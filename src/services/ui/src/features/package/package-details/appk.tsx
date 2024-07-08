@@ -43,8 +43,10 @@ export const AppK = () => {
       },
     );
   };
-
-  if (!cache.data.appkChildren) return <></>;
+  console.log(cache.data.appkChildren);
+  if (!cache.data.appkChildren || cache.data.appkChildren.length === 0) {
+    return <></>;
+  }
 
   return (
     <div className="my-2" id="appendix_k">

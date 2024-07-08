@@ -12,6 +12,7 @@ export const completeIntakeSchema = z.object({
   typeIds: z.array(z.number()),
   subTypeIds: z.array(z.number()),
   cpoc: z.number(),
+  timestamp: z.number().optional(),
 });
 
 export type CompleteIntake = z.infer<typeof completeIntakeSchema>;
