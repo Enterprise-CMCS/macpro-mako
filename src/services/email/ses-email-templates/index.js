@@ -1168,4 +1168,42 @@ and extension requests on Waivers only. Any other correspondence will be disrega
 <p>Thank you!</p>`,
     text: "",
   },
+  {
+    name: "subsequent-submission-cms",
+    subject: "Action required: review new documents for {{actionType}} {{id}}",
+    html: `
+<p>New documents have been submitted for {{actionType}} {{id}} in OneMAC.</p>
+<br><b>State or territory:</b> {{territory}}
+<br><b>Medicaid SPA Package ID:</b> {{id}}
+<p>Summary:
+<br>{{additionalInformation}}</p>
+<br>Files:
+<br>{{formattedFileList}}
+<p><b>How to Access:</b></p>
+<ul>
+  <li>These documents can be found in OneMAC through <a href='{{applicationEndpoint}}'>this link</a>.</li>
+  <li>If you are not already logged in, click “Login” at the top of the page and log in 
+  using your Enterprise User Administration (EUA) credentials.</li>
+  <li>After you logged in, click the submission ID number on the dashboard page to view details. </li>
+</ul>
+<p>If you have questions or did not expect this email, please contact 
+<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a> or your state lead.</p>
+<p>Thank you!</p>
+    `,
+    text: `
+New documents have been submitted for {{actionType}} {{id}} in OneMAC.
+State or territory:</b> {{territory}}
+Medicaid SPA Package ID: {{id}}
+Summary:
+{{additionalInformation}}
+Files:
+{{formattedFileList}}
+How to Access:
+  - These documents can be found in OneMAC through this link.
+  - If you are not already logged in, click “Login” at the top of the page and log in 
+  using your Enterprise User Administration (EUA) credentials.
+  - After you logged in, click the submission ID number on the dashboard page to view details. 
+If you have questions or did not expect this email, please contact SPA@cms.hhs.gov or your state lead.
+Thank you!`
+  }
 ];

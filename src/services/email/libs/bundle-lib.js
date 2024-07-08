@@ -438,6 +438,35 @@ const getBundleFromEvent = (configKey, stage) => {
           },
         ],
       };
+      case "subsequent-submission":
+        return {
+          lookupList: ["osInsights", "cognito", "osMain"],
+          dataList: [
+            "osgEmail",
+            "dhcbsooEmail",
+            "cpoc",
+            "srt",
+            "allState",
+            "id",
+            "actionType",
+            "applicationEndpoint",
+            "territory",
+            "submitterName",
+            "submitterEmail",
+            "authority",
+            "additionalInformation",
+            "formattedFileList",
+            "textFileList",
+            "initialSubmitterName",
+            "initialSubmitterEmail",
+          ],
+          emailCommands: [
+            {
+              Template: `subsequent-submission-cms_${stage}`,
+              ToAddresses: ["cpoc", "srt"],
+            },
+          ],
+        }; 
     default:
       return { message: `no bundle defined for configKey ${configKey}` };
   }
