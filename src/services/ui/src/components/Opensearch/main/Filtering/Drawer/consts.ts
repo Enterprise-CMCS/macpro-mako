@@ -96,6 +96,15 @@ export const DATE_FINALDISPOSITION: DrawerFilterableGroup = {
   value: { gte: undefined, lte: undefined },
 };
 
+export const DATE_LATESTPACKAGEACTIVITY: DrawerFilterableGroup = {
+  label: "Latest Package Activity",
+  field: "makoChangedDate",
+  component: "dateRange",
+  prefix: "must",
+  type: "range",
+  value: { gte: undefined, lte: undefined },
+};
+
 export const DATE_RAIRECEIVED: DrawerFilterableGroup = {
   label: "Formal RAI Received",
   field: "raiReceivedDate",
