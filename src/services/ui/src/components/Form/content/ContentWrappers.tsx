@@ -91,22 +91,19 @@ export const ActionFormHeaderCard = ({
 
 export const PreSubmitNotice = ({
   message,
-  hasProgressLossReminder = true,
 }: {
   message: string | ReactElement;
-  hasProgressLossReminder?: boolean;
 }) => (
   <Alert variant={"infoBlock"} className="space-x-2 mb-8">
     <Info />
     {/* Wraps strings, but allows for ReactElements to declare their own wrapper */}
     {typeof message === "string" ? (
       <p>
-        {message}
-        {hasProgressLossReminder && <ProgressLossReminder />}
+        {message} <ProgressLossReminder />
       </p>
     ) : (
       <>
-        {message} {hasProgressLossReminder && <ProgressLossReminder />}
+        {message} <ProgressLossReminder />
       </>
     )}
   </Alert>
