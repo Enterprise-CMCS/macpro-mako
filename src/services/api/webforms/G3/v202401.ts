@@ -543,7 +543,7 @@ export const v202401: FormSchema = {
                 pattern: {
                   value: /^(?:[0-4]\.\d|5\.0)$/,
                   message:
-                    "Must be between 0% and 5% with only one decimal place",
+                    "Must be between 0% and 5% with max one decimal place",
                 },
               },
               props: {
