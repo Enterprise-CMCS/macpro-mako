@@ -122,6 +122,7 @@ jobs:
         run: run coverage
 
       - name: Upload coverage report
+        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: coverage-report
