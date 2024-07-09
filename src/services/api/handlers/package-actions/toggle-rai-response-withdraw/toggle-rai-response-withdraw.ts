@@ -5,7 +5,8 @@ import {
 } from "shared-types";
 import { response } from "../../../libs/handler";
 import { produceMessage } from "../../../libs/kafka";
-import { getIdsToUpdate, TOPIC_NAME } from "../../packageActions";
+import { getIdsToUpdate } from "../get-id-to-update";
+import { TOPIC_NAME } from "../consts";
 
 export async function toggleRaiResponseWithdraw(
   body: ToggleWithdrawRaiEnabled,

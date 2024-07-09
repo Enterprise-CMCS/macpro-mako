@@ -2,8 +2,8 @@ import { completeIntakeSchema, Action } from "shared-types";
 import { response } from "../../../libs/handler";
 import { produceMessage } from "../../../libs/kafka";
 import { buildStatusMemoQuery } from "../../../libs/statusMemo";
-import { config, TOPIC_NAME } from "../../packageActions";
 import * as sql from "mssql";
+import { config, TOPIC_NAME } from "../consts";
 
 export async function completeIntake(body: any) {
   console.log("CMS performing intake for a record.");

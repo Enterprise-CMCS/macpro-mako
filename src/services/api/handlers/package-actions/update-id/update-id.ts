@@ -3,8 +3,8 @@ import { seaToolFriendlyTimestamp } from "shared-utils";
 import { response } from "../../../libs/handler";
 import { produceMessage } from "../../../libs/kafka";
 import { buildStatusMemoQuery } from "../../../libs/statusMemo";
-import { config, TOPIC_NAME } from "../../packageActions";
 import * as sql from "mssql";
+import { config, TOPIC_NAME } from "../consts";
 
 export async function updateId(body: any) {
   console.log("CMS updating the ID of a package.");

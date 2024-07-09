@@ -12,8 +12,9 @@ import {
 import { response } from "../../../libs/handler";
 import { produceMessage } from "../../../libs/kafka";
 import { buildStatusMemoQuery } from "../../../libs/statusMemo";
-import { config, getIdsToUpdate, TOPIC_NAME } from "../../packageActions";
+import { getIdsToUpdate } from "../get-id-to-update";
 import * as sql from "mssql";
+import { config, TOPIC_NAME } from "../consts";
 
 export async function respondToRai(body: RaiResponse, document: any) {
   console.log("State responding to RAI");

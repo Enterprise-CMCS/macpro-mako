@@ -3,8 +3,9 @@ import { seaToolFriendlyTimestamp } from "shared-utils";
 import { response } from "../../../libs/handler";
 import { produceMessage } from "../../../libs/kafka";
 import { buildStatusMemoQuery } from "../../../libs/statusMemo";
-import { config, getIdsToUpdate, TOPIC_NAME } from "../../packageActions";
 import * as sql from "mssql";
+import { config, TOPIC_NAME } from "../consts";
+import { getIdsToUpdate } from "../get-id-to-update";
 
 export async function issueRai(body: RaiIssue) {
   console.log("CMS issuing a new RAI");
