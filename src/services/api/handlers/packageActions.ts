@@ -4,7 +4,7 @@ const user = process.env.dbUser;
 const password = process.env.dbPassword;
 const server = process.env.dbIp;
 const port = parseInt(process.env.dbPort as string);
-const config = {
+export const config = {
   user: user,
   password: password,
   server: server,
@@ -41,7 +41,7 @@ import { buildStatusMemoQuery } from "../libs/statusMemo";
 import { getAppkChildren } from "../libs/package";
 import { getItem } from "libs";
 
-const TOPIC_NAME = process.env.topicName as string;
+export const TOPIC_NAME = process.env.topicName as string;
 
 export async function issueRai(body: RaiIssue) {
   console.log("CMS issuing a new RAI");
@@ -490,7 +490,7 @@ export async function removeAppkChild(doc: opensearch.main.Document) {
   }
 }
 
-async function getIdsToUpdate(id: string) {
+export async function getIdsToUpdate(id: string) {
   console.log(process.env.osDomain);
   console.log(id);
   const og = (await getItem(
