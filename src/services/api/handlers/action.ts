@@ -10,14 +10,14 @@ import { getAvailableActions } from "shared-utils";
 import { Action } from "shared-types";
 import {
   issueRai,
-  removeAppkChild,
   respondToRai,
   toggleRaiResponseWithdraw,
   updateId,
   withdrawPackage,
   withdrawRai,
   completeIntake,
-} from "./packageActions";
+  removeAppkChild,
+} from "./package-actions";
 
 export const handler = async (event: APIGatewayEvent) => {
   if (!event.pathParameters || !event.pathParameters.actionType) {
@@ -58,14 +58,6 @@ export const handler = async (event: APIGatewayEvent) => {
       authDetails.poolId,
     );
 
-    if (actionType === Action.REMOVE_APPK_CHILD) {
-      await removeAppkChild(body);
-      return response({
-        statusCode: 200,
-        body: { message: "success" },
-      });
-    }
-
     // Check that the package action is available
     const actions: Action[] = getAvailableActions(userAttr, result._source);
     if (!actions.includes(actionType)) {
@@ -102,6 +94,9 @@ export const handler = async (event: APIGatewayEvent) => {
         break;
       case Action.COMPLETE_INTAKE:
         await completeIntake(body);
+        break;
+      case Action.REMOVE_APPK_CHILD:
+        await removeAppkChild(body);
         break;
       default:
         throw `No ${actionType} action available`;

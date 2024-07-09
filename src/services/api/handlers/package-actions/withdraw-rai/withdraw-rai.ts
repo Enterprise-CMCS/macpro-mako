@@ -9,11 +9,13 @@ import {
   formatSeatoolDate,
   getNextBusinessDayTimestamp,
 } from "shared-utils";
-import { response } from "../../libs/handler";
-import { produceMessage } from "../../libs/kafka";
-import { buildStatusMemoQuery } from "../../libs/statusMemo";
+
 import * as sql from "mssql";
-import { TOPIC_NAME, config, getIdsToUpdate } from "../packageActions";
+import { response } from "../../../libs/handler";
+import { getIdsToUpdate } from "../get-id-to-update";
+import { config, TOPIC_NAME } from "../consts";
+import { produceMessage } from "../../../libs/kafka";
+import { buildStatusMemoQuery } from "../../../libs/statusMemo";
 
 export async function withdrawRai(body: RaiWithdraw, document: any) {
   console.log("State withdrawing an RAI Response");
