@@ -119,7 +119,7 @@ jobs:
           role-duration-seconds: 10800
 
       - name: Test
-        run: yarn test-ci
+        run: run coverage
 
   e2e:
     timeout-minutes: 5

@@ -22,7 +22,7 @@ async function install_deps(runner: LabeledProcessRunner) {
     `Installing Dependencies`,
     ["yarn"],
     ".",
-    true
+    true,
   );
 }
 
@@ -35,7 +35,7 @@ async function refreshOutputs(stage: string) {
     `SLS Refresh Outputs`,
     ["sls", "refresh-outputs", "--stage", stage],
     ".",
-    true
+    true,
   );
 }
 
@@ -55,19 +55,19 @@ yargs(process.argv.slice(2))
       await runner.run_command_and_output(
         `config vars`,
         ["sls", "ui", "package", "--stage", options.stage],
-        "."
+        ".",
       );
       await runner.run_command_and_output(
         `config vars`,
         ["sls", "ui", "useLocalhost", "--stage", options.stage],
-        "."
+        ".",
       );
       await runner.run_command_and_output(
         `ui start`,
         ["yarn", "dev"],
-        `src/services/ui`
+        `src/services/ui`,
       );
-    }
+    },
   )
   .command(
     "deploy",
@@ -90,23 +90,24 @@ yargs(process.argv.slice(2))
         ];
       }
       await runner.run_command_and_output(`SLS Deploy`, deployCmd, ".");
-    }
-  )
-  .command(
-    "test",
-    "run all available tests.",
-    {
-      stage: { type: "string", demandOption: true },
     },
-    async (options) => {
+  )
+  .command("test", "Run unit tests and watch for changes", {}, async () => {
+    await install_deps_for_services();
+    await runner.run_command_and_output(`Unit Tests`, ["yarn", "test"], ".");
+  })
+  .command(
+    "coverage",
+    "Run unit tests and output a coverage report.",
+    {},
+    async () => {
       await install_deps_for_services();
-      await runner.run_command_and_output(`Unit Tests`, ["yarn", "test"], ".");
       await runner.run_command_and_output(
-        `Load test data`,
-        ["sls", "database", "seed", "--stage", options.stage],
-        "."
+        `Unit Tests`,
+        ["yarn", "coverage"],
+        ".",
       );
-    }
+    },
   )
   .command(
     "e2e",
@@ -119,26 +120,26 @@ yargs(process.argv.slice(2))
       await runner.run_command_and_output(
         `Install playwright`,
         ["yarn", "playwright", "install", "--with-deps"],
-        "."
+        ".",
       );
 
       if (argv.ui) {
         await runner.run_command_and_output(
           `e2e:ui tests`,
           ["yarn", "e2e:ui"],
-          "."
+          ".",
         );
       } else {
         await runner.run_command_and_output(`e2e tests`, ["yarn", "e2e"], ".");
       }
-    }
+    },
   )
   .command("test-gui", "open unit-testing gui for vitest.", {}, async () => {
     await install_deps_for_services();
     await runner.run_command_and_output(
       `Unit Tests`,
       ["yarn", "test-gui"],
-      "."
+      ".",
     );
   })
   .command(
@@ -169,7 +170,7 @@ yargs(process.argv.slice(2))
         filters: filters,
         verify: options.verify,
       });
-    }
+    },
   )
   .command(
     "connect",
@@ -184,9 +185,9 @@ yargs(process.argv.slice(2))
       await runner.run_command_and_output(
         `SLS connect`,
         ["sls", options.service, "connect", "--stage", options.stage],
-        "."
+        ".",
       );
-    }
+    },
   )
   .command(
     "docs",
@@ -199,7 +200,7 @@ yargs(process.argv.slice(2))
       await runner.run_command_and_output(
         `Stop any existing container.`,
         ["docker", "rm", "-f", "jekyll"],
-        "docs"
+        "docs",
       );
 
       // If we're starting...
@@ -223,10 +224,10 @@ yargs(process.argv.slice(2))
             "-c",
             "bundle install && bundle exec jekyll serve --force_polling --host 0.0.0.0",
           ],
-          "docs"
+          "docs",
         );
       }
-    }
+    },
   )
   .command(
     "base-update",
@@ -249,7 +250,7 @@ yargs(process.argv.slice(2))
         {
           stderr: true,
           close: true,
-        }
+        },
       );
 
       const fetchBaseCommand = ["git", "fetch", "base"];
@@ -257,7 +258,7 @@ yargs(process.argv.slice(2))
       await runner.run_command_and_output(
         "Update from Base | fetching base template",
         fetchBaseCommand,
-        "."
+        ".",
       );
 
       const mergeCommand = ["git", "merge", "base/production", "--no-ff"];
@@ -266,13 +267,13 @@ yargs(process.argv.slice(2))
         "Update from Base | merging code from base template",
         mergeCommand,
         ".",
-        true
+        true,
       );
 
       console.log(
-        "Merge command was performed. You may have conflicts. This is normal behaivor. To complete the update process fix any conflicts, commit, push, and open a PR."
+        "Merge command was performed. You may have conflicts. This is normal behaivor. To complete the update process fix any conflicts, commit, push, and open a PR.",
       );
-    }
+    },
   )
   .command(
     ["listRunningStages", "runningEnvs", "listRunningEnvs"],
@@ -285,7 +286,7 @@ yargs(process.argv.slice(2))
           await ServerlessRunningStages.getAllStagesForRegion(region!);
         console.log(`runningStages=${runningStages.join(",")}`);
       }
-    }
+    },
   )
   .command(
     ["securityHubJiraSync", "securityHubSync", "secHubSync"],
@@ -301,7 +302,7 @@ yargs(process.argv.slice(2))
             "* All findings of this type are resolved or suppressed, indicated by a Workflow Status of Resolved or Suppressed.  (Note:  this ticket will automatically close when the AC is met.)",
         },
       }).sync();
-    }
+    },
   )
   .command(
     ["open-kibana", "open-os"],
@@ -313,10 +314,10 @@ yargs(process.argv.slice(2))
       let url = await getCloudFormationOutputValue(
         "data",
         options.stage,
-        "OpenSearchDashboardEndpoint"
+        "OpenSearchDashboardEndpoint",
       );
       open(url);
-    }
+    },
   )
   .command(
     ["open-app"],
@@ -328,10 +329,10 @@ yargs(process.argv.slice(2))
       let url = await getCloudFormationOutputValue(
         "ui-infra",
         options.stage,
-        "ApplicationEndpointUrl"
+        "ApplicationEndpointUrl",
       );
       open(url);
-    }
+    },
   )
   .strict() // This errors and prints help if you pass an unknown command
   .scriptName("run") // This modifies the displayed help menu to show 'run' isntead of 'dev.js'
@@ -341,7 +342,7 @@ async function getCloudFormationOutputValue(
   service: string,
   stage: string,
   outputKey: string,
-  region: string = ""
+  region: string = "",
 ): Promise<string> {
   const cliRegion = region !== "" ? region : process.env.REGION_A;
   const client = new CloudFormationClient({ region: cliRegion });
@@ -354,7 +355,7 @@ async function getCloudFormationOutputValue(
     const response = await client.send(command);
     const stack = response.Stacks?.[0];
     const outputValue = stack?.Outputs?.find(
-      (output) => output.OutputKey === outputKey
+      (output) => output.OutputKey === outputKey,
     )?.OutputValue;
     if (outputValue === undefined || outputValue.trim() === "") {
       throw new Error("Output not found");
@@ -363,7 +364,7 @@ async function getCloudFormationOutputValue(
   } catch (error) {
     console.error(
       `Failed to retrieve output [${outputKey}] from stack [${stackName}]:`,
-      error
+      error,
     );
     throw error; // Rethrow or handle as needed
   }
