@@ -121,6 +121,12 @@ jobs:
       - name: Test
         run: run coverage
 
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage
+
   e2e:
     timeout-minutes: 5
     runs-on: ubuntu-20.04
