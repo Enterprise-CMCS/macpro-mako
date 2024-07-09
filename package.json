@@ -9,7 +9,8 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "turbo test",
+    "test": "vitest --watch",
+    "coverage": "vitest --coverage",
     "test-ci": "turbo test",
     "lint": "turbo lint",
     "build:cli": "turbo build:cli",
@@ -41,11 +42,12 @@
     "@testing-library/react": "^14.0.0",
     "@types/uuid": "^9.0.1",
     "@vitest/coverage-c8": "^0.29.8",
+    "@vitest/coverage-istanbul": "^2.0.1",
     "@vitest/ui": "^0.29.8",
     "aws-sdk-client-mock": "^2.0.1",
     "esbuild": "^0.19.3",
-    "prettier": "3.2.5",
     "msw": "^2.2.1",
+    "prettier": "3.2.5",
     "semantic-release": "^21.0.1",
     "serverless": "^3.38.0",
     "serverless-disable-functions": "^1.0.0",
