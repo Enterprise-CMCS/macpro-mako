@@ -15,7 +15,7 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
         {props.section.title && (
           <div
             className={
-              "py-4 px-8 w-full " +
+              "py-1 px-8 w-full " +
               (props.section.subsection
                 ? "bg-gray-300 text-2xl"
                 : "bg-primary text-white text-3xl")
