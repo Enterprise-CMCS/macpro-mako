@@ -15,7 +15,7 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
         {props.section.title && (
           <div
             className={
-              "py-1 px-8 w-full " +
+              "py-2 px-8 w-full " +
               (props.section.subsection
                 ? "bg-gray-300 text-2xl"
                 : "bg-primary text-white text-3xl")
@@ -25,7 +25,7 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
           </div>
         )}
         {props.section.form?.length ? (
-          <div className="px-8 py-4">
+          <div className="mt-[32px] mx-8">
             {props.section.form.map((FORM, index) => (
               <RHFFormGroup
                 key={`rhf-form-${index}-${FORM.description}`}
