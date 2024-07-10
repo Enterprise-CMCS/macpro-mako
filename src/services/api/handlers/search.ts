@@ -3,6 +3,8 @@ import { APIGatewayEvent } from "aws-lambda";
 import { getStateFilter } from "../libs/auth/user";
 import * as os from "./../../../libs/opensearch-lib";
 import { getAppkChildren } from "../libs/package";
+import { Index } from "shared-types/opensearch";
+import { ItemResult } from "shared-types/opensearch/main";
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
 }
@@ -39,9 +41,6 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     query.from = query.from || 0;
     query.size = query.size || 100;
 
-    console.log("Sending query, built as follow:");
-    console.log(JSON.stringify(query, null, 2));
-
     if (!process.env.osDomain) {
       return response({
         statusCode: 500,
@@ -51,21 +50,17 @@ export const getSearchData = async (event: APIGatewayEvent) => {
 
     const results = await os.search(
       process.env.osDomain,
-      event.pathParameters.index as any,
+      event.pathParameters.index as Index,
       query,
     );
 
-    if (results) {
-      results.hits.hits = await Promise.all(
-        results?.hits.hits.map(async (item: any) => {
-          if (item._source.appkParent) {
-            item._source.appkChildren = (
-              await getAppkChildren(item._id)
-            ).hits.hits;
-          }
-          return item;
-        }),
-      );
+    for (let i = 0; i < results.hits.hits.length; i++) {
+      if (results.hits.hits[i]._source.appkParent) {
+        const children = await getAppkChildren(results.hits.hits[i]._id);
+        if (children.hits?.hits.length > 0) {
+          results.hits.hits[i]._source.appkChildren = children.hits.hits;
+        }
+      }
     }
 
     return response<unknown>({
