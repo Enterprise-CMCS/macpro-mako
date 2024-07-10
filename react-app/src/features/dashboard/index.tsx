@@ -47,6 +47,7 @@ export const dashboardLoader = loader;
 export const Dashboard = () => {
   const userContext = useUserContext();
   const osData = useOsData();
+  useScrollToTop();
 
   const role = useMemo(() => {
     return userContext?.user?.["custom:cms-roles"] ? true : false;
@@ -55,7 +56,6 @@ export const Dashboard = () => {
   if (!role) {
     return <Navigate path={"/"} />;
   }
-  useScrollToTop();
 
   return (
     <OsProvider

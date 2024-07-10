@@ -22,6 +22,7 @@ function createAwsConnector(credentials: any) {
       const request = super.buildRequestObject(params);
       request.headers = request.headers || {};
       request.headers["host"] = request.hostname ?? undefined;
+      // request.headers["Content-Type"] = "application/json; charset=UTF-8"; // Ensure Content-Type header is set
 
       return aws4.sign(<any>request, credentials);
     }
@@ -170,7 +171,7 @@ export async function mapRole(
         },
       ],
     );
-    return patchResponse.data;
+    return decodeUtf8(patchResponse.data);
   } catch (error) {
     console.error("Error making PUT request:", error);
     throw error;
@@ -188,7 +189,7 @@ export async function search(
       index: index,
       body: query,
     });
-    return response.body;
+    return decodeUtf8(response).body;
   } catch (e) {
     console.log({ e });
   }
@@ -202,7 +203,7 @@ export async function getItem(
   client = client || (await getClient(host));
   try {
     const response = await client.get({ id, index });
-    return response.body;
+    return decodeUtf8(response).body;
   } catch (e) {
     console.log({ e });
   }
@@ -241,4 +242,24 @@ export async function updateFieldMapping(
     console.error("Error updating field mapping:", error);
     throw error;
   }
+}
+
+function decodeUtf8(data: any): any {
+  if (typeof data === 'string') {
+    try {
+      return decodeURIComponent(escape(data));
+    } catch (e) {
+      return data;
+    }
+  }
+  if (Array.isArray(data)) {
+    return data.map(item => decodeUtf8(item));
+  }
+  if (typeof data === 'object' && data !== null) {
+    return Object.keys(data).reduce((acc, key) => {
+      acc[key] = decodeUtf8(data[key]);
+      return acc;
+    }, {} as any);
+  }
+  return data;
 }

@@ -83,7 +83,7 @@ const ClearDataButton: FC<{ reset: () => void }> = ({ reset }) => {
   if (clearDataButton) {
     return (
       <Button type="button" onClick={reset} variant="outline" className="mx-2">
-        Clear Data
+        Clear
       </Button>
     );
   }

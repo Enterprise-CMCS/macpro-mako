@@ -7,6 +7,7 @@ export const toggleWithdrawRaiEnabledSchema = z.object({
   raiWithdrawEnabled: z.boolean(),
   submitterName: z.string(),
   submitterEmail: z.string(),
+  timestamp: z.number().optional(),
 });
 export type ToggleWithdrawRaiEnabled = z.infer<
   typeof toggleWithdrawRaiEnabledSchema

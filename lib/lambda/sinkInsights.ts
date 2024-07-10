@@ -1,5 +1,5 @@
 import { Handler } from "aws-lambda";
-import { decode } from "base-64";
+import { decodeBase64WithUtf8 } from "shared-utils";
 import { KafkaEvent, KafkaRecord } from "shared-types";
 import {
   ErrorType,
@@ -41,8 +41,8 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
     try {
       if (!value) continue;
 
-      const id: string = JSON.parse(decode(key));
-      const record = JSON.parse(decode(value));
+      const id: string = JSON.parse(decodeBase64WithUtf8(key));
+      const record = JSON.parse(decodeBase64WithUtf8(value));
       docs.push({ ...record, id });
     } catch (error) {
       logError({

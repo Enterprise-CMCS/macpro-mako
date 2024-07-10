@@ -6,7 +6,6 @@ import {
   getPackage,
   getPackageChangelog,
 } from "../libs/api/package";
-import { Authority } from "shared-types";
 if (!process.env.osDomain) {
   throw "ERROR:  osDomain env variable is required,";
 }
@@ -62,6 +61,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
         body: { message: "No record found for the given id" },
       });
     }
+    console.log(JSON.stringify(changelog, null, 2));
 
     return response<unknown>({
       statusCode: 200,

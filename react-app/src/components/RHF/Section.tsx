@@ -11,7 +11,7 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
 }) => {
   return (
     <DependencyWrapper {...props.section}>
-      <div className="py-4">
+      <div className={props.section.subsection ? "" : "py-4"}>
         {props.section.title && (
           <div
             className={
@@ -24,16 +24,20 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
             <FormLabel className="font-bold">{props.section.title}</FormLabel>
           </div>
         )}
-        <div className="px-8">
-          {props.section.form.map((FORM, index) => (
-            <RHFFormGroup
-              key={`rhf-form-${index}-${FORM.description}`}
-              parentId={props.formId + "_" + props.section.sectionId + "_"}
-              control={props.control}
-              form={FORM}
-            />
-          ))}
-        </div>
+        {props.section.form?.length ? (
+          <div className="px-8 py-4">
+            {props.section.form.map((FORM, index) => (
+              <RHFFormGroup
+                key={`rhf-form-${index}-${FORM.description}`}
+                parentId={props.formId + "_" + props.section.sectionId + "_"}
+                control={props.control}
+                form={FORM}
+              />
+            ))}
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </DependencyWrapper>
   );

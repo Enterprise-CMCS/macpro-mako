@@ -7,6 +7,7 @@ import {
 import {
   CalendarProps,
   InputProps,
+  MultiselectProps,
   RadioProps,
   SelectProps,
   SwitchProps,
@@ -15,6 +16,7 @@ import {
 
 export interface FormSchema {
   header: string;
+  subheader?: string;
   formId: string;
   sections: Section[];
 }
@@ -31,6 +33,7 @@ export type RHFSlotProps = {
   descriptionClassName?: string;
   dependency?: DependencyRule;
   rules?: RegisterOptions;
+  horizontalLayout?: boolean;
 } & {
   [K in keyof RHFComponentMap]: {
     rhf: K;
@@ -94,6 +97,7 @@ export type RHFComponentMap = {
   Textarea: TextareaProps;
   Switch: SwitchProps;
   Select: SelectProps & { sort?: "ascending" | "descending" };
+  Multiselect: MultiselectProps;
   Radio: RadioProps & {
     options: RHFOption[];
   };

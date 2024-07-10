@@ -126,6 +126,15 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       cell: (data) => data.origin,
     },
     {
+      field: "makoChangedDate",
+      label: "Latest Package Activity",
+      transform: (data) =>
+        data.makoChangedDate
+          ? formatSeatoolDate(data.makoChangedDate)
+          : BLANK_VALUE,
+      cell: renderCellDate("makoChangedDate"),
+    },
+    {
       field: "raiRequestedDate",
       label: "Formal RAI Requested",
       hidden: true,

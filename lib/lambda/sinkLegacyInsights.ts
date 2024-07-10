@@ -1,5 +1,5 @@
 import { Handler } from "aws-lambda";
-import { decode } from "base-64";
+import { decodeBase64WithUtf8 } from "shared-utils";
 import { KafkaEvent, KafkaRecord } from "shared-types";
 import {
   ErrorType,
@@ -39,7 +39,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   for (const kafkaRecord of kafkaRecords) {
     const { key, value, offset } = kafkaRecord;
     try {
-      const id: string = decode(key);
+      const id: string = decodeBase64WithUtf8(key);
       if (!value) {
         docs.push({
           id,
@@ -47,7 +47,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         });
         continue;
       }
-      const record = JSON.parse(decode(value));
+      const record = JSON.parse(decodeBase64WithUtf8(value));
       if (!record.sk) continue;
       docs.push({
         ...record,

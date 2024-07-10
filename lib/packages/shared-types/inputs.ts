@@ -18,6 +18,7 @@ export type DatePickerProps = {
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: string;
+  iconRight?: boolean;
 }
 
 export type RadioProps = React.ComponentPropsWithoutRef<
@@ -31,6 +32,21 @@ export type SelectProps = React.ComponentPropsWithoutRef<
 > & {
   options: { label: string; value: any }[];
   className?: string;
+};
+
+export interface MultiselectOption {
+  readonly value: string;
+  readonly label: string;
+  readonly color?: string;
+  readonly isFixed?: boolean;
+  readonly isDisabled?: boolean;
+}
+
+export type MultiselectProps = {
+  className?: string;
+  options: MultiselectOption[];
+  value?: string[];
+  onChange?: (selectedValues: string[]) => void;
 };
 
 export type SwitchProps = React.ComponentPropsWithoutRef<

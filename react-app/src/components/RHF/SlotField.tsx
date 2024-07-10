@@ -1,4 +1,9 @@
-import { RHFComponentMap, RHFOption, RHFSlotProps } from "shared-types";
+import {
+  RHFComponentMap,
+  RHFOption,
+  RHFSlotProps,
+  MultiselectOption,
+} from "shared-types";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/utils";
@@ -19,6 +24,7 @@ import {
   FormField,
   FormLabel,
   Input,
+  Multiselect,
   RadioGroup,
   RadioGroupItem,
   Select,
@@ -46,6 +52,7 @@ export const SlotField = ({
   parentId,
   fields,
   name,
+  horizontalLayout,
 }: SlotFieldProps) => {
   switch (rhf) {
     case "Input":
@@ -111,6 +118,19 @@ export const SlotField = ({
             ))}
           </SelectContent>
         </Select>
+      );
+    }
+    case "Multiselect": {
+      const options = props?.options as MultiselectOption[];
+      const value = field.value as string[];
+
+      return (
+        <Multiselect
+          options={options}
+          value={value}
+          onChange={(selectedValues) => field.onChange(selectedValues)}
+          {...props}
+        />
       );
     }
     case "DatePicker":
@@ -192,7 +212,7 @@ export const SlotField = ({
         <RadioGroup
           onValueChange={field.onChange}
           defaultValue={field.value}
-          className="flex flex-col space-y-1"
+          className={`flex  ${horizontalLayout ? "pl-5 gap-5" : "flex-col space-y-1"}`}
         >
           {(props as RHFComponentMap["Radio"]).options.map((OPT) => {
             return (
@@ -256,7 +276,7 @@ export const OptChildren = ({
               control={control}
               name={parentId + SLOT.name}
               {...(SLOT.rules && { rules: SLOT.rules })}
-              render={RHFSlot({ ...SLOT, parentId, control })}
+              render={RHFSlot({ ...SLOT, control, parentId })}
             />
           </div>
         ))}
