@@ -541,7 +541,7 @@ export const v202401: FormSchema = {
               rules: {
                 required: "* Required",
                 pattern: {
-                  value: /^(?:[0-4]\.\d|5\.0)$/,
+                  value: /^(?:[0-4](?:\.[0-9])?|5(?:\.0)?|\.[0-9])$/,
                   message:
                     "Must be between 0% and 5% with max one decimal place",
                 },
