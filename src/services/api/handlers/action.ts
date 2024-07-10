@@ -23,6 +23,20 @@ import { SeatoolWriteService } from "./package-actions/services/seatool-write-se
 import { MakoWriteService } from "./package-actions/services/mako-write-service";
 import { produceMessage } from "../libs/kafka";
 import { PackageActionWriteService } from "./package-actions/services/package-action-write-service";
+import { setupWriteService } from "./package-actions/setup-write-service";
+
+const checkIfActionType = (
+  potentialActionType: unknown,
+): potentialActionType is Action => {
+  if (potentialActionType) {
+    return true;
+  }
+  return false;
+};
+
+if (typeof globalThis.packageActionWriteService === "undefined") {
+  global.packageActionWriteService = await setupWriteService();
+}
 
 export const handler = async (event: APIGatewayEvent) => {
   if (!event.pathParameters || !event.pathParameters.actionType) {
@@ -41,8 +55,6 @@ export const handler = async (event: APIGatewayEvent) => {
   try {
     const actionType = event.pathParameters.actionType as Action;
     const body = JSON.parse(event.body);
-    console.log(actionType);
-    console.log(body);
 
     // Check auth
     const result = await getPackage(body.id);
@@ -73,14 +85,7 @@ export const handler = async (event: APIGatewayEvent) => {
         },
       });
     }
-    console.log(actionType);
-    const seatoolWriteService =
-      await SeatoolWriteService.createSeatoolService(config);
-    const makoWriteService = new MakoWriteService(produceMessage);
-    const packageActionWriteService = new PackageActionWriteService(
-      seatoolWriteService,
-      makoWriteService,
-    );
+
     // Call package action
     switch (actionType) {
       case Action.WITHDRAW_PACKAGE:
@@ -105,7 +110,7 @@ export const handler = async (event: APIGatewayEvent) => {
         await updateId(body);
         break;
       case Action.COMPLETE_INTAKE:
-        await completeIntake(body, packageActionWriteService);
+        await completeIntake(body);
         break;
       case Action.REMOVE_APPK_CHILD:
         await removeAppkChild(body);

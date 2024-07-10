@@ -1,16 +1,11 @@
 import { completeIntakeSchema, Action } from "shared-types";
 import { response } from "../../../libs/handler";
-import { produceMessage } from "../../../libs/kafka";
-import { buildStatusMemoQuery } from "../../../libs/statusMemo";
-import * as sql from "mssql";
-import { config, TOPIC_NAME } from "../consts";
-import { SeatoolWriteService } from "../services/seatool-write-service";
-import { MakoWriteService } from "../services/mako-write-service";
-import { PackageActionWriteService } from "../services/package-action-write-service";
+import { TOPIC_NAME } from "../consts";
+import { type PackageActionWriteService } from "../services/package-action-write-service";
 
 export async function completeIntake(
   body: any,
-  packageActionWriteService: PackageActionWriteService,
+  packageActionWriteService: PackageActionWriteService = globalThis.packageActionWriteService,
 ) {
   console.log("CMS performing intake for a record.");
 
