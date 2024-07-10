@@ -18,7 +18,7 @@ export const defaultEnableRaiWithdrawContent: FormContentHydrator = (
   title: "Enable Formal RAI Response Withdraw Details",
   enableSubmit: true,
   successBanner: {
-    header: "RAI response withdrawal Enabled",
+    header: "RAI response withdrawal enabled",
     body: "The state will be able to withdraw its RAI response. It may take up to a minute for this change to be applied.",
   },
 });
@@ -37,8 +37,8 @@ export const defaultDisableRaiWithdrawContent: FormContentHydrator = (
   title: "Disable Formal RAI Response Withdraw Details",
   enableSubmit: true,
   successBanner: {
-    header: "RAI response withdrawal Disabled",
-    body: "The state will be able to withdraw its RAI response. It may take up to a minute for this change to be applied.",
+    header: "RAI response withdrawal disabled",
+    body: "The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied.",
   },
 });
 
