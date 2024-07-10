@@ -102,22 +102,24 @@ export const SlotField = ({
       props?.sort === "descending" && opts.reverse();
 
       return (
-        <Select
-          {...props}
-          onValueChange={field.onChange}
-          defaultValue={field.value}
-        >
-          <SelectTrigger {...props} aria-label={field.name}>
-            <SelectValue {...props} />
-          </SelectTrigger>
-          <SelectContent className="overflow-auto max-h-60">
-            {opts?.map((OPT) => (
-              <SelectItem key={`OPT-${OPT.value}`} value={OPT.value}>
-                {OPT.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="mb-4">
+          <Select
+            {...props}
+            onValueChange={field.onChange}
+            defaultValue={field.value}
+          >
+            <SelectTrigger {...props} aria-label={field.name}>
+              <SelectValue {...props} />
+            </SelectTrigger>
+            <SelectContent className="overflow-auto max-h-60">
+              {opts?.map((OPT) => (
+                <SelectItem key={`OPT-${OPT.value}`} value={OPT.value}>
+                  {OPT.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       );
     }
     case "Multiselect": {
@@ -167,7 +169,7 @@ export const SlotField = ({
       );
     case "Checkbox":
       return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 mb-4">
           {(props as RHFComponentMap["Checkbox"]).options.map((OPT) => (
             <DependencyWrapper
               name={OPT.value}
@@ -224,7 +226,7 @@ export const SlotField = ({
                     aria-label={OPT.value}
                   />
                   {
-                    <FormLabel className="font-normal mt-2" htmlFor={OPT.value}>
+                    <FormLabel className="font-normal" htmlFor={OPT.value}>
                       <RHFTextDisplay
                         text={(OPT.styledLabel || OPT.label) as string}
                       />
