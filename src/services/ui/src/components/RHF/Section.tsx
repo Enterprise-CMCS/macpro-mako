@@ -25,7 +25,7 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
           </div>
         )}
         {props.section.form?.length ? (
-          <div className="mt-[1rem] mx-8">
+          <div className="mt-4 mx-8">
             {props.section.form.map((FORM, index) => (
               <RHFFormGroup
                 key={`rhf-form-${index}-${FORM.description}`}
