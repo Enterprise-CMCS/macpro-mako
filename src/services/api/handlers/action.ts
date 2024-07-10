@@ -17,12 +17,7 @@ import {
   withdrawRai,
   completeIntake,
   removeAppkChild,
-  config,
 } from "./package-actions";
-import { SeatoolWriteService } from "./package-actions/services/seatool-write-service";
-import { MakoWriteService } from "./package-actions/services/mako-write-service";
-import { produceMessage } from "../libs/kafka";
-import { PackageActionWriteService } from "./package-actions/services/package-action-write-service";
 import { setupWriteService } from "./package-actions/setup-write-service";
 
 const checkIfActionType = (
@@ -34,11 +29,10 @@ const checkIfActionType = (
   return false;
 };
 
-if (typeof globalThis.packageActionWriteService === "undefined") {
-  global.packageActionWriteService = await setupWriteService();
-}
-
 export const handler = async (event: APIGatewayEvent) => {
+  if (typeof globalThis.packageActionWriteService === "undefined") {
+    global.packageActionWriteService = await setupWriteService();
+  }
   if (!event.pathParameters || !event.pathParameters.actionType) {
     return response({
       statusCode: 400,
