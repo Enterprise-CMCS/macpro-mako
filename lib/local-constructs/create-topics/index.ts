@@ -73,8 +73,6 @@ export class CreateTopics extends Construct {
       bundling: {
         minify: true,
         sourceMap: true,
-        target: "es2020",
-        externalModules: ["aws-sdk"],
       },
     });
 

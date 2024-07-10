@@ -193,6 +193,10 @@ export class ApiStack extends NestedStack {
         securityGroups: securityGroup ? [securityGroup] : undefined,
         vpcSubnets: subnets ? { subnets } : undefined,
         logGroup,
+        bundling: {
+          minify: true,
+          sourceMap: true,
+        },
       });
 
       if (provisionedConcurrency > 0) {

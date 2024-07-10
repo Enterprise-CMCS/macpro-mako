@@ -313,6 +313,10 @@ export class AuthStack extends NestedStack {
         securityGroups: [lambdaSecurityGroup],
         vpcSubnets: { subnets: privateSubnets },
         logGroup: postAuthLambdaLogGroup,
+        bundling: {
+          minify: true,
+          sourceMap: true,
+        },
       });
 
       userPool.addTrigger(

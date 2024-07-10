@@ -75,6 +75,10 @@ export class EmptyBuckets extends Construct {
       timeout: Duration.minutes(15),
       logGroup: lambdaLogGroup,
       role: lambdaRole,
+      bundling: {
+        minify: true,
+        sourceMap: true,
+      },
     });
 
     buckets.forEach((bucket) => {

@@ -327,6 +327,10 @@ export class DataStack extends NestedStack {
           region: this.region,
           osDomain: `https://${openSearchDomain.attrDomainEndpoint}`,
         },
+        bundling: {
+          minify: true,
+          sourceMap: true,
+        },
       });
 
       const customResourceProvider = new Provider(
@@ -412,8 +416,6 @@ export class DataStack extends NestedStack {
         bundling: {
           minify: true,
           sourceMap: true,
-          target: "es2020",
-          externalModules: ["aws-sdk"],
         },
       });
 
@@ -823,8 +825,6 @@ export class DataStack extends NestedStack {
         bundling: {
           minify: true,
           sourceMap: true,
-          target: "es2020",
-          externalModules: ["aws-sdk"],
         },
       },
     );

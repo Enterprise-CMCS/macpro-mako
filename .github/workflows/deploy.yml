@@ -47,10 +47,9 @@ jobs:
       - cache
     environment:
       name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
-      url: ${{ steps.deployment-data.outputs.APPURL }}
     outputs:
       app-url: ${{ steps.deployment-data.outputs.APPURL }}
-      kibana-url: ${{ steps.kibana-url.outputs.KIBANAURL }}
+      kibana-url: ${{ steps.deployment-data.outputs.KIBANAURL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -73,25 +72,30 @@ jobs:
       - name: Deploy
         run: run deploy --stage $STAGE_NAME
 
-      - name: Set Site URL
+      - name: Set Application URLs
         id: deployment-data
         run: |
-          echo ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
-          echo "APPURL=$(
-            aws cloudformation \
-            --region us-east-1 describe-stacks \
-            --stack-name $PROJECT-ui-infra-$STAGE_NAME \
-            --query Stacks[0].Outputs[0].OutputValue
-          )" | tr -d \'\" >> $GITHUB_OUTPUT
+          secret_value=$(aws ssm get-parameter \
+            --region us-east-1 \
+            --name "/$PROJECT/$STAGE_NAME/deployment-output" \
+            --query Parameter.Value \
+            --output text)
+          application_endpoint_url=$(echo $secret_value | jq -r '.applicationEndpointUrl')
+          echo "APPURL=$application_endpoint_url" >> $GITHUB_OUTPUT
+          kibana_url=$(echo $secret_value | jq -r '.kibanaUrl')
+          echo "KIBANAURL=$kibana_url" >> $GITHUB_OUTPUT
 
-      - name: Set Kibana URL
-        id: kibana-url
+  application-url:
+    runs-on: ubuntu-20.04
+    needs:
+      - deploy
+    environment:
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}-app
+      url: ${{ needs.deploy.outputs.app-url }}
+    steps:
+      - name: Display App URL
         run: |
-          echo KIBANAURL=$(
-            sls info --verbose --stage $STAGE_NAME |& grep -m 1 OpenSearchDashboardEndpoint |
-            awk '{print $NF}' | awk '{$1=$1};1' |
-            tr -d \'\"
-          ) >> $GITHUB_OUTPUT
+          echo "App URL: ${{ needs.deploy.outputs.app-url }}"
 
   kibana-url:
     runs-on: ubuntu-20.04

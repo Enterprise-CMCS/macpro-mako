@@ -8,11 +8,12 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "jest",
     "cdk": "cdk",
     "build:cli": "turbo build:cli",
     "e2e": "turbo e2e",
-    "e2e:ui": "turbo e2e:ui"
+    "e2e:ui": "turbo e2e:ui",
+    "test": "turbo test",
+    "test-ci": "turbo test"
   },
   "repository": "https://github.com/Enterprise-CMCS/macpro-mako",
   "workspaces": [
