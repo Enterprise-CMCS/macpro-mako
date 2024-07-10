@@ -96,8 +96,7 @@ const arUpdateId: ActionRule = {
 };
 const arCompleteIntake: ActionRule = {
   action: Action.COMPLETE_INTAKE,
-  check: (checker, user) =>
-    false && isCmsWriteUser(user) && checker.needsIntake,
+  check: (checker, user) => isCmsWriteUser(user) && checker.needsIntake,
 };
 
 // TODO: Add rule for remove-appk-child
