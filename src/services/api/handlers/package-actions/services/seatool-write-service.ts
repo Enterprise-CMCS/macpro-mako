@@ -20,7 +20,7 @@ export class SeatoolWriteService {
     this.trx = new Transaction(pool);
   }
 
-  async createSeatoolService(config: config) {
+  public static async createSeatoolService(config: config) {
     const pool = await connect(config);
 
     return new SeatoolWriteService(pool);
