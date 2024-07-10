@@ -41,9 +41,7 @@ export const RHFSlot = <
 
     return (
       <FormItem
-        className={cn(`flex gap-1${
-          formItemClassName ? ` ${formItemClassName}` : ""
-        }
+        className={cn(`flex${formItemClassName ? ` ${formItemClassName}` : ""}
         ${horizontalLayout ? "" : " flex-col"}
         `)}
         data-testid={rest.name + "Wrapper"}
