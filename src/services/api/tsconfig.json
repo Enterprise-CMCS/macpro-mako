@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "target": "ES2016",
-    "moduleResolution": "node",
-    "module": "commonjs",
+    "target": "ES2017",
+    "module": "Node16",
     "skipLibCheck": true,
     "strict": true,
-    "noEmit": true
+    "noEmit": true,
+    "typeRoots": ["./global.d.ts"]
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules"]
