@@ -1,0 +1,15 @@
+{
+  "name": "shared-utils",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "@18f/us-federal-holidays": "^4.0.0",
+    "moment-timezone": "^0.5.45"
+  }
+}

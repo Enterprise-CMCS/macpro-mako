@@ -1,0 +1,39 @@
+name: Dev Startup
+
+on:
+  schedule:
+    # Runs at 7 AM UTC every weekday (Monday to Friday)
+    - cron: "0 7 * * 1-5"
+  workflow_dispatch:
+
+jobs:
+  list-and-process-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install GitHub CLI
+        run: sudo apt-get install -y gh
+
+      - name: Authenticate with GitHub CLI
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Get list of branches
+        id: get_branches
+        run: |
+          gh api -X GET repos/${{ github.repository }}/branches -q '.[].name' > branches.txt
+          grep -Ev '^(skipci-|master|val|production)' branches.txt > filtered_branches.txt
+          echo "::set-output name=branches::$(cat filtered_branches.txt | paste -sd ',' -)"
+
+      - name: Trigger workflows for each branch
+        run: |
+          branches=$(echo "${{ steps.get_branches.outputs.branches }}" | tr ',' '\n')
+          for branch in $branches; do
+            echo "Triggering workflow for branch: $branch"
+            gh workflow run deploy.yml -f ref=$branch -f environment=$branch || echo "Failed to trigger workflow for branch: $branch"
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

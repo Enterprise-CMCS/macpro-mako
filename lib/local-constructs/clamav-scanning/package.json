@@ -1,0 +1,28 @@
+{
+  "name": "clamav-scanning",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "npm run buildScan && npm run buildDefs",
+    "buildScan": "esbuild src/antivirus.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/scan.js",
+    "buildDefs": "esbuild src/download-definitions.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/defs.js",
+    "buildDocker": "docker build . -t clamscan:test",
+    "start": "npm run buildDocker && docker run -d -p 9000:8080 clamscan:test",
+    "stop": "docker ps -q --filter ancestor=clamscan:test | xargs -r docker stop && docker ps -a -q --filter ancestor=clamscan:test | xargs -r docker rm",
+    "test": "curl 'http://localhost:9000/2015-03-31/functions/function/invocations' -d '{}'",
+    "dev": "npm run stop && npm run start && npm run test"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.140",
+    "esbuild": "^0.21.5"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0",
+    "@types/mime-types": "^2.1.4",
+    "file-type": "^19.0.0",
+    "mime-types": "^2.1.35",
+    "pino": "^9.2.0"
+  }
+}
