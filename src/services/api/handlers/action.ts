@@ -17,7 +17,12 @@ import {
   withdrawRai,
   completeIntake,
   removeAppkChild,
+  config,
 } from "./package-actions";
+import { SeatoolWriteService } from "./package-actions/services/seatool-write-service";
+import { MakoWriteService } from "./package-actions/services/mako-write-service";
+import { produceMessage } from "../libs/kafka";
+import { PackageActionWriteService } from "./package-actions/services/package-action-write-service";
 
 export const handler = async (event: APIGatewayEvent) => {
   if (!event.pathParameters || !event.pathParameters.actionType) {
@@ -69,6 +74,13 @@ export const handler = async (event: APIGatewayEvent) => {
       });
     }
     console.log(actionType);
+    const seatoolWriteService =
+      await SeatoolWriteService.createSeatoolService(config);
+    const makoWriteService = new MakoWriteService(produceMessage);
+    const packageActionWriteService = new PackageActionWriteService(
+      seatoolWriteService,
+      makoWriteService,
+    );
     // Call package action
     switch (actionType) {
       case Action.WITHDRAW_PACKAGE:
@@ -93,7 +105,7 @@ export const handler = async (event: APIGatewayEvent) => {
         await updateId(body);
         break;
       case Action.COMPLETE_INTAKE:
-        await completeIntake(body);
+        await completeIntake(body, packageActionWriteService);
         break;
       case Action.REMOVE_APPK_CHILD:
         await removeAppkChild(body);
