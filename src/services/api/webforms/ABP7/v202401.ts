@@ -34,28 +34,19 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              name: "notice-to-individual-includes-description",
+              name: "epsdt-services",
               rules: { required: "* Required" },
               props: {
                 options: [
                   {
                     label:
                       "The state/territory assures that the notice to an individual includes a description of the method for ensuring access to EPSDT services (42 CFR 440.345).",
-                    value: "true",
+                    value: "notice-to-individual-includes-description",
                   },
-                ],
-              },
-            },
-            {
-              rhf: "Checkbox",
-              name: "provided-to-individuals-under-21",
-              rules: { required: "* Required" },
-              props: {
-                options: [
                   {
                     label:
                       "The state/territory assures EPSDT services will be provided to individuals under age 21 who are covered under the state/territory plan under Section 1902(a)(10)(A) of the Act.",
-                    value: "true",
+                    value: "provided-to-individuals-under-21",
                   },
                 ],
               },
