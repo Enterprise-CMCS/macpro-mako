@@ -31,9 +31,10 @@ export async function toggleRaiResponseWithdraw(
   }
   try {
     await packageActionWriteService.toggleRaiResponseWithdraw({
+      ...result.data,
+      action: toggle ? Action.ENABLE_RAI_WITHDRAW : Action.DISABLE_RAI_WITHDRAW,
       id: result.data.id,
       topicName: TOPIC_NAME,
-      action: toggle ? Action.ENABLE_RAI_WITHDRAW : Action.DISABLE_RAI_WITHDRAW,
     });
 
     return response({
