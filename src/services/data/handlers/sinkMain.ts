@@ -135,6 +135,14 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
               return opensearch.main.toggleWithdrawEnabled
                 .transform(id)
                 .safeParse(record);
+            case Action.ISSUE_RAI:
+              return opensearch.main.issueRai
+                .transform(id)
+                .safeParse(record);
+            case Action.ISSUE_RAI:
+              return opensearch.main.respondToRai
+                .transform(id)
+                .safeParse(record);
             case Action.WITHDRAW_RAI:
               return opensearch.main.withdrawRai
                 .transform(id)
