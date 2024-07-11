@@ -1,4 +1,5 @@
 import { type Action } from "shared-types";
+import { getNextBusinessDayTimestamp } from "shared-utils";
 
 type MessageProducer = (
   topic: string,
@@ -17,6 +18,13 @@ export type IssueRaiDto = {
   topicName: string;
   id: string;
   action: Action;
+} & Record<string, unknown>;
+
+export type RespondToRaiDto = {
+  topicName: string;
+  id: string;
+  action: Action;
+  responseDate: number;
 } & Record<string, unknown>;
 
 export class MakoWriteService {
@@ -52,6 +60,28 @@ export class MakoWriteService {
         ...data,
         id,
         actionType: action,
+      }),
+    );
+  }
+
+  async respondToRai({
+    action,
+    id,
+    responseDate,
+    topicName,
+    ...data
+  }: RespondToRaiDto) {
+    await this.#messageProducer(
+      topicName,
+      id,
+      JSON.stringify({
+        ...data,
+        id,
+        responseDate,
+        actionType: action,
+        notificationMetadata: {
+          submissionDate: getNextBusinessDayTimestamp(),
+        },
       }),
     );
   }
