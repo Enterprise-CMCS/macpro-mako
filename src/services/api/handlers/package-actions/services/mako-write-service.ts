@@ -95,11 +95,13 @@ export class MakoWriteService {
     action,
     id,
     topicName,
+    ...data
   }: ToggleRaiResponseDto) {
-    this.#messageProducer(
+    await this.#messageProducer(
       topicName,
       id,
       JSON.stringify({
+        ...data,
         id,
         actionType: action,
       }),
