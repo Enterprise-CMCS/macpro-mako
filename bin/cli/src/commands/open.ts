@@ -1,6 +1,6 @@
 import { Argv } from "yargs";
 import { openUrl } from "../lib";
-import { fetchSSMParameter } from "../lib/ssm";
+import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 
 const createOpenCommand = (
   name: string,
@@ -13,9 +13,13 @@ const createOpenCommand = (
     yargs.option("stage", { type: "string", demandOption: true }),
   handler: async ({ stage }: { stage: string }) => {
     const url = JSON.parse(
-      await fetchSSMParameter(
-        `/${process.env.PROJECT}/${stage}/deployment-output`,
-      ),
+      (
+        await new SSMClient({ region: "us-east-1" }).send(
+          new GetParameterCommand({
+            Name: `/${process.env.PROJECT}/${stage}/deployment-output`,
+          }),
+        )
+      ).Parameter!.Value!,
     )[exportName];
     openUrl(url);
   },

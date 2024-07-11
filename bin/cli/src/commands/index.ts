@@ -4,7 +4,6 @@ export * from "./docs";
 export * from "./e2e";
 export * from "./install";
 export * from "./open";
-export * from "./security-hub-sync";
 export * from "./test-gui";
 export * from "./test";
 export * from "./ui";

@@ -1,18 +1,26 @@
 import path from "path";
-import { promises as fs } from "fs"; // Import fs module
-import { fetchSSMParameter } from "./ssm";
+import { promises as fs } from "fs";
+import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 
 export async function writeUiEnvFile(stage, local = false) {
   const deploymentOutput = JSON.parse(
-    await fetchSSMParameter(
-      `/${process.env.PROJECT}/${stage}/deployment-output`,
-    ),
+    (
+      await new SSMClient({ region: "us-east-1" }).send(
+        new GetParameterCommand({
+          Name: `/${process.env.PROJECT}/${stage}/deployment-output`,
+        }),
+      )
+    ).Parameter!.Value!,
   );
 
   const deploymentConfig = JSON.parse(
-    await fetchSSMParameter(
-      `/${process.env.PROJECT}/${stage}/deployment-config`,
-    ),
+    (
+      await new SSMClient({ region: "us-east-1" }).send(
+        new GetParameterCommand({
+          Name: `/${process.env.PROJECT}/${stage}/deployment-config`,
+        }),
+      )
+    ).Parameter!.Value!,
   );
 
   const envVariables = {

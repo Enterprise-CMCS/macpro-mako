@@ -1,6 +1,7 @@
 import { NestedStack, NestedStackProps, Aws, RemovalPolicy } from "aws-cdk-lib";
 import {
   AccountRootPrincipal,
+  AnyPrincipal,
   Effect,
   PolicyStatement,
   ServicePrincipal,
@@ -91,7 +92,7 @@ export class UiInfraStack extends NestedStack {
     bucket.addToResourcePolicy(
       new PolicyStatement({
         effect: Effect.DENY,
-        principals: [new AccountRootPrincipal()],
+        principals: [new AnyPrincipal()],
         actions: ["s3:*"],
         resources: [bucket.bucketArn, `${bucket.bucketArn}/*`],
         conditions: {

@@ -13,6 +13,7 @@ import {
   PolicyDocument,
   Effect,
   AccountRootPrincipal,
+  AnyPrincipal,
 } from "aws-cdk-lib/aws-iam";
 import { LogGroup, CfnSubscriptionFilter } from "aws-cdk-lib/aws-logs";
 
@@ -45,7 +46,7 @@ export class CloudWatchToS3 extends Construct {
     this.logBucket.addToResourcePolicy(
       new PolicyStatement({
         effect: Effect.DENY,
-        principals: [new AccountRootPrincipal()],
+        principals: [new AnyPrincipal()],
         actions: ["s3:*"],
         resources: [this.logBucket.bucketArn, `${this.logBucket.bucketArn}/*`],
         conditions: {

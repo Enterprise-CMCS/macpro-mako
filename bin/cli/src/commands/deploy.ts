@@ -6,7 +6,7 @@ import {
   CloudFrontClient,
   CreateInvalidationCommand,
 } from "@aws-sdk/client-cloudfront";
-import { fetchSSMParameter } from "../lib/ssm";
+import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 
 const runner = new LabeledProcessRunner();
 
@@ -32,9 +32,13 @@ export const deploy = {
     );
 
     const { s3BucketName, cloudfrontDistributionId } = JSON.parse(
-      await fetchSSMParameter(
-        `/${process.env.PROJECT}/${options.stage}/deployment-output`,
-      ),
+      (
+        await new SSMClient({ region: "us-east-1" }).send(
+          new GetParameterCommand({
+            Name: `/${process.env.PROJECT}/${options.stage}/deployment-output`,
+          }),
+        )
+      ).Parameter!.Value!,
     );
 
     if (!s3BucketName || !cloudfrontDistributionId) {

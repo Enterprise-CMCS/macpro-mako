@@ -10,12 +10,10 @@
     "@aws-sdk/client-cloudfront": "^3.600.0",
     "@aws-sdk/client-cost-explorer": "^3.613.0",
     "@aws-sdk/client-ssm": "^3.613.0",
-    "@enterprise-cmcs/macpro-security-hub-sync": "^1.9.0",
-    "@enterprise-cmcs/macpro-serverless-running-stages": "^1.0.6",
-    "@stratiformdigital/serverless-stage-destroyer": "^2.1.0",
     "dotenv": "^16.0.3",
     "open": "^10.0.4",
     "readline-sync": "^1.4.10",
+    "shared-utils": "*",
     "yargs": "^17.7.1"
   },
   "devDependencies": {

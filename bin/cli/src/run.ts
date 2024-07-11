@@ -7,7 +7,6 @@ import {
   install,
   openApp,
   openKibana,
-  securityHubSync,
   testGui,
   test,
   ui,
@@ -22,7 +21,6 @@ yargs
   .command(install)
   .command(openApp)
   .command(openKibana)
-  .command(securityHubSync)
   .command(testGui)
   .command(test)
   .command(ui)

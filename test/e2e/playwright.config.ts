@@ -1,16 +1,26 @@
 import { defineConfig, devices } from "@playwright/test";
-import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, ".env.local") });
-
+import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
+
+const baseURL = process.env.STAGE_NAME
+  ? JSON.parse(
+      (
+        await new SSMClient({ region: "us-east-1" }).send(
+          new GetParameterCommand({
+            Name: `/${process.env.PROJECT}/${
+              process.env.STAGE_NAME || "main"
+            }/deployment-output`,
+          }),
+        )
+      ).Parameter!.Value!,
+    ).applicationEndpointUrl
+  : "http://localhost:5000";
+
+console.log(`Playwright configured to run against ${baseURL}`);
 export default defineConfig({
-  testDir: "./e2e",
+  testDir: ".",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -24,7 +34,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.baseurl || "http://localhost:5000",
+    baseURL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
