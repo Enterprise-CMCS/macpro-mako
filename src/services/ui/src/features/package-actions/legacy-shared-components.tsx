@@ -21,7 +21,7 @@ export const useSubmitForm = () => {
     const formData = new FormData();
     // Append all other data
     for (const key in data) {
-      if (key !== "attachments") {
+      if (key !== "attachments" && data[key] !== undefined) {
         formData.append(key, data[key]);
       }
     }
