@@ -33,6 +33,12 @@ export type ToggleRaiResponseDto = {
   action: Action;
 } & Record<string, unknown>;
 
+export type WithdrawRaiDto = {
+  topicName: string;
+  id: string;
+  action: Action;
+} & Record<string, unknown>;
+
 export class MakoWriteService {
   #messageProducer: MessageProducer;
 
@@ -91,6 +97,27 @@ export class MakoWriteService {
       }),
     );
   }
+  
+  async withdrawRai({
+    action,
+    id,
+    topicName,
+    ...data
+  }:WithdrawRaiDto){
+    await this.#messageProducer(
+      topicName,
+      id,
+      JSON.stringify({
+        ...data,
+        id,
+        actionType: action,
+        notificationMetadata: {
+          submissionDate: getNextBusinessDayTimestamp(),
+        },
+      }),
+    );
+  }
+
   async toggleRaiResponseWithdraw({
     action,
     id,
