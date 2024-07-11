@@ -1,6 +1,6 @@
 import { ConnectionPool, Transaction, config, connect } from "mssql";
 import { buildStatusMemoQuery } from "../../../libs/statusMemo";
-import { type Action } from "shared-types";
+import { type SEATOOL_STATUS } from "shared-types";
 
 export type CompleteIntakeDto = {
   id: string;
@@ -15,7 +15,7 @@ export type CompleteIntakeDto = {
 export type IssueRaiDto = {
   id: string;
   timestamp: number;
-  spwStatus: Action;
+  spwStatus: string;
 };
 
 export class SeatoolWriteService {

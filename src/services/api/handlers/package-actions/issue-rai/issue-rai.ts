@@ -1,4 +1,4 @@
-import { RaiIssue, raiIssueSchema, Action } from "shared-types";
+import { RaiIssue, raiIssueSchema, Action, SEATOOL_STATUS } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 import { response } from "../../../libs/handler";
 import { TOPIC_NAME } from "../consts";
@@ -30,7 +30,7 @@ export async function issueRai(
     ...result.data,
     action: Action.ISSUE_RAI,
     id: result.data.id,
-    spwStatus: Action.ISSUE_RAI,
+    spwStatus: SEATOOL_STATUS.PENDING_RAI,
     timestamp: today,
     topicName: TOPIC_NAME,
   });
