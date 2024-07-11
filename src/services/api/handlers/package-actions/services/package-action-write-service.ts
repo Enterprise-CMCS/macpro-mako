@@ -76,7 +76,7 @@ export class PackageActionWriteService {
     ...data
   }: IssueRaiDto) {
     try {
-      this.#seatoolWriteService.trx.begin();
+      await this.#seatoolWriteService.trx.begin();
       const idsToUpdate = await this.#getIdsToUpdate(id);
 
       for (const id of idsToUpdate) {
@@ -88,6 +88,8 @@ export class PackageActionWriteService {
           ...data,
         });
       }
+
+      await this.#seatoolWriteService.trx.commit();
     } catch (err: unknown) {
       await this.#seatoolWriteService.trx.rollback();
 
