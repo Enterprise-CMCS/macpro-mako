@@ -48,6 +48,7 @@ export async function respondToRai(
 
   try {
     await packageActionWriteService.respondToRai({
+      ...result.data,
       action: Action.RESPOND_TO_RAI,
       id: result.data.id,
       raiReceivedDate: document.raiReceivedDate!,
