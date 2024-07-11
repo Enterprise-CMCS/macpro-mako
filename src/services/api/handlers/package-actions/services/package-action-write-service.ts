@@ -1,8 +1,10 @@
+import { Action } from "shared-types";
 import {
   MakoWriteService,
   IssueRaiDto as MakoIssueRaiDto,
   CompleteIntakeDto as MakoCompleteIntake,
   RespondToRaiDto as MakoRespondToRai,
+  ToggleRaiResponseDto,
 } from "./mako-write-service";
 import {
   SeatoolWriteService,
@@ -138,6 +140,21 @@ export class PackageActionWriteService {
     } catch (err: unknown) {
       await this.#seatoolWriteService.trx.rollback();
 
+      console.error(err);
+    }
+  }
+
+  async toggleRaiResponseWithdraw(data: ToggleRaiResponseDto) {
+    try {
+      const idsToUpdate = await this.#getIdsToUpdate(data.id);
+
+      for (const id of idsToUpdate) {
+        await this.#makoWriteService.toggleRaiResponseWithdraw({
+          ...data,
+          id,
+        });
+      }
+    } catch (err: unknown) {
       console.error(err);
     }
   }

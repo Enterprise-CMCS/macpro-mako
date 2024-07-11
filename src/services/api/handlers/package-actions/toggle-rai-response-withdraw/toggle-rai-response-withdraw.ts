@@ -4,13 +4,12 @@ import {
   Action,
 } from "shared-types";
 import { response } from "../../../libs/handler";
-import { produceMessage } from "../../../libs/kafka";
-import { getIdsToUpdate } from "../get-id-to-update";
 import { TOPIC_NAME } from "../consts";
 
 export async function toggleRaiResponseWithdraw(
   body: ToggleWithdrawRaiEnabled,
   toggle: boolean,
+  packageActionWriteService = globalThis.packageActionWriteService,
 ) {
   const result = toggleWithdrawRaiEnabledSchema.safeParse({
     ...body,
@@ -31,20 +30,11 @@ export async function toggleRaiResponseWithdraw(
     });
   }
   try {
-    const idsToUpdate = await getIdsToUpdate(result.data.id);
-    for (const id of idsToUpdate) {
-      await produceMessage(
-        TOPIC_NAME,
-        id,
-        JSON.stringify({
-          actionType: toggle
-            ? Action.ENABLE_RAI_WITHDRAW
-            : Action.DISABLE_RAI_WITHDRAW,
-          ...result.data,
-          id,
-        }),
-      );
-    }
+    await packageActionWriteService.toggleRaiResponseWithdraw({
+      id: result.data.id,
+      topicName: TOPIC_NAME,
+      action: toggle ? Action.ENABLE_RAI_WITHDRAW : Action.DISABLE_RAI_WITHDRAW,
+    });
 
     return response({
       statusCode: 200,
