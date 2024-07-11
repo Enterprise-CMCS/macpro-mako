@@ -57,7 +57,7 @@ export const v202401: FormSchema = {
                       {
                         text: "C. What the process is for disenrolling",
                         type: "default",
-                        classname: "block py-1",
+                        classname: "block pt-1",
                       },
                     ],
                     value:
@@ -78,7 +78,7 @@ export const v202401: FormSchema = {
                       {
                         text: "B. The costs of the different benefit packages and a comparison of how the ABP differs from the approved Medicaid state/territory plan",
                         type: "default",
-                        classname: "block py-1",
+                        classname: "block pt-1",
                       },
                     ],
                     value:
