@@ -1,7 +1,7 @@
 import { type Action } from "shared-types";
 import { getNextBusinessDayTimestamp } from "shared-utils";
 
-type MessageProducer = (
+export type MessageProducer = (
   topic: string,
   key: string,
   value: string,
@@ -25,6 +25,12 @@ export type RespondToRaiDto = {
   id: string;
   action: Action;
   responseDate: number;
+} & Record<string, unknown>;
+
+export type ToggleRaiResponseDto = {
+  topicName: string;
+  id: string;
+  action: Action;
 } & Record<string, unknown>;
 
 export class MakoWriteService {
@@ -82,6 +88,20 @@ export class MakoWriteService {
         notificationMetadata: {
           submissionDate: getNextBusinessDayTimestamp(),
         },
+      }),
+    );
+  }
+  async toggleRaiResponseWithdraw({
+    action,
+    id,
+    topicName,
+  }: ToggleRaiResponseDto) {
+    this.#messageProducer(
+      topicName,
+      id,
+      JSON.stringify({
+        id,
+        actionType: action,
       }),
     );
   }
