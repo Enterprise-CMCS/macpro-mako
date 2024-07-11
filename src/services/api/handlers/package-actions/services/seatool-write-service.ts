@@ -131,7 +131,6 @@ export class SeatoolWriteService {
     } else {
       statusMemoUpdate = buildStatusMemoQuery(id, "RAI Response Received");
     }
-    await this.trx.begin();
 
     // Respond to RAI
     const query1 = `
