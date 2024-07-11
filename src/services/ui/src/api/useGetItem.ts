@@ -42,7 +42,7 @@ export const useGetItem = (
   );
 };
 
-export const useGetItemCache = (id: string) => {
+export const useGetItemCache = (id: string | undefined) => {
   const queryClient = useQueryClient();
   const data = (() => {
     const data = queryClient.getQueryCache().find(["record", id])?.state

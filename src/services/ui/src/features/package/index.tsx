@@ -101,7 +101,7 @@ const DetailsSidebar: FC<{ id: string }> = ({ id }) => {
 };
 
 export const usePackageDetailsCache = () => {
-  const query = useQuery();
-  const id = query.get("id") as string;
+  const { id } = useParams<{ id: string }>();
+
   return useGetItemCache(id);
 };
