@@ -1,6 +1,5 @@
 import { ConnectionPool, Transaction, config, connect } from "mssql";
 import { buildStatusMemoQuery } from "../../../libs/statusMemo";
-import { type SEATOOL_STATUS } from "shared-types";
 import { formatSeatoolDate } from "shared-utils";
 
 export type CompleteIntakeDto = {
@@ -26,6 +25,15 @@ export type RespondToRaiDto = {
   timestamp: number;
   raiToRespondTo: number;
   spwStatus: string;
+};
+
+export type WithdrawRaiDto = {
+  id: string;
+  timestamp: number;
+  raiToWithdraw: number;
+  spwStatus: string;
+  raiRequestedDate: string;
+  raiReceivedDate: string;
 };
 
 export class SeatoolWriteService {
@@ -154,5 +162,33 @@ export class SeatoolWriteService {
         `;
     const result2 = await this.trx.request().query(query2);
     console.log(result2);
+  }
+
+  async withdrawRai({
+    id,
+    timestamp,
+    raiToWithdraw,
+    spwStatus,
+    raiRequestedDate,
+    raiReceivedDate,
+  }: WithdrawRaiDto) {
+    await this.trx.request().query(`
+      UPDATE SEA.dbo.RAI
+        SET 
+          RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${timestamp}', 10)), CAST('19700101' AS DATETIME))
+      WHERE ID_Number = '${id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToWithdraw}', 10)), CAST('19700101' AS DATETIME))
+    `);
+    // Set Status to Pending - RAI
+    await this.trx.request().query(`
+      UPDATE SEA.dbo.State_Plan
+        SET 
+          SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${spwStatus}'),
+          Status_Date = dateadd(s, convert(int, left(${timestamp}, 10)), cast('19700101' as datetime)),
+          Status_Memo = ${buildStatusMemoQuery(
+            id,
+            `RAI Response Withdrawn.  This withdrawal is for the RAI requested on ${formatSeatoolDate(raiRequestedDate)} and received on ${formatSeatoolDate(raiReceivedDate)}`,
+          )}
+        WHERE ID_Number = '${id}'
+    `);
   }
 }

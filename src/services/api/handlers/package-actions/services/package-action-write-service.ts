@@ -4,6 +4,7 @@ import {
   IssueRaiDto as MakoIssueRaiDto,
   CompleteIntakeDto as MakoCompleteIntake,
   RespondToRaiDto as MakoRespondToRai,
+  WithdrawRaiDto as MakoWithdrawRai,
   ToggleRaiResponseDto,
 } from "./mako-write-service";
 import {
@@ -11,6 +12,7 @@ import {
   IssueRaiDto as SeaIssueRaiDto,
   CompleteIntakeDto as SeaCompleteIntake,
   RespondToRaiDto as SeaRespondToRai,
+  WithdrawRaiDto as SeaWithdrawRai,
 } from "./seatool-write-service";
 
 type IdsToUpdateFunction = (lookupId: string) => Promise<string[]>;
@@ -18,6 +20,7 @@ type IdsToUpdateFunction = (lookupId: string) => Promise<string[]>;
 type CompleteIntakeDto = MakoCompleteIntake & SeaCompleteIntake;
 type IssueRaiDto = SeaIssueRaiDto & MakoIssueRaiDto;
 type RespondToRaiDto = SeaRespondToRai & MakoRespondToRai;
+type WithdrawRaiDto = SeaWithdrawRai & MakoWithdrawRai
 
 export class PackageActionWriteService {
   #seatoolWriteService: SeatoolWriteService;
@@ -132,6 +135,49 @@ export class PackageActionWriteService {
           id,
           topicName,
           responseDate,
+          ...data,
+        });
+      }
+
+      await this.#seatoolWriteService.trx.commit();
+    } catch (err: unknown) {
+      await this.#seatoolWriteService.trx.rollback();
+
+      console.error(err);
+    }
+  }
+
+  async withdrawRai({  
+    id,
+    spwStatus,
+    timestamp,
+    raiReceivedDate,
+    raiToWithdraw,
+    raiRequestedDate,
+    action,
+    topicName,
+    withdrawnDate,
+    ...data
+
+  }:WithdrawRaiDto) {
+    try {
+      await this.#seatoolWriteService.trx.begin();
+      const idsToUpdate = await this.#getIdsToUpdate(id);
+
+      for (const id of idsToUpdate) {
+        await this.#seatoolWriteService.withdrawRai({
+          id,
+          spwStatus,
+          timestamp,
+          raiReceivedDate,
+          raiToWithdraw,
+          raiRequestedDate,
+        });
+        await this.#makoWriteService.withdrawRai({
+          action,
+          id,
+          topicName,
+          withdrawnDate,
           ...data,
         });
       }
