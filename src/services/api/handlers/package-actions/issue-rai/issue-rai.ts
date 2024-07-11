@@ -1,13 +1,13 @@
-import { RaiIssue, raiIssueSchema, SEATOOL_STATUS, Action } from "shared-types";
+import { RaiIssue, raiIssueSchema, Action } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 import { response } from "../../../libs/handler";
-import { produceMessage } from "../../../libs/kafka";
-import { buildStatusMemoQuery } from "../../../libs/statusMemo";
-import * as sql from "mssql";
-import { config, TOPIC_NAME } from "../consts";
-import { getIdsToUpdate } from "../get-id-to-update";
+import { TOPIC_NAME } from "../consts";
+import { type PackageActionWriteService } from "../services/package-action-write-service";
 
-export async function issueRai(body: RaiIssue) {
+export async function issueRai(
+  body: RaiIssue,
+  packageActionWriteService: PackageActionWriteService = globalThis.packageActionWriteService,
+) {
   console.log("CMS issuing a new RAI");
   const today = seaToolFriendlyTimestamp();
   const result = raiIssueSchema.safeParse({ ...body, requestedDate: today });
@@ -26,61 +26,12 @@ export async function issueRai(body: RaiIssue) {
     });
   }
 
-  const pool = await sql.connect(config);
-  const transaction = new sql.Transaction(pool);
-  try {
-    await transaction.begin();
-
-    const idsToUpdate = await getIdsToUpdate(result.data.id);
-    console.log(idsToUpdate);
-    console.log("ASDFASDFASDF");
-    for (const id of idsToUpdate) {
-      // Issue RAI
-      const query1 = `
-        Insert into SEA.dbo.RAI (ID_Number, RAI_Requested_Date)
-          values ('${id}'
-          ,dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)))
-      `;
-      const result1 = await transaction.request().query(query1);
-      console.log(result1);
-
-      // Update Status
-      const query2 = `
-        UPDATE SEA.dbo.State_Plan
-        SET 
-          SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${
-            SEATOOL_STATUS.PENDING_RAI
-          }'),
-          Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
-          Status_Memo = ${buildStatusMemoQuery(id, "RAI Issued")}
-        WHERE ID_Number = '${id}'
-      `;
-      const result2 = await transaction.request().query(query2);
-      console.log(result2);
-
-      // write to kafka here
-      await produceMessage(
-        TOPIC_NAME,
-        id,
-        JSON.stringify({
-          ...result.data,
-          id,
-          actionType: Action.ISSUE_RAI,
-        }),
-      );
-    }
-    // Commit transaction
-    await transaction.commit();
-  } catch (err) {
-    // Rollback and log
-    await transaction.rollback();
-    console.error(err);
-    return response({
-      statusCode: 500,
-      body: err instanceof Error ? { message: err.message } : err,
-    });
-  } finally {
-    // Close pool
-    await pool.close();
-  }
+  await packageActionWriteService.issueRai({
+    ...result.data,
+    action: Action.ISSUE_RAI,
+    id: result.data.id,
+    spwStatus: Action.ISSUE_RAI,
+    timestamp: today,
+    topicName: TOPIC_NAME,
+  });
 }

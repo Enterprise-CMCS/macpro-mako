@@ -1,5 +1,6 @@
 import { ConnectionPool, Transaction, config, connect } from "mssql";
 import { buildStatusMemoQuery } from "../../../libs/statusMemo";
+import { type Action } from "shared-types";
 
 export type CompleteIntakeDto = {
   id: string;
@@ -9,6 +10,12 @@ export type CompleteIntakeDto = {
   description: string;
   cpoc: number;
   submitterName: string;
+};
+
+export type IssueRaiDto = {
+  id: string;
+  timestamp: number;
+  spwStatus: Action;
 };
 
 export class SeatoolWriteService {
@@ -69,5 +76,26 @@ export class SeatoolWriteService {
         -- Insert all types into State_Plan_Service_SubTypes
         ${subTypeIdsInsert}
     `);
+  }
+
+  async issueRai({ id, spwStatus, timestamp }: IssueRaiDto) {
+    // Issue RAI
+    const query1 = `
+    Insert into SEA.dbo.RAI (ID_Number, RAI_Requested_Date)
+      values ('${id}'
+      ,dateadd(s, convert(int, left(${timestamp}, 10)), cast('19700101' as datetime)))
+    `;
+    await this.trx.request().query(query1);
+
+    // Update Status
+    const query2 = `
+    UPDATE SEA.dbo.State_Plan
+    SET 
+      SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${spwStatus}'),
+      Status_Date = dateadd(s, convert(int, left(${timestamp}, 10)), cast('19700101' as datetime)),
+      Status_Memo = ${buildStatusMemoQuery(id, "RAI Issued")}
+    WHERE ID_Number = '${id}'
+    `;
+    await this.trx.request().query(query2);
   }
 }

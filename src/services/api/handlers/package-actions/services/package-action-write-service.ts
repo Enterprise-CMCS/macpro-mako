@@ -1,21 +1,32 @@
 import {
   MakoWriteService,
+  IssueRaiDto as MakoIssueRaiDto,
   CompleteIntakeDto as MakoCompleteIntake,
 } from "./mako-write-service";
 import {
   SeatoolWriteService,
+  IssueRaiDto as SeaIssueRaiDto,
   CompleteIntakeDto as SeaCompleteIntake,
 } from "./seatool-write-service";
 
+type IdsToUpdateFunction = (lookupId: string) => Promise<string[]>;
+
 type CompleteIntakeDto = MakoCompleteIntake & SeaCompleteIntake;
+type IssueRaiDto = SeaIssueRaiDto & MakoIssueRaiDto;
 
 export class PackageActionWriteService {
   #seatoolWriteService: SeatoolWriteService;
   #makoWriteService: MakoWriteService;
+  #getIdsToUpdate: (lookupId: string) => Promise<string[]>;
 
-  constructor(seatool: SeatoolWriteService, mako: MakoWriteService) {
+  constructor(
+    seatool: SeatoolWriteService,
+    mako: MakoWriteService,
+    idsToUpdateFunction: IdsToUpdateFunction,
+  ) {
     this.#makoWriteService = mako;
     this.#seatoolWriteService = seatool;
+    this.#getIdsToUpdate = idsToUpdateFunction;
   }
 
   async completeIntake({
@@ -53,6 +64,34 @@ export class PackageActionWriteService {
     } catch (err: unknown) {
       console.log("AN ERROR OCCURED: ", err);
       this.#seatoolWriteService.trx.rollback();
+    }
+  }
+
+  async issueRai({
+    action,
+    id,
+    spwStatus,
+    timestamp,
+    topicName,
+    ...data
+  }: IssueRaiDto) {
+    try {
+      this.#seatoolWriteService.trx.begin();
+      const idsToUpdate = await this.#getIdsToUpdate(id);
+
+      for (const id of idsToUpdate) {
+        await this.#seatoolWriteService.issueRai({ id, spwStatus, timestamp });
+        await this.#makoWriteService.issueRai({
+          action,
+          id,
+          topicName,
+          ...data,
+        });
+      }
+    } catch (err: unknown) {
+      await this.#seatoolWriteService.trx.rollback();
+
+      console.error(err);
     }
   }
 }
