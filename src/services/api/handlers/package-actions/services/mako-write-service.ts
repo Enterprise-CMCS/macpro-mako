@@ -13,6 +13,12 @@ export type CompleteIntakeDto = {
   timestamp: number;
 } & Record<string, unknown>;
 
+export type IssueRaiDto = {
+  topicName: string;
+  id: string;
+  action: Action;
+} & Record<string, unknown>;
+
 export class MakoWriteService {
   #messageProducer: MessageProducer;
 
@@ -34,6 +40,18 @@ export class MakoWriteService {
         actionType: action,
         timestamp,
         ...data,
+      }),
+    );
+  }
+
+  async issueRai({ action, id, topicName, ...data }: IssueRaiDto) {
+    await this.#messageProducer(
+      topicName,
+      id,
+      JSON.stringify({
+        ...data,
+        id,
+        actionType: action,
       }),
     );
   }
