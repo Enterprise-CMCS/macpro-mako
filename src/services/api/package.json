@@ -31,6 +31,7 @@
     "build": "tsc",
     "lint": "eslint '**/*.{ts,js}'",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:gui": "vitest --ui"
   }
 }

@@ -9,16 +9,14 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "vitest --watch",
-    "coverage": "vitest --coverage",
-    "test-ci": "turbo test",
     "lint": "turbo lint",
     "build:cli": "turbo build:cli",
-    "test:watch": "turbo test:watch",
-    "test:gui": "turbo test:gui",
     "e2e": "turbo e2e",
     "e2e:ui": "turbo e2e:ui",
-    "test-tsc": "tsc --skipLibCheck --noEmit"
+    "test-tsc": "tsc --skipLibCheck --noEmit",
+    "test": "turbo test",
+    "test:coverage": "turbo test:coverage",
+    "test:gui": "turbo test:gui"
   },
   "repository": "https://github.com/Enterprise-CMCS/macpro-mako",
   "workspaces": [
@@ -42,8 +40,9 @@
     "@testing-library/react": "^14.0.0",
     "@types/uuid": "^9.0.1",
     "@vitest/coverage-c8": "^0.29.8",
-    "@vitest/coverage-istanbul": "^2.0.1",
-    "@vitest/ui": "^0.29.8",
+    "@vitest/coverage-istanbul": "^2.0.2",
+    "@vitest/coverage-v8": "^2.0.2",
+    "@vitest/ui": "^2.0.2",
     "aws-sdk-client-mock": "^2.0.1",
     "esbuild": "^0.19.3",
     "msw": "^2.2.1",
@@ -58,7 +57,7 @@
     "serverless-scriptable-plugin": "^1.3.1",
     "serverless-stack-termination-protection": "^2.0.2",
     "turbo": "^1.9.3",
-    "vitest": "^0.30.1"
+    "vitest": "^2.0.2"
   },
   "release": {
     "branches": [
