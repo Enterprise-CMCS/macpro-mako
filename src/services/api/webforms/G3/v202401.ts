@@ -156,7 +156,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Does the state elect to exempt individuals under age 19, 20, or 21 or any reasonable category of individuals age 18 or over? ",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               name: "state-elect-exempt-under-age",
               rules: { required: "* Required" },
               props: {
@@ -170,7 +170,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Radio",
               label: "Age of exemption",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               name: "age-of-exempt",
               rules: { required: "* Required" },
               props: {
@@ -196,7 +196,7 @@ export const v202401: FormSchema = {
                           {
                             rhf: "Textarea",
                             label: "Describe",
-                            labelClassName: "font-bold",
+                            labelClassName: "font-bold text-black",
                             name: "other-res-cat-describe",
                             rules: {
                               required: "* Required",
@@ -219,7 +219,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Does the state elect to exempt individuals whose medical assistance for services furnished in a home and community-based setting is reduced by amounts reflecting available income other than required for personal needs?",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               name: "state-elect-exempt-medical-assist",
               rules: { required: "* Required" },
               props: {
@@ -306,7 +306,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "identify-ai-an-receiving-item-service",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               label:
                 "To identify that American Indians/Alaskan Natives (AI/AN) are currently receiving or have ever received an item or service furnished by an Indian health care provider or through referral under contract health services in accordance with 42 CFR 447.56(a)(1)(x), the state:",
               rules: {
@@ -341,7 +341,7 @@ export const v202401: FormSchema = {
                           {
                             rhf: "Textarea",
                             label: "Describe",
-                            labelClassName: "font-bold",
+                            labelClassName: "font-bold text-black",
                             name: "other-ai-an-describe",
                             rules: {
                               required: "* Required",
@@ -362,7 +362,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               label: "Additional procedures used (optional)",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               name: "ai-an-additional-proc-used",
               rules: {
                 pattern: {
@@ -375,7 +375,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "identify-exempt-from-cost-share",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               formItemClassName: "border-slate-300 border-t-2 mt-2",
               label:
                 "To identify all other individuals exempt from cost sharing, the state uses:",
@@ -412,7 +412,7 @@ export const v202401: FormSchema = {
                           {
                             rhf: "Textarea",
                             label: "Describe",
-                            labelClassName: "font-bold",
+                            labelClassName: "font-bold text-black",
                             name: "other-exempt-describe",
                             rules: {
                               required: "* Required",
@@ -433,7 +433,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               label: "Additional procedures used (optional)",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               name: "other-exempt-additional-proc-used",
               rules: {
                 pattern: {
@@ -482,7 +482,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Does the state contract with one or more managed care organizations (MCOs) to deliver services under Medicaid?",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               name: "state-contract-mcos-to-deliver-serv",
               rules: { required: "* Required" },
               props: {
@@ -536,18 +536,20 @@ export const v202401: FormSchema = {
               rhf: "Input",
               label:
                 "Percentage of family income used for aggregate limit (must be between 0% and 5%)",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               name: "percent-fam-income-used-for-agg",
               rules: {
                 required: "* Required",
                 pattern: {
-                  value: /^(?:[0-4](?:\.\d)?|5(?:\.0)?|0?\.\d)$/,
-                  message: "Must be between 0% and 5%",
+                  value: /^(?:[0-4](?:\.[0-9])?|5(?:\.0)?|\.[0-9])$/,
+                  message:
+                    "Must be between 0% and 5% with max one decimal place",
                 },
               },
               props: {
                 className: "w-[229px]",
                 icon: "%",
+                iconRight: true,
               },
             },
 
@@ -555,7 +557,7 @@ export const v202401: FormSchema = {
               rhf: "Radio",
               label:
                 "Basis on which the state calculates family income for the purpose of the aggregate limit",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               name: "basis-state-calc-agg-limit",
               rules: { required: "* Required" },
               props: {
@@ -576,7 +578,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Does the state have a process to track each family’s incurred premiums and cost sharing through a mechanism that does not rely on beneficiary documentation?",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               name: "does-state-track-fam-incur-prem-and-cost-share",
               rules: { required: "* Required" },
               props: {
@@ -593,9 +595,9 @@ export const v202401: FormSchema = {
               name: "how-does-state-track-incurred-prems-and-cost",
               label:
                 "How does the state track each family’s incurred premiums and cost sharing?",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               formItemClassName:
-                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+                "ml-[0.6rem] px-4 mt-2 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
@@ -605,6 +607,9 @@ export const v202401: FormSchema = {
                   },
                 ],
                 effect: { type: "show" },
+              },
+              rules: {
+                required: "* Required",
               },
               props: {
                 options: [
@@ -622,7 +627,7 @@ export const v202401: FormSchema = {
                           {
                             rhf: "Textarea",
                             label: "Describe",
-                            labelClassName: "font-bold",
+                            labelClassName: "font-bold text-black",
                             name: "state-track-mco-desc",
                             rules: {
                               required: "* Required",
@@ -646,7 +651,7 @@ export const v202401: FormSchema = {
                           {
                             rhf: "Textarea",
                             label: "Describe",
-                            labelClassName: "font-bold",
+                            labelClassName: "font-bold text-black",
                             name: "state-track-other-desc",
                             rules: {
                               required: "* Required",
@@ -664,13 +669,39 @@ export const v202401: FormSchema = {
                 ],
               },
             },
+            {
+              rhf: "Textarea",
+              label:
+                "How does the state inform beneficiaries and providers of the beneficiaries' aggregate family limit? How does the state notify beneficiaries and providers when a beneficiary has incurred premiums and cost sharing up to the aggregate family limit and that individual family members are no longer subject to premiums or cost sharing for the remainder of the family's current monthly or quarterly cap period?",
+              labelClassName: "font-bold text-black",
+              formItemClassName:
+                "ml-[0.6rem] px-4 mb-2 border-l-4 border-l-primary",
+              name: "how-state-bene-agg-fam-limit",
+              dependency: {
+                conditions: [
+                  {
+                    name: "g3_agg-limits_does-state-track-fam-incur-prem-and-cost-share",
+                    type: "expectedValue",
+                    expectedValue: "yes",
+                  },
+                ],
+                effect: { type: "show" },
+              },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: /^\S(.*\S)?$/,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
+            },
 
             // end yes option
             {
               rhf: "Textarea",
               label:
                 "Explain how the state's premium and cost sharing rules do not place beneficiaries at risk of reaching the aggregate family limit.",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               formItemClassName:
                 "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               name: "explain-state-prem-cost-share-dont-place-risk",
@@ -697,7 +728,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Does the state have a documented appeals process for families that believe they have incurred premiums or cost sharing over the aggregate limit for the current monthly or quarterly cap period?",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               name: "does-state-doc-appeals",
               rules: { required: "* Required" },
               props: {
@@ -712,7 +743,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               label: "Describe",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               formItemClassName:
                 "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               dependency: {
@@ -739,7 +770,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               label:
                 "What is the process for reimbursing beneficiaries and/or providers if the family is identified as paying over the aggregate limit for the month/quarter?",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               name: "process-reimburse-over-agg-limit",
               rules: {
                 required: "* Required",
@@ -754,7 +785,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               label:
                 "What is the process for beneficiaries to request a reassessment of their family aggregate limit if they have a change in circumstances or if they are being terminated for failure to pay a premium?",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               name: "process-for-reimbirse-reqiest-reassess",
               rules: {
                 required: "* Required",
@@ -769,7 +800,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Does the state impose additional aggregate limits, consistent with 42 CFR 447.56(f)(5)?",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               name: "does-state-impose-add-agg-limits",
               rules: { required: "* Required" },
               props: {
@@ -784,7 +815,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               label: "Describe",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               formItemClassName:
                 "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               dependency: {
