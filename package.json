@@ -14,9 +14,9 @@
     "e2e": "turbo e2e",
     "e2e:ui": "turbo e2e:ui",
     "test-tsc": "tsc --skipLibCheck --noEmit",
-    "test": "turbo test",
-    "test:coverage": "turbo test:coverage",
-    "test:gui": "turbo test:gui"
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:gui": "vitest run --ui"
   },
   "repository": "https://github.com/Enterprise-CMCS/macpro-mako",
   "workspaces": [
