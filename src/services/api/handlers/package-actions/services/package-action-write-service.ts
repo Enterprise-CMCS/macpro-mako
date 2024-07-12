@@ -88,6 +88,7 @@ export class PackageActionWriteService {
     action,
     id,
     spwStatus,
+    today,
     timestamp,
     topicName,
     ...data
@@ -97,10 +98,11 @@ export class PackageActionWriteService {
       const idsToUpdate = await this.#getIdsToUpdate(id);
 
       for (const id of idsToUpdate) {
-        await this.#seatoolWriteService.issueRai({ id, spwStatus, timestamp });
+        await this.#seatoolWriteService.issueRai({ id, spwStatus, today });
         await this.#makoWriteService.issueRai({
           action,
           id,
+          timestamp,
           topicName,
           ...data,
         });
@@ -122,6 +124,7 @@ export class PackageActionWriteService {
     raiWithdrawnDate,
     responseDate,
     spwStatus,
+    today,
     timestamp,
     topicName,
     ...data
@@ -134,7 +137,7 @@ export class PackageActionWriteService {
         await this.#seatoolWriteService.respondToRai({
           id,
           spwStatus,
-          timestamp,
+          today,
           raiReceivedDate,
           raiToRespondTo,
           raiWithdrawnDate,
@@ -143,6 +146,7 @@ export class PackageActionWriteService {
           action,
           id,
           topicName,
+          timestamp,
           responseDate,
           ...data,
         });
@@ -159,6 +163,7 @@ export class PackageActionWriteService {
   async withdrawRai({
     id,
     spwStatus,
+    today,
     timestamp,
     raiReceivedDate,
     raiToWithdraw,
@@ -176,7 +181,7 @@ export class PackageActionWriteService {
         await this.#seatoolWriteService.withdrawRai({
           id,
           spwStatus,
-          timestamp,
+          today,
           raiReceivedDate,
           raiToWithdraw,
           raiRequestedDate,
@@ -185,6 +190,7 @@ export class PackageActionWriteService {
           action,
           id,
           topicName,
+          timestamp,
           withdrawnDate,
           ...data,
         });
@@ -216,6 +222,7 @@ export class PackageActionWriteService {
   async removeAppkChild({
     id,
     timestamp,
+    today,
     spwStatus,
     action,
     topicName,
@@ -229,12 +236,13 @@ export class PackageActionWriteService {
         await this.#seatoolWriteService.removeAppkChild({
           id,
           spwStatus,
-          timestamp,
+          today,
         });
         await this.#makoWriteService.removeAppkChild({
           action,
           id,
           topicName,
+          timestamp,
           ...data,
         });
       }
@@ -250,6 +258,7 @@ export class PackageActionWriteService {
   async withdrawPackage({
     id,
     timestamp,
+    today,
     spwStatus,
     action,
     topicName,
@@ -262,12 +271,13 @@ export class PackageActionWriteService {
       await this.#seatoolWriteService.withdrawPackage({
         id,
         spwStatus,
-        timestamp,
+        today,
       });
       await this.#makoWriteService.withdrawPackage({
         action,
         id,
         topicName,
+        timestamp,
         ...data,
       });
     }
