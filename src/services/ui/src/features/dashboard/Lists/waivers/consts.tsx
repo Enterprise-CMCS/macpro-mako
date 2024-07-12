@@ -35,7 +35,9 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       label: "Waiver Number",
       locked: true,
       transform: (data) => data.id,
-      cell: renderCellIdLink((id) => `/details?id=${encodeURIComponent(id)}`),
+      cell: renderCellIdLink(
+        (id, authority) => `/details/${authority}/${encodeURIComponent(id)}`,
+      ),
     },
     {
       field: "state.keyword",

@@ -17,9 +17,11 @@ export const renderCellDate = (key: keyof opensearch.main.Document) =>
     return formatSeatoolDate(data[key] as string);
   };
 
-export const renderCellIdLink = (pathResolver: (id: string) => string) =>
+export const renderCellIdLink = (
+  pathResolver: (id: string, authority: Authority) => string,
+) =>
   function Cell(data: opensearch.main.Document) {
-    const path = pathResolver(encodeURIComponent(data.id));
+    const path = pathResolver(encodeURIComponent(data.id), data.authority);
     return (
       <Link className="cursor-pointer text-blue-600" to={path}>
         {data.id}
