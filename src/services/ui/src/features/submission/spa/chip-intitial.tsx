@@ -17,7 +17,6 @@ import {
 import * as Inputs from "@/components/Inputs";
 import * as Content from "@/components";
 import { useGetUser, submit } from "@/api";
-import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
   zAttachmentRequired,
@@ -92,7 +91,7 @@ export const ChipSpaFormPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: Authority.CHIP_SPA,
+        authority: "chip spa",
       });
       alert.setContent({
         header: "Package submitted",

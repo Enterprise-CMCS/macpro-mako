@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,7 +18,6 @@ import {
 } from "@/components";
 import * as Content from "@/components";
 import { submit } from "@/api";
-import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
   zAttachmentRequired,
@@ -97,7 +95,7 @@ export const MedicaidSpaFormPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: Authority.MED_SPA,
+        authority: "medicaid spa",
       });
       alert.setContent({
         header: "Package submitted",
