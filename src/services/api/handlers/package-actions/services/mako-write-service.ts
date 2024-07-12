@@ -175,4 +175,22 @@ export class MakoWriteService {
       }),
     );
   }
+
+  async updateId({ action, id, topicName, ...data }: UpdateIdDto) {
+    await this.#messageProducer(
+      topicName,
+      id,
+      JSON.stringify({
+        ...data,
+        id,
+        actionType: action,
+      }),
+    );
+  }
 }
+
+export type UpdateIdDto = {
+  topicName: string;
+  id: string;
+  action: Action;
+} & Record<string, unknown>;
