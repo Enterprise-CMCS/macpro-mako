@@ -5,11 +5,12 @@ import {
 } from "shared-types";
 import { response } from "../../../libs/handler";
 import { TOPIC_NAME } from "../consts";
+import { PackageWriteClass } from "../services/package-action-write-service";
 
 export async function toggleRaiResponseWithdraw(
   body: ToggleWithdrawRaiEnabled,
   toggle: boolean,
-  packageActionWriteService = globalThis.packageActionWriteService,
+  packageActionWriteService: PackageWriteClass = globalThis.packageActionWriteService,
 ) {
   const now = new Date().getTime();
   const result = toggleWithdrawRaiEnabledSchema.safeParse({
@@ -36,7 +37,7 @@ export async function toggleRaiResponseWithdraw(
       action: toggle ? Action.ENABLE_RAI_WITHDRAW : Action.DISABLE_RAI_WITHDRAW,
       id: result.data.id,
       topicName: TOPIC_NAME,
-      timestamp: now
+      timestamp: now,
     });
 
     return response({
