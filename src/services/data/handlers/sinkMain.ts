@@ -139,7 +139,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
               return opensearch.main.issueRai
                 .transform(id)
                 .safeParse(record);
-            case Action.ISSUE_RAI:
+            case Action.RESPOND_TO_RAI:
               return opensearch.main.respondToRai
                 .transform(id)
                 .safeParse(record);
