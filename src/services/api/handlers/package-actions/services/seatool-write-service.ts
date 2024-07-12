@@ -42,6 +42,12 @@ export type RemoveAppkChildDto = {
   spwStatus: string;
 };
 
+export type WithdrawPackageDto = {
+  id: string;
+  timestamp: number;
+  spwStatus: string;
+};
+
 export class SeatoolWriteService {
   #pool: ConnectionPool;
   trx: Transaction;
@@ -207,5 +213,18 @@ export class SeatoolWriteService {
           Status_Memo = ${buildStatusMemoQuery(id, "Package Withdrawn")}
         WHERE ID_Number = '${id}'
     `);
+  }
+
+  async withdrawPackage({ id, timestamp, spwStatus }: WithdrawPackageDto) {
+    await this.trx.request().query(
+      `
+        UPDATE SEA.dbo.State_Plan
+          SET 
+            SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${spwStatus}'),
+            Status_Date = dateadd(s, convert(int, left(${timestamp}, 10)), cast('19700101' as datetime)),
+            Status_Memo = ${buildStatusMemoQuery(id, "Package Withdrawn")}
+          WHERE ID_Number = '${id}'
+      `,
+    );
   }
 }
