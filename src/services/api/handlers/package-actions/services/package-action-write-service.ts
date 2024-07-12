@@ -7,6 +7,7 @@ import {
   WithdrawRaiDto as MakoWithdrawRai,
   ToggleRaiResponseDto,
   RemoveAppkChildDto as MakoRemoveAppkChild,
+  WithdrawPackageDto as MakoWithdrawPackage,
 } from "./mako-write-service";
 import {
   SeatoolWriteService,
@@ -15,6 +16,7 @@ import {
   RespondToRaiDto as SeaRespondToRai,
   WithdrawRaiDto as SeaWithdrawRai,
   RemoveAppkChildDto as SeaRemoveAppkChild,
+  WithdrawPackageDto as SeaWithdrawPackage,
 } from "./seatool-write-service";
 
 type IdsToUpdateFunction = (lookupId: string) => Promise<string[]>;
@@ -24,6 +26,7 @@ type IssueRaiDto = SeaIssueRaiDto & MakoIssueRaiDto;
 type RespondToRaiDto = SeaRespondToRai & MakoRespondToRai;
 type WithdrawRaiDto = SeaWithdrawRai & MakoWithdrawRai;
 type RemoveAppkChildDto = SeaRemoveAppkChild & MakoRemoveAppkChild;
+type WithdrawPackageDto = SeaWithdrawPackage & MakoWithdrawPackage;
 
 export class PackageActionWriteService {
   #seatoolWriteService: SeatoolWriteService;
@@ -238,6 +241,32 @@ export class PackageActionWriteService {
       await this.#seatoolWriteService.trx.rollback();
 
       console.error(err);
+    }
+  }
+
+  async withdrawPackage({
+    id,
+    timestamp,
+    spwStatus,
+    action,
+    topicName,
+    ...data
+  }: WithdrawPackageDto) {
+    await this.#seatoolWriteService.trx.begin();
+    const idsToUpdate = await this.#getIdsToUpdate(id);
+
+    for (const id of idsToUpdate) {
+      await this.#seatoolWriteService.withdrawPackage({
+        id,
+        spwStatus,
+        timestamp,
+      });
+      await this.#makoWriteService.withdrawPackage({
+        action,
+        id,
+        topicName,
+        ...data,
+      });
     }
   }
 }

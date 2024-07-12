@@ -45,6 +45,12 @@ export type RemoveAppkChildDto = {
   action: Action;
 } & Record<string, unknown>;
 
+export type WithdrawPackageDto = {
+  topicName: string;
+  id: string;
+  action: Action;
+} & Record<string, unknown>;
+
 export class MakoWriteService {
   #messageProducer: MessageProducer;
 
@@ -142,6 +148,23 @@ export class MakoWriteService {
     topicName,
     ...data
   }: RemoveAppkChildDto) {
+    await this.#messageProducer(
+      topicName,
+      id,
+      JSON.stringify({
+        ...data,
+        id,
+        actionType: action,
+      }),
+    );
+  }
+
+  async withdrawPackage({
+    action,
+    id,
+    topicName,
+    ...data
+  }: WithdrawPackageDto) {
     await this.#messageProducer(
       topicName,
       id,
