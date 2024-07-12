@@ -13,6 +13,7 @@ import {
 } from "../services/package-action-write-service";
 import { ToggleRaiResponseDto } from "../services/mako-write-service";
 import { CompleteIntakeDto } from "../services/seatool-write-service";
+import { response } from "../../../libs/handler";
 
 class MockPackageActionWriteService implements PackageWriteClass {
   async issueRai(data: IssueRaiDto) {
@@ -54,5 +55,7 @@ describe("toggleRaiResponseWithdraw", async () => {
       true,
       mockPackageWrite,
     );
+
+    expect(toggleRaiWithdraw.statusCode).toBe(400);
   });
 });
