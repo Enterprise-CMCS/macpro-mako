@@ -5,7 +5,8 @@ import { TOPIC_NAME } from "../consts";
 
 export async function updateId(body: any) {
   console.log("CMS updating the ID of a package.");
-
+  const now = new Date().getTime();
+  const today = seaToolFriendlyTimestamp();
   const result = updateIdSchema.safeParse(body);
   if (!result.success) {
     console.error(
@@ -22,9 +23,6 @@ export async function updateId(body: any) {
     });
   }
   console.log(JSON.stringify(result.data, null, 2));
-
-  const now = new Date().getTime();
-  const today = seaToolFriendlyTimestamp();
 
   await packageActionWriteService.updateId({
     ...result.data,

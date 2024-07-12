@@ -10,7 +10,10 @@ import { TOPIC_NAME } from "../consts";
 
 export async function withdrawPackage(body: WithdrawPackage) {
   console.log("State withdrawing a package.");
-  // Check incoming data
+  
+  const now = new Date().getTime();
+  const today = seaToolFriendlyTimestamp();
+  
   const result = withdrawPackageSchema.safeParse(body);
   if (result.success === false) {
     console.error(
@@ -24,14 +27,14 @@ export async function withdrawPackage(body: WithdrawPackage) {
       body: { message: "Withdraw Package event validation error" },
     });
   }
-  // Begin query (data is confirmed)
-  const today = seaToolFriendlyTimestamp();
+
   await packageActionWriteService.withdrawPackage({
     ...result.data,
     action: Action.WITHDRAW_PACKAGE,
     id: result.data.id,
     spwStatus: SEATOOL_STATUS.WITHDRAWN,
-    timestamp: today,
+    timestamp: now,
+    today,
     topicName: TOPIC_NAME,
   });
 }

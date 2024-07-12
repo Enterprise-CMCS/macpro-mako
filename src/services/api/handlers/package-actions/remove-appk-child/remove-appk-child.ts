@@ -19,6 +19,7 @@ export async function removeAppkChild(doc: opensearch.main.Document) {
     });
   }
 
+  const now = new Date().getTime();
   const today = seaToolFriendlyTimestamp();
 
   await packageActionWriteService.removeAppkChild({
@@ -26,7 +27,8 @@ export async function removeAppkChild(doc: opensearch.main.Document) {
     action: Action.REMOVE_APPK_CHILD,
     id: result.data.id,
     spwStatus: SEATOOL_STATUS.WITHDRAWN,
-    timestamp: today,
+    today: today,
+    timestamp: now,
     topicName: TOPIC_NAME,
   });
 }
