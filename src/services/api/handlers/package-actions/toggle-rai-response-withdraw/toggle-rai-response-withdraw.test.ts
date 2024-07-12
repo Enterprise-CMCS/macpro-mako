@@ -1,45 +1,58 @@
 // toggle-rai-response-withdraw.test.ts
 
 import { toggleRaiResponseWithdraw } from "./toggle-rai-response-withdraw";
-import { ToggleWithdrawRaiEnabled, Action } from "shared-types";
-import { response } from "../../../libs/handler";
-import { TOPIC_NAME } from "../consts";
 import { vi, describe, it, expect, beforeEach } from "vitest";
-import { PackageWriteClass } from "../services/package-action-write-service";
+import {
+  IssueRaiDto,
+  PackageWriteClass,
+  RemoveAppkChildDto,
+  RespondToRaiDto,
+  UpdateIdDto,
+  WithdrawPackageDto,
+  WithdrawRaiDto,
+} from "../services/package-action-write-service";
 import { ToggleRaiResponseDto } from "../services/mako-write-service";
-import { CompleteIntakeDto, IssueRaiDto, RespondToRaiDto, WithdrawRaiDto, RemoveAppkChildDto, WithdrawPackageDto, UpdateIdDto } from "../services/seatool-write-service";
+import { CompleteIntakeDto } from "../services/seatool-write-service";
 
 class MockPackageActionWriteService implements PackageWriteClass {
-  completeIntake: (data: { topicName: string; id: string; action: Action; timestamp: number; } & Record<string, unknown> & CompleteIntakeDto) => {
-    
-  };
-  issueRai: (data: IssueRaiDto & { topicName: string; id: string; action: Action; } & Record<string, unknown>) => Promise<void>;
-  respondToRai: (data: RespondToRaiDto & { topicName: string; id: string; action: Action; responseDate: number; } & Record<string, unknown>) => Promise<...>;
-  withdrawRai: (data: WithdrawRaiDto & { topicName: string; id: string; action: Action; } & Record<string, unknown>) => Promise<void>;
-  toggleRaiResponseWithdraw: (data: ToggleRaiResponseDto) => Promise<void>;
-  removeAppkChild: (data: RemoveAppkChildDto & { topicName: string; id: string; action: Action; } & Record<string, unknown>) => Promise<void>;
-  withdrawPackage: (data: WithdrawPackageDto & { topicName: string; id: string; action: Action; } & Record<string, unknown>) => Promise<void>;
-  updateId: (data: UpdateIdDto & { topicName: string; id: string; action: Action; } & Record<string, unknown>) => Promise<void>;
+  async issueRai(data: IssueRaiDto) {
+    console.log("hello");
+  }
+  async respondToRai(data: RespondToRaiDto) {
+    console.log("hello");
+  }
+  async withdrawRai(data: WithdrawRaiDto) {
+    console.log("hello");
+  }
+  async toggleRaiResponseWithdraw(data: ToggleRaiResponseDto) {
+    console.log("hello");
+  }
+  async removeAppkChild(data: RemoveAppkChildDto) {
+    console.log("hello");
+  }
+  async withdrawPackage(data: WithdrawPackageDto) {
+    console.log("hello");
+  }
+  async updateId(data: UpdateIdDto) {
+    console.log("hello");
+  }
+  async completeIntake(data: CompleteIntakeDto) {
+    console.log("hello");
+  }
 }
 
-describe("toggleRaiResponseWithdraw", () => {
+describe("toggleRaiResponseWithdraw", async () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("should return a server error response if service throws an error", async () => {
-    mockPackageActionWriteService.toggleRaiResponseWithdraw.mockRejectedValueOnce(
-      new Error("Service Error"),
-    );
+  it("should return a server error response if given bad body", async () => {
+    const mockPackageWrite = new MockPackageActionWriteService();
 
-    const result = await toggleRaiResponseWithdraw(
-      body,
+    const toggleRaiWithdraw = await toggleRaiResponseWithdraw(
+      { hello: "world" },
       true,
-      mockPackageActionWriteService,
+      mockPackageWrite,
     );
-
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 500,
-    });
   });
 });

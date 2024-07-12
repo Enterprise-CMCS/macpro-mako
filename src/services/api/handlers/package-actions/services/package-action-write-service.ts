@@ -23,13 +23,13 @@ import {
 
 type IdsToUpdateFunction = (lookupId: string) => Promise<string[]>;
 
-type CompleteIntakeDto = MakoCompleteIntake & SeaCompleteIntake;
-type IssueRaiDto = SeaIssueRaiDto & MakoIssueRaiDto;
-type RespondToRaiDto = SeaRespondToRai & MakoRespondToRai;
-type WithdrawRaiDto = SeaWithdrawRai & MakoWithdrawRai;
-type RemoveAppkChildDto = SeaRemoveAppkChild & MakoRemoveAppkChild;
-type WithdrawPackageDto = SeaWithdrawPackage & MakoWithdrawPackage;
-type UpdateIdDto = SeaUpdateId & MakoUpdateId;
+export type CompleteIntakeDto = MakoCompleteIntake & SeaCompleteIntake;
+export type IssueRaiDto = SeaIssueRaiDto & MakoIssueRaiDto;
+export type RespondToRaiDto = SeaRespondToRai & MakoRespondToRai;
+export type WithdrawRaiDto = SeaWithdrawRai & MakoWithdrawRai;
+export type RemoveAppkChildDto = SeaRemoveAppkChild & MakoRemoveAppkChild;
+export type WithdrawPackageDto = SeaWithdrawPackage & MakoWithdrawPackage;
+export type UpdateIdDto = SeaUpdateId & MakoUpdateId;
 
 export type PackageWriteClass = {
   completeIntake: (data: CompleteIntakeDto) => Promise<void>;

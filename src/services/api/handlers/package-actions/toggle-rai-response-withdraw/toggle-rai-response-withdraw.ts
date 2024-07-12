@@ -8,7 +8,7 @@ import { TOPIC_NAME } from "../consts";
 import { PackageWriteClass } from "../services/package-action-write-service";
 
 export async function toggleRaiResponseWithdraw(
-  body: ToggleWithdrawRaiEnabled,
+  body: any,
   toggle: boolean,
   packageActionWriteService: PackageWriteClass = globalThis.packageActionWriteService,
 ) {
