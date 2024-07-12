@@ -119,14 +119,16 @@ jobs:
           role-duration-seconds: 10800
 
       - name: Test
-        run: run coverage
-
+        run: run test --coverage
+      
+      # should be CC, will update in a few
       - name: Upload coverage report
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: coverage-report
           path: coverage
+
 
   e2e:
     timeout-minutes: 5
