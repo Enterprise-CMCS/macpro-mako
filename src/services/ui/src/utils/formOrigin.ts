@@ -9,7 +9,7 @@ export const ORIGIN = "origin";
 /** Mapping of origin types to their corresponding route strings. */
 export const originRoute: Record<Origin, Route> = {
   actionsDashboard: "/dashboard",
-  actionsDetails: "/details",
+  actionsDetails: "/details/:authority/:id",
   options: "/dashboard",
 };
 /**

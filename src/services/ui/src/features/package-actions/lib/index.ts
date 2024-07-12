@@ -1,16 +1,18 @@
-import { Action, Authority, AuthorityUnion } from "shared-types";
+import { Action, AuthorityUnion } from "shared-types";
 import { getSchemaFor } from "@/features/package-actions/lib/schemaSwitch";
 import { getFieldsFor } from "@/features/package-actions/lib/fieldsSwitch";
 import { OneMacUser, submit } from "@/api";
-import { buildActionUrl, useOriginPath } from "@/utils";
+import {
+  buildActionUrl,
+  getDashboardTabForAuthority,
+  useOriginPath,
+} from "@/utils";
 import { Route, useAlertContext, useNavigate } from "@/components";
 import { FieldValues } from "react-hook-form";
 import { getContentFor } from "@/features/package-actions/lib/contentSwitch";
 import { successCheckSwitch } from "./successCheckSwitch";
 import { documentPoller } from "@/utils/Poller/documentPoller";
 import { stripQueryStringFromURL } from "@/utils/stripQueryString";
-import { SPA_ID_REGEX } from "@/consts";
-
 export type FormSetup = {
   schema: ReturnType<typeof getSchemaFor>;
   fields: ReturnType<typeof getFieldsFor>;
@@ -41,7 +43,7 @@ export const submitActionForm = async ({
   id: string;
   type: Action;
   user: OneMacUser;
-  authority: Authority;
+  authority: AuthorityUnion;
   originRoute: ReturnType<typeof useOriginPath>;
   alert: ReturnType<typeof useAlertContext>;
   navigate: ReturnType<typeof useNavigate>;
@@ -54,7 +56,7 @@ export const submitActionForm = async ({
     await submit({
       data: { ...data, id: id },
       endpoint: !actionsThatUseSubmitEndpoint.includes(type)
-        ? buildActionUrl(type!) // "/action/{type}"
+        ? buildActionUrl(type) // "/action/{type}"
         : "/submit",
       user,
       authority: authority,
@@ -76,7 +78,7 @@ export const submitActionForm = async ({
       path: strippedPath.path as Route,
       query: {
         ...strippedPath.queryParams,
-        tab: SPA_ID_REGEX.test(id) ? "spas" : "waivers",
+        tab: getDashboardTabForAuthority(authority),
       },
     });
   } catch (e: unknown) {

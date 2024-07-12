@@ -78,19 +78,19 @@ export const TempExtensionWrapper = () => {
 };
 
 export const TemporaryExtension = () => {
-  const { type, id } = useParams();
+  const { id, authority } = useParams<{ id: string; authority: string }>();
 
   const navigationLocation = useMemo(
-    () => (isNewSubmission() ? "/dashboard?tab=waivers" : `/details?id=${id}`),
-    [type],
+    () =>
+      isNewSubmission()
+        ? "/dashboard?tab=waivers"
+        : `/details/${authority}/${id}`,
+    [id, authority],
   );
 
   const { handleSubmit, formMethods } = useSubmitForm();
-  const { id: urlId } = useParams();
-  const formId = formMethods.getValues("originalWaiverNumber");
   formMethods.setValue("seaActionType", "Extend");
 
-  const parentId = urlId ? urlId : formId;
   useDisplaySubmissionAlert(
     "Temporary extension request submitted",
     "Your submission has been received.",
