@@ -14,7 +14,7 @@ export const v202401: FormSchema = {
               name: "mandatory-identify-exempt",
               rhf: "Checkbox",
               descriptionAbove: true,
-              descriptionClassName: "text-black text-base",
+              descriptionClassName: "text-[#212121] text-base",
               description: [
                 "These assurances must be made by the state/territory if enrollment is mandatory for any of the target populations or subpopulations.",
                 {
@@ -50,7 +50,7 @@ export const v202401: FormSchema = {
               name: "how-identify",
               rhf: "Checkbox",
               label: "How will the state/territory identify these individuals?",
-              labelClassName: "font-bold text-black",
+              labelClassName: "font-bold text-[#212121]",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -63,7 +63,7 @@ export const v202401: FormSchema = {
                         name: "how-id-review-eligible-crit-desc",
                         rhf: "Textarea",
                         label: "Describe",
-                        labelClassName: "font-bold text-black",
+                        labelClassName: "font-bold text-[#212121]",
                         rules: {
                           required: "* Required",
                           pattern: {
@@ -83,7 +83,7 @@ export const v202401: FormSchema = {
                         name: "how-id-self-id-desc",
                         rhf: "Textarea",
                         label: "Describe",
-                        labelClassName: "font-bold text-black",
+                        labelClassName: "font-bold text-[#212121]",
                         rules: {
                           required: "* Required",
                           pattern: {
@@ -103,7 +103,7 @@ export const v202401: FormSchema = {
                         name: "how-id-other-desc",
                         rhf: "Textarea",
                         label: "Describe",
-                        labelClassName: "font-bold text-black",
+                        labelClassName: "font-bold text-[#212121]",
                         rules: {
                           required: "* Required",
                           pattern: {
@@ -163,7 +163,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               label:
                 "How will the state/territory identify if an individual becomes exempt?",
-              labelClassName: "font-bold text-black",
+              labelClassName: "font-bold text-[#212121]",
               rules: { required: "* Required" },
               props: {
                 options: [
@@ -195,7 +195,7 @@ export const v202401: FormSchema = {
                         name: "how-id-exempt-other-desc",
                         rhf: "Textarea",
                         label: "Describe",
-                        labelClassName: "font-bold text-black",
+                        labelClassName: "font-bold text-[#212121]",
                         rules: {
                           required: "* Required",
                           pattern: {
@@ -214,7 +214,7 @@ export const v202401: FormSchema = {
               name: "freq-determine-exemptions",
               rhf: "Radio",
               rules: { required: "* Required" },
-              labelClassName: "font-bold text-black",
+              labelClassName: "font-bold text-[#212121]",
               label:
                 "How frequently will the state/territory review the ABP population to determine if individuals are exempt from mandatory enrollment or meet the exemption criteria?",
               props: {
@@ -243,7 +243,7 @@ export const v202401: FormSchema = {
                         name: "freq-determine-ex-other-desc",
                         rhf: "Textarea",
                         label: "Describe",
-                        labelClassName: "font-bold text-black",
+                        labelClassName: "font-bold text-[#212121]",
                         rules: {
                           required: "* Required",
                           pattern: {
@@ -284,7 +284,7 @@ export const v202401: FormSchema = {
                 },
               },
               label: "Describe the process for processing requests.",
-              labelClassName: "font-bold text-black",
+              labelClassName: "font-bold text-[#212121]",
               formItemClassName: "pl-8",
             },
           ],
@@ -302,7 +302,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               label:
                 "Other information about enrollment assurances for mandatory participants (optional)",
-              labelClassName: "font-bold text-black",
+              labelClassName: "font-bold text-[#212121]",
               props: {
                 className: "min-h-[114px]",
               },

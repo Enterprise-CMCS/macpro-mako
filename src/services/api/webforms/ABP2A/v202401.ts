@@ -14,7 +14,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Select",
               name: "is-state-territory-aligned",
-              descriptionClassName: "text-black text-base",
+              descriptionClassName: "text-[#212121] text-base",
               descriptionAbove: true,
               description: [
                 {
