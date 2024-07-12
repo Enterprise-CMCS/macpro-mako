@@ -14,7 +14,7 @@ export type CompleteIntakeDto = {
 
 export type IssueRaiDto = {
   id: string;
-  timestamp: number;
+  today: number;
   spwStatus: string;
 };
 
@@ -22,14 +22,14 @@ export type RespondToRaiDto = {
   id: string;
   raiReceivedDate: string;
   raiWithdrawnDate: string;
-  timestamp: number;
+  today: number;
   raiToRespondTo: number;
   spwStatus: string;
 };
 
 export type WithdrawRaiDto = {
   id: string;
-  timestamp: number;
+  today: number;
   raiToWithdraw: number;
   spwStatus: string;
   raiRequestedDate: string;
@@ -38,13 +38,13 @@ export type WithdrawRaiDto = {
 
 export type RemoveAppkChildDto = {
   id: string;
-  timestamp: number;
+  today: number;
   spwStatus: string;
 };
 
 export type WithdrawPackageDto = {
   id: string;
-  timestamp: number;
+  today: number;
   spwStatus: string;
 };
 
@@ -115,12 +115,12 @@ export class SeatoolWriteService {
     `);
   }
 
-  async issueRai({ id, spwStatus, timestamp }: IssueRaiDto) {
+  async issueRai({ id, spwStatus, today }: IssueRaiDto) {
     // Issue RAI
     const query1 = `
     Insert into SEA.dbo.RAI (ID_Number, RAI_Requested_Date)
       values ('${id}'
-      ,dateadd(s, convert(int, left(${timestamp}, 10)), cast('19700101' as datetime)))
+      ,dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)))
     `;
     await this.trx.request().query(query1);
 
@@ -129,7 +129,7 @@ export class SeatoolWriteService {
     UPDATE SEA.dbo.State_Plan
     SET 
       SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${spwStatus}'),
-      Status_Date = dateadd(s, convert(int, left(${timestamp}, 10)), cast('19700101' as datetime)),
+      Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
       Status_Memo = ${buildStatusMemoQuery(id, "RAI Issued")}
     WHERE ID_Number = '${id}'
     `;
@@ -140,7 +140,7 @@ export class SeatoolWriteService {
     id,
     raiReceivedDate,
     raiWithdrawnDate,
-    timestamp,
+    today,
     raiToRespondTo,
     spwStatus,
   }: RespondToRaiDto) {
@@ -163,7 +163,7 @@ export class SeatoolWriteService {
     const query1 = `
           UPDATE SEA.dbo.RAI
             SET 
-              RAI_RECEIVED_DATE = DATEADD(s, CONVERT(int, LEFT('${timestamp}', 10)), CAST('19700101' AS DATETIME)),
+              RAI_RECEIVED_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME)),
               RAI_WITHDRAWN_DATE = NULL
             WHERE ID_Number = '${id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToRespondTo}', 10)), CAST('19700101' AS DATETIME))
         `;
@@ -175,7 +175,7 @@ export class SeatoolWriteService {
           UPDATE SEA.dbo.State_Plan
             SET 
               SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${spwStatus}'),
-              Status_Date = dateadd(s, convert(int, left(${timestamp}, 10)), cast('19700101' as datetime)),
+              Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
               Status_Memo = ${statusMemoUpdate}
             WHERE ID_Number = '${id}'
         `;
@@ -185,7 +185,7 @@ export class SeatoolWriteService {
 
   async withdrawRai({
     id,
-    timestamp,
+    today,
     raiToWithdraw,
     spwStatus,
     raiRequestedDate,
@@ -194,7 +194,7 @@ export class SeatoolWriteService {
     await this.trx.request().query(`
       UPDATE SEA.dbo.RAI
         SET 
-          RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${timestamp}', 10)), CAST('19700101' AS DATETIME))
+          RAI_WITHDRAWN_DATE = DATEADD(s, CONVERT(int, LEFT('${today}', 10)), CAST('19700101' AS DATETIME))
       WHERE ID_Number = '${id}' AND RAI_REQUESTED_DATE = DATEADD(s, CONVERT(int, LEFT('${raiToWithdraw}', 10)), CAST('19700101' AS DATETIME))
     `);
     // Set Status to Pending - RAI
@@ -202,7 +202,7 @@ export class SeatoolWriteService {
       UPDATE SEA.dbo.State_Plan
         SET 
           SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${spwStatus}'),
-          Status_Date = dateadd(s, convert(int, left(${timestamp}, 10)), cast('19700101' as datetime)),
+          Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
           Status_Memo = ${buildStatusMemoQuery(
             id,
             `RAI Response Withdrawn.  This withdrawal is for the RAI requested on ${formatSeatoolDate(raiRequestedDate)} and received on ${formatSeatoolDate(raiReceivedDate)}`,
@@ -211,24 +211,24 @@ export class SeatoolWriteService {
     `);
   }
 
-  async removeAppkChild({ id, timestamp, spwStatus }: RemoveAppkChildDto) {
+  async removeAppkChild({ id, today, spwStatus }: RemoveAppkChildDto) {
     await this.trx.request().query(`
       UPDATE SEA.dbo.State_Plan
         SET 
           SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${spwStatus}'),
-          Status_Date = dateadd(s, convert(int, left(${timestamp}, 10)), cast('19700101' as datetime)),
+          Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
           Status_Memo = ${buildStatusMemoQuery(id, "Package Withdrawn")}
         WHERE ID_Number = '${id}'
     `);
   }
 
-  async withdrawPackage({ id, timestamp, spwStatus }: WithdrawPackageDto) {
+  async withdrawPackage({ id, today, spwStatus }: WithdrawPackageDto) {
     await this.trx.request().query(
       `
         UPDATE SEA.dbo.State_Plan
           SET 
             SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${spwStatus}'),
-            Status_Date = dateadd(s, convert(int, left(${timestamp}, 10)), cast('19700101' as datetime)),
+            Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
             Status_Memo = ${buildStatusMemoQuery(id, "Package Withdrawn")}
           WHERE ID_Number = '${id}'
       `,
