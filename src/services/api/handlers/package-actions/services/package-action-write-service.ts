@@ -300,23 +300,30 @@ export class PackageActionWriteService {
     newId,
     ...data
   }: UpdateIdDto) {
-    await this.#seatoolWriteService.trx.begin();
-    const idsToUpdate = [id];
+    try {
+      await this.#seatoolWriteService.trx.begin();
+      const idsToUpdate = [id];
 
-    for (const id of idsToUpdate) {
-      await this.#seatoolWriteService.updateId({
-        id,
-        spwStatus,
-        today,
-        newId,
-      });
-      await this.#makoWriteService.updateId({
-        action,
-        id,
-        timestamp,
-        topicName,
-        ...data,
-      });
-    }
+      for (const id of idsToUpdate) {
+        await this.#seatoolWriteService.updateId({
+          id,
+          spwStatus,
+          today,
+          newId,
+        });
+        await this.#makoWriteService.updateId({
+          action,
+          id,
+          timestamp,
+          topicName,
+          ...data,
+        });
+      }
+      await this.#seatoolWriteService.trx.commit();
+   } catch (err: unknown) {
+    await this.#seatoolWriteService.trx.rollback();
+
+    console.error(err);
+   }
   }
 }
