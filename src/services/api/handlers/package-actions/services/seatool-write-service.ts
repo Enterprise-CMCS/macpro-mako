@@ -223,16 +223,15 @@ export class SeatoolWriteService {
   }
 
   async withdrawPackage({ id, today, spwStatus }: WithdrawPackageDto) {
-    await this.trx.request().query(
-      `
+    const query = `
         UPDATE SEA.dbo.State_Plan
           SET 
             SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${spwStatus}'),
             Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
             Status_Memo = ${buildStatusMemoQuery(id, "Package Withdrawn")}
           WHERE ID_Number = '${id}'
-      `,
-    );
+      `;
+    await this.trx.request().query(query);
   }
 
   async updateId({ id, today, spwStatus, newId }: UpdateIdDto) {
