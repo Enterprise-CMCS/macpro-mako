@@ -25,6 +25,7 @@ export async function respondToRai(
     });
   }
   const raiToRespondTo = new Date(document.raiRequestedDate).getTime();
+  const now = new Date().getTime();
   const today = seaToolFriendlyTimestamp();
   const result = raiResponseSchema.safeParse({
     ...body,
@@ -45,26 +46,19 @@ export async function respondToRai(
       },
     });
   }
+  
+  await packageActionWriteService.respondToRai({
+    ...result.data,
+    action: Action.RESPOND_TO_RAI,
+    id: result.data.id,
+    raiReceivedDate: document.raiReceivedDate!,
+    raiToRespondTo: raiToRespondTo,
+    raiWithdrawnDate: document.raiWithdrawnDate!,
+    responseDate: today,
+    spwStatus: SEATOOL_STATUS.PENDING,
+    today,
+    timestamp: now,
+    topicName: TOPIC_NAME,
+  });
 
-  try {
-    await packageActionWriteService.respondToRai({
-      ...result.data,
-      action: Action.RESPOND_TO_RAI,
-      id: result.data.id,
-      raiReceivedDate: document.raiReceivedDate!,
-      raiToRespondTo: raiToRespondTo,
-      raiWithdrawnDate: document.raiWithdrawnDate!,
-      responseDate: today,
-      spwStatus: SEATOOL_STATUS.PENDING,
-      timestamp: today,
-      topicName: TOPIC_NAME,
-    });
-  } catch (err) {
-    // Rollback and log
-    console.error(err);
-    return response({
-      statusCode: 500,
-      body: err instanceof Error ? { message: err.message } : err,
-    });
-  }
 }

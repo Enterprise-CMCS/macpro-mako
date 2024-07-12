@@ -9,6 +9,7 @@ export async function issueRai(
   packageActionWriteService: PackageActionWriteService = globalThis.packageActionWriteService,
 ) {
   console.log("CMS issuing a new RAI");
+  const now = new Date().getTime();
   const today = seaToolFriendlyTimestamp();
   const result = raiIssueSchema.safeParse({ ...body, requestedDate: today });
   if (result.success === false) {
@@ -31,7 +32,8 @@ export async function issueRai(
     action: Action.ISSUE_RAI,
     id: result.data.id,
     spwStatus: SEATOOL_STATUS.PENDING_RAI,
-    timestamp: today,
+    today: today,
+    timestamp: now,
     topicName: TOPIC_NAME,
   });
 }

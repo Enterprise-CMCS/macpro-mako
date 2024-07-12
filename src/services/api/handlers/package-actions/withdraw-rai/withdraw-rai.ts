@@ -17,6 +17,7 @@ export async function withdrawRai(
   packageActionWriteService: PackageActionWriteService = globalThis.packageActionWriteService,
 ) {
   console.log("State withdrawing an RAI Response");
+
   if (!document.raiRequestedDate || !document.raiReceivedDate) {
     return response({
       statusCode: 400,
@@ -27,7 +28,10 @@ export async function withdrawRai(
   }
 
   const raiToWithdraw = new Date(document.raiRequestedDate).getTime();
+
+  const now = new Date().getTime();
   const today = seaToolFriendlyTimestamp();
+  
   const result = raiWithdrawSchema.safeParse({
     ...body,
     requestedDate: raiToWithdraw,
@@ -53,7 +57,8 @@ export async function withdrawRai(
     action: Action.WITHDRAW_RAI,
     id: result.data.id,
     spwStatus: SEATOOL_STATUS.PENDING_RAI,
-    timestamp: today,
+    timestamp: now,
+    today,
     topicName: TOPIC_NAME,
     raiToWithdraw,
     raiRequestedDate: document.raiRequestedDate,

@@ -71,6 +71,8 @@ export const handler = async (event: APIGatewayEvent) => {
 
     // Check that the package action is available
     const actions: Action[] = getAvailableActions(userAttr, result._source);
+    console.log("ACTIONTYPE: " + actionType);
+    console.log("AVAILABLE ACTION: " + actions);
     if (!actions.includes(actionType)) {
       return response({
         statusCode: 401,

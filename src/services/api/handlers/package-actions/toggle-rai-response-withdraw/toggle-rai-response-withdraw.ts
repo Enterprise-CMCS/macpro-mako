@@ -11,6 +11,7 @@ export async function toggleRaiResponseWithdraw(
   toggle: boolean,
   packageActionWriteService = globalThis.packageActionWriteService,
 ) {
+  const now = new Date().getTime();
   const result = toggleWithdrawRaiEnabledSchema.safeParse({
     ...body,
     raiWithdrawEnabled: toggle,
@@ -35,6 +36,7 @@ export async function toggleRaiResponseWithdraw(
       action: toggle ? Action.ENABLE_RAI_WITHDRAW : Action.DISABLE_RAI_WITHDRAW,
       id: result.data.id,
       topicName: TOPIC_NAME,
+      timestamp: now
     });
 
     return response({
