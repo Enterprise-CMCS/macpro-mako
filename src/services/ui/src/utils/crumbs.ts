@@ -8,7 +8,7 @@ type DetailsAndActionsBreadCrumbsArgs = {
   actionType?: Action;
 };
 
-export const getDashboardTabForAuthority = (authority?: AuthorityUnion) => {
+export const getDashboardTabForAuthority = (authority: AuthorityUnion) => {
   if (authority === "CHIP SPA" || authority === "Medicaid SPA") {
     return "spas";
   }
