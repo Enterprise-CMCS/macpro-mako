@@ -6,6 +6,7 @@ import {
   RespondToRaiDto as MakoRespondToRai,
   WithdrawRaiDto as MakoWithdrawRai,
   ToggleRaiResponseDto,
+  RemoveAppkChildDto as MakoRemoveAppkChild,
 } from "./mako-write-service";
 import {
   SeatoolWriteService,
@@ -13,6 +14,7 @@ import {
   CompleteIntakeDto as SeaCompleteIntake,
   RespondToRaiDto as SeaRespondToRai,
   WithdrawRaiDto as SeaWithdrawRai,
+  RemoveAppkChildDto as SeaRemoveAppkChild,
 } from "./seatool-write-service";
 
 type IdsToUpdateFunction = (lookupId: string) => Promise<string[]>;
@@ -20,7 +22,8 @@ type IdsToUpdateFunction = (lookupId: string) => Promise<string[]>;
 type CompleteIntakeDto = MakoCompleteIntake & SeaCompleteIntake;
 type IssueRaiDto = SeaIssueRaiDto & MakoIssueRaiDto;
 type RespondToRaiDto = SeaRespondToRai & MakoRespondToRai;
-type WithdrawRaiDto = SeaWithdrawRai & MakoWithdrawRai
+type WithdrawRaiDto = SeaWithdrawRai & MakoWithdrawRai;
+type RemoveAppkChildDto = SeaRemoveAppkChild & MakoRemoveAppkChild;
 
 export class PackageActionWriteService {
   #seatoolWriteService: SeatoolWriteService;
@@ -147,7 +150,7 @@ export class PackageActionWriteService {
     }
   }
 
-  async withdrawRai({  
+  async withdrawRai({
     id,
     spwStatus,
     timestamp,
@@ -158,8 +161,7 @@ export class PackageActionWriteService {
     topicName,
     withdrawnDate,
     ...data
-
-  }:WithdrawRaiDto) {
+  }: WithdrawRaiDto) {
     try {
       await this.#seatoolWriteService.trx.begin();
       const idsToUpdate = await this.#getIdsToUpdate(id);
@@ -201,6 +203,40 @@ export class PackageActionWriteService {
         });
       }
     } catch (err: unknown) {
+      console.error(err);
+    }
+  }
+
+  async removeAppkChild({
+    id,
+    timestamp,
+    spwStatus,
+    action,
+    topicName,
+    ...data
+  }: RemoveAppkChildDto) {
+    try {
+      await this.#seatoolWriteService.trx.begin();
+      const idsToUpdate = [id];
+
+      for (const id of idsToUpdate) {
+        await this.#seatoolWriteService.removeAppkChild({
+          id,
+          spwStatus,
+          timestamp,
+        });
+        await this.#makoWriteService.removeAppkChild({
+          action,
+          id,
+          topicName,
+          ...data,
+        });
+      }
+
+      await this.#seatoolWriteService.trx.commit();
+    } catch (err: unknown) {
+      await this.#seatoolWriteService.trx.rollback();
+
       console.error(err);
     }
   }

@@ -39,6 +39,12 @@ export type WithdrawRaiDto = {
   action: Action;
 } & Record<string, unknown>;
 
+export type RemoveAppkChildDto = {
+  topicName: string;
+  id: string;
+  action: Action;
+} & Record<string, unknown>;
+
 export class MakoWriteService {
   #messageProducer: MessageProducer;
 
@@ -97,13 +103,8 @@ export class MakoWriteService {
       }),
     );
   }
-  
-  async withdrawRai({
-    action,
-    id,
-    topicName,
-    ...data
-  }:WithdrawRaiDto){
+
+  async withdrawRai({ action, id, topicName, ...data }: WithdrawRaiDto) {
     await this.#messageProducer(
       topicName,
       id,
@@ -124,6 +125,23 @@ export class MakoWriteService {
     topicName,
     ...data
   }: ToggleRaiResponseDto) {
+    await this.#messageProducer(
+      topicName,
+      id,
+      JSON.stringify({
+        ...data,
+        id,
+        actionType: action,
+      }),
+    );
+  }
+
+  async removeAppkChild({
+    action,
+    id,
+    topicName,
+    ...data
+  }: RemoveAppkChildDto) {
     await this.#messageProducer(
       topicName,
       id,
