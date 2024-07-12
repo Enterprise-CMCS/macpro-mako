@@ -7,9 +7,10 @@
     "build:cli": {
       "cache": false
     },
-    "test:watch": {},
-    "test:gui": {},
     "e2e": {},
-    "e2e:ui": {}
+    "e2e:ui": {},
+    "test": {},
+    "test:coverage": {},
+    "test:gui": {}
   }
 }
