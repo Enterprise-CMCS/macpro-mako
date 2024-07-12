@@ -264,22 +264,29 @@ export class PackageActionWriteService {
     topicName,
     ...data
   }: WithdrawPackageDto) {
-    await this.#seatoolWriteService.trx.begin();
-    const idsToUpdate = await this.#getIdsToUpdate(id);
+    try {
+      await this.#seatoolWriteService.trx.begin();
+      const idsToUpdate = await this.#getIdsToUpdate(id);
 
-    for (const id of idsToUpdate) {
-      await this.#seatoolWriteService.withdrawPackage({
-        id,
-        spwStatus,
-        today,
-      });
-      await this.#makoWriteService.withdrawPackage({
-        action,
-        id,
-        topicName,
-        timestamp,
-        ...data,
-      });
+      for (const id of idsToUpdate) {
+        await this.#seatoolWriteService.withdrawPackage({
+          id,
+          spwStatus,
+          today,
+        });
+        await this.#makoWriteService.withdrawPackage({
+          action,
+          id,
+          topicName,
+          timestamp,
+          ...data,
+        });
+    }
+      await this.#seatoolWriteService.trx.commit();
+    } catch (err: unknown) {
+      await this.#seatoolWriteService.trx.rollback();
+
+      console.error(err);
     }
   }
 
