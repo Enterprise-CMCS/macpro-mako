@@ -48,6 +48,13 @@ export type WithdrawPackageDto = {
   spwStatus: string;
 };
 
+export type UpdateIdDto = {
+  id: string;
+  today: number;
+  spwStatus: string;
+  newId: string;
+};
+
 export class SeatoolWriteService {
   #pool: ConnectionPool;
   trx: Transaction;
@@ -225,6 +232,81 @@ export class SeatoolWriteService {
             Status_Memo = ${buildStatusMemoQuery(id, "Package Withdrawn")}
           WHERE ID_Number = '${id}'
       `,
+    );
+  }
+
+  async updateId({ id, today, spwStatus, newId }: UpdateIdDto) {
+    await this.trx.request().query(
+      `
+      DECLARE @columns NVARCHAR(MAX), @sql NVARCHAR(MAX), @newId NVARCHAR(50), @originalId NVARCHAR(50);
+
+      SET @newId = '${newId}';
+      SET @originalId = '${id}';
+      
+      SELECT @columns = COALESCE(@columns + ', ', '') + QUOTENAME(column_name)
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE table_name = 'State_Plan' AND column_name != 'ID_Number' AND column_name != 'UUID' AND column_name != 'replica_id' AND table_schema = 'dbo'
+        ORDER BY ordinal_position;
+      
+      SET @sql = 'INSERT INTO SEA.dbo.State_Plan (ID_Number, ' + @columns + ') SELECT ''' + @newId + ''' as ID_Number, ' + @columns + ' FROM SEA.dbo.State_Plan WHERE ID_Number = ''' + @originalId + '''';
+      EXEC sp_executesql @sql;
+    `,
+    );
+
+    await this.trx.request().query(
+      `
+      INSERT INTO RAI (ID_Number, RAI_REQUESTED_DATE, RAI_RECEIVED_DATE, RAI_WITHDRAWN_DATE)
+        SELECT '${newId}', RAI_REQUESTED_DATE, RAI_RECEIVED_DATE, RAI_WITHDRAWN_DATE
+        FROM RAI
+        WHERE ID_Number = '${id}';
+    `,
+    );
+
+    await this.trx.request().query(
+      `
+      INSERT INTO State_Plan_Service_Types (ID_Number, Service_Type_ID)
+        SELECT '${newId}', Service_Type_ID
+        FROM State_Plan_Service_Types
+        WHERE ID_Number = '${id}';
+    `,
+    );
+
+    await this.trx.request().query(
+      `
+      INSERT INTO State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID)
+        SELECT '${newId}', Service_SubType_ID
+        FROM State_Plan_Service_SubTypes
+        WHERE ID_Number = '${id}';
+    `,
+    );
+
+    await this.trx.request().query(
+      `
+      INSERT INTO Action_Officers (ID_Number, Officer_ID)
+        SELECT '${newId}', Officer_ID
+        FROM Action_Officers
+        WHERE ID_Number = '${id}';
+    `,
+    );
+
+    await this.trx.request().query(
+      `
+      UPDATE SEA.dbo.State_Plan
+      SET 
+        SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${spwStatus}'),
+        Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
+        Status_Memo = ${buildStatusMemoQuery(id, `Package Terminated via ID Update: this package was copied to ${newId} and then terminated.`)}
+      WHERE ID_Number = '${id}'
+    `,
+    );
+
+    await this.trx.request().query(
+      `
+    UPDATE SEA.dbo.State_Plan
+      SET 
+        Status_Memo = ${buildStatusMemoQuery(id, `Package Created via ID Update: this package was copied from ${id}.`)}
+      WHERE ID_Number = '${newId}'
+    `,
     );
   }
 }
