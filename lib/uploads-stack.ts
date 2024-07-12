@@ -1,11 +1,6 @@
 import { NestedStack, NestedStackProps, Aws, RemovalPolicy } from "aws-cdk-lib";
 import { Bucket, HttpMethods } from "aws-cdk-lib/aws-s3";
-import {
-  AnyPrincipal,
-  ArnPrincipal,
-  Effect,
-  PolicyStatement,
-} from "aws-cdk-lib/aws-iam";
+import { AnyPrincipal, Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 
 import { EmptyBuckets } from "local-constructs";
@@ -56,7 +51,7 @@ export class UploadsStack extends NestedStack {
     attachmentsBucket.addToResourcePolicy(
       new PolicyStatement({
         effect: Effect.DENY,
-        principals: [new ArnPrincipal("*")],
+        principals: [new AnyPrincipal()],
         actions: ["s3:*"],
         resources: [
           attachmentsBucket.bucketArn,

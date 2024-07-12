@@ -116,7 +116,7 @@ export class UiInfraStack extends NestedStack {
     loggingBucket.addToResourcePolicy(
       new PolicyStatement({
         effect: Effect.DENY,
-        principals: [new AccountRootPrincipal()],
+        principals: [new AnyPrincipal()],
         actions: ["s3:*"],
         resources: [loggingBucket.bucketArn, `${loggingBucket.bucketArn}/*`],
         conditions: {

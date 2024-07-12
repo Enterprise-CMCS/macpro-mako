@@ -14,7 +14,6 @@ import * as cr from "aws-cdk-lib/custom-resources";
 import {
   ManagedPolicy,
   PolicyDocument,
-  PolicyStatement,
   Role,
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
@@ -42,7 +41,7 @@ export class ClamScanScanner extends Construct {
     this.clamDefsBucket.addToResourcePolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.DENY,
-        principals: [new iam.ArnPrincipal("*")],
+        principals: [new iam.AnyPrincipal()],
         actions: ["s3:*"],
         resources: [
           this.clamDefsBucket.bucketArn,
@@ -187,7 +186,6 @@ export class ClamScanScanner extends Construct {
         CLAMAV_BUCKET_NAME: this.clamDefsBucket.bucketName,
         PATH_TO_AV_DEFINITIONS: "lambda/s3-antivirus/av-definitions",
       },
-      reservedConcurrentExecutions: 1,
     });
 
     const clamscanLambdaLogGroup = new logs.LogGroup(
@@ -210,6 +208,7 @@ export class ClamScanScanner extends Construct {
         CLAMAV_BUCKET_NAME: this.clamDefsBucket.bucketName,
         PATH_TO_AV_DEFINITIONS: "lambda/s3-antivirus/av-definitions",
       },
+      reservedConcurrentExecutions: 1,
     });
 
     // Add the SQS queue as an event source to the Lambda function
