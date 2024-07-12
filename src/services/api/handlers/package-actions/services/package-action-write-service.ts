@@ -31,7 +31,18 @@ type RemoveAppkChildDto = SeaRemoveAppkChild & MakoRemoveAppkChild;
 type WithdrawPackageDto = SeaWithdrawPackage & MakoWithdrawPackage;
 type UpdateIdDto = SeaUpdateId & MakoUpdateId;
 
-export class PackageActionWriteService {
+export type PackageWriteClass = {
+  completeIntake: (data: CompleteIntakeDto) => Promise<void>;
+  issueRai: (data: IssueRaiDto) => Promise<void>;
+  respondToRai: (data: RespondToRaiDto) => Promise<void>;
+  withdrawRai: (data: WithdrawRaiDto) => Promise<void>;
+  toggleRaiResponseWithdraw: (data: ToggleRaiResponseDto) => Promise<void>;
+  removeAppkChild: (data: RemoveAppkChildDto) => Promise<void>;
+  withdrawPackage: (data: WithdrawPackageDto) => Promise<void>;
+  updateId: (data: UpdateIdDto) => Promise<void>;
+};
+
+export class PackageActionWriteService implements PackageWriteClass {
   #seatoolWriteService: SeatoolWriteService;
   #makoWriteService: MakoWriteService;
   #getIdsToUpdate: IdsToUpdateFunction;
@@ -281,7 +292,7 @@ export class PackageActionWriteService {
           timestamp,
           ...data,
         });
-    }
+      }
       await this.#seatoolWriteService.trx.commit();
     } catch (err: unknown) {
       await this.#seatoolWriteService.trx.rollback();
@@ -320,10 +331,10 @@ export class PackageActionWriteService {
         });
       }
       await this.#seatoolWriteService.trx.commit();
-   } catch (err: unknown) {
-    await this.#seatoolWriteService.trx.rollback();
+    } catch (err: unknown) {
+      await this.#seatoolWriteService.trx.rollback();
 
-    console.error(err);
-   }
+      console.error(err);
+    }
   }
 }
