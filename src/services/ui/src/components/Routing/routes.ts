@@ -1,7 +1,7 @@
 export const ACTION = "/action/:id/:type";
 export const HOME = "/";
 export const DASHBOARD = "/dashboard";
-export const DETAILS = "/details/:authority/:id";
+export const DETAILS = "/details";
 export const FAQ = "/faq";
 export const FAQ_ID = "/faq/:id";
 export const PROFILE = "/profile";
