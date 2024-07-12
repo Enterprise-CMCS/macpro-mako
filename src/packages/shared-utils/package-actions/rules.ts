@@ -99,7 +99,12 @@ const arCompleteIntake: ActionRule = {
   check: (checker, user) => isCmsWriteUser(user) && checker.needsIntake,
 };
 
-// TODO: Add rule for remove-appk-child
+const arRemoveAppkChild: ActionRule = {
+  action: Action.REMOVE_APPK_CHILD,
+  check: (checker, user) =>
+    isStateUser(user) && !!checker.isAppkChild
+}
+
 
 export default [
   arIssueRai,
@@ -111,4 +116,5 @@ export default [
   arTempExtension,
   arUpdateId,
   arCompleteIntake,
+  arRemoveAppkChild,
 ];
