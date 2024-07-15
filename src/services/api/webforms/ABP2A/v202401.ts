@@ -134,7 +134,7 @@ export const v202401: FormSchema = {
                       {
                         text: "The state/territory assures it will inform the individual of:",
                         type: "default",
-                        classname: "block py-1",
+                        classname: "block pb-1",
                       },
                       {
                         text: "A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements",
