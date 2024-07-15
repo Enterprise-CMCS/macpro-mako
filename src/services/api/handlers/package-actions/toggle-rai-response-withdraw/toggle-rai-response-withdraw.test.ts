@@ -22,7 +22,11 @@ describe("toggleRaiResponseWithdraw", async () => {
 
   it("should pass validation and call class method", async () => {
     const mockData = generateMock(toggleWithdrawRaiEnabledSchema);
-
-    console.log(mockData);
+    const toggleRaiWithdraw = await toggleRaiResponseWithdraw(
+      mockData,
+      true,
+      mockPackageWrite,
+    );
+    expect(toggleRaiWithdraw.statusCode).toBe(200);
   });
 });
