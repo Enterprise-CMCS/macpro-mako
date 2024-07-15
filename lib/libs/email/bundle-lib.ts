@@ -1,4 +1,5 @@
 import { Action } from "shared-types";
+import { DecodedRecord } from "./handler-lib";
 
 interface EmailCommand {
   Template: string;
@@ -13,7 +14,7 @@ interface Bundle {
   emailCommands: EmailCommand[];
 }
 
-interface Record {
+export interface Record {
   origin?: string;
   authority?: string;
   actionType?: string;
@@ -466,7 +467,7 @@ const getBundleFromEvent = (
   }
 };
 
-const buildKeyFromRecord = (record: Record): string | undefined => {
+const buildKeyFromRecord = (record: DecodedRecord): string | undefined => {
   const seaActionTypeLookup: { [key: string]: string } = {
     Extend: Action.TEMP_EXTENSION,
   };
@@ -488,7 +489,7 @@ const buildKeyFromRecord = (record: Record): string | undefined => {
   return `${actionType}-${authority}`;
 };
 
-export const getBundle = (record: Record, stage: string) => {
+export const getBundle = (record: DecodedRecord, stage: string) => {
   const configKey = buildKeyFromRecord(record) as string;
 
   return getBundleFromEvent(configKey, stage);

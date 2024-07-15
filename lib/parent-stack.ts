@@ -1,4 +1,4 @@
-import { CfnOutput, Stack, StackProps } from "aws-cdk-lib";
+import { Fn, Stack, StackProps } from "aws-cdk-lib";
 import { Vpc, ISubnet } from "aws-cdk-lib/aws-ec2";
 import { Construct } from "constructs";
 
@@ -13,6 +13,7 @@ import { UploadsStack } from "./uploads-stack";
 
 import { CloudWatchLogsResourcePolicy } from "local-constructs";
 import { StringParameter } from "aws-cdk-lib/aws-ssm";
+import { EmailStack } from "./email-stack";
 
 export class ParentStack extends Stack {
   constructor(
@@ -113,6 +114,18 @@ export class ParentStack extends Stack {
       idmAuthzApiKeyArn: props.idmAuthzApiKeyArn,
       idmClientSecretArn: props.idmClientSecretArn,
       devPasswordArn: props.devPasswordArn,
+    });
+
+    const emailStack = new EmailStack(this, "email", {
+      ...commonProps,
+      stage: commonProps.stage,
+      vpc,
+      privateSubnets,
+      brokerString: props.brokerString,
+      osDomainArn: dataStack.openSearchDomainArn,
+      lambdaSecurityGroupId:
+        networkingStack.lambdaSecurityGroup.securityGroupId,
+      applicationEndpoint: uiInfraStack.applicationEndpointUrl,
     });
 
     new StringParameter(this, "DeploymentOutput", {

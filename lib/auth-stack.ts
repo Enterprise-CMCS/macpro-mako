@@ -2,6 +2,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 
 import {
+  CfnOutput,
   Duration,
   NestedStack,
   NestedStackProps,
@@ -64,6 +65,7 @@ export class AuthStack extends NestedStack {
   public readonly userPoolClient: CfnUserPoolClient;
   public readonly userPoolClientDomain: string;
   public readonly identityPool: CfnIdentityPool;
+  public userPoolIdOutput: CfnOutput;
 
   constructor(scope: Construct, id: string, props: AuthStackProps) {
     super(scope, id, props);
@@ -324,6 +326,12 @@ export class AuthStack extends NestedStack {
         postAuthLambda,
       );
     }
+
+    // Output the Alerts Topic ARN
+    this.userPoolIdOutput = new CfnOutput(this, "UserPoolIdOutput", {
+      value: userPool.userPoolId,
+      exportName: "cognitoUserPoolId",
+    });
 
     return { userPool, userPoolClient, userPoolDomain, identityPool };
   }

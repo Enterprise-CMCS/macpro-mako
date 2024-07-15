@@ -5,17 +5,17 @@ interface EncodedRecord {
   value: string;
 }
 
-interface DecodedRecord {
+export interface DecodedRecord {
   id: string;
   [key: string]: any;
 }
 
-interface Event {
+export type Event = {
   eventSource?: string;
   records: Record<string, EncodedRecord[]>;
-}
+};
 
-interface LambdaResponse {
+export interface LambdaResponse {
   statusCode: number;
   body: string | null;
   headers: {
@@ -34,7 +34,7 @@ const decodeRecord = (
   };
 };
 
-export default function handler(
+export function emailHandler(
   lambda: (eventData: DecodedRecord) => Promise<any>,
 ) {
   return async function (event: Event): Promise<LambdaResponse> {
