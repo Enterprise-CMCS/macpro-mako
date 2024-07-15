@@ -1,6 +1,5 @@
-import { defineConfig } from "vitest/config";
+import { defineConfig, configDefaults } from "vitest/config";
 import { join } from "path";
-import { configDefaults } from "vitest/config";
 
 export default defineConfig({
   test: {
@@ -9,7 +8,14 @@ export default defineConfig({
       reportsDirectory: join(__dirname, "coverage"),
       reporter: ["text", "json-summary", "json", "lcov"],
       reportOnFailure: true,
-      exclude: [...configDefaults.exclude, join(__dirname, "docs")],
+      exclude: [
+        ...configDefaults.exclude,
+        "docs",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+      ],
     },
   },
 });
