@@ -22,18 +22,9 @@ export async function respondToRai(
       },
     });
   }
-  console.log("aaaaa");
-  console.log(document.raiRequestedDate);
-  console.log(new Date(document.raiRequestedDate.toString()));
-  console.log("today");
-  console.log(new Date());
   const raiToRespondTo = new Date(document.raiRequestedDate).getTime();
-  console.log(raiToRespondTo);
   const now = new Date().getTime();
   const today = seaToolFriendlyTimestamp();
-  console.log("f");
-  console.log(typeof raiToRespondTo);
-  console.log(raiToRespondTo);
   const result = raiResponseSchema.safeParse({
     ...body,
     responseDate: today,
