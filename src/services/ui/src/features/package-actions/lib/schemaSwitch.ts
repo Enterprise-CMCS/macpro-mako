@@ -1,11 +1,9 @@
 import { Action, AuthorityUnion } from "shared-types";
-import { ZodEffects, ZodObject } from "zod";
+import { ZodEffects, ZodObject, ZodRawShape, ZodType } from "zod";
 import {
   bWaiverRaiSchema,
   chipSpaRaiSchema,
   chipWithdrawPackageSchema,
-  defaultDisableRaiWithdrawSchema,
-  defaultEnableRaiWithdrawSchema,
   defaultIssueRaiSchema,
   defaultTempExtSchema,
   defaultWithdrawPackageSchema,
@@ -15,8 +13,8 @@ import {
   defaultUpdateIdSchema,
 } from "@/features/package-actions/lib/modules";
 
-type Schema = ZodObject<any> | ZodEffects<any>;
-type SchemaGroup = Record<AuthorityUnion, Schema | undefined>;
+type Schema = ZodObject<ZodRawShape> | ZodEffects<ZodType>;
+type SchemaGroup = Record<AuthorityUnion, Schema | undefined | null>;
 
 const issueRaiFor: SchemaGroup = {
   "CHIP SPA": defaultIssueRaiSchema,
@@ -33,17 +31,17 @@ const respondToRaiFor: SchemaGroup = {
 };
 
 const enableRaiWithdrawFor: SchemaGroup = {
-  "CHIP SPA": defaultEnableRaiWithdrawSchema,
-  "Medicaid SPA": defaultEnableRaiWithdrawSchema,
-  "1915(b)": defaultEnableRaiWithdrawSchema,
-  "1915(c)": defaultEnableRaiWithdrawSchema,
+  "CHIP SPA": null,
+  "Medicaid SPA": null,
+  "1915(b)": null,
+  "1915(c)": null,
 };
 
 const disableRaiWithdrawFor: SchemaGroup = {
-  "CHIP SPA": defaultDisableRaiWithdrawSchema,
-  "Medicaid SPA": defaultDisableRaiWithdrawSchema,
-  "1915(b)": defaultDisableRaiWithdrawSchema,
-  "1915(c)": defaultDisableRaiWithdrawSchema,
+  "CHIP SPA": null,
+  "Medicaid SPA": null,
+  "1915(b)": null,
+  "1915(c)": null,
 };
 
 const withdrawRaiFor: SchemaGroup = {
@@ -81,7 +79,7 @@ const completeIntakeFor: SchemaGroup = {
   "1915(c)": defaultCompleteIntakeSchema,
 };
 
-export const getSchemaFor = (a: Action, p: AuthorityUnion): Schema => {
+export const getSchemaFor = (a: Action, p: AuthorityUnion): Schema | null => {
   const actionSchemaMap: Record<string, SchemaGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,
@@ -93,9 +91,16 @@ export const getSchemaFor = (a: Action, p: AuthorityUnion): Schema => {
     "update-id": updateIdFor,
     "complete-intake": completeIntakeFor,
   };
+
   const group = actionSchemaMap[a];
-  if (!group) throw new Error(`No schema group for "${a}"`);
+  if (group === undefined) {
+    throw new Error(`No schema group for "${a}"`);
+  }
+
   const schema = group[p];
-  if (!schema) throw new Error(`No schema for "${p}" found in group "${a}`);
+  if (schema === undefined) {
+    throw new Error(`No schema for "${p}" found in group "${a}`);
+  }
+
   return schema;
 };
