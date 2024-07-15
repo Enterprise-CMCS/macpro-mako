@@ -3,6 +3,7 @@ import * as TRhf from "shared-types";
 import { FormLabel, FormField } from "../Inputs";
 import { DependencyWrapper } from "./dependencyWrapper";
 import { RHFSlot } from "./Slot";
+import { cn } from "@/utils";
 
 export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
   form: TRhf.FormGroup;
@@ -22,7 +23,7 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
             </FormLabel>
           </div>
         )}
-        <div className={props.form.wrapperClassName}>
+        <div className={cn(props.form.wrapperClassName, "space-y-4")}>
           {props.form.slots.map((SLOT) => (
             <DependencyWrapper key={props.parentId + SLOT.name} {...SLOT}>
               <FormField
