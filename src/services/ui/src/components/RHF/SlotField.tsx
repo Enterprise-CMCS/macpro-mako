@@ -268,20 +268,20 @@ export const OptChildren = ({
             );
           })}
       </div>
-      {slots &&
-        slots.map((SLOT, index) => (
-          <div
-            className="ml-[0.7rem] pl-6 px-4 space-y-3 border-l-4 border-l-primary"
-            key={SLOT.name + index}
-          >
-            <FormField
-              control={control}
-              name={parentId + SLOT.name}
-              {...(SLOT.rules && { rules: SLOT.rules })}
-              render={RHFSlot({ ...SLOT, control, parentId })}
-            />
-          </div>
-        ))}
+
+      <div className="ml-[0.7rem] pl-6 px-4 space-y-3 border-l-4 border-l-primary">
+        {slots &&
+          slots.map((SLOT, index) => (
+            <div className="mt-2" key={SLOT.name + index}>
+              <FormField
+                control={control}
+                name={parentId + SLOT.name}
+                {...(SLOT.rules && { rules: SLOT.rules })}
+                render={RHFSlot({ ...SLOT, control, parentId })}
+              />
+            </div>
+          ))}
+      </div>
     </>
   );
 };
