@@ -167,7 +167,7 @@ export const SlotField = ({
       );
     case "Checkbox":
       return (
-        <div className="flex flex-col gap-4 my-4">
+        <div className="flex flex-col gap-4">
           {(props as RHFComponentMap["Checkbox"]).options.map((OPT) => (
             <DependencyWrapper
               name={OPT.value}
@@ -250,26 +250,28 @@ export const OptChildren = ({
 }: SelectedSubsetProps) => {
   return (
     <>
-      {form &&
-        form.map((FORM, index) => {
-          return (
-            <div
-              className="ml-[0.6rem] pl-6 px-4 my-2 border-l-4 border-l-primary"
-              key={`rhf-form-${index}-${FORM.description}`}
-            >
-              <RHFFormGroup
-                form={FORM}
-                control={control}
-                parentId={parentId}
-                className="py-0"
-              />
-            </div>
-          );
-        })}
+      <div className="ml-[0.7rem] pl-6 px-4 space-y-3 border-l-4 border-l-primary">
+        {form &&
+          form.map((FORM, index) => {
+            return (
+              <div
+                className="mt-2"
+                key={`rhf-form-${index}-${FORM.description}`}
+              >
+                <RHFFormGroup
+                  form={FORM}
+                  control={control}
+                  parentId={parentId}
+                  className="py-0"
+                />
+              </div>
+            );
+          })}
+      </div>
       {slots &&
         slots.map((SLOT, index) => (
           <div
-            className="ml-[0.6rem] pl-6 px-4 border-l-4 border-l-primary"
+            className="ml-[0.7rem] pl-6 px-4 space-y-3 border-l-4 border-l-primary"
             key={SLOT.name + index}
           >
             <FormField
