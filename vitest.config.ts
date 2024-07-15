@@ -1,5 +1,6 @@
 import { defineConfig } from "vitest/config";
 import { join } from "path";
+import { configDefaults } from "vitest/config";
 
 export default defineConfig({
   test: {
@@ -9,5 +10,6 @@ export default defineConfig({
       reporter: ["text", "json-summary", "json", "lcov"],
       reportOnFailure: true,
     },
+    exclude: [...configDefaults.exclude, "docs/**"],
   },
 });
