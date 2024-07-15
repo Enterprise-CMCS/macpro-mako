@@ -167,7 +167,7 @@ export const SlotField = ({
       );
     case "Checkbox":
       return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3">
           {(props as RHFComponentMap["Checkbox"]).options.map((OPT) => (
             <DependencyWrapper
               name={OPT.value}
