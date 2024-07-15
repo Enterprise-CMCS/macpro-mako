@@ -99,7 +99,7 @@ describe("helpers", () => {
           { test: "data" },
           mockGeorge,
           "/default" as SubmissionServiceEndpoint,
-          "MEDICAID",
+          "medicaid spa",
           mockUploadRecipes(3),
         );
       expect(payload.authority).toEqual("MEDICAID");
@@ -115,7 +115,7 @@ describe("helpers", () => {
         mockFormData,
         mockGeorge,
         "/submit",
-        "MEDICAID",
+        "medicaid spa",
         mockUploadRecipes(3),
       );
     expect(payload.authority).toEqual("MEDICAID");
