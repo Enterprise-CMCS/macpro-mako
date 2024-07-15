@@ -15,6 +15,7 @@ export default defineConfig({
         "**/*.test.tsx",
         "**/*.spec.ts",
         "**/*.spec.tsx",
+        "build_run",
       ],
     },
   },
