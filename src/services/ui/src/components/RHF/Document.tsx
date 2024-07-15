@@ -11,11 +11,11 @@ export const RHFDocument = <TFieldValues extends FieldValues>(props: {
       <div className="h-[5px] bg-gradient-to-r from-primary from-50% to-[#02bfe7] to-[66%] rounded-t"></div>
       <div className="pt-4 px-8 border-2 border-t-0 mt-0">
         <div className="mb-3 mt-9">
-          <h1 className="font-bold text-4xl px-8 pb-4 inline-block leading-[48px]">
+          <h1 className="font-bold text-4xl px-8 pb-5 inline-block leading-[48px]">
             {props.document.header}
           </h1>
           {props.document.subheader && (
-            <h2 className="font-bold text-1xl px-8 pb-4 inline-block leading-[48px]">
+            <h2 className="font-bold text-1xl px-8 pb-5 inline-block leading-[48px]">
               {props.document.subheader}
             </h2>
           )}
