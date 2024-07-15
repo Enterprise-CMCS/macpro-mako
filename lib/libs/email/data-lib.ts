@@ -1,15 +1,46 @@
 import { DateTime } from "luxon";
 
-import { getLookupValues } from "./lookup-lib";
-import { attachmentTitleMap } from "shared-types";
+import { getLookupValues, LookupType } from "./lookup-lib";
+import { AttachmentKey, attachmentTitleMap } from "shared-types";
 
-const actionTypeLookup = {
+interface Attachment {
+  title: keyof typeof attachmentTitleMap;
+  filename: string;
+}
+
+const actionTypeLookup: { [key: string]: string } = {
   New: "Initial Waiver",
   Amend: "Waiver Amendment",
   Renew: "Waiver Renewal",
 };
 
-const formatAttachments = (formatType, attachmentList) => {
+interface Attachment {
+  title: AttachmentKey;
+  filename: string;
+}
+
+interface Data {
+  id: string | number;
+  notificationMetadata?: {
+    submissionDate?: number;
+    proposedEffectiveDate?: number;
+  };
+  submitterEmail?: string;
+  submitterName?: string;
+  attachments?: Attachment[];
+  seaActionType?: string;
+  [key: string]: any;
+}
+
+interface Bundle {
+  lookupList?: string[];
+  dataList?: string[];
+}
+
+const formatAttachments = (
+  formatType: "text" | "html",
+  attachmentList?: Attachment[],
+): string => {
   const formatChoices = {
     text: {
       begin: "\n\n",
@@ -33,17 +64,21 @@ const formatAttachments = (formatType, attachmentList) => {
       const attachmentTitle = attachmentTitleMap[a.title] ?? a.title;
       return `${attachmentTitle}: ${a.filename}`;
     });
-    return `${format.begin}${attachmentFormat.join(format.joiner)}${format.end}`;
+    return `${format.begin}${attachmentFormat.join(format.joiner)}${
+      format.end
+    }`;
   }
-    
 };
 
-const formatDateFromTimestamp = (timestamp) => {
+const formatDateFromTimestamp = (timestamp?: number): string => {
   if (!timestamp || timestamp <= 0) return "Pending";
   return DateTime.fromMillis(timestamp).toFormat("DDDD");
 };
 
-function formatNinetyDaysDate(data, lookupValues) {
+function formatNinetyDaysDate(
+  data: Data,
+  lookupValues: { [key: string]: any },
+): string {
   if (lookupValues?.ninetyDaysDate)
     return formatDateFromTimestamp(lookupValues?.ninetyDaysDate);
   if (!data?.notificationMetadata?.submissionDate) return "Pending";
@@ -52,17 +87,28 @@ function formatNinetyDaysDate(data, lookupValues) {
     .toFormat("DDDD '@ 11:59pm ET'");
 }
 
-export const buildEmailData = async (bundle, data) => {
-  const returnObject = {};
+export const buildEmailData = async (
+  bundle: Bundle,
+  data: Data,
+): Promise<{ [key: string]: string }> => {
+  const returnObject: { [key: string]: string } = {};
 
-  const lookupValues = await getLookupValues(bundle.lookupList, data.id);
+  const lookupValues = await getLookupValues(
+    bundle.lookupList as LookupType[],
+    data.id as string,
+  );
 
   if (
     !bundle.dataList ||
     !Array.isArray(bundle.dataList) ||
     bundle.dataList.length === 0
   )
-    return { error: "init statement fail", bundle, data, lookupValues };
+    return {
+      error: "init statement fail",
+      bundle: JSON.stringify(bundle),
+      data: JSON.stringify(data),
+      lookupValues: JSON.stringify(lookupValues),
+    };
 
   bundle.dataList.forEach((dataType) => {
     switch (dataType) {
@@ -75,7 +121,8 @@ export const buildEmailData = async (bundle, data) => {
         );
         break;
       case "applicationEndpoint":
-        returnObject["applicationEndpoint"] = process.env.applicationEndpoint;
+        returnObject["applicationEndpoint"] =
+          process.env.applicationEndpoint ?? "missing data";
         break;
       case "formattedFileList":
         returnObject["formattedFileList"] = formatAttachments(
@@ -98,13 +145,12 @@ export const buildEmailData = async (bundle, data) => {
       case "submitter":
         returnObject["submitter"] =
           data.submitterEmail === "george@example.com"
-            ? // eslint-disable-next-line quotes
-              '"George\'s Substitute" <mako.stateuser@gmail.com>'
+            ? `"George's Substitute" <mako.stateuser@gmail.com>`
             : `"${data.submitterName}" <${data.submitterEmail}>`;
         break;
       case "actionType":
         returnObject["actionType"] =
-          actionTypeLookup[data.seaActionType] ?? "Waiver";
+          actionTypeLookup[data.seaActionType as any] ?? "Waiver";
         break;
       case "osgEmail":
       case "chipInbox":
@@ -112,17 +158,13 @@ export const buildEmailData = async (bundle, data) => {
       case "dpoEmail":
       case "dmcoEmail":
       case "dhcbsooEmail":
-        returnObject[dataType] = process?.env[dataType]
-          ? process.env[dataType]
-          : `'${dataType} Substitute' <mako.stateuser@gmail.com>`;
+        returnObject[dataType] =
+          process.env[dataType] ??
+          `'${dataType} Substitute' <mako.stateuser@gmail.com>`;
         break;
-
       default:
-        returnObject[dataType] = data[dataType]
-          ? data[dataType]
-          : lookupValues[dataType]
-            ? lookupValues[dataType]
-            : "missing data";
+        returnObject[dataType] =
+          data[dataType] ?? lookupValues[dataType] ?? "missing data";
         break;
     }
   });

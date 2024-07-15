@@ -1,15 +1,15 @@
 import { SESClient, SendTemplatedEmailCommand } from "@aws-sdk/client-ses";
 
-import handler from "../libs/handler-lib";
-import { getBundle } from "../libs/bundle-lib";
-import { buildDestination } from "../libs/address-lib";
-import { buildEmailData } from "../libs/data-lib";
+import handler from "libs/email/handler-lib";
+import { getBundle } from "libs/email/bundle-lib";
+import { buildDestination } from "libs/email/address-lib";
+import { buildEmailData } from "libs/email/data-lib";
 
 const SES = new SESClient({ region: process.env.region });
 
-export const main = handler(async (record) => {
+export const processEmails = async (record: any) => {
   // get the bundle of emails associated with this action
-  const emailBundle = getBundle(record, process.env.stage);
+  const emailBundle = getBundle(record, process.env.stage!!) as any;
   console.log("emailBundle: ", emailBundle);
 
   // not every event has a bundle, and that's ok!
@@ -20,7 +20,7 @@ export const main = handler(async (record) => {
   const emailData = await buildEmailData(emailBundle, record);
 
   const sendResults = await Promise.allSettled(
-    emailBundle.emailCommands.map(async (command) => {
+    emailBundle.emailCommands.map(async (command: any) => {
       try {
         return await SES.send(
           new SendTemplatedEmailCommand({
@@ -43,4 +43,4 @@ export const main = handler(async (record) => {
   );
   console.log("sendResults: ", sendResults);
   return sendResults;
-});
+};
