@@ -13,6 +13,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Select",
+              rules: { required: "* Required" },
               name: "state-charge-categorically-needy",
               labelClassName: "font-bold",
               label:
@@ -53,6 +54,7 @@ export const v202401: FormSchema = {
                 {
                   rhf: "Input",
                   name: "service-item-name",
+                  rules: { required: "* Required" },
                   props: { className: "w-96" },
                   labelClassName: "font-bold",
                   label: "Service or Item",
@@ -67,6 +69,14 @@ export const v202401: FormSchema = {
                     {
                       rhf: "Input",
                       name: "amount",
+                      rules: {
+                        pattern: {
+                          value: /^\d*(?:\.\d{1,2})?$/,
+                          message:
+                            "Must be a positive number, maximum of two decimals, no commas. e.g. 1234.56",
+                        },
+                        required: "* Required",
+                      },
                       formItemClassName: "w-48",
                       labelClassName: "font-bold",
                       label: "Amount",
@@ -74,6 +84,7 @@ export const v202401: FormSchema = {
                     {
                       rhf: "Select",
                       name: "dollar-or-percent",
+                      rules: { required: "* Required" },
                       formItemClassName: "w-56",
                       labelClassName: "font-bold",
                       label: "Dollar or percentage",
@@ -93,6 +104,7 @@ export const v202401: FormSchema = {
                     {
                       rhf: "Select",
                       name: "unit",
+                      rules: { required: "* Required" },
                       labelClassName: "font-bold",
                       label: "Unit",
                       formItemClassName: "w-48",
@@ -145,6 +157,7 @@ export const v202401: FormSchema = {
               fields: [
                 {
                   rhf: "Input",
+                  rules: { required: "* Required" },
                   name: "service-item-name",
                   props: { className: "w-96" },
                   labelClassName: "font-bold",
@@ -170,6 +183,7 @@ export const v202401: FormSchema = {
                       fields: [
                         {
                           rhf: "Input",
+                          rules: { required: "* Required" },
                           name: "income-greater-than",
                           formItemClassName: "w-48",
                           labelClassName: "font-bold",
@@ -177,6 +191,7 @@ export const v202401: FormSchema = {
                         },
                         {
                           rhf: "Input",
+                          rules: { required: "* Required" },
                           name: "income-lesser-than",
                           labelClassName: "font-bold",
                           label: "Income less than or equal to ($)",
@@ -193,6 +208,14 @@ export const v202401: FormSchema = {
                       fields: [
                         {
                           rhf: "Input",
+                          rules: {
+                            pattern: {
+                              value: /^\d*(?:\.\d{1,2})?$/,
+                              message:
+                                "Must be a positive number, maximum of two decimals, no commas. e.g. 1234.56",
+                            },
+                            required: "* Required",
+                          },
                           name: "amount",
                           formItemClassName: "w-48",
                           labelClassName: "font-bold",
@@ -200,6 +223,7 @@ export const v202401: FormSchema = {
                         },
                         {
                           rhf: "Select",
+                          rules: { required: "* Required" },
                           name: "dollar-or-percent",
                           formItemClassName: "w-56",
                           labelClassName: "font-bold",
@@ -219,6 +243,7 @@ export const v202401: FormSchema = {
                         },
                         {
                           rhf: "Select",
+                          rules: { required: "* Required" },
                           name: "unit",
                           formItemClassName: "w-48",
                           labelClassName: "font-bold",
@@ -268,6 +293,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Select",
+              rules: { required: "* Required" },
               name: "charge-otherwise-exempt",
               labelClassName: "font-bold",
               label:
@@ -282,6 +308,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Select",
+              rules: { required: "* Required" },
               name: "charges-same-as-non-exempt",
               labelClassName: "font-bold",
               label:
@@ -334,6 +361,14 @@ export const v202401: FormSchema = {
                   fields: [
                     {
                       rhf: "Input",
+                      rules: {
+                        pattern: {
+                          value: /^\d*(?:\.\d{1,2})?$/,
+                          message:
+                            "Must be a positive number, maximum of two decimals, no commas. e.g. 1234.56",
+                        },
+                        required: "* Required",
+                      },
                       name: "amount",
                       formItemClassName: "w-48",
                       labelClassName: "font-bold",
@@ -341,6 +376,7 @@ export const v202401: FormSchema = {
                     },
                     {
                       rhf: "Select",
+                      rules: { required: "* Required" },
                       name: "dollar-or-percent",
                       formItemClassName: "w-56",
                       labelClassName: "font-bold",
@@ -361,6 +397,7 @@ export const v202401: FormSchema = {
                     {
                       rhf: "Select",
                       name: "unit",
+                      rules: { required: "* Required" },
                       formItemClassName: "w-48",
                       labelClassName: "font-bold",
                       label: "Unit",
@@ -407,6 +444,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Select",
+              rules: { required: "* Required" },
               name: "charge-otherwise-exempt",
               labelClassName: "font-bold",
               label:
@@ -421,6 +459,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Select",
+              rules: { required: "* Required" },
               name: "charges-same-as-non-exempt",
               labelClassName: "font-bold",
               label:
@@ -446,6 +485,7 @@ export const v202401: FormSchema = {
             {
               name: "charge-rate",
               rhf: "FieldArray",
+              rules: { required: "* Required" },
               props: {
                 appendText: "Add charge",
                 fieldArrayClassName: "flex-col",
@@ -473,6 +513,14 @@ export const v202401: FormSchema = {
                   fields: [
                     {
                       rhf: "Input",
+                      rules: {
+                        pattern: {
+                          value: /^\d*(?:\.\d{1,2})?$/,
+                          message:
+                            "Must be a positive number, maximum of two decimals, no commas. e.g. 1234.56",
+                        },
+                        required: "* Required",
+                      },
                       formItemClassName: "w-46",
                       name: "amount",
                       labelClassName: "font-bold",
@@ -480,6 +528,7 @@ export const v202401: FormSchema = {
                     },
                     {
                       rhf: "Select",
+                      rules: { required: "* Required" },
                       name: "dollar-or-percent",
                       formItemClassName: "w-56",
                       labelClassName: "font-bold",
@@ -499,6 +548,7 @@ export const v202401: FormSchema = {
                     },
                     {
                       rhf: "Select",
+                      rules: { required: "* Required" },
                       name: "unit",
                       formItemClassName: "w-40",
                       labelClassName: "font-bold",

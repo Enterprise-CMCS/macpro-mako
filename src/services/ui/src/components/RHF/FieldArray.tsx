@@ -27,7 +27,7 @@ export const RHFFieldArray = <TFields extends FieldValues>(
   }, [fieldArr, props.fields]);
 
   return (
-    <div className={`flex flex-col gap-4 w-${isFieldArray ? "full" : "full"}`}>
+    <div className={"flex flex-col gap-4 w-full"}>
       {fieldArr.fields.map((FLD, index) => {
         return (
           <div
