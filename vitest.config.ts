@@ -9,7 +9,7 @@ export default defineConfig({
       reportsDirectory: join(__dirname, "coverage"),
       reporter: ["text", "json-summary", "json", "lcov"],
       reportOnFailure: true,
+      exclude: [...configDefaults.exclude, join(__dirname, "docs")],
     },
-    exclude: [...configDefaults.exclude, "docs/**"],
   },
 });
