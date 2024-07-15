@@ -1,19 +1,17 @@
-import {
-  RaiResponse,
-  raiResponseSchema,
-  SEATOOL_STATUS,
-  Action,
-} from "shared-types";
+import { raiResponseSchema, SEATOOL_STATUS, Action } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 import { response } from "../../../libs/handler";
 import { TOPIC_NAME } from "../consts";
 import { ExtendedItemResult } from "../../../libs/package";
-import { type PackageActionWriteService } from "../services/package-action-write-service";
+import { PackageWriteClass } from "../services/package-action-write-service";
 
 export async function respondToRai(
-  body: RaiResponse,
-  document: ExtendedItemResult["_source"],
-  packageActionWriteService: PackageActionWriteService = globalThis.packageActionWriteService,
+  body: any,
+  document: Pick<
+    ExtendedItemResult["_source"],
+    "raiReceivedDate" | "raiRequestedDate" | "raiWithdrawnDate"
+  >,
+  packageActionWriteService: PackageWriteClass = globalThis.packageActionWriteService,
 ) {
   console.log("State responding to RAI");
   if (!document.raiRequestedDate) {
@@ -24,9 +22,18 @@ export async function respondToRai(
       },
     });
   }
+  console.log("aaaaa");
+  console.log(document.raiRequestedDate);
+  console.log(new Date(document.raiRequestedDate.toString()));
+  console.log("today");
+  console.log(new Date());
   const raiToRespondTo = new Date(document.raiRequestedDate).getTime();
+  console.log(raiToRespondTo);
   const now = new Date().getTime();
   const today = seaToolFriendlyTimestamp();
+  console.log("f");
+  console.log(typeof raiToRespondTo);
+  console.log(raiToRespondTo);
   const result = raiResponseSchema.safeParse({
     ...body,
     responseDate: today,
@@ -46,19 +53,31 @@ export async function respondToRai(
       },
     });
   }
-  
-  await packageActionWriteService.respondToRai({
-    ...result.data,
-    action: Action.RESPOND_TO_RAI,
-    id: result.data.id,
-    raiReceivedDate: document.raiReceivedDate!,
-    raiToRespondTo: raiToRespondTo,
-    raiWithdrawnDate: document.raiWithdrawnDate!,
-    responseDate: today,
-    spwStatus: SEATOOL_STATUS.PENDING,
-    today,
-    timestamp: now,
-    topicName: TOPIC_NAME,
-  });
+  try {
+    await packageActionWriteService.respondToRai({
+      ...result.data,
+      action: Action.RESPOND_TO_RAI,
+      id: result.data.id,
+      raiReceivedDate: document.raiReceivedDate!,
+      raiToRespondTo: raiToRespondTo,
+      raiWithdrawnDate: document.raiWithdrawnDate!,
+      responseDate: today,
+      spwStatus: SEATOOL_STATUS.PENDING,
+      today,
+      timestamp: now,
+      topicName: TOPIC_NAME,
+    });
+    return response({
+      statusCode: 200,
+      body: {
+        message: "record successfully submitted",
+      },
+    });
+  } catch (err) {
+    console.log(err);
 
+    return response({
+      statusCode: 500,
+    });
+  }
 }
