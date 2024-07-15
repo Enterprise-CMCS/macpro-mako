@@ -129,7 +129,9 @@ jobs:
           path: ${{github.workspace}}/client/coverage/lcov.info:lcov
 
       - name: Report coverage to Code Climate
-        if: ${{ github.ref != 'refs/heads/master' }}
+        # if: ${{ github.ref != 'refs/heads/master' }}
+        # REVERTME before merge
+        if: ${{ github.ref != 'refs/heads/appk-toggle' }}
         uses: paambaati/codeclimate-action@v8.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
