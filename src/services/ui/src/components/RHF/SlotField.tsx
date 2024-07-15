@@ -252,21 +252,16 @@ export const OptChildren = ({
     <>
       <div className="ml-[0.7rem] pl-6 px-4 space-y-3 border-l-4 border-l-primary">
         {form &&
-          form.map((FORM, index) => {
-            return (
-              <div
-                className="mt-2"
-                key={`rhf-form-${index}-${FORM.description}`}
-              >
-                <RHFFormGroup
-                  form={FORM}
-                  control={control}
-                  parentId={parentId}
-                  className="py-0"
-                />
-              </div>
-            );
-          })}
+          form.map((FORM, index) => (
+            <div className="mt-2" key={`rhf-form-${index}-${FORM.description}`}>
+              <RHFFormGroup
+                form={FORM}
+                control={control}
+                parentId={parentId}
+                className="py-0"
+              />
+            </div>
+          ))}
       </div>
 
       <div className="ml-[0.7rem] pl-6 px-4 space-y-3 border-l-4 border-l-primary">
