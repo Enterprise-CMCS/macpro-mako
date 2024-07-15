@@ -224,7 +224,7 @@ export const SlotField = ({
                     aria-label={OPT.value}
                   />
                   {
-                    <FormLabel className="font-normal" htmlFor={OPT.value}>
+                    <FormLabel className="font-normal mt-2" htmlFor={OPT.value}>
                       <RHFTextDisplay
                         text={(OPT.styledLabel || OPT.label) as string}
                       />
@@ -253,7 +253,7 @@ export const OptChildren = ({
       <div className="ml-[0.7rem] pl-6 px-4 space-y-3 border-l-4 border-l-primary">
         {form &&
           form.map((FORM, index) => (
-            <div className="mt-2" key={`rhf-form-${index}-${FORM.description}`}>
+            <div key={`rhf-form-${index}-${FORM.description}`}>
               <RHFFormGroup
                 form={FORM}
                 control={control}
