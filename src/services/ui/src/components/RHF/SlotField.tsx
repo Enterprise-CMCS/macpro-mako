@@ -256,7 +256,7 @@ export const OptChildren = ({
         form.map((FORM, index) => {
           return (
             <div
-              className="ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary"
+              className="ml-[0.6rem] pl-6 px-4 my-2 border-l-4 border-l-primary"
               key={`rhf-form-${index}-${FORM.description}`}
             >
               <RHFFormGroup
@@ -271,7 +271,7 @@ export const OptChildren = ({
       {slots &&
         slots.map((SLOT, index) => (
           <div
-            className="ml-[0.6rem] px-4 border-l-4 border-l-primary"
+            className="ml-[0.6rem] pl-6 px-4 border-l-4 border-l-primary"
             key={SLOT.name + index}
           >
             <FormField
