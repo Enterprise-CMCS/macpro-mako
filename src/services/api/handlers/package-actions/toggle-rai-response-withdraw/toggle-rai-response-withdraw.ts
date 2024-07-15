@@ -1,8 +1,4 @@
-import {
-  ToggleWithdrawRaiEnabled,
-  toggleWithdrawRaiEnabledSchema,
-  Action,
-} from "shared-types";
+import { toggleWithdrawRaiEnabledSchema, Action } from "shared-types";
 import { response } from "../../../libs/handler";
 import { TOPIC_NAME } from "../consts";
 import { PackageWriteClass } from "../services/package-action-write-service";

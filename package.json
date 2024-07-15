@@ -16,7 +16,7 @@
     "test-tsc": "tsc --skipLibCheck --noEmit",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:gui": "vitest run --ui"
+    "test:gui": "vitest --ui"
   },
   "repository": "https://github.com/Enterprise-CMCS/macpro-mako",
   "workspaces": [
