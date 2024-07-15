@@ -35,8 +35,22 @@ describe("respondToRai", async () => {
       },
       mockPackageWrite,
     );
-    console.log(response);
     expect(response.statusCode).toBe(400);
+  });
+
+  it("should return a 400 when a bad requestDate is sent", async () => {
+    const mockData = generateMock(raiResponseSchema);
+    const response = await respondToRai(
+      mockData,
+      {
+        raiRequestedDate: "123456789", // should be an isoString
+        raiReceivedDate: null,
+        raiWithdrawnDate: null,
+      },
+      mockPackageWrite,
+    );
+    expect(response.statusCode).toBe(400);
+    expect(JSON.parse(response.body).message).toBe("Event validation error");
   });
 
   it("should return a 200 when a good payload is sent", async () => {
