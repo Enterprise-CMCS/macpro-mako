@@ -71,9 +71,8 @@ export const v202401: FormSchema = {
                       name: "amount",
                       rules: {
                         pattern: {
-                          value: /^\d*(?:\.\d{1,2})?$/,
-                          message:
-                            "Must be a positive number, maximum of two decimals, no commas. e.g. 1234.56",
+                          value: /^[0-9]\d*$/,
+                          message: "Must be a positive integer value",
                         },
                         required: "* Required",
                       },
@@ -210,9 +209,8 @@ export const v202401: FormSchema = {
                           rhf: "Input",
                           rules: {
                             pattern: {
-                              value: /^\d*(?:\.\d{1,2})?$/,
-                              message:
-                                "Must be a positive number, maximum of two decimals, no commas. e.g. 1234.56",
+                              value: /^[0-9]\d*$/,
+                              message: "Must be a positive integer value",
                             },
                             required: "* Required",
                           },
@@ -363,9 +361,8 @@ export const v202401: FormSchema = {
                       rhf: "Input",
                       rules: {
                         pattern: {
-                          value: /^\d*(?:\.\d{1,2})?$/,
-                          message:
-                            "Must be a positive number, maximum of two decimals, no commas. e.g. 1234.56",
+                          value: /^[0-9]\d*$/,
+                          message: "Must be a positive integer value",
                         },
                         required: "* Required",
                       },
@@ -515,9 +512,8 @@ export const v202401: FormSchema = {
                       rhf: "Input",
                       rules: {
                         pattern: {
-                          value: /^\d*(?:\.\d{1,2})?$/,
-                          message:
-                            "Must be a positive number, maximum of two decimals, no commas. e.g. 1234.56",
+                          value: /^[0-9]\d*$/,
+                          message: "Must be a positive integer value",
                         },
                         required: "* Required",
                       },
