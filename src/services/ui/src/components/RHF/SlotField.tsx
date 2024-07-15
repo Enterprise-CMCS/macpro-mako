@@ -229,6 +229,22 @@ export const SlotField = ({
           })}
         </RadioGroup>
       );
+    case "WrappedGroup":
+      return (
+        <div className={props?.wrapperClassName}>
+          {fields?.map((S, i) => {
+            return (
+              <FormField
+                key={`wrappedSlot-${i}`}
+                control={control}
+                name={parentId + S.name}
+                {...(S.rules && { rules: S.rules })}
+                render={RHFSlot({ ...S, control, parentId })}
+              />
+            );
+          })}
+        </div>
+      );
   }
 };
 
