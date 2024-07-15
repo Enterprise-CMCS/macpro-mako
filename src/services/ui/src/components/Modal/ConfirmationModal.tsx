@@ -43,14 +43,14 @@ export function ConfirmationModal({
         </DialogHeader>
         {body && <div className="grid gap-4 py-4">{body}</div>}
         <DialogFooter>
-          {cancelButtonVisible && (
-            <Button type="button" variant={"outline"} onClick={onCancel}>
-              {cancelButtonText}
-            </Button>
-          )}
           {acceptButtonVisible && (
             <Button type="submit" onClick={onAccept}>
               {acceptButtonText}
+            </Button>
+          )}
+          {cancelButtonVisible && (
+            <Button type="button" variant={"outline"} onClick={onCancel}>
+              {cancelButtonText}
             </Button>
           )}
         </DialogFooter>
