@@ -109,7 +109,7 @@ export const v202401: FormSchema = {
                       {
                         text: "Once an individual is identified, the state/territory assures it will effectively inform the individual:",
                         type: "default",
-                        classname: "block py-1",
+                        classname: "block pb-1",
                       },
                       {
                         text: "A. That enrollment in the specified ABP is voluntary",
@@ -268,7 +268,7 @@ export const v202401: FormSchema = {
                       {
                         text: "The state/territory assures it will document in the exempt individual's eligibility file that the individual:",
                         type: "default",
-                        classname: "block py-1",
+                        classname: "block pb-1",
                       },
                       {
                         text: "A. Was informed in accordance with this section prior to enrollment",
@@ -281,7 +281,7 @@ export const v202401: FormSchema = {
                         classname: "block py-1",
                       },
                       {
-                        text: " C. Chose to enroll in ABP coverage subject to Section 1937 requirements or defined as the state/territory's approved Medicaid state plan not subject to Section 1937 requirements",
+                        text: "C. Chose to enroll in ABP coverage subject to Section 1937 requirements or defined as the state/territory's approved Medicaid state plan not subject to Section 1937 requirements",
                       },
                     ],
                     value:
