@@ -68,34 +68,4 @@ describe("respondToRai", async () => {
     expect(packageWriteSpy).toHaveBeenCalledOnce();
     expect(response.statusCode).toBe(200);
   });
-
-  // it("calls package write service with action set to Enable RAI when toggle set to true", async () => {
-  //   const packageWriteSpy = vi.spyOn(
-  //     mockPackageWrite,
-  //     "toggleRaiResponseWithdraw",
-  //   );
-  //   const mockData = generateMock(toggleWithdrawRaiEnabledSchema);
-  //   await toggleRaiResponseWithdraw(mockData, true, mockPackageWrite);
-
-  //   expect(packageWriteSpy).toHaveBeenCalledWith(
-  //     expect.objectContaining({
-  //       action: Action.ENABLE_RAI_WITHDRAW,
-  //     }),
-  //   );
-  // });
-
-  // it("calls package write service with action set to Disable RAI when toggle set to false", async () => {
-  //   const packageWriteSpy = vi.spyOn(
-  //     mockPackageWrite,
-  //     "toggleRaiResponseWithdraw",
-  //   );
-  //   const mockData = generateMock(toggleWithdrawRaiEnabledSchema);
-  //   await toggleRaiResponseWithdraw(mockData, false, mockPackageWrite);
-
-  //   expect(packageWriteSpy).toHaveBeenCalledWith(
-  //     expect.objectContaining({
-  //       action: Action.DISABLE_RAI_WITHDRAW,
-  //     }),
-  //   );
-  // });
 });
