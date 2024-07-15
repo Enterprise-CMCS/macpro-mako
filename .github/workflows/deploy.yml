@@ -136,7 +136,7 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageLocations: coverage/lcov.info
+          coverageLocations: coverage/lcov.info:lcov
 
   e2e:
     timeout-minutes: 5
