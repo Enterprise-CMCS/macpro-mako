@@ -120,15 +120,21 @@ jobs:
 
       - name: Test
         run: run test --coverage
-      
-      # should be CC, will update in a few
-      - name: Upload coverage report
+
+      - name: Save coverage as a workflow artifact
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: coverage-report
-          path: coverage
+          path: ${{github.workspace}}/client/coverage/lcov.info:lcov
 
+      - name: Report coverage to Code Climate
+        if: ${{ github.ref != 'refs/heads/master' }}
+        uses: paambaati/codeclimate-action@v8.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageLocations: coverage/lcov.info
 
   e2e:
     timeout-minutes: 5
