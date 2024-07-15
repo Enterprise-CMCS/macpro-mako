@@ -10,7 +10,6 @@ import { cn } from "@/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components";
 import {
   DependencyWrapper,
-  FieldGroup,
   RHFFieldArray,
   RHFFormGroup,
   RHFSlot,
@@ -76,30 +75,21 @@ export const SlotField = ({
         />
       );
     case "FieldArray":
+    case "FieldGroup":
       return (
         <RHFFieldArray
           control={control}
           name={name}
-          fields={fields ?? []}
-          parentId={parentId}
-          {...props}
-        />
-      );
-    case "FieldGroup":
-      return (
-        <FieldGroup
-          control={control}
-          name={name}
+          rhf={rhf}
           fields={fields ?? []}
           parentId={parentId}
           {...props}
         />
       );
     case "Select": {
-      const opts = props?.sort
-        ? props.options.sort((a, b) => a.label.localeCompare(b.label))
-        : (props as RHFComponentMap["Select"]).options;
-      props?.sort === "descending" && opts.reverse();
+      const opts = props?.options.sort((a, b) =>
+        a.label.localeCompare(b.label),
+      );
 
       return (
         <Select
