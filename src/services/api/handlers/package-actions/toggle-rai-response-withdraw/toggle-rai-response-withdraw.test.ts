@@ -50,6 +50,7 @@ describe("toggleRaiResponseWithdraw", async () => {
       }),
     );
   });
+
   it("calls package write service with action set to Disable RAI when toggle set to false", async () => {
     const packageWriteSpy = vi.spyOn(
       mockPackageWrite,
