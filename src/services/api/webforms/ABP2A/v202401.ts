@@ -339,7 +339,7 @@ export const v202401: FormSchema = {
               descriptionClassName: "font-bold text-black",
               description:
                 "What documentation will be maintained in the eligibility file?",
-              formItemClassName: "border-b-4",
+              formItemClassName: "pb-6 border-b-[1px] border-[#AEB0B5]",
               rules: {
                 required: "* Required",
               },
