@@ -1,22 +1,13 @@
-import { useLabelMapping } from "@/hooks";
-import { useState, useEffect } from "react";
+import { STATES } from "@/hooks";
 
-export const useConvertStateAbbreviations = (input: string | undefined): string => {
-  const [convertedNames, setConvertedNames] = useState<string>("");
-  const labelMap = useLabelMapping();
+type State = keyof typeof STATES;
+const isStringAState = (supposedState: string): supposedState is State =>
+  supposedState in STATES;
 
-  useEffect(() => {
-    if (input === undefined) {
-      setConvertedNames("");
-      return;
-    }
+export const convertStateAbbrToFullName = (input: string): string => {
+  if (isStringAState(input)) {
+    return STATES[input].split(",")[0];
+  }
 
-    const abbreviations = input.split(",");
-    const fullNames = abbreviations.map(
-      (abbr) => labelMap[abbr]?.split(",")[0] || abbr
-    );
-    setConvertedNames(fullNames.join(", "));
-  }, [input, labelMap]);
-
-  return convertedNames;
+  return input;
 };

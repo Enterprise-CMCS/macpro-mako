@@ -45,15 +45,9 @@ export const PackageDetails: FC<{
   title: string;
 }> = (props) => {
   const { data } = usePackageDetailsCache();
-  // const title = props.title || `${data.authority} Package Details`;
 
-  // andies thoughts:
-  //     abstract out the grid container from the Details Item Grid components
-  //     instead make the items just the "cells in the grid"
-  //     add some sort of logic for the description to conditionally make it take up 2 cells
-  //    ^ if it takes up 2 cells it must be on its own row
   return (
-    <DetailsSection id="package_detailss" title={props.title}>
+    <DetailsSection id="package_details" title={props.title}>
       <div className="flex-col gap-4 max-w-2xl">
         <DetailItemsGrid
           displayItems={[
@@ -63,7 +57,6 @@ export const PackageDetails: FC<{
           ]}
           containerStyle="py-4"
         />
-        {/* <DetailItemsGrid displayItems={descriptionDetails(data)} fullWidth /> */}
         <hr className="my-4" />
         <DetailItemsGrid displayItems={submissionDetails(data)} />
         <AppK />

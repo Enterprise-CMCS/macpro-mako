@@ -1,5 +1,4 @@
 import { useGetItem } from "@/api";
-import { removeUnderscoresAndCapitalize } from "@/utils";
 import { useLayoutEffect, useState } from "react";
 
 export type DetailsSidebarLink = {
@@ -16,19 +15,22 @@ export const useDetailsSidebarLinks = (
 
   useLayoutEffect(() => {
     const ids = [
-      "package_detailss",
-      "package_activity",
-      "administrative_package_changess",
+      { id: "package_details", label: "Package Details" },
+      { id: "package_activity", label: "Package Activity" },
+      {
+        id: "administrative_package_changes",
+        label: "Administrative Package Changes",
+      },
     ];
 
     // Check if dataId is not undefined before proceeding
     if (data?._id) {
       const links = ids
-        .filter((id) => document.getElementById(id) != null)
-        .map((id) => ({
-          id,
-          href: `?id=${encodeURIComponent(dataId)}#${id}`,
-          displayName: removeUnderscoresAndCapitalize(id),
+        .filter(({ id }) => document.getElementById(id) !== null)
+        .map((link) => ({
+          id: link.id,
+          href: `#${link.id}`,
+          displayName: link.label,
         }));
 
       setSideBarLinks(links);
