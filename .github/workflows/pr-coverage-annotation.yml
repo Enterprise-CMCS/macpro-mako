@@ -1,9 +1,9 @@
-name: Coverage Report
+name: PR - coverage annotation
 
 on:
   pull_request:
     branches:
-      - appk-toggle
+      - main
 
 jobs:
   coverage-report:
