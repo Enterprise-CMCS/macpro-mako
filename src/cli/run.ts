@@ -92,33 +92,44 @@ yargs(process.argv.slice(2))
       await runner.run_command_and_output(`SLS Deploy`, deployCmd, ".");
     },
   )
-  .command("test", "Run unit tests and watch for changes", (yargs) => {
-    yargs
-      .option('coverage', {
-        type: 'boolean',
-        describe: 'Run tests and generate a coverage report.',
-      })
-      .option('gui', {
-        type: 'boolean',
-        describe: 'Run tests with GUI',
-      })
-      .check((argv) => {
-        if (argv.coverage && argv.gui) {
-          throw new Error('You cannot use both --watch and --gui at the same time.');
-        }
-        return true;
-      });
-  }, async (argv) => {
-    await install_deps_for_services();
-    let testCommand = 'test';
-    if (argv.coverage) {
-      testCommand = 'test:coverage';
-    }
-    if (argv.gui) {
-      testCommand = 'test:gui';
-    }
-    await runner.run_command_and_output('Unit Tests', ['yarn', testCommand], '.');
-  })
+  .command(
+    "test",
+    "Run unit tests and watch for changes",
+    (yargs) => {
+      yargs
+        .option("coverage", {
+          type: "boolean",
+          describe: "Run tests and generate a coverage report.",
+        })
+        .option("ui", {
+          type: "boolean",
+          describe: "Run tests with Vitest UI",
+        })
+        .check((argv) => {
+          if (argv.coverage && argv.ui) {
+            throw new Error(
+              "You cannot use both --watch and --ui at the same time.",
+            );
+          }
+          return true;
+        });
+    },
+    async (argv) => {
+      await install_deps_for_services();
+      let testCommand = "test";
+      if (argv.coverage) {
+        testCommand = "test:coverage";
+      }
+      if (argv.ui) {
+        testCommand = "test:ui";
+      }
+      await runner.run_command_and_output(
+        "Unit Tests",
+        ["yarn", testCommand],
+        ".",
+      );
+    },
+  )
   .command(
     "e2e",
     "run e2e tests.",
@@ -144,14 +155,6 @@ yargs(process.argv.slice(2))
       }
     },
   )
-  .command("test-gui", "open unit-testing gui for vitest.", {}, async () => {
-    await install_deps_for_services();
-    await runner.run_command_and_output(
-      `Unit Tests`,
-      ["yarn", "test-gui"],
-      ".",
-    );
-  })
   .command(
     "destroy",
     "destroy a stage in AWS",

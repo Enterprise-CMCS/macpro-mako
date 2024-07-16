@@ -12,7 +12,7 @@
   "scripts": {
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:gui": "vitest --ui"
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "s3-url-parser": "^1.0.3",

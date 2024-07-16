@@ -126,7 +126,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: coverage-report
-          path: ${{github.workspace}}/client/coverage/lcov.info:lcov
+          path: coverage
 
       - name: Report coverage to Code Climate
         uses: paambaati/codeclimate-action@v8.0.0
