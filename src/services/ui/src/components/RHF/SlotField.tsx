@@ -212,7 +212,7 @@ export const SlotField = ({
         <RadioGroup
           onValueChange={field.onChange}
           defaultValue={field.value}
-          className={`flex  ${horizontalLayout ? "pl-5 gap-5" : "flex-col space-y-1"}`}
+          className={`flex  ${horizontalLayout ? "pl-5 gap-5" : "flex-col space-y-2"}`}
         >
           {(props as RHFComponentMap["Radio"]).options.map((OPT) => {
             return (
