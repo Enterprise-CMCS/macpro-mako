@@ -37,21 +37,26 @@ export const defaultWithdrawRaiFields: ReactElement[] = [
     instruction={"Explain your need for withdrawal."}
   />,
 ];
-export const defaultWithdrawRaiContent: FormContentHydrator = (document) => ({
-  title: `${document.authority} Withdraw Formal RAI Response Details`,
-  preSubmitNotice:
-    "Once you submit this form, a confirmation email is sent to you and to CMS. CMS will use this content to review your package, and you will not be able to edit this form. If CMS needs any additional information, they will follow up by email.",
-  confirmationModal: {
-    header: "Withdraw RAI response?",
-    body: `The RAI response for ${document.id} will be withdrawn, and CMS will be notified.`,
-    acceptButtonText: "Yes, withdraw response",
-    cancelButtonText: "Cancel",
-  },
-  successBanner: {
-    header: "RAI response withdrawn",
-    body: `The RAI response for ${document.id} has been withdrawn. CMS may follow up if additional information is needed.`,
-  },
-});
+export const defaultWithdrawRaiContent: FormContentHydrator = (document) => {
+  const title = document.appkParent
+    ? `${document.authority} Appendix K Withdraw Formal RAI Response Details`
+    : `${document.authority} Withdraw Formal RAI Response Details`;
+  return {
+    title,
+    preSubmitNotice:
+      "Once you submit this form, a confirmation email is sent to you and to CMS. CMS will use this content to review your package, and you will not be able to edit this form. If CMS needs any additional information, they will follow up by email.",
+    confirmationModal: {
+      header: "Withdraw RAI response?",
+      body: `The RAI response for ${document.id} will be withdrawn, and CMS will be notified.`,
+      acceptButtonText: "Yes, withdraw response",
+      cancelButtonText: "Cancel",
+    },
+    successBanner: {
+      header: "RAI response withdrawn",
+      body: `The RAI response for ${document.id} has been withdrawn. CMS may follow up if additional information is needed.`,
+    },
+  };
+};
 
 export const raiWithdrawn: CheckDocumentFunction = (checks) =>
   checks.hasStatus(SEATOOL_STATUS.PENDING_RAI) && checks.hasRaiWithdrawal;
