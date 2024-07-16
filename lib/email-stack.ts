@@ -1,6 +1,6 @@
 import * as cdk from "aws-cdk-lib";
 import * as path from "path";
-import { Duration, Stack, StackProps } from "aws-cdk-lib";
+import { Duration } from "aws-cdk-lib";
 import {
   Role,
   ServicePrincipal,
@@ -23,7 +23,7 @@ import {
 import { ISubnet, IVpc, SecurityGroup } from "aws-cdk-lib/aws-ec2";
 import { Construct } from "constructs";
 
-interface EmailServiceStackProps extends StackProps {
+interface EmailServiceStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
   vpc: IVpc;
@@ -32,21 +32,25 @@ interface EmailServiceStackProps extends StackProps {
   osDomainArn: string;
   lambdaSecurityGroupId: string;
   applicationEndpoint: string;
+  stack: string;
+  cognitoUserPoolId: string;
 }
 
-export class EmailStack extends Stack {
+export class EmailStack extends cdk.NestedStack {
   constructor(scope: Construct, id: string, props: EmailServiceStackProps) {
     super(scope, id, props);
 
     const {
       project,
       stage,
+      stack,
       vpc,
       privateSubnets,
       brokerString,
       osDomainArn,
       lambdaSecurityGroupId,
       applicationEndpoint,
+      cognitoUserPoolId,
     } = props;
 
     // IAM Role for Lambda
@@ -87,8 +91,6 @@ export class EmailStack extends Stack {
         }),
       },
     });
-
-    const cognitoUserPoolId = cdk.Fn.importValue(`cognitoUserPoolId`);
 
     // SNS Topic
     const emailEventTopic = new CfnTopic(this, "EmailEventTopic", {

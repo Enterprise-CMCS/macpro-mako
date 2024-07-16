@@ -118,7 +118,7 @@ export class ParentStack extends Stack {
 
     const emailStack = new EmailStack(this, "email", {
       ...commonProps,
-      stage: commonProps.stage,
+      stack: "email",
       vpc,
       privateSubnets,
       brokerString: props.brokerString,
@@ -126,6 +126,7 @@ export class ParentStack extends Stack {
       lambdaSecurityGroupId:
         networkingStack.lambdaSecurityGroup.securityGroupId,
       applicationEndpoint: uiInfraStack.applicationEndpointUrl,
+      cognitoUserPoolId: authStack.userPool.userPoolId,
     });
 
     new StringParameter(this, "DeploymentOutput", {
