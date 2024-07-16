@@ -10,11 +10,10 @@
     "aws4": "^1.12.0",
     "aws4-axios": "^3.2.24"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "scripts": {
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:gui": "vitest --ui"
+    "test:ui": "vitest --ui"
   }
 }

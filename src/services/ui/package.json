@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:gui": "vitest --ui",
+    "test:ui": "vitest --ui",
     "e2e:ui": "playwright test --ui"
   },
   "dependencies": {

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:gui": "vitest --ui"
+    "test:ui": "vitest --ui"
   },
   "devDependencies": {},
   "dependencies": {

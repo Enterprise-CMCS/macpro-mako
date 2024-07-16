@@ -8,9 +8,6 @@
       "cache": false
     },
     "e2e": {},
-    "e2e:ui": {},
-    "test": {},
-    "test:coverage": {},
-    "test:gui": {}
+    "e2e:ui": {}
   }
 }
