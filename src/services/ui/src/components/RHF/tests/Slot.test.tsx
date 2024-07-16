@@ -71,7 +71,7 @@ describe("RHFSlot tests", () => {
     const wrap = rend.getByTestId(`${testValues.name}Wrapper`);
     const input = rend.getByRole("textbox", { name: `${testValues.name}` });
     expect(desc).toBeNull();
-    expect(wrap.classList.contains("pb-4")).toBeTruthy();
+    expect(wrap.classList.contains("gap-2")).toBeTruthy();
     expect(input.id).toBe(testValues.name);
   });
 });
