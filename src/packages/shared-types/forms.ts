@@ -48,7 +48,7 @@ export type RHFSlotProps = {
 export type RHFTextField =
   | Array<
       | {
-          text: string;
+          text?: string;
           type?: RHFTextItemType;
           link?: string;
           listType?: "ordered" | "unordered";
