@@ -36,7 +36,8 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       locked: true,
       transform: (data) => data.id,
       cell: renderCellIdLink(
-        (id, authority) => `/details/${authority}/${encodeURIComponent(id)}`,
+        (id, authority) =>
+          `/details/${encodeURIComponent(authority)}/${encodeURIComponent(id)}`,
       ),
     },
     {
