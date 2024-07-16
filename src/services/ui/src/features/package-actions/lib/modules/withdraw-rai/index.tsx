@@ -44,7 +44,7 @@ export const defaultWithdrawRaiContent: FormContentHydrator = (document) => {
   return {
     title,
     preSubmitNotice:
-      "Once you submit this form, a confirmation email is sent to you and to CMS. CMS will use this content to review your package, and you will not be able to edit this form. If CMS needs any additional information, they will follow up by email.",
+      "Complete this form to withdraw the Formal RAI response. Once complete, you and CMS will receive an email confirmation.",
     confirmationModal: {
       header: "Withdraw RAI response?",
       body: `The RAI response for ${document.id} will be withdrawn, and CMS will be notified.`,
