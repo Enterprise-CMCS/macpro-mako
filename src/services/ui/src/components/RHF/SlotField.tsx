@@ -14,6 +14,7 @@ import {
   RHFFormGroup,
   RHFSlot,
   RHFTextDisplay,
+  sortFunctions,
 } from ".";
 import {
   Button,
@@ -89,9 +90,11 @@ export const SlotField = ({
     case "Select": {
       const opts = props?.options.sort((a, b) =>
         props.customSort
-          ? props.customSort(a, b)
+          ? sortFunctions[props.customSort](a.label, b.label)
           : a.label.localeCompare(b.label),
       );
+
+      console.log("props.customSort", props?.customSort);
 
       return (
         <Select

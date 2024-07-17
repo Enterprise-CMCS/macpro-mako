@@ -87,6 +87,8 @@ export type RHFOption = {
   optionlabelClassName?: string;
 };
 
+export type SortFuncs = "noSort" | "reverseSort";
+
 export type RHFComponentMap = {
   Input: InputProps & {
     label?: string;
@@ -94,7 +96,7 @@ export type RHFComponentMap = {
   };
   Textarea: TextareaProps;
   Switch: SwitchProps;
-  Select: SelectProps & { customSort?: (a: any, b: any) => number };
+  Select: SelectProps & { customSort?: SortFuncs };
   Multiselect: MultiselectProps;
   Radio: RadioProps & {
     options: RHFOption[];
