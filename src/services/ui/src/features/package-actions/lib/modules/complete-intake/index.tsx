@@ -47,4 +47,6 @@ export const defaultCompleteIntakeContent: FormContentHydrator = (
   },
 });
 
-export const intakeCompleted: CheckDocumentFunction = (_checks) => true;
+export const intakeCompleted: CheckDocumentFunction = (checks) => {
+  return checks.hasCpoc;
+};
