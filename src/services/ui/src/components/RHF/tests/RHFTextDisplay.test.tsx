@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { prettyDOM, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { RHFTextDisplay } from "..";
 import { RHFTextField } from "shared-types";
@@ -41,7 +41,6 @@ const testValues: RHFTextField = [
 describe("RHFTextDisplay Tests", () => {
   test("test base cases", () => {
     const { container, getByText } = render(<TestComp text={testValues} />);
-    console.log(prettyDOM(container));
     const itallicTags = container.getElementsByTagName("i");
     const breakTags = container.getElementsByTagName("br");
     const listTags = container.getElementsByTagName("li");
