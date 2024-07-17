@@ -212,7 +212,7 @@ export const SlotField = ({
         <RadioGroup
           onValueChange={field.onChange}
           defaultValue={field.value}
-          className={`flex  ${horizontalLayout ? "pl-5 gap-5" : "flex-col space-y-2"}`}
+          className={`flex  ${horizontalLayout ? "pl-5 gap-5" : "flex-col space-y-6"}`}
         >
           {(props as RHFComponentMap["Radio"]).options.map((OPT) => {
             return (
@@ -224,7 +224,7 @@ export const SlotField = ({
                     aria-label={OPT.value}
                   />
                   {
-                    <FormLabel className="font-normal mt-2" htmlFor={OPT.value}>
+                    <FormLabel className="font-normal" htmlFor={OPT.value}>
                       <RHFTextDisplay
                         text={(OPT.styledLabel || OPT.label) as string}
                       />
@@ -249,7 +249,7 @@ export const OptChildren = ({
   parentId,
 }: SelectedSubsetProps) => {
   const childClasses =
-    "ml-[0.6rem] mt-3 pl-6 px-4 space-y-6 border-l-4 border-l-primary";
+    "ml-[0.6rem] mt-4 pl-6 px-4 space-y-6 border-l-4 border-l-primary";
 
   return (
     <>
