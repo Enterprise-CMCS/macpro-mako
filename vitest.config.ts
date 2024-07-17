@@ -11,6 +11,7 @@ export default defineConfig({
       exclude: [
         ...configDefaults.exclude,
         "docs",
+        "src/services/api/webforms",
         "**/*.test.ts",
         "**/*.test.tsx",
         "**/*.spec.ts",
