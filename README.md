@@ -17,6 +17,9 @@
   <a href="https://codeclimate.com/github/Enterprise-CMCS/macpro-mako/maintainability">
     <img src="https://api.codeclimate.com/v1/badges/f4480e77af640e6fa864/maintainability" />
   </a>
+  <a href="https://codeclimate.com/github/Enterprise-CMCS/macpro-mako/test_coverage">
+    <img src="https://api.codeclimate.com/v1/badges/f4480e77af640e6fa864/test_coverage" />
+  </a>
   <a href="https://snyk.io/">
     <img alt="Snyk" src="https://img.shields.io/badge/Snyk-protected-purple">
   </a>
