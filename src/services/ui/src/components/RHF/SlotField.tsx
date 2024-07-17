@@ -10,11 +10,11 @@ import { cn } from "@/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components";
 import {
   DependencyWrapper,
-  FieldGroup,
   RHFFieldArray,
   RHFFormGroup,
   RHFSlot,
   RHFTextDisplay,
+  sortFunctions,
 } from ".";
 import {
   Button,
@@ -76,30 +76,25 @@ export const SlotField = ({
         />
       );
     case "FieldArray":
+    case "FieldGroup":
       return (
         <RHFFieldArray
           control={control}
           name={name}
-          fields={fields ?? []}
-          parentId={parentId}
-          {...props}
-        />
-      );
-    case "FieldGroup":
-      return (
-        <FieldGroup
-          control={control}
-          name={name}
+          rhf={rhf}
           fields={fields ?? []}
           parentId={parentId}
           {...props}
         />
       );
     case "Select": {
-      const opts = props?.sort
-        ? props.options.sort((a, b) => a.label.localeCompare(b.label))
-        : (props as RHFComponentMap["Select"]).options;
-      props?.sort === "descending" && opts.reverse();
+      const opts = props?.options.sort((a, b) =>
+        props.customSort
+          ? sortFunctions[props.customSort](a.label, b.label)
+          : a.label.localeCompare(b.label),
+      );
+
+      console.log("props.customSort", props?.customSort);
 
       return (
         <Select
@@ -238,6 +233,22 @@ export const SlotField = ({
             );
           })}
         </RadioGroup>
+      );
+    case "WrappedGroup":
+      return (
+        <div className={props?.wrapperClassName}>
+          {fields?.map((S, i) => {
+            return (
+              <FormField
+                key={`wrappedSlot-${i}`}
+                control={control}
+                name={parentId + S.name}
+                {...(S.rules && { rules: S.rules })}
+                render={RHFSlot({ ...S, control, parentId })}
+              />
+            );
+          })}
+        </div>
       );
   }
 };
