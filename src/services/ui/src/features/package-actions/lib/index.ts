@@ -1,9 +1,4 @@
-import {
-  Action,
-  AUTHORITY_API_TO_FE,
-  AuthorityAPI,
-  AuthorityUnion,
-} from "shared-types";
+import { Action, AUTHORITY_FE_TO_API, AuthorityUnion } from "shared-types";
 import { getSchemaFor } from "@/features/package-actions/lib/schemaSwitch";
 import { getFieldsFor } from "@/features/package-actions/lib/fieldsSwitch";
 import { OneMacUser, submit } from "@/api";
@@ -47,7 +42,7 @@ export const submitActionForm = async ({
   id: string;
   type: Action;
   user: OneMacUser;
-  authority: AuthorityAPI;
+  authority: AuthorityUnion;
   originRoute: ReturnType<typeof useOriginPath>;
   alert: ReturnType<typeof useAlertContext>;
   navigate: ReturnType<typeof useNavigate>;
@@ -63,7 +58,7 @@ export const submitActionForm = async ({
         ? buildActionUrl(type) // "/action/{type}"
         : "/submit",
       user,
-      authority: authority,
+      authority: AUTHORITY_FE_TO_API[authority],
     });
     alert.setBannerStyle("success");
     alert.setBannerShow(true);
@@ -81,7 +76,7 @@ export const submitActionForm = async ({
     navigate({
       path: strippedPath.path as Route,
       query: {
-        tab: getDashboardTabForAuthority(AUTHORITY_API_TO_FE[authority]),
+        tab: getDashboardTabForAuthority(authority),
       },
     });
   } catch (e: unknown) {
