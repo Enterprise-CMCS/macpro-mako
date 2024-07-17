@@ -6,7 +6,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reportsDirectory: join(__dirname, "coverage"),
-      reporter: ["text", "json-summary", "json", "lcov"],
+      reporter: ["html", "text", "json-summary", "json", "lcov"],
       reportOnFailure: true,
       exclude: [
         ...configDefaults.exclude,
