@@ -57,10 +57,12 @@ export type UpdateIdDto = {
 };
 
 let pool: ConnectionPool | null = null;
+let transaction: Transaction | null = null;
 export const getTrx = async () => {
   pool = pool || (await connect(sqlConfg));
+  transaction = transaction || new Transaction(pool);
 
-  return { trx: new Transaction(pool) };
+  return { trx: transaction };
 };
 
 export const completeIntakeSeatool = async ({
