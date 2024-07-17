@@ -94,7 +94,7 @@ export type RHFComponentMap = {
   };
   Textarea: TextareaProps;
   Switch: SwitchProps;
-  Select: SelectProps;
+  Select: SelectProps & { customSort?: (a: any, b: any) => number };
   Multiselect: MultiselectProps;
   Radio: RadioProps & {
     options: RHFOption[];

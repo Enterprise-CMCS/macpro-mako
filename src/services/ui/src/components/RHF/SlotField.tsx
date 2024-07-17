@@ -88,7 +88,9 @@ export const SlotField = ({
       );
     case "Select": {
       const opts = props?.options.sort((a, b) =>
-        a.label.localeCompare(b.label),
+        props.customSort
+          ? props.customSort(a, b)
+          : a.label.localeCompare(b.label),
       );
 
       return (

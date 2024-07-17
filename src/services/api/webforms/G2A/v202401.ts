@@ -110,6 +110,7 @@ export const v202401: FormSchema = {
                       label: "Unit",
                       formItemClassName: "w-48",
                       props: {
+                        customSort: () => 0,
                         options: [
                           { label: "Day", value: "Day" },
                           { label: "Month", value: "Month" },
@@ -270,6 +271,7 @@ export const v202401: FormSchema = {
                           labelClassName: "text-black font-bold",
                           label: "Unit",
                           props: {
+                            customSort: () => 0,
                             options: [
                               { label: "Day", value: "Day" },
                               { label: "Month", value: "Month" },
@@ -422,6 +424,7 @@ export const v202401: FormSchema = {
                       labelClassName: "text-black font-bold",
                       label: "Unit",
                       props: {
+                        customSort: () => 0,
                         options: [
                           { label: "Day", value: "Day" },
                           { label: "Month", value: "Month" },
@@ -573,6 +576,7 @@ export const v202401: FormSchema = {
                       labelClassName: "text-black font-bold",
                       label: "Unit",
                       props: {
+                        customSort: () => 0,
                         options: [
                           { label: "Day", value: "Day" },
                           { label: "Month", value: "Month" },
