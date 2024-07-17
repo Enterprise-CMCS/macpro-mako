@@ -410,7 +410,7 @@ export const v202401: FormSchema = {
                         rhf: "Select",
                         name: "is-geo-area",
                         label: "State/territory",
-                        labelClassName: "mt-3 pr-4 font-bold",
+                        labelClassName: "font-bold",
                         formItemClassName: "flex-row",
                         props: {
                           className: "w-[256px]",
@@ -607,7 +607,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "ambulatory-patient-services-state-territory",
                                       label: "From state/territory",
-                                      labelClassName: "p-3 font-bold",
+                                      labelClassName: "font-bold",
                                       formItemClassName: "flex-row",
                                       props: {
                                         className: "w-[256px]",
@@ -720,7 +720,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "emergency-services-state-territory",
                                       label: "From state/territory",
-                                      labelClassName: "p-3 font-bold",
+                                      labelClassName: "font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -836,7 +836,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "hospital-state-territory",
                                       label: "From state/territory",
-                                      labelClassName: "p-3 font-bold",
+                                      labelClassName: "font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -952,7 +952,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "maternity-and-newborn-care-state-territory",
                                       label: "From state/territory",
-                                      labelClassName: "p-3 font-bold",
+                                      labelClassName: "font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -1070,7 +1070,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "mental-health-and-substance-use-disorders-state-territory",
                                       label: "From state/territory",
-                                      labelClassName: "p-3 font-bold",
+                                      labelClassName: "font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -1186,7 +1186,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "prescription-drugs-state-territory",
                                       label: "From state/territory",
-                                      labelClassName: "p-3 font-bold",
+                                      labelClassName: "font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -1304,7 +1304,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "rehab-and-habilitative-services-and-devices-state-territory",
                                       label: "From state/territory",
-                                      labelClassName: "p-3 font-bold",
+                                      labelClassName: "font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -1420,7 +1420,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "laboratory-services-state-territory",
                                       label: "From state/territory",
-                                      labelClassName: "p-3 font-bold",
+                                      labelClassName: "font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -1538,7 +1538,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "prevent-and-well-services-and-chronic-disease-management-state-territory",
                                       label: "From state/territory",
-                                      labelClassName: "p-3 font-bold",
+                                      labelClassName: "font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",
@@ -1656,7 +1656,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       name: "pediatric-services-including-oral-and-vision-care-state-territory",
                                       label: "From state/territory",
-                                      labelClassName: "p-3 font-bold",
+                                      labelClassName: "font-bold",
                                       formItemClassName: "flex-row",
                                       rules: {
                                         required: "* Required",

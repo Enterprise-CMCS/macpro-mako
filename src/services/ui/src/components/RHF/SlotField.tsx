@@ -162,7 +162,7 @@ export const SlotField = ({
       );
     case "Checkbox":
       return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
           {(props as RHFComponentMap["Checkbox"]).options.map((OPT) => (
             <DependencyWrapper
               name={OPT.value}
@@ -207,7 +207,7 @@ export const SlotField = ({
         <RadioGroup
           onValueChange={field.onChange}
           defaultValue={field.value}
-          className={`flex  ${horizontalLayout ? "pl-5 gap-5" : "flex-col space-y-1"}`}
+          className={`flex  ${horizontalLayout ? "pl-5 gap-5" : "flex-col space-y-6"}`}
         >
           {(props as RHFComponentMap["Radio"]).options.map((OPT) => {
             return (
@@ -219,7 +219,7 @@ export const SlotField = ({
                     aria-label={OPT.value}
                   />
                   {
-                    <FormLabel className="font-normal mt-2" htmlFor={OPT.value}>
+                    <FormLabel className="font-normal" htmlFor={OPT.value}>
                       <RHFTextDisplay
                         text={(OPT.styledLabel || OPT.label) as string}
                       />
@@ -259,15 +259,15 @@ export const OptChildren = ({
   control,
   parentId,
 }: SelectedSubsetProps) => {
+  const childClasses =
+    "ml-[0.6rem] mt-4 pl-6 px-4 space-y-6 border-l-4 border-l-primary";
+
   return (
     <>
-      {form &&
-        form.map((FORM, index) => {
-          return (
-            <div
-              className="ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary"
-              key={`rhf-form-${index}-${FORM.description}`}
-            >
+      {form && (
+        <div className={childClasses}>
+          {form.map((FORM, index) => (
+            <div key={`rhf-form-${index}-${FORM.description}`}>
               <RHFFormGroup
                 form={FORM}
                 control={control}
@@ -275,22 +275,23 @@ export const OptChildren = ({
                 className="py-0"
               />
             </div>
-          );
-        })}
-      {slots &&
-        slots.map((SLOT, index) => (
-          <div
-            className="ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary"
-            key={SLOT.name + index}
-          >
-            <FormField
-              control={control}
-              name={parentId + SLOT.name}
-              {...(SLOT.rules && { rules: SLOT.rules })}
-              render={RHFSlot({ ...SLOT, control, parentId })}
-            />
-          </div>
-        ))}
+          ))}
+        </div>
+      )}
+      {slots && (
+        <div className={childClasses}>
+          {slots.map((SLOT, index) => (
+            <div key={SLOT.name + index}>
+              <FormField
+                control={control}
+                name={parentId + SLOT.name}
+                {...(SLOT.rules && { rules: SLOT.rules })}
+                render={RHFSlot({ ...SLOT, control, parentId })}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </>
   );
 };
