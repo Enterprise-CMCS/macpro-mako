@@ -116,7 +116,7 @@ export class DeploymentConfig {
   private static isConfig(config: any): config is InjectedConfigProperties {
     return (
       typeof config.brokerString === "string" &&
-      typeof config.dbInfoSecretName == "string" &&
+      typeof config.dbInfoSecretName == "string" && // pragma: allowlist secret
       typeof config.devPasswordArn == "string" &&
       typeof config.domainCertificateArn == "string" &&
       typeof config.domainName === "string" &&
