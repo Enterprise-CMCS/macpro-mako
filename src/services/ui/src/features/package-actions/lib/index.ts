@@ -47,7 +47,6 @@ export const submitActionForm = async ({
   alert: ReturnType<typeof useAlertContext>;
   navigate: ReturnType<typeof useNavigate>;
   statusToCheck: ReturnType<typeof successCheckSwitch>;
-  locationState: { from?: string };
 }) => {
   const path = originRoute ? originRoute : "/dashboard";
   const actionsThatUseSubmitEndpoint: Action[] = [Action.TEMP_EXTENSION];
