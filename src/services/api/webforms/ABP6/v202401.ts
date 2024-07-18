@@ -21,6 +21,9 @@ export const v202401: FormSchema = {
               label:
                 "Aggregate actuarial value of the benchmark plan (e.g., FEHBP, state/territory employee coverage, commercial plan, state plan) that is equivalent to the state/territory's benefit package",
               labelClassName: "font-bold",
+              props: {
+                icon: "$",
+              },
               rules: {
                 required: "* Required",
                 pattern: {
@@ -35,6 +38,9 @@ export const v202401: FormSchema = {
               label:
                 "Aggregate actuarial value of the state/territory's benchmark-equivalent plan (must be greater than or equal to the amount entered above)",
               labelClassName: "font-bold",
+              props: {
+                icon: "$",
+              },
               rules: {
                 required: "* Required",
                 pattern: {
@@ -283,6 +289,9 @@ export const v202401: FormSchema = {
             {
               name: "description",
               rhf: "Textarea",
+              props: {
+                className: "h-[114px]",
+              },
             },
           ],
         },
