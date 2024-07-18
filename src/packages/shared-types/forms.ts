@@ -21,6 +21,24 @@ export interface FormSchema {
   sections: Section[];
 }
 
+export type AdditionalRule =
+  | {
+      type: "lessThanField" | "greaterThanField";
+      strictGreater?: boolean;
+      fieldName: string;
+      message: string;
+    }
+  | {
+      type: "cannotCoexist";
+      fieldName: string;
+      message: string;
+    };
+
+export type RuleGenerator = (
+  rules?: RegisterOptions,
+  addtnlRules?: AdditionalRule[],
+) => RegisterOptions;
+
 export type RHFSlotProps = {
   name: string;
   label?: RHFTextField;
@@ -33,6 +51,7 @@ export type RHFSlotProps = {
   descriptionClassName?: string;
   dependency?: DependencyRule;
   rules?: RegisterOptions;
+  addtnlRules?: AdditionalRule[];
   horizontalLayout?: boolean;
 } & {
   [K in keyof RHFComponentMap]: {
