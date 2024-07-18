@@ -258,7 +258,7 @@ Summary:
 <p>If the contents of this email seem suspicious, do not open them, and instead 
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
-text: `
+    text: `
 he OneMAC Submission Portal received a request to withdraw the package below.
 The package will no longer be considered for CMS review:
 
@@ -1226,6 +1226,7 @@ Thank you!`,
     subject: "{{authority}} Waiver Extension {{id}} Submitted",
     html: `
 <p>The Submission Portal received a {{authority}} Waiver Extension Submission:</p>
+<p>The OneMAC Submission Portal received a [TE Type] Waiver Extension Submission:</p>
 <ul>
 <li>The submission can be accessed in the OneMAC application, which you 
 can find at <a href='{{applicationEndpoint}}'>this link</a>.</li>
