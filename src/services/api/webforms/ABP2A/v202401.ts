@@ -20,7 +20,7 @@ export const v202401: FormSchema = {
                 {
                   text: "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
                   type: "default",
-                  classname: "font-bold block py-1",
+                  classname: "font-bold block pb-1",
                 },
                 {
                   text: "Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
@@ -109,7 +109,7 @@ export const v202401: FormSchema = {
                       {
                         text: "Once an individual is identified, the state/territory assures it will effectively inform the individual:",
                         type: "default",
-                        classname: "block py-1",
+                        classname: "block pb-1",
                       },
                       {
                         text: "A. That enrollment in the specified ABP is voluntary",
@@ -134,7 +134,7 @@ export const v202401: FormSchema = {
                       {
                         text: "The state/territory assures it will inform the individual of:",
                         type: "default",
-                        classname: "block py-1",
+                        classname: "block pb-1",
                       },
                       {
                         text: "A. The benefits available as ABP coverage defined using Section 1937 requirements as compared to ABP coverage defined as the state/territory's approved Medicaid state plan and not subject to Section 1937 requirements",
@@ -268,7 +268,7 @@ export const v202401: FormSchema = {
                       {
                         text: "The state/territory assures it will document in the exempt individual's eligibility file that the individual:",
                         type: "default",
-                        classname: "block py-1",
+                        classname: "block pb-1",
                       },
                       {
                         text: "A. Was informed in accordance with this section prior to enrollment",
@@ -281,7 +281,7 @@ export const v202401: FormSchema = {
                         classname: "block py-1",
                       },
                       {
-                        text: " C. Chose to enroll in ABP coverage subject to Section 1937 requirements or defined as the state/territory's approved Medicaid state plan not subject to Section 1937 requirements",
+                        text: "C. Chose to enroll in ABP coverage subject to Section 1937 requirements or defined as the state/territory's approved Medicaid state plan not subject to Section 1937 requirements",
                       },
                     ],
                     value:
@@ -339,7 +339,7 @@ export const v202401: FormSchema = {
               descriptionClassName: "font-bold text-black",
               description:
                 "What documentation will be maintained in the eligibility file?",
-              formItemClassName: "border-b-4",
+              formItemClassName: "pb-6 border-b-[1px] border-[#AEB0B5]",
               rules: {
                 required: "* Required",
               },
