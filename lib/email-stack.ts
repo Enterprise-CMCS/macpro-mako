@@ -97,7 +97,7 @@ export class EmailStack extends cdk.NestedStack {
 
     // SNS Topic
     const emailEventTopic = new CfnTopic(this, "EmailEventTopic", {
-      topicName: `${project}-${stage}-email-events`,
+      topicName: `${topicNamespace}-email-events`,
       displayName: "Monitoring the sending of emails",
     });
 
@@ -167,7 +167,7 @@ export class EmailStack extends cdk.NestedStack {
       this,
       "ProcessEmailsLambdaFunction",
       {
-        functionName: `${project}-${stage}-processEmails`,
+        functionName: `${topicNamespace}-processEmails`,
         runtime: Runtime.NODEJS_18_X,
         handler: "processEmails.handler",
         code: Code.fromAsset(path.join(__dirname, "lambda")),
@@ -179,7 +179,7 @@ export class EmailStack extends cdk.NestedStack {
           stage: stage,
           osDomain: osDomainArn,
           cognitoPoolId: cognitoUserPoolId,
-          emailConfigSet: `${project}-${stage}-configuration`,
+          emailConfigSet: `${topicNamespace}-configuration`,
           applicationEndpoint: applicationEndpoint,
         },
         vpc,
@@ -201,7 +201,7 @@ export class EmailStack extends cdk.NestedStack {
       this,
       "ProcessEmailEventsLambdaFunction",
       {
-        functionName: `${project}-${stage}-processEmailEvents`,
+        functionName: `${topicNamespace}-processEmailEvents`,
         runtime: Runtime.NODEJS_18_X,
         handler: "processEmails.handler",
         code: Code.fromAsset(path.join(__dirname, "lambda")),
@@ -211,7 +211,7 @@ export class EmailStack extends cdk.NestedStack {
           stage: stage,
           osDomain: osDomainArn,
           cognitoPoolId: cognitoUserPoolId,
-          emailConfigSet: `${project}-${stage}-configuration`,
+          emailConfigSet: `${topicNamespace}-configuration`,
           applicationEndpoint: applicationEndpoint,
         },
       },
@@ -229,7 +229,7 @@ export class EmailStack extends cdk.NestedStack {
       this,
       "EmailEventConfigurationSet",
       {
-        name: `${project}-${stage}-configuration`,
+        name: `${topicNamespace}-configuration`,
       },
     );
 
@@ -241,7 +241,7 @@ export class EmailStack extends cdk.NestedStack {
         configurationSetName: emailEventConfigurationSet.ref,
         eventDestination: {
           enabled: true,
-          name: `${project}-${stage}-destination`,
+          name: `${topicNamespace}-destination`,
           matchingEventTypes: [
             "send",
             "reject",

@@ -104,7 +104,8 @@ export const buildEmailData = async (
   );
 
   const emailConfigString = await fetchSSMParameter({
-    secretName: "om/default/emailAddressLookup", // In each env there is one default secret for email addresses. - These are not stage specific.
+    //  In each env there is one default secret for email addresses. - These are not stage specific.
+    secretName: "om/default/emailAddressLookup", // pragma: allowlist-secret
   });
 
   const emailAddresses = JSON.parse(emailConfigString) as EmailAddresses;

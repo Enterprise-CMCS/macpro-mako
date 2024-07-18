@@ -10,6 +10,7 @@
     "watch": "tsc -w",
     "cdk": "cdk",
     "build:cli": "turbo build:cli",
+    "lint": "turbo lint",
     "e2e": "turbo e2e",
     "e2e:ui": "turbo e2e:ui",
     "test": "turbo test",
