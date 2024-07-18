@@ -42,6 +42,8 @@ describe("Additional Rules Tests", () => {
         },
       ]);
 
+      if (!rules) throw new Error("Failed to create rule set.");
+
       const valFunc1 = (rules.validate as VO)["lessThanField_0"];
       expect(valFunc1).toBeTruthy();
       expect(valFunc1(0, testData)).toBeTruthy();
@@ -69,6 +71,8 @@ describe("Additional Rules Tests", () => {
           strictGreater: true,
         },
       ]);
+
+      if (!rules) throw new Error("Failed to create rule set.");
 
       const valFunc1 = (rules.validate as VO)["greaterThanField_0"];
       expect(valFunc1).toBeTruthy();
@@ -98,6 +102,8 @@ describe("Additional Rules Tests", () => {
           message: "Validation Failed 2",
         },
       ]);
+
+      if (!rules) throw new Error("Failed to create rule set.");
 
       const valFunc1 = (rules.validate as VO)["cannotCoexist_0"];
       expect(valFunc1).toBeTruthy();

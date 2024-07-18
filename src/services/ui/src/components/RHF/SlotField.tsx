@@ -14,6 +14,7 @@ import {
   RHFFormGroup,
   RHFSlot,
   RHFTextDisplay,
+  ruleGenerator,
   sortFunctions,
 } from ".";
 import {
@@ -285,7 +286,7 @@ export const OptChildren = ({
               <FormField
                 control={control}
                 name={parentId + SLOT.name}
-                {...(SLOT.rules && { rules: SLOT.rules })}
+                rules={ruleGenerator(SLOT.rules, SLOT.addtnlRules)}
                 render={RHFSlot({ ...SLOT, control, parentId })}
               />
             </div>

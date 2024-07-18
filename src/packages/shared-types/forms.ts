@@ -37,7 +37,7 @@ export type AdditionalRule =
 export type RuleGenerator = (
   rules?: RegisterOptions,
   addtnlRules?: AdditionalRule[],
-) => RegisterOptions;
+) => RegisterOptions | undefined;
 
 export type RHFSlotProps = {
   name: string;

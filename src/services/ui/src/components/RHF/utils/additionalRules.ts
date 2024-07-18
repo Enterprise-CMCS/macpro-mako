@@ -9,7 +9,7 @@ export const sortFunctions: {
 };
 
 export const ruleGenerator: RuleGenerator = (rules, addtnlRules) => {
-  if (!rules && !addtnlRules) return {};
+  if (!rules && !addtnlRules) return undefined;
   const simpleRules = rules ?? {};
   const customRules = addtnlRules
     ? { validate: addtnlRules.reduce(valReducer, {}) }

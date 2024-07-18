@@ -6,7 +6,7 @@ import {
   RHFTextField,
 } from "shared-types";
 import { FormField, FormLabel } from "../Inputs/form";
-import { DependencyWrapper, RHFSlot, RHFTextDisplay } from "./";
+import { DependencyWrapper, RHFSlot, RHFTextDisplay, ruleGenerator } from "./";
 
 interface FieldProps<T extends FieldValues>
   extends FieldGroupProps<T>,
@@ -62,7 +62,7 @@ export const Field = <TFields extends FieldValues>({
       key={adjustedSlotName}
       control={control}
       name={adjustedSlotName as never}
-      {...(SLOT.rules && { rules: SLOT.rules })}
+      rules={ruleGenerator(SLOT.rules, SLOT.addtnlRules)}
       render={RHFSlot({
         ...SLOT,
         control: control,
