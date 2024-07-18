@@ -27,7 +27,7 @@ export const handler = E.emailHandler(
         try {
           return await SES.send(
             new SendTemplatedEmailCommand({
-              Source: process.env.emailSource ?? "bpaige@fearless.tech",
+              Source: process.env.emailSource ?? "kgrue@fearless.tech",
               Destination: buildDestination(command, emailData),
               TemplateData: JSON.stringify(emailData),
               Template: command.Template,

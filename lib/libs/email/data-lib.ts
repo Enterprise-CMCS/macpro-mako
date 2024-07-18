@@ -1,7 +1,12 @@
 import { DateTime } from "luxon";
 
 import { getLookupValues, LookupType } from "./lookup-lib";
-import { AttachmentKey, attachmentTitleMap } from "shared-types";
+import {
+  AttachmentKey,
+  attachmentTitleMap,
+  EmailAddresses,
+} from "shared-types";
+import { fetchSSMParameter } from "shared-utils";
 
 interface Attachment {
   title: keyof typeof attachmentTitleMap;
@@ -98,6 +103,12 @@ export const buildEmailData = async (
     data.id as string,
   );
 
+  const emailConfigString = await fetchSSMParameter({
+    secretName: "om/default/emailAddressLookup", // In each env there is one default secret for email addresses. - These are not stage specific.
+  });
+
+  const emailAddresses = JSON.parse(emailConfigString) as EmailAddresses;
+
   if (
     !bundle.dataList ||
     !Array.isArray(bundle.dataList) ||
@@ -145,7 +156,7 @@ export const buildEmailData = async (
       case "submitter":
         returnObject["submitter"] =
           data.submitterEmail === "george@example.com"
-            ? `"George's Substitute" <mako.stateuser@gmail.com>`
+            ? `"George A. StateSubmitter" <mako.stateuser@gmail.com>`
             : `"${data.submitterName}" <${data.submitterEmail}>`;
         break;
       case "actionType":
@@ -159,7 +170,7 @@ export const buildEmailData = async (
       case "dmcoEmail":
       case "dhcbsooEmail":
         returnObject[dataType] =
-          process.env[dataType] ??
+          emailAddresses[dataType] ??
           `'${dataType} Substitute' <mako.stateuser@gmail.com>`;
         break;
       default:

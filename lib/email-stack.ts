@@ -86,6 +86,7 @@ export class EmailStack extends cdk.NestedStack {
                 "ec2:DescribeSecurityGroups",
                 "es:ESHttpGet",
                 "cognito-idp:ListUsers",
+                "secretsmanager:GetSecretValue",
               ],
               resources: ["*"],
             }),
