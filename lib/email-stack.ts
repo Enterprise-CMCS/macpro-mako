@@ -29,6 +29,7 @@ interface EmailServiceStackProps extends cdk.NestedStackProps {
   vpc: IVpc;
   privateSubnets: ISubnet[];
   brokerString: string;
+  topicNamespace: string;
   osDomainArn: string;
   lambdaSecurityGroupId: string;
   applicationEndpoint: string;
@@ -47,6 +48,7 @@ export class EmailStack extends cdk.NestedStack {
       vpc,
       privateSubnets,
       brokerString,
+      topicNamespace,
       osDomainArn,
       lambdaSecurityGroupId,
       applicationEndpoint,
@@ -188,13 +190,7 @@ export class EmailStack extends cdk.NestedStack {
           ),
         ],
         vpcSubnets: {
-          subnets: privateSubnets.map((subnetId) => {
-            return cdk.aws_ec2.Subnet.fromSubnetId(
-              this,
-              `PrivateSubnet${subnetId}`,
-              String(subnetId),
-            );
-          }),
+          subnets: privateSubnets,
         },
       },
     );
@@ -268,19 +264,23 @@ export class EmailStack extends cdk.NestedStack {
     new CfnEventSourceMapping(this, "SinkEmailTrigger", {
       batchSize: 10,
       enabled: true,
-      eventSourceArn: `arn:aws:kafka:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:cluster/${brokerString}`,
+      selfManagedEventSource: {
+        endpoints: {
+          kafkaBootstrapServers: brokerString.split(","),
+        },
+      },
       functionName: processEmailsLambda.functionArn,
       sourceAccessConfigurations: [
-        { type: "VPC_SUBNET", uri: `subnet:${privateSubnets[0]}` },
-        { type: "VPC_SUBNET", uri: `subnet:${privateSubnets[1]}` },
-        { type: "VPC_SUBNET", uri: `subnet:${privateSubnets[2]}` },
+        { type: "VPC_SUBNET", uri: privateSubnets[0].subnetId },
+        { type: "VPC_SUBNET", uri: privateSubnets[1].subnetId },
+        { type: "VPC_SUBNET", uri: privateSubnets[2].subnetId },
         {
           type: "VPC_SECURITY_GROUP",
-          uri: `security_group:${lambdaSecurityGroupId}`,
+          uri: lambdaSecurityGroupId,
         },
       ],
       startingPosition: "LATEST",
-      topics: [`${project}-${stage}-email-events`],
+      topics: [`${topicNamespace}aws.onemac.migration.cdc`],
     });
   }
 }
