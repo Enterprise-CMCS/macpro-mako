@@ -261,6 +261,10 @@ export class EmailStack extends cdk.NestedStack {
       },
     );
 
+    const accessConfigSubnets = privateSubnets
+      .slice(0, 3)
+      .map((subnet) => ({ type: "VPC_SUBNET", uri: subnet.subnetId }));
+
     // Lambda Event Source Mapping for Kafka
     new CfnEventSourceMapping(this, "SinkEmailTrigger", {
       batchSize: 10,
@@ -272,9 +276,7 @@ export class EmailStack extends cdk.NestedStack {
       },
       functionName: processEmailsLambda.functionArn,
       sourceAccessConfigurations: [
-        { type: "VPC_SUBNET", uri: privateSubnets[0].subnetId },
-        { type: "VPC_SUBNET", uri: privateSubnets[1].subnetId },
-        { type: "VPC_SUBNET", uri: privateSubnets[2].subnetId },
+        ...accessConfigSubnets,
         {
           type: "VPC_SECURITY_GROUP",
           uri: lambdaSecurityGroupId,
