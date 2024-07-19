@@ -124,7 +124,7 @@ export class DeploymentConfig {
       typeof config.googleAnalyticsDisable == "boolean" &&
       typeof config.googleAnalyticsGTag === "string" &&
       typeof config.idmAuthzApiEndpoint === "string" &&
-      typeof config.idmAuthzApiKeyArn === "string" &&
+      typeof config.idmAuthzApiKeyArn === "string" && // pragma: allowlist secret
       typeof config.idmClientId === "string" &&
       typeof config.idmClientIssuer === "string" &&
       typeof config.idmClientSecretArn === "string" && // pragma: allowlist secret
