@@ -117,8 +117,8 @@ export class DeploymentConfig {
   private static isConfig(config: any): config is InjectedConfigProperties {
     return (
       typeof config.brokerString === "string" &&
-      typeof config.dbInfoSecretName == "string" &&
-      typeof config.devPasswordArn == "string" &&
+      typeof config.dbInfoSecretName == "string" && // pragma: allowlist secret
+      typeof config.devPasswordArn == "string" && // pragma: allowlist secret
       typeof config.domainCertificateArn == "string" &&
       typeof config.domainName === "string" &&
       typeof config.googleAnalyticsDisable == "boolean" &&
@@ -127,7 +127,7 @@ export class DeploymentConfig {
       typeof config.idmAuthzApiKeyArn === "string" &&
       typeof config.idmClientId === "string" &&
       typeof config.idmClientIssuer === "string" &&
-      typeof config.idmClientSecretArn === "string" &&
+      typeof config.idmClientSecretArn === "string" && // pragma: allowlist secret
       typeof config.idmEnable === "boolean" &&
       typeof config.idmHomeUrl === "string" &&
       typeof config.legacyS3AccessRoleArn === "string" &&
