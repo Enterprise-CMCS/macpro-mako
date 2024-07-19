@@ -117,7 +117,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
       alert.setBannerDisplayOn(originPath.pathname as Route);
 
       const poller = documentPoller(formData.id, (checks) =>
-        checks.actionIs("Amend"),
+        checks.actionIs("Renew"),
       );
 
       await poller.startPollingData();

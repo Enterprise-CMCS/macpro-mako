@@ -90,7 +90,7 @@ export const Contracting1915BWaiverInitialPage = () => {
       alert.setBannerDisplayOn(originPath.pathname as Route);
 
       const poller = documentPoller(formData.id, (checks) =>
-        checks.actionIs("Amend"),
+        checks.actionIs("New"),
       );
 
       await poller.startPollingData();
