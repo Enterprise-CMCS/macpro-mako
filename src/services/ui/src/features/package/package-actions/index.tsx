@@ -1,6 +1,6 @@
 import { useGetItem, useGetPackageActions } from "@/api";
 import { LoadingSpinner, Link } from "@/components";
-import { mapActionLabel } from "@/utils";
+import { DETAILS_ORIGIN, mapActionLabel } from "@/utils";
 import { DetailCardWrapper } from "..";
 import { FC } from "react";
 import { useLocation } from "react-router-dom";
@@ -39,7 +39,7 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
               key={`${idx}-${type}`}
               params={{ id, type, authority: item.data?._source.authority }}
               query={{
-                origin: "actionsDetails",
+                origin: DETAILS_ORIGIN,
               }}
               className="text-sky-700 font-semibold text-lg"
             >

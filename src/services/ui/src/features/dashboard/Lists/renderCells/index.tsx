@@ -1,15 +1,10 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import {
-  Action,
-  Authority,
-  CognitoUserAttributes,
-  opensearch,
-} from "shared-types";
+import { Authority, CognitoUserAttributes, opensearch } from "shared-types";
 import { getAvailableActions, formatSeatoolDate } from "shared-utils";
 import { Link as TypedLink } from "@/components";
 import { Link } from "react-router-dom";
 import * as POP from "@/components";
-import { cn, mapActionLabel } from "@/utils";
+import { cn, DASHBOARD_ORIGIN, mapActionLabel } from "@/utils";
 
 export const renderCellDate = (key: keyof opensearch.main.Document) =>
   function Cell(data: opensearch.main.Document) {
@@ -52,7 +47,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) => {
           </POP.PopoverTrigger>
           <POP.PopoverContent>
             <div className="flex flex-col">
-              {actions.map((action: Action, idx: any) => (
+              {actions.map((action, idx) => (
                 <TypedLink
                   state={{
                     from: `${location.pathname}${location.search}`,
@@ -69,7 +64,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) => {
                     "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
                   )}
                   query={{
-                    origin: "actionsDashboard",
+                    origin: DASHBOARD_ORIGIN,
                   }}
                 >
                   {mapActionLabel(action)}
