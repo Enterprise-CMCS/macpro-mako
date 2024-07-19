@@ -13,7 +13,7 @@ type GetFormOriginArgs = {
   authority?: string;
 };
 
-type GetFormOrigin = (args: GetFormOriginArgs) => {
+type GetFormOrigin = (args?: GetFormOriginArgs) => {
   pathname: string;
   search?: string;
 };
@@ -23,7 +23,7 @@ type GetFormOrigin = (args: GetFormOriginArgs) => {
  * NOTE: `getFormOrigin` should _not_ be used within a component's lifecycle as it may result in stale data.
  * Instead, call within functions
  */
-export const getFormOrigin: GetFormOrigin = ({ id, authority }) => {
+export const getFormOrigin: GetFormOrigin = ({ id, authority } = {}) => {
   const origin =
     new URLSearchParams(window.location.search).get(ORIGIN) ?? DASHBOARD_ORIGIN;
 
