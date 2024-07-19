@@ -3,7 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components";
 import * as Content from "../../../../components/Form/old-content";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useGetUser } from "@/api";
 import {
   BreadCrumbs,
@@ -11,7 +11,6 @@ import {
   SectionCard,
   FAQFooter,
   formCrumbsFromPath,
-  useNavigate,
   Route,
   FormField,
 } from "@/components";
@@ -25,8 +24,7 @@ import {
 } from "@/utils";
 import { FAQ_TAB } from "@/components/Routing/consts";
 import { useAlertContext } from "@/components/Context/alertContext";
-import { Origin, ORIGIN, originRoute, useOriginPath } from "@/utils/formOrigin";
-import { useQuery as useQueryString } from "@/hooks";
+import { getOrigin } from "@/utils/formOrigin";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 import { SlotAdditionalInfo } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
@@ -75,46 +73,36 @@ export const Capitated1915BWaiverInitialPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
-  const urlQuery = useQueryString();
   const alert = useAlertContext();
-  const originPath = useOriginPath();
 
   const handleSubmit: SubmitHandler<Waiver1915BCapitatedAmendment> = async (
     formData,
   ) => {
     try {
-      console.log("testing");
       await submit<Waiver1915BCapitatedAmendment>({
         data: formData,
         endpoint: "/submit",
         user,
         authority: Authority["1915b"],
       });
+
+      const originPath = getOrigin({ authority: Authority["1915b"] });
+
       alert.setContent({
         header: "Package submitted",
         body: "Your submission has been received.",
       });
       alert.setBannerStyle("success");
       alert.setBannerShow(true);
-      alert.setBannerDisplayOn(
-        // This uses the originRoute map because this value doesn't work
-        // when any queries are added, such as the case of /details?id=...
-        urlQuery.get(ORIGIN)
-          ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-          : "/dashboard",
-      );
+      alert.setBannerDisplayOn(originPath.pathname as Route);
 
       const poller = documentPoller(formData.id, (checks) =>
-        checks.actionIs("New"),
+        checks.actionIs("Amend"),
       );
 
       await poller.startPollingData();
 
-      navigate(
-        originPath
-          ? { path: `${originPath}?tab=waivers` as Route }
-          : { path: "/dashboard?tab=waivers" as Route },
-      );
+      navigate(originPath);
     } catch (e) {
       console.error(e);
       alert.setContent({
@@ -250,11 +238,7 @@ export const Capitated1915BWaiverInitialPage = () => {
             />
           </SectionCard>
           <Content.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection
-            showAlert
-            loadingSpinner
-            cancelNavigationLocation={originPath ?? "/dashboard"}
-          />
+          <SubmitAndCancelBtnSection showAlert loadingSpinner />
         </form>
       </Inputs.Form>
       <FAQFooter />
