@@ -49,7 +49,6 @@ export const v202402: FormSchema = {
                   label: "Eligibility group",
                   labelClassName: "font-bold",
                   props: {
-                    sort: "ascending",
                     className: "w-[300px]",
                     options: [
                       {

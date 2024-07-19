@@ -42,7 +42,7 @@ export const v202401: FormSchema = {
                       {
                         text: "Effectively inform individuals who voluntarily enroll:",
                         type: "default",
-                        classname: "block py-1",
+                        classname: "block pb-1",
                       },
                       {
                         text: "A. That enrollment is voluntary",
@@ -57,7 +57,7 @@ export const v202401: FormSchema = {
                       {
                         text: "C. What the process is for disenrolling",
                         type: "default",
-                        classname: "block py-1",
+                        classname: "block pt-1",
                       },
                     ],
                     value:
@@ -68,7 +68,7 @@ export const v202401: FormSchema = {
                       {
                         text: "Inform individuals of:",
                         type: "default",
-                        classname: "block py-1",
+                        classname: "block pb-1",
                       },
                       {
                         text: "A. The benefits available under the ABP",
@@ -78,7 +78,7 @@ export const v202401: FormSchema = {
                       {
                         text: "B. The costs of the different benefit packages and a comparison of how the ABP differs from the approved Medicaid state/territory plan",
                         type: "default",
-                        classname: "block py-1",
+                        classname: "block pt-1",
                       },
                     ],
                     value:
@@ -192,7 +192,7 @@ export const v202401: FormSchema = {
                       {
                         text: "The state/territory assures it will document in the exempt individual's eligibility file that the individual:",
                         type: "default",
-                        classname: "block py-1",
+                        classname: "block pb-1",
                       },
                       {
                         text: "A. Was informed in accordance with this section prior to enrollment",
@@ -263,7 +263,7 @@ export const v202401: FormSchema = {
               descriptionClassName: "font-bold text-black",
               description:
                 "What documentation will be maintained in the eligibility file?",
-              formItemClassName: "border-b-4",
+              formItemClassName: "pb-6 border-b-[1px] border-[#AEB0B5]",
               rules: {
                 required: "* Required",
               },

@@ -330,7 +330,7 @@ const getBundleFromEvent = (configKey, stage) => {
           "submitterName",
           "submitterEmail",
           "authority",
-          "title",
+          "appkTitle",
           "proposedEffectiveDateNice",
           "ninetyDaysDate",
           "additionalInformation",

@@ -2,7 +2,7 @@ import * as os from "../../../../libs/opensearch-lib";
 import { opensearch } from "shared-types";
 import { getAppkChildren } from "./appk";
 
-interface ExtendedItemResult extends opensearch.main.ItemResult {
+export interface ExtendedItemResult extends opensearch.main.ItemResult {
   appkChildren?: any[]; // Add appkChildren field
 }
 export const getPackage = async (id: string) => {

@@ -46,7 +46,6 @@ export const v202401: FormSchema = {
                   },
                   label: "Eligibility group",
                   props: {
-                    sort: "ascending",
                     className: "min-w-[300px]",
                     options: [
                       {
