@@ -21,7 +21,7 @@ import {
   zAttachmentOptional,
   zAttachmentRequired,
   zSpaIdSchema,
-  getOrigin,
+  getFormOrigin,
 } from "@/utils";
 import { SlotAdditionalInfo } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
@@ -88,7 +88,7 @@ export const ChipSpaFormPage = () => {
         authority: "chip spa",
       });
 
-      const originPath = getOrigin();
+      const originPath = getFormOrigin();
 
       alert.setContent({
         header: "Package submitted",

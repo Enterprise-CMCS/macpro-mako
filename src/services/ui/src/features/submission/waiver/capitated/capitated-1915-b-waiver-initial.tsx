@@ -24,7 +24,7 @@ import {
 } from "@/utils";
 import { FAQ_TAB } from "@/components/Routing/consts";
 import { useAlertContext } from "@/components/Context/alertContext";
-import { getOrigin } from "@/utils/formOrigin";
+import { getFormOrigin } from "@/utils/formOrigin";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 import { SlotAdditionalInfo } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
@@ -86,7 +86,7 @@ export const Capitated1915BWaiverInitialPage = () => {
         authority: Authority["1915b"],
       });
 
-      const originPath = getOrigin({ authority: Authority["1915b"] });
+      const originPath = getFormOrigin({ authority: Authority["1915b"] });
 
       alert.setContent({
         header: "Package submitted",

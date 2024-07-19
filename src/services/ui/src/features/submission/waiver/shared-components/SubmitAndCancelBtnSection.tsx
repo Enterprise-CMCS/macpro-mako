@@ -3,7 +3,7 @@ import * as Inputs from "@/components";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import { useMemo } from "react";
-import { getOrigin } from "@/utils";
+import { getFormOrigin } from "@/utils";
 
 interface buttonProps {
   loadingSpinner?: boolean;
@@ -26,7 +26,7 @@ export const SubmitAndCancelBtnSection = ({
   const acceptAction = () => {
     modal.setModalOpen(false);
 
-    const origin = getOrigin({ id, authority });
+    const origin = getFormOrigin({ id, authority });
     navigate(origin);
   };
 

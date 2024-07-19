@@ -8,7 +8,7 @@ import {
   useModalContext,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
-import { getOrigin } from "@/utils";
+import { getFormOrigin } from "@/utils";
 import { FormSetup } from "./lib";
 import { submitActionForm } from "@/features/package-actions/lib";
 import { useGetItem } from "@/api";
@@ -68,7 +68,7 @@ export const ActionForm = ({
       alert.setBannerShow(true);
       alert.setContent(content.successBanner);
 
-      const originPath = getOrigin({
+      const originPath = getFormOrigin({
         id: data?.newId ?? id,
         authority,
       });

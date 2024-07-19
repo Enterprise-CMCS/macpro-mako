@@ -8,20 +8,22 @@ export const DASHBOARD_ORIGIN = "dashboard";
 /** Constant key for `details` origin. */
 export const DETAILS_ORIGIN = "details";
 
-type GetOriginArgs = {
+type GetFormOriginArgs = {
   id?: string;
   authority?: string;
 };
 
-/** Get the origin pathname belonging to the form's action
- *
- * ⚠️: `getOrigin` should not be used with a component's lifecycle as it may result in stale data.
- * Instead, use within functions called by components
- */
-export const getOrigin = ({ id, authority }: GetOriginArgs | undefined = {}): {
+type GetFormOrigin = (args: GetFormOriginArgs) => {
   pathname: string;
   search?: string;
-} => {
+};
+
+/** Get the form's origin pathname
+ *
+ * NOTE: `getFormOrigin` should _not_ be used within a component's lifecycle as it may result in stale data.
+ * Instead, call within functions
+ */
+export const getFormOrigin: GetFormOrigin = ({ id, authority }) => {
   const origin =
     new URLSearchParams(window.location.search).get(ORIGIN) ?? DASHBOARD_ORIGIN;
 

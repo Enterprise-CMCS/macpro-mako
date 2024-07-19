@@ -23,7 +23,7 @@ import {
   zAttachmentOptional,
   zAttachmentRequired,
   zRenewalWaiverNumberSchema,
-  getOrigin,
+  getFormOrigin,
 } from "@/utils";
 import { SlotAdditionalInfo } from "@/features";
 import { SubmitAndCancelBtnSection } from "../shared-components";
@@ -106,7 +106,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
         authority: Authority["1915b"],
       });
 
-      const originPath = getOrigin({ authority: Authority["1915b"] });
+      const originPath = getFormOrigin({ authority: Authority["1915b"] });
 
       alert.setContent({
         header: "Package submitted",

@@ -21,7 +21,7 @@ import {
   zAttachmentOptional,
   zAttachmentRequired,
   zSpaIdSchema,
-  getOrigin,
+  getFormOrigin,
 } from "@/utils";
 import { FormField } from "@/components/Inputs";
 import { SlotAdditionalInfo } from "@/features";
@@ -91,7 +91,7 @@ export const MedicaidSpaFormPage = () => {
         authority: "medicaid spa",
       });
 
-      const originPath = getOrigin();
+      const originPath = getFormOrigin();
 
       alert.setContent({
         header: "Package submitted",

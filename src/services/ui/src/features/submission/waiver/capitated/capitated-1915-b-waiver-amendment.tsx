@@ -23,7 +23,7 @@ import {
   zAmendmentWaiverNumberSchema,
   zAttachmentOptional,
   zAttachmentRequired,
-  getOrigin,
+  getFormOrigin,
 } from "@/utils";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 import { SlotAdditionalInfo } from "@/features";
@@ -85,7 +85,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
         authority: Authority["1915b"],
       });
 
-      const originPath = getOrigin({ authority: Authority["1915b"] });
+      const originPath = getFormOrigin({ authority: Authority["1915b"] });
 
       alert.setContent({
         header: "Package submitted",

@@ -18,7 +18,7 @@ import * as Inputs from "@/components/Inputs";
 import { useGetUser, submit } from "@/api";
 import { Authority } from "shared-types";
 import {
-  getOrigin,
+  getFormOrigin,
   zAdditionalInfoOptional,
   zAmendmentOriginalWaiverNumberSchema,
   zAmendmentWaiverNumberSchema,
@@ -82,7 +82,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
         authority: Authority["1915b"],
       });
 
-      const originPath = getOrigin({ authority: Authority["1915b"] });
+      const originPath = getFormOrigin({ authority: Authority["1915b"] });
 
       alert.setContent({
         header: "Package submitted",
