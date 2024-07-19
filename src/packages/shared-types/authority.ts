@@ -14,6 +14,14 @@ export type AuthorityUnion =
 
 export type AuthorityAPI = "medicaid spa" | "chip spa" | "1915(b)" | "1915(c)";
 
+export const AUTHORITIES = ["Medicaid SPA", "CHIP SPA", "1915(b)", "1915(c)"];
+
+export const isStringAuthority = (
+  supposedAuthority: unknown,
+): supposedAuthority is AuthorityUnion =>
+  typeof supposedAuthority === "string" &&
+  AUTHORITIES.includes(supposedAuthority);
+
 export const AUTHORITY_FE_TO_API: Record<AuthorityUnion, AuthorityAPI> = {
   "CHIP SPA": "chip spa",
   "Medicaid SPA": "medicaid spa",
