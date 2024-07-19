@@ -1,14 +1,14 @@
 import { LoadingSpinner, useModalContext, Button } from "@/components";
 import * as Inputs from "@/components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import { useMemo } from "react";
+import { getOrigin } from "@/utils";
 
 interface buttonProps {
   loadingSpinner?: boolean;
   showAlert?: boolean;
   confirmWithdraw?: () => void;
-  cancelNavigationLocation?: string;
   enableSubmit?: boolean;
 }
 
@@ -16,20 +16,18 @@ export const SubmitAndCancelBtnSection = ({
   loadingSpinner,
   showAlert,
   confirmWithdraw,
-  cancelNavigationLocation,
   enableSubmit,
 }: buttonProps) => {
   const form = useFormContext();
   const modal = useModalContext();
   const navigate = useNavigate();
+  const { id, authority } = useParams<{ id: string; authority: string }>();
 
   const acceptAction = () => {
     modal.setModalOpen(false);
-    if (cancelNavigationLocation) {
-      navigate(cancelNavigationLocation);
-    } else {
-      navigate(-1);
-    }
+
+    const origin = getOrigin({ id, authority });
+    navigate(origin);
   };
 
   // adding this so we can overwrite the disable submit functionality
