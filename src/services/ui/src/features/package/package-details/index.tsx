@@ -6,13 +6,15 @@ import {
   submissionDetails,
 } from "./hooks";
 
-import { FC } from "react";
+import { FC, useMemo } from "react";
 
 import { DetailSectionItem } from "./hooks";
 import { useGetUser } from "@/api/useGetUser";
 import { AppK } from "./appk";
 import { cn } from "@/utils";
 import { usePackageDetailsCache } from "..";
+import { Authority } from "shared-types";
+import { ItemResult } from "shared-types/opensearch/main";
 
 export const DetailItemsGrid: FC<{
   displayItems: DetailSectionItem[];
@@ -41,13 +43,30 @@ export const DetailItemsGrid: FC<{
   );
 };
 
-export const PackageDetails: FC<{
-  title: string;
-}> = (props) => {
+type PackageDetailsProps = {
+  itemResult: ItemResult;
+};
+
+export const PackageDetails = ({ itemResult }: PackageDetailsProps) => {
   const { data } = usePackageDetailsCache();
 
+  const title = useMemo(() => {
+    const { _source: source } = itemResult;
+
+    switch (source.authority) {
+      case Authority["1915b"]:
+      case Authority["1915c"]:
+      case undefined: // Some TEs have no authority
+        if (source.appkParent) return "Appendix K Amendment Package Details";
+        if (source.actionType == "Extend")
+          return "Temporary Extension Request Details";
+    }
+
+    return `${source.authority} Package Details`;
+  }, [itemResult]);
+
   return (
-    <DetailsSection id="package_details" title={props.title}>
+    <DetailsSection id="package_details" title={title}>
       <div className="flex-col gap-4 max-w-2xl">
         <DetailItemsGrid
           displayItems={[
