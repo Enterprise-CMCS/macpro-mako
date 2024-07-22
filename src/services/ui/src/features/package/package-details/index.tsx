@@ -12,7 +12,6 @@ import { DetailSectionItem } from "./hooks";
 import { useGetUser } from "@/api/useGetUser";
 import { AppK } from "./appk";
 import { cn } from "@/utils";
-import { usePackageDetailsCache } from "..";
 import { Authority } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/main";
 
@@ -48,8 +47,6 @@ type PackageDetailsProps = {
 };
 
 export const PackageDetails = ({ itemResult }: PackageDetailsProps) => {
-  const { data } = usePackageDetailsCache();
-
   const title = useMemo(() => {
     const { _source: source } = itemResult;
 
@@ -70,14 +67,14 @@ export const PackageDetails = ({ itemResult }: PackageDetailsProps) => {
       <div className="flex-col gap-4 max-w-2xl">
         <DetailItemsGrid
           displayItems={[
-            ...recordDetails(data),
-            ...approvedAndAEffectiveDetails(data),
-            ...descriptionDetails(data),
+            ...recordDetails(itemResult._source),
+            ...approvedAndAEffectiveDetails(itemResult._source),
+            ...descriptionDetails(itemResult._source),
           ]}
           containerStyle="py-4"
         />
         <hr className="my-4" />
-        <DetailItemsGrid displayItems={submissionDetails(data)} />
+        <DetailItemsGrid displayItems={submissionDetails(itemResult._source)} />
         <AppK />
       </div>
     </DetailsSection>
