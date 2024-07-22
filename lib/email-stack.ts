@@ -14,14 +14,11 @@ import {
   CfnConfigurationSet,
   CfnConfigurationSetEventDestination,
 } from "aws-cdk-lib/aws-ses";
-import {
-  Function,
-  Runtime,
-  Code,
-  CfnEventSourceMapping,
-} from "aws-cdk-lib/aws-lambda";
+import { Runtime, Code, CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
 import { ISubnet, IVpc, SecurityGroup } from "aws-cdk-lib/aws-ec2";
 import { Construct } from "constructs";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { LogGroup } from "aws-cdk-lib/aws-logs";
 
 interface EmailServiceStackProps extends cdk.NestedStackProps {
   project: string;
@@ -35,6 +32,7 @@ interface EmailServiceStackProps extends cdk.NestedStackProps {
   applicationEndpoint: string;
   stack: string;
   cognitoUserPoolId: string;
+  emailAddressLookupSecretName: string;
 }
 
 export class EmailStack extends cdk.NestedStack {
@@ -53,6 +51,7 @@ export class EmailStack extends cdk.NestedStack {
       lambdaSecurityGroupId,
       applicationEndpoint,
       cognitoUserPoolId,
+      emailAddressLookupSecretName,
     } = props;
 
     // IAM Role for Lambda
@@ -162,15 +161,20 @@ export class EmailStack extends cdk.NestedStack {
       },
     });
 
+    const processEmailsLogGroup = new LogGroup(this, `processEmailsLogGroup`, {
+      logGroupName: `/aws/lambda/${project}-${stage}-${stack}-processEmails`,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
     // Lambda Function: ProcessEmails
-    const processEmailsLambda = new Function(
+    const processEmailsLambda = new NodejsFunction(
       this,
       "ProcessEmailsLambdaFunction",
       {
         functionName: `${topicNamespace}-processEmails`,
         runtime: Runtime.NODEJS_18_X,
-        handler: "processEmails.handler",
-        code: Code.fromAsset(path.join(__dirname, "lambda")),
+        handler: "handler",
+        entry: path.join(__dirname, "lambda/processEmails.ts"),
         role: lambdaRole,
         memorySize: 1024,
         timeout: Duration.seconds(60),
@@ -181,6 +185,7 @@ export class EmailStack extends cdk.NestedStack {
           cognitoPoolId: cognitoUserPoolId,
           emailConfigSet: `${topicNamespace}-configuration`,
           applicationEndpoint: applicationEndpoint,
+          emailAddressLookupSecretName,
         },
         vpc,
         securityGroups: [
@@ -193,18 +198,32 @@ export class EmailStack extends cdk.NestedStack {
         vpcSubnets: {
           subnets: privateSubnets,
         },
+        logGroup: processEmailsLogGroup,
+        bundling: {
+          minify: true,
+          sourceMap: true,
+        },
+      },
+    );
+
+    const processEmailEventsLogGroup = new LogGroup(
+      this,
+      `processEmailEventsLogGroup`,
+      {
+        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-processEmailEvents`,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
       },
     );
 
     // Lambda Function: ProcessEmailEvents
-    const processEmailEventsLambda = new Function(
+    const processEmailEventsLambda = new NodejsFunction(
       this,
       "ProcessEmailEventsLambdaFunction",
       {
         functionName: `${topicNamespace}-processEmailEvents`,
         runtime: Runtime.NODEJS_18_X,
-        handler: "processEmails.handler",
-        code: Code.fromAsset(path.join(__dirname, "lambda")),
+        handler: "main",
+        entry: path.join(__dirname, "lambda/processEmailEvents.ts"),
         role: lambdaRole,
         environment: {
           region: cdk.Aws.REGION,
@@ -213,6 +232,11 @@ export class EmailStack extends cdk.NestedStack {
           cognitoPoolId: cognitoUserPoolId,
           emailConfigSet: `${topicNamespace}-configuration`,
           applicationEndpoint: applicationEndpoint,
+        },
+        logGroup: processEmailEventsLogGroup,
+        bundling: {
+          minify: true,
+          sourceMap: true,
         },
       },
     );

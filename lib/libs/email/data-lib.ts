@@ -6,7 +6,7 @@ import {
   attachmentTitleMap,
   EmailAddresses,
 } from "shared-types";
-import { fetchSSMParameter } from "shared-utils";
+import { getSecret } from "shared-utils";
 
 interface Attachment {
   title: keyof typeof attachmentTitleMap;
@@ -103,12 +103,9 @@ export const buildEmailData = async (
     data.id as string,
   );
 
-  const emailConfigString = await fetchSSMParameter({
-    //  In each env there is one default secret for email addresses. - These are not stage specific.
-    secretName: "om/default/emailAddressLookup", // pragma: allowlist-secret
-  });
-
-  const emailAddresses = JSON.parse(emailConfigString) as EmailAddresses;
+  const emailAddresses = JSON.parse(
+    await getSecret(process.env.emailAddressLookupSecretName!),
+  ) as EmailAddresses;
 
   if (
     !bundle.dataList ||
