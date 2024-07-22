@@ -1,19 +1,12 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
-    "test": {
-      "outputs": ["dist/**"],
-      "cache": false
-    },
-    "coverage": {},
     "lint": {
       "cache": false
     },
     "build:cli": {
       "cache": false
     },
-    "test:watch": {},
-    "test:gui": {},
     "e2e": {},
     "e2e:ui": {}
   }

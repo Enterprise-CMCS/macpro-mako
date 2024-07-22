@@ -39,18 +39,16 @@ export type RHFSlotProps = {
     rhf: K;
     props?: RHFComponentMap[K];
     text?: K extends "TextDisplay" ? RHFTextField : never;
-    fields?: K extends "FieldArray"
+    fields?: K extends "FieldArray" | "FieldGroup" | "WrappedGroup"
       ? RHFSlotProps[]
-      : K extends "FieldGroup"
-        ? RHFSlotProps[]
-        : never;
+      : never;
   };
 }[keyof RHFComponentMap];
 
 export type RHFTextField =
   | Array<
       | {
-          text: string;
+          text?: string;
           type?: RHFTextItemType;
           link?: string;
           listType?: "ordered" | "unordered";
@@ -89,6 +87,8 @@ export type RHFOption = {
   optionlabelClassName?: string;
 };
 
+export type SortFuncs = "noSort" | "reverseSort";
+
 export type RHFComponentMap = {
   Input: InputProps & {
     label?: string;
@@ -96,7 +96,7 @@ export type RHFComponentMap = {
   };
   Textarea: TextareaProps;
   Switch: SwitchProps;
-  Select: SelectProps & { sort?: "ascending" | "descending" };
+  Select: SelectProps & { customSort?: SortFuncs };
   Multiselect: MultiselectProps;
   Radio: RadioProps & {
     options: RHFOption[];
@@ -111,12 +111,15 @@ export type RHFComponentMap = {
   };
   FieldArray: {
     appendText?: string;
+    fieldArrayClassName?: string;
   };
   FieldGroup: {
     appendText?: string;
     removeText?: string;
+    fieldArrayClassName?: string;
   };
   TextDisplay: { className?: string };
+  WrappedGroup: { wrapperClassName?: string };
 };
 
 export type FormGroup = {
@@ -145,10 +148,13 @@ export type FieldArrayProps<
   TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>,
 > = {
   control: Control<T, unknown>;
+  rhf: keyof RHFComponentMap;
   name: TFieldArrayName;
   fields: RHFSlotProps[];
   parentId?: string;
   appendText?: string;
+  removeText?: string;
+  fieldArrayClassName?: string;
 };
 
 export type FieldGroupProps<
@@ -160,6 +166,7 @@ export type FieldGroupProps<
   fields: RHFSlotProps[];
   appendText?: string;
   removeText?: string;
+  fieldArrayClassName?: string;
   parentId?: string;
 };
 
