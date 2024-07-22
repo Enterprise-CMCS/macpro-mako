@@ -8,12 +8,19 @@ type DetailsAndActionsBreadCrumbsArgs = {
   actionType?: Action;
 };
 
-export const getDashboardTabForAuthority = (authority: AuthorityUnion) => {
-  if (authority === "CHIP SPA" || authority === "Medicaid SPA") {
-    return "spas";
+export const getDashboardTabForAuthority = (
+  authority: AuthorityUnion,
+): "spas" | "waivers" => {
+  switch (authority) {
+    case "CHIP SPA":
+    case "Medicaid SPA":
+      return "spas";
+    case "1915(b)":
+    case "1915(c)":
+      return "waivers";
+    default:
+      throw new Error("Invalid authority");
   }
-
-  return "waivers";
 };
 
 export const detailsAndActionsCrumbs = ({
