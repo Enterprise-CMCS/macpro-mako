@@ -10,12 +10,7 @@ export const main = async (
     JSON.stringify(event, null, 4),
   );
 
-  let message: any;
-  if (typeof event.Records[0].Sns.Message === "string") {
-    message = { simpleMessage: event.Records[0].Sns.Message };
-  } else {
-    message = JSON.parse(event.Records[0].Sns.Message);
-  }
+  const message = { simpleMessage: event.Records[0].Sns.Message };
   console.log("Message received from SNS:", message);
 
   callback(null, "Success");

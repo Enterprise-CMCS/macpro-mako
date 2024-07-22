@@ -1,4 +1,3 @@
-/* prettier-ignore */
 import { getExport, getSecret } from "shared-utils";
 
 interface InjectedConfigOptions {
