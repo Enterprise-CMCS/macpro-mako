@@ -13,6 +13,7 @@ type InjectedConfigProperties = {
   devPasswordArn: string;
   domainCertificateArn: string;
   domainName: string;
+  emailAddressLookupSecretName: string;
   googleAnalyticsDisable: boolean;
   googleAnalyticsGTag: string;
   idmAuthzApiEndpoint: string;
@@ -121,6 +122,7 @@ export class DeploymentConfig {
       typeof config.devPasswordArn == "string" && // pragma: allowlist secret
       typeof config.domainCertificateArn == "string" &&
       typeof config.domainName === "string" &&
+      typeof config.emailAddressLookupSecretName === "string" && // pragma: allowlist secret
       typeof config.googleAnalyticsDisable == "boolean" &&
       typeof config.googleAnalyticsGTag === "string" &&
       typeof config.idmAuthzApiEndpoint === "string" &&

@@ -128,6 +128,7 @@ export class ParentStack extends Stack {
         networkingStack.lambdaSecurityGroup.securityGroupId,
       applicationEndpoint: uiInfraStack.applicationEndpointUrl,
       cognitoUserPoolId: authStack.userPool.userPoolId,
+      emailAddressLookupSecretName: props.emailAddressLookupSecretName,
     });
 
     new StringParameter(this, "DeploymentOutput", {

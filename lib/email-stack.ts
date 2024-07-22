@@ -32,6 +32,7 @@ interface EmailServiceStackProps extends cdk.NestedStackProps {
   applicationEndpoint: string;
   stack: string;
   cognitoUserPoolId: string;
+  emailAddressLookupSecretName: string;
 }
 
 export class EmailStack extends cdk.NestedStack {
@@ -50,6 +51,7 @@ export class EmailStack extends cdk.NestedStack {
       lambdaSecurityGroupId,
       applicationEndpoint,
       cognitoUserPoolId,
+      emailAddressLookupSecretName,
     } = props;
 
     // IAM Role for Lambda
@@ -183,6 +185,7 @@ export class EmailStack extends cdk.NestedStack {
           cognitoPoolId: cognitoUserPoolId,
           emailConfigSet: `${topicNamespace}-configuration`,
           applicationEndpoint: applicationEndpoint,
+          emailAddressLookupSecretName,
         },
         vpc,
         securityGroups: [
