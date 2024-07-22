@@ -11,6 +11,8 @@ import {
   newSubmission,
   legacyPackageView,
   withdrawPackage,
+  issueRai,
+  respondToRai,
   withdrawRai,
   toggleWithdrawEnabled,
   seatool,
@@ -19,6 +21,8 @@ import {
 
 export type Document = z.infer<newSubmission.Schema> &
   z.infer<legacyPackageView.Schema> &
+  z.infer<issueRai.Schema> &
+  z.infer<respondToRai.Schema> &
   z.infer<withdrawRai.Schema> &
   z.infer<withdrawPackage.Schema> &
   z.infer<toggleWithdrawEnabled.Schema> &
