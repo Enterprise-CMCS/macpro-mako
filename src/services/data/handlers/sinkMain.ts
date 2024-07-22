@@ -157,6 +157,10 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
                 .safeParse(record);
             case Action.UPDATE_ID: {
               console.log("UPDATE_ID detected...");
+              if(!record.newId){
+                console.log("Malformed update id record.  We're going to skip.")
+                break; // we need to add a safeparse so malformed receords fail in a nominal way.
+              }
               // Immediately index all prior documents
               await bulkUpdateDataWrapper(osDomain, index, docs);
               // Reset docs back to empty
