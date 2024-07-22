@@ -222,7 +222,7 @@ export class EmailStack extends cdk.NestedStack {
       {
         functionName: `${topicNamespace}-processEmailEvents`,
         runtime: Runtime.NODEJS_18_X,
-        handler: "handler",
+        handler: "main",
         entry: path.join(__dirname, "lambda/processEmailEvents.ts"),
         role: lambdaRole,
         environment: {
