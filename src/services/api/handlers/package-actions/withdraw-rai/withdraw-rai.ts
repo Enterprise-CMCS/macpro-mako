@@ -1,9 +1,8 @@
 import { raiWithdrawSchema, SEATOOL_STATUS, Action } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
-
 import { response } from "../../../libs/handler";
 import { TOPIC_NAME } from "../consts";
-import { PackageWriteClass } from "../services/package-action-write-service";
+import { withdrawRaiAction } from "../services/package-action-write-service";
 import { ExtendedItemResult } from "../../../libs/package";
 
 export async function withdrawRai(
@@ -12,7 +11,6 @@ export async function withdrawRai(
     ExtendedItemResult["_source"],
     "raiReceivedDate" | "raiRequestedDate"
   >,
-  packageActionWriteService: PackageWriteClass = globalThis.packageActionWriteService,
 ) {
   console.log("State withdrawing an RAI Response");
 
@@ -51,7 +49,7 @@ export async function withdrawRai(
   }
 
   try {
-    await packageActionWriteService.withdrawRai({
+    await withdrawRaiAction({
       ...result.data,
       action: Action.WITHDRAW_RAI,
       id: result.data.id,

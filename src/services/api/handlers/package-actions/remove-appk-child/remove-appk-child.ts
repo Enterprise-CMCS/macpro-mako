@@ -7,6 +7,7 @@ import {
 import { seaToolFriendlyTimestamp } from "shared-utils";
 import { response } from "../../../libs/handler";
 import { TOPIC_NAME } from "../consts";
+import { removeAppkChildAction } from "../services/package-action-write-service";
 export async function removeAppkChild(doc: opensearch.main.Document) {
   const result = removeAppkChildSchema.safeParse(doc);
 
@@ -22,7 +23,7 @@ export async function removeAppkChild(doc: opensearch.main.Document) {
   const now = new Date().getTime();
   const today = seaToolFriendlyTimestamp();
 
-  await packageActionWriteService.removeAppkChild({
+  await removeAppkChildAction({
     ...result.data,
     action: Action.REMOVE_APPK_CHILD,
     id: result.data.id,
