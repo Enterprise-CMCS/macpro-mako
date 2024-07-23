@@ -21,7 +21,7 @@ const getBundleFromEvent = (configKey, stage) => {
         emailCommands: [
           {
             Template: `new-submission-medicaid-spa-cms_${stage}`,
-            ToAddresses: ["osgEmail", "cpoc"],
+            ToAddresses: ["osgEmail"],
           },
           {
             Template: `new-submission-medicaid-spa-state_${stage}`,
@@ -50,7 +50,7 @@ const getBundleFromEvent = (configKey, stage) => {
         emailCommands: [
           {
             Template: `new-submission-1915b-cms_${stage}`,
-            ToAddresses: ["osgEmail", "cpoc"],
+            ToAddresses: ["osgEmail"],
           },
           {
             Template: `new-submission-1915b-state_${stage}`,
@@ -106,7 +106,7 @@ const getBundleFromEvent = (configKey, stage) => {
         emailCommands: [
           {
             Template: `withdraw-package-1915b-cms_${stage}`,
-            ToAddresses: ["osgEmail", "cpoc", "srt"],
+            ToAddresses: ["osgEmail", "cpoc", "srt", "dmcoEmail"],
           },
           {
             Template: `withdraw-package-1915b-state_${stage}`,
@@ -190,7 +190,7 @@ const getBundleFromEvent = (configKey, stage) => {
         emailCommands: [
           {
             Template: `withdraw-package-medicaid-spa-cms_${stage}`,
-            ToAddresses: ["osgEmail", "cpoc"],
+            ToAddresses: ["osgEmail"],
             CcAddresses: ["dpoEmail"],
           },
           {
@@ -220,7 +220,7 @@ const getBundleFromEvent = (configKey, stage) => {
         emailCommands: [
           {
             Template: `new-submission-chip-spa-cms_${stage}`,
-            ToAddresses: ["osgEmail", "chipInbox", "cpoc"],
+            ToAddresses: ["chipInbox"],
             CcAddresses: ["chipCcList"],
           },
           {
@@ -251,7 +251,7 @@ const getBundleFromEvent = (configKey, stage) => {
         emailCommands: [
           {
             Template: `respond-to-rai-chip-spa-cms_${stage}`,
-            ToAddresses: ["osgEmail", "chipInbox", "cpoc"],
+            ToAddresses: ["srt", "chipInbox", "cpoc"],
             CcAddresses: ["chipCcList"],
           },
           {
@@ -340,7 +340,7 @@ const getBundleFromEvent = (configKey, stage) => {
         emailCommands: [
           {
             Template: `new-submission-1915c-cms_${stage}`,
-            ToAddresses: ["osgEmail", "cpoc"],
+            ToAddresses: ["osgEmail"],
           },
           {
             Template: `new-submission-1915c-state_${stage}`,
@@ -368,7 +368,7 @@ const getBundleFromEvent = (configKey, stage) => {
         emailCommands: [
           {
             Template: `temporary-extension-cms_${stage}`,
-            ToAddresses: ["osgEmail", "cpoc"],
+            ToAddresses: ["osgEmail"],
           },
           {
             Template: `temporary-extension-state_${stage}`,
