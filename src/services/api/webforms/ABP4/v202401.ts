@@ -42,49 +42,55 @@ export const v202401: FormSchema = {
               },
             },
             {
-              rhf: "Checkbox",
-              name: "see-approved-attachment",
-              rules: { required: "* Required" },
-              formItemClassName:
-                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
-              dependency: {
-                conditions: [
-                  {
-                    name: "abp4_cost-sharing_abp-for-individuals-income-over-100-poverty",
-                    type: "expectedValue",
-                    expectedValue: "yes",
+              rhf: "WrappedGroup",
+              name: "wrapped",
+              fields: [
+                {
+                  rhf: "Checkbox",
+                  name: "see-approved-attachment",
+                  rules: { required: "* Required" },
+                  formItemClassName:
+                    "ml-[0.6rem] px-4 border-l-4 border-l-primary pb-6",
+                  dependency: {
+                    conditions: [
+                      {
+                        name: "abp4_cost-sharing_abp-for-individuals-income-over-100-poverty",
+                        type: "expectedValue",
+                        expectedValue: "yes",
+                      },
+                    ],
+                    effect: { type: "show" },
                   },
-                ],
-                effect: { type: "show" },
-              },
-              props: {
-                options: [
-                  {
-                    label:
-                      "See approved Attachment 4.18-F or G for description.",
-                    value: "true",
+                  props: {
+                    options: [
+                      {
+                        label:
+                          "See approved Attachment 4.18-F or G for description.",
+                        value: "true",
+                      },
+                    ],
                   },
-                ],
-              },
-            },
-            {
-              rhf: "Upload",
-              name: "attachment_upload",
-              label: "Attachment 4.18-F or G",
-              labelClassName: "font-bold",
-              rules: { required: "* Required" },
-              formItemClassName:
-                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
-              dependency: {
-                conditions: [
-                  {
-                    name: "abp4_cost-sharing_abp-for-individuals-income-over-100-poverty",
-                    type: "expectedValue",
-                    expectedValue: "yes",
+                },
+                {
+                  rhf: "Upload",
+                  name: "attachment_upload",
+                  label: "Attachment 4.18-F or G",
+                  labelClassName: "font-bold",
+                  rules: { required: "* Required" },
+                  formItemClassName:
+                    "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+                  dependency: {
+                    conditions: [
+                      {
+                        name: "abp4_cost-sharing_abp-for-individuals-income-over-100-poverty",
+                        type: "expectedValue",
+                        expectedValue: "yes",
+                      },
+                    ],
+                    effect: { type: "show" },
                   },
-                ],
-                effect: { type: "show" },
-              },
+                },
+              ],
             },
             {
               rhf: "Textarea",
