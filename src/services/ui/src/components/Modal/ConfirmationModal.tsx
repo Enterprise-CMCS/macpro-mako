@@ -12,6 +12,7 @@ export type ConfirmationModalProps = {
   open: boolean;
   description?: React.ReactNode;
   body?: React.ReactNode;
+  reverseButtonPlacement?: boolean;
   title: React.ReactNode;
   onCancel: () => void;
   onAccept: () => void;
@@ -26,6 +27,7 @@ export function ConfirmationModal({
   open,
   description,
   title,
+  reverseButtonPlacement = false,
   body,
   onAccept,
   onCancel,
