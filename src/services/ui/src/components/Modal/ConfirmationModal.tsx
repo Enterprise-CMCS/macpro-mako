@@ -13,7 +13,7 @@ export type ConfirmationModalProps = {
   open: boolean;
   description?: React.ReactNode;
   body?: React.ReactNode;
-  reverseButtonPlacement?: boolean;
+  areButtonsReversed?: boolean;
   title: React.ReactNode;
   onCancel: () => void;
   onAccept: () => void;
@@ -28,7 +28,7 @@ export function ConfirmationModal({
   open,
   description,
   title,
-  reverseButtonPlacement = false,
+  areButtonsReversed = false,
   body,
   onAccept,
   onCancel,
@@ -47,8 +47,7 @@ export function ConfirmationModal({
         {body && <div className="grid gap-4 py-4">{body}</div>}
         <DialogFooter
           className={cn({
-            "flex-col sm:flex-row-reverse sm:justify-start":
-              reverseButtonPlacement,
+            "flex-col sm:flex-row-reverse sm:justify-start": areButtonsReversed,
           })}
         >
           {acceptButtonVisible && (
