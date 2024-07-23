@@ -16,7 +16,6 @@ import {
   FormField,
 } from "@/components";
 import { submit } from "@/api/submissionService";
-import { Authority } from "shared-types";
 import {
   zAdditionalInfoOptional,
   zAttachmentOptional,
@@ -88,7 +87,7 @@ export const Capitated1915BWaiverInitialPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: Authority["1915b"],
+        authority: "1915(b)",
       });
       alert.setContent({
         header: "Package submitted",

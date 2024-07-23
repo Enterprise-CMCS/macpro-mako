@@ -1,5 +1,5 @@
 import { ConfirmationModal, LoadingSpinner } from "@/components";
-import { SEATOOL_STATUS } from "shared-types";
+import { SEATOOL_STATUS, SeatoolAuthority } from "shared-types";
 import { useState } from "react";
 import * as T from "@/components/Table";
 import { Button } from "@/components/Inputs";
@@ -25,7 +25,7 @@ export const AppK = () => {
       {
         data: { id, appkParentId: cache.data.id },
         user,
-        authority: cache.data.authority,
+        authority: cache.data.authority as SeatoolAuthority,
         endpoint: "/action/remove-appk-child",
       },
       {

@@ -1,4 +1,4 @@
-import { Action, AuthorityUnion } from "shared-types";
+import { Action, Authority } from "shared-types";
 import { ZodEffects, ZodObject, ZodRawShape, ZodType } from "zod";
 import {
   bWaiverRaiSchema,
@@ -14,7 +14,7 @@ import {
 } from "@/features/package-actions/lib/modules";
 
 type Schema = ZodObject<ZodRawShape> | ZodEffects<ZodType>;
-type SchemaGroup = Record<AuthorityUnion, Schema | undefined | null>;
+type SchemaGroup = Record<Authority, Schema | undefined | null>;
 
 const issueRaiFor: SchemaGroup = {
   "CHIP SPA": defaultIssueRaiSchema,
@@ -79,7 +79,7 @@ const completeIntakeFor: SchemaGroup = {
   "1915(c)": defaultCompleteIntakeSchema,
 };
 
-export const getSchemaFor = (a: Action, p: AuthorityUnion): Schema | null => {
+export const getSchemaFor = (a: Action, p: Authority): Schema | null => {
   const actionSchemaMap: Record<string, SchemaGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,

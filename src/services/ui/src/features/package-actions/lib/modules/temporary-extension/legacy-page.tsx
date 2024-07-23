@@ -5,7 +5,7 @@
 import { unflatten } from "flat";
 import { defaultTempExtSchema } from ".";
 import { getUser, submit } from "@/api";
-import { AuthorityAPI } from "shared-types";
+import { Authority, SeatoolAuthority } from "shared-types";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -45,8 +45,8 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
       data,
       endpoint: "/submit",
       user,
-      // REFACTOR: either check if data.authority is AuthorityAPI or type it out correctly
-      authority: data.authority as AuthorityAPI,
+      // REFACTOR: either check if data.authority is SeatoolAuthority or type it out correctly
+      authority: data.authority as SeatoolAuthority,
     });
 
     await documentPoller(data.id, (data) => !!data).startPollingData();
@@ -79,7 +79,7 @@ export const TempExtensionWrapper = () => {
 };
 
 export const TemporaryExtension = () => {
-  const { id, authority } = useParams<{ id: string; authority: string }>();
+  const { id, authority } = useParams<{ id: string; authority: Authority }>();
 
   const navigationLocation = useMemo(
     () =>

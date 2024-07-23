@@ -1,7 +1,14 @@
 import { describe, it, expect } from "vitest";
-import { testItemResult, testCMSCognitoUser } from "./testData";
+import { testItemResult } from "./testData";
 import { PackageCheck } from "../package-check";
-import { ActionType, Authority, SEATOOL_STATUS } from "shared-types";
+import {
+  ActionType,
+  AUTHORITY,
+  CHIP_SPA,
+  MEDICAD_SPA,
+  SEATOOL_STATUS,
+  WAIVER_1915_B,
+} from "shared-types";
 
 // Build Mock Package data:
 //   - make it basic, like a new submission
@@ -13,38 +20,38 @@ describe("PackageCheck", () => {
     it("checks if isSpa", () => {
       let packageCheck = PackageCheck({
         ...testItemResult._source,
-        authority: Authority.MED_SPA,
+        authority: MEDICAD_SPA,
       });
       expect(packageCheck.isSpa).toBe(true);
       packageCheck = PackageCheck({
         ...testItemResult._source,
-        authority: Authority.CHIP_SPA,
+        authority: CHIP_SPA,
       });
       expect(packageCheck.isSpa).toBe(true);
       packageCheck = PackageCheck({
         ...testItemResult._source,
-        authority: Authority["1915b"],
+        authority: WAIVER_1915_B,
       });
       expect(packageCheck.isSpa).toBe(false);
     });
     it("checks if isWaiver", () => {
       let packageCheck = PackageCheck({
         ...testItemResult._source,
-        authority: Authority["1915b"],
+        authority: WAIVER_1915_B,
       });
       expect(packageCheck.isWaiver).toBe(true);
       packageCheck = PackageCheck({
         ...testItemResult._source,
-        authority: Authority.CHIP_SPA,
+        authority: CHIP_SPA,
       });
       expect(packageCheck.isWaiver).toBe(false);
     });
     it("checks against input", () => {
       let packageCheck = PackageCheck({
         ...testItemResult._source,
-        authority: Authority["1915b"],
+        authority: WAIVER_1915_B,
       });
-      expect(packageCheck.authorityIs([Authority["1915b"]])).toBe(true);
+      expect(packageCheck.authorityIs(["1915(b)"])).toBe(true);
     });
   });
 
@@ -64,7 +71,7 @@ describe("PackageCheck", () => {
     it("checks if isInSecondClock", () => {
       let packageCheck = PackageCheck({
         ...testItemResult._source,
-        authority: Authority.CHIP_SPA, // Chip Spas don't have 2nd clock
+        authority: CHIP_SPA, // Chip Spas don't have 2nd clock
         seatoolStatus: SEATOOL_STATUS.PENDING,
         raiRequestedDate: "exists",
         raiReceivedDate: "exists",
@@ -72,7 +79,7 @@ describe("PackageCheck", () => {
       expect(packageCheck.isInSecondClock).toBe(false);
       packageCheck = PackageCheck({
         ...testItemResult._source,
-        authority: Authority.MED_SPA,
+        authority: MEDICAD_SPA,
         seatoolStatus: SEATOOL_STATUS.PENDING,
         raiRequestedDate: "exists",
         raiReceivedDate: "exists",

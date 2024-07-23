@@ -1,15 +1,15 @@
 import { BreadCrumbConfig, Route } from "@/components";
 import { mapActionLabel, mapSubmissionCrumb } from "@/utils";
-import { Action, AuthorityUnion } from "shared-types";
+import { Action, Authority } from "shared-types";
 
 type DetailsAndActionsBreadCrumbsArgs = {
   id: string;
-  authority: AuthorityUnion;
+  authority: Authority;
   actionType?: Action;
 };
 
 export const getDashboardTabForAuthority = (
-  authority: AuthorityUnion,
+  authority: Authority,
 ): "spas" | "waivers" => {
   switch (authority) {
     case "CHIP SPA":
@@ -38,9 +38,7 @@ export const detailsAndActionsCrumbs = ({
     : defaultBreadCrumbs;
 };
 
-export const dashboardCrumb = (
-  authority?: AuthorityUnion,
-): BreadCrumbConfig => {
+export const dashboardCrumb = (authority?: Authority): BreadCrumbConfig => {
   return {
     displayText: "Dashboard",
     order: 1,
@@ -53,7 +51,7 @@ export const dashboardCrumb = (
 
 export const detailsCrumb = (
   id: string,
-  authority: AuthorityUnion,
+  authority: Authority,
 ): BreadCrumbConfig => ({
   displayText: id,
   order: 2,

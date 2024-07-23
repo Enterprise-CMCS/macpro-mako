@@ -1,4 +1,4 @@
-import { Action, AUTHORITY_FE_TO_API, AuthorityUnion } from "shared-types";
+import { Action, AUTHORITY, Authority } from "shared-types";
 import { getSchemaFor } from "@/features/package-actions/lib/schemaSwitch";
 import { getFieldsFor } from "@/features/package-actions/lib/fieldsSwitch";
 import { OneMacUser, submit } from "@/api";
@@ -20,7 +20,7 @@ export type FormSetup = {
 };
 /** Builds a form setup using an Action x Authority 2-dimensional
  * lookup. */
-export const getSetupFor = (a: Action, p: AuthorityUnion): FormSetup => ({
+export const getSetupFor = (a: Action, p: Authority): FormSetup => ({
   schema: getSchemaFor(a, p),
   fields: getFieldsFor(a, p),
   content: getContentFor(a, p),
@@ -42,7 +42,7 @@ export const submitActionForm = async ({
   id: string;
   type: Action;
   user: OneMacUser;
-  authority: AuthorityUnion;
+  authority: Authority;
   originRoute: ReturnType<typeof useOriginPath>;
   alert: ReturnType<typeof useAlertContext>;
   navigate: ReturnType<typeof useNavigate>;
@@ -58,7 +58,7 @@ export const submitActionForm = async ({
         ? buildActionUrl(type) // "/action/{type}"
         : "/submit",
       user,
-      authority: AUTHORITY_FE_TO_API[authority],
+      authority: AUTHORITY[authority],
     });
     alert.setBannerStyle("success");
     alert.setBannerShow(true);

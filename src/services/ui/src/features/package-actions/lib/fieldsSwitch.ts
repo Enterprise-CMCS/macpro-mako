@@ -1,4 +1,4 @@
-import { Action, AuthorityUnion } from "shared-types";
+import { Action, Authority } from "shared-types";
 import { ReactElement } from "react";
 import {
   bWaiverRaiFields,
@@ -15,7 +15,7 @@ import {
   medSpaRaiFields,
 } from "@/features/package-actions/lib/modules";
 
-type FieldsGroup = Record<AuthorityUnion, ReactElement[] | undefined>;
+type FieldsGroup = Record<Authority, ReactElement[] | undefined>;
 
 const issueRaiFor: FieldsGroup = {
   "CHIP SPA": defaultIssueRaiFields,
@@ -80,7 +80,7 @@ const completeIntakeFor: FieldsGroup = {
   "1915(c)": defaultCompleteIntakeFields,
 };
 
-export const getFieldsFor = (a: Action, p: AuthorityUnion): ReactElement[] => {
+export const getFieldsFor = (a: Action, p: Authority): ReactElement[] => {
   const fieldsGroupMap: Record<string, FieldsGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,

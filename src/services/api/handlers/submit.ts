@@ -9,7 +9,7 @@ import {
 
 import {
   Action,
-  Authority,
+  AUTHORITY,
   SEATOOL_AUTHORITIES,
   onemacSchema,
 } from "shared-types";
@@ -54,10 +54,10 @@ export const submit = async (event: APIGatewayEvent) => {
   }
 
   const activeSubmissionTypes = [
-    Authority.CHIP_SPA,
-    Authority.MED_SPA,
-    Authority["1915b"],
-    Authority["1915c"], // We accept amendments, renewals, and extensions for Cs
+    AUTHORITY["CHIP SPA"],
+    AUTHORITY["Medicaid SPA"],
+    AUTHORITY["1915(b)"],
+    AUTHORITY["1915(c)"], // We accept amendments, renewals, and extensions for Cs
   ];
   if (!activeSubmissionTypes.includes(body.authority)) {
     return response({
@@ -76,7 +76,7 @@ export const submit = async (event: APIGatewayEvent) => {
 
   // I think we need to break this file up.  A switch maybe
   if (
-    [Authority["1915b"], Authority["1915c"]].includes(body.authority) &&
+    [AUTHORITY["1915(b)"], AUTHORITY["1915(c)"]].includes(body.authority) &&
     body.seaActionType === "Extend"
   ) {
     console.log("Received a new temporary extension sumbission");
@@ -164,9 +164,10 @@ export const submit = async (event: APIGatewayEvent) => {
     // Resolve the the Plan_Type_ID
     const authorityId = findAuthorityIdByName(body.authority);
     // Resolve the actionTypeID, if applicable
-    const actionTypeSelect = [Authority["1915b"], Authority.CHIP_SPA].includes(
-      body.authority,
-    )
+    const actionTypeSelect = [
+      AUTHORITY["1915(b)"],
+      AUTHORITY["CHIP SPA"],
+    ].includes(body.authority)
       ? `
         SELECT @ActionTypeID = Action_ID FROM SEA.dbo.Action_Types
         WHERE Plan_Type_ID = '${authorityId}'

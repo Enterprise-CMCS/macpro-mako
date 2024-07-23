@@ -8,7 +8,6 @@ import { FORM, SchemaForm } from "./consts";
 import { SlotStateSelect, WaiverIdFieldArray } from "./slots";
 import { SubmissionServiceParameters, submit } from "@/api/submissionService";
 import { useGetUser } from "@/api/useGetUser";
-import { Authority } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@/components/Routing";
 import { useEffect, useState } from "react";
@@ -39,7 +38,7 @@ export const AppKSubmissionForm = () => {
     await submission.mutateAsync(
       {
         data: draft,
-        authority: Authority["1915c"],
+        authority: "1915(c)",
         endpoint: "/appk",
         user,
       },
@@ -55,8 +54,7 @@ export const AppKSubmissionForm = () => {
           await documentPoller(
             `${draft.state}-${draft.waiverIds[0]}`,
             (checks) =>
-              checks.authorityIs([Authority["1915c"]]) &&
-              checks.actionIs("Amend"),
+              checks.authorityIs(["1915(c)"]) && checks.actionIs("Amend"),
           ).startPollingData();
           setIsDataPolling(false);
 

@@ -1,7 +1,7 @@
 import { isCmsUser } from "shared-utils";
 
 import { BLANK_VALUE } from "@/consts";
-import { Authority, opensearch } from "shared-types";
+import { AUTHORITY, opensearch } from "shared-types";
 import { FC, ReactNode } from "react";
 import { OneMacUser } from "@/api/useGetUser";
 
@@ -56,7 +56,9 @@ export const recordDetails = (
     label: "Action Type",
     value: LABELS[data.actionType as keyof typeof LABELS] || data.actionType,
     canView: () => {
-      return [Authority["1915b"], Authority["1915c"]].includes(data.authority);
+      return [AUTHORITY["1915(b)"], AUTHORITY["1915(c)"]].some(
+        (waiver) => waiver === data.authority,
+      );
     },
   },
   {
