@@ -1,4 +1,7 @@
-import { SEATOOL_AUTHORITIES_MAP_TO_ID } from "shared-types";
+import {
+  SEATOOL_AUTHORITIES_MAP_TO_ID,
+  SeatoolAuthorityType,
+} from "shared-types";
 import { useParams } from "@/components";
 import { useState } from "react";
 
@@ -7,7 +10,9 @@ import { useState } from "react";
 export const useSeaToolAuthorityId = () => {
   const { authority } = useParams("/action/:authority/:id/:type");
   const [stAuthorityId] = useState(
-    authority ? SEATOOL_AUTHORITIES_MAP_TO_ID[authority] : 0,
+    authority
+      ? SEATOOL_AUTHORITIES_MAP_TO_ID[authority as SeatoolAuthorityType]
+      : 0,
   );
   return stAuthorityId;
 };

@@ -1,14 +1,19 @@
-export const CHIP_SPA = "CHIP SPA" as const;
-export const MEDICAD_SPA = "Medicaid SPA" as const;
-export const WAIVER_1915_B = "1915(b)" as const;
-export const WAIVER_1915_C = "1915(c)" as const;
+export enum SeatoolAuthority {
+  MedicaidSPA = "Medicaid SPA",
+  CHIPSPA = "CHIP SPA",
+  "1915b" = "1915(b)",
+  "1915c" = "1915(c)",
+  "1115Waiver" = "1115",
+  "1115IndPlus" = "1115 Indep. Plus",
+  "1915cIndPlus" = "1915(c) Indep. Plus",
+  "ADP" = "APD",
+  "ADM" = "ADM",
+  "ULP" = "UPL",
+}
 
-export const AUTHORITY = {
-  [CHIP_SPA]: "chip spa",
-  [MEDICAD_SPA]: "medicaid spa",
-  [WAIVER_1915_B]: "1915(b)",
-  [WAIVER_1915_C]: "1915(c)",
-} as const;
+export type SeatoolAuthorityType = `${SeatoolAuthority}`;
 
-export type Authority = keyof typeof AUTHORITY;
-export type SeatoolAuthority = (typeof AUTHORITY)[keyof typeof AUTHORITY];
+// Now you can use SeatoolAuthorityType wherever you need to allow any value from SeatoolAuthority
+
+// const exampleAuthority: SeatoolAuthorityType = "Medicaid SPA"; // This is valid
+// const anotherExample: SeatoolAuthorityType = SeatoolAuthority.CHIPSPA; // This is also valid

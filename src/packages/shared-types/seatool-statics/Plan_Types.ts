@@ -1,25 +1,17 @@
-export const SEATOOL_AUTHORITIES: { [key: string]: string } = {
-  "121": "1115",
-  "122": "1915(b)",
-  "123": "1915(c)",
-  "124": "CHIP SPA",
-  "125": "Medicaid SPA",
-  "126": "1115 Indep. Plus",
-  "127": "1915(c) Indep. Plus",
-  "128": "APD",
-  "129": "ADM",
-  "130": "UPL",
-};
+import { SeatoolAuthority, SeatoolAuthorityType } from "../authority";
 
-export const SEATOOL_AUTHORITIES_MAP_TO_ID: { [key: string]: number } = {
-  ["1115"]: 121,
-  ["1915(b)"]: 122,
-  ["1915(c)"]: 123,
-  ["CHIP SPA"]: 124,
-  ["Medicaid SPA"]: 125,
-  ["1115 Indep. Plus"]: 126,
-  ["1915(c) Indep. Plus"]: 127,
-  ["APD"]: 128,
-  ["ADM"]: 129,
-  ["UPL"]: 130,
+export const SEATOOL_AUTHORITIES_MAP_TO_ID: Record<
+  SeatoolAuthorityType,
+  number
+> = {
+  [SeatoolAuthority["1115Waiver"]]: 121,
+  [SeatoolAuthority["1915b"]]: 122,
+  [SeatoolAuthority["1915c"]]: 123,
+  [SeatoolAuthority["CHIPSPA"]]: 124,
+  [SeatoolAuthority["MedicaidSPA"]]: 125,
+  [SeatoolAuthority["1115IndPlus"]]: 126,
+  [SeatoolAuthority["1915cIndPlus"]]: 127,
+  [SeatoolAuthority["ADP"]]: 128,
+  [SeatoolAuthority["ADM"]]: 129,
+  [SeatoolAuthority["ULP"]]: 130,
 };

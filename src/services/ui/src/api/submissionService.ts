@@ -4,7 +4,6 @@ import {
   ReactQueryApiError,
   Action,
   AttachmentKey,
-  AUTHORITY,
   SeatoolAuthority,
 } from "shared-types";
 import { buildActionUrl, SubmissionServiceEndpoint } from "@/utils";
@@ -78,7 +77,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...data,
         ...userDetails,
         ...baseProperties,
-        authority: AUTHORITY["1915(c)"],
+        authority: SeatoolAuthority["1915c"],
         proposedEffectiveDate: seaToolFriendlyTimestamp(
           data.proposedEffectiveDate as Date,
         ),
@@ -89,7 +88,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...data,
         ...baseProperties,
         ...userDetails,
-        authority: AUTHORITY["1915(c)"],
+        authority: SeatoolAuthority["1915c"],
       };
     case "/submit":
       return {

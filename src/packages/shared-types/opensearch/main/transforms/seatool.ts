@@ -1,3 +1,4 @@
+import { getAuthorityDetailsFromRecord } from "shared-utils";
 import {
   seatoolSchema,
   SEATOOL_STATUS,
@@ -7,8 +8,6 @@ import {
   SeatoolOfficer,
   SEATOOL_SPW_STATUS,
 } from "../../..";
-
-import { SEATOOL_AUTHORITIES } from "shared-types";
 
 type Flavor = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
@@ -121,17 +120,6 @@ const isInSecondClock = (
   return false; // otherwise, we're not
 };
 
-const getAuthority = (authorityId: number | null, id: string) => {
-  try {
-    if (!authorityId) return null;
-    return SEATOOL_AUTHORITIES[authorityId];
-  } catch (error) {
-    console.log(`SEATOOL AUTHORITY LOOKUP ERROR: ${id} ${authorityId}`);
-    console.log(error);
-    return null;
-  }
-};
-
 export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
@@ -141,7 +129,8 @@ export const transform = (id: string) => {
       ? SEATOOL_SPW_STATUS[data.STATE_PLAN.SPW_STATUS_ID]
       : "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-    const authorityId = data.STATE_PLAN?.PLAN_TYPE;
+    const { authorityId, authority } = getAuthorityDetailsFromRecord(data);
+
     const resp = {
       id,
       flavor: flavorLookup(data.STATE_PLAN.PLAN_TYPE), // This is MEDICAID CHIP or WAIVER... our concept
@@ -157,8 +146,8 @@ export const transform = (id: string) => {
       initialIntakeNeeded:
         !leadAnalystName && !finalDispositionStatuses.includes(seatoolStatus),
       leadAnalystName,
-      authorityId: authorityId || null,
-      authority: getAuthority(authorityId, id),
+      authorityId,
+      authority,
       types:
         data.STATE_PLAN_SERVICETYPES?.filter(
           (type): type is NonNullable<typeof type> => type != null,

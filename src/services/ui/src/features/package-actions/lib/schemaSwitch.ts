@@ -1,4 +1,4 @@
-import { Action, Authority } from "shared-types";
+import { Action, SeatoolAuthority } from "shared-types";
 import { ZodEffects, ZodObject, ZodRawShape, ZodType } from "zod";
 import {
   bWaiverRaiSchema,
@@ -14,72 +14,72 @@ import {
 } from "@/features/package-actions/lib/modules";
 
 type Schema = ZodObject<ZodRawShape> | ZodEffects<ZodType>;
-type SchemaGroup = Record<Authority, Schema | undefined | null>;
+type SchemaGroup = Partial<Record<SeatoolAuthority, Schema | null>>;
 
 const issueRaiFor: SchemaGroup = {
-  "CHIP SPA": defaultIssueRaiSchema,
-  "Medicaid SPA": defaultIssueRaiSchema,
-  "1915(b)": defaultIssueRaiSchema,
-  "1915(c)": defaultIssueRaiSchema,
+  [SeatoolAuthority.CHIPSPA]: defaultIssueRaiSchema,
+  [SeatoolAuthority.MedicaidSPA]: defaultIssueRaiSchema,
+  [SeatoolAuthority["1915b"]]: defaultIssueRaiSchema,
+  [SeatoolAuthority["1915c"]]: defaultIssueRaiSchema,
 };
 
 const respondToRaiFor: SchemaGroup = {
-  "CHIP SPA": chipSpaRaiSchema,
-  "Medicaid SPA": medSpaRaiSchema,
-  "1915(b)": bWaiverRaiSchema,
-  "1915(c)": bWaiverRaiSchema,
+  [SeatoolAuthority.CHIPSPA]: chipSpaRaiSchema,
+  [SeatoolAuthority.MedicaidSPA]: medSpaRaiSchema,
+  [SeatoolAuthority["1915b"]]: bWaiverRaiSchema,
+  [SeatoolAuthority["1915c"]]: bWaiverRaiSchema,
 };
 
 const enableRaiWithdrawFor: SchemaGroup = {
-  "CHIP SPA": null,
-  "Medicaid SPA": null,
-  "1915(b)": null,
-  "1915(c)": null,
+  [SeatoolAuthority.CHIPSPA]: null,
+  [SeatoolAuthority.MedicaidSPA]: null,
+  [SeatoolAuthority["1915b"]]: null,
+  [SeatoolAuthority["1915c"]]: null,
 };
 
 const disableRaiWithdrawFor: SchemaGroup = {
-  "CHIP SPA": null,
-  "Medicaid SPA": null,
-  "1915(b)": null,
-  "1915(c)": null,
+  [SeatoolAuthority.CHIPSPA]: null,
+  [SeatoolAuthority.MedicaidSPA]: null,
+  [SeatoolAuthority["1915b"]]: null,
+  [SeatoolAuthority["1915c"]]: null,
 };
 
 const withdrawRaiFor: SchemaGroup = {
-  "CHIP SPA": defaultWithdrawRaiSchema,
-  "Medicaid SPA": defaultWithdrawRaiSchema,
-  "1915(b)": defaultWithdrawRaiSchema,
-  "1915(c)": defaultWithdrawRaiSchema,
+  [SeatoolAuthority.CHIPSPA]: defaultWithdrawRaiSchema,
+  [SeatoolAuthority.MedicaidSPA]: defaultWithdrawRaiSchema,
+  [SeatoolAuthority["1915b"]]: defaultWithdrawRaiSchema,
+  [SeatoolAuthority["1915c"]]: defaultWithdrawRaiSchema,
 };
 
 const withdrawPackageFor: SchemaGroup = {
-  "CHIP SPA": chipWithdrawPackageSchema,
-  "Medicaid SPA": defaultWithdrawPackageSchema,
-  "1915(b)": defaultWithdrawPackageSchema,
-  "1915(c)": defaultWithdrawPackageSchema,
+  [SeatoolAuthority.CHIPSPA]: chipWithdrawPackageSchema,
+  [SeatoolAuthority.MedicaidSPA]: defaultWithdrawPackageSchema,
+  [SeatoolAuthority["1915b"]]: defaultWithdrawPackageSchema,
+  [SeatoolAuthority["1915c"]]: defaultWithdrawPackageSchema,
 };
 
 const tempExtensionFor: SchemaGroup = {
-  "CHIP SPA": defaultTempExtSchema,
-  "Medicaid SPA": defaultTempExtSchema,
-  "1915(b)": defaultTempExtSchema,
-  "1915(c)": defaultTempExtSchema,
+  [SeatoolAuthority.CHIPSPA]: defaultTempExtSchema,
+  [SeatoolAuthority.MedicaidSPA]: defaultTempExtSchema,
+  [SeatoolAuthority["1915b"]]: defaultTempExtSchema,
+  [SeatoolAuthority["1915c"]]: defaultTempExtSchema,
 };
 
 const updateIdFor: SchemaGroup = {
-  "CHIP SPA": defaultUpdateIdSchema,
-  "Medicaid SPA": defaultUpdateIdSchema,
-  "1915(b)": defaultUpdateIdSchema,
-  "1915(c)": defaultUpdateIdSchema,
+  [SeatoolAuthority.CHIPSPA]: defaultUpdateIdSchema,
+  [SeatoolAuthority.MedicaidSPA]: defaultUpdateIdSchema,
+  [SeatoolAuthority["1915b"]]: defaultUpdateIdSchema,
+  [SeatoolAuthority["1915c"]]: defaultUpdateIdSchema,
 };
 
 const completeIntakeFor: SchemaGroup = {
-  "CHIP SPA": defaultCompleteIntakeSchema,
-  "Medicaid SPA": defaultCompleteIntakeSchema,
-  "1915(b)": defaultCompleteIntakeSchema,
-  "1915(c)": defaultCompleteIntakeSchema,
+  [SeatoolAuthority.CHIPSPA]: defaultCompleteIntakeSchema,
+  [SeatoolAuthority.MedicaidSPA]: defaultCompleteIntakeSchema,
+  [SeatoolAuthority["1915b"]]: defaultCompleteIntakeSchema,
+  [SeatoolAuthority["1915c"]]: defaultCompleteIntakeSchema,
 };
 
-export const getSchemaFor = (a: Action, p: Authority): Schema | null => {
+export const getSchemaFor = (a: Action, p: SeatoolAuthority): Schema | null => {
   const actionSchemaMap: Record<string, SchemaGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,

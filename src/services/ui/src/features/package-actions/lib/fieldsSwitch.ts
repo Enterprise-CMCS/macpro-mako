@@ -1,4 +1,4 @@
-import { Action, Authority } from "shared-types";
+import { Action, SeatoolAuthority } from "shared-types";
 import { ReactElement } from "react";
 import {
   bWaiverRaiFields,
@@ -15,72 +15,75 @@ import {
   medSpaRaiFields,
 } from "@/features/package-actions/lib/modules";
 
-type FieldsGroup = Record<Authority, ReactElement[] | undefined>;
+type FieldsGroup = Partial<Record<SeatoolAuthority, ReactElement[]>>;
 
 const issueRaiFor: FieldsGroup = {
-  "CHIP SPA": defaultIssueRaiFields,
-  "Medicaid SPA": defaultIssueRaiFields,
-  "1915(b)": defaultIssueRaiFields,
-  "1915(c)": defaultIssueRaiFields,
+  [SeatoolAuthority.CHIPSPA]: defaultIssueRaiFields,
+  [SeatoolAuthority.MedicaidSPA]: defaultIssueRaiFields,
+  [SeatoolAuthority["1915b"]]: defaultIssueRaiFields,
+  [SeatoolAuthority["1915c"]]: defaultIssueRaiFields,
 };
 
 const respondToRaiFor: FieldsGroup = {
-  "CHIP SPA": chipSpaRaiFields,
-  "Medicaid SPA": medSpaRaiFields,
-  "1915(b)": bWaiverRaiFields,
-  "1915(c)": bWaiverRaiFields,
+  [SeatoolAuthority.CHIPSPA]: chipSpaRaiFields,
+  [SeatoolAuthority.MedicaidSPA]: medSpaRaiFields,
+  [SeatoolAuthority["1915b"]]: bWaiverRaiFields,
+  [SeatoolAuthority["1915c"]]: bWaiverRaiFields,
 };
 
 const enableRaiWithdrawFor: FieldsGroup = {
-  "CHIP SPA": defaultEnableRaiWithdrawFields,
-  "Medicaid SPA": defaultEnableRaiWithdrawFields,
-  "1915(b)": defaultEnableRaiWithdrawFields,
-  "1915(c)": defaultEnableRaiWithdrawFields,
+  [SeatoolAuthority.CHIPSPA]: defaultEnableRaiWithdrawFields,
+  [SeatoolAuthority.MedicaidSPA]: defaultEnableRaiWithdrawFields,
+  [SeatoolAuthority["1915b"]]: defaultEnableRaiWithdrawFields,
+  [SeatoolAuthority["1915c"]]: defaultEnableRaiWithdrawFields,
 };
 
 const disableRaiWithdrawFor: FieldsGroup = {
-  "CHIP SPA": defaultDisableRaiWithdrawFields,
-  "Medicaid SPA": defaultDisableRaiWithdrawFields,
-  "1915(b)": defaultDisableRaiWithdrawFields,
-  "1915(c)": defaultDisableRaiWithdrawFields,
+  [SeatoolAuthority.CHIPSPA]: defaultDisableRaiWithdrawFields,
+  [SeatoolAuthority.MedicaidSPA]: defaultDisableRaiWithdrawFields,
+  [SeatoolAuthority["1915b"]]: defaultDisableRaiWithdrawFields,
+  [SeatoolAuthority["1915c"]]: defaultDisableRaiWithdrawFields,
 };
 
 const withdrawRaiFor: FieldsGroup = {
-  "CHIP SPA": defaultWithdrawRaiFields,
-  "Medicaid SPA": defaultWithdrawRaiFields,
-  "1915(b)": defaultWithdrawRaiFields,
-  "1915(c)": defaultWithdrawRaiFields,
+  [SeatoolAuthority.CHIPSPA]: defaultWithdrawRaiFields,
+  [SeatoolAuthority.MedicaidSPA]: defaultWithdrawRaiFields,
+  [SeatoolAuthority["1915b"]]: defaultWithdrawRaiFields,
+  [SeatoolAuthority["1915c"]]: defaultWithdrawRaiFields,
 };
 
 const withdrawPackageFor: FieldsGroup = {
-  "CHIP SPA": chipWithdrawPackageFields,
-  "Medicaid SPA": defaultWithdrawPackageFields,
-  "1915(b)": defaultWithdrawPackageFields,
-  "1915(c)": defaultWithdrawPackageFields,
+  [SeatoolAuthority.CHIPSPA]: chipWithdrawPackageFields,
+  [SeatoolAuthority.MedicaidSPA]: defaultWithdrawPackageFields,
+  [SeatoolAuthority["1915b"]]: defaultWithdrawPackageFields,
+  [SeatoolAuthority["1915c"]]: defaultWithdrawPackageFields,
 };
 
 const tempExtensionFor: FieldsGroup = {
-  "CHIP SPA": defaultTempExtFields,
-  "Medicaid SPA": defaultTempExtFields,
-  "1915(b)": defaultTempExtFields,
-  "1915(c)": defaultTempExtFields,
+  [SeatoolAuthority.CHIPSPA]: defaultTempExtFields,
+  [SeatoolAuthority.MedicaidSPA]: defaultTempExtFields,
+  [SeatoolAuthority["1915b"]]: defaultTempExtFields,
+  [SeatoolAuthority["1915c"]]: defaultTempExtFields,
 };
 
 const updateIdFor: FieldsGroup = {
-  "CHIP SPA": defaultUpdateIdFields,
-  "Medicaid SPA": defaultUpdateIdFields,
-  "1915(b)": defaultUpdateIdFields,
-  "1915(c)": defaultUpdateIdFields,
+  [SeatoolAuthority.CHIPSPA]: defaultUpdateIdFields,
+  [SeatoolAuthority.MedicaidSPA]: defaultUpdateIdFields,
+  [SeatoolAuthority["1915b"]]: defaultUpdateIdFields,
+  [SeatoolAuthority["1915c"]]: defaultUpdateIdFields,
 };
 
 const completeIntakeFor: FieldsGroup = {
-  "CHIP SPA": defaultCompleteIntakeFields,
-  "Medicaid SPA": defaultCompleteIntakeFields,
-  "1915(b)": defaultCompleteIntakeFields,
-  "1915(c)": defaultCompleteIntakeFields,
+  [SeatoolAuthority.CHIPSPA]: defaultCompleteIntakeFields,
+  [SeatoolAuthority.MedicaidSPA]: defaultCompleteIntakeFields,
+  [SeatoolAuthority["1915b"]]: defaultCompleteIntakeFields,
+  [SeatoolAuthority["1915c"]]: defaultCompleteIntakeFields,
 };
 
-export const getFieldsFor = (a: Action, p: Authority): ReactElement[] => {
+export const getFieldsFor = (
+  a: Action,
+  p: SeatoolAuthority,
+): ReactElement[] => {
   const fieldsGroupMap: Record<string, FieldsGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,

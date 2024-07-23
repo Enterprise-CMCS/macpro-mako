@@ -1,4 +1,5 @@
 import { OptionData } from "@/features/selection-flow/plan-types";
+import { SeatoolAuthority } from "shared-types";
 
 export const AUTHORITY_OPTIONS: OptionData[] = [
   {
@@ -16,12 +17,12 @@ export const AUTHORITY_OPTIONS: OptionData[] = [
 
 export const SPA_OPTIONS: OptionData[] = [
   {
-    title: "Medicaid SPA",
+    title: SeatoolAuthority.MedicaidSPA,
     description: "Submit a new Medicaid State Plan Amendment",
     linkTo: "/new-submission/spa/medicaid",
   },
   {
-    title: "CHIP SPA",
+    title: SeatoolAuthority.CHIPSPA,
     description: "Submit a new CHIP State Plan Amendment",
     linkTo: "/new-submission/spa/chip",
   },

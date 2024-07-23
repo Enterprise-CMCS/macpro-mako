@@ -2,7 +2,6 @@ import {
   opensearch,
   SEATOOL_STATUS,
   ActionType,
-  Authority,
   SeatoolAuthority,
 } from "shared-types";
 
@@ -12,8 +11,10 @@ const secondClockStatuses = [
   SEATOOL_STATUS.PENDING_CONCURRENCE,
 ];
 
-const checkAuthority = (authority: string, validAuthorities: Authority[]) =>
-  validAuthorities.some((validAuthority) => validAuthority === authority);
+const checkAuthority = (
+  authority: string,
+  validAuthorities: SeatoolAuthority[],
+) => validAuthorities.some((validAuthority) => validAuthority === authority);
 
 const checkStatus = (seatoolStatus: string, authorized: string | string[]) =>
   typeof authorized === "string"
@@ -36,12 +37,18 @@ export const PackageCheck = ({
   leadAnalystName,
 }: opensearch.main.Document) => {
   const planChecks = {
-    isSpa: checkAuthority(authority, ["Medicaid SPA", "CHIP SPA"]),
-    isWaiver: checkAuthority(authority, ["1915(b)", "1915(c)"]),
+    isSpa: checkAuthority(authority, [
+      SeatoolAuthority.MedicaidSPA,
+      SeatoolAuthority.CHIPSPA,
+    ]),
+    isWaiver: checkAuthority(authority, [
+      SeatoolAuthority["1915b"],
+      SeatoolAuthority["1915c"],
+    ]),
     isAppk: appkParent,
     isAppkChild: appkParentId,
     /** Keep excess methods to a minimum with `is` **/
-    authorityIs: (validAuthorities: Authority[]) =>
+    authorityIs: (validAuthorities: SeatoolAuthority[]) =>
       checkAuthority(authority, validAuthorities),
     hasCpoc: !!leadAnalystName,
   };
@@ -53,7 +60,7 @@ export const PackageCheck = ({
     ]),
     /** Is in a second clock status and RAI has been received **/
     isInSecondClock:
-      !planChecks.authorityIs(["CHIP SPA"]) &&
+      !planChecks.authorityIs([SeatoolAuthority.CHIPSPA]) &&
       checkStatus(seatoolStatus, secondClockStatuses) &&
       raiRequestedDate &&
       raiReceivedDate &&

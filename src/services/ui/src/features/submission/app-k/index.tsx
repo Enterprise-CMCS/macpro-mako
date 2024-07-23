@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { SlotAdditionalInfo, SlotAttachments } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
 import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
+import { SeatoolAuthority } from "shared-types";
 
 export const AppKSubmissionForm = () => {
   const nav = useNavigate();
@@ -38,7 +39,7 @@ export const AppKSubmissionForm = () => {
     await submission.mutateAsync(
       {
         data: draft,
-        authority: "1915(c)",
+        authority: SeatoolAuthority["1915c"],
         endpoint: "/appk",
         user,
       },
@@ -54,7 +55,8 @@ export const AppKSubmissionForm = () => {
           await documentPoller(
             `${draft.state}-${draft.waiverIds[0]}`,
             (checks) =>
-              checks.authorityIs(["1915(c)"]) && checks.actionIs("Amend"),
+              checks.authorityIs([SeatoolAuthority["1915c"]]) &&
+              checks.actionIs("Amend"),
           ).startPollingData();
           setIsDataPolling(false);
 

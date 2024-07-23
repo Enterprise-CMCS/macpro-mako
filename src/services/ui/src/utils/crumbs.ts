@@ -1,22 +1,22 @@
 import { BreadCrumbConfig, Route } from "@/components";
 import { mapActionLabel, mapSubmissionCrumb } from "@/utils";
-import { Action, Authority } from "shared-types";
+import { Action, SeatoolAuthority } from "shared-types";
 
 type DetailsAndActionsBreadCrumbsArgs = {
   id: string;
-  authority: Authority;
+  authority: SeatoolAuthority;
   actionType?: Action;
 };
 
 export const getDashboardTabForAuthority = (
-  authority: Authority,
+  authority: SeatoolAuthority,
 ): "spas" | "waivers" => {
   switch (authority) {
-    case "CHIP SPA":
-    case "Medicaid SPA":
+    case SeatoolAuthority.CHIPSPA:
+    case SeatoolAuthority.MedicaidSPA:
       return "spas";
-    case "1915(b)":
-    case "1915(c)":
+    case SeatoolAuthority["1915b"]:
+    case SeatoolAuthority["1915c"]:
       return "waivers";
     default:
       throw new Error("Invalid authority");
@@ -38,7 +38,9 @@ export const detailsAndActionsCrumbs = ({
     : defaultBreadCrumbs;
 };
 
-export const dashboardCrumb = (authority?: Authority): BreadCrumbConfig => {
+export const dashboardCrumb = (
+  authority?: SeatoolAuthority,
+): BreadCrumbConfig => {
   return {
     displayText: "Dashboard",
     order: 1,
@@ -51,7 +53,7 @@ export const dashboardCrumb = (authority?: Authority): BreadCrumbConfig => {
 
 export const detailsCrumb = (
   id: string,
-  authority: Authority,
+  authority: SeatoolAuthority,
 ): BreadCrumbConfig => ({
   displayText: id,
   order: 2,

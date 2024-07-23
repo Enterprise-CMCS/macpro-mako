@@ -1,7 +1,7 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import {
   Action,
-  Authority,
+  SeatoolAuthority,
   CognitoUserAttributes,
   opensearch,
 } from "shared-types";
@@ -19,7 +19,7 @@ export const renderCellDate = (key: keyof opensearch.main.Document) =>
 
 type CellIdLinkProps = {
   id: string;
-  authority: Authority;
+  authority: SeatoolAuthority;
 };
 
 export const CellDetailsLink = ({ id, authority }: CellIdLinkProps) => (

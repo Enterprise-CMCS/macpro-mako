@@ -1,7 +1,7 @@
-import { Authority } from "shared-types";
+import { SeatoolAuthority } from "shared-types";
 
 export function removeUnderscoresAndCapitalize(
-  str: Authority | string
+  str: SeatoolAuthority | string,
 ): string {
   // Replace underscores with spaces
   const withoutUnderscores = str.replace(/_/g, " ");

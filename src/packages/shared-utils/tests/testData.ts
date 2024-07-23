@@ -1,5 +1,5 @@
 import { OneMacUser } from "ui/src/api";
-import { opensearch } from "../../shared-types";
+import { SeatoolAuthority, opensearch } from "../../shared-types";
 
 export const testStateCognitoUser: OneMacUser = {
   isCms: false,
@@ -99,7 +99,7 @@ export const testItemResult: opensearch.main.ItemResult = {
     flavor: "MEDICAID",
     authorityId: 125,
     initialIntakeNeeded: true,
-    authority: "Medicaid SPA",
+    authority: SeatoolAuthority.MedicaidSPA,
     approvedEffectiveDate: null,
     typeId: null,
     seatoolStatus: "Pending",

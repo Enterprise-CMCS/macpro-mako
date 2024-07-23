@@ -1,5 +1,5 @@
 import { BannerContent, SubmissionAlert } from "@/components";
-import { Action, Authority, opensearch } from "shared-types";
+import { Action, SeatoolAuthority, opensearch } from "shared-types";
 import {
   defaultIssueRaiContent,
   defaultTempExtContent,
@@ -24,72 +24,75 @@ type FormContent = {
 /** Form content sometimes requires data values for templating, so forms
  * hydrate the content with these functions. */
 export type FormContentHydrator = (d: opensearch.main.Document) => FormContent;
-type FormContentGroup = Record<Authority, FormContentHydrator | undefined>;
+type FormContentGroup = Partial<Record<SeatoolAuthority, FormContentHydrator>>;
 
 const issueRaiFor: FormContentGroup = {
-  "CHIP SPA": defaultIssueRaiContent,
-  "Medicaid SPA": defaultIssueRaiContent,
-  "1915(b)": defaultIssueRaiContent,
-  "1915(c)": defaultIssueRaiContent,
+  [SeatoolAuthority.CHIPSPA]: defaultIssueRaiContent,
+  [SeatoolAuthority.MedicaidSPA]: defaultIssueRaiContent,
+  [SeatoolAuthority["1915b"]]: defaultIssueRaiContent,
+  [SeatoolAuthority["1915c"]]: defaultIssueRaiContent,
 };
 
 const respondToRaiFor: FormContentGroup = {
-  "CHIP SPA": spaRaiContent,
-  "Medicaid SPA": spaRaiContent,
-  "1915(b)": waiverRaiContent,
-  "1915(c)": waiverRaiContent,
+  [SeatoolAuthority.CHIPSPA]: spaRaiContent,
+  [SeatoolAuthority.MedicaidSPA]: spaRaiContent,
+  [SeatoolAuthority["1915b"]]: waiverRaiContent,
+  [SeatoolAuthority["1915c"]]: waiverRaiContent,
 };
 
 const enableRaiWithdrawFor: FormContentGroup = {
-  "CHIP SPA": defaultEnableRaiWithdrawContent,
-  "Medicaid SPA": defaultEnableRaiWithdrawContent,
-  "1915(b)": defaultEnableRaiWithdrawContent,
-  "1915(c)": defaultEnableRaiWithdrawContent,
+  [SeatoolAuthority.CHIPSPA]: defaultEnableRaiWithdrawContent,
+  [SeatoolAuthority.MedicaidSPA]: defaultEnableRaiWithdrawContent,
+  [SeatoolAuthority["1915b"]]: defaultEnableRaiWithdrawContent,
+  [SeatoolAuthority["1915c"]]: defaultEnableRaiWithdrawContent,
 };
 
 const disableRaiWithdrawFor: FormContentGroup = {
-  "CHIP SPA": defaultDisableRaiWithdrawContent,
-  "Medicaid SPA": defaultDisableRaiWithdrawContent,
-  "1915(b)": defaultDisableRaiWithdrawContent,
-  "1915(c)": defaultDisableRaiWithdrawContent,
+  [SeatoolAuthority.CHIPSPA]: defaultDisableRaiWithdrawContent,
+  [SeatoolAuthority.MedicaidSPA]: defaultDisableRaiWithdrawContent,
+  [SeatoolAuthority["1915b"]]: defaultDisableRaiWithdrawContent,
+  [SeatoolAuthority["1915c"]]: defaultDisableRaiWithdrawContent,
 };
 
 const withdrawRaiFor: FormContentGroup = {
-  "CHIP SPA": defaultWithdrawRaiContent,
-  "Medicaid SPA": defaultWithdrawRaiContent,
-  "1915(b)": defaultWithdrawRaiContent,
-  "1915(c)": defaultWithdrawRaiContent,
+  [SeatoolAuthority.CHIPSPA]: defaultWithdrawRaiContent,
+  [SeatoolAuthority.MedicaidSPA]: defaultWithdrawRaiContent,
+  [SeatoolAuthority["1915b"]]: defaultWithdrawRaiContent,
+  [SeatoolAuthority["1915c"]]: defaultWithdrawRaiContent,
 };
 
 const withdrawPackageFor: FormContentGroup = {
-  "CHIP SPA": defaultWithdrawPackageContent,
-  "Medicaid SPA": defaultWithdrawPackageContent,
-  "1915(b)": waiverWithdrawPackageContent,
-  "1915(c)": waiverWithdrawPackageContent,
+  [SeatoolAuthority.CHIPSPA]: defaultWithdrawPackageContent,
+  [SeatoolAuthority.MedicaidSPA]: defaultWithdrawPackageContent,
+  [SeatoolAuthority["1915b"]]: waiverWithdrawPackageContent,
+  [SeatoolAuthority["1915c"]]: waiverWithdrawPackageContent,
 };
 
 const tempExtensionFor: FormContentGroup = {
-  "CHIP SPA": defaultTempExtContent,
-  "Medicaid SPA": defaultTempExtContent,
-  "1915(b)": defaultTempExtContent,
-  "1915(c)": defaultTempExtContent,
+  [SeatoolAuthority.CHIPSPA]: defaultTempExtContent,
+  [SeatoolAuthority.MedicaidSPA]: defaultTempExtContent,
+  [SeatoolAuthority["1915b"]]: defaultTempExtContent,
+  [SeatoolAuthority["1915c"]]: defaultTempExtContent,
 };
 
 const updateIdFor: FormContentGroup = {
-  "CHIP SPA": defaultUpdateIdContent,
-  "Medicaid SPA": defaultUpdateIdContent,
-  "1915(b)": defaultUpdateIdContent,
-  "1915(c)": defaultUpdateIdContent,
+  [SeatoolAuthority.CHIPSPA]: defaultUpdateIdContent,
+  [SeatoolAuthority.MedicaidSPA]: defaultUpdateIdContent,
+  [SeatoolAuthority["1915b"]]: defaultUpdateIdContent,
+  [SeatoolAuthority["1915c"]]: defaultUpdateIdContent,
 };
 
 const completeIntakeFor: FormContentGroup = {
-  "CHIP SPA": defaultCompleteIntakeContent,
-  "Medicaid SPA": defaultCompleteIntakeContent,
-  "1915(b)": defaultCompleteIntakeContent,
-  "1915(c)": defaultCompleteIntakeContent,
+  [SeatoolAuthority.CHIPSPA]: defaultCompleteIntakeContent,
+  [SeatoolAuthority.MedicaidSPA]: defaultCompleteIntakeContent,
+  [SeatoolAuthority["1915b"]]: defaultCompleteIntakeContent,
+  [SeatoolAuthority["1915c"]]: defaultCompleteIntakeContent,
 };
 
-export const getContentFor = (a: Action, p: Authority): FormContentHydrator => {
+export const getContentFor = (
+  a: Action,
+  p: SeatoolAuthority,
+): FormContentHydrator => {
   const actionContentMap: Record<string, FormContentGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,

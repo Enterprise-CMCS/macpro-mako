@@ -1,21 +1,5 @@
-import {
-  SEATOOL_AUTHORITIES,
-  SEATOOL_STATUS,
-  onemacSchema,
-} from "shared-types";
-
-const getIdByAuthorityName = (authorityName: string) => {
-  try {
-    const authorityId = Object.keys(SEATOOL_AUTHORITIES).find(
-      (key) => SEATOOL_AUTHORITIES[key] === authorityName,
-    );
-    return authorityId ? parseInt(authorityId, 10) : null;
-  } catch (error) {
-    console.error(`SEATOOL AUTHORITY ID LOOKUP ERROR: ${authorityName}`);
-    console.error(error);
-    return null;
-  }
-};
+import { SEATOOL_STATUS, onemacSchema } from "shared-types";
+import { getAuthorityDetailsFromRecord } from "shared-utils";
 
 const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
   epocDate !== null && epocDate !== undefined
@@ -27,6 +11,8 @@ export const transform = (id: string) => {
     if (data.seaActionType === "Extend") {
       // We should have a separate transform for TE new submission, and possibly for each new-submission that's unique (appk)... todo
       // TODO: mako timestamp
+
+      const { authorityId, authority } = getAuthorityDetailsFromRecord(data);
       return {
         id,
         attachments: data.attachments,
@@ -44,8 +30,8 @@ export const transform = (id: string) => {
         state: id.split("-")[0],
         actionType: data.seaActionType,
         actionTypeId: 9999,
-        authorityId: getIdByAuthorityName(data.authority),
-        authority: data.authority,
+        authorityId,
+        authority,
         stateStatus: "Submitted",
         cmsStatus: "Requested",
         seatoolStatus: SEATOOL_STATUS.PENDING,
@@ -54,7 +40,7 @@ export const transform = (id: string) => {
         changedDate: getDateStringOrNullFromEpoc(data.changedDate),
         subject: null,
         description: null,
-        makoChangedDate: !!data.timestamp
+        makoChangedDate: data.timestamp
           ? new Date(data.timestamp).toISOString()
           : null,
         // ----------
@@ -72,7 +58,7 @@ export const transform = (id: string) => {
         submitterName:
           data.submitterName === "-- --" ? null : data.submitterName,
         origin: "OneMAC",
-        makoChangedDate: !!data.timestamp
+        makoChangedDate: data.timestamp
           ? new Date(data.timestamp).toISOString()
           : null,
       };

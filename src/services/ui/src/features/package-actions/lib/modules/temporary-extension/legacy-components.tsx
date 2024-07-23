@@ -19,6 +19,7 @@ import {
 } from "@/components";
 import { defaultTempExtSchema } from "@/features/package-actions/lib/modules";
 import { useDebounce } from "@/hooks";
+import { SeatoolAuthority } from "shared-types";
 
 export const TEPackageSection = () => {
   const { id, authority } = useParams();
@@ -131,8 +132,8 @@ const TempExtensionTypeDropDown = () => {
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              <SelectItem value="1915(b)">1915(b)</SelectItem>
-              <SelectItem value="1915(c)">1915(c)</SelectItem>
+              <SelectItem value={SeatoolAuthority["1915b"]}>1915(b)</SelectItem>
+              <SelectItem value={SeatoolAuthority["1915c"]}>1915(c)</SelectItem>
             </SelectContent>
           </Select>
           <FormMessage />

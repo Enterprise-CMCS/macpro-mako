@@ -1,7 +1,7 @@
 import { isCmsUser } from "shared-utils";
 
 import { BLANK_VALUE } from "@/consts";
-import { AUTHORITY, opensearch } from "shared-types";
+import { SeatoolAuthority, opensearch } from "shared-types";
 import { FC, ReactNode } from "react";
 import { OneMacUser } from "@/api/useGetUser";
 
@@ -56,7 +56,7 @@ export const recordDetails = (
     label: "Action Type",
     value: LABELS[data.actionType as keyof typeof LABELS] || data.actionType,
     canView: () => {
-      return [AUTHORITY["1915(b)"], AUTHORITY["1915(c)"]].some(
+      return [SeatoolAuthority["1915b"], SeatoolAuthority["1915c"]].some(
         (waiver) => waiver === data.authority,
       );
     },

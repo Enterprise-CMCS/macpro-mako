@@ -31,6 +31,7 @@ import { useQuery as useQueryString } from "@/hooks";
 import { SlotAdditionalInfo } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
 import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
+import { SeatoolAuthority } from "shared-types";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -91,7 +92,7 @@ export const ChipSpaFormPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: "chip spa",
+        authority: SeatoolAuthority.CHIPSPA,
       });
       alert.setContent({
         header: "Package submitted",

@@ -2,6 +2,7 @@ import {
   Action,
   ActionRule,
   SEATOOL_STATUS,
+  SeatoolAuthority,
   finalDispositionStatuses,
 } from "shared-types";
 import {
@@ -21,7 +22,7 @@ const arIssueRai: ActionRule = {
       // The latest RAI is complete
       (checker.hasCompletedRai &&
         // The package is a chip (chips can have more than 1 rai)
-        checker.authorityIs(["CHIP SPA"]) &&
+        checker.authorityIs([SeatoolAuthority.CHIPSPA]) &&
         // The package does not have RAI Response Withdraw enabled
         !checker.hasEnabledRaiWithdraw)) &&
     isCmsWriteUser(user) &&

@@ -11,7 +11,7 @@ import { PackageDetails } from "./package-details";
 import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
-import { AUTHORITY, Authority } from "shared-types";
+import { SeatoolAuthority } from "shared-types";
 import { Navigate, useParams } from "react-router-dom";
 import { detailsAndActionsCrumbs } from "@/utils";
 
@@ -38,8 +38,8 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
   const title =
     (() => {
       switch (data._source.authority) {
-        case AUTHORITY["1915(b)"]:
-        case AUTHORITY["1915(c)"]:
+        case SeatoolAuthority["1915b"]:
+        case SeatoolAuthority["1915c"]:
         case undefined: // Some TEs have no authority
           if (data._source.appkParent)
             return "Appendix K Amendment Package Details";
@@ -72,7 +72,7 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
 export const Details = () => {
   const { id, authority } = useParams<{
     id: string;
-    authority: Authority;
+    authority: SeatoolAuthority;
   }>();
 
   if (id === undefined || authority === undefined) {

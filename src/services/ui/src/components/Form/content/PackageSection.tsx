@@ -1,4 +1,4 @@
-import { AUTHORITY } from "shared-types";
+import { SeatoolAuthority } from "shared-types";
 import { useParams } from "@/components";
 
 export const PackageSection = () => {
@@ -9,10 +9,10 @@ export const PackageSection = () => {
     <section className="flex flex-col mb-8 space-y-8">
       <div>
         <p>
-          {[AUTHORITY["CHIP SPA"], AUTHORITY["Medicaid SPA"]].includes(
+          {[SeatoolAuthority.CHIPSPA, SeatoolAuthority.MedicaidSPA].includes(
             authority.toLowerCase(),
           ) && "Package ID"}
-          {[AUTHORITY["1915(b)"], AUTHORITY["1915(c)"]].includes(
+          {[SeatoolAuthority["1915b"], SeatoolAuthority["1915c"]].includes(
             authority.toLowerCase(),
           ) && "Waiver Number"}
         </p>
@@ -21,10 +21,11 @@ export const PackageSection = () => {
       <div>
         <p>Authority</p>
         <p className="text-xl">
-          {lcAuthority === AUTHORITY["1915(b)"] && "1915(b) Waiver"}
-          {lcAuthority === AUTHORITY["1915(c)"] && "1915(c) Waiver"}
-          {lcAuthority === AUTHORITY["CHIP SPA"] && "CHIP SPA"}
-          {lcAuthority === AUTHORITY["Medicaid SPA"] && "Medicaid SPA"}
+          {lcAuthority === SeatoolAuthority["1915b"] && "1915(b) Waiver"}
+          {lcAuthority === SeatoolAuthority["1915c"] && "1915(c) Waiver"}
+          {lcAuthority === SeatoolAuthority.CHIPSPA && SeatoolAuthority.CHIPSPA}
+          {lcAuthority === SeatoolAuthority.MedicaidSPA &&
+            SeatoolAuthority.MedicaidSPA}
         </p>
       </div>
     </section>

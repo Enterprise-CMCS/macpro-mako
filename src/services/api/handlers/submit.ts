@@ -7,12 +7,7 @@ import {
   lookupUserAttributes,
 } from "../libs/auth/user";
 
-import {
-  Action,
-  AUTHORITY,
-  SEATOOL_AUTHORITIES,
-  onemacSchema,
-} from "shared-types";
+import { Action, onemacSchema, SeatoolAuthority } from "shared-types";
 import {
   getAvailableActions,
   getNextBusinessDayTimestamp,
@@ -54,10 +49,10 @@ export const submit = async (event: APIGatewayEvent) => {
   }
 
   const activeSubmissionTypes = [
-    AUTHORITY["CHIP SPA"],
-    AUTHORITY["Medicaid SPA"],
-    AUTHORITY["1915(b)"],
-    AUTHORITY["1915(c)"], // We accept amendments, renewals, and extensions for Cs
+    SeatoolAuthority.CHIPSPA,
+    SeatoolAuthority.MedicaidSPA,
+    SeatoolAuthority["1915b"],
+    SeatoolAuthority["1915c"], // We accept amendments, renewals, and extensions for Cs
   ];
   if (!activeSubmissionTypes.includes(body.authority)) {
     return response({
@@ -76,7 +71,9 @@ export const submit = async (event: APIGatewayEvent) => {
 
   // I think we need to break this file up.  A switch maybe
   if (
-    [AUTHORITY["1915(b)"], AUTHORITY["1915(c)"]].includes(body.authority) &&
+    [SeatoolAuthority["1915b"], SeatoolAuthority["1915c"]].includes(
+      body.authority,
+    ) &&
     body.seaActionType === "Extend"
   ) {
     console.log("Received a new temporary extension sumbission");
@@ -165,8 +162,8 @@ export const submit = async (event: APIGatewayEvent) => {
     const authorityId = findAuthorityIdByName(body.authority);
     // Resolve the actionTypeID, if applicable
     const actionTypeSelect = [
-      AUTHORITY["1915(b)"],
-      AUTHORITY["CHIP SPA"],
+      SeatoolAuthority["1915b"],
+      SeatoolAuthority.CHIPSPA,
     ].includes(body.authority)
       ? `
         SELECT @ActionTypeID = Action_ID FROM SEA.dbo.Action_Types
@@ -279,7 +276,7 @@ export const submit = async (event: APIGatewayEvent) => {
 };
 
 function findAuthorityIdByName(authority: string): string | undefined {
-  const entries = Object.entries(SEATOOL_AUTHORITIES);
+  const entries = Object.entries(SeatoolAuthority);
   for (const [key, value] of entries) {
     if (value.toLowerCase() === authority.toLowerCase()) {
       return key;

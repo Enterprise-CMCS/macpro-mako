@@ -32,6 +32,7 @@ import { useQuery as useQueryString } from "@/hooks";
 import { SlotAdditionalInfo } from "@/features";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 import { documentPoller } from "@/utils/Poller/documentPoller";
+import { SeatoolAuthority } from "shared-types";
 
 const formSchema = z.object({
   waiverNumber: zAmendmentOriginalWaiverNumberSchema,
@@ -85,7 +86,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: "1915(b)",
+        authority: SeatoolAuthority["1915b"],
       });
       alert.setContent({
         header: "Package submitted",

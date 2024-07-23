@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import * as unit from "./submissionService";
 import { OneMacUser } from "@/api/useGetUser";
 import { SubmissionServiceEndpoint } from "@/utils";
+import { SeatoolAuthority } from "shared-types";
 
 const mockFormData = {
   test: "data",
@@ -99,10 +100,10 @@ describe("helpers", () => {
           { test: "data" },
           mockGeorge,
           "/default" as SubmissionServiceEndpoint,
-          "medicaid spa",
+          SeatoolAuthority.MedicaidSPA,
           mockUploadRecipes(3),
         );
-      expect(payload.authority).toEqual("medicaid spa");
+      expect(payload.authority).toEqual(SeatoolAuthority.MedicaidSPA);
       expect(payload.origin).toEqual("micro");
       expect(payload.attachments).toHaveLength(3);
       expect(payload.test).toEqual("data");
@@ -115,10 +116,10 @@ describe("helpers", () => {
         mockFormData,
         mockGeorge,
         "/submit",
-        "medicaid spa",
+        SeatoolAuthority.MedicaidSPA,
         mockUploadRecipes(3),
       );
-    expect(payload.authority).toEqual("medicaid spa");
+    expect(payload.authority).toEqual(SeatoolAuthority.MedicaidSPA);
     expect(payload.origin).toEqual("micro");
     expect(payload.attachments).toHaveLength(3);
     expect(payload.test).toEqual("data");

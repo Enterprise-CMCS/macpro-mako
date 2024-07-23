@@ -1,7 +1,7 @@
 import { removeUnderscoresAndCapitalize, LABELS } from "@/utils";
 import { OsTableColumn } from "@/components";
 import { BLANK_VALUE } from "@/consts";
-import { Authority, CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
+import { CMS_READ_ONLY_ROLES, SeatoolAuthority, UserRoles } from "shared-types";
 import { useGetUser } from "@/api";
 import {
   CellDetailsLink,
@@ -35,8 +35,11 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       label: "Waiver Number",
       locked: true,
       transform: (data) => data.id,
-      cell: ({ id, authority }) => (
-        <CellDetailsLink id={id} authority={authority as Authority} />
+      cell: (data) => (
+        <CellDetailsLink
+          id={data.id}
+          authority={data.authority as SeatoolAuthority}
+        />
       ),
     },
     {
