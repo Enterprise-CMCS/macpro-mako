@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { assert, describe, expect, it, vi } from "vitest";
 import { withdrawPackage } from "./withdraw-package";
 import { generateMock } from "@anatine/zod-mock";
 import { withdrawPackageSchema } from "shared-types";
@@ -16,7 +16,11 @@ describe("withdrawPackageAction", async () => {
       hello: "world",
     });
 
-    expect(withdrawPackageAction?.statusCode).toBe(400);
+    if (withdrawPackageAction === undefined) {
+      throw new Error("withdrawPackageAction should be defined");
+    }
+
+    expect(withdrawPackageAction.statusCode).toBe(400);
   });
 
   it("should invoke withdraw package action if given a valid body", async () => {
