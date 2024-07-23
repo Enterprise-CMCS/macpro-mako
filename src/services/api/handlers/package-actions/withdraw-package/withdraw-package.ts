@@ -9,7 +9,7 @@ import { response } from "../../../libs/handler";
 import { TOPIC_NAME } from "../consts";
 import { withdrawPackageAction } from "../services/package-action-write-service";
 
-export async function withdrawPackage(body: WithdrawPackage) {
+export async function withdrawPackage(body: unknown) {
   console.log("State withdrawing a package.");
 
   const now = new Date().getTime();
