@@ -5,7 +5,7 @@
 import { unflatten } from "flat";
 import { defaultTempExtSchema } from ".";
 import { getUser, submit } from "@/api";
-import { Authority, SeatoolAuthority } from "shared-types";
+import { Authority } from "shared-types";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -46,7 +46,7 @@ export const onValidSubmission: ActionFunction = async ({ request }) => {
       endpoint: "/submit",
       user,
       // REFACTOR: either check if data.authority is SeatoolAuthority or type it out correctly
-      authority: data.authority as SeatoolAuthority,
+      authority: data.authority as Authority,
     });
 
     await documentPoller(data.id, (data) => !!data).startPollingData();

@@ -91,7 +91,7 @@ export const ChipSpaFormPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: "chip spa",
+        authority: "CHIP SPA",
       });
       alert.setContent({
         header: "Package submitted",

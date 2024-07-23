@@ -95,7 +95,7 @@ export const MedicaidSpaFormPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: "medicaid spa",
+        authority: "Medicaid SPA",
       });
       alert.setContent({
         header: "Package submitted",

@@ -99,10 +99,10 @@ describe("helpers", () => {
           { test: "data" },
           mockGeorge,
           "/default" as SubmissionServiceEndpoint,
-          "medicaid spa",
+          "Medicaid SPA",
           mockUploadRecipes(3),
         );
-      expect(payload.authority).toEqual("medicaid spa");
+      expect(payload.authority).toEqual("Medicaid SPA");
       expect(payload.origin).toEqual("micro");
       expect(payload.attachments).toHaveLength(3);
       expect(payload.test).toEqual("data");
@@ -115,10 +115,10 @@ describe("helpers", () => {
         mockFormData,
         mockGeorge,
         "/submit",
-        "medicaid spa",
+        "Medicaid SPA",
         mockUploadRecipes(3),
       );
-    expect(payload.authority).toEqual("medicaid spa");
+    expect(payload.authority).toEqual("Medicaid SPA");
     expect(payload.origin).toEqual("micro");
     expect(payload.attachments).toHaveLength(3);
     expect(payload.test).toEqual("data");
