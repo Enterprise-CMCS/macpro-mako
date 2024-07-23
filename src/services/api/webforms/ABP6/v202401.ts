@@ -207,7 +207,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "vision-service-equivalent-percentage",
               rules: { required: "* Required" },
-              formItemClassName: "ml-[0.7rem] border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.7rem] px-4 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
@@ -253,7 +253,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "hearing-service-equivalent-percentage",
               rules: { required: "* Required" },
-              formItemClassName: "ml-[0.7rem] border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.7rem] px-4 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
