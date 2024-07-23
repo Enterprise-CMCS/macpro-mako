@@ -1,4 +1,4 @@
-import { Action, AUTHORITY, Authority } from "shared-types";
+import { Action, Authority } from "shared-types";
 import { getSchemaFor } from "@/features/package-actions/lib/schemaSwitch";
 import { getFieldsFor } from "@/features/package-actions/lib/fieldsSwitch";
 import { OneMacUser, submit } from "@/api";
@@ -58,7 +58,7 @@ export const submitActionForm = async ({
         ? buildActionUrl(type) // "/action/{type}"
         : "/submit",
       user,
-      authority: AUTHORITY[authority],
+      authority,
     });
     alert.setBannerStyle("success");
     alert.setBannerShow(true);

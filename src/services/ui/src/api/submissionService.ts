@@ -5,7 +5,7 @@ import {
   Action,
   AttachmentKey,
   AUTHORITY,
-  SeatoolAuthority,
+  Authority,
 } from "shared-types";
 import { buildActionUrl, SubmissionServiceEndpoint } from "@/utils";
 import { OneMacUser } from "@/api";
@@ -16,7 +16,7 @@ export type SubmissionServiceParameters<T> = {
   data: T;
   endpoint: SubmissionServiceEndpoint;
   user: OneMacUser | undefined;
-  authority: SeatoolAuthority;
+  authority: Authority;
 };
 type SubmissionServiceResponse = {
   body: {
@@ -59,7 +59,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
   data: T,
   user: OneMacUser | undefined,
   endpoint: SubmissionServiceEndpoint,
-  authority: SeatoolAuthority,
+  authority: Authority,
   attachments?: UploadRecipe[],
 ) => {
   const userDetails = {

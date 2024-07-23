@@ -3,7 +3,6 @@ import { testItemResult } from "./testData";
 import { PackageCheck } from "../package-check";
 import {
   ActionType,
-  AUTHORITY,
   CHIP_SPA,
   MEDICAD_SPA,
   SEATOOL_STATUS,
