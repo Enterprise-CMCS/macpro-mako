@@ -1,3 +1,4 @@
+import { cn } from "@/utils";
 import {
   Dialog,
   DialogContent,
@@ -44,7 +45,12 @@ export function ConfirmationModal({
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
         {body && <div className="grid gap-4 py-4">{body}</div>}
-        <DialogFooter>
+        <DialogFooter
+          className={cn({
+            "flex-col sm:flex-row-reverse sm:justify-start":
+              reverseButtonPlacement,
+          })}
+        >
           {acceptButtonVisible && (
             <Button type="submit" onClick={onAccept}>
               {acceptButtonText}
