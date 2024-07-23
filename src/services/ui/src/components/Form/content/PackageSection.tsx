@@ -1,4 +1,4 @@
-import { Authority } from "shared-types";
+import { AUTHORITY } from "shared-types";
 import { useParams } from "@/components";
 
 export const PackageSection = () => {
@@ -9,11 +9,11 @@ export const PackageSection = () => {
     <section className="flex flex-col mb-8 space-y-8">
       <div>
         <p>
-          {[Authority.CHIP_SPA, Authority.MED_SPA].includes(
-            authority.toLowerCase() as Authority,
+          {[AUTHORITY["CHIP SPA"], AUTHORITY["Medicaid SPA"]].includes(
+            authority.toLowerCase(),
           ) && "Package ID"}
-          {[Authority["1915b"], Authority["1915c"]].includes(
-            authority.toLowerCase() as Authority,
+          {[AUTHORITY["1915(b)"], AUTHORITY["1915(c)"]].includes(
+            authority.toLowerCase(),
           ) && "Waiver Number"}
         </p>
         <p className="text-xl">{id}</p>
@@ -21,10 +21,10 @@ export const PackageSection = () => {
       <div>
         <p>Authority</p>
         <p className="text-xl">
-          {lcAuthority === Authority["1915b"] && "1915(b) Waiver"}
-          {lcAuthority === Authority["1915c"] && "1915(c) Waiver"}
-          {lcAuthority === Authority["CHIP_SPA"] && "CHIP SPA"}
-          {lcAuthority === Authority["MED_SPA"] && "Medicaid SPA"}
+          {lcAuthority === AUTHORITY["1915(b)"] && "1915(b) Waiver"}
+          {lcAuthority === AUTHORITY["1915(c)"] && "1915(c) Waiver"}
+          {lcAuthority === AUTHORITY["CHIP SPA"] && "CHIP SPA"}
+          {lcAuthority === AUTHORITY["Medicaid SPA"] && "Medicaid SPA"}
         </p>
       </div>
     </section>

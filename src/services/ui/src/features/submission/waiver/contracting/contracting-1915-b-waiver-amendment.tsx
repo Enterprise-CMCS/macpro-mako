@@ -17,7 +17,6 @@ import {
 import * as Content from "@/components/Form/old-content";
 import * as Inputs from "@/components/Inputs";
 import { useGetUser, submit } from "@/api";
-import { Authority } from "shared-types";
 import {
   zAdditionalInfoOptional,
   zAmendmentOriginalWaiverNumberSchema,
@@ -86,7 +85,7 @@ export const Contracting1915BWaiverAmendmentPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: Authority["1915b"],
+        authority: "1915(b)",
       });
       alert.setContent({
         header: "Package submitted",

@@ -1,7 +1,6 @@
 import {
   Action,
   ActionRule,
-  Authority,
   SEATOOL_STATUS,
   finalDispositionStatuses,
 } from "shared-types";
@@ -22,7 +21,7 @@ const arIssueRai: ActionRule = {
       // The latest RAI is complete
       (checker.hasCompletedRai &&
         // The package is a chip (chips can have more than 1 rai)
-        checker.authorityIs([Authority.CHIP_SPA]) &&
+        checker.authorityIs(["CHIP SPA"]) &&
         // The package does not have RAI Response Withdraw enabled
         !checker.hasEnabledRaiWithdraw)) &&
     isCmsWriteUser(user) &&
@@ -101,10 +100,8 @@ const arCompleteIntake: ActionRule = {
 
 const arRemoveAppkChild: ActionRule = {
   action: Action.REMOVE_APPK_CHILD,
-  check: (checker, user) =>
-    isStateUser(user) && !!checker.isAppkChild
-}
-
+  check: (checker, user) => isStateUser(user) && !!checker.isAppkChild,
+};
 
 export default [
   arIssueRai,

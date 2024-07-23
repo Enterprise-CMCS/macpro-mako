@@ -8,7 +8,7 @@ import {
   AttachmentsSection,
 } from "@/components";
 import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
-import { Authority, SEATOOL_STATUS } from "shared-types";
+import { AUTHORITY, SEATOOL_STATUS } from "shared-types";
 
 export * from "./spa/withdraw-chip-rai";
 export * from "./waiver/withdraw-waiver";
@@ -66,7 +66,7 @@ export const defaultWithdrawPackageFields: ReactElement[] = [
 export const defaultWithdrawPackageContent: FormContentHydrator = (
   document,
 ) => ({
-  title: `Withdraw ${document.authority} ${document.authority === Authority["1915c"] ? "Appendix K" : ""}`,
+  title: `Withdraw ${document.authority} ${document.authority === AUTHORITY["1915(c)"] ? "Appendix K" : ""}`,
   preSubmitNotice:
     "Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.",
   confirmationModal: {

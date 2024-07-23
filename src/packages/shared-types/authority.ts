@@ -1,29 +1,14 @@
-// TODO: Refactor out
-export enum Authority {
-  MED_SPA = "medicaid spa",
-  CHIP_SPA = "chip spa",
-  "1915b" = "1915(b)",
-  "1915c" = "1915(c)",
-}
+export const CHIP_SPA = "CHIP SPA" as const;
+export const MEDICAD_SPA = "Medicaid SPA" as const;
+export const WAIVER_1915_B = "1915(b)" as const;
+export const WAIVER_1915_C = "1915(c)" as const;
 
-export type AuthorityUnion =
-  | "Medicaid SPA"
-  | "CHIP SPA"
-  | "1915(b)"
-  | "1915(c)";
+export const AUTHORITY = {
+  [CHIP_SPA]: "chip spa",
+  [MEDICAD_SPA]: "medicaid spa",
+  [WAIVER_1915_B]: "1915(b)",
+  [WAIVER_1915_C]: "1915(c)",
+} as const;
 
-export type AuthorityAPI = "medicaid spa" | "chip spa" | "1915(b)" | "1915(c)";
-
-export const AUTHORITY_FE_TO_API: Record<AuthorityUnion, AuthorityAPI> = {
-  "CHIP SPA": "chip spa",
-  "Medicaid SPA": "medicaid spa",
-  "1915(b)": "1915(b)",
-  "1915(c)": "1915(c)",
-};
-
-export const AUTHORITY_API_TO_FE: Record<AuthorityAPI, AuthorityUnion> = {
-  "1915(b)": "1915(b)",
-  "1915(c)": "1915(c)",
-  "chip spa": "CHIP SPA",
-  "medicaid spa": "Medicaid SPA",
-};
+export type Authority = keyof typeof AUTHORITY;
+export type SeatoolAuthority = (typeof AUTHORITY)[keyof typeof AUTHORITY];

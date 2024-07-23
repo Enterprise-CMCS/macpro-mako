@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import rules from "../package-actions/rules";
-import { Action, Authority, SEATOOL_STATUS } from "shared-types";
+import { Action, AUTHORITY, SEATOOL_STATUS } from "shared-types";
 import {
   testItemResult,
   testCMSCognitoUser,
@@ -54,7 +54,7 @@ describe("Action Rules", () => {
     it("is unavailable if the package has completed the latest RAI and is a Medicaid SPA", () => {
       const packageChecker = PackageCheck({
         ...testItemResult._source,
-        authority: Authority.MED_SPA,
+        authority: AUTHORITY["Medicaid SPA"],
         raiRequestedDate: "yesterday, lol",
         raiReceivedDate: "today, foo",
       });
@@ -63,7 +63,7 @@ describe("Action Rules", () => {
     it("is unavailable if the package has completed the latest RAI and has RAI Withdraw enabled", () => {
       const packageChecker = PackageCheck({
         ...testItemResult._source,
-        authority: Authority.CHIP_SPA,
+        authority: AUTHORITY["CHIP SPA"],
         raiRequestedDate: "yesterday, lol",
         raiReceivedDate: "today, foo",
         raiWithdrawEnabled: true,

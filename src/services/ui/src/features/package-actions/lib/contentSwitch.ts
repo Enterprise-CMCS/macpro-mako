@@ -1,5 +1,5 @@
 import { BannerContent, SubmissionAlert } from "@/components";
-import { Action, AuthorityUnion, opensearch } from "shared-types";
+import { Action, Authority, opensearch } from "shared-types";
 import {
   defaultIssueRaiContent,
   defaultTempExtContent,
@@ -24,7 +24,7 @@ type FormContent = {
 /** Form content sometimes requires data values for templating, so forms
  * hydrate the content with these functions. */
 export type FormContentHydrator = (d: opensearch.main.Document) => FormContent;
-type FormContentGroup = Record<AuthorityUnion, FormContentHydrator | undefined>;
+type FormContentGroup = Record<Authority, FormContentHydrator | undefined>;
 
 const issueRaiFor: FormContentGroup = {
   "CHIP SPA": defaultIssueRaiContent,
@@ -89,10 +89,7 @@ const completeIntakeFor: FormContentGroup = {
   "1915(c)": defaultCompleteIntakeContent,
 };
 
-export const getContentFor = (
-  a: Action,
-  p: AuthorityUnion,
-): FormContentHydrator => {
+export const getContentFor = (a: Action, p: Authority): FormContentHydrator => {
   const actionContentMap: Record<string, FormContentGroup> = {
     "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,

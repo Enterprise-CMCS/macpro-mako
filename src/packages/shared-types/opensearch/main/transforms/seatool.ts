@@ -8,7 +8,7 @@ import {
   SEATOOL_SPW_STATUS,
 } from "../../..";
 
-import { Authority, SEATOOL_AUTHORITIES } from "shared-types";
+import { SEATOOL_AUTHORITIES } from "shared-types";
 
 type Flavor = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
 
@@ -158,7 +158,7 @@ export const transform = (id: string) => {
         !leadAnalystName && !finalDispositionStatuses.includes(seatoolStatus),
       leadAnalystName,
       authorityId: authorityId || null,
-      authority: getAuthority(authorityId, id) as Authority | null,
+      authority: getAuthority(authorityId, id),
       types:
         data.STATE_PLAN_SERVICETYPES?.filter(
           (type): type is NonNullable<typeof type> => type != null,
