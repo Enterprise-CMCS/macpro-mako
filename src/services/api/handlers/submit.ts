@@ -12,6 +12,7 @@ import {
   AUTHORITY,
   SEATOOL_AUTHORITIES,
   onemacSchema,
+  SeatoolAuthority,
 } from "shared-types";
 import {
   getAvailableActions,
@@ -53,11 +54,11 @@ export const submit = async (event: APIGatewayEvent) => {
     });
   }
 
-  const activeSubmissionTypes = [
-    AUTHORITY["CHIP SPA"],
-    AUTHORITY["Medicaid SPA"],
-    AUTHORITY["1915(b)"],
-    AUTHORITY["1915(c)"], // We accept amendments, renewals, and extensions for Cs
+  const activeSubmissionTypes: SeatoolAuthority[] = [
+    "chip spa",
+    "medicaid spa",
+    "1915(b)",
+    "1915(c)",
   ];
   if (!activeSubmissionTypes.includes(body.authority)) {
     return response({
