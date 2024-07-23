@@ -560,9 +560,9 @@ Medicaid SPA Package ID: {{id}}
 Summary:
 {{additionalInformation}}
 
-This mailbox is for the submittal of State Plan Amendments and non-web 
-based responses to Requests for Additional Information (RAI) on submitted 
-SPAs only. Any other correspondence will be disregarded.
+This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, 
+responses to Requests for Additional Information (RAI), and extension requests on Waivers only. 
+Any other correspondence will be disregarded.
 
 If you have any questions, please contact spa@cms.hhs.gov or your state lead.
 
