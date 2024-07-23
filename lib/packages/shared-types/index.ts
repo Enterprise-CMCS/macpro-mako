@@ -2,6 +2,7 @@ export * from "./actions";
 export * from "./action-types";
 export * from "./attachments";
 export * from "./authority";
+export * from "./email-addresses";
 export * from "./errors";
 export * from "./forms";
 export * from "./guides";

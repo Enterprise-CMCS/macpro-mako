@@ -1,6 +1,30 @@
 import { Action } from "shared-types";
+import { DecodedRecord } from "./handler-lib";
 
-const getBundleFromEvent = (configKey, stage) => {
+interface EmailCommand {
+  Template: string;
+  ToAddresses: string[];
+  CcAddresses?: string[];
+  BccAddresses?: string[];
+}
+
+interface Bundle {
+  lookupList?: string[];
+  dataList: string[];
+  emailCommands: EmailCommand[];
+}
+
+export interface Record {
+  origin?: string;
+  authority?: string;
+  actionType?: string;
+  seaActionType?: string;
+}
+
+const getBundleFromEvent = (
+  configKey: string,
+  stage: string,
+): Bundle | { message: string } => {
   switch (configKey) {
     case "new-submission-medicaid-spa":
       return {
@@ -443,20 +467,20 @@ const getBundleFromEvent = (configKey, stage) => {
   }
 };
 
-const buildKeyFromRecord = (record) => {
-  const seaActionTypeLookup = {
+const buildKeyFromRecord = (record: DecodedRecord): string | undefined => {
+  const seaActionTypeLookup: { [key: string]: string } = {
     Extend: Action.TEMP_EXTENSION,
   };
 
   if (record?.origin !== "micro" || !record?.authority) return;
 
-  //use action type if present, else check for sea tool action type and translate that, else assume new-submission
+  // Use action type if present, else check for sea tool action type and translate that, else assume new-submission
   const actionType =
     record?.actionType ??
-    seaActionTypeLookup[record.seaActionType] ??
+    seaActionTypeLookup[record.seaActionType as any] ??
     "new-submission";
 
-  //replace spaces from authority with hyphens and remove parentheses
+  // Replace spaces from authority with hyphens and remove parentheses
   const authority = record.authority
     .toLowerCase()
     .replace(/\s+/g, "-")
@@ -465,8 +489,8 @@ const buildKeyFromRecord = (record) => {
   return `${actionType}-${authority}`;
 };
 
-export const getBundle = (record, stage) => {
-  const configKey = buildKeyFromRecord(record);
+export const getBundle = (record: DecodedRecord, stage: string) => {
+  const configKey = buildKeyFromRecord(record) as string;
 
   return getBundleFromEvent(configKey, stage);
 };

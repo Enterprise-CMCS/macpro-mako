@@ -1,8 +1,14 @@
-/**
- * @returns {Promise<{name: string, subject: string, html: string, text}[]>}
- */
+interface EmailTemplate {
+  name: string;
+  subject: string;
+  html: string;
+  text?: string;
+}
 
-module.exports = async () => [
+/**
+ * @returns {Promise<EmailTemplate[]>}
+ */
+const getEmailTemplates = async (): Promise<EmailTemplate[]> => [
   // Medicaid SPA email template group
   {
     name: "new-submission-medicaid-spa-cms",
@@ -157,7 +163,7 @@ forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p
 The OneMAC Submission Portal received a 1915(b) {{actionType}} submission:
 
 The submission can be accessed in the OneMAC application, which you 
-can find at <a href='{{applicationEndpoint}}'>this link</a>.
+can find at {{applicationEndpoint}}.
 
 If you are not already logged in, please click the "Login" link
 at the top of the page and log in using your Enterprise User 
@@ -234,7 +240,7 @@ before {{ninetyDaysDate}}.
 
 This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
 responses to Requests for Additional Information (RAI) on Waivers,
-and extension requests on Waivers only. Any other correspondence will be disregarded</p>
+and extension requests on Waivers only. Any other correspondence will be disregarded
 
 If you have questions or did not expect this email, please contact
 SPA@cms.hhs.gov or your state lead.
@@ -487,8 +493,8 @@ Summary:
 <br>
 <br><b>Files</b>:
 <br>{{formattedFileList}}
-<p>If the contents of this email seem suspicious, do not open them, and 
-instead forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.
+<p>If the contents of this email seem suspicious, do not open them, and instead 
+forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.
 </p>
 <p>Thank you!</p>`,
   },
@@ -560,10 +566,11 @@ by {{submitterName}}. The review of Medicaid SPA {{id}} has concluded.</p>
 <p>Thank you!</p>`,
     text: `
 This email is to confirm Medicaid SPA {{id}} was withdrawn
-by {{submitterName}}. The review of Medicaid SPA {{id}} has concluded.</p>
-<p>If you have questions or did not expect this email, please contact 
-<a href='mailto:SPA@cms.hhs.gov'>SPA@cms.hhs.gov</a>.</p>
-<p>Thank you!</p>`,
+by {{submitterName}}. The review of Medicaid SPA {{id}} has concluded.
+
+If you have questions or did not expect this email, please contact SPA@cms.hhs.gov.
+
+Thank you!`,
   },
 
   // CHIP SPA email template group
@@ -1169,3 +1176,5 @@ and extension requests on Waivers only. Any other correspondence will be disrega
     text: "",
   },
 ];
+
+export default getEmailTemplates;

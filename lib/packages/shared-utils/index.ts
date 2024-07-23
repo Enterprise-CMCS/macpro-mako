@@ -8,4 +8,3 @@ export * from "./user-helper";
 export * from "./secrets-manager";
 export * from "./cloudformation";
 export * from "./decode";
-export * from "./ssm";

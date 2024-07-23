@@ -2,6 +2,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 
 import {
+  CfnOutput,
   Duration,
   NestedStack,
   NestedStackProps,
