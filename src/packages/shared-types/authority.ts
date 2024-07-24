@@ -11,27 +11,3 @@ export type AuthorityUnion =
   | "CHIP SPA"
   | "1915(b)"
   | "1915(c)";
-
-export type AuthorityAPI = "medicaid spa" | "chip spa" | "1915(b)" | "1915(c)";
-
-export const AUTHORITIES = ["Medicaid SPA", "CHIP SPA", "1915(b)", "1915(c)"];
-
-export const isStringAuthority = (
-  supposedAuthority: unknown,
-): supposedAuthority is AuthorityUnion =>
-  typeof supposedAuthority === "string" &&
-  AUTHORITIES.includes(supposedAuthority);
-
-export const AUTHORITY_FE_TO_API: Record<AuthorityUnion, AuthorityAPI> = {
-  "CHIP SPA": "chip spa",
-  "Medicaid SPA": "medicaid spa",
-  "1915(b)": "1915(b)",
-  "1915(c)": "1915(c)",
-};
-
-export const AUTHORITY_API_TO_FE: Record<AuthorityAPI, AuthorityUnion> = {
-  "1915(b)": "1915(b)",
-  "1915(c)": "1915(c)",
-  "chip spa": "CHIP SPA",
-  "medicaid spa": "Medicaid SPA",
-};

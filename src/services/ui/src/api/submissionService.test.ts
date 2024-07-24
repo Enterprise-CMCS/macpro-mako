@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import * as unit from "./submissionService";
 import { OneMacUser } from "@/api/useGetUser";
 import { SubmissionServiceEndpoint } from "@/utils";
+import { Authority } from "shared-types";
 
 const mockFormData = {
   test: "data",
@@ -99,7 +100,7 @@ describe("helpers", () => {
           { test: "data" },
           mockGeorge,
           "/default" as SubmissionServiceEndpoint,
-          "medicaid spa",
+          Authority.MED_SPA,
           mockUploadRecipes(3),
         );
       expect(payload.authority).toEqual("medicaid spa");
@@ -115,7 +116,7 @@ describe("helpers", () => {
         mockFormData,
         mockGeorge,
         "/submit",
-        "medicaid spa",
+        Authority.MED_SPA,
         mockUploadRecipes(3),
       );
     expect(payload.authority).toEqual("medicaid spa");

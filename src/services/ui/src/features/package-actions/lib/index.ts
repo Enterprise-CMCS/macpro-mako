@@ -1,4 +1,4 @@
-import { Action, AUTHORITY_FE_TO_API, AuthorityUnion } from "shared-types";
+import { Action, Authority, AuthorityUnion } from "shared-types";
 import { getSchemaFor } from "@/features/package-actions/lib/schemaSwitch";
 import { getFieldsFor } from "@/features/package-actions/lib/fieldsSwitch";
 import { OneMacUser, submit } from "@/api";
@@ -33,7 +33,7 @@ export const submitActionForm = async ({
   id: string;
   actionType: Action;
   user: OneMacUser;
-  authority: AuthorityUnion;
+  authority: Authority;
 }) => {
   await submit({
     data: { ...data, id: id },
@@ -42,7 +42,7 @@ export const submitActionForm = async ({
         ? "/submit"
         : buildActionUrl(actionType),
     user,
-    authority: AUTHORITY_FE_TO_API[authority],
+    authority,
   });
 
   const poller = documentPoller(

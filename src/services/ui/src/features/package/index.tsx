@@ -11,7 +11,7 @@ import { PackageDetails } from "./package-details";
 import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
-import { Authority, AuthorityUnion } from "shared-types";
+import { Authority } from "shared-types";
 import { Navigate, useParams } from "react-router-dom";
 import { detailsAndActionsCrumbs } from "@/utils";
 
@@ -72,7 +72,7 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
 export const Details = () => {
   const { id, authority } = useParams<{
     id: string;
-    authority: AuthorityUnion;
+    authority: Authority;
   }>();
 
   if (id === undefined || authority === undefined) {
