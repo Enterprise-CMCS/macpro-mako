@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import rules from "../package-actions/rules";
-import { Action, CHIP_SPA, MEDICAD_SPA, SEATOOL_STATUS } from "shared-types";
+import { Action, CHIP_SPA, MEDICAID_SPA, SEATOOL_STATUS } from "shared-types";
 import {
   testItemResult,
   testCMSCognitoUser,
@@ -54,7 +54,7 @@ describe("Action Rules", () => {
     it("is unavailable if the package has completed the latest RAI and is a Medicaid SPA", () => {
       const packageChecker = PackageCheck({
         ...testItemResult._source,
-        authority: MEDICAD_SPA,
+        authority: MEDICAID_SPA,
         raiRequestedDate: "yesterday, lol",
         raiReceivedDate: "today, foo",
       });
