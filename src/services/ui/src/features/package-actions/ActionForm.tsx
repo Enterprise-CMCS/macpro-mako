@@ -17,12 +17,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ActionFormHeaderCard } from "@/components";
 import { SubmitAndCancelBtnSection } from "../submission/waiver/shared-components";
 import { useNavigate } from "react-router-dom";
-import { Action, AuthorityUnion } from "shared-types";
+import { Action, Authority } from "shared-types";
 
 type ActionFormProps = {
   setup: FormSetup;
   id: string;
-  authority: AuthorityUnion;
+  authority: Authority;
   actionType: Action;
 };
 

@@ -3,21 +3,21 @@ import { getSetupFor } from "@/features/package-actions/lib";
 import { ActionForm } from "@/features/package-actions/ActionForm";
 import { detailsAndActionsCrumbs } from "@/utils";
 import { Navigate, useParams } from "react-router-dom";
-import { Action, AuthorityUnion } from "shared-types";
+import { Action, Authority, AuthorityUnion } from "shared-types";
 
 export const ActionPage = () => {
   const {
     id,
     type: actionType,
     authority,
-  } = useParams<{ id: string; type: Action; authority: AuthorityUnion }>();
+  } = useParams<{ id: string; type: Action; authority: Authority }>();
 
   // TODO: use zod
   if (!id || !actionType || !authority) {
     return <Navigate to="/dashboard" />;
   }
 
-  const setup = getSetupFor(actionType, authority);
+  const setup = getSetupFor(actionType, authority as AuthorityUnion);
 
   return (
     <SimplePageContainer>

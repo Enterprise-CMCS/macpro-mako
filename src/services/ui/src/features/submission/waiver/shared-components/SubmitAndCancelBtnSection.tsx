@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import { useMemo } from "react";
 import { getFormOrigin } from "@/utils";
+import { Authority } from "shared-types";
 
 interface buttonProps {
   loadingSpinner?: boolean;
@@ -21,7 +22,7 @@ export const SubmitAndCancelBtnSection = ({
   const form = useFormContext();
   const modal = useModalContext();
   const navigate = useNavigate();
-  const { id, authority } = useParams<{ id: string; authority: string }>();
+  const { id, authority } = useParams<{ id: string; authority: Authority }>();
 
   const acceptAction = () => {
     modal.setModalOpen(false);

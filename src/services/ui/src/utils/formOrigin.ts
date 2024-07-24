@@ -1,4 +1,4 @@
-import { isStringAuthority } from "shared-types";
+import { Authority } from "shared-types";
 import { getDashboardTabForAuthority } from "./crumbs";
 
 /** Constant key for accessing origin in query string. */
@@ -10,7 +10,7 @@ export const DETAILS_ORIGIN = "details";
 
 type GetFormOriginArgs = {
   id?: string;
-  authority?: string;
+  authority?: Authority;
 };
 
 type GetFormOrigin = (args?: GetFormOriginArgs) => {
@@ -33,7 +33,7 @@ export const getFormOrigin: GetFormOrigin = ({ id, authority } = {}) => {
     };
   }
 
-  if (origin === DASHBOARD_ORIGIN && isStringAuthority(authority)) {
+  if (origin === DASHBOARD_ORIGIN && authority) {
     return {
       pathname: `/${origin}`,
       search: new URLSearchParams({
