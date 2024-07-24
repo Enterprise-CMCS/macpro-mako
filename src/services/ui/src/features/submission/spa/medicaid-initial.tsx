@@ -32,6 +32,7 @@ import { FormField } from "@/components/Inputs";
 import { SlotAdditionalInfo } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
 import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
+import { Authority } from "shared-types";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -95,7 +96,7 @@ export const MedicaidSpaFormPage = () => {
         data: formData,
         endpoint: "/submit",
         user,
-        authority: "medicaid spa",
+        authority: Authority.MED_SPA,
       });
       alert.setContent({
         header: "Package submitted",

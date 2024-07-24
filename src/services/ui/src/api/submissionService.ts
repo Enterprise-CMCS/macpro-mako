@@ -77,7 +77,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...data,
         ...userDetails,
         ...baseProperties,
-        authority: "1915(c)",
+        authority: Authority["1915c"],
         proposedEffectiveDate: seaToolFriendlyTimestamp(
           data.proposedEffectiveDate as Date,
         ),
@@ -88,7 +88,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...data,
         ...baseProperties,
         ...userDetails,
-        authority: "1915(c)",
+        authority: Authority["1915c"],
       };
     case "/submit":
       return {

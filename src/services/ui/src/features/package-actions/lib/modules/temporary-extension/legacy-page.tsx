@@ -78,7 +78,7 @@ export const TempExtensionWrapper = () => {
 };
 
 export const TemporaryExtension = () => {
-  const { id, authority } = useParams<{ id: string; authority: string }>();
+  const { id, authority } = useParams<{ id: string; authority: Authority }>();
 
   const navigationLocation = useMemo(
     () =>
