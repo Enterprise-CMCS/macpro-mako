@@ -4,7 +4,7 @@ import { PackageCheck } from "../package-check";
 import {
   ActionType,
   CHIP_SPA,
-  MEDICAD_SPA,
+  MEDICAID_SPA,
   SEATOOL_STATUS,
   WAIVER_1915_B,
 } from "shared-types";
@@ -19,7 +19,7 @@ describe("PackageCheck", () => {
     it("checks if isSpa", () => {
       let packageCheck = PackageCheck({
         ...testItemResult._source,
-        authority: MEDICAD_SPA,
+        authority: MEDICAID_SPA,
       });
       expect(packageCheck.isSpa).toBe(true);
       packageCheck = PackageCheck({
@@ -78,7 +78,7 @@ describe("PackageCheck", () => {
       expect(packageCheck.isInSecondClock).toBe(false);
       packageCheck = PackageCheck({
         ...testItemResult._source,
-        authority: MEDICAD_SPA,
+        authority: MEDICAID_SPA,
         seatoolStatus: SEATOOL_STATUS.PENDING,
         raiRequestedDate: "exists",
         raiReceivedDate: "exists",
