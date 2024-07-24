@@ -4,8 +4,7 @@ import {
   ReactQueryApiError,
   Action,
   AttachmentKey,
-  AUTHORITY_FE_TO_API,
-  AuthorityAPI,
+  Authority,
 } from "shared-types";
 import { buildActionUrl, SubmissionServiceEndpoint } from "@/utils";
 import { OneMacUser } from "@/api";
@@ -16,7 +15,7 @@ export type SubmissionServiceParameters<T> = {
   data: T;
   endpoint: SubmissionServiceEndpoint;
   user: OneMacUser | undefined;
-  authority: AuthorityAPI;
+  authority: Authority;
 };
 type SubmissionServiceResponse = {
   body: {
@@ -59,7 +58,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
   data: T,
   user: OneMacUser | undefined,
   endpoint: SubmissionServiceEndpoint,
-  authority: AuthorityAPI,
+  authority: Authority,
   attachments?: UploadRecipe[],
 ) => {
   const userDetails = {
@@ -78,7 +77,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...data,
         ...userDetails,
         ...baseProperties,
-        authority: AUTHORITY_FE_TO_API["1915(c)"],
+        authority: "1915(c)",
         proposedEffectiveDate: seaToolFriendlyTimestamp(
           data.proposedEffectiveDate as Date,
         ),
@@ -89,7 +88,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...data,
         ...baseProperties,
         ...userDetails,
-        authority: AUTHORITY_FE_TO_API["1915(c)"],
+        authority: "1915(c)",
       };
     case "/submit":
       return {
