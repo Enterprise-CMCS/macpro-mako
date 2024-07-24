@@ -1,14 +1,6 @@
-export const CHIP_SPA = "CHIP SPA" as const;
-export const MEDICAD_SPA = "Medicaid SPA" as const;
-export const WAIVER_1915_B = "1915(b)" as const;
-export const WAIVER_1915_C = "1915(c)" as const;
+export type Authority = "CHIP SPA" | "Medicaid SPA" | "1915(c)" | "1915(b)";
 
-export const AUTHORITY = {
-  [CHIP_SPA]: "chip spa",
-  [MEDICAD_SPA]: "medicaid spa",
-  [WAIVER_1915_B]: "1915(b)",
-  [WAIVER_1915_C]: "1915(c)",
-} as const;
-
-export type Authority = keyof typeof AUTHORITY;
-export type SeatoolAuthority = (typeof AUTHORITY)[keyof typeof AUTHORITY];
+export const CHIP_SPA: Authority = "CHIP SPA";
+export const MEDICAD_SPA: Authority = "Medicaid SPA";
+export const WAIVER_1915_B: Authority = "1915(b)";
+export const WAIVER_1915_C: Authority = "1915(c)";

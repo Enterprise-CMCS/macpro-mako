@@ -4,8 +4,8 @@ import {
   ReactQueryApiError,
   Action,
   AttachmentKey,
-  AUTHORITY,
   Authority,
+  WAIVER_1915_C,
 } from "shared-types";
 import { buildActionUrl, SubmissionServiceEndpoint } from "@/utils";
 import { OneMacUser } from "@/api";
@@ -78,7 +78,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...data,
         ...userDetails,
         ...baseProperties,
-        authority: AUTHORITY["1915(c)"],
+        authority: WAIVER_1915_C,
         proposedEffectiveDate: seaToolFriendlyTimestamp(
           data.proposedEffectiveDate as Date,
         ),
@@ -89,7 +89,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...data,
         ...baseProperties,
         ...userDetails,
-        authority: AUTHORITY["1915(c)"],
+        authority: WAIVER_1915_C,
       };
     case "/submit":
       return {

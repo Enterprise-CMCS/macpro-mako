@@ -11,7 +11,7 @@ import { PackageDetails } from "./package-details";
 import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
-import { AUTHORITY, Authority } from "shared-types";
+import { Authority, WAIVER_1915_B, WAIVER_1915_C } from "shared-types";
 import { Navigate, useParams } from "react-router-dom";
 import { detailsAndActionsCrumbs } from "@/utils";
 
@@ -38,8 +38,8 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
   const title =
     (() => {
       switch (data._source.authority) {
-        case AUTHORITY["1915(b)"]:
-        case AUTHORITY["1915(c)"]:
+        case WAIVER_1915_B:
+        case WAIVER_1915_C:
         case undefined: // Some TEs have no authority
           if (data._source.appkParent)
             return "Appendix K Amendment Package Details";

@@ -1,6 +1,6 @@
 import { Handler } from "aws-lambda";
 import * as os from "./../../../libs/opensearch-lib";
-import { Action, AUTHORITY, KafkaRecord, opensearch } from "shared-types";
+import { Action, KafkaRecord, opensearch, WAIVER_1915_C } from "shared-types";
 import { KafkaEvent } from "shared-types";
 import {
   ErrorType,
@@ -198,7 +198,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
               // Handle the appk children when an appk parent id is updated
               // I'd like a better way to identify an appk parent.
               if (
-                item._source.authority === AUTHORITY["1915(c)"] &&
+                item._source.authority === WAIVER_1915_C &&
                 !item._source.appkParentId
               ) {
                 console.log("AppK Parent ID update detected...");

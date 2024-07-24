@@ -9,10 +9,12 @@ import {
 
 import {
   Action,
-  AUTHORITY,
   SEATOOL_AUTHORITIES,
   onemacSchema,
-  SeatoolAuthority,
+  Authority,
+  WAIVER_1915_B,
+  WAIVER_1915_C,
+  CHIP_SPA,
 } from "shared-types";
 import {
   getAvailableActions,
@@ -54,9 +56,9 @@ export const submit = async (event: APIGatewayEvent) => {
     });
   }
 
-  const activeSubmissionTypes: SeatoolAuthority[] = [
-    "chip spa",
-    "medicaid spa",
+  const activeSubmissionTypes: Authority[] = [
+    "CHIP SPA",
+    "Medicaid SPA",
     "1915(b)",
     "1915(c)",
   ];
@@ -77,7 +79,7 @@ export const submit = async (event: APIGatewayEvent) => {
 
   // I think we need to break this file up.  A switch maybe
   if (
-    [AUTHORITY["1915(b)"], AUTHORITY["1915(c)"]].includes(body.authority) &&
+    [WAIVER_1915_B, WAIVER_1915_C].includes(body.authority) &&
     body.seaActionType === "Extend"
   ) {
     console.log("Received a new temporary extension sumbission");
@@ -165,10 +167,7 @@ export const submit = async (event: APIGatewayEvent) => {
     // Resolve the the Plan_Type_ID
     const authorityId = findAuthorityIdByName(body.authority);
     // Resolve the actionTypeID, if applicable
-    const actionTypeSelect = [
-      AUTHORITY["1915(b)"],
-      AUTHORITY["CHIP SPA"],
-    ].includes(body.authority)
+    const actionTypeSelect = [WAIVER_1915_B, CHIP_SPA].includes(body.authority)
       ? `
         SELECT @ActionTypeID = Action_ID FROM SEA.dbo.Action_Types
         WHERE Plan_Type_ID = '${authorityId}'

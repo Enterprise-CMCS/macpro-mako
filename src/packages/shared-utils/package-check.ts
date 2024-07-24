@@ -3,7 +3,6 @@ import {
   SEATOOL_STATUS,
   ActionType,
   Authority,
-  SeatoolAuthority,
 } from "shared-types";
 
 const secondClockStatuses = [
