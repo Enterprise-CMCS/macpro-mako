@@ -54,6 +54,8 @@ export const slotInitializer =
       case "Upload":
         ACC[adjustedName] = [];
         break;
+      // If switching from undefined to a Date causes an error from RHF,
+      // DatePickerProps in inputs.ts may need to be adjusted:
       case "DatePicker":
         ACC[adjustedName] = undefined;
         break;
