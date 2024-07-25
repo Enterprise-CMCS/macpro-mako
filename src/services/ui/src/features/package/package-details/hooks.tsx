@@ -126,7 +126,7 @@ export const recordDetails = (
     canView: () => true,
   },
   {
-    label: "Formal RAI received",
+    label: "Formal RAI response",
     value: data.raiReceivedDate
       ? formatSeatoolDate(data.raiReceivedDate)
       : BLANK_VALUE,
