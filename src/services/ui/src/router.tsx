@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
         element: <F.Dashboard />,
         loader: F.dashboardLoader(queryClient),
       },
-      { path: "/details", element: <F.Details /> },
+      { path: "/details/:authority/:id", element: <F.Details /> },
       {
         path: "/new-submission",
         element: <F.NewSubmissionInitialOptions />,
