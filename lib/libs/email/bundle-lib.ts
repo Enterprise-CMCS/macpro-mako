@@ -354,7 +354,7 @@ const getBundleFromEvent = (
           "submitterName",
           "submitterEmail",
           "authority",
-          "title",
+          "appkTitle",
           "proposedEffectiveDateNice",
           "ninetyDaysDate",
           "additionalInformation",

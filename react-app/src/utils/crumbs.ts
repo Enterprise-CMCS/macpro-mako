@@ -1,25 +1,61 @@
-import { BreadCrumbConfig, Route, urlEmbedQuery } from "@/components";
-import { SPA_ID_REGEX } from "@/consts";
+import { BreadCrumbConfig, Route } from "@/components";
 import { mapActionLabel, mapSubmissionCrumb } from "@/utils";
-import { Action } from "shared-types";
+import { Action, Authority } from "shared-types";
 
-export const dashboardCrumb = (id?: string): BreadCrumbConfig => {
+type DetailsAndActionsBreadCrumbsArgs = {
+  id: string;
+  authority: Authority;
+  actionType?: Action;
+};
+
+export const getDashboardTabForAuthority = (
+  authority: Authority,
+): "spas" | "waivers" => {
+  switch (authority) {
+    case "CHIP SPA" as Authority:
+    case "Medicaid SPA" as Authority:
+      return "spas";
+    case "1915(b)":
+    case "1915(c)":
+      return "waivers";
+    default:
+      throw new Error("Invalid authority");
+  }
+};
+
+export const detailsAndActionsCrumbs = ({
+  id,
+  authority,
+  actionType,
+}: DetailsAndActionsBreadCrumbsArgs): BreadCrumbConfig[] => {
+  const defaultBreadCrumbs = [
+    dashboardCrumb(authority),
+    detailsCrumb(id, authority),
+  ];
+
+  return actionType
+    ? [...defaultBreadCrumbs, actionCrumb(actionType, id)]
+    : defaultBreadCrumbs;
+};
+
+export const dashboardCrumb = (authority?: Authority): BreadCrumbConfig => {
   return {
     displayText: "Dashboard",
     order: 1,
     default: true,
-    to: id
-      ? urlEmbedQuery("/dashboard", {
-          tab: SPA_ID_REGEX.test(id) ? "spas" : "waivers",
-        })
+    to: authority
+      ? `/dashboard?tab=${getDashboardTabForAuthority(authority)}`
       : "/dashboard",
   };
 };
 
-export const detailsCrumb = (id: string): BreadCrumbConfig => ({
+export const detailsCrumb = (
+  id: string,
+  authority: Authority,
+): BreadCrumbConfig => ({
   displayText: id,
   order: 2,
-  to: `/details?id=${id}`,
+  to: `/details/${authority}/${id}`,
 });
 
 export const actionCrumb = (action: Action, id: string): BreadCrumbConfig => ({

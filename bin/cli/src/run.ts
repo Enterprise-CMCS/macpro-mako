@@ -7,7 +7,6 @@ import {
   install,
   openApp,
   openKibana,
-  testGui,
   test,
   ui,
   getCost,
@@ -21,7 +20,6 @@ yargs
   .command(install)
   .command(openApp)
   .command(openKibana)
-  .command(testGui)
   .command(test)
   .command(ui)
   .command(getCost)

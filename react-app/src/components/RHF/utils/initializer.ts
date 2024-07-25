@@ -31,6 +31,8 @@ export const slotInitializer =
     };
 
     switch (SLOT.rhf) {
+      case "TextDisplay":
+        break;
       case "Switch":
         ACC[adjustedName] = false;
         break;
@@ -38,9 +40,16 @@ export const slotInitializer =
         SLOT.props?.options.forEach(optionReducer);
         ACC[adjustedName] = [];
         break;
+      case "Radio":
+        SLOT.props?.options.forEach(optionReducer);
+        ACC[adjustedName] = "";
+        break;
       case "FieldArray":
       case "FieldGroup":
         ACC[adjustedName] = [SLOT.fields?.reduce(fieldInitializer, {})];
+        break;
+      case "WrappedGroup":
+        ACC = { ...ACC, ...SLOT.fields?.reduce(fieldInitializer, {}) };
         break;
       case "Upload":
         ACC[adjustedName] = [];
@@ -48,7 +57,6 @@ export const slotInitializer =
       case "Input":
       case "Select":
       case "Multiselect":
-      case "Radio":
       case "Textarea":
       default:
         ACC[adjustedName] = "";

@@ -31,7 +31,7 @@ export const v202401: FormSchema = {
                     styledLabel: [
                       {
                         text: "The state/territory assures it will appropriately identify any individuals in the eligibility groups who:",
-                        classname: "block py-1",
+                        classname: "block pb-1",
                       },
                       {
                         text: "A. Are exempt from mandatory enrollment in an ABP",

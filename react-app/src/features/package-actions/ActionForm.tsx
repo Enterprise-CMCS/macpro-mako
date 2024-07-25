@@ -34,7 +34,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
     [item],
   );
   const form = useForm({
-    resolver: zodResolver(setup.schema),
+    resolver: setup.schema ? zodResolver(setup.schema) : undefined,
     mode: "onChange",
   });
 
@@ -81,7 +81,7 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
                 return (
                   <ActionFormHeaderCard
                     title={content.title}
-                    hasRequiredField
+                    hasRequiredField={setup.schema !== null}
                     isTE={field.key === "te-content-description"}
                     key="content-description"
                   >
@@ -94,7 +94,10 @@ export const ActionForm = ({ setup }: { setup: FormSetup }) => {
             })}
           <ErrorBanner />
           {content?.preSubmitNotice && (
-            <PreSubmitNotice message={content.preSubmitNotice} />
+            <PreSubmitNotice
+              message={content.preSubmitNotice}
+              hasProgressLossReminder={setup.schema !== null}
+            />
           )}
           {content?.confirmationModal ? (
             <SubmitAndCancelBtnSection

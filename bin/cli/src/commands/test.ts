@@ -7,12 +7,35 @@ export const test = {
   command: "test",
   describe: "run all available tests.",
   builder: (yargs: Argv) => {
-    return yargs.option("stage", { type: "string", demandOption: true });
+    return yargs
+      .option("coverage", {
+        type: "boolean",
+        describe: "Run tests and generate a coverage report.",
+      })
+      .option("ui", {
+        type: "boolean",
+        describe: "Run tests with Vitest UI",
+      })
+      .check((argv) => {
+        if (argv.coverage && argv.ui) {
+          throw new Error(
+            "You cannot use both --watch and --ui at the same time.",
+          );
+        }
+        return true;
+      });
   },
-  handler: async (options: { stage: string }) => {
+  handler: async (argv) => {
+    let testCommand = "test";
+    if (argv.coverage) {
+      testCommand = "test:coverage";
+    }
+    if (argv.ui) {
+      testCommand = "test:ui";
+    }
     await runner.run_command_and_output(
-      "Load test data",
-      ["sls", "database", "seed", "--stage", options.stage],
+      "Unit Tests",
+      ["yarn", testCommand],
       ".",
     );
   },

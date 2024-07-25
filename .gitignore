@@ -15,3 +15,6 @@ build_run
 .serverless
 ./src
 .env*
+
+# tests
+coverage

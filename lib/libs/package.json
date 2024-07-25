@@ -23,7 +23,7 @@
   },
   "scripts": {
     "test": "vitest",
-    "coverage": "vitest run --coverage",
-    "test:gui": "vitest --ui"
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   }
 }

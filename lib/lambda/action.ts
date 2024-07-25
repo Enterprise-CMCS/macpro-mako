@@ -10,16 +10,29 @@ import { getAvailableActions } from "shared-utils";
 import { Action } from "shared-types";
 import {
   issueRai,
-  removeAppkChild,
   respondToRai,
   toggleRaiResponseWithdraw,
   updateId,
   withdrawPackage,
   withdrawRai,
   completeIntake,
-} from "./packageActions";
+  removeAppkChild,
+} from "./package-actions";
+import { setupWriteService } from "./package-actions/setup-write-service";
+
+const checkIfActionType = (
+  potentialActionType: unknown,
+): potentialActionType is Action => {
+  if (potentialActionType) {
+    return true;
+  }
+  return false;
+};
 
 export const handler = async (event: APIGatewayEvent) => {
+  if (typeof globalThis.packageActionWriteService === "undefined") {
+    global.packageActionWriteService = await setupWriteService();
+  }
   if (!event.pathParameters || !event.pathParameters.actionType) {
     return response({
       statusCode: 400,
@@ -36,8 +49,6 @@ export const handler = async (event: APIGatewayEvent) => {
   try {
     const actionType = event.pathParameters.actionType as Action;
     const body = JSON.parse(event.body);
-    console.log(actionType);
-    console.log(body);
 
     // Check auth
     const result = await getPackage(body.id);
@@ -58,16 +69,10 @@ export const handler = async (event: APIGatewayEvent) => {
       authDetails.poolId,
     );
 
-    if (actionType === Action.REMOVE_APPK_CHILD) {
-      await removeAppkChild(body);
-      return response({
-        statusCode: 200,
-        body: { message: "success" },
-      });
-    }
-
     // Check that the package action is available
     const actions: Action[] = getAvailableActions(userAttr, result._source);
+    console.log("ACTIONTYPE: " + actionType);
+    console.log("AVAILABLE ACTION: " + actions);
     if (!actions.includes(actionType)) {
       return response({
         statusCode: 401,
@@ -76,7 +81,7 @@ export const handler = async (event: APIGatewayEvent) => {
         },
       });
     }
-    console.log(actionType);
+
     // Call package action
     switch (actionType) {
       case Action.WITHDRAW_PACKAGE:
@@ -102,6 +107,9 @@ export const handler = async (event: APIGatewayEvent) => {
         break;
       case Action.COMPLETE_INTAKE:
         await completeIntake(body);
+        break;
+      case Action.REMOVE_APPK_CHILD:
+        await removeAppkChild(body);
         break;
       default:
         throw `No ${actionType} action available`;

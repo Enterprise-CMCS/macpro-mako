@@ -136,6 +136,12 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
               return opensearch.main.toggleWithdrawEnabled
                 .transform(id)
                 .safeParse(record);
+            case Action.ISSUE_RAI:
+              return opensearch.main.issueRai.transform(id).safeParse(record);
+            case Action.RESPOND_TO_RAI:
+              return opensearch.main.respondToRai
+                .transform(id)
+                .safeParse(record);
             case Action.WITHDRAW_RAI:
               return opensearch.main.withdrawRai
                 .transform(id)
@@ -150,6 +156,12 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
                 .safeParse(record);
             case Action.UPDATE_ID: {
               console.log("UPDATE_ID detected...");
+              if (!record.newId) {
+                console.log(
+                  "Malformed update id record.  We're going to skip.",
+                );
+                break; // we need to add a safeparse so malformed receords fail in a nominal way.
+              }
               // Immediately index all prior documents
               await bulkUpdateDataWrapper(osDomain, index, docs);
               // Reset docs back to empty

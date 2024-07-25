@@ -171,6 +171,7 @@ export const buildEmailData = async (
           emailAddresses[dataType] ??
           `'${dataType} Substitute' <mako.stateuser@gmail.com>`;
         break;
+        
       default:
         returnObject[dataType] =
           data[dataType] ?? lookupValues[dataType] ?? "missing data";

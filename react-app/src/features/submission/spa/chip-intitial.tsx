@@ -17,7 +17,6 @@ import {
 import * as Inputs from "@/components/Inputs";
 import * as Content from "@/components";
 import { useGetUser, submit } from "@/api";
-import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
   zAttachmentRequired,
@@ -32,6 +31,7 @@ import { useQuery as useQueryString } from "@/hooks";
 import { SlotAdditionalInfo } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
 import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
+import { Authority } from "shared-types";
 
 const formSchema = z.object({
   id: zSpaIdSchema,

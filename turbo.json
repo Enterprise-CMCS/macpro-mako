@@ -1,11 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
-    "test": {
-      "outputs": ["dist/**"],
-      "cache": false
-    },
-    "coverage": {},
     "lint": {
       "cache": false
     },
@@ -13,8 +8,6 @@
       "inputs": ["bin/cli/"],
       "cache": false
     },
-    "test:watch": {},
-    "test:gui": {},
     "e2e": {
       "cache": false,
       "env": [
