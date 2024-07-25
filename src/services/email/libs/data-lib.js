@@ -116,7 +116,9 @@ export const buildEmailData = async (bundle, data) => {
           ? process.env[dataType]
           : `'${dataType} Substitute' <mako.stateuser@gmail.com>`;
         break;
-        
+      case "additionalInformation":
+        returnObject[dataType] = data[dataType] ?? "No additional information submitted";
+        break;
       default:
         returnObject[dataType] = data[dataType]
           ? data[dataType]

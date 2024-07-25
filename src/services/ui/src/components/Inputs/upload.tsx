@@ -46,26 +46,28 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
 
   return (
     <>
-      <div className="my-2 flex flex-wrap gap-2">
-        {files.map((file) => (
-          <div
-            className="flex border-2 rounded-md py-1 pl-2.5 pr-1 border-sky-500 items-center"
-            key={file.name}
-          >
-            <span className="text-sky-700">{file.name}</span>
-            <I.Button
-              onClick={(e) => {
-                e.preventDefault();
-                setFiles(files.filter((a) => a.name !== file.name));
-              }}
-              variant="ghost"
-              className="p-0 h-0"
+      {files.length > 0 && (
+        <div className="my-2 flex flex-wrap gap-2">
+          {files.map((file) => (
+            <div
+              className="flex border-2 rounded-md py-1 pl-2.5 pr-1 border-sky-500 items-center"
+              key={file.name}
             >
-              <X className="ml-2 text-sky-700 w-5" />
-            </I.Button>
-          </div>
-        ))}
-      </div>
+              <span className="text-sky-700">{file.name}</span>
+              <I.Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setFiles(files.filter((a) => a.name !== file.name));
+                }}
+                variant="ghost"
+                className="p-0 h-0"
+              >
+                <X className="ml-2 text-sky-700 w-5" />
+              </I.Button>
+            </div>
+          ))}
+        </div>
+      )}
       {errorMessage && <span className="text-red-500">{errorMessage}</span>}
       <div
         {...getRootProps()}

@@ -258,7 +258,7 @@ Summary:
 <p>If the contents of this email seem suspicious, do not open them, and instead 
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
-text: `
+    text: `
 he OneMAC Submission Portal received a request to withdraw the package below.
 The package will no longer be considered for CMS review:
 
@@ -541,11 +541,11 @@ for {{id}} was withdrawn by {{submitterName}} {{submitterEmail}}.</p>
 Summary:
 <br>{{additionalInformation}}
 <br>
-<p>This mailbox is for the submittal of State Plan Amendments and non-web 
-based responses to Requests for Additional Information (RAI) on submitted 
-SPAs only. Any other correspondence will be disregarded.</p>
+<p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, 
+responses to Requests for Additional Information (RAI), and extension requests on Waivers only. 
+Any other correspondence will be disregarded.</p>
 <p>If you have questions, please contact 
-<a href='mailto:SPA@cms.hhs.gov'>spa@cms.hhs.gov</a>.</p>
+<a href='mailto:SPA@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
     text: `
 The OneMAC Submission Portal received a request to withdraw the Formal 
@@ -560,9 +560,9 @@ Medicaid SPA Package ID: {{id}}
 Summary:
 {{additionalInformation}}
 
-This mailbox is for the submittal of State Plan Amendments and non-web 
-based responses to Requests for Additional Information (RAI) on submitted 
-SPAs only. Any other correspondence will be disregarded.
+This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, 
+responses to Requests for Additional Information (RAI), and extension requests on Waivers only. 
+Any other correspondence will be disregarded.
 
 If you have any questions, please contact spa@cms.hhs.gov or your state lead.
 
@@ -1225,7 +1225,7 @@ Thank you!`,
     name: "temporary-extension-cms",
     subject: "{{authority}} Waiver Extension {{id}} Submitted",
     html: `
-<p>The Submission Portal received a {{authority}} Waiver Extension Submission:</p>
+<p>The OneMAC Submission Portal received a {{authority}} Waiver Extension Submission:</p>
 <ul>
 <li>The submission can be accessed in the OneMAC application, which you 
 can find at <a href='{{applicationEndpoint}}'>this link</a>.</li>
