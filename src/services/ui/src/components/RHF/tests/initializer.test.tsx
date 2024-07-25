@@ -137,7 +137,7 @@ const initForm = {
   testForm_sec1_switch: false,
   testForm_sec1_input: "",
   testForm_sec1_select: "",
-  testForm_sec1_datePicker: "",
+  testForm_sec1_datePicker: undefined,
   testForm_sec1_textarea: "",
   testForm_sec1_radio: "",
   testForm_sec1_upload: [],

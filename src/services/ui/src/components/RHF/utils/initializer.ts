@@ -55,6 +55,8 @@ export const slotInitializer =
         ACC[adjustedName] = [];
         break;
       case "DatePicker":
+        ACC[adjustedName] = undefined;
+        break;
       case "Input":
       case "Select":
       case "Multiselect":
