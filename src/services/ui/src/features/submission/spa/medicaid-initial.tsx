@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,7 +18,6 @@ import {
 } from "@/components";
 import * as Content from "@/components";
 import { submit } from "@/api";
-import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
   zAttachmentRequired,
@@ -34,6 +32,7 @@ import { FormField } from "@/components/Inputs";
 import { SlotAdditionalInfo } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
 import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
+import { Authority } from "shared-types";
 
 const formSchema = z.object({
   id: zSpaIdSchema,

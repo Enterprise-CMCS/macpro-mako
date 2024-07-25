@@ -73,7 +73,7 @@ export const defaultWithdrawPackageContent: FormContentHydrator = (
     header: "Withdraw package?",
     body: `You are about to withdraw ${document.authority} ${document.id}. Completing this action will conclude the review of this ${document.authority} package. If you are not sure this is the correct action to select, contact your CMS point of contact for assistance.`,
     acceptButtonText: "Yes, withdraw package",
-    cancelButtonText: "Return to form",
+    cancelButtonText: "Cancel",
   },
   successBanner: {
     header: "Package withdrawn",
