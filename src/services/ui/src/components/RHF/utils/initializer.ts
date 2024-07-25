@@ -54,6 +54,7 @@ export const slotInitializer =
       case "Upload":
         ACC[adjustedName] = [];
         break;
+      case "DatePicker":
       case "Input":
       case "Select":
       case "Multiselect":
