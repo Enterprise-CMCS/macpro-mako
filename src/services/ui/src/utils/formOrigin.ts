@@ -17,12 +17,17 @@ export const originRoute: Record<Origin, Route> = {
  */
 export const useOriginPath = () => {
   const urlQuery = useQueryString();
-  const { id } = useParams("/action/:id/:type");
+  const origin = urlQuery.get(ORIGIN) as Origin | null;
+
+  const { id, authority } = useParams("/action/:authority/:id/:type");
+
   return useMemo(() => {
-    const origin = urlQuery.get(ORIGIN) as Origin | null;
-    if (!origin || !originRoute[origin]) return null;
+    if (!origin || !originRoute[origin]) {
+      return null;
+    }
+
     return origin === "actionsDetails"
-      ? (`${originRoute[origin]}?id=${id}` as Route)
-      : (originRoute[origin] as Route);
-  }, []);
+      ? `${originRoute[origin]}/${authority}/${id}`
+      : originRoute[origin];
+  }, [authority, id, origin]);
 };
