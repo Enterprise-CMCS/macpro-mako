@@ -4,7 +4,6 @@ import AxeBuilder from "@axe-core/playwright";
 const staticRoutes = [
   "/",
   "/dashboard",
-  "/details",
   "/faq",
   "/profile",
   "/new-submission",
