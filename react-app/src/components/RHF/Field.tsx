@@ -60,6 +60,7 @@ export const Field = <TFields extends FieldValues>({
   const formField = (
     <FormField
       key={adjustedSlotName}
+      // @ts-ignore
       control={control}
       name={adjustedSlotName as never}
       {...(SLOT.rules && { rules: SLOT.rules })}
