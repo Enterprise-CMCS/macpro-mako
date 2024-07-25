@@ -1,5 +1,5 @@
 import { ConfirmationModal, LoadingSpinner } from "@/components";
-import { Authority, SEATOOL_STATUS } from "shared-types";
+import { SEATOOL_STATUS } from "shared-types";
 import { useState } from "react";
 import * as T from "@/components/Table";
 import { Button } from "@/components/Inputs";
@@ -21,11 +21,11 @@ export const AppK = () => {
 
   const onChildRemove = async (id: string) => {
     setLoading(true);
-    await submission.mutate(
+    submission.mutate(
       {
         data: { id, appkParentId: cache.data.id },
         user,
-        authority: cache.data.authority as Authority,
+        authority: cache.data.authority,
         endpoint: "/action/remove-appk-child",
       },
       {

@@ -6,7 +6,6 @@ export enum Authority {
   "1915c" = "1915(c)",
 }
 
-/* Authority values as a union string type. Replaces old Authority enum. */
 export type AuthorityUnion =
   | "Medicaid SPA"
   | "CHIP SPA"
