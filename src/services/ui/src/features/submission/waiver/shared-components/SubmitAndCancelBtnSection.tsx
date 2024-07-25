@@ -69,6 +69,7 @@ export const SubmitAndCancelBtnSection = ({
               body: "All information you've entered on this form will be lost if you leave this page.",
               acceptButtonText: "Yes, leave form",
               cancelButtonText: "Return to form",
+              areButtonsReversed: true,
             });
             modal.setOnAccept(() => acceptAction);
             modal.setModalOpen(true);
