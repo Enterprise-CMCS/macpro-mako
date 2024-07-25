@@ -81,19 +81,5 @@ export const defaultWithdrawPackageContent: FormContentHydrator = (
   },
 });
 
-export const waiverWithdrawPackageFields: ReactElement[] = [
-  ...defaultWithdrawPackageFields,
-].toSpliced(
-  0,
-  1,
-  <ActionFormDescription key="content-description" boldReminder>
-    Complete this form to withdraw this 1915(c) Appendix K package. Once
-    complete, you will not be able to resubmit this package. CMS will be
-    notified and will use this content to review your request. If CMS needs any
-    additional information, they will follow up by email.
-  </ActionFormDescription>,
-);
-console.log(waiverWithdrawPackageFields);
-
 export const packageWithdrawn: CheckDocumentFunction = (checks) =>
   checks.hasStatus(SEATOOL_STATUS.WITHDRAWN);
