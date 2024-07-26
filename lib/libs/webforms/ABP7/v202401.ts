@@ -11,7 +11,7 @@ export const v202401: FormSchema = {
       form: [
         {
           description:
-            "If the target population includes persons under 21, complete the following assurances regarding Early and Periodic Screening, Diagnostic, and Treatment (EPSDT). Otherwise, skip to the Prescription drug coverage assurances below.",
+            "If the target population includes persons under 21, complete the following assurances regarding Early and Periodic Screening, Diagnostic, and Treatment (EPSDT). Otherwise, skip to the prescription drug coverage assurances below.",
           descriptionClassName: "font-normal",
           slots: [
             {
