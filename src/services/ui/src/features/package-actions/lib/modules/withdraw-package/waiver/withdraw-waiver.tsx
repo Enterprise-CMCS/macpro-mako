@@ -35,6 +35,9 @@ export const waiverWithdraw1915cPackageFields: ReactElement[] = [
   <AttachmentsSection
     faqAttLink="/faq"
     key={"field-attachments"}
+    instructions={
+      "Upload your supporting documentation for withdrawal or explain your need for withdrawal in the Additional Information section."
+    }
     attachments={[
       {
         name: "supportingDocumentation",
@@ -43,9 +46,10 @@ export const waiverWithdraw1915cPackageFields: ReactElement[] = [
     ]}
   />,
   <AdditionalInfoSection
-    required
     key={"field-addlinfo"}
-    instruction={"Explain your need for withdrawal."}
+    instruction={
+      "Explain your need for withdrawal, or upload supporting documentation."
+    }
   />,
 ];
 
