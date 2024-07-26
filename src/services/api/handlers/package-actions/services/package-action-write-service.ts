@@ -354,6 +354,7 @@ export class PackageActionWriteService implements PackageWriteClass {
           id,
           timestamp,
           topicName,
+          newId,
           ...data,
         });
       }
