@@ -71,8 +71,7 @@ export const PA_AppkChildRemovedFromParent: FC<
     <div className="flex gap-1">
       <p>Removed from:</p>
       <Link
-        path="/details"
-        query={{ id: props.appkParentId }}
+        path={`/details/1915(c)/${props.appkParentId}` as Table.Route}
         className="hover:underline font-semibold text-blue-600"
       >
         {props.appkParentId}
