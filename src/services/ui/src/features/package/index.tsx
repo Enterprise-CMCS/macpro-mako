@@ -1,6 +1,5 @@
 import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
 
-import { useQuery } from "@/hooks";
 import { useGetItem, useGetItemCache } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { FC, PropsWithChildren } from "react";
@@ -13,7 +12,8 @@ import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
 import { Authority } from "shared-types";
-import { detailsAndActionsCrumbs } from "@/features/package-actions/actions-breadcrumbs";
+import { Navigate, useParams } from "react-router-dom";
+import { detailsAndActionsCrumbs } from "@/utils";
 
 export const DetailCardWrapper = ({
   title,
@@ -70,13 +70,19 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
 };
 
 export const Details = () => {
-  const query = useQuery();
-  const id = query.get("id") as string;
+  const { id, authority } = useParams<{
+    id: string;
+    authority: Authority;
+  }>();
+
+  if (id === undefined || authority === undefined) {
+    return <Navigate to="/dashboard" />;
+  }
 
   return (
     <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row px-4 lg:px-8">
       <div>
-        <BreadCrumbs options={detailsAndActionsCrumbs({ id })} />
+        <BreadCrumbs options={detailsAndActionsCrumbs({ id, authority })} />
         <div className="hidden lg:block">
           <DetailsSidebar id={id} />
         </div>
@@ -101,7 +107,7 @@ const DetailsSidebar: FC<{ id: string }> = ({ id }) => {
 };
 
 export const usePackageDetailsCache = () => {
-  const query = useQuery();
-  const id = query.get("id") as string;
+  const { id } = useParams<{ id: string }>();
+
   return useGetItemCache(id);
 };

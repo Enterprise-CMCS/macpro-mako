@@ -40,6 +40,9 @@ export const v202401: FormSchema = {
               label:
                 "Describe the employer-sponsored insurance, including the population covered, amount of premium assistance by population, and employer-sponsored insurance activities, including required contribution, cost-effectiveness test requirements, and benefit information.",
               labelClassName: "font-bold",
+              props: {
+                className: "h-[114px]",
+              },
               dependency: {
                 conditions: [
                   {
@@ -82,6 +85,9 @@ export const v202401: FormSchema = {
               label:
                 "Describe, including the population covered, amount of premium assistance by population, required contributions, cost-effectiveness test requirements, and benefit information.",
               labelClassName: "font-bold",
+              props: {
+                className: "h-[114px]",
+              },
               dependency: {
                 conditions: [
                   {
@@ -100,6 +106,9 @@ export const v202401: FormSchema = {
               label:
                 "Other information about employer-sponsored insurance or payment of premiums (optional)",
               labelClassName: "font-bold",
+              props: {
+                className: "h-[114px]",
+              },
               rules: {
                 pattern: {
                   value: /^\S(.*\S)?$/,
