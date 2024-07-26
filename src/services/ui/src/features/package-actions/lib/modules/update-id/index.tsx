@@ -47,4 +47,5 @@ export const defaultUpdateIdContent: FormContentHydrator = (document) => ({
     "Once you submit this form, the ID of the existing package will be updated in SEATool and OneMAC.",
 });
 
-export const idUpdated: CheckDocumentFunction = (_checks) => true;
+export const idUpdated: CheckDocumentFunction = (checks) =>
+  checks.recordExists && checks.hasSubmissionDate;

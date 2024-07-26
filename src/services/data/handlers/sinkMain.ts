@@ -158,6 +158,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
               if (!record.newId) {
                 console.log(
                   "Malformed update id record.  We're going to skip.",
+                  JSON.stringify(record),
                 );
                 break; // we need to add a safeparse so malformed receords fail in a nominal way.
               }

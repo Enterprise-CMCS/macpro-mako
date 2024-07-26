@@ -1,7 +1,7 @@
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   BreadCrumbs,
   SimplePageContainer,
@@ -10,7 +10,6 @@ import {
   FAQFooter,
   useAlertContext,
   formCrumbsFromPath,
-  useNavigate,
   Route,
   FormField,
 } from "@/components";
@@ -19,16 +18,12 @@ import * as Inputs from "@/components/Inputs";
 import { useGetUser, submit } from "@/api";
 import { Authority } from "shared-types";
 import {
+  getFormOrigin,
   zAdditionalInfoOptional,
   zAttachmentOptional,
   zAttachmentRequired,
   zInitialWaiverNumberSchema,
-  Origin,
-  ORIGIN,
-  originRoute,
-  useOriginPath,
 } from "@/utils";
-import { useQuery as useQueryString } from "@/hooks";
 import { SlotAdditionalInfo } from "@/features";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 import { documentPoller } from "@/utils/Poller/documentPoller";
@@ -71,9 +66,7 @@ export const Contracting1915BWaiverInitialPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
-  const urlQuery = useQueryString();
   const alert = useAlertContext();
-  const originPath = useOriginPath();
 
   const handleSubmit: SubmitHandler<Waiver1915BContractingInitial> = async (
     formData,
@@ -85,19 +78,16 @@ export const Contracting1915BWaiverInitialPage = () => {
         user,
         authority: Authority["1915b"],
       });
+
+      const originPath = getFormOrigin({ authority: Authority["1915b"] });
+
       alert.setContent({
         header: "Package submitted",
         body: "Your submission has been received.",
       });
       alert.setBannerStyle("success");
       alert.setBannerShow(true);
-      alert.setBannerDisplayOn(
-        // This uses the originRoute map because this value doesn't work
-        // when any queries are added, such as the case of /details?id=...
-        urlQuery.get(ORIGIN)
-          ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-          : "/dashboard",
-      );
+      alert.setBannerDisplayOn(originPath.pathname as Route);
 
       const poller = documentPoller(formData.id, (checks) =>
         checks.actionIs("New"),
@@ -105,11 +95,7 @@ export const Contracting1915BWaiverInitialPage = () => {
 
       await poller.startPollingData();
 
-      navigate(
-        originPath
-          ? { path: `${originPath}?tab=waivers` as Route }
-          : { path: "/dashboard?tab=waivers" as Route },
-      );
+      navigate(originPath);
     } catch (e) {
       console.error(e);
       alert.setContent({
@@ -246,11 +232,7 @@ export const Contracting1915BWaiverInitialPage = () => {
             />
           </SectionCard>
           <Content.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection
-            showAlert
-            loadingSpinner
-            cancelNavigationLocation={originPath ?? "/dashboard"}
-          />
+          <SubmitAndCancelBtnSection showAlert loadingSpinner />
         </form>
       </Inputs.Form>
       <FAQFooter />
