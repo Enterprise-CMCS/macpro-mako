@@ -1,9 +1,8 @@
-import { useCallback } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components/Inputs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useGetUser } from "@/api/useGetUser";
 import {
   Alert,
@@ -13,27 +12,22 @@ import {
   SimplePageContainer,
   FAQ_TAB,
   useAlertContext,
-  useNavigate,
   useLocationCrumbs,
   Route,
 } from "@/components";
 import * as Content from "@/components";
 import { submit } from "@/api";
-import { Authority } from "shared-types";
 import {
   zAttachmentOptional,
   zAttachmentRequired,
   zSpaIdSchema,
-  Origin,
-  ORIGIN,
-  originRoute,
-  useOriginPath,
+  getFormOrigin,
 } from "@/utils";
-import { useQuery as useQueryString } from "@/hooks";
 import { FormField } from "@/components/Inputs";
 import { SlotAdditionalInfo } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
 import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
+import { Authority } from "shared-types";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -83,9 +77,7 @@ export const MedicaidSpaFormPage = () => {
   const { data: user } = useGetUser();
   const crumbs = useLocationCrumbs();
   const navigate = useNavigate();
-  const urlQuery = useQueryString();
   const alert = useAlertContext();
-  const originPath = useOriginPath();
   const form = useForm<MedicaidFormSchema>({
     resolver: zodResolver(formSchema),
     mode: "onChange",
@@ -99,19 +91,16 @@ export const MedicaidSpaFormPage = () => {
         user,
         authority: Authority.MED_SPA,
       });
+
+      const originPath = getFormOrigin();
+
       alert.setContent({
         header: "Package submitted",
         body: "Your submission has been received.",
       });
       alert.setBannerStyle("success");
       alert.setBannerShow(true);
-      alert.setBannerDisplayOn(
-        // This uses the originRoute map because this value doesn't work
-        // when any queries are added, such as the case of /details?id=...
-        urlQuery.get(ORIGIN)
-          ? originRoute[urlQuery.get(ORIGIN)! as Origin]
-          : "/dashboard",
-      );
+      alert.setBannerDisplayOn(originPath.pathname as Route);
 
       const poller = documentPoller(
         formData.id,
@@ -120,11 +109,7 @@ export const MedicaidSpaFormPage = () => {
 
       await poller.startPollingData();
 
-      navigate(
-        originPath
-          ? { path: `${originPath}?tab=spas` as Route }
-          : { path: "/dashboard?tab=spas" as Route },
-      );
+      navigate(originPath);
     } catch (e) {
       console.error(e);
       alert.setContent({
@@ -259,9 +244,7 @@ export const MedicaidSpaFormPage = () => {
               <LoadingSpinner />
             </div>
           ) : null}
-          <SubmitAndCancelBtnSection
-            cancelNavigationLocation={originPath ?? "/dashboard"}
-          />
+          <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
       <Content.FAQFooter />

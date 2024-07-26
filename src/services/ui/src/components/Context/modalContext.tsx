@@ -5,6 +5,7 @@ import { ConfirmationModal } from "@/components";
 export type SubmissionAlert = {
   header: string;
   body: string;
+  areButtonsReversed?: boolean;
   cancelButtonText?: string;
   acceptButtonText?: string;
 };
@@ -46,6 +47,7 @@ export const ModalProvider = ({ children }: PropsWithChildren) => {
         acceptButtonVisible={context.content.acceptButtonText !== undefined}
         cancelButtonText={context.content.cancelButtonText}
         acceptButtonText={context.content.acceptButtonText}
+        areButtonsReversed={context.content.areButtonsReversed}
         title={context.content.header}
         body={context.content.body}
       />

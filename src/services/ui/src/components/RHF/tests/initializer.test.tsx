@@ -25,6 +25,10 @@ const form: FormSchema = {
               rhf: "Select",
             },
             {
+              name: "datePicker",
+              rhf: "DatePicker",
+            },
+            {
               name: "textDisplay",
               rhf: "TextDisplay",
             },
@@ -133,6 +137,7 @@ const initForm = {
   testForm_sec1_switch: false,
   testForm_sec1_input: "",
   testForm_sec1_select: "",
+  testForm_sec1_datePicker: undefined,
   testForm_sec1_textarea: "",
   testForm_sec1_radio: "",
   testForm_sec1_upload: [],
