@@ -54,7 +54,6 @@ export const transform = (id: string) => {
         changedDate: getDateStringOrNullFromEpoc(data.changedDate),
         subject: null,
         description: null,
-        wasAppkChild: false,
         makoChangedDate:
           typeof data.timestamp === "number"
             ? new Date(data.timestamp).toISOString()
