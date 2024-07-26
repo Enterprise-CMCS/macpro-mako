@@ -13,9 +13,13 @@ export const ui = {
     await writeUiEnvFile(options.stage, true);
     await runner.run_command_and_output(
       `Build`,
-      ["yarn", "build"],
+      ["bun", "run", "build"],
       "react-app",
     );
-    await runner.run_command_and_output(`Run`, ["yarn", "dev"], `react-app`);
+    await runner.run_command_and_output(
+      `Run`,
+      ["bun", "run", "dev"],
+      `react-app`,
+    );
   },
 };

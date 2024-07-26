@@ -43,6 +43,7 @@ import { DeploymentConfigProperties } from "./deployment-config";
 import { CloudWatchToS3 } from "local-constructs";
 import { EmptyBuckets } from "local-constructs";
 import { RegionalWaf } from "local-constructs";
+import path = require("path");
 
 interface ApiStackProps extends NestedStackProps {
   project: string;
@@ -182,6 +183,7 @@ export class ApiStack extends NestedStack {
       const fn = new NodejsFunction(this, id, {
         runtime: Runtime.NODEJS_18_X,
         functionName: `${project}-${stage}-${stack}-${id}`,
+        depsLockFilePath: join(__dirname, "../bun.lockb"),
         entry,
         handler: "handler",
         role: lambdaRole,

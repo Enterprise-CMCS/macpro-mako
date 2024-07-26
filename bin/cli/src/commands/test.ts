@@ -35,7 +35,7 @@ export const test = {
     }
     await runner.run_command_and_output(
       "Unit Tests",
-      ["yarn", testCommand],
+      ["bun", "run", testCommand],
       ".",
     );
   },

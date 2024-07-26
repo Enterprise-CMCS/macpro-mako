@@ -27,7 +27,7 @@ export const deploy = {
 
     await runner.run_command_and_output(
       "Build",
-      ["yarn", "build"],
+      ["bun", "run", "build"],
       "react-app",
     );
 

@@ -23,21 +23,14 @@ if ! diff  <(cat .nvmrc | tr -d '\n') <(node -v | tr -d '\n') > /dev/null ; then
 	exit 1
 fi
 
-# check yarn exists
-if ! which yarn > /dev/null ; then
-	echo "yarn not found on the system. On macOS, you can install it with 'brew install yarn'"
+# check bun exists
+if ! which bun > /dev/null ; then
+	echo "bun not found on the system. On macOS, you can install it with 'brew install oven-sh/bun/bun'"
 	exit 1
 fi
 
-# Ensure packages are up to date.  To do it efficiently, we have to use slightly different logic for CI systems and local.
-if [ -n "${CI+set}" ] && [ "$CI" == "true" ] ; then # If we're in a CI system, and have no node_modules (cache miss scenario).
-	if [ ! -d "node_modules" ] ; then
-		yarn install --frozen-lockfile
-	fi
-elif [ "yarn.lock" -nt ".yarn_install" ]; then  # We're local, and the install flag is older than the lockfile
-	yarn install --frozen-lockfile
-	touch .yarn_install
-fi
+# Ensure packages are up to date.
+bun install
 
 # build and run dev.ts
-yarn build:cli && node ./.build_run/src/run.js "$@"
+bun build:cli && node ./.build_run/src/run.js "$@"

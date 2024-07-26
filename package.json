@@ -75,5 +75,5 @@
       "@semantic-release/github"
     ]
   },
-  "packageManager": "yarn@1.22.21"
+  "packageManager": "bun@1.1.20"
 }

@@ -19,6 +19,7 @@ import { ISubnet, IVpc, SecurityGroup } from "aws-cdk-lib/aws-ec2";
 import { Construct } from "constructs";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
+import { join } from "path";
 
 interface EmailServiceStackProps extends cdk.NestedStackProps {
   project: string;
@@ -173,6 +174,7 @@ export class EmailStack extends cdk.NestedStack {
       {
         functionName: `${topicNamespace}-processEmails`,
         runtime: Runtime.NODEJS_18_X,
+        depsLockFilePath: join(__dirname, "../bun.lockb"),
         handler: "handler",
         entry: path.join(__dirname, "lambda/processEmails.ts"),
         role: lambdaRole,
@@ -223,6 +225,7 @@ export class EmailStack extends cdk.NestedStack {
         functionName: `${topicNamespace}-processEmailEvents`,
         runtime: Runtime.NODEJS_18_X,
         handler: "main",
+        depsLockFilePath: join(__dirname, "../bun.lockb"),
         entry: path.join(__dirname, "lambda/processEmailEvents.ts"),
         role: lambdaRole,
         environment: {

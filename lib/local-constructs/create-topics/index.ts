@@ -18,6 +18,7 @@ import { Duration, RemovalPolicy } from "aws-cdk-lib";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { ISecurityGroup, ISubnet, IVpc } from "aws-cdk-lib/aws-ec2";
+import path = require("path");
 
 interface CreateTopicsProps {
   vpc: IVpc;
@@ -42,6 +43,7 @@ export class CreateTopics extends Construct {
       handler: "handler",
       runtime: Runtime.NODEJS_18_X,
       timeout: Duration.minutes(5),
+      depsLockFilePath: join(__dirname, "../../../bun.lockb"),
       role: new Role(this, "CreateTopicsLambdaExecutionRole", {
         assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
         managedPolicies: [

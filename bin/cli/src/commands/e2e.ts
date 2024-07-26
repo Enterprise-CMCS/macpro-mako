@@ -15,13 +15,13 @@ export const e2e = {
   handler: async ({ ui }: { ui: boolean }) => {
     await runner.run_command_and_output(
       "Install playwright",
-      ["yarn", "playwright", "install", "--with-deps"],
+      ["bun", "playwright", "install", "--with-deps"],
       ".",
     );
 
     await runner.run_command_and_output(
       ui ? "e2e:ui tests" : "e2e tests",
-      ["yarn", ui ? "e2e:ui" : "e2e"],
+      ["bun", ui ? "e2e:ui" : "e2e"],
       ".",
     );
   },

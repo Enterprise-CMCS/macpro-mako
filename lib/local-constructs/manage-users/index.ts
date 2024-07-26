@@ -18,6 +18,7 @@ import { Duration, RemovalPolicy } from "aws-cdk-lib";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { UserPool } from "aws-cdk-lib/aws-cognito";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
+import path = require("path");
 
 export class ManageUsers extends Construct {
   constructor(
@@ -37,6 +38,7 @@ export class ManageUsers extends Construct {
       entry: join(__dirname, "src/manageUsers.ts"),
       handler: "handler",
       runtime: Runtime.NODEJS_18_X,
+      depsLockFilePath: join(__dirname, "../../../bun.lockb"),
       timeout: Duration.minutes(5),
       logGroup,
       role: new Role(this, "LambdaExecutionRole", {

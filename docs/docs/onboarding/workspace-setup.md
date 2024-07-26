@@ -28,7 +28,7 @@ This is a static list of tools that should be pre-installed to support all Devel
 | [XCode Command Line Tools](https://mac.install.guide/commandlinetools/index.html) | 2392      | Yes      |
 | [NodeJS](https://nodejs.org/en/)                                                  | 14.x      | Yes      |
 | [Node Version Manager (NVM)](https://github.com/nvm-sh/nvm)                       | 0.39.1    | Yes      |
-| [Yarn](https://yarnpkg.com/)                                                      | 1.22.18   | Yes      |
+| [Bun](https://bun.sh/)                                                            | 1.1.20    | Yes      |
 | [Direnv](https://direnv/)                                                         | 2.31.0    | Yes      |
 | [AWS CLI ](https://aws.amazon.com/cli/)                                           | 2.x       | Yes      |
 | [AWS CLI Sessions Manager Plugin][ssmpluginlink]                                  | 1.2.312.0 | Yes      |

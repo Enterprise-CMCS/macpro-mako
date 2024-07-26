@@ -61,6 +61,7 @@ import { LambdaInvoke } from "aws-cdk-lib/aws-stepfunctions-tasks";
 import { Construct } from "constructs";
 
 import { CleanupKafka, CreateTopics, ManageUsers } from "local-constructs";
+import path = require("path");
 
 interface DataStackProps extends NestedStackProps {
   project: string;
@@ -282,6 +283,7 @@ export class DataStack extends NestedStack {
         functionName: `${project}-${stage}-${stack}-mapRole`,
         entry: join(__dirname, "lambda/mapRole.ts"),
         handler: "handler",
+        depsLockFilePath: join(__dirname, "../bun.lockb"),
         runtime: Runtime.NODEJS_18_X,
         role: new Role(this, "MapRoleLambdaExecutionRole", {
           assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
@@ -402,6 +404,7 @@ export class DataStack extends NestedStack {
       });
       const fn = new NodejsFunction(this, id, {
         functionName: `${project}-${stage}-${stack}-${id}`,
+        depsLockFilePath: join(__dirname, "../bun.lockb"),
         entry: join(__dirname, `lambda/${entry}`),
         handler: "handler",
         runtime: Runtime.NODEJS_18_X,
@@ -793,6 +796,7 @@ export class DataStack extends NestedStack {
         functionName: `${project}-${stage}-${stack}-runReindex`,
         entry: join(__dirname, "lambda/runReindex.ts"),
         handler: "handler",
+        depsLockFilePath: join(__dirname, "../bun.lockb"),
         runtime: Runtime.NODEJS_18_X,
         timeout: Duration.minutes(5),
         role: new Role(this, "RunReindexLambdaExecutionRole", {

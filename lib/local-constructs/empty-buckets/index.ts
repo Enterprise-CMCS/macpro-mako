@@ -19,6 +19,7 @@ import {
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
+import path = require("path");
 
 interface EmptyBucketsProps extends StackProps {
   buckets: IBucket[];
@@ -71,6 +72,7 @@ export class EmptyBuckets extends Construct {
     const lambda = new NodejsFunction(this, "Lambda", {
       runtime: Runtime.NODEJS_18_X,
       handler: "handler",
+      depsLockFilePath: join(__dirname, "../../../bun.lockb"),
       entry: join(__dirname, "src", "emptyBuckets.ts"),
       timeout: Duration.minutes(15),
       logGroup: lambdaLogGroup,

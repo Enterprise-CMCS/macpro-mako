@@ -40,6 +40,7 @@ import { Construct } from "constructs";
 
 import { DeploymentConfigProperties } from "./deployment-config";
 import { ManageUsers } from "local-constructs";
+import path = require("path");
 
 interface AuthStackProps extends NestedStackProps {
   project: string;
@@ -303,6 +304,7 @@ export class AuthStack extends NestedStack {
         entry: join(__dirname, "lambda/postAuth.ts"),
         handler: "handler",
         role: postAuthLambdaRole,
+        depsLockFilePath: join(__dirname, "../bun.lockb"),
         environment: {
           idmAuthzApiEndpoint,
           idmAuthzApiKeyArn,
