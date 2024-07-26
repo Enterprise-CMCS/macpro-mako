@@ -25,13 +25,12 @@ async function main() {
         region: process.env.CDK_DEFAULT_REGION,
       },
     });
-
-    app.synth();
   } catch (error) {
     console.error("Error:", error);
     process.exit(1);
   }
 }
+
 main();
 
 function validateEnvVariable(variableName: string): string {
