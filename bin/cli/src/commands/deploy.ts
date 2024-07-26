@@ -7,6 +7,9 @@ import {
   CreateInvalidationCommand,
 } from "@aws-sdk/client-cloudfront";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
+import { S3Client } from "@aws-sdk/client-s3";
+import { S3SyncClient } from "s3-sync-client";
+import mime from "mime-types";
 
 const runner = new LabeledProcessRunner();
 
@@ -53,11 +56,16 @@ export const deploy = {
       console.error("Failed to set fixed timestamps:", error);
     }
 
-    await runner.run_command_and_output(
-      "S3 Sync",
-      ["aws", "s3", "sync", buildDir, `s3://${s3BucketName}/`, "--delete"],
-      ".",
-    );
+    const { sync } = new S3SyncClient({
+      client: new S3Client({ region: process.env.REGION_A }),
+    });
+
+    await sync(buildDir, `s3://${s3BucketName}`, {
+      del: true,
+      commandInput: (input) => ({
+        ContentType: mime.lookup(input.Key) || "text/html",
+      }),
+    });
 
     const cloudfrontClient = new CloudFrontClient({
       region: process.env.REGION_A,
