@@ -47,6 +47,7 @@ export const AppK = () => {
             alert.setBannerStyle("success");
             alert.setBannerShow(true);
             alert.setBannerDisplayOn(window.location.pathname as Route);
+            window.scrollTo(0, 0);
           }, 5000);
         },
         onError: (err) => {

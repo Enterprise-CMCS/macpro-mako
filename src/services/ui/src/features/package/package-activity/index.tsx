@@ -54,8 +54,7 @@ export const PA_AppkParentRemovedChild: FC<opensearch.changelog.Document> = (
   return (
     <div className="flex gap-1">
       <Link
-        path="/details"
-        query={{ id: props.appkChildId }}
+        path={`/details/1915(c)/${props.appkChildId}` as Table.Route}
         className="hover:underline font-semibold text-blue-600"
       >
         {props.appkChildId}
