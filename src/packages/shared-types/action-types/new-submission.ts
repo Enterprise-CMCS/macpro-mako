@@ -10,7 +10,6 @@ export const onemacSchema = z.object({
   appkParentId: z.string().nullable().default(null),
   appkTitle: z.string().nullish(), // appk only, candidate to move to its own schema
   appkParent: z.boolean().optional(),
-  wasAppkChild: z.boolean().optional().default(false),
   originalWaiverNumber: z.string().nullable().default(null),
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
