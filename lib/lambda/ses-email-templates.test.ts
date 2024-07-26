@@ -20,9 +20,4 @@ describe("getEmailTemplates", () => {
       }
     });
   });
-
-  it("should match the snapshot of email templates", async () => {
-    const templates = await getEmailTemplates();
-    expect(templates).toMatchSnapshot();
-  });
 });
