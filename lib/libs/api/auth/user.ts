@@ -41,7 +41,7 @@ function userAttrDict(cognitoUser: CognitoUserType): CognitoUserAttributes {
 // Retrieve and parse user attributes from Cognito using the provided userId and poolId
 export async function lookupUserAttributes(
   userId: string,
-  poolId: string
+  poolId: string,
 ): Promise<CognitoUserAttributes> {
   const fetchResult = await fetchUserFromCognito(userId, poolId);
 
@@ -56,9 +56,9 @@ export async function lookupUserAttributes(
 }
 
 // Fetch user data from Cognito based on the provided userId and poolId
-async function fetchUserFromCognito(
+export async function fetchUserFromCognito(
   userID: string,
-  poolID: string
+  poolID: string,
 ): Promise<CognitoUserType | Error> {
   const cognitoClient = new CognitoIdentityProviderClient({
     region: process.env.region,
@@ -84,13 +84,19 @@ async function fetchUserFromCognito(
     const currentUser = listUsersResponse.Users[0];
     return currentUser;
   } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message === "No user found with this sub"
+    ) {
+      throw error;
+    }
     throw new Error("Error fetching user from Cognito");
   }
 }
 
 export const isAuthorized = async (
   event: APIGatewayEvent,
-  stateCode?: string | null
+  stateCode?: string | null,
 ) => {
   // Retrieve authentication details of the user
   const authDetails = getAuthDetails(event);
@@ -98,7 +104,7 @@ export const isAuthorized = async (
   // Look up user attributes from Cognito
   const userAttributes = await lookupUserAttributes(
     authDetails.userId,
-    authDetails.poolId
+    authDetails.poolId,
   );
   return (
     isCmsUser(userAttributes) ||
@@ -108,7 +114,7 @@ export const isAuthorized = async (
 
 export const isAuthorizedToGetPackageActions = async (
   event: APIGatewayEvent,
-  stateCode?: string | null
+  stateCode?: string | null,
 ) => {
   // Retrieve authentication details of the user
   const authDetails = getAuthDetails(event);
@@ -116,7 +122,7 @@ export const isAuthorizedToGetPackageActions = async (
   // Look up user attributes from Cognito
   const userAttributes = await lookupUserAttributes(
     authDetails.userId,
-    authDetails.poolId
+    authDetails.poolId,
   );
   return (
     isCmsWriteUser(userAttributes) ||
@@ -132,7 +138,7 @@ export const getStateFilter = async (event: APIGatewayEvent) => {
   // Look up user attributes from Cognito
   const userAttributes = await lookupUserAttributes(
     authDetails.userId,
-    authDetails.poolId
+    authDetails.poolId,
   );
 
   if (!isCmsUser(userAttributes)) {

@@ -1,8 +1,5 @@
 import { Kafka, Message, Producer } from "kafkajs";
-
-if (!process.env.brokerString) {
-  console.error("process.env.brokerString must be defined");
-}
+import { validateEnvVariable } from "shared-utils";
 
 const kafka = new Kafka({
   clientId: "submit",
@@ -18,6 +15,7 @@ const kafka = new Kafka({
 
 let producer: Producer;
 export function getProducer() {
+  validateEnvVariable("brokerString");
   return kafka.producer();
 }
 
