@@ -1,5 +1,5 @@
 import { it, describe, expect } from "vitest";
-import { convertRegexToString, reInsertRegex } from "../regex";
+import { convertRegexToString, reInsertRegex } from ".";
 
 const testRegex = /^-?\d*\.?\d+$/g;
 

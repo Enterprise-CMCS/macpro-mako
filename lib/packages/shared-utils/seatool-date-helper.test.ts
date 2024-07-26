@@ -5,7 +5,7 @@ import {
   offsetFromUtc,
   offsetToUtc,
   seaToolFriendlyTimestamp,
-} from "../seatool-date-helper";
+} from ".";
 
 describe("offsetToUtc", () => {
   it("offsets given date to UTC", () => {

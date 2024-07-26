@@ -5,7 +5,8 @@ import {
   isCmsWriteUser,
   isIDM,
   isStateUser,
-} from "../user-helper";
+  isCmsSuperUser,
+} from ".";
 import {
   testCMSCognitoUser,
   testCMSIDMUser,
@@ -27,6 +28,10 @@ const cmsReviewerUser: CognitoUserAttributes = {
   ...testCMSCognitoUser.user,
   "custom:cms-roles": "onemac-micro-reviewer",
 };
+const cmsSuperUser: CognitoUserAttributes = {
+  ...testCMSCognitoUser.user,
+  "custom:cms-roles": "onemac-micro-super",
+};
 const stateSubmitterUser: CognitoUserAttributes = testStateCognitoUser.user;
 
 describe("isCmsUser", () => {
@@ -34,6 +39,7 @@ describe("isCmsUser", () => {
     expect(isCmsUser(cmsHelpDeskUser)).toEqual(true);
     expect(isCmsUser(cmsReadOnlyUser)).toEqual(true);
     expect(isCmsUser(cmsReviewerUser)).toEqual(true);
+    expect(isCmsUser(cmsSuperUser)).toEqual(true);
   });
   it("returns false for State users", () => {
     expect(isCmsUser(stateSubmitterUser)).toEqual(false);
@@ -70,16 +76,22 @@ describe("isStateUser", () => {
   it("returns false for CMS Write users", () => {
     expect(isStateUser(cmsReviewerUser)).toEqual(false);
   });
-  it("returns true for CMS Read-Only users", () => {
+  it("returns false for CMS Read-Only users", () => {
     expect(isStateUser(cmsReadOnlyUser)).toEqual(false);
     expect(isStateUser(cmsHelpDeskUser)).toEqual(false);
   });
-  it("returns false for State users", () => {
+  it("returns true for State users", () => {
     expect(isStateUser(stateSubmitterUser)).toEqual(true);
   });
   // Maybe we should refactor to eliminate this
   it("returns false for null args", () => {
     expect(isStateUser(null)).toBe(false);
+  });
+});
+
+describe("isCmsSuperUser", () => {
+  it("returns true for CMS Super Users", () => {
+    expect(isCmsSuperUser(cmsSuperUser)).toEqual(true);
   });
 });
 

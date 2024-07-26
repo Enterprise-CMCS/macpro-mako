@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { testItemResult, testCMSCognitoUser } from "./testData";
-import { PackageCheck } from "../package-check";
+import { PackageCheck } from ".";
 import { ActionType, Authority, SEATOOL_STATUS } from "shared-types";
 
 // Build Mock Package data:

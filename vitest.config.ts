@@ -4,7 +4,7 @@ import { join } from "path";
 export default defineConfig({
   test: {
     coverage: {
-      provider: "v8",
+      provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),
       reporter: ["html", "text", "json-summary", "json", "lcovonly"],
       reportOnFailure: true,
@@ -18,6 +18,7 @@ export default defineConfig({
         "lib/packages/eslint-config-custom",
         "lib/packages/eslint-config-custom-server",
         "bin/cli",
+        "bin/app.ts",
         "vitest.workspace.ts",
         "**/*/.eslintrc.{ts,js,cjs}",
         "**/*.config.{ts,js,cjs}",

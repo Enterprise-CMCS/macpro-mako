@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import rules from "../package-actions/rules";
+import rules from "./package-actions/rules";
 import { Action, Authority, SEATOOL_STATUS } from "shared-types";
 import {
   testItemResult,
@@ -8,7 +8,7 @@ import {
   testStateIDMUser,
   testCMSIDMUser,
 } from "./testData";
-import { PackageCheck } from "../package-check";
+import { PackageCheck } from "./package-check";
 
 // Build Mock Package data:
 //   - make it basic, like a new submission
