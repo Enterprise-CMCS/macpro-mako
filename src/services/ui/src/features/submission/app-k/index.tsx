@@ -13,7 +13,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@/components/Routing";
 import { useEffect, useState } from "react";
 import * as Content from "@/components";
-import { useOriginPath } from "@/utils";
 import { Link } from "react-router-dom";
 import { SlotAdditionalInfo, SlotAttachments } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
@@ -23,7 +22,6 @@ export const AppKSubmissionForm = () => {
   const nav = useNavigate();
   const crumbs = C.useLocationCrumbs();
   const { data: user } = useGetUser();
-  const originPath = useOriginPath();
   const [isDataPolling, setIsDataPolling] = useState(false);
   const form = useForm<SchemaForm>({
     reValidateMode: "onBlur",
@@ -236,9 +234,7 @@ export const AppKSubmissionForm = () => {
             />
           </C.SectionCard>
           <C.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection
-            cancelNavigationLocation={originPath ?? "/dashboard"}
-          />
+          <SubmitAndCancelBtnSection />
         </form>
       </I.Form>
       <C.FAQFooter />

@@ -327,6 +327,7 @@ export const updateIdAction = async ({
       await updateIdMako({
         action,
         id,
+        newId,
         timestamp,
         topicName,
         ...data,
