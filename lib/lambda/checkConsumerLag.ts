@@ -19,25 +19,46 @@ export const handler: Handler = async (event, _, callback) => {
     for (const trigger of event.triggers) {
       for (const topic of [...new Set(trigger.topics)]) {
         console.log(
-          `Getting consumer groups for function: ${trigger.function} and topic ${topic}`
+          `Getting consumer groups for function: ${trigger.function} and topic ${topic}`,
         );
-        const response = await lambdaClient.send(
-          new ListEventSourceMappingsCommand({ FunctionName: trigger.function })
+        const lambdaResponse = await lambdaClient.send(
+          new ListEventSourceMappingsCommand({
+            FunctionName: trigger.function,
+          }),
         );
-        if (!response.EventSourceMappings) {
-          throw `ERROR:  No event source mapping found for function ${trigger.function} and topic ${topic}`;
+        if (!lambdaResponse.EventSourceMappings) {
+          throw new Error(
+            `ERROR: No event source mapping found for function ${trigger.function} and topic ${topic}`,
+          );
         }
-        const mappingForCurrentTopic = response.EventSourceMappings.filter(
-          (mapping) =>
-            mapping.Topics && mapping.Topics.includes(topic as string)
-        );
+        if (
+          !lambdaResponse.EventSourceMappings ||
+          lambdaResponse.EventSourceMappings.length === 0
+        ) {
+          throw new Error(
+            `ERROR: No event source mapping found for function ${trigger.function} and topic ${topic}`,
+          );
+        }
+        const mappingForCurrentTopic =
+          lambdaResponse.EventSourceMappings.filter(
+            (mapping) =>
+              mapping.Topics && mapping.Topics.includes(topic as string),
+          );
         if (mappingForCurrentTopic.length > 1) {
-          throw `ERROR:  Multiple event source mappings found for function ${trigger.function} and topic ${topic}`;
+          throw new Error(
+            `ERROR: Multiple event source mappings found for function ${trigger.function} and topic ${topic}`,
+          );
+        }
+        const groupId =
+          mappingForCurrentTopic[0]?.SelfManagedKafkaEventSourceConfig
+            ?.ConsumerGroupId;
+        if (!groupId) {
+          throw new Error(
+            `ERROR: No ConsumerGroupId found for function ${trigger.function} and topic ${topic}`,
+          );
         }
         triggerInfo.push({
-          groupId:
-            mappingForCurrentTopic[0].SelfManagedKafkaEventSourceConfig
-              ?.ConsumerGroupId,
+          groupId,
           topics: [topic],
         });
       }
@@ -47,7 +68,7 @@ export const handler: Handler = async (event, _, callback) => {
       brokers: event.brokerString?.split(",") || [],
       ssl: true,
     });
-    const admin = await kafka.admin();
+    const admin = kafka.admin();
     await admin.connect();
 
     // Get status for each consumer group
@@ -71,14 +92,14 @@ export const handler: Handler = async (event, _, callback) => {
           currentOffset,
         };
         console.log(
-          `Topic: ${topic}, Group: ${groupId}, Latest Offset: ${latestOffset}, Current Offset: ${currentOffset}`
+          `Topic: ${topic}, Group: ${groupId}, Latest Offset: ${latestOffset}, Current Offset: ${currentOffset}`,
         );
       }
     }
     await admin.disconnect();
     response.stable = statuses.every((status) => status === "Stable");
     response.current = Object.values(offsets).every(
-      (o) => o.latestOffset === o.currentOffset
+      (o) => o.latestOffset === o.currentOffset,
     );
     response.ready = response.stable && response.current;
   } catch (error: any) {

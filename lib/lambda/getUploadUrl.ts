@@ -4,14 +4,15 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { v4 as uuidv4 } from "uuid";
 import * as path from "node:path";
-
-checkEnvVariables(["attachmentsBucketName", "attachmentsBucketRegion"]);
+import { validateEnvVariable } from "shared-utils";
 
 const s3 = new S3Client({
   region: process.env.attachmentsBucketRegion,
 });
 
 export const handler = async (event: APIGatewayEvent) => {
+  validateEnvVariable("attachmentsBucketName");
+  validateEnvVariable("attachmentsBucketRegion");
   try {
     if (!event.body) {
       return response({

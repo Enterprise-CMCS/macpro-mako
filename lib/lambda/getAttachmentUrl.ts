@@ -6,12 +6,15 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 import { getStateFilter } from "../libs/api/auth/user";
 import { getPackage, getPackageChangelog } from "../libs/api/package";
-if (!process.env.osDomain) {
-  throw "ERROR:  osDomain env variable is required,";
-}
 
 // Handler function to get Seatool data
 export const handler = async (event: APIGatewayEvent) => {
+  if (!process.env.osDomain) {
+    return response({
+      statusCode: 500,
+      body: { message: "ERROR:  osDomain env variable is required" },
+    });
+  }
   if (!event.body) {
     return response({
       statusCode: 400,

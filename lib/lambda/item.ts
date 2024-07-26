@@ -6,11 +6,10 @@ import {
   getPackage,
   getPackageChangelog,
 } from "../libs/api/package";
-if (!process.env.osDomain) {
-  throw "ERROR:  osDomain env variable is required,";
-}
+import { validateEnvVariable } from "shared-utils";
 
 export const getItemData = async (event: APIGatewayEvent) => {
+  validateEnvVariable("osDomain");
   if (!event.body) {
     return response({
       statusCode: 400,

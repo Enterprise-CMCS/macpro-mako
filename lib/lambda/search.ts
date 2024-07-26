@@ -4,13 +4,11 @@ import { getStateFilter } from "../libs/api/auth/user";
 import * as os from "../libs/opensearch-lib";
 import { Index } from "shared-types/opensearch";
 import { getAppkChildren } from "../libs/api/package";
-
-if (!process.env.osDomain) {
-  throw "ERROR:  osDomain env variable is required,";
-}
+import { validateEnvVariable } from "shared-utils";
 
 // Handler function to search index
 export const getSearchData = async (event: APIGatewayEvent) => {
+  validateEnvVariable("osDomain");
   if (!event.pathParameters || !event.pathParameters.index) {
     return response({
       statusCode: 400,
@@ -40,13 +38,6 @@ export const getSearchData = async (event: APIGatewayEvent) => {
 
     query.from = query.from || 0;
     query.size = query.size || 100;
-
-    if (!process.env.osDomain) {
-      return response({
-        statusCode: 500,
-        body: { message: "Handler is missing process.env.osDomain env var" },
-      });
-    }
 
     const results = await os.search(
       process.env.osDomain,
