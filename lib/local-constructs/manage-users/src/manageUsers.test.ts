@@ -50,7 +50,7 @@ describe("Cognito User Lambda Handler", () => {
             ],
           },
         ],
-        passwordSecretArn: "passwordSecretArn",
+        passwordSecretArn: "passwordSecretArn", // pragma: allowlist secret
       },
     };
 
@@ -77,7 +77,7 @@ describe("Cognito User Lambda Handler", () => {
       MessageAction: "SUPPRESS",
     });
     expect(mockSetPassword).toHaveBeenCalledWith({
-      Password: "devUserPassword",
+      Password: "devUserPassword", // pragma: allowlist secret
       UserPoolId: "userPoolId",
       Username: "user1",
       Permanent: true,

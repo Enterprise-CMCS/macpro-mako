@@ -16,18 +16,18 @@ describe("DeploymentConfig", () => {
   const project = "test-project";
   const defaultSecret = JSON.stringify({
     brokerString: "brokerString",
-    dbInfoSecretName: "dbInfoSecretName",
-    devPasswordArn: "devPasswordArn",
+    dbInfoSecretName: "dbInfoSecretName", // pragma: allowlist secret
+    devPasswordArn: "devPasswordArn", // pragma: allowlist secret
     domainCertificateArn: "domainCertificateArn",
     domainName: "domainName",
-    emailAddressLookupSecretName: "emailAddressLookupSecretName",
+    emailAddressLookupSecretName: "emailAddressLookupSecretName", // pragma: allowlist secret
     googleAnalyticsDisable: "true",
     googleAnalyticsGTag: "googleAnalyticsGTag",
     idmAuthzApiEndpoint: "idmAuthzApiEndpoint",
-    idmAuthzApiKeyArn: "idmAuthzApiKeyArn",
+    idmAuthzApiKeyArn: "idmAuthzApiKeyArn", // pragma: allowlist secret
     idmClientId: "idmClientId",
     idmClientIssuer: "idmClientIssuer",
-    idmClientSecretArn: "idmClientSecretArn",
+    idmClientSecretArn: "idmClientSecretArn", // pragma: allowlist secret
     idmEnable: "true",
     idmHomeUrl: "idmHomeUrl",
     legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
