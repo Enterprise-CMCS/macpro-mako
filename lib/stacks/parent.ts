@@ -112,13 +112,14 @@ export class ParentStack extends cdk.Stack {
       privateSubnets,
       brokerString: props.brokerString,
       topicNamespace,
-      emailFromIdentity: props.emailFromIdentity,
+      indexNamespace,
       lambdaSecurityGroupId:
         networkingStack.lambdaSecurityGroup.securityGroupId,
       applicationEndpoint: uiInfraStack.applicationEndpointUrl,
       emailAddressLookupSecretName: props.emailAddressLookupSecretName,
       emailIdentityDomain: props.emailIdentityDomain,
       lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
+      emailFromIdentity: props.emailFromIdentity,
     });
 
     new cdk.aws_ssm.StringParameter(this, "DeploymentOutput", {

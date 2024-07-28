@@ -109,7 +109,7 @@ export const getOsMainData = async (
 
     const osMainItem: OsMainItem = await os.getItem(
       process.env.osDomain,
-      "main",
+      `${process.env.indexNamespace}main`,
       id,
     );
     console.log("Main Item: ", osMainItem);

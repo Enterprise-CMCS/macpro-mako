@@ -16,7 +16,7 @@ interface WafProps {
   readonly awsBadInputsExcludeRules?: string[];
 }
 
-class WafConstruct extends Construct {
+export class WafConstruct extends Construct {
   public readonly webAcl: CfnWebACL;
   public readonly logGroup: LogGroup;
 

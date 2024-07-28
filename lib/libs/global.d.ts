@@ -1,4 +1,4 @@
-import { type PackageActionWriteService } from "./handlers/package-actions/services/package-action-write-service";
+import { type PackageActionWriteService } from "./../../lib/lambda/package-actions/services/package-action-write-service";
 
 declare global {
   // eslint-disable-next-line no-var

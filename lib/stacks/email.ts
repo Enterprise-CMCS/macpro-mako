@@ -10,6 +10,7 @@ interface EmailServiceStackProps extends cdk.StackProps {
   applicationEndpoint: string;
   emailIdentityDomain: string;
   emailFromIdentity: string;
+  indexNamespace: string;
   emailAddressLookupSecretName: string;
   topicNamespace: string;
   privateSubnets: ISubnet[];
@@ -28,6 +29,7 @@ export class Email extends cdk.NestedStack {
       emailIdentityDomain,
       applicationEndpoint,
       topicNamespace,
+      indexNamespace,
       emailAddressLookupSecretName,
       brokerString,
       lambdaSecurityGroupId,
@@ -175,6 +177,7 @@ export class Email extends cdk.NestedStack {
           EMAIL_IDENTITY: emailIdentity.emailIdentity,
           CONFIGURATION_SET: configurationSet.name!,
           REGION: cdk.Aws.REGION,
+          indexNamespace,
           applicationEndpoint: applicationEndpoint,
           emailAddressLookupSecretName: emailAddressLookupSecretName,
           EMAIL_DATA_BUCKET_NAME: emailDataBucket.bucketName,
