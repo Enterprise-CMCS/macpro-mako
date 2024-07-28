@@ -1,6 +1,6 @@
-import * as clamav from "./clamav";
-import { generateSystemMessage, cleanupFolder } from "./utils";
-import { FRESHCLAM_WORK_DIR } from "./constants";
+import * as clamav from "./lib/clamav";
+import { generateSystemMessage, cleanupFolder } from "./lib/utils";
+import { FRESHCLAM_WORK_DIR } from "./lib/constants";
 
 export async function handler(): Promise<string> {
   generateSystemMessage(`AV definition update start time: ${new Date()}`);

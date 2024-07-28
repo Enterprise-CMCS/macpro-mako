@@ -9,9 +9,9 @@ import { randomUUID } from "crypto";
 import fs from "fs";
 import asyncfs from "fs/promises";
 
-import { downloadAVDefinitions, scanLocalFile } from "./clamav";
-import * as utils from "./utils";
-import * as constants from "./constants";
+import { downloadAVDefinitions, scanLocalFile } from "./lib/clamav";
+import * as utils from "./lib/utils";
+import * as constants from "./lib/constants";
 import pino from "pino";
 const logger = pino();
 

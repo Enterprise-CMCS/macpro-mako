@@ -37,7 +37,7 @@ export function generateTagSet(virusScanStatus: string): TagSet {
  */
 export function cleanupFolder(folderToClean: string): void {
   let result: Buffer = execSync(`ls -l ${folderToClean}`);
-
+  // console.log(result.toString());
   console.log("-- Folder before cleanup--");
   console.log(result.toString());
 
@@ -55,15 +55,13 @@ export function cleanupFolder(folderToClean: string): void {
  * @return {any} Parsed S3 event.
  */
 export function extractS3EventFromSQSEvent(sqsEvent: any): any {
-  const sqsMessageBody: string = sqsEvent["Records"][0]["body"];
-
-  if (!sqsMessageBody) {
+  try {
+    const sqsMessageBody: string = sqsEvent["Records"][0]["body"];
+    const s3Event = JSON.parse(sqsMessageBody);
+    return s3Event;
+  } catch (error) {
     throw new Error("Unable to retrieve body from the SQS event");
   }
-
-  const s3Event = JSON.parse(sqsMessageBody);
-
-  return s3Event;
 }
 
 /**
@@ -72,13 +70,12 @@ export function extractS3EventFromSQSEvent(sqsEvent: any): any {
  * @return {string} Key
  */
 export function extractKeyFromS3Event(s3Event: any): string {
-  const key: string = s3Event["Records"][0]["s3"]["object"]["key"];
-
-  if (!key) {
+  try {
+    const key: string = s3Event["Records"][0]["s3"]["object"]["key"];
+    return decodeURIComponent(key).replace(/\+/g, " ");
+  } catch (error) {
     throw new Error("Unable to retrieve key information from the event");
   }
-
-  return decodeURIComponent(key).replace(/\+/g, " ");
 }
 
 /**
@@ -87,13 +84,12 @@ export function extractKeyFromS3Event(s3Event: any): string {
  * @return {string} Bucket
  */
 export function extractBucketFromS3Event(s3Event: any): string {
-  const bucketName: string = s3Event["Records"][0]["s3"]["bucket"]["name"];
-
-  if (!bucketName) {
+  try {
+    const bucketName: string = s3Event["Records"][0]["s3"]["bucket"]["name"];
+    return bucketName;
+  } catch (error) {
     throw new Error("Unable to retrieve bucket information from the event");
   }
-
-  return bucketName;
 }
 
 /**
