@@ -117,7 +117,7 @@ describe("Cognito User Lambda Handler", () => {
             ],
           },
         ],
-        passwordSecretArn: "passwordSecretArn",
+        passwordSecretArn: "passwordSecretArn", // pragma: allowlist secret
       },
     };
 
@@ -128,7 +128,7 @@ describe("Cognito User Lambda Handler", () => {
 
     await handler(event, context);
 
-    expect(mockGetSecret).toHaveBeenCalledWith("passwordSecretArn");
+    expect(mockGetSecret).toHaveBeenCalledWith("passwordSecretArn"); // pragma: allowlist secret
     expect(mockSend).toHaveBeenCalledWith(
       event,
       context,

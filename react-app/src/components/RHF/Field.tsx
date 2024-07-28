@@ -1,4 +1,4 @@
-import { FieldValues } from "react-hook-form";
+import { FieldValues, RegisterOptions } from "react-hook-form";
 import {
   FieldArrayProps,
   FieldGroupProps,
@@ -14,6 +14,12 @@ interface FieldProps<T extends FieldValues>
   index: number;
   SLOT: RHFSlotProps;
 }
+
+// Define a type for the rules if not already defined
+type CustomRegisterOptions = Omit<
+  RegisterOptions<FieldValues, never>,
+  "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
+>;
 
 export const Field = <TFields extends FieldValues>({
   name,
@@ -62,9 +68,10 @@ export const Field = <TFields extends FieldValues>({
       key={adjustedSlotName}
       // @ts-ignore
       control={control}
-      rules={ruleGenerator(SLOT.rules, SLOT.addtnlRules)}
+      rules={
+        ruleGenerator(SLOT.rules, SLOT.addtnlRules) as CustomRegisterOptions
+      }
       name={adjustedSlotName as never}
-      {...(SLOT.rules && { rules: SLOT.rules })}
       render={RHFSlot({
         ...SLOT,
         control: control,

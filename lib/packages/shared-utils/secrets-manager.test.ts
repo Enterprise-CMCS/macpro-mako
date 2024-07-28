@@ -20,7 +20,7 @@ describe("getSecret", () => {
 
   it("should return the secret value if the secret exists and is not marked for deletion", async () => {
     const secretId = "test-secret";
-    const expectedSecretValue = "test-secret-value";
+    const expectedSecretValue = "test-secret-value"; // pragma: allowlist secret
 
     mockSend
       .mockResolvedValueOnce({ DeletedDate: null }) // Mock DescribeSecretCommand response
