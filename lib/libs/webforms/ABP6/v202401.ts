@@ -47,14 +47,14 @@ export const v202401: FormSchema = {
                   value: /^[0-9]\d*$/,
                   message: "Must be a positive integer value",
                 },
-                addtnlRules: [
-                  {
-                    type: "greaterThanField",
-                    fieldName: "abp6_desc-of-ben_agg-actuarial-ben-plan",
-                    message: "Must be greater than value entered above.",
-                  },
-                ],
               },
+              addtnlRules: [
+                {
+                  type: "greaterThanField",
+                  fieldName: "abp6_desc-of-ben_agg-actuarial-ben-plan",
+                  message: "Must be greater than value entered above.",
+                },
+              ],
             },
             {
               rhf: "Checkbox",
