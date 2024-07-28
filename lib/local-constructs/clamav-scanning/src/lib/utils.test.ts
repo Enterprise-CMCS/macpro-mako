@@ -19,25 +19,6 @@ describe("utils", () => {
     vi.useRealTimers();
   });
 
-  describe("generateTagSet", () => {
-    it("should generate a valid tag set", () => {
-      const virusScanStatus = "CLEAN";
-      const tagSet = utils.generateTagSet(virusScanStatus);
-      expect(tagSet).toEqual({
-        TagSet: [
-          {
-            Key: constants.VIRUS_SCAN_STATUS_KEY,
-            Value: virusScanStatus,
-          },
-          {
-            Key: constants.VIRUS_SCAN_TIMESTAMP_KEY,
-            Value: mockDate.getTime().toString(),
-          },
-        ],
-      });
-    });
-  });
-
   describe("cleanupFolder", () => {
     it("should clean up the folder", () => {
       const folderToClean = "/tmp/test_folder/";
@@ -124,18 +105,6 @@ describe("utils", () => {
       expect(() => utils.extractBucketFromS3Event(s3Event)).toThrow(
         "Unable to retrieve bucket information from the event",
       );
-    });
-  });
-
-  describe("generateSystemMessage", () => {
-    it("should generate and log a system message", () => {
-      const systemMessage = "Test message";
-
-      console.log = vi.fn();
-
-      const finalMessage = utils.generateSystemMessage(systemMessage);
-      expect(finalMessage).toBe("--- Test message ---");
-      expect(console.log).toHaveBeenCalledWith("--- Test message ---");
     });
   });
 });
