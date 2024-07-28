@@ -18,8 +18,7 @@
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
     "typeRoots": ["./node_modules/@types"],
-    "declaration": false,
-    "emitDeclarationOnly": false
+    "noEmit": true
   },
   "exclude": ["node_modules", "cdk.out", ".cdk"],
   "include": ["lib/**/*", "react-app/**/*", "test/**/*"]

@@ -78,9 +78,6 @@ export class Email extends cdk.NestedStack {
         sendingOptions: {
           sendingEnabled: true,
         },
-        trackingOptions: {
-          customRedirectDomain: "track.cdk.dev",
-        },
         suppressionOptions: {
           suppressedReasons: ["BOUNCE", "COMPLAINT"],
         },
