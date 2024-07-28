@@ -20,7 +20,7 @@ export const handler = async function (
   ) {
     const topic: string = element.topic;
     const replicationFactor: number = element.replicationFactor || 3;
-    const numPartitions: number = element.numPartitions || 1;
+    const numPartitions: number = element.numPartitions ?? 1;
     if (!topic) {
       throw "Invalid configuration for topicsToCreate.  All entries must have a 'name' key with a string value.";
     }

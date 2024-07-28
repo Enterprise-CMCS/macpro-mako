@@ -23,7 +23,7 @@ const CLAMD_SOCKET = "/tmp/clamd.ctl";
 const MAX_WAIT_TIME = 30000; // 30 seconds
 const SLEEP_INTERVAL = 1000; // 1 second
 
-async function startClamd() {
+export async function startClamd() {
   return new Promise<void>((resolve, reject) => {
     // Check if clamd is already running
     if (fs.existsSync(CLAMD_SOCKET)) {
@@ -167,7 +167,7 @@ export async function isS3FileTooBig(
   }
 }
 
-async function downloadFileFromS3(
+export async function downloadFileFromS3(
   s3ObjectKey: string,
   s3ObjectBucket: string,
 ): Promise<string> {
