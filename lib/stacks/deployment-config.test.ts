@@ -33,6 +33,8 @@ describe("DeploymentConfig", () => {
     legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
     useSharedOpenSearch: "true",
     vpcName: "vpcName",
+    emailFromIdentity: "test@cms.hhs.gov",
+    emailIdentityDomain: "cms.hhs.gov",
   });
 
   const stageSecret = JSON.stringify({
@@ -97,6 +99,8 @@ describe("DeploymentConfig", () => {
       sharedOpenSearchDomainEndpoint: "sharedOpenSearchDomainEndpoint",
       stage: "dev",
       terminationProtection: false,
+      emailFromIdentity: "test@cms.hhs.gov",
+      emailIdentityDomain: "cms.hhs.gov",
     };
 
     expect(deploymentConfig.config).toEqual(expectedConfig);
