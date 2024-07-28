@@ -1,12 +1,12 @@
 import { getExport, getSecret } from "shared-utils";
 
-interface InjectedConfigOptions {
+export interface InjectedConfigOptions {
   project: string;
   stage: string;
   region?: string;
 }
 
-type InjectedConfigProperties = {
+export type InjectedConfigProperties = {
   brokerString: string;
   dbInfoSecretName: string;
   devPasswordArn: string;
@@ -75,8 +75,10 @@ export class DeploymentConfig {
     const stageSecretName = `${project}-${stage}`;
 
     // Fetch project-default secret
-    const defaultSecret = JSON.parse(await getSecret(defaultSecretName));
-    if (!defaultSecret) {
+    let defaultSecret: { [key: string]: string } = {};
+    try {
+      defaultSecret = JSON.parse(await getSecret(defaultSecretName));
+    } catch (error) {
       throw new Error(`Failed to fetch mandatory secret ${defaultSecretName}`);
     }
 

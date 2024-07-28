@@ -11,7 +11,7 @@ import {
 
 const s3 = new S3Client({ region: process.env.AWS_REGION });
 
-exports.handler = async function (event: any, context: any) {
+export const handler = async function (event: any, context: any) {
   console.log("Request received:\n", JSON.stringify(event, null, 2));
 
   if (event.RequestType === "Delete") {
@@ -33,6 +33,7 @@ async function blockAllUploads(bucket: string) {
     const response = await s3.send(
       new GetBucketPolicyCommand(getBucketPolicyParams),
     );
+    console.log(response);
     existingPolicy = response.Policy
       ? JSON.parse(response.Policy)
       : {

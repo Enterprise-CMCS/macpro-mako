@@ -123,6 +123,7 @@ export class ParentStack extends Stack {
       privateSubnets,
       brokerString: props.brokerString,
       topicNamespace,
+      indexNamespace,
       osDomainArn: dataStack.openSearchDomainArn,
       lambdaSecurityGroupId:
         networkingStack.lambdaSecurityGroup.securityGroupId,

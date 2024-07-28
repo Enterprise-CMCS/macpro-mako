@@ -4,8 +4,8 @@
   "description": "",
   "scripts": {
     "build": "npm run buildScan && npm run buildDefs",
-    "buildScan": "esbuild src/antivirus.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/scan.js",
-    "buildDefs": "esbuild src/download-definitions.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/defs.js",
+    "buildScan": "esbuild src/handlers/scan.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/scan.js",
+    "buildDefs": "esbuild src/handlers/defs.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/defs.js",
     "buildDocker": "docker build . -t clamscan:test",
     "start": "npm run buildDocker && docker run -d -p 9000:8080 clamscan:test",
     "stop": "docker ps -q --filter ancestor=clamscan:test | xargs -r docker stop && docker ps -a -q --filter ancestor=clamscan:test | xargs -r docker rm",

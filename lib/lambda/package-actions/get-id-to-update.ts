@@ -7,7 +7,7 @@ export async function getIdsToUpdate(id: string) {
   console.log(id);
   const og = (await getItem(
     process.env.osDomain!,
-    "main",
+    `${process.env.indexNamespace}main`,
     id,
   )) as opensearch.main.ItemResult;
   if (!og) {

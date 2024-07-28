@@ -28,6 +28,7 @@ interface EmailServiceStackProps extends cdk.NestedStackProps {
   privateSubnets: ISubnet[];
   brokerString: string;
   topicNamespace: string;
+  indexNamespace: string;
   osDomainArn: string;
   lambdaSecurityGroupId: string;
   applicationEndpoint: string;
@@ -48,6 +49,7 @@ export class EmailStack extends cdk.NestedStack {
       privateSubnets,
       brokerString,
       topicNamespace,
+      indexNamespace,
       osDomainArn,
       lambdaSecurityGroupId,
       applicationEndpoint,
@@ -184,6 +186,7 @@ export class EmailStack extends cdk.NestedStack {
           region: cdk.Aws.REGION,
           stage: stage,
           osDomain: osDomainArn,
+          indexNamespace,
           cognitoPoolId: cognitoUserPoolId,
           emailConfigSet: `${topicNamespace}-configuration`,
           applicationEndpoint: applicationEndpoint,
