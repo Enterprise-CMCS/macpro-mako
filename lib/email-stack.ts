@@ -1,39 +1,21 @@
 import * as cdk from "aws-cdk-lib";
-import * as path from "path";
-import { Duration } from "aws-cdk-lib";
-import {
-  Role,
-  ServicePrincipal,
-  ManagedPolicy,
-  PolicyDocument,
-  PolicyStatement,
-  Effect,
-} from "aws-cdk-lib/aws-iam";
-import { CfnTopic, CfnTopicPolicy, CfnSubscription } from "aws-cdk-lib/aws-sns";
-import {
-  CfnConfigurationSet,
-  CfnConfigurationSetEventDestination,
-} from "aws-cdk-lib/aws-ses";
-import { Runtime, Code, CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
-import { ISubnet, IVpc, SecurityGroup } from "aws-cdk-lib/aws-ec2";
 import { Construct } from "constructs";
+import * as path from "path";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
-import { LogGroup } from "aws-cdk-lib/aws-logs";
-import { join } from "path";
+import { ISubnet } from "aws-cdk-lib/aws-ec2";
+import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
 
-interface EmailServiceStackProps extends cdk.NestedStackProps {
-  project: string;
-  stage: string;
-  vpc: IVpc;
-  privateSubnets: ISubnet[];
-  brokerString: string;
-  topicNamespace: string;
-  osDomainArn: string;
-  lambdaSecurityGroupId: string;
+interface EmailServiceStackProps extends cdk.StackProps {
+  vpc: cdk.aws_ec2.IVpc;
   applicationEndpoint: string;
-  stack: string;
-  cognitoUserPoolId: string;
+  emailIdentityDomain: string;
+  emailFromIdentity: string;
   emailAddressLookupSecretName: string;
+  topicNamespace: string;
+  privateSubnets: ISubnet[];
+  lambdaSecurityGroupId: string;
+  brokerString: string;
+  lambdaSecurityGroup: cdk.aws_ec2.SecurityGroup;
 }
 
 export class EmailStack extends cdk.NestedStack {
@@ -41,234 +23,84 @@ export class EmailStack extends cdk.NestedStack {
     super(scope, id, props);
 
     const {
-      project,
-      stage,
-      stack,
       vpc,
-      privateSubnets,
-      brokerString,
-      topicNamespace,
-      osDomainArn,
-      lambdaSecurityGroupId,
+      emailFromIdentity,
+      emailIdentityDomain,
       applicationEndpoint,
-      cognitoUserPoolId,
+      topicNamespace,
       emailAddressLookupSecretName,
+      brokerString,
+      lambdaSecurityGroupId,
+      privateSubnets,
+      lambdaSecurityGroup,
     } = props;
-
-    // IAM Role for Lambda
-    const lambdaRole = new Role(this, "LambdaExecutionRole", {
-      assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
-      managedPolicies: [
-        ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaBasicExecutionRole",
-        ),
-        ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaVPCAccessExecutionRole",
-        ),
-      ],
-      inlinePolicies: {
-        EmailServicePolicy: new PolicyDocument({
-          statements: [
-            new PolicyStatement({
-              effect: Effect.ALLOW,
-              actions: [
-                "sts:AssumeRole",
-                "ses:ListIdentities",
-                "ses:ListConfigurationSets",
-                "ses:SendTemplatedEmail",
-                "sns:Subscribe",
-                "sns:Publish",
-                "ec2:CreateNetworkInterface",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:DescribeVpcs",
-                "ec2:DeleteNetworkInterface",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeSecurityGroups",
-                "es:ESHttpGet",
-                "cognito-idp:ListUsers",
-                "secretsmanager:GetSecretValue",
-              ],
-              resources: ["*"],
-            }),
-          ],
-        }),
-      },
-    });
-
-    // SNS Topic
-    const emailEventTopic = new CfnTopic(this, "EmailEventTopic", {
-      topicName: `${topicNamespace}-email-events`,
-      displayName: "Monitoring the sending of emails",
-    });
 
     // KMS Key for SNS Topic
     const kmsKeyForEmails = new cdk.aws_kms.Key(this, "KmsKeyForEmails", {
       enableKeyRotation: true,
-      policy: new PolicyDocument({
+      policy: new cdk.aws_iam.PolicyDocument({
         statements: [
-          new PolicyStatement({
-            sid: "Allow access for Root User",
-            effect: Effect.ALLOW,
-            principals: [new cdk.aws_iam.AccountRootPrincipal()],
+          new cdk.aws_iam.PolicyStatement({
             actions: ["kms:*"],
+            principals: [new cdk.aws_iam.AccountRootPrincipal()],
             resources: ["*"],
           }),
-          new PolicyStatement({
-            sid: "Allow access for Key User (SNS Service Principal)",
-            effect: Effect.ALLOW,
-            principals: [new ServicePrincipal("sns.amazonaws.com")],
+          new cdk.aws_iam.PolicyStatement({
             actions: ["kms:GenerateDataKey", "kms:Decrypt"],
-            resources: ["*"],
-          }),
-          new PolicyStatement({
-            sid: "Allow CloudWatch events to use the key",
-            effect: Effect.ALLOW,
-            principals: [new ServicePrincipal("events.amazonaws.com")],
-            actions: ["kms:Decrypt", "kms:GenerateDataKey"],
-            resources: ["*"],
-          }),
-          new PolicyStatement({
-            sid: "Allow CloudWatch for CMK",
-            effect: Effect.ALLOW,
-            principals: [new ServicePrincipal("cloudwatch.amazonaws.com")],
-            actions: ["kms:Decrypt", "kms:GenerateDataKey*"],
-            resources: ["*"],
-          }),
-          new PolicyStatement({
-            sid: "Allow SES events to use the key",
-            effect: Effect.ALLOW,
-            principals: [new ServicePrincipal("ses.amazonaws.com")],
-            actions: ["kms:Decrypt", "kms:GenerateDataKey*"],
+            principals: [new cdk.aws_iam.ServicePrincipal("sns.amazonaws.com")],
             resources: ["*"],
           }),
         ],
       }),
     });
 
-    // SNS Topic Policy
-    new CfnTopicPolicy(this, "EmailEventTopicPolicy", {
-      topics: [emailEventTopic.ref],
-      policyDocument: {
-        Statement: [
-          {
-            Effect: "Allow",
-            Principal: {
-              Service: ["lambda.amazonaws.com", "ses.amazonaws.com"],
-            },
-            Action: ["sns:Subscribe", "sns:Publish"],
-            Resource: emailEventTopic.ref,
-          },
-        ],
-      },
+    // SNS Topic for Email Events
+    const emailEventTopic = new cdk.aws_sns.Topic(this, "EmailEventTopic", {
+      displayName: "Monitoring the sending of emails",
+      masterKey: kmsKeyForEmails,
     });
 
-    const processEmailsLogGroup = new LogGroup(this, `processEmailsLogGroup`, {
-      logGroupName: `/aws/lambda/${project}-${stage}-${stack}-processEmails`,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-    });
-
-    // Lambda Function: ProcessEmails
-    const processEmailsLambda = new NodejsFunction(
+    // SES Dedicated IP Pool
+    const dedicatedIpPool = new cdk.aws_ses.CfnDedicatedIpPool(
       this,
-      "ProcessEmailsLambdaFunction",
+      "DedicatedIpPool",
       {
-        functionName: `${topicNamespace}-processEmails`,
-        runtime: Runtime.NODEJS_18_X,
-        depsLockFilePath: join(__dirname, "../bun.lockb"),
-        handler: "handler",
-        entry: path.join(__dirname, "lambda/processEmails.ts"),
-        role: lambdaRole,
-        memorySize: 1024,
-        timeout: Duration.seconds(60),
-        environment: {
-          region: cdk.Aws.REGION,
-          stage: stage,
-          osDomain: osDomainArn,
-          cognitoPoolId: cognitoUserPoolId,
-          emailConfigSet: `${topicNamespace}-configuration`,
-          applicationEndpoint: applicationEndpoint,
-          emailAddressLookupSecretName,
-        },
-        vpc,
-        securityGroups: [
-          SecurityGroup.fromSecurityGroupId(
-            this,
-            "LambdaSecurityGroup",
-            lambdaSecurityGroupId,
-          ),
-        ],
-        vpcSubnets: {
-          subnets: privateSubnets,
-        },
-        logGroup: processEmailsLogGroup,
-        bundling: {
-          minify: true,
-          sourceMap: true,
-        },
+        poolName: `${topicNamespace}-ipPool`,
       },
     );
-
-    const processEmailEventsLogGroup = new LogGroup(
-      this,
-      `processEmailEventsLogGroup`,
-      {
-        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-processEmailEvents`,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    );
-
-    // Lambda Function: ProcessEmailEvents
-    const processEmailEventsLambda = new NodejsFunction(
-      this,
-      "ProcessEmailEventsLambdaFunction",
-      {
-        functionName: `${topicNamespace}-processEmailEvents`,
-        runtime: Runtime.NODEJS_18_X,
-        handler: "main",
-        depsLockFilePath: join(__dirname, "../bun.lockb"),
-        entry: path.join(__dirname, "lambda/processEmailEvents.ts"),
-        role: lambdaRole,
-        environment: {
-          region: cdk.Aws.REGION,
-          stage: stage,
-          osDomain: osDomainArn,
-          cognitoPoolId: cognitoUserPoolId,
-          emailConfigSet: `${topicNamespace}-configuration`,
-          applicationEndpoint: applicationEndpoint,
-        },
-        logGroup: processEmailEventsLogGroup,
-        bundling: {
-          minify: true,
-          sourceMap: true,
-        },
-      },
-    );
-
-    // SNS Subscription
-    new CfnSubscription(this, "EmailEventSubscription", {
-      topicArn: emailEventTopic.ref,
-      protocol: "lambda",
-      endpoint: processEmailEventsLambda.functionArn,
-    });
 
     // SES Configuration Set
-    const emailEventConfigurationSet = new CfnConfigurationSet(
+    const configurationSet = new cdk.aws_ses.CfnConfigurationSet(
       this,
-      "EmailEventConfigurationSet",
+      "ConfigurationSet",
       {
-        name: `${topicNamespace}-configuration`,
+        name: "email-configuration-set",
+        reputationOptions: {
+          reputationMetricsEnabled: true,
+        },
+        sendingOptions: {
+          sendingEnabled: true,
+        },
+        deliveryOptions: {
+          sendingPoolName: dedicatedIpPool.poolName,
+        },
+        trackingOptions: {
+          customRedirectDomain: "track.cdk.dev",
+        },
+        suppressionOptions: {
+          suppressedReasons: ["BOUNCE", "COMPLAINT"],
+        },
       },
     );
 
-    // SES Configuration Set Event Destination
-    new CfnConfigurationSetEventDestination(
+    // SES Event Destination for Configuration Set
+    new cdk.aws_ses.CfnConfigurationSetEventDestination(
       this,
-      "EmailEventConfigurationSetEventDestination",
+      "ConfigurationSetEventDestination",
       {
-        configurationSetName: emailEventConfigurationSet.ref,
+        configurationSetName: configurationSet.name!,
         eventDestination: {
           enabled: true,
-          name: `${topicNamespace}-destination`,
           matchingEventTypes: [
             "send",
             "reject",
@@ -278,12 +110,80 @@ export class EmailStack extends cdk.NestedStack {
             "open",
             "click",
             "renderingFailure",
-            "deliveryDelay",
-            "subscription",
           ],
           snsDestination: {
-            topicArn: emailEventTopic.ref,
+            topicArn: emailEventTopic.topicArn,
           },
+        },
+      },
+    );
+
+    // SES Email Identity
+    const emailIdentity = new cdk.aws_ses.CfnEmailIdentity(
+      this,
+      "EmailIdentity",
+      {
+        emailIdentity: emailFromIdentity,
+        mailFromAttributes: {
+          mailFromDomain: `mail.cms.hhs.gov`,
+          behaviorOnMxFailure: "USE_DEFAULT_VALUE",
+        },
+      },
+    );
+
+    // IAM Role for Lambda
+    const lambdaRole = new cdk.aws_iam.Role(this, "LambdaExecutionRole", {
+      assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+      managedPolicies: [
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "service-role/AWSLambdaBasicExecutionRole",
+        ),
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "service-role/AWSLambdaVPCAccessExecutionRole",
+        ),
+      ],
+      inlinePolicies: {
+        EmailServicePolicy: new cdk.aws_iam.PolicyDocument({
+          statements: [
+            new cdk.aws_iam.PolicyStatement({
+              actions: [
+                "ses:SendEmail",
+                "ses:SendRawEmail",
+                "ses:ListIdentities",
+                "ses:ListConfigurationSets",
+                "sns:Subscribe",
+                "sns:Publish",
+              ],
+              resources: ["*"],
+            }),
+          ],
+        }),
+      },
+    });
+
+    // Lambda Function for Processing Emails
+    const processEmailsLambda = new NodejsFunction(
+      this,
+      "ProcessEmailsLambda",
+      {
+        functionName: "ProcessEmails",
+        entry: path.join(__dirname, "lambda/processEmails.ts"),
+        handler: "handler",
+        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+        memorySize: 1024,
+        timeout: cdk.Duration.seconds(60),
+        role: lambdaRole,
+        vpc: vpc,
+        vpcSubnets: {
+          subnets: privateSubnets,
+        },
+        securityGroups: [lambdaSecurityGroup],
+        environment: {
+          EMAIL_IDENTITY: emailIdentity.emailIdentity,
+          CONFIGURATION_SET: configurationSet.name!,
+          REGION: cdk.Aws.REGION,
+          applicationEndpoint: applicationEndpoint,
+          emailAddressLookupSecretName: emailAddressLookupSecretName,
         },
       },
     );
@@ -312,5 +212,15 @@ export class EmailStack extends cdk.NestedStack {
       startingPosition: "LATEST",
       topics: [`${topicNamespace}aws.onemac.migration.cdc`],
     });
+
+    // Grant permissions to the Lambda function to send emails using SES
+    processEmailsLambda.addToRolePolicy(
+      new cdk.aws_iam.PolicyStatement({
+        actions: ["ses:SendEmail", "ses:SendRawEmail"],
+        resources: [
+          `arn:aws:ses:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:identity/${emailIdentityDomain}`,
+        ],
+      }),
+    );
   }
 }

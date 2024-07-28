@@ -118,17 +118,17 @@ export class ParentStack extends Stack {
 
     const emailStack = new EmailStack(this, "email", {
       ...commonProps,
-      stack: "email",
       vpc,
       privateSubnets,
       brokerString: props.brokerString,
       topicNamespace,
-      osDomainArn: dataStack.openSearchDomainArn,
+      emailFromIdentity: props.emailFromIdentity,
       lambdaSecurityGroupId:
         networkingStack.lambdaSecurityGroup.securityGroupId,
       applicationEndpoint: uiInfraStack.applicationEndpointUrl,
-      cognitoUserPoolId: authStack.userPool.userPoolId,
       emailAddressLookupSecretName: props.emailAddressLookupSecretName,
+      emailIdentityDomain: props.emailIdentityDomain,
+      lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
     });
 
     new StringParameter(this, "DeploymentOutput", {
