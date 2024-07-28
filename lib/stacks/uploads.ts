@@ -1,20 +1,17 @@
-import { NestedStack, NestedStackProps, Aws, RemovalPolicy } from "aws-cdk-lib";
-import { Bucket, HttpMethods } from "aws-cdk-lib/aws-s3";
-import { AnyPrincipal, Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
+import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
+import * as LC from "local-constructs";
 
-import { EmptyBuckets } from "local-constructs";
-import { ClamScanScanner } from "local-constructs";
-
-interface UploadsStackProps extends NestedStackProps {
+interface UploadsStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
   stack: string;
   isDev: boolean;
 }
 
-export class UploadsStack extends NestedStack {
-  public readonly attachmentsBucket: Bucket;
+export class Uploads extends cdk.NestedStack {
+  public readonly attachmentsBucket: cdk.aws_s3.Bucket;
+
   constructor(scope: Construct, id: string, props: UploadsStackProps) {
     super(scope, id, props);
     const resources = this.initializeResources(props);
@@ -22,12 +19,13 @@ export class UploadsStack extends NestedStack {
   }
 
   private initializeResources(props: UploadsStackProps): {
-    attachmentsBucket: Bucket;
+    attachmentsBucket: cdk.aws_s3.Bucket;
   } {
-    const { project, stage, stack, isDev } = props;
-    const attachmentsBucketName = `${project}-${stage}-attachments-${Aws.ACCOUNT_ID}`;
+    const { project, stage, isDev } = props;
+    const attachmentsBucketName = `${project}-${stage}-attachments-${cdk.Aws.ACCOUNT_ID}`;
+
     // S3 Buckets
-    const attachmentsBucket = new Bucket(this, "AttachmentsBucket", {
+    const attachmentsBucket = new cdk.aws_s3.Bucket(this, "AttachmentsBucket", {
       bucketName: attachmentsBucketName,
       versioned: true,
       cors: [
@@ -35,23 +33,25 @@ export class UploadsStack extends NestedStack {
           allowedOrigins: ["*"],
           allowedHeaders: ["*"],
           allowedMethods: [
-            HttpMethods.GET,
-            HttpMethods.PUT,
-            HttpMethods.POST,
-            HttpMethods.DELETE,
-            HttpMethods.HEAD,
+            cdk.aws_s3.HttpMethods.GET,
+            cdk.aws_s3.HttpMethods.PUT,
+            cdk.aws_s3.HttpMethods.POST,
+            cdk.aws_s3.HttpMethods.DELETE,
+            cdk.aws_s3.HttpMethods.HEAD,
           ],
           exposedHeaders: ["ETag"],
           maxAge: 3000,
         },
       ],
-      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+      removalPolicy: isDev
+        ? cdk.RemovalPolicy.DESTROY
+        : cdk.RemovalPolicy.RETAIN,
     });
 
     attachmentsBucket.addToResourcePolicy(
-      new PolicyStatement({
-        effect: Effect.DENY,
-        principals: [new AnyPrincipal()],
+      new cdk.aws_iam.PolicyStatement({
+        effect: cdk.aws_iam.Effect.DENY,
+        principals: [new cdk.aws_iam.AnyPrincipal()],
         actions: ["s3:*"],
         resources: [
           attachmentsBucket.bucketArn,
@@ -63,14 +63,14 @@ export class UploadsStack extends NestedStack {
       }),
     );
 
-    const scanner = new ClamScanScanner(this, "ClamScan", {
+    const scanner = new LC.ClamScanScanner(this, "ClamScan", {
       fileBucket: attachmentsBucket,
     });
 
     attachmentsBucket.addToResourcePolicy(
-      new PolicyStatement({
-        effect: Effect.DENY,
-        principals: [new AnyPrincipal()],
+      new cdk.aws_iam.PolicyStatement({
+        effect: cdk.aws_iam.Effect.DENY,
+        principals: [new cdk.aws_iam.AnyPrincipal()],
         actions: ["s3:GetObject"],
         resources: [`${attachmentsBucket.bucketArn}/*`],
         conditions: {
@@ -82,7 +82,7 @@ export class UploadsStack extends NestedStack {
       }),
     );
 
-    new EmptyBuckets(this, "EmptyBuckets", {
+    new LC.EmptyBuckets(this, "EmptyBuckets", {
       buckets: [attachmentsBucket, scanner.clamDefsBucket],
     });
 

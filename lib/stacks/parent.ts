@@ -3,7 +3,7 @@ import { Construct } from "constructs";
 import { CloudWatchLogsResourcePolicy } from "local-constructs";
 
 import { DeploymentConfigProperties } from "./deployment-config";
-import * as Stacks from "./stacks";
+import * as Stacks from "../stacks";
 
 export class ParentStack extends cdk.Stack {
   constructor(

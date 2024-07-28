@@ -1,72 +1,33 @@
-import { join } from "path";
-
-import {
-  Duration,
-  NestedStack,
-  NestedStackProps,
-  RemovalPolicy,
-} from "aws-cdk-lib";
-import {
-  Alarm,
-  ComparisonOperator,
-  Metric,
-  TreatMissingData,
-} from "aws-cdk-lib/aws-cloudwatch";
-import { IVpc, ISubnet, ISecurityGroup } from "aws-cdk-lib/aws-ec2";
-import {
-  Effect,
-  ManagedPolicy,
-  PolicyDocument,
-  PolicyStatement,
-  Role,
-  ServicePrincipal,
-} from "aws-cdk-lib/aws-iam";
-import { Alias, Function, Runtime } from "aws-cdk-lib/aws-lambda";
+import * as cdk from "aws-cdk-lib";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
-import { LogGroup } from "aws-cdk-lib/aws-logs";
-import { Bucket } from "aws-cdk-lib/aws-s3";
-import { Topic } from "aws-cdk-lib/aws-sns";
-import {
-  RestApi,
-  MethodLoggingLevel,
-  Cors,
-  EndpointType,
-  LogGroupLogDestination,
-  AccessLogFormat,
-  LambdaIntegration,
-  AuthorizationType,
-  CfnGatewayResponse,
-} from "aws-cdk-lib/aws-apigateway";
 import { Construct } from "constructs";
-
+import { join } from "path";
 import { DeploymentConfigProperties } from "./deployment-config";
-import { CloudWatchToS3 } from "local-constructs";
-import { EmptyBuckets } from "local-constructs";
-import { RegionalWaf } from "local-constructs";
-import path = require("path");
+import * as LC from "local-constructs";
 
-interface ApiStackProps extends NestedStackProps {
+interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
   stack: string;
   isDev: boolean;
-  vpc: IVpc;
-  privateSubnets: ISubnet[];
-  lambdaSecurityGroup: ISecurityGroup;
+  vpc: cdk.aws_ec2.IVpc;
+  privateSubnets: cdk.aws_ec2.ISubnet[];
+  lambdaSecurityGroup: cdk.aws_ec2.ISecurityGroup;
   topicNamespace: string;
   indexNamespace: string;
   openSearchDomainArn: string;
   openSearchDomainEndpoint: string;
-  alertsTopic: Topic;
-  attachmentsBucket: Bucket;
+  alertsTopic: cdk.aws_sns.Topic;
+  attachmentsBucket: cdk.aws_s3.Bucket;
   brokerString: DeploymentConfigProperties["brokerString"];
   dbInfoSecretName: DeploymentConfigProperties["dbInfoSecretName"];
   legacyS3AccessRoleArn: DeploymentConfigProperties["legacyS3AccessRoleArn"];
 }
 
-export class ApiStack extends NestedStack {
-  public readonly apiGateway: RestApi;
+export class Api extends cdk.NestedStack {
+  public readonly apiGateway: cdk.aws_apigateway.RestApi;
   public readonly apiGatewayUrl: string;
+
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
     const resources = this.initializeResources(props);
@@ -75,7 +36,7 @@ export class ApiStack extends NestedStack {
   }
 
   private initializeResources(props: ApiStackProps): {
-    apiGateway: RestApi;
+    apiGateway: cdk.aws_apigateway.RestApi;
   } {
     const { project, stage, stack, isDev } = props;
     const {
@@ -96,22 +57,24 @@ export class ApiStack extends NestedStack {
     const topicName = `${topicNamespace}aws.onemac.migration.cdc`;
 
     // Define IAM role
-    const lambdaRole = new Role(this, "LambdaExecutionRole", {
-      assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
+    const lambdaRole = new cdk.aws_iam.Role(this, "LambdaExecutionRole", {
+      assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
       managedPolicies: [
-        ManagedPolicy.fromAwsManagedPolicyName(
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
           "service-role/AWSLambdaBasicExecutionRole",
         ),
-        ManagedPolicy.fromAwsManagedPolicyName(
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
           "service-role/AWSLambdaVPCAccessExecutionRole",
         ),
-        ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsFullAccess"),
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "CloudWatchLogsFullAccess",
+        ),
       ],
       inlinePolicies: {
-        LambdaPolicy: new PolicyDocument({
+        LambdaPolicy: new cdk.aws_iam.PolicyDocument({
           statements: [
-            new PolicyStatement({
-              effect: Effect.ALLOW,
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
               actions: [
                 "es:ESHttpHead",
                 "es:ESHttpPost",
@@ -122,18 +85,18 @@ export class ApiStack extends NestedStack {
               ],
               resources: [`${openSearchDomainArn}/*`],
             }),
-            new PolicyStatement({
-              effect: Effect.ALLOW,
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["cognito-idp:GetUser", "cognito-idp:ListUsers"],
               resources: ["*"],
             }),
-            new PolicyStatement({
-              effect: Effect.ALLOW,
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["sts:AssumeRole"],
               resources: [legacyS3AccessRoleArn],
             }),
-            new PolicyStatement({
-              effect: Effect.ALLOW,
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
               actions: [
                 "s3:PutObject",
                 "s3:PutObjectTagging",
@@ -142,8 +105,8 @@ export class ApiStack extends NestedStack {
               ],
               resources: [`${attachmentsBucket.bucketArn}/*`],
             }),
-            new PolicyStatement({
-              effect: Effect.ALLOW,
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
               actions: [
                 "secretsmanager:DescribeSecret",
                 "secretsmanager:GetSecretValue",
@@ -162,9 +125,9 @@ export class ApiStack extends NestedStack {
       id: string,
       entry: string,
       environment: { [key: string]: string | undefined },
-      vpc?: IVpc,
-      securityGroup?: ISecurityGroup,
-      subnets?: ISubnet[],
+      vpc?: cdk.aws_ec2.IVpc,
+      securityGroup?: cdk.aws_ec2.ISecurityGroup,
+      subnets?: cdk.aws_ec2.ISubnet[],
       provisionedConcurrency: number = 0,
     ) => {
       // Remove any undefined values from the environment object
@@ -175,20 +138,20 @@ export class ApiStack extends NestedStack {
         }
       }
 
-      const logGroup = new LogGroup(this, `${id}LogGroup`, {
+      const logGroup = new cdk.aws_logs.LogGroup(this, `${id}LogGroup`, {
         logGroupName: `/aws/lambda/${project}-${stage}-${stack}-${id}`,
-        removalPolicy: RemovalPolicy.DESTROY,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
       });
 
       const fn = new NodejsFunction(this, id, {
-        runtime: Runtime.NODEJS_18_X,
+        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
         functionName: `${project}-${stage}-${stack}-${id}`,
         depsLockFilePath: join(__dirname, "../bun.lockb"),
         entry,
         handler: "handler",
         role: lambdaRole,
         environment: sanitizedEnvironment,
-        timeout: Duration.seconds(30),
+        timeout: cdk.Duration.seconds(30),
         memorySize: 1024,
         retryAttempts: 0,
         vpc: vpc,
@@ -205,7 +168,7 @@ export class ApiStack extends NestedStack {
         const version = fn.currentVersion;
 
         // Configure provisioned concurrency
-        new Alias(this, `FunctionAlias${id}`, {
+        new cdk.aws_lambda.Alias(this, `FunctionAlias${id}`, {
           aliasName: "prod",
           version: version,
           provisionedConcurrentExecutions: provisionedConcurrency,
@@ -353,18 +316,18 @@ export class ApiStack extends NestedStack {
     }, {} as { [key: string]: NodejsFunction });
 
     // Create IAM role for API Gateway to invoke Lambda functions
-    const apiGatewayRole = new Role(this, "ApiGatewayRole", {
-      assumedBy: new ServicePrincipal("apigateway.amazonaws.com"),
+    const apiGatewayRole = new cdk.aws_iam.Role(this, "ApiGatewayRole", {
+      assumedBy: new cdk.aws_iam.ServicePrincipal("apigateway.amazonaws.com"),
       inlinePolicies: {
-        InvokeLambdaPolicy: new PolicyDocument({
+        InvokeLambdaPolicy: new cdk.aws_iam.PolicyDocument({
           statements: [
-            new PolicyStatement({
-              effect: Effect.ALLOW,
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["lambda:InvokeFunction"],
               resources: ["arn:aws:lambda:*:*:function:*"],
             }),
-            new PolicyStatement({
-              effect: Effect.DENY,
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.DENY,
               actions: ["logs:CreateLogGroup"],
               resources: ["*"],
             }),
@@ -373,40 +336,41 @@ export class ApiStack extends NestedStack {
       },
     });
 
-    const apiExecutionLogsLogGroup = new LogGroup(
+    const apiExecutionLogsLogGroup = new cdk.aws_logs.LogGroup(
       this,
       "ApiGatewayExecutionLogsLogGroup",
       {
-        removalPolicy: RemovalPolicy.DESTROY,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
       },
     );
 
     // Define API Gateway
-    const api = new RestApi(this, "APIGateway", {
+    const api = new cdk.aws_apigateway.RestApi(this, "APIGateway", {
       restApiName: `${project}-${stage}`,
       deployOptions: {
         stageName: stage,
-        loggingLevel: MethodLoggingLevel.INFO,
+        loggingLevel: cdk.aws_apigateway.MethodLoggingLevel.INFO,
         dataTraceEnabled: true,
         metricsEnabled: true,
-        accessLogDestination: new LogGroupLogDestination(
+        accessLogDestination: new cdk.aws_apigateway.LogGroupLogDestination(
           apiExecutionLogsLogGroup,
         ),
-        accessLogFormat: AccessLogFormat.jsonWithStandardFields({
-          caller: true,
-          httpMethod: true,
-          ip: true,
-          protocol: true,
-          requestTime: true,
-          resourcePath: true,
-          responseLength: true,
-          status: true,
-          user: true,
-        }),
+        accessLogFormat:
+          cdk.aws_apigateway.AccessLogFormat.jsonWithStandardFields({
+            caller: true,
+            httpMethod: true,
+            ip: true,
+            protocol: true,
+            requestTime: true,
+            resourcePath: true,
+            responseLength: true,
+            status: true,
+            user: true,
+          }),
       },
       defaultCorsPreflightOptions: {
-        allowOrigins: Cors.ALL_ORIGINS,
-        allowMethods: Cors.ALL_METHODS,
+        allowOrigins: cdk.aws_apigateway.Cors.ALL_ORIGINS,
+        allowMethods: cdk.aws_apigateway.Cors.ALL_METHODS,
         allowHeaders: [
           "Content-Type",
           "Authorization",
@@ -418,29 +382,37 @@ export class ApiStack extends NestedStack {
         allowCredentials: true,
       },
       endpointConfiguration: {
-        types: [EndpointType.EDGE],
+        types: [cdk.aws_apigateway.EndpointType.EDGE],
       },
     });
 
     // Add GatewayResponse for 4XX errors
-    new CfnGatewayResponse(this, "GatewayResponseDefault4XX", {
-      restApiId: api.restApiId,
-      responseType: "DEFAULT_4XX",
-      responseParameters: {
-        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
-        "gatewayresponse.header.Access-Control-Allow-Headers": "'*'",
+    new cdk.aws_apigateway.CfnGatewayResponse(
+      this,
+      "GatewayResponseDefault4XX",
+      {
+        restApiId: api.restApiId,
+        responseType: "DEFAULT_4XX",
+        responseParameters: {
+          "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+          "gatewayresponse.header.Access-Control-Allow-Headers": "'*'",
+        },
       },
-    });
+    );
 
     // Add GatewayResponse for 5XX errors
-    new CfnGatewayResponse(this, "GatewayResponseDefault5XX", {
-      restApiId: api.restApiId,
-      responseType: "DEFAULT_5XX",
-      responseParameters: {
-        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
-        "gatewayresponse.header.Access-Control-Allow-Headers": "'*'",
+    new cdk.aws_apigateway.CfnGatewayResponse(
+      this,
+      "GatewayResponseDefault5XX",
+      {
+        restApiId: api.restApiId,
+        responseType: "DEFAULT_5XX",
+        responseParameters: {
+          "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+          "gatewayresponse.header.Access-Control-Allow-Headers": "'*'",
+        },
       },
-    });
+    );
 
     const apiResources = {
       search: {
@@ -505,20 +477,23 @@ export class ApiStack extends NestedStack {
 
     const addApiResource = (
       path: string,
-      lambdaFunction: Function,
+      lambdaFunction: cdk.aws_lambda.Function,
       method: string = "POST",
     ) => {
       const resource = api.root.resourceForPath(path);
 
       // Define the integration for the Lambda function
-      const integration = new LambdaIntegration(lambdaFunction, {
-        proxy: true,
-        credentialsRole: apiGatewayRole,
-      });
+      const integration = new cdk.aws_apigateway.LambdaIntegration(
+        lambdaFunction,
+        {
+          proxy: true,
+          credentialsRole: apiGatewayRole,
+        },
+      );
 
       // Add method for specified HTTP method
       resource.addMethod(method, integration, {
-        authorizationType: AuthorizationType.IAM,
+        authorizationType: cdk.aws_apigateway.AuthorizationType.IAM,
         apiKeyRequired: false,
         methodResponses: [
           {
@@ -538,23 +513,27 @@ export class ApiStack extends NestedStack {
     });
 
     // Define CloudWatch Alarms
-    const createCloudWatchAlarm = (id: string, lambdaFunction: Function) => {
-      const alarm = new Alarm(this, id, {
+    const createCloudWatchAlarm = (
+      id: string,
+      lambdaFunction: cdk.aws_lambda.Function,
+    ) => {
+      const alarm = new cdk.aws_cloudwatch.Alarm(this, id, {
         alarmName: `${project}-${stage}-${id}Alarm`,
-        metric: new Metric({
+        metric: new cdk.aws_cloudwatch.Metric({
           namespace: `${project}-api/Errors`,
           metricName: "LambdaErrorCount",
           dimensionsMap: {
             FunctionName: lambdaFunction.functionName,
           },
           statistic: "Sum",
-          period: Duration.minutes(5),
+          period: cdk.Duration.minutes(5),
         }),
         threshold: 1,
         evaluationPeriods: 1,
         comparisonOperator:
-          ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
-        treatMissingData: TreatMissingData.NOT_BREACHING,
+          cdk.aws_cloudwatch.ComparisonOperator
+            .GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
+        treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
       });
 
       alarm.addAlarmAction({
@@ -568,16 +547,20 @@ export class ApiStack extends NestedStack {
       createCloudWatchAlarm(`${lambdaFunc.node.id}ErrorAlarm`, lambdaFunc);
     });
 
-    const waf = new RegionalWaf(this, "WafConstruct", {
+    const waf = new LC.RegionalWaf(this, "WafConstruct", {
       name: `${project}-${stage}-${stack}`,
       apiGateway: api,
     });
 
-    const cloudwatchToS3 = new CloudWatchToS3(this, "CloudWatchToS3Construct", {
-      logGroup: waf.logGroup,
-    });
+    const cloudwatchToS3 = new LC.CloudWatchToS3(
+      this,
+      "CloudWatchToS3Construct",
+      {
+        logGroup: waf.logGroup,
+      },
+    );
 
-    new EmptyBuckets(this, "EmptyBuckets", {
+    new LC.EmptyBuckets(this, "EmptyBuckets", {
       buckets: [cloudwatchToS3.logBucket],
     });
 

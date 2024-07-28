@@ -18,7 +18,7 @@ interface EmailServiceStackProps extends cdk.StackProps {
   lambdaSecurityGroup: cdk.aws_ec2.SecurityGroup;
 }
 
-export class EmailStack extends cdk.NestedStack {
+export class Email extends cdk.NestedStack {
   constructor(scope: Construct, id: string, props: EmailServiceStackProps) {
     super(scope, id, props);
 
@@ -60,29 +60,23 @@ export class EmailStack extends cdk.NestedStack {
       masterKey: kmsKeyForEmails,
     });
 
-    // SES Dedicated IP Pool
-    const dedicatedIpPool = new cdk.aws_ses.CfnDedicatedIpPool(
-      this,
-      "DedicatedIpPool",
-      {
-        poolName: `${topicNamespace}-ipPool`,
-      },
-    );
+    // S3 Bucket for storing email event data
+    const emailDataBucket = new cdk.aws_s3.Bucket(this, "EmailDataBucket", {
+      versioned: true,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
 
     // SES Configuration Set
     const configurationSet = new cdk.aws_ses.CfnConfigurationSet(
       this,
       "ConfigurationSet",
       {
-        name: "email-configuration-set",
+        name: `email-configuration-set`,
         reputationOptions: {
           reputationMetricsEnabled: true,
         },
         sendingOptions: {
           sendingEnabled: true,
-        },
-        deliveryOptions: {
-          sendingPoolName: dedicatedIpPool.poolName,
         },
         trackingOptions: {
           customRedirectDomain: "track.cdk.dev",
@@ -125,7 +119,7 @@ export class EmailStack extends cdk.NestedStack {
       {
         emailIdentity: emailFromIdentity,
         mailFromAttributes: {
-          mailFromDomain: `mail.cms.hhs.gov`,
+          mailFromDomain: `mail.${emailIdentityDomain}`,
           behaviorOnMxFailure: "USE_DEFAULT_VALUE",
         },
       },
@@ -153,6 +147,7 @@ export class EmailStack extends cdk.NestedStack {
                 "ses:ListConfigurationSets",
                 "sns:Subscribe",
                 "sns:Publish",
+                "s3:PutObject",
               ],
               resources: ["*"],
             }),
@@ -167,6 +162,7 @@ export class EmailStack extends cdk.NestedStack {
       "ProcessEmailsLambda",
       {
         functionName: "ProcessEmails",
+        depsLockFilePath: path.join(__dirname, "../bun.lockb"),
         entry: path.join(__dirname, "lambda/processEmails.ts"),
         handler: "handler",
         runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
@@ -184,15 +180,16 @@ export class EmailStack extends cdk.NestedStack {
           REGION: cdk.Aws.REGION,
           applicationEndpoint: applicationEndpoint,
           emailAddressLookupSecretName: emailAddressLookupSecretName,
+          EMAIL_DATA_BUCKET_NAME: emailDataBucket.bucketName,
         },
       },
     );
 
-    const accessConfigSubnets = privateSubnets
-      .slice(0, 3)
-      .map((subnet) => ({ type: "VPC_SUBNET", uri: subnet.subnetId }));
+    // Grant permissions to the Lambda function to write to the S3 bucket
+    emailDataBucket.grantPut(processEmailsLambda);
 
-    // Lambda Event Source Mapping for Kafka
+    // Additional configurations (e.g., Kafka event source mapping)...
+    // Example of Kafka Event Source Mapping
     new CfnEventSourceMapping(this, "SinkEmailTrigger", {
       batchSize: 10,
       enabled: true,
@@ -203,7 +200,10 @@ export class EmailStack extends cdk.NestedStack {
       },
       functionName: processEmailsLambda.functionArn,
       sourceAccessConfigurations: [
-        ...accessConfigSubnets,
+        ...privateSubnets.map((subnet) => ({
+          type: "VPC_SUBNET",
+          uri: subnet.subnetId,
+        })),
         {
           type: "VPC_SECURITY_GROUP",
           uri: lambdaSecurityGroupId,
