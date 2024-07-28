@@ -162,8 +162,8 @@ export class Email extends cdk.NestedStack {
       "ProcessEmailsLambda",
       {
         functionName: "ProcessEmails",
-        depsLockFilePath: path.join(__dirname, "../bun.lockb"),
-        entry: path.join(__dirname, "lambda/processEmails.ts"),
+        depsLockFilePath: path.join(__dirname, "../../bun.lockb"),
+        entry: path.join(__dirname, "../lambda/processEmails.ts"),
         handler: "handler",
         runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
         memorySize: 1024,

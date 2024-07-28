@@ -230,7 +230,10 @@ export class Auth extends cdk.NestedStack {
       "ManageUsers",
       userPool,
       JSON.parse(
-        readFileSync(join(__dirname, "../test/users/app-users.json"), "utf8"),
+        readFileSync(
+          join(__dirname, "../../test/users/app-users.json"),
+          "utf8",
+        ),
       ),
       devPasswordArn,
     );
@@ -288,10 +291,10 @@ export class Auth extends cdk.NestedStack {
       );
       const postAuthLambda = new NodejsFunction(this, "PostAuthLambda", {
         runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
-        entry: join(__dirname, "lambda/postAuth.ts"),
+        entry: join(__dirname, "../lambda/postAuth.ts"),
         handler: "handler",
         role: postAuthLambdaRole,
-        depsLockFilePath: join(__dirname, "../bun.lockb"),
+        depsLockFilePath: join(__dirname, "../../bun.lockb"),
         environment: {
           idmAuthzApiEndpoint,
           idmAuthzApiKeyArn,

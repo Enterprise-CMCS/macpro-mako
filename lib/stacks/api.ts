@@ -146,7 +146,7 @@ export class Api extends cdk.NestedStack {
       const fn = new NodejsFunction(this, id, {
         runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
         functionName: `${project}-${stage}-${stack}-${id}`,
-        depsLockFilePath: join(__dirname, "../bun.lockb"),
+        depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry,
         handler: "handler",
         role: lambdaRole,
@@ -180,7 +180,7 @@ export class Api extends cdk.NestedStack {
     const lambdaDefinitions = [
       {
         id: "getUploadUrl",
-        entry: join(__dirname, "lambda/getUploadUrl.ts"),
+        entry: join(__dirname, "../lambda/getUploadUrl.ts"),
         environment: {
           attachmentsBucketName: attachmentsBucket.bucketName,
           attachmentsBucketRegion: this.region,
@@ -188,7 +188,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "search",
-        entry: join(__dirname, "lambda/search.ts"),
+        entry: join(__dirname, "../lambda/search.ts"),
         environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
@@ -197,7 +197,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "getPackageActions",
-        entry: join(__dirname, "lambda/getPackageActions.ts"),
+        entry: join(__dirname, "../lambda/getPackageActions.ts"),
         environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           legacyS3AccessRoleArn,
@@ -206,7 +206,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "getAttachmentUrl",
-        entry: join(__dirname, "lambda/getAttachmentUrl.ts"),
+        entry: join(__dirname, "../lambda/getAttachmentUrl.ts"),
         environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           legacyS3AccessRoleArn,
@@ -216,7 +216,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "item",
-        entry: join(__dirname, "lambda/item.ts"),
+        entry: join(__dirname, "../lambda/item.ts"),
         environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
@@ -225,7 +225,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "submit",
-        entry: join(__dirname, "lambda/submit.ts"),
+        entry: join(__dirname, "../lambda/submit.ts"),
         environment: {
           dbInfoSecretName,
           topicName,
@@ -237,7 +237,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "action",
-        entry: join(__dirname, "lambda/action.ts"),
+        entry: join(__dirname, "../lambda/action.ts"),
         environment: {
           dbInfoSecretName,
           topicName,
@@ -248,7 +248,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "getTypes",
-        entry: join(__dirname, "lambda/getTypes.ts"),
+        entry: join(__dirname, "../lambda/getTypes.ts"),
         environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
@@ -256,7 +256,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "getSubTypes",
-        entry: join(__dirname, "lambda/getSubTypes.ts"),
+        entry: join(__dirname, "../lambda/getSubTypes.ts"),
         environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
@@ -264,7 +264,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "getCpocs",
-        entry: join(__dirname, "lambda/getCpocs.ts"),
+        entry: join(__dirname, "../lambda/getCpocs.ts"),
         environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
@@ -272,7 +272,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "itemExists",
-        entry: join(__dirname, "lambda/itemExists.ts"),
+        entry: join(__dirname, "../lambda/itemExists.ts"),
         environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
@@ -280,17 +280,17 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "forms",
-        entry: join(__dirname, "lambda/getForm.ts"),
+        entry: join(__dirname, "../lambda/getForm.ts"),
         environment: {},
       },
       {
         id: "getAllForms",
-        entry: join(__dirname, "lambda/getAllForms.ts"),
+        entry: join(__dirname, "../lambda/getAllForms.ts"),
         environment: {},
       },
       {
         id: "appkNewSubmission",
-        entry: join(__dirname, "lambda/appkNewSubmission.ts"),
+        entry: join(__dirname, "../lambda/appkNewSubmission.ts"),
         environment: {
           dbInfoSecretName,
           topicName,

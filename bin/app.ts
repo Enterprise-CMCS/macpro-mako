@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
-import { ParentStack } from "../lib/parent-stack";
-import { DeploymentConfig } from "../lib/deployment-config";
+import { ParentStack } from "../lib/stacks/parent";
+import { DeploymentConfig } from "../lib/stacks/deployment-config";
 import { validateEnvVariable } from "shared-utils";
 
 async function main() {

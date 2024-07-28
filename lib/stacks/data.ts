@@ -246,7 +246,7 @@ export class Data extends cdk.NestedStack {
         userPool,
         JSON.parse(
           readFileSync(
-            join(__dirname, "../test/users/kibana-users.json"),
+            join(__dirname, "../../test/users/kibana-users.json"),
             "utf8",
           ),
         ),
@@ -255,9 +255,9 @@ export class Data extends cdk.NestedStack {
 
       const mapRole = new NodejsFunction(this, "MapRoleLambdaFunction", {
         functionName: `${project}-${stage}-${stack}-mapRole`,
-        entry: join(__dirname, "lambda/mapRole.ts"),
+        entry: join(__dirname, "../lambda/mapRole.ts"),
         handler: "handler",
-        depsLockFilePath: join(__dirname, "../bun.lockb"),
+        depsLockFilePath: join(__dirname, "../../bun.lockb"),
         runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
         role: new cdk.aws_iam.Role(this, "MapRoleLambdaExecutionRole", {
           assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
@@ -378,8 +378,8 @@ export class Data extends cdk.NestedStack {
       });
       const fn = new NodejsFunction(this, id, {
         functionName: `${project}-${stage}-${stack}-${id}`,
-        depsLockFilePath: join(__dirname, "../bun.lockb"),
-        entry: join(__dirname, `lambda/${entry}`),
+        depsLockFilePath: join(__dirname, "../../bun.lockb"),
+        entry: join(__dirname, `../lambda/${entry}`),
         handler: "handler",
         runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
         role,
@@ -806,9 +806,9 @@ export class Data extends cdk.NestedStack {
       "runReindexLambdaFunction",
       {
         functionName: `${project}-${stage}-${stack}-runReindex`,
-        entry: join(__dirname, "lambda/runReindex.ts"),
+        entry: join(__dirname, "../lambda/runReindex.ts"),
         handler: "handler",
-        depsLockFilePath: join(__dirname, "../bun.lockb"),
+        depsLockFilePath: join(__dirname, "../../bun.lockb"),
         runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
         timeout: cdk.Duration.minutes(5),
         role: new cdk.aws_iam.Role(this, "RunReindexLambdaExecutionRole", {

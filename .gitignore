@@ -19,3 +19,4 @@ build_run
 # tests
 coverage
 __snapshots__
+bin
