@@ -14,6 +14,7 @@ import {
   RHFFormGroup,
   RHFSlot,
   RHFTextDisplay,
+  ruleGenerator,
   sortFunctions,
 } from ".";
 import {
@@ -207,7 +208,9 @@ export const SlotField = ({
         <RadioGroup
           onValueChange={field.onChange}
           defaultValue={field.value}
-          className={`flex  ${horizontalLayout ? "pl-5 gap-5" : "flex-col space-y-6"}`}
+          className={`flex  ${
+            horizontalLayout ? "pl-5 gap-5" : "flex-col space-y-6"
+          }`}
         >
           {(props as RHFComponentMap["Radio"]).options.map((OPT) => {
             return (
@@ -285,6 +288,7 @@ export const OptChildren = ({
               <FormField
                 control={control}
                 name={parentId + SLOT.name}
+                rules={ruleGenerator(SLOT.rules, SLOT.addtnlRules)}
                 {...(SLOT.rules && { rules: SLOT.rules })}
                 render={RHFSlot({ ...SLOT, control, parentId })}
               />

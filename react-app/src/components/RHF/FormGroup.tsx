@@ -4,6 +4,7 @@ import * as TRhf from "shared-types";
 import { FormLabel, FormField } from "../Inputs";
 import { DependencyWrapper } from "./dependencyWrapper";
 import { RHFSlot } from "./Slot";
+import { ruleGenerator } from "./utils";
 import { cn } from "@/utils";
 
 export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
@@ -30,6 +31,7 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
               <FormField
                 control={props.control}
                 name={(props.parentId + SLOT.name) as never}
+                rules={ruleGenerator(SLOT.rules, SLOT.addtnlRules)}
                 {...(SLOT.rules && { rules: SLOT.rules })}
                 render={RHFSlot({
                   ...SLOT,
