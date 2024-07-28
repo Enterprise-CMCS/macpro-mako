@@ -52,6 +52,11 @@ export class Email extends cdk.NestedStack {
             principals: [new cdk.aws_iam.ServicePrincipal("sns.amazonaws.com")],
             resources: ["*"],
           }),
+          new cdk.aws_iam.PolicyStatement({
+            actions: ["kms:GenerateDataKey", "kms:Decrypt"],
+            principals: [new cdk.aws_iam.ServicePrincipal("ses.amazonaws.com")],
+            resources: ["*"],
+          }),
         ],
       }),
     });
@@ -63,14 +68,16 @@ export class Email extends cdk.NestedStack {
     });
 
     // Allow SES to publish to the SNS topic
-    emailEventTopic.addToResourcePolicy(
-      new cdk.aws_iam.PolicyStatement({
-        actions: ["sns:Publish"],
-        principals: [new cdk.aws_iam.ServicePrincipal("ses.amazonaws.com")],
-        resources: [emailEventTopic.topicArn],
-        effect: cdk.aws_iam.Effect.ALLOW,
-      }),
-    );
+    const snsPublishPolicyStatement = new cdk.aws_iam.PolicyStatement({
+      actions: ["sns:Publish"],
+      principals: [new cdk.aws_iam.ServicePrincipal("ses.amazonaws.com")],
+      resources: [emailEventTopic.topicArn],
+      effect: cdk.aws_iam.Effect.ALLOW,
+    });
+    emailEventTopic.addToResourcePolicy(snsPublishPolicyStatement);
+    const snsTopicPolicy = emailEventTopic.node.tryFindChild(
+      "Policy",
+    ) as cdk.CfnResource;
 
     // S3 Bucket for storing email event data
     const emailDataBucket = new cdk.aws_s3.Bucket(this, "EmailDataBucket", {
@@ -97,29 +104,32 @@ export class Email extends cdk.NestedStack {
     );
 
     // SES Event Destination for Configuration Set
-    new cdk.aws_ses.CfnConfigurationSetEventDestination(
-      this,
-      "ConfigurationSetEventDestination",
-      {
-        configurationSetName: configurationSet.name!,
-        eventDestination: {
-          enabled: true,
-          matchingEventTypes: [
-            "send",
-            "reject",
-            "bounce",
-            "complaint",
-            "delivery",
-            "open",
-            "click",
-            "renderingFailure",
-          ],
-          snsDestination: {
-            topicArn: emailEventTopic.topicArn,
+    const eventDestination =
+      new cdk.aws_ses.CfnConfigurationSetEventDestination(
+        this,
+        "ConfigurationSetEventDestination",
+        {
+          configurationSetName: configurationSet.name!,
+          eventDestination: {
+            enabled: true,
+            matchingEventTypes: [
+              "send",
+              "reject",
+              "bounce",
+              "complaint",
+              "delivery",
+              "open",
+              "click",
+              "renderingFailure",
+            ],
+            snsDestination: {
+              topicArn: emailEventTopic.topicArn,
+            },
           },
         },
-      },
-    );
+      );
+
+    eventDestination.node.addDependency(snsTopicPolicy);
 
     // SES Email Identity
     const emailIdentity = new cdk.aws_ses.CfnEmailIdentity(
@@ -158,6 +168,11 @@ export class Email extends cdk.NestedStack {
                 "sns:Publish",
                 "s3:PutObject",
               ],
+              resources: ["*"],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["ec2:DescribeSecurityGroups", "ec2:DescribeVpcs"],
               resources: ["*"],
             }),
           ],
@@ -210,7 +225,7 @@ export class Email extends cdk.NestedStack {
       },
       functionName: processEmailsLambda.functionArn,
       sourceAccessConfigurations: [
-        ...privateSubnets.map((subnet) => ({
+        ...privateSubnets.slice(0, 3).map((subnet) => ({
           type: "VPC_SUBNET",
           uri: subnet.subnetId,
         })),
