@@ -62,6 +62,16 @@ export class Email extends cdk.NestedStack {
       masterKey: kmsKeyForEmails,
     });
 
+    // Allow SES to publish to the SNS topic
+    emailEventTopic.addToResourcePolicy(
+      new cdk.aws_iam.PolicyStatement({
+        actions: ["sns:Publish"],
+        principals: [new cdk.aws_iam.ServicePrincipal("ses.amazonaws.com")],
+        resources: [emailEventTopic.topicArn],
+        effect: cdk.aws_iam.Effect.ALLOW,
+      }),
+    );
+
     // S3 Bucket for storing email event data
     const emailDataBucket = new cdk.aws_s3.Bucket(this, "EmailDataBucket", {
       versioned: true,
