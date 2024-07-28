@@ -216,7 +216,7 @@ export class Email extends cdk.NestedStack {
         })),
         {
           type: "VPC_SECURITY_GROUP",
-          uri: lambdaSecurityGroupId,
+          uri: `security_group:${lambdaSecurityGroupId}`,
         },
       ],
       startingPosition: "LATEST",
