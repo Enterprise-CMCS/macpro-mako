@@ -230,7 +230,7 @@ export const AppKSubmissionForm = () => {
               })}
             />
           </C.SectionCard>
-          <C.PreSubmissionMessage />
+          <C.PreSubmissionMessage showProgressLoss={false} />
           <SubmitAndCancelBtnSection />
         </form>
       </I.Form>
