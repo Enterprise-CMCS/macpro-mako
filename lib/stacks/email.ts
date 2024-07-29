@@ -137,19 +137,6 @@ export class Email extends cdk.NestedStack {
 
     eventDestination.node.addDependency(snsTopicPolicy);
 
-    // SES Email Identity
-    const emailIdentity = new cdk.aws_ses.CfnEmailIdentity(
-      this,
-      "EmailIdentity",
-      {
-        emailIdentity: emailFromIdentity,
-        mailFromAttributes: {
-          mailFromDomain: `mail.${emailIdentityDomain}`,
-          behaviorOnMxFailure: "USE_DEFAULT_VALUE",
-        },
-      },
-    );
-
     // IAM Role for Lambda
     const lambdaRole = new cdk.aws_iam.Role(this, "LambdaExecutionRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
@@ -205,7 +192,7 @@ export class Email extends cdk.NestedStack {
         },
         securityGroups: [lambdaSecurityGroup],
         environment: {
-          EMAIL_IDENTITY: emailIdentity.emailIdentity,
+          EMAIL_IDENTITY: emailFromIdentity,
           CONFIGURATION_SET: configurationSet.name!,
           REGION: cdk.Aws.REGION,
           indexNamespace,
