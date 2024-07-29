@@ -5,10 +5,11 @@ import {
   extractKeyFromS3Event,
   extractBucketFromS3Event,
   STATUS_ERROR_PROCESSING_FILE,
-  STATUS_SKIPPED_FILE,
   downloadFileFromS3,
-  isS3FileTooBig,
   tagWithScanStatus,
+  checkFileExt,
+  STATUS_CLEAN_FILE,
+  checkFileSize,
 } from "./../lib";
 import pino from "pino";
 const logger = pino();
@@ -49,15 +50,30 @@ export async function handler(event: any): Promise<string[]> {
 
     let virusScanStatus: string;
 
-    if (await isS3FileTooBig(s3ObjectKey, s3ObjectBucket)) {
-      virusScanStatus = STATUS_SKIPPED_FILE;
-      logger.info(`S3 File is too big. virusScanStatus=${virusScanStatus}`);
-    } else {
+    try {
+      virusScanStatus = await checkFileSize(s3ObjectKey, s3ObjectBucket);
+      if (virusScanStatus !== STATUS_CLEAN_FILE) {
+        await tagWithScanStatus(s3ObjectBucket, s3ObjectKey, virusScanStatus);
+        results.push(virusScanStatus);
+        continue;
+      }
       const fileLoc: string = await downloadFileFromS3(
         s3ObjectKey,
         s3ObjectBucket,
       );
+      virusScanStatus = await checkFileExt(fileLoc);
+      if (virusScanStatus !== STATUS_CLEAN_FILE) {
+        await tagWithScanStatus(s3ObjectBucket, s3ObjectKey, virusScanStatus);
+        results.push(virusScanStatus);
+        continue;
+      }
       virusScanStatus = (await scanLocalFile(fileLoc))!;
+      await tagWithScanStatus(s3ObjectBucket, s3ObjectKey, virusScanStatus);
+      results.push(virusScanStatus);
+    } catch (error) {
+      virusScanStatus = STATUS_ERROR_PROCESSING_FILE;
+      await tagWithScanStatus(s3ObjectBucket, s3ObjectKey, virusScanStatus);
+      results.push(virusScanStatus);
     }
 
     await tagWithScanStatus(s3ObjectBucket, s3ObjectKey, virusScanStatus);
