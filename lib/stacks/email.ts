@@ -96,7 +96,7 @@ export class Email extends cdk.NestedStack {
       this,
       "ConfigurationSet",
       {
-        name: `email-configuration-set`,
+        name: `${project}-${stage}-${stack}-email-configuration-set`,
         reputationOptions: {
           reputationMetricsEnabled: true,
         },
