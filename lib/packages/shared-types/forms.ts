@@ -206,7 +206,7 @@ type Effects =
     }
   | {
       type: "setValue";
-      newValue: unknown;
+      newValue: string | string[];
       fieldName: string;
     };
 

@@ -9,12 +9,6 @@ const checkTriggeringValue = (
   return !!dependency?.conditions?.every((d, i) => {
     switch (d.type) {
       case "expectedValue":
-        // console.log(
-        //   Array.isArray(dependentValue[i]),
-        //   dependentValue,
-        //   i,
-        //   d.expectedValue,
-        // );
         if (Array.isArray(dependentValue[i])) {
           return (dependentValue[i] as unknown[]).includes(d.expectedValue);
         } else {
@@ -47,7 +41,6 @@ export const DependencyWrapper = (
   ) {
     return <>{props.children}</>;
   }
-  console.log(props);
 
   return <DependencyWrapperHandler {...props} />;
 };
@@ -59,7 +52,7 @@ const DependencyWrapperHandler = ({
   parentValue,
   changeMethod,
 }: PropsWithChildren<DependencyWrapperProps>) => {
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, getValues } = useFormContext();
   const [wasSetLast, setWasSetLast] = useState(false);
   const dependentValues = watch(
     dependency?.conditions?.map((c) => c.name) ?? [],
@@ -71,14 +64,24 @@ const DependencyWrapperHandler = ({
       !wasSetLast &&
       dependency?.effect.type === "setValue" &&
       isTriggered &&
-      !!name
+      !!dependency.effect.fieldName
     ) {
-      console.log(
-        dependency.effect.newValue,
-        dependency.effect.fieldName,
-        dependency,
-      );
-      setValue(dependency.effect.fieldName, dependency.effect.newValue);
+      const value = getValues(dependency.effect.fieldName);
+      if (Array.isArray(value)) {
+        if (Array.isArray(dependency.effect.newValue)) {
+          setValue(dependency.effect.fieldName, [
+            ...value,
+            ...dependency.effect.newValue,
+          ]);
+        } else {
+          setValue(dependency.effect.fieldName, [
+            ...value,
+            dependency.effect.newValue,
+          ]);
+        }
+      } else {
+        setValue(dependency.effect.fieldName, dependency.effect.newValue);
+      }
       setWasSetLast(true);
     } else if (!isTriggered && wasSetLast) {
       setWasSetLast(false);
