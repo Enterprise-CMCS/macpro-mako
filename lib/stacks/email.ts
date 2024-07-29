@@ -6,6 +6,9 @@ import { ISubnet } from "aws-cdk-lib/aws-ec2";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
 
 interface EmailServiceStackProps extends cdk.StackProps {
+  project: string;
+  stage: string;
+  stack: string;
   vpc: cdk.aws_ec2.IVpc;
   applicationEndpoint: string;
   emailIdentityDomain: string;
@@ -24,6 +27,9 @@ export class Email extends cdk.NestedStack {
     super(scope, id, props);
 
     const {
+      project,
+      stage,
+      stack,
       vpc,
       emailFromIdentity,
       emailIdentityDomain,
@@ -185,7 +191,7 @@ export class Email extends cdk.NestedStack {
       this,
       "ProcessEmailsLambda",
       {
-        functionName: "ProcessEmails",
+        functionName: `${project}-${stage}-${stack}-processEmails`,
         depsLockFilePath: path.join(__dirname, "../../bun.lockb"),
         entry: path.join(__dirname, "../lambda/processEmails.ts"),
         handler: "handler",

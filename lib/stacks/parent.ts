@@ -108,6 +108,7 @@ export class ParentStack extends cdk.Stack {
 
     const emailStack = new Stacks.Email(this, "email", {
       ...commonProps,
+      stack: "email",
       vpc,
       privateSubnets,
       brokerString: props.brokerString,
