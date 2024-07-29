@@ -92,10 +92,10 @@ export const AttachmentsSizeTypesDesc = ({
 );
 
 type PreSubmissionMessageProps = {
-  showProgressLoss?: boolean;
+  hasProgressLossReminder?: boolean;
 };
 export const PreSubmissionMessage = ({
-  showProgressLoss = true,
+  hasProgressLossReminder = true,
 }: PreSubmissionMessageProps) => (
   <Alert variant={"infoBlock"} className="my-2 flex-row text-sm">
     <Info />
@@ -104,7 +104,7 @@ export const PreSubmissionMessage = ({
       CMS will use this content to review your package, and you will not be able
       to edit this form. If CMS needs any additional information, they will
       follow up by email.
-      {showProgressLoss && <ProgressLossReminder />}
+      {hasProgressLossReminder && <ProgressLossReminder />}
     </p>
   </Alert>
 );
