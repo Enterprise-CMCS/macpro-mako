@@ -13,7 +13,6 @@
     "dotenv": "^16.0.3",
     "open": "^10.0.4",
     "readline-sync": "^1.4.10",
-    "s3-sync-client": "^4.3.1",
     "shared-utils": "*",
     "yargs": "^17.7.1"
   },
