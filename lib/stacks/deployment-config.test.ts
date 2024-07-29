@@ -16,23 +16,25 @@ describe("DeploymentConfig", () => {
   const project = "test-project";
   const defaultSecret = JSON.stringify({
     brokerString: "brokerString",
-    dbInfoSecretName: "dbInfoSecretName",
-    devPasswordArn: "devPasswordArn",
+    dbInfoSecretName: "dbInfoSecretName", // pragma: allowlist secret
+    devPasswordArn: "devPasswordArn", // pragma: allowlist secret
     domainCertificateArn: "domainCertificateArn",
     domainName: "domainName",
-    emailAddressLookupSecretName: "emailAddressLookupSecretName",
+    emailAddressLookupSecretName: "emailAddressLookupSecretName", // pragma: allowlist secret
     googleAnalyticsDisable: "true",
     googleAnalyticsGTag: "googleAnalyticsGTag",
     idmAuthzApiEndpoint: "idmAuthzApiEndpoint",
-    idmAuthzApiKeyArn: "idmAuthzApiKeyArn",
+    idmAuthzApiKeyArn: "idmAuthzApiKeyArn", // pragma: allowlist secret
     idmClientId: "idmClientId",
     idmClientIssuer: "idmClientIssuer",
-    idmClientSecretArn: "idmClientSecretArn",
+    idmClientSecretArn: "idmClientSecretArn", // pragma: allowlist secret
     idmEnable: "true",
     idmHomeUrl: "idmHomeUrl",
     legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
     useSharedOpenSearch: "true",
     vpcName: "vpcName",
+    emailFromIdentity: "test@cms.hhs.gov",
+    emailIdentityDomain: "cms.hhs.gov",
   });
 
   const stageSecret = JSON.stringify({
@@ -74,18 +76,18 @@ describe("DeploymentConfig", () => {
 
     const expectedConfig: DeploymentConfigProperties = {
       brokerString: "brokerString",
-      dbInfoSecretName: "dbInfoSecretName",
-      devPasswordArn: "devPasswordArn",
+      dbInfoSecretName: "dbInfoSecretName", // pragma: allowlist secret
+      devPasswordArn: "devPasswordArn", // pragma: allowlist secret
       domainCertificateArn: "domainCertificateArn",
       domainName: "stage-domainName", // Overridden by stage secret
-      emailAddressLookupSecretName: "emailAddressLookupSecretName",
+      emailAddressLookupSecretName: "emailAddressLookupSecretName", // pragma: allowlist secret
       googleAnalyticsDisable: false, // Converted to boolean and overridden by stage secret
       googleAnalyticsGTag: "googleAnalyticsGTag",
       idmAuthzApiEndpoint: "idmAuthzApiEndpoint",
-      idmAuthzApiKeyArn: "idmAuthzApiKeyArn",
+      idmAuthzApiKeyArn: "idmAuthzApiKeyArn", // pragma: allowlist secret
       idmClientId: "idmClientId",
       idmClientIssuer: "idmClientIssuer",
-      idmClientSecretArn: "idmClientSecretArn",
+      idmClientSecretArn: "idmClientSecretArn", // pragma: allowlist secret
       idmEnable: true, // Converted to boolean
       idmHomeUrl: "idmHomeUrl",
       legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
@@ -97,6 +99,8 @@ describe("DeploymentConfig", () => {
       sharedOpenSearchDomainEndpoint: "sharedOpenSearchDomainEndpoint",
       stage: "dev",
       terminationProtection: false,
+      emailFromIdentity: "test@cms.hhs.gov",
+      emailIdentityDomain: "cms.hhs.gov",
     };
 
     expect(deploymentConfig.config).toEqual(expectedConfig);
@@ -138,18 +142,18 @@ describe("DeploymentConfig", () => {
 
     const expectedConfig: DeploymentConfigProperties = {
       brokerString: "brokerString",
-      dbInfoSecretName: "dbInfoSecretName",
-      devPasswordArn: "devPasswordArn",
+      dbInfoSecretName: "dbInfoSecretName", // pragma: allowlist secret
+      devPasswordArn: "devPasswordArn", // pragma: allowlist secret
       domainCertificateArn: "domainCertificateArn",
       domainName: "domainName",
-      emailAddressLookupSecretName: "emailAddressLookupSecretName",
+      emailAddressLookupSecretName: "emailAddressLookupSecretName", // pragma: allowlist secret
       googleAnalyticsDisable: true,
       googleAnalyticsGTag: "googleAnalyticsGTag",
       idmAuthzApiEndpoint: "idmAuthzApiEndpoint",
-      idmAuthzApiKeyArn: "idmAuthzApiKeyArn",
+      idmAuthzApiKeyArn: "idmAuthzApiKeyArn", // pragma: allowlist secret
       idmClientId: "idmClientId",
       idmClientIssuer: "idmClientIssuer",
-      idmClientSecretArn: "idmClientSecretArn",
+      idmClientSecretArn: "idmClientSecretArn", // pragma: allowlist secret
       idmEnable: true,
       idmHomeUrl: "idmHomeUrl",
       legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
@@ -161,6 +165,8 @@ describe("DeploymentConfig", () => {
       sharedOpenSearchDomainEndpoint: "sharedOpenSearchDomainEndpoint",
       stage: "dev",
       terminationProtection: false,
+      emailFromIdentity: "test@cms.hhs.gov",
+      emailIdentityDomain: "cms.hhs.gov",
     };
 
     expect(deploymentConfig.config).toEqual(expectedConfig);

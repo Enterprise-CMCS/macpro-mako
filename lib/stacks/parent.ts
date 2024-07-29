@@ -1,25 +1,15 @@
-import { Fn, Stack, StackProps } from "aws-cdk-lib";
-import { Vpc, ISubnet } from "aws-cdk-lib/aws-ec2";
+import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
+import { CloudWatchLogsResourcePolicy } from "local-constructs";
 
 import { DeploymentConfigProperties } from "./deployment-config";
-import { AlertsStack } from "./alerts-stack";
-import { ApiStack } from "./api-stack";
-import { AuthStack } from "./auth-stack";
-import { DataStack } from "./data-stack";
-import { NetworkingStack } from "./networking-stack";
-import { UiInfraStack } from "./ui-infra-stack";
-import { UploadsStack } from "./uploads-stack";
+import * as Stacks from "../stacks";
 
-import { CloudWatchLogsResourcePolicy } from "local-constructs";
-import { StringParameter } from "aws-cdk-lib/aws-ssm";
-import { EmailStack } from "./email-stack";
-
-export class ParentStack extends Stack {
+export class ParentStack extends cdk.Stack {
   constructor(
     scope: Construct,
     id: string,
-    props: StackProps & DeploymentConfigProperties,
+    props: cdk.StackProps & DeploymentConfigProperties,
   ) {
     super(scope, id, props);
 
@@ -33,7 +23,7 @@ export class ParentStack extends Stack {
       : "";
     const indexNamespace = props.stage;
 
-    const vpc = Vpc.fromLookup(this, "Vpc", {
+    const vpc = cdk.aws_ec2.Vpc.fromLookup(this, "Vpc", {
       vpcName: props.vpcName,
     });
     const privateSubnets = sortSubnets(vpc.privateSubnets);
@@ -44,18 +34,18 @@ export class ParentStack extends Stack {
       });
     }
 
-    const networkingStack = new NetworkingStack(this, "networking", {
+    const networkingStack = new Stacks.Networking(this, "networking", {
       ...commonProps,
       stack: "networking",
       vpc,
     });
 
-    const alertsStack = new AlertsStack(this, "alerts", {
+    const alertsStack = new Stacks.Alerts(this, "alerts", {
       ...commonProps,
       stack: "alerts",
     });
 
-    const uiInfraStack = new UiInfraStack(this, "ui-infra", {
+    const uiInfraStack = new Stacks.UiInfra(this, "ui-infra", {
       ...commonProps,
       stack: "ui-infra",
       isDev: props.isDev,
@@ -63,12 +53,12 @@ export class ParentStack extends Stack {
       domainName: props.domainName,
     });
 
-    const uploadsStack = new UploadsStack(this, "uploads", {
+    const uploadsStack = new Stacks.Uploads(this, "uploads", {
       ...commonProps,
       stack: "uploads",
     });
 
-    const dataStack = new DataStack(this, "data", {
+    const dataStack = new Stacks.Data(this, "data", {
       ...commonProps,
       stack: "data",
       vpc,
@@ -82,7 +72,7 @@ export class ParentStack extends Stack {
       sharedOpenSearchDomainEndpoint: props.sharedOpenSearchDomainEndpoint,
     });
 
-    const apiStack = new ApiStack(this, "api", {
+    const apiStack = new Stacks.Api(this, "api", {
       ...commonProps,
       stack: "api",
       vpc,
@@ -99,7 +89,7 @@ export class ParentStack extends Stack {
       attachmentsBucket: uploadsStack.attachmentsBucket,
     });
 
-    const authStack = new AuthStack(this, "auth", {
+    const authStack = new Stacks.Auth(this, "auth", {
       ...commonProps,
       stack: "auth",
       apiGateway: apiStack.apiGateway,
@@ -116,7 +106,7 @@ export class ParentStack extends Stack {
       devPasswordArn: props.devPasswordArn,
     });
 
-    const emailStack = new EmailStack(this, "email", {
+    const emailStack = new Stacks.Email(this, "email", {
       ...commonProps,
       stack: "email",
       vpc,
@@ -124,15 +114,16 @@ export class ParentStack extends Stack {
       brokerString: props.brokerString,
       topicNamespace,
       indexNamespace,
-      osDomainArn: dataStack.openSearchDomainArn,
       lambdaSecurityGroupId:
         networkingStack.lambdaSecurityGroup.securityGroupId,
       applicationEndpoint: uiInfraStack.applicationEndpointUrl,
-      cognitoUserPoolId: authStack.userPool.userPoolId,
       emailAddressLookupSecretName: props.emailAddressLookupSecretName,
+      emailIdentityDomain: props.emailIdentityDomain,
+      lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
+      emailFromIdentity: props.emailFromIdentity,
     });
 
-    new StringParameter(this, "DeploymentOutput", {
+    new cdk.aws_ssm.StringParameter(this, "DeploymentOutput", {
       parameterName: `/${props.project}/${props.stage}/deployment-output`,
       stringValue: JSON.stringify({
         apiGatewayRestApiUrl: apiStack.apiGatewayUrl,
@@ -149,7 +140,7 @@ export class ParentStack extends Stack {
       description: `Deployment output for the ${props.stage} environment.`,
     });
 
-    new StringParameter(this, "DeploymentConfig", {
+    new cdk.aws_ssm.StringParameter(this, "DeploymentConfig", {
       parameterName: `/${props.project}/${props.stage}/deployment-config`,
       stringValue: JSON.stringify(props),
       description: `Deployment config for the ${props.stage} environment.`,
@@ -171,7 +162,7 @@ function getSubnetSize(cidrBlock: string): number {
   return Math.pow(2, 32 - subnetMask);
 }
 
-function sortSubnets(subnets: ISubnet[]): ISubnet[] {
+function sortSubnets(subnets: cdk.aws_ec2.ISubnet[]): cdk.aws_ec2.ISubnet[] {
   return subnets.sort((a, b) => {
     const sizeA = getSubnetSize(a.ipv4CidrBlock);
     const sizeB = getSubnetSize(b.ipv4CidrBlock);

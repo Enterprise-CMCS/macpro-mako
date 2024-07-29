@@ -14,7 +14,7 @@ describe("ManageUsers", () => {
   // Mock properties
   const userPool = new cognito.UserPool(stack, "UserPool");
   const users = [{ username: "user1" }, { username: "user2" }];
-  const passwordSecretArn = "mockPasswordSecretArn";
+  const passwordSecretArn = "mockPasswordSecretArn"; // pragma: allowlist secret
 
   const manageUsers = new ManageUsers(
     stack,
