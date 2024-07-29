@@ -5,6 +5,7 @@ import {
   PutObjectTaggingCommand,
   HeadObjectCommandOutput,
   PutObjectTaggingCommandOutput,
+  ListObjectsV2Command,
 } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
 import fs from "fs";
@@ -16,10 +17,10 @@ import { Readable } from "stream";
 
 const s3Client: S3Client = new S3Client();
 
-export async function isS3FileTooBig(
+export async function checkFileSize(
   key: string,
   bucket: string,
-): Promise<boolean> {
+): Promise<string> {
   try {
     const res: HeadObjectCommandOutput = await s3Client.send(
       new HeadObjectCommand({ Key: key, Bucket: bucket }),
@@ -32,12 +33,14 @@ export async function isS3FileTooBig(
       logger.info(
         `ContentLength is invalid for S3 Object: s3://${bucket}/${key}`,
       );
-      return false; // Or handle accordingly
+      return constants.STATUS_ERROR_PROCESSING_FILE;
     }
-    return res.ContentLength > parseInt(constants.MAX_FILE_SIZE);
+    return res.ContentLength > parseInt(constants.MAX_FILE_SIZE)
+      ? constants.STATUS_TOO_BIG
+      : constants.STATUS_CLEAN_FILE;
   } catch (e) {
     logger.info(`Error finding size of S3 Object: s3://${bucket}/${key}`);
-    return true;
+    return constants.STATUS_ERROR_PROCESSING_FILE;
   }
 }
 
@@ -102,5 +105,23 @@ export async function tagWithScanStatus(
     logger.info("Tagging successful");
   } catch (err) {
     logger.error(err);
+  }
+}
+
+export async function listBucketFiles(bucketName: string): Promise<string[]> {
+  try {
+    const listFilesResult = await s3Client.send(
+      new ListObjectsV2Command({ Bucket: bucketName }),
+    );
+    if (listFilesResult.Contents) {
+      const keys = listFilesResult.Contents.map((c) => c.Key) as string[];
+      return keys;
+    } else {
+      return [];
+    }
+  } catch (err) {
+    logger.info("Error listing files");
+    logger.error(err);
+    throw err;
   }
 }
