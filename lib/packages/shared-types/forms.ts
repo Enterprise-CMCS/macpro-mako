@@ -207,6 +207,7 @@ type Effects =
   | {
       type: "setValue";
       newValue: unknown;
+      fieldName: string;
     };
 
 export interface DependencyRule {

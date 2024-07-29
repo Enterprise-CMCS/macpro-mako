@@ -9,7 +9,17 @@ const checkTriggeringValue = (
   return !!dependency?.conditions?.every((d, i) => {
     switch (d.type) {
       case "expectedValue":
-        return dependentValue[i] === d?.expectedValue;
+        // console.log(
+        //   Array.isArray(dependentValue[i]),
+        //   dependentValue,
+        //   i,
+        //   d.expectedValue,
+        // );
+        if (Array.isArray(dependentValue[i])) {
+          return (dependentValue[i] as unknown[]).includes(d.expectedValue);
+        } else {
+          return dependentValue[i] === d?.expectedValue;
+        }
       case "valueExists":
         return (
           (Array.isArray(dependentValue[i]) &&
@@ -37,6 +47,7 @@ export const DependencyWrapper = (
   ) {
     return <>{props.children}</>;
   }
+  console.log(props);
 
   return <DependencyWrapperHandler {...props} />;
 };
@@ -55,7 +66,6 @@ const DependencyWrapperHandler = ({
   );
   const isTriggered =
     dependency && checkTriggeringValue(dependentValues, dependency);
-
   useEffect(() => {
     if (
       !wasSetLast &&
@@ -63,7 +73,12 @@ const DependencyWrapperHandler = ({
       isTriggered &&
       !!name
     ) {
-      setValue(name, dependency.effect.newValue);
+      console.log(
+        dependency.effect.newValue,
+        dependency.effect.fieldName,
+        dependency,
+      );
+      setValue(dependency.effect.fieldName, dependency.effect.newValue);
       setWasSetLast(true);
     } else if (!isTriggered && wasSetLast) {
       setWasSetLast(false);
