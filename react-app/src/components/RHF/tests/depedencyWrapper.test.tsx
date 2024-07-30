@@ -52,7 +52,9 @@ describe("DependencyWrapper Tests", () => {
         name="testField"
         dependency={dependency}
         parentValue={["testField"]}
-        changeMethod={() => {}}
+        changeMethod={(value) => {
+          console.log(value);
+        }}
       >
         <div>Child Component</div>
       </TestComp>,
@@ -73,7 +75,9 @@ describe("DependencyWrapper Tests", () => {
         name="testField"
         dependency={dependency}
         parentValue={["testField"]}
-        changeMethod={() => {}}
+        changeMethod={(value) => {
+          console.log(value);
+        }}
       >
         <div>Child Component</div>
       </TestComp>,
@@ -120,7 +124,9 @@ describe("DependencyWrapper Tests", () => {
         name="testField"
         dependency={dependency}
         parentValue={["testField"]}
-        changeMethod={() => {}}
+        changeMethod={(value) => {
+          console.log(value);
+        }}
       >
         <div>Child Component</div>
       </TestCompWithMethods>,
