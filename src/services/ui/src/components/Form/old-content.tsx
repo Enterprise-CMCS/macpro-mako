@@ -104,7 +104,7 @@ export const PreSubmissionMessage = ({
       CMS will use this content to review your package, and you will not be able
       to edit this form. If CMS needs any additional information, they will
       follow up by email.
-      {hasProgressLossReminder && <ProgressLossReminder />}
     </p>
+    {hasProgressLossReminder && <ProgressLossReminder />}
   </Alert>
 );
