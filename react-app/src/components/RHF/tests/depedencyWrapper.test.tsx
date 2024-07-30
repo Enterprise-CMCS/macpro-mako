@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import { useForm, FormProvider } from "react-hook-form";
 import { DependencyWrapper } from "../dependencyWrapper";
 import { PropsWithChildren } from "react";
-import { DependencyRule } from "shared-types"; // Adjust the import path as needed
+import { DependencyRule } from "shared-types";
 
 const TestComp = ({
   name,
@@ -89,18 +89,43 @@ describe("DependencyWrapper Tests", () => {
       ],
       effect: { type: "setValue", fieldName: "field2", newValue: "newValue" },
     };
-    const { getByRole } = render(
-      <TestComp
+
+    let methods: any;
+
+    const TestCompWithMethods = (
+      props: PropsWithChildren<{
+        name: string;
+        dependency: DependencyRule;
+        parentValue: string[];
+        changeMethod: (values: string[]) => void;
+      }>,
+    ) => {
+      methods = useForm({
+        defaultValues: {
+          [props.name]: props.parentValue,
+          field1: "test",
+          field2: "",
+        },
+      });
+
+      return (
+        <FormProvider {...methods}>
+          <DependencyWrapper {...props}>{props.children}</DependencyWrapper>
+        </FormProvider>
+      );
+    };
+
+    render(
+      <TestCompWithMethods
         name="testField"
         dependency={dependency}
         parentValue={["testField"]}
         changeMethod={() => {}}
       >
         <div>Child Component</div>
-      </TestComp>,
+      </TestCompWithMethods>,
     );
 
-    const input = getByRole("textbox", { name: /field2/i }) as HTMLInputElement;
-    expect(input.value).toBe("newValue");
+    expect(methods.getValues("field2")).toBe("newValue");
   });
 });
