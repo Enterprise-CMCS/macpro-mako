@@ -259,13 +259,13 @@ Summary:
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
     text: `
-he OneMAC Submission Portal received a request to withdraw the package below.
+The OneMAC Submission Portal received a request to withdraw the package below.
 The package will no longer be considered for CMS review:
 
 State or territory: {{territory}}
 Name: {{submitterName}}
 Email: {{submitterEmail}}
-{{actionType}} Number: {{id}}
+Waiver Number: {{id}}
 
 Summary:
 {{additionalInformation}}
