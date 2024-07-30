@@ -255,7 +255,7 @@ export const SlotField = ({
       return (
         <div
           className={cn(
-            "w-full border-slate-400 border-4",
+            "w-full border-slate-400 border-2",
             props?.wrapperClassName,
           )}
         />

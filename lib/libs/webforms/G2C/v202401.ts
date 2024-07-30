@@ -1,7 +1,7 @@
 import { FormSchema, DefaultFieldGroupProps } from "shared-types";
 
-const subheaderStyling =
-  "py-3 px-8 w-full bg-gray-300 text-2xl font-bold -mx-8";
+const subheaderStyling = "py-3 px-8 w-full bg-gray-300 text-2xl font-bold ";
+const rowStyling = "flex-row flex w-full gap-8";
 
 export const v202401: FormSchema = {
   formId: "g2c",
@@ -16,9 +16,13 @@ export const v202401: FormSchema = {
           slots: [
             {
               name: "does-state-target-specific-groups",
+              label:
+                "Does the state target cost sharing to a specific group or groups of individuals?",
+              labelClassName: "text-black font-bold",
               rhf: "Select",
               props: {
                 customSort: "noSort",
+                className: "max-w-28",
                 options: [
                   { label: "Yes", value: "yes" },
                   { label: "No", value: "no" },
@@ -35,13 +39,16 @@ export const v202401: FormSchema = {
       title: "Populations",
       form: [
         {
+          wrapperClassName: "-mt-6",
           slots: [
             {
               name: "pop-array",
               rhf: "FieldArray",
               props: {
-                fieldArrayClassName: DefaultFieldGroupProps.fieldArrayClassName,
+                fieldArrayClassName:
+                  DefaultFieldGroupProps.fieldArrayClassName + "space-y-6",
                 appendText: "Add population",
+                appendClassName: DefaultFieldGroupProps.appendClassName,
                 removeText: "Remove above population",
                 appendVariant: "default",
               },
@@ -56,6 +63,8 @@ export const v202401: FormSchema = {
                   name: "pop-name-opt",
                   rhf: "Input",
                   label: "Population name (optional)",
+                  labelClassName: "text-black font-bold",
+                  props: { className: "w-[40rem]" },
                 },
                 {
                   name: "eligibile-group-list",
@@ -66,12 +75,13 @@ export const v202401: FormSchema = {
                 {
                   name: "income-wrapper",
                   rhf: "WrappedGroup",
-                  props: { wrapperClassName: "flex-row" },
+                  props: { wrapperClassName: rowStyling },
                   fields: [
                     {
                       name: "inc-greater-than",
                       rhf: "Input",
                       label: "Income greater than",
+                      labelClassName: "text-black font-bold",
                       rules: {
                         required: "* Required",
                         pattern: {
@@ -85,6 +95,7 @@ export const v202401: FormSchema = {
                       name: "inc-lesser-than",
                       rhf: "Input",
                       label: "Income less than or equal to",
+                      labelClassName: "text-black font-bold",
                       rules: {
                         required: "* Required",
                         pattern: {
@@ -105,90 +116,108 @@ export const v202401: FormSchema = {
                   rhf: "FieldArray",
                   props: {
                     appendText: "Add service",
-                    divider: true,
                     fieldArrayClassName:
-                      DefaultFieldGroupProps.fieldArrayClassName +
-                      "ml-[0.6rem] mt-4 pl-6 px-4 space-y-6 border-l-4 border-l-primary",
+                      DefaultFieldGroupProps.fieldArrayClassName + "space-y-6",
                   },
                   fields: [
                     {
-                      name: "serv-name",
-                      rhf: "Input",
-                      label: "Service",
-                      rules: { required: "* Required" },
-                    },
-                    {
-                      name: "serviceWrapper",
+                      name: "child-wrapper",
                       rhf: "WrappedGroup",
-                      props: { wrapperClassName: "flex-row" },
+                      props: {
+                        wrapperClassName:
+                          "ml-[0.6rem] mt-4 pl-6 px-4 space-y-6 border-l-4 border-l-primary",
+                      },
                       fields: [
                         {
-                          name: "serv-amount",
+                          name: "serv-name",
                           rhf: "Input",
-                          label: "Amount",
-                          formItemClassName: "w-48",
-                          rules: {
-                            required: "* Required",
-                            pattern: {
-                              value: /^\d*(?:\.\d{1,2})?$/,
-                              message:
-                                "Must be a positive number, maximum of two decimals, no commas. e.g. 1234.56",
+                          label: "Service",
+                          labelClassName: "text-black font-bold",
+                          props: { className: "w-[40rem]" },
+                          rules: { required: "* Required" },
+                        },
+                        {
+                          name: "serviceWrapper",
+                          rhf: "WrappedGroup",
+                          props: { wrapperClassName: rowStyling },
+                          fields: [
+                            {
+                              name: "serv-amount",
+                              rhf: "Input",
+                              label: "Amount",
+                              labelClassName: "text-black font-bold",
+                              formItemClassName: "w-48",
+                              rules: {
+                                required: "* Required",
+                                pattern: {
+                                  value: /^\d*(?:\.\d{1,2})?$/,
+                                  message:
+                                    "Must be a positive number, maximum of two decimals, no commas. e.g. 1234.56",
+                                },
+                              },
                             },
-                          },
+                            {
+                              rhf: "Select",
+                              name: "dollar-or-percent",
+                              rules: { required: "* Required" },
+                              formItemClassName: "w-56",
+                              labelClassName: "text-black font-bold",
+                              label: "Dollars or percentage",
+                              props: {
+                                options: [
+                                  {
+                                    label: "Dollar",
+                                    value: "dollar",
+                                  },
+                                  {
+                                    label: "Percentage",
+                                    value: "percentage",
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              rhf: "Select",
+                              name: "unit",
+                              rules: { required: "* Required" },
+                              labelClassName: "text-black font-bold",
+                              label: "Unit",
+                              formItemClassName: "w-48",
+                              props: {
+                                customSort: "noSort",
+                                options: [
+                                  { label: "Day", value: "Day" },
+                                  { label: "Month", value: "Month" },
+                                  { label: "Visit", value: "Visit" },
+                                  {
+                                    label: "Prescription",
+                                    value: "Prescription",
+                                  },
+                                  { label: "15 minute", value: "15 minute" },
+                                  { label: "30 minute", value: "30 minute" },
+                                  { label: "Hour", value: "Hour" },
+                                  { label: "Trip", value: "Trip" },
+                                  { label: "Encounter", value: "Encounter" },
+                                  { label: "Pair", value: "Pair" },
+                                  { label: "Item", value: "Item" },
+                                  { label: "Procedure", value: "Procedure" },
+                                  {
+                                    label: "Entire Stay",
+                                    value: "Entire Stay",
+                                  },
+                                  { label: "Other", value: "Other" },
+                                ],
+                              },
+                            },
+                          ],
                         },
                         {
-                          rhf: "Select",
-                          name: "dollar-or-percent",
-                          rules: { required: "* Required" },
-                          formItemClassName: "w-56",
+                          name: "explanation",
+                          label: "Explanation (optional)",
                           labelClassName: "text-black font-bold",
-                          label: "Dollars or percentage",
-                          props: {
-                            options: [
-                              {
-                                label: "Dollar",
-                                value: "dollar",
-                              },
-                              {
-                                label: "Percentage",
-                                value: "percentage",
-                              },
-                            ],
-                          },
-                        },
-                        {
-                          rhf: "Select",
-                          name: "unit",
-                          rules: { required: "* Required" },
-                          labelClassName: "text-black font-bold",
-                          label: "Unit",
-                          formItemClassName: "w-48",
-                          props: {
-                            customSort: "noSort",
-                            options: [
-                              { label: "Day", value: "Day" },
-                              { label: "Month", value: "Month" },
-                              { label: "Visit", value: "Visit" },
-                              { label: "Prescription", value: "Prescription" },
-                              { label: "15 minute", value: "15 minute" },
-                              { label: "30 minute", value: "30 minute" },
-                              { label: "Hour", value: "Hour" },
-                              { label: "Trip", value: "Trip" },
-                              { label: "Encounter", value: "Encounter" },
-                              { label: "Pair", value: "Pair" },
-                              { label: "Item", value: "Item" },
-                              { label: "Procedure", value: "Procedure" },
-                              { label: "Entire Stay", value: "Entire Stay" },
-                              { label: "Other", value: "Other" },
-                            ],
-                          },
+                          rhf: "Textarea",
                         },
                       ],
-                    },
-                    {
-                      name: "explanation",
-                      label: "Explanation (optional)",
-                      rhf: "Textarea",
                     },
                   ],
                 },
@@ -201,7 +230,9 @@ export const v202401: FormSchema = {
                   label:
                     "Does the state allow providers to require individuals to pay cost sharing as a condition for receiving items or services, subject to the conditions specified at 42 CFR 447.52(e)(1)? This is only allowed for non-exempt individuals with family income above 100% of the federal poverty level (FPL).",
                   rhf: "Select",
+                  labelClassName: "text-black font-bold",
                   props: {
+                    className: "max-w-28",
                     options: [
                       { label: "Yes", value: "yes" },
                       { label: "No", value: "no" },
@@ -233,7 +264,9 @@ export const v202401: FormSchema = {
                   label:
                     "Does the state charge cost sharing for non-preferred drugs to otherwise exempt individuals?",
                   rhf: "Select",
+                  labelClassName: "text-black font-bold",
                   props: {
+                    className: "max-w-28",
                     options: [
                       { label: "Yes", value: "yes" },
                       { label: "No", value: "no" },
@@ -265,7 +298,9 @@ export const v202401: FormSchema = {
                   label:
                     "Does the state charge cost sharing for non-emergency services provided in the hospital emergency department to otherwise exempt individuals?",
                   rhf: "Select",
+                  labelClassName: "text-black font-bold",
                   props: {
+                    className: "max-w-28",
                     options: [
                       { label: "Yes", value: "yes" },
                       { label: "No", value: "no" },

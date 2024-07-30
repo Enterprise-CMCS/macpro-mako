@@ -70,7 +70,7 @@ export const RHFTextDisplay = (props: RHFTextDisplayProps) => {
               </>
             );
           case "numberedSet":
-            return <>{`${t.text} ${props.index}`}</>;
+            return <>{`${t.text} ${props.index + 1}`}</>;
           default:
             return <span className={t.classname}>{t.text}</span>;
         }
