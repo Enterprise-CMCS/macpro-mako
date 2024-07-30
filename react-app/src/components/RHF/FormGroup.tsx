@@ -32,7 +32,6 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
                 control={props.control}
                 name={(props.parentId + SLOT.name) as never}
                 rules={ruleGenerator(SLOT.rules, SLOT.addtnlRules)}
-                {...(SLOT.rules && { rules: SLOT.rules })}
                 render={RHFSlot({
                   ...SLOT,
                   control: props.control as Control,
