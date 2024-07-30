@@ -101,6 +101,8 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         continue;
       }
       const record = { timestamp, ...JSON.parse(decodeBase64WithUtf8(value)) };
+      console.log("Record");
+      console.log({ record });
       // Process legacy events
       if (record?.origin !== "micro") {
         // Is a Package View from legacy onemac
