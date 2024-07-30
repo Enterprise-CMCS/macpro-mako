@@ -42,6 +42,7 @@ export type RuleGenerator = (
 export type RHFSlotProps = {
   name: string;
   label?: RHFTextField;
+  index?: number;
   labelClassName?: string;
   styledLabel?: RHFTextField;
   formItemClassName?: string;
@@ -92,6 +93,7 @@ type RHFTextItemType =
   | "bold"
   | "italic"
   | "list"
+  | "numberedSet"
   | "default";
 
 export type RHFOption = {
@@ -136,6 +138,7 @@ export type RHFComponentMap = {
   };
   TextDisplay: { className?: string };
   WrappedGroup: { wrapperClassName?: string };
+  Divider: { wrapperClassName?: string };
 };
 
 export type FormGroup = {

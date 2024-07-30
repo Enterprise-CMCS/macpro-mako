@@ -4,6 +4,7 @@ import { RHFTextField } from "shared-types";
 
 interface RHFTextDisplayProps {
   text: RHFTextField;
+  index?: number;
 }
 
 export const RHFTextDisplay = (props: RHFTextDisplayProps) => {
@@ -68,6 +69,8 @@ export const RHFTextDisplay = (props: RHFTextDisplayProps) => {
                 )}
               </>
             );
+          case "numberedSet":
+            return <>{`${t.text} ${props.index}`}</>;
           default:
             return <span className={t.classname}>{t.text}</span>;
         }
