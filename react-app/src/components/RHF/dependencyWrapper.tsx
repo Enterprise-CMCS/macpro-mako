@@ -64,7 +64,7 @@ const DependencyWrapperHandler = ({
       !wasSetLast &&
       dependency?.effect.type === "setValue" &&
       isTriggered &&
-      !!dependency.effect.fieldName
+      !!dependency?.effect.fieldName
     ) {
       const value = getValues(dependency.effect.fieldName);
       if (Array.isArray(value)) {
