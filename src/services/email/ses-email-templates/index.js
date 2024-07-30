@@ -241,7 +241,7 @@ spa@cms.hhs.gov or your state lead.
 Thank you!`,
   },
   {
-    name: "withdraw-package-1915b-cms",
+    name: "withdraw-package-waiver-cms",
     subject: "Waiver Package {{id}} Withdraw Request",
     html: `
 <p>The OneMAC Submission Portal received a request to withdraw the package below.
@@ -272,20 +272,20 @@ Summary:
 
 If the contents of this email seem suspicious, do not open them, and instead forward this email to SPAM@cms.hhs.gov.
 
-Thank you!`
+Thank you!`,
   },
   {
-    name: "withdraw-package-1915b-state",
-    subject: "1915(b) Waiver {{id}} Withdrawal Confirmation",
+    name: "withdraw-package-waiver-state",
+    subject: "{{authority}} Waiver {{id}} Withdrawal Confirmation",
     html: `
-<p>This email is to confirm 1915(b) Waiver {{id}} was withdrawn
-by {{submitterName}}. The review of 1915(b) Waiver {{id}} has concluded.</p>
+<p>This email is to confirm {{authority}} Waiver {{id}} was withdrawn
+by {{submitterName}}. The review of {{authority}} Waiver {{id}} has concluded.</p>
 <p>If you have questions, please contact 
 <a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
     text: `
-This email is to confirm 1915(b) Waiver {{id}} was withdrawn by {{submitterName}}.
-The review of 1915(b) Waiver {{id}} has concluded.
+This email is to confirm {{authority}} Waiver {{id}} was withdrawn by {{submitterName}}.
+The review of {{authority}} Waiver {{id}} has concluded.
 
 If you have questions, please contact spa@cms.hhs.gov or your state lead.
 
@@ -523,7 +523,7 @@ Any other correspondence will be disregarded.
 
 If you have any questions, please contact spa@cms.hhs.gov or your state lead.
 
-Thank you!`
+Thank you!`,
   },
   {
     name: "withdraw-rai-1915b-state",
@@ -566,7 +566,7 @@ Any other correspondence will be disregarded.
 
 If you have any questions, please contact spa@cms.hhs.gov or your state lead.
 
-Thank you!`
+Thank you!`,
   },
   {
     name: "withdraw-package-medicaid-spa-cms",
@@ -961,10 +961,10 @@ If you have any questions, please contact CHIPSPASubmissionMailbox@cms.hhs.gov o
 Thank you!`,
   },
   {
-    name: "respond-to-rai-1915b-cms",
+    name: "respond-to-rai-waiver-cms",
     subject: "Waiver RAI Response for {{id}} Submitted",
     html: `
-<p>The OneMAC Submission Portal received a 1915(b) Waiver RAI Response Submission:</p>
+<p>The OneMAC Submission Portal received a {{authority}} Waiver RAI Response Submission:</p>
 <ul>
 <li>The submission can be accessed in the OneMAC application, which you 
 can find at <a href='{{applicationEndpoint}}'>this link</a>.</li>
@@ -990,7 +990,7 @@ Summary:
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
     text: `
-The OneMAC Submission Portal received a 1915(b) Waiver RAI Response Submission:
+The OneMAC Submission Portal received a {{authority}} Waiver RAI Response Submission:
 
 - The submission can be accessed in the OneMAC application, which you can 
   find at {{applicationEndpoint}}.
@@ -1018,11 +1018,11 @@ forward this email to SPAM@cms.hhs.gov.
 Thank you!`,
   },
   {
-    name: "respond-to-rai-1915b-state",
+    name: "respond-to-rai-waiver-state",
     subject:
-      "Your 1915(b) Waiver RAI Response for {{id}} has been submitted to CMS",
+      "Your {{authority}} Waiver RAI Response for {{id}} has been submitted to CMS",
     html: `
-<p>This response confirms the submission of your 1915(b) Waiver RAI Response to CMS for review:</p>
+<p>This response confirms the submission of your {{authority}} Waiver RAI Response to CMS for review:</p>
 <p>
 <br><b>State or territory:</b> {{territory}}
 <br><b>Name:</b> {{submitterName}}
@@ -1047,7 +1047,7 @@ requests on Waivers only.  Any other correspondence will be disregarded.
 or your state lead.</p>
 <p>Thank you!</p>`,
     text: `
-This response confirms the submission of your 1915(b) Waiver RAI Response to CMS for review:
+This response confirms the submission of your {{authority}} Waiver RAI Response to CMS for review:
 
 State or territory: {{territory}}
 Name: {{submitterName}}
