@@ -11,7 +11,7 @@ export const v202401: FormSchema = {
       form: [
         {
           description:
-            "If the target population includes persons under 21, complete the following assurances regarding Early and Periodic Screening, Diagnostic, and Treatment (EPSDT). Otherwise, skip to the Prescription drug coverage assurances below.",
+            "If the target population includes persons under 21, complete the following assurances regarding Early and Periodic Screening, Diagnostic, and Treatment (EPSDT). Otherwise, skip to the prescription drug coverage assurances below.",
           descriptionClassName: "font-normal",
           slots: [
             {
@@ -36,6 +36,18 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "epsdt-services",
               rules: { required: "* Required" },
+              dependency: {
+                conditions: [
+                  {
+                    name: "abp7_epsdt-assurances_does-abp-include-beneficiaries-under-21",
+                    type: "expectedValue",
+                    expectedValue: "yes",
+                  },
+                ],
+                effect: {
+                  type: "show",
+                },
+              },
               props: {
                 options: [
                   {
@@ -57,6 +69,18 @@ export const v202401: FormSchema = {
               labelClassName: "font-bold",
               name: "how-will-epsdt-be-provided",
               rules: { required: "* Required" },
+              dependency: {
+                conditions: [
+                  {
+                    name: "abp7_epsdt-assurances_does-abp-include-beneficiaries-under-21",
+                    type: "expectedValue",
+                    expectedValue: "yes",
+                  },
+                ],
+                effect: {
+                  type: "show",
+                },
+              },
               props: {
                 options: [
                   {
@@ -150,6 +174,19 @@ export const v202401: FormSchema = {
                 "Other information about how ESPDT benefits will be provided to participants under age 21 (optional)",
               labelClassName: "font-bold",
               name: "other-info-about-espdt-provided-to-under-21",
+              dependency: {
+                conditions: [
+                  {
+                    name: "abp7_epsdt-assurances_does-abp-include-beneficiaries-under-21",
+                    type: "expectedValue",
+                    expectedValue: "yes",
+                  },
+                ],
+                effect: {
+                  type: "show",
+                },
+              },
+
               rules: {
                 pattern: {
                   value: /^\S(.*\S)?$/,

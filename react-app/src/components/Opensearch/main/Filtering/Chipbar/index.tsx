@@ -65,7 +65,7 @@ export const ChipTerms: FC<RenderProp> = ({
   return (
     <>
       {filter.value.map((v, vindex) => {
-        const chipText = `${filter?.label + ": " ?? ""}${labelMap[v] ?? v}`;
+        const chipText = `${filter?.label ? `${filter.label}: ` : ""}${labelMap[v] ?? v}`;
         return (
           <Chip
             key={`${vindex}-${filter.field}`}
