@@ -208,7 +208,6 @@ export type Schema = ReturnType<typeof transform>;
 export const tombstone = (id: string) => {
   return {
     id,
-    flavor: null,
     actionType: null,
     actionTypeId: null,
     approvedEffectiveDate: null,
@@ -217,21 +216,23 @@ export const tombstone = (id: string) => {
     finalDispositionDate: null,
     leadAnalystName: null,
     leadAnalystOfficerId: null,
-    authority: null,
-    authorityId: null,
-    proposedDate: null,
     raiReceivedDate: null,
     raiRequestedDate: null,
     raiWithdrawnDate: null,
     reviewTeam: null,
-    state: null,
+    subject: null,
+    types: null,
+    subTypes: null,
     cmsStatus: null,
     stateStatus: null,
     seatoolStatus: null,
     statusDate: null,
     submissionDate: null,
-    subject: null,
-    types: null,
-    subTypes: null,
+    //
+    flavor: null,
+    authorityId: null,
+    authority: null,
+    state: null,
+    proposedDate: null,
   };
 };

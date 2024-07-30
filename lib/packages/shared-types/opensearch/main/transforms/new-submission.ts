@@ -1,6 +1,7 @@
 import {
   SEATOOL_AUTHORITIES,
   SEATOOL_STATUS,
+  getStatus,
   onemacSchema,
 } from "shared-types";
 
@@ -21,6 +22,21 @@ const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
   epocDate !== null && epocDate !== undefined
     ? new Date(epocDate).toISOString()
     : null;
+
+type Flavor = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
+
+const flavorLookup = (val: string | null): null | string => {
+  if (!val) return null;
+
+  const lookup: Record<string, Flavor> = {
+    ["1915(b)"]: "WAIVER",
+    ["1915(c)"]: "WAIVER",
+    ["chip spa"]: "CHIP",
+    ["medicaid spa"]: "MEDICAID",
+  };
+
+  return lookup[val];
+};
 
 export const transform = (id: string) => {
   return onemacSchema.transform((data) => {
@@ -48,6 +64,7 @@ export const transform = (id: string) => {
         authority: data.authority,
         stateStatus: "Submitted",
         cmsStatus: "Requested",
+        proposedDate: data.proposedEffectiveDate,
         seatoolStatus: SEATOOL_STATUS.PENDING,
         statusDate: getDateStringOrNullFromEpoc(data.statusDate),
         submissionDate: getDateStringOrNullFromEpoc(data.submissionDate),
@@ -60,6 +77,7 @@ export const transform = (id: string) => {
         // ----------
       };
     } else {
+      const { stateStatus, cmsStatus } = getStatus(data.seatoolStatus);
       return {
         id,
         attachments: data.attachments,
@@ -75,6 +93,19 @@ export const transform = (id: string) => {
         makoChangedDate: !!data.timestamp
           ? new Date(data.timestamp).toISOString()
           : null,
+        flavor: flavorLookup(data.authority.toLowerCase()),
+        proposedDate: data.proposedEffectiveDate,
+        actionType: data.seaActionType,
+        actionTypeId: 9999,
+        authorityId: getIdByAuthorityName(data.authority),
+        seatoolStatus: SEATOOL_STATUS.PENDING,
+        stateStatus,
+        cmsStatus,
+        statusDate: getDateStringOrNullFromEpoc(data.statusDate),
+        submissionDate: getDateStringOrNullFromEpoc(data.submissionDate),
+        changedDate: getDateStringOrNullFromEpoc(data.changedDate),
+        subject: null,
+        description: null,
       };
     }
   });

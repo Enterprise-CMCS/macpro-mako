@@ -26,7 +26,7 @@ import {
 import { SlotAdditionalInfo } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
 import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
-import { Authority } from "shared-types";
+import { Authority, SEATOOL_STATUS } from "shared-types";
 
 const formSchema = z.object({
   id: zSpaIdSchema,
@@ -41,7 +41,8 @@ const formSchema = z.object({
     other: zAttachmentOptional,
   }),
   proposedEffectiveDate: z.date(),
-  seaActionType: z.string().default("Amend"),
+  seaActionType: z.string().default("New"),
+  seatoolStatus: z.string().default(SEATOOL_STATUS.PENDING),
 });
 
 type ChipFormSchema = z.infer<typeof formSchema>;

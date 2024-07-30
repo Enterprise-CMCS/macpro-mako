@@ -1,8 +1,9 @@
 import { z } from "zod";
 import { attachmentSchema } from "../attachments";
 import { notificationMetadataSchema } from "../notification-metadata";
+import { SEATOOL_STATUS } from "../statusHelper";
 
-// This is the event schema for ne submissions from our system
+// This is the event schema for new submissions from our system
 export const onemacSchema = z.object({
   authority: z.string(),
   seaActionType: z.string().optional(), // Used by waivers and chip spas
@@ -18,10 +19,13 @@ export const onemacSchema = z.object({
   raiWithdrawEnabled: z.boolean().default(false),
   notificationMetadata: notificationMetadataSchema.nullish(),
   timestamp: z.number().optional(),
-  // these are specific to TEs... should be broken into its own schema
   statusDate: z.number().optional(),
   submissionDate: z.number().optional(),
   changedDate: z.number().optional(),
+  //
+  seatoolStatus: z.literal(SEATOOL_STATUS.PENDING),
+  proposedEffectiveDate: z.number().optional(),
+  state: z.string(),
 });
 
 export type OneMac = z.infer<typeof onemacSchema>;
