@@ -5,6 +5,7 @@ import {
   docs,
   e2e,
   install,
+  logs,
   openApp,
   openKibana,
   test,
@@ -18,6 +19,7 @@ yargs
   .command(docs)
   .command(e2e)
   .command(install)
+  .command(logs)
   .command(openApp)
   .command(openKibana)
   .command(test)

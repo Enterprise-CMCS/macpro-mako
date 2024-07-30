@@ -17,6 +17,8 @@
     "yargs": "^17.7.1"
   },
   "devDependencies": {
+    "@aws-sdk/client-resource-groups-tagging-api": "^3.621.0",
+    "simple-git": "^3.25.0",
     "typescript": "^5.0.4"
   }
 }
