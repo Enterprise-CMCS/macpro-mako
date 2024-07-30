@@ -77,7 +77,6 @@ export const SlotField = ({
         />
       );
     case "FieldArray":
-    case "FieldGroup":
       return (
         <RHFFieldArray
           control={control}
@@ -94,8 +93,6 @@ export const SlotField = ({
           ? sortFunctions[props.customSort](a.label, b.label)
           : a.label.localeCompare(b.label),
       );
-
-      console.log("props.customSort", props?.customSort);
 
       return (
         <Select

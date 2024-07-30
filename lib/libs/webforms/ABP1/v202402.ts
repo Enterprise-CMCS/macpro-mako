@@ -1,4 +1,4 @@
-import { FormSchema } from "shared-types";
+import { FormSchema, DefaultFieldGroupProps } from "shared-types";
 
 export const v202402: FormSchema = {
   header: "ABP 1: Alternative Benefit Plan populations",
@@ -630,9 +630,10 @@ export const v202402: FormSchema = {
                                               {
                                                 slots: [
                                                   {
-                                                    rhf: "FieldGroup",
+                                                    rhf: "FieldArray",
                                                     name: "income-def-specific-statewide-group-region",
                                                     props: {
+                                                      ...DefaultFieldGroupProps,
                                                       appendText: "Add region",
                                                       removeText:
                                                         "Remove region",
@@ -799,9 +800,10 @@ export const v202402: FormSchema = {
                                               {
                                                 slots: [
                                                   {
-                                                    rhf: "FieldGroup",
+                                                    rhf: "FieldArray",
                                                     name: "liv-arrange",
                                                     props: {
+                                                      ...DefaultFieldGroupProps,
                                                       appendText:
                                                         "Add living arrangement",
                                                       removeText:
@@ -971,9 +973,10 @@ export const v202402: FormSchema = {
                                               {
                                                 slots: [
                                                   {
-                                                    rhf: "FieldGroup",
+                                                    rhf: "FieldArray",
                                                     name: "add-other-way",
                                                     props: {
+                                                      ...DefaultFieldGroupProps,
                                                       appendText:
                                                         "Add other way",
                                                       removeText:
