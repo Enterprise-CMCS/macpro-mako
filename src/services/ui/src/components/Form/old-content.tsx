@@ -105,6 +105,6 @@ export const PreSubmissionMessage = ({
       to edit this form. If CMS needs any additional information, they will
       follow up by email.
     </p>
-    {hasProgressLossReminder && <ProgressLossReminder />}
+    {hasProgressLossReminder && <ProgressLossReminder className="ml-2" />}
   </Alert>
 );
