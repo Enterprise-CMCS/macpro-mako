@@ -1,10 +1,11 @@
 import {
-  AuthorityUnion,
   SEATOOL_AUTHORITIES,
   SEATOOL_STATUS,
+  authorityStringToSeatoolAuthority,
   getStatus,
   onemacSchema,
 } from "shared-types";
+import { seaToolFriendlyTimestamp } from "shared-utils";
 
 const getIdByAuthorityName = (authorityName: string) => {
   try {
@@ -82,6 +83,9 @@ export const transform = (id: string) => {
       };
     } else {
       const { stateStatus, cmsStatus } = getStatus(data.seatoolStatus);
+      const currentDate = !!data.timestamp
+        ? new Date(data.timestamp).toISOString()
+        : seaToolFriendlyTimestamp();
       const result = {
         id,
         attachments: data.attachments,
@@ -94,9 +98,7 @@ export const transform = (id: string) => {
         submitterName:
           data.submitterName === "-- --" ? null : data.submitterName,
         origin: "OneMAC",
-        makoChangedDate: !!data.timestamp
-          ? new Date(data.timestamp).toISOString()
-          : null,
+        makoChangedDate: currentDate,
         flavor: flavorLookup(data.authority.toLowerCase()),
         proposedDate: data.proposedEffectiveDate,
         actionType: data.seaActionType,
@@ -105,13 +107,13 @@ export const transform = (id: string) => {
         seatoolStatus: SEATOOL_STATUS.PENDING,
         stateStatus,
         cmsStatus,
-        statusDate: getDateStringOrNullFromEpoc(data.statusDate),
-        submissionDate: getDateStringOrNullFromEpoc(data.submissionDate),
-        changedDate: getDateStringOrNullFromEpoc(data.changedDate),
+        statusDate: currentDate,
+        submissionDate: seaToolFriendlyTimestamp(),
+        changedDate: currentDate,
         subject: null,
         description: null,
         state: data.state,
-        authority: data.authority,
+        authority: authorityStringToSeatoolAuthority[data.authority],
       };
       console.log("SENDING TO OPENSEARCH:");
       console.log(JSON.stringify(result));

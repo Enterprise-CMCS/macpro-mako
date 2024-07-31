@@ -11,3 +11,10 @@ export type AuthorityUnion =
   | "CHIP SPA"
   | "1915(b)"
   | "1915(c)";
+
+export const authorityStringToSeatoolAuthority = {
+  "medicaid spa": "Medicaid SPA",
+  "chip spa": "CHIP SPA",
+  "1915(b)": "1915(b)",
+  "1915(c)": "1915(c)",
+};
