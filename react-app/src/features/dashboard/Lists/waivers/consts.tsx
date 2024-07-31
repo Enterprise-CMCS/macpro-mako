@@ -165,7 +165,7 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
     },
     {
       field: "raiReceivedDate",
-      label: "Formal RAI Received",
+      label: "Formal RAI Response",
       transform: (data) => {
         return data.raiReceivedDate
           ? formatSeatoolDate(data.raiReceivedDate)

@@ -43,17 +43,22 @@ export class CloudWatchToS3 extends Construct {
         removalPolicy: cdk.RemovalPolicy.DESTROY,
       });
 
-    this.logBucket.addToResourcePolicy(
-      new PolicyStatement({
-        effect: Effect.DENY,
-        principals: [new AnyPrincipal()],
-        actions: ["s3:*"],
-        resources: [this.logBucket.bucketArn, `${this.logBucket.bucketArn}/*`],
-        conditions: {
-          Bool: { "aws:SecureTransport": "false" },
-        },
-      }),
-    );
+    if (!bucket) {
+      this.logBucket.addToResourcePolicy(
+        new PolicyStatement({
+          effect: Effect.DENY,
+          principals: [new AnyPrincipal()],
+          actions: ["s3:*"],
+          resources: [
+            this.logBucket.bucketArn,
+            `${this.logBucket.bucketArn}/*`,
+          ],
+          conditions: {
+            Bool: { "aws:SecureTransport": "false" },
+          },
+        }),
+      );
+    }
 
     // Create a Firehose role
     const firehoseRole = new Role(this, "FirehoseRole", {

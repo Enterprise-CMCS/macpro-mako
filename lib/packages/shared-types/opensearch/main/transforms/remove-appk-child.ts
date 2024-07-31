@@ -5,7 +5,8 @@ export const transform = (id: string) => {
     return {
       id,
       appkParentId: null,
-      makoChangedDate: !!data.timestamp
+      appkParent: true,
+      makoChangedDate: data.timestamp
         ? new Date(data.timestamp).toISOString()
         : null,
     };

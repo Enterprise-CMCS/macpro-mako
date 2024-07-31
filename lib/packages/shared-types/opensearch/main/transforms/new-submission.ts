@@ -76,9 +76,10 @@ export const transform = (id: string) => {
         changedDate: getDateStringOrNullFromEpoc(data.changedDate),
         subject: null,
         description: null,
-        makoChangedDate: !!data.timestamp
-          ? new Date(data.timestamp).toISOString()
-          : null,
+        makoChangedDate:
+          typeof data.timestamp === "number"
+            ? new Date(data.timestamp).toISOString()
+            : null,
         // ----------
       };
     } else {
