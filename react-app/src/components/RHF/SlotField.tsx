@@ -95,8 +95,6 @@ export const SlotField = ({
           : a.label.localeCompare(b.label),
       );
 
-      console.log("props.customSort", props?.customSort);
-
       return (
         <Select
           {...props}
