@@ -49,7 +49,7 @@ describe("handler", () => {
     );
     expect(os.createIndex).toHaveBeenCalledWith(
       "test-domain",
-      "legacyinsights",
+      "test-namespace-legacyinsights",
     );
 
     expect(os.updateFieldMapping).toHaveBeenCalledTimes(1);
