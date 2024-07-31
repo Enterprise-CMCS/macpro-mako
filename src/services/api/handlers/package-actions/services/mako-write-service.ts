@@ -192,5 +192,6 @@ export class MakoWriteService {
 export type UpdateIdDto = {
   topicName: string;
   id: string;
+  newId: string;
   action: Action;
 } & Record<string, unknown>;
