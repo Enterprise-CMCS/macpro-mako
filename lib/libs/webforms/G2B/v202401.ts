@@ -80,7 +80,7 @@ export const v202401: FormSchema = {
                   name: "service-item-name",
                   rules: { required: "* Required" },
                   props: { className: "w-96" },
-                  labelClassName: "text-black font-bold",
+                  labelClassName: "text-[#212121] font-bold",
                   label: "Service or Item",
                 },
                 {
@@ -101,7 +101,7 @@ export const v202401: FormSchema = {
                         required: "* Required",
                       },
                       formItemClassName: "w-48",
-                      labelClassName: "text-black font-bold",
+                      labelClassName: "text-[#212121] font-bold",
                       label: "Amount",
                     },
                     {
@@ -109,7 +109,7 @@ export const v202401: FormSchema = {
                       name: "dollar-or-percent",
                       rules: { required: "* Required" },
                       formItemClassName: "w-56",
-                      labelClassName: "text-black font-bold",
+                      labelClassName: "text-[#212121] font-bold",
                       label: "Dollars or percentage",
                       props: {
                         options: [
@@ -128,7 +128,7 @@ export const v202401: FormSchema = {
                       rhf: "Select",
                       name: "unit",
                       rules: { required: "* Required" },
-                      labelClassName: "text-black font-bold",
+                      labelClassName: "text-[#212121] font-bold",
                       label: "Unit",
                       formItemClassName: "w-48",
                       props: {
@@ -156,7 +156,7 @@ export const v202401: FormSchema = {
                 {
                   rhf: "Textarea",
                   name: "explanation",
-                  labelClassName: "text-black font-bold",
+                  labelClassName: "text-[#212121] font-bold",
                   label: "Explanation (optional)",
                 },
               ],
@@ -186,14 +186,14 @@ export const v202401: FormSchema = {
                   rules: { required: "* Required" },
                   name: "service-item-name",
                   props: { className: "w-96" },
-                  labelClassName: "text-black font-bold",
+                  labelClassName: "text-[#212121] font-bold",
                   label: "Service or Item",
                 },
                 {
                   name: "array-label-non-child-style",
                   rhf: "TextDisplay",
                   text: "Income ranges for cost-sharing amount",
-                  props: { className: "text-black font-bold" },
+                  props: { className: "text-[#212121] font-bold" },
                 },
                 {
                   rhf: "FieldArray",
@@ -225,7 +225,7 @@ export const v202401: FormSchema = {
                           },
                           name: "income-greater-than",
                           formItemClassName: "w-48",
-                          labelClassName: "text-black font-bold",
+                          labelClassName: "text-[#212121] font-bold",
                           label: "Income greater than ($)",
                         },
                         {
@@ -239,7 +239,7 @@ export const v202401: FormSchema = {
                             required: "* Required",
                           },
                           name: "income-lesser-than",
-                          labelClassName: "text-black font-bold",
+                          labelClassName: "text-[#212121] font-bold",
                           label: "Income less than or equal to ($)",
                         },
                       ],
@@ -263,7 +263,7 @@ export const v202401: FormSchema = {
                           },
                           name: "amount",
                           formItemClassName: "w-48",
-                          labelClassName: "text-black font-bold",
+                          labelClassName: "text-[#212121] font-bold",
                           label: "Amount",
                         },
                         {
@@ -271,7 +271,7 @@ export const v202401: FormSchema = {
                           rules: { required: "* Required" },
                           name: "dollar-or-percent",
                           formItemClassName: "w-56",
-                          labelClassName: "text-black font-bold",
+                          labelClassName: "text-[#212121] font-bold",
                           label: "Dollars or percentage",
                           props: {
                             options: [
@@ -291,7 +291,7 @@ export const v202401: FormSchema = {
                           rules: { required: "* Required" },
                           name: "unit",
                           formItemClassName: "w-48",
-                          labelClassName: "text-black font-bold",
+                          labelClassName: "text-[#212121] font-bold",
                           label: "Unit",
                           props: {
                             customSort: "noSort",
@@ -318,7 +318,7 @@ export const v202401: FormSchema = {
                     {
                       rhf: "Textarea",
                       name: "explanation",
-                      labelClassName: "text-black font-bold",
+                      labelClassName: "text-[#212121] font-bold",
                       label: "Explanation (optional)",
                     },
                   ],
@@ -342,7 +342,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               rules: { required: "* Required" },
               name: "charge-otherwise-exempt",
-              labelClassName: "text-black font-bold",
+              labelClassName: "text-[#212121] font-bold",
               label:
                 "Does the state charge cost sharing for non-preferred drugs (entered above) to otherwise exempt individuals?",
               props: {
@@ -357,7 +357,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               rules: { required: "* Required" },
               name: "charges-same-as-non-exempt",
-              labelClassName: "text-black font-bold",
+              labelClassName: "text-[#212121] font-bold",
               label:
                 "Are the cost-sharing charges for non-preferred drugs imposed on otherwise exempt individuals the same as the charges imposed on non-exempt individuals?",
               props: {
@@ -417,7 +417,7 @@ export const v202401: FormSchema = {
                       },
                       name: "amount",
                       formItemClassName: "w-48",
-                      labelClassName: "text-black font-bold",
+                      labelClassName: "text-[#212121] font-bold",
                       label: "Amount",
                     },
                     {
@@ -425,7 +425,7 @@ export const v202401: FormSchema = {
                       rules: { required: "* Required" },
                       name: "dollar-or-percent",
                       formItemClassName: "w-56",
-                      labelClassName: "text-black font-bold",
+                      labelClassName: "text-[#212121] font-bold",
                       label: "Dollars or percentage",
                       props: {
                         options: [
@@ -445,7 +445,7 @@ export const v202401: FormSchema = {
                       name: "unit",
                       rules: { required: "* Required" },
                       formItemClassName: "w-48",
-                      labelClassName: "text-black font-bold",
+                      labelClassName: "text-[#212121] font-bold",
                       label: "Unit",
                       props: {
                         customSort: "noSort",
@@ -472,7 +472,7 @@ export const v202401: FormSchema = {
                 {
                   rhf: "Textarea",
                   name: "explanation",
-                  labelClassName: "text-black font-bold",
+                  labelClassName: "text-[#212121] font-bold",
                   label: "Explanation (optional)",
                 },
               ],
@@ -494,7 +494,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               rules: { required: "* Required" },
               name: "charge-otherwise-exempt",
-              labelClassName: "text-black font-bold",
+              labelClassName: "text-[#212121] font-bold",
               label:
                 "Does the state charge cost sharing for non-emergency services provided in the hospital emergency department (entered above) to otherwise exempt individuals?",
               props: {
@@ -509,7 +509,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               rules: { required: "* Required" },
               name: "charges-same-as-non-exempt",
-              labelClassName: "text-black font-bold",
+              labelClassName: "text-[#212121] font-bold",
               label:
                 "Are the cost-sharing charges for non-emergency services provided in the hospital emergency department imposed on otherwise exempt individuals the same as the charges imposed on non-exempt individuals?",
               props: {
@@ -570,7 +570,7 @@ export const v202401: FormSchema = {
                       },
                       formItemClassName: "w-46",
                       name: "amount",
-                      labelClassName: "text-black font-bold",
+                      labelClassName: "text-[#212121] font-bold",
                       label: "Amount",
                     },
                     {
@@ -578,7 +578,7 @@ export const v202401: FormSchema = {
                       rules: { required: "* Required" },
                       name: "dollar-or-percent",
                       formItemClassName: "w-56",
-                      labelClassName: "text-black font-bold",
+                      labelClassName: "text-[#212121] font-bold",
                       label: "Dollars or percentage",
                       props: {
                         options: [
@@ -598,7 +598,7 @@ export const v202401: FormSchema = {
                       rules: { required: "* Required" },
                       name: "unit",
                       formItemClassName: "w-40",
-                      labelClassName: "text-black font-bold",
+                      labelClassName: "text-[#212121] font-bold",
                       label: "Unit",
                       props: {
                         customSort: "noSort",
@@ -625,7 +625,7 @@ export const v202401: FormSchema = {
                 {
                   rhf: "Textarea",
                   name: "explanation",
-                  labelClassName: "text-black font-bold",
+                  labelClassName: "text-[#212121] font-bold",
                   label: "Explanation (optional)",
                 },
               ],

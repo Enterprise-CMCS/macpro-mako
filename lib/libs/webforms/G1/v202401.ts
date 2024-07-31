@@ -17,7 +17,7 @@ export const v202401: FormSchema = {
               rules: { required: "* Required" },
               label:
                 "Does the state charge cost sharing (deductibles, coinsurance, or copayments) to individuals covered under Medicaid?",
-              labelClassName: "font-bold text-black",
+              labelClassName: "font-bold text-[#212121]",
               props: {
                 className: "w-[125px]",
                 options: [
@@ -110,7 +110,7 @@ export const v202401: FormSchema = {
               name: "state-process-to-inform-cost-shar-for-item-or-serv",
               label:
                 "What is the state’s process to inform providers whether cost sharing for a specific item or service may be imposed on a beneficiary and whether the provider requires the beneficiary to pay the cost-sharing charge as a condition for receiving the item or service?",
-              labelClassName: "font-bold text-black",
+              labelClassName: "font-bold text-[#212121]",
               rules: {
                 required: "* Required",
               },
@@ -171,7 +171,7 @@ export const v202401: FormSchema = {
               rules: { required: "* Required" },
               label:
                 "Does the state impose cost sharing for non-emergency services provided in a hospital emergency department?",
-              labelClassName: "font-bold text-black",
+              labelClassName: "font-bold text-[#212121]",
               props: {
                 className: "w-[125px]",
                 options: [
@@ -250,7 +250,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               rules: { required: "* Required" },
               label: "Describe the process.",
-              labelClassName: "font-bold text-black",
+              labelClassName: "font-bold text-[#212121]",
               formItemClassName: "pl-9",
             },
           ],
@@ -269,7 +269,7 @@ export const v202401: FormSchema = {
               rules: { required: "* Required" },
               label:
                 "Does the state charge cost sharing (deductibles, coinsurance, or copayments) to individuals covered under Medicaid?",
-              labelClassName: "font-bold text-black",
+              labelClassName: "font-bold text-[#212121]",
               props: {
                 className: "w-[125px]",
                 options: [
@@ -290,7 +290,7 @@ export const v202401: FormSchema = {
               rules: { required: "* Required" },
               label:
                 "Has the state established differential cost sharing for preferred and non-preferred drugs?",
-              labelClassName: "font-bold text-black",
+              labelClassName: "font-bold text-[#212121]",
               props: {
                 className: "w-[125px]",
                 options: [

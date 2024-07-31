@@ -33,7 +33,7 @@ const testValues: RHFTextField = [
   },
   {
     text: "default styled case",
-    classname: "font-bold text-black",
+    classname: "font-bold text-[#212121]",
   },
   "simple case",
 ];
@@ -52,6 +52,6 @@ describe("RHFTextDisplay Tests", () => {
     expect(listTags.length).toBe(6);
     expect(linkTags.length).toBe(2);
     expect(linkTags[1].href.includes("example")).toBeTruthy();
-    expect(defaultCase.className.includes("text-black")).toBeTruthy();
+    expect(defaultCase.className.includes("text-[#212121]")).toBeTruthy();
   });
 });

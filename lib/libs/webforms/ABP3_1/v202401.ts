@@ -380,7 +380,7 @@ export const v202401: FormSchema = {
               name: "ehb-bench-option",
               rhf: "Radio",
               descriptionAbove: true,
-              descriptionClassName: "text-base text-black",
+              descriptionClassName: "text-base text-[#212121]",
               rules: {
                 required: "* Required",
               },

@@ -14,7 +14,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Select",
               name: "is-state-territory-aligned",
-              descriptionClassName: "text-black text-base",
+              descriptionClassName: "text-[#212121] text-base",
               descriptionAbove: true,
               description: [
                 {
@@ -46,7 +46,7 @@ export const v202401: FormSchema = {
               description:
                 "Explain how the state has fully aligned its benefits.",
               descriptionAbove: true,
-              descriptionClassName: "font-bold text-black",
+              descriptionClassName: "font-bold text-[#212121]",
               rules: {
                 required: "* Required",
                 pattern: {
@@ -218,7 +218,7 @@ export const v202401: FormSchema = {
               description:
                 "Provide a copy of the letter, email, or other communication.",
               descriptionAbove: true,
-              descriptionClassName: "font-bold text-black",
+              descriptionClassName: "font-bold text-[#212121]",
               rules: {
                 required: "* Required",
               },
@@ -237,7 +237,7 @@ export const v202401: FormSchema = {
                   message: "Must not have leading or trailing whitespace.",
                 },
               },
-              descriptionClassName: "font-bold text-black",
+              descriptionClassName: "font-bold text-[#212121]",
             },
             {
               rhf: "Textarea",
@@ -245,7 +245,7 @@ export const v202401: FormSchema = {
               descriptionAbove: true,
               description:
                 "Describe the state/territory's process for allowing individuals in the Section 1902(a)(10)(A)(i)(VIII) eligibility group who meet exemption criteria to disenroll from the ABP using Section 1937 requirements and enroll in the ABP that is the state/territory's approved Medicaid state plan.",
-              descriptionClassName: "font-bold text-black",
+              descriptionClassName: "font-bold text-[#212121]",
               rules: {
                 required: "* Required",
                 pattern: {
@@ -294,7 +294,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "where-will-info-be-doc",
               descriptionAbove: true,
-              descriptionClassName: "font-bold text-black",
+              descriptionClassName: "font-bold text-[#212121]",
               description: "Where will the information be documented?",
               rules: {
                 required: "* Required",
@@ -336,7 +336,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "what-docu-will-be-maintained",
               descriptionAbove: true,
-              descriptionClassName: "font-bold text-black",
+              descriptionClassName: "font-bold text-[#212121]",
               description:
                 "What documentation will be maintained in the eligibility file?",
               formItemClassName: "pb-6 border-b-[1px] border-[#AEB0B5]",
