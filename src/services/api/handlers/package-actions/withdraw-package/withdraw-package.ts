@@ -7,13 +7,14 @@ import {
 import { seaToolFriendlyTimestamp } from "shared-utils";
 import { response } from "../../../libs/handler";
 import { TOPIC_NAME } from "../consts";
+import { withdrawPackageAction } from "../services/package-action-write-service";
 
-export async function withdrawPackage(body: WithdrawPackage) {
+export async function withdrawPackage(body: unknown) {
   console.log("State withdrawing a package.");
-  
+
   const now = new Date().getTime();
   const today = seaToolFriendlyTimestamp();
-  
+
   const result = withdrawPackageSchema.safeParse(body);
   if (result.success === false) {
     console.error(
@@ -28,7 +29,7 @@ export async function withdrawPackage(body: WithdrawPackage) {
     });
   }
 
-  await packageActionWriteService.withdrawPackage({
+  await withdrawPackageAction({
     ...result.data,
     action: Action.WITHDRAW_PACKAGE,
     id: result.data.id,

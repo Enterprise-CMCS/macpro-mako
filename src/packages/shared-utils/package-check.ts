@@ -37,8 +37,8 @@ export const PackageCheck = ({
   appkParentId,
   appkParent,
   initialIntakeNeeded,
-  leadAnalystName
-   
+  submissionDate,
+  leadAnalystName,
 }: opensearch.main.Document) => {
   const planChecks = {
     isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
@@ -72,6 +72,8 @@ export const PackageCheck = ({
      * object attributes! **/
     hasStatus: (authorizedStatuses: string | string[]) =>
       checkStatus(seatoolStatus, authorizedStatuses),
+    /** If submission date exists */
+    hasSubmissionDate: submissionDate !== undefined,
   };
   const subStatusChecks = {
     /** Is in any of our pending statuses, sans Pending-RAI **/

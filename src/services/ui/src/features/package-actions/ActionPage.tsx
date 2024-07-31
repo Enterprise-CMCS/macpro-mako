@@ -1,35 +1,39 @@
-import {
-  BreadCrumbConfig,
-  BreadCrumbs,
-  FAQFooter,
-  SimplePageContainer,
-} from "@/components";
-import { useParams } from "@/components/Routing";
+import { BreadCrumbs, FAQFooter, SimplePageContainer } from "@/components";
 import { getSetupFor } from "@/features/package-actions/lib";
 import { ActionForm } from "@/features/package-actions/ActionForm";
-import { Action } from "shared-types";
-import { actionCrumb, dashboardCrumb, detailsCrumb } from "@/utils";
-const detailsAndActionsCrumbs = ({
-  id,
-  action,
-}: {
-  id: string;
-  action?: Action;
-}): BreadCrumbConfig[] => {
-  const base = [dashboardCrumb(id), detailsCrumb(id)];
-  return !action ? base : [...base, actionCrumb(action, id)];
-};
+import { detailsAndActionsCrumbs } from "@/utils";
+import { Navigate, useParams } from "react-router-dom";
+import { Action, Authority, AuthorityUnion } from "shared-types";
+
 export const ActionPage = () => {
-  const { id, type, authority } = useParams("/action/:authority/:id/:type");
+  const {
+    id,
+    type: actionType,
+    authority,
+  } = useParams<{ id: string; type: Action; authority: Authority }>();
+
+  // TODO: use zod
+  if (!id || !actionType || !authority) {
+    return <Navigate to="/dashboard" />;
+  }
+
+  const setup = getSetupFor(actionType, authority as AuthorityUnion);
+
   return (
     <SimplePageContainer>
       <BreadCrumbs
         options={detailsAndActionsCrumbs({
           id,
-          action: type!,
+          authority,
+          actionType,
         })}
       />
-      <ActionForm setup={getSetupFor(type, authority)} />
+      <ActionForm
+        setup={setup}
+        actionType={actionType}
+        authority={authority}
+        id={id}
+      />
       <FAQFooter />
     </SimplePageContainer>
   );

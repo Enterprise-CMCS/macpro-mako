@@ -1,5 +1,10 @@
-import { ConfirmationModal, LoadingSpinner } from "@/components";
-import { Authority, SEATOOL_STATUS } from "shared-types";
+import {
+  ConfirmationModal,
+  LoadingSpinner,
+  Route,
+  useAlertContext,
+} from "@/components";
+import { SEATOOL_STATUS } from "shared-types";
 import { useState } from "react";
 import * as T from "@/components/Table";
 import { Button } from "@/components/Inputs";
@@ -12,6 +17,7 @@ import { usePackageDetailsCache } from "..";
 
 export const AppK = () => {
   const [removeChild, setRemoveChild] = useState("");
+  const alert = useAlertContext();
   const [loading, setLoading] = useState(false);
   const { data: user } = useGetUser();
   const cache = usePackageDetailsCache();
@@ -21,11 +27,11 @@ export const AppK = () => {
 
   const onChildRemove = async (id: string) => {
     setLoading(true);
-    await submission.mutate(
+    submission.mutate(
       {
         data: { id, appkParentId: cache.data.id },
         user,
-        authority: cache.data.authority as Authority,
+        authority: cache.data.authority,
         endpoint: "/action/remove-appk-child",
       },
       {
@@ -34,6 +40,14 @@ export const AppK = () => {
             setRemoveChild("");
             cache.refetch();
             setLoading(false);
+            alert.setContent({
+              header: "Package withdrawn",
+              body: `The package ${id} has been withdrawn.`,
+            });
+            alert.setBannerStyle("success");
+            alert.setBannerShow(true);
+            alert.setBannerDisplayOn(window.location.pathname as Route);
+            window.scrollTo(0, 0);
           }, 5000);
         },
         onError: (err) => {

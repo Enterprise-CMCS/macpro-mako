@@ -4,9 +4,9 @@ import { BLANK_VALUE } from "@/consts";
 import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
 import { useGetUser } from "@/api";
 import {
+  CellDetailsLink,
   renderCellActions,
   renderCellDate,
-  renderCellIdLink,
 } from "../renderCells";
 import { formatSeatoolDate } from "shared-utils";
 
@@ -35,7 +35,9 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
       label: "Waiver Number",
       locked: true,
       transform: (data) => data.id,
-      cell: renderCellIdLink((id) => `/details?id=${encodeURIComponent(id)}`),
+      cell: ({ id, authority }) => (
+        <CellDetailsLink id={id} authority={authority} />
+      ),
     },
     {
       field: "state.keyword",
@@ -163,7 +165,7 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
     },
     {
       field: "raiReceivedDate",
-      label: "Formal RAI Received",
+      label: "Formal RAI Response",
       transform: (data) => {
         return data.raiReceivedDate
           ? formatSeatoolDate(data.raiReceivedDate)

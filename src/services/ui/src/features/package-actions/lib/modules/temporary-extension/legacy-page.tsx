@@ -22,16 +22,13 @@ import {
   ProgressLossReminder,
   FAQFooter,
 } from "@/components";
-import { useParams } from "react-router-dom";
 import {
   ActionFunction,
   useDisplaySubmissionAlert,
   useSubmitForm,
 } from "@/features/package-actions/legacy-shared-components";
 import { Info } from "lucide-react";
-import { useMemo } from "react";
 import { documentPoller } from "@/utils/Poller/documentPoller";
-import { isNewSubmission } from "@/utils";
 import { SubmitAndCancelBtnSection } from "@/features/submission/waiver/shared-components";
 
 export const onValidSubmission: ActionFunction = async ({ request }) => {
@@ -78,19 +75,9 @@ export const TempExtensionWrapper = () => {
 };
 
 export const TemporaryExtension = () => {
-  const { type, id } = useParams();
-
-  const navigationLocation = useMemo(
-    () => (isNewSubmission() ? "/dashboard?tab=waivers" : `/details?id=${id}`),
-    [type],
-  );
-
   const { handleSubmit, formMethods } = useSubmitForm();
-  const { id: urlId } = useParams();
-  const formId = formMethods.getValues("originalWaiverNumber");
   formMethods.setValue("seaActionType", "Extend");
 
-  const parentId = urlId ? urlId : formId;
   useDisplaySubmissionAlert(
     "Temporary extension request submitted",
     "Your submission has been received.",
@@ -143,9 +130,7 @@ export const TemporaryExtension = () => {
         </Alert>
         <FormLoadingSpinner />
         <ErrorBanner />
-        <SubmitAndCancelBtnSection
-          cancelNavigationLocation={navigationLocation}
-        />
+        <SubmitAndCancelBtnSection />
       </form>
       <FAQFooter />
     </SimplePageContainer>
