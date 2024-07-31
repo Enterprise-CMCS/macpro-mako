@@ -1,5 +1,6 @@
 import { type Action } from "shared-types";
 import { getNextBusinessDayTimestamp } from "shared-utils";
+import { produceMessage } from "../../../libs/kafka";
 
 export type MessageProducer = (
   topic: string,
@@ -51,147 +52,146 @@ export type WithdrawPackageDto = {
   action: Action;
 } & Record<string, unknown>;
 
-export class MakoWriteService {
-  #messageProducer: MessageProducer;
-
-  constructor(messageProducer: MessageProducer) {
-    this.#messageProducer = messageProducer;
-  }
-
-  async completeIntake({
-    action,
-    id,
-    timestamp,
-    topicName,
-    ...data
-  }: CompleteIntakeDto) {
-    await this.#messageProducer(
-      topicName,
-      id,
-      JSON.stringify({
-        actionType: action,
-        timestamp,
-        ...data,
-      }),
-    );
-  }
-
-  async issueRai({ action, id, topicName, ...data }: IssueRaiDto) {
-    await this.#messageProducer(
-      topicName,
-      id,
-      JSON.stringify({
-        ...data,
-        id,
-        actionType: action,
-      }),
-    );
-  }
-
-  async respondToRai({
-    action,
-    id,
-    responseDate,
-    topicName,
-    ...data
-  }: RespondToRaiDto) {
-    await this.#messageProducer(
-      topicName,
-      id,
-      JSON.stringify({
-        ...data,
-        id,
-        responseDate,
-        actionType: action,
-        notificationMetadata: {
-          submissionDate: getNextBusinessDayTimestamp(),
-        },
-      }),
-    );
-  }
-
-  async withdrawRai({ action, id, topicName, ...data }: WithdrawRaiDto) {
-    await this.#messageProducer(
-      topicName,
-      id,
-      JSON.stringify({
-        ...data,
-        id,
-        actionType: action,
-        notificationMetadata: {
-          submissionDate: getNextBusinessDayTimestamp(),
-        },
-      }),
-    );
-  }
-
-  async toggleRaiResponseWithdraw({
-    action,
-    id,
-    topicName,
-    ...data
-  }: ToggleRaiResponseDto) {
-    await this.#messageProducer(
-      topicName,
-      id,
-      JSON.stringify({
-        ...data,
-        id,
-        actionType: action,
-      }),
-    );
-  }
-
-  async removeAppkChild({
-    action,
-    id,
-    topicName,
-    ...data
-  }: RemoveAppkChildDto) {
-    await this.#messageProducer(
-      topicName,
-      id,
-      JSON.stringify({
-        ...data,
-        id,
-        actionType: action,
-      }),
-    );
-  }
-
-  async withdrawPackage({
-    action,
-    id,
-    topicName,
-    ...data
-  }: WithdrawPackageDto) {
-    await this.#messageProducer(
-      topicName,
-      id,
-      JSON.stringify({
-        ...data,
-        id,
-        actionType: action,
-      }),
-    );
-  }
-
-  async updateId({ action, id, topicName, ...data }: UpdateIdDto) {
-    await this.#messageProducer(
-      topicName,
-      id,
-      JSON.stringify({
-        ...data,
-        id,
-        actionType: action,
-      }),
-    );
-  }
-}
-
 export type UpdateIdDto = {
   topicName: string;
   id: string;
   newId: string;
   action: Action;
 } & Record<string, unknown>;
+
+export const completeIntakeMako = async ({
+  action,
+  id,
+  timestamp,
+  topicName,
+  ...data
+}: CompleteIntakeDto) =>
+  produceMessage(
+    topicName,
+    id,
+    JSON.stringify({
+      actionType: action,
+      timestamp,
+      ...data,
+    }),
+  );
+
+export const issueRaiMako = async ({
+  action,
+  id,
+  topicName,
+  ...data
+}: IssueRaiDto) =>
+  produceMessage(
+    topicName,
+    id,
+    JSON.stringify({
+      ...data,
+      id,
+      actionType: action,
+    }),
+  );
+
+export const respondToRaiMako = async ({
+  action,
+  id,
+  responseDate,
+  topicName,
+  ...data
+}: RespondToRaiDto) =>
+  produceMessage(
+    topicName,
+    id,
+    JSON.stringify({
+      ...data,
+      id,
+      responseDate,
+      actionType: action,
+      notificationMetadata: {
+        submissionDate: getNextBusinessDayTimestamp(),
+      },
+    }),
+  );
+
+export const withdrawRaiMako = async ({
+  action,
+  id,
+  topicName,
+  ...data
+}: WithdrawRaiDto) =>
+  produceMessage(
+    topicName,
+    id,
+    JSON.stringify({
+      ...data,
+      id,
+      actionType: action,
+      notificationMetadata: {
+        submissionDate: getNextBusinessDayTimestamp(),
+      },
+    }),
+  );
+
+export const toggleRaiResponseWithdrawMako = async ({
+  action,
+  id,
+  topicName,
+  ...data
+}: ToggleRaiResponseDto) =>
+  produceMessage(
+    topicName,
+    id,
+    JSON.stringify({
+      ...data,
+      id,
+      actionType: action,
+    }),
+  );
+
+export const removeAppkChildMako = async ({
+  action,
+  id,
+  topicName,
+  ...data
+}: RemoveAppkChildDto) =>
+  produceMessage(
+    topicName,
+    id,
+    JSON.stringify({
+      ...data,
+      id,
+      actionType: action,
+    }),
+  );
+
+export const withdrawPackageMako = async ({
+  action,
+  id,
+  topicName,
+  ...data
+}: WithdrawPackageDto) =>
+  produceMessage(
+    topicName,
+    id,
+    JSON.stringify({
+      ...data,
+      id,
+      actionType: action,
+    }),
+  );
+
+export const updateIdMako = async ({
+  action,
+  id,
+  topicName,
+  ...data
+}: UpdateIdDto) =>
+  produceMessage(
+    topicName,
+    id,
+    JSON.stringify({
+      ...data,
+      id,
+      actionType: action,
+    }),
+  );
