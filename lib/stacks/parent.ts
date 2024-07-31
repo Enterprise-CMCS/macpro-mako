@@ -26,7 +26,7 @@ export class ParentStack extends cdk.Stack {
     const vpc = cdk.aws_ec2.Vpc.fromLookup(this, "Vpc", {
       vpcName: props.vpcName,
     });
-    const privateSubnets = sortSubnets(vpc.privateSubnets);
+    const privateSubnets = sortSubnets(vpc.privateSubnets).slice(0, 3);
 
     if (!props.isDev || props.stage === "main") {
       new CloudWatchLogsResourcePolicy(this, "logPolicy", {
