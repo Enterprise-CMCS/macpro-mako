@@ -41,7 +41,7 @@ const formSchema = z.object({
     other: zAttachmentOptional,
   }),
   proposedEffectiveDate: z.date(),
-  seaActionType: z.string().default("New"),
+  seaActionType: z.string().default("Amend"),
   seatoolStatus: z.string().default(SEATOOL_STATUS.PENDING),
 });
 

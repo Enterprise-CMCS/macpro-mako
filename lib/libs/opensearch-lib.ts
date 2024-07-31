@@ -77,6 +77,10 @@ export async function bulkUpdateData(
   ): Promise<void> {
     try {
       const response = await client.bulk({ refresh: true, body: body });
+
+      console.log("BULK UPDATE");
+      console.log({ body });
+      console.log({ response });
       if (response.body.errors) {
         // Check for 429 status within response errors
         const hasRateLimitErrors = response.body.items.some(
@@ -245,7 +249,7 @@ export async function updateFieldMapping(
 }
 
 function decodeUtf8(data: any): any {
-  if (typeof data === 'string') {
+  if (typeof data === "string") {
     try {
       return decodeURIComponent(escape(data));
     } catch (e) {
@@ -253,9 +257,9 @@ function decodeUtf8(data: any): any {
     }
   }
   if (Array.isArray(data)) {
-    return data.map(item => decodeUtf8(item));
+    return data.map((item) => decodeUtf8(item));
   }
-  if (typeof data === 'object' && data !== null) {
+  if (typeof data === "object" && data !== null) {
     return Object.keys(data).reduce((acc, key) => {
       acc[key] = decodeUtf8(data[key]);
       return acc;
