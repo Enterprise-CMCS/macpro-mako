@@ -18,12 +18,8 @@ export const getItemData = async (event: APIGatewayEvent) => {
   }
   try {
     const body = JSON.parse(event.body);
-
-    console.log("Hello World");
-    console.log({ body });
     const stateFilter = await getStateFilter(event);
     const packageResult = await getPackage(body.id);
-    console.log({ packageResult });
 
     let appkChildren: any[] = [];
     if (packageResult._source.appkParent) {

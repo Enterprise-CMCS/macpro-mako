@@ -78,9 +78,6 @@ export async function bulkUpdateData(
     try {
       const response = await client.bulk({ refresh: true, body: body });
 
-      console.log("BULK UPDATE");
-      console.log({ body });
-      console.log({ response });
       if (response.body.errors) {
         // Check for 429 status within response errors
         const hasRateLimitErrors = response.body.items.some(

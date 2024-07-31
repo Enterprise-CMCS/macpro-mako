@@ -18,15 +18,10 @@ if (!osDomain) {
 const index: Index = `${process.env.indexNamespace}main`;
 
 export const handler: Handler<KafkaEvent> = async (event) => {
-  console.log("EVENT");
-  console.log({ event });
   const loggableEvent = { ...event, records: "too large to display" };
-  console.log({ loggableEvent });
   try {
     for (const topicPartition of Object.keys(event.records)) {
       const topic = getTopic(topicPartition);
-      console.log({ topic });
-
       switch (topic) {
         case undefined:
           logError({ type: ErrorType.BADTOPIC });
@@ -106,8 +101,6 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         continue;
       }
       const record = { timestamp, ...JSON.parse(decodeBase64WithUtf8(value)) };
-      console.log("Record");
-      console.log({ record });
       // Process legacy events
       if (record?.origin !== "micro") {
         // Is a Package View from legacy onemac
