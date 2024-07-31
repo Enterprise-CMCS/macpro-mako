@@ -109,7 +109,7 @@ const getBundleFromEvent = (configKey, stage) => {
         emailCommands: [
           {
             Template: `withdraw-package-waiver-cms_${stage}`,
-            ToAddresses: ["osgEmail", "cpoc", "srt"],
+            ToAddresses: ["osgEmail", "cpoc", "srt", "dmcoEmail"],
           },
           {
             Template: `withdraw-package-waiver-state_${stage}`,
@@ -223,7 +223,7 @@ const getBundleFromEvent = (configKey, stage) => {
         emailCommands: [
           {
             Template: `new-submission-chip-spa-cms_${stage}`,
-            ToAddresses: ["osgEmail", "chipInbox"],
+            ToAddresses: ["chipInbox"],
             CcAddresses: ["chipCcList"],
           },
           {
@@ -254,7 +254,7 @@ const getBundleFromEvent = (configKey, stage) => {
         emailCommands: [
           {
             Template: `respond-to-rai-chip-spa-cms_${stage}`,
-            ToAddresses: ["osgEmail", "chipInbox"],
+            ToAddresses: ["srt", "chipInbox", "cpoc"],
             CcAddresses: ["chipCcList"],
           },
           {
