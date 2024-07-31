@@ -2,12 +2,9 @@ import { RaiIssue, raiIssueSchema, Action, SEATOOL_STATUS } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 import { response } from "../../../libs/handler";
 import { TOPIC_NAME } from "../consts";
-import { type PackageActionWriteService } from "../services/package-action-write-service";
+import { issueRaiAction } from "../services/package-action-write-service";
 
-export async function issueRai(
-  body: RaiIssue,
-  packageActionWriteService: PackageActionWriteService = globalThis.packageActionWriteService,
-) {
+export async function issueRai(body: RaiIssue) {
   console.log("CMS issuing a new RAI");
   const now = new Date().getTime();
   const today = seaToolFriendlyTimestamp();
@@ -27,7 +24,7 @@ export async function issueRai(
     });
   }
 
-  await packageActionWriteService.issueRai({
+  await issueRaiAction({
     ...result.data,
     action: Action.ISSUE_RAI,
     id: result.data.id,

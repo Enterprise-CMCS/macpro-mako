@@ -2,6 +2,7 @@ import { updateIdSchema, SEATOOL_STATUS, Action } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 import { response } from "../../../libs/handler";
 import { TOPIC_NAME } from "../consts";
+import { updateIdAction } from "../services/package-action-write-service";
 
 export async function updateId(body: any) {
   console.log("CMS updating the ID of a package.");
@@ -24,7 +25,7 @@ export async function updateId(body: any) {
   }
   console.log(JSON.stringify(result.data, null, 2));
 
-  await packageActionWriteService.updateId({
+  await updateIdAction({
     ...result.data,
     action: Action.UPDATE_ID,
     id: body.id,
