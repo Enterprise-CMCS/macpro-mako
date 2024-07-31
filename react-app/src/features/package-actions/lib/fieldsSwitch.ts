@@ -13,6 +13,7 @@ import {
   defaultWithdrawPackageFields,
   defaultWithdrawRaiFields,
   medSpaRaiFields,
+  waiverWithdraw1915cPackageFields,
 } from "@/features/package-actions/lib/modules";
 
 type FieldsGroup = Record<AuthorityUnion, ReactElement[] | undefined>;
@@ -56,7 +57,7 @@ const withdrawPackageFor: FieldsGroup = {
   "CHIP SPA": chipWithdrawPackageFields,
   "Medicaid SPA": defaultWithdrawPackageFields,
   "1915(b)": defaultWithdrawPackageFields,
-  "1915(c)": defaultWithdrawPackageFields,
+  "1915(c)": waiverWithdraw1915cPackageFields,
 };
 
 const tempExtensionFor: FieldsGroup = {
