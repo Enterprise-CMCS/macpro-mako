@@ -31,7 +31,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
         case undefined:
           logError({ type: ErrorType.BADTOPIC });
           throw new Error();
-        case `${process.env.indexNamespace}aws.onemac.migration.cdc`:
         case "aws.onemac.migration.cdc":
           await onemac(event.records[topicPartition], topicPartition);
           break;
@@ -309,7 +308,5 @@ const changed_date = async (
     }
   }
 
-  console.log("UPDATING TO THIS INDEX:");
-  console.log({ index });
   await bulkUpdateDataWrapper(osDomain, index, docs);
 };

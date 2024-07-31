@@ -1,4 +1,5 @@
 import {
+  AuthorityUnion,
   SEATOOL_AUTHORITIES,
   SEATOOL_STATUS,
   getStatus,
@@ -8,7 +9,8 @@ import {
 const getIdByAuthorityName = (authorityName: string) => {
   try {
     const authorityId = Object.keys(SEATOOL_AUTHORITIES).find(
-      (key) => SEATOOL_AUTHORITIES[key] === authorityName,
+      (key) =>
+        SEATOOL_AUTHORITIES[key].toLowerCase() === authorityName.toLowerCase(),
     );
     return authorityId ? parseInt(authorityId, 10) : null;
   } catch (error) {
@@ -47,6 +49,8 @@ export const transform = (id: string) => {
         id,
         attachments: data.attachments,
         appkParentId: data.appkParentId,
+        appkParent: data.appkParent,
+        appkTitle: data.appkTitle,
         raiWithdrawEnabled: data.raiWithdrawEnabled,
         additionalInformation: data.additionalInformation,
         submitterEmail: data.submitterEmail,
@@ -60,7 +64,7 @@ export const transform = (id: string) => {
         state: id.split("-")[0],
         actionType: data.seaActionType,
         actionTypeId: 9999,
-        authorityId: getIdByAuthorityName(data.authority),
+        authorityId: getIdByAuthorityName(data.authority.toUpperCase()),
         authority: data.authority,
         stateStatus: "Submitted",
         cmsStatus: "Requested",
@@ -78,7 +82,7 @@ export const transform = (id: string) => {
       };
     } else {
       const { stateStatus, cmsStatus } = getStatus(data.seatoolStatus);
-      return {
+      const result = {
         id,
         attachments: data.attachments,
         appkParentId: data.appkParentId,
@@ -97,7 +101,7 @@ export const transform = (id: string) => {
         proposedDate: data.proposedEffectiveDate,
         actionType: data.seaActionType,
         actionTypeId: 9999,
-        authorityId: getIdByAuthorityName(data.authority),
+        authorityId: getIdByAuthorityName(data.authority.toUpperCase()),
         seatoolStatus: SEATOOL_STATUS.PENDING,
         stateStatus,
         cmsStatus,
@@ -106,7 +110,12 @@ export const transform = (id: string) => {
         changedDate: getDateStringOrNullFromEpoc(data.changedDate),
         subject: null,
         description: null,
+        state: data.state,
+        authority: data.authority,
       };
+      console.log("SENDING TO OPENSEARCH:");
+      console.log(JSON.stringify(result));
+      return result;
     }
   });
 };
