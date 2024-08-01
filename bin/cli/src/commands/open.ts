@@ -1,5 +1,10 @@
 import { Argv } from "yargs";
-import { checkIfAuthenticated, openUrl } from "../lib";
+import {
+  checkIfAuthenticated,
+  openUrl,
+  project,
+  setStageFromBranch,
+} from "../lib";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 
 const createOpenCommand = (
@@ -10,14 +15,15 @@ const createOpenCommand = (
   command: name,
   describe: describe,
   builder: (yargs: Argv) =>
-    yargs.option("stage", { type: "string", demandOption: true }),
-  handler: async ({ stage }: { stage: string }) => {
+    yargs.option("stage", { type: "string", demandOption: false }),
+  handler: async (options: { stage?: string }) => {
     await checkIfAuthenticated();
+    const stage = options.stage || (await setStageFromBranch());
     const url = JSON.parse(
       (
         await new SSMClient({ region: "us-east-1" }).send(
           new GetParameterCommand({
-            Name: `/${process.env.PROJECT}/${stage}/deployment-output`,
+            Name: `/${project}/${stage}/deployment-output`,
           }),
         )
       ).Parameter!.Value!,

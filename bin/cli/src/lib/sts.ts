@@ -1,8 +1,9 @@
 import { STSClient, GetCallerIdentityCommand } from "@aws-sdk/client-sts";
+import { region } from "./consts";
 
 export async function checkIfAuthenticated(): Promise<void> {
   try {
-    const client = new STSClient({ region: process.env.REGION_A });
+    const client = new STSClient({ region });
     const command = new GetCallerIdentityCommand({});
     await client.send(command);
   } catch (error) {
