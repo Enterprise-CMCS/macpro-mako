@@ -233,9 +233,7 @@ export class Data extends cdk.NestedStack {
           },
           vpcOptions: {
             securityGroupIds: [openSearchSecurityGroup.securityGroupId],
-            subnetIds: privateSubnets
-              .slice(0, 3)
-              .map((subnet) => subnet.subnetId),
+            subnetIds: privateSubnets.map((subnet) => subnet.subnetId),
           },
           logPublishingOptions: {
             AUDIT_LOGS: {
@@ -379,7 +377,7 @@ export class Data extends cdk.NestedStack {
 
     new LC.CreateTopics(this, "createTopics", {
       brokerString,
-      privateSubnets,
+      privateSubnets: privateSubnets,
       securityGroups: [lambdaSecurityGroup],
       topics: [
         {
@@ -392,7 +390,7 @@ export class Data extends cdk.NestedStack {
     if (isDev) {
       new LC.CleanupKafka(this, "cleanupKafka", {
         vpc,
-        privateSubnets,
+        privateSubnets: privateSubnets,
         securityGroups: [lambdaSecurityGroup],
         brokerString,
         topicPatternsToDelete: [`${topicNamespace}aws.onemac.migration.cdc`],
@@ -719,9 +717,7 @@ export class Data extends cdk.NestedStack {
               brokerString,
               securityGroup: lambdaSecurityGroup.securityGroupId,
               consumerGroupPrefix,
-              subnets: privateSubnets
-                .slice(0, 3)
-                .map((subnet) => subnet.subnetId),
+              subnets: privateSubnets.map((subnet) => subnet.subnetId),
               triggers: [
                 {
                   function: lambdaFunctions.sinkMain.functionName,
@@ -778,9 +774,7 @@ export class Data extends cdk.NestedStack {
                   brokerString,
                   securityGroup: lambdaSecurityGroup.securityGroupId,
                   consumerGroupPrefix,
-                  subnets: privateSubnets
-                    .slice(0, 3)
-                    .map((subnet) => subnet.subnetId),
+                  subnets: privateSubnets.map((subnet) => subnet.subnetId),
                   triggers: [
                     {
                       function: lambdaFunctions.sinkInsights.functionName,

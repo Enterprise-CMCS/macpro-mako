@@ -1,5 +1,9 @@
 import { Argv } from "yargs";
-import { LabeledProcessRunner, writeUiEnvFile } from "../lib/";
+import {
+  checkIfAuthenticated,
+  LabeledProcessRunner,
+  writeUiEnvFile,
+} from "../lib/";
 import path from "path";
 import { execSync } from "child_process";
 import {
@@ -17,6 +21,7 @@ export const deploy = {
     return yargs.option("stage", { type: "string", demandOption: true });
   },
   handler: async (options: { stage: string; stack?: string }) => {
+    await checkIfAuthenticated();
     await runner.run_command_and_output(
       "CDK Deploy",
       ["cdk", "deploy", "-c", `stage=${options.stage}`, "--all"],

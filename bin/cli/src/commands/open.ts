@@ -1,5 +1,5 @@
 import { Argv } from "yargs";
-import { openUrl } from "../lib";
+import { checkIfAuthenticated, openUrl } from "../lib";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 
 const createOpenCommand = (
@@ -12,6 +12,7 @@ const createOpenCommand = (
   builder: (yargs: Argv) =>
     yargs.option("stage", { type: "string", demandOption: true }),
   handler: async ({ stage }: { stage: string }) => {
+    await checkIfAuthenticated();
     const url = JSON.parse(
       (
         await new SSMClient({ region: "us-east-1" }).send(

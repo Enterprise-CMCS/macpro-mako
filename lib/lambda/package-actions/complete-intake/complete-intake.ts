@@ -1,12 +1,9 @@
 import { completeIntakeSchema, Action } from "shared-types";
 import { response } from "../../../libs/handler-lib";
 import { TOPIC_NAME } from "../consts";
-import { type PackageActionWriteService } from "../services/package-action-write-service";
+import { completeIntakeAction } from "../services/package-action-write-service";
 
-export async function completeIntake(
-  body: any,
-  packageActionWriteService: PackageActionWriteService = globalThis.packageActionWriteService,
-) {
+export async function completeIntake(body: any) {
   console.log("CMS performing intake for a record.");
 
   const result = completeIntakeSchema.safeParse(body);
@@ -27,7 +24,7 @@ export async function completeIntake(
 
   const now = new Date().getTime();
 
-  await packageActionWriteService.completeIntake({
+  await completeIntakeAction({
     timestamp: now,
     action: Action.COMPLETE_INTAKE,
     cpoc: result.data.cpoc,
