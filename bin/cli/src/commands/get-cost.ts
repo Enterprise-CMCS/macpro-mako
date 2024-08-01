@@ -3,13 +3,17 @@ import {
   CostExplorerClient,
   GetCostAndUsageCommand,
 } from "@aws-sdk/client-cost-explorer";
-import { checkIfAuthenticated, project } from "../lib";
+import { branchName, checkIfAuthenticated, project } from "../lib";
 
 export const getCost = {
   command: "get-cost",
   describe: "get cost of an environment",
   builder: (yargs: Argv) => {
-    return yargs.option("stage", { type: "string", demandOption: true });
+    return yargs.option("stage", {
+      type: "string",
+      demandOption: false,
+      default: branchName,
+    });
   },
   handler: async (options: { stage: string; stack?: string }) => {
     await checkIfAuthenticated();
