@@ -41,5 +41,12 @@ jobs:
           aws-region: us-east-1
           role-duration-seconds: 10800
 
+     - name: Remove CloudFormation templates
+        id: removeCfts
+        run: |
+          stackList=(`aws cloudformation describe-stacks --query "Stacks[?Tags[?Key=='STAGE' && Value=='$STAGE_NAME'] && Tags[?Key=='PROJECT' && Value=='$PROJECT']].StackName" --output text`)
+          for stack in "${stackList[@]}"; do
+            aws cloudformation delete-stack --stack-name "$stack"
+
       - name: Destroy
         run: run destroy --stage $STAGE_NAME --verify false
