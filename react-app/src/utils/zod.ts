@@ -172,7 +172,7 @@ export const zAppkWaiverNumberSchema = z
   .min(1, { message: "Required" })
   .regex(
     /^\d{4,5}\.R\d{2}\.(0[1-9]|[1-9][0-9])$/,
-    "The 1915(c) Waiver Amendment Number must be in the format of ####.R##.## or #####.R##.##. For amendments, the last two digits start with '01' and ascends.",
+    "The Waiver Amendment Number must be in the format of ####.R##.## or #####.R##.##. For amendments, the last two digits start with '01' and ascends.",
   );
 
 export const zExtensionWaiverNumberSchema = z

@@ -238,7 +238,7 @@ export class Email extends cdk.NestedStack {
       },
       functionName: processEmailsLambda.functionArn,
       sourceAccessConfigurations: [
-        ...privateSubnets.slice(0, 3).map((subnet) => ({
+        ...privateSubnets.map((subnet) => ({
           type: "VPC_SUBNET",
           uri: subnet.subnetId,
         })),
