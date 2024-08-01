@@ -4,6 +4,7 @@ import * as path from "path";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { ISubnet } from "aws-cdk-lib/aws-ec2";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
+import * as LC from "local-constructs";
 
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;
@@ -89,6 +90,25 @@ export class Email extends cdk.NestedStack {
     const emailDataBucket = new cdk.aws_s3.Bucket(this, "EmailDataBucket", {
       versioned: true,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    emailDataBucket.addToResourcePolicy(
+      new cdk.aws_iam.PolicyStatement({
+        effect: cdk.aws_iam.Effect.DENY,
+        principals: [new cdk.aws_iam.AnyPrincipal()],
+        actions: ["s3:*"],
+        resources: [
+          emailDataBucket.bucketArn,
+          `${emailDataBucket.bucketArn}/*`,
+        ],
+        conditions: {
+          Bool: { "aws:SecureTransport": "false" },
+        },
+      }),
+    );
+
+    new LC.EmptyBuckets(this, "EmptyBuckets", {
+      buckets: [emailDataBucket],
     });
 
     // SES Configuration Set
@@ -218,7 +238,7 @@ export class Email extends cdk.NestedStack {
       },
       functionName: processEmailsLambda.functionArn,
       sourceAccessConfigurations: [
-        ...privateSubnets.slice(0, 3).map((subnet) => ({
+        ...privateSubnets.map((subnet) => ({
           type: "VPC_SUBNET",
           uri: subnet.subnetId,
         })),

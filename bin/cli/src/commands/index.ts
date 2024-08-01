@@ -3,6 +3,7 @@ export * from "./destroy";
 export * from "./docs";
 export * from "./e2e";
 export * from "./install";
+export * from "./logs";
 export * from "./open";
 export * from "./test";
 export * from "./ui";

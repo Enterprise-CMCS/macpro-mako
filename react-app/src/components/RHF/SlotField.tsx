@@ -244,7 +244,7 @@ export const SlotField = ({
                 key={`wrappedSlot-${i}`}
                 control={control}
                 name={parentId + S.name}
-                {...(S.rules && { rules: S.rules })}
+                rules={ruleGenerator(S.rules, S.addtnlRules)}
                 render={RHFSlot({ ...S, control, parentId })}
               />
             );
@@ -296,7 +296,6 @@ export const OptChildren = ({
                 control={control}
                 name={parentId + SLOT.name}
                 rules={ruleGenerator(SLOT.rules, SLOT.addtnlRules)}
-                {...(SLOT.rules && { rules: SLOT.rules })}
                 render={RHFSlot({ ...SLOT, control, parentId })}
               />
             </div>

@@ -3,7 +3,7 @@ import { seaToolFriendlyTimestamp } from "shared-utils";
 import { response } from "../../../libs/handler-lib";
 import { TOPIC_NAME } from "../consts";
 import { ExtendedItemResult } from "../../../libs/api/package";
-import { PackageWriteClass } from "../services/package-action-write-service";
+import { respondToRaiAction } from "../services/package-action-write-service";
 
 export async function respondToRai(
   body: any,
@@ -11,7 +11,6 @@ export async function respondToRai(
     ExtendedItemResult["_source"],
     "raiReceivedDate" | "raiRequestedDate" | "raiWithdrawnDate"
   >,
-  packageActionWriteService: PackageWriteClass = globalThis.packageActionWriteService,
 ) {
   console.log("State responding to RAI");
   if (!document.raiRequestedDate) {
@@ -45,7 +44,7 @@ export async function respondToRai(
     });
   }
   try {
-    await packageActionWriteService.respondToRai({
+    await respondToRaiAction({
       ...result.data,
       action: Action.RESPOND_TO_RAI,
       id: result.data.id,
