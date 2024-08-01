@@ -18,21 +18,8 @@ import {
   completeIntake,
   removeAppkChild,
 } from "./package-actions";
-import { setupWriteService } from "./package-actions/setup-write-service";
-
-const checkIfActionType = (
-  potentialActionType: unknown,
-): potentialActionType is Action => {
-  if (potentialActionType) {
-    return true;
-  }
-  return false;
-};
 
 export const handler = async (event: APIGatewayEvent) => {
-  if (typeof globalThis.packageActionWriteService === "undefined") {
-    global.packageActionWriteService = await setupWriteService();
-  }
   if (!event.pathParameters || !event.pathParameters.actionType) {
     return response({
       statusCode: 400,
@@ -94,10 +81,10 @@ export const handler = async (event: APIGatewayEvent) => {
         await respondToRai(body, result._source);
         break;
       case Action.ENABLE_RAI_WITHDRAW:
-        await toggleRaiResponseWithdraw(body, true);
+        await toggleRaiResponseWithdraw({ toggle: true, ...body });
         break;
       case Action.DISABLE_RAI_WITHDRAW:
-        await toggleRaiResponseWithdraw(body, false);
+        await toggleRaiResponseWithdraw(body);
         break;
       case Action.WITHDRAW_RAI:
         await withdrawRai(body, result._source);

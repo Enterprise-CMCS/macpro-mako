@@ -1,5 +1,5 @@
 import { Argv } from "yargs";
-import { LabeledProcessRunner } from "../lib/";
+import { checkIfAuthenticated, LabeledProcessRunner } from "../lib/";
 import simpleGit from "simple-git";
 import {
   ResourceGroupsTaggingAPIClient,
@@ -29,6 +29,8 @@ export const logs = {
         demandOption: true,
       }),
   handler: async (options: { stage?: string; functionName: string }) => {
+    await checkIfAuthenticated();
+
     let { stage, functionName } = options;
     if (!stage) {
       const git = simpleGit();
