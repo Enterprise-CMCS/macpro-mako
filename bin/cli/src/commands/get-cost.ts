@@ -3,7 +3,7 @@ import {
   CostExplorerClient,
   GetCostAndUsageCommand,
 } from "@aws-sdk/client-cost-explorer";
-import { branchName, checkIfAuthenticated, project } from "../lib";
+import { checkIfAuthenticated, setStageFromBranch, project } from "../lib";
 
 export const getCost = {
   command: "get-cost",
@@ -12,15 +12,14 @@ export const getCost = {
     return yargs.option("stage", {
       type: "string",
       demandOption: false,
-      default: branchName,
     });
   },
-  handler: async (options: { stage: string; stack?: string }) => {
+  handler: async (options: { stage?: string; stack?: string }) => {
     await checkIfAuthenticated();
-
+    const stage = options.stage || (await setStageFromBranch());
     const tags = {
       PROJECT: [project],
-      STAGE: [options.stage],
+      STAGE: [stage],
     };
 
     const today = new Date();
@@ -48,9 +47,7 @@ export const getCost = {
       )}`,
     );
     console.log(
-      `Yesterday, the stack ${options.stage} cost $${yesterdayCost.toFixed(
-        2,
-      )}.`,
+      `Yesterday, the stack ${stage} cost $${yesterdayCost.toFixed(2)}.`,
     );
   },
 };

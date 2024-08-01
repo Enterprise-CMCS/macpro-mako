@@ -4,8 +4,8 @@ import {
   LabeledProcessRunner,
   project,
   region,
+  setStageFromBranch,
 } from "../lib/";
-import simpleGit from "simple-git";
 import {
   ResourceGroupsTaggingAPIClient,
   GetResourcesCommand,
@@ -35,13 +35,9 @@ export const logs = {
       }),
   handler: async (options: { stage?: string; functionName: string }) => {
     await checkIfAuthenticated();
+    const stage = options.stage || (await setStageFromBranch());
+    const { functionName } = options;
 
-    let { stage, functionName } = options;
-    if (!stage) {
-      const git = simpleGit();
-      const branchSummary = await git.branch();
-      stage = branchSummary.current;
-    }
     // Find all lambdas for the project and stage
     const lambdas = await getLambdasWithTags([
       {
