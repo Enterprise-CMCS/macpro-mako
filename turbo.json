@@ -1,13 +1,32 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "lint": {
       "cache": false
     },
     "build:cli": {
+      "inputs": ["bin/cli/"],
       "cache": false
     },
-    "e2e": {},
-    "e2e:ui": {}
+    "e2e": {
+      "cache": false,
+      "env": [
+        "AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY",
+        "AWS_SESSION_TOKEN",
+        "STAGE_NAME",
+        "PROJECT"
+      ]
+    },
+    "e2e:ui": {
+      "cache": false,
+      "env": [
+        "AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY",
+        "AWS_SESSION_TOKEN",
+        "STAGE_NAME",
+        "PROJECT"
+      ]
+    }
   }
 }

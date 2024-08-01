@@ -94,9 +94,9 @@ if ! which awslogs > /dev/null ; then
   brew install awslogs
 fi
 
-# Install yarn, a node package manager similiar to npm
+# Install bun, a super fast package manager for node
 if ! which yarn > /dev/null ; then
-  brew install yarn
+  brew install oven-sh/bun/bun
 fi
 
 # Install git, our version control system 

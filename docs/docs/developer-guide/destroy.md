@@ -54,7 +54,7 @@ The same GitHub Actions workflow referenced above can be triggered manually.  Th
 - Click the Actions tab
 - Click Destroy, located on the left hand side of the screen.
 - Click 'Run workflow'
-  - Leave 'Use workflow from' set to master.
+  - Leave 'Use workflow from' set to main.
   - Enter the name of the stage you wish to destroy in the free text field.
   - Click 'Run workflow'
 - Monitor the status of your stage's destruction in the repo's [Actions area](https://github.com/{{ site.repo.org }}/{{ site.repo.name }}/actions).

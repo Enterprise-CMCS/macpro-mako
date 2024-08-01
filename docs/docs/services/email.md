@@ -41,3 +41,7 @@ The email services uses the serverless-ses-template plugin to manage the email t
 - subject: the subject line of the email, may contain replacement values using {{name}}.
 - html: the email body in html, may contain replacement values using {{name}}.
 - text: the email body in text, may contain replacement values using {{name}}.
+
+## Email Sending Service with AWS CDK
+
+This guide provides an overview and implementation of a robust email sending service using AWS Cloud Development Kit (CDK). The service includes features such as dedicated IP pools, configuration sets, verified email identities, and monitoring through SNS topics.
