@@ -1,18 +1,18 @@
 import { toggleWithdrawRaiEnabledSchema, Action } from "shared-types";
 import { response } from "../../../libs/handler-lib";
 import { TOPIC_NAME } from "../consts";
-import { PackageWriteClass } from "../services/package-action-write-service";
+import { toggleRaiResponseWithdrawAction } from "../services/package-action-write-service";
 
-export async function toggleRaiResponseWithdraw(
-  body: any,
-  toggle: boolean,
-  packageActionWriteService: PackageWriteClass = globalThis.packageActionWriteService,
-) {
+export async function toggleRaiResponseWithdraw({
+  toggle = false,
+  ...body
+}: Record<string, unknown> & { toggle?: boolean }) {
   const now = new Date().getTime();
   const result = toggleWithdrawRaiEnabledSchema.safeParse({
     ...body,
     raiWithdrawEnabled: toggle,
   });
+
   if (result.success === false) {
     console.error(
       "Toggle Rai Response Withdraw Enable event validation error. The following record failed to parse: ",
@@ -28,7 +28,7 @@ export async function toggleRaiResponseWithdraw(
     });
   }
   try {
-    await packageActionWriteService.toggleRaiResponseWithdraw({
+    await toggleRaiResponseWithdrawAction({
       ...result.data,
       action: toggle ? Action.ENABLE_RAI_WITHDRAW : Action.DISABLE_RAI_WITHDRAW,
       id: result.data.id,

@@ -4,7 +4,7 @@ import {
   DeleteStackCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
-import { confirmDestroyCommand } from "../lib";
+import { checkIfAuthenticated, confirmDestroyCommand } from "../lib";
 
 const waitForStackDeleteComplete = async (
   client: CloudFormationClient,
@@ -37,6 +37,8 @@ export const destroy = {
     wait: boolean;
     verify: boolean;
   }) => {
+    await checkIfAuthenticated();
+
     const stackName = `${process.env.PROJECT}-${stage}`;
 
     if (/prod/i.test(stage)) {

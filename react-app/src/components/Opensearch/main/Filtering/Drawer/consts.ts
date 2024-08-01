@@ -106,7 +106,7 @@ export const DATE_LATESTPACKAGEACTIVITY: DrawerFilterableGroup = {
 };
 
 export const DATE_RAIRECEIVED: DrawerFilterableGroup = {
-  label: "Formal RAI Received",
+  label: "Formal RAI Response",
   field: "raiReceivedDate",
   component: "dateRange",
   prefix: "must",

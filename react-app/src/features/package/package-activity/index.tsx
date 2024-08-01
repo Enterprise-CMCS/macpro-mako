@@ -11,8 +11,8 @@ import {
 import * as Table from "@/components";
 import { BLANK_VALUE } from "@/consts";
 import { usePackageActivities, useAttachmentService } from "./hook";
-import { Link } from "@/components/Routing";
 import { attachmentTitleMap } from "shared-types";
+import { Link } from "react-router-dom";
 
 // id, attachments, hook
 const AttachmentDetails: FC<{
@@ -54,8 +54,7 @@ export const PA_AppkParentRemovedChild: FC<opensearch.changelog.Document> = (
   return (
     <div className="flex gap-1">
       <Link
-        path="/details"
-        query={{ id: props.appkChildId }}
+        to={`/details/${props.authority}/${props.appkChildId}`}
         className="hover:underline font-semibold text-blue-600"
       >
         {props.appkChildId}
@@ -72,8 +71,7 @@ export const PA_AppkChildRemovedFromParent: FC<
     <div className="flex gap-1">
       <p>Removed from:</p>
       <Link
-        path="/details"
-        query={{ id: props.appkParentId }}
+        to={`/details/${props.authority}/${props.appkParentId}`}
         className="hover:underline font-semibold text-blue-600"
       >
         {props.appkParentId}

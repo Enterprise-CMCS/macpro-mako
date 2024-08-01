@@ -3,6 +3,7 @@ import {
   CostExplorerClient,
   GetCostAndUsageCommand,
 } from "@aws-sdk/client-cost-explorer";
+import { checkIfAuthenticated } from "../lib";
 
 export const getCost = {
   command: "get-cost",
@@ -11,6 +12,8 @@ export const getCost = {
     return yargs.option("stage", { type: "string", demandOption: true });
   },
   handler: async (options: { stage: string; stack?: string }) => {
+    await checkIfAuthenticated();
+
     const tags = {
       PROJECT: [process.env.PROJECT!],
       STAGE: [options.stage],

@@ -42,7 +42,7 @@ export const handler: Handler = async (event, __, callback) => {
     });
     await manageIndexResource({
       osDomain: event.osDomain,
-      index: "legacyinsights",
+      index: `${event.indexNamespace}legacyinsights`,
     });
   } catch (error: any) {
     response.statusCode = 500;

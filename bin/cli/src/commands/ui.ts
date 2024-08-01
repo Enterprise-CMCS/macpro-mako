@@ -1,5 +1,9 @@
 import { Argv } from "yargs";
-import { LabeledProcessRunner, writeUiEnvFile } from "../lib";
+import {
+  checkIfAuthenticated,
+  LabeledProcessRunner,
+  writeUiEnvFile,
+} from "../lib";
 
 const runner = new LabeledProcessRunner();
 
@@ -10,6 +14,7 @@ export const ui = {
     return yargs.option("stage", { type: "string", demandOption: true });
   },
   handler: async (options: { stage: string }) => {
+    await checkIfAuthenticated();
     await writeUiEnvFile(options.stage, true);
     await runner.run_command_and_output(
       `Build`,

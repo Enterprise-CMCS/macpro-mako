@@ -207,7 +207,7 @@ export class Data extends cdk.NestedStack {
           nodeToNodeEncryptionOptions: { enabled: true },
           domainEndpointOptions: {
             enforceHttps: true,
-            tlsSecurityPolicy: "Policy-Min-TLS-1-2-2019-07",
+            tlsSecurityPolicy: "Policy-Min-TLS-1-2-PFS-2023-10",
           },
           cognitoOptions: {
             enabled: true,
@@ -233,9 +233,53 @@ export class Data extends cdk.NestedStack {
           },
           vpcOptions: {
             securityGroupIds: [openSearchSecurityGroup.securityGroupId],
-            subnetIds: privateSubnets
-              .slice(0, 3)
-              .map((subnet) => subnet.subnetId),
+            subnetIds: privateSubnets.map((subnet) => subnet.subnetId),
+          },
+          logPublishingOptions: {
+            AUDIT_LOGS: {
+              enabled: true,
+              cloudWatchLogsLogGroupArn: new cdk.aws_logs.LogGroup(
+                this,
+                "OpenSearchAuditLogGroup",
+                {
+                  logGroupName: `/aws/opensearch/${project}-${stage}-audit-logs`,
+                  removalPolicy: cdk.RemovalPolicy.DESTROY,
+                },
+              ).logGroupArn,
+            },
+            INDEX_SLOW_LOGS: {
+              enabled: true,
+              cloudWatchLogsLogGroupArn: new cdk.aws_logs.LogGroup(
+                this,
+                "OpenSearchIndexSlowLogGroup",
+                {
+                  logGroupName: `/aws/opensearch/${project}-${stage}-index-slow-logs`,
+                  removalPolicy: cdk.RemovalPolicy.DESTROY,
+                },
+              ).logGroupArn,
+            },
+            SEARCH_SLOW_LOGS: {
+              enabled: true,
+              cloudWatchLogsLogGroupArn: new cdk.aws_logs.LogGroup(
+                this,
+                "OpenSearchSearchSlowLogGroup",
+                {
+                  logGroupName: `/aws/opensearch/${project}-${stage}-search-slow-logs`,
+                  removalPolicy: cdk.RemovalPolicy.DESTROY,
+                },
+              ).logGroupArn,
+            },
+            ES_APPLICATION_LOGS: {
+              enabled: true,
+              cloudWatchLogsLogGroupArn: new cdk.aws_logs.LogGroup(
+                this,
+                "OpenSearchApplicationLogGroup",
+                {
+                  logGroupName: `/aws/opensearch/${project}-${stage}-application-logs`,
+                  removalPolicy: cdk.RemovalPolicy.DESTROY,
+                },
+              ).logGroupArn,
+            },
           },
         },
       );
@@ -300,7 +344,7 @@ export class Data extends cdk.NestedStack {
         securityGroups: [lambdaSecurityGroup],
         environment: {
           brokerString,
-          region: this.region,
+          region: cdk.Stack.of(this).region,
           osDomain: `https://${openSearchDomain.attrDomainEndpoint}`,
         },
         bundling: {
@@ -321,7 +365,7 @@ export class Data extends cdk.NestedStack {
         serviceToken: customResourceProvider.serviceToken,
         properties: {
           OsDomain: `https://${openSearchDomain.attrDomainEndpoint}`,
-          IamRoleName: `arn:aws:iam::${this.account}:role/*`,
+          IamRoleName: `arn:aws:iam::${cdk.Stack.of(this).account}:role/*`,
           MasterRoleToAssume: openSearchMasterRole.roleArn,
           OsRoleName: "all_access",
         },
@@ -333,7 +377,7 @@ export class Data extends cdk.NestedStack {
 
     new LC.CreateTopics(this, "createTopics", {
       brokerString,
-      privateSubnets,
+      privateSubnets: privateSubnets,
       securityGroups: [lambdaSecurityGroup],
       topics: [
         {
@@ -346,7 +390,7 @@ export class Data extends cdk.NestedStack {
     if (isDev) {
       new LC.CleanupKafka(this, "cleanupKafka", {
         vpc,
-        privateSubnets,
+        privateSubnets: privateSubnets,
         securityGroups: [lambdaSecurityGroup],
         brokerString,
         topicPatternsToDelete: [`${topicNamespace}aws.onemac.migration.cdc`],
@@ -506,7 +550,7 @@ export class Data extends cdk.NestedStack {
             new cdk.aws_iam.PolicyStatement({
               actions: ["lambda:InvokeFunction"],
               resources: [
-                `arn:aws:lambda:${this.region}:${this.account}:function:${project}-${stage}-${stack}-*`,
+                `arn:aws:lambda:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:function:${project}-${stage}-${stack}-*`,
               ],
             }),
           ],
@@ -673,9 +717,7 @@ export class Data extends cdk.NestedStack {
               brokerString,
               securityGroup: lambdaSecurityGroup.securityGroupId,
               consumerGroupPrefix,
-              subnets: privateSubnets
-                .slice(0, 3)
-                .map((subnet) => subnet.subnetId),
+              subnets: privateSubnets.map((subnet) => subnet.subnetId),
               triggers: [
                 {
                   function: lambdaFunctions.sinkMain.functionName,
@@ -732,9 +774,7 @@ export class Data extends cdk.NestedStack {
                   brokerString,
                   securityGroup: lambdaSecurityGroup.securityGroupId,
                   consumerGroupPrefix,
-                  subnets: privateSubnets
-                    .slice(0, 3)
-                    .map((subnet) => subnet.subnetId),
+                  subnets: privateSubnets.map((subnet) => subnet.subnetId),
                   triggers: [
                     {
                       function: lambdaFunctions.sinkInsights.functionName,

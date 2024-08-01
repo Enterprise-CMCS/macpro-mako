@@ -8,6 +8,7 @@ import {
 } from "@/components";
 import { useFormContext } from "react-hook-form";
 import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
+import clsx from "clsx";
 
 export const FormSectionCard = ({
   children,
@@ -42,8 +43,12 @@ export const RequiredFieldDescription = () => (
   </>
 );
 
-export const ProgressLossReminder = () => (
-  <p className="font-bold">
+export const ProgressLossReminder = ({
+  className = "",
+}: {
+  className?: string;
+}) => (
+  <p className={clsx("font-bold", className)}>
     If you leave this page, you will lose your progress on this form.
   </p>
 );

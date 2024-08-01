@@ -1,5 +1,5 @@
 import { Argv } from "yargs";
-import { LabeledProcessRunner } from "../lib";
+import { checkIfAuthenticated, LabeledProcessRunner } from "../lib";
 
 const runner = new LabeledProcessRunner();
 
@@ -13,6 +13,7 @@ export const e2e = {
       default: false,
     }),
   handler: async ({ ui }: { ui: boolean }) => {
+    await checkIfAuthenticated();
     await runner.run_command_and_output(
       "Install playwright",
       ["bun", "playwright", "install", "--with-deps"],
