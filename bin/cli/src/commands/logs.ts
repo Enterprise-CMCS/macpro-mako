@@ -1,5 +1,10 @@
 import { Argv } from "yargs";
-import { checkIfAuthenticated, LabeledProcessRunner } from "../lib/";
+import {
+  checkIfAuthenticated,
+  LabeledProcessRunner,
+  project,
+  region,
+} from "../lib/";
 import simpleGit from "simple-git";
 import {
   ResourceGroupsTaggingAPIClient,
@@ -13,7 +18,7 @@ import {
 } from "@aws-sdk/client-lambda";
 import prompts from "prompts";
 
-const lambdaClient = new LambdaClient({ region: process.env.REGION_A });
+const lambdaClient = new LambdaClient({ region });
 
 const runner = new LabeledProcessRunner();
 
@@ -41,7 +46,7 @@ export const logs = {
     const lambdas = await getLambdasWithTags([
       {
         Key: "PROJECT",
-        Value: process.env.project!,
+        Value: project,
       },
       {
         Key: "STAGE",
@@ -93,7 +98,7 @@ interface Tag {
 
 async function getLambdasWithTags(tags: Tag[]): Promise<string[]> {
   const taggingClient = new ResourceGroupsTaggingAPIClient({
-    region: process.env.REGION_A,
+    region,
   });
 
   // Ensure tags are valid

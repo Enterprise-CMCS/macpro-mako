@@ -3,7 +3,7 @@ import {
   CostExplorerClient,
   GetCostAndUsageCommand,
 } from "@aws-sdk/client-cost-explorer";
-import { checkIfAuthenticated } from "../lib";
+import { checkIfAuthenticated, project } from "../lib";
 
 export const getCost = {
   command: "get-cost",
@@ -15,7 +15,7 @@ export const getCost = {
     await checkIfAuthenticated();
 
     const tags = {
-      PROJECT: [process.env.PROJECT!],
+      PROJECT: [project],
       STAGE: [options.stage],
     };
 
