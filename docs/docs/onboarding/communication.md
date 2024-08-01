@@ -42,7 +42,7 @@ We use Jira to document work items.  This should be the place where ideas are wr
 
 ## GitHub Pull Requests (PRs)
 
-GitHub Pull Requests are the primary vehicle to propose code changes to {{ site.repo.name }}.  A PR is always used to ship code to the master branch, with very few exceptions.
+GitHub Pull Requests are the primary vehicle to propose code changes to {{ site.repo.name }}.  A PR is always used to ship code to the main branch, with very few exceptions.
 
 This project has PR templates which will be used automatically when you create a PR.  While the template sets up a PR with the fields that are typically required, you need to add the content to the various sections.
 

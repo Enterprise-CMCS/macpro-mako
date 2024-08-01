@@ -73,7 +73,7 @@ export const testItemResult: opensearch.main.ItemResult = {
     ],
     appkParentId: null,
     raiWithdrawEnabled: false,
-    additionalInformation: "does the master branch work?!",
+    additionalInformation: "does the main branch work?!",
     submitterEmail: "george@example.com",
     submitterName: "George Harrison",
     origin: "OneMAC",
@@ -113,7 +113,7 @@ export const testItemResult: opensearch.main.ItemResult = {
           authority: "medicaid spa",
           origin: "micro",
           appkParentId: null,
-          additionalInformation: "does the master branch work?!",
+          additionalInformation: "does the main branch work?!",
           submitterName: "George Harrison",
           submitterEmail: "george@example.com",
           attachments: [

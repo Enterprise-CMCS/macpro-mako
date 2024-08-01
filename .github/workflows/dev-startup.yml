@@ -25,7 +25,7 @@ jobs:
         id: get_branches
         run: |
           gh api -X GET repos/${{ github.repository }}/branches -q '.[].name' > branches.txt
-          grep -Ev '^(skipci-|master|val|production)' branches.txt > filtered_branches.txt
+          grep -Ev '^(skipci-|main|val|production)' branches.txt > filtered_branches.txt
           echo "::set-output name=branches::$(cat filtered_branches.txt | paste -sd ',' -)"
 
       - name: Trigger workflows for each branch

@@ -56,7 +56,7 @@ export class DeploymentConfig {
       ...injectedConfig,
       project: options.project,
       stage: options.stage,
-      isDev: !["master", "val", "production"].includes(options.stage),
+      isDev: !["main", "val", "production"].includes(options.stage),
       terminationProtection: ["main", "val", "production"].includes(
         options.stage,
       ),
