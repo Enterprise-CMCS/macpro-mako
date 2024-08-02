@@ -11,7 +11,7 @@ export default {
   content: [
     "./src/**/*.{ts,tsx}",
     "./index.html",
-    "../api/webforms/**/*.{js,ts,jsx,tsx}",
+    "../lib/libs/webforms/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     fontFamily: {
