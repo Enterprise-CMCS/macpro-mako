@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@/components";
 import { Auth } from "aws-amplify";
-import { useIdle } from "@/hooks/useIdle";
+import { useIdle } from "@/hooks";
 import { useGetUser } from "@/api";
 import { useCountdown } from "@/hooks/useCountdown";
 import { intervalToDuration } from "date-fns";
