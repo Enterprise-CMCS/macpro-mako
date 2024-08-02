@@ -8,6 +8,24 @@ export const sortFunctions: {
   reverseSort: (a, b) => b.localeCompare(a),
 };
 
+export function stringCompare(
+  a: { label: string },
+  b: { label: string },
+): number {
+  const aIsNumber = !isNaN(parseFloat(a.label));
+  const bIsNumber = !isNaN(parseFloat(b.label));
+
+  if (aIsNumber && bIsNumber) {
+    return Number(a.label) - Number(b.label);
+  } else if (aIsNumber) {
+    return -1;
+  } else if (bIsNumber) {
+    return 1;
+  } else {
+    return a.label.localeCompare(b.label);
+  }
+}
+
 export const ruleGenerator: RuleGenerator = (rules, addtnlRules) => {
   if (!rules && !addtnlRules) return undefined;
   const simpleRules = rules ?? {};
