@@ -73,7 +73,7 @@ describe("useIdle", () => {
     expect(result.current).toBe(false);
   });
 
-  test("Returns correct value when timeout has elapsed", async () => {
+  test("Returns correct value when timeout has elapsed", () => {
     const { result } = renderHook(() =>
       useIdle(IDLE_TIME, { initialState: false }),
     );
