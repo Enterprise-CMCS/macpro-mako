@@ -14,10 +14,12 @@ const gitignorePath = path.resolve(__dirname, ".gitignore");
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
+  // @ts-expect-error https://github.com/typescript-eslint/typescript-eslint/issues/8522
   includeIgnoreFile(gitignorePath),
   {
     plugins: {
       react,
+      // @ts-expect-error https://github.com/facebook/react/pull/28773#issuecomment-2147149016
       "react-hooks": fixupPluginRules(eslintReactHooks),
     },
     languageOptions: {
