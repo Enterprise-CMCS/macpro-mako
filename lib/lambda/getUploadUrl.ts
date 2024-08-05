@@ -11,9 +11,10 @@ const s3 = new S3Client({
 });
 
 export const handler = async (event: APIGatewayEvent) => {
-  validateEnvVariable("attachmentsBucketName");
-  validateEnvVariable("attachmentsBucketRegion");
   try {
+    validateEnvVariable("attachmentsBucketName");
+    validateEnvVariable("attachmentsBucketRegion");
+
     if (!event.body) {
       return response({
         statusCode: 400,
