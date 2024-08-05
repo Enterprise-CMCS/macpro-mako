@@ -8,7 +8,7 @@ on:
     types:
       - completed
     branches:
-      - master
+      - main
       - val
       - production
   # Allows you to run this workflow manually from the Actions tab
@@ -40,7 +40,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: master
+          ref: main
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - uses: ./.github/actions/setup
@@ -55,17 +55,17 @@ jobs:
         run: |
           cd docs/_deploy-metrics
           rm -rf node_modules
-          yarn install --frozen-lockfile
+          bun install
           echo $BRANCHES_TO_GENERATE
       - name: Build Deploy Metrics
         run: |
           cd docs/_deploy-metrics
-          yarn build
+          bun run build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
           REPO_NAME: OneMAC
-          BRANCHES_TO_GENERATE: master,val
+          BRANCHES_TO_GENERATE: main,val
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
