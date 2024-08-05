@@ -11,8 +11,9 @@ export default {
   content: [
     "./src/**/*.{ts,tsx}",
     "./index.html",
-    "lib/libs/webforms/**/*.{js,ts,jsx,tsx}",
+    ".././lib/libs/webforms/**/*.{js,ts,jsx,tsx}",
   ],
+  relative: true,
   theme: {
     fontFamily: {
       serif: ["Merriweather", "serif"],
