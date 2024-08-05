@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { Kafka, Producer } from "kafkajs";
+import { Producer } from "kafkajs";
 import { produceMessage, getProducer } from "./kafka";
 
 vi.mock("kafkajs", () => {

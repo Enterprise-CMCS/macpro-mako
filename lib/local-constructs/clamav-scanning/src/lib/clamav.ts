@@ -18,7 +18,7 @@ const s3Client: S3Client = new S3Client();
 
 export const updateAVDefinitonsWithFreshclam = (): boolean => {
   try {
-    const { stdout, stderr, error }: SpawnSyncReturns<Buffer> = spawnSync(
+    const { stdout, stderr }: SpawnSyncReturns<Buffer> = spawnSync(
       `${constants.PATH_TO_FRESHCLAM}`,
       [
         `--config-file=${constants.FRESHCLAM_CONFIG}`,

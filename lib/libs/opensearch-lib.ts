@@ -35,7 +35,7 @@ function createAwsConnector(credentials: any) {
 export async function updateData(host: string, indexObject: any) {
   client = client || (await getClient(host));
   // Add a document to the index.
-  var response = await client.update(indexObject);
+  const response = await client.update(indexObject);
 }
 
 function sleep(ms: number): Promise<void> {
@@ -214,7 +214,7 @@ export async function createIndex(host: string, index: opensearch.Index) {
   client = client || (await getClient(host));
   try {
     const exists = await client.indices.exists({ index });
-    if (!!exists.body) return;
+    if (exists.body) return;
 
     await client.indices.create({ index });
   } catch (error) {
@@ -245,17 +245,17 @@ export async function updateFieldMapping(
 }
 
 function decodeUtf8(data: any): any {
-  if (typeof data === 'string') {
+  if (typeof data === "string") {
     try {
       return decodeURIComponent(escape(data));
-    } catch (e) {
+    } catch {
       return data;
     }
   }
   if (Array.isArray(data)) {
-    return data.map(item => decodeUtf8(item));
+    return data.map((item) => decodeUtf8(item));
   }
-  if (typeof data === 'object' && data !== null) {
+  if (typeof data === "object" && data !== null) {
     return Object.keys(data).reduce((acc, key) => {
       acc[key] = decodeUtf8(data[key]);
       return acc;

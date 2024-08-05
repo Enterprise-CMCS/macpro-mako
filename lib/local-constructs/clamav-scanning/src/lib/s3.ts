@@ -38,7 +38,7 @@ export async function checkFileSize(
     return res.ContentLength > parseInt(constants.MAX_FILE_SIZE)
       ? constants.STATUS_TOO_BIG
       : constants.STATUS_CLEAN_FILE;
-  } catch (e) {
+  } catch {
     logger.info(`Error finding size of S3 Object: s3://${bucket}/${key}`);
     return constants.STATUS_ERROR_PROCESSING_FILE;
   }

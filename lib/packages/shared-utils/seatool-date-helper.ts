@@ -29,27 +29,27 @@ export const formatSeatoolDate = (date: string): string => {
 export const getNextBusinessDayTimestamp = (
   date: Date = new Date(),
 ): number => {
-  let localeStringDate = date.toLocaleString("en-US", {
+  const localeStringDate = date.toLocaleString("en-US", {
     timeZone: "America/New_York",
     dateStyle: "short",
   });
-  let localeStringHours24 = date.toLocaleString("en-US", {
+  const localeStringHours24 = date.toLocaleString("en-US", {
     timeZone: "America/New_York",
     hour: "numeric",
     hour12: false,
   });
-  let localeDate = new Date(localeStringDate);
+  const localeDate = new Date(localeStringDate);
   const after5pmEST = parseInt(localeStringHours24, 10) >= 17;
   const isHoliday = fedHolidays.isAHoliday(localeDate);
   const isWeekend = !(localeDate.getDay() % 6);
   if (after5pmEST || isHoliday || isWeekend) {
-    let nextDate = localeDate;
+    const nextDate = localeDate;
     nextDate.setDate(nextDate.getDate() + 1);
     nextDate.setHours(12, 0, 0, 0);
     return getNextBusinessDayTimestamp(nextDate);
   }
 
   // Return the next business day's epoch for midnight UTC
-  let ret = offsetToUtc(localeDate).getTime();
+  const ret = offsetToUtc(localeDate).getTime();
   return ret;
 };

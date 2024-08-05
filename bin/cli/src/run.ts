@@ -14,7 +14,7 @@ import {
 } from "./commands";
 
 yargs
-  .fail((msg, err, _) => {
+  .fail((msg, err) => {
     if (err) throw err;
     if (msg) console.error(msg);
     process.exit(1);

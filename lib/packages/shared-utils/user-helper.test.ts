@@ -14,7 +14,6 @@ import {
   testStateIDMUser,
 } from "./testData";
 import { CognitoUserAttributes } from "shared-types";
-import { OneMacUser } from "ui/src/api";
 
 const cmsHelpDeskUser: CognitoUserAttributes = {
   ...testCMSCognitoUser.user,
