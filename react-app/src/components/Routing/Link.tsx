@@ -15,7 +15,6 @@ export type _LinkProps<T extends Route> = {
   Omit<LinkProps, "to">;
 
 export const Link = <T extends Route>(props: _LinkProps<T>) => {
-  //@ts-expect-error
   const { path, params, hash, query, ...rest } = props;
 
   const to = (() => {
@@ -37,7 +36,6 @@ export type _NavigateProps<T extends Route> = {
   Omit<NavigateProps, "to">;
 
 export const Navigate = <T extends Route>(props: _NavigateProps<T>) => {
-  //@ts-expect-error
   const { path, params, hash, query, ...rest } = props;
 
   const to = (() => {

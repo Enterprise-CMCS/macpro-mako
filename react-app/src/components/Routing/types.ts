@@ -31,9 +31,9 @@ export type Params<
 > =
   StringContains<T, TWildCard> extends true
     ? {
-        params: TupleByCharKeyToInterface<
+        params?: TupleByCharKeyToInterface<
           StringToTuple<T, TDelimiter>,
           TWildCard
         >;
       }
-    : { params: object };
+    : { params?: object };
