@@ -56,6 +56,7 @@ export class ClamScanScanner extends Construct {
     // Create a customer-managed KMS key
     const kmsKey = new kms.Key(this, "NotificationQueueKey", {
       enableKeyRotation: true,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
     // Grant SQS and S3 permissions to use the KMS key

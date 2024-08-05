@@ -4,7 +4,12 @@ import {
   DeleteStackCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
-import { confirmDestroyCommand } from "../lib";
+import {
+  checkIfAuthenticated,
+  confirmDestroyCommand,
+  project,
+  region,
+} from "../lib";
 
 const waitForStackDeleteComplete = async (
   client: CloudFormationClient,
@@ -37,7 +42,9 @@ export const destroy = {
     wait: boolean;
     verify: boolean;
   }) => {
-    const stackName = `${process.env.PROJECT}-${stage}`;
+    await checkIfAuthenticated();
+
+    const stackName = `${project}-${stage}`;
 
     if (/prod/i.test(stage)) {
       console.log("Error: Destruction of production stages is not allowed.");
@@ -46,7 +53,7 @@ export const destroy = {
 
     if (verify) await confirmDestroyCommand(stackName);
 
-    const client = new CloudFormationClient({ region: process.env.REGION_A });
+    const client = new CloudFormationClient({ region });
     await client.send(new DeleteStackCommand({ StackName: stackName }));
     console.log(`Stack ${stackName} delete initiated.`);
 

@@ -1,6 +1,11 @@
 import { Argv } from "yargs";
-import { LabeledProcessRunner } from "../lib/";
-import simpleGit from "simple-git";
+import {
+  checkIfAuthenticated,
+  LabeledProcessRunner,
+  project,
+  region,
+  setStageFromBranch,
+} from "../lib/";
 import {
   ResourceGroupsTaggingAPIClient,
   GetResourcesCommand,
@@ -13,7 +18,7 @@ import {
 } from "@aws-sdk/client-lambda";
 import prompts from "prompts";
 
-const lambdaClient = new LambdaClient({ region: process.env.REGION_A });
+const lambdaClient = new LambdaClient({ region });
 
 const runner = new LabeledProcessRunner();
 
@@ -29,17 +34,15 @@ export const logs = {
         demandOption: true,
       }),
   handler: async (options: { stage?: string; functionName: string }) => {
-    let { stage, functionName } = options;
-    if (!stage) {
-      const git = simpleGit();
-      const branchSummary = await git.branch();
-      stage = branchSummary.current;
-    }
+    await checkIfAuthenticated();
+    const stage = options.stage || (await setStageFromBranch());
+    const { functionName } = options;
+
     // Find all lambdas for the project and stage
     const lambdas = await getLambdasWithTags([
       {
         Key: "PROJECT",
-        Value: process.env.project!,
+        Value: project,
       },
       {
         Key: "STAGE",
@@ -91,7 +94,7 @@ interface Tag {
 
 async function getLambdasWithTags(tags: Tag[]): Promise<string[]> {
   const taggingClient = new ResourceGroupsTaggingAPIClient({
-    region: process.env.REGION_A,
+    region,
   });
 
   // Ensure tags are valid
