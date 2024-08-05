@@ -3,15 +3,11 @@ import defaultTheme from "tailwindcss/defaultTheme";
 
 export default {
   mode: "jit",
-  purge: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "./public/**/*.{png,ico,tsx,txt,pdf,doc}",
-  ],
   darkMode: ["class"],
   content: [
     "./src/**/*.{ts,tsx}",
     "./index.html",
-    "../api/webforms/**/*.{js,ts,jsx,tsx}",
+    "../lib/libs/webforms/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     fontFamily: {
