@@ -70,6 +70,15 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         });
         continue;
       }
+
+      // if() {
+      //   // see if there is a change date from seatool
+      //   // get the record with the id of this from open search
+      //   // check the latest activity timestamp
+      //   // if the change date is less than mako activity timestamp continue
+      //   // see if the changed_date
+      // }
+
       if (
         result.data.authorityId &&
         typeof result.data.seatoolStatus === "string" &&
