@@ -20,7 +20,6 @@ export const Link = <T extends Route>(props: _LinkProps<T>) => {
 
   const to = (() => {
     let url: string = path;
-    //@ts-expect-error
     if (params) url = urlEmbedParams(url, params);
     if (query) url = urlEmbedQuery(url, query);
     if (hash) url = urlEmbedHash(url, hash);
@@ -43,7 +42,6 @@ export const Navigate = <T extends Route>(props: _NavigateProps<T>) => {
 
   const to = (() => {
     let url: string = path;
-    //@ts-expect-error
     if (params) url = urlEmbedParams(path, params);
     if (query) url = urlEmbedQuery(path, query);
     if (hash) url = urlEmbedHash(path, hash);

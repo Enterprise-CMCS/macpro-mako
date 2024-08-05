@@ -59,7 +59,7 @@ describe("Handler for generating signed URL", () => {
         key: "123e4567-e89b-12d3-a456-426614174000.pdf",
       },
     });
-    expect(getSignedUrl).toHaveBeenCalled;
+    expect(getSignedUrl).toHaveBeenCalled();
   });
 
   it("should return 500 if an error occurs during processing", async () => {
@@ -80,6 +80,6 @@ describe("Handler for generating signed URL", () => {
   it("should throw an error if required environment variables are missing", () => {
     delete process.env.attachmentsBucketName;
 
-    expect(() => handler({} as APIGatewayEvent)).toThrowError;
+    expect(() => handler({} as APIGatewayEvent)).toThrowError();
   });
 });

@@ -50,7 +50,7 @@ export class LabeledProcessRunner {
   private sanitizeInput(input) {
     // A basic pattern that allows letters, numbers, dashes, underscores, and periods
     // Adjust the pattern to fit the expected input format
-    const sanitizedInput = input.replace(/[^a-zA-Z0-9-_\.]/g, "");
+    const sanitizedInput = input.replace(/[^a-zA-Z0-9-_.]/g, "");
     return sanitizedInput;
   }
 

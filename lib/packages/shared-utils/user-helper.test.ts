@@ -1,4 +1,4 @@
-import { describe, it, vi, expect } from "vitest";
+import { describe, it, expect } from "vitest";
 import {
   isCmsReadonlyUser,
   isCmsUser,
@@ -95,7 +95,6 @@ describe("isCmsSuperUser", () => {
 });
 
 describe("isIDM", () => {
-  const consoleErrorSpy = vi.spyOn(console, "error");
   it("returns false if a user has no Cognito identities", () => {
     expect(isIDM(testStateCognitoUser.user)).toBe(false);
     expect(isIDM(testCMSCognitoUser.user)).toBe(false);

@@ -225,7 +225,7 @@ export class Auth extends cdk.NestedStack {
       },
     );
 
-    const manageUsers = new ManageUsers(
+    new ManageUsers(
       this,
       "ManageUsers",
       userPool,

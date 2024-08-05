@@ -63,7 +63,7 @@ export const downloadAVDefinitions = async (): Promise<void[]> => {
   // Download each file in the bucket
   const downloadPromises: Promise<void>[] = definitionFileKeys.map(
     (filenameToDownload) => {
-      return new Promise<void>(async (resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
         const destinationFile: string = path.join(
           constants.FRESHCLAM_WORK_DIR,
           filenameToDownload,
@@ -79,13 +79,17 @@ export const downloadAVDefinitions = async (): Promise<void[]> => {
         };
 
         try {
-          const { Body } = await s3Client.send(new GetObjectCommand(options));
-          if (!Body || !(Body instanceof Readable)) {
-            throw new Error("Invalid Body type received from S3");
-          }
-          await asyncfs.writeFile(destinationFile, Body);
-          logger.info(`Finished download ${filenameToDownload}`);
-          resolve();
+          s3Client
+            .send(new GetObjectCommand(options))
+            .then(async ({ Body }) => {
+              if (!Body || !(Body instanceof Readable)) {
+                throw new Error("Invalid Body type received from S3");
+              }
+
+              await asyncfs.writeFile(destinationFile, Body);
+              resolve();
+              logger.info(`Finished download ${filenameToDownload}`);
+            });
         } catch (err) {
           logger.info(
             `Error downloading definition file ${filenameToDownload}`,
@@ -145,7 +149,7 @@ export const uploadAVDefinitions = async (): Promise<void[]> => {
 
   const uploadPromises: Promise<void>[] = definitionFiles.map(
     (filenameToUpload) => {
-      return new Promise<void>(async (resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
         logger.info(
           `Uploading updated definitions for file ${filenameToUpload} ---`,
         );
@@ -159,9 +163,10 @@ export const uploadAVDefinitions = async (): Promise<void[]> => {
         };
 
         try {
-          await s3Client.send(new PutObjectCommand(options));
-          resolve();
-          logger.info(`--- Finished uploading ${filenameToUpload} ---`);
+          s3Client.send(new PutObjectCommand(options)).then(() => {
+            logger.info(`--- Finished uploading ${filenameToUpload} ---`);
+            resolve();
+          });
         } catch (err) {
           logger.info(`--- Error uploading ${filenameToUpload} ---`);
           logger.info(err);

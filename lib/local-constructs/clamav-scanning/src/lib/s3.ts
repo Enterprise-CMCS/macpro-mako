@@ -4,7 +4,6 @@ import {
   GetObjectCommand,
   PutObjectTaggingCommand,
   HeadObjectCommandOutput,
-  PutObjectTaggingCommandOutput,
   ListObjectsV2Command,
 } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
@@ -55,7 +54,7 @@ export async function downloadFileFromS3(
   const localPath: string = `${
     constants.TMP_DOWNLOAD_PATH
   }${randomUUID()}--${s3ObjectKey}`;
-  const writeStream: fs.WriteStream = fs.createWriteStream(localPath);
+  fs.createWriteStream(localPath);
 
   logger.info(`Downloading file s3://${s3ObjectBucket}/${s3ObjectKey}`);
 
@@ -84,7 +83,7 @@ export async function tagWithScanStatus(
   virusScanStatus: string,
 ): Promise<void> {
   try {
-    const res: PutObjectTaggingCommandOutput = await s3Client.send(
+    await s3Client.send(
       new PutObjectTaggingCommand({
         Bucket: bucket,
         Key: key,

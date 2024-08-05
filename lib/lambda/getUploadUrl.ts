@@ -48,15 +48,3 @@ export const handler = async (event: APIGatewayEvent) => {
     });
   }
 };
-
-function checkEnvVariables(requiredEnvVariables: string[]) {
-  const missingVariables = requiredEnvVariables.filter(
-    (envVar) => !process.env[envVar],
-  );
-
-  if (missingVariables.length > 0) {
-    throw new Error(
-      `Missing required environment variables: ${missingVariables.join(", ")}`,
-    );
-  }
-}

@@ -1,15 +1,9 @@
 import {
   NavigateOptions,
   useNavigate as useNav,
-  useParams as usePara,
   redirect as redir,
 } from "react-router-dom";
-import {
-  Route,
-  Params,
-  TupleByCharKeyToInterface,
-  StringToTuple,
-} from "./types";
+import { Route, Params } from "./types";
 import { urlEmbedHash, urlEmbedParams, urlEmbedQuery } from "./utils";
 
 export const useNavigate = () => {
@@ -37,10 +31,6 @@ export const useNavigate = () => {
   };
 
   return navigate;
-};
-
-export const useParams = <T extends Route>() => {
-  return usePara<TupleByCharKeyToInterface<StringToTuple<T, "/">, ":">>();
 };
 
 export const redirect = <T extends Route>(
