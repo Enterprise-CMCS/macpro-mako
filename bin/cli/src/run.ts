@@ -32,4 +32,5 @@ yargs
   .command(getCost)
   .strict()
   .scriptName("run")
-  .demandCommand(1, "");
+  .demandCommand(1, "")
+  .parse();
