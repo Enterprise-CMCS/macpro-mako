@@ -19,7 +19,6 @@ export const useNavigate = () => {
   ) => {
     const to = (() => {
       let url: string = props.path;
-      //@ts-expect-error
       if (props.params) url = urlEmbedParams(url, props.params);
       if (props.query) url = urlEmbedQuery(url, props.query);
       if (props.hash) url = urlEmbedHash(url, props.hash);
@@ -42,7 +41,6 @@ export const redirect = <T extends Route>(
 ) => {
   const to = (() => {
     let url: string = props.path;
-    //@ts-expect-error
     if (props.params) url = urlEmbedParams(url, props.params);
     if (props.query) url = urlEmbedQuery(url, props.query);
     if (props.hash) url = urlEmbedHash(url, props.hash);

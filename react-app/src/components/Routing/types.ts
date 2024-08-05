@@ -22,7 +22,7 @@ export type StringToTuple<
 type StringContains<
   T extends string,
   C extends string,
-> = T extends `${infer _U}${C}${infer _A}` ? true : false;
+> = T extends `${string}${C}${string}` ? true : false;
 
 export type Params<
   T extends string,
@@ -36,4 +36,4 @@ export type Params<
           TWildCard
         >;
       }
-    : object;
+    : { params: object };
