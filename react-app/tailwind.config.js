@@ -8,12 +8,13 @@ export default {
     "./public/**/*.{png,ico,tsx,txt,pdf,doc}",
   ],
   darkMode: ["class"],
-  content: [
+  content: {files: [
     "./src/**/*.{ts,tsx}",
     "./index.html",
     ".././lib/libs/webforms/**/*.{js,ts,jsx,tsx}",
   ],
   relative: true,
+},
   theme: {
     fontFamily: {
       serif: ["Merriweather", "serif"],
