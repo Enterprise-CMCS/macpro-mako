@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   aggQueryBuilder,
   filterQueryBuilder,
@@ -76,7 +75,7 @@ export const useOsSearch = <TProps, TResponse>(
     QueryProps<TProps>
   >,
 ) => {
-  //@ts-ignore
+  //@ts-expect-error
   return useMutation<TResponse, ReactQueryApiError, QueryProps<TProps>>(
     (props) => getOsData(props),
     options,

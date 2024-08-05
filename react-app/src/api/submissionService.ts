@@ -63,8 +63,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
 ) => {
   const userDetails = {
     submitterEmail: user?.user?.email ?? "N/A",
-    submitterName:
-      `${user?.user?.given_name} ${user?.user?.family_name}` ?? "N/A",
+    submitterName: `${user?.user?.given_name} ${user?.user?.family_name}`,
   };
   const baseProperties = {
     authority: authority,

@@ -1,5 +1,3 @@
-import type { UrlObject } from "url";
-
 export type RoutesModule = typeof import("./routes");
 
 export type Route = RoutesModule[keyof RoutesModule];
@@ -38,5 +36,4 @@ export type Params<
           TWildCard
         >;
       }
-    : // eslint-disable-next-line @typescript-eslint/ban-types
-      {};
+    : object;

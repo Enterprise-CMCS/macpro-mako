@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   NavigateOptions,
   useNavigate as useNav,
@@ -26,7 +25,7 @@ export const useNavigate = () => {
   ) => {
     const to = (() => {
       let url: string = props.path;
-      //@ts-ignore
+      //@ts-expect-error
       if (props.params) url = urlEmbedParams(url, props.params);
       if (props.query) url = urlEmbedQuery(url, props.query);
       if (props.hash) url = urlEmbedHash(url, props.hash);
@@ -40,8 +39,7 @@ export const useNavigate = () => {
   return navigate;
 };
 
-export const useParams = <T extends Route>(_: T) => {
-  //@ts-ignore
+export const useParams = <T extends Route>() => {
   return usePara<TupleByCharKeyToInterface<StringToTuple<T, "/">, ":">>();
 };
 
@@ -54,7 +52,7 @@ export const redirect = <T extends Route>(
 ) => {
   const to = (() => {
     let url: string = props.path;
-    //@ts-ignore
+    //@ts-expect-error
     if (props.params) url = urlEmbedParams(url, props.params);
     if (props.query) url = urlEmbedQuery(url, props.query);
     if (props.hash) url = urlEmbedHash(url, props.hash);

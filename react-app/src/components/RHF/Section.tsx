@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+ 
 import { Control, FieldValues } from "react-hook-form";
 import { Section } from "shared-types";
 import { FormLabel } from "../Inputs";
