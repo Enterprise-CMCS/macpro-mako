@@ -11,32 +11,14 @@ describe("CloudWatchToS3", () => {
   const stack = new cdk.Stack(app, "TestStack");
   const logGroup = new logs.LogGroup(stack, "LogGroup");
 
-  const cloudWatchToS3 = new CloudWatchToS3(stack, "CloudWatchToS3", {
-    logGroup,
+  const bucket = new cdk.aws_s3.Bucket(stack, "Bucket", {
+    versioned: true,
+    removalPolicy: cdk.RemovalPolicy.DESTROY,
   });
 
-  it("should create an S3 bucket with appropriate properties", () => {
-    const logBucket = cloudWatchToS3.logBucket;
-    expect(logBucket).toBeInstanceOf(s3.Bucket);
-
-    const bucketConfig = logBucket.node.defaultChild as s3.CfnBucket;
-    expect(bucketConfig.versioningConfiguration.status).toBe("Enabled");
-    expect(
-      bucketConfig.bucketEncryption.serverSideEncryptionConfiguration[0]
-        .serverSideEncryptionByDefault.sseAlgorithm,
-    ).toBe("AES256");
-    expect(bucketConfig.publicAccessBlockConfiguration.blockPublicAcls).toBe(
-      true,
-    );
-    expect(bucketConfig.publicAccessBlockConfiguration.blockPublicPolicy).toBe(
-      true,
-    );
-    expect(bucketConfig.publicAccessBlockConfiguration.ignorePublicAcls).toBe(
-      true,
-    );
-    expect(
-      bucketConfig.publicAccessBlockConfiguration.restrictPublicBuckets,
-    ).toBe(true);
+  const cloudWatchToS3 = new CloudWatchToS3(stack, "CloudWatchToS3", {
+    logGroup,
+    bucket,
   });
 
   it("should create a Firehose delivery stream with appropriate properties", () => {
@@ -46,7 +28,7 @@ describe("CloudWatchToS3", () => {
 
     const s3DestConfig =
       deliveryStream.extendedS3DestinationConfiguration as firehose.CfnDeliveryStream.ExtendedS3DestinationConfigurationProperty;
-    expect(s3DestConfig.bucketArn).toBe(cloudWatchToS3.logBucket.bucketArn);
+    expect(s3DestConfig.bucketArn).toBe(bucket.bucketArn);
   });
 
   it("should create IAM roles with appropriate policies", () => {
@@ -71,7 +53,7 @@ describe("CloudWatchToS3", () => {
       expect.arrayContaining([
         expect.objectContaining({
           actions: ["s3:PutObject", "s3:PutObjectAcl"],
-          resources: [`${cloudWatchToS3.logBucket.bucketArn}/*`],
+          resources: [`${bucket.bucketArn}/*`],
         }),
         expect.objectContaining({
           actions: ["logs:PutLogEvents"],

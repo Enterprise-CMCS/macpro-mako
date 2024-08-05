@@ -71,10 +71,10 @@ Each branch pushed to the {{ site.repo.name }} git repository is automatically d
 
 #### Procedure
 - [Obtain and set AWS CLI credentials]({{ site.baseurl }}{%link docs/developer-guide/aws-auth.md %})
-- Create a new branch based off of any other branch or commit.  The 'master' branch is the most common branch from which to create new branches, and is shown in the following procedure.:
+- Create a new branch based off of any other branch or commit.  The 'main' branch is the most common branch from which to create new branches, and is shown in the following procedure.:
   ```bash
     cd {{ site.repo.name }}
-    git checkout master
+    git checkout main
     git pull
     git checkout -b foo
     git push --set-upstream origin foo

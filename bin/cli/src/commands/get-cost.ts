@@ -3,20 +3,23 @@ import {
   CostExplorerClient,
   GetCostAndUsageCommand,
 } from "@aws-sdk/client-cost-explorer";
-import { checkIfAuthenticated } from "../lib";
+import { checkIfAuthenticated, setStageFromBranch, project } from "../lib";
 
 export const getCost = {
   command: "get-cost",
   describe: "get cost of an environment",
   builder: (yargs: Argv) => {
-    return yargs.option("stage", { type: "string", demandOption: true });
+    return yargs.option("stage", {
+      type: "string",
+      demandOption: false,
+    });
   },
-  handler: async (options: { stage: string; stack?: string }) => {
+  handler: async (options: { stage?: string; stack?: string }) => {
     await checkIfAuthenticated();
-
+    const stage = options.stage || (await setStageFromBranch());
     const tags = {
-      PROJECT: [process.env.PROJECT!],
-      STAGE: [options.stage],
+      PROJECT: [project],
+      STAGE: [stage],
     };
 
     const today = new Date();
@@ -44,9 +47,7 @@ export const getCost = {
       )}`,
     );
     console.log(
-      `Yesterday, the stack ${options.stage} cost $${yesterdayCost.toFixed(
-        2,
-      )}.`,
+      `Yesterday, the stack ${stage} cost $${yesterdayCost.toFixed(2)}.`,
     );
   },
 };
