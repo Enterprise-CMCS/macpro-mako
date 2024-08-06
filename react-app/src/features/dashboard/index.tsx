@@ -4,7 +4,6 @@ import { Plus as PlusIcon } from "lucide-react";
 import { getUser } from "@/api";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
-import { SimplePageContainer } from "@/components";
 import {
   OsProvider,
   type OsTab,

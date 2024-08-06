@@ -273,12 +273,8 @@ const changed_date = async (
 ) => {
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
-    const { key, value } = kafkaRecord;
+    const { value } = kafkaRecord;
     try {
-      // Set id
-      const id: string = JSON.parse(decodeBase64WithUtf8(key)).payload
-        .ID_Number;
-
       // Handle delete events and continue
       if (value === undefined) {
         continue;

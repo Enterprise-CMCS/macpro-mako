@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   Link as AppLink,
   Navigate as AppNavigate,
@@ -16,12 +15,10 @@ export type _LinkProps<T extends Route> = {
   Omit<LinkProps, "to">;
 
 export const Link = <T extends Route>(props: _LinkProps<T>) => {
-  //@ts-ignore
   const { path, params, hash, query, ...rest } = props;
 
   const to = (() => {
     let url: string = path;
-    //@ts-ignore
     if (params) url = urlEmbedParams(url, params);
     if (query) url = urlEmbedQuery(url, query);
     if (hash) url = urlEmbedHash(url, hash);
@@ -39,12 +36,10 @@ export type _NavigateProps<T extends Route> = {
   Omit<NavigateProps, "to">;
 
 export const Navigate = <T extends Route>(props: _NavigateProps<T>) => {
-  //@ts-ignore
   const { path, params, hash, query, ...rest } = props;
 
   const to = (() => {
     let url: string = path;
-    //@ts-ignore
     if (params) url = urlEmbedParams(path, params);
     if (query) url = urlEmbedQuery(path, query);
     if (hash) url = urlEmbedHash(path, hash);

@@ -1,12 +1,14 @@
+/* eslint-disable */
+
 import * as UI from "@chakra-ui/react";
 import { formatDistance } from "date-fns";
 import { Resource } from "../lib/getAwsResources";
 
 const ResourceTypeLabel = ({ type }: { type: string }) => {
-  let iconName = type.split("::")[1];
+  const iconName = type.split("::")[1];
   try {
     var ICON = require(`react-aws-icons/dist/aws/logo/${iconName}`).default;
-  } catch (ex) {
+  } catch {
     var ICON = require(`react-aws-icons/dist/aws/logo/AWS`).default;
   }
 

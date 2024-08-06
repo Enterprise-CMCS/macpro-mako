@@ -1,5 +1,3 @@
-import type { UrlObject } from "url";
-
 export type RoutesModule = typeof import("./routes");
 
 export type Route = RoutesModule[keyof RoutesModule];
@@ -24,7 +22,7 @@ export type StringToTuple<
 type StringContains<
   T extends string,
   C extends string,
-> = T extends `${infer _U}${C}${infer _A}` ? true : false;
+> = T extends `${string}${C}${string}` ? true : false;
 
 export type Params<
   T extends string,
@@ -33,10 +31,9 @@ export type Params<
 > =
   StringContains<T, TWildCard> extends true
     ? {
-        params: TupleByCharKeyToInterface<
+        params?: TupleByCharKeyToInterface<
           StringToTuple<T, TDelimiter>,
           TWildCard
         >;
       }
-    : // eslint-disable-next-line @typescript-eslint/ban-types
-      {};
+    : { params?: object };
