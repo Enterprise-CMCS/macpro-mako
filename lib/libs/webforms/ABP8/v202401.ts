@@ -410,12 +410,178 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Will one or more ABP benefits or services be provided through a type of coverage other than the MCO, such as another managed care plan or fee-for service delivery system?",
+              labelClassName: "font-bold",
               name: "abp-benefits-provided",
               props: {
                 className: "w-[125px]",
                 options: [
                   { label: "Yes", value: "yes" },
                   { label: "No", value: "no" },
+                ],
+              },
+            },
+            {
+              rhf: "FieldGroup",
+              name: "benefit-service",
+              label:
+                "Which benefit or service will be provided by a type of coverage other than the MCO?",
+              labelClassName: "font-bold",
+              props: {
+                appendText: "Add benefit or service",
+                removeText: "Remove",
+              },
+              fields: [
+                {
+                  rhf: "WrappedGroup",
+                  name: "benefit-service",
+                  props: {
+                    wrapperClassName:
+                      "ml-[0.6rem] px-4  border-l-4 border-l-primary my-2",
+                  },
+                  fields: [
+                    {
+                      rhf: "Input",
+                      label: "Benefit or service",
+                      labelClassName: "font-bold",
+                      name: "benefit-service",
+                      props: {
+                        className: "w-full",
+                      },
+                    },
+                    {
+                      rhf: "Textarea",
+                      label: "How it will be provided",
+                      labelClassName: "font-bold",
+                      name: "how-provided",
+                      props: {
+                        className: "w-[527px]",
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              rhf: "Select",
+              label:
+                "Is MCO service delivery provided on less than a statewide basis?",
+              labelClassName: "font-bold",
+              name: "mco-service-delivery",
+              props: {
+                className: "w-[125px]",
+                options: [
+                  { label: "Yes", value: "yes" },
+                  { label: "No", value: "no" },
+                ],
+              },
+            },
+            {
+              rhf: "Radio",
+              label:
+                "What is the limited geographic area where MCO service delivery is available?",
+              name: "mco-geographic-area",
+              props: {
+                options: [
+                  {
+                    label: "Only in designated counties",
+                    value: "counties",
+                    slots: [
+                      {
+                        rhf: "Input",
+                        label: "Counties",
+                        labelClassName: "font-bold",
+                        name: "counties",
+                        props: {
+                          className: "w-full",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label: "Only in designated regions",
+                    value: "regions",
+                    slots: [
+                      {
+                        rhf: "Input",
+                        label: "Regions and makeup of each",
+                        labelClassName: "font-bold",
+                        name: "regions",
+                        props: {
+                          className: "w-full",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label: "Only in designated cities and municipalities",
+                    value: "cities",
+                    slots: [
+                      {
+                        rhf: "Input",
+                        label: "Cities and municipalities",
+                        labelClassName: "font-bold",
+                        name: "cities",
+                        props: {
+                          className: "w-full",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label:
+                      "In some other geographic area (must not be smaller than a zip code)",
+                    value: "other-geographic-area",
+                    slots: [
+                      {
+                        rhf: "Input",
+                        label: "Geographic area",
+                        labelClassName: "font-bold",
+                        name: "geographic-area",
+                        props: {
+                          className: "w-full",
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "MCO participation exclusions",
+      sectionId: "mco-participation-exclusions",
+      subsection: true,
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Select",
+              label:
+                "Are individuals excluded from MCO participation in the ABP?",
+              labelClassName: "font-bold",
+              name: "mco-participation-exclusions",
+              props: {
+                className: "w-[125px]",
+                options: [
+                  { label: "Yes", value: "yes" },
+                  { label: "No", value: "no" },
+                ],
+              },
+            },
+            {
+              rhf: "Checkbox",
+              label: "Excluded individuals",
+              labelClassName: "font-bold",
+              name: "excluded-individuals",
+              props: {
+                options: [
+                  {
+                    label: "Individuals with other medical insurance",
+                    value: "other-insurance",
+                  },
                 ],
               },
             },
