@@ -17,6 +17,8 @@ export type InjectedConfigProperties = {
   emailIdentityDomain: string;
   googleAnalyticsDisable: boolean;
   googleAnalyticsGTag: string;
+  iamPath: string;
+  iamPermissionsBoundary: string;
   idmAuthzApiEndpoint: string;
   idmAuthzApiKeyArn: string;
   idmClientId: string;
@@ -56,8 +58,8 @@ export class DeploymentConfig {
       ...injectedConfig,
       project: options.project,
       stage: options.stage,
-      isDev: !["master", "val", "production"].includes(options.stage),
-      terminationProtection: ["master", "val", "production"].includes(
+      isDev: !["main", "val", "production"].includes(options.stage),
+      terminationProtection: ["main", "val", "production"].includes(
         options.stage,
       ),
       sharedOpenSearchDomainArn: "",
@@ -128,6 +130,8 @@ export class DeploymentConfig {
       typeof config.emailAddressLookupSecretName === "string" && // pragma: allowlist secret
       typeof config.googleAnalyticsDisable == "boolean" &&
       typeof config.googleAnalyticsGTag === "string" &&
+      typeof config.iamPermissionsBoundary === "string" &&
+      typeof config.iamPath === "string" &&
       typeof config.idmAuthzApiEndpoint === "string" &&
       typeof config.idmAuthzApiKeyArn === "string" && // pragma: allowlist secret
       typeof config.idmClientId === "string" &&

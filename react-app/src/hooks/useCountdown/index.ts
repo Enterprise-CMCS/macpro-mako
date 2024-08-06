@@ -9,9 +9,9 @@ type CountdownControllers = {
 };
 
 export const useCountdown = (
-  countStart: number,
+  minutesToCountDown: number,
 ): [number, CountdownControllers] => {
-  const [count, setCount] = useState<number>(countStart);
+  const [count, setCount] = useState<number>(minutesToCountDown);
   const [isCountdownRunning, setIsCountdownRunning] = useState<boolean>(false);
 
   const startCountdown = () => {
@@ -25,7 +25,7 @@ export const useCountdown = (
   // Will set running false and reset the seconds to initial value
   const resetCountdown = useCallback(() => {
     stopCountdown();
-    setCount(countStart);
+    setCount(minutesToCountDown);
   }, [stopCountdown]);
 
   const countdownCallback = useCallback(() => {

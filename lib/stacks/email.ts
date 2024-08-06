@@ -188,10 +188,24 @@ export class Email extends cdk.NestedStack {
               actions: ["ec2:DescribeSecurityGroups", "ec2:DescribeVpcs"],
               resources: ["*"],
             }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.DENY,
+              actions: ["logs:CreateLogGroup"],
+              resources: ["*"],
+            }),
           ],
         }),
       },
     });
+
+    const processEmailsLambdaLogGroup = new cdk.aws_logs.LogGroup(
+      this,
+      "ProcessEmailsLambdaLogGroup",
+      {
+        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-processEmails`,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+      },
+    );
 
     // Lambda Function for Processing Emails
     const processEmailsLambda = new NodejsFunction(
@@ -211,6 +225,7 @@ export class Email extends cdk.NestedStack {
           subnets: privateSubnets,
         },
         securityGroups: [lambdaSecurityGroup],
+        logGroup: processEmailsLambdaLogGroup,
         environment: {
           EMAIL_IDENTITY: emailFromIdentity,
           CONFIGURATION_SET: configurationSet.name!,

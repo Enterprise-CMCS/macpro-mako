@@ -1,4 +1,10 @@
 import * as cdk from "aws-cdk-lib";
+import { AnyPrincipal, Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
+import {
+  BlockPublicAccess,
+  Bucket,
+  BucketEncryption,
+} from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
 import * as LC from "local-constructs";
 
@@ -199,17 +205,38 @@ export class UiInfra extends cdk.NestedStack {
       },
     );
 
+    const logBucket = new Bucket(this, "LogBucket", {
+      versioned: true,
+      encryption: BucketEncryption.S3_MANAGED,
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    logBucket.addToResourcePolicy(
+      new PolicyStatement({
+        effect: Effect.DENY,
+        principals: [new AnyPrincipal()],
+        actions: ["s3:*"],
+        resources: [logBucket.bucketArn, `${logBucket.bucketArn}/*`],
+        conditions: {
+          Bool: { "aws:SecureTransport": "false" },
+        },
+      }),
+    );
+
+    const emptyBuckets = new LC.EmptyBuckets(this, "EmptyBuckets", {
+      buckets: [bucket, loggingBucket, logBucket],
+    });
+
     const cloudwatchToS3 = new LC.CloudWatchToS3(
       this,
       "CloudWatchToS3Construct",
       {
         logGroup: waf.logGroup,
+        bucket: logBucket,
       },
     );
-
-    new LC.EmptyBuckets(this, "EmptyBuckets", {
-      buckets: [bucket, loggingBucket, cloudwatchToS3.logBucket],
-    });
+    cloudwatchToS3.node.addDependency(emptyBuckets);
 
     return { distribution, bucket };
   }

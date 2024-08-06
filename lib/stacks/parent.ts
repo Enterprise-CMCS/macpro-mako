@@ -28,7 +28,7 @@ export class ParentStack extends cdk.Stack {
     });
     const privateSubnets = sortSubnets(vpc.privateSubnets).slice(0, 3);
 
-    if (!props.isDev || props.stage === "main") {
+    if (!props.isDev) {
       new CloudWatchLogsResourcePolicy(this, "logPolicy", {
         project: props.project,
       });

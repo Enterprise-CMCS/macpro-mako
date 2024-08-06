@@ -2,6 +2,8 @@ import { Argv } from "yargs";
 import {
   checkIfAuthenticated,
   LabeledProcessRunner,
+  project,
+  region,
   writeUiEnvFile,
 } from "../lib/";
 import path from "path";
@@ -40,7 +42,7 @@ export const deploy = {
       (
         await new SSMClient({ region: "us-east-1" }).send(
           new GetParameterCommand({
-            Name: `/${process.env.PROJECT}/${options.stage}/deployment-output`,
+            Name: `/${project}/${options.stage}/deployment-output`,
           }),
         )
       ).Parameter!.Value!,
@@ -73,7 +75,7 @@ export const deploy = {
     );
 
     const cloudfrontClient = new CloudFrontClient({
-      region: process.env.REGION_A,
+      region,
     });
     const invalidationParams = {
       DistributionId: cloudfrontDistributionId,
