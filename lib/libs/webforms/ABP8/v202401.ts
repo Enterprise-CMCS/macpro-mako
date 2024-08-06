@@ -129,6 +129,118 @@ export const v202401: FormSchema = {
                     label:
                       "The state provides an enrollment choice period, as described in 42 CFR 438.54(c)(1)(i) and 42 CFR 438.54(c)(2)(i), during which individuals who are subject to voluntary enrollment may make an active choice to enroll in the managed care program or will otherwise continue to receive covered services through the fee-for-service (FFS) delivery system.",
                     value: "enrollment-choice-period",
+                    slots: [
+                      {
+                        rhf: "Input",
+                        label: "Length of enrollment choice period",
+                        name: "enrollment-choice-period-length",
+                        labelClassName: "font-bold",
+                        props: {
+                          className: "w-full",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label:
+                      "The state uses a passive enrollment process, as described in 42 CFR 438.54(c)(1)(ii) and 438.54 (c)(2)(ii), for individuals who are subject to voluntary enrollment.",
+                    value: "passive-enrollment",
+                    slots: [
+                      {
+                        rhf: "Textarea",
+                        label:
+                          "Describe the method used for passive enrollment and how the method and the state’s provision of information meet all the requirements of 42 CFR 438.54(c)(4), (5), (6), (7), and (8).",
+                        labelClassName: "font-bold",
+                        name: "passive-enrollment-method",
+                        props: {
+                          className: "min-h-[114px]",
+                        },
+                      },
+                      {
+                        rhf: "Input",
+                        label:
+                          "How much time will the enrollee have to disenroll from the plan and return to the FFS delivery system?",
+                        labelClassName: "font-bold",
+                        name: "disenroll-time",
+                        props: {
+                          className: "w-full",
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              rhf: "TextDisplay",
+              text: "Mandatory enrollment (42 CFR 438.54(d))",
+              name: "mandatory-enrollment-textdisplay",
+              props: { className: "text-black font-bold" },
+            },
+            {
+              rhf: "Textarea",
+              label:
+                "How will the state fulfill its obligations to provide information as specified in 42 CFR 438.10(c)(4), 42 CFR 438.10(e), and 42 CFR 438.54(d)(3)?",
+              labelClassName: "font-bold",
+              name: "mandatory-enrollment-info",
+              props: {
+                className: "min-h-[114px]",
+              },
+            },
+            {
+              rhf: "Checkbox",
+              name: "mandatory-enrollment-options",
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state provides an enrollment choice period, as described in 42 CFR 438.54(d)(2)(i), during which individuals who are subject to mandatory enrollment may make an active choice to select a managed care plan or will otherwise be enrolled in a plan selected by the state’s default enrollment process.",
+                    value: "enrollment-choice-period",
+                    slots: [
+                      {
+                        rhf: "Input",
+                        label: "Length of enrollment choice period",
+                        name: "enrollment-choice-period-length",
+                        labelClassName: "font-bold",
+                        props: {
+                          className: "w-full",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label:
+                      "The state uses a default enrollment process, as described in 42 CFR 438.54(d)(5), for individuals who are subject to mandatory enrollment.",
+                    value: "default-enrollment",
+                    slots: [
+                      {
+                        rhf: "Textarea",
+                        label:
+                          "Describe the method used for default enrollment and how it meets all the requirements of 42 CFR 438.54(d)(4), (5), (7), and (8).",
+                        labelClassName: "font-bold",
+                        name: "default-enrollment-method",
+                        props: {
+                          className: "min-h-[114px]",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label:
+                      "The state uses a passive enrollment process, as described in 42 CFR 438.54(d)(2), for individuals who are subject to mandatory enrollment.",
+                    value: "passive-enrollment",
+                    slots: [
+                      {
+                        rhf: "Textarea",
+                        label:
+                          "Describe the method used for passive enrollment and how it meets all of the requirements of 42 CFR 438.54(d)(4), (6), (7), and (8).",
+                        labelClassName: "font-bold",
+                        name: "passive-enrollment-method",
+                        props: {
+                          className: "min-h-[114px]",
+                        },
+                      },
+                    ],
                   },
                 ],
               },
