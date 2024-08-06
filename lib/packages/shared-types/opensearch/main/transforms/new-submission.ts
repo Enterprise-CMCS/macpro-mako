@@ -84,7 +84,7 @@ export const transform = (id: string) => {
       };
     } else {
       const { stateStatus, cmsStatus } = getStatus(data.seatoolStatus);
-      //@ts-ignore
+      // eslint-disable-next-line
       const currentDate = !!data.timestamp
         ? new Date(data.timestamp).toISOString()
         : seaToolFriendlyTimestamp();
