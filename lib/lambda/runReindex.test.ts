@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { Handler } from "aws-lambda";
 import { send, SUCCESS, FAILED } from "cfn-response-async";
 import { SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
 import { handler } from "./runReindex";

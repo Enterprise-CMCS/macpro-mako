@@ -95,7 +95,7 @@ if ! which awslogs > /dev/null ; then
 fi
 
 # Install bun, a super fast package manager for node
-if ! which yarn > /dev/null ; then
+if ! which bun > /dev/null ; then
   brew install oven-sh/bun/bun
 fi
 

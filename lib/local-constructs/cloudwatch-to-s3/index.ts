@@ -86,18 +86,14 @@ export class CloudWatchToS3 extends Construct {
     });
 
     // Create a subscription filter to send logs from the CloudWatch Log Group to Firehose
-    const subscriptionFilter = new CfnSubscriptionFilter(
-      this,
-      "SubscriptionFilter",
-      {
-        logGroupName: logGroup.logGroupName,
-        filterPattern: filterPattern,
-        destinationArn: cdk.Fn.getAtt(
-          this.deliveryStream.logicalId,
-          "Arn",
-        ).toString(),
-        roleArn: subscriptionFilterRole.roleArn,
-      },
-    );
+    new CfnSubscriptionFilter(this, "SubscriptionFilter", {
+      logGroupName: logGroup.logGroupName,
+      filterPattern: filterPattern,
+      destinationArn: cdk.Fn.getAtt(
+        this.deliveryStream.logicalId,
+        "Arn",
+      ).toString(),
+      roleArn: subscriptionFilterRole.roleArn,
+    });
   }
 }

@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+ 
 import { useEffect } from "react";
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
 import type { RHFSlotProps, RHFTextField } from "shared-types";

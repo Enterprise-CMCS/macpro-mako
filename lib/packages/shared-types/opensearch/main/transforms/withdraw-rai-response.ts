@@ -4,7 +4,7 @@ export const transform = (id: string) => {
   return raiWithdrawSchema.transform((data) => ({
     id,
     raiWithdrawEnabled: false,
-    makoChangedDate: !!data.timestamp
+    makoChangedDate: data.timestamp
       ? new Date(data.timestamp).toISOString()
       : null,
   }));

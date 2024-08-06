@@ -47,7 +47,7 @@ export const logError = ({
         metadata,
       }),
     },
-    ErrorMessages[type]
+    ErrorMessages[type],
   );
 };
 
@@ -57,7 +57,7 @@ const prettyPrintJsonInObject = (obj: any): any => {
     try {
       JSON.parse(str);
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   };
@@ -85,7 +85,7 @@ const prettyPrintJsonInObject = (obj: any): any => {
 export async function bulkUpdateDataWrapper(
   domain: string,
   index: string,
-  docs: any[]
+  docs: any[],
 ) {
   try {
     await os.bulkUpdateData(process.env.osDomain!, index, docs);

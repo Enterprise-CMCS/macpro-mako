@@ -1,7 +1,6 @@
 import { execSync } from "child_process";
 import { describe, it, expect, vi, beforeAll, afterAll } from "vitest";
 import * as utils from "./utils";
-import * as constants from "./constants";
 
 vi.mock("child_process", () => ({
   execSync: vi.fn(),
