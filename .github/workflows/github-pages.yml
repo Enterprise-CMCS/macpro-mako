@@ -14,10 +14,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:
-  FORCE_COLOR: 1
-  TERM: xterm-256color
-
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
@@ -34,6 +30,8 @@ concurrency:
 
 env:
   STAGE_NAME: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
+  FORCE_COLOR: 1
+  TERM: xterm-256color
 
 jobs:
   # Build job
