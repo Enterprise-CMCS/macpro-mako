@@ -10,7 +10,7 @@ import { getSecret } from "shared-utils";
 // Initialize Cognito client
 const client = new CognitoIdentityProviderClient({});
 
-export const handler: Handler = async (event, context) => {
+export const handler: Handler = async (event) => {
   console.log(JSON.stringify(event, null, 2));
 
   // Check if idmInfoSecretArn is provided
@@ -30,7 +30,7 @@ export const handler: Handler = async (event, context) => {
     throw error;
   }
 
-  const { request, response } = event;
+  const { request } = event;
   const { userAttributes } = request;
 
   if (!userAttributes.identities) {
@@ -56,12 +56,12 @@ export const handler: Handler = async (event, context) => {
           `Network response was not ok. Response was ${response.status}: ${response.statusText}`,
         );
       }
-      let data = await response.json();
+      const data = await response.json();
       console.log(JSON.stringify(data, null, 2));
-      let roleArray: string[] = [];
-      let stateArray: string[] = [];
+      const roleArray: string[] = [];
+      const stateArray: string[] = [];
       data.userProfileAppRoles.userRolesInfoList.forEach((element: any) => {
-        let role = element.roleName;
+        const role = element.roleName;
         if (Object.values(UserRoles).includes(role)) {
           roleArray.push(role);
           if (STATE_ROLES.includes(role)) {
@@ -74,7 +74,7 @@ export const handler: Handler = async (event, context) => {
         }
       });
 
-      let attributeData: any = {
+      const attributeData: any = {
         Username: event.userName,
         UserPoolId: event.userPoolId,
         UserAttributes: [
@@ -126,7 +126,7 @@ async function updateUserAttributes(params: any): Promise<void> {
         : [];
 
     // Prepare for updating user attributes
-    let attributeData: any = {
+    const attributeData: any = {
       UserPoolId: params.UserPoolId,
       Username: params.Username,
       UserAttributes: params.UserAttributes,
@@ -139,7 +139,7 @@ async function updateUserAttributes(params: any): Promise<void> {
       );
       if (rolesIndex !== -1) {
         // Only merge if new roles are not empty
-        let newRoles = attributeData.UserAttributes[rolesIndex].Value
+        const newRoles = attributeData.UserAttributes[rolesIndex].Value
           ? new Set(
               attributeData.UserAttributes[rolesIndex].Value.split(",").concat(
                 "onemac-micro-super",
@@ -164,7 +164,7 @@ async function updateUserAttributes(params: any): Promise<void> {
       );
       if (stateIndex !== -1) {
         // Only merge if new states are not empty
-        let newStates = attributeData.UserAttributes[stateIndex].Value
+        const newStates = attributeData.UserAttributes[stateIndex].Value
           ? new Set(
               attributeData.UserAttributes[stateIndex].Value.split(",").concat(
                 "ZZ",

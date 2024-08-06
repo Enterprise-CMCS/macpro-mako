@@ -18,7 +18,6 @@ import { Duration, RemovalPolicy } from "aws-cdk-lib";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { ISecurityGroup, ISubnet, IVpc } from "aws-cdk-lib/aws-ec2";
-import path = require("path");
 
 interface CleanupKafkaProps {
   vpc: IVpc;

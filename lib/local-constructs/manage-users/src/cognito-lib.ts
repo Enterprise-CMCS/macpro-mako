@@ -59,7 +59,7 @@ export async function updateUserAttributes(params: any): Promise<void> {
         : [];
 
     // Prepare for updating user attributes
-    let attributeData: any = {
+    const attributeData: any = {
       UserPoolId: params.UserPoolId,
       Username: params.Username,
       UserAttributes: params.UserAttributes,
@@ -72,7 +72,7 @@ export async function updateUserAttributes(params: any): Promise<void> {
       );
       if (rolesIndex !== -1) {
         // Only merge if new roles are not empty
-        let newRoles = attributeData.UserAttributes[rolesIndex].Value
+        const newRoles = attributeData.UserAttributes[rolesIndex].Value
           ? new Set(
               attributeData.UserAttributes[rolesIndex].Value.split(",").concat(
                 "onemac-micro-super",
@@ -97,7 +97,7 @@ export async function updateUserAttributes(params: any): Promise<void> {
       );
       if (stateIndex !== -1) {
         // Only merge if new states are not empty
-        let newStates = attributeData.UserAttributes[stateIndex].Value
+        const newStates = attributeData.UserAttributes[stateIndex].Value
           ? new Set(
               attributeData.UserAttributes[stateIndex].Value.split(",").concat(
                 "ZZ",

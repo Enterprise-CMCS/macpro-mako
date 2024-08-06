@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { testItemResult, testCMSCognitoUser } from "./testData";
+import { testItemResult } from "./testData";
 import { PackageCheck } from ".";
 import { ActionType, Authority, SEATOOL_STATUS } from "shared-types";
 
@@ -40,7 +40,7 @@ describe("PackageCheck", () => {
       expect(packageCheck.isWaiver).toBe(false);
     });
     it("checks against input", () => {
-      let packageCheck = PackageCheck({
+      const packageCheck = PackageCheck({
         ...testItemResult._source,
         authority: Authority["1915b"],
       });
@@ -92,7 +92,7 @@ describe("PackageCheck", () => {
       expect(packageCheck.isNotWithdrawn).toBe(true);
     });
     it("checks against input", () => {
-      let packageCheck = PackageCheck({
+      const packageCheck = PackageCheck({
         ...testItemResult._source,
         seatoolStatus: SEATOOL_STATUS.WITHDRAWN,
       });
@@ -149,7 +149,7 @@ describe("PackageCheck", () => {
   });
   describe("Action Type Checks", () => {
     it("checks against input", () => {
-      let packageChecker = PackageCheck({
+      const packageChecker = PackageCheck({
         ...testItemResult._source,
         actionType: "Amend" as ActionType,
       });

@@ -82,7 +82,7 @@ export class DeploymentConfig {
     let defaultSecret: { [key: string]: string } = {};
     try {
       defaultSecret = JSON.parse(await getSecret(defaultSecretName));
-    } catch (error) {
+    } catch {
       throw new Error(`Failed to fetch mandatory secret ${defaultSecretName}`);
     }
 
@@ -97,7 +97,7 @@ export class DeploymentConfig {
     }
 
     // Merge secrets with stageSecret taking precedence
-    let combinedSecret: { [key: string]: any } = {
+    const combinedSecret: { [key: string]: any } = {
       ...defaultSecret,
       ...stageSecret,
     };
