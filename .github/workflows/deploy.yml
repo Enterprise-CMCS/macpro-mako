@@ -11,7 +11,7 @@ concurrency:
 
 env:
   STAGE_NAME: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
-  FORCE_COLOR: 1
+  FORCE_COLOR: "1"
   TERM: xterm-256color
   COLORTERM: truecolor
   COLORFGBG: 7;0
