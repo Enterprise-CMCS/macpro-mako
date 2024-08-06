@@ -12,7 +12,10 @@ export class IamPermissionsBoundaryAspect implements IAspect {
   public visit(node: IConstruct): void {
     if (node instanceof iam.Role) {
       const roleResource = node.node.defaultChild as iam.CfnRole;
-      roleResource.addPropertyOverride("Path", this.permissionsBoundaryArn);
+      roleResource.addPropertyOverride(
+        "PermissionsBoundary",
+        this.permissionsBoundaryArn,
+      );
     }
   }
 }
