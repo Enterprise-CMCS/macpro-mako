@@ -24,7 +24,6 @@ export const transform = (id: string) => {
         flavor: "WAIVER",
         state: id.slice(0, 2),
         actionType: "Extend",
-        actionTypeId: 9999,
         authorityId: data.temporaryExtensionType
           ? getIdByAuthorityName(data.temporaryExtensionType)
           : null,

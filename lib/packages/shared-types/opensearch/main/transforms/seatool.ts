@@ -146,7 +146,6 @@ export const transform = (id: string) => {
       id,
       flavor: flavorLookup(data.STATE_PLAN.PLAN_TYPE), // This is MEDICAID CHIP or WAIVER... our concept
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
-      actionTypeId: data.ACTIONTYPES?.[0].ACTION_ID,
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.APPROVED_EFFECTIVE_DATE ||
           data.STATE_PLAN.ACTUAL_EFFECTIVE_DATE,
@@ -209,7 +208,6 @@ export const tombstone = (id: string) => {
   return {
     id,
     actionType: null,
-    actionTypeId: null,
     approvedEffectiveDate: null,
     changedDate: null,
     description: null,
