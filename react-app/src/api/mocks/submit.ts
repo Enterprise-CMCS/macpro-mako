@@ -1,6 +1,5 @@
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
-import { opensearch, SEATOOL_STATUS } from "shared-types";
 
 const handlers = [
   http.put("/upload", async () => {
@@ -13,7 +12,7 @@ const handlers = [
         key: "test-key",
         bucket: "test-bucket",
       },
-      { status: 200 }
+      { status: 200 },
     );
   }),
   http.post("/test", () => {

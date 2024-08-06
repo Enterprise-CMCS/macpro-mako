@@ -1,9 +1,8 @@
-import { CloudFormationCustomResourceEvent, Context } from "aws-lambda";
+import { CloudFormationCustomResourceEvent } from "aws-lambda";
 import * as topics from "../../../libs/topics-lib";
 
 export const handler = async function (
   event: CloudFormationCustomResourceEvent,
-  context: Context,
 ): Promise<void> {
   console.log("Request:", JSON.stringify(event, undefined, 2));
 

@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/no-require-imports: 0 */
 /** @type {import('tailwindcss').Config} */
 import defaultTheme from "tailwindcss/defaultTheme";
 

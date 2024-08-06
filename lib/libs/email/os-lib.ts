@@ -41,7 +41,7 @@ const buildEmailsToSend = (
 export const getOsInsightData = async (
   id: string,
 ): Promise<{ [key: string]: any }> => {
-  let returnData: { [key: string]: any } = {};
+  const returnData: { [key: string]: any } = {};
   try {
     if (!process.env.osDomain) {
       throw new Error("process.env.osDomain must be defined");
@@ -101,7 +101,7 @@ export const getOsInsightData = async (
 export const getOsMainData = async (
   id: string,
 ): Promise<{ [key: string]: any }> => {
-  let returnData: { [key: string]: any } = {};
+  const returnData: { [key: string]: any } = {};
   try {
     if (!process.env.osDomain) {
       throw new Error("process.env.osDomain must be defined");
