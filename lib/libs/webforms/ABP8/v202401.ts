@@ -249,5 +249,179 @@ export const v202401: FormSchema = {
         },
       ],
     },
+    {
+      title: "Managed care organizations (MCOs)",
+      sectionId: "mcos",
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Select",
+              label:
+                "Is the managed care delivery system the same as an already approved managed care program?",
+              name: "same-as-approved-program",
+              rules: {
+                required: "* Required",
+              },
+              props: {
+                className: "w-[125px]",
+                options: [
+                  { label: "Yes", value: "yes" },
+                  { label: "No", value: "no" },
+                ],
+              },
+            },
+            {
+              rhf: "Checkbox",
+              label: "The existing managed care program operates under:",
+              labelClassName: "font-bold",
+              name: "existing-managed-care-program",
+              props: {
+                options: [
+                  {
+                    label: "Section 1915(a) voluntary managed care program",
+                    value: "1915a",
+                    slots: [
+                      {
+                        rhf: "DatePicker",
+                        label: "Date program approved by CMS",
+                        labelClassName: "font-bold",
+                        name: "1915a-date-approved",
+                      },
+                      {
+                        rhf: "Input",
+                        label: "Program name",
+                        labelClassName: "font-bold",
+                        name: "1915a-program-name",
+                        props: {
+                          className: "w-full",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label: "Section 1915(b) managed care waiver",
+                    value: "1915b",
+                    slots: [
+                      {
+                        rhf: "DatePicker",
+                        label: "Date program approved by CMS",
+                        labelClassName: "font-bold",
+                        name: "1915b-date-approved",
+                      },
+                      {
+                        rhf: "Input",
+                        label: "Program name",
+                        labelClassName: "font-bold",
+                        name: "1915b-program-name",
+                        props: {
+                          className: "w-full",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label:
+                      "Section 1932(a) mandatory managed care state plan amendment",
+                    value: "1932a",
+                    slots: [
+                      {
+                        rhf: "DatePicker",
+                        label: "Date program approved by CMS",
+                        labelClassName: "font-bold",
+                        name: "1932a-date-approved",
+                      },
+                      {
+                        rhf: "Input",
+                        label: "Program name",
+                        labelClassName: "font-bold",
+                        name: "1932a-program-name",
+                        props: {
+                          className: "w-full",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label: "Section 1115 demonstration",
+                    value: "1115",
+                    slots: [
+                      {
+                        rhf: "DatePicker",
+                        label: "Date program approved by CMS",
+                        labelClassName: "font-bold",
+                        name: "1115-date-approved",
+                      },
+                      {
+                        rhf: "Input",
+                        label: "Program name",
+                        labelClassName: "font-bold",
+                        name: "1115-program-name",
+                        props: {
+                          className: "w-full",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label:
+                      "An MCO consistent with applicable managed care requirements (42 CFR Part 438, 42 CFR Part 440, and Sections 1903(m), 1932, and 1937 of the Social Security Act)",
+                    value: "mco",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "MCO procurement or selection",
+      sectionId: "mco-procurement",
+      subsection: true,
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Checkbox",
+              name: "mco-procurement",
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state assures all applicable requirements of 45 CFR 75.326 for procurement of contracts will be met.",
+                    value: "assures-requirements",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Other MCO-based service delivery system characteristics",
+      sectionId: "mco-service-delivery",
+      subsection: true,
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Select",
+              label:
+                "Will one or more ABP benefits or services be provided through a type of coverage other than the MCO, such as another managed care plan or fee-for service delivery system?",
+              name: "abp-benefits-provided",
+              props: {
+                className: "w-[125px]",
+                options: [
+                  { label: "Yes", value: "yes" },
+                  { label: "No", value: "no" },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
   ],
 };
