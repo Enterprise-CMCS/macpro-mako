@@ -1,12 +1,10 @@
 import { Argv } from "yargs";
 import {
   checkIfAuthenticated,
-  LabeledProcessRunner,
+  runCommand,
   setStageFromBranch,
   writeUiEnvFile,
 } from "../lib";
-
-const runner = new LabeledProcessRunner();
 
 export const ui = {
   command: "ui",
@@ -18,15 +16,7 @@ export const ui = {
     await checkIfAuthenticated();
     const stage = options.stage || (await setStageFromBranch());
     await writeUiEnvFile(stage, true);
-    await runner.run_command_and_output(
-      `Build`,
-      ["bun", "run", "build"],
-      "react-app",
-    );
-    await runner.run_command_and_output(
-      `Run`,
-      ["bun", "run", "dev"],
-      `react-app`,
-    );
+    await runCommand("bun", ["run", "build"], "react-app");
+    await runCommand("bun", ["run", "dev"], `react-app`);
   },
 };
