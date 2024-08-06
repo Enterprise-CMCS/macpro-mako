@@ -1,7 +1,6 @@
 import { IAspect } from "aws-cdk-lib";
 import { IConstruct } from "constructs";
 import * as iam from "aws-cdk-lib/aws-iam";
-import { isCfnRole, isCfnUser, isCfnGroup } from "shared-utils";
 
 export class IamPathAspect implements IAspect {
   private readonly iamPath: string;
@@ -11,16 +10,19 @@ export class IamPathAspect implements IAspect {
   }
 
   public visit(node: IConstruct): void {
-    if (node instanceof iam.Role && isCfnRole(node.node.defaultChild)) {
-      node.node.defaultChild?.addPropertyOverride("Path", this.iamPath);
+    if (node instanceof iam.Role) {
+      const roleResource = node.node.defaultChild as iam.CfnRole;
+      roleResource.addPropertyOverride("Path", this.iamPath);
     }
 
-    if (node instanceof iam.User && isCfnUser(node.node.defaultChild)) {
-      node.node.defaultChild.addPropertyOverride("Path", this.iamPath);
+    if (node instanceof iam.User) {
+      const userResource = node.node.defaultChild as iam.CfnUser;
+      userResource.addPropertyOverride("Path", this.iamPath);
     }
 
-    if (node instanceof iam.Group && isCfnGroup(node.node.defaultChild)) {
-      node.node.defaultChild.addPropertyOverride("Path", this.iamPath);
+    if (node instanceof iam.Group) {
+      const groupResource = node.node.defaultChild as iam.CfnGroup;
+      groupResource.addPropertyOverride("Path", this.iamPath);
     }
   }
 }

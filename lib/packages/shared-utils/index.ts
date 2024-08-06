@@ -1,4 +1,3 @@
-export * from "./cdk-type-guards";
 export * from "./feature-flags";
 export * from "./package-actions/getAvailableActions";
 export * from "./package-check";
