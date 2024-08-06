@@ -8,6 +8,10 @@ on:
         description: "Name of the environment to destroy:"
         required: true
 
+env:
+  FORCE_COLOR: 1
+  TERM: xterm-256color
+
 jobs:
   destroy:
     if: |

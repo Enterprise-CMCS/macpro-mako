@@ -2,6 +2,10 @@ name: ESLint
 
 on: [pull_request]
 
+env:
+  FORCE_COLOR: 1
+  TERM: xterm-256color
+
 jobs:
   lint:
     runs-on: ubuntu-20.04

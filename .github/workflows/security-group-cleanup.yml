@@ -5,6 +5,10 @@ on:
     - cron: "0 2 * * *"
   workflow_dispatch:
 
+env:
+  FORCE_COLOR: 1
+  TERM: xterm-256color
+
 jobs:
   security-group-cleanup:
     name: Security Group Cleanup
