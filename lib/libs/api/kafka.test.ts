@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { Kafka, Producer } from "kafkajs";
+import { Producer } from "kafkajs";
 import { produceMessage, getProducer } from "./kafka";
 
 vi.mock("kafkajs", () => {
@@ -86,6 +86,6 @@ describe("Kafka producer functions", () => {
 
   it("should throw an error if brokerString is not defined", () => {
     delete process.env.brokerString;
-    expect(() => getProducer()).toThrowError;
+    expect(() => getProducer()).toThrowError();
   });
 });

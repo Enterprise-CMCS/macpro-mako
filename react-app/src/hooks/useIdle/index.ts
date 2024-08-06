@@ -30,7 +30,7 @@ export function useIdle(
     timer.current = window.setTimeout(() => {
       setIdle(true);
     }, timeout);
-  }, []);
+  }, [timeout, events]);
 
   useEffect(() => {
     const handleEvents = () => {

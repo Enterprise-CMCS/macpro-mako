@@ -15,7 +15,6 @@ expect.extend(matchers);
 
 // Add this to remove all the expected errors in console when running unit tests.
 beforeAll(() => {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   vi.spyOn(console, "error").mockImplementation(() => {});
 });
 

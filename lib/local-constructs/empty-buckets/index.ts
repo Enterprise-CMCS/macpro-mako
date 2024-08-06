@@ -19,7 +19,6 @@ import {
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
-import path = require("path");
 
 interface EmptyBucketsProps extends StackProps {
   buckets: IBucket[];

@@ -9,7 +9,7 @@ interface TopicConfig {
 
 export async function createTopics(
   brokerString: string,
-  topicsConfig: TopicConfig[]
+  topicsConfig: TopicConfig[],
 ) {
   const topics = topicsConfig;
   const brokers = brokerString.split(",");
@@ -27,7 +27,7 @@ export async function createTopics(
     // Fetch topics from MSK and filter out __ internal management topic
     const existingTopicList = _.filter(
       await admin.listTopics(),
-      (n) => !n.startsWith("_")
+      (n) => !n.startsWith("_"),
     );
 
     console.log("Existing topics:", JSON.stringify(existingTopicList, null, 2));
@@ -35,7 +35,7 @@ export async function createTopics(
     // Fetch the metadata for the topics in MSK
     const topicsMetadata = _.get(
       await admin.fetchTopicMetadata({ topics: existingTopicList }),
-      "topics"
+      "topics",
     );
     console.log("Topics Metadata:", JSON.stringify(topicsMetadata, null, 2));
 
@@ -43,7 +43,7 @@ export async function createTopics(
     const topicsToCreate = _.differenceWith(
       topics,
       existingTopicList,
-      (topicConfig, topic) => _.get(topicConfig, "topic") === topic
+      (topicConfig, topic) => _.get(topicConfig, "topic") === topic,
     );
 
     // Find intersection of topics metadata collection with topic configuration collection
@@ -55,7 +55,7 @@ export async function createTopics(
       (topicConfig, topicMetadata) =>
         _.get(topicConfig, "topic") === _.get(topicMetadata, "name") &&
         _.get(topicConfig, "numPartitions") >
-          _.get(topicMetadata, "partitions", []).length
+          _.get(topicMetadata, "partitions", []).length,
     );
 
     // Create a collection to update topic partitioning
@@ -83,19 +83,20 @@ export async function createTopics(
     console.log("Topics to Update:", JSON.stringify(topicsToUpdate, null, 2));
     console.log(
       "Partitions to Update:",
-      JSON.stringify(partitionConfig, null, 2)
+      JSON.stringify(partitionConfig, null, 2),
     );
     console.log(
       "Topic configuration options:",
-      JSON.stringify(configs, null, 2)
+      JSON.stringify(configs, null, 2),
     );
 
     // Create topics that don't exist in MSK
     await admin.createTopics({ topics: topicsToCreate });
 
     // If any topics have fewer partitions in MSK than in the configuration, add those partitions
-    partitionConfig.length > 0 &&
-      (await admin.createPartitions({ topicPartitions: partitionConfig }));
+    if (partitionConfig.length > 0) {
+      await admin.createPartitions({ topicPartitions: partitionConfig });
+    }
 
     await admin.disconnect();
   };
@@ -108,7 +109,7 @@ export async function deleteTopics(brokerString: string, topicList: string[]) {
   for (const topic of topicList) {
     if (!topic.match(/.*--.*--.*--.*/g)) {
       throw new Error(
-        "ERROR: The deleteTopics function only operates against topics that match /.*--.*--.*--.*/g"
+        "ERROR: The deleteTopics function only operates against topics that match /.*--.*--.*--.*/g",
       );
     }
   }
@@ -130,7 +131,7 @@ export async function deleteTopics(brokerString: string, topicList: string[]) {
   const currentTopics = await admin.listTopics();
 
   const topicsToDelete = _.filter(currentTopics, (currentTopic) =>
-    topicList.some((pattern) => !!currentTopic.match(pattern))
+    topicList.some((pattern) => !!currentTopic.match(pattern)),
   );
 
   console.log(`Deleting topics: ${topicsToDelete}`);
