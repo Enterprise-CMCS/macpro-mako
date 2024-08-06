@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeAll, beforeEach } from "vitest";
+import { describe, test, expect, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BreadCrumb, BreadCrumbBar } from "./BreadCrumb";
@@ -25,7 +25,7 @@ describe("Bread Crumb Tests", () => {
           </BreadCrumbBar>
           <LocationDisplay />
         </>,
-        { wrapper: BrowserRouter }
+        { wrapper: BrowserRouter },
       );
 
       const user = userEvent.setup();
@@ -51,7 +51,7 @@ describe("Bread Crumb Tests", () => {
         </BreadCrumbBar>,
         {
           wrapper: BrowserRouter,
-        }
+        },
       );
     });
 

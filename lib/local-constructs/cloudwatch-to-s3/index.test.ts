@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import * as cdk from "aws-cdk-lib";
 import { CloudWatchToS3 } from ".";
 import * as logs from "aws-cdk-lib/aws-logs";
-import * as s3 from "aws-cdk-lib/aws-s3";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as firehose from "aws-cdk-lib/aws-kinesisfirehose";
 

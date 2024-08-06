@@ -17,8 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components";
-import { defaultTempExtSchema } from "@/features/package-actions/lib/modules";
-import { useDebounce } from "@/hooks";
+import type { defaultTempExtSchema } from "@/features/package-actions/lib/modules";
 
 export const TEPackageSection = () => {
   const { id, authority } = useParams();

@@ -59,7 +59,7 @@ export const Field = <TFields extends FieldValues>({
   const formField = (
     <FormField
       key={adjustedSlotName}
-      // @ts-ignore
+      // @ts-expect-error
       control={control}
       rules={
         ruleGenerator(SLOT.rules, SLOT.addtnlRules) as CustomRegisterOptions

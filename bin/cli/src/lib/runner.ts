@@ -38,7 +38,7 @@ export class LabeledProcessRunner {
     }
 
     let maxLength = 0;
-    for (let pre in this.prefixColors) {
+    for (const pre in this.prefixColors) {
       if (pre.length > maxLength) {
         maxLength = pre.length;
       }
@@ -50,7 +50,7 @@ export class LabeledProcessRunner {
   private sanitizeInput(input) {
     // A basic pattern that allows letters, numbers, dashes, underscores, and periods
     // Adjust the pattern to fit the expected input format
-    const sanitizedInput = input.replace(/[^a-zA-Z0-9-_\.]/g, "");
+    const sanitizedInput = input.replace(/[^a-zA-Z0-9-_.]/g, "");
     return sanitizedInput;
   }
 
@@ -90,7 +90,7 @@ export class LabeledProcessRunner {
     const handleOutput = (data: Buffer, prefix: string, silenced: boolean) => {
       const paddedPrefix = this.formattedPrefix(prefix);
       if (!silenced)
-        for (let line of data.toString().split("\n")) {
+        for (const line of data.toString().split("\n")) {
           process.stdout.write(`${paddedPrefix} ${line}\n`);
         }
     };

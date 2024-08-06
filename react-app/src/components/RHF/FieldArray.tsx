@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useEffect } from "react";
 import { FieldValues, useFieldArray } from "react-hook-form";
 import { FieldArrayProps } from "shared-types";

@@ -37,7 +37,7 @@ export const handler = E.emailHandler(
   async (
     record: EmailLib.DecodedRecord,
   ): Promise<EmailLib.LambdaResponse[] | { message: string }> => {
-    const emailBundle = EmailLib.getBundle(record, process.env.STAGE!!) as any;
+    const emailBundle = EmailLib.getBundle(record, process.env.STAGE!) as any;
 
     if (!emailBundle || !!emailBundle?.message || !emailBundle?.emailCommands) {
       return { message: "no eventToEmailMapping found, no email sent" };
