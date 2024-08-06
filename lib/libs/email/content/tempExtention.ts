@@ -1,9 +1,5 @@
 import { OneMac } from "shared-types";
-import {
-  CommonVariables,
-  formatAttachments,
-  formatNinetyDaysDate,
-} from "../email-templates";
+import { CommonVariables, formatAttachments, formatNinetyDaysDate } from "..";
 
 export const tempExtention = {
   cms: async (variables: OneMac & CommonVariables) => {

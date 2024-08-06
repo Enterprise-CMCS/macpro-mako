@@ -3,7 +3,7 @@ import { handler } from "./processEmails";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { KafkaEvent, KafkaRecord } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
-import { getEmailTemplate, fillTemplate } from "../libs/email/email-templates";
+import { getEmailTemplate, fillTemplate } from "libs/email";
 
 // Mock dependencies
 vi.mock("@aws-sdk/client-ses", () => {

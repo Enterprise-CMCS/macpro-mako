@@ -1,9 +1,5 @@
 import { Action, Authority, RaiWithdraw } from "shared-types";
-import {
-  CommonVariables,
-  formatAttachments,
-  getLatestMatchingEvent,
-} from "../email-templates";
+import { CommonVariables, formatAttachments, getLatestMatchingEvent } from "..";
 
 export const withdrawRai = {
   [Authority.MED_SPA]: {

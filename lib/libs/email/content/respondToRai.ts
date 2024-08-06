@@ -1,9 +1,5 @@
 import { Authority, RaiResponse } from "shared-types";
-import {
-  CommonVariables,
-  formatAttachments,
-  formatNinetyDaysDate,
-} from "../email-templates";
+import { CommonVariables, formatAttachments, formatNinetyDaysDate } from "..";
 
 export const respondToRai = {
   [Authority.MED_SPA]: {

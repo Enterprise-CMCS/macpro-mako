@@ -5,7 +5,7 @@ import {
   formatAttachments,
   formatDate,
   formatNinetyDaysDate,
-} from "../email-templates";
+} from "..";
 
 export const newSubmission = {
   [Authority.MED_SPA]: {

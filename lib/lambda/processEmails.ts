@@ -1,15 +1,8 @@
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
-import {
-  Action,
-  Authority,
-  AuthorityUnion,
-  EmailAddresses,
-  KafkaEvent,
-  KafkaRecord,
-} from "shared-types";
+import { Action, Authority, KafkaEvent, KafkaRecord } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
-import { getEmailTemplate } from "./../libs/email/email-templates"; // Import the email templates
+import { getEmailTemplate } from "./../libs/email"; // Import the email templates
 
 const sesClient = new SESClient({ region: process.env.REGION });
 
@@ -51,7 +44,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
         // Handle micro events
         if (record?.origin === "micro") {
-          console.log();
           console.log(
             `Handling event for ${id}: ` + JSON.stringify(record, null, 2),
           );
@@ -93,9 +85,11 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           // Generate the email from the template and the template variables
           const filledTemplate = await template(tempalteVariables);
 
+          console.log("SUBMITTER EMAIL");
+          console.log(record.submitterEmail);
           // Send the email
           await sendEmail({
-            to: "mdial@fearless.tech", // todo... resolve actual endpoint
+            to: "bpaige@fearless.tech", // todo... resolve actual endpoint
             from: emailAddressLookup.sourceEmail,
             subject: filledTemplate.subject,
             html: filledTemplate.html,

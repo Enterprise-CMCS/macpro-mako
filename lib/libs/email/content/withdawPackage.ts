@@ -1,5 +1,5 @@
 import { Authority, WithdrawPackage } from "shared-types";
-import { CommonVariables } from "../email-templates";
+import { CommonVariables } from "..";
 
 export const withdrawPackage = {
   [Authority.MED_SPA]: {
