@@ -2,108 +2,144 @@ import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { Action, Authority, KafkaEvent, KafkaRecord } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
-import { getEmailTemplates } from "./../libs/email"; // Import the email templates
+import { getEmailTemplates } from "./../libs/email";
 
 const sesClient = new SESClient({ region: process.env.REGION });
 
 export const handler: Handler<KafkaEvent> = async (event) => {
-  // Log the Event
-  console.log("Processing email event: " + JSON.stringify(event, null, 2));
+  try {
+    // Validate environment variables
+    const emailAddressLookupSecretName =
+      process.env.emailAddressLookupSecretName;
+    const applicationEndpointUrl = process.env.applicationEndpointUrl;
 
-  // For each topic
-  for (const topicPartition of Object.keys(event.records)) {
-    // For each record in this topic
-    for (const rec of event.records[topicPartition]) {
-      const kafkaRecord: KafkaRecord = rec;
-      const { key, value, timestamp } = kafkaRecord;
+    if (!emailAddressLookupSecretName || !applicationEndpointUrl) {
+      throw new Error("Environment variables are not set properly.");
+    }
 
-      // Extract/decode the id
-      const id: string = decodeBase64WithUtf8(key);
+    // Log the event
+    console.log("Processing email event: " + JSON.stringify(event, null, 2));
 
-      // Handle tombstone events
-      if (!value) {
-        console.log("Tombstone detected. Doing nothing for this event");
-        continue;
-      }
+    // Process each record
+    const processRecordsPromises = [];
 
-      // Extract/decode the record value
-      const record = {
-        timestamp, // why am i doing this... this is copy/paste i think
-        ...JSON.parse(decodeBase64WithUtf8(value)),
-      };
-
-      // Handle micro events
-      if (record?.origin === "micro") {
-        console.log(
-          `Handling event for ${id}: ` + JSON.stringify(record, null, 2),
+    for (const topicPartition of Object.keys(event.records)) {
+      for (const rec of event.records[topicPartition]) {
+        processRecordsPromises.push(
+          processRecord(
+            rec,
+            emailAddressLookupSecretName,
+            applicationEndpointUrl,
+          ),
         );
-
-        // Set the action with some unfortunate logic that needs refactored
-        let action: Action | "new-submission";
-        switch (record.actionType) {
-          case undefined:
-          case "new-submission":
-            if (record.seaActionType === "Extend") {
-              action = Action.TEMP_EXTENSION;
-            } else {
-              action = "new-submission";
-            }
-            break;
-          default:
-            action = record.actionType;
-            break;
-        }
-
-        // Set the authority with some unfortunate lower case logic
-        const authority = record.authority.toLowerCase() as Authority;
-        processAndSendEmails(action, authority, record, id)
-          .then(() => console.log("Emails sent successfully"))
-          .catch((error) => console.error("Error sending emails:", error));
       }
     }
+
+    await Promise.all(processRecordsPromises);
+
+    console.log("All emails processed successfully.");
+  } catch (error) {
+    console.error("Error processing email event:", error);
   }
 };
+
+async function processRecord(
+  kafkaRecord: KafkaRecord,
+  emailAddressLookupSecretName: string,
+  applicationEndpointUrl: string,
+) {
+  try {
+    const { key, value, timestamp } = kafkaRecord;
+
+    // Extract/decode the id
+    const id: string = decodeBase64WithUtf8(key);
+
+    // Handle tombstone events
+    if (!value) {
+      console.log("Tombstone detected. Doing nothing for this event");
+      return;
+    }
+
+    // Extract/decode the record value
+    const record = {
+      timestamp,
+      ...JSON.parse(decodeBase64WithUtf8(value)),
+    };
+
+    // Handle micro events
+    if (record?.origin === "micro") {
+      console.log(
+        `Handling event for ${id}: ` + JSON.stringify(record, null, 2),
+      );
+
+      // Set the action
+      const action: Action | "new-submission" = determineAction(record);
+
+      // Set the authority
+      const authority: Authority = record.authority.toLowerCase() as Authority;
+
+      await processAndSendEmails(
+        action,
+        authority,
+        record,
+        id,
+        emailAddressLookupSecretName,
+        applicationEndpointUrl,
+      );
+    }
+  } catch (error) {
+    console.error("Error processing record:", error);
+  }
+}
+
+function determineAction(record: any): Action | "new-submission" {
+  if (!record.actionType || record.actionType === "new-submission") {
+    return record.seaActionType === "Extend"
+      ? Action.TEMP_EXTENSION
+      : "new-submission";
+  }
+  return record.actionType;
+}
 
 async function processAndSendEmails(
   action: Action | "new-submission",
   authority: Authority,
   record: any,
   id: string,
+  emailAddressLookupSecretName: string,
+  applicationEndpointUrl: string,
 ) {
-  const emailAddressLookup = JSON.parse(
-    await getSecret(process.env.emailAddressLookupSecretName!),
-  );
+  try {
+    const emailAddressLookup = JSON.parse(
+      await getSecret(emailAddressLookupSecretName),
+    );
 
-  if (!process.env.applicationEndpointUrl) {
-    throw "applicationEndpointUrl";
-  }
+    // Get the templates
+    const templates = await getEmailTemplates<typeof record>(action, authority);
 
-  const applicationEndpointUrl = process.env.applicationEndpointUrl;
+    // Set the template variables; consists of the event data and some add-ons.
+    const templateVariables = {
+      ...record,
+      id,
+      applicationEndpointUrl,
+      territory: id.slice(0, 2),
+    };
 
-  // Get the templates
-  const templates = await getEmailTemplates<typeof record>(action, authority);
-
-  // Set the template variables; consists of the event data and some add-ons.
-  const templateVariables = {
-    ...record,
-    id,
-    applicationEndpointUrl,
-    territory: id.slice(0, 2),
-  };
-
-  // Iterate over each template, generate the email, and send it
-  for (const template of templates) {
-    // Generate the email from the template and the template variables
-    const filledTemplate = await template(templateVariables);
-
-    // Send the email
-    await sendEmail({
-      to: record.submitterEmail,
-      from: emailAddressLookup.sourceEmail,
-      subject: filledTemplate.subject,
-      html: filledTemplate.html,
-      text: filledTemplate.text,
+    // Generate and send emails concurrently
+    const sendEmailPromises = templates.map(async (template) => {
+      const filledTemplate = await template(templateVariables);
+      await sendEmail({
+        to: record.submitterEmail,
+        from: emailAddressLookup.sourceEmail,
+        subject: filledTemplate.subject,
+        html: filledTemplate.html,
+        text: filledTemplate.text,
+      });
     });
+
+    await Promise.all(sendEmailPromises);
+  } catch (error) {
+    console.error("Error processing and sending emails:", error);
   }
 }
 
