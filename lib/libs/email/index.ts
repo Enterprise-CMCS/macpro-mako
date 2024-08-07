@@ -11,30 +11,6 @@ import { getPackageChangelog } from "../api/package";
 import * as EmailContent from "./content";
 
 export type UserType = "cms" | "state";
-
-export interface EmailTemplate {
-  subject: string;
-  html: string;
-  text?: string;
-}
-
-export type EmailTemplateFunction<T> = (variables: T) => Promise<EmailTemplate>;
-
-export type EmailTemplates = {
-  [K in Action | "new-submission"]?:
-    | {
-        [A in Authority]?:
-          | {
-              [U in UserType]?: EmailTemplateFunction<any>;
-            }
-          | EmailTemplateFunction<any>;
-      }
-    | {
-        [U in UserType]?: EmailTemplateFunction<any>;
-      }
-    | EmailTemplateFunction<any>;
-};
-
 export interface CommonVariables {
   id: string;
   territory: string;
@@ -96,12 +72,115 @@ export function formatNinetyDaysDate(date: number | null | undefined): string {
   }
 }
 
+export interface EmailTemplate {
+  subject: string;
+  html: string;
+  text?: string;
+}
+
+type EmailTemplateFunction<T> = (variables: T) => Promise<EmailTemplate>;
+type UserTypeOnlyTemplate = { [U in UserType]: EmailTemplateFunction<any> };
+type AuthoritiesWithUserTypesTemplate = {
+  [A in Authority]?: { [U in UserType]?: EmailTemplateFunction<any> };
+};
+
+export type EmailTemplates = {
+  [K in Action | "new-submission"]?:
+    | AuthoritiesWithUserTypesTemplate
+    | UserTypeOnlyTemplate;
+};
+
 export const emailTemplates: EmailTemplates = {
   "new-submission": EmailContent.newSubmission,
+
+  /* 
+    {
+      "medicaid spa": {
+        "cms": "func",
+        "state": "func"
+      },
+      "chip spa": {
+        "cms": "func",
+        "state": "func"
+      },
+      "1915(b)": {
+        "cms": "func",
+        "state": "func"
+      },
+      "1915(c)": {
+        "cms": "func",
+        "state": "func"
+      }
+    }
+  */
+
   [Action.WITHDRAW_PACKAGE]: EmailContent.withdrawPackage,
+
+  /* 
+    {
+      "medicaid spa": {
+        "cms": "func",
+        "state": "func"
+      },
+      "chip spa": {
+        "cms": "func",
+        "state": "func"
+      },
+      "1915(b)": {
+        "cms": "func",
+        "state": "func"
+      }
+    }
+  */
+
   [Action.RESPOND_TO_RAI]: EmailContent.respondToRai,
+
+  /* 
+    {
+      "medicaid spa": {
+        "cms": "func",
+        "state": "func"
+      },
+      "chip spa": {
+        "cms": "func",
+        "state": "func"
+      },
+      "1915(b)": {
+        "cms": "func",
+        "state": "func"
+      }
+    }
+  */
+
   [Action.WITHDRAW_RAI]: EmailContent.withdrawRai,
+
+  /* 
+    {
+      "medicaid spa": {
+        "cms": "func",
+        "state": "func"
+      },
+      "chip spa": {
+        "cms": "func",
+        "state": "func"
+      },
+      "1915(b)": {
+        "cms": "func",
+        "state": "func"
+      },
+      "1915(c)": {
+        "cms": "func"
+      }
+    }
+  */
+
   [Action.TEMP_EXTENSION]: EmailContent.tempExtention,
+  /* 
+    {
+      "cms": "func",
+      "state": "func"
+    } 
+  */
 };
 
 export async function getEmailTemplate<T>(
