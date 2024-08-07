@@ -183,60 +183,33 @@ export const emailTemplates: EmailTemplates = {
   */
 };
 
-export async function getEmailTemplate<T>(
+function isAuthorityTemplate(
+  obj: any,
+  authority: Authority,
+): obj is AuthoritiesWithUserTypesTemplate {
+  return authority in obj;
+}
+
+export async function getEmailTemplates<T>(
   action: Action | "new-submission",
   authority: Authority,
-  userType: "cms" | "state",
-): Promise<EmailTemplateFunction<T>> {
+): Promise<EmailTemplateFunction<T>[]> {
   const template = emailTemplates[action];
+  const emailTemplatesToSend: EmailTemplateFunction<T>[] = [];
 
   if (!template) {
     throw new Error(`No templates found for action ${action}`);
   }
 
-  if (typeof template === "function") {
-    return template as EmailTemplateFunction<T>;
+  if (isAuthorityTemplate(template, authority)) {
+    emailTemplatesToSend.push(
+      ...Object.values(template[authority] as EmailTemplateFunction<T>),
+    );
   } else {
-    if (userType in template) {
-      return (template as { [key in UserType]: EmailTemplateFunction<any> })[
-        userType
-      ] as EmailTemplateFunction<T>;
-    }
-
-    if (!authority) {
-      throw new Error(`Authority is required for action ${action}`);
-    }
-
-    const authorityTemplate = (
-      template as {
-        [key in Authority]?: { [key in UserType]?: EmailTemplateFunction<any> };
-      }
-    )[authority];
-
-    if (!authorityTemplate) {
-      throw new Error(
-        `No templates found for authority ${authority} and action ${action}`,
-      );
-    }
-
-    if (typeof authorityTemplate === "function") {
-      return authorityTemplate as EmailTemplateFunction<T>;
-    } else {
-      const userTemplate = (
-        authorityTemplate as {
-          [key in UserType]?: EmailTemplateFunction<any>;
-        }
-      )[userType];
-
-      if (!userTemplate) {
-        throw new Error(
-          `No templates found for user type ${userType}, authority ${authority}, and action ${action}`,
-        );
-      }
-
-      return userTemplate as EmailTemplateFunction<T>;
-    }
+    emailTemplatesToSend.push(...Object.values(template));
   }
+
+  return emailTemplatesToSend;
 }
 
 // I think this needs to be written to handle not finding any matching events and so forth
