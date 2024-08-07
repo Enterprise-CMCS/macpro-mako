@@ -1,5 +1,5 @@
-import { LoadingSpinner, useModalContext, Button } from "@/components";
-import * as Inputs from "@/components";
+import { LoadingSpinner, Button } from "@/components";
+import { Alert, userPrompt } from "@/components";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import { useMemo } from "react";
@@ -20,13 +20,10 @@ export const SubmitAndCancelBtnSection = ({
   enableSubmit,
 }: buttonProps) => {
   const form = useFormContext();
-  const modal = useModalContext();
   const navigate = useNavigate();
   const { id, authority } = useParams<{ id: string; authority: Authority }>();
 
   const acceptAction = () => {
-    modal.setModalOpen(false);
-
     const origin = getFormOrigin({ id, authority });
     navigate(origin);
   };
@@ -47,16 +44,16 @@ export const SubmitAndCancelBtnSection = ({
       )}
 
       {showAlert && Object.keys(form.formState.errors).length !== 0 && (
-        <Inputs.Alert className="mb-6 " variant="destructive">
+        <Alert className="mb-6 " variant="destructive">
           Missing or malformed information. Please see errors above.
-        </Inputs.Alert>
+        </Alert>
       )}
 
       <section className="flex justify-end gap-2 p-4 ml-auto">
         <Button
           className="px-12"
           type={confirmWithdraw ? "button" : "submit"}
-          onClick={confirmWithdraw ? () => confirmWithdraw() : () => null}
+          onClick={confirmWithdraw ? confirmWithdraw : () => null}
           disabled={disableSubmit}
         >
           Submit
@@ -64,15 +61,14 @@ export const SubmitAndCancelBtnSection = ({
         <Button
           className="px-12"
           onClick={() => {
-            modal.setContent({
+            userPrompt({
               header: "Stop form submission?",
               body: "All information you've entered on this form will be lost if you leave this page.",
               acceptButtonText: "Yes, leave form",
               cancelButtonText: "Return to form",
+              onAccept: acceptAction,
               areButtonsReversed: true,
             });
-            modal.setOnAccept(() => acceptAction);
-            modal.setModalOpen(true);
           }}
           variant={"outline"}
           type="reset"
