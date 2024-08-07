@@ -1,13 +1,14 @@
 import path from "path";
 import { promises as fs } from "fs";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
+import { project, region } from "./consts";
 
 export async function writeUiEnvFile(stage, local = false) {
   const deploymentOutput = JSON.parse(
     (
       await new SSMClient({ region: "us-east-1" }).send(
         new GetParameterCommand({
-          Name: `/${process.env.PROJECT}/${stage}/deployment-output`,
+          Name: `/${project}/${stage}/deployment-output`,
         }),
       )
     ).Parameter!.Value!,
@@ -17,17 +18,17 @@ export async function writeUiEnvFile(stage, local = false) {
     (
       await new SSMClient({ region: "us-east-1" }).send(
         new GetParameterCommand({
-          Name: `/${process.env.PROJECT}/${stage}/deployment-config`,
+          Name: `/${project}/${stage}/deployment-config`,
         }),
       )
     ).Parameter!.Value!,
   );
 
   const envVariables = {
-    VITE_API_REGION: `"${process.env.REGION_A}"`,
+    VITE_API_REGION: `"${region}"`,
     VITE_API_URL: deploymentOutput.apiGatewayRestApiUrl,
     VITE_NODE_ENV: `"development"`,
-    VITE_COGNITO_REGION: process.env.REGION_A,
+    VITE_COGNITO_REGION: region,
     VITE_COGNITO_IDENTITY_POOL_ID: deploymentOutput.identityPoolId,
     VITE_COGNITO_USER_POOL_ID: deploymentOutput.userPoolId,
     VITE_COGNITO_USER_POOL_CLIENT_ID: deploymentOutput.userPoolClientId,

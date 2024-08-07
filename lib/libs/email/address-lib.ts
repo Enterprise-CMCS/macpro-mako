@@ -30,7 +30,7 @@ export const buildDestination = (
   command: Command,
   data: Record<string, string>,
 ): Destination => {
-  let destination: Destination = {
+  const destination: Destination = {
     ToAddresses: buildAddressList(command.ToAddresses, data),
   };
   if (command.CcAddresses)

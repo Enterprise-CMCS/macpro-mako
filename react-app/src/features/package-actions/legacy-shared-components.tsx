@@ -17,7 +17,7 @@ export const useSubmitForm = () => {
   const submit = useSubmit();
   const location = useLocation();
 
-  const validSubmission: SubmitHandler<any> = (data, e) => {
+  const validSubmission: SubmitHandler<any> = (data) => {
     const formData = new FormData();
     // Append all other data
     for (const key in data) {
@@ -53,7 +53,7 @@ export const useIntakePackage = () => {
   const submit = useSubmit();
   const location = useLocation();
 
-  const validSubmission: SubmitHandler<any> = (data, e) => {
+  const validSubmission: SubmitHandler<any> = (data) => {
     submit(data, {
       method: "post",
       encType: "application/json",
@@ -116,7 +116,7 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
 const filterUndefinedValues = (obj: Record<any, any>) => {
   if (obj) {
     return Object.fromEntries(
-      Object.entries(obj).filter(([key, value]) => value !== undefined),
+      Object.entries(obj).filter(([, value]) => value !== undefined),
     );
   }
   return {};

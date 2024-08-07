@@ -1,5 +1,5 @@
+import { opensearch, Authority } from "shared-types";
 import { OneMacUser } from "ui/src/api";
-import { Authority, opensearch } from "../../shared-types";
 
 export const testStateCognitoUser: OneMacUser = {
   isCms: false,
@@ -19,6 +19,7 @@ export const testStateIDMUser: OneMacUser = {
   user: {
     ...testStateCognitoUser.user,
     username: "IDM_0000aaaa-0000-00aa-0a0a-aaaaaa000000",
+    // @ts-expect-error
     identities:
       '[{"dateCreated":"1709308952587","userId":"abc123","providerName":"IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
   },
@@ -41,6 +42,7 @@ export const testCMSIDMUser: OneMacUser = {
   user: {
     ...testCMSCognitoUser.user,
     username: "IDM_0000aaaa-0000-00aa-0a0a-aaaaaa000000",
+    // @ts-expect-error
     identities:
       '[{"dateCreated":"1709308952587","userId":"abc123","providerName":"IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
   },
@@ -73,7 +75,7 @@ export const testItemResult: opensearch.main.ItemResult = {
     ],
     appkParentId: null,
     raiWithdrawEnabled: false,
-    additionalInformation: "does the master branch work?!",
+    additionalInformation: "does the main branch work?!",
     submitterEmail: "george@example.com",
     submitterName: "George Harrison",
     origin: "OneMAC",
@@ -108,12 +110,12 @@ export const testItemResult: opensearch.main.ItemResult = {
       {
         _index: "changelog",
         _id: "MD-12-3456",
-        // @ts-ignore
         _source: {
           authority: "medicaid spa",
           origin: "micro",
+          //@ts-expect-error
           appkParentId: null,
-          additionalInformation: "does the master branch work?!",
+          additionalInformation: "does the main branch work?!",
           submitterName: "George Harrison",
           submitterEmail: "george@example.com",
           attachments: [
@@ -135,7 +137,9 @@ export const testItemResult: opensearch.main.ItemResult = {
             },
           ],
           raiWithdrawEnabled: false,
+          //@ts-expect-error
           actionType: "new-submission",
+          //@ts-expect-error
           timestamp: "1709319909826",
           id: "MD-12-3456",
           packageId: "MD-12-3456",

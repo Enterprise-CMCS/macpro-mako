@@ -4,6 +4,12 @@ import { Construct } from "constructs";
 import { join } from "path";
 import { DeploymentConfigProperties } from "./deployment-config";
 import * as LC from "local-constructs";
+import {
+  BlockPublicAccess,
+  Bucket,
+  BucketEncryption,
+} from "aws-cdk-lib/aws-s3";
+import { AnyPrincipal, Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
@@ -38,7 +44,7 @@ export class Api extends cdk.NestedStack {
   private initializeResources(props: ApiStackProps): {
     apiGateway: cdk.aws_apigateway.RestApi;
   } {
-    const { project, stage, stack, isDev } = props;
+    const { project, stage, stack } = props;
     const {
       vpc,
       privateSubnets,
@@ -302,18 +308,21 @@ export class Api extends cdk.NestedStack {
       },
     ];
 
-    const lambdas = lambdaDefinitions.reduce((acc, lambdaDef) => {
-      acc[lambdaDef.id] = createNodeJsLambda(
-        lambdaDef.id,
-        lambdaDef.entry,
-        lambdaDef.environment,
-        vpc,
-        lambdaSecurityGroup,
-        privateSubnets,
-        !props.isDev ? lambdaDef.provisionedConcurrency : 0,
-      );
-      return acc;
-    }, {} as { [key: string]: NodejsFunction });
+    const lambdas = lambdaDefinitions.reduce(
+      (acc, lambdaDef) => {
+        acc[lambdaDef.id] = createNodeJsLambda(
+          lambdaDef.id,
+          lambdaDef.entry,
+          lambdaDef.environment,
+          vpc,
+          lambdaSecurityGroup,
+          privateSubnets,
+          !props.isDev ? lambdaDef.provisionedConcurrency : 0,
+        );
+        return acc;
+      },
+      {} as { [key: string]: NodejsFunction },
+    );
 
     // Create IAM role for API Gateway to invoke Lambda functions
     const apiGatewayRole = new cdk.aws_iam.Role(this, "ApiGatewayRole", {
@@ -552,17 +561,38 @@ export class Api extends cdk.NestedStack {
       apiGateway: api,
     });
 
+    const logBucket = new Bucket(this, "LogBucket", {
+      versioned: true,
+      encryption: BucketEncryption.S3_MANAGED,
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    logBucket.addToResourcePolicy(
+      new PolicyStatement({
+        effect: Effect.DENY,
+        principals: [new AnyPrincipal()],
+        actions: ["s3:*"],
+        resources: [logBucket.bucketArn, `${logBucket.bucketArn}/*`],
+        conditions: {
+          Bool: { "aws:SecureTransport": "false" },
+        },
+      }),
+    );
+
+    const emptyBuckets = new LC.EmptyBuckets(this, "EmptyBuckets", {
+      buckets: [logBucket],
+    });
+
     const cloudwatchToS3 = new LC.CloudWatchToS3(
       this,
       "CloudWatchToS3Construct",
       {
         logGroup: waf.logGroup,
+        bucket: logBucket,
       },
     );
-
-    new LC.EmptyBuckets(this, "EmptyBuckets", {
-      buckets: [cloudwatchToS3.logBucket],
-    });
+    cloudwatchToS3.node.addDependency(emptyBuckets);
 
     return { apiGateway: api };
   }

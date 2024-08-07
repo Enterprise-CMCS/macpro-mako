@@ -1,6 +1,11 @@
 import { Argv } from "yargs";
-import { checkIfAuthenticated, LabeledProcessRunner } from "../lib/";
-import simpleGit from "simple-git";
+import {
+  checkIfAuthenticated,
+  runCommand,
+  project,
+  region,
+  setStageFromBranch,
+} from "../lib/";
 import {
   ResourceGroupsTaggingAPIClient,
   GetResourcesCommand,
@@ -13,9 +18,7 @@ import {
 } from "@aws-sdk/client-lambda";
 import prompts from "prompts";
 
-const lambdaClient = new LambdaClient({ region: process.env.REGION_A });
-
-const runner = new LabeledProcessRunner();
+const lambdaClient = new LambdaClient({ region });
 
 export const logs = {
   command: "logs",
@@ -30,18 +33,14 @@ export const logs = {
       }),
   handler: async (options: { stage?: string; functionName: string }) => {
     await checkIfAuthenticated();
+    const stage = options.stage || (await setStageFromBranch());
+    const { functionName } = options;
 
-    let { stage, functionName } = options;
-    if (!stage) {
-      const git = simpleGit();
-      const branchSummary = await git.branch();
-      stage = branchSummary.current;
-    }
     // Find all lambdas for the project and stage
     const lambdas = await getLambdasWithTags([
       {
         Key: "PROJECT",
-        Value: process.env.project!,
+        Value: project,
       },
       {
         Key: "STAGE",
@@ -78,9 +77,9 @@ export const logs = {
     const lambdaLogGroup = await getLambdaLogGroup(lambda);
 
     // Stream the logs
-    await runner.run_command_and_output(
-      "stream awslogs",
-      ["awslogs", "get", lambdaLogGroup, "-s10m", "--watch"],
+    await runCommand(
+      "awslogs",
+      ["get", lambdaLogGroup, "-s10m", "--watch"],
       ".",
     );
   },
@@ -93,7 +92,7 @@ interface Tag {
 
 async function getLambdasWithTags(tags: Tag[]): Promise<string[]> {
   const taggingClient = new ResourceGroupsTaggingAPIClient({
-    region: process.env.REGION_A,
+    region,
   });
 
   // Ensure tags are valid

@@ -38,7 +38,7 @@ export function emailHandler(
   lambda: (eventData: DecodedRecord) => Promise<any>,
 ) {
   return async function (event: Event): Promise<LambdaResponse> {
-    let eventQueue: EncodedRecord[] = [];
+    const eventQueue: EncodedRecord[] = [];
     let sendResults: any[] = [];
     const response: LambdaResponse = {
       statusCode: 200,

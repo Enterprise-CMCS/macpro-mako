@@ -26,7 +26,7 @@ export const getCognitoData = async (
       commandListUsers,
     );
     const userList: string[] = listUsersResponse.Users?.map((user) => {
-      let oneUser: UserAttributes = {};
+      const oneUser: UserAttributes = {};
       user.Attributes?.forEach((attribute: AttributeType) => {
         oneUser[attribute.Name as any] = attribute.Value;
       });

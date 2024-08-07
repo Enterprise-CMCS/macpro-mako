@@ -74,16 +74,12 @@ export class Data extends cdk.NestedStack {
         standardAttributes: { email: { required: true, mutable: true } },
       });
 
-      const userPoolDomain = new cdk.aws_cognito.UserPoolDomain(
-        this,
-        "UserPoolDomain",
-        {
-          userPool,
-          cognitoDomain: {
-            domainPrefix: `${project}-${stage}-search`,
-          },
+      new cdk.aws_cognito.UserPoolDomain(this, "UserPoolDomain", {
+        userPool,
+        cognitoDomain: {
+          domainPrefix: `${project}-${stage}-search`,
         },
-      );
+      });
 
       const userPoolClient = new cdk.aws_cognito.UserPoolClient(
         this,
@@ -499,6 +495,11 @@ export class Data extends cdk.NestedStack {
                 actions: ["ec2:DescribeSecurityGroups", "ec2:DescribeVpcs"],
                 resources: ["*"],
               }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.DENY,
+                actions: ["logs:CreateLogGroup"],
+                resources: ["*"],
+              }),
             ],
           }),
         },
@@ -893,20 +894,70 @@ export class Data extends cdk.NestedStack {
       },
     );
 
-    const runReindexCustomResource = new cdk.CustomResource(
-      this,
-      "RunReindex",
-      {
-        serviceToken: runReindexProviderProvider.serviceToken,
-        properties: {
-          stateMachine: reindexStateMachine.stateMachineArn,
-        },
+    new cdk.CustomResource(this, "RunReindex", {
+      serviceToken: runReindexProviderProvider.serviceToken,
+      properties: {
+        stateMachine: reindexStateMachine.stateMachineArn,
       },
-    );
+    });
 
     if (!usingSharedOpenSearch) {
       reindexStateMachine.node.addDependency(this.mapRoleCustomResource);
     }
+
+    const deleteIndexOnStackDeleteCustomResourceLogGroup =
+      new cdk.aws_logs.LogGroup(
+        this,
+        "deleteIndexOnStackDeleteCustomResourceLogGroup",
+        {
+          logGroupName: `/aws/lambda/${project}-${stage}-${stack}-deleteIndexOnDeleteCustomResource`,
+          removalPolicy: cdk.RemovalPolicy.DESTROY,
+        },
+      );
+    const deleteIndexOnStackDeleteCustomResource = new cr.AwsCustomResource(
+      this,
+      "DeleteIndexOnStackDeleteCustomResource",
+      {
+        onDelete: {
+          service: "Lambda",
+          action: "invoke",
+          parameters: {
+            FunctionName: deleteIndex.functionName,
+            InvocationType: "RequestResponse",
+            Payload: JSON.stringify({
+              RequestType: "Delete",
+              osDomain: `https://${openSearchDomainEndpoint}`,
+              indexNamespace,
+            }),
+          },
+          physicalResourceId: cr.PhysicalResourceId.of(
+            "delete-index-on-stack-deletes",
+          ),
+        },
+        logGroup: deleteIndexOnStackDeleteCustomResourceLogGroup,
+        policy: cr.AwsCustomResourcePolicy.fromStatements([
+          new cdk.aws_iam.PolicyStatement({
+            actions: ["lambda:InvokeFunction"],
+            resources: [deleteIndex.functionArn],
+          }),
+          new cdk.aws_iam.PolicyStatement({
+            effect: cdk.aws_iam.Effect.DENY,
+            actions: ["logs:CreateLogGroup"],
+            resources: ["*"],
+          }),
+        ]),
+      },
+    );
+    const deleteIndexOnDeleteCustomResourcePolicy =
+      deleteIndexOnStackDeleteCustomResource.node.findChild(
+        "CustomResourcePolicy",
+      );
+    deleteIndexOnStackDeleteCustomResource.node.addDependency(
+      deleteIndexOnDeleteCustomResourcePolicy,
+    );
+    deleteIndexOnStackDeleteCustomResourceLogGroup.node.addDependency(
+      deleteIndexOnDeleteCustomResourcePolicy,
+    );
 
     const deleteTriggersOnStackDeleteCustomResourceLogGroup =
       new cdk.aws_logs.LogGroup(
@@ -961,6 +1012,10 @@ export class Data extends cdk.NestedStack {
     );
     deleteTriggersOnStackDeleteCustomResourceLogGroup.node.addDependency(
       deleteTriggersOnDeleteCustomResourcePolicy,
+    );
+    // Ensures the triggers will be deleted before the indexes on stack delete
+    deleteTriggersOnStackDeleteCustomResource.node.addDependency(
+      deleteIndexOnStackDeleteCustomResource,
     );
 
     return { openSearchDomainEndpoint, openSearchDomainArn };

@@ -28,7 +28,7 @@ export class ParentStack extends cdk.Stack {
     });
     const privateSubnets = sortSubnets(vpc.privateSubnets).slice(0, 3);
 
-    if (!props.isDev || props.stage === "main") {
+    if (!props.isDev) {
       new CloudWatchLogsResourcePolicy(this, "logPolicy", {
         project: props.project,
       });
@@ -106,7 +106,7 @@ export class ParentStack extends cdk.Stack {
       devPasswordArn: props.devPasswordArn,
     });
 
-    const emailStack = new Stacks.Email(this, "email", {
+    new Stacks.Email(this, "email", {
       ...commonProps,
       stack: "email",
       vpc,

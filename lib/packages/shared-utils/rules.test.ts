@@ -5,7 +5,6 @@ import {
   testItemResult,
   testCMSCognitoUser,
   testStateCognitoUser,
-  testStateIDMUser,
   testCMSIDMUser,
 } from "./testData";
 import { PackageCheck } from "./package-check";

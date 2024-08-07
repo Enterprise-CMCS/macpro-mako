@@ -1,25 +1,18 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
-import {
-  Bucket,
-  BucketEncryption,
-  BlockPublicAccess,
-} from "aws-cdk-lib/aws-s3";
+import { Bucket } from "aws-cdk-lib/aws-s3";
 import { CfnDeliveryStream } from "aws-cdk-lib/aws-kinesisfirehose";
 import {
   Role,
   ServicePrincipal,
   PolicyStatement,
   PolicyDocument,
-  Effect,
-  AccountRootPrincipal,
-  AnyPrincipal,
 } from "aws-cdk-lib/aws-iam";
 import { LogGroup, CfnSubscriptionFilter } from "aws-cdk-lib/aws-logs";
 
 interface CloudWatchToS3Props {
   readonly logGroup: LogGroup;
-  readonly bucket?: Bucket;
+  readonly bucket: Bucket;
   readonly filePrefix?: string;
   readonly filterPattern?: string;
 }
@@ -33,33 +26,6 @@ export class CloudWatchToS3 extends Construct {
 
     const { logGroup, bucket, filePrefix = "", filterPattern = "" } = props;
 
-    // Create an S3 bucket if not provided
-    this.logBucket =
-      bucket ||
-      new Bucket(this, "LogBucket", {
-        versioned: true,
-        encryption: BucketEncryption.S3_MANAGED,
-        blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      });
-
-    if (!bucket) {
-      this.logBucket.addToResourcePolicy(
-        new PolicyStatement({
-          effect: Effect.DENY,
-          principals: [new AnyPrincipal()],
-          actions: ["s3:*"],
-          resources: [
-            this.logBucket.bucketArn,
-            `${this.logBucket.bucketArn}/*`,
-          ],
-          conditions: {
-            Bool: { "aws:SecureTransport": "false" },
-          },
-        }),
-      );
-    }
-
     // Create a Firehose role
     const firehoseRole = new Role(this, "FirehoseRole", {
       assumedBy: new ServicePrincipal("firehose.amazonaws.com"),
@@ -68,7 +34,7 @@ export class CloudWatchToS3 extends Construct {
     firehoseRole.addToPolicy(
       new PolicyStatement({
         actions: ["s3:PutObject", "s3:PutObjectAcl"],
-        resources: [`${this.logBucket.bucketArn}/*`],
+        resources: [`${bucket.bucketArn}/*`],
       }),
     );
 
@@ -92,7 +58,7 @@ export class CloudWatchToS3 extends Construct {
     this.deliveryStream = new CfnDeliveryStream(this, "DeliveryStream", {
       deliveryStreamType: "DirectPut",
       extendedS3DestinationConfiguration: {
-        bucketArn: this.logBucket.bucketArn,
+        bucketArn: bucket.bucketArn,
         roleArn: firehoseRole.roleArn,
         prefix: filePrefix,
         cloudWatchLoggingOptions: {
@@ -120,18 +86,14 @@ export class CloudWatchToS3 extends Construct {
     });
 
     // Create a subscription filter to send logs from the CloudWatch Log Group to Firehose
-    const subscriptionFilter = new CfnSubscriptionFilter(
-      this,
-      "SubscriptionFilter",
-      {
-        logGroupName: logGroup.logGroupName,
-        filterPattern: filterPattern,
-        destinationArn: cdk.Fn.getAtt(
-          this.deliveryStream.logicalId,
-          "Arn",
-        ).toString(),
-        roleArn: subscriptionFilterRole.roleArn,
-      },
-    );
+    new CfnSubscriptionFilter(this, "SubscriptionFilter", {
+      logGroupName: logGroup.logGroupName,
+      filterPattern: filterPattern,
+      destinationArn: cdk.Fn.getAtt(
+        this.deliveryStream.logicalId,
+        "Arn",
+      ).toString(),
+      roleArn: subscriptionFilterRole.roleArn,
+    });
   }
 }

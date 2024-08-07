@@ -1,7 +1,9 @@
 import { Argv } from "yargs";
 import {
   checkIfAuthenticated,
-  LabeledProcessRunner,
+  runCommand,
+  project,
+  region,
   writeUiEnvFile,
 } from "../lib/";
 import path from "path";
@@ -12,8 +14,6 @@ import {
 } from "@aws-sdk/client-cloudfront";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 
-const runner = new LabeledProcessRunner();
-
 export const deploy = {
   command: "deploy",
   describe: "deploy the project",
@@ -22,25 +22,21 @@ export const deploy = {
   },
   handler: async (options: { stage: string; stack?: string }) => {
     await checkIfAuthenticated();
-    await runner.run_command_and_output(
-      "CDK Deploy",
-      ["cdk", "deploy", "-c", `stage=${options.stage}`, "--all"],
+    await runCommand(
+      "cdk",
+      ["deploy", "-c", `stage=${options.stage}`, "--all"],
       ".",
     );
 
     await writeUiEnvFile(options.stage);
 
-    await runner.run_command_and_output(
-      "Build",
-      ["bun", "run", "build"],
-      "react-app",
-    );
+    await runCommand("bun", ["run", "build"], "react-app");
 
     const { s3BucketName, cloudfrontDistributionId } = JSON.parse(
       (
         await new SSMClient({ region: "us-east-1" }).send(
           new GetParameterCommand({
-            Name: `/${process.env.PROJECT}/${options.stage}/deployment-output`,
+            Name: `/${project}/${options.stage}/deployment-output`,
           }),
         )
       ).Parameter!.Value!,
@@ -61,19 +57,19 @@ export const deploy = {
     // There's a mime type issue when aws s3 syncing files up
     // Empirically, this issue never presents itself if the bucket is cleared just before.
     // Until we have a neat way of ensuring correct mime types, we'll remove all files from the bucket.
-    await runner.run_command_and_output(
-      "S3 Clean",
-      ["aws", "s3", "rm", `s3://${s3BucketName}/`, "--recursive"],
+    await runCommand(
+      "aws",
+      ["s3", "rm", `s3://${s3BucketName}/`, "--recursive"],
       ".",
     );
-    await runner.run_command_and_output(
-      "S3 Sync",
-      ["aws", "s3", "sync", buildDir, `s3://${s3BucketName}/`],
+    await runCommand(
+      "aws",
+      ["s3", "sync", buildDir, `s3://${s3BucketName}/`],
       ".",
     );
 
     const cloudfrontClient = new CloudFrontClient({
-      region: process.env.REGION_A,
+      region,
     });
     const invalidationParams = {
       DistributionId: cloudfrontDistributionId,
