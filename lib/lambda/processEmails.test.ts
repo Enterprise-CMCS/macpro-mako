@@ -1,163 +1,197 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { handler } from "./processEmails";
+import { describe, it, expect, beforeEach, afterEach, vi, Mock } from "vitest";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
-import { KafkaEvent, KafkaRecord } from "shared-types";
+import { handler } from "./processEmails";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
-import { getEmailTemplate, fillTemplate } from "libs/email";
+import { getEmailTemplates } from "./../libs/email";
+import { KafkaEvent, KafkaRecord } from "shared-types";
 
-// Mock dependencies
-vi.mock("@aws-sdk/client-ses", () => {
-  return {
-    SESClient: vi.fn(() => ({
-      send: vi.fn(),
-    })),
-    SendEmailCommand: vi.fn(),
-  };
-});
+vi.mock("@aws-sdk/client-ses");
+vi.mock("shared-utils", () => ({
+  decodeBase64WithUtf8: vi.fn(),
+  getSecret: vi.fn(),
+}));
+vi.mock("./../libs/email", () => ({
+  getEmailTemplates: vi.fn(),
+}));
 
-vi.mock("shared-utils", () => {
-  return {
-    decodeBase64WithUtf8: vi.fn((str: string) =>
-      Buffer.from(str, "base64").toString("utf-8"),
-    ),
-    getSecret: vi.fn(),
-  };
-});
-
-vi.mock("../libs/email/email-templates", () => {
-  return {
-    getEmailTemplate: vi.fn(),
-    fillTemplate: vi.fn(),
-  };
-});
-
-const sesClient = new SESClient();
-
-describe("Lambda Handler", () => {
+describe("handler", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    process.env.emailAddressLookupSecretName = "mockSecretName";
+    process.env.applicationEndpointUrl = "http://mock-url.com";
   });
 
-  it("should process an email event and send an email", async () => {
-    const event: KafkaEvent = {
+  afterEach(() => {
+    vi.resetAllMocks();
+    delete process.env.emailAddressLookupSecretName;
+    delete process.env.applicationEndpointUrl;
+  });
+
+  it("should process Kafka event and send emails successfully", async () => {
+    const mockEvent: KafkaEvent = {
+      eventSource: "aws:kafka",
+      bootstrapServers: "localhost:9092,localhost:9093,localhost:9094",
       records: {
-        "--mako--hmmm--aws.onemac.migration.cdc-0": [
+        "topic-partition": [
           {
-            topic: "--mako--hmmm--aws.onemac.migration.cdc",
+            key: "mockKey",
+            value: "mockValue",
+            timestamp: 1628090400000,
+            topic: "mockTopic",
             partition: 0,
-            offset: 10,
-            timestamp: 1722734888826,
+            offset: 0,
             timestampType: "CREATE_TIME",
-            key: "TUQtOTktMTkzNQ==",
-            value:
-              "eyJ0aW1lc3RhbXAiOjE3MjI3MzQ4ODg1MzksImF1dGhvcml0eSI6Ik1lZGljYWlkIFNQQSIsIm9yaWdpbiI6Im1pY3JvIiwiYWRkaXRpb25hbEluZm9ybWF0aW9uIjoiYXNkZiIsImF0dGFjaG1lbnRzIjpbXSwic3VibWl0dGVyTmFtZSI6Ikdlb3JnZSBIYXJyaXNvbiIsInN1Ym1pdHRlckVtYWlsIjoiZ2VvcmdlQGV4YW1wbGUuY29tIiwiaWQiOiJNRC05OS0xOTM1IiwiYWN0aW9uVHlwZSI6IndpdGhkcmF3LXBhY2thZ2UifQ==",
-            headers: [
-              {
-                source: [109, 105, 99, 114, 111],
-              },
-            ],
+            headers: {
+              hello: "world",
+            },
           },
         ],
       },
     };
 
-    (getSecret as vi.Mock).mockResolvedValue(
-      JSON.stringify({
-        source: "no-reply@example.com",
+    const mockDecodedKey = "decodedKey";
+    const mockRecord = {
+      origin: "micro",
+      actionType: "new-submission",
+      authority: "mockAuthority",
+      submitterEmail: "test@example.com",
+    };
+
+    (decodeBase64WithUtf8 as Mock).mockReturnValueOnce(mockDecodedKey);
+    (decodeBase64WithUtf8 as Mock).mockReturnValueOnce(
+      JSON.stringify(mockRecord),
+    );
+    (getSecret as Mock).mockResolvedValue(
+      JSON.stringify({ sourceEmail: "source@example.com" }),
+    );
+    (getEmailTemplates as Mock).mockResolvedValue([
+      async (variables: any) => ({
+        subject: "Test Subject",
+        html: "Test HTML",
+        text: "Test Text",
       }),
+    ]);
+
+    const sendMock = vi.fn().mockResolvedValue({ messageId: "mockMessageId" });
+    SESClient.prototype.send = sendMock;
+
+    const mockContext = {} as any;
+    const mockCallback = () => {};
+
+    await handler(mockEvent, mockContext, mockCallback);
+
+    expect(decodeBase64WithUtf8).toHaveBeenCalledTimes(2);
+    expect(getSecret).toHaveBeenCalledWith("mockSecretName");
+    expect(sendMock).toHaveBeenCalledWith(expect.any(SendEmailCommand));
+  });
+
+  it("should handle missing environment variables", async () => {
+    delete process.env.emailAddressLookupSecretName;
+
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    const mockContext = {} as any;
+    const mockCallback = () => {};
+
+    await handler(
+      {
+        eventSource: "aws:kafka",
+        bootstrapServers: "localhost:9092,localhost:9093,localhost:9094",
+        records: {},
+      } as KafkaEvent,
+      mockContext,
+      mockCallback,
     );
 
-    (getEmailTemplate as vi.Mock).mockReturnValue({
-      subject: "Test Subject",
-      html: "<p>Test HTML</p>",
-      text: "Test Text",
-      validate: vi.fn(),
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Error processing email event:",
+      expect.any(Error),
+    );
+    consoleErrorSpy.mockRestore();
+  });
+
+  it("should handle tombstone events", async () => {
+    const mockEvent: KafkaEvent = {
+      eventSource: "aws:kafka",
+      bootstrapServers: "localhost:9092,localhost:9093,localhost:9094",
+      records: {
+        "topic-partition": [
+          {
+            key: "mockKey",
+            value: "", // Use an empty string instead of null to match the expected type
+            timestamp: 1628090400000,
+            topic: "mockTopic",
+            partition: 0,
+            offset: 0,
+            timestampType: "CREATE_TIME",
+            headers: {},
+          },
+        ],
+      },
+    };
+
+    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+
+    (decodeBase64WithUtf8 as Mock).mockReturnValueOnce("decodedKey");
+
+    const mockContext = {} as any;
+    const mockCallback = () => {};
+
+    await handler(mockEvent, mockContext, mockCallback);
+
+    expect(consoleLogSpy).toHaveBeenCalledWith(
+      "Tombstone detected. Doing nothing for this event",
+    );
+    consoleLogSpy.mockRestore();
+  });
+
+  it("should handle errors during record processing", async () => {
+    const mockEvent: KafkaEvent = {
+      eventSource: "aws:kafka",
+      bootstrapServers: "localhost:9092,localhost:9093,localhost:9094",
+      records: {
+        "topic-partition": [
+          {
+            key: "mockKey",
+            value: "mockValue",
+            timestamp: 1628090400000,
+            topic: "mockTopic",
+            partition: 0,
+            offset: 0,
+            timestampType: "CREATE_TIME",
+            headers: {},
+          },
+        ],
+      },
+    };
+
+    const mockDecodedKey = "decodedKey";
+    const mockRecord = {
+      origin: "micro",
+      actionType: "new-submission",
+      authority: "mockAuthority",
+      submitterEmail: "test@example.com",
+    };
+
+    (decodeBase64WithUtf8 as Mock).mockReturnValueOnce(mockDecodedKey);
+    (decodeBase64WithUtf8 as Mock).mockImplementationOnce(() => {
+      throw new Error("Decode error");
     });
 
-    (fillTemplate as vi.Mock).mockReturnValue({
-      subject: "Filled Subject",
-      html: "<p>Filled HTML</p>",
-      text: "Filled Text",
-    });
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
-    await handler(event);
+    const mockContext = {} as any;
+    const mockCallback = () => {};
 
-    expect(getSecret).toHaveBeenCalledWith(
-      process.env.emailAddressLookupSecretName,
+    await handler(mockEvent, mockContext, mockCallback);
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Error processing record:",
+      expect.any(Error),
     );
-    expect(getEmailTemplate).toHaveBeenCalledWith(
-      "new-submission",
-      "medicaid spa",
-      "state",
-    );
-    expect(fillTemplate).toHaveBeenCalledWith(
-      expect.any(Object),
-      expect.any(Object),
-    );
-    expect(sesClient.send).toHaveBeenCalledWith(expect.any(SendEmailCommand));
-  });
-
-  it("should skip processing for tombstone events", async () => {
-    const kafkaRecord: KafkaRecord = {
-      key: Buffer.from("test-key").toString("base64"),
-      value: undefined, // Tombstone event
-      timestamp: Date.now(),
-    };
-
-    const event: KafkaEvent = {
-      records: [[kafkaRecord]],
-    };
-
-    await handler(event);
-
-    expect(sesClient.send).not.toHaveBeenCalled();
-  });
-
-  it("should skip processing for legacy records", async () => {
-    const kafkaRecord: KafkaRecord = {
-      key: Buffer.from("test-key").toString("base64"),
-      value: Buffer.from(
-        JSON.stringify({
-          origin: "legacy",
-          actionType: "new-submission",
-          authority: "medicaid spa",
-          email: "test@example.com",
-        }),
-      ).toString("base64"),
-      timestamp: Date.now(),
-    };
-
-    const event: KafkaEvent = {
-      records: [[kafkaRecord]],
-    };
-
-    await handler(event);
-
-    expect(sesClient.send).not.toHaveBeenCalled();
-  });
-
-  it("should handle errors gracefully", async () => {
-    const kafkaRecord: KafkaRecord = {
-      key: Buffer.from("test-key").toString("base64"),
-      value: Buffer.from(
-        JSON.stringify({
-          origin: "micro",
-          actionType: "new-submission",
-          authority: "medicaid spa",
-          email: "test@example.com",
-        }),
-      ).toString("base64"),
-      timestamp: Date.now(),
-    };
-
-    const event: KafkaEvent = {
-      records: [[kafkaRecord]],
-    };
-
-    (getSecret as vi.Mock).mockRejectedValue(new Error("Secret fetch error"));
-
-    await expect(handler(event)).rejects.toThrow("Secret fetch error");
-
-    expect(sesClient.send).not.toHaveBeenCalled();
+    consoleErrorSpy.mockRestore();
   });
 });
