@@ -1,4 +1,349 @@
-import { FormSchema } from "shared-types";
+import { FormSchema, RHFSlotProps } from "shared-types";
+
+enum Section {
+  MCO = "MCO",
+  HIO = "HIO",
+}
+interface sectionParams {
+  programLabel: string;
+}
+
+function managedCare({ programLabel }: sectionParams): RHFSlotProps[] {
+  return [
+    {
+      rhf: "Select",
+      label:
+        "Is the managed care delivery system the same as an already approved managed care program?",
+      labelClassName: "font-bold",
+      name: "same-as-approved-program",
+      rules: {
+        required: "* Required",
+      },
+      props: {
+        className: "w-[125px]",
+        options: [
+          { label: "Yes", value: "yes" },
+          { label: "No", value: "no" },
+        ],
+      },
+    },
+    {
+      rhf: "Checkbox",
+      label: "The existing managed care program operates under:",
+      labelClassName: "font-bold",
+      name: "existing-managed-care-program",
+      props: {
+        options: [
+          {
+            label: "Section 1915(a) voluntary managed care program",
+            value: "1915a",
+            slots: [
+              {
+                rhf: "DatePicker",
+                label: "Date program approved by CMS",
+                labelClassName: "font-bold",
+                name: "1915a-date-approved",
+              },
+              {
+                rhf: "Input",
+                label: "Program name",
+                labelClassName: "font-bold",
+                name: "1915a-program-name",
+                props: {
+                  className: "w-full",
+                },
+              },
+            ],
+          },
+          {
+            label: "Section 1915(b) managed care waiver",
+            value: "1915b",
+            slots: [
+              {
+                rhf: "DatePicker",
+                label: "Date program approved by CMS",
+                labelClassName: "font-bold",
+                name: "1915b-date-approved",
+              },
+              {
+                rhf: "Input",
+                label: "Program name",
+                labelClassName: "font-bold",
+                name: "1915b-program-name",
+                props: {
+                  className: "w-full",
+                },
+              },
+            ],
+          },
+          {
+            label:
+              "Section 1932(a) mandatory managed care state plan amendment",
+            value: "1932a",
+            slots: [
+              {
+                rhf: "DatePicker",
+                label: "Date program approved by CMS",
+                labelClassName: "font-bold",
+                name: "1932a-date-approved",
+              },
+              {
+                rhf: "Input",
+                label: "Program name",
+                labelClassName: "font-bold",
+                name: "1932a-program-name",
+                props: {
+                  className: "w-full",
+                },
+              },
+            ],
+          },
+          {
+            label: "Section 1115 demonstration",
+            value: "1115",
+            slots: [
+              {
+                rhf: "DatePicker",
+                label: "Date program approved by CMS",
+                labelClassName: "font-bold",
+                name: "1115-date-approved",
+              },
+              {
+                rhf: "Input",
+                label: "Program name",
+                labelClassName: "font-bold",
+                name: "1115-program-name",
+                props: {
+                  className: "w-full",
+                },
+              },
+            ],
+          },
+          {
+            label: `An ${programLabel} consistent with applicable managed care requirements (42 CFR Part 438, 42 CFR Part 440, and Sections 1903(m), 1932, and 1937 of the Social Security Act)`,
+            value: "consistent-with-requirements",
+          },
+        ],
+      },
+    },
+  ];
+}
+
+const procurementRequirements: RHFSlotProps[] = [
+  {
+    rhf: "Checkbox",
+    name: "procurement-requirments",
+    props: {
+      options: [
+        {
+          label:
+            "The state assures all applicable requirements of 45 CFR 75.326 for procurement of contracts will be met.",
+          value: "assures-requirements",
+        },
+      ],
+    },
+  },
+];
+
+function deliverySystemCharactaristics({
+  programLabel,
+}: sectionParams): RHFSlotProps[] {
+  return [
+    {
+      rhf: "Select",
+      label: `Will one or more ABP benefits or services be provided through a type of coverage other than the ${programLabel}, such as another managed care plan or fee-for service delivery system?`,
+      labelClassName: "font-bold",
+      name: "abp-benefits-provided",
+      props: {
+        className: "w-[125px]",
+        options: [
+          { label: "Yes", value: "yes" },
+          { label: "No", value: "no" },
+        ],
+      },
+    },
+    {
+      rhf: "FieldGroup",
+      name: "benefit-service",
+      label: `Which benefit or service will be provided by a type of coverage other than the ${programLabel}?`,
+      labelClassName: "font-bold",
+      props: {
+        appendText: "Add benefit or service",
+        removeText: "Remove",
+      },
+      fields: [
+        {
+          rhf: "WrappedGroup",
+          name: "benefit-service",
+          props: {
+            wrapperClassName:
+              "ml-[0.6rem] pl-4 border-l-4 border-l-primary my-2 space-y-6",
+          },
+          fields: [
+            {
+              rhf: "Input",
+              label: "Benefit or service",
+              labelClassName: "font-bold",
+              name: "benefit-service",
+              props: {
+                className: "w-full",
+              },
+            },
+            {
+              rhf: "Textarea",
+              label: "How it will be provided",
+              labelClassName: "font-bold",
+              name: "how-provided",
+              props: {
+                className: "min-h-[76px]",
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      rhf: "Select",
+      label: `Is ${programLabel} service delivery provided on less than a statewide basis?`,
+      labelClassName: "font-bold",
+      name: "service-delivery",
+      props: {
+        className: "w-[125px]",
+        options: [
+          { label: "Yes", value: "yes" },
+          { label: "No", value: "no" },
+        ],
+      },
+    },
+    {
+      rhf: "Radio",
+      label: `What is the limited geographic area where ${programLabel} service delivery is available?`,
+      name: "geographic-area",
+      props: {
+        options: [
+          {
+            label: "Only in designated counties",
+            value: "counties",
+            slots: [
+              {
+                rhf: "Input",
+                label: "Counties",
+                labelClassName: "font-bold",
+                name: "counties",
+                props: {
+                  className: "w-full",
+                },
+              },
+            ],
+          },
+          {
+            label: "Only in designated regions",
+            value: "regions",
+            slots: [
+              {
+                rhf: "Input",
+                label: "Regions and makeup of each",
+                labelClassName: "font-bold",
+                name: "regions",
+                props: {
+                  className: "w-full",
+                },
+              },
+            ],
+          },
+          {
+            label: "Only in designated cities and municipalities",
+            value: "cities",
+            slots: [
+              {
+                rhf: "Input",
+                label: "Cities and municipalities",
+                labelClassName: "font-bold",
+                name: "cities",
+                props: {
+                  className: "w-full",
+                },
+              },
+            ],
+          },
+          {
+            label:
+              "In some other geographic area (must not be smaller than a zip code)",
+            value: "other-geographic-area",
+            slots: [
+              {
+                rhf: "Input",
+                label: "Geographic area",
+                labelClassName: "font-bold",
+                name: "geographic-area",
+                props: {
+                  className: "w-full",
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ];
+}
+
+function participationExclusions({
+  programLabel,
+}: sectionParams): RHFSlotProps[] {
+  return [
+    {
+      rhf: "Select",
+      label: `Are individuals excluded from ${programLabel} participation in the ABP?`,
+      labelClassName: "font-bold",
+      name: "participation-exclusions",
+      props: {
+        className: "w-[125px]",
+        options: [
+          { label: "Yes", value: "yes" },
+          { label: "No", value: "no" },
+        ],
+      },
+    },
+    {
+      rhf: "Checkbox",
+      label: "Excluded individuals",
+      labelClassName: "font-bold",
+      name: "excluded-individuals",
+      props: {
+        options: [
+          {
+            label: "Individuals with other medical insurance",
+            value: "other-insurance",
+          },
+          {
+            label: "Individuals eligible for less than three months",
+            value: "less-than-three-months",
+          },
+          {
+            label:
+              "Individuals in a retroactive period of Medicaid eligibility",
+            value: "retroactive-period",
+          },
+          {
+            label: "Other",
+            value: "other",
+            slots: [
+              {
+                rhf: "Textarea",
+                label: "Describe",
+                name: "other-exclusions",
+                props: {
+                  className: "min-h-[76px]",
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ];
+}
 
 export const v202401: FormSchema = {
   header: "ABP 8: Service delivery systems",
@@ -52,16 +397,6 @@ export const v202401: FormSchema = {
     {
       title: "Managed care options",
       sectionId: "managed-care-options",
-      // dependency: {
-      //   conditions: [
-      //     {
-      //       name: "abp8_delivery-systems_managed-care-delivery-systems",
-      //       type: "expectedValue",
-      //       expectedValue: "mco",
-      //     },
-      //   ],
-      //   effect: { type: "show" },
-      // },
       form: [
         {
           slots: [
@@ -249,129 +584,13 @@ export const v202401: FormSchema = {
         },
       ],
     },
+    // MCO --------------------------------------------------------------------
     {
       title: "Managed care organizations (MCOs)",
       sectionId: "mcos",
       form: [
         {
-          slots: [
-            {
-              rhf: "Select",
-              label:
-                "Is the managed care delivery system the same as an already approved managed care program?",
-              name: "same-as-approved-program",
-              rules: {
-                required: "* Required",
-              },
-              props: {
-                className: "w-[125px]",
-                options: [
-                  { label: "Yes", value: "yes" },
-                  { label: "No", value: "no" },
-                ],
-              },
-            },
-            {
-              rhf: "Checkbox",
-              label: "The existing managed care program operates under:",
-              labelClassName: "font-bold",
-              name: "existing-managed-care-program",
-              props: {
-                options: [
-                  {
-                    label: "Section 1915(a) voluntary managed care program",
-                    value: "1915a",
-                    slots: [
-                      {
-                        rhf: "DatePicker",
-                        label: "Date program approved by CMS",
-                        labelClassName: "font-bold",
-                        name: "1915a-date-approved",
-                      },
-                      {
-                        rhf: "Input",
-                        label: "Program name",
-                        labelClassName: "font-bold",
-                        name: "1915a-program-name",
-                        props: {
-                          className: "w-full",
-                        },
-                      },
-                    ],
-                  },
-                  {
-                    label: "Section 1915(b) managed care waiver",
-                    value: "1915b",
-                    slots: [
-                      {
-                        rhf: "DatePicker",
-                        label: "Date program approved by CMS",
-                        labelClassName: "font-bold",
-                        name: "1915b-date-approved",
-                      },
-                      {
-                        rhf: "Input",
-                        label: "Program name",
-                        labelClassName: "font-bold",
-                        name: "1915b-program-name",
-                        props: {
-                          className: "w-full",
-                        },
-                      },
-                    ],
-                  },
-                  {
-                    label:
-                      "Section 1932(a) mandatory managed care state plan amendment",
-                    value: "1932a",
-                    slots: [
-                      {
-                        rhf: "DatePicker",
-                        label: "Date program approved by CMS",
-                        labelClassName: "font-bold",
-                        name: "1932a-date-approved",
-                      },
-                      {
-                        rhf: "Input",
-                        label: "Program name",
-                        labelClassName: "font-bold",
-                        name: "1932a-program-name",
-                        props: {
-                          className: "w-full",
-                        },
-                      },
-                    ],
-                  },
-                  {
-                    label: "Section 1115 demonstration",
-                    value: "1115",
-                    slots: [
-                      {
-                        rhf: "DatePicker",
-                        label: "Date program approved by CMS",
-                        labelClassName: "font-bold",
-                        name: "1115-date-approved",
-                      },
-                      {
-                        rhf: "Input",
-                        label: "Program name",
-                        labelClassName: "font-bold",
-                        name: "1115-program-name",
-                        props: {
-                          className: "w-full",
-                        },
-                      },
-                    ],
-                  },
-                  {
-                    label:
-                      "An MCO consistent with applicable managed care requirements (42 CFR Part 438, 42 CFR Part 440, and Sections 1903(m), 1932, and 1937 of the Social Security Act)",
-                    value: "mco",
-                  },
-                ],
-              },
-            },
-          ],
+          slots: managedCare({ programLabel: Section.MCO }),
         },
       ],
     },
@@ -381,21 +600,7 @@ export const v202401: FormSchema = {
       subsection: true,
       form: [
         {
-          slots: [
-            {
-              rhf: "Checkbox",
-              name: "mco-procurement",
-              props: {
-                options: [
-                  {
-                    label:
-                      "The state assures all applicable requirements of 45 CFR 75.326 for procurement of contracts will be met.",
-                    value: "assures-requirements",
-                  },
-                ],
-              },
-            },
-          ],
+          slots: procurementRequirements,
         },
       ],
     },
@@ -405,148 +610,7 @@ export const v202401: FormSchema = {
       subsection: true,
       form: [
         {
-          slots: [
-            {
-              rhf: "Select",
-              label:
-                "Will one or more ABP benefits or services be provided through a type of coverage other than the MCO, such as another managed care plan or fee-for service delivery system?",
-              labelClassName: "font-bold",
-              name: "abp-benefits-provided",
-              props: {
-                className: "w-[125px]",
-                options: [
-                  { label: "Yes", value: "yes" },
-                  { label: "No", value: "no" },
-                ],
-              },
-            },
-            {
-              rhf: "FieldGroup",
-              name: "benefit-service",
-              label:
-                "Which benefit or service will be provided by a type of coverage other than the MCO?",
-              labelClassName: "font-bold",
-              props: {
-                appendText: "Add benefit or service",
-                removeText: "Remove",
-              },
-              fields: [
-                {
-                  rhf: "WrappedGroup",
-                  name: "benefit-service",
-                  props: {
-                    wrapperClassName:
-                      "ml-[0.6rem] pl-4 border-l-4 border-l-primary my-2 space-y-6",
-                  },
-                  fields: [
-                    {
-                      rhf: "Input",
-                      label: "Benefit or service",
-                      labelClassName: "font-bold",
-                      name: "benefit-service",
-                      props: {
-                        className: "w-full",
-                      },
-                    },
-                    {
-                      rhf: "Textarea",
-                      label: "How it will be provided",
-                      labelClassName: "font-bold",
-                      name: "how-provided",
-                      props: {
-                        className: "min-h-[76px]",
-                      },
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              rhf: "Select",
-              label:
-                "Is MCO service delivery provided on less than a statewide basis?",
-              labelClassName: "font-bold",
-              name: "mco-service-delivery",
-              props: {
-                className: "w-[125px]",
-                options: [
-                  { label: "Yes", value: "yes" },
-                  { label: "No", value: "no" },
-                ],
-              },
-            },
-            {
-              rhf: "Radio",
-              label:
-                "What is the limited geographic area where MCO service delivery is available?",
-              name: "mco-geographic-area",
-              props: {
-                options: [
-                  {
-                    label: "Only in designated counties",
-                    value: "counties",
-                    slots: [
-                      {
-                        rhf: "Input",
-                        label: "Counties",
-                        labelClassName: "font-bold",
-                        name: "counties",
-                        props: {
-                          className: "w-full",
-                        },
-                      },
-                    ],
-                  },
-                  {
-                    label: "Only in designated regions",
-                    value: "regions",
-                    slots: [
-                      {
-                        rhf: "Input",
-                        label: "Regions and makeup of each",
-                        labelClassName: "font-bold",
-                        name: "regions",
-                        props: {
-                          className: "w-full",
-                        },
-                      },
-                    ],
-                  },
-                  {
-                    label: "Only in designated cities and municipalities",
-                    value: "cities",
-                    slots: [
-                      {
-                        rhf: "Input",
-                        label: "Cities and municipalities",
-                        labelClassName: "font-bold",
-                        name: "cities",
-                        props: {
-                          className: "w-full",
-                        },
-                      },
-                    ],
-                  },
-                  {
-                    label:
-                      "In some other geographic area (must not be smaller than a zip code)",
-                    value: "other-geographic-area",
-                    slots: [
-                      {
-                        rhf: "Input",
-                        label: "Geographic area",
-                        labelClassName: "font-bold",
-                        name: "geographic-area",
-                        props: {
-                          className: "w-full",
-                        },
-                      },
-                    ],
-                  },
-                ],
-              },
-            },
-          ],
+          slots: deliverySystemCharactaristics({ programLabel: Section.MCO }),
         },
       ],
     },
@@ -556,59 +620,7 @@ export const v202401: FormSchema = {
       subsection: true,
       form: [
         {
-          slots: [
-            {
-              rhf: "Select",
-              label:
-                "Are individuals excluded from MCO participation in the ABP?",
-              labelClassName: "font-bold",
-              name: "mco-participation-exclusions",
-              props: {
-                className: "w-[125px]",
-                options: [
-                  { label: "Yes", value: "yes" },
-                  { label: "No", value: "no" },
-                ],
-              },
-            },
-            {
-              rhf: "Checkbox",
-              label: "Excluded individuals",
-              labelClassName: "font-bold",
-              name: "excluded-individuals",
-              props: {
-                options: [
-                  {
-                    label: "Individuals with other medical insurance",
-                    value: "other-insurance",
-                  },
-                  {
-                    label: "Individuals eligible for less than three months",
-                    value: "less-than-three-months",
-                  },
-                  {
-                    label:
-                      "Individuals in a retroactive period of Medicaid eligibility",
-                    value: "retroactive-period",
-                  },
-                  {
-                    label: "Other",
-                    value: "other",
-                    slots: [
-                      {
-                        rhf: "Textarea",
-                        label: "Describe",
-                        name: "other-exclusions",
-                        props: {
-                          className: "min-h-[76px]",
-                        },
-                      },
-                    ],
-                  },
-                ],
-              },
-            },
-          ],
+          slots: participationExclusions({ programLabel: Section.MCO }),
         },
       ],
     },
@@ -963,8 +975,8 @@ export const v202401: FormSchema = {
       ],
     },
     {
-      title: "Additional information: HIO",
-      sectionId: "additional-info-hio",
+      title: "Additional information: MCO",
+      sectionId: "additional-info-mco",
       subsection: true,
       form: [
         {
@@ -980,6 +992,46 @@ export const v202401: FormSchema = {
               },
             },
           ],
+        },
+      ],
+    },
+    // HIO --------------------------------------------------------------------
+    {
+      title: "Health insuring organizations (HIOs)",
+      sectionId: "hios",
+      form: [
+        {
+          slots: managedCare({ programLabel: Section.HIO }),
+        },
+      ],
+    },
+    {
+      title: "HIO procurement",
+      sectionId: "hio-procurement",
+      subsection: true,
+      form: [
+        {
+          slots: procurementRequirements,
+        },
+      ],
+    },
+    {
+      title: "Other HIO-based service delivery system characteristics",
+      sectionId: "hil-service-delivery",
+      subsection: true,
+      form: [
+        {
+          slots: deliverySystemCharactaristics({ programLabel: Section.HIO }),
+        },
+      ],
+    },
+    {
+      title: "HIO participation exclusions",
+      sectionId: "hio-participation-exclusions",
+      subsection: true,
+      form: [
+        {
+          slots: participationExclusions({ programLabel: Section.HIO }),
         },
       ],
     },
