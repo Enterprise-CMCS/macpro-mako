@@ -436,7 +436,7 @@ export const v202401: FormSchema = {
                   name: "benefit-service",
                   props: {
                     wrapperClassName:
-                      "ml-[0.6rem] px-4  border-l-4 border-l-primary my-2",
+                      "ml-[0.6rem] pl-4 border-l-4 border-l-primary my-2 space-y-6",
                   },
                   fields: [
                     {
@@ -454,7 +454,7 @@ export const v202401: FormSchema = {
                       labelClassName: "font-bold",
                       name: "how-provided",
                       props: {
-                        className: "w-[527px]",
+                        className: "min-h-[76px]",
                       },
                     },
                   ],
@@ -581,6 +581,300 @@ export const v202401: FormSchema = {
                   {
                     label: "Individuals with other medical insurance",
                     value: "other-insurance",
+                  },
+                  {
+                    label: "Individuals eligible for less than three months",
+                    value: "less-than-three-months",
+                  },
+                  {
+                    label:
+                      "Individuals in a retroactive period of Medicaid eligibility",
+                    value: "retroactive-period",
+                  },
+                  {
+                    label: "Other",
+                    value: "other",
+                    slots: [
+                      {
+                        rhf: "Textarea",
+                        label: "Describe",
+                        name: "other-exclusions",
+                        props: {
+                          className: "min-h-[76px]",
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "General MCO participation requirements",
+      sectionId: "mco-participation-requirements",
+      subsection: true,
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Radio",
+              label: "Participation in managed care",
+              labelClassName: "font-bold",
+              name: "participation-in-managed-care",
+              props: {
+                options: [
+                  {
+                    label: "Mandatory",
+                    value: "mandatory",
+                    slots: [
+                      {
+                        rhf: "Textarea",
+                        label: "Method of enrollment in MCOs",
+                        name: "mandatory-enrollment-method",
+                        labelClassName: "font-bold",
+                        props: {
+                          className: "min-h-[133px]",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label:
+                      "Voluntary, using the below method for effectuating enrollment",
+                    value: "voluntary",
+                    slots: [
+                      {
+                        rhf: "Radio",
+                        name: "voluntary-enrollment-method",
+                        props: {
+                          options: [
+                            {
+                              label: "Affirmative selection of MCO",
+                              value: "affirmative-selection",
+                            },
+                            {
+                              label:
+                                "State enrolls individual in MCO (passive enrollment) and permits disenrollment",
+                              value: "passive-enrollment",
+                            },
+                            {
+                              label: "Other",
+                              value: "other",
+                              slots: [
+                                {
+                                  rhf: "Input",
+                                  label: "Describe",
+                                  labelClassName: "font-bold",
+                                  name: "other-voluntary-enrollment-method",
+                                  formItemClassName: "w-full",
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Disenrollment",
+      sectionId: "disenrollment",
+      subsection: true,
+      form: [
+        {
+          description:
+            "Complete the below based on whether mandatory and/or voluntary enrollment are applicable to your program (see definitions in 42 CFR 438.54(b)).",
+          descriptionClassName: "font-normal",
+          slots: [
+            {
+              rhf: "Select",
+              label: "Will the state limit disenrollment for managed care?",
+              labelClassName: "font-bold",
+              name: "limit-disenrollment",
+              props: {
+                className: "w-[125px]",
+                options: [
+                  { label: "Yes", value: "yes" },
+                  { label: "No", value: "no" },
+                ],
+              },
+            },
+            {
+              rhf: "Input",
+              label:
+                "Length of time the disenrollment limitation will apply (up to 12 months)",
+              labelClassName: "font-bold",
+              name: "disenrollment-limit-length",
+              props: {
+                className: "w-full",
+              },
+            },
+            {
+              rhf: "Checkbox",
+              name: "assures-beneficiary-requests",
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state assures that beneficiary requests for disenrollment (with and without cause) will be permitted in accordance with 42 CFR 438.56.",
+                    value: "assures-requests",
+                  },
+                ],
+              },
+            },
+            {
+              rhf: "Textarea",
+              label:
+                "What is the state’s process for notifying Medicaid beneficiaries of their right to disenroll without cause during the 90 days following the date of their initial enrollment into the MCO/HIO/PAHP/PIHP/PCCM/PCCM entity (e.g., state-generated correspondence, enrollment packet), in accordance with federal requirements including 42 CFR 438.10 and 438.56?",
+              labelClassName: "font-bold",
+              name: "disenrollment-notification",
+              props: {
+                className: "min-h-[114px]",
+              },
+            },
+            {
+              rhf: "Textarea",
+              label:
+                "Additional circumstances of cause for disenrollment (optional)",
+              labelClassName: "font-bold",
+              name: "additional-disenrollment-cause",
+              props: {
+                className: "min-h-[114px]",
+              },
+            },
+            {
+              rhf: "Checkbox",
+              name: "disenrollment-options",
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state limits disenrollment and assures it meets the requirements of 42 CFR 438.56(c).",
+                    value: "limits-disenrollment",
+                  },
+                  {
+                    label:
+                      "After the initial 90-day enrollment or notice period described in 42 CFR 438.56(c)(2)(i), enrollees may request MCO/HIO/PIHP/PAHP/PCCM/PCCM entity disenrollment every set number of months.",
+                    value: "request-disenrollment",
+                    slots: [
+                      {
+                        rhf: "Input",
+                        label: "Number of months",
+                        labelClassName: "font-bold",
+                        name: "disenrollment-number-months",
+                        props: {
+                          icon: "months",
+                          iconRight: true,
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label:
+                      "Enrollees submit disenrollment requests to the state or its agent.",
+                    value: "submit-requests",
+                  },
+                  {
+                    label:
+                      "Enrollees submit disenrollment requests to the MCO/HIO/PIHP/PAHP/PCCM/PCCM entity. The managed care plan may approve the request but may not disapprove it.",
+                    value: "submit-requests-to-mco",
+                  },
+                  {
+                    label:
+                      "The MCO/HIO/PIHP/PAHP/PCCM/PCCM entity may not approve or disapprove requests and must refer all disenrollment requests received to the state.",
+                    value: "mco-refers-requests",
+                  },
+                  {
+                    label:
+                      "Enrollees must seek redress through the MCO/HIO/PIHP/PAHP grievance process before the state will make a determination on the disenrollment request.",
+                    value: "seek-redress",
+                  },
+                ],
+              },
+            },
+            {
+              rhf: "Textarea",
+              label:
+                "Describe the “for cause” reasons, if any, that an enrollee may request disenrollment, in addition to those listed in 42 CFR 438.56(d)(2)).",
+              labelClassName: "font-bold",
+              name: "for-cause-reasons",
+              props: {
+                className: "min-h-[76px]",
+              },
+            },
+            {
+              rhf: "Textarea",
+              label:
+                "Describe the processes in place to ensure disenrollments are effective no later than the first day of the second month following the month in which the enrollee requests disenrollment or the MCO/PIHP/PAHP/PCCM/PCCM entity refers the request to the state.",
+              labelClassName: "font-bold",
+              name: "disenrollment-processes",
+              props: {
+                className: "min-h-[76px]",
+              },
+            },
+            {
+              rhf: "Checkbox",
+              name: "disenrollment-options",
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state does not limit disenrollment, and enrollees in MCOs/HIOs/PIHPs/PAHPs/PCCMs/PCCM entities are allowed to disenroll without cause at any time. The disenrollment is effective no later than the first day of the second month following the month in which the enrollee requests disenrollment or the MCO/PIHP/PAHP/PCCM/PCCM entity refers the request to the state.",
+                    value: "state-does-not-limit-disenrollment",
+                  },
+                  {
+                    label:
+                      "The state allows MCOs/PIHPs/PAHPs/PCCMs/PCCM entities to request disenrollment of enrollees.",
+                    value: "state-allows-disenrollment",
+                    slots: [
+                      {
+                        rhf: "Checkbox",
+                        name: "disenrollment-request-options",
+                        props: {
+                          options: [
+                            {
+                              label:
+                                "The MCO/PIHP/PAHP/PCCM/PCCM entity can request disenrollment of an enrollee for certain reasons. \n \n In accordance with 42 CFR 438.56(b), the MCO/PIHP/PAHP/PCCM/PCCM entity may not request disenrollment because of an adverse change in the enrollee's health status or because of the enrollee's utilization of medical services, diminished mental capacity, or uncooperative or disruptive behavior resulting from his or her special needs (except when his or her continued enrollment in the MCO/PIHP/PAHP/PCCM/PCCM entity seriously impairs the entity's ability to furnish services to either this particular enrollee or other enrollees).",
+
+                              value: "can-request-disenrollment",
+                              optionlabelClassName: "whitespace-pre-line",
+                              slots: [
+                                {
+                                  rhf: "Textarea",
+                                  label: "List and describe the reasons.",
+                                  labelClassName: "font-bold",
+                                  name: "disenrollment-request-reasons",
+                                },
+                              ],
+                            },
+                            {
+                              label:
+                                "The state reviews and approves all requests for enrollee transfers or disenrollments initiated by MCOs/PIHPs/PAHPS/PCCMs/PCCM entities.",
+                              value: "state-reviews-requests",
+                            },
+                            {
+                              label:
+                                "If a reassignment is approved, the state notifies the enrollee in a direct and timely manner of the desire of the MCO/PIHP/PAHP/PCCM/PCCM entity to remove the enrollee from its membership or from the PCCM’s caseload.",
+                              value: "state-notifies-enrollee",
+                            },
+                            {
+                              label:
+                                "The enrollee remains an enrollee of the MCO/PIHP/PAHP/PCCM/PCCM entity until another MCO/PIHP/PAHP/PCCM/PCCM entity is chosen or assigned.",
+                              value: "enrollee-remains",
+                            },
+                          ],
+                        },
+                      },
+                    ],
                   },
                 ],
               },
