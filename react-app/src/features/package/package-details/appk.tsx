@@ -1,9 +1,4 @@
-import {
-  ConfirmationDialog,
-  LoadingSpinner,
-  Route,
-  useAlertContext,
-} from "@/components";
+import { ConfirmationDialog, LoadingSpinner, banner } from "@/components";
 import { SEATOOL_STATUS } from "shared-types";
 import { useState } from "react";
 import * as T from "@/components/Table";
@@ -17,7 +12,6 @@ import { usePackageDetailsCache } from "..";
 
 export const AppK = () => {
   const [removeChild, setRemoveChild] = useState("");
-  const alert = useAlertContext();
   const [loading, setLoading] = useState(false);
   const { data: user } = useGetUser();
   const cache = usePackageDetailsCache();
@@ -40,13 +34,12 @@ export const AppK = () => {
             setRemoveChild("");
             cache.refetch();
             setLoading(false);
-            alert.setContent({
+            banner({
               header: "Package withdrawn",
               body: `The package ${id} has been withdrawn.`,
+              pathnameToDisplayOn: window.location.pathname,
+              variant: "success",
             });
-            alert.setBannerStyle("success");
-            alert.setBannerShow(true);
-            alert.setBannerDisplayOn(window.location.pathname as Route);
             window.scrollTo(0, 0);
           }, 5000);
         },

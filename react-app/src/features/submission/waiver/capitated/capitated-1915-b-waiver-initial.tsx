@@ -11,8 +11,8 @@ import {
   SectionCard,
   FAQFooter,
   formCrumbsFromPath,
-  Route,
   FormField,
+  banner,
 } from "@/components";
 import { submit } from "@/api/submissionService";
 import { Authority } from "shared-types";
@@ -23,7 +23,6 @@ import {
   zInitialWaiverNumberSchema,
 } from "@/utils";
 import { FAQ_TAB } from "@/components/Routing/consts";
-import { useAlertContext } from "@/components/Context/alertContext";
 import { getFormOrigin } from "@/utils/formOrigin";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 import { SlotAdditionalInfo } from "@/features";
@@ -73,7 +72,6 @@ export const Capitated1915BWaiverInitialPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
-  const alert = useAlertContext();
 
   const handleSubmit: SubmitHandler<Waiver1915BCapitatedAmendment> = async (
     formData,
@@ -88,13 +86,12 @@ export const Capitated1915BWaiverInitialPage = () => {
 
       const originPath = getFormOrigin({ authority: Authority["1915b"] });
 
-      alert.setContent({
+      banner({
         header: "Package submitted",
         body: "Your submission has been received.",
+        variant: "success",
+        pathnameToDisplayOn: originPath.pathname,
       });
-      alert.setBannerStyle("success");
-      alert.setBannerShow(true);
-      alert.setBannerDisplayOn(originPath.pathname as Route);
 
       const poller = documentPoller(formData.id, (checks) =>
         checks.actionIs("New"),
@@ -105,13 +102,12 @@ export const Capitated1915BWaiverInitialPage = () => {
       navigate(originPath);
     } catch (e) {
       console.error(e);
-      alert.setContent({
+      banner({
         header: "An unexpected error has occurred:",
         body: e instanceof Error ? e.message : String(e),
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
       });
-      alert.setBannerStyle("destructive");
-      alert.setBannerDisplayOn(window.location.pathname as Route);
-      alert.setBannerShow(true);
       window.scrollTo(0, 0);
     }
   };

@@ -1,9 +1,10 @@
-import { Route, urlEmbedQuery, useAlertContext } from "@/components";
+import { banner } from "@/components";
 import { isNewSubmission } from "@/utils";
 import { useEffect } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import {
   ActionFunctionArgs,
+  createSearchParams,
   useActionData,
   useLocation,
   useNavigate,
@@ -68,48 +69,68 @@ export const useIntakePackage = () => {
 };
 
 export const useDisplaySubmissionAlert = (header: string, body: string) => {
-  const alert = useAlertContext();
   const data = useActionData() as ActionFunctionReturnType & { isTe?: boolean };
   const navigate = useNavigate();
   const location = useLocation();
 
   return useEffect(() => {
     if (data?.submitted) {
-      alert.setContent({
+      if (location.pathname.endsWith("/update-id")) {
+        banner({
+          header,
+          body,
+          variant: "success",
+          pathnameToDisplayOn: "/dashboard",
+        });
+        return navigate("/dashboard");
+      }
+
+      if (data.isTe) {
+        if (isNewSubmission()) {
+          if (location.state?.from?.includes("dashboard")) {
+            banner({
+              header,
+              body,
+              variant: "success",
+              pathnameToDisplayOn: "/dashboard",
+            });
+            return navigate({
+              pathname: "/dashboard",
+              search: createSearchParams({ tab: "waivers" }).toString(),
+            });
+          }
+          banner({
+            header,
+            body,
+            variant: "success",
+            pathnameToDisplayOn: "/details",
+          });
+          return navigate(location.state?.from ?? "/dashboard");
+        }
+      }
+
+      banner({
         header,
         body,
-      });
-      alert.setBannerStyle("success");
-      alert.setBannerShow(true);
-      if (location.pathname?.endsWith("/update-id")) {
-        alert.setBannerDisplayOn("/dashboard");
-        navigate("/dashboard");
-      } else if (data.isTe) {
-        if (isNewSubmission() || location.state?.from?.includes("dashboard")) {
-          alert.setBannerDisplayOn("/dashboard");
-          navigate(urlEmbedQuery("/dashboard", { tab: "waivers" }));
-        } else {
-          alert.setBannerDisplayOn("/details");
-          navigate(location?.state?.from ?? "/dashboard");
-        }
-      } else {
-        alert.setBannerDisplayOn(
+        variant: "success",
+        pathnameToDisplayOn:
           location.state?.from?.split("?")[0] ?? "/dashboard",
-        );
-        navigate(location.state?.from ?? "/dashboard");
-      }
-    } else if (!data?.submitted && data?.error) {
-      alert.setContent({
+      });
+
+      navigate(location.state?.from ?? "/dashboard");
+    }
+
+    if (!data?.submitted && data?.error) {
+      window.scrollTo(0, 0);
+      return banner({
         header: "An unexpected error has occurred:",
         body:
           data.error instanceof Error ? data.error.message : String(data.error),
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
       });
-      alert.setBannerStyle("destructive");
-      alert.setBannerDisplayOn(window.location.pathname as Route);
-      alert.setBannerShow(true);
-      window.scrollTo(0, 0);
     }
-  }, [data, alert, navigate, location.state, location.pathname]);
+  }, [data, navigate, location.state, location.pathname, body, header]);
 };
 
 // Utility Functions

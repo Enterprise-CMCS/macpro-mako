@@ -12,7 +12,7 @@ import { useUserContext } from "../Context";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
 import { useNavigate } from "../Routing";
-import { AlertProvider, UserPrompt } from "@/components";
+import { SimplePageContainer, UserPrompt, Banner } from "@/components";
 import { isFaqPage, isProd } from "@/utils";
 
 const useGetLinks = () => {
@@ -150,9 +150,10 @@ export const Layout = () => {
         </div>
       </nav>
       <main className="flex-1">
-        <AlertProvider>
-          <Outlet />
-        </AlertProvider>
+        <SimplePageContainer>
+          <Banner />
+        </SimplePageContainer>
+        <Outlet />
       </main>
       <Footer
         email="OneMAC_Helpdesk@cms.hhs.gov"

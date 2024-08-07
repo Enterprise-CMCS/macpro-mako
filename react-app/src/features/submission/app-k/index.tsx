@@ -1,5 +1,3 @@
- 
-
 import * as I from "@/components/Inputs";
 import * as C from "@/components";
 import { useForm } from "react-hook-form";
@@ -12,7 +10,6 @@ import { Authority } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@/components/Routing";
 import { useEffect, useState } from "react";
-import * as Content from "@/components";
 import { Link } from "react-router-dom";
 import { SlotAdditionalInfo, SlotAttachments } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
@@ -27,7 +24,6 @@ export const AppKSubmissionForm = () => {
     reValidateMode: "onBlur",
     resolver: zodResolver(FORM),
   });
-  const alert = C.useAlertContext();
 
   const submission = useMutation({
     mutationFn: (config: SubmissionServiceParameters<any>) => submit(config),
@@ -43,12 +39,12 @@ export const AppKSubmissionForm = () => {
       },
       {
         onSuccess: async () => {
-          alert.setContent({
+          C.banner({
             header: "Package submitted",
             body: "The 1915(c) Appendix K Amendment Request has been submitted.",
+            variant: "success",
+            pathnameToDisplayOn: "/dashboard",
           });
-          alert.setBannerShow(true);
-          alert.setBannerDisplayOn("/dashboard");
           setIsDataPolling(true);
           await documentPoller(
             `${draft.state}-${draft.waiverIds[0]}`,
@@ -84,7 +80,7 @@ export const AppKSubmissionForm = () => {
       <I.Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 flex flex-col">
           <C.SectionCard title="1915(c) Appendix K Amendment Request Details">
-            <Content.FormIntroTextForAppK />
+            <C.FormIntroTextForAppK />
             <I.FormField
               control={form.control}
               name="title"
