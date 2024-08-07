@@ -1013,7 +1013,7 @@ export const v202401: FormSchema = {
 
     {
       title: "Managed care organizations (MCOs)",
-      sectionId: "mcos",
+      sectionId: "mco",
       form: [
         {
           slots: managedCare({ programLabel: SectionName.MCO }),
@@ -1032,7 +1032,7 @@ export const v202401: FormSchema = {
 
     {
       title: "Health insuring organizations (HIOs)",
-      sectionId: "hios",
+      sectionId: "hio",
       form: [
         {
           slots: managedCare({ programLabel: SectionName.HIO }),
