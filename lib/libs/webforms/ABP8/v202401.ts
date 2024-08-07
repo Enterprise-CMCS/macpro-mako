@@ -132,21 +132,35 @@ function managedCare({ programLabel }: sectionParams): RHFSlotProps[] {
   ];
 }
 
-const procurementRequirements: RHFSlotProps[] = [
-  {
-    rhf: "Checkbox",
-    name: "procurement-requirments",
-    props: {
-      options: [
-        {
-          label:
-            "The state assures all applicable requirements of 45 CFR 75.326 for procurement of contracts will be met.",
-          value: "assures-requirements",
-        },
-      ],
-    },
-  },
-];
+// "[Program] procurement or selection"
+function procurementOrSelection({ programLabel }: sectionParams): Section {
+  return {
+    title: "MCO procurement or selection",
+    sectionId: "mco-procurement",
+    subsection: true,
+    form: [
+      {
+        slots: [
+          {
+            rhf: "Checkbox",
+            name: "procurement-requirments",
+            props: {
+              options: [
+                {
+                  label:
+                    "The state assures all applicable requirements of 45 CFR 75.326 for procurement of contracts will be met.",
+                  value: "assures-requirements",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  };
+}
+
+const procurementRequirements: RHFSlotProps[] = [];
 
 // "Other [program]-based service delivery system characteristics"
 function deliverySystemCharactaristics({
@@ -1005,16 +1019,7 @@ export const v202401: FormSchema = {
         },
       ],
     },
-    {
-      title: "MCO procurement or selection",
-      sectionId: "mco-procurement",
-      subsection: true,
-      form: [
-        {
-          slots: procurementRequirements,
-        },
-      ],
-    },
+    procurementOrSelection({ programLabel: SectionName.MCO }),
     deliverySystemCharactaristics({ programLabel: SectionName.MCO }),
     participationExclusions({ programLabel: SectionName.MCO }),
     participationRequirements({ programLabel: SectionName.MCO }),
@@ -1033,16 +1038,7 @@ export const v202401: FormSchema = {
         },
       ],
     },
-    {
-      title: "HIO procurement",
-      sectionId: "hio-procurement",
-      subsection: true,
-      form: [
-        {
-          slots: procurementRequirements,
-        },
-      ],
-    },
+    procurementOrSelection({ programLabel: SectionName.HIO }),
     deliverySystemCharactaristics({ programLabel: SectionName.HIO }),
     participationExclusions({ programLabel: SectionName.HIO }),
     participationRequirements({ programLabel: SectionName.HIO }),
