@@ -2,7 +2,6 @@ import { Action } from "shared-types";
 
 import { BLANK_VALUE } from "@/consts";
 import { Route } from "@/components";
-import config from "@/config";
 
 export const mapActionLabel = (a: Action) => {
   switch (a) {

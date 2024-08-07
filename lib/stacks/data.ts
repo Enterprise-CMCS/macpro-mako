@@ -74,16 +74,12 @@ export class Data extends cdk.NestedStack {
         standardAttributes: { email: { required: true, mutable: true } },
       });
 
-      const userPoolDomain = new cdk.aws_cognito.UserPoolDomain(
-        this,
-        "UserPoolDomain",
-        {
-          userPool,
-          cognitoDomain: {
-            domainPrefix: `${project}-${stage}-search`,
-          },
+      new cdk.aws_cognito.UserPoolDomain(this, "UserPoolDomain", {
+        userPool,
+        cognitoDomain: {
+          domainPrefix: `${project}-${stage}-search`,
         },
-      );
+      });
 
       const userPoolClient = new cdk.aws_cognito.UserPoolClient(
         this,
@@ -898,16 +894,12 @@ export class Data extends cdk.NestedStack {
       },
     );
 
-    const runReindexCustomResource = new cdk.CustomResource(
-      this,
-      "RunReindex",
-      {
-        serviceToken: runReindexProviderProvider.serviceToken,
-        properties: {
-          stateMachine: reindexStateMachine.stateMachineArn,
-        },
+    new cdk.CustomResource(this, "RunReindex", {
+      serviceToken: runReindexProviderProvider.serviceToken,
+      properties: {
+        stateMachine: reindexStateMachine.stateMachineArn,
       },
-    );
+    });
 
     if (!usingSharedOpenSearch) {
       reindexStateMachine.node.addDependency(this.mapRoleCustomResource);

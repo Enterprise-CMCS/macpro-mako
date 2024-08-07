@@ -1,3 +1,5 @@
+/* eslint no-prototype-builtins: 0 */ // --> OFF
+
 export type FormResult = {
     version: string;
     data: any; // replace 'any' with the actual type of the data returned from the API

@@ -18,15 +18,15 @@ export const useCountdown = (
     setIsCountdownRunning(true);
   };
 
-  const stopCountdown = () => {
+  const stopCountdown = useCallback(() => {
     setIsCountdownRunning(false);
-  };
+  }, []);
 
   // Will set running false and reset the seconds to initial value
   const resetCountdown = useCallback(() => {
     stopCountdown();
     setCount(minutesToCountDown);
-  }, [stopCountdown]);
+  }, [stopCountdown, minutesToCountDown]);
 
   const countdownCallback = useCallback(() => {
     if (count === 0) {
