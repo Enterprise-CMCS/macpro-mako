@@ -161,8 +161,6 @@ function procurementOrSelection({ programLabel }: sectionParams): Section {
   };
 }
 
-const procurementRequirements: RHFSlotProps[] = [];
-
 // "Other [program]-based service delivery system characteristics"
 function deliverySystemCharactaristics({
   programLabel,
