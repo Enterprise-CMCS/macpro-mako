@@ -136,8 +136,8 @@ function managedCare({ programLabel }: sectionParams): RHFSlotProps[] {
 // "[Program] procurement or selection"
 function procurementOrSelection({ programLabel }: sectionParams): Section {
   return {
-    title: "MCO procurement or selection",
-    sectionId: "mco-procurement",
+    title: `${programLabel} procurement or selection`,
+    sectionId: `${programLabel.toLowerCase()}-procurement`,
     subsection: true,
     form: [
       {
