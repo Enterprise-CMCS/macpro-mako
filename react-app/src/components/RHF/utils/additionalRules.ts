@@ -16,11 +16,7 @@ export function stringCompare(
   const bIsNumber = !isNaN(parseFloat(b.label));
 
   if (aIsNumber && bIsNumber) {
-    return Number(a.label) - Number(b.label);
-  } else if (aIsNumber) {
-    return -1;
-  } else if (bIsNumber) {
-    return 1;
+    return parseFloat(a.label) - parseFloat(b.label);
   } else {
     return a.label.localeCompare(b.label);
   }
