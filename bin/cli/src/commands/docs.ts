@@ -1,7 +1,5 @@
 import { Argv } from "yargs";
-import { LabeledProcessRunner } from "../lib";
-
-const runner = new LabeledProcessRunner();
+import { runCommand } from "../lib";
 
 export const docs = {
   command: "docs",
@@ -14,17 +12,12 @@ export const docs = {
       default: false,
     }),
   handler: async ({ stop }: { stop: boolean }) => {
-    await runner.run_command_and_output(
-      "Stop any existing container.",
-      ["docker", "rm", "-f", "jekyll"],
-      "docs",
-    );
+    await runCommand("docker", ["rm", "-f", "jekyll"], "docs");
 
     if (!stop) {
-      await runner.run_command_and_output(
-        "Run docs at http://localhost:4000",
+      await runCommand(
+        "docker",
         [
-          "docker",
           "run",
           "--rm",
           "-i",
