@@ -1,6 +1,8 @@
-import { FormSchema, RHFSlotProps } from "shared-types";
+import { FormSchema, RHFSlotProps, Section } from "shared-types";
 
-enum Section {
+// Repeating sections ---------------------------------------------------------
+
+enum SectionName {
   MCO = "MCO",
   HIO = "HIO",
 }
@@ -147,203 +149,296 @@ const procurementRequirements: RHFSlotProps[] = [
 
 function deliverySystemCharactaristics({
   programLabel,
-}: sectionParams): RHFSlotProps[] {
-  return [
-    {
-      rhf: "Select",
-      label: `Will one or more ABP benefits or services be provided through a type of coverage other than the ${programLabel}, such as another managed care plan or fee-for service delivery system?`,
-      labelClassName: "font-bold",
-      name: "abp-benefits-provided",
-      props: {
-        className: "w-[125px]",
-        options: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
-        ],
-      },
-    },
-    {
-      rhf: "FieldGroup",
-      name: "benefit-service",
-      label: `Which benefit or service will be provided by a type of coverage other than the ${programLabel}?`,
-      labelClassName: "font-bold",
-      props: {
-        appendText: "Add benefit or service",
-        removeText: "Remove",
-      },
-      fields: [
-        {
-          rhf: "WrappedGroup",
-          name: "benefit-service",
-          props: {
-            wrapperClassName:
-              "ml-[0.6rem] pl-4 border-l-4 border-l-primary my-2 space-y-6",
-          },
-          fields: [
-            {
-              rhf: "Input",
-              label: "Benefit or service",
-              labelClassName: "font-bold",
-              name: "benefit-service",
-              props: {
-                className: "w-full",
-              },
+}: sectionParams): Section {
+  return {
+    title: `Other ${programLabel}-based service delivery system characteristics`,
+    sectionId: `${programLabel.toLowerCase()}-service-delivery`,
+    subsection: true,
+    form: [
+      {
+        slots: [
+          {
+            rhf: "Select",
+            label: `Will one or more ABP benefits or services be provided through a type of coverage other than the ${programLabel}, such as another managed care plan or fee-for service delivery system?`,
+            labelClassName: "font-bold",
+            name: "abp-benefits-provided",
+            props: {
+              className: "w-[125px]",
+              options: [
+                { label: "Yes", value: "yes" },
+                { label: "No", value: "no" },
+              ],
             },
-            {
-              rhf: "Textarea",
-              label: "How it will be provided",
-              labelClassName: "font-bold",
-              name: "how-provided",
-              props: {
-                className: "min-h-[76px]",
-              },
+          },
+          {
+            rhf: "FieldGroup",
+            name: "benefit-service",
+            label: `Which benefit or service will be provided by a type of coverage other than the ${programLabel}?`,
+            labelClassName: "font-bold",
+            props: {
+              appendText: "Add benefit or service",
+              removeText: "Remove",
             },
-          ],
-        },
-      ],
-    },
-    {
-      rhf: "Select",
-      label: `Is ${programLabel} service delivery provided on less than a statewide basis?`,
-      labelClassName: "font-bold",
-      name: "service-delivery",
-      props: {
-        className: "w-[125px]",
-        options: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
+            fields: [
+              {
+                rhf: "WrappedGroup",
+                name: "benefit-service",
+                props: {
+                  wrapperClassName:
+                    "ml-[0.6rem] pl-4 border-l-4 border-l-primary my-2 space-y-6",
+                },
+                fields: [
+                  {
+                    rhf: "Input",
+                    label: "Benefit or service",
+                    labelClassName: "font-bold",
+                    name: "benefit-service",
+                    props: {
+                      className: "w-full",
+                    },
+                  },
+                  {
+                    rhf: "Textarea",
+                    label: "How it will be provided",
+                    labelClassName: "font-bold",
+                    name: "how-provided",
+                    props: {
+                      className: "min-h-[76px]",
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            rhf: "Select",
+            label: `Is ${programLabel} service delivery provided on less than a statewide basis?`,
+            labelClassName: "font-bold",
+            name: "service-delivery",
+            props: {
+              className: "w-[125px]",
+              options: [
+                { label: "Yes", value: "yes" },
+                { label: "No", value: "no" },
+              ],
+            },
+          },
+          {
+            rhf: "Radio",
+            label: `What is the limited geographic area where ${programLabel} service delivery is available?`,
+            name: "geographic-area",
+            props: {
+              options: [
+                {
+                  label: "Only in designated counties",
+                  value: "counties",
+                  slots: [
+                    {
+                      rhf: "Input",
+                      label: "Counties",
+                      labelClassName: "font-bold",
+                      name: "counties",
+                      props: {
+                        className: "w-full",
+                      },
+                    },
+                  ],
+                },
+                {
+                  label: "Only in designated regions",
+                  value: "regions",
+                  slots: [
+                    {
+                      rhf: "Input",
+                      label: "Regions and makeup of each",
+                      labelClassName: "font-bold",
+                      name: "regions",
+                      props: {
+                        className: "w-full",
+                      },
+                    },
+                  ],
+                },
+                {
+                  label: "Only in designated cities and municipalities",
+                  value: "cities",
+                  slots: [
+                    {
+                      rhf: "Input",
+                      label: "Cities and municipalities",
+                      labelClassName: "font-bold",
+                      name: "cities",
+                      props: {
+                        className: "w-full",
+                      },
+                    },
+                  ],
+                },
+                {
+                  label:
+                    "In some other geographic area (must not be smaller than a zip code)",
+                  value: "other-geographic-area",
+                  slots: [
+                    {
+                      rhf: "Input",
+                      label: "Geographic area",
+                      labelClassName: "font-bold",
+                      name: "geographic-area",
+                      props: {
+                        className: "w-full",
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          },
         ],
       },
-    },
-    {
-      rhf: "Radio",
-      label: `What is the limited geographic area where ${programLabel} service delivery is available?`,
-      name: "geographic-area",
-      props: {
-        options: [
-          {
-            label: "Only in designated counties",
-            value: "counties",
-            slots: [
-              {
-                rhf: "Input",
-                label: "Counties",
-                labelClassName: "font-bold",
-                name: "counties",
-                props: {
-                  className: "w-full",
-                },
-              },
-            ],
-          },
-          {
-            label: "Only in designated regions",
-            value: "regions",
-            slots: [
-              {
-                rhf: "Input",
-                label: "Regions and makeup of each",
-                labelClassName: "font-bold",
-                name: "regions",
-                props: {
-                  className: "w-full",
-                },
-              },
-            ],
-          },
-          {
-            label: "Only in designated cities and municipalities",
-            value: "cities",
-            slots: [
-              {
-                rhf: "Input",
-                label: "Cities and municipalities",
-                labelClassName: "font-bold",
-                name: "cities",
-                props: {
-                  className: "w-full",
-                },
-              },
-            ],
-          },
-          {
-            label:
-              "In some other geographic area (must not be smaller than a zip code)",
-            value: "other-geographic-area",
-            slots: [
-              {
-                rhf: "Input",
-                label: "Geographic area",
-                labelClassName: "font-bold",
-                name: "geographic-area",
-                props: {
-                  className: "w-full",
-                },
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ];
+    ],
+  };
 }
 
-function participationExclusions({
-  programLabel,
-}: sectionParams): RHFSlotProps[] {
-  return [
-    {
-      rhf: "Select",
-      label: `Are individuals excluded from ${programLabel} participation in the ABP?`,
-      labelClassName: "font-bold",
-      name: "participation-exclusions",
-      props: {
-        className: "w-[125px]",
-        options: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
-        ],
-      },
-    },
-    {
-      rhf: "Checkbox",
-      label: "Excluded individuals",
-      labelClassName: "font-bold",
-      name: "excluded-individuals",
-      props: {
-        options: [
+function participationExclusions({ programLabel }: sectionParams): Section {
+  return {
+    title: `${programLabel} participation exclusions`,
+    sectionId: `${programLabel.toLowerCase()}-participation-exclusions`,
+    subsection: true,
+    form: [
+      {
+        slots: [
           {
-            label: "Individuals with other medical insurance",
-            value: "other-insurance",
+            rhf: "Select",
+            label: `Are individuals excluded from ${programLabel} participation in the ABP?`,
+            labelClassName: "font-bold",
+            name: "participation-exclusions",
+            props: {
+              className: "w-[125px]",
+              options: [
+                { label: "Yes", value: "yes" },
+                { label: "No", value: "no" },
+              ],
+            },
           },
           {
-            label: "Individuals eligible for less than three months",
-            value: "less-than-three-months",
-          },
-          {
-            label:
-              "Individuals in a retroactive period of Medicaid eligibility",
-            value: "retroactive-period",
-          },
-          {
-            label: "Other",
-            value: "other",
-            slots: [
-              {
-                rhf: "Textarea",
-                label: "Describe",
-                name: "other-exclusions",
-                props: {
-                  className: "min-h-[76px]",
+            rhf: "Checkbox",
+            label: "Excluded individuals",
+            labelClassName: "font-bold",
+            name: "excluded-individuals",
+            props: {
+              options: [
+                {
+                  label: "Individuals with other medical insurance",
+                  value: "other-insurance",
                 },
-              },
-            ],
+                {
+                  label: "Individuals eligible for less than three months",
+                  value: "less-than-three-months",
+                },
+                {
+                  label:
+                    "Individuals in a retroactive period of Medicaid eligibility",
+                  value: "retroactive-period",
+                },
+                {
+                  label: "Other",
+                  value: "other",
+                  slots: [
+                    {
+                      rhf: "Textarea",
+                      label: "Describe",
+                      name: "other-exclusions",
+                      props: {
+                        className: "min-h-[76px]",
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
           },
         ],
       },
-    },
-  ];
+    ],
+  };
 }
+
+function participationRequirements({ programLabel }: sectionParams): Section {
+  return {
+    title: `General ${programLabel} participation requirements`,
+    sectionId: `${programLabel.toLowerCase()}-participation-requirements`,
+    subsection: true,
+    form: [
+      {
+        slots: [
+          {
+            rhf: "Radio",
+            label: "Participation in managed care",
+            labelClassName: "font-bold",
+            name: "participation-in-managed-care",
+            props: {
+              options: [
+                {
+                  label: "Mandatory",
+                  value: "mandatory",
+                  slots: [
+                    {
+                      rhf: "Textarea",
+                      label: `Method of enrollment in ${programLabel}s`,
+                      name: "mandatory-enrollment-method",
+                      labelClassName: "font-bold",
+                      props: {
+                        className: "min-h-[133px]",
+                      },
+                    },
+                  ],
+                },
+                {
+                  label:
+                    "Voluntary, using the below method for effectuating enrollment",
+                  value: "voluntary",
+                  slots: [
+                    {
+                      rhf: "Radio",
+                      name: "voluntary-enrollment-method",
+                      props: {
+                        options: [
+                          {
+                            label: `Affirmative selection of ${programLabel}`,
+                            value: "affirmative-selection",
+                          },
+                          {
+                            label: `State enrolls individual in ${programLabel} (passive enrollment) and permits disenrollment`,
+                            value: "passive-enrollment",
+                          },
+                          {
+                            label: "Other",
+                            value: "other",
+                            slots: [
+                              {
+                                rhf: "Input",
+                                label: "Describe",
+                                labelClassName: "font-bold",
+                                name: "other-voluntary-enrollment-method",
+                                formItemClassName: "w-full",
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  };
+}
+
+// Form schema ----------------------------------------------------------------
 
 export const v202401: FormSchema = {
   header: "ABP 8: Service delivery systems",
@@ -584,13 +679,15 @@ export const v202401: FormSchema = {
         },
       ],
     },
+
     // MCO --------------------------------------------------------------------
+
     {
       title: "Managed care organizations (MCOs)",
       sectionId: "mcos",
       form: [
         {
-          slots: managedCare({ programLabel: Section.MCO }),
+          slots: managedCare({ programLabel: SectionName.MCO }),
         },
       ],
     },
@@ -604,99 +701,9 @@ export const v202401: FormSchema = {
         },
       ],
     },
-    {
-      title: "Other MCO-based service delivery system characteristics",
-      sectionId: "mco-service-delivery",
-      subsection: true,
-      form: [
-        {
-          slots: deliverySystemCharactaristics({ programLabel: Section.MCO }),
-        },
-      ],
-    },
-    {
-      title: "MCO participation exclusions",
-      sectionId: "mco-participation-exclusions",
-      subsection: true,
-      form: [
-        {
-          slots: participationExclusions({ programLabel: Section.MCO }),
-        },
-      ],
-    },
-    {
-      title: "General MCO participation requirements",
-      sectionId: "mco-participation-requirements",
-      subsection: true,
-      form: [
-        {
-          slots: [
-            {
-              rhf: "Radio",
-              label: "Participation in managed care",
-              labelClassName: "font-bold",
-              name: "participation-in-managed-care",
-              props: {
-                options: [
-                  {
-                    label: "Mandatory",
-                    value: "mandatory",
-                    slots: [
-                      {
-                        rhf: "Textarea",
-                        label: "Method of enrollment in MCOs",
-                        name: "mandatory-enrollment-method",
-                        labelClassName: "font-bold",
-                        props: {
-                          className: "min-h-[133px]",
-                        },
-                      },
-                    ],
-                  },
-                  {
-                    label:
-                      "Voluntary, using the below method for effectuating enrollment",
-                    value: "voluntary",
-                    slots: [
-                      {
-                        rhf: "Radio",
-                        name: "voluntary-enrollment-method",
-                        props: {
-                          options: [
-                            {
-                              label: "Affirmative selection of MCO",
-                              value: "affirmative-selection",
-                            },
-                            {
-                              label:
-                                "State enrolls individual in MCO (passive enrollment) and permits disenrollment",
-                              value: "passive-enrollment",
-                            },
-                            {
-                              label: "Other",
-                              value: "other",
-                              slots: [
-                                {
-                                  rhf: "Input",
-                                  label: "Describe",
-                                  labelClassName: "font-bold",
-                                  name: "other-voluntary-enrollment-method",
-                                  formItemClassName: "w-full",
-                                },
-                              ],
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                ],
-              },
-            },
-          ],
-        },
-      ],
-    },
+    deliverySystemCharactaristics({ programLabel: SectionName.MCO }),
+    participationExclusions({ programLabel: SectionName.MCO }),
+    participationRequirements({ programLabel: SectionName.MCO }),
     {
       title: "Disenrollment",
       sectionId: "disenrollment",
@@ -995,13 +1002,15 @@ export const v202401: FormSchema = {
         },
       ],
     },
+
     // HIO --------------------------------------------------------------------
+
     {
       title: "Health insuring organizations (HIOs)",
       sectionId: "hios",
       form: [
         {
-          slots: managedCare({ programLabel: Section.HIO }),
+          slots: managedCare({ programLabel: SectionName.HIO }),
         },
       ],
     },
@@ -1015,25 +1024,8 @@ export const v202401: FormSchema = {
         },
       ],
     },
-    {
-      title: "Other HIO-based service delivery system characteristics",
-      sectionId: "hil-service-delivery",
-      subsection: true,
-      form: [
-        {
-          slots: deliverySystemCharactaristics({ programLabel: Section.HIO }),
-        },
-      ],
-    },
-    {
-      title: "HIO participation exclusions",
-      sectionId: "hio-participation-exclusions",
-      subsection: true,
-      form: [
-        {
-          slots: participationExclusions({ programLabel: Section.HIO }),
-        },
-      ],
-    },
+    deliverySystemCharactaristics({ programLabel: SectionName.HIO }),
+    participationExclusions({ programLabel: SectionName.HIO }),
+    participationRequirements({ programLabel: SectionName.HIO }),
   ],
 };
