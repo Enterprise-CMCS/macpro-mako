@@ -47,6 +47,8 @@ jobs:
           stackList=(`aws cloudformation describe-stacks --query "Stacks[?Tags[?Key=='STAGE' && Value=='$STAGE_NAME'] && Tags[?Key=='PROJECT' && Value=='$PROJECT']].StackName" --output text`)
           for stack in "${stackList[@]}"; do
             aws cloudformation delete-stack --stack-name "$stack"
+            aws cloudformation wait stack-delete-complete --stack-name "$stack"
+            echo "Stack '$stack' has been deleted."
           done
 
       - name: Destroy
