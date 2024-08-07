@@ -973,6 +973,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               label:
                 "Additional details about this service delivery system (optional)",
+              labelClassName: "font-bold",
               name: "additional-details",
               props: {
                 className: "min-h-[114px]",
