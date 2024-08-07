@@ -1,11 +1,18 @@
 import { FormSchema, RHFSlotProps, Section } from "shared-types";
 
+function sectionId(programLabel: string): string {
+  return programLabel.toLowerCase().replace(" ", "-");
+}
+
 // Repeating sections ---------------------------------------------------------
 
 // Enum prevents typos and ensures consistency
 enum SectionName {
   HIO = "HIO",
   MCO = "MCO",
+  PAHP = "PAHP",
+  PCCM = "PCCM",
+  PCCMEntity = "PCCM entity",
   PIHP = "PIHP",
 }
 interface sectionParams {
@@ -137,7 +144,7 @@ function managedCare({ programLabel }: sectionParams): RHFSlotProps[] {
 function procurementOrSelection({ programLabel }: sectionParams): Section {
   return {
     title: `${programLabel} procurement or selection`,
-    sectionId: `${programLabel.toLowerCase()}-procurement`,
+    sectionId: `${sectionId(programLabel)}-procurement`,
     subsection: true,
     form: [
       {
@@ -167,7 +174,7 @@ function deliverySystemCharactaristics({
 }: sectionParams): Section {
   return {
     title: `Other ${programLabel}-based service delivery system characteristics`,
-    sectionId: `${programLabel.toLowerCase()}-service-delivery`,
+    sectionId: `${sectionId(programLabel)}-service-delivery`,
     subsection: true,
     form: [
       {
@@ -318,7 +325,7 @@ function deliverySystemCharactaristics({
 function participationExclusions({ programLabel }: sectionParams): Section {
   return {
     title: `${programLabel} participation exclusions`,
-    sectionId: `${programLabel.toLowerCase()}-participation-exclusions`,
+    sectionId: `${sectionId(programLabel)}-participation-exclusions`,
     subsection: true,
     form: [
       {
@@ -383,7 +390,7 @@ function participationExclusions({ programLabel }: sectionParams): Section {
 function participationRequirements({ programLabel }: sectionParams): Section {
   return {
     title: `General ${programLabel} participation requirements`,
-    sectionId: `${programLabel.toLowerCase()}-participation-requirements`,
+    sectionId: `${sectionId(programLabel)}-participation-requirements`,
     subsection: true,
     form: [
       {
@@ -558,12 +565,12 @@ function disenrollment({ programLabel }: sectionParams): Section {
                 {
                   label:
                     "Enrollees submit disenrollment requests to the MCO/HIO/PIHP/PAHP/PCCM/PCCM entity. The managed care plan may approve the request but may not disapprove it.",
-                  value: `submit-requests-to-${programLabel.toLowerCase()}`,
+                  value: `submit-requests-to-${sectionId(programLabel)}`,
                 },
                 {
                   label:
                     "The MCO/HIO/PIHP/PAHP/PCCM/PCCM entity may not approve or disapprove requests and must refer all disenrollment requests received to the state.",
-                  value: `${programLabel.toLowerCase()}-refers-requests`,
+                  value: `${sectionId(programLabel)}-refers-requests`,
                 },
                 {
                   label:
@@ -661,7 +668,7 @@ function disenrollment({ programLabel }: sectionParams): Section {
 function assurances({ programLabel }: sectionParams): Section {
   return {
     title: "Assurances",
-    sectionId: `${programLabel.toLowerCase()}-assurances`,
+    sectionId: `${sectionId(programLabel)}-assurances`,
     subsection: true,
     form: [
       {
@@ -744,7 +751,7 @@ function assurances({ programLabel }: sectionParams): Section {
 function additionalInfo({ programLabel }: sectionParams): Section {
   return {
     title: `Additional information: ${programLabel}`,
-    sectionId: `additional-info-${programLabel.toLowerCase()}`,
+    sectionId: `additional-info-${sectionId(programLabel)}`,
     subsection: true,
     form: [
       {
@@ -757,6 +764,47 @@ function additionalInfo({ programLabel }: sectionParams): Section {
             name: "additional-details",
             props: {
               className: "min-h-[114px]",
+            },
+          },
+        ],
+      },
+    ],
+  };
+}
+
+// "[Program] payments"
+function payments({ programLabel }: sectionParams): Section {
+  return {
+    title: `${programLabel} payments`,
+    sectionId: `${sectionId(programLabel)}-payments`,
+    subsection: true,
+    form: [
+      {
+        slots: [
+          {
+            rhf: "Checkbox",
+            label: "How is payment for services handled?",
+            labelClassName: "font-bold",
+            name: `${sectionId(programLabel)}-payment`,
+            props: {
+              options: [
+                {
+                  label: "Case management fee",
+                  value: "case-management-fee",
+                },
+                {
+                  label: "Other",
+                  value: "other",
+                  slots: [
+                    {
+                      rhf: "Textarea",
+                      label: "Describe",
+                      labelClassName: "font-bold",
+                      name: "other-payment",
+                    },
+                  ],
+                },
+              ],
             },
           },
         ],
@@ -1063,5 +1111,54 @@ export const v202401: FormSchema = {
     disenrollment({ programLabel: SectionName.PIHP }),
     assurances({ programLabel: SectionName.PIHP }),
     additionalInfo({ programLabel: SectionName.PIHP }),
+
+    // PAHP -------------------------------------------------------------------
+
+    {
+      title: "Prepaid ambulatory health plans (PAHPs)",
+      sectionId: "pahp",
+      form: [
+        {
+          slots: managedCare({ programLabel: SectionName.PAHP }),
+        },
+      ],
+    },
+    procurementOrSelection({ programLabel: SectionName.PAHP }),
+    deliverySystemCharactaristics({ programLabel: SectionName.PAHP }),
+    participationExclusions({ programLabel: SectionName.PAHP }),
+    participationRequirements({ programLabel: SectionName.PAHP }),
+    disenrollment({ programLabel: SectionName.PAHP }),
+    assurances({ programLabel: SectionName.PAHP }),
+    additionalInfo({ programLabel: SectionName.PAHP }),
+
+    // PCCM -------------------------------------------------------------------
+
+    {
+      title: "Primary care case management (PCCM)",
+      sectionId: "pccm",
+      form: [
+        {
+          slots: managedCare({ programLabel: SectionName.PCCM }),
+        },
+      ],
+    },
+    procurementOrSelection({ programLabel: SectionName.PCCM }),
+    deliverySystemCharactaristics({ programLabel: SectionName.PCCM }),
+    payments({ programLabel: SectionName.PCCM }),
+    disenrollment({ programLabel: SectionName.PCCM }),
+    assurances({ programLabel: SectionName.PCCM }),
+    additionalInfo({ programLabel: SectionName.PCCM }),
+
+    // PCCM entity ------------------------------------------------------------
+    {
+      title: "PCCM entity",
+      sectionId: "pccm-entity",
+      form: [
+        {
+          slots: managedCare({ programLabel: SectionName.PCCMEntity }),
+        },
+      ],
+    },
+    deliverySystemCharactaristics({ programLabel: SectionName.PCCMEntity }),
   ],
 };
