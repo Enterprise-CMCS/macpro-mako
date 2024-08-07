@@ -51,7 +51,7 @@ export const userPrompt = (newuserPrompt: UserPrompt) => {
 };
 
 export const UserPrompt = () => {
-  const [activeuserPrompt, setActiveuserPrompt] = useState<UserPrompt | null>(
+  const [activeUserPrompt, setActiveUserPrompt] = useState<UserPrompt | null>(
     null,
   );
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -59,11 +59,11 @@ export const UserPrompt = () => {
   useEffect(() => {
     const unsubscribe = userPromptState.subscribe((userPrompt) => {
       if (userPrompt) {
-        setActiveuserPrompt(userPrompt);
+        setActiveUserPrompt(userPrompt);
         setIsOpen(true);
       } else {
         // artificial delay to prevent content from disappearing first
-        setTimeout(() => setActiveuserPrompt(null), 100);
+        setTimeout(() => setActiveUserPrompt(null), 100);
         setIsOpen(false);
       }
     });
@@ -72,35 +72,35 @@ export const UserPrompt = () => {
   }, []);
 
   const onCancel = () => {
-    if (activeuserPrompt) {
-      if (activeuserPrompt.onCancel) {
-        activeuserPrompt.onCancel();
+    if (activeUserPrompt) {
+      if (activeUserPrompt.onCancel) {
+        activeUserPrompt.onCancel();
       }
       userPromptState.dismiss();
     }
   };
 
   const onAccept = () => {
-    if (activeuserPrompt) {
-      activeuserPrompt.onAccept();
+    if (activeUserPrompt) {
+      activeUserPrompt.onAccept();
       userPromptState.dismiss();
     }
   };
 
-  if (activeuserPrompt === null) {
+  if (activeUserPrompt === null) {
     return null;
   }
 
   return (
     <ConfirmationDialog
       open={isOpen}
-      title={activeuserPrompt.header}
-      body={activeuserPrompt.body}
+      title={activeUserPrompt.header}
+      body={activeUserPrompt.body}
       onAccept={onAccept}
       onCancel={onCancel}
-      cancelButtonText={activeuserPrompt.cancelButtonText}
-      acceptButtonText={activeuserPrompt.acceptButtonText}
-      areButtonsReversed={activeuserPrompt.areButtonsReversed}
+      cancelButtonText={activeUserPrompt.cancelButtonText}
+      acceptButtonText={activeUserPrompt.acceptButtonText}
+      areButtonsReversed={activeUserPrompt.areButtonsReversed}
     />
   );
 };
