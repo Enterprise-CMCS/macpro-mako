@@ -29,7 +29,6 @@ export const v202401: FormSchema = {
 
                   props: {
                     appendText: "Add range",
-                    // fieldArrayClassName: "flex-col",
                   },
                   fields: [
                     {
