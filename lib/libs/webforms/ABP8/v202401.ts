@@ -1160,5 +1160,9 @@ export const v202401: FormSchema = {
       ],
     },
     deliverySystemCharactaristics({ programLabel: SectionName.PCCMEntity }),
+    payments({ programLabel: SectionName.PCCMEntity }),
+    disenrollment({ programLabel: SectionName.PCCMEntity }),
+    assurances({ programLabel: SectionName.PCCMEntity }),
+    additionalInfo({ programLabel: SectionName.PCCMEntity }),
   ],
 };
