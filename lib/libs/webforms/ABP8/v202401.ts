@@ -4,8 +4,9 @@ import { FormSchema, RHFSlotProps, Section } from "shared-types";
 
 // Enum prevents typos and ensures consistency
 enum SectionName {
-  MCO = "MCO",
   HIO = "HIO",
+  MCO = "MCO",
+  PIHP = "PIHP",
 }
 interface sectionParams {
   programLabel: string;
@@ -1045,5 +1046,24 @@ export const v202401: FormSchema = {
     disenrollment({ programLabel: SectionName.HIO }),
     assurances({ programLabel: SectionName.HIO }),
     additionalInfo({ programLabel: SectionName.HIO }),
+
+    // PIHP -------------------------------------------------------------------
+
+    {
+      title: "Prepaid inpatient health plans (PIHPs)",
+      sectionId: "pihp",
+      form: [
+        {
+          slots: managedCare({ programLabel: SectionName.PIHP }),
+        },
+      ],
+    },
+    procurementOrSelection({ programLabel: SectionName.PIHP }),
+    deliverySystemCharactaristics({ programLabel: SectionName.PIHP }),
+    participationExclusions({ programLabel: SectionName.PIHP }),
+    participationRequirements({ programLabel: SectionName.PIHP }),
+    disenrollment({ programLabel: SectionName.PIHP }),
+    assurances({ programLabel: SectionName.PIHP }),
+    additionalInfo({ programLabel: SectionName.PIHP }),
   ],
 };
