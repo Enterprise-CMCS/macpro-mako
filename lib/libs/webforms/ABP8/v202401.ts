@@ -2,6 +2,7 @@ import { FormSchema, RHFSlotProps, Section } from "shared-types";
 
 // Repeating sections ---------------------------------------------------------
 
+// Enum prevents typos and ensures consistency
 enum SectionName {
   MCO = "MCO",
   HIO = "HIO",
@@ -147,6 +148,7 @@ const procurementRequirements: RHFSlotProps[] = [
   },
 ];
 
+// "Other [program]-based service delivery system characteristics"
 function deliverySystemCharactaristics({
   programLabel,
 }: sectionParams): Section {
@@ -299,6 +301,7 @@ function deliverySystemCharactaristics({
   };
 }
 
+// "[Program] participation exclusions"
 function participationExclusions({ programLabel }: sectionParams): Section {
   return {
     title: `${programLabel} participation exclusions`,
@@ -363,6 +366,7 @@ function participationExclusions({ programLabel }: sectionParams): Section {
   };
 }
 
+// "General [program] participation requirements"
 function participationRequirements({ programLabel }: sectionParams): Section {
   return {
     title: `General ${programLabel} participation requirements`,
@@ -430,6 +434,316 @@ function participationRequirements({ programLabel }: sectionParams): Section {
                   ],
                 },
               ],
+            },
+          },
+        ],
+      },
+    ],
+  };
+}
+
+// "Disenrollment"
+function disenrollment({ programLabel }: sectionParams): Section {
+  return {
+    title: "Disenrollment",
+    sectionId: "disenrollment",
+    subsection: true,
+    form: [
+      {
+        description:
+          "Complete the below based on whether mandatory and/or voluntary enrollment are applicable to your program (see definitions in 42 CFR 438.54(b)).",
+        descriptionClassName: "font-normal",
+        slots: [
+          {
+            rhf: "Select",
+            label: "Will the state limit disenrollment for managed care?",
+            labelClassName: "font-bold",
+            name: "limit-disenrollment",
+            props: {
+              className: "w-[125px]",
+              options: [
+                { label: "Yes", value: "yes" },
+                { label: "No", value: "no" },
+              ],
+            },
+          },
+          {
+            rhf: "Input",
+            label:
+              "Length of time the disenrollment limitation will apply (up to 12 months)",
+            labelClassName: "font-bold",
+            name: "disenrollment-limit-length",
+            props: {
+              className: "w-full",
+            },
+          },
+          {
+            rhf: "Checkbox",
+            name: "assures-beneficiary-requests",
+            props: {
+              options: [
+                {
+                  label:
+                    "The state assures that beneficiary requests for disenrollment (with and without cause) will be permitted in accordance with 42 CFR 438.56.",
+                  value: "assures-requests",
+                },
+              ],
+            },
+          },
+          {
+            rhf: "Textarea",
+            label:
+              "What is the state’s process for notifying Medicaid beneficiaries of their right to disenroll without cause during the 90 days following the date of their initial enrollment into the MCO/HIO/PAHP/PIHP/PCCM/PCCM entity (e.g., state-generated correspondence, enrollment packet), in accordance with federal requirements including 42 CFR 438.10 and 438.56?",
+            labelClassName: "font-bold",
+            name: "disenrollment-notification",
+            props: {
+              className: "min-h-[114px]",
+            },
+          },
+          {
+            rhf: "Textarea",
+            label:
+              "Additional circumstances of cause for disenrollment (optional)",
+            labelClassName: "font-bold",
+            name: "additional-disenrollment-cause",
+            props: {
+              className: "min-h-[114px]",
+            },
+          },
+          {
+            rhf: "Checkbox",
+            name: "disenrollment-options",
+            props: {
+              options: [
+                {
+                  label:
+                    "The state limits disenrollment and assures it meets the requirements of 42 CFR 438.56(c).",
+                  value: "limits-disenrollment",
+                },
+                {
+                  label:
+                    "After the initial 90-day enrollment or notice period described in 42 CFR 438.56(c)(2)(i), enrollees may request MCO/HIO/PIHP/PAHP/PCCM/PCCM entity disenrollment every set number of months.",
+                  value: "request-disenrollment",
+                  slots: [
+                    {
+                      rhf: "Input",
+                      label: "Number of months",
+                      labelClassName: "font-bold",
+                      name: "disenrollment-number-months",
+                      props: {
+                        icon: "months",
+                        iconRight: true,
+                      },
+                    },
+                  ],
+                },
+                {
+                  label:
+                    "Enrollees submit disenrollment requests to the state or its agent.",
+                  value: "submit-requests",
+                },
+                {
+                  label:
+                    "Enrollees submit disenrollment requests to the MCO/HIO/PIHP/PAHP/PCCM/PCCM entity. The managed care plan may approve the request but may not disapprove it.",
+                  value: `submit-requests-to-${programLabel.toLowerCase()}`,
+                },
+                {
+                  label:
+                    "The MCO/HIO/PIHP/PAHP/PCCM/PCCM entity may not approve or disapprove requests and must refer all disenrollment requests received to the state.",
+                  value: `${programLabel.toLowerCase()}-refers-requests`,
+                },
+                {
+                  label:
+                    "Enrollees must seek redress through the MCO/HIO/PIHP/PAHP grievance process before the state will make a determination on the disenrollment request.",
+                  value: "seek-redress",
+                },
+              ],
+            },
+          },
+          {
+            rhf: "Textarea",
+            label:
+              "Describe the “for cause” reasons, if any, that an enrollee may request disenrollment, in addition to those listed in 42 CFR 438.56(d)(2)).",
+            labelClassName: "font-bold",
+            name: "for-cause-reasons",
+            props: {
+              className: "min-h-[76px]",
+            },
+          },
+          {
+            rhf: "Textarea",
+            label:
+              "Describe the processes in place to ensure disenrollments are effective no later than the first day of the second month following the month in which the enrollee requests disenrollment or the MCO/PIHP/PAHP/PCCM/PCCM entity refers the request to the state.",
+            labelClassName: "font-bold",
+            name: "disenrollment-processes",
+            props: {
+              className: "min-h-[76px]",
+            },
+          },
+          {
+            rhf: "Checkbox",
+            name: "disenrollment-options",
+            props: {
+              options: [
+                {
+                  label:
+                    "The state does not limit disenrollment, and enrollees in MCOs/HIOs/PIHPs/PAHPs/PCCMs/PCCM entities are allowed to disenroll without cause at any time. The disenrollment is effective no later than the first day of the second month following the month in which the enrollee requests disenrollment or the MCO/PIHP/PAHP/PCCM/PCCM entity refers the request to the state.",
+                  value: "state-does-not-limit-disenrollment",
+                },
+                {
+                  label:
+                    "The state allows MCOs/PIHPs/PAHPs/PCCMs/PCCM entities to request disenrollment of enrollees.",
+                  value: "state-allows-disenrollment",
+                  slots: [
+                    {
+                      rhf: "Checkbox",
+                      name: "disenrollment-request-options",
+                      props: {
+                        options: [
+                          {
+                            label:
+                              "The MCO/PIHP/PAHP/PCCM/PCCM entity can request disenrollment of an enrollee for certain reasons. \n \n In accordance with 42 CFR 438.56(b), the MCO/PIHP/PAHP/PCCM/PCCM entity may not request disenrollment because of an adverse change in the enrollee's health status or because of the enrollee's utilization of medical services, diminished mental capacity, or uncooperative or disruptive behavior resulting from his or her special needs (except when his or her continued enrollment in the MCO/PIHP/PAHP/PCCM/PCCM entity seriously impairs the entity's ability to furnish services to either this particular enrollee or other enrollees).",
+
+                            value: "can-request-disenrollment",
+                            optionlabelClassName: "whitespace-pre-line",
+                            slots: [
+                              {
+                                rhf: "Textarea",
+                                label: "List and describe the reasons.",
+                                labelClassName: "font-bold",
+                                name: "disenrollment-request-reasons",
+                              },
+                            ],
+                          },
+                          {
+                            label:
+                              "The state reviews and approves all requests for enrollee transfers or disenrollments initiated by MCOs/PIHPs/PAHPS/PCCMs/PCCM entities.",
+                            value: "state-reviews-requests",
+                          },
+                          {
+                            label:
+                              "If a reassignment is approved, the state notifies the enrollee in a direct and timely manner of the desire of the MCO/PIHP/PAHP/PCCM/PCCM entity to remove the enrollee from its membership or from the PCCM’s caseload.",
+                            value: "state-notifies-enrollee",
+                          },
+                          {
+                            label:
+                              "The enrollee remains an enrollee of the MCO/PIHP/PAHP/PCCM/PCCM entity until another MCO/PIHP/PAHP/PCCM/PCCM entity is chosen or assigned.",
+                            value: "enrollee-remains",
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  };
+}
+
+// "Assurances"
+function assurances({ programLabel }: sectionParams): Section {
+  return {
+    title: "Assurances",
+    sectionId: `${programLabel.toLowerCase()}-assurances`,
+    subsection: true,
+    form: [
+      {
+        slots: [
+          {
+            rhf: "Checkbox",
+            name: "assurances",
+            props: {
+              options: [
+                {
+                  label:
+                    "The state assures all applicable managed care requirements of 42 CFR 438 and 42 CFR 449.385 will be met.",
+                  value: "assures-requirements",
+                },
+                {
+                  label:
+                    "The state assures all applicable requirements of 42 CFR 438.4, 438.5, 438.6, 438.7, 438.8, and 438.74 for payments under any risk contracts will be met.",
+                  value: "assures-payments",
+                },
+                {
+                  label:
+                    "The state assures that, per the requirements at 438.52(c), Medicaid beneficiaries enrolled in an HIO will have a choice between at least two primary care providers within the entity.",
+                  value: "assures-choice",
+                },
+                {
+                  label:
+                    "The state assures that beneficiary requests for disenrollment (with and without cause) will be permitted in accordance with 42 CFR 438.56.",
+                  value: "assures-disenrollment",
+                },
+                {
+                  label:
+                    "The state assures the limitations on Medicaid beneficiaries to change between primary care providers will be no more restrictive than the limitations on disenrollment described at 438.56(c).",
+                  value: "assures-change",
+                },
+                {
+                  label:
+                    "If the state plan so specifies in accordance with 42 CFR 438.56(g), the state assures that the contract provides for automatic reenrollment for a beneficiary who is disenrolled solely because they lose Medicaid eligibility for a period of two months or less.",
+                  value: "assures-reenrollment",
+                },
+                {
+                  label:
+                    "The state assures all applicable requirements of 42 CFR 438.66(a), (b), and (c) regarding a monitoring system and using data to improve the performance of its managed care program will be met.",
+                  value: "assures-monitoring",
+                },
+                {
+                  label:
+                    "The state assures all applicable requirements of 42 CFR 438.66(d) regarding readiness assessment will be met.",
+                  value: "assures-readiness",
+                },
+                {
+                  label:
+                    "The state assures all applicable requirements of 42 CFR 438.66(e) regarding reporting to CMS about the managed care program will be met.",
+                  value: "assures-reporting",
+                },
+                {
+                  label:
+                    "The state assures it meets all applicable requirements of 42 CFR 438.71 regarding the development and implementation of a beneficiary support system both prior to and after beneficiary enrollment in MCO/HIO/PIHP/PAHP/PCCM/PCCM entity.",
+                  value: "assures-support",
+                },
+                {
+                  label:
+                    "The state assures it appropriately identifies individuals in the mandatory exempt groups identified in 42 CFR 440.315.",
+                  value: "assures-identifies",
+                },
+                {
+                  label:
+                    "The state assures all the applicable requirements of 42 CFR regarding freedom of choice for family planning services and supplies defined in Section 1905(a)(4)(C) will be met.",
+                  value: "assures-family-planning",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  };
+}
+
+// "Additional information: [program]"
+function additionalInfo({ programLabel }: sectionParams): Section {
+  return {
+    title: `Additional information: ${programLabel}`,
+    sectionId: `additional-info-${programLabel.toLowerCase()}`,
+    subsection: true,
+    form: [
+      {
+        slots: [
+          {
+            rhf: "Textarea",
+            label:
+              "Additional details about this service delivery system (optional)",
+            labelClassName: "font-bold",
+            name: "additional-details",
+            props: {
+              className: "min-h-[114px]",
             },
           },
         ],
@@ -704,304 +1018,9 @@ export const v202401: FormSchema = {
     deliverySystemCharactaristics({ programLabel: SectionName.MCO }),
     participationExclusions({ programLabel: SectionName.MCO }),
     participationRequirements({ programLabel: SectionName.MCO }),
-    {
-      title: "Disenrollment",
-      sectionId: "disenrollment",
-      subsection: true,
-      form: [
-        {
-          description:
-            "Complete the below based on whether mandatory and/or voluntary enrollment are applicable to your program (see definitions in 42 CFR 438.54(b)).",
-          descriptionClassName: "font-normal",
-          slots: [
-            {
-              rhf: "Select",
-              label: "Will the state limit disenrollment for managed care?",
-              labelClassName: "font-bold",
-              name: "limit-disenrollment",
-              props: {
-                className: "w-[125px]",
-                options: [
-                  { label: "Yes", value: "yes" },
-                  { label: "No", value: "no" },
-                ],
-              },
-            },
-            {
-              rhf: "Input",
-              label:
-                "Length of time the disenrollment limitation will apply (up to 12 months)",
-              labelClassName: "font-bold",
-              name: "disenrollment-limit-length",
-              props: {
-                className: "w-full",
-              },
-            },
-            {
-              rhf: "Checkbox",
-              name: "assures-beneficiary-requests",
-              props: {
-                options: [
-                  {
-                    label:
-                      "The state assures that beneficiary requests for disenrollment (with and without cause) will be permitted in accordance with 42 CFR 438.56.",
-                    value: "assures-requests",
-                  },
-                ],
-              },
-            },
-            {
-              rhf: "Textarea",
-              label:
-                "What is the state’s process for notifying Medicaid beneficiaries of their right to disenroll without cause during the 90 days following the date of their initial enrollment into the MCO/HIO/PAHP/PIHP/PCCM/PCCM entity (e.g., state-generated correspondence, enrollment packet), in accordance with federal requirements including 42 CFR 438.10 and 438.56?",
-              labelClassName: "font-bold",
-              name: "disenrollment-notification",
-              props: {
-                className: "min-h-[114px]",
-              },
-            },
-            {
-              rhf: "Textarea",
-              label:
-                "Additional circumstances of cause for disenrollment (optional)",
-              labelClassName: "font-bold",
-              name: "additional-disenrollment-cause",
-              props: {
-                className: "min-h-[114px]",
-              },
-            },
-            {
-              rhf: "Checkbox",
-              name: "disenrollment-options",
-              props: {
-                options: [
-                  {
-                    label:
-                      "The state limits disenrollment and assures it meets the requirements of 42 CFR 438.56(c).",
-                    value: "limits-disenrollment",
-                  },
-                  {
-                    label:
-                      "After the initial 90-day enrollment or notice period described in 42 CFR 438.56(c)(2)(i), enrollees may request MCO/HIO/PIHP/PAHP/PCCM/PCCM entity disenrollment every set number of months.",
-                    value: "request-disenrollment",
-                    slots: [
-                      {
-                        rhf: "Input",
-                        label: "Number of months",
-                        labelClassName: "font-bold",
-                        name: "disenrollment-number-months",
-                        props: {
-                          icon: "months",
-                          iconRight: true,
-                        },
-                      },
-                    ],
-                  },
-                  {
-                    label:
-                      "Enrollees submit disenrollment requests to the state or its agent.",
-                    value: "submit-requests",
-                  },
-                  {
-                    label:
-                      "Enrollees submit disenrollment requests to the MCO/HIO/PIHP/PAHP/PCCM/PCCM entity. The managed care plan may approve the request but may not disapprove it.",
-                    value: "submit-requests-to-mco",
-                  },
-                  {
-                    label:
-                      "The MCO/HIO/PIHP/PAHP/PCCM/PCCM entity may not approve or disapprove requests and must refer all disenrollment requests received to the state.",
-                    value: "mco-refers-requests",
-                  },
-                  {
-                    label:
-                      "Enrollees must seek redress through the MCO/HIO/PIHP/PAHP grievance process before the state will make a determination on the disenrollment request.",
-                    value: "seek-redress",
-                  },
-                ],
-              },
-            },
-            {
-              rhf: "Textarea",
-              label:
-                "Describe the “for cause” reasons, if any, that an enrollee may request disenrollment, in addition to those listed in 42 CFR 438.56(d)(2)).",
-              labelClassName: "font-bold",
-              name: "for-cause-reasons",
-              props: {
-                className: "min-h-[76px]",
-              },
-            },
-            {
-              rhf: "Textarea",
-              label:
-                "Describe the processes in place to ensure disenrollments are effective no later than the first day of the second month following the month in which the enrollee requests disenrollment or the MCO/PIHP/PAHP/PCCM/PCCM entity refers the request to the state.",
-              labelClassName: "font-bold",
-              name: "disenrollment-processes",
-              props: {
-                className: "min-h-[76px]",
-              },
-            },
-            {
-              rhf: "Checkbox",
-              name: "disenrollment-options",
-              props: {
-                options: [
-                  {
-                    label:
-                      "The state does not limit disenrollment, and enrollees in MCOs/HIOs/PIHPs/PAHPs/PCCMs/PCCM entities are allowed to disenroll without cause at any time. The disenrollment is effective no later than the first day of the second month following the month in which the enrollee requests disenrollment or the MCO/PIHP/PAHP/PCCM/PCCM entity refers the request to the state.",
-                    value: "state-does-not-limit-disenrollment",
-                  },
-                  {
-                    label:
-                      "The state allows MCOs/PIHPs/PAHPs/PCCMs/PCCM entities to request disenrollment of enrollees.",
-                    value: "state-allows-disenrollment",
-                    slots: [
-                      {
-                        rhf: "Checkbox",
-                        name: "disenrollment-request-options",
-                        props: {
-                          options: [
-                            {
-                              label:
-                                "The MCO/PIHP/PAHP/PCCM/PCCM entity can request disenrollment of an enrollee for certain reasons. \n \n In accordance with 42 CFR 438.56(b), the MCO/PIHP/PAHP/PCCM/PCCM entity may not request disenrollment because of an adverse change in the enrollee's health status or because of the enrollee's utilization of medical services, diminished mental capacity, or uncooperative or disruptive behavior resulting from his or her special needs (except when his or her continued enrollment in the MCO/PIHP/PAHP/PCCM/PCCM entity seriously impairs the entity's ability to furnish services to either this particular enrollee or other enrollees).",
-
-                              value: "can-request-disenrollment",
-                              optionlabelClassName: "whitespace-pre-line",
-                              slots: [
-                                {
-                                  rhf: "Textarea",
-                                  label: "List and describe the reasons.",
-                                  labelClassName: "font-bold",
-                                  name: "disenrollment-request-reasons",
-                                },
-                              ],
-                            },
-                            {
-                              label:
-                                "The state reviews and approves all requests for enrollee transfers or disenrollments initiated by MCOs/PIHPs/PAHPS/PCCMs/PCCM entities.",
-                              value: "state-reviews-requests",
-                            },
-                            {
-                              label:
-                                "If a reassignment is approved, the state notifies the enrollee in a direct and timely manner of the desire of the MCO/PIHP/PAHP/PCCM/PCCM entity to remove the enrollee from its membership or from the PCCM’s caseload.",
-                              value: "state-notifies-enrollee",
-                            },
-                            {
-                              label:
-                                "The enrollee remains an enrollee of the MCO/PIHP/PAHP/PCCM/PCCM entity until another MCO/PIHP/PAHP/PCCM/PCCM entity is chosen or assigned.",
-                              value: "enrollee-remains",
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                ],
-              },
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Assurances",
-      sectionId: "assurances",
-      subsection: true,
-      form: [
-        {
-          slots: [
-            {
-              rhf: "Checkbox",
-              name: "assurances",
-              props: {
-                options: [
-                  {
-                    label:
-                      "The state assures all applicable managed care requirements of 42 CFR 438 and 42 CFR 449.385 will be met.",
-                    value: "assures-requirements",
-                  },
-                  {
-                    label:
-                      "The state assures all applicable requirements of 42 CFR 438.4, 438.5, 438.6, 438.7, 438.8, and 438.74 for payments under any risk contracts will be met.",
-                    value: "assures-payments",
-                  },
-                  {
-                    label:
-                      "The state assures that, per the requirements at 438.52(c), Medicaid beneficiaries enrolled in an HIO will have a choice between at least two primary care providers within the entity.",
-                    value: "assures-choice",
-                  },
-                  {
-                    label:
-                      "The state assures that beneficiary requests for disenrollment (with and without cause) will be permitted in accordance with 42 CFR 438.56.",
-                    value: "assures-disenrollment",
-                  },
-                  {
-                    label:
-                      "The state assures the limitations on Medicaid beneficiaries to change between primary care providers will be no more restrictive than the limitations on disenrollment described at 438.56(c).",
-                    value: "assures-change",
-                  },
-                  {
-                    label:
-                      "If the state plan so specifies in accordance with 42 CFR 438.56(g), the state assures that the contract provides for automatic reenrollment for a beneficiary who is disenrolled solely because they lose Medicaid eligibility for a period of two months or less.",
-                    value: "assures-reenrollment",
-                  },
-                  {
-                    label:
-                      "The state assures all applicable requirements of 42 CFR 438.66(a), (b), and (c) regarding a monitoring system and using data to improve the performance of its managed care program will be met.",
-                    value: "assures-monitoring",
-                  },
-                  {
-                    label:
-                      "The state assures all applicable requirements of 42 CFR 438.66(d) regarding readiness assessment will be met.",
-                    value: "assures-readiness",
-                  },
-                  {
-                    label:
-                      "The state assures all applicable requirements of 42 CFR 438.66(e) regarding reporting to CMS about the managed care program will be met.",
-                    value: "assures-reporting",
-                  },
-                  {
-                    label:
-                      "The state assures it meets all applicable requirements of 42 CFR 438.71 regarding the development and implementation of a beneficiary support system both prior to and after beneficiary enrollment in MCO/HIO/PIHP/PAHP/PCCM/PCCM entity.",
-                    value: "assures-support",
-                  },
-                  {
-                    label:
-                      "The state assures it appropriately identifies individuals in the mandatory exempt groups identified in 42 CFR 440.315.",
-                    value: "assures-identifies",
-                  },
-                  {
-                    label:
-                      "The state assures all the applicable requirements of 42 CFR regarding freedom of choice for family planning services and supplies defined in Section 1905(a)(4)(C) will be met.",
-                    value: "assures-family-planning",
-                  },
-                ],
-              },
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Additional information: MCO",
-      sectionId: "additional-info-mco",
-      subsection: true,
-      form: [
-        {
-          slots: [
-            {
-              rhf: "Textarea",
-              label:
-                "Additional details about this service delivery system (optional)",
-              labelClassName: "font-bold",
-              name: "additional-details",
-              props: {
-                className: "min-h-[114px]",
-              },
-            },
-          ],
-        },
-      ],
-    },
+    disenrollment({ programLabel: SectionName.MCO }),
+    assurances({ programLabel: SectionName.MCO }),
+    additionalInfo({ programLabel: SectionName.MCO }),
 
     // HIO --------------------------------------------------------------------
 
@@ -1027,5 +1046,8 @@ export const v202401: FormSchema = {
     deliverySystemCharactaristics({ programLabel: SectionName.HIO }),
     participationExclusions({ programLabel: SectionName.HIO }),
     participationRequirements({ programLabel: SectionName.HIO }),
+    disenrollment({ programLabel: SectionName.HIO }),
+    assurances({ programLabel: SectionName.HIO }),
+    additionalInfo({ programLabel: SectionName.HIO }),
   ],
 };
