@@ -129,7 +129,8 @@ async function processAndSendEmails(
     const sendEmailPromises = templates.map(async (template) => {
       const filledTemplate = await template(templateVariables);
       await sendEmail({
-        to: record.submitterEmail,
+        // to: record.submitterEmail,
+        to: "bpaige@fearless.tech",
         from: emailAddressLookup.sourceEmail,
         subject: filledTemplate.subject,
         html: filledTemplate.html,
