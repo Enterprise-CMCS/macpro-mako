@@ -46,8 +46,8 @@ class Observer {
 
 const userPromptState = new Observer();
 
-export const userPrompt = (newuserPrompt: UserPrompt) => {
-  return userPromptState.create(newuserPrompt);
+export const userPrompt = (newUserPrompt: UserPrompt) => {
+  return userPromptState.create(newUserPrompt);
 };
 
 export const UserPrompt = () => {
