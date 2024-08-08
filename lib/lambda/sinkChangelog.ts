@@ -83,7 +83,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       }
 
       // Process micro events
-      if (record?.origin === "micro") {
+      if (record?.origin === "mako") {
         // Resolve actionType
         const actionType = record.actionType || "new-submission";
 

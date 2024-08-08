@@ -102,7 +102,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       }
       const record = { timestamp, ...JSON.parse(decodeBase64WithUtf8(value)) };
       // Process legacy events
-      if (record?.origin !== "micro") {
+      if (record?.origin !== "mako") {
         // Is a Package View from legacy onemac
         if (record?.sk === "Package" && record.submitterName) {
           const result = opensearch.main.legacyPackageView
@@ -123,7 +123,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       }
 
       // Handle everything else
-      if (record.origin === "micro") {
+      if (record.origin === "mako") {
         const result = await (async () => {
           switch (record?.actionType) {
             case "new-submission":
