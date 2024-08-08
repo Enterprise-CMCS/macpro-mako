@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Alert, AlertVariant } from "../Alert";
 import { Check, X } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import { Observer } from "@/utils/basic-observable";
 
 export type Banner = {
   header: string;
@@ -10,47 +11,26 @@ export type Banner = {
   pathnameToDisplayOn: string;
 };
 
-class Observer {
-  subscribers: Array<(banner: Banner) => void>;
-  banner: Banner | null;
-
-  constructor() {
-    this.subscribers = [];
-    this.banner = null;
-  }
-
-  subscribe = (subscriber: (banner: Banner | null) => void) => {
-    this.subscribers.push(subscriber);
-
-    return () => {
-      const index = this.subscribers.indexOf(subscriber);
-      this.subscribers.splice(index, 1);
-    };
-  };
-
-  private publish = (data: Banner | null) => {
-    this.subscribers.forEach((subscriber) => subscriber(data));
-  };
-
+class BannerObserver extends Observer<Banner> {
   create = (data: Banner) => {
     this.publish(data);
-    this.banner = { ...data };
+    this.observed = { ...data };
   };
 
   dismiss = () => {
     this.publish(null);
-    this.banner = null;
+    this.observed = null;
   };
 }
 
-const bannerState = new Observer();
+const bannerState = new BannerObserver();
 
 export const banner = (newBanner: Banner) => {
   return bannerState.create(newBanner);
 };
 
 export const Banner = () => {
-  const [banner, setBanner] = useState<Banner | null>(null);
+  const [activeBanner, setActiveBanner] = useState<Banner | null>(null);
   const { pathname } = useLocation();
 
   const onClose = () => {
@@ -60,37 +40,42 @@ export const Banner = () => {
   useEffect(() => {
     const unsubscribe = bannerState.subscribe((banner) => {
       if (banner) {
-        setBanner(banner);
+        setActiveBanner(banner);
       } else {
-        setBanner(null);
+        setActiveBanner(null);
       }
     });
 
     return unsubscribe;
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
-    if (banner && banner.pathnameToDisplayOn !== pathname) {
+    if (activeBanner && activeBanner.pathnameToDisplayOn !== pathname) {
       onClose();
     }
-  }, [pathname, banner]);
+  }, [pathname, activeBanner]);
 
-  if (banner === null) {
-    return null;
+  if (activeBanner && activeBanner.pathnameToDisplayOn === pathname) {
+    return (
+      <Alert
+        variant={activeBanner.variant}
+        className="mt-4 mb-8 flex-row text-sm"
+      >
+        <div className="flex items-start justify-between">
+          <Check />
+          <div className="ml-2 w-full">
+            <h3 className="text-lg font-bold" data-testid="banner-header">
+              {activeBanner.header}
+            </h3>
+            <p data-testid="banner-body">{activeBanner.body}</p>
+          </div>
+          <button onClick={onClose} data-testid="banner-close">
+            <X size={20} />
+          </button>
+        </div>
+      </Alert>
+    );
   }
 
-  return (
-    <Alert variant={banner.variant} className="mt-4 mb-8 flex-row text-sm">
-      <div className="flex items-start justify-between">
-        <Check />
-        <div className="ml-2 w-full">
-          <h3 className="text-lg font-bold">{banner.header}</h3>
-          <p>{banner.body}</p>
-        </div>
-        <button onClick={onClose}>
-          <X size={20} />
-        </button>
-      </div>
-    </Alert>
-  );
+  return null;
 };
