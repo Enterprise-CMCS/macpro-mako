@@ -44,7 +44,7 @@ export class Api extends cdk.NestedStack {
   private initializeResources(props: ApiStackProps): {
     apiGateway: cdk.aws_apigateway.RestApi;
   } {
-    const { project, stage, stack, isDev } = props;
+    const { project, stage, stack } = props;
     const {
       vpc,
       privateSubnets,

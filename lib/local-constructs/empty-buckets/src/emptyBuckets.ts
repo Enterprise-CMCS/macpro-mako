@@ -11,7 +11,7 @@ import {
 
 const s3 = new S3Client({ region: process.env.AWS_REGION });
 
-export const handler = async function (event: any, context: any) {
+export const handler = async function (event: any) {
   console.log("Request received:\n", JSON.stringify(event, null, 2));
 
   if (event.RequestType === "Delete") {

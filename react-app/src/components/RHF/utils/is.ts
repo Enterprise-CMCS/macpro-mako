@@ -19,8 +19,7 @@ export type MinType =
   | InputValidationRules["min"]
   | InputValidationRules["minLength"];
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const isFunction = (value: unknown): value is Function =>
+export const isFunction = (value: unknown): value is typeof Function =>
   typeof value === "function";
 
 export const isNullOrUndefined = (value: unknown): value is null | undefined =>

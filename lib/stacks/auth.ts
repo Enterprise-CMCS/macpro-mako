@@ -47,7 +47,7 @@ export class Auth extends cdk.NestedStack {
     userPoolDomain: cdk.aws_cognito.CfnUserPoolDomain;
     identityPool: cdk.aws_cognito.CfnIdentityPool;
   } {
-    const { project, stage, stack, isDev } = props;
+    const { project, stage, stack } = props;
     const {
       apiGateway,
       applicationEndpointUrl,
@@ -225,7 +225,7 @@ export class Auth extends cdk.NestedStack {
       },
     );
 
-    const manageUsers = new ManageUsers(
+    new ManageUsers(
       this,
       "ManageUsers",
       userPool,

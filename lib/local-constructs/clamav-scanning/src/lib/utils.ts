@@ -28,7 +28,7 @@ export function extractS3EventFromSQSEvent(sqsEvent: any): any {
     const sqsMessageBody: string = sqsEvent["Records"][0]["body"];
     const s3Event = JSON.parse(sqsMessageBody);
     return s3Event;
-  } catch (error) {
+  } catch {
     throw new Error("Unable to retrieve body from the SQS event");
   }
 }
@@ -42,7 +42,7 @@ export function extractKeyFromS3Event(s3Event: any): string {
   try {
     const key: string = s3Event["Records"][0]["s3"]["object"]["key"];
     return decodeURIComponent(key).replace(/\+/g, " ");
-  } catch (error) {
+  } catch {
     throw new Error("Unable to retrieve key information from the event");
   }
 }
@@ -56,7 +56,7 @@ export function extractBucketFromS3Event(s3Event: any): string {
   try {
     const bucketName: string = s3Event["Records"][0]["s3"]["bucket"]["name"];
     return bucketName;
-  } catch (error) {
+  } catch {
     throw new Error("Unable to retrieve bucket information from the event");
   }
 }

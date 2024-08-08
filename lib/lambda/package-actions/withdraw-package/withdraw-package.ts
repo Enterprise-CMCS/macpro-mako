@@ -1,9 +1,4 @@
-import {
-  WithdrawPackage,
-  withdrawPackageSchema,
-  SEATOOL_STATUS,
-  Action,
-} from "shared-types";
+import { withdrawPackageSchema, SEATOOL_STATUS, Action } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 import { response } from "../../../libs/handler-lib";
 import { TOPIC_NAME } from "../consts";

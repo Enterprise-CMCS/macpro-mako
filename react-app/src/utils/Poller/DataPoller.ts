@@ -16,7 +16,7 @@ export class DataPoller<TFetcherReturn> {
     return new Promise<{
       maxAttemptsReached: boolean;
       correctDataStateFound: boolean;
-    }>((resolve, _reject) => {
+    }>((resolve) => {
       let timesPolled = 0;
 
       const intervalId = setInterval(async () => {
