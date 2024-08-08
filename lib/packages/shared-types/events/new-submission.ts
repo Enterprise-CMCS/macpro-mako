@@ -24,4 +24,4 @@ export const newSubmissionSchema = z.object({
   changedDate: z.number().optional(),
 });
 
-export type OneMac = z.infer<typeof newSubmissionSchema>;
+export type NewSubmission = z.infer<typeof newSubmissionSchema>;

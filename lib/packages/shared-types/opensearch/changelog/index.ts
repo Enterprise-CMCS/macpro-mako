@@ -8,7 +8,7 @@ import {
 } from "./../_";
 import { z } from "zod";
 import {
-  OneMac,
+  NewSubmission,
   RaiIssue,
   RaiResponse,
   RaiWithdraw,
@@ -18,7 +18,7 @@ import {
 } from "../../events";
 import { legacyAdminChange, legacyEvent } from "./transforms";
 
-export type Document = OneMac &
+export type Document = NewSubmission &
   WithdrawPackage &
   RaiResponse &
   RaiIssue &
