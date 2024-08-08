@@ -45,6 +45,9 @@ export const v202401: FormSchema = {
                           labelClassName: "text-black font-bold",
                           label: "From age",
                           formItemClassName: "w-[125px]",
+                          rules: {
+                            required: "* Required",
+                          },
                           props: {
                             options: [
                               { value: "0", label: "0" },
@@ -76,6 +79,9 @@ export const v202401: FormSchema = {
                           labelClassName: "text-black font-bold",
                           label: "To age",
                           formItemClassName: "w-[125px]",
+                          rules: {
+                            required: "* Required",
+                          },
                           props: {
                             options: [
                               { value: "0", label: "0" },
@@ -108,8 +114,15 @@ export const v202401: FormSchema = {
                           label: "Above",
                           formItemClassName: "w-[159px]",
                           props: {
-                            icon: "%FPL",
+                            icon: "% FPL",
                             iconRight: true,
+                          },
+                          rules: {
+                            pattern: {
+                              value: /^[0-9]\d*$/,
+                              message: "Must be a positive integer value",
+                            },
+                            required: "* Required",
                           },
                         },
                         {
@@ -118,8 +131,15 @@ export const v202401: FormSchema = {
                           labelClassName: "text-black font-bold",
                           label: "Up to and including",
                           formItemClassName: "w-[159px]",
+                          rules: {
+                            pattern: {
+                              value: /^[0-9]\d*$/,
+                              message: "Must be a positive integer value",
+                            },
+                            required: "* Required",
+                          },
                           props: {
-                            icon: "%FPL",
+                            icon: "% FPL",
                             iconRight: true,
                           },
                         },
