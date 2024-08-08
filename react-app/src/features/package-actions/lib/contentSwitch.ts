@@ -1,4 +1,4 @@
-import { BannerContent, UserPrompt } from "@/components";
+import { Banner, UserPrompt } from "@/components";
 import { Action, AuthorityUnion, opensearch } from "shared-types";
 import {
   defaultIssueRaiContent,
@@ -16,7 +16,7 @@ import {
 
 type FormContent = {
   title: string;
-  successBanner: BannerContent;
+  successBanner: Omit<Banner, "variant" | "pathnameToDisplayOn">;
   preSubmitNotice?: string;
   confirmationModal?: Omit<UserPrompt, "onAccept">;
   enableSubmit?: boolean;
