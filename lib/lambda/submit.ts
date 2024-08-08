@@ -11,7 +11,7 @@ import {
   Action,
   Authority,
   SEATOOL_AUTHORITIES,
-  onemacSchema,
+  newSubmissionSchema,
 } from "shared-types";
 import {
   getSecret,
@@ -108,7 +108,7 @@ export const submit = async (event: APIGatewayEvent) => {
     }
 
     // Safe parse the body
-    const eventBody = onemacSchema.safeParse(body);
+    const eventBody = newSubmissionSchema.safeParse(body);
     if (!eventBody.success) {
       return console.log(
         "MAKO Validation Error. The following record failed to parse: ",
@@ -156,7 +156,7 @@ export const submit = async (event: APIGatewayEvent) => {
   try {
     await transaction.begin();
     // We first parse the event; if it's malformed, this will throw an error before we touch seatool or kafka
-    const eventBody = onemacSchema.safeParse(body);
+    const eventBody = newSubmissionSchema.safeParse(body);
     if (!eventBody.success) {
       return console.log(
         "MAKO Validation Error. The following record failed to parse: ",
@@ -236,8 +236,8 @@ export const submit = async (event: APIGatewayEvent) => {
       -- Main insert into State_Plan
       INSERT INTO SEA.dbo.State_Plan (ID_Number, State_Code, Title_Name, Summary_Memo, Region_ID, Plan_Type, Submission_Date, Status_Date, Proposed_Date, SPW_Status_ID, Budget_Neutrality_Established_Flag, Status_Memo, Action_Type)
       VALUES ('${body.id}', '${
-      body.state
-    }', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo, @ActionTypeID);
+        body.state
+      }', @TitleName, @SummaryMemo, @RegionID, @PlanTypeID, @SubmissionDate, @StatusDate, @ProposedDate, @SPWStatusID, 0, @StatusMemo, @ActionTypeID);
       `;
 
     // -- Insert all types into State_Plan_Service_Types

@@ -1,7 +1,7 @@
 import {
   SEATOOL_AUTHORITIES,
   SEATOOL_STATUS,
-  onemacSchema,
+  newSubmissionSchema,
 } from "shared-types";
 
 const getIdByAuthorityName = (authorityName: string) => {
@@ -23,7 +23,7 @@ const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
     : null;
 
 export const transform = (id: string) => {
-  return onemacSchema.transform((data) => {
+  return newSubmissionSchema.transform((data) => {
     if (data.seaActionType === "Extend") {
       // We should have a separate transform for TE new submission, and possibly for each new-submission that's unique (appk)... todo
       // TODO: mako timestamp

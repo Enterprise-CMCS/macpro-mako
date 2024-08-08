@@ -3,7 +3,7 @@ import { attachmentSchema } from "../attachments";
 import { notificationMetadataSchema } from "../notification-metadata";
 
 // This is the event schema for ne submissions from our system
-export const onemacSchema = z.object({
+export const newSubmissionSchema = z.object({
   authority: z.string(),
   seaActionType: z.string().optional(), // Used by waivers and chip spas
   origin: z.string(),
@@ -24,4 +24,4 @@ export const onemacSchema = z.object({
   changedDate: z.number().optional(),
 });
 
-export type OneMac = z.infer<typeof onemacSchema>;
+export type OneMac = z.infer<typeof newSubmissionSchema>;

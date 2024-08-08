@@ -3,7 +3,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import * as sql from "mssql";
 import { isAuthorized } from "../libs/api/auth/user";
 
-import { onemacSchema } from "shared-types";
+import { newSubmissionSchema } from "shared-types";
 import {
   getSecret,
   getNextBusinessDayTimestamp,
@@ -76,7 +76,7 @@ export const submit = async (event: APIGatewayEvent) => {
       proposedEffectiveDate: body.proposedEffectiveDate,
     };
 
-    const validateZod = onemacSchema.safeParse({
+    const validateZod = newSubmissionSchema.safeParse({
       ...body,
       ...(!!Number(WINDEX) && {
         appkParentId: `${body.state}-${body.waiverIds[0]}`,
