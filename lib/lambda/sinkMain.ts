@@ -29,7 +29,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
         case "aws.onemac.migration.cdc":
           await onemac(event.records[topicPartition], topicPartition);
           break;
-        case "aws.seatool.ksql.onemac.agg.State_Plan":
+        case "aws.seatool.ksql.onemac.v2.agg.State_Plan":
           await ksql(event.records[topicPartition], topicPartition);
           break;
         case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":

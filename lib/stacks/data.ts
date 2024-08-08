@@ -624,7 +624,7 @@ export class Data extends cdk.NestedStack {
             triggers: [
               {
                 function: lambdaFunctions.sinkMain.functionName,
-                topics: ["aws.seatool.ksql.onemac.agg.State_Plan"],
+                topics: ["aws.seatool.ksql.onemac.v2.agg.State_Plan"],
               },
             ],
           }),
@@ -648,7 +648,6 @@ export class Data extends cdk.NestedStack {
               topics: [
                 "aws.onemac.migration.cdc",
                 `${topicNamespace}aws.onemac.migration.cdc`,
-                "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan",
               ],
             },
             {
@@ -743,7 +742,7 @@ export class Data extends cdk.NestedStack {
               triggers: [
                 {
                   function: lambdaFunctions.sinkMain.functionName,
-                  topics: ["aws.seatool.ksql.onemac.agg.State_Plan"],
+                  topics: ["aws.seatool.ksql.onemac.v2.agg.State_Plan"],
                 },
               ],
             }),
@@ -854,7 +853,7 @@ export class Data extends cdk.NestedStack {
                             {
                               function: lambdaFunctions.sinkMain.functionName,
                               topics: [
-                                "aws.seatool.ksql.onemac.agg.State_Plan",
+                                "aws.seatool.ksql.onemac.v2.agg.State_Plan",
                               ],
                             },
                           ],
