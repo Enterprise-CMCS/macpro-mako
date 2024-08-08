@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+ 
 
 import * as I from "@/components/Inputs";
 import * as C from "@/components";

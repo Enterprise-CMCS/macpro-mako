@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useEffect } from "react";
 import { FieldValues, useFieldArray } from "react-hook-form";
 import { FieldArrayProps } from "shared-types";
@@ -9,7 +8,7 @@ import { Field } from "./Field";
 import { cn } from "@/utils";
 
 export const RHFFieldArray = <TFields extends FieldValues>(
-  props: FieldArrayProps<TFields>
+  props: FieldArrayProps<TFields>,
 ) => {
   const isFieldArray = props.rhf === "FieldArray";
   const fieldArr = useFieldArray<any>({

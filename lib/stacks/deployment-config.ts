@@ -17,6 +17,8 @@ export type InjectedConfigProperties = {
   emailIdentityDomain: string;
   googleAnalyticsDisable: boolean;
   googleAnalyticsGTag: string;
+  iamPath: string;
+  iamPermissionsBoundary: string;
   idmAuthzApiEndpoint: string;
   idmAuthzApiKeyArn: string;
   idmClientId: string;
@@ -80,7 +82,7 @@ export class DeploymentConfig {
     let defaultSecret: { [key: string]: string } = {};
     try {
       defaultSecret = JSON.parse(await getSecret(defaultSecretName));
-    } catch (error) {
+    } catch {
       throw new Error(`Failed to fetch mandatory secret ${defaultSecretName}`);
     }
 
@@ -95,7 +97,7 @@ export class DeploymentConfig {
     }
 
     // Merge secrets with stageSecret taking precedence
-    let combinedSecret: { [key: string]: any } = {
+    const combinedSecret: { [key: string]: any } = {
       ...defaultSecret,
       ...stageSecret,
     };
@@ -128,6 +130,8 @@ export class DeploymentConfig {
       typeof config.emailAddressLookupSecretName === "string" && // pragma: allowlist secret
       typeof config.googleAnalyticsDisable == "boolean" &&
       typeof config.googleAnalyticsGTag === "string" &&
+      typeof config.iamPermissionsBoundary === "string" &&
+      typeof config.iamPath === "string" &&
       typeof config.idmAuthzApiEndpoint === "string" &&
       typeof config.idmAuthzApiKeyArn === "string" && // pragma: allowlist secret
       typeof config.idmClientId === "string" &&

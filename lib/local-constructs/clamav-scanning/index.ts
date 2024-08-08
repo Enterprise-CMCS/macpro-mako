@@ -1,7 +1,6 @@
 import { DockerImageCode, DockerImageFunction } from "aws-cdk-lib/aws-lambda";
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
-import path = require("path");
 import * as sqs from "aws-cdk-lib/aws-sqs";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as s3n from "aws-cdk-lib/aws-s3-notifications";
@@ -56,6 +55,7 @@ export class ClamScanScanner extends Construct {
     // Create a customer-managed KMS key
     const kmsKey = new kms.Key(this, "NotificationQueueKey", {
       enableKeyRotation: true,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
     // Grant SQS and S3 permissions to use the KMS key

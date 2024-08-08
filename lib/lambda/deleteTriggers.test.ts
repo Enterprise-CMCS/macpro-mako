@@ -1,10 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { handler, deleteAllTriggersForFunctions } from "./deleteTriggers";
+import { handler } from "./deleteTriggers";
 import {
   LambdaClient,
   ListEventSourceMappingsCommand,
   DeleteEventSourceMappingCommand,
-  GetEventSourceMappingCommand,
 } from "@aws-sdk/client-lambda";
 
 vi.mock("@aws-sdk/client-lambda", () => ({

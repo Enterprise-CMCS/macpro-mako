@@ -19,46 +19,15 @@ export class Alerts extends cdk.NestedStack {
   private initializeResources(props: AlertsStackProps): cdk.aws_sns.Topic {
     const { project, stage } = props;
 
-    // Create Alerts Topic with KMS Key
+    // Create Alerts Topic with AWS-managed KMS Key
     const alertsTopic = new cdk.aws_sns.Topic(this, "AlertsTopic", {
       topicName: `Alerts-${project}-${stage}`,
+      masterKey: cdk.aws_kms.Alias.fromAliasName(
+        this,
+        "KmsAlias",
+        "alias/aws/sns",
+      ),
     });
-
-    const kmsKeyForSns = new cdk.aws_kms.Key(this, "KmsKeyForSns", {
-      enableKeyRotation: true,
-    });
-
-    // KMS Key Policy
-    kmsKeyForSns.addToResourcePolicy(
-      new cdk.aws_iam.PolicyStatement({
-        sid: "Allow access for Root User",
-        effect: cdk.aws_iam.Effect.ALLOW,
-        principals: [new cdk.aws_iam.AccountPrincipal(cdk.Aws.ACCOUNT_ID)],
-        actions: ["kms:*"],
-        resources: ["*"],
-      }),
-    );
-    kmsKeyForSns.addToResourcePolicy(
-      new cdk.aws_iam.PolicyStatement({
-        sid: "Allow access for Key User (SNS Service Principal)",
-        effect: cdk.aws_iam.Effect.ALLOW,
-        principals: [new cdk.aws_iam.ServicePrincipal("sns.amazonaws.com")],
-        actions: ["kms:GenerateDataKey", "kms:Decrypt"],
-        resources: ["*"],
-      }),
-    );
-    kmsKeyForSns.addToResourcePolicy(
-      new cdk.aws_iam.PolicyStatement({
-        sid: "Allow CloudWatch events to use the key",
-        effect: cdk.aws_iam.Effect.ALLOW,
-        principals: [
-          new cdk.aws_iam.ServicePrincipal("events.amazonaws.com"),
-          new cdk.aws_iam.ServicePrincipal("cloudwatch.amazonaws.com"),
-        ],
-        actions: ["kms:Decrypt", "kms:GenerateDataKey"],
-        resources: ["*"],
-      }),
-    );
 
     // Output the Alerts Topic ARN
     new cdk.CfnOutput(this, "AlertsTopicArn", {

@@ -35,6 +35,8 @@ describe("DeploymentConfig", () => {
     vpcName: "vpcName",
     emailFromIdentity: "test@cms.hhs.gov",
     emailIdentityDomain: "cms.hhs.gov",
+    iamPath: "/my/path/",
+    iamPermissionsBoundary: "arn:aws:iam::1234578910:policy/foo/bar-policy",
   });
 
   const stageSecret = JSON.stringify({
@@ -101,6 +103,8 @@ describe("DeploymentConfig", () => {
       terminationProtection: false,
       emailFromIdentity: "test@cms.hhs.gov",
       emailIdentityDomain: "cms.hhs.gov",
+      iamPath: "/my/path/",
+      iamPermissionsBoundary: "arn:aws:iam::1234578910:policy/foo/bar-policy",
     };
 
     expect(deploymentConfig.config).toEqual(expectedConfig);
@@ -167,6 +171,8 @@ describe("DeploymentConfig", () => {
       terminationProtection: false,
       emailFromIdentity: "test@cms.hhs.gov",
       emailIdentityDomain: "cms.hhs.gov",
+      iamPath: "/my/path/",
+      iamPermissionsBoundary: "arn:aws:iam::1234578910:policy/foo/bar-policy",
     };
 
     expect(deploymentConfig.config).toEqual(expectedConfig);

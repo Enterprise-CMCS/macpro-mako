@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
-import { handler, getPackageActions } from "./getPackageActions";
+import { handler } from "./getPackageActions";
 import { response } from "libs/handler-lib";
 import { getAvailableActions } from "shared-utils";
 import { getPackage } from "../libs/api/package/getPackage";

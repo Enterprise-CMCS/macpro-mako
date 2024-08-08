@@ -1,4 +1,4 @@
-import { CloudFormationCustomResourceEvent, Context } from "aws-lambda";
+import { CloudFormationCustomResourceEvent } from "aws-lambda";
 import * as topics from "./../../../libs/topics-lib";
 
 interface TopicConfig {
@@ -9,7 +9,6 @@ interface TopicConfig {
 
 export const handler = async function (
   event: CloudFormationCustomResourceEvent,
-  context: Context,
 ) {
   console.log("Request:", JSON.stringify(event, undefined, 2));
   const resourceProperties = event.ResourceProperties;

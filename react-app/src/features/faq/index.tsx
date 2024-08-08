@@ -7,11 +7,11 @@ import {
   AccordionContent,
   AccordionTrigger,
   SubNavHeader,
-  useParams,
 } from "@/components";
+import { useParams } from "react-router-dom";
 
 export const Faq = () => {
-  const { id } = useParams("/faq/:id");
+  const { id } = useParams<{ id: string }>();
 
   const [openItems, setOpenItems] = useState<string[]>([]);
   useEffect(() => {

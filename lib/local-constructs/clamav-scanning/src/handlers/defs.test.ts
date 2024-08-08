@@ -6,7 +6,6 @@ import {
   FRESHCLAM_WORK_DIR,
 } from "./../lib";
 import { expect, test, vi } from "vitest";
-import pino from "pino";
 
 vi.mock("pino", () => {
   return {

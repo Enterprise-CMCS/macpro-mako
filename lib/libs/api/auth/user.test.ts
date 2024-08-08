@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import {
   getAuthDetails,
   lookupUserAttributes,
-  fetchUserFromCognito,
   isAuthorized,
   isAuthorizedToGetPackageActions,
   getStateFilter,
@@ -10,7 +9,6 @@ import {
 import { APIGatewayEvent } from "aws-lambda";
 import {
   CognitoIdentityProviderClient,
-  ListUsersCommand,
   UserType as CognitoUserType,
 } from "@aws-sdk/client-cognito-identity-provider";
 

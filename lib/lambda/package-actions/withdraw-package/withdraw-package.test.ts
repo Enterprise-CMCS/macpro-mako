@@ -1,4 +1,4 @@
-import { assert, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { withdrawPackage } from "./withdraw-package";
 import { generateMock } from "@anatine/zod-mock";
 import { withdrawPackageSchema } from "shared-types";

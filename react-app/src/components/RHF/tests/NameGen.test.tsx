@@ -107,12 +107,10 @@ describe("Test Name Generation", () => {
   });
 
   test("Test data structure matches expectation", async () => {
-    let data: any = {};
     const rend = render(
       <TestWrapper
         onSubmit={(d) => {
           console.log("d", d);
-          data = d;
         }}
       />,
     );

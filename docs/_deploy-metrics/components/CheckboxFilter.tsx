@@ -9,7 +9,7 @@ type CheckboxFilterProps = Omit<UI.CheckboxGroupProps, "onChange"> & {
 };
 
 export const CheckboxFilter = (props: CheckboxFilterProps) => {
-  const { options, label, spacing = "2", showSearch, ...rest } = props;
+  const { options, label, spacing = "2", ...rest } = props;
 
   return (
     <UI.Stack as="fieldset" spacing={spacing}>
