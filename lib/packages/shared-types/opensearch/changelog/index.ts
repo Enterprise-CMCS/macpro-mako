@@ -15,7 +15,7 @@ import {
   WithdrawPackage,
   ToggleWithdrawRaiEnabled,
   UpdateId,
-} from "../../action-types";
+} from "../../events";
 import { legacyAdminChange, legacyEvent } from "./transforms";
 
 export type Document = OneMac &
