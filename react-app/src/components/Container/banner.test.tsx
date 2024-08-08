@@ -10,11 +10,11 @@ const wrapper = ({ children }: { children: ReactNode }) => (
     <Routes>
       <Route
         path="/dashboard"
-        element={<Link to="/example" data-testid="dashboard-link" />}
+        element={<Link to="/example" id="dashboard-link" />}
       />
       <Route
         path="/example"
-        element={<Link to="/example" data-testid="example-link" />}
+        element={<Link to="/dashboard" id="example-link" />}
       />
     </Routes>
     {children}
@@ -28,7 +28,7 @@ describe("banner", () => {
     expect(queryByTestId("banner-header")).not.toBeInTheDocument();
   });
 
-  test("Check if banner is hidden on wrong pathnameToDisplayOn", () => {
+  test("Check if banner is not rendered on wrong pathnameToDisplayOn", () => {
     const { queryByTestId } = render(<Banner />, { wrapper });
 
     act(() => {
@@ -56,6 +56,21 @@ describe("banner", () => {
     expect(getByTestId("banner-header")).toHaveTextContent("Test header");
   });
 
+  test("Check if banner header and body text match", () => {
+    const { getByText } = render(<Banner />, { wrapper });
+
+    act(() => {
+      banner({
+        header: "Test header",
+        body: "Test body",
+        pathnameToDisplayOn: "/dashboard",
+      });
+    });
+
+    expect(getByText("Test header")).toBeInTheDocument();
+    expect(getByText("Test body")).toBeInTheDocument();
+  });
+
   test("Check if banner is closed when clicking the Close button", async () => {
     const { getByTestId, queryByTestId } = render(<Banner />, {
       wrapper,
@@ -76,7 +91,7 @@ describe("banner", () => {
   });
 
   test("Check if banner is closed when navigating away", async () => {
-    const { getByTestId, queryByTestId } = render(<Banner />, {
+    const { container, queryByTestId } = render(<Banner />, {
       wrapper,
     });
     const user = userEvent.setup();
@@ -89,7 +104,7 @@ describe("banner", () => {
       });
     });
 
-    await user.click(getByTestId("dashboard-link"));
+    await user.click(container.querySelector("#dashboard-link"));
 
     expect(queryByTestId("banner-header")).not.toBeInTheDocument();
   });
