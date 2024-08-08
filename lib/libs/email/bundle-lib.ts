@@ -83,6 +83,7 @@ const getBundleFromEvent = (
         ],
       };
     case "respond-to-rai-1915b":
+    case "respond-to-rai-1915c":
       return {
         lookupList: ["osInsights"],
         dataList: [
@@ -104,16 +105,17 @@ const getBundleFromEvent = (
         ],
         emailCommands: [
           {
-            Template: `respond-to-rai-1915b-cms_${stage}`,
+            Template: `respond-to-rai-waiver-cms_${stage}`,
             ToAddresses: ["osgEmail", "cpoc", "srt", "dmcoEmail"],
           },
           {
-            Template: `respond-to-rai-1915b-state_${stage}`,
+            Template: `respond-to-rai-waiver-state_${stage}`,
             ToAddresses: ["submitter"],
           },
         ],
       };
     case "withdraw-package-1915b":
+    case "withdraw-package-1915c":
       return {
         lookupList: ["osInsights", "cognito"],
         dataList: [
@@ -126,14 +128,15 @@ const getBundleFromEvent = (
           "submitterName",
           "submitterEmail",
           "additionalInformation",
+          "authority",
         ],
         emailCommands: [
           {
-            Template: `withdraw-package-1915b-cms_${stage}`,
-            ToAddresses: ["osgEmail", "cpoc", "srt"],
+            Template: `withdraw-package-waiver-cms_${stage}`,
+            ToAddresses: ["osgEmail", "cpoc", "srt", "dmcoEmail"],
           },
           {
-            Template: `withdraw-package-1915b-state_${stage}`,
+            Template: `withdraw-package-waiver-state_${stage}`,
             ToAddresses: ["allState"],
           },
         ],
@@ -244,7 +247,7 @@ const getBundleFromEvent = (
         emailCommands: [
           {
             Template: `new-submission-chip-spa-cms_${stage}`,
-            ToAddresses: ["osgEmail", "chipInbox"],
+            ToAddresses: ["chipInbox"],
             CcAddresses: ["chipCcList"],
           },
           {
@@ -275,7 +278,7 @@ const getBundleFromEvent = (
         emailCommands: [
           {
             Template: `respond-to-rai-chip-spa-cms_${stage}`,
-            ToAddresses: ["osgEmail", "chipInbox"],
+            ToAddresses: ["srt", "chipInbox", "cpoc"],
             CcAddresses: ["chipCcList"],
           },
           {
