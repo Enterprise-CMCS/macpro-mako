@@ -1,7 +1,5 @@
 import { Argv } from "yargs";
-import { LabeledProcessRunner } from "../lib";
-
-const runner = new LabeledProcessRunner();
+import { runCommand } from "../lib";
 
 export const test = {
   command: "test",
@@ -33,10 +31,6 @@ export const test = {
     if (argv.ui) {
       testCommand = "test:ui";
     }
-    await runner.run_command_and_output(
-      "Unit Tests",
-      ["bun", "run", testCommand],
-      ".",
-    );
+    await runCommand("bun", ["run", testCommand], ".");
   },
 };

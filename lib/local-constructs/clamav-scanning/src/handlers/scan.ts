@@ -70,7 +70,7 @@ export async function handler(event: any): Promise<string[]> {
       virusScanStatus = (await scanLocalFile(fileLoc))!;
       await tagWithScanStatus(s3ObjectBucket, s3ObjectKey, virusScanStatus);
       results.push(virusScanStatus);
-    } catch (error) {
+    } catch {
       virusScanStatus = STATUS_ERROR_PROCESSING_FILE;
       await tagWithScanStatus(s3ObjectBucket, s3ObjectKey, virusScanStatus);
       results.push(virusScanStatus);

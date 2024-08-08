@@ -19,7 +19,7 @@ export const useLzUrl = <T>(props: { key: string; initValue?: T }) => {
 
     try {
       return JSON.parse(decompress);
-    } catch (e) {
+    } catch {
       return props.initValue;
     }
   }, [queryString]);
@@ -31,7 +31,7 @@ export const useLzUrl = <T>(props: { key: string; initValue?: T }) => {
     })();
 
     const compressedValue = LZ.compressToEncodedURIComponent(
-      JSON.stringify(val)
+      JSON.stringify(val),
     );
 
     setParams(
@@ -47,7 +47,7 @@ export const useLzUrl = <T>(props: { key: string; initValue?: T }) => {
 
         return { ...prevParams, [props.key]: compressedValue };
       },
-      { replace: true }
+      { replace: true },
     );
   };
 

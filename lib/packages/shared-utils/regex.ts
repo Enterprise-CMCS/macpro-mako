@@ -1,3 +1,5 @@
+/* eslint no-prototype-builtins: 0 */ // --> OFF
+
 export const convertRegexToString = (obj: any) => {
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
@@ -34,7 +36,7 @@ export const reInsertRegex = (obj: any) => {
           // if its a pattern.value replace the value's value with a regex from the weird array thing
           obj[key].pattern.value = new RegExp(
             obj[key].pattern.value[1],
-            obj[key].pattern.value[2]
+            obj[key].pattern.value[2],
           );
         }
       }

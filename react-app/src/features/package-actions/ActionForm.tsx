@@ -2,10 +2,10 @@ import {
   ErrorBanner,
   Form,
   LoadingSpinner,
+  userPrompt,
   PreSubmitNotice,
   Route,
   useAlertContext,
-  useModalContext,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
 import { getFormOrigin } from "@/utils";
@@ -34,7 +34,6 @@ export const ActionForm = ({
 }: ActionFormProps) => {
   const navigate = useNavigate();
   const alert = useAlertContext();
-  const modal = useModalContext();
   const { data: user } = useGetUser();
   const { data: item } = useGetItem(id);
 
@@ -90,15 +89,11 @@ export const ActionForm = ({
 
   const onConfirmWithdraw = () => {
     if (content.confirmationModal) {
-      modal.setContent(content.confirmationModal);
+      userPrompt({
+        ...content.confirmationModal,
+        onAccept: onSubmit,
+      });
     }
-
-    modal.setModalOpen(true);
-
-    modal.setOnAccept(() => () => {
-      modal.setModalOpen(false);
-      onSubmit();
-    });
   };
 
   return (

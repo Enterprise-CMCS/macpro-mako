@@ -1,10 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { handler } from "./checkConsumerLag";
 import { Kafka } from "kafkajs";
-import {
-  LambdaClient,
-  ListEventSourceMappingsCommand,
-} from "@aws-sdk/client-lambda";
 
 const mockKafkaAdmin = {
   connect: vi.fn(),

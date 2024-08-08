@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
-import { handler, getSearchData } from "./search";
+import { handler } from "./search";
 import { response } from "libs/handler-lib";
-import { getStateFilter } from "../libs/api/auth/user";
+
 import * as os from "../libs/opensearch-lib";
 import { getAppkChildren } from "../libs/api/package";
 

@@ -5,7 +5,6 @@ import {
   CreateEventSourceMappingCommand,
   GetEventSourceMappingCommand,
 } from "@aws-sdk/client-lambda";
-import { randomUUID } from "crypto";
 
 vi.mock("@aws-sdk/client-lambda", () => ({
   LambdaClient: vi.fn().mockImplementation(() => ({

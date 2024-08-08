@@ -1,7 +1,6 @@
 import { beforeAll, it, expect, vi, describe } from "vitest";
 import * as unit from "./useGetUser";
 import { Auth } from "aws-amplify";
-import { CognitoUser } from "@aws-amplify/auth";
 
 /* When mocking the getItem and helper functions:
  * 1. Assign Auth.currentAuthenticatedUser to use mockCognito
@@ -31,7 +30,7 @@ const mockUserAttr = ({
   isCms?: boolean;
   options?: { error?: boolean; noRoles?: boolean };
 }) =>
-  vi.fn(async (user: CognitoUser) => {
+  vi.fn(async () => {
     return await new Promise<Array<{ Name: string; Value: string }>>(
       (resolve) => {
         if (options?.error)
@@ -58,7 +57,7 @@ const mockUserAttr = ({
             Value: isCms ? "onemac-micro-reviewer" : "onemac-micro-cmsreview",
           },
         ] as Array<{ Name: string; Value: string }>);
-      }
+      },
     );
   });
 
@@ -69,20 +68,17 @@ describe("getUser", () => {
   it("distinguishes CMS users with `isCms` property", async () => {
     // Auth.userAttributes doesn't like mockUserAttr, and the necessary
     // type is not exported for manual assertion.
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error
     Auth.userAttributes = mockUserAttr({ isCms: false });
     const stateUser = await unit.getUser();
     expect(stateUser.isCms).toBe(false);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error
     Auth.userAttributes = mockUserAttr({ isCms: true });
     const cmsUser = await unit.getUser();
     expect(cmsUser.isCms).toBe(true);
   });
   it("returns an object of CognitoUserAttributes", async () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error
     Auth.userAttributes = mockUserAttr({ isCms: false });
     const oneMacUser = await unit.getUser();
     expect(oneMacUser.user).toStrictEqual({
@@ -97,8 +93,7 @@ describe("getUser", () => {
     });
   });
   it("handles a user with no 'custom:cms-roles'", async () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error
     Auth.userAttributes = mockUserAttr({
       isCms: false,
       options: { noRoles: true },
@@ -116,8 +111,7 @@ describe("getUser", () => {
     });
   });
   it("handles and logs errors", async () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error
     Auth.userAttributes = mockUserAttr({
       isCms: false,
       options: { error: true },
