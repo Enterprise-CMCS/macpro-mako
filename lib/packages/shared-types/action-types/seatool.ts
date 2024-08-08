@@ -11,7 +11,7 @@ export type SeatoolOfficer = z.infer<typeof seatoolOfficerSchema>;
 export const seatoolSchema = z.object({
   ACTION_OFFICERS: z.array(seatoolOfficerSchema).nullish(),
   LEAD_ANALYST: z.array(seatoolOfficerSchema).nullable(),
-  changed_date: z.string().optional(),
+  CHANGED_DATE: z.number().optional(),
   STATE_PLAN_SERVICETYPES: z
     .array(
       z
