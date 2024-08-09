@@ -276,22 +276,11 @@ export const v202401: FormSchema = {
 
     // MCO --------------------------------------------------------------------
 
-    {
+    managedCare({
+      conditionalInfo: sectionDependency.MCO,
+      programLabel: SectionName.MCO,
       title: "Managed care organizations (MCOs)",
-      sectionId: "mco",
-      form: [
-        {
-          slots: managedCare({
-            programLabel: SectionName.MCO,
-            conditionalInfo: sectionDependency.MCO,
-          }),
-        },
-      ],
-      dependency: generateDependency(
-        sectionDependency.MCO.name,
-        sectionDependency.MCO.expectedValue,
-      ),
-    },
+    }),
     deliverySystemCharactaristics({
       programLabel: SectionName.MCO,
       conditionalInfo: sectionDependency.MCO,
@@ -319,22 +308,11 @@ export const v202401: FormSchema = {
 
     // HIO --------------------------------------------------------------------
 
-    {
+    managedCare({
+      conditionalInfo: sectionDependency.HIO,
       title: "Health insuring organizations (HIOs)",
-      sectionId: "hio",
-      form: [
-        {
-          slots: managedCare({
-            programLabel: SectionName.HIO,
-            conditionalInfo: sectionDependency.HIO,
-          }),
-        },
-      ],
-      dependency: generateDependency(
-        sectionDependency.HIO.name,
-        sectionDependency.HIO.expectedValue,
-      ),
-    },
+      programLabel: SectionName.HIO,
+    }),
     procurementOrSelection({
       programLabel: SectionName.HIO,
       conditionalInfo: sectionDependency.HIO,

@@ -1,7 +1,7 @@
 import { DependencyRule, RHFSlotProps, Section } from "shared-types";
 
 // Helper function to generate IDs for components
-function sectionId(programLabel: string): string {
+function createSectionId(programLabel: string): string {
   return programLabel.toLowerCase().replace(" ", "-");
 }
 
@@ -37,131 +37,148 @@ export interface SectionDependencyInfo {
 }
 
 interface SectionParams {
-  programLabel: string;
   conditionalInfo: SectionDependencyInfo;
+  programLabel: string;
+  title?: string;
 }
 
 // Repeating sections ---------------------------------------------------------
 
-export function managedCare({ programLabel }: SectionParams): RHFSlotProps[] {
-  return [
-    {
-      rhf: "Select",
-      label:
-        "Is the managed care delivery system the same as an already approved managed care program?",
-      labelClassName: "font-bold",
-      name: "same-as-approved-program",
-      rules: {
-        required: "* Required",
-      },
-      props: {
-        className: "w-[125px]",
-        options: [
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
-        ],
-      },
-    },
-    {
-      rhf: "Checkbox",
-      label: "The existing managed care program operates under:",
-      labelClassName: "font-bold",
-      name: "existing-managed-care-program",
-      props: {
-        options: [
+export function managedCare({
+  conditionalInfo,
+  programLabel,
+  title,
+}: SectionParams): Section {
+  return {
+    title: title || `${programLabel}`,
+    sectionId: createSectionId(programLabel),
+    dependency: generateDependency(
+      conditionalInfo.name,
+      conditionalInfo.expectedValue,
+    ),
+    form: [
+      {
+        slots: [
           {
-            label: "Section 1915(a) voluntary managed care program",
-            value: "1915a",
-            slots: [
-              {
-                rhf: "DatePicker",
-                label: "Date program approved by CMS",
-                labelClassName: "font-bold",
-                name: "1915a-date-approved",
-              },
-              {
-                rhf: "Input",
-                label: "Program name",
-                labelClassName: "font-bold",
-                name: "1915a-program-name",
-                props: {
-                  className: "w-full",
-                },
-              },
-            ],
-          },
-          {
-            label: "Section 1915(b) managed care waiver",
-            value: "1915b",
-            slots: [
-              {
-                rhf: "DatePicker",
-                label: "Date program approved by CMS",
-                labelClassName: "font-bold",
-                name: "1915b-date-approved",
-              },
-              {
-                rhf: "Input",
-                label: "Program name",
-                labelClassName: "font-bold",
-                name: "1915b-program-name",
-                props: {
-                  className: "w-full",
-                },
-              },
-            ],
-          },
-          {
+            rhf: "Select",
             label:
-              "Section 1932(a) mandatory managed care state plan amendment",
-            value: "1932a",
-            slots: [
-              {
-                rhf: "DatePicker",
-                label: "Date program approved by CMS",
-                labelClassName: "font-bold",
-                name: "1932a-date-approved",
-              },
-              {
-                rhf: "Input",
-                label: "Program name",
-                labelClassName: "font-bold",
-                name: "1932a-program-name",
-                props: {
-                  className: "w-full",
-                },
-              },
-            ],
+              "Is the managed care delivery system the same as an already approved managed care program?",
+            labelClassName: "font-bold",
+            name: "same-as-approved-program",
+            rules: {
+              required: "* Required",
+            },
+            props: {
+              className: "w-[125px]",
+              options: [
+                { label: "Yes", value: "yes" },
+                { label: "No", value: "no" },
+              ],
+            },
           },
           {
-            label: "Section 1115 demonstration",
-            value: "1115",
-            slots: [
-              {
-                rhf: "DatePicker",
-                label: "Date program approved by CMS",
-                labelClassName: "font-bold",
-                name: "1115-date-approved",
-              },
-              {
-                rhf: "Input",
-                label: "Program name",
-                labelClassName: "font-bold",
-                name: "1115-program-name",
-                props: {
-                  className: "w-full",
+            rhf: "Checkbox",
+            label: "The existing managed care program operates under:",
+            labelClassName: "font-bold",
+            name: "existing-managed-care-program",
+            props: {
+              options: [
+                {
+                  label: "Section 1915(a) voluntary managed care program",
+                  value: "1915a",
+                  slots: [
+                    {
+                      rhf: "DatePicker",
+                      label: "Date program approved by CMS",
+                      labelClassName: "font-bold",
+                      name: "1915a-date-approved",
+                    },
+                    {
+                      rhf: "Input",
+                      label: "Program name",
+                      labelClassName: "font-bold",
+                      name: "1915a-program-name",
+                      props: {
+                        className: "w-full",
+                      },
+                    },
+                  ],
                 },
-              },
-            ],
-          },
-          {
-            label: `An ${programLabel} consistent with applicable managed care requirements (42 CFR Part 438, 42 CFR Part 440, and Sections 1903(m), 1932, and 1937 of the Social Security Act)`,
-            value: "consistent-with-requirements",
+                {
+                  label: "Section 1915(b) managed care waiver",
+                  value: "1915b",
+                  slots: [
+                    {
+                      rhf: "DatePicker",
+                      label: "Date program approved by CMS",
+                      labelClassName: "font-bold",
+                      name: "1915b-date-approved",
+                    },
+                    {
+                      rhf: "Input",
+                      label: "Program name",
+                      labelClassName: "font-bold",
+                      name: "1915b-program-name",
+                      props: {
+                        className: "w-full",
+                      },
+                    },
+                  ],
+                },
+                {
+                  label:
+                    "Section 1932(a) mandatory managed care state plan amendment",
+                  value: "1932a",
+                  slots: [
+                    {
+                      rhf: "DatePicker",
+                      label: "Date program approved by CMS",
+                      labelClassName: "font-bold",
+                      name: "1932a-date-approved",
+                    },
+                    {
+                      rhf: "Input",
+                      label: "Program name",
+                      labelClassName: "font-bold",
+                      name: "1932a-program-name",
+                      props: {
+                        className: "w-full",
+                      },
+                    },
+                  ],
+                },
+                {
+                  label: "Section 1115 demonstration",
+                  value: "1115",
+                  slots: [
+                    {
+                      rhf: "DatePicker",
+                      label: "Date program approved by CMS",
+                      labelClassName: "font-bold",
+                      name: "1115-date-approved",
+                    },
+                    {
+                      rhf: "Input",
+                      label: "Program name",
+                      labelClassName: "font-bold",
+                      name: "1115-program-name",
+                      props: {
+                        className: "w-full",
+                      },
+                    },
+                  ],
+                },
+                {
+                  label: `An ${programLabel} consistent with applicable managed care requirements (42 CFR Part 438, 42 CFR Part 440, and Sections 1903(m), 1932, and 1937 of the Social Security Act)`,
+                  value: "consistent-with-requirements",
+                },
+              ],
+            },
           },
         ],
       },
-    },
-  ];
+    ],
+  };
 }
 
 // "[Program] procurement or selection"
@@ -171,7 +188,7 @@ export function procurementOrSelection({
 }: SectionParams): Section {
   return {
     title: `${programLabel} procurement or selection`,
-    sectionId: `${sectionId(programLabel)}-procurement`,
+    sectionId: `${createSectionId(programLabel)}-procurement`,
     subsection: true,
     dependency: generateDependency(
       conditionalInfo.name,
@@ -206,7 +223,7 @@ export function deliverySystemCharactaristics({
 }: SectionParams): Section {
   return {
     title: `Other ${programLabel}-based service delivery system characteristics`,
-    sectionId: `${sectionId(programLabel)}-service-delivery`,
+    sectionId: `${createSectionId(programLabel)}-service-delivery`,
     subsection: true,
     dependency: generateDependency(
       conditionalInfo.name,
@@ -364,7 +381,7 @@ export function participationExclusions({
 }: SectionParams): Section {
   return {
     title: `${programLabel} participation exclusions`,
-    sectionId: `${sectionId(programLabel)}-participation-exclusions`,
+    sectionId: `${createSectionId(programLabel)}-participation-exclusions`,
     subsection: true,
     dependency: generateDependency(
       conditionalInfo.name,
@@ -436,7 +453,7 @@ export function participationRequirements({
 }: SectionParams): Section {
   return {
     title: `General ${programLabel} participation requirements`,
-    sectionId: `${sectionId(programLabel)}-participation-requirements`,
+    sectionId: `${createSectionId(programLabel)}-participation-requirements`,
     subsection: true,
     dependency: generateDependency(
       conditionalInfo.name,
@@ -622,12 +639,12 @@ export function disenrollment({
                 {
                   label:
                     "Enrollees submit disenrollment requests to the MCO/HIO/PIHP/PAHP/PCCM/PCCM entity. The managed care plan may approve the request but may not disapprove it.",
-                  value: `submit-requests-to-${sectionId(programLabel)}`,
+                  value: `submit-requests-to-${createSectionId(programLabel)}`,
                 },
                 {
                   label:
                     "The MCO/HIO/PIHP/PAHP/PCCM/PCCM entity may not approve or disapprove requests and must refer all disenrollment requests received to the state.",
-                  value: `${sectionId(programLabel)}-refers-requests`,
+                  value: `${createSectionId(programLabel)}-refers-requests`,
                 },
                 {
                   label:
@@ -728,7 +745,7 @@ export function assurances({
 }: SectionParams): Section {
   return {
     title: "Assurances",
-    sectionId: `${sectionId(programLabel)}-assurances`,
+    sectionId: `${createSectionId(programLabel)}-assurances`,
     subsection: true,
     dependency: generateDependency(
       conditionalInfo.name,
@@ -818,7 +835,7 @@ export function additionalInfo({
 }: SectionParams): Section {
   return {
     title: `Additional information: ${programLabel}`,
-    sectionId: `additional-info-${sectionId(programLabel)}`,
+    sectionId: `additional-info-${createSectionId(programLabel)}`,
     subsection: true,
     dependency: generateDependency(
       conditionalInfo.name,
@@ -850,7 +867,7 @@ export function payments({
 }: SectionParams): Section {
   return {
     title: `${programLabel} payments`,
-    sectionId: `${sectionId(programLabel)}-payments`,
+    sectionId: `${createSectionId(programLabel)}-payments`,
     subsection: true,
     dependency: generateDependency(
       conditionalInfo.name,
