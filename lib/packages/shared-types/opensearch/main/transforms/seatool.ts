@@ -134,6 +134,7 @@ const getAuthority = (authorityId: number | null, id: string) => {
 
 export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
+    console.log("changed date value", data.CHANGED_DATE);
     const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
       getRaiDate(data);
