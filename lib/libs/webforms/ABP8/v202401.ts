@@ -1,4 +1,4 @@
-import { DependencyRule, FormSchema } from "shared-types";
+import { FormSchema } from "shared-types";
 import {
   additionalInfo,
   assurances,
