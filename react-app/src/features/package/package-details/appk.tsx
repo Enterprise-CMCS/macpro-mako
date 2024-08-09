@@ -1,5 +1,5 @@
 import {
-  ConfirmationModal,
+  ConfirmationDialog,
   LoadingSpinner,
   Route,
   useAlertContext,
@@ -98,7 +98,7 @@ export const AppK = () => {
         </T.TableBody>
       </T.Table>
       {(submission.isLoading || loading) && <LoadingSpinner />}
-      <ConfirmationModal
+      <ConfirmationDialog
         open={!!removeChild}
         onAccept={() => onChildRemove(removeChild)}
         onCancel={() => setRemoveChild("")}
