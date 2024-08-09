@@ -42,6 +42,7 @@ export type RuleGenerator = (
 export type RHFSlotProps = {
   name: string;
   label?: RHFTextField;
+  index?: number;
   labelClassName?: string;
   styledLabel?: RHFTextField;
   formItemClassName?: string;
@@ -58,9 +59,7 @@ export type RHFSlotProps = {
     rhf: K;
     props?: RHFComponentMap[K];
     text?: K extends "TextDisplay" ? RHFTextField : never;
-    fields?: K extends "FieldArray" | "FieldGroup" | "WrappedGroup"
-      ? RHFSlotProps[]
-      : never;
+    fields?: K extends "FieldArray" | "WrappedGroup" ? RHFSlotProps[] : never;
   };
 }[keyof RHFComponentMap];
 
@@ -94,6 +93,7 @@ type RHFTextItemType =
   | "bold"
   | "italic"
   | "list"
+  | "numberedSet"
   | "default";
 
 export type RHFOption = {
@@ -130,15 +130,15 @@ export type RHFComponentMap = {
   };
   FieldArray: {
     appendText?: string;
-    fieldArrayClassName?: string;
-  };
-  FieldGroup: {
-    appendText?: string;
     removeText?: string;
     fieldArrayClassName?: string;
+    divider?: boolean;
+    appendClassName?: string;
+    appendVariant?: "default" | "outline" | "ghost" | "secondary";
   };
   TextDisplay: { className?: string };
   WrappedGroup: { wrapperClassName?: string };
+  Divider: { wrapperClassName?: string };
 };
 
 export type FormGroup = {
@@ -174,19 +174,19 @@ export type FieldArrayProps<
   appendText?: string;
   removeText?: string;
   fieldArrayClassName?: string;
+  divider?: boolean;
+  appendClassName?: string;
+  appendVariant?: "default" | "outline" | "ghost" | "secondary";
 };
 
-export type FieldGroupProps<
-  T extends FieldValues,
-  TFieldArrayName extends FieldArrayPath<T> = FieldArrayPath<T>,
-> = {
-  control: Control<T, unknown>;
-  name: TFieldArrayName;
-  fields: RHFSlotProps[];
-  appendText?: string;
-  removeText?: string;
-  fieldArrayClassName?: string;
-  parentId?: string;
+// old default values for fieldGroups
+export const DefaultFieldGroupProps: RHFComponentMap["FieldArray"] = {
+  appendText: "New Group",
+  appendVariant: "default",
+  appendClassName: "self-end ",
+  removeText: "Remove Group",
+  fieldArrayClassName: "flex-col ",
+  divider: true,
 };
 
 type ConditionRules =

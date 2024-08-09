@@ -3,6 +3,7 @@ import {
   FormSchema,
   RHFSlotProps,
   Section,
+  DefaultFieldGroupProps,
 } from "shared-types";
 
 const formName = "abp5";
@@ -339,9 +340,10 @@ function subsection({
         slots: [
           ...headerSlots,
           {
-            rhf: "FieldGroup",
+            rhf: "FieldArray",
             name: "benefit",
             props: {
+              ...DefaultFieldGroupProps,
               appendText: "Add benefit",
               removeText: "Remove benefit",
             },
@@ -814,9 +816,10 @@ export const v202401: FormSchema = {
                       {
                         slots: [
                           {
-                            rhf: "FieldGroup",
+                            rhf: "FieldArray",
                             name: "other-non-essential",
                             props: {
+                              ...DefaultFieldGroupProps,
                               appendText: "Add benefit",
                               removeText: "Remove benefit",
                             },
@@ -840,9 +843,10 @@ export const v202401: FormSchema = {
                       {
                         slots: [
                           {
-                            rhf: "FieldGroup",
+                            rhf: "FieldArray",
                             name: "other-base",
                             props: {
+                              ...DefaultFieldGroupProps,
                               appendText: "Add item",
                               removeText: "Remove item",
                             },
@@ -894,9 +898,10 @@ export const v202401: FormSchema = {
                       {
                         slots: [
                           {
-                            rhf: "FieldGroup",
+                            rhf: "FieldArray",
                             name: "add-benefits",
                             props: {
+                              ...DefaultFieldGroupProps,
                               appendText: "Add benefit",
                               removeText: "Remove benefit",
                             },

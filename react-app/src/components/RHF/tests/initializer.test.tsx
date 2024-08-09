@@ -94,7 +94,7 @@ const form: FormSchema = {
             },
             {
               name: "fieldGroup",
-              rhf: "FieldGroup",
+              rhf: "FieldArray",
               fields: [
                 {
                   name: "input",

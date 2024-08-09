@@ -29,7 +29,7 @@ These webforms are a replacement for the pdf form uploads previously used in mmd
 1. The data. The data collected is added along with its metadata to its parent record. This data can be used to view/approve/edit the form later by admins or other users with appropriate permissions. 
 
 ## Things to note
-Some of the fields listed in these webforms are FieldGroups and FieldArrays. This means that they are arrays of values that contain groups of like values (think an array of identicaly typed objects). The items within those arrays will have `Parent` values to indicate which parent they belong to.
+Some of the fields listed in these webforms are FieldArrays. This means that they are arrays of values that contain groups of like values (think an array of identicaly typed objects). The items within those arrays will have `Parent` values to indicate which parent they belong to.
 
 ## Key structuring of Webforms:
 For our webforms, we are in communication with data connect on our we should pass our json data to their team. We have gone with this approach to help streamline our data, but also make it as easy as possible to hunt down questions if items are added or changed. Our “name” keys are made up of for different parts.

@@ -1,4 +1,4 @@
-import { FormSchema } from "shared-types";
+import { DefaultFieldGroupProps, FormSchema } from "shared-types";
 
 export const v202401: FormSchema = {
   header: "ABP 1: Alternative Benefit Plan populations",
@@ -626,9 +626,10 @@ export const v202401: FormSchema = {
                                               {
                                                 slots: [
                                                   {
-                                                    rhf: "FieldGroup",
+                                                    rhf: "FieldArray",
                                                     name: "income_definition_specific_statewide_group_region",
                                                     props: {
+                                                      ...DefaultFieldGroupProps,
                                                       appendText: "Add Region",
                                                       removeText:
                                                         "Remove Region",
@@ -773,9 +774,10 @@ export const v202401: FormSchema = {
                                               {
                                                 slots: [
                                                   {
-                                                    rhf: "FieldGroup",
+                                                    rhf: "FieldArray",
                                                     name: "income_definition_specific_statewide_group_liv_arrange",
                                                     props: {
+                                                      ...DefaultFieldGroupProps,
                                                       appendText:
                                                         "Add Living Arrangement",
                                                       removeText:
@@ -922,9 +924,10 @@ export const v202401: FormSchema = {
                                               {
                                                 slots: [
                                                   {
-                                                    rhf: "FieldGroup",
+                                                    rhf: "FieldArray",
                                                     name: "income_definition_specific_statewide_group_other",
                                                     props: {
+                                                      ...DefaultFieldGroupProps,
                                                       appendText:
                                                         "Add some other way",
                                                       removeText:

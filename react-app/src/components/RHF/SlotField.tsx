@@ -54,6 +54,7 @@ export const SlotField = ({
   fields,
   name,
   horizontalLayout,
+  index,
 }: SlotFieldProps) => {
   switch (rhf) {
     case "Input":
@@ -65,7 +66,7 @@ export const SlotField = ({
     case "TextDisplay":
       return (
         <p {...props} data-testid={field.name}>
-          <RHFTextDisplay text={text ?? "UNDEFINED TEXT FIELD"} />
+          <RHFTextDisplay text={text ?? "UNDEFINED TEXT FIELD"} index={index} />
         </p>
       );
     case "Upload":
@@ -77,7 +78,6 @@ export const SlotField = ({
         />
       );
     case "FieldArray":
-    case "FieldGroup":
       return (
         <RHFFieldArray
           control={control}
@@ -249,6 +249,15 @@ export const SlotField = ({
             );
           })}
         </div>
+      );
+    case "Divider":
+      return (
+        <div
+          className={cn(
+            "w-full border-slate-400 border-2",
+            props?.wrapperClassName,
+          )}
+        />
       );
   }
 };
