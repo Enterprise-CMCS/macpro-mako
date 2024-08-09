@@ -884,7 +884,7 @@ export function payments({
             rhf: "Checkbox",
             label: "How is payment for services handled?",
             labelClassName: "font-bold",
-            name: `${sectionId(programLabel)}-payment`,
+            name: `${createSectionId(programLabel)}-payment`,
             props: {
               options: [
                 {
