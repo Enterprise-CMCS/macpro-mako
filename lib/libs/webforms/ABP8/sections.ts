@@ -1,4 +1,4 @@
-import { DependencyRule, RHFSlotProps, Section } from "shared-types";
+import { DependencyRule, Section } from "shared-types";
 
 export enum SectionName {
   HIO = "HIO",

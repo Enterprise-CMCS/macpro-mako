@@ -23,27 +23,27 @@ const deliverySystemsFormName = `${formId}_delivery-systems_managed-care-deliver
 const sectionDependency: Record<string, SectionDependencyInfo> = {
   HIO: {
     name: deliverySystemsFormName,
-    expectedValue: SectionName.HIO.toLowerCase(),
+    expectedValue: createSectionId(SectionName.HIO),
   },
   MCO: {
     name: deliverySystemsFormName,
-    expectedValue: SectionName.MCO.toLowerCase(),
+    expectedValue: createSectionId(SectionName.MCO),
   },
   PAHP: {
     name: deliverySystemsFormName,
-    expectedValue: SectionName.PAHP.toLowerCase(),
+    expectedValue: createSectionId(SectionName.PAHP),
   },
   PCCM: {
     name: deliverySystemsFormName,
-    expectedValue: SectionName.PCCM.toLowerCase(),
+    expectedValue: createSectionId(SectionName.PCCM),
   },
   PCCMEntity: {
     name: deliverySystemsFormName,
-    expectedValue: SectionName.PCCMEntity.toLowerCase(),
+    expectedValue: createSectionId(SectionName.PCCMEntity),
   },
   PIHP: {
     name: deliverySystemsFormName,
-    expectedValue: SectionName.PIHP.toLowerCase(),
+    expectedValue: createSectionId(SectionName.PIHP),
   },
 };
 
@@ -396,57 +396,100 @@ export const v202401: FormSchema = {
       programLabel: SectionName.PIHP,
     }),
 
-    // // PAHP -------------------------------------------------------------------
+    // PAHP -------------------------------------------------------------------
 
-    // {
-    //   title: "Prepaid ambulatory health plans (PAHPs)",
-    //   sectionId: "pahp",
-    //   form: [
-    //     {
-    //       slots: managedCare({ programLabel: SectionName.PAHP }),
-    //     },
-    //   ],
-    // },
-    // procurementOrSelection({ programLabel: SectionName.PAHP }),
-    // deliverySystemCharactaristics({ programLabel: SectionName.PAHP }),
-    // participationExclusions({ programLabel: SectionName.PAHP }),
-    // participationRequirements({ programLabel: SectionName.PAHP }),
-    // disenrollment({ programLabel: SectionName.PAHP }),
-    // assurances({ programLabel: SectionName.PAHP }),
-    // additionalInfo({ programLabel: SectionName.PAHP }),
+    managedCare({
+      conditionalInfo: sectionDependency.PAHP,
+      programLabel: SectionName.PAHP,
+      title: "Prepaid ambulatory health plans (PAHPs)",
+    }),
+    procurementOrSelection({
+      conditionalInfo: sectionDependency.PAHP,
+      programLabel: SectionName.PAHP,
+    }),
+    deliverySystemCharactaristics({
+      conditionalInfo: sectionDependency.PAHP,
+      programLabel: SectionName.PAHP,
+    }),
+    participationExclusions({
+      conditionalInfo: sectionDependency.PAHP,
+      programLabel: SectionName.PAHP,
+    }),
+    participationRequirements({
+      conditionalInfo: sectionDependency.PAHP,
+      programLabel: SectionName.PAHP,
+    }),
+    disenrollment({
+      conditionalInfo: sectionDependency.PAHP,
+      programLabel: SectionName.PAHP,
+    }),
+    assurances({
+      conditionalInfo: sectionDependency.PAHP,
+      programLabel: SectionName.PAHP,
+    }),
+    additionalInfo({
+      conditionalInfo: sectionDependency.PAHP,
+      programLabel: SectionName.PAHP,
+    }),
 
-    // // PCCM -------------------------------------------------------------------
+    // PCCM -------------------------------------------------------------------
 
-    // {
-    //   title: "Primary care case management (PCCM)",
-    //   sectionId: "pccm",
-    //   form: [
-    //     {
-    //       slots: managedCare({ programLabel: SectionName.PCCM }),
-    //     },
-    //   ],
-    // },
-    // procurementOrSelection({ programLabel: SectionName.PCCM }),
-    // deliverySystemCharactaristics({ programLabel: SectionName.PCCM }),
-    // payments({ programLabel: SectionName.PCCM }),
-    // disenrollment({ programLabel: SectionName.PCCM }),
-    // assurances({ programLabel: SectionName.PCCM }),
-    // additionalInfo({ programLabel: SectionName.PCCM }),
+    managedCare({
+      conditionalInfo: sectionDependency.PCCM,
+      programLabel: SectionName.PCCM,
+      title: "Primary care case management (PCCM)",
+    }),
+    procurementOrSelection({
+      conditionalInfo: sectionDependency.PCCM,
+      programLabel: SectionName.PCCM,
+    }),
+    deliverySystemCharactaristics({
+      conditionalInfo: sectionDependency.PCCM,
+      programLabel: SectionName.PCCM,
+    }),
+    payments({
+      conditionalInfo: sectionDependency.PCCM,
+      programLabel: SectionName.PCCM,
+    }),
+    disenrollment({
+      conditionalInfo: sectionDependency.PCCM,
+      programLabel: SectionName.PCCM,
+    }),
+    assurances({
+      conditionalInfo: sectionDependency.PCCM,
+      programLabel: SectionName.PCCM,
+    }),
+    additionalInfo({
+      conditionalInfo: sectionDependency.PCCM,
+      programLabel: SectionName.PCCM,
+    }),
 
-    // // PCCM entity ------------------------------------------------------------
-    // {
-    //   title: "PCCM entity",
-    //   sectionId: "pccm-entity",
-    //   form: [
-    //     {
-    //       slots: managedCare({ programLabel: SectionName.PCCMEntity }),
-    //     },
-    //   ],
-    // },
-    // deliverySystemCharactaristics({ programLabel: SectionName.PCCMEntity }),
-    // payments({ programLabel: SectionName.PCCMEntity }),
-    // disenrollment({ programLabel: SectionName.PCCMEntity }),
-    // assurances({ programLabel: SectionName.PCCMEntity }),
-    // additionalInfo({ programLabel: SectionName.PCCMEntity }),
+    // PCCM entity ------------------------------------------------------------
+
+    managedCare({
+      conditionalInfo: sectionDependency.PCCMEntity,
+      programLabel: SectionName.PCCMEntity,
+      title: "Primary care case management entity (PCCM entity)",
+    }),
+    deliverySystemCharactaristics({
+      conditionalInfo: sectionDependency.PCCMEntity,
+      programLabel: SectionName.PCCMEntity,
+    }),
+    payments({
+      conditionalInfo: sectionDependency.PCCMEntity,
+      programLabel: SectionName.PCCMEntity,
+    }),
+    disenrollment({
+      conditionalInfo: sectionDependency.PCCMEntity,
+      programLabel: SectionName.PCCMEntity,
+    }),
+    assurances({
+      conditionalInfo: sectionDependency.PCCMEntity,
+      programLabel: SectionName.PCCMEntity,
+    }),
+    additionalInfo({
+      conditionalInfo: sectionDependency.PCCMEntity,
+      programLabel: SectionName.PCCMEntity,
+    }),
   ],
 };
