@@ -467,10 +467,6 @@ export const v202401: FormSchema = {
       programLabel: SectionName.PCCM,
       title: "Primary care case management (PCCM)",
     }),
-    procurementOrSelection({
-      conditionalInfo: sectionDependency.PCCM,
-      programLabel: SectionName.PCCM,
-    }),
     deliverySystemCharactaristics({
       conditionalInfo: sectionDependency.PCCM,
       programLabel: SectionName.PCCM,

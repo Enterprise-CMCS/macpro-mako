@@ -1,4 +1,6 @@
-import { DependencyRule, Section } from "shared-types";
+import { DependencyRule, RHFSlotProps, Section } from "shared-types";
+
+const formId = "abp8";
 
 export enum SectionName {
   HIO = "HIO",
@@ -225,17 +227,12 @@ export function deliverySystemCharactaristics({
   conditionalInfo,
   programLabel,
 }: SectionParams): Section {
-  return {
-    title: `Other ${programLabel}-based service delivery system characteristics`,
-    sectionId: `${createSectionId(programLabel)}-service-delivery`,
-    subsection: true,
-    dependency: generateDependency(
-      conditionalInfo.name,
-      conditionalInfo.expectedValue,
-    ),
-    form: [
-      {
-        slots: [
+  const sectionId = `${createSectionId(programLabel)}_delivery-system`;
+
+  const otherCoverage: RHFSlotProps[] =
+    programLabel === SectionName.PCCM
+      ? []
+      : [
           {
             rhf: "Select",
             label: `Will one or more ABP benefits or services be provided through a type of coverage other than the ${programLabel}, such as another managed care plan or fee-for service delivery system?`,
@@ -261,7 +258,7 @@ export function deliverySystemCharactaristics({
             fields: [
               {
                 rhf: "WrappedGroup",
-                name: "benefit-service",
+                name: "benefit-service-group",
                 props: {
                   wrapperClassName:
                     "ml-[0.6rem] pl-4 border-l-4 border-l-primary my-2 space-y-6",
@@ -271,7 +268,7 @@ export function deliverySystemCharactaristics({
                     rhf: "Input",
                     label: "Benefit or service",
                     labelClassName: "font-bold",
-                    name: "benefit-service",
+                    name: "benefit-or-service",
                     props: {
                       className: "w-full",
                     },
@@ -289,6 +286,20 @@ export function deliverySystemCharactaristics({
               },
             ],
           },
+        ];
+
+  return {
+    title: `Other ${programLabel}-based service delivery system characteristics`,
+    sectionId,
+    subsection: true,
+    dependency: generateDependency(
+      conditionalInfo.name,
+      conditionalInfo.expectedValue,
+    ),
+    form: [
+      {
+        slots: [
+          ...otherCoverage,
           {
             rhf: "Select",
             label: `Is ${programLabel} service delivery provided on less than a statewide basis?`,
@@ -384,9 +395,11 @@ export function participationExclusions({
   conditionalInfo,
   programLabel,
 }: SectionParams): Section {
+  const sectionId = `${createSectionId(programLabel)}_participation-exclusions`;
+
   return {
     title: `${programLabel} participation exclusions`,
-    sectionId: `${createSectionId(programLabel)}-participation-exclusions`,
+    sectionId,
     subsection: true,
     dependency: generateDependency(
       conditionalInfo.name,
@@ -435,6 +448,7 @@ export function participationExclusions({
                     {
                       rhf: "Textarea",
                       label: "Describe",
+                      labelClassName: "font-bold",
                       name: "other-exclusions",
                       props: {
                         className: "min-h-[76px]",
@@ -539,9 +553,10 @@ export function disenrollment({
   conditionalInfo,
   programLabel,
 }: SectionParams): Section {
+  const sectionId = `${createSectionId(programLabel)}_disenrollment`;
   return {
     title: "Disenrollment",
-    sectionId: "disenrollment",
+    sectionId: sectionId,
     subsection: true,
     dependency: generateDependency(
       conditionalInfo.name,
@@ -574,6 +589,13 @@ export function disenrollment({
             name: "disenrollment-limit-length",
             props: {
               className: "w-full",
+            },
+            rules: {
+              pattern: {
+                value: /^(?:1[0-2]|[1-9])$/,
+                message: "Must be a positive integer value up to 12",
+              },
+              required: "* Required",
             },
           },
           {
@@ -773,6 +795,32 @@ export function assurances({
                   label:
                     "The state assures all applicable requirements of 42 CFR 438.4, 438.5, 438.6, 438.7, 438.8, and 438.74 for payments under any risk contracts will be met.",
                   value: "assures-payments",
+                },
+                {
+                  label:
+                    "The state plan program applies the rural exception to choice requirements of 42 CFR 438.52(a) for MCOs in accordance with 42 CFR 438.52(b).",
+                  value: "assures-rural-exception",
+                  slots: [
+                    {
+                      rhf: "Input",
+                      label: "Impacted rural counties",
+                      labelClassName: "font-bold",
+                      name: "rural-counties",
+                    },
+                    {
+                      rhf: "Checkbox",
+                      name: "rural-exception-options",
+                      props: {
+                        options: [
+                          {
+                            label:
+                              "This provision is not applicable to this ABP state plan amendment (SPA).",
+                            value: "not-applicable",
+                          },
+                        ],
+                      },
+                    },
+                  ],
                 },
                 {
                   label:
