@@ -87,6 +87,13 @@ export const ChipSpaFormPage = () => {
         authority: Authority.CHIP_SPA,
       });
 
+      const poller = documentPoller(
+        formData.id,
+        (checks) => checks.recordExists,
+      );
+
+      await poller.startPollingData();
+
       const originPath = getFormOrigin();
 
       banner({
@@ -95,13 +102,6 @@ export const ChipSpaFormPage = () => {
         variant: "success",
         pathnameToDisplayOn: originPath.pathname,
       });
-
-      const poller = documentPoller(
-        formData.id,
-        (checks) => checks.recordExists,
-      );
-
-      await poller.startPollingData();
 
       navigate(originPath);
     } catch (e) {

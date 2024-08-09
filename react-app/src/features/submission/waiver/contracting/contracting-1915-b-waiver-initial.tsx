@@ -77,6 +77,11 @@ export const Contracting1915BWaiverInitialPage = () => {
         authority: Authority["1915b"],
       });
 
+      const poller = documentPoller(formData.id, (checks) =>
+        checks.actionIs("New"),
+      );
+      await poller.startPollingData();
+
       const originPath = getFormOrigin({ authority: Authority["1915b"] });
 
       banner({
@@ -85,12 +90,6 @@ export const Contracting1915BWaiverInitialPage = () => {
         variant: "success",
         pathnameToDisplayOn: originPath.pathname,
       });
-
-      const poller = documentPoller(formData.id, (checks) =>
-        checks.actionIs("New"),
-      );
-
-      await poller.startPollingData();
 
       navigate(originPath);
     } catch (e) {

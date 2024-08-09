@@ -1,15 +1,15 @@
 import { banner } from "@/components";
-import { isNewSubmission } from "@/utils";
+import { getFormOrigin } from "@/utils";
 import { useEffect } from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import {
   ActionFunctionArgs,
-  createSearchParams,
   useActionData,
   useLocation,
   useNavigate,
   useSubmit,
 } from "react-router-dom";
+import { Authority } from "shared-types";
 
 // ONLY used by temp extension legacy-page.tsx, will be refactored out
 
@@ -85,39 +85,16 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
         return navigate("/dashboard");
       }
 
-      if (data.isTe) {
-        if (isNewSubmission()) {
-          if (location.state?.from?.includes("dashboard")) {
-            banner({
-              header,
-              body,
-              variant: "success",
-              pathnameToDisplayOn: "/dashboard",
-            });
-            return navigate({
-              pathname: "/dashboard",
-              search: createSearchParams({ tab: "waivers" }).toString(),
-            });
-          }
-          banner({
-            header,
-            body,
-            variant: "success",
-            pathnameToDisplayOn: "/details",
-          });
-          return navigate(location.state?.from ?? "/dashboard");
-        }
-      }
+      const formOrigin = getFormOrigin({ authority: Authority["1915c"] });
 
       banner({
         header,
         body,
         variant: "success",
-        pathnameToDisplayOn:
-          location.state?.from?.split("?")[0] ?? "/dashboard",
+        pathnameToDisplayOn: formOrigin.pathname,
       });
 
-      navigate(location.state?.from ?? "/dashboard");
+      navigate(formOrigin);
     }
 
     if (!data?.submitted && data?.error) {
@@ -130,7 +107,7 @@ export const useDisplaySubmissionAlert = (header: string, body: string) => {
         pathnameToDisplayOn: window.location.pathname,
       });
     }
-  }, [data, navigate, location.state, location.pathname, body, header]);
+  }, [data, navigate, location, body, header]);
 };
 
 // Utility Functions

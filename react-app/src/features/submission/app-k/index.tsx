@@ -8,15 +8,15 @@ import { SubmissionServiceParameters, submit } from "@/api/submissionService";
 import { useGetUser } from "@/api/useGetUser";
 import { Authority } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "@/components/Routing";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SlotAdditionalInfo, SlotAttachments } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
 import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
+import { getFormOrigin } from "@/utils";
 
 export const AppKSubmissionForm = () => {
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const crumbs = C.useLocationCrumbs();
   const { data: user } = useGetUser();
   const [isDataPolling, setIsDataPolling] = useState(false);
@@ -39,12 +39,6 @@ export const AppKSubmissionForm = () => {
       },
       {
         onSuccess: async () => {
-          C.banner({
-            header: "Package submitted",
-            body: "The 1915(c) Appendix K Amendment Request has been submitted.",
-            variant: "success",
-            pathnameToDisplayOn: "/dashboard",
-          });
           setIsDataPolling(true);
           await documentPoller(
             `${draft.state}-${draft.waiverIds[0]}`,
@@ -54,12 +48,16 @@ export const AppKSubmissionForm = () => {
           ).startPollingData();
           setIsDataPolling(false);
 
-          nav({
-            path: "/dashboard",
-            query: {
-              tab: "waivers",
-            },
+          const formOrigin = getFormOrigin({ authority: Authority["1915b"] });
+
+          C.banner({
+            header: "Package submitted",
+            body: "The 1915(c) Appendix K Amendment Request has been submitted.",
+            variant: "success",
+            pathnameToDisplayOn: formOrigin.pathname,
           });
+
+          navigate(formOrigin);
         },
         onError: (err) => console.error(err),
       },

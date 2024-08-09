@@ -90,6 +90,13 @@ export const MedicaidSpaFormPage = () => {
         authority: Authority.MED_SPA,
       });
 
+      const poller = documentPoller(
+        formData.id,
+        (checks) => checks.recordExists,
+      );
+
+      await poller.startPollingData();
+
       const originPath = getFormOrigin();
 
       banner({
@@ -98,13 +105,6 @@ export const MedicaidSpaFormPage = () => {
         variant: "success",
         pathnameToDisplayOn: originPath.pathname,
       });
-
-      const poller = documentPoller(
-        formData.id,
-        (checks) => checks.recordExists,
-      );
-
-      await poller.startPollingData();
 
       navigate(originPath);
     } catch (e) {
