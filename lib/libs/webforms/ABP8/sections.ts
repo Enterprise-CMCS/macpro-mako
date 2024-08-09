@@ -1,11 +1,27 @@
-import { RHFSlotProps, Section } from "shared-types";
+import { DependencyRule, RHFSlotProps, Section } from "shared-types";
 
 // Helper function to generate IDs for components
 function sectionId(programLabel: string): string {
   return programLabel.toLowerCase().replace(" ", "-");
 }
 
-// Enum prevents typos and ensures consistency
+// Helper function to generate the dependency object
+export function generateDependency(
+  name: string,
+  expectedValue: string,
+): DependencyRule {
+  return {
+    conditions: [
+      {
+        name,
+        type: "expectedValue",
+        expectedValue,
+      },
+    ],
+    effect: { type: "show" },
+  };
+}
+
 export enum SectionName {
   HIO = "HIO",
   MCO = "MCO",
@@ -15,13 +31,14 @@ export enum SectionName {
   PIHP = "PIHP",
 }
 
-interface SectionParams {
-  programLabel: string;
-}
-
-export interface SectionConditionals {
+export interface SectionDependencyInfo {
   name: string;
   expectedValue: string;
+}
+
+interface SectionParams {
+  programLabel: string;
+  conditionalInfo: SectionDependencyInfo;
 }
 
 // Repeating sections ---------------------------------------------------------
@@ -149,12 +166,17 @@ export function managedCare({ programLabel }: SectionParams): RHFSlotProps[] {
 
 // "[Program] procurement or selection"
 export function procurementOrSelection({
+  conditionalInfo,
   programLabel,
 }: SectionParams): Section {
   return {
     title: `${programLabel} procurement or selection`,
     sectionId: `${sectionId(programLabel)}-procurement`,
     subsection: true,
+    dependency: generateDependency(
+      conditionalInfo.name,
+      conditionalInfo.expectedValue,
+    ),
     form: [
       {
         slots: [
@@ -179,12 +201,17 @@ export function procurementOrSelection({
 
 // "Other [program]-based service delivery system characteristics"
 export function deliverySystemCharactaristics({
+  conditionalInfo,
   programLabel,
 }: SectionParams): Section {
   return {
     title: `Other ${programLabel}-based service delivery system characteristics`,
     sectionId: `${sectionId(programLabel)}-service-delivery`,
     subsection: true,
+    dependency: generateDependency(
+      conditionalInfo.name,
+      conditionalInfo.expectedValue,
+    ),
     form: [
       {
         slots: [
@@ -332,12 +359,17 @@ export function deliverySystemCharactaristics({
 
 // "[Program] participation exclusions"
 export function participationExclusions({
+  conditionalInfo,
   programLabel,
 }: SectionParams): Section {
   return {
     title: `${programLabel} participation exclusions`,
     sectionId: `${sectionId(programLabel)}-participation-exclusions`,
     subsection: true,
+    dependency: generateDependency(
+      conditionalInfo.name,
+      conditionalInfo.expectedValue,
+    ),
     form: [
       {
         slots: [
@@ -399,12 +431,17 @@ export function participationExclusions({
 
 // "General [program] participation requirements"
 export function participationRequirements({
+  conditionalInfo,
   programLabel,
 }: SectionParams): Section {
   return {
     title: `General ${programLabel} participation requirements`,
     sectionId: `${sectionId(programLabel)}-participation-requirements`,
     subsection: true,
+    dependency: generateDependency(
+      conditionalInfo.name,
+      conditionalInfo.expectedValue,
+    ),
     form: [
       {
         slots: [
@@ -476,11 +513,18 @@ export function participationRequirements({
 }
 
 // "Disenrollment"
-export function disenrollment({ programLabel }: SectionParams): Section {
+export function disenrollment({
+  conditionalInfo,
+  programLabel,
+}: SectionParams): Section {
   return {
     title: "Disenrollment",
     sectionId: "disenrollment",
     subsection: true,
+    dependency: generateDependency(
+      conditionalInfo.name,
+      conditionalInfo.expectedValue,
+    ),
     form: [
       {
         description:
@@ -678,11 +722,18 @@ export function disenrollment({ programLabel }: SectionParams): Section {
 }
 
 // "Assurances"
-export function assurances({ programLabel }: SectionParams): Section {
+export function assurances({
+  conditionalInfo,
+  programLabel,
+}: SectionParams): Section {
   return {
     title: "Assurances",
     sectionId: `${sectionId(programLabel)}-assurances`,
     subsection: true,
+    dependency: generateDependency(
+      conditionalInfo.name,
+      conditionalInfo.expectedValue,
+    ),
     form: [
       {
         slots: [
@@ -761,11 +812,18 @@ export function assurances({ programLabel }: SectionParams): Section {
 }
 
 // "Additional information: [program]"
-export function additionalInfo({ programLabel }: SectionParams): Section {
+export function additionalInfo({
+  conditionalInfo,
+  programLabel,
+}: SectionParams): Section {
   return {
     title: `Additional information: ${programLabel}`,
     sectionId: `additional-info-${sectionId(programLabel)}`,
     subsection: true,
+    dependency: generateDependency(
+      conditionalInfo.name,
+      conditionalInfo.expectedValue,
+    ),
     form: [
       {
         slots: [
@@ -786,11 +844,18 @@ export function additionalInfo({ programLabel }: SectionParams): Section {
 }
 
 // "[Program] payments"
-export function payments({ programLabel }: SectionParams): Section {
+export function payments({
+  conditionalInfo,
+  programLabel,
+}: SectionParams): Section {
   return {
     title: `${programLabel} payments`,
     sectionId: `${sectionId(programLabel)}-payments`,
     subsection: true,
+    dependency: generateDependency(
+      conditionalInfo.name,
+      conditionalInfo.expectedValue,
+    ),
     form: [
       {
         slots: [

@@ -1,19 +1,33 @@
-import { FormSchema } from "shared-types";
+import { DependencyRule, FormSchema } from "shared-types";
 import {
   additionalInfo,
   assurances,
   deliverySystemCharactaristics,
   disenrollment,
+  generateDependency,
   managedCare,
   participationExclusions,
   participationRequirements,
   payments,
   procurementOrSelection,
-  SectionConditionals,
+  SectionDependencyInfo,
   SectionName,
 } from "./sections";
 
 const formId = "abp8";
+
+// Section dependency values, used for sections and sub-sections --------------
+
+const sectionDependency: Record<string, SectionDependencyInfo> = {
+  MCO: {
+    name: `${formId}_delivery-systems_managed-care-delivery-systems`,
+    expectedValue: "mco",
+  },
+  HIO: {
+    name: `${formId}_delivery-systems_managed-care-delivery-systems`,
+    expectedValue: "hio",
+  },
+};
 
 // Form schema ----------------------------------------------------------------
 
@@ -267,26 +281,41 @@ export const v202401: FormSchema = {
       sectionId: "mco",
       form: [
         {
-          slots: managedCare({ programLabel: SectionName.MCO }),
+          slots: managedCare({
+            programLabel: SectionName.MCO,
+            conditionalInfo: sectionDependency.MCO,
+          }),
         },
       ],
-      dependency: {
-        conditions: [
-          {
-            name: `${formId}_delivery-systems_managed-care-delivery-systems`,
-            type: "expectedValue",
-            expectedValue: "mco",
-          },
-        ],
-        effect: { type: "show" },
-      },
+      dependency: generateDependency(
+        sectionDependency.MCO.name,
+        sectionDependency.MCO.expectedValue,
+      ),
     },
-    deliverySystemCharactaristics({ programLabel: SectionName.MCO }),
-    participationExclusions({ programLabel: SectionName.MCO }),
-    participationRequirements({ programLabel: SectionName.MCO }),
-    disenrollment({ programLabel: SectionName.MCO }),
-    assurances({ programLabel: SectionName.MCO }),
-    additionalInfo({ programLabel: SectionName.MCO }),
+    deliverySystemCharactaristics({
+      programLabel: SectionName.MCO,
+      conditionalInfo: sectionDependency.MCO,
+    }),
+    participationExclusions({
+      programLabel: SectionName.MCO,
+      conditionalInfo: sectionDependency.MCO,
+    }),
+    participationRequirements({
+      programLabel: SectionName.MCO,
+      conditionalInfo: sectionDependency.MCO,
+    }),
+    disenrollment({
+      programLabel: SectionName.MCO,
+      conditionalInfo: sectionDependency.MCO,
+    }),
+    assurances({
+      programLabel: SectionName.MCO,
+      conditionalInfo: sectionDependency.MCO,
+    }),
+    additionalInfo({
+      programLabel: SectionName.MCO,
+      conditionalInfo: sectionDependency.MCO,
+    }),
 
     // HIO --------------------------------------------------------------------
 
@@ -295,88 +324,116 @@ export const v202401: FormSchema = {
       sectionId: "hio",
       form: [
         {
-          slots: managedCare({ programLabel: SectionName.HIO }),
+          slots: managedCare({
+            programLabel: SectionName.HIO,
+            conditionalInfo: sectionDependency.HIO,
+          }),
         },
       ],
+      dependency: generateDependency(
+        sectionDependency.HIO.name,
+        sectionDependency.HIO.expectedValue,
+      ),
     },
-    procurementOrSelection({ programLabel: SectionName.HIO }),
-    deliverySystemCharactaristics({ programLabel: SectionName.HIO }),
-    participationExclusions({ programLabel: SectionName.HIO }),
-    participationRequirements({ programLabel: SectionName.HIO }),
-    disenrollment({ programLabel: SectionName.HIO }),
-    assurances({ programLabel: SectionName.HIO }),
-    additionalInfo({ programLabel: SectionName.HIO }),
+    procurementOrSelection({
+      programLabel: SectionName.HIO,
+      conditionalInfo: sectionDependency.HIO,
+    }),
+    deliverySystemCharactaristics({
+      programLabel: SectionName.HIO,
+      conditionalInfo: sectionDependency.HIO,
+    }),
+    participationExclusions({
+      programLabel: SectionName.HIO,
+      conditionalInfo: sectionDependency.HIO,
+    }),
+    participationRequirements({
+      programLabel: SectionName.HIO,
+      conditionalInfo: sectionDependency.HIO,
+    }),
+    disenrollment({
+      programLabel: SectionName.HIO,
+      conditionalInfo: sectionDependency.HIO,
+    }),
+    assurances({
+      programLabel: SectionName.HIO,
+      conditionalInfo: sectionDependency.HIO,
+    }),
+    additionalInfo({
+      programLabel: SectionName.HIO,
+      conditionalInfo: sectionDependency.HIO,
+    }),
 
     // PIHP -------------------------------------------------------------------
 
-    {
-      title: "Prepaid inpatient health plans (PIHPs)",
-      sectionId: "pihp",
-      form: [
-        {
-          slots: managedCare({ programLabel: SectionName.PIHP }),
-        },
-      ],
-    },
-    procurementOrSelection({ programLabel: SectionName.PIHP }),
-    deliverySystemCharactaristics({ programLabel: SectionName.PIHP }),
-    participationExclusions({ programLabel: SectionName.PIHP }),
-    participationRequirements({ programLabel: SectionName.PIHP }),
-    disenrollment({ programLabel: SectionName.PIHP }),
-    assurances({ programLabel: SectionName.PIHP }),
-    additionalInfo({ programLabel: SectionName.PIHP }),
+    // {
+    //   title: "Prepaid inpatient health plans (PIHPs)",
+    //   sectionId: "pihp",
+    //   form: [
+    //     {
+    //       slots: managedCare({ programLabel: SectionName.PIHP }),
+    //     },
+    //   ],
+    // },
+    // procurementOrSelection({ programLabel: SectionName.PIHP }),
+    // deliverySystemCharactaristics({ programLabel: SectionName.PIHP }),
+    // participationExclusions({ programLabel: SectionName.PIHP }),
+    // participationRequirements({ programLabel: SectionName.PIHP }),
+    // disenrollment({ programLabel: SectionName.PIHP }),
+    // assurances({ programLabel: SectionName.PIHP }),
+    // additionalInfo({ programLabel: SectionName.PIHP }),
 
-    // PAHP -------------------------------------------------------------------
+    // // PAHP -------------------------------------------------------------------
 
-    {
-      title: "Prepaid ambulatory health plans (PAHPs)",
-      sectionId: "pahp",
-      form: [
-        {
-          slots: managedCare({ programLabel: SectionName.PAHP }),
-        },
-      ],
-    },
-    procurementOrSelection({ programLabel: SectionName.PAHP }),
-    deliverySystemCharactaristics({ programLabel: SectionName.PAHP }),
-    participationExclusions({ programLabel: SectionName.PAHP }),
-    participationRequirements({ programLabel: SectionName.PAHP }),
-    disenrollment({ programLabel: SectionName.PAHP }),
-    assurances({ programLabel: SectionName.PAHP }),
-    additionalInfo({ programLabel: SectionName.PAHP }),
+    // {
+    //   title: "Prepaid ambulatory health plans (PAHPs)",
+    //   sectionId: "pahp",
+    //   form: [
+    //     {
+    //       slots: managedCare({ programLabel: SectionName.PAHP }),
+    //     },
+    //   ],
+    // },
+    // procurementOrSelection({ programLabel: SectionName.PAHP }),
+    // deliverySystemCharactaristics({ programLabel: SectionName.PAHP }),
+    // participationExclusions({ programLabel: SectionName.PAHP }),
+    // participationRequirements({ programLabel: SectionName.PAHP }),
+    // disenrollment({ programLabel: SectionName.PAHP }),
+    // assurances({ programLabel: SectionName.PAHP }),
+    // additionalInfo({ programLabel: SectionName.PAHP }),
 
-    // PCCM -------------------------------------------------------------------
+    // // PCCM -------------------------------------------------------------------
 
-    {
-      title: "Primary care case management (PCCM)",
-      sectionId: "pccm",
-      form: [
-        {
-          slots: managedCare({ programLabel: SectionName.PCCM }),
-        },
-      ],
-    },
-    procurementOrSelection({ programLabel: SectionName.PCCM }),
-    deliverySystemCharactaristics({ programLabel: SectionName.PCCM }),
-    payments({ programLabel: SectionName.PCCM }),
-    disenrollment({ programLabel: SectionName.PCCM }),
-    assurances({ programLabel: SectionName.PCCM }),
-    additionalInfo({ programLabel: SectionName.PCCM }),
+    // {
+    //   title: "Primary care case management (PCCM)",
+    //   sectionId: "pccm",
+    //   form: [
+    //     {
+    //       slots: managedCare({ programLabel: SectionName.PCCM }),
+    //     },
+    //   ],
+    // },
+    // procurementOrSelection({ programLabel: SectionName.PCCM }),
+    // deliverySystemCharactaristics({ programLabel: SectionName.PCCM }),
+    // payments({ programLabel: SectionName.PCCM }),
+    // disenrollment({ programLabel: SectionName.PCCM }),
+    // assurances({ programLabel: SectionName.PCCM }),
+    // additionalInfo({ programLabel: SectionName.PCCM }),
 
-    // PCCM entity ------------------------------------------------------------
-    {
-      title: "PCCM entity",
-      sectionId: "pccm-entity",
-      form: [
-        {
-          slots: managedCare({ programLabel: SectionName.PCCMEntity }),
-        },
-      ],
-    },
-    deliverySystemCharactaristics({ programLabel: SectionName.PCCMEntity }),
-    payments({ programLabel: SectionName.PCCMEntity }),
-    disenrollment({ programLabel: SectionName.PCCMEntity }),
-    assurances({ programLabel: SectionName.PCCMEntity }),
-    additionalInfo({ programLabel: SectionName.PCCMEntity }),
+    // // PCCM entity ------------------------------------------------------------
+    // {
+    //   title: "PCCM entity",
+    //   sectionId: "pccm-entity",
+    //   form: [
+    //     {
+    //       slots: managedCare({ programLabel: SectionName.PCCMEntity }),
+    //     },
+    //   ],
+    // },
+    // deliverySystemCharactaristics({ programLabel: SectionName.PCCMEntity }),
+    // payments({ programLabel: SectionName.PCCMEntity }),
+    // disenrollment({ programLabel: SectionName.PCCMEntity }),
+    // assurances({ programLabel: SectionName.PCCMEntity }),
+    // additionalInfo({ programLabel: SectionName.PCCMEntity }),
   ],
 };
