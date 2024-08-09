@@ -53,6 +53,7 @@ export function ConfirmationDialog({
           className={cn({
             "flex-col sm:flex-row-reverse sm:justify-start": areButtonsReversed,
           })}
+          data-testid="dialog-footer"
         >
           {acceptButtonVisible && (
             <Button

@@ -1,5 +1,3 @@
- 
-
 import * as I from "@/components/Inputs";
 import * as C from "@/components";
 import { useForm } from "react-hook-form";
@@ -10,16 +8,15 @@ import { SubmissionServiceParameters, submit } from "@/api/submissionService";
 import { useGetUser } from "@/api/useGetUser";
 import { Authority } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "@/components/Routing";
 import { useEffect, useState } from "react";
-import * as Content from "@/components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SlotAdditionalInfo, SlotAttachments } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
 import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
+import { getFormOrigin } from "@/utils";
 
 export const AppKSubmissionForm = () => {
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const crumbs = C.useLocationCrumbs();
   const { data: user } = useGetUser();
   const [isDataPolling, setIsDataPolling] = useState(false);
@@ -27,7 +24,6 @@ export const AppKSubmissionForm = () => {
     reValidateMode: "onBlur",
     resolver: zodResolver(FORM),
   });
-  const alert = C.useAlertContext();
 
   const submission = useMutation({
     mutationFn: (config: SubmissionServiceParameters<any>) => submit(config),
@@ -43,12 +39,6 @@ export const AppKSubmissionForm = () => {
       },
       {
         onSuccess: async () => {
-          alert.setContent({
-            header: "Package submitted",
-            body: "The 1915(c) Appendix K Amendment Request has been submitted.",
-          });
-          alert.setBannerShow(true);
-          alert.setBannerDisplayOn("/dashboard");
           setIsDataPolling(true);
           await documentPoller(
             `${draft.state}-${draft.waiverIds[0]}`,
@@ -58,12 +48,16 @@ export const AppKSubmissionForm = () => {
           ).startPollingData();
           setIsDataPolling(false);
 
-          nav({
-            path: "/dashboard",
-            query: {
-              tab: "waivers",
-            },
+          const formOrigin = getFormOrigin({ authority: Authority["1915b"] });
+
+          C.banner({
+            header: "Package submitted",
+            body: "The 1915(c) Appendix K Amendment Request has been submitted.",
+            variant: "success",
+            pathnameToDisplayOn: formOrigin.pathname,
           });
+
+          navigate(formOrigin);
         },
         onError: (err) => console.error(err),
       },
@@ -84,7 +78,7 @@ export const AppKSubmissionForm = () => {
       <I.Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 flex flex-col">
           <C.SectionCard title="1915(c) Appendix K Amendment Request Details">
-            <Content.FormIntroTextForAppK />
+            <C.FormIntroTextForAppK />
             <I.FormField
               control={form.control}
               name="title"

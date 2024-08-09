@@ -30,3 +30,4 @@ export * from "./MaintenanceBanner";
 export * from "./ConfirmationDialog";
 export * from "./SearchForm";
 export * from "./TimeoutModal";
+export * from "./Banner";
