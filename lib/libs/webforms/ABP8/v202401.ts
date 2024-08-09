@@ -135,6 +135,9 @@ export const v202401: FormSchema = {
                 "Describe the implementation plan for the ABP under managed care, including member, stakeholder, and provider outreach efforts.",
               name: "implementation-plan",
               labelClassName: "font-bold",
+              props: {
+                className: "min-h-[114px]",
+              },
             },
           ],
         },
@@ -171,6 +174,9 @@ export const v202401: FormSchema = {
                 "How does the state fulfill its obligations to provide information as specified in 42 CFR 438.10(c)(4), 42 CFR 438.10(e), and 42 CFR 438.54(c)(3)?",
               labelClassName: "font-bold",
               name: "voluntary-enrollment-info",
+              props: {
+                className: "min-h-[114px]",
+              },
             },
             {
               rhf: "TextDisplay",
@@ -316,6 +322,10 @@ export const v202401: FormSchema = {
       conditionalInfo: sectionDependency.MCO,
       programLabel: SectionName.MCO,
       title: "Managed care organizations (MCOs)",
+    }),
+    procurementOrSelection({
+      programLabel: SectionName.MCO,
+      conditionalInfo: sectionDependency.MCO,
     }),
     deliverySystemCharactaristics({
       programLabel: SectionName.MCO,

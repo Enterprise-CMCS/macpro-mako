@@ -305,6 +305,7 @@ export function deliverySystemCharactaristics({
           {
             rhf: "Radio",
             label: `What is the limited geographic area where ${programLabel} service delivery is available?`,
+            labelClassName: "font-bold",
             name: "geographic-area",
             props: {
               options: [
@@ -362,7 +363,7 @@ export function deliverySystemCharactaristics({
                       rhf: "Input",
                       label: "Geographic area",
                       labelClassName: "font-bold",
-                      name: "geographic-area",
+                      name: "geographic",
                       props: {
                         className: "w-full",
                       },
