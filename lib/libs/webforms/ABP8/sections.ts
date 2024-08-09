@@ -680,7 +680,7 @@ export function disenrollment({
           },
           {
             rhf: "Checkbox",
-            name: "disenrollment-options",
+            name: "disenrollment-request",
             props: {
               options: [
                 {
