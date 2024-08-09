@@ -2,9 +2,9 @@ import { DependencyRule, FormSchema } from "shared-types";
 import {
   additionalInfo,
   assurances,
+  createSectionId,
   deliverySystemCharactaristics,
   disenrollment,
-  generateDependency,
   managedCare,
   participationExclusions,
   participationRequirements,
@@ -18,14 +18,32 @@ const formId = "abp8";
 
 // Section dependency values, used for sections and sub-sections --------------
 
+const deliverySystemsFormName = `${formId}_delivery-systems_managed-care-delivery-systems`;
+
 const sectionDependency: Record<string, SectionDependencyInfo> = {
-  MCO: {
-    name: `${formId}_delivery-systems_managed-care-delivery-systems`,
-    expectedValue: "mco",
-  },
   HIO: {
-    name: `${formId}_delivery-systems_managed-care-delivery-systems`,
-    expectedValue: "hio",
+    name: deliverySystemsFormName,
+    expectedValue: SectionName.HIO.toLowerCase(),
+  },
+  MCO: {
+    name: deliverySystemsFormName,
+    expectedValue: SectionName.MCO.toLowerCase(),
+  },
+  PAHP: {
+    name: deliverySystemsFormName,
+    expectedValue: SectionName.PAHP.toLowerCase(),
+  },
+  PCCM: {
+    name: deliverySystemsFormName,
+    expectedValue: SectionName.PCCM.toLowerCase(),
+  },
+  PCCMEntity: {
+    name: deliverySystemsFormName,
+    expectedValue: SectionName.PCCMEntity.toLowerCase(),
+  },
+  PIHP: {
+    name: deliverySystemsFormName,
+    expectedValue: SectionName.PIHP.toLowerCase(),
   },
 };
 
@@ -139,7 +157,7 @@ export const v202401: FormSchema = {
             {
               rhf: "TextDisplay",
               text: "States with voluntary enrollment must have an enrollment choice period or a passive enrollment process where the state enrolls the potential enrollee into a managed care plan, PCCM, or PCCM entity and simultaneously provides a period of time for the enrollee to make an active choice of delivery system.",
-              name: "voluntary-enrollment-textdisplay",
+              name: "states-with-voluntary-enrollment",
             },
             {
               rhf: "Checkbox",
@@ -344,22 +362,39 @@ export const v202401: FormSchema = {
 
     // PIHP -------------------------------------------------------------------
 
-    // {
-    //   title: "Prepaid inpatient health plans (PIHPs)",
-    //   sectionId: "pihp",
-    //   form: [
-    //     {
-    //       slots: managedCare({ programLabel: SectionName.PIHP }),
-    //     },
-    //   ],
-    // },
-    // procurementOrSelection({ programLabel: SectionName.PIHP }),
-    // deliverySystemCharactaristics({ programLabel: SectionName.PIHP }),
-    // participationExclusions({ programLabel: SectionName.PIHP }),
-    // participationRequirements({ programLabel: SectionName.PIHP }),
-    // disenrollment({ programLabel: SectionName.PIHP }),
-    // assurances({ programLabel: SectionName.PIHP }),
-    // additionalInfo({ programLabel: SectionName.PIHP }),
+    managedCare({
+      conditionalInfo: sectionDependency.PIHP,
+      title: "Prepaid inpatient health plans (PIHPs)",
+      programLabel: SectionName.PIHP,
+    }),
+    procurementOrSelection({
+      conditionalInfo: sectionDependency.PIHP,
+      programLabel: SectionName.PIHP,
+    }),
+    deliverySystemCharactaristics({
+      conditionalInfo: sectionDependency.PIHP,
+      programLabel: SectionName.PIHP,
+    }),
+    participationExclusions({
+      conditionalInfo: sectionDependency.PIHP,
+      programLabel: SectionName.PIHP,
+    }),
+    participationRequirements({
+      conditionalInfo: sectionDependency.PIHP,
+      programLabel: SectionName.PIHP,
+    }),
+    disenrollment({
+      conditionalInfo: sectionDependency.PIHP,
+      programLabel: SectionName.PIHP,
+    }),
+    assurances({
+      conditionalInfo: sectionDependency.PIHP,
+      programLabel: SectionName.PIHP,
+    }),
+    additionalInfo({
+      conditionalInfo: sectionDependency.PIHP,
+      programLabel: SectionName.PIHP,
+    }),
 
     // // PAHP -------------------------------------------------------------------
 
