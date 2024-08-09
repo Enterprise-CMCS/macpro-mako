@@ -1,11 +1,35 @@
 import { DependencyRule, RHFSlotProps, Section } from "shared-types";
 
-// Helper function to generate IDs for components
-function createSectionId(programLabel: string): string {
+export enum SectionName {
+  HIO = "HIO",
+  MCO = "MCO",
+  PAHP = "PAHP",
+  PCCM = "PCCM",
+  PCCMEntity = "PCCM entity",
+  PIHP = "PIHP",
+}
+
+// Parameters needed to generate a section
+
+export interface SectionDependencyInfo {
+  name: string;
+  expectedValue: string;
+}
+
+interface SectionParams {
+  conditionalInfo: SectionDependencyInfo;
+  programLabel: string;
+  title?: string;
+}
+
+// Helper functions -----------------------------------------------------------
+
+// Generate IDs for components
+export function createSectionId(programLabel: string): string {
   return programLabel.toLowerCase().replace(" ", "-");
 }
 
-// Helper function to generate the dependency object
+// Generate the DependencyRule to show sections
 export function generateDependency(
   name: string,
   expectedValue: string,
@@ -22,27 +46,7 @@ export function generateDependency(
   };
 }
 
-export enum SectionName {
-  HIO = "HIO",
-  MCO = "MCO",
-  PAHP = "PAHP",
-  PCCM = "PCCM",
-  PCCMEntity = "PCCM entity",
-  PIHP = "PIHP",
-}
-
-export interface SectionDependencyInfo {
-  name: string;
-  expectedValue: string;
-}
-
-interface SectionParams {
-  conditionalInfo: SectionDependencyInfo;
-  programLabel: string;
-  title?: string;
-}
-
-// Repeating sections ---------------------------------------------------------
+// Section generators ---------------------------------------------------------
 
 export function managedCare({
   conditionalInfo,
