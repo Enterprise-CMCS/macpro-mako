@@ -104,6 +104,15 @@ export const v202401: FormSchema = {
     {
       title: "Managed care options",
       sectionId: "managed-care-options",
+      dependency: {
+        conditions: [
+          {
+            name: deliverySystemsFormName,
+            type: "valueExists",
+          },
+        ],
+        effect: { type: "show" },
+      },
       form: [
         {
           slots: [
@@ -135,6 +144,15 @@ export const v202401: FormSchema = {
       title: "Enrollment process",
       sectionId: "enrollment-process",
       subsection: true,
+      dependency: {
+        conditions: [
+          {
+            name: deliverySystemsFormName,
+            type: "valueExists",
+          },
+        ],
+        effect: { type: "show" },
+      },
       form: [
         {
           description:
