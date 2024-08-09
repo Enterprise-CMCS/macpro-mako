@@ -1,23 +1,23 @@
 export class Observer<T> {
-  #subscribers: Array<(observed: T) => void>;
+  private subscribers: Array<(observed: T) => void>;
   observed: T | null;
 
   constructor() {
-    this.#subscribers = [];
+    this.subscribers = [];
     this.observed = null;
   }
 
   subscribe = (subscriber: (newObserved: T | null) => void) => {
-    this.#subscribers.push(subscriber);
+    this.subscribers.push(subscriber);
 
     // unsubscribe function
     return () => {
-      const index = this.#subscribers.indexOf(subscriber);
-      this.#subscribers.splice(index, 1);
+      const index = this.subscribers.indexOf(subscriber);
+      this.subscribers.splice(index, 1);
     };
   };
 
   publish = (data: T | null) => {
-    this.#subscribers.forEach((subscriber) => subscriber(data));
+    this.subscribers.forEach((subscriber) => subscriber(data));
   };
 }

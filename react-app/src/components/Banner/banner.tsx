@@ -47,7 +47,7 @@ export const Banner = () => {
     });
 
     return unsubscribe;
-  }, [pathname]);
+  }, []);
 
   useEffect(() => {
     if (activeBanner && activeBanner.pathnameToDisplayOn !== pathname) {
