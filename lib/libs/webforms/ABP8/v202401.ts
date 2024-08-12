@@ -358,6 +358,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "assurances",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -380,10 +383,16 @@ export const v202401: FormSchema = {
                         label: "Impacted rural counties",
                         labelClassName: "font-bold",
                         name: "rural-counties",
+                        rules: {
+                          required: "* Required",
+                        },
                       },
                       {
                         rhf: "Checkbox",
                         name: "rural-exception-options",
+                        rules: {
+                          required: "* Required",
+                        },
                         props: {
                           options: [
                             {
@@ -499,6 +508,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "assurances",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -614,6 +626,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "assurances",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -641,10 +656,16 @@ export const v202401: FormSchema = {
                         label: "Impacted rural counties",
                         labelClassName: "font-bold",
                         name: "rural-counties",
+                        rules: {
+                          required: "* Required",
+                        },
                       },
                       {
                         rhf: "Checkbox",
                         name: "rural-exception-options",
+                        rules: {
+                          required: "* Required",
+                        },
                         props: {
                           options: [
                             {
@@ -765,6 +786,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "assurances",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -792,10 +816,16 @@ export const v202401: FormSchema = {
                         label: "Impacted rural counties",
                         labelClassName: "font-bold",
                         name: "rural-counties",
+                        rules: {
+                          required: "* Required",
+                        },
                       },
                       {
                         rhf: "Checkbox",
                         name: "rural-exception-options",
+                        rules: {
+                          required: "* Required",
+                        },
                         props: {
                           options: [
                             {
@@ -908,6 +938,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "assurances",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -995,6 +1028,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "assurances",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {

@@ -90,6 +90,9 @@ export function managedCare({
             label: "The existing managed care program operates under:",
             labelClassName: "font-bold",
             name: "existing-managed-care-program",
+            rules: {
+              required: "* Required",
+            },
             props: {
               options: [
                 {
@@ -101,6 +104,9 @@ export function managedCare({
                       label: "Date program approved by CMS",
                       labelClassName: "font-bold",
                       name: "1915a-date-approved",
+                      rules: {
+                        required: "* Required",
+                      },
                     },
                     {
                       rhf: "Input",
@@ -109,6 +115,9 @@ export function managedCare({
                       name: "1915a-program-name",
                       props: {
                         className: "w-full",
+                      },
+                      rules: {
+                        required: "* Required",
                       },
                     },
                   ],
@@ -122,6 +131,9 @@ export function managedCare({
                       label: "Date program approved by CMS",
                       labelClassName: "font-bold",
                       name: "1915b-date-approved",
+                      rules: {
+                        required: "* Required",
+                      },
                     },
                     {
                       rhf: "Input",
@@ -130,6 +142,9 @@ export function managedCare({
                       name: "1915b-program-name",
                       props: {
                         className: "w-full",
+                      },
+                      rules: {
+                        required: "* Required",
                       },
                     },
                   ],
@@ -144,6 +159,9 @@ export function managedCare({
                       label: "Date program approved by CMS",
                       labelClassName: "font-bold",
                       name: "1932a-date-approved",
+                      rules: {
+                        required: "* Required",
+                      },
                     },
                     {
                       rhf: "Input",
@@ -152,6 +170,9 @@ export function managedCare({
                       name: "1932a-program-name",
                       props: {
                         className: "w-full",
+                      },
+                      rules: {
+                        required: "* Required",
                       },
                     },
                   ],
@@ -165,6 +186,9 @@ export function managedCare({
                       label: "Date program approved by CMS",
                       labelClassName: "font-bold",
                       name: "1115-date-approved",
+                      rules: {
+                        required: "* Required",
+                      },
                     },
                     {
                       rhf: "Input",
@@ -174,11 +198,14 @@ export function managedCare({
                       props: {
                         className: "w-full",
                       },
+                      rules: {
+                        required: "* Required",
+                      },
                     },
                   ],
                 },
                 {
-                  label: `An ${programLabel} consistent with applicable managed care requirements (42 CFR Part 438, 42 CFR Part 440, and Sections 1903(m), 1932, and 1937 of the Social Security Act)`,
+                  label: `A ${programLabel} consistent with applicable managed care requirements (42 CFR Part 438, 42 CFR Part 440, and Sections 1903(m), 1932, and 1937 of the Social Security Act)`,
                   value: "consistent-with-requirements",
                 },
               ],
@@ -209,6 +236,9 @@ export function procurementOrSelection({
           {
             rhf: "Checkbox",
             name: "procurement-requirments",
+            rules: {
+              required: "* Required",
+            },
             props: {
               options: [
                 {
@@ -302,6 +332,9 @@ export function deliverySystemCharactaristics({
             descriptionClassName: "font-bold",
             descriptionAbove: true,
             name: "delivery-system-characteristics",
+            rules: {
+              required: "* Required",
+            },
             props: {
               options: [
                 {
@@ -361,6 +394,9 @@ export function deliverySystemCharactaristics({
                       label: "Describe",
                       labelClassName: "font-bold",
                       name: "other-description",
+                      rules: {
+                        required: "* Required",
+                      },
                     },
                   ],
                 },
@@ -388,6 +424,9 @@ export function deliverySystemCharactaristics({
             label: `Is ${programLabel} service delivery provided on less than a statewide basis?`,
             labelClassName: "font-bold",
             name: "service-delivery",
+            rules: {
+              required: "* Required",
+            },
             props: {
               className: "w-[125px]",
               options: [
@@ -401,6 +440,9 @@ export function deliverySystemCharactaristics({
             label: `What is the limited geographic area where ${programLabel} service delivery is available?`,
             labelClassName: "font-bold",
             name: "geographic-area",
+            rules: {
+              required: "* Required",
+            },
             props: {
               options: [
                 {
@@ -412,6 +454,9 @@ export function deliverySystemCharactaristics({
                       label: "Counties",
                       labelClassName: "font-bold",
                       name: "counties",
+                      rules: {
+                        required: "* Required",
+                      },
                       props: {
                         className: "w-full",
                       },
@@ -427,6 +472,9 @@ export function deliverySystemCharactaristics({
                       label: "Regions and makeup of each",
                       labelClassName: "font-bold",
                       name: "regions",
+                      rules: {
+                        required: "* Required",
+                      },
                       props: {
                         className: "w-full",
                       },
@@ -442,6 +490,9 @@ export function deliverySystemCharactaristics({
                       label: "Cities and municipalities",
                       labelClassName: "font-bold",
                       name: "cities",
+                      rules: {
+                        required: "* Required",
+                      },
                       props: {
                         className: "w-full",
                       },
@@ -458,6 +509,9 @@ export function deliverySystemCharactaristics({
                       label: "Geographic area",
                       labelClassName: "font-bold",
                       name: "geographic",
+                      rules: {
+                        required: "* Required",
+                      },
                       props: {
                         className: "w-full",
                       },
@@ -496,6 +550,9 @@ export function participationExclusions({
             label: `Are individuals excluded from ${programLabel} participation in the ABP?`,
             labelClassName: "font-bold",
             name: "participation-exclusions",
+            rules: {
+              required: "* Required",
+            },
             props: {
               className: "w-[125px]",
               options: [
@@ -509,6 +566,9 @@ export function participationExclusions({
             label: "Excluded individuals",
             labelClassName: "font-bold",
             name: "excluded-individuals",
+            rules: {
+              required: "* Required",
+            },
             props: {
               options: [
                 {
@@ -533,6 +593,9 @@ export function participationExclusions({
                       label: "Describe",
                       labelClassName: "font-bold",
                       name: "other-exclusions",
+                      rules: {
+                        required: "* Required",
+                      },
                       props: {
                         className: "min-h-[76px]",
                       },
@@ -569,6 +632,9 @@ export function participationRequirements({
             label: "Participation in managed care",
             labelClassName: "font-bold",
             name: "participation-in-managed-care",
+            rules: {
+              required: "* Required",
+            },
             props: {
               options: [
                 {
@@ -580,6 +646,9 @@ export function participationRequirements({
                       label: `Method of enrollment in ${programLabel}s`,
                       name: "mandatory-enrollment-method",
                       labelClassName: "font-bold",
+                      rules: {
+                        required: "* Required",
+                      },
                       props: {
                         className: "min-h-[133px]",
                       },
@@ -594,6 +663,9 @@ export function participationRequirements({
                     {
                       rhf: "Radio",
                       name: "voluntary-enrollment-method",
+                      rules: {
+                        required: "* Required",
+                      },
                       props: {
                         options: [
                           {
@@ -614,6 +686,9 @@ export function participationRequirements({
                                 labelClassName: "font-bold",
                                 name: "other-voluntary-enrollment-method",
                                 formItemClassName: "w-full",
+                                rules: {
+                                  required: "* Required",
+                                },
                               },
                             ],
                           },
@@ -656,6 +731,9 @@ export function disenrollment({
             label: "Will the state limit disenrollment for managed care?",
             labelClassName: "font-bold",
             name: "limit-disenrollment",
+            rules: {
+              required: "* Required",
+            },
             props: {
               className: "w-[125px]",
               options: [
@@ -684,6 +762,9 @@ export function disenrollment({
           {
             rhf: "Checkbox",
             name: "assures-beneficiary-requests",
+            rules: {
+              required: "* Required",
+            },
             props: {
               options: [
                 {
@@ -700,6 +781,9 @@ export function disenrollment({
               "What is the state’s process for notifying Medicaid beneficiaries of their right to disenroll without cause during the 90 days following the date of their initial enrollment into the MCO/HIO/PAHP/PIHP/PCCM/PCCM entity (e.g., state-generated correspondence, enrollment packet), in accordance with federal requirements including 42 CFR 438.10 and 438.56?",
             labelClassName: "font-bold",
             name: "disenrollment-notification",
+            rules: {
+              required: "* Required",
+            },
             props: {
               className: "min-h-[114px]",
             },
@@ -710,6 +794,9 @@ export function disenrollment({
               "Additional circumstances of cause for disenrollment (optional)",
             labelClassName: "font-bold",
             name: "additional-disenrollment-cause",
+            rules: {
+              required: "* Required",
+            },
             props: {
               className: "min-h-[114px]",
             },
@@ -717,6 +804,9 @@ export function disenrollment({
           {
             rhf: "Checkbox",
             name: "disenrollment-options",
+            rules: {
+              required: "* Required",
+            },
             props: {
               options: [
                 {
@@ -734,6 +824,9 @@ export function disenrollment({
                       label: "Number of months",
                       labelClassName: "font-bold",
                       name: "disenrollment-number-months",
+                      rules: {
+                        required: "* Required",
+                      },
                       props: {
                         icon: "months",
                         iconRight: true,
@@ -770,6 +863,9 @@ export function disenrollment({
               "Describe the “for cause” reasons, if any, that an enrollee may request disenrollment, in addition to those listed in 42 CFR 438.56(d)(2)).",
             labelClassName: "font-bold",
             name: "for-cause-reasons",
+            rules: {
+              required: "* Required",
+            },
             props: {
               className: "min-h-[76px]",
             },
@@ -780,6 +876,9 @@ export function disenrollment({
               "Describe the processes in place to ensure disenrollments are effective no later than the first day of the second month following the month in which the enrollee requests disenrollment or the MCO/PIHP/PAHP/PCCM/PCCM entity refers the request to the state.",
             labelClassName: "font-bold",
             name: "disenrollment-processes",
+            rules: {
+              required: "* Required",
+            },
             props: {
               className: "min-h-[76px]",
             },
@@ -787,6 +886,9 @@ export function disenrollment({
           {
             rhf: "Checkbox",
             name: "disenrollment-request",
+            rules: {
+              required: "* Required",
+            },
             props: {
               options: [
                 {
@@ -802,6 +904,9 @@ export function disenrollment({
                     {
                       rhf: "Checkbox",
                       name: "disenrollment-request-options",
+                      rules: {
+                        required: "* Required",
+                      },
                       props: {
                         options: [
                           {
@@ -816,6 +921,9 @@ export function disenrollment({
                                 label: "List and describe the reasons.",
                                 labelClassName: "font-bold",
                                 name: "disenrollment-request-reasons",
+                                rules: {
+                                  required: "* Required",
+                                },
                               },
                             ],
                           },
@@ -867,6 +975,9 @@ export function assurances({
           {
             rhf: "Checkbox",
             name: "assurances",
+            rules: {
+              required: "* Required",
+            },
             props: {
               options: [
                 {
@@ -889,10 +1000,16 @@ export function assurances({
                       label: "Impacted rural counties",
                       labelClassName: "font-bold",
                       name: "rural-counties",
+                      rules: {
+                        required: "* Required",
+                      },
                     },
                     {
                       rhf: "Checkbox",
                       name: "rural-exception-options",
+                      rules: {
+                        required: "* Required",
+                      },
                       props: {
                         options: [
                           {
@@ -1028,6 +1145,9 @@ export function payments({
             label: "How is payment for services handled?",
             labelClassName: "font-bold",
             name: `${createSectionId(programLabel)}-payment`,
+            rules: {
+              required: "* Required",
+            },
             props: {
               options: [
                 {
@@ -1044,6 +1164,9 @@ export function payments({
                       label: "Describe",
                       labelClassName: "font-bold",
                       name: "other-payment",
+                      rules: {
+                        required: "* Required",
+                      },
                     },
                   ],
                 },
