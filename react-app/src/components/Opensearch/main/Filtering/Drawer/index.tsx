@@ -79,12 +79,10 @@ export const OsFilterDrawer = () => {
                   />
                 )}
                 {PK.component === "boolean" && (
-                  <>
-                    <F.FilterableBoolean
+                  <F.FilterableBoolean
                       value={hook.filters[PK.field]?.value as boolean}
                       onChange={hook.onFilterChange(PK.field)}
                     />
-                  </>
                 )}
               </AccordionContent>
             </AccordionItem>

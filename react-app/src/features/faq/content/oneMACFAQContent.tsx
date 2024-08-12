@@ -219,8 +219,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "onboarding-materials",
         question: "Onboarding Materials",
         answerJSX: (
-          <>
-            <ul>
+          <ul>
               {[
                 [WelcometoOneMAC, "Welcome to OneMAC"],
                 [
@@ -243,7 +242,6 @@ export const oneMACFAQContent: FAQContent[] = [
                 </li>
               ))}
             </ul>
-          </>
         ),
       },
     ],
@@ -905,14 +903,12 @@ export const oneMACFAQContent: FAQContent[] = [
         question:
           "Why does the status of my Temporary Extension Request continue to show as 'Submitted'?",
         answerJSX: (
-          <>
-            <p>
+          <p>
               Temporary Extensions Requests will only show a status of
               ‘Submitted’ in the OneMAC system at this time. Their status does
               not update regardless of where that request is in the Submission
               Review process.
             </p>
-          </>
         ),
       },
       {
