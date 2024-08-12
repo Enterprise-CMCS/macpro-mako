@@ -12,7 +12,7 @@ import {
   procurementOrSelection,
   SectionDependencyInfo,
   SectionName,
-} from "./sections";
+} from "./sections/v202401";
 
 const formId = "abp8";
 
