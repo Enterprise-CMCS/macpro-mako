@@ -1,84 +1,41 @@
+import { SEATOOL_STATUS, getStatus, newSubmissionSchema } from "shared-types";
 import {
-  SEATOOL_AUTHORITIES,
-  SEATOOL_STATUS,
-  newSubmissionSchema,
-} from "shared-types";
-
-const getIdByAuthorityName = (authorityName: string) => {
-  try {
-    const authorityId = Object.keys(SEATOOL_AUTHORITIES).find(
-      (key) => SEATOOL_AUTHORITIES[key] === authorityName,
-    );
-    return authorityId ? parseInt(authorityId, 10) : null;
-  } catch (error) {
-    console.error(`SEATOOL AUTHORITY ID LOOKUP ERROR: ${authorityName}`);
-    console.error(error);
-    return null;
-  }
-};
-
-const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
-  epocDate !== null && epocDate !== undefined
-    ? new Date(epocDate).toISOString()
-    : null;
+  getNextBusinessDayTimestamp,
+  seaToolFriendlyTimestamp,
+} from "shared-utils";
 
 export const transform = (id: string) => {
   return newSubmissionSchema.transform((data) => {
-    if (data.seaActionType === "Extend") {
-      // We should have a separate transform for TE new submission, and possibly for each new-submission that's unique (appk)... todo
-      // TODO: mako timestamp
-      return {
-        id,
-        attachments: data.attachments,
-        appkParentId: data.appkParentId,
-        raiWithdrawEnabled: data.raiWithdrawEnabled,
-        additionalInformation: data.additionalInformation,
-        submitterEmail: data.submitterEmail,
-        submitterName:
-          data.submitterName === "-- --" ? null : data.submitterName,
-        origin: "OneMAC",
-        originalWaiverNumber: data.originalWaiverNumber,
-        // ----------
-        // The fields below are usually set by way of seatool and the ksql output, but must be set here for TEs.
-        flavor: "WAIVER",
-        state: id.split("-")[0],
-        actionType: data.seaActionType,
-        actionTypeId: 9999,
-        authorityId: getIdByAuthorityName(data.authority),
-        authority: data.authority,
-        stateStatus: "Submitted",
-        cmsStatus: "Requested",
-        seatoolStatus: SEATOOL_STATUS.PENDING,
-        statusDate: getDateStringOrNullFromEpoc(data.statusDate),
-        submissionDate: getDateStringOrNullFromEpoc(data.submissionDate),
-        changedDate: getDateStringOrNullFromEpoc(data.changedDate),
-        subject: null,
-        description: null,
-        makoChangedDate:
-          typeof data.timestamp === "number"
-            ? new Date(data.timestamp).toISOString()
-            : null,
-        // ----------
-      };
-    } else {
-      return {
-        id,
-        attachments: data.attachments,
-        appkParentId: data.appkParentId,
-        appkTitle: data.appkTitle, // this probably maps to subject, but for now we're just going to put it in main directly
-        appkParent: data.appkParent,
-        raiWithdrawEnabled: data.raiWithdrawEnabled,
-        additionalInformation: data.additionalInformation,
-        submitterEmail: data.submitterEmail,
-        submitterName:
-          data.submitterName === "-- --" ? null : data.submitterName,
-        origin: "OneMAC",
-        makoChangedDate:
-          typeof data.timestamp === "number"
-            ? new Date(data.timestamp).toISOString()
-            : null,
-      };
-    }
+    const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.PENDING);
+    const timestampDate = new Date(data.timestamp);
+    const todayEpoch = seaToolFriendlyTimestamp(timestampDate);
+    const nextBusinessDayEpoch = getNextBusinessDayTimestamp(timestampDate);
+    return {
+      id,
+      attachments: data.attachments,
+      appkParentId: data.appkParentId,
+      appkTitle: data.appkTitle,
+      appkParent: data.appkParent,
+      additionalInformation: data.additionalInformation,
+      submitterEmail: data.submitterEmail,
+      submitterName: data.submitterName === "-- --" ? null : data.submitterName,
+      origin: "OneMAC",
+      originalWaiverNumber: data.originalWaiverNumber,
+      state: id.split("-")[0],
+      authority: data.authority,
+      seatoolStatus: SEATOOL_STATUS.PENDING,
+      cmsStatus,
+      stateStatus,
+      raiWithdrawEnabled: false, // Set to false for new submissions
+      statusDate: new Date(todayEpoch).toISOString(),
+      submissionDate: new Date(nextBusinessDayEpoch).toISOString(),
+      changedDate: new Date(data.timestamp).toISOString(),
+      makoChangedDate: new Date(data.timestamp).toISOString(),
+      // These are not collected by our app, but need to be set for our frontend to display things properly
+      subject: null,
+      description: null,
+    };
+    // }
   });
 };
 

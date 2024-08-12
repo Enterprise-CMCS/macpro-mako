@@ -1,27 +1,33 @@
 import { z } from "zod";
 import { attachmentSchema } from "../attachments";
-import { notificationMetadataSchema } from "../notification-metadata";
 
-// This is the event schema for ne submissions from our system
-export const newSubmissionSchema = z.object({
+// These are fields we expect the frontend to provide in the api request's payload
+export const feNewSubmissionSchema = z.object({
+  event: z.literal("new-submission").default("new-submission"),
+  eventVersion: z.literal(0).default(0),
   authority: z.string(),
-  seaActionType: z.string().optional(), // Used by waivers and chip spas
-  origin: z.string(),
-  appkParentId: z.string().nullable().default(null),
-  appkTitle: z.string().nullish(), // appk only, candidate to move to its own schema
-  appkParent: z.boolean().optional(),
-  originalWaiverNumber: z.string().nullable().default(null),
-  additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),
+  proposedEffectiveDate: z.number(),
   attachments: z.array(attachmentSchema).nullish(),
-  raiWithdrawEnabled: z.boolean().default(false),
-  notificationMetadata: notificationMetadataSchema.nullish(),
-  timestamp: z.number().optional(),
-  // these are specific to TEs... should be broken into its own schema
-  statusDate: z.number().optional(),
-  submissionDate: z.number().optional(),
-  changedDate: z.number().optional(),
+  additionalInformation: z.string().nullable().default(null),
+  appkParent: z.boolean().optional(),
+  appkParentId: z.string().nullable().default(null),
+  appkTitle: z.string().nullish(),
+  actionType: z.enum(["New", "Amend", "Renew", "Extend"]).optional(),
+  originalWaiverNumber: z.string().nullable().default(null),
 });
 
+// These are fields we want the api backend to control to prevent manipulation.  They're added to what the frontend sends
+export const beNewSubmissionSchema = z.object({
+  origin: z.literal("mako").default("mako"),
+  timestamp: z.number(),
+});
+
+// The overall schema is the merge of the two
+export const newSubmissionSchema = feNewSubmissionSchema.merge(
+  beNewSubmissionSchema,
+);
+
+// The exported inferred type is based off the merged schema
 export type NewSubmission = z.infer<typeof newSubmissionSchema>;
