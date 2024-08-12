@@ -40,7 +40,6 @@ export const ActionForm = ({
   const form = useForm<Record<string, string>>({
     resolver: setup.schema ? zodResolver(setup.schema) : undefined,
     mode: "onChange",
-    defaultValues: { id },
   });
 
   if (!item || !user) {
@@ -49,6 +48,10 @@ export const ActionForm = ({
 
   if (actionType === "temporary-extension") {
     form.setValue("seaActionType", "Extend");
+  }
+
+  if (actionType === "update-id") {
+    form.setValue("id", id);
   }
 
   const content = setup.content(item._source);
