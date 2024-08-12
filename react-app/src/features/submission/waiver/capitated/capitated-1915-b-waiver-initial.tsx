@@ -13,6 +13,7 @@ import {
   formCrumbsFromPath,
   Route,
   FormField,
+  LoadingSpinner,
 } from "@/components";
 import { submit } from "@/api/submissionService";
 import { Authority } from "shared-types";
@@ -125,6 +126,7 @@ export const Capitated1915BWaiverInitialPage = () => {
     <SimplePageContainer>
       <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
       <Inputs.Form {...form}>
+        {form.formState.isSubmitting && <LoadingSpinner />}
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
@@ -238,7 +240,7 @@ export const Capitated1915BWaiverInitialPage = () => {
             />
           </SectionCard>
           <Content.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection showAlert loadingSpinner />
+          <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
       <FAQFooter />
