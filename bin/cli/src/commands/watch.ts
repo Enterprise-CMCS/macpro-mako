@@ -1,12 +1,10 @@
 import { Argv } from "yargs";
 import {
   checkIfAuthenticated,
-  LabeledProcessRunner,
+  runCommand,
   setStageFromBranch,
   writeUiEnvFile,
 } from "../lib/";
-
-const runner = new LabeledProcessRunner();
 
 export const watch = {
   command: "watch",
@@ -20,9 +18,9 @@ export const watch = {
 
     await writeUiEnvFile(stage);
 
-    await runner.run_command_and_output(
-      "CDK Watch",
-      ["cdk", "watch", "-c", `stage=${stage}`, "--no-rollback"],
+    await runCommand(
+      "cdk",
+      ["watch", "-c", `stage=${stage}`, "--no-rollback"],
       ".",
     );
   },
