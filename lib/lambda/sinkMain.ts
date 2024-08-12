@@ -72,7 +72,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       }
 
       if (result.data.changed_date) {
-        console.log("I am here", result.data.changed_date);
+        console.log("I am here", result.data.id, result.data.changed_date);
         // see if there is a change date from seatool
         // get the record with the id of this from open search
         // check the latest activity timestamp
