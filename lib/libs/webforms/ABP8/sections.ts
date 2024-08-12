@@ -1,4 +1,4 @@
-import { DependencyRule, RHFSlotProps, Section } from "shared-types";
+import { DependencyRule, RHFOption, RHFSlotProps, Section } from "shared-types";
 
 const formId = "abp8";
 
@@ -234,7 +234,7 @@ export function deliverySystemCharactaristics({
 
   // This part of the section does not appear in PCCM
   const otherCoverage: RHFSlotProps[] =
-    programLabel === SectionName.PCCM
+    programLabel === SectionName.PCCM || programLabel === SectionName.PCCMEntity
       ? []
       : [
           {
@@ -292,6 +292,84 @@ export function deliverySystemCharactaristics({
           },
         ];
 
+  const PCCMEntityFunctions: RHFSlotProps[] =
+    programLabel === SectionName.PCCMEntity
+      ? [
+          {
+            rhf: "Checkbox",
+            description:
+              "In addition to PCCM services, which function(s) will the entity provide, as defined at 42 CFR 438.2?",
+            descriptionClassName: "font-bold",
+            descriptionAbove: true,
+            name: "delivery-system-characteristics",
+            props: {
+              options: [
+                {
+                  label:
+                    "Provision of intensive telephonic or face-to-face case management, including operation of a nurse triage advice line",
+                  value: "intensive-case-management",
+                },
+                {
+                  label: "Development of enrollee care plans",
+                  value: "care-plans",
+                },
+                {
+                  label:
+                    "Execution of contracts with and/or oversight responsibilities for the activities of FFS providers in the FFS program",
+                  value: "ffs-provider-contracts",
+                },
+                {
+                  label:
+                    "Provision of payments to FFS providers on behalf of the state",
+                  value: "ffs-provider-payments",
+                },
+                {
+                  label:
+                    "Provision of enrollee outreach and education activities",
+                  value: "enrollee-outreach",
+                },
+                {
+                  label: "Operation of a customer service call center",
+                  value: "customer-service",
+                },
+                {
+                  label:
+                    "Review of provider claims, utilization, and practice patterns to conduct provider profiling and/or practice improvement",
+                  value: "provider-claims-review",
+                },
+                {
+                  label:
+                    "Implementation of quality improvement activities, including administering enrollee satisfaction surveys or collecting data necessary for performance measurement of providers",
+                  value: "quality-improvement",
+                },
+                {
+                  label:
+                    "Coordination with behavioral health systems/providers",
+                  value: "behavioral-health-coordination",
+                },
+                {
+                  label:
+                    "Coordination with long-term services and support systems/providers",
+                  value: "ltss-coordination",
+                },
+                {
+                  label: "Other",
+                  value: "other",
+                  slots: [
+                    {
+                      rhf: "Textarea",
+                      label: "Describe",
+                      labelClassName: "font-bold",
+                      name: "other-description",
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        ]
+      : [];
+
   return {
     title: `Other ${programLabel}-based service delivery system characteristics`,
     sectionId,
@@ -304,6 +382,7 @@ export function deliverySystemCharactaristics({
       {
         slots: [
           ...otherCoverage,
+          ...PCCMEntityFunctions,
           {
             rhf: "Select",
             label: `Is ${programLabel} service delivery provided on less than a statewide basis?`,
@@ -922,6 +1001,17 @@ export function payments({
   conditionalInfo,
   programLabel,
 }: SectionParams): Section {
+  const pccmEntityPayment: RHFOption[] =
+    programLabel === SectionName.PCCMEntity
+      ? [
+          {
+            label:
+              "Shared savings, incentive payments, and/or financial rewards (see 42 CFR 438.310(c)(2))",
+            value: "shared-savings",
+          },
+        ]
+      : [];
+
   return {
     title: `${programLabel} payments`,
     sectionId: `${createSectionId(programLabel)}-payments`,
@@ -944,6 +1034,7 @@ export function payments({
                   label: "Case management fee",
                   value: "case-management-fee",
                 },
+                ...pccmEntityPayment,
                 {
                   label: "Other",
                   value: "other",
