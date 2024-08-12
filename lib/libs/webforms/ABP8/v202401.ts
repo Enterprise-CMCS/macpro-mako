@@ -967,7 +967,7 @@ export const v202401: FormSchema = {
     managedCare({
       conditionalInfo: sectionDependency.PCCMEntity,
       programLabel: SectionName.PCCMEntity,
-      title: "Primary care case management entity (PCCM entity)",
+      title: "PCCM entity",
     }),
     deliverySystemCharactaristics({
       conditionalInfo: sectionDependency.PCCMEntity,
