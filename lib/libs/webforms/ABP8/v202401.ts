@@ -14,7 +14,6 @@ import {
   SectionDependencyInfo,
   SectionName,
 } from "./sections";
-import { valReducer } from "ui/src/components";
 
 const formId = "abp8";
 
