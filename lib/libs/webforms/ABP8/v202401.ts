@@ -364,17 +364,17 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "The state assures all applicable managed care requirements of 42 CFR 438 and 42 CFR 449.385 will be met.",
-                    value: "assures-requirements",
+                    value: "managed-care-requirements-met",
                   },
                   {
                     label:
                       "The state assures all applicable requirements of 42 CFR 438.4, 438.5, 438.6, 438.7, 438.8, and 438.74 for payments under any risk contracts will be met.",
-                    value: "assures-payments",
+                    value: "risk-contracts-payments-requirements-met",
                   },
                   {
                     label:
                       "The state plan program applies the rural exception to choice requirements of 42 CFR 438.52(a) for MCOs in accordance with 42 CFR 438.52(b).",
-                    value: "assures-rural-exception",
+                    value: "rural-exception-applied",
                     slots: [
                       {
                         rhf: "Input",
@@ -400,52 +400,52 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "The state assures that, per the choice requirements in 42 CFR 438.52, Medicaid beneficiaries with mandatory enrollment in an MCO will have a choice between at least two MCOs unless the area is considered rural as defined in 42 CFR 438.52(b)(3).",
-                    value: "assures-choice",
+                    value: "mco-choice-requirements-met",
                   },
                   {
                     label:
                       "The state assures that beneficiary requests for disenrollment (with and without cause) will be permitted in accordance with 42 CFR 438.56.",
-                    value: "assures-disenrollment",
+                    value: "disenrollment-requests-permitted",
                   },
                   {
                     label:
                       "The state assures the limitations on Medicaid beneficiaries to change between primary care providers will be no more restrictive than the limitations on disenrollment described at 438.56(c).",
-                    value: "assures-change",
+                    value: "provider-change-limitations",
                   },
                   {
                     label:
                       "If the state plan so specifies in accordance with 42 CFR 438.56(g), the state assures that the contract provides for automatic reenrollment for a beneficiary who is disenrolled solely because they lose Medicaid eligibility for a period of two months or less.",
-                    value: "assures-reenrollment",
+                    value: "automatic-reenrollment",
                   },
                   {
                     label:
                       "The state assures all applicable requirements of 42 CFR 438.66(a), (b), and (c) regarding a monitoring system and using data to improve the performance of its managed care program will be met.",
-                    value: "assures-monitoring",
+                    value: "monitoring-system-requirements-met",
                   },
                   {
                     label:
                       "The state assures all applicable requirements of 42 CFR 438.66(d) regarding readiness assessment will be met.",
-                    value: "assures-readiness",
+                    value: "readiness-assessment-requirements-met",
                   },
                   {
                     label:
                       "The state assures all applicable requirements of 42 CFR 438.66(e) regarding reporting to CMS about the managed care program will be met.",
-                    value: "assures-reporting",
+                    value: "cms-reporting-requirements-met",
                   },
                   {
                     label:
-                      "The state assures it meets all applicable requirements of 42 CFR 438.71 regarding the development and implementation of a beneficiary support system both prior to and after beneficiary enrollment in MCO/HIO/PIHP/PAHP/PCCM/PCCM entity.",
-                    value: "assures-support",
+                      "The state assures it meets all applicable requirements of 42 CFR 438.71 regarding the development and implementation of a beneficiary support system both prior to and after beneficiary enrollment in an MCO/HIO/PIHP/PAHP/PCCM/PCCM entity.",
+                    value: "beneficiary-support-system-requirements-met",
                   },
                   {
                     label:
                       "The state assures it appropriately identifies individuals in the mandatory exempt groups identified in 42 CFR 440.315.",
-                    value: "assures-identifies",
+                    value: "mandatory-exempt-groups-identified",
                   },
                   {
                     label:
                       "The state assures all the applicable requirements of 42 CFR regarding freedom of choice for family planning services and supplies defined in Section 1905(a)(4)(C) will be met.",
-                    value: "assures-family-planning",
+                    value: "family-planning-freedom-of-choice-met",
                   },
                 ],
               },
@@ -505,62 +505,62 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "The state assures all applicable managed care requirements of 42 CFR 438 and 42 CFR 449.385 will be met.",
-                    value: "assures-requirements",
+                    value: "managed-care-requirements-met",
                   },
                   {
                     label:
                       "The state assures all applicable requirements of 42 CFR 438.4, 438.5, 438.6, 438.7, 438.8, and 438.74 for payments under any risk contracts will be met.",
-                    value: "assures-payments",
+                    value: "risk-contracts-payments-requirements-met",
                   },
                   {
                     label:
                       "The state assures that, per the requirements at 438.52(c), Medicaid beneficiaries enrolled in an HIO will have a choice between at least two primary care providers within the entity.",
-                    value: "assures-choice",
+                    value: "hio-choice-requirements-met",
                   },
                   {
                     label:
                       "The state assures that beneficiary requests for disenrollment (with and without cause) will be permitted in accordance with 42 CFR 438.56.",
-                    value: "assures-disenrollment",
+                    value: "disenrollment-requests-permitted",
                   },
                   {
                     label:
-                      "The state assures the limitations on Medicaid beneficiaries to change between primary care providers will be no more restrictive than the limitations on disenrollment described at 438.56(c).",
-                    value: "assures-change",
+                      "The state assures the limitations on Medicaid beneficiaries to change between primary care providers will be no more restrictive than the limitations on disenrollment described at 438.56(c).",
+                    value: "provider-change-limitations",
                   },
                   {
                     label:
                       "If the state plan so specifies in accordance with 42 CFR 438.56(g), the state assures that the contract provides for automatic reenrollment for a beneficiary who is disenrolled solely because they lose Medicaid eligibility for a period of two months or less.",
-                    value: "assures-reenrollment",
+                    value: "automatic-reenrollment",
                   },
                   {
                     label:
                       "The state assures all applicable requirements of 42 CFR 438.66(a), (b), and (c) regarding a monitoring system and using data to improve the performance of its managed care program will be met.",
-                    value: "assures-monitoring",
+                    value: "monitoring-system-requirements-met",
                   },
                   {
                     label:
                       "The state assures all applicable requirements of 42 CFR 438.66(d) regarding readiness assessment will be met.",
-                    value: "assures-readiness",
+                    value: "readiness-assessment-requirements-met",
                   },
                   {
                     label:
                       "The state assures all applicable requirements of 42 CFR 438.66(e) regarding reporting to CMS about the managed care program will be met.",
-                    value: "assures-reporting",
+                    value: "cms-reporting-requirements-met",
                   },
                   {
                     label:
                       "The state assures it meets all applicable requirements of 42 CFR 438.71 regarding the development and implementation of a beneficiary support system both prior to and after beneficiary enrollment in MCO/HIO/PIHP/PAHP/PCCM/PCCM entity.",
-                    value: "assures-support",
+                    value: "beneficiary-support-system-requirements-met",
                   },
                   {
                     label:
                       "The state assures it appropriately identifies individuals in the mandatory exempt groups identified in 42 CFR 440.315.",
-                    value: "assures-identifies",
+                    value: "mandatory-exempt-groups-identified",
                   },
                   {
                     label:
                       "The state assures all the applicable requirements of 42 CFR regarding freedom of choice for family planning services and supplies defined in Section 1905(a)(4)(C) will be met.",
-                    value: "assures-family-planning",
+                    value: "family-planning-freedom-of-choice-met",
                   },
                 ],
               },
@@ -601,10 +601,125 @@ export const v202401: FormSchema = {
       conditionalInfo: sectionDependency.PIHP,
       programLabel: SectionName.PIHP,
     }),
-    assurances({
-      conditionalInfo: sectionDependency.PIHP,
-      programLabel: SectionName.PIHP,
-    }),
+    {
+      title: "Assurances",
+      sectionId: `${createSectionId(SectionName.PIHP)}-assurances`,
+      subsection: true,
+      dependency: generateDependency({
+        name: sectionDependency.PIHP.name,
+        expectedValue: sectionDependency.PIHP.expectedValue,
+      }),
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Checkbox",
+              name: "assurances",
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state assures all applicable managed care requirements of 42 CFR 438 and 42 CFR 449.385 will be met.",
+                    value: "managed-care-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures all applicable requirements of 42 CFR 438.2 payments under any non-risk contracts will be met.",
+                    value: "non-risk-payments-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures all applicable requirements of 42 CFR 438.4, 438.5, 438.6, 438.7, 438.8, and 438.74 for payments under any risk contracts will be met.",
+                    value: "risk-contracts-payments-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state plan program applies the rural exception to choice requirements of 42 CFR 438.52(a) for MCOs in accordance with 42 CFR 438.52(b).",
+                    value: "assures-rural-exception",
+                    slots: [
+                      {
+                        rhf: "Input",
+                        label: "Impacted rural counties",
+                        labelClassName: "font-bold",
+                        name: "rural-counties",
+                      },
+                      {
+                        rhf: "Checkbox",
+                        name: "rural-exception-options",
+                        props: {
+                          options: [
+                            {
+                              label:
+                                "This provision is not applicable to this ABP state plan amendment (SPA).",
+                              value: "not-applicable",
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label:
+                      "The state assures that, per the choice requirements in 42 CFR 438.52, Medicaid beneficiaries with mandatory enrollment in a PIHP will have a choice between at least two PIHPs unless the area is considered rural as defined in 42 CFR 438.52(b)(3).",
+                    value: "choice-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures that beneficiary requests for disenrollment (with and without cause) will be permitted in accordance with 42 CFR 438.56.",
+                    value: "disenrollment-requests-permitted",
+                  },
+                  {
+                    label:
+                      "The state assures the limitations on Medicaid beneficiaries to change between primary care providers will be no more restrictive than the limitations on disenrollment described at 438.56(c).",
+                    value: "provider-change-limitations",
+                  },
+                  {
+                    label:
+                      "If the state plan so specifies in accordance with 42 CFR 438.56(g), the state assures that the contract provides for automatic reenrollment for a beneficiary who is disenrolled solely because they lose Medicaid eligibility for a period of two months or less.",
+                    value: "automatic-reenrollment",
+                  },
+                  {
+                    label:
+                      "The state assures all applicable requirements of 42 CFR 438.66(a), (b), and (c) regarding a monitoring system and using data to improve the performance of its managed care program will be met.",
+                    value: "monitoring-system-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures all applicable requirements of 42 CFR 438.66(d) regarding readiness assessment will be met.",
+                    value: "readiness-assessment-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures all applicable requirements of 42 CFR 438.66(e) regarding reporting to CMS about the managed care program will be met.",
+                    value: "cms-reporting-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures it meets all applicable requirements of 42 CFR 438.71 regarding the development and implementation of a beneficiary support system both prior to and after beneficiary enrollment in MCO/HIO/PIHP/PAHP/PCCM/PCCM entity.",
+                    value: "beneficiary-support-system-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures it appropriately identifies individuals in the mandatory exempt groups identified in 42 CFR 440.315.",
+                    value: "mandatory-exempt-groups-identified",
+                  },
+                  {
+                    label:
+                      "The state assures all the applicable requirements of 42 CFR regarding freedom of choice for family planning services and supplies defined in Section 1905(a)(4)(C) will be met.",
+                    value: "family-planning-freedom-of-choice-met",
+                  },
+                  {
+                    label:
+                      "The state assures all the applicable requirements of Section 1905(t) of the Act for PCCMs and PCCM contracts (including for PCCM entities) will be met.",
+                    value: "pccm-requirements-met",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
     additionalInfo({
       conditionalInfo: sectionDependency.PIHP,
       programLabel: SectionName.PIHP,
@@ -637,10 +752,125 @@ export const v202401: FormSchema = {
       conditionalInfo: sectionDependency.PAHP,
       programLabel: SectionName.PAHP,
     }),
-    assurances({
-      conditionalInfo: sectionDependency.PAHP,
-      programLabel: SectionName.PAHP,
-    }),
+    {
+      title: "Assurances",
+      sectionId: `${createSectionId(SectionName.PAHP)}-assurances`,
+      subsection: true,
+      dependency: generateDependency({
+        name: sectionDependency.PAHP.name,
+        expectedValue: sectionDependency.PAHP.expectedValue,
+      }),
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Checkbox",
+              name: "assurances",
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state assures all applicable managed care requirements of 42 CFR 438 and 42 CFR 449.385 will be met.",
+                    value: "managed-care-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures all applicable requirements of 42 CFR 438.2 payments under any non-risk contracts will be met.",
+                    value: "non-risk-payments-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures all applicable requirements of 42 CFR 438.4, 438.5, 438.6, 438.7, 438.8, and 438.74 for payments under any risk contracts will be met.",
+                    value: "risk-contracts-payments-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state plan program applies the rural exception to choice requirements of 42 CFR 438.52(a) for MCOs in accordance with 42 CFR 438.52(b).",
+                    value: "assures-rural-exception",
+                    slots: [
+                      {
+                        rhf: "Input",
+                        label: "Impacted rural counties",
+                        labelClassName: "font-bold",
+                        name: "rural-counties",
+                      },
+                      {
+                        rhf: "Checkbox",
+                        name: "rural-exception-options",
+                        props: {
+                          options: [
+                            {
+                              label:
+                                "This provision is not applicable to this ABP state plan amendment (SPA).",
+                              value: "not-applicable",
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label:
+                      "The state assures that, per the choice requirements in 42 CFR 438.52, Medicaid beneficiaries with mandatory enrollment in an PAHP will have a choice between at least two PAHPs unless the area is considered rural as defined in 42 CFR 438.52(b)(3).",
+                    value: "choice-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures that beneficiary requests for disenrollment (with and without cause) will be permitted in accordance with 42 CFR 438.56.",
+                    value: "disenrollment-requests-permitted",
+                  },
+                  {
+                    label:
+                      "The state assures the limitations on Medicaid beneficiaries to change between primary care providers will be no more restrictive than the limitations on disenrollment described at 438.56(c).",
+                    value: "provider-change-limitations",
+                  },
+                  {
+                    label:
+                      "If the state plan so specifies in accordance with 42 CFR 438.56(g), the state assures that the contract provides for automatic reenrollment for a beneficiary who is disenrolled solely because they lose Medicaid eligibility for a period of two months or less.",
+                    value: "automatic-reenrollment",
+                  },
+                  {
+                    label:
+                      "The state assures all applicable requirements of 42 CFR 438.66(a), (b), and (c) regarding a monitoring system and using data to improve the performance of its managed care program will be met.",
+                    value: "monitoring-system-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures all applicable requirements of 42 CFR 438.66(d) regarding readiness assessment will be met.",
+                    value: "readiness-assessment-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures all applicable requirements of 42 CFR 438.66(e) regarding reporting to CMS about the managed care program will be met.",
+                    value: "cms-reporting-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures it meets all applicable requirements of 42 CFR 438.71 regarding the development and implementation of a beneficiary support system both prior to and after beneficiary enrollment in MCO/HIO/PIHP/PAHP/PCCM/PCCM entity.",
+                    value: "beneficiary-support-system-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures it appropriately identifies individuals in the mandatory exempt groups identified in 42 CFR 440.315.",
+                    value: "mandatory-exempt-groups-identified",
+                  },
+                  {
+                    label:
+                      "The state assures all the applicable requirements of 42 CFR regarding freedom of choice for family planning services and supplies defined in Section 1905(a)(4)(C) will be met.",
+                    value: "family-planning-freedom-of-choice-met",
+                  },
+                  {
+                    label:
+                      "The state assures all the applicable requirements of Section 1905(t) of the Act for PCCMs and PCCM contracts (including for PCCM entities) will be met.",
+                    value: "pccm-requirements-met",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
     additionalInfo({
       conditionalInfo: sectionDependency.PAHP,
       programLabel: SectionName.PAHP,
@@ -665,10 +895,69 @@ export const v202401: FormSchema = {
       conditionalInfo: sectionDependency.PCCM,
       programLabel: SectionName.PCCM,
     }),
-    assurances({
-      conditionalInfo: sectionDependency.PCCM,
-      programLabel: SectionName.PCCM,
-    }),
+    {
+      title: "Assurances",
+      sectionId: `${createSectionId(SectionName.PCCM)}-assurances`,
+      subsection: true,
+      dependency: generateDependency({
+        name: sectionDependency.PCCM.name,
+        expectedValue: sectionDependency.PCCM.expectedValue,
+      }),
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Checkbox",
+              name: "assurances",
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state assures all applicable managed care requirements of 42 CFR 438 and 42 CFR 449.385 will be met.",
+                    value: "managed-care-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures that, per the choice requirements in 42 CFR 438.52, Medicaid beneficiaries with mandatory enrollment in a PCCM system will have a choice of at least two primary care case managers employed by or contracted with the state.",
+                    value: "non-risk-payments-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures that beneficiary requests for disenrollment (with and without cause) will be permitted in accordance with 42 CFR 438.56.",
+                    value: "disenrollment-requests-permitted",
+                  },
+                  {
+                    label:
+                      "If the state plan so specifies in accordance with 42 CFR 438.56(g), the state assures that the contract provides for automatic reenrollment for a beneficiary who is disenrolled solely because they lose Medicaid eligibility for a period of two months or less.",
+                    value: "automatic-reenrollment",
+                  },
+                  {
+                    label:
+                      "The state assures it meets all applicable requirements of 42 CFR 438.71 regarding the development and implementation of a beneficiary support system both prior to and after beneficiary enrollment in MCO/HIO/PIHP/PAHP/PCCM/PCCM entity.",
+                    value: "beneficiary-support-system-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures it appropriately identifies individuals in the mandatory exempt groups identified in 42 CFR 440.315.",
+                    value: "mandatory-exempt-groups-identified",
+                  },
+                  {
+                    label:
+                      "The state assures all the applicable requirements of 42 CFR regarding freedom of choice for family planning services and supplies defined in Section 1905(a)(4)(C) will be met.",
+                    value: "family-planning-freedom-of-choice-met",
+                  },
+                  {
+                    label:
+                      "The state assures all the applicable requirements of Section 1905(t) of the Act for PCCMs and PCCM contracts (including for PCCM entities) will be met.",
+                    value: "pccm-requirements-met",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
     additionalInfo({
       conditionalInfo: sectionDependency.PCCM,
       programLabel: SectionName.PCCM,
@@ -693,10 +982,89 @@ export const v202401: FormSchema = {
       conditionalInfo: sectionDependency.PCCMEntity,
       programLabel: SectionName.PCCMEntity,
     }),
-    assurances({
-      conditionalInfo: sectionDependency.PCCMEntity,
-      programLabel: SectionName.PCCMEntity,
-    }),
+    {
+      title: "Assurances",
+      sectionId: `${createSectionId(SectionName.PCCMEntity)}-assurances`,
+      subsection: true,
+      dependency: generateDependency({
+        name: sectionDependency.PCCMEntity.name,
+        expectedValue: sectionDependency.PCCMEntity.expectedValue,
+      }),
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Checkbox",
+              name: "assurances",
+              props: {
+                options: [
+                  {
+                    label:
+                      "The state assures that all the applicable requirements of the ABP for the state’s option to limit freedom of choice by requiring beneficiaries to receive their benefits through managed care entities will be met.",
+                    value: "freedom-of-choice-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures all applicable managed care requirements of 42 CFR 438 and 42 CFR 449.385 will be met.",
+                    value: "managed-care-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures that, per the choice requirements in 42 CFR 438.52, Medicaid beneficiaries with mandatory enrollment in a PCCM entity may be limited to a single PCCM entity and will have a choice of at least two PCCMs employed by or contracted with the PCCM entity.",
+                    value: "choice-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures that beneficiary requests for disenrollment (with and without cause) will be permitted in accordance with 42 CFR 438.56.",
+                    value: "disenrollment-requests-permitted",
+                  },
+                  {
+                    label:
+                      "If the state plan so specifies in accordance with 42 CFR 438.56(g), the state assures that the contract provides for automatic reenrollment for a beneficiary who is disenrolled solely because they lose Medicaid eligibility for a period of two months or less.",
+                    value: "automatic-reenrollment",
+                  },
+                  {
+                    label:
+                      "The state assures all applicable requirements of 42 CFR 438.66(a), (b), and (c) regarding a monitoring system and using data to improve the performance of its managed care program will be met.",
+                    value: "monitoring-system-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures all applicable requirements of 42 CFR 438.66(d) regarding readiness assessment will be met.",
+                    value: "readiness-assessment-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures all applicable requirements of 42 CFR 438.66(e) regarding reporting to CMS about the managed care program will be met.",
+                    value: "cms-reporting-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures it meets all applicable requirements of 42 CFR 438.71 regarding the development and implementation of a beneficiary support system both prior to and after beneficiary enrollment in MCO/PIHP/PAHP/PCCM/PCCM entity.",
+                    value: "beneficiary-support-system-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures it appropriately identifies individuals in the mandatory exempt groups identified in 42 CFR 440.315.",
+                    value: "mandatory-exempt-groups-identified",
+                  },
+                  {
+                    label:
+                      "The state assures all the applicable requirements of Section 1905(t) of the Act for PCCMs and PCCM contracts (including for PCCM entities) will be met.",
+                    value: "pccm-requirements-met",
+                  },
+                  {
+                    label:
+                      "The state assures all the applicable requirements of 42 CFR regarding freedom of choice for family planning services and supplies defined in Section 1905(a)(4)(C) will be met.",
+                    value: "family-planning-freedom-of-choice-met",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
     additionalInfo({
       conditionalInfo: sectionDependency.PCCMEntity,
       programLabel: SectionName.PCCMEntity,
