@@ -32,10 +32,13 @@ export function createSectionId(programLabel: string): string {
 }
 
 // Generate the DependencyRule to show sections
-export function generateDependency(
-  name: string,
-  expectedValue: string,
-): DependencyRule {
+export function generateDependency({
+  name,
+  expectedValue,
+}: {
+  name: string;
+  expectedValue: string;
+}): DependencyRule {
   return {
     conditions: [
       {
@@ -58,10 +61,10 @@ export function managedCare({
   return {
     title: title || `${programLabel}`,
     sectionId: createSectionId(programLabel),
-    dependency: generateDependency(
-      conditionalInfo.name,
-      conditionalInfo.expectedValue,
-    ),
+    dependency: generateDependency({
+      name: conditionalInfo.name,
+      expectedValue: conditionalInfo.expectedValue,
+    }),
     form: [
       {
         slots: [
@@ -196,10 +199,10 @@ export function procurementOrSelection({
     title: `${programLabel} procurement or selection`,
     sectionId: `${createSectionId(programLabel)}-procurement`,
     subsection: true,
-    dependency: generateDependency(
-      conditionalInfo.name,
-      conditionalInfo.expectedValue,
-    ),
+    dependency: generateDependency({
+      name: conditionalInfo.name,
+      expectedValue: conditionalInfo.expectedValue,
+    }),
     form: [
       {
         slots: [
@@ -229,6 +232,7 @@ export function deliverySystemCharactaristics({
 }: SectionParams): Section {
   const sectionId = `${createSectionId(programLabel)}_delivery-system`;
 
+  // This part of the section does not appear in PCCM
   const otherCoverage: RHFSlotProps[] =
     programLabel === SectionName.PCCM
       ? []
@@ -292,10 +296,10 @@ export function deliverySystemCharactaristics({
     title: `Other ${programLabel}-based service delivery system characteristics`,
     sectionId,
     subsection: true,
-    dependency: generateDependency(
-      conditionalInfo.name,
-      conditionalInfo.expectedValue,
-    ),
+    dependency: generateDependency({
+      name: conditionalInfo.name,
+      expectedValue: conditionalInfo.expectedValue,
+    }),
     form: [
       {
         slots: [
@@ -401,10 +405,10 @@ export function participationExclusions({
     title: `${programLabel} participation exclusions`,
     sectionId,
     subsection: true,
-    dependency: generateDependency(
-      conditionalInfo.name,
-      conditionalInfo.expectedValue,
-    ),
+    dependency: generateDependency({
+      name: conditionalInfo.name,
+      expectedValue: conditionalInfo.expectedValue,
+    }),
     form: [
       {
         slots: [
@@ -474,10 +478,10 @@ export function participationRequirements({
     title: `General ${programLabel} participation requirements`,
     sectionId: `${createSectionId(programLabel)}-participation-requirements`,
     subsection: true,
-    dependency: generateDependency(
-      conditionalInfo.name,
-      conditionalInfo.expectedValue,
-    ),
+    dependency: generateDependency({
+      name: conditionalInfo.name,
+      expectedValue: conditionalInfo.expectedValue,
+    }),
     form: [
       {
         slots: [
@@ -558,10 +562,10 @@ export function disenrollment({
     title: "Disenrollment",
     sectionId: sectionId,
     subsection: true,
-    dependency: generateDependency(
-      conditionalInfo.name,
-      conditionalInfo.expectedValue,
-    ),
+    dependency: generateDependency({
+      name: conditionalInfo.name,
+      expectedValue: conditionalInfo.expectedValue,
+    }),
     form: [
       {
         description:
@@ -774,10 +778,10 @@ export function assurances({
     title: "Assurances",
     sectionId: `${createSectionId(programLabel)}-assurances`,
     subsection: true,
-    dependency: generateDependency(
-      conditionalInfo.name,
-      conditionalInfo.expectedValue,
-    ),
+    dependency: generateDependency({
+      name: conditionalInfo.name,
+      expectedValue: conditionalInfo.expectedValue,
+    }),
     form: [
       {
         slots: [
@@ -890,10 +894,10 @@ export function additionalInfo({
     title: `Additional information: ${programLabel}`,
     sectionId: `additional-info-${createSectionId(programLabel)}`,
     subsection: true,
-    dependency: generateDependency(
-      conditionalInfo.name,
-      conditionalInfo.expectedValue,
-    ),
+    dependency: generateDependency({
+      name: conditionalInfo.name,
+      expectedValue: conditionalInfo.expectedValue,
+    }),
     form: [
       {
         slots: [
@@ -922,10 +926,10 @@ export function payments({
     title: `${programLabel} payments`,
     sectionId: `${createSectionId(programLabel)}-payments`,
     subsection: true,
-    dependency: generateDependency(
-      conditionalInfo.name,
-      conditionalInfo.expectedValue,
-    ),
+    dependency: generateDependency({
+      name: conditionalInfo.name,
+      expectedValue: conditionalInfo.expectedValue,
+    }),
     form: [
       {
         slots: [
