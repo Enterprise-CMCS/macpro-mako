@@ -1,7 +1,5 @@
 import { DependencyRule, RHFOption, RHFSlotProps, Section } from "shared-types";
 
-const formId = "abp8";
-
 export enum SectionName {
   HIO = "HIO",
   MCO = "MCO",

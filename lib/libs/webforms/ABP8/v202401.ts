@@ -1,7 +1,6 @@
 import { FormSchema } from "shared-types";
 import {
   additionalInfo,
-  assurances,
   createSectionId,
   deliverySystemCharactaristics,
   disenrollment,
