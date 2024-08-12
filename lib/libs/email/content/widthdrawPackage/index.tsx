@@ -1,5 +1,5 @@
 import { Authority, WithdrawPackage } from "shared-types";
-import { CommonVariables } from "..";
+import { CommonVariables } from "../..";
 
 export const withdrawPackage = {
   [Authority.MED_SPA]: {

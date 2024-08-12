@@ -19,7 +19,7 @@ const index: Index = `${process.env.indexNamespace}main`;
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   console.log("event");
-  console.log(event);
+  console.log(JSON.stringify(event, null, 2));
   const loggableEvent = { ...event, records: "too large to display" };
   console.log("loggableEvent");
   console.log(loggableEvent);

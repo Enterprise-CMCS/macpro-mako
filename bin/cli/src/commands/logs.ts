@@ -81,7 +81,7 @@ export const logs = {
     // Stream the logs
     await runner.run_command_and_output(
       "stream awslogs",
-      ["awslogs", "get", lambdaLogGroup, "-s30m", "--watch"],
+      ["awslogs", "get", lambdaLogGroup, "-s5h", "--watch"],
       ".",
     );
   },
