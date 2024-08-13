@@ -67,6 +67,9 @@ export const v202401: FormSchema = {
               label: "Managed care delivery systems",
               name: "managed-care-delivery-systems",
               labelClassName: "font-bold",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -119,6 +122,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "state-territory-complicance",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -135,6 +141,9 @@ export const v202401: FormSchema = {
                 "Describe the implementation plan for the ABP under managed care, including member, stakeholder, and provider outreach efforts.",
               name: "implementation-plan",
               labelClassName: "font-bold",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 className: "min-h-[114px]",
               },
@@ -166,6 +175,9 @@ export const v202401: FormSchema = {
               rhf: "TextDisplay",
               text: "Voluntary enrollment (42 CFR 438.54(c))",
               name: "voluntary-enrollment-textdisplay",
+              rules: {
+                required: "* Required",
+              },
               props: { className: "text-black font-bold" },
             },
             {
@@ -174,6 +186,9 @@ export const v202401: FormSchema = {
                 "How does the state fulfill its obligations to provide information as specified in 42 CFR 438.10(c)(4), 42 CFR 438.10(e), and 42 CFR 438.54(c)(3)?",
               labelClassName: "font-bold",
               name: "voluntary-enrollment-info",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 className: "min-h-[114px]",
               },
@@ -182,6 +197,9 @@ export const v202401: FormSchema = {
               rhf: "TextDisplay",
               text: "States with voluntary enrollment must have an enrollment choice period or a passive enrollment process where the state enrolls the potential enrollee into a managed care plan, PCCM, or PCCM entity and simultaneously provides a period of time for the enrollee to make an active choice of delivery system.",
               name: "states-with-voluntary-enrollment",
+              rules: {
+                required: "* Required",
+              },
             },
             {
               rhf: "Checkbox",
@@ -189,6 +207,9 @@ export const v202401: FormSchema = {
                 "Which of the following will apply to the managed care program?",
               labelClassName: "font-bold",
               name: "voluntary-enrollment-options",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -201,6 +222,9 @@ export const v202401: FormSchema = {
                         label: "Length of enrollment choice period",
                         name: "enrollment-choice-period-length",
                         labelClassName: "font-bold",
+                        rules: {
+                          required: "* Required",
+                        },
                         props: {
                           className: "w-full",
                         },
@@ -218,6 +242,9 @@ export const v202401: FormSchema = {
                           "Describe the method used for passive enrollment and how the method and the state’s provision of information meet all the requirements of 42 CFR 438.54(c)(4), (5), (6), (7), and (8).",
                         labelClassName: "font-bold",
                         name: "passive-enrollment-method",
+                        rules: {
+                          required: "* Required",
+                        },
                         props: {
                           className: "min-h-[114px]",
                         },
@@ -228,6 +255,9 @@ export const v202401: FormSchema = {
                           "How much time will the enrollee have to disenroll from the plan and return to the FFS delivery system?",
                         labelClassName: "font-bold",
                         name: "disenroll-time",
+                        rules: {
+                          required: "* Required",
+                        },
                         props: {
                           className: "w-full",
                         },
@@ -249,6 +279,9 @@ export const v202401: FormSchema = {
                 "How will the state fulfill its obligations to provide information as specified in 42 CFR 438.10(c)(4), 42 CFR 438.10(e), and 42 CFR 438.54(d)(3)?",
               labelClassName: "font-bold",
               name: "mandatory-enrollment-info",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 className: "min-h-[114px]",
               },
@@ -256,6 +289,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "mandatory-enrollment-options",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
@@ -268,6 +304,9 @@ export const v202401: FormSchema = {
                         label: "Length of enrollment choice period",
                         name: "enrollment-choice-period-length",
                         labelClassName: "font-bold",
+                        rules: {
+                          required: "* Required",
+                        },
                         props: {
                           className: "w-full",
                         },
@@ -285,6 +324,9 @@ export const v202401: FormSchema = {
                           "Describe the method used for default enrollment and how it meets all the requirements of 42 CFR 438.54(d)(4), (5), (7), and (8).",
                         labelClassName: "font-bold",
                         name: "default-enrollment-method",
+                        rules: {
+                          required: "* Required",
+                        },
                         props: {
                           className: "min-h-[114px]",
                         },
@@ -302,6 +344,9 @@ export const v202401: FormSchema = {
                           "Describe the method used for passive enrollment and how it meets all of the requirements of 42 CFR 438.54(d)(4), (6), (7), and (8).",
                         labelClassName: "font-bold",
                         name: "passive-enrollment-method",
+                        rules: {
+                          required: "* Required",
+                        },
                         props: {
                           className: "min-h-[114px]",
                         },
