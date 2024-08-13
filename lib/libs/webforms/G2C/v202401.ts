@@ -82,7 +82,7 @@ export const v202401: FormSchema = {
                       name: "inc-greater-than",
                       rhf: "Input",
                       label: "Income greater than",
-                      labelClassName: "text-black font-bold",
+                      labelClassName: "text-black",
                       rules: {
                         required: "* Required",
                         pattern: {
@@ -96,7 +96,7 @@ export const v202401: FormSchema = {
                       name: "inc-lesser-than",
                       rhf: "Input",
                       label: "Income less than or equal to",
-                      labelClassName: "text-black font-bold",
+                      labelClassName: "text-black",
                       rules: {
                         required: "* Required",
                         pattern: {
