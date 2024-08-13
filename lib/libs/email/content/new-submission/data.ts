@@ -2,7 +2,7 @@ export const key = "C0-24-8110";
 
 export const value = {
   timestamp: 1723390633663,
-  authority: "chip spa",
+  authority: "george@example.com",
   seaActionType: "Amend",
   origin: "micro",
   appkParentId: null,

@@ -109,6 +109,7 @@ async function processAndSendEmails(
   emailAddressLookupSecretName: string,
   applicationEndpointUrl: string,
 ) {
+  console.log("processAndSendEmails has been called");
   try {
     const emailAddressLookup = JSON.parse(
       await getSecret(emailAddressLookupSecretName),

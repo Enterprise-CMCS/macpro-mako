@@ -9,7 +9,7 @@ import {
   getEmailTemplates,
   getLatestMatchingEvent,
   emailTemplates,
-} from "."; // Adjust the import to the correct module path
+} from ".";
 
 vi.mock("luxon", () => {
   const originalLuxon = vi.importActual("luxon");

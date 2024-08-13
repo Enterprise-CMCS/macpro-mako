@@ -3,7 +3,8 @@ import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { handler } from "./processEmails";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { getEmailTemplates } from "./../libs/email";
-import { KafkaEvent, KafkaRecord } from "shared-types";
+import { key, value } from "./../libs/email/content/new-submission/data";
+import { KafkaEvent } from "shared-types";
 
 vi.mock("@aws-sdk/client-ses");
 vi.mock("shared-utils", () => ({
@@ -33,8 +34,8 @@ describe("handler", () => {
       records: {
         "topic-partition": [
           {
-            key: "mockKey",
-            value: "mockValue",
+            key: key,
+            value: JSON.stringify(value),
             timestamp: 1628090400000,
             topic: "mockTopic",
             partition: 0,
@@ -48,12 +49,12 @@ describe("handler", () => {
       },
     };
 
-    const mockDecodedKey = "decodedKey";
+    const mockDecodedKey = "C0-24-8110";
     const mockRecord = {
       origin: "micro",
       actionType: "new-submission",
-      authority: "mockAuthority",
-      submitterEmail: "test@example.com",
+      authority: "george@example.com",
+      submitterEmail: "george@example.com",
     };
 
     (decodeBase64WithUtf8 as Mock).mockReturnValueOnce(mockDecodedKey);
@@ -61,11 +62,11 @@ describe("handler", () => {
       JSON.stringify(mockRecord),
     );
     (getSecret as Mock).mockResolvedValue(
-      JSON.stringify({ sourceEmail: "source@example.com" }),
+      JSON.stringify({ sourceEmail: "george@example.com" }),
     );
     (getEmailTemplates as Mock).mockResolvedValue([
       async (variables: any) => ({
-        subject: "Test Subject",
+        subject: "Medicaid SPA C0-24-8110 Submitted",
         html: "Test HTML",
         text: "Test Text",
       }),
