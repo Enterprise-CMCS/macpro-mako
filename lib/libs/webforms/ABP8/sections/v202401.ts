@@ -270,6 +270,9 @@ export function deliverySystemCharactaristics({
             label: `Will one or more ABP benefits or services be provided through a type of coverage other than the ${programLabel}, such as another managed care plan or fee-for service delivery system?`,
             labelClassName: "font-bold",
             name: "abp-benefits-provided",
+            rules: {
+              required: "* Required",
+            },
             props: {
               className: "w-[125px]",
               options: [
@@ -301,6 +304,9 @@ export function deliverySystemCharactaristics({
                     label: "Benefit or service",
                     labelClassName: "font-bold",
                     name: "benefit-or-service",
+                    rules: {
+                      required: "* Required",
+                    },
                     props: {
                       className: "w-full",
                     },
@@ -310,6 +316,9 @@ export function deliverySystemCharactaristics({
                     label: "How it will be provided",
                     labelClassName: "font-bold",
                     name: "how-provided",
+                    rules: {
+                      required: "* Required",
+                    },
                     props: {
                       className: "min-h-[76px]",
                     },
