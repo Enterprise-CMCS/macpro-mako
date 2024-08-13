@@ -2,7 +2,7 @@ import { SEATOOL_STATUS, getStatus, newSubmissionSchema } from "shared-types";
 import {
   getNextBusinessDayTimestamp,
   seaToolFriendlyTimestamp,
-} from "shared-utils";
+} from "../../../../shared-utils/seatool-date-helper";
 
 export const transform = (id: string) => {
   return newSubmissionSchema.transform((data) => {
@@ -11,29 +11,28 @@ export const transform = (id: string) => {
     const todayEpoch = seaToolFriendlyTimestamp(timestampDate);
     const nextBusinessDayEpoch = getNextBusinessDayTimestamp(timestampDate);
     return {
-      id,
-      attachments: data.attachments,
+      additionalInformation: data.additionalInformation,
+      appkParent: data.appkParent,
       appkParentId: data.appkParentId,
       appkTitle: data.appkTitle,
-      appkParent: data.appkParent,
-      additionalInformation: data.additionalInformation,
-      submitterEmail: data.submitterEmail,
-      submitterName: data.submitterName === "-- --" ? null : data.submitterName,
+      attachments: data.attachments,
+      authority: data.authority,
+      changedDate: new Date(data.timestamp).toISOString(),
+      cmsStatus,
+      description: null,
+      id,
+      makoChangedDate: new Date(data.timestamp).toISOString(),
       origin: "OneMAC",
       originalWaiverNumber: data.originalWaiverNumber,
-      state: id.split("-")[0],
-      authority: data.authority,
-      seatoolStatus: SEATOOL_STATUS.PENDING,
-      cmsStatus,
-      stateStatus,
       raiWithdrawEnabled: false, // Set to false for new submissions
+      seatoolStatus: SEATOOL_STATUS.PENDING,
+      state: id.split("-")[0],
+      stateStatus,
       statusDate: new Date(todayEpoch).toISOString(),
-      submissionDate: new Date(nextBusinessDayEpoch).toISOString(),
-      changedDate: new Date(data.timestamp).toISOString(),
-      makoChangedDate: new Date(data.timestamp).toISOString(),
-      // These are not collected by our app, but need to be set for our frontend to display things properly
       subject: null,
-      description: null,
+      submissionDate: new Date(nextBusinessDayEpoch).toISOString(),
+      submitterEmail: data.submitterEmail,
+      submitterName: data.submitterName,
     };
     // }
   });
