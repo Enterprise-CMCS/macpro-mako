@@ -70,6 +70,7 @@ export const v202401: FormSchema = {
                   name: "eligibile-group-list",
                   rhf: "Textarea",
                   label: "Eligibility group(s) included",
+                  labelClassName: "font-bold text-black",
                   rules: { required: "* Required" },
                 },
                 {
