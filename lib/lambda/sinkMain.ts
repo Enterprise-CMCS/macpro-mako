@@ -71,7 +71,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         continue;
       }
       if (
-        result.data.authorityId &&
+        result.data.authority &&
         typeof result.data.seatoolStatus === "string" &&
         result.data.seatoolStatus != "Unknown"
       ) {
