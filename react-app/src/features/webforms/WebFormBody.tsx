@@ -51,7 +51,7 @@ export function WebformBody({
     <div className="max-w-screen-lg mx-auto p-4 py-8 lg:px-8">
       <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-6">
-          <fieldset disabled={readonly}>
+          <fieldset disabled={readonly} className="min-w-full">
             <RHFDocument document={data} {...form} />
             {!readonly && (
               <div className="flex justify-between text-blue-700 underline mb-2 mt-10">
