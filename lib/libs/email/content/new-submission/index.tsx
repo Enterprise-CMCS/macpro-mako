@@ -5,7 +5,7 @@ import {
   formatAttachments,
   formatDate,
   formatNinetyDaysDate,
-} from "..";
+} from "../..";
 
 export const newSubmission = {
   [Authority.MED_SPA]: {
