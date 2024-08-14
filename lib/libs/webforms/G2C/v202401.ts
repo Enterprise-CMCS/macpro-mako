@@ -118,7 +118,8 @@ export const v202401: FormSchema = {
                   props: {
                     appendText: "Add service",
                     fieldArrayClassName:
-                      DefaultFieldGroupProps.fieldArrayClassName + "space-y-6",
+                      DefaultFieldGroupProps.fieldArrayClassName +
+                      "space-y-6 divider-parent-element",
                   },
                   fields: [
                     {
@@ -219,6 +220,13 @@ export const v202401: FormSchema = {
                           rhf: "Textarea",
                         },
                       ],
+                    },
+                    {
+                      name: "div-2",
+                      rhf: "Divider",
+                      props: {
+                        wrapperClassName: "last-child-element",
+                      },
                     },
                   ],
                 },
