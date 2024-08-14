@@ -16,6 +16,7 @@ import {
   RHFTextDisplay,
   ruleGenerator,
   sortFunctions,
+  stringCompare,
 } from ".";
 import {
   Button,
@@ -92,7 +93,7 @@ export const SlotField = ({
       const opts = props?.options.sort((a, b) =>
         props.customSort
           ? sortFunctions[props.customSort](a.label, b.label)
-          : a.label.localeCompare(b.label),
+          : stringCompare(a, b),
       );
 
       return (
