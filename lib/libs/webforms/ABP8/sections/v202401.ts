@@ -203,7 +203,12 @@ export function managedCare({
                   ],
                 },
                 {
-                  label: `A ${programLabel} consistent with applicable managed care requirements (42 CFR Part 438, 42 CFR Part 440, and Sections 1903(m), 1932, and 1937 of the Social Security Act)`,
+                  label: `${
+                    programLabel === SectionName.HIO ||
+                    programLabel === SectionName.MCO
+                      ? "An"
+                      : "A"
+                  } ${programLabel} consistent with applicable managed care requirements (42 CFR Part 438, 42 CFR Part 440, and Sections 1903(m), 1932, and 1937 of the Social Security Act)`,
                   value: "consistent-with-requirements",
                 },
               ],
@@ -801,9 +806,6 @@ export function disenrollment({
               "Additional circumstances of cause for disenrollment (optional)",
             labelClassName: "font-bold",
             name: "additional-disenrollment-cause",
-            rules: {
-              required: "* Required",
-            },
             props: {
               className: "min-h-[114px]",
             },
@@ -832,6 +834,10 @@ export function disenrollment({
                       labelClassName: "font-bold",
                       name: "disenrollment-number-months",
                       rules: {
+                        pattern: {
+                          value: /^[0-9]\d*$/,
+                          message: "Must be a positive integer value",
+                        },
                         required: "* Required",
                       },
                       props: {
@@ -856,11 +862,16 @@ export function disenrollment({
                     "The MCO/HIO/PIHP/PAHP/PCCM/PCCM entity may not approve or disapprove requests and must refer all disenrollment requests received to the state.",
                   value: `${createSectionId(programLabel)}-refers-requests`,
                 },
-                {
-                  label:
-                    "Enrollees must seek redress through the MCO/HIO/PIHP/PAHP grievance process before the state will make a determination on the disenrollment request.",
-                  value: "seek-redress",
-                },
+                ...(programLabel === SectionName.PCCM ||
+                programLabel === SectionName.PCCMEntity
+                  ? []
+                  : [
+                      {
+                        label:
+                          "Enrollees must seek redress through the MCO/HIO/PIHP/PAHP grievance process before the state will make a determination on the disenrollment request.",
+                        value: "seek-redress",
+                      },
+                    ]),
               ],
             },
           },
@@ -936,7 +947,7 @@ export function disenrollment({
                           },
                           {
                             label:
-                              "The state reviews and approves all requests for enrollee transfers or disenrollments initiated by MCOs/PIHPs/PAHPS/PCCMs/PCCM entities.",
+                              "The state reviews and approves all requests for enrollee transfers or disenrollments initiated by MCOs/PIHPs/PAHPs/PCCMs/PCCM entities.",
                             value: "state-reviews-requests",
                           },
                           {

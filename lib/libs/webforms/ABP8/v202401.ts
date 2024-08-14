@@ -692,7 +692,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     label:
-                      "The state plan program applies the rural exception to choice requirements of 42 CFR 438.52(a) for MCOs in accordance with 42 CFR 438.52(b).",
+                      "The state plan program applies the rural exception to choice requirements of 42 CFR 438.52(a) for PIHPs in accordance with 42 CFR 438.52(b).",
                     value: "assures-rural-exception",
                     slots: [
                       {
@@ -852,7 +852,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     label:
-                      "The state plan program applies the rural exception to choice requirements of 42 CFR 438.52(a) for MCOs in accordance with 42 CFR 438.52(b).",
+                      "The state plan program applies the rural exception to choice requirements of 42 CFR 438.52(a) for PAHPs in accordance with 42 CFR 438.52(b).",
                     value: "assures-rural-exception",
                     slots: [
                       {
