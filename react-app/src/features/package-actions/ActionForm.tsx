@@ -1,5 +1,4 @@
 import {
-  ErrorBanner,
   Form,
   LoadingSpinner,
   userPrompt,
@@ -120,7 +119,6 @@ export const ActionForm = ({
 
           return field;
         })}
-        <ErrorBanner />
         {content.preSubmitNotice && (
           <PreSubmitNotice
             message={content.preSubmitNotice}
