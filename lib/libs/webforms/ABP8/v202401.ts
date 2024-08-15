@@ -194,9 +194,6 @@ export const v202401: FormSchema = {
               rhf: "TextDisplay",
               text: "States with voluntary enrollment must have an enrollment choice period or a passive enrollment process where the state enrolls the potential enrollee into a managed care plan, PCCM, or PCCM entity and simultaneously provides a period of time for the enrollee to make an active choice of delivery system.",
               name: "states-with-voluntary-enrollment",
-              rules: {
-                required: "* Required",
-              },
             },
             {
               rhf: "Checkbox",
