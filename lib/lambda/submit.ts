@@ -1,6 +1,10 @@
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
-import { isAuthorized } from "../libs/api/auth/user";
+import {
+  getAuthDetails,
+  isAuthorized,
+  lookupUserAttributes,
+} from "../libs/api/auth/user";
 
 import { newSubmissionSchema } from "shared-types";
 import { produceMessage } from "../libs/api/kafka";
@@ -17,12 +21,22 @@ export const submit = async (event: APIGatewayEvent) => {
   const body = JSON.parse(event.body);
   console.log(body);
 
+  // Check that the caller has appropriate permissions
   if (!(await isAuthorized(event, body.state))) {
     return response({
       statusCode: 403,
       body: { message: "Unauthorized" },
     });
   }
+
+  // Extract the caller's name and email, derived from their auth details
+  const authDetails = getAuthDetails(event);
+  const userAttr = await lookupUserAttributes(
+    authDetails.userId,
+    authDetails.poolId,
+  );
+  const submitterEmail = userAttr.email;
+  const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
 
   // TODO... run an action check, to make sure its allowed
   // const originalWaiver = await getPackage(body.originalWaiverNumber);
@@ -32,13 +46,13 @@ export const submit = async (event: APIGatewayEvent) => {
   //   authDetails.poolId,
   // );
 
-  const now = Date.now();
-
   try {
     // Safe parse the event; throws an error when malformed
     const eventBody = newSubmissionSchema.safeParse({
       ...body,
-      timestamp: now,
+      submitterEmail,
+      submitterName,
+      timestamp: Date.now(),
     });
 
     if (!eventBody.success) {
