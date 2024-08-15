@@ -3,18 +3,18 @@ import { attachmentSchema } from "../attachments";
 
 // These are fields we expect the frontend to provide in the api request's payload
 export const feNewSubmissionSchema = z.object({
-  id: z.string(),
-  event: z.literal("new-submission").default("new-submission"),
-  eventVersion: z.literal(0).default(0),
-  authority: z.string(),
-  proposedEffectiveDate: z.number(),
-  attachments: z.array(attachmentSchema).nullish(),
+  actionType: z.enum(["New", "Amend", "Renew", "Extend"]).optional(),
   additionalInformation: z.string().nullable().default(null),
   appkParent: z.boolean().optional(),
   appkParentId: z.string().nullable().default(null),
   appkTitle: z.string().nullish(),
-  actionType: z.enum(["New", "Amend", "Renew", "Extend"]).optional(),
+  attachments: z.array(attachmentSchema).nullish(),
+  authority: z.string(),
+  event: z.literal("new-submission").default("new-submission"),
+  eventVersion: z.literal(0).default(0),
+  id: z.string(),
   originalWaiverNumber: z.string().nullable().default(null),
+  proposedEffectiveDate: z.number(),
 });
 
 // These are fields we want the api backend to control to prevent manipulation.  They're added to what the frontend sends
