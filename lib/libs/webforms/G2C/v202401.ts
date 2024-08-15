@@ -225,7 +225,7 @@ export const v202401: FormSchema = {
                       name: "div-2",
                       rhf: "Divider",
                       props: {
-                        wrapperClassName: "last-child-element border-1",
+                        wrapperClassName: "last-child-element",
                       },
                     },
                   ],
