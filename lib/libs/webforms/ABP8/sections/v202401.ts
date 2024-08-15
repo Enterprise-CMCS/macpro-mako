@@ -835,7 +835,7 @@ export function disenrollment({
                       name: "disenrollment-number-months",
                       rules: {
                         pattern: {
-                          value: /^[0-9]\d*$/,
+                          value: /^[1-9]\d*$/,
                           message: "Must be a positive integer value",
                         },
                         required: "* Required",
