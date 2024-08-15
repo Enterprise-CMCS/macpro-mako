@@ -175,9 +175,6 @@ export const v202401: FormSchema = {
               rhf: "TextDisplay",
               text: "Voluntary enrollment (42 CFR 438.54(c))",
               name: "voluntary-enrollment-textdisplay",
-              rules: {
-                required: "* Required",
-              },
               props: { className: "text-black font-bold" },
             },
             {
