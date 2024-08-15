@@ -1,32 +1,30 @@
-import { SEATOOL_STATUS, getStatus, newSubmissionSchema } from "shared-types";
+import { SEATOOL_STATUS, getStatus } from "shared-types";
+import * as newSubmission from "../../../events/new-submission";
 import {
   getNextBusinessDayTimestamp,
   seaToolFriendlyTimestamp,
 } from "../../../../shared-utils/seatool-date-helper";
 
-export const transform = (id: string) => {
-  return newSubmissionSchema.transform((data) => {
+export const transform = () => {
+  // any adhoc logic
+  return newSubmission.schema.transform((data) => {
     const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.PENDING);
     const timestampDate = new Date(data.timestamp);
     const todayEpoch = seaToolFriendlyTimestamp(timestampDate);
     const nextBusinessDayEpoch = getNextBusinessDayTimestamp(timestampDate);
     return {
       additionalInformation: data.additionalInformation,
-      appkParent: data.appkParent,
-      appkParentId: data.appkParentId,
-      appkTitle: data.appkTitle,
       attachments: data.attachments,
       authority: data.authority,
       changedDate: new Date(data.timestamp).toISOString(),
       cmsStatus,
       description: null,
-      id,
+      id: data.id,
       makoChangedDate: new Date(data.timestamp).toISOString(),
       origin: "OneMAC",
-      originalWaiverNumber: data.originalWaiverNumber,
       raiWithdrawEnabled: false, // Set to false for new submissions
       seatoolStatus: SEATOOL_STATUS.PENDING,
-      state: id.split("-")[0],
+      state: data.id.split("-")[0],
       stateStatus,
       statusDate: new Date(todayEpoch).toISOString(),
       subject: null,
@@ -34,7 +32,6 @@ export const transform = (id: string) => {
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
     };
-    // }
   });
 };
 

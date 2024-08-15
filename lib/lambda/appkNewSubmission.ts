@@ -3,7 +3,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import * as sql from "mssql";
 import { isAuthorized } from "../libs/api/auth/user";
 
-import { newSubmissionSchema } from "shared-types";
+import { newSubmission } from "shared-types";
 import {
   getSecret,
   getNextBusinessDayTimestamp,
@@ -76,7 +76,7 @@ export const submit = async (event: APIGatewayEvent) => {
       proposedEffectiveDate: body.proposedEffectiveDate,
     };
 
-    const validateZod = newSubmissionSchema.safeParse({
+    const validateZod = newSubmission.feSchema.safeParse({
       ...body,
       ...(!!Number(WINDEX) && {
         appkParentId: `${body.state}-${body.waiverIds[0]}`,

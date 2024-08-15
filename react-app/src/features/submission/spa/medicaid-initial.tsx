@@ -27,29 +27,30 @@ import { FormField } from "@/components/Inputs";
 import { SlotAdditionalInfo } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
 import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
-import { Authority } from "shared-types";
+import { Authority, newSubmission } from "shared-types";
+import { NewSubmission } from "shared-types/events/new-submission";
 
-const formSchema = z.object({
-  id: zSpaIdSchema,
-  additionalInformation: z.string().max(4000).optional(),
-  attachments: z.object({
-    cmsForm179: zAttachmentRequired({
-      min: 1,
-      max: 1,
-      message: "Required: You must submit exactly one file for CMS Form 179.",
-    }),
-    spaPages: zAttachmentRequired({ min: 1 }),
-    coverLetter: zAttachmentOptional,
-    tribalEngagement: zAttachmentOptional,
-    existingStatePlanPages: zAttachmentOptional,
-    publicNotice: zAttachmentOptional,
-    sfq: zAttachmentOptional,
-    tribalConsultation: zAttachmentOptional,
-    other: zAttachmentOptional,
-  }),
-  proposedEffectiveDate: z.date(),
-});
-type MedicaidFormSchema = z.infer<typeof formSchema>;
+// const formSchema = z.object({
+//   id: zSpaIdSchema,
+//   additionalInformation: z.string().max(4000).optional(),
+//   attachments: z.object({
+//     cmsForm179: zAttachmentRequired({
+//       min: 1,
+//       max: 1,
+//       message: "Required: You must submit exactly one file for CMS Form 179.",
+//     }),
+//     spaPages: zAttachmentRequired({ min: 1 }),
+//     coverLetter: zAttachmentOptional,
+//     tribalEngagement: zAttachmentOptional,
+//     existingStatePlanPages: zAttachmentOptional,
+//     publicNotice: zAttachmentOptional,
+//     sfq: zAttachmentOptional,
+//     tribalConsultation: zAttachmentOptional,
+//     other: zAttachmentOptional,
+//   }),
+//   proposedEffectiveDate: z.date(),
+// });
+// type MedicaidFormSchema = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
@@ -78,14 +79,14 @@ export const MedicaidSpaFormPage = () => {
   const crumbs = useLocationCrumbs();
   const navigate = useNavigate();
   const alert = useAlertContext();
-  const form = useForm<MedicaidFormSchema>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<newSubmission.NewSubmission>({
+    resolver: zodResolver(newSubmission.feSchema),
     mode: "onChange",
   });
 
-  const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
+  const handleSubmit: SubmitHandler<NewSubmission> = async (formData) => {
     try {
-      await submit<MedicaidFormSchema>({
+      await submit<newSubmission.NewSubmission>({
         data: formData,
         endpoint: "/submit",
         user,

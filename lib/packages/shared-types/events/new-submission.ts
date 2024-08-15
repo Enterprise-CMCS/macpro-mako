@@ -1,34 +1,64 @@
 import { z } from "zod";
-import { attachmentSchema } from "../attachments";
+import { attachmentArraySchema } from "../attachments";
+import { APIGatewayEvent } from "aws-lambda";
+import {
+  getAuthDetails,
+  lookupUserAttributes,
+} from "../../../libs/api/auth/user"; // this should move
 
 // These are fields we expect the frontend to provide in the api request's payload
-export const feNewSubmissionSchema = z.object({
-  actionType: z.enum(["New", "Amend", "Renew", "Extend"]).optional(),
+export const feSchema = z.object({
+  action: z.literal("new-submission").default("new-submission"),
   additionalInformation: z.string().nullable().default(null),
-  appkParent: z.boolean().optional(),
-  appkParentId: z.string().nullable().default(null),
-  appkTitle: z.string().nullish(),
-  attachments: z.array(attachmentSchema).nullish(),
+  attachments: z.object({
+    cmsForm179: attachmentArraySchema({
+      min: 1,
+      max: 1,
+      message: "Required: You must submit exactly one file for CMS Form 179.",
+    }),
+    spaPages: attachmentArraySchema({ min: 1 }),
+    coverLetter: attachmentArraySchema({}),
+    tribalEngagement: attachmentArraySchema({}),
+    existingStatePlanPages: attachmentArraySchema({}),
+    publicNotice: attachmentArraySchema({}),
+    sfq: attachmentArraySchema({}),
+    tribalConsultation: attachmentArraySchema({}),
+    other: attachmentArraySchema({}),
+  }),
   authority: z.string(),
-  event: z.literal("new-submission").default("new-submission"),
-  eventVersion: z.literal(0).default(0),
   id: z.string(),
-  originalWaiverNumber: z.string().nullable().default(null),
   proposedEffectiveDate: z.number(),
 });
 
-// These are fields we want the api backend to control to prevent manipulation.  They're added to what the frontend sends
-export const beNewSubmissionSchema = z.object({
+export const schema = feSchema.extend({
   origin: z.literal("mako").default("mako"),
   submitterName: z.string(),
-  submitterEmail: z.string(),
+  submitterEmail: z.string().email(),
   timestamp: z.number(),
 });
 
-// The overall schema is the merge of the two
-export const newSubmissionSchema = feNewSubmissionSchema.merge(
-  beNewSubmissionSchema,
-);
+export const transform = async (event: APIGatewayEvent) => {
+  const parsedResult = feSchema.safeParse(JSON.parse(event.body));
+  if (!parsedResult.success) {
+    throw parsedResult.error;
+  }
 
-// The exported inferred type is based off the merged schema
-export type NewSubmission = z.infer<typeof newSubmissionSchema>;
+  const authDetails = getAuthDetails(event);
+  const userAttr = await lookupUserAttributes(
+    authDetails.userId,
+    authDetails.poolId,
+  );
+  const submitterEmail = userAttr.email;
+  const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
+
+  const transformedData = schema.parse({
+    ...parsedResult.data,
+    submitterName,
+    submitterEmail,
+    timestamp: Date.now(),
+  });
+
+  return transformedData;
+};
+
+export type NewSubmission = Awaited<ReturnType<typeof transform>>;

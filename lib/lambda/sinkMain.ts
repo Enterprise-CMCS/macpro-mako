@@ -129,7 +129,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
             case "new-submission":
             case undefined:
               return opensearch.main.newSubmission
-                .transform(id)
+                .transform()
                 .safeParse(record);
             case Action.DISABLE_RAI_WITHDRAW:
             case Action.ENABLE_RAI_WITHDRAW:
