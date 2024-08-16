@@ -57,9 +57,9 @@ export const AppK = () => {
       },
     );
   };
-  console.log(cache.data.appkChildren);
+
   if (!cache.data.appkChildren || cache.data.appkChildren.length === 0) {
-    return <></>;
+    return null;
   }
 
   return (
@@ -106,12 +106,10 @@ export const AppK = () => {
         cancelButtonText="Cancel"
         title="Are you sure you want to withdraw this 1915(c) Appendix K?"
         body={
-          <>
-            <p>
-              Any 1915(c) Appendix Ks associated with {removeChild} will not be
-              affected.
-            </p>
-          </>
+          <p>
+            Any 1915(c) Appendix Ks associated with {removeChild} will not be
+            affected.
+          </p>
         }
       />
     </div>
