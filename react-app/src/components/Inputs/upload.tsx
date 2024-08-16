@@ -6,8 +6,9 @@ import { X } from "lucide-react";
 import { FILE_TYPES } from "shared-types/uploads";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
-import { attachmentSchema } from "shared-types";
 import { API } from "aws-amplify";
+import { LoadingSpinner } from "@/components/LoadingSpinner"; // Import your LoadingSpinner component
+import { attachmentSchema } from "shared-types";
 
 type Attachment = z.infer<typeof attachmentSchema>;
 
@@ -18,6 +19,7 @@ type UploadProps = {
 };
 
 export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
+  const [isUploading, setIsUploading] = useState(false); // New state for tracking upload status
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const uniqueId = uuidv4();
 
@@ -43,22 +45,19 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
         );
       } else {
         setErrorMessage(null);
+        setIsUploading(true); // Set uploading to true
 
         const processedFiles = await Promise.all(
           acceptedFiles.map(async (file) => {
             try {
-              // Get presigned URL
               const url = await getPresignedUrl(file.name);
-
-              // Upload file to S3 using the presigned URL
               await uploadToS3(file, url);
 
-              // Create attachment object
               const attachment: Attachment = {
                 filename: file.name,
-                title: file.name.split(".").slice(0, -1).join("."), // Example logic for title
-                bucket: "your-bucket-name", // Replace with actual bucket logic
-                key: `${uniqueId}/${file.name}`, // Example logic for key
+                title: file.name.split(".").slice(0, -1).join("."),
+                bucket: "your-bucket-name",
+                key: `${uniqueId}/${file.name}`,
                 uploadDate: Date.now(),
               };
 
@@ -71,12 +70,12 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
           }),
         );
 
-        // Filter out any null attachments (from failed uploads)
         const validAttachments = processedFiles.filter(
           (attachment) => attachment !== null,
         ) as Attachment[];
 
         setFiles([...files, ...validAttachments]);
+        setIsUploading(false); // Set uploading to false when done
       }
     },
     [files, setFiles, uniqueId],
@@ -94,6 +93,7 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
     accept,
     maxFiles,
     maxSize: 80 * 1024 * 1024, // 80MB,
+    disabled: isUploading, // Disable dropzone while uploading
   });
 
   return (
@@ -121,24 +121,28 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
         </div>
       )}
       {errorMessage && <span className="text-red-500">{errorMessage}</span>}
-      <div
-        {...getRootProps()}
-        className={cn(
-          "w-full flex items-center justify-center border border-dashed border-[#71767a] py-6 rounded-sm",
-          isDragActive && "border-blue-700",
-        )}
-      >
-        <p>
-          Drag file here or{" "}
-          <span className="text-sky-700 underline hover:cursor-pointer">
-            choose from folder
-          </span>
-        </p>
-        <label htmlFor={`upload-${uniqueId}`} className="sr-only">
-          Drag file here or choose from folder
-        </label>
-        <input id={`upload-${uniqueId}`} {...getInputProps()} />
-      </div>
+      {isUploading ? (
+        <LoadingSpinner /> // Render the loading spinner when uploading
+      ) : (
+        <div
+          {...getRootProps()}
+          className={cn(
+            "w-full flex items-center justify-center border border-dashed border-[#71767a] py-6 rounded-sm",
+            isDragActive && "border-blue-700",
+          )}
+        >
+          <p>
+            Drag file here or{" "}
+            <span className="text-sky-700 underline hover:cursor-pointer">
+              choose from folder
+            </span>
+          </p>
+          <label htmlFor={`upload-${uniqueId}`} className="sr-only">
+            Drag file here or choose from folder
+          </label>
+          <input id={`upload-${uniqueId}`} {...getInputProps()} />
+        </div>
+      )}
     </>
   );
 };
