@@ -21,7 +21,6 @@ import { SlotAdditionalInfo } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
 import { SubmitAndCancelBtnSection } from "../../submission/waiver/shared-components";
 import { newSubmission } from "shared-types";
-import { NewSubmission } from "shared-types/events/new-submission";
 import { API } from "aws-amplify";
 import { z } from "zod";
 
@@ -35,7 +34,9 @@ export const NewMedicaidForm = () => {
     mode: "onChange",
   });
 
-  const handleSubmit: SubmitHandler<NewSubmission> = async (formData) => {
+  const handleSubmit: SubmitHandler<newSubmission.NewSubmission> = async (
+    formData,
+  ) => {
     try {
       await API.post("os", "/submit", {
         body: formData,
