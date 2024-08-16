@@ -1,4 +1,4 @@
-import { Action } from "shared-types";
+import { Action } from "../../packages/shared-types";
 import { DecodedRecord } from "./handler-lib";
 
 interface EmailCommand {
@@ -258,7 +258,7 @@ const getBundleFromEvent = (
       };
     case "respond-to-rai-chip-spa":
       return {
-        lookupList: ["osInsights"],
+        lookupList: ["osInsights", "cognito"],
         dataList: [
           "osgEmail",
           "chipInbox",
@@ -274,6 +274,8 @@ const getBundleFromEvent = (
           "additionalInformation",
           "formattedFileList",
           "textFileList",
+          "srt",
+          "cpoc",
         ],
         emailCommands: [
           {
