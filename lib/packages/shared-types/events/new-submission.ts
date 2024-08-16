@@ -52,7 +52,7 @@ export const feSchema = z.object({
       label: z.string().default("Other"),
     }),
   }),
-  authority: z.string(),
+  authority: z.string().default("Medicaid SPA"),
   id: z.string(),
   proposedEffectiveDate: z.number(),
 });
