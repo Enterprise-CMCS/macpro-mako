@@ -14,7 +14,6 @@ import {
   Alert,
   AttachmentsSection,
   BreadCrumbs,
-  ErrorBanner,
   ActionFormHeaderCard,
   SimplePageContainer,
   useLocationCrumbs,
@@ -129,7 +128,6 @@ export const TemporaryExtension = () => {
           </div>
         </Alert>
         <FormLoadingSpinner />
-        <ErrorBanner />
         <SubmitAndCancelBtnSection />
       </form>
       <FAQFooter />
