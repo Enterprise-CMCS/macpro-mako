@@ -4,6 +4,7 @@ import { RHFTextField } from "shared-types";
 
 interface RHFTextDisplayProps {
   text: RHFTextField;
+  index?: number;
 }
 
 export const RHFTextDisplay = (props: RHFTextDisplayProps) => {

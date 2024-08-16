@@ -1,4 +1,4 @@
-import { FormSchema } from "shared-types";
+import { FormSchema, DefaultFieldGroupProps } from "shared-types";
 
 export const v202401: FormSchema = {
   header:
@@ -68,9 +68,10 @@ export const v202401: FormSchema = {
         {
           slots: [
             {
-              rhf: "FieldGroup",
+              rhf: "FieldArray",
               name: "service-item",
               props: {
+                ...DefaultFieldGroupProps,
                 appendText: "Add service or item",
                 removeText: "Remove",
               },
@@ -175,8 +176,9 @@ export const v202401: FormSchema = {
           slots: [
             {
               name: "service-item",
-              rhf: "FieldGroup",
+              rhf: "FieldArray",
               props: {
+                ...DefaultFieldGroupProps,
                 appendText: "Add service or item",
                 removeText: "Remove",
               },
