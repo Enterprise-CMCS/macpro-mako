@@ -18,7 +18,7 @@ const checkTriggeringValue = (
         return (
           (Array.isArray(dependentValue[i]) &&
             (dependentValue[i] as unknown[]).length > 0) ||
-          !!dependentValue[i]
+          (!Array.isArray(dependentValue[i]) && !!dependentValue[i])
         );
       case "valueNotExist":
         return (
