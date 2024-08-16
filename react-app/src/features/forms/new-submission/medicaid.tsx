@@ -114,7 +114,7 @@ export const NewMedicaidForm = () => {
                 </Inputs.FormItem>
               )}
             />
-            {/* <Inputs.FormField
+            <Inputs.FormField
               control={form.control}
               name="proposedEffectiveDate"
               render={({ field }) => (
@@ -125,14 +125,14 @@ export const NewMedicaidForm = () => {
                   </Inputs.FormLabel>
                   <Inputs.FormControl>
                     <Inputs.DatePicker
-                      onChange={field.onChange}
-                      date={field.value}
+                      onChange={(date) => field.onChange(date.getTime())}
+                      date={field.value ? new Date(field.value) : undefined}
                     />
                   </Inputs.FormControl>
                   <Inputs.FormMessage />
                 </Inputs.FormItem>
               )}
-            /> */}
+            />
           </SectionCard>
           {/* <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc
