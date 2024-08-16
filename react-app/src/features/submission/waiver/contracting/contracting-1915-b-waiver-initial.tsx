@@ -11,6 +11,7 @@ import {
   formCrumbsFromPath,
   FormField,
   banner,
+  LoadingSpinner,
 } from "@/components";
 import * as Content from "@/components/Form/old-content";
 import * as Inputs from "@/components/Inputs";
@@ -115,6 +116,7 @@ export const Contracting1915BWaiverInitialPage = () => {
     <SimplePageContainer>
       <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
       <Inputs.Form {...form}>
+        {form.formState.isSubmitting && <LoadingSpinner />}
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
@@ -227,7 +229,7 @@ export const Contracting1915BWaiverInitialPage = () => {
             />
           </SectionCard>
           <Content.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection showAlert loadingSpinner />
+          <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
       <FAQFooter />

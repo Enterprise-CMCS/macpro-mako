@@ -1,4 +1,3 @@
- 
 import { Control, FieldValues } from "react-hook-form";
 import { Section } from "shared-types";
 import { FormLabel } from "../Inputs";
@@ -24,7 +23,7 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
             <FormLabel className="font-bold">{props.section.title}</FormLabel>
           </div>
         )}
-        {props.section.form?.length ? (
+        {props.section.form?.length > 0 && (
           <div className="px-8 py-6">
             {props.section.form.map((FORM, index) => (
               <RHFFormGroup
@@ -35,8 +34,6 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
               />
             ))}
           </div>
-        ) : (
-          <></>
         )}
       </div>
     </DependencyWrapper>
