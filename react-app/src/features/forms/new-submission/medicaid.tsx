@@ -23,6 +23,7 @@ import { SubmitAndCancelBtnSection } from "../../submission/waiver/shared-compon
 import { newSubmission } from "shared-types";
 import { NewSubmission } from "shared-types/events/new-submission";
 import { API } from "aws-amplify";
+import { z } from "zod";
 
 export const NewMedicaidForm = () => {
   // const { data: user } = useGetUser();
@@ -70,6 +71,11 @@ export const NewMedicaidForm = () => {
       window.scrollTo(0, 0);
     }
   };
+
+  const attachmentKeys = Object.keys(
+    newSubmission.feSchema.shape.attachments.shape,
+  ) as Array<keyof typeof newSubmission.feSchema.shape.attachments.shape>;
+
   return (
     <SimplePageContainer>
       <BreadCrumbs options={crumbs} />
@@ -134,41 +140,35 @@ export const NewMedicaidForm = () => {
               )}
             />
           </SectionCard>
-          {/* <SectionCard title="Attachments">
-            <Content.AttachmentsSizeTypesDesc
-              faqAttLink="/faq/medicaid-spa-attachments"
-              includeCMS179
-            />
-            {attachmentList.map(({ name, label, required }) => (
-              <Inputs.FormField
-                key={name}
-                control={form.control}
-                name={`attachments.${name}`}
-                render={({ field }) => (
-                  <Inputs.FormItem>
-                    <Inputs.FormLabel>
-                      {label} {required ? <Inputs.RequiredIndicator /> : null}
-                    </Inputs.FormLabel>
-                    {
-                      <Inputs.FormDescription>
-                        {name === "cmsForm179"
-                          ? "One attachment is required"
-                          : ""}
-                        {name === "spaPages"
-                          ? "At least one attachment is required"
-                          : ""}
-                      </Inputs.FormDescription>
-                    }
-                    <Inputs.Upload
-                      files={field?.value ?? []}
-                      setFiles={field.onChange}
-                    />
-                    <Inputs.FormMessage />
-                  </Inputs.FormItem>
-                )}
-              />
-            ))}
-          </SectionCard> */}
+          <SectionCard title="Attachments">
+            {attachmentKeys.map((key) => {
+              const attachmentSchema =
+                newSubmission.feSchema.shape.attachments.shape[key].shape;
+              return (
+                <Inputs.FormField
+                  key={key}
+                  control={form.control}
+                  name={`attachments.${key}.files`}
+                  render={({ field }) => (
+                    <Inputs.FormItem>
+                      <Inputs.FormLabel>
+                        {attachmentSchema.label._def.defaultValue() as string}{" "}
+                        {attachmentSchema.files instanceof
+                        z.ZodOptional ? null : (
+                          <Inputs.RequiredIndicator />
+                        )}
+                      </Inputs.FormLabel>
+                      <Inputs.Upload
+                        files={field?.value ?? []}
+                        setFiles={field.onChange}
+                      />
+                      <Inputs.FormMessage />
+                    </Inputs.FormItem>
+                  )}
+                />
+              );
+            })}
+          </SectionCard>
           <SectionCard title={"Additional Information"}>
             <FormField
               control={form.control}
