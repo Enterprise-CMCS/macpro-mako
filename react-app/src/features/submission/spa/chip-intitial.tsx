@@ -48,27 +48,27 @@ type ChipFormSchema = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
-const attachmentList = [
-  { name: "currentStatePlan", label: "Current State Plan", required: true },
-  {
-    name: "amendedLanguage",
-    label: "Amended State Plan Language",
-    required: true,
-  },
-  {
-    name: "coverLetter",
-    label: "Cover Letter",
-    required: true,
-  },
-  {
-    name: "budgetDocuments",
-    label: "Budget Documents",
-    required: false,
-  },
-  { name: "publicNotice", label: "Public Notice", required: false },
-  { name: "tribalConsultation", label: "Tribal Consultation", required: false },
-  { name: "other", label: "Other", required: false },
-] as const;
+// const attachmentList = [
+//   { name: "currentStatePlan", label: "Current State Plan", required: true },
+//   {
+//     name: "amendedLanguage",
+//     label: "Amended State Plan Language",
+//     required: true,
+//   },
+//   {
+//     name: "coverLetter",
+//     label: "Cover Letter",
+//     required: true,
+//   },
+//   {
+//     name: "budgetDocuments",
+//     label: "Budget Documents",
+//     required: false,
+//   },
+//   { name: "publicNotice", label: "Public Notice", required: false },
+//   { name: "tribalConsultation", label: "Tribal Consultation", required: false },
+//   { name: "other", label: "Other", required: false },
+// ] as const;
 
 export const ChipSpaFormPage = () => {
   const crumbs = useLocationCrumbs();
@@ -184,7 +184,7 @@ export const ChipSpaFormPage = () => {
               )}
             />
           </SectionCard>
-          <SectionCard title="Attachments">
+          {/* <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqAttLink="/faq/chip-spa-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
@@ -210,7 +210,7 @@ export const ChipSpaFormPage = () => {
                 )}
               />
             ))}
-          </SectionCard>
+          </SectionCard> */}
           <SectionCard title={"Additional Information"}>
             <FormField
               control={form.control}

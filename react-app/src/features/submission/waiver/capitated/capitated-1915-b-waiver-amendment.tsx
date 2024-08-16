@@ -44,29 +44,29 @@ const formSchema = z.object({
 });
 type Waiver1915BCapitatedAmendment = z.infer<typeof formSchema>;
 
-const attachmentList = [
-  {
-    name: "bCapWaiverApplication",
-    label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
-    required: true,
-  },
-  {
-    name: "bCapCostSpreadsheets",
-    label:
-      "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
-    required: true,
-  },
-  {
-    name: "tribalConsultation",
-    label: "Tribal Consultation",
-    required: false,
-  },
-  {
-    name: "other",
-    label: "Other",
-    required: false,
-  },
-] as const;
+// const attachmentList = [
+//   {
+//     name: "bCapWaiverApplication",
+//     label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
+//     required: true,
+//   },
+//   {
+//     name: "bCapCostSpreadsheets",
+//     label:
+//       "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
+//     required: true,
+//   },
+//   {
+//     name: "tribalConsultation",
+//     label: "Tribal Consultation",
+//     required: false,
+//   },
+//   {
+//     name: "other",
+//     label: "Other",
+//     required: false,
+//   },
+// ] as const;
 
 export const Capitated1915BWaiverAmendmentPage = () => {
   const location = useLocation();
@@ -226,7 +226,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
               )}
             />
           </SectionCard>
-          <SectionCard title="Attachments">
+          {/* <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqAttLink="/faq/waiverb-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
@@ -248,7 +248,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
                 )}
               />
             ))}
-          </SectionCard>
+          </SectionCard> */}
           <SectionCard title={"Additional Information"}>
             <FormField
               control={form.control}

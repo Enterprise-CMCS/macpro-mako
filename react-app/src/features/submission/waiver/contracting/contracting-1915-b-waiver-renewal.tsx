@@ -63,30 +63,30 @@ type Waiver1915BContractingRenewal = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
-const attachmentList = [
-  {
-    name: "b4WaiverApplication",
-    label:
-      "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
-    required: true,
-  },
-  {
-    name: "b4IndependentAssessment",
-    label:
-      "1915(b)(4) FFS Selective Contracting (Streamlined) Independent Assessment (first two renewals only)",
-    required: false,
-  },
-  {
-    name: "tribalConsultation",
-    label: "Tribal Consultation",
-    required: false,
-  },
-  {
-    name: "other",
-    label: "Other",
-    required: false,
-  },
-] as const;
+// const attachmentList = [
+//   {
+//     name: "b4WaiverApplication",
+//     label:
+//       "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
+//     required: true,
+//   },
+//   {
+//     name: "b4IndependentAssessment",
+//     label:
+//       "1915(b)(4) FFS Selective Contracting (Streamlined) Independent Assessment (first two renewals only)",
+//     required: false,
+//   },
+//   {
+//     name: "tribalConsultation",
+//     label: "Tribal Consultation",
+//     required: false,
+//   },
+//   {
+//     name: "other",
+//     label: "Other",
+//     required: false,
+//   },
+// ] as const;
 
 export const Contracting1915BWaiverRenewalPage = () => {
   const location = useLocation();
@@ -249,7 +249,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
               )}
             />
           </SectionCard>
-          <SectionCard title="Attachments">
+          {/* <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqAttLink="/faq/waiverb-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
@@ -271,7 +271,7 @@ export const Contracting1915BWaiverRenewalPage = () => {
                 )}
               />
             ))}
-          </SectionCard>
+          </SectionCard> */}
           <SectionCard title={"Additional Information"}>
             <FormField
               control={form.control}

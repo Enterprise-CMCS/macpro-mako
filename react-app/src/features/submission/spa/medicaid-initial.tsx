@@ -53,25 +53,25 @@ type MedicaidFormSchema = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
-const attachmentList = [
-  { name: "cmsForm179", label: "CMS Form 179", required: true },
-  { name: "spaPages", label: "SPA Pages", required: true },
-  { name: "coverLetter", label: "Cover Letter", required: false },
-  {
-    name: "tribalEngagement",
-    label: "Document Demonstrating Good-Faith Tribal Engagement",
-    required: false,
-  },
-  {
-    name: "existingStatePlanPages",
-    label: "Existing State Plan Page(s)",
-    required: false,
-  },
-  { name: "publicNotice", label: "Public Notice", required: false },
-  { name: "sfq", label: "Standard Funding Questions (SFQs)", required: false },
-  { name: "tribalConsultation", label: "Tribal Consultation", required: false },
-  { name: "other", label: "Other", required: false },
-] as const;
+// const attachmentList = [
+//   { name: "cmsForm179", label: "CMS Form 179", required: true },
+//   { name: "spaPages", label: "SPA Pages", required: true },
+//   { name: "coverLetter", label: "Cover Letter", required: false },
+//   {
+//     name: "tribalEngagement",
+//     label: "Document Demonstrating Good-Faith Tribal Engagement",
+//     required: false,
+//   },
+//   {
+//     name: "existingStatePlanPages",
+//     label: "Existing State Plan Page(s)",
+//     required: false,
+//   },
+//   { name: "publicNotice", label: "Public Notice", required: false },
+//   { name: "sfq", label: "Standard Funding Questions (SFQs)", required: false },
+//   { name: "tribalConsultation", label: "Tribal Consultation", required: false },
+//   { name: "other", label: "Other", required: false },
+// ] as const;
 
 export const MedicaidSpaFormPage = () => {
   const { data: user } = useGetUser();
@@ -186,7 +186,7 @@ export const MedicaidSpaFormPage = () => {
               )}
             />
           </SectionCard>
-          <SectionCard title="Attachments">
+          {/* <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc
               faqAttLink="/faq/medicaid-spa-attachments"
               includeCMS179
@@ -220,7 +220,7 @@ export const MedicaidSpaFormPage = () => {
                 )}
               />
             ))}
-          </SectionCard>
+          </SectionCard> */}
           <SectionCard title={"Additional Information"}>
             <FormField
               control={form.control}

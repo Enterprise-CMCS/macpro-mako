@@ -15,7 +15,7 @@ const mapActionType: Record<string, string> = {
 };
 const confirmationModalBody = (document: opensearch.main.Document) => {
   const beginning = `You are about to withdraw ${document.authority} ${mapActionType[document.actionType]} waiver ${document.id}.`;
-  const middle = document.appkParent
+  const middle = false
     ? `Completing this action will conclude
     the review of this ${document.authority} ${mapActionType[document.actionType]} waiver package, and all packages associated with ${document.id} will also be withdrawn.`
     : `Completing this action will conclude 

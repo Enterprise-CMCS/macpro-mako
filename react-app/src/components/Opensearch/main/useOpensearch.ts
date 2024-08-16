@@ -26,12 +26,12 @@ export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
         value: ["1915(b)", "1915(c)"],
         prefix: "must",
       },
-      {
-        field: "appkParentId",
-        type: "exists",
-        value: true,
-        prefix: "must_not",
-      },
+      // {
+      //   field: "appkParentId",
+      //   type: "exists",
+      //   value: true,
+      //   prefix: "must_not",
+      // },
     ],
   },
 };

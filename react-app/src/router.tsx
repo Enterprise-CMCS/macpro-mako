@@ -73,53 +73,53 @@ export const router = createBrowserRouter([
       // },
       {
         path: "/new-submission/spa/medicaid/create",
-        element: <F.MedicaidSpaFormPage />,
+        element: <F.NewMedicaidForm />,
       },
-      {
-        path: "/new-submission/spa/chip/create",
-        element: <F.ChipSpaFormPage />,
-      },
-      {
-        path: "/new-submission/waiver/b/capitated/amendment/create",
-        element: <F.Capitated1915BWaiverAmendmentPage />,
-      },
-      {
-        path: "/new-submission/waiver/b/capitated/initial/create",
-        element: <F.Capitated1915BWaiverInitialPage />,
-      },
-      {
-        path: "/new-submission/waiver/b/capitated/renewal/create",
-        element: <F.Capitated1915BWaiverRenewalPage />,
-      },
-      {
-        path: "/new-submission/waiver/b/b4/renewal/create",
-        element: <F.Contracting1915BWaiverRenewalPage />,
-      },
-      {
-        path: "/new-submission/waiver/b/b4/initial/create",
-        element: <F.Contracting1915BWaiverInitialPage />,
-      },
-      {
-        path: "/new-submission/waiver/b/b4/amendment/create",
-        element: <F.Contracting1915BWaiverAmendmentPage />,
-      },
-      {
-        path: "/new-submission/spa/medicaid/create",
-        element: <F.MedicaidSpaFormPage />,
-      },
-      {
-        path: "/new-submission/spa/chip/create",
-        element: <F.ChipSpaFormPage />,
-      },
+      // {
+      //   path: "/new-submission/spa/chip/create",
+      //   element: <F.ChipSpaFormPage />,
+      // },
+      // {
+      //   path: "/new-submission/waiver/b/capitated/amendment/create",
+      //   element: <F.Capitated1915BWaiverAmendmentPage />,
+      // },
+      // {
+      //   path: "/new-submission/waiver/b/capitated/initial/create",
+      //   element: <F.Capitated1915BWaiverInitialPage />,
+      // },
+      // {
+      //   path: "/new-submission/waiver/b/capitated/renewal/create",
+      //   element: <F.Capitated1915BWaiverRenewalPage />,
+      // },
+      // {
+      //   path: "/new-submission/waiver/b/b4/renewal/create",
+      //   element: <F.Contracting1915BWaiverRenewalPage />,
+      // },
+      // {
+      //   path: "/new-submission/waiver/b/b4/initial/create",
+      //   element: <F.Contracting1915BWaiverInitialPage />,
+      // },
+      // {
+      //   path: "/new-submission/waiver/b/b4/amendment/create",
+      //   element: <F.Contracting1915BWaiverAmendmentPage />,
+      // },
+      // {
+      //   path: "/new-submission/spa/medicaid/create",
+      //   element: <F.MedicaidSpaFormPage />,
+      // },
+      // {
+      //   path: "/new-submission/spa/chip/create",
+      //   element: <F.ChipSpaFormPage />,
+      // },
       { path: "/action/:authority/:id/:type", element: <F.ActionPage /> },
       { path: "/webforms", element: <F.WebformsList /> },
       { path: "/webform/:id/:version", element: <F.Webform /> },
       { path: "/profile", element: <F.Profile /> },
       { path: "/guides/abp", element: <F.ABPGuide /> },
-      {
-        path: "/new-submission/waiver/app-k",
-        element: <F.AppKSubmissionForm />,
-      },
+      // {
+      //   path: "/new-submission/waiver/app-k",
+      //   element: <F.AppKSubmissionForm />,
+      // },
       {
         path: "/new-submission/waiver/temporary-extensions",
         element: <TempExtensionWrapper />,

@@ -8,5 +8,5 @@ export * from "./welcome";
 export * from "./guides";
 export * from "./faq";
 export * from "./webforms";
-export * from "./submission";
+// export * from "./submission";
 export * from "./forms";

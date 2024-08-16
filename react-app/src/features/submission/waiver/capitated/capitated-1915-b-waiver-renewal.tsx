@@ -64,36 +64,36 @@ type Waiver1915BCapitatedRenewal = z.infer<typeof formSchema>;
 
 // first argument in the array is the name that will show up in the form submission
 // second argument is used when mapping over for the label
-const attachmentList = [
-  {
-    name: "bCapWaiverApplication",
-    label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
-    required: true,
-  },
-  {
-    name: "bCapCostSpreadsheets",
-    label:
-      "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
-    required: true,
-  },
-  {
-    name: "bCapIndependentAssessment",
-    label:
-      "1915(b) Comprehensive (Capitated) Waiver Independent Assessment (first two renewals only)",
-    subtext: "Required for the first two renewals",
-    required: false,
-  },
-  {
-    name: "tribalConsultation",
-    label: "Tribal Consultation",
-    required: false,
-  },
-  {
-    name: "other",
-    label: "Other",
-    required: false,
-  },
-] as const;
+// const attachmentList = [
+//   {
+//     name: "bCapWaiverApplication",
+//     label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
+//     required: true,
+//   },
+//   {
+//     name: "bCapCostSpreadsheets",
+//     label:
+//       "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
+//     required: true,
+//   },
+//   {
+//     name: "bCapIndependentAssessment",
+//     label:
+//       "1915(b) Comprehensive (Capitated) Waiver Independent Assessment (first two renewals only)",
+//     subtext: "Required for the first two renewals",
+//     required: false,
+//   },
+//   {
+//     name: "tribalConsultation",
+//     label: "Tribal Consultation",
+//     required: false,
+//   },
+//   {
+//     name: "other",
+//     label: "Other",
+//     required: false,
+//   },
+// ] as const;
 
 export const Capitated1915BWaiverRenewalPage = () => {
   const location = useLocation();
@@ -256,7 +256,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
               )}
             />
           </SectionCard>
-          <SectionCard title="Attachments">
+          {/* <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc faqAttLink="/faq/waiverb-attachments" />
             {attachmentList.map(({ name, label, required }) => (
               <Inputs.FormField
@@ -278,7 +278,7 @@ export const Capitated1915BWaiverRenewalPage = () => {
                 )}
               />
             ))}
-          </SectionCard>
+          </SectionCard> */}
           <SectionCard title={"Additional Information"}>
             <FormField
               control={form.control}

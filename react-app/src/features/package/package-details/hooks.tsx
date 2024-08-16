@@ -66,8 +66,8 @@ export const recordDetails = (
   },
   {
     label: "Amendment Title",
-    value: <p>{data?.appkTitle || BLANK_VALUE}</p>,
-    canView: () => !!data.appkTitle,
+    value: <p>{"asdf" || BLANK_VALUE}</p>,
+    canView: () => false,
   },
   {
     label: "Subject",

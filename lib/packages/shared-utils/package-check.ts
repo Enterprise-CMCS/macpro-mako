@@ -34,8 +34,8 @@ export const PackageCheck = ({
   raiWithdrawEnabled,
   authority,
   actionType,
-  appkParentId,
-  appkParent,
+  // appkParentId,
+  // appkParent,
   initialIntakeNeeded,
   submissionDate,
   leadAnalystName,
@@ -46,8 +46,8 @@ export const PackageCheck = ({
       Authority["1915b"],
       Authority["1915c"],
     ]),
-    isAppk: appkParent,
-    isAppkChild: appkParentId,
+    isAppk: false,
+    isAppkChild: false,
     /** Keep excess methods to a minimum with `is` **/
     authorityIs: (validAuthorities: Authority[]) =>
       checkAuthority(authority, validAuthorities),

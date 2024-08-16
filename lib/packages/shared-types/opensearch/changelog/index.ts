@@ -33,7 +33,10 @@ export type Document = newSubmission.NewSubmission &
     oldPackageId: string;
     newPackageId: string;
   } & z.infer<legacyEvent.Schema> &
-  z.infer<legacyAdminChange.Schema>;
+  z.infer<legacyAdminChange.Schema> & {
+    appkParentId: string;
+    appkParent: boolean;
+  };
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
