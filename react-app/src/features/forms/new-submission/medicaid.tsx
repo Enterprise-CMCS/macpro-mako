@@ -1,9 +1,8 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Inputs from "@/components/Inputs";
 import { Link, useNavigate } from "react-router-dom";
-import { useGetUser } from "@/api/useGetUser";
+// import { useGetUser } from "@/api/useGetUser";
 import {
   Alert,
   BreadCrumbs,
@@ -16,80 +15,29 @@ import {
   Route,
 } from "@/components";
 import * as Content from "@/components";
-import { submit } from "@/api";
-import {
-  zAttachmentOptional,
-  zAttachmentRequired,
-  zSpaIdSchema,
-  getFormOrigin,
-} from "@/utils";
+import { getFormOrigin } from "@/utils";
 import { FormField } from "@/components/Inputs";
 import { SlotAdditionalInfo } from "@/features";
 import { documentPoller } from "@/utils/Poller/documentPoller";
-import { SubmitAndCancelBtnSection } from "../waiver/shared-components";
-import { Authority } from "shared-types";
+import { SubmitAndCancelBtnSection } from "../../submission/waiver/shared-components";
+import { newSubmission } from "shared-types";
+import { NewSubmission } from "shared-types/events/new-submission";
+import { API } from "aws-amplify";
 
-const formSchema = z.object({
-  id: zSpaIdSchema,
-  additionalInformation: z.string().max(4000).optional(),
-  attachments: z.object({
-    cmsForm179: zAttachmentRequired({
-      min: 1,
-      max: 1,
-      message: "Required: You must submit exactly one file for CMS Form 179.",
-    }),
-    spaPages: zAttachmentRequired({ min: 1 }),
-    coverLetter: zAttachmentOptional,
-    tribalEngagement: zAttachmentOptional,
-    existingStatePlanPages: zAttachmentOptional,
-    publicNotice: zAttachmentOptional,
-    sfq: zAttachmentOptional,
-    tribalConsultation: zAttachmentOptional,
-    other: zAttachmentOptional,
-  }),
-  proposedEffectiveDate: z.date(),
-});
-type MedicaidFormSchema = z.infer<typeof formSchema>;
-
-// first argument in the array is the name that will show up in the form submission
-// second argument is used when mapping over for the label
-const attachmentList = [
-  { name: "cmsForm179", label: "CMS Form 179", required: true },
-  { name: "spaPages", label: "SPA Pages", required: true },
-  { name: "coverLetter", label: "Cover Letter", required: false },
-  {
-    name: "tribalEngagement",
-    label: "Document Demonstrating Good-Faith Tribal Engagement",
-    required: false,
-  },
-  {
-    name: "existingStatePlanPages",
-    label: "Existing State Plan Page(s)",
-    required: false,
-  },
-  { name: "publicNotice", label: "Public Notice", required: false },
-  { name: "sfq", label: "Standard Funding Questions (SFQs)", required: false },
-  { name: "tribalConsultation", label: "Tribal Consultation", required: false },
-  { name: "other", label: "Other", required: false },
-] as const;
-
-export const MedicaidSpaFormPage = () => {
-  const { data: user } = useGetUser();
+export const NewMedicaidForm = () => {
+  // const { data: user } = useGetUser();
   const crumbs = useLocationCrumbs();
   const navigate = useNavigate();
   const alert = useAlertContext();
-  const form = useForm<MedicaidFormSchema>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<newSubmission.NewSubmission>({
+    resolver: zodResolver(newSubmission.feSchema),
     mode: "onChange",
   });
 
-  const handleSubmit: SubmitHandler<MedicaidFormSchema> = async (formData) => {
+  const handleSubmit: SubmitHandler<NewSubmission> = async (formData) => {
     try {
-      await submit<MedicaidFormSchema>({
-        data: formData,
-        endpoint: "/submit",
-        user,
-        authority: Authority.MED_SPA,
+      await API.post("os", "/submit", {
+        body: formData,
       });
 
       const originPath = getFormOrigin();
@@ -166,7 +114,7 @@ export const MedicaidSpaFormPage = () => {
                 </Inputs.FormItem>
               )}
             />
-            <Inputs.FormField
+            {/* <Inputs.FormField
               control={form.control}
               name="proposedEffectiveDate"
               render={({ field }) => (
@@ -184,9 +132,9 @@ export const MedicaidSpaFormPage = () => {
                   <Inputs.FormMessage />
                 </Inputs.FormItem>
               )}
-            />
+            /> */}
           </SectionCard>
-          <SectionCard title="Attachments">
+          {/* <SectionCard title="Attachments">
             <Content.AttachmentsSizeTypesDesc
               faqAttLink="/faq/medicaid-spa-attachments"
               includeCMS179
@@ -220,7 +168,7 @@ export const MedicaidSpaFormPage = () => {
                 )}
               />
             ))}
-          </SectionCard>
+          </SectionCard> */}
           <SectionCard title={"Additional Information"}>
             <FormField
               control={form.control}

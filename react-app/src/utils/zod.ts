@@ -21,22 +21,22 @@ export const zSpaIdSchema = z
       "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
   });
 
-// export const zAttachmentOptional = z.array(z.instanceof(File)).optional();
+export const zAttachmentOptional = z.array(z.instanceof(File)).optional();
 
-// export const zAttachmentRequired = ({
-//   min,
-//   max = 9999,
-//   message = "Required",
-// }: {
-//   min: number;
-//   max?: number;
-//   message?: string;
-// }) =>
-//   z
-//     .array(z.instanceof(File))
-//     .refine((value) => value.length >= min && value.length <= max, {
-//       message: message,
-//     });
+export const zAttachmentRequired = ({
+  min,
+  max = 9999,
+  message = "Required",
+}: {
+  min: number;
+  max?: number;
+  message?: string;
+}) =>
+  z
+    .array(z.instanceof(File))
+    .refine((value) => value.length >= min && value.length <= max, {
+      message: message,
+    });
 
 export const zAdditionalInfoOptional = z
   .string()
