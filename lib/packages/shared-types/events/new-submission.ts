@@ -11,19 +11,46 @@ export const feSchema = z.object({
   action: z.literal("new-submission").default("new-submission"),
   additionalInformation: z.string().nullable().default(null),
   attachments: z.object({
-    cmsForm179: attachmentArraySchema({
-      min: 1,
-      max: 1,
-      message: "Required: You must submit exactly one file for CMS Form 179.",
+    cmsForm179: z.object({
+      files: attachmentArraySchema({
+        min: 1,
+        max: 1,
+        message: "Required: You must submit exactly one file for CMS Form 179.",
+      }),
+      label: z.string().default("CMS Form 179"),
     }),
-    spaPages: attachmentArraySchema({ min: 1 }),
-    coverLetter: attachmentArraySchema({}),
-    tribalEngagement: attachmentArraySchema({}),
-    existingStatePlanPages: attachmentArraySchema({}),
-    publicNotice: attachmentArraySchema({}),
-    sfq: attachmentArraySchema({}),
-    tribalConsultation: attachmentArraySchema({}),
-    other: attachmentArraySchema({}),
+    spaPages: z.object({
+      files: attachmentArraySchema({ min: 1 }),
+      label: z.string().default("SPA Pages"),
+    }),
+    coverLetter: z.object({
+      files: attachmentArraySchema({}),
+      label: z.string().default("Cover Letter"),
+    }),
+    tribalEngagement: z.object({
+      files: attachmentArraySchema({}),
+      label: z.string().default("Tribal Engagement"),
+    }),
+    existingStatePlanPages: z.object({
+      files: attachmentArraySchema({}),
+      label: z.string().default("Existing State Plan Pages"),
+    }),
+    publicNotice: z.object({
+      files: attachmentArraySchema({}),
+      label: z.string().default("Public Notice"),
+    }),
+    sfq: z.object({
+      files: attachmentArraySchema({}),
+      label: z.string().default("SFQ"),
+    }),
+    tribalConsultation: z.object({
+      files: attachmentArraySchema({}),
+      label: z.string().default("Tribal Consultation"),
+    }),
+    other: z.object({
+      files: attachmentArraySchema({}),
+      label: z.string().default("Other"),
+    }),
   }),
   authority: z.string(),
   id: z.string(),
