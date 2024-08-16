@@ -11,8 +11,8 @@ import {
   SectionCard,
   FAQFooter,
   formCrumbsFromPath,
-  Route,
   FormField,
+  banner,
   LoadingSpinner,
 } from "@/components";
 import { submit } from "@/api/submissionService";
@@ -24,7 +24,6 @@ import {
   zInitialWaiverNumberSchema,
 } from "@/utils";
 import { FAQ_TAB } from "@/components/Routing/consts";
-import { useAlertContext } from "@/components/Context/alertContext";
 import { getFormOrigin } from "@/utils/formOrigin";
 import { SubmitAndCancelBtnSection } from "../shared-components";
 import { SlotAdditionalInfo } from "@/features";
@@ -74,7 +73,6 @@ export const Capitated1915BWaiverInitialPage = () => {
   const location = useLocation();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
-  const alert = useAlertContext();
 
   const handleSubmit: SubmitHandler<Waiver1915BCapitatedAmendment> = async (
     formData,
@@ -87,32 +85,29 @@ export const Capitated1915BWaiverInitialPage = () => {
         authority: Authority["1915b"],
       });
 
-      const originPath = getFormOrigin({ authority: Authority["1915b"] });
-
-      alert.setContent({
-        header: "Package submitted",
-        body: "Your submission has been received.",
-      });
-      alert.setBannerStyle("success");
-      alert.setBannerShow(true);
-      alert.setBannerDisplayOn(originPath.pathname as Route);
-
       const poller = documentPoller(formData.id, (checks) =>
         checks.actionIs("New"),
       );
-
       await poller.startPollingData();
+
+      const originPath = getFormOrigin({ authority: Authority["1915b"] });
+
+      banner({
+        header: "Package submitted",
+        body: "Your submission has been received.",
+        variant: "success",
+        pathnameToDisplayOn: originPath.pathname,
+      });
 
       navigate(originPath);
     } catch (e) {
       console.error(e);
-      alert.setContent({
+      banner({
         header: "An unexpected error has occurred:",
         body: e instanceof Error ? e.message : String(e),
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
       });
-      alert.setBannerStyle("destructive");
-      alert.setBannerDisplayOn(window.location.pathname as Route);
-      alert.setBannerShow(true);
       window.scrollTo(0, 0);
     }
   };

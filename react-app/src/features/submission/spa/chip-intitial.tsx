@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
-import { Route } from "@/components/Routing";
 import {
   Alert,
   BreadCrumbs,
@@ -10,9 +9,9 @@ import {
   SectionCard,
   SimplePageContainer,
   FAQ_TAB,
-  useAlertContext,
   useLocationCrumbs,
   FormField,
+  banner,
 } from "@/components";
 import * as Inputs from "@/components/Inputs";
 import * as Content from "@/components";
@@ -74,7 +73,6 @@ export const ChipSpaFormPage = () => {
   const crumbs = useLocationCrumbs();
   const { data: user } = useGetUser();
   const navigate = useNavigate();
-  const alert = useAlertContext();
 
   const form = useForm<ChipFormSchema>({
     resolver: zodResolver(formSchema),
@@ -89,16 +87,6 @@ export const ChipSpaFormPage = () => {
         authority: Authority.CHIP_SPA,
       });
 
-      const originPath = getFormOrigin();
-
-      alert.setContent({
-        header: "Package submitted",
-        body: "Your submission has been received.",
-      });
-      alert.setBannerStyle("success");
-      alert.setBannerShow(true);
-      alert.setBannerDisplayOn(originPath.pathname as Route);
-
       const poller = documentPoller(
         formData.id,
         (checks) => checks.recordExists,
@@ -106,16 +94,24 @@ export const ChipSpaFormPage = () => {
 
       await poller.startPollingData();
 
+      const originPath = getFormOrigin();
+
+      banner({
+        header: "Package submitted",
+        body: "Your submission has been received.",
+        variant: "success",
+        pathnameToDisplayOn: originPath.pathname,
+      });
+
       navigate(originPath);
     } catch (e) {
       console.error(e);
-      alert.setContent({
+      banner({
         header: "An unexpected error has occurred:",
         body: e instanceof Error ? e.message : String(e),
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
       });
-      alert.setBannerStyle("destructive");
-      alert.setBannerDisplayOn(window.location.pathname as Route);
-      alert.setBannerShow(true);
       window.scrollTo(0, 0);
     }
   });
