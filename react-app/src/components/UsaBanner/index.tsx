@@ -25,12 +25,10 @@ export const UsaBanner = () => {
   }, []);
   const { error } = useLoaderData() as { error: string };
   return (
-    <>
-      <div className="bg-[#f0f0f0]" role="banner">
+    <div className="bg-[#f0f0f0]" role="banner">
         {/* Display for Desktop */}
         {isDesktop && (
-          <>
-            <div className="max-w-screen-xl px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center">
+          <div className="max-w-screen-xl px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center">
               <img
                 className="w-4 h-[11px]"
                 src={UsFlag}
@@ -48,7 +46,6 @@ export const UsaBanner = () => {
                 {isOpen && <ChevronUp className="w-4 h-4 text-[#005ea2]" />}
               </button>
             </div>
-          </>
         )}
         {/* Display for Mobile */}
         {!isDesktop && (
@@ -100,7 +97,6 @@ export const UsaBanner = () => {
           </div>
         )}
       </div>
-    </>
   );
 };
 

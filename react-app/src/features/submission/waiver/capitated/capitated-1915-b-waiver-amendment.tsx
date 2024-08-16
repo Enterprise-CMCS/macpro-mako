@@ -9,9 +9,9 @@ import {
   formCrumbsFromPath,
   FAQ_TAB,
   FAQFooter,
-  useAlertContext,
-  Route,
+  banner,
   FormField,
+  LoadingSpinner,
 } from "@/components";
 import * as Content from "@/components/Form/old-content";
 import * as Inputs from "@/components/Inputs";
@@ -72,7 +72,6 @@ export const Capitated1915BWaiverAmendmentPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { data: user } = useGetUser();
-  const alert = useAlertContext();
 
   const handleSubmit: SubmitHandler<Waiver1915BCapitatedAmendment> = async (
     formData,
@@ -85,32 +84,29 @@ export const Capitated1915BWaiverAmendmentPage = () => {
         authority: Authority["1915b"],
       });
 
-      const originPath = getFormOrigin({ authority: Authority["1915b"] });
-
-      alert.setContent({
-        header: "Package submitted",
-        body: "Your submission has been received.",
-      });
-      alert.setBannerStyle("success");
-      alert.setBannerShow(true);
-      alert.setBannerDisplayOn(originPath.pathname as Route);
-
       const poller = documentPoller(formData.id, (checks) =>
         checks.actionIs("Amend"),
       );
-
       await poller.startPollingData();
+
+      const originPath = getFormOrigin({ authority: Authority["1915b"] });
+
+      banner({
+        header: "Package submitted",
+        body: "Your submission has been received.",
+        variant: "success",
+        pathnameToDisplayOn: originPath.pathname,
+      });
 
       navigate(originPath);
     } catch (e) {
       console.error(e);
-      alert.setContent({
+      banner({
         header: "An unexpected error has occurred:",
         body: e instanceof Error ? e.message : String(e),
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
       });
-      alert.setBannerStyle("destructive");
-      alert.setBannerDisplayOn(window.location.pathname as Route);
-      alert.setBannerShow(true);
       window.scrollTo(0, 0);
     }
   };
@@ -124,6 +120,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
     <SimplePageContainer>
       <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
       <Inputs.Form {...form}>
+        {form.formState.isSubmitting && <LoadingSpinner />}
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
@@ -262,7 +259,7 @@ export const Capitated1915BWaiverAmendmentPage = () => {
             />
           </SectionCard>
           <Content.PreSubmissionMessage />
-          <SubmitAndCancelBtnSection showAlert loadingSpinner />
+          <SubmitAndCancelBtnSection />
         </form>
       </Inputs.Form>
       <FAQFooter />

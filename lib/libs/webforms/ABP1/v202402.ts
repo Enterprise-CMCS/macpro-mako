@@ -49,7 +49,7 @@ export const v202402: FormSchema = {
                   label: "Eligibility group",
                   labelClassName: "font-bold",
                   props: {
-                    className: "w-[300px]",
+                    className: "w-[229px]",
                     options: [
                       {
                         label: "Adult",
@@ -283,7 +283,7 @@ export const v202402: FormSchema = {
                     required: "* Required",
                   },
                   props: {
-                    className: "w-[300px]",
+                    className: "w-[229px]",
                     options: [
                       {
                         label: "Mandatory",

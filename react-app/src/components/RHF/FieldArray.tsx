@@ -46,7 +46,7 @@ export const RHFFieldArray = <TFields extends FieldValues>(
             {/* FieldArray Removal */}
             {index >= 1 && !props.removeText && (
               <Trash2
-                className="self-end mb-4 cursor-pointer stroke-primary"
+                className="self-end mb-2 cursor-pointer stroke-primary"
                 data-testid={`removeRowButton-${index}`}
                 onClick={() => fieldArr.remove(index)}
               />
