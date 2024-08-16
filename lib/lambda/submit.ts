@@ -19,7 +19,7 @@ export const submit = async (event: APIGatewayEvent) => {
 
   // Check that the caller has appropriate permissions
   // Should his move to the transform?
-  if (!(await isAuthorized(event, body.state))) {
+  if (!(await isAuthorized(event, body.id.slice(0, 2)))) {
     return response({
       statusCode: 403,
       body: { message: "Unauthorized" },
