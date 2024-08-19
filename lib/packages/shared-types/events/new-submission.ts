@@ -24,31 +24,31 @@ export const feSchema = z.object({
       label: z.string().default("SPA Pages"),
     }),
     coverLetter: z.object({
-      files: attachmentArraySchema({}),
+      files: attachmentArraySchema(),
       label: z.string().default("Cover Letter"),
     }),
     tribalEngagement: z.object({
-      files: attachmentArraySchema({}),
+      files: attachmentArraySchema(),
       label: z.string().default("Tribal Engagement"),
     }),
     existingStatePlanPages: z.object({
-      files: attachmentArraySchema({}),
+      files: attachmentArraySchema(),
       label: z.string().default("Existing State Plan Pages"),
     }),
     publicNotice: z.object({
-      files: attachmentArraySchema({}),
+      files: attachmentArraySchema(),
       label: z.string().default("Public Notice"),
     }),
     sfq: z.object({
-      files: attachmentArraySchema({}),
+      files: attachmentArraySchema(),
       label: z.string().default("SFQ"),
     }),
     tribalConsultation: z.object({
-      files: attachmentArraySchema({}),
+      files: attachmentArraySchema(),
       label: z.string().default("Tribal Consultation"),
     }),
     other: z.object({
-      files: attachmentArraySchema({}),
+      files: attachmentArraySchema(),
       label: z.string().default("Other"),
     }),
   }),
