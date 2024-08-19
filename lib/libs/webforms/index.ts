@@ -16,6 +16,7 @@ import * as CS3 from "./CS3";
 import * as G2A from "./G2A";
 import * as G1 from "./G1";
 import * as G2B from "./G2B";
+import * as G2C from "./G2C";
 import * as G3 from "./G3";
 import { FormSchema } from "shared-types";
 
@@ -74,6 +75,9 @@ export const webformVersions: Record<string, Record<string, FormSchema>> = {
   },
   G2B: {
     v202401: G2B.v202401,
+  },
+  G2C: {
+    v202401: G2C.v202401,
   },
   G3: {
     v202401: G3.v202401,
