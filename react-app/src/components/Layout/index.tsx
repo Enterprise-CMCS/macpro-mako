@@ -12,7 +12,7 @@ import { useUserContext } from "../Context";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
 import { useNavigate } from "../Routing";
-import { AlertProvider, UserPrompt } from "@/components";
+import { SimplePageContainer, UserPrompt, Banner } from "@/components";
 import { isFaqPage, isProd } from "@/utils";
 
 const useGetLinks = () => {
@@ -150,9 +150,10 @@ export const Layout = () => {
         </div>
       </nav>
       <main className="flex-1">
-        <AlertProvider>
-          <Outlet />
-        </AlertProvider>
+        <SimplePageContainer>
+          <Banner />
+        </SimplePageContainer>
+        <Outlet />
       </main>
       <Footer
         email="OneMAC_Helpdesk@cms.hhs.gov"
@@ -191,7 +192,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     window.location.assign(url);
   };
 
-  if (isLoading || isError) return <></>;
+  if (isLoading || isError) return null;
 
   const setClassBasedOnNav: NavLinkProps["className"] = ({ isActive }) =>
     isActive
@@ -216,30 +217,28 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
           </NavLink>
         ))}
         <div className="flex-1"></div>
-        <>
-          {data.user ? (
-            // When the user is signed in
-            <UserDropdownMenu />
-          ) : (
-            !isFaqPage && (
-              // When the user is not signed in
-              <>
-                <button
-                  className="text-white hover:text-white/70"
-                  onClick={handleLogin}
-                >
-                  Sign In
-                </button>
-                <button
-                  className="text-white hover:text-white/70"
-                  onClick={handleRegister}
-                >
-                  Register
-                </button>
-              </>
-            )
-          )}
-        </>
+        {data.user ? (
+          // When the user is signed in
+          <UserDropdownMenu />
+        ) : (
+          !isFaqPage && (
+            // When the user is not signed in
+            <>
+              <button
+                className="text-white hover:text-white/70"
+                onClick={handleLogin}
+              >
+                Sign In
+              </button>
+              <button
+                className="text-white hover:text-white/70"
+                onClick={handleRegister}
+              >
+                Register
+              </button>
+            </>
+          )
+        )}
       </>
     );
   }
@@ -261,30 +260,28 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                 </Link>
               </li>
             ))}
-            <>
-              {data.user ? (
-                // When the user is signed in
-                <UserDropdownMenu />
-              ) : (
-                !isFaqPage && (
-                  // When the user is not signed in
-                  <>
-                    <button
-                      className="text-left block py-2 pl-3 pr-4 text-white rounded"
-                      onClick={handleLogin}
-                    >
-                      Sign In
-                    </button>
-                    <button
-                      className="text-white hover:text-white/70"
-                      onClick={handleRegister}
-                    >
-                      Register
-                    </button>
-                  </>
-                )
-              )}
-            </>
+            {data.user ? (
+              // When the user is signed in
+              <UserDropdownMenu />
+            ) : (
+              !isFaqPage && (
+                // When the user is not signed in
+                <>
+                  <button
+                    className="text-left block py-2 pl-3 pr-4 text-white rounded"
+                    onClick={handleLogin}
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    className="text-white hover:text-white/70"
+                    onClick={handleRegister}
+                  >
+                    Register
+                  </button>
+                </>
+              )
+            )}
           </ul>
         </div>
       )}

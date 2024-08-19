@@ -196,10 +196,6 @@ export const slotValidator =
         FLD[SLOT1.name].forEach((DAT: any) => {
           SLOT1.fields?.forEach(fieldValidator(DAT));
         });
-      } else if (SLOT1.rhf === "FieldGroup") {
-        FLD[SLOT1.name].forEach((DAT: any) => {
-          SLOT1.fields?.forEach(fieldValidator(DAT));
-        });
       } else {
         slotValidator(FLD)(ACC, SLOT1);
       }
@@ -260,11 +256,6 @@ export const slotValidator =
     }
 
     if (SLOT.rhf === "FieldArray") {
-      data[SLOT.name].forEach((DAT: any) => {
-        SLOT.fields?.forEach(fieldValidator(DAT));
-      });
-    }
-    if (SLOT.rhf === "FieldGroup") {
       data[SLOT.name].forEach((DAT: any) => {
         SLOT.fields?.forEach(fieldValidator(DAT));
       });
