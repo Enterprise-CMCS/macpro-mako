@@ -5,7 +5,7 @@ import { InputProps } from "shared-types";
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, icon, iconRight, ...props }, ref) => {
     return (
-      <span
+      <div
         className={cn(
           "relative",
           icon && !className.includes("w-full") && "w-fit",
@@ -31,7 +31,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           id={props.name}
           {...props}
         />
-      </span>
+      </div>
     );
   },
 );
