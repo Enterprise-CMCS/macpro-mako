@@ -57,6 +57,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   const filteredRecords = openSearchRecords.body.docs.filter(
     (doc: any) => doc.found,
   );
+  console.log("The ids for opensearch query are: ", JSON.stringify(ids));
   console.log(
     "The opensearch records are the following: ",
     JSON.stringify(filteredRecords),
