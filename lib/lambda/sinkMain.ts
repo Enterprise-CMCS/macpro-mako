@@ -53,10 +53,13 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
     return decodedId;
   });
 
-  const openSearchRecords = await os.getItems(osDomain, index, ids);
+  const openSearchRecords = (await os.getItems(osDomain, index, ids)) as any;
+  const filteredRecords = openSearchRecords.body.docs.filter(
+    (doc: any) => doc.found,
+  );
   console.log(
     "The opensearch records are the following: ",
-    JSON.stringify(openSearchRecords),
+    JSON.stringify(filteredRecords),
   );
 
   for (const kafkaRecord of kafkaRecords) {
