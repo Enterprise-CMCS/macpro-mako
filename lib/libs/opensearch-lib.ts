@@ -209,6 +209,26 @@ export async function getItem(
   }
 }
 
+export async function getItems(
+  host: string,
+  index: opensearch.Index,
+  ids: string[],
+) {
+  try {
+    client = client || (await getClient(host));
+
+    return await client.mget({
+      index,
+      body: {
+        ids,
+      },
+    });
+  } catch (e) {
+    console.log({ e });
+    return [];
+  }
+}
+
 // check it exists - then create
 export async function createIndex(host: string, index: opensearch.Index) {
   client = client || (await getClient(host));

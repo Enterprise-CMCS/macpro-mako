@@ -10,6 +10,7 @@ import {
 } from "../libs/sink-lib";
 import { Index } from "shared-types/opensearch";
 import { decodeBase64WithUtf8 } from "shared-utils";
+import { compareAsc } from "date-fns";
 
 const osDomain = process.env.osDomain;
 if (!osDomain) {
@@ -45,6 +46,19 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
 const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   const docs: any[] = [];
+  // fetch the date for all kafkaRecords in the list from opensearch
+  const ids = kafkaRecords.map((record) => {
+    const decodedId = decodeBase64WithUtf8(record.key);
+
+    return decodedId;
+  });
+
+  const openSearchRecords = await os.getItems(osDomain, index, ids);
+  console.log(
+    "The opensearch records are the following: ",
+    JSON.stringify(openSearchRecords),
+  );
+
   for (const kafkaRecord of kafkaRecords) {
     const { key, value } = kafkaRecord;
     try {
