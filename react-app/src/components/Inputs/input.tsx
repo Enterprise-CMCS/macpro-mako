@@ -3,7 +3,7 @@ import { cn } from "@/utils";
 import { InputProps } from "shared-types";
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, icon, iconRight, ...props }, ref) => {
+  ({ className = "", icon, iconRight, ...props }, ref) => {
     return (
       <div
         className={cn(
