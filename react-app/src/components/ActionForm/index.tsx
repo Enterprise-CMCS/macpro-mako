@@ -28,7 +28,7 @@ import {
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { SlotAdditionalInfo } from "@/features";
 import { getFormOrigin } from "@/utils";
 import {
@@ -36,19 +36,20 @@ import {
   documentPoller,
 } from "@/utils/Poller/documentPoller";
 import { API } from "aws-amplify";
+import { Authority } from "shared-types";
+
+type EnforceSchemaProperties<Shape extends z.ZodRawShape> = Shape & {
+  attachments?: z.ZodObject<{
+    [Key in keyof Shape]: z.ZodObject<{
+      label: z.ZodDefault<z.ZodString>;
+      files: z.ZodTypeAny;
+    }>;
+  }>;
+  additionalInformation?: z.ZodDefault<z.ZodNullable<z.ZodString>>;
+};
 
 type CombinedSchema<Shape extends z.ZodRawShape> = z.ZodObject<
-  {
-    [Key in keyof Shape]: Shape[Key];
-  } & {
-    attachments?: z.ZodObject<{
-      [Key in keyof Shape]: z.ZodObject<{
-        label: z.ZodLiteral<string>;
-        files: z.ZodTypeAny;
-      }>;
-    }>;
-    additionalInformation?: z.ZodDefault<z.ZodNullable<z.ZodString>>;
-  },
+  EnforceSchemaProperties<Shape>,
   "strip",
   z.ZodTypeAny
 >;
@@ -73,7 +74,7 @@ const ActionFormAttachments = <Schema extends z.ZodRawShape>({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                {value.shape.label._def.value}{" "}
+                {value.shape.label._def.defaultValue()}{" "}
                 {value.shape.files instanceof z.ZodOptional ? null : (
                   <RequiredIndicator />
                 )}
@@ -88,28 +89,26 @@ const ActionFormAttachments = <Schema extends z.ZodRawShape>({
   );
 };
 
-type ActionFormProps<Schema extends z.ZodRawShape> = {
-  schema: CombinedSchema<Schema>;
-  defaultValues?: DefaultValues<Schema>;
+type ActionFormProps<Schema extends z.ZodObject<any>> = {
+  schema: Schema;
+  defaultValues?: DefaultValues<z.TypeOf<Schema>>;
   title: string;
-  //   description: string;
   fieldsLayout?: ({ children }: { children: ReactNode }) => ReactNode;
-  fields: (form: UseFormReturn<Schema>) => ReactNode[];
+  fields: (form: UseFormReturn<z.TypeOf<Schema>>) => ReactNode[];
   bannerPostSubmission: Omit<Banner, "pathnameToDisplayOn">;
   promptPreSubmission?: Omit<UserPrompt, "onAccept">;
   promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
   documentPollerArgs: {
-    property: keyof Schema & string;
+    property: keyof z.TypeOf<Schema> & string;
     documentChecker: CheckDocumentFunction;
   };
   footer?: () => ReactNode;
 };
 
-export const ActionForm = <Schema extends z.ZodRawShape>({
+export const ActionForm = <Schema extends CombinedSchema<z.ZodRawShape>>({
   schema,
   defaultValues,
   title,
-  // description,
   fields: Fields,
   fieldsLayout: FieldsLayout,
   bannerPostSubmission,
@@ -118,10 +117,11 @@ export const ActionForm = <Schema extends z.ZodRawShape>({
   documentPollerArgs,
   footer: Footer,
 }: ActionFormProps<Schema>) => {
+  const { id, authority } = useParams<{ id: string; authority: Authority }>();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const form = useForm<Schema>({
+  const form = useForm<z.infer<Schema>>({
     resolver: zodResolver(schema),
     mode: "onChange",
     defaultValues: {
@@ -166,7 +166,6 @@ export const ActionForm = <Schema extends z.ZodRawShape>({
       <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
       {form.formState.isSubmitting && <LoadingSpinner />}
       <Form {...form}>
-        {form.formState.isSubmitting && <LoadingSpinner />}
         <form
           onSubmit={onSubmit}
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
@@ -187,7 +186,7 @@ export const ActionForm = <Schema extends z.ZodRawShape>({
             <SectionCard title="Additional Information">
               <FormField
                 control={form.control}
-                name={"additionalInformation" as FieldPath<Schema>}
+                name={"additionalInformation" as FieldPath<z.TypeOf<Schema>>}
                 render={SlotAdditionalInfo({
                   withoutHeading: true,
                   label: (
@@ -208,16 +207,24 @@ export const ActionForm = <Schema extends z.ZodRawShape>({
                   : undefined
               }
               disabled={form.formState.isValid === false}
+              data-testid="submit-action-form"
             >
               Submit
             </Button>
             <Button
               className="px-12"
               onClick={() =>
-                userPrompt({ ...promptOnLeavingForm, onAccept: () => {} })
+                userPrompt({
+                  ...promptOnLeavingForm,
+                  onAccept: () => {
+                    const origin = getFormOrigin({ id, authority });
+                    navigate(origin);
+                  },
+                })
               }
               variant="outline"
               type="reset"
+              data-testid="cancel-action-form"
             >
               Cancel
             </Button>
