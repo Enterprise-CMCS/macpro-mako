@@ -52,6 +52,7 @@ export const v202401: FormSchema = {
                 ...DefaultFieldGroupProps,
                 appendText: "Add service or item",
                 removeText: "Remove",
+                fieldArrayClassName: DefaultFieldGroupProps.fieldArrayClassName,
               },
               fields: [
                 {
@@ -158,6 +159,7 @@ export const v202401: FormSchema = {
                 ...DefaultFieldGroupProps,
                 appendText: "Add service or item",
                 removeText: "Remove",
+                fieldArrayClassName: DefaultFieldGroupProps.fieldArrayClassName,
               },
               fields: [
                 {
@@ -181,7 +183,9 @@ export const v202401: FormSchema = {
                     "ml-[0.6rem] px-4  border-l-4 border-l-primary mt-2",
                   props: {
                     appendText: "Add range",
-                    fieldArrayClassName: "flex-col",
+                    divider: true,
+                    fieldArrayClassName:
+                      DefaultFieldGroupProps.fieldArrayClassName,
                   },
                   fields: [
                     {
@@ -361,7 +365,8 @@ export const v202401: FormSchema = {
               rhf: "FieldArray",
               props: {
                 appendText: "Add charge",
-                fieldArrayClassName: "flex-col",
+                fieldArrayClassName: DefaultFieldGroupProps.fieldArrayClassName,
+                divider: true,
               },
               dependency: {
                 conditions: [
@@ -513,7 +518,8 @@ export const v202401: FormSchema = {
               rules: { required: "* Required" },
               props: {
                 appendText: "Add charge",
-                fieldArrayClassName: "flex-col",
+                fieldArrayClassName: DefaultFieldGroupProps.fieldArrayClassName,
+                divider: true,
               },
               dependency: {
                 conditions: [
