@@ -15,7 +15,7 @@ import {
 } from "./commands";
 
 yargs
-  .fail((msg, err, _) => {
+  .fail((msg, err) => {
     if (err) throw err;
     if (msg) console.error(msg);
     process.exit(1);
@@ -34,4 +34,5 @@ yargs
   .command(getCost)
   .strict()
   .scriptName("run")
-  .demandCommand(1, "").argv;
+  .demandCommand(1, "")
+  .parse();

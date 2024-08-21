@@ -8,12 +8,15 @@ import * as ABP4 from "./ABP4";
 import * as ABP5 from "./ABP5";
 import * as ABP6 from "./ABP6";
 import * as ABP7 from "./ABP7";
+import * as ABP8 from "./ABP8";
 import * as ABP9 from "./ABP9";
 import * as ABP10 from "./ABP10";
 import * as ABP11 from "./ABP11";
+import * as CS3 from "./CS3";
 import * as G2A from "./G2A";
 import * as G1 from "./G1";
 import * as G2B from "./G2B";
+import * as G2C from "./G2C";
 import * as G3 from "./G3";
 import { FormSchema } from "shared-types";
 
@@ -49,6 +52,9 @@ export const webformVersions: Record<string, Record<string, FormSchema>> = {
   ABP7: {
     v202401: ABP7.v202401,
   },
+  ABP8: {
+    v202401: ABP8.v202401,
+  },
   ABP9: {
     v202401: ABP9.v202401,
   },
@@ -58,6 +64,9 @@ export const webformVersions: Record<string, Record<string, FormSchema>> = {
   ABP11: {
     v202401: ABP11.v202401,
   },
+  CS3: {
+    v202401: CS3.v202401,
+  },
   G1: {
     v202401: G1.v202401,
   },
@@ -66,6 +75,9 @@ export const webformVersions: Record<string, Record<string, FormSchema>> = {
   },
   G2B: {
     v202401: G2B.v202401,
+  },
+  G2C: {
+    v202401: G2C.v202401,
   },
   G3: {
     v202401: G3.v202401,

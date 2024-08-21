@@ -16,6 +16,7 @@ import {
   RHFTextDisplay,
   ruleGenerator,
   sortFunctions,
+  stringCompare,
 } from ".";
 import {
   Button,
@@ -54,6 +55,7 @@ export const SlotField = ({
   fields,
   name,
   horizontalLayout,
+  index,
 }: SlotFieldProps) => {
   switch (rhf) {
     case "Input":
@@ -65,7 +67,7 @@ export const SlotField = ({
     case "TextDisplay":
       return (
         <p {...props} data-testid={field.name}>
-          <RHFTextDisplay text={text ?? "UNDEFINED TEXT FIELD"} />
+          <RHFTextDisplay text={text ?? "UNDEFINED TEXT FIELD"} index={index} />
         </p>
       );
     case "Upload":
@@ -77,7 +79,6 @@ export const SlotField = ({
         />
       );
     case "FieldArray":
-    case "FieldGroup":
       return (
         <RHFFieldArray
           control={control}
@@ -92,7 +93,7 @@ export const SlotField = ({
       const opts = props?.options.sort((a, b) =>
         props.customSort
           ? sortFunctions[props.customSort](a.label, b.label)
-          : a.label.localeCompare(b.label),
+          : stringCompare(a, b),
       );
 
       return (
@@ -152,8 +153,7 @@ export const SlotField = ({
             <Calendar
               {...props}
               selected={field.value}
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error
               onSelect={field.onChange}
             />
           </PopoverContent>
@@ -250,6 +250,15 @@ export const SlotField = ({
             );
           })}
         </div>
+      );
+    case "Divider":
+      return (
+        <div
+          className={cn(
+            "w-full border-slate-400 border-2",
+            props?.wrapperClassName,
+          )}
+        />
       );
   }
 };

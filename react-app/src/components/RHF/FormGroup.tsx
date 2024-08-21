@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Control, FieldValues } from "react-hook-form";
 import * as TRhf from "shared-types";
 import { FormLabel, FormField } from "../Inputs";
@@ -29,8 +28,10 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
           {props.form.slots.map((SLOT) => (
             <DependencyWrapper key={props.parentId + SLOT.name} {...SLOT}>
               <FormField
+                // @ts-expect-error
                 control={props.control}
                 name={(props.parentId + SLOT.name) as never}
+                // @ts-expect-error
                 rules={ruleGenerator(SLOT.rules, SLOT.addtnlRules)}
                 render={RHFSlot({
                   ...SLOT,

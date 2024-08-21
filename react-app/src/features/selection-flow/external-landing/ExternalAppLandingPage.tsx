@@ -6,7 +6,6 @@ import {
   BreadCrumbs,
   FAQ_TAB,
   optionCrumbsFromPath,
-  Route,
 } from "@/components";
 import { SimplePageTitle } from "@/features";
 

@@ -20,7 +20,7 @@ export const v202401: FormSchema = {
               name: "agg-actuarial-ben-plan",
               label:
                 "Aggregate actuarial value of the benchmark plan (e.g., FEHBP, state/territory employee coverage, commercial plan, state plan) that is equivalent to the state/territory's benefit package",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               props: {
                 icon: "$",
               },
@@ -28,7 +28,8 @@ export const v202401: FormSchema = {
                 required: "* Required",
                 pattern: {
                   value: /^[0-9]\d*$/,
-                  message: "Must be a positive integer value",
+                  message:
+                    "Must be a positive integer value with no leading or trailing whitespace",
                 },
               },
             },
@@ -37,7 +38,7 @@ export const v202401: FormSchema = {
               name: "agg-actuarial-ben-euqivalent-plan",
               label:
                 "Aggregate actuarial value of the state/territory's benchmark-equivalent plan (must be greater than or equal to the amount entered above)",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               props: {
                 icon: "$",
               },
@@ -45,14 +46,16 @@ export const v202401: FormSchema = {
                 required: "* Required",
                 pattern: {
                   value: /^[0-9]\d*$/,
-                  message: "Must be a positive integer value",
+                  message:
+                    "Must be a positive integer value with no leading or trailing whitespace",
                 },
               },
               addtnlRules: [
                 {
                   type: "greaterThanField",
                   fieldName: "abp6_desc-of-ben_agg-actuarial-ben-plan",
-                  message: "Must be greater than value entered above.",
+                  message:
+                    "Must be greater than or equal to value entered above.",
                 },
               ],
             },
@@ -72,7 +75,7 @@ export const v202401: FormSchema = {
                         name: "benefit-chart-of-benchmark-equiv",
                         rules: { required: "* Required" },
                         label: "Upload attachment(s)",
-                        labelClassName: "font-bold",
+                        labelClassName: "font-bold text-black",
                       },
                     ],
                   },
@@ -84,7 +87,7 @@ export const v202401: FormSchema = {
                       {
                         name: "actuarial-report",
                         label: "Upload actuarial report",
-                        labelClassName: "font-bold",
+                        labelClassName: "font-bold text-black",
                         rhf: "Upload",
                       },
                     ],
@@ -94,7 +97,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Textarea",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               name: "other-info-related-bench-equiv",
               label:
                 "Other information related to this benchmark-equivalent benefit package (optional)",
@@ -188,7 +191,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               name: "bench-pckg-include-vision-services",
               rules: { required: "* Required" },
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               label:
                 "Does the benchmark benefit package that is the basis for comparison of the benchmark-equivalent benefit package include vision services?",
               props: {
@@ -234,7 +237,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               name: "bench-pckg-include-hearing-services",
               rules: { required: "* Required" },
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               label:
                 "Does the benchmark benefit package that is the basis for comparison of the benchmark-equivalent benefit package include hearing services?",
               props: {

@@ -10,7 +10,7 @@ const logger = pino();
 export async function checkFileExt(pathToFile: string): Promise<string> {
   try {
     // Calculate the mime type based off the extension.
-    let mimeTypeFromExtension = lookup(path.extname(pathToFile));
+    const mimeTypeFromExtension = lookup(path.extname(pathToFile));
 
     // Error out if mimeTypes couldn't figure out the mime type.
     if (!mimeTypeFromExtension) {
@@ -25,7 +25,7 @@ export async function checkFileExt(pathToFile: string): Promise<string> {
     }
 
     // Caclulate the mime type based off the file's contents.
-    let mimeTypeFromContents = await getFileTypeFromContents(pathToFile);
+    const mimeTypeFromContents = await getFileTypeFromContents(pathToFile);
     // Error out if file-type couldn't determine the mime type.
     if (!mimeTypeFromContents) {
       logger.info("FAILURE - CANNOT DETERMINE MIMETYPE FROM CONTENTS");
@@ -37,7 +37,7 @@ export async function checkFileExt(pathToFile: string): Promise<string> {
     logger.info(`File mimetype from contents:   ${mimeTypeFromContents}`);
 
     // Check if the mimes are equivalent
-    let same = areMimeTypesEquivalent(
+    const same = areMimeTypesEquivalent(
       mimeTypeFromExtension,
       mimeTypeFromContents,
     );
@@ -51,7 +51,7 @@ export async function checkFileExt(pathToFile: string): Promise<string> {
 
     // Otherwise, so far it's clean
     return constants.STATUS_CLEAN_FILE;
-  } catch (error) {
+  } catch {
     logger.error("Error Checking file extension");
     return constants.STATUS_ERROR_PROCESSING_FILE;
   }

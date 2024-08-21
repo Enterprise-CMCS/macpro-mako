@@ -106,7 +106,7 @@ export class ParentStack extends cdk.Stack {
       devPasswordArn: props.devPasswordArn,
     });
 
-    const emailStack = new Stacks.Email(this, "email", {
+    new Stacks.Email(this, "email", {
       ...commonProps,
       stack: "email",
       vpc,

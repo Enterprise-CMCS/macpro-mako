@@ -12,7 +12,7 @@ import { useUserContext } from "../Context";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
 import { useNavigate } from "../Routing";
-import { ModalProvider, AlertProvider } from "@/components";
+import { SimplePageContainer, UserPrompt, Banner } from "@/components";
 import { isFaqPage, isProd } from "@/utils";
 
 const useGetLinks = () => {
@@ -120,51 +120,51 @@ export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   return (
-    <ModalProvider>
-      <div className="min-h-full flex flex-col">
-        <UsaBanner />
-        <nav className="bg-primary">
-          <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
-            <div className="h-[70px] flex gap-12 items-center text-white">
-              {!isFaqPage ? (
-                // This is the original Link component
-                <Link to="/">
-                  <img
-                    className="h-10 w-28 min-w-[112px] resize-none"
-                    src={oneMacLogo}
-                    alt="onemac site logo"
-                  />
-                </Link>
-              ) : (
-                // This is a non-clickable element that looks the same
-                <div>
-                  <img
-                    className="h-10 w-28 min-w-[112px] resize-none"
-                    src={oneMacLogo}
-                    alt="onemac site logo"
-                  />
-                </div>
-              )}
-              <ResponsiveNav isDesktop={isDesktop} />
-            </div>
+    <div className="min-h-full flex flex-col">
+      <UserPrompt />
+      <UsaBanner />
+      <nav className="bg-primary">
+        <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
+          <div className="h-[70px] flex gap-12 items-center text-white">
+            {!isFaqPage ? (
+              // This is the original Link component
+              <Link to="/">
+                <img
+                  className="h-10 w-28 min-w-[112px] resize-none"
+                  src={oneMacLogo}
+                  alt="onemac site logo"
+                />
+              </Link>
+            ) : (
+              // This is a non-clickable element that looks the same
+              <div>
+                <img
+                  className="h-10 w-28 min-w-[112px] resize-none"
+                  src={oneMacLogo}
+                  alt="onemac site logo"
+                />
+              </div>
+            )}
+            <ResponsiveNav isDesktop={isDesktop} />
           </div>
-        </nav>
-        <main className="flex-1">
-          <AlertProvider>
-            <Outlet />
-          </AlertProvider>
-        </main>
-        <Footer
-          email="OneMAC_Helpdesk@cms.hhs.gov"
-          address={{
-            city: "Baltimore",
-            state: "MD",
-            street: "7500 Security Boulevard",
-            zip: 21244,
-          }}
-        />
-      </div>
-    </ModalProvider>
+        </div>
+      </nav>
+      <main className="flex-1">
+        <SimplePageContainer>
+          <Banner />
+        </SimplePageContainer>
+        <Outlet />
+      </main>
+      <Footer
+        email="OneMAC_Helpdesk@cms.hhs.gov"
+        address={{
+          city: "Baltimore",
+          state: "MD",
+          street: "7500 Security Boulevard",
+          zip: 21244,
+        }}
+      />
+    </div>
   );
 };
 
@@ -192,7 +192,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     window.location.assign(url);
   };
 
-  if (isLoading || isError) return <></>;
+  if (isLoading || isError) return null;
 
   const setClassBasedOnNav: NavLinkProps["className"] = ({ isActive }) =>
     isActive
@@ -217,30 +217,28 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
           </NavLink>
         ))}
         <div className="flex-1"></div>
-        <>
-          {data.user ? (
-            // When the user is signed in
-            <UserDropdownMenu />
-          ) : (
-            !isFaqPage && (
-              // When the user is not signed in
-              <>
-                <button
-                  className="text-white hover:text-white/70"
-                  onClick={handleLogin}
-                >
-                  Sign In
-                </button>
-                <button
-                  className="text-white hover:text-white/70"
-                  onClick={handleRegister}
-                >
-                  Register
-                </button>
-              </>
-            )
-          )}
-        </>
+        {data.user ? (
+          // When the user is signed in
+          <UserDropdownMenu />
+        ) : (
+          !isFaqPage && (
+            // When the user is not signed in
+            <>
+              <button
+                className="text-white hover:text-white/70"
+                onClick={handleLogin}
+              >
+                Sign In
+              </button>
+              <button
+                className="text-white hover:text-white/70"
+                onClick={handleRegister}
+              >
+                Register
+              </button>
+            </>
+          )
+        )}
       </>
     );
   }
@@ -262,30 +260,28 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                 </Link>
               </li>
             ))}
-            <>
-              {data.user ? (
-                // When the user is signed in
-                <UserDropdownMenu />
-              ) : (
-                !isFaqPage && (
-                  // When the user is not signed in
-                  <>
-                    <button
-                      className="text-left block py-2 pl-3 pr-4 text-white rounded"
-                      onClick={handleLogin}
-                    >
-                      Sign In
-                    </button>
-                    <button
-                      className="text-white hover:text-white/70"
-                      onClick={handleRegister}
-                    >
-                      Register
-                    </button>
-                  </>
-                )
-              )}
-            </>
+            {data.user ? (
+              // When the user is signed in
+              <UserDropdownMenu />
+            ) : (
+              !isFaqPage && (
+                // When the user is not signed in
+                <>
+                  <button
+                    className="text-left block py-2 pl-3 pr-4 text-white rounded"
+                    onClick={handleLogin}
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    className="text-white hover:text-white/70"
+                    onClick={handleRegister}
+                  >
+                    Register
+                  </button>
+                </>
+              )
+            )}
           </ul>
         </div>
       )}

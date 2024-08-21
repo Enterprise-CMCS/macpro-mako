@@ -1,7 +1,7 @@
 import { Argv } from "yargs";
 import {
   checkIfAuthenticated,
-  LabeledProcessRunner,
+  runCommand,
   project,
   region,
   setStageFromBranch,
@@ -19,8 +19,6 @@ import {
 import prompts from "prompts";
 
 const lambdaClient = new LambdaClient({ region });
-
-const runner = new LabeledProcessRunner();
 
 export const logs = {
   command: "logs",
@@ -79,9 +77,9 @@ export const logs = {
     const lambdaLogGroup = await getLambdaLogGroup(lambda);
 
     // Stream the logs
-    await runner.run_command_and_output(
-      "stream awslogs",
-      ["awslogs", "get", lambdaLogGroup, "-s5h", "--watch"],
+    await runCommand(
+      "awslogs",
+      ["get", lambdaLogGroup, "-s10m", "--watch"],
       ".",
     );
   },

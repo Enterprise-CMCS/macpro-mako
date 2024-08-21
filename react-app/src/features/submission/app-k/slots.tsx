@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useGetUser } from "@/api/useGetUser";
 import { OPTIONS_STATE } from "./consts";
 import * as I from "@/components/Inputs";
@@ -75,7 +74,7 @@ export const SlotWaiverId = <
 
       setLoading(true);
 
-      const [_, index] = field.name.split(".");
+      const [, index] = field.name.split(".");
       const childWaivers = context.getValues("waiverIds") || [];
       const existsInList = childWaivers
         .filter((_: any, I: number) => I != Number(index))
@@ -180,8 +179,6 @@ export const WaiverIdFieldArray = (props: any) => {
                 <I.FormField
                   control={props.control}
                   name={`${props.name}.${index}`}
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
                   render={SlotWaiverId({
                     ...(index && { onRemove: () => fieldArr.remove(index) }),
                     state: props.state,

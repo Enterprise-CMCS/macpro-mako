@@ -1,16 +1,9 @@
 import { FieldValues, RegisterOptions } from "react-hook-form";
-import {
-  FieldArrayProps,
-  FieldGroupProps,
-  RHFSlotProps,
-  RHFTextField,
-} from "shared-types";
+import { FieldArrayProps, RHFSlotProps, RHFTextField } from "shared-types";
 import { FormField, FormLabel } from "../Inputs/form";
 import { DependencyWrapper, RHFSlot, RHFTextDisplay, ruleGenerator } from "./";
 
-interface FieldProps<T extends FieldValues>
-  extends FieldGroupProps<T>,
-    FieldArrayProps<T> {
+interface FieldProps<T extends FieldValues> extends FieldArrayProps<T> {
   index: number;
   SLOT: RHFSlotProps;
 }
@@ -66,7 +59,7 @@ export const Field = <TFields extends FieldValues>({
   const formField = (
     <FormField
       key={adjustedSlotName}
-      // @ts-ignore
+      // @ts-expect-error
       control={control}
       rules={
         ruleGenerator(SLOT.rules, SLOT.addtnlRules) as CustomRegisterOptions
@@ -74,6 +67,7 @@ export const Field = <TFields extends FieldValues>({
       name={adjustedSlotName as never}
       render={RHFSlot({
         ...SLOT,
+        index: index,
         control: control,
         name: adjustedSlotName,
         parentId: adjustedPrefix,

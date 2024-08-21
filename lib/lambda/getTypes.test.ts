@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
-import { handler, queryTypes } from "./getTypes";
+import { handler } from "./getTypes";
 import { response } from "libs/handler-lib";
 import * as os from "libs/opensearch-lib";
 
