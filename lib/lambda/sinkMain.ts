@@ -54,11 +54,12 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   });
 
   const openSearchRecords = (await os.getItems(osDomain, index, ids)) as any;
+  const test = await os.getItem(osDomain, index, ids.at(0)!);
   const filteredRecords = openSearchRecords.body.docs.filter(
     (doc: any) => doc.found,
   );
   console.log("The ids for opensearch query are: ", JSON.stringify(ids));
-  console.log("Test to see format of string: ", ids.at(0));
+  console.log("Does getting the first item work: ", JSON.stringify(test));
   console.log(
     "The opensearch records are the following: ",
     JSON.stringify(filteredRecords),
