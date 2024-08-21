@@ -22,20 +22,17 @@ export const ui = {
 
   handler: async (options: { stage?: string; watch: boolean }) => {
     await checkIfAuthenticated();
-    const stage = options.stage || await setStageFromBranch();
+    const stage = options.stage || (await setStageFromBranch());
 
     await writeUiEnvFile(stage, true);
     if (options.watch) {
-      // Integrate the watch functionality when the --watch flag is passed
-      await runCommand(
-        "CDK Watch",
-        ["cdk", "watch", "-c", `stage=${stage}`, "--no-rollback"],
-        ".",
-      );
+      // Run both commands simultaneously using the ui:watch script
+      console.log("Running CDK watch and Bun dev commands simultaneously...");
+      process.env.STAGE = stage;
+      await runCommand("bun", ["run", "ui:watch"], ".");
     } else {
       // Regular UI command execution
-      await runCommand(`Build`, ["bun", "run", "build"], "react-app");
-      await runCommand(`Run`, ["bun", "run", "dev"], `react-app`);
+      await runCommand(`bun`, ["run", "dev"], "react-app");
     }
   },
 };

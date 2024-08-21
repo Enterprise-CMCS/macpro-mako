@@ -16,7 +16,10 @@
     "test-tsc": "tsc --skipLibCheck --noEmit",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "cdk:watch": "cdk watch -c stage=${STAGE:-local} --no-rollback",
+    "bun:dev": "cd react-app && bun run dev",
+    "ui:watch": "npm-run-all --parallel cdk:watch bun:dev"
   },
   "repository": "https://github.com/Enterprise-CMCS/macpro-mako",
   "workspaces": [
@@ -59,6 +62,7 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "globals": "^15.9.0",
     "jest": "^29.7.0",
+    "npm-run-all": "^4.1.5",
     "semantic-release": "^21.1.2",
     "ts-jest": "^29.2.4",
     "ts-node": "^10.9.2",
