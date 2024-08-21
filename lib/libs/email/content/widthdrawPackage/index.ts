@@ -16,7 +16,7 @@ The package will no longer be considered for CMS review:</p>
 <br><b>Medicaid SPA Package ID:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation ?? "No additional information submitted"}
 <p>If the contents of this email seem suspicious, do not open them, and instead 
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
@@ -30,7 +30,7 @@ Email: ${variables.submitterEmail}
 Medicaid SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation ?? "No additional information submitted"}
 
 If the contents of this email seem suspicious, do not open them, and instead 
 forward this email to SPAM@cms.hhs.gov.
@@ -70,7 +70,7 @@ The package will no longer be considered for CMS review:</p>
 <br><b>CHIP SPA Package ID:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation ?? "No additional information submitted"}
 <br>
 <p>If the contents of this email seem suspicious, do not open them, and instead forward this email to 
 <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>
@@ -86,7 +86,7 @@ Email Address: ${variables.submitterEmail}
 CHIP SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation ?? "No additional information submitted"}
 
 If the contents of this email seem suspicious, do not open them, and instead forward this email to SPAM@cms.hhs.gov'
 
@@ -123,26 +123,27 @@ The package will no longer be considered for CMS review:</p>
 <p>
 <br><b>State or territory:</b> ${variables.territory}
 <br><b>Name:</b> ${variables.submitterName}
-<br><b>Email:</b> ${variables.submitterEmail}
-<br><b>Waiver Number:</b> ${variables.id}
+<br><b>Email Address:</b> ${variables.submitterEmail}
+<br><b>${variables.authority} Package ID:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation ?? "No additional information submitted"}
+<br>
 <br>
 <p>If the contents of this email seem suspicious, do not open them, and instead 
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
         text: `
-he OneMAC Submission Portal received a request to withdraw the package below.
+The OneMAC Submission Portal received a request to withdraw the package below.
 The package will no longer be considered for CMS review:
 
 State or territory: ${variables.territory}
 Name: ${variables.submitterName}
 Email: ${variables.submitterEmail}
-${variables.actionType} Number: ${variables.id}
+Waiver Number: ${variables.id}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation ?? "No additional information submitted"}
 
 If the contents of this email seem suspicious, do not open them, and instead forward this email to SPAM@cms.hhs.gov.
 
