@@ -73,7 +73,7 @@ export const router = createBrowserRouter([
       // },
       {
         path: "/new-submission/spa/medicaid/create",
-        element: <F.NewMedicaidForm />,
+        element: <F.MedicaidForm />,
       },
       // {
       //   path: "/new-submission/spa/chip/create",
