@@ -131,7 +131,7 @@ async function processAndSendEmails(
       const filledTemplate = await template(templateVariables);
       await sendEmail({
         // to: record.submitterEmail,
-        to: "bpaige@fearless.tech",
+        to: "mako.stateuser@gmail.com",
         from: emailAddressLookup.sourceEmail,
         subject: filledTemplate.subject,
         html: filledTemplate.html,
