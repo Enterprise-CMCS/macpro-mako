@@ -15,13 +15,14 @@ export const ui = {
       .option("watch", {
         type: "boolean",
         demandOption: false,
+        default: false,
         describe: "Watch the project for changes",
       });
   },
 
-  handler: async (options: { stage: string; watch: boolean }) => {
+  handler: async (options: { stage?: string; watch: boolean }) => {
     await checkIfAuthenticated();
-    const stage = options.stage || (await setStageFromBranch());
+    const stage = options.stage || await setStageFromBranch();
 
     await writeUiEnvFile(stage, true);
     if (options.watch) {
