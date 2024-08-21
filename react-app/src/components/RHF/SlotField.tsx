@@ -141,7 +141,7 @@ export const SlotField = ({
                 )}
               >
                 {field.value ? (
-                  format(field.value, "PPP")
+                  format(new Date(field.value), "PPP")
                 ) : (
                   <span>Pick a date</span>
                 )}
@@ -153,8 +153,9 @@ export const SlotField = ({
             <Calendar
               {...props}
               selected={field.value}
-              // @ts-expect-error
-              onSelect={field.onChange}
+              onDayClick={(e) => {
+                field.onChange(e);
+              }}
             />
           </PopoverContent>
         </Popover>
