@@ -51,7 +51,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps<z.ZodRawShape>> =
     attachments: {
       faqLink: string;
       specialInstructions?: string;
-      fileInstructions: {
+      fileErrors: {
         [Key in keyof z.TypeOf<Schema>["attachments"]]: string;
       };
     };

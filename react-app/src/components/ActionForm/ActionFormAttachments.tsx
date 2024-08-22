@@ -33,7 +33,7 @@ type ActionFormAttachmentsProps<Schema extends z.ZodRawShape> = {
   schema: SchemaWithEnforcableProps<Schema>;
   specialInstructions?: string;
   faqLink: string;
-  fileInstructions?: {
+  fileErrors?: {
     [key: string]: string;
   };
 };
@@ -42,7 +42,7 @@ export const ActionFormAttachments = <Schema extends z.ZodRawShape>({
   schema,
   specialInstructions = DEFAULT_ATTACHMENTS_INSTRUCTIONS,
   faqLink,
-  fileInstructions = {},
+  fileErrors = {},
 }: ActionFormAttachmentsProps<Schema>) => {
   const form = useFormContext();
   const attachementsFromSchema = Object.entries(schema.shape.attachments.shape);
@@ -90,9 +90,9 @@ export const ActionFormAttachments = <Schema extends z.ZodRawShape>({
                 {value.shape.files instanceof z.ZodOptional ? null : (
                   <RequiredIndicator />
                 )}
-                {fileInstructions[key] && (
-                  <FormDescription data-testid={fileInstructions[key]}>
-                    {fileInstructions[key]}
+                {fileErrors[key] && (
+                  <FormDescription data-testid={fileErrors[key]}>
+                    {fileErrors[key]}
                   </FormDescription>
                 )}
               </FormLabel>
