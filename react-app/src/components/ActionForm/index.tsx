@@ -43,7 +43,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps<z.ZodRawShape>> =
     schema: Schema;
     defaultValues?: DefaultValues<z.TypeOf<Schema>>;
     title: string;
-    fieldsLayout?: ({ children }: { children: ReactNode }) => ReactNode;
+    fieldsLayout?: (props: { children: ReactNode; title: string }) => ReactNode;
     fields: (form: UseFormReturn<z.TypeOf<Schema>>) => ReactNode;
     bannerPostSubmission: Omit<Banner, "pathnameToDisplayOn">;
     promptPreSubmission?: Omit<UserPrompt, "onAccept">;
@@ -127,7 +127,7 @@ export const ActionForm = <
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
           {FieldsLayout ? (
-            <FieldsLayout>
+            <FieldsLayout title={title}>
               <Fields {...form} />
             </FieldsLayout>
           ) : (

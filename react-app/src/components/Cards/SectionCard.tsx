@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { ReactNode } from "react";
 import { cn } from "@/utils";
 
 interface SectionCardProps {
@@ -7,7 +7,7 @@ interface SectionCardProps {
   title?: ReactNode;
   id?: string;
 }
-export const SectionCard: FC<SectionCardProps> = ({
+export const SectionCard = ({
   title,
   children,
   className,
@@ -22,10 +22,12 @@ export const SectionCard: FC<SectionCardProps> = ({
         {title && (
           <>
             <h1 className="text-3xl font-semibold mb-2">{title}</h1>
-            <hr className="my-6 bg-slate-200 " />
+            <hr className="my-6 bg-slate-200" />
           </>
         )}
-        <div className="gap-8 flex flex-col">{children}</div>
+        <div className="gap-8 flex flex-col" data-testid="attachments-section">
+          {children}
+        </div>
       </section>
     </div>
   );
