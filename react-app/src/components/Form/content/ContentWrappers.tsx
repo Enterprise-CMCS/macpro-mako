@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useMemo } from "react";
+import { ReactElement, ReactNode } from "react";
 import { Info } from "lucide-react";
 import {
   Alert,
@@ -6,7 +6,6 @@ import {
   PackageSection,
   SectionCard,
 } from "@/components";
-import { useFormContext } from "react-hook-form";
 import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
 import clsx from "clsx";
 
@@ -116,17 +115,3 @@ export const PreSubmitNotice = ({
     )}
   </Alert>
 );
-
-export const ErrorBanner = () => {
-  const form = useFormContext();
-  const errorLen = useMemo(
-    () => Object.keys(form.formState.errors).length,
-    [form.formState.errors],
-  );
-
-  return errorLen !== 0 ? (
-    <Alert className="my-6" variant="destructive">
-      Missing or malformed information. Please see errors above.
-    </Alert>
-  ) : null;
-};

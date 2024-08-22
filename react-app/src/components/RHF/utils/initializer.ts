@@ -20,7 +20,7 @@ export const slotInitializer =
     };
 
     const fieldInitializer = (ACC1: GL, SLOTC: T.RHFSlotProps): GL => {
-      if (SLOTC.rhf === "FieldArray" || SLOTC.rhf === "FieldGroup") {
+      if (SLOTC.rhf === "FieldArray") {
         return {
           ...ACC1,
           [SLOTC.name]: [SLOTC.fields?.reduce(fieldInitializer, {})],
@@ -45,7 +45,6 @@ export const slotInitializer =
         ACC[adjustedName] = "";
         break;
       case "FieldArray":
-      case "FieldGroup":
         ACC[adjustedName] = [SLOT.fields?.reduce(fieldInitializer, {})];
         break;
       case "WrappedGroup":

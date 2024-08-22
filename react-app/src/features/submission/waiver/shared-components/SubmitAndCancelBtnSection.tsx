@@ -1,5 +1,5 @@
-import { LoadingSpinner, Button } from "@/components";
-import { Alert, userPrompt } from "@/components";
+import { Button } from "@/components";
+import { userPrompt } from "@/components";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import { useMemo } from "react";
@@ -7,15 +7,11 @@ import { getFormOrigin } from "@/utils";
 import { Authority } from "shared-types";
 
 interface buttonProps {
-  loadingSpinner?: boolean;
-  showAlert?: boolean;
   confirmWithdraw?: () => void;
   enableSubmit?: boolean;
 }
 
 export const SubmitAndCancelBtnSection = ({
-  loadingSpinner,
-  showAlert,
   confirmWithdraw,
   enableSubmit,
 }: buttonProps) => {
@@ -36,46 +32,32 @@ export const SubmitAndCancelBtnSection = ({
   }, [form.formState.isValid]);
 
   return (
-    <>
-      {loadingSpinner && form.formState.isSubmitting && (
-        <div className="p-4">
-          <LoadingSpinner />
-        </div>
-      )}
-
-      {showAlert && Object.keys(form.formState.errors).length !== 0 && (
-        <Alert className="mb-6 " variant="destructive">
-          Missing or malformed information. Please see errors above.
-        </Alert>
-      )}
-
-      <section className="flex justify-end gap-2 p-4 ml-auto">
-        <Button
-          className="px-12"
-          type={confirmWithdraw ? "button" : "submit"}
-          onClick={confirmWithdraw ? confirmWithdraw : () => null}
-          disabled={disableSubmit}
-        >
-          Submit
-        </Button>
-        <Button
-          className="px-12"
-          onClick={() => {
-            userPrompt({
-              header: "Stop form submission?",
-              body: "All information you've entered on this form will be lost if you leave this page.",
-              acceptButtonText: "Yes, leave form",
-              cancelButtonText: "Return to form",
-              onAccept: acceptAction,
-              areButtonsReversed: true,
-            });
-          }}
-          variant={"outline"}
-          type="reset"
-        >
-          Cancel
-        </Button>
-      </section>
-    </>
+    <section className="flex justify-end gap-2 p-4 ml-auto">
+      <Button
+        className="px-12"
+        type={confirmWithdraw ? "button" : "submit"}
+        onClick={confirmWithdraw ? confirmWithdraw : () => null}
+        disabled={disableSubmit}
+      >
+        Submit
+      </Button>
+      <Button
+        className="px-12"
+        onClick={() => {
+          userPrompt({
+            header: "Stop form submission?",
+            body: "All information you've entered on this form will be lost if you leave this page.",
+            acceptButtonText: "Yes, leave form",
+            cancelButtonText: "Return to form",
+            onAccept: acceptAction,
+            areButtonsReversed: true,
+          });
+        }}
+        variant={"outline"}
+        type="reset"
+      >
+        Cancel
+      </Button>
+    </section>
   );
 };

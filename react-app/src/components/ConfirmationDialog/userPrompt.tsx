@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
+import { Observer } from "@/utils/basic-observable";
 
 export type UserPrompt = {
   header: string;
@@ -11,43 +12,22 @@ export type UserPrompt = {
   onCancel?: () => void;
 };
 
-class Observer {
-  subscribers: Array<(userPrompt: UserPrompt) => void>;
-  userPrompt: UserPrompt | null;
-
-  constructor() {
-    this.subscribers = [];
-    this.userPrompt = null;
-  }
-
-  subscribe = (subscriber: (userPrompt: UserPrompt | null) => void) => {
-    this.subscribers.push(subscriber);
-
-    return () => {
-      const index = this.subscribers.indexOf(subscriber);
-      this.subscribers.splice(index, 1);
-    };
-  };
-
-  private publish = (data: UserPrompt | null) => {
-    this.subscribers.forEach((subscriber) => subscriber(data));
-  };
-
+class UserPromptObserver extends Observer<UserPrompt> {
   create = (data: UserPrompt) => {
     this.publish(data);
-    this.userPrompt = { ...data };
+    this.observed = { ...data };
   };
 
   dismiss = () => {
     this.publish(null);
-    this.userPrompt = null;
+    this.observed = null;
   };
 }
 
-const userPromptState = new Observer();
+const userPromptState = new UserPromptObserver();
 
-export const userPrompt = (newuserPrompt: UserPrompt) => {
-  return userPromptState.create(newuserPrompt);
+export const userPrompt = (newUserPrompt: UserPrompt) => {
+  return userPromptState.create(newUserPrompt);
 };
 
 export const UserPrompt = () => {

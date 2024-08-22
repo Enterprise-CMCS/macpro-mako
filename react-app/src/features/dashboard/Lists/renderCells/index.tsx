@@ -28,54 +28,52 @@ export const CellDetailsLink = ({ id, authority }: CellIdLinkProps) => (
 
 export const renderCellActions = (user: CognitoUserAttributes | null) => {
   return function Cell(data: opensearch.main.Document) {
-    if (!user) return <></>;
+    if (!user) return null;
 
     const actions = getAvailableActions(user, data);
     return (
-      <>
-        <POP.Popover>
-          <POP.PopoverTrigger
-            disabled={!actions.length}
-            className="block ml-3"
-            aria-label="Available actions"
-          >
-            <EllipsisVerticalIcon
-              aria-label="record actions"
-              className={cn(
-                "w-8 ",
-                actions.length ? "text-blue-700" : "text-gray-400",
-              )}
-            />
-          </POP.PopoverTrigger>
-          <POP.PopoverContent>
-            <div className="flex flex-col">
-              {actions.map((action, idx) => (
-                <TypedLink
-                  state={{
-                    from: `${location.pathname}${location.search}`,
-                  }}
-                  path="/action/:authority/:id/:type"
-                  key={`${idx}-${action}`}
-                  params={{
-                    id: data.id,
-                    type: action,
-                    authority: data.authority,
-                  }}
-                  className={cn(
-                    "text-blue-500",
-                    "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-                  )}
-                  query={{
-                    origin: DASHBOARD_ORIGIN,
-                  }}
-                >
-                  {mapActionLabel(action)}
-                </TypedLink>
-              ))}
-            </div>
-          </POP.PopoverContent>
-        </POP.Popover>
-      </>
+      <POP.Popover>
+        <POP.PopoverTrigger
+          disabled={!actions.length}
+          className="block ml-3"
+          aria-label="Available actions"
+        >
+          <EllipsisVerticalIcon
+            aria-label="record actions"
+            className={cn(
+              "w-8 ",
+              actions.length ? "text-blue-700" : "text-gray-400",
+            )}
+          />
+        </POP.PopoverTrigger>
+        <POP.PopoverContent>
+          <div className="flex flex-col">
+            {actions.map((action, idx) => (
+              <TypedLink
+                state={{
+                  from: `${location.pathname}${location.search}`,
+                }}
+                path="/action/:authority/:id/:type"
+                key={`${idx}-${action}`}
+                params={{
+                  id: data.id,
+                  type: action,
+                  authority: data.authority,
+                }}
+                className={cn(
+                  "text-blue-500",
+                  "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+                )}
+                query={{
+                  origin: DASHBOARD_ORIGIN,
+                }}
+              >
+                {mapActionLabel(action)}
+              </TypedLink>
+            ))}
+          </div>
+        </POP.PopoverContent>
+      </POP.Popover>
     );
   };
 };
