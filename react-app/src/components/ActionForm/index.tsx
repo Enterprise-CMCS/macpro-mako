@@ -155,7 +155,7 @@ export const ActionForm = <
           )}
           <PreSubmissionMessage
             hasProgressLossReminder={
-              Fields.length > 0 &&
+              Fields.length > 0 ||
               schema.shape.attachments instanceof z.ZodObject
             }
           />
