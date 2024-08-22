@@ -11,6 +11,10 @@ import {
   OsTableColumn,
   createSearchFilterable,
   useOsUrl,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from "@/components";
 import { FC } from "react";
 
@@ -55,6 +59,9 @@ export const OsExportData: FC<{
   };
 
   return (
+    <TooltipProvider>
+      <Tooltip disableHoverableContent={true}>
+      <TooltipTrigger asChild className='disabled:pointer-events-auto'>
     <Button
       variant="outline"
       onClick={handleExport}
@@ -72,5 +79,11 @@ export const OsExportData: FC<{
       {!loading && <Download className="w-4 h-4" />}
       <span className="prose-sm">Export</span>
     </Button>
+    </TooltipTrigger>
+    {disabled && <TooltipContent>
+      <p>No records available</p>
+      </TooltipContent>}
+    </Tooltip>
+    </TooltipProvider>
   );
 };
