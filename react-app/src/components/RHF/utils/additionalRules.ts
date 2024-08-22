@@ -79,6 +79,28 @@ export const valReducer = (
           return rule.message;
         },
       };
+    case "noOverlappingAges":
+      return {
+        ...valSet,
+        [valName]: (value: any[]) => {
+          if (!value || value.length < 2) return true;
+          
+          const sortedRanges = [...value].sort((a, b) => 
+            parseInt(a['from-age']) - parseInt(b['from-age'])
+          );
+
+          for (let i = 0; i < sortedRanges.length - 1; i++) {
+            const currentRange = sortedRanges[i];
+            const nextRange = sortedRanges[i + 1];
+            
+            if (parseInt(currentRange['to-age']) >= parseInt(nextRange['from-age'])) {
+              return false;
+            }
+          }
+
+          return true;
+        },
+      };
     default:
       return { ...valSet };
   }

@@ -1,6 +1,6 @@
 export const key = "C0-24-8110";
 
-export const value = {
+export const emailTemplateValue = {
   timestamp: 1723390633663,
   authority: "george@example.com",
   seaActionType: "Amend",

@@ -26,10 +26,17 @@ export const v202401: FormSchema = {
                 {
                   rhf: "FieldArray",
                   name: "age-and-house-inc-range",
-
                   props: {
                     appendText: "Add range",
                   },
+                  addtnlRules: [
+                    {
+                      type: "noOverlappingAges",
+                      fieldName: "age-and-house-inc-range",
+                      message:
+                        "Age ranges should not overlap. Please adjust the ranges to ensure there are no overlaps.",
+                    },
+                  ],
                   fields: [
                     {
                       rhf: "Select",
