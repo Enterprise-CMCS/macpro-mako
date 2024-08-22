@@ -200,12 +200,12 @@ export const v202401: FormSchema = {
                 {
                   rhf: "FieldArray",
                   name: "inc-range-cost-share-amount",
-                  formItemClassName:
-                    "ml-[0.6rem] px-4  border-l-4 border-l-primary mt-2",
                   props: {
                     appendText: "Add range",
                     fieldArrayClassName:
-                      DefaultFieldGroupProps.fieldArrayClassName,
+                      DefaultFieldGroupProps.fieldArrayClassName +
+                      "space-y-6 " +
+                      "ml-[0.6rem] px-4 border-l-4 border-l-primary mb-4",
                     divider: true,
                   },
                   fields: [
@@ -387,7 +387,10 @@ export const v202401: FormSchema = {
               rhf: "FieldArray",
               props: {
                 appendText: "Add charge",
-                fieldArrayClassName: DefaultFieldGroupProps.fieldArrayClassName,
+                fieldArrayClassName:
+                  DefaultFieldGroupProps.fieldArrayClassName +
+                  "space-y-6 " +
+                  "ml-[0.6rem] px-4 border-l-4 border-l-primary mb-4",
                 divider: true,
               },
               dependency: {
@@ -400,8 +403,6 @@ export const v202401: FormSchema = {
                 ],
                 effect: { type: "show" },
               },
-              formItemClassName:
-                "ml-[0.6rem] px-4  border-l-4 border-l-primary mt-2",
               fields: [
                 {
                   rhf: "WrappedGroup",
@@ -541,7 +542,10 @@ export const v202401: FormSchema = {
               rules: { required: "* Required" },
               props: {
                 appendText: "Add charge",
-                fieldArrayClassName: DefaultFieldGroupProps.fieldArrayClassName,
+                fieldArrayClassName:
+                  DefaultFieldGroupProps.fieldArrayClassName +
+                  "space-y-6 " +
+                  "ml-[0.6rem] px-4 border-l-4 border-l-primary mb-4",
                 divider: true,
               },
               dependency: {
@@ -554,8 +558,6 @@ export const v202401: FormSchema = {
                 ],
                 effect: { type: "show" },
               },
-              formItemClassName:
-                "ml-[0.6rem] px-4 border-l-4 border-l-primary mt-2",
               fields: [
                 {
                   rhf: "WrappedGroup",
