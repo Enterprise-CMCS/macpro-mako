@@ -5,8 +5,8 @@ import {
   AttachmentKey,
   attachmentTitleMap,
   EmailAddresses,
-} from "shared-types";
-import { getSecret } from "shared-utils";
+} from "../../packages/shared-types";
+import { getSecret } from "../../packages/shared-utils";
 
 interface Attachment {
   title: keyof typeof attachmentTitleMap;
@@ -171,7 +171,10 @@ export const buildEmailData = async (
           emailAddresses[dataType] ??
           `'${dataType} Substitute' <mako.stateuser@gmail.com>`;
         break;
-        
+      case "additionalInformation":
+        returnObject[dataType] =
+          data[dataType] ?? "No additional information submitted";
+        break;
       default:
         returnObject[dataType] =
           data[dataType] ?? lookupValues[dataType] ?? "missing data";
