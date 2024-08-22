@@ -6,7 +6,7 @@ export const tempExtention = {
     return {
       subject: `${variables.authority} Waiver Extension ${variables.id} Submitted`,
       html: `
-<p>The Submission Portal received a ${
+<p>The OneMAC Submission Portal received a ${
         variables.authority
       } Waiver Extension Submission:</p>
 <ul>
@@ -34,7 +34,7 @@ Summary:
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
       text: `
-The Submission Portal received a ${
+The OneMAC Submission Portal received a ${
         variables.authority
       } Waiver Extension Submission:
 
