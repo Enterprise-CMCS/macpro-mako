@@ -3,7 +3,7 @@ import { Link, MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, test } from "vitest";
 import { act, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { banner, Banner } from "../Banner";
+import { banner, Banner } from ".";
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <MemoryRouter initialEntries={["/dashboard"]}>
