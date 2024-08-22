@@ -13,6 +13,8 @@ import {
   banner,
   userPrompt,
   formCrumbsFromPath,
+  FAQFooter,
+  PreSubmissionMessage,
 } from "@/components";
 import {
   DefaultValues,
@@ -57,7 +59,6 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps<z.ZodRawShape>> =
       property: keyof z.TypeOf<Schema> & string;
       documentChecker: CheckDocumentFunction;
     };
-    footer?: () => ReactNode;
   };
 
 export const ActionForm = <
@@ -73,7 +74,6 @@ export const ActionForm = <
   promptPreSubmission,
   documentPollerArgs,
   attachments,
-  footer: Footer,
 }: ActionFormProps<Schema>) => {
   const { id, authority } = useParams<{ id: string; authority: Authority }>();
   const location = useLocation();
@@ -153,6 +153,12 @@ export const ActionForm = <
               />
             </SectionCard>
           )}
+          <PreSubmissionMessage
+            hasProgressLossReminder={
+              Fields.length > 0 &&
+              schema.shape.attachments instanceof z.ZodObject
+            }
+          />
           <section className="flex justify-end gap-2 p-4 ml-auto">
             <Button
               className="px-12"
@@ -188,7 +194,7 @@ export const ActionForm = <
           </section>
         </form>
       </Form>
-      {Footer && <Footer />}
+      <FAQFooter />
     </SimplePageContainer>
   );
 };
