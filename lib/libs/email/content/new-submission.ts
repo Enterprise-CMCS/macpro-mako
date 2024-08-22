@@ -248,282 +248,132 @@ Thank you!`,
       };
     },
   },
-  [Authority["1915b"]]: {
-    cms: async (variables: OneMac & CommonVariables) => {
-      return {
-        subject: `${variables.authority} ${variables.id} Submitted`,
-        html: `
-    <p>The OneMAC Submission Portal received a 1915(b) ${
-      variables.actionType
-    } Submission:</p>
-    <ul>
-    <li>The submission can be accessed in the OneMAC application, which you 
-    can find at <a href='${
-      variables.applicationEndpointUrl
-    }'>this link</a>.</li>
-    <li>If you are not already logged in, please click the "Login" link 
-    at the top of the page and log in using your Enterprise User 
-    Administration (EUA) credentials.</li>
-    <li>After you have logged in, you will be taken to the OneMAC application. 
-    The submission will be listed on the dashboard page, and you can view its 
-    details by clicking on its ID number.</li>
-    </ul>
-    <p>
-    <br><b>State or territory:</b> ${variables.territory}
-    <br><b>Name:</b> ${variables.submitterName}
-    <br><b>Email Address:</b> ${variables.submitterEmail}
-    <br><b>${variables.actionType} Number:</b> ${variables.id}
-    <br><br><b>Waiver Authority:</b> ${variables.authority}
-    <br><b>Proposed Effective Date:</b> ${DateTime.fromMillis(
-      variables.notificationMetadata?.proposedEffectiveDate!,
-    ).toFormat("DDDD")}
-    </p>
-    <b>Summary:</b>
-    <br>${variables.additionalInformation}
-    <br>
-    <br><b>Files:</b>
-    <br>${formatAttachments("html", variables.attachments)}
-    <br>
-    <p>If the contents of this email seem suspicious, do not open them, and instead 
-    forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
-    <p>Thank you!</p>`,
-        text: `
-    The OneMAC Submission Portal received a 1915(b) ${
-      variables.actionType
-    } submission:
-    
-    The submission can be accessed in the OneMAC application, which you 
-    can find at ${variables.applicationEndpointUrl}.
-    
-    If you are not already logged in, please click the "Login" link
-    at the top of the page and log in using your Enterprise User 
-    Administration (EUA) credentials.
-    
-    After you have logged in, you will be taken to the OneMAC application.
-    The submission will be listed on the dashboard page, and you can view its 
-    details by clicking on its ID number.
-    
-    
-    State or territory: ${variables.territory}
-    Name: ${variables.submitterName}
-    Email: ${variables.submitterEmail}
-    ${variables.actionType} Number: ${variables.id}
-    
-    Waiver Authority: ${variables.authority}
-    Proposed Effective Date: ${DateTime.fromMillis(
-      variables.notificationMetadata?.proposedEffectiveDate!,
-    ).toFormat("DDDD")}
-    
-    Summary:
-    ${variables.additionalInformation}
-    
-    Files:
-    ${formatAttachments("html", variables.attachments)}
-    
-    If the contents of this email seem suspicious, do not open them, and instead 
-    forward this email to SPAM@cms.hhs.gov.
-    
-    Thank you!`,
-      };
-    },
-    state: async (variables: OneMac & CommonVariables) => {
-      return {
-        subject: `Your ${variables.actionType} ${variables.id} has been submitted to CMS`,
-        html: `
-    <p>This response confirms the submission of your 1915(b) ${
-      variables.actionType
-    } to CMS for review:</p>
-    <p>
-    <br><b>State or territory:</b> ${variables.territory}
-    <br><b>Name:</b> ${variables.submitterName}
-    <br><b>Email Address:</b> ${variables.submitterEmail}
-    <br><b>${variables.actionType} Number:</b> ${variables.id}</b>
-    <br><b>Waiver Authority:</b> ${variables.authority}
-    <br><b>Proposed Effective Date:</b> ${DateTime.fromMillis(
-      variables.notificationMetadata?.proposedEffectiveDate!,
-    ).toFormat("DDDD")}
-    <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(
-      variables.notificationMetadata?.submissionDate,
-    )}
-    </p>
-    <b>Summary:</b>
-    <br>${variables.additionalInformation}
-    <br>
-    <p>This response confirms the receipt of your Waiver request or your response
-    to a Waiver Request for Additional Information (RAI). You can expect a formal
-    response to your submittal to be issued within 90 days,
-    before ${formatNinetyDaysDate(
-      variables.notificationMetadata?.submissionDate,
-    )}.</p>
-    <p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
-    responses to Requests for Additional Information (RAI) on Waivers,
-    and extension requests on Waivers only. Any other correspondence will be disregarded</p>
-    <p>If you have questions or did not expect this email, please contact 
-    <a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
-    <p>Thank you!</p>`,
-        text: `
-    This response confirms the submission of your 1915(b) ${
-      variables.actionType
-    } to CMS for review:
-    
-    State or territory: ${variables.territory}
-    Name: ${variables.submitterName}
-    Email Address: ${variables.submitterEmail}
-    ${variables.actionType} Number: ${variables.id}
-    Waiver Authority: ${variables.authority}
-    Proposed Effective Date: ${DateTime.fromMillis(
-      variables.notificationMetadata?.proposedEffectiveDate!,
-    ).toFormat("DDDD")}
-    90th Day Deadline: ${formatNinetyDaysDate(
-      variables.notificationMetadata?.submissionDate,
-    )}
-    
-    Summary:
-    ${variables.additionalInformation}
-    
-    This response confirms the receipt of your Waiver request or your response
-    to a Waiver Request for Additional Information (RAI). You can expect a formal
-    response to your submittal to be issued within 90 days,
-    before ${formatNinetyDaysDate(
-      variables.notificationMetadata?.submissionDate,
-    )}.
-    
-    This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
-    responses to Requests for Additional Information (RAI) on Waivers,
-    and extension requests on Waivers only. Any other correspondence will be disregarded
-    
-    If you have questions or did not expect this email, please contact
-    spa@cms.hhs.gov or your state lead.
-    
-    Thank you!`,
-      };
-    },
-  },
+
   [Authority["1915c"]]: {
     cms: async (variables: OneMac & CommonVariables) => {
       return {
         subject: `1915(c) ${variables.id} Submitted`,
         html: `
-<p>The OneMAC Submission Portal received a 1915(c) Appendix K Amendment Submission:</p>
-<ul>
-<li>The submission can be accessed in the OneMAC application, which you 
-can find at <a href='${variables.applicationEndpointUrl}'>this link</a>.</li>
-<li>If you are not already logged in, please click the "Login" link 
-at the top of the page and log in using your Enterprise User 
-Administration (EUA) credentials.</li>
-<li>After you have logged in, you will be taken to the OneMAC application. 
-The submission will be listed on the dashboard page, and you can view its 
-details by clicking on its ID number.</li>
-</ul>
-<p>
-<br><b>State or territory:</b> ${variables.territory}
-<br><b>Name:</b> ${variables.submitterName}
-<br><b>Email Address:</b> ${variables.submitterEmail}
-<br><b>Amendment Title:</b> ${variables.appkTitle}
-<br><b>Waiver Amendment Number:</b> ${variables.id}
-<br><b>Waiver Authority:</b> 1915(c)
-<br><b>Proposed Effective Date: ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
-        )}
-</p>
-Summary:
-<br>${variables.additionalInformation}
-<br>Files:
-<br>${formatAttachments("html", variables.attachments)}
-<p>If the contents of this email seem suspicious, do not open them, and instead 
-forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
-<p>Thank you!</p>`,
+  <p>The OneMAC Submission Portal received a 1915(c) Appendix K Amendment Submission:</p>
+  <ul>
+  <li>The submission can be accessed in the OneMAC application, which you
+  can find at <a href='${variables.applicationEndpointUrl}'>this link</a>.</li>
+  <li>If you are not already logged in, please click the "Login" link
+  at the top of the page and log in using your Enterprise User
+  Administration (EUA) credentials.</li>
+  <li>After you have logged in, you will be taken to the OneMAC application.
+  The submission will be listed on the dashboard page, and you can view its
+  details by clicking on its ID number.</li>
+  </ul>
+  <p>
+  <br><b>State or territory:</b> ${variables.territory}
+  <br><b>Name:</b> ${variables.submitterName}
+  <br><b>Email Address:</b> ${variables.submitterEmail}
+  <br><b>Amendment Title:</b> ${variables.appkTitle}
+  <br><b>Waiver Amendment Number:</b> ${variables.id}
+  <br><b>Waiver Authority:</b> 1915(c)
+  <br><b>Proposed Effective Date: ${formatDate(
+    variables.notificationMetadata?.proposedEffectiveDate!,
+  )}
+  </p>
+  Summary:
+  <br>${variables.additionalInformation}
+  <br>Files:
+  <br>${formatAttachments("html", variables.attachments)}
+  <p>If the contents of this email seem suspicious, do not open them, and instead
+  forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
+  <p>Thank you!</p>`,
         text: `
-This response confirms the submission of your [insert Waiver Action] to CMS for review:
+  This response confirms the submission of your [insert Waiver Action] to CMS for review:
 
-State or territory: ${variables.territory}
-Name: ${variables.submitterName}
-Email Address: ${variables.submitterEmail}
-Amendment Title: ${variables.appkTitle}
-Waiver Amendment Number: ${variables.id}
-Waiver Authority: 1915(c)
-Proposed Effective Date: ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
-        )}
+  State or territory: ${variables.territory}
+  Name: ${variables.submitterName}
+  Email Address: ${variables.submitterEmail}
+  Amendment Title: ${variables.appkTitle}
+  Waiver Amendment Number: ${variables.id}
+  Waiver Authority: 1915(c)
+  Proposed Effective Date: ${formatDate(
+    variables.notificationMetadata?.proposedEffectiveDate!,
+  )}
 
-Summary:
-${variables.additionalInformation}
+  Summary:
+  ${variables.additionalInformation}
 
-Files:
-${formatAttachments("html", variables.attachments)}
+  Files:
+  ${formatAttachments("html", variables.attachments)}
 
-If the contents of this email seem suspicious, do not open them, and instead forward this email to SPAM@CMS.HHS.gov
+  If the contents of this email seem suspicious, do not open them, and instead forward this email to SPAM@CMS.HHS.gov
 
-Thank you!
-`,
+  Thank you!
+  `,
       };
     },
     state: async (variables: OneMac & CommonVariables) => {
       return {
         subject: `Your 1915(c) ${variables.id} has been submitted to CMS`,
         html: `
-<p>This response confirms the submission of your 1915(c) Waiver to CMS for review:</p>
-<p>
-<br><b>State or territory:</b> ${variables.territory}
-<br><b>Name:</b> ${variables.submitterName}
-<br><b>Email Address:</b> ${variables.submitterEmail}
-<br><b>Initial Waiver Number:</b> ${variables.id}
-<br><b>Waiver Authority:</b> 1915(c)
-<br><b>Proposed Effective Date:</b> ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
-        )}
-<br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(
-          variables.notificationMetadata?.submissionDate,
-        )}
-</p>
-Summary:
-<br>${variables.additionalInformation}
-<p>
-This response confirms the receipt of your Waiver request or your response
-to a Waiver Request for Additional Information (RAI). You can expect a formal
-response to your submittal to be issued within 90 days, before ${formatNinetyDaysDate(
-          variables.notificationMetadata?.submissionDate,
-        )}.
-</p>
-<p>
-This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
-responses to Requests for Additional Information (RAI) on Waivers, and
-extension requests on Waivers only.  Any other correspondence will be disregarded.
-</p>
-<p>If you have questions, please contact 
-<a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
-<p>Thank you!</p>`,
+  <p>This response confirms the submission of your 1915(c) Waiver to CMS for review:</p>
+  <p>
+  <br><b>State or territory:</b> ${variables.territory}
+  <br><b>Name:</b> ${variables.submitterName}
+  <br><b>Email Address:</b> ${variables.submitterEmail}
+  <br><b>Initial Waiver Number:</b> ${variables.id}
+  <br><b>Waiver Authority:</b> 1915(c)
+  <br><b>Proposed Effective Date:</b> ${formatDate(
+    variables.notificationMetadata?.proposedEffectiveDate!,
+  )}
+  <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(
+    variables.notificationMetadata?.submissionDate,
+  )}
+  </p>
+  Summary:
+  <br>${variables.additionalInformation}
+  <p>
+  This response confirms the receipt of your Waiver request or your response
+  to a Waiver Request for Additional Information (RAI). You can expect a formal
+  response to your submittal to be issued within 90 days, before ${formatNinetyDaysDate(
+    variables.notificationMetadata?.submissionDate,
+  )}.
+  </p>
+  <p>
+  This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
+  responses to Requests for Additional Information (RAI) on Waivers, and
+  extension requests on Waivers only.  Any other correspondence will be disregarded.
+  </p>
+  <p>If you have questions, please contact
+  <a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
+  <p>Thank you!</p>`,
         text: `
-This response confirms the submission of your 1915(c) Waiver to CMS for review:
+  This response confirms the submission of your 1915(c) Waiver to CMS for review:
 
-State or territory:${variables.territory}
-Name: ${variables.submitterName}
-Email Address: ${variables.submitterEmail}
-Initial Waiver Number: ${variables.id}
-Waiver Authority: 1915(c)
-Proposed Effective Date: ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
-        )}
-90th Day Deadline: ${formatNinetyDaysDate(
-          variables.notificationMetadata?.submissionDate,
-        )}
+  State or territory:${variables.territory}
+  Name: ${variables.submitterName}
+  Email Address: ${variables.submitterEmail}
+  Initial Waiver Number: ${variables.id}
+  Waiver Authority: 1915(c)
+  Proposed Effective Date: ${formatDate(
+    variables.notificationMetadata?.proposedEffectiveDate!,
+  )}
+  90th Day Deadline: ${formatNinetyDaysDate(
+    variables.notificationMetadata?.submissionDate,
+  )}
 
-Summary:
-${variables.additionalInformation}
+  Summary:
+  ${variables.additionalInformation}
 
-This response confirms the receipt of your Waiver request or your response
-to a Waiver Request for Additional Information (RAI). You can expect a formal
-response to your submittal to be issued within 90 days, before ${formatNinetyDaysDate(
-          variables.notificationMetadata?.submissionDate,
-        )}.
+  This response confirms the receipt of your Waiver request or your response
+  to a Waiver Request for Additional Information (RAI). You can expect a formal
+  response to your submittal to be issued within 90 days, before ${formatNinetyDaysDate(
+    variables.notificationMetadata?.submissionDate,
+  )}.
 
-This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
-responses to Requests for Additional Information (RAI) on Waivers, and
-extension requests on Waivers only.  Any other correspondence will be disregarded.
+  This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
+  responses to Requests for Additional Information (RAI) on Waivers, and
+  extension requests on Waivers only.  Any other correspondence will be disregarded.
 
-If you have questions, please contact SPA@cms.hhs.gov or your state lead.
+  If you have questions, please contact SPA@cms.hhs.gov or your state lead.
 
-Thank you!`,
+  Thank you!`,
       };
     },
   },

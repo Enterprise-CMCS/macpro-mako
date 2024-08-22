@@ -133,7 +133,7 @@ Summary:
 forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
 <p>Thank you!</p>`,
         text: `
-he OneMAC Submission Portal received a request to withdraw the package below.
+The OneMAC Submission Portal received a request to withdraw the package below.
 The package will no longer be considered for CMS review:
 
 State or territory: ${variables.territory}
@@ -151,16 +151,16 @@ Thank you!`,
     },
     state: async (variables: WithdrawPackage & CommonVariables) => {
       return {
-        subject: `1915(b) Waiver ${variables.id} Withdrawal Confirmation`,
+        subject: `${variables.authority} Waiver ${variables.id} Withdrawal Confirmation`,
         html: `
-<p>This email is to confirm 1915(b) Waiver ${variables.id} was withdrawn
-by ${variables.submitterName}. The review of 1915(b) Waiver ${variables.id} has concluded.</p>
+<p>This email is to confirm ${variables.authority} Waiver ${variables.id} was withdrawn
+by ${variables.submitterName}. The review of ${variables.authority} Waiver ${variables.id} has concluded.</p>
 <p>If you have questions, please contact 
 <a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
 <p>Thank you!</p>`,
         text: `
-This email is to confirm 1915(b) Waiver ${variables.id} was withdrawn by ${variables.submitterName}.
-The review of 1915(b) Waiver ${variables.id} has concluded.
+This email is to confirm ${variables.authority} Waiver ${variables.id} was withdrawn by ${variables.submitterName}.
+The review of ${variables.authority} Waiver ${variables.id} has concluded.
 
 If you have questions, please contact spa@cms.hhs.gov or your state lead.
 
