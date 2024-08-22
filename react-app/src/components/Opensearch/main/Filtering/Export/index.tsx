@@ -16,7 +16,8 @@ import { FC } from "react";
 
 export const OsExportData: FC<{
   columns: OsTableColumn[];
-}> = ({ columns }) => {
+  disabled?: boolean;
+}> = ({ columns, disabled }) => {
   const [loading, setLoading] = useState(false);
   const url = useOsUrl();
 
@@ -57,7 +58,7 @@ export const OsExportData: FC<{
     <Button
       variant="outline"
       onClick={handleExport}
-      disabled={loading}
+      disabled={loading || disabled}
       className="w-full xs:w-fit hover:bg-transparent self-center h-10 flex gap-2"
     >
       {loading && (
