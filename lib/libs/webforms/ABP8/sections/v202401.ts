@@ -287,7 +287,7 @@ export function deliverySystemCharactaristics({
             },
           },
           {
-            rhf: "FieldGroup",
+            rhf: "FieldArray",
             name: "benefit-service",
             label: `Which benefit or service will be provided by a type of coverage other than the ${programLabel}?`,
             labelClassName: "font-bold",

@@ -128,4 +128,23 @@ describe("userPrompt", () => {
 
     expect(mockOnCancel).toHaveBeenCalled();
   });
+
+  test("Custom Accept and Cancel button texts are applied", async () => {
+    const { getByTestId } = render(<UserPrompt />);
+
+    act(() => {
+      userPrompt({
+        header: "Testing",
+        body: "testing body",
+        onAccept: vi.fn(),
+        acceptButtonText: "Custom Accept",
+        cancelButtonText: "Custom Cancel",
+      });
+    });
+
+    const { children: dialogFooterChildren } = getByTestId("dialog-footer");
+
+    expect(dialogFooterChildren.item(0).textContent).toEqual("Custom Accept");
+    expect(dialogFooterChildren.item(1).textContent).toEqual("Custom Cancel");
+  });
 });

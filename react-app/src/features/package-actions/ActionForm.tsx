@@ -3,8 +3,7 @@ import {
   LoadingSpinner,
   userPrompt,
   PreSubmitNotice,
-  Route,
-  useAlertContext,
+  banner,
 } from "@/components";
 import { useGetUser } from "@/api/useGetUser";
 import { getFormOrigin } from "@/utils";
@@ -32,7 +31,6 @@ export const ActionForm = ({
   actionType,
 }: ActionFormProps) => {
   const navigate = useNavigate();
-  const alert = useAlertContext();
   const { data: user } = useGetUser();
   const { data: item } = useGetItem(id);
 
@@ -65,26 +63,26 @@ export const ActionForm = ({
         user,
       });
 
-      alert.setBannerStyle("success");
-      alert.setBannerShow(true);
-      alert.setContent(content.successBanner);
-
       const originPath = getFormOrigin({
         id: data?.newId ?? id,
         authority,
       });
 
-      navigate(originPath);
+      banner({
+        ...content.successBanner,
+        variant: "success",
+        pathnameToDisplayOn: originPath.pathname,
+      });
 
-      alert.setBannerDisplayOn(originPath.pathname as Route);
+      navigate(originPath);
     } catch (error) {
-      alert.setContent({
+      banner({
         header: "An unexpected error has occurred:",
         body: error instanceof Error ? error.message : String(error),
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
       });
-      alert.setBannerStyle("destructive");
-      alert.setBannerDisplayOn(window.location.pathname as Route);
-      alert.setBannerShow(true);
+
       window.scrollTo(0, 0);
     }
   });
