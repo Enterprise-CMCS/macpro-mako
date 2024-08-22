@@ -42,7 +42,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps<z.ZodRawShape>> =
     defaultValues?: DefaultValues<z.TypeOf<Schema>>;
     title: string;
     fieldsLayout?: ({ children }: { children: ReactNode }) => ReactNode;
-    fields: (form: UseFormReturn<z.TypeOf<Schema>>) => ReactNode[];
+    fields: (form: UseFormReturn<z.TypeOf<Schema>>) => ReactNode;
     bannerPostSubmission: Omit<Banner, "pathnameToDisplayOn">;
     promptPreSubmission?: Omit<UserPrompt, "onAccept">;
     promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
