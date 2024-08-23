@@ -12,7 +12,7 @@ import {
 // These are fields we expect the frontend to provide in the api request's payload
 export const feSchema = z.object({
   action: z.literal("new-submission").default("new-submission"),
-  additionalInformation: z.string().nullable().default(null),
+  additionalInformation: z.string().max(4000).nullable().default(null),
   attachments: z.object({
     cmsForm179: z.object({
       files: attachmentArraySchema({
