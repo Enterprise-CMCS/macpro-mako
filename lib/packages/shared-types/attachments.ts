@@ -89,19 +89,10 @@ export const attachmentArraySchema = ({
   const baseSchema = z.array(attachmentSchema);
   const noMax = max === 0 || max === undefined;
   if (noMax) {
-    return baseSchema
-      .min(min, null)
-      .refine((value) => value.length >= (min || 0) && value.length <= 99, {
-        message,
-      });
-  } else {
-    return baseSchema
-      .min(min, null)
-      .max(max, null)
-      .refine((value) => value.length >= (min || 0) && value.length <= max, {
-        message,
-      });
+    return baseSchema.min(min, { message });
   }
+
+  return baseSchema.min(min, { message }).max(max, { message });
 };
 
 export const attachmentArraySchemaOptional = () => {

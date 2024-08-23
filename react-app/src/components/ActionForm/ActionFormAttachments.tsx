@@ -8,7 +8,6 @@ import {
   FormMessage,
   RequiredIndicator,
   Upload,
-  FormDescription,
 } from "@/components";
 import { Link } from "react-router-dom";
 import { FAQ_TAB } from "../Routing";
@@ -74,40 +73,25 @@ export const ActionFormAttachments = <Schema extends z.ZodRawShape>({
           .
         </p>
       </div>
-      {attachementsFromSchema.map(([key, value]) => {
-        const minLength = value.shape.files._def.schema?._def.minLength?.value;
-        const maxLength = value.shape.files._def.schema?._def.maxLength?.value;
-
-        return (
-          <FormField
-            key={key}
-            control={form.control}
-            name={`attachments.${key}.files`}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  {value.shape.label._def.defaultValue()}{" "}
-                  {value.shape.files instanceof z.ZodOptional ? null : (
-                    <RequiredIndicator />
-                  )}
-                  {!!minLength && maxLength === 1 && (
-                    <FormDescription data-testid={`attachment-desc-${key}`}>
-                      {"One attachment is required."}
-                    </FormDescription>
-                  )}
-                  {!!minLength && (!maxLength || maxLength > 1) && (
-                    <FormDescription data-testid={`attachment-desc-${key}`}>
-                      {"At least one attachment is required"}
-                    </FormDescription>
-                  )}
-                </FormLabel>
-                <Upload files={field.value ?? []} setFiles={field.onChange} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        );
-      })}
+      {attachementsFromSchema.map(([key, value]) => (
+        <FormField
+          key={key}
+          control={form.control}
+          name={`attachments.${key}.files`}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                {value.shape.label._def.defaultValue()}{" "}
+                {value.shape.files instanceof z.ZodOptional ? null : (
+                  <RequiredIndicator />
+                )}
+              </FormLabel>
+              <FormMessage />
+              <Upload files={field.value ?? []} setFiles={field.onChange} />
+            </FormItem>
+          )}
+        />
+      ))}
     </SectionCard>
   );
 };
