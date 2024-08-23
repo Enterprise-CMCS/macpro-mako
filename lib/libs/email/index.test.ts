@@ -1,5 +1,4 @@
 import { describe, it, expect, beforeEach, vi, Mock } from "vitest";
-import { DateTime } from "luxon";
 import { Action, Attachment, Authority } from "shared-types";
 import { getPackageChangelog } from "../api/package";
 import {
@@ -10,16 +9,6 @@ import {
   getLatestMatchingEvent,
   emailTemplates,
 } from "."; // Adjust the import to the correct module path
-
-vi.mock("luxon", () => {
-  const originalLuxon = vi.importActual("luxon");
-  return {
-    ...originalLuxon,
-    DateTime: {
-      fromMillis: vi.fn(),
-    },
-  };
-});
 
 vi.mock("../api/package", () => ({
   getPackageChangelog: vi.fn(),
@@ -87,10 +76,6 @@ describe("formatDate", () => {
   });
 
   it("should format date correctly", () => {
-    const mockDate = {
-      toFormat: vi.fn().mockReturnValue("August 4, 2021"),
-    };
-    (DateTime.fromMillis as Mock).mockReturnValue(mockDate);
     const result = formatDate(1628090400000);
     expect(result).toBe("August 4, 2021");
   });
@@ -107,11 +92,6 @@ describe("formatNinetyDaysDate", () => {
   });
 
   it("should format ninety days date correctly", () => {
-    const mockDate = {
-      plus: vi.fn().mockReturnThis(),
-      toFormat: vi.fn().mockReturnValue("November 2, 2021 @ 11:59pm ET"),
-    };
-    (DateTime.fromMillis as Mock).mockReturnValue(mockDate);
     const result = formatNinetyDaysDate(1628090400000);
     expect(result).toBe("November 2, 2021 @ 11:59pm ET");
   });
