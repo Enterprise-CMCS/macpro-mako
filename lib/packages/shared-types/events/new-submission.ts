@@ -1,5 +1,8 @@
 import { z } from "zod";
-import { attachmentArraySchema } from "../attachments";
+import {
+  attachmentArraySchema,
+  attachmentArraySchemaOptional,
+} from "../attachments";
 import { APIGatewayEvent } from "aws-lambda";
 import {
   getAuthDetails,
@@ -13,42 +16,41 @@ export const feSchema = z.object({
   attachments: z.object({
     cmsForm179: z.object({
       files: attachmentArraySchema({
-        min: 1,
         max: 1,
         message: "Required: You must submit exactly one file for CMS Form 179.",
       }),
       label: z.string().default("CMS Form 179"),
     }),
     spaPages: z.object({
-      files: attachmentArraySchema({ min: 1 }),
+      files: attachmentArraySchema(),
       label: z.string().default("SPA Pages"),
     }),
     coverLetter: z.object({
-      files: attachmentArraySchema(),
+      files: attachmentArraySchemaOptional(),
       label: z.string().default("Cover Letter"),
     }),
     tribalEngagement: z.object({
-      files: attachmentArraySchema(),
+      files: attachmentArraySchemaOptional(),
       label: z.string().default("Tribal Engagement"),
     }),
     existingStatePlanPages: z.object({
-      files: attachmentArraySchema(),
+      files: attachmentArraySchemaOptional(),
       label: z.string().default("Existing State Plan Pages"),
     }),
     publicNotice: z.object({
-      files: attachmentArraySchema(),
+      files: attachmentArraySchemaOptional(),
       label: z.string().default("Public Notice"),
     }),
     sfq: z.object({
-      files: attachmentArraySchema(),
+      files: attachmentArraySchemaOptional(),
       label: z.string().default("SFQ"),
     }),
     tribalConsultation: z.object({
-      files: attachmentArraySchema(),
+      files: attachmentArraySchemaOptional(),
       label: z.string().default("Tribal Consultation"),
     }),
     other: z.object({
-      files: attachmentArraySchema(),
+      files: attachmentArraySchemaOptional(),
       label: z.string().default("Other"),
     }),
   }),

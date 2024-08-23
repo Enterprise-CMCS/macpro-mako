@@ -79,29 +79,32 @@ export function handleLegacyAttachment(
 }
 
 export const attachmentArraySchema = ({
-  min,
-  max = 9999,
+  max,
   message = "Required",
 }: {
-  min?: number;
   max?: number;
   message?: string;
 } = {}) => {
+  const min = 1;
   const baseSchema = z.array(attachmentSchema);
-
-  // Determine if the schema should be optional
-  const isOptional = min === 0 || min === undefined;
-
-  if (isOptional) {
-    return baseSchema.optional();
+  const noMax = max === 0 || max === undefined;
+  if (noMax) {
+    return baseSchema
+      .min(min, null)
+      .refine((value) => value.length >= (min || 0) && value.length <= 99, {
+        message,
+      });
+  } else {
+    return baseSchema
+      .min(min, null)
+      .max(max, null)
+      .refine((value) => value.length >= (min || 0) && value.length <= max, {
+        message,
+      });
   }
+};
 
-  const refinedSchema = baseSchema.refine(
-    (value) => value.length >= (min || 0) && value.length <= max,
-    {
-      message: message,
-    },
-  );
-
-  return refinedSchema;
+export const attachmentArraySchemaOptional = () => {
+  const baseSchema = z.array(attachmentSchema);
+  return baseSchema.optional();
 };
