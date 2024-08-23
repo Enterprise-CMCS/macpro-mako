@@ -24,6 +24,7 @@ export const OsExportData: FC<{
 }> = ({ columns, disabled }) => {
   const [loading, setLoading] = useState(false);
   const url = useOsUrl();
+  console.log(columns, 'COLUMNS')
 
   const handleExport = async () => {
     setLoading(true);
@@ -67,6 +68,7 @@ export const OsExportData: FC<{
       onClick={handleExport}
       disabled={loading || disabled}
       className="w-full xs:w-fit hover:bg-transparent self-center h-10 flex gap-2"
+      role="tooltip-trigger"
     >
       {loading && (
         <motion.div
