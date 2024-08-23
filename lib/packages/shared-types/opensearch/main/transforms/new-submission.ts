@@ -1,5 +1,5 @@
 import { SEATOOL_STATUS, getStatus } from "shared-types";
-import * as newSubmission from "../../../events/new-submission";
+import * as newSubmission from "../../../events/new-medicaid-submission";
 import {
   getNextBusinessDayTimestamp,
   seaToolFriendlyTimestamp,

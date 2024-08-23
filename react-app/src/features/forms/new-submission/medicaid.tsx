@@ -11,12 +11,12 @@ import {
   FAQ_TAB,
   SpaIdFormattingDesc,
 } from "@/components";
-import { newSubmission } from "shared-types";
+import { newMedicaidSubmission } from "shared-types";
 import { ActionForm } from "@/components/ActionForm";
 
 export const MedicaidForm = () => (
   <ActionForm
-    schema={newSubmission.feSchema}
+    schema={newMedicaidSubmission.feSchema}
     title="Medicaid SPA Details"
     fields={({ control }) => (
       <>
@@ -82,11 +82,6 @@ export const MedicaidForm = () => (
     documentPollerArgs={{
       property: "id",
       documentChecker: (check) => check.recordExists,
-    }}
-    bannerPostSubmission={{
-      header: "Package submitted",
-      body: "Your submission has been received.",
-      variant: "success",
     }}
     promptOnLeavingForm={{
       header: "Stop form submission?",
