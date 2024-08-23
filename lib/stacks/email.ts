@@ -4,7 +4,6 @@ import * as path from "path";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { ISubnet } from "aws-cdk-lib/aws-ec2";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
-import * as LC from "local-constructs";
 
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;
@@ -45,22 +44,18 @@ export class Email extends cdk.NestedStack {
     } = props;
 
     // SES Configuration Set
-    const configurationSet = new cdk.aws_ses.CfnConfigurationSet(
-      this,
-      "ConfigurationSet",
-      {
-        name: `${project}-${stage}-${stack}-email-configuration-set`,
-        reputationOptions: {
-          reputationMetricsEnabled: true,
-        },
-        sendingOptions: {
-          sendingEnabled: true,
-        },
-        suppressionOptions: {
-          suppressedReasons: ["BOUNCE", "COMPLAINT"],
-        },
+    new cdk.aws_ses.CfnConfigurationSet(this, "ConfigurationSet", {
+      name: `${project}-${stage}-${stack}-email-configuration-set`,
+      reputationOptions: {
+        reputationMetricsEnabled: true,
       },
-    );
+      sendingOptions: {
+        sendingEnabled: true,
+      },
+      suppressionOptions: {
+        suppressedReasons: ["BOUNCE", "COMPLAINT"],
+      },
+    });
 
     // IAM Role for Lambda
     const lambdaRole = new cdk.aws_iam.Role(this, "LambdaExecutionRole", {
