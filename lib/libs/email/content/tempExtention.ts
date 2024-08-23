@@ -76,7 +76,7 @@ This response confirms you have submitted a ${
 <br><b>Temporary Extension Request Number:</b> ${variables.id}
 <br><b>Temporary Extension Type:</b> ${variables.authority}
 <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(
-        variables.notificationMetadata?.submissionDate!,
+        variables.notificationMetadata?.submissionDate,
       )}
 </p>
 Summary:
@@ -99,7 +99,7 @@ Email Address: ${variables.submitterEmail}
 Temporary Extension Request Number: ${variables.id}
 Temporary Extension Type: ${variables.authority}
 90th day deadline: ${formatNinetyDaysDate(
-        variables.notificationMetadata?.submissionDate!,
+        variables.notificationMetadata?.submissionDate,
       )}
 Summary:
 ${variables.additionalInformation}

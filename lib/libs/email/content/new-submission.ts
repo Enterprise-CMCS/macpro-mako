@@ -1,4 +1,3 @@
-import { DateTime } from "luxon";
 import { Authority, OneMac } from "shared-types";
 import {
   CommonVariables,
@@ -30,7 +29,7 @@ details by clicking on its ID number.</li>
 <br><b>Email:</b> ${variables.submitterEmail}
 <br><b>Medicaid SPA ID: ${variables.id}</b>
 <br><b>Proposed Effective Date:</b> ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
+          variables.notificationMetadata?.proposedEffectiveDate,
         )}
 </p>
 <b>Summary:</b>
@@ -61,7 +60,7 @@ Name: ${variables.submitterName}
 Email: ${variables.submitterEmail}
 Medicaid SPA ID: ${variables.id}
 Proposed Effective Date: ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
+          variables.notificationMetadata?.proposedEffectiveDate,
         )}
 
 Summary:
@@ -87,7 +86,7 @@ Thank you!`,
 <br><b>Email Address:</b> ${variables.submitterEmail}
 <br><b>Medicaid SPA ID: ${variables.id}</b>
 <br><b>Proposed Effective Date:</b> ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
+          variables.notificationMetadata?.proposedEffectiveDate,
         )}
 <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(
           variables.notificationMetadata?.submissionDate,
@@ -116,7 +115,7 @@ Name: ${variables.submitterName}
 Email Address: ${variables.submitterEmail}
 Medicaid SPA ID: ${variables.id}
 Proposed Effective Date:  ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
+          variables.notificationMetadata?.proposedEffectiveDate,
         )}
 90th Day Deadline: ${formatNinetyDaysDate(
           variables.notificationMetadata?.submissionDate,
@@ -273,7 +272,7 @@ Thank you!`,
   <br><b>Waiver Amendment Number:</b> ${variables.id}
   <br><b>Waiver Authority:</b> 1915(c)
   <br><b>Proposed Effective Date: ${formatDate(
-    variables.notificationMetadata?.proposedEffectiveDate!,
+    variables.notificationMetadata?.proposedEffectiveDate,
   )}
   </p>
   Summary:
@@ -293,7 +292,7 @@ Thank you!`,
   Waiver Amendment Number: ${variables.id}
   Waiver Authority: 1915(c)
   Proposed Effective Date: ${formatDate(
-    variables.notificationMetadata?.proposedEffectiveDate!,
+    variables.notificationMetadata?.proposedEffectiveDate,
   )}
 
   Summary:
@@ -320,7 +319,7 @@ Thank you!`,
   <br><b>Initial Waiver Number:</b> ${variables.id}
   <br><b>Waiver Authority:</b> 1915(c)
   <br><b>Proposed Effective Date:</b> ${formatDate(
-    variables.notificationMetadata?.proposedEffectiveDate!,
+    variables.notificationMetadata?.proposedEffectiveDate,
   )}
   <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(
     variables.notificationMetadata?.submissionDate,
@@ -352,7 +351,7 @@ Thank you!`,
   Initial Waiver Number: ${variables.id}
   Waiver Authority: 1915(c)
   Proposed Effective Date: ${formatDate(
-    variables.notificationMetadata?.proposedEffectiveDate!,
+    variables.notificationMetadata?.proposedEffectiveDate,
   )}
   90th Day Deadline: ${formatNinetyDaysDate(
     variables.notificationMetadata?.submissionDate,
