@@ -1,18 +1,11 @@
-import { describe, it, expect, beforeEach, afterEach, vi, Mock } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { handler } from "./processEmails";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { getEmailTemplates } from "./../libs/email";
-import { KafkaEvent, KafkaRecord } from "shared-types";
+import { KafkaEvent } from "shared-types";
 
 vi.mock("@aws-sdk/client-ses");
-vi.mock("shared-utils", () => ({
-  decodeBase64WithUtf8: vi.fn(),
-  getSecret: vi.fn(),
-}));
-vi.mock("./../libs/email", () => ({
-  getEmailTemplates: vi.fn(),
-}));
 
 describe("handler", () => {
   beforeEach(() => {
@@ -56,15 +49,24 @@ describe("handler", () => {
       submitterEmail: "test@example.com",
     };
 
-    (decodeBase64WithUtf8 as Mock).mockReturnValueOnce(mockDecodedKey);
-    (decodeBase64WithUtf8 as Mock).mockReturnValueOnce(
-      JSON.stringify(mockRecord),
+    const decodeBase64Mock = vi.spyOn(
+      { decodeBase64WithUtf8 },
+      "decodeBase64WithUtf8",
     );
-    (getSecret as Mock).mockResolvedValue(
+
+    decodeBase64Mock.mockReturnValueOnce(mockDecodedKey);
+    decodeBase64Mock.mockReturnValueOnce(JSON.stringify(mockRecord));
+
+    const getSecretMock = vi.fn().mockImplementation(getSecret);
+
+    getSecretMock.mockResolvedValue(
       JSON.stringify({ sourceEmail: "source@example.com" }),
     );
-    (getEmailTemplates as Mock).mockResolvedValue([
-      async (variables: any) => ({
+
+    const getEmailTemplatesMock = vi.fn().mockImplementation(getEmailTemplates);
+
+    getEmailTemplatesMock.mockResolvedValue([
+      async () => ({
         subject: "Test Subject",
         html: "Test HTML",
         text: "Test Text",
@@ -79,7 +81,7 @@ describe("handler", () => {
 
     await handler(mockEvent, mockContext, mockCallback);
 
-    expect(decodeBase64WithUtf8).toHaveBeenCalledTimes(2);
+    expect(decodeBase64Mock).toHaveBeenCalledTimes(2);
     expect(getSecret).toHaveBeenCalledWith("mockSecretName");
     expect(sendMock).toHaveBeenCalledWith(expect.any(SendEmailCommand));
   });
@@ -132,8 +134,9 @@ describe("handler", () => {
     };
 
     const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const decodeBase64Mock = vi.fn().mockImplementation(decodeBase64WithUtf8);
 
-    (decodeBase64WithUtf8 as Mock).mockReturnValueOnce("decodedKey");
+    decodeBase64Mock.mockReturnValueOnce("decodedKey");
 
     const mockContext = {} as any;
     const mockCallback = () => {};
@@ -167,15 +170,10 @@ describe("handler", () => {
     };
 
     const mockDecodedKey = "decodedKey";
-    const mockRecord = {
-      origin: "micro",
-      actionType: "new-submission",
-      authority: "mockAuthority",
-      submitterEmail: "test@example.com",
-    };
+    const decodeBase64Mock = vi.fn().mockImplementation(decodeBase64WithUtf8);
 
-    (decodeBase64WithUtf8 as Mock).mockReturnValueOnce(mockDecodedKey);
-    (decodeBase64WithUtf8 as Mock).mockImplementationOnce(() => {
+    decodeBase64Mock.mockReturnValueOnce(mockDecodedKey);
+    decodeBase64Mock.mockImplementationOnce(() => {
       throw new Error("Decode error");
     });
 
