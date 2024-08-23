@@ -95,7 +95,7 @@ export const ActionForm = <
         documentPollerArgs.documentChecker,
       );
 
-      const formOrigins = getFormOrigin();
+      const formOrigins = getFormOrigin({ authority, id });
       banner({
         ...bannerPostSubmission,
         pathnameToDisplayOn: formOrigins.pathname,
