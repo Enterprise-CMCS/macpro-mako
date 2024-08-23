@@ -86,7 +86,7 @@ export const attachmentArraySchema = ({
   min?: number;
   max?: number;
   message?: string;
-}) => {
+} = {}) => {
   const baseSchema = z.array(attachmentSchema);
 
   // Determine if the schema should be optional
