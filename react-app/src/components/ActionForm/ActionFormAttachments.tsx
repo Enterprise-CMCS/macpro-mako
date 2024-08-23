@@ -45,7 +45,7 @@ export const ActionFormAttachments = <Schema extends z.ZodRawShape>({
   return (
     <SectionCard title="Attachments">
       <div className="text-gray-700 font-light">
-        <p>
+        <p data-testid="attachments-instructions">
           {specialInstructions} Read the description for each of the attachment
           types on the{" "}
           <Link
@@ -73,25 +73,27 @@ export const ActionFormAttachments = <Schema extends z.ZodRawShape>({
           .
         </p>
       </div>
-      {attachementsFromSchema.map(([key, value]) => (
-        <FormField
-          key={key}
-          control={form.control}
-          name={`attachments.${key}.files`}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                {value.shape.label._def.defaultValue()}{" "}
-                {value.shape.files instanceof z.ZodOptional ? null : (
-                  <RequiredIndicator />
-                )}
-              </FormLabel>
-              <FormMessage />
-              <Upload files={field.value ?? []} setFiles={field.onChange} />
-            </FormItem>
-          )}
-        />
-      ))}
+      <section className="space-y-8" data-testid="attachments-section">
+        {attachementsFromSchema.map(([key, value]) => (
+          <FormField
+            key={key}
+            control={form.control}
+            name={`attachments.${key}.files`}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  {value.shape.label._def.defaultValue()}{" "}
+                  {value.shape.files instanceof z.ZodOptional ? null : (
+                    <RequiredIndicator />
+                  )}
+                </FormLabel>
+                <FormMessage />
+                <Upload files={field.value ?? []} setFiles={field.onChange} />
+              </FormItem>
+            )}
+          />
+        ))}
+      </section>
     </SectionCard>
   );
 };
