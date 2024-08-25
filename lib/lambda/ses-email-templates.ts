@@ -17,7 +17,7 @@ const getEmailTemplates = async (): Promise<EmailTemplate[]> => [
     name: "temporary-extension-cms",
     subject: "{{authority}} Waiver Extension {{id}} Submitted",
     html: `
-<p>The Submission Portal received a {{authority}} Waiver Extension Submission:</p>
+<p>The OneMAC Submission Portal received a {{authority}} Waiver Extension Submission:</p>
 <ul>
 <li>The submission can be accessed in the OneMAC application, which you 
 can find at <a href='{{applicationEndpoint}}'>this link</a>.</li>
