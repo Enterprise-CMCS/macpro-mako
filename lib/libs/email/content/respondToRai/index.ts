@@ -1,4 +1,7 @@
 import { Authority, EmailAddresses, RaiResponse } from "shared-types";
+import * as os from "../../../opensearch-lib";
+import { opensearch } from "shared-types";
+
 import {
   CommonVariables,
   formatAttachments,
@@ -242,6 +245,18 @@ Thank you!`,
     cms: async (
       variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
     ) => {
+      const item = (await os.getItem(
+        process.env.osDomain!,
+        `${process.env.indexNamespace}main`,
+        variables.id,
+      )) as opensearch.main.Response;
+      const cpoc = item.hits.hits[0]._source.leadAnalystName;
+      const srts = item.hits.hits[0]._source.reviewTeam.map((SRT) => {
+        console.log("cpoc", JSON.stringify(cpoc, null, 2));
+        console.log("single srt", JSON.stringify(SRT, null, 2));
+      });
+      console.log("srts", JSON.stringify(srts, null, 2));
+      // get cpoc and srt from record using getItem(variable.id) -> add function and permissions
       return {
         to: `${variables.emails.osgEmail};${variables.emails.dmcoEmail}`, // TODO: Should be also sent to CPOC and SRT
         subject: `Waiver RAI Response for ${variables.id} Submitted`,
