@@ -1,5 +1,12 @@
 import { ReactNode } from "react";
-import { Link, MemoryRouter, Route, Routes, createMemoryRouter, RouterProvider } from "react-router-dom";
+import {
+  Link,
+  MemoryRouter,
+  Route,
+  Routes,
+  createMemoryRouter,
+  RouterProvider,
+} from "react-router-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, expect, test, beforeAll, vi } from "vitest";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from ".";
@@ -8,17 +15,17 @@ import { Dashboard, dashboardLoader } from "@/features";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 
-const wrapper = ({ children }: { children: ReactNode }) => (
-  <MemoryRouter initialEntries={["/dashboard"]}>
-    <Routes>
-      <Route
-        path="/dashboard"
-        element={<Dashboard />}
-      />
-    </Routes>
-    {children}
-  </MemoryRouter>
-);
+// const wrapper = ({ children }: { children: ReactNode }) => (
+//   <MemoryRouter initialEntries={["/dashboard"]}>
+//     <Routes>
+//       <Route
+//         path="/dashboard"
+//         element={<Dashboard />}
+//       />
+//     </Routes>
+//     {children}
+//   </MemoryRouter>
+// );
 
 // const renderWithClient = (ui: ReactJSXElement) => {
 //   const queryClient = new QueryClient();
@@ -31,29 +38,76 @@ const wrapper = ({ children }: { children: ReactNode }) => (
 
 // const testing = <MemoryRouter initialEntries={["/dashboard"]}>
 // <Routes>
-//   <Route path="/dashboard" element={<Dashboard/>}/> 
+//   <Route path="/dashboard" element={<Dashboard/>}/>
 // </Routes>
 // </MemoryRouter>
 
-describe("Tooltip Component", async () => {
-  beforeAll(() => {
-    // const queryClient = new QueryClient();
-    // const memoryRouter = createMemoryRouter(
-    //   [
-    //     { path: "/dashboard", element:<Dashboard/>, },
-    //   ],
-    //   {
-    //     initialEntries: ["/dashboard"],
+// vi.mock("../Opensearch/main/useOpensearch.ts", () => ({
+//   useOsUrl: vi.fn().mockResolvedValue({
+//     state: {
+//       filters: [],
+//       search: "",
+//       tab: "spas",
+//       pagination: {
+//         number: 0,
+//         size: 25,
+//       },
+//       sort: {
+//         field: "submissionDate",
+//         order: "desc",
+//       },
+//     },
+//     queryString: "randomstring",
+//   }),
+// }));
+vi.mock("../Opensearch/main/useOpensearch.ts", () => ({
+  useOsUrl: vi.fn(),
+}))
+
+describe("Tooltip Component", () => {
+  test("Tooltip content hidden when not hovering", async () => {
+    // useOsUrl.mockReturnValue({
+    //   state: {
+    //     filters: [],
+    //     search: "",
+    //     tab: "spas",
+    //     pagination: {
+    //       number: 0,
+    //       size: 25,
+    //     },
+    //     sort: {
+    //       field: "submissionDate",
+    //       order: "desc",
+    //     },
     //   },
-    // );
-    // render(<RouterProvider router={memoryRouter} />);
-    // renderWithClient(<RouterProvider router={memoryRouter} />);
-    // renderWithClient(<Dashboard/>);
-  });
-  test("Tooltip content hidden when not hovering", () => {
-    render(<OsExportData columns={[]}/>, { wrapper })
-    const tooltipTrigger = screen.getByText("SPAs")
-    expect(tooltipTrigger).toBeInTheDocument();
+    //   queryString: "randomstring",
+    // })
+    vi.mock("../Opensearch/main/useOpensearch.ts", () => ({
+      useOsUrl: vi.fn().mockReturnValue({
+        state: {
+          filters: [],
+          search: "",
+          tab: "spas",
+          pagination: {
+            number: 0,
+            size: 25,
+          },
+          sort: {
+            field: "submissionDate",
+            order: "desc",
+          },
+        },
+        queryString: "randomstring",
+      }),
+    }));
+    
+    const { getByText } = render(<OsExportData columns={[]} />);
+    expect(getByText("SPAs")).toBeInTheDocument()
+    // screen.findByText("SPAs")
+    // expect(screen.getByText("SPAs")).toBeInTheDocument();
+    // render(<Dashboard/>)
+    // const tooltipTrigger = screen.getByText("SPAs");
+    // expect(tooltipTrigger).toBeInTheDocument();
     // const tooltipContent = screen.queryByTestId("tooltip-content");
     // expect(tooltipContent).not.toBeInTheDocument();
   });
