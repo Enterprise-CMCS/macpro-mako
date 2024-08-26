@@ -12,6 +12,7 @@ import * as EmailContent from "./content";
 
 export type UserType = "cms" | "state";
 export interface CommonVariables {
+  to: string;
   id: string;
   territory: string;
   applicationEndpointUrl: string;
@@ -73,6 +74,8 @@ export function formatNinetyDaysDate(date: number | null | undefined): string {
 }
 
 export interface EmailTemplate {
+  to: string;
+  cc?: string;
   subject: string;
   html: string;
   text?: string;

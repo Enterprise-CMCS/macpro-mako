@@ -39,8 +39,7 @@ Summary:
 <br>{{additionalInformation}}
 <br>Files:
 <br>{{formattedFileList}}
-<p>If the contents of this email seem suspicious, do not open them, and instead 
-forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
+
 <p>Thank you!</p>`,
     text: `
 The Submission Portal received a {{authority}} Waiver Extension Submission:
@@ -63,7 +62,7 @@ Temporary Extension Type: {{authority}}
 Files:
 {{formattedFileList}}
 
-If the contents of this email seem suspicious, do not open them, and instead forward this email to SPAM@cms.hhs.gov.
+ .
 
 Thank you!`,
   },

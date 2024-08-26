@@ -1,4 +1,4 @@
-import { OneMac } from "shared-types";
+import { EmailAddresses, OneMac } from "shared-types";
 import {
   CommonVariables,
   formatAttachments,
@@ -6,11 +6,14 @@ import {
 } from "../..";
 
 export const tempExtention = {
-  cms: async (variables: OneMac & CommonVariables) => {
+  cms: async (
+    variables: OneMac & CommonVariables & { emails: EmailAddresses },
+  ) => {
     return {
+      to: variables.emails.osgEmail,
       subject: `${variables.authority} Waiver Extension ${variables.id} Submitted`,
       html: `
-<p>The Submission Portal received a ${
+<p>The OneMAC Submission Portal received a ${
         variables.authority
       } Waiver Extension Submission:</p>
 <ul>
@@ -31,11 +34,10 @@ details by clicking on its ID number.</li>
 <br><b>Temporary Extension Type:</b> ${variables.authority}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>Files:
 <br>${formatAttachments("html", variables.attachments)}
-<p>If the contents of this email seem suspicious, do not open them, and instead 
-forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
+
 <p>Thank you!</p>`,
       text: `
 The Submission Portal received a ${
@@ -60,13 +62,16 @@ Temporary Extension Type: ${variables.authority}
 Files:
 ${formatAttachments("html", variables.attachments)}
 
-If the contents of this email seem suspicious, do not open them, and instead forward this email to SPAM@cms.hhs.gov.
+ .
 
 Thank you!`,
     };
   },
-  state: async (variables: OneMac & CommonVariables) => {
+  state: async (
+    variables: OneMac & CommonVariables & { emails: EmailAddresses },
+  ) => {
     return {
+      to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
       subject: `Your Request for the ${variables.authority} Waiver Extension ${variables.id} has been submitted to CMS`,
       html: `
 <p>	
@@ -80,11 +85,11 @@ This response confirms you have submitted a ${
 <br><b>Temporary Extension Request Number:</b> ${variables.id}
 <br><b>Temporary Extension Type:</b> ${variables.authority}
 <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(
-        variables.notificationMetadata?.submissionDate!,
+        variables.notificationMetadata?.submissionDate as number,
       )}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <p>
 <p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
 responses to Requests for Additional Information (RAI) on Waivers,
@@ -103,10 +108,10 @@ Email Address: ${variables.submitterEmail}
 Temporary Extension Request Number: ${variables.id}
 Temporary Extension Type: ${variables.authority}
 90th day deadline: ${formatNinetyDaysDate(
-        variables.notificationMetadata?.submissionDate!,
+        variables.notificationMetadata?.submissionDate as number,
       )}
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI), 
 and extension requests on Waivers only. Any other correspondence will be disregarded.

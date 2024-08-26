@@ -1,4 +1,4 @@
-import { Action, Authority, RaiWithdraw } from "shared-types";
+import { Action, Authority, EmailAddresses, RaiWithdraw } from "shared-types";
 import {
   CommonVariables,
   formatAttachments,
@@ -7,12 +7,15 @@ import {
 
 export const withdrawRai = {
   [Authority.MED_SPA]: {
-    cms: async (variables: RaiWithdraw & CommonVariables) => {
+    cms: async (
+      variables: RaiWithdraw & CommonVariables & { emails: EmailAddresses },
+    ) => {
       const relatedEvent = await getLatestMatchingEvent(
         variables.id,
         Action.RESPOND_TO_RAI,
       );
       return {
+        to: `${variables.emails.osgEmail};${variables.emails.dpoEmail}`, // TODO Should also include CPOC and SRT
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         html: `
 <p>The OneMAC Submission Portal received a request to withdraw the Formal 
@@ -27,7 +30,7 @@ for ${variables.id} was withdrawn by ${variables.submitterName} ${
 <br><b>SPA Package ID:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>
 <br><b>Files</b>:
 <br>${formatAttachments("html", variables.attachments)}
@@ -48,7 +51,7 @@ Email Address: ${relatedEvent.submitterEmail ?? "Unknown"}
 SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 Files:
 ${formatAttachments("html", variables.attachments)}
@@ -59,12 +62,15 @@ instead forward this email to SPAM@cms.hhs.gov.
 Thank you!`,
       };
     },
-    state: async (variables: RaiWithdraw & CommonVariables) => {
+    state: async (
+      variables: RaiWithdraw & CommonVariables & { emails: EmailAddresses },
+    ) => {
       const relatedEvent = await getLatestMatchingEvent(
         variables.id,
         Action.RESPOND_TO_RAI,
       );
       return {
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`, // TODO: should go to all state users, but we dont have that info
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         html: `
 <p>The OneMAC Submission Portal received a request to withdraw the Formal 
@@ -79,7 +85,7 @@ for ${variables.id} was withdrawn by ${variables.submitterName} ${
 <br><b>Medicaid SPA Package ID:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>
 <p>If you have questions or did not expect this email, please contact 
 <a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.
@@ -97,7 +103,7 @@ Email Address: ${relatedEvent.submitterEmail ?? "Unknown"}
 Medicaid SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 If you have questions or did not expect this email, please contact 
 spa@cms.hhs.gov or your state lead.
@@ -107,12 +113,16 @@ Thank you!`,
     },
   },
   [Authority.CHIP_SPA]: {
-    cms: async (variables: RaiWithdraw & CommonVariables) => {
+    cms: async (
+      variables: RaiWithdraw & CommonVariables & { emails: EmailAddresses },
+    ) => {
       const relatedEvent = await getLatestMatchingEvent(
         variables.id,
         Action.RESPOND_TO_RAI,
       );
       return {
+        to: variables.emails.chipInbox,
+        cc: variables.emails.chipCcList, // TODO: DShould also go to CPOC and SRT
         subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
         html: `
 <p>The OneMAC Submission Portal received a request to withdraw the Formal 
@@ -127,7 +137,7 @@ for ${variables.id} was withdrawn by ${variables.submitterName} ${
 <br><b>CHIP SPA Package ID:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>
 <br><b>Files</b>:
 <br>${formatAttachments("html", variables.attachments)}
@@ -148,7 +158,7 @@ Email Address: ${relatedEvent.submitterEmail ?? "Unknown"}
 CHIP SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 Files:
 ${formatAttachments("html", variables.attachments)}
@@ -159,12 +169,15 @@ instead forward this email to SPAM@cms.hhs.gov.
 Thank you!`,
       };
     },
-    state: async (variables: RaiWithdraw & CommonVariables) => {
+    state: async (
+      variables: RaiWithdraw & CommonVariables & { emails: EmailAddresses },
+    ) => {
       const relatedEvent = await getLatestMatchingEvent(
         variables.id,
         Action.RESPOND_TO_RAI,
       );
       return {
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
         subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
         html: `
 <p>The OneMAC Submission Portal received a request to withdraw the Formal 
@@ -179,7 +192,7 @@ for ${variables.id} was withdrawn by ${variables.submitterName} ${
 <br><b>CHIP SPA Package ID:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>
 <p>If you have any questions, please contact 
 <a href='mailto:CHIPSPASubmissionMailbox@cms.hhs.gov'>CHIPSPASubmissionMailbox@cms.hhs.gov</a>
@@ -198,7 +211,7 @@ Email Address: ${relatedEvent.submitterEmail ?? "Unknown"}
 CHIP SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 If you have any questions, please contact CHIPSPASubmissionMailbox@cms.hhs.gov
 or your state lead.
@@ -208,12 +221,15 @@ Thank you!`,
     },
   },
   [Authority["1915b"]]: {
-    cms: async (variables: RaiWithdraw & CommonVariables) => {
+    cms: async (
+      variables: RaiWithdraw & CommonVariables & { emails: EmailAddresses },
+    ) => {
       const relatedEvent = await getLatestMatchingEvent(
         variables.id,
         Action.RESPOND_TO_RAI,
       );
       return {
+        to: `${variables.emails.dmcoEmail};${variables.emails.osgEmail}`, // TODO: add CPOC and SRT
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id} `,
         html: `
 <p>The OneMAC Submission Portal received a request to withdraw the Formal 
@@ -228,7 +244,7 @@ for ${variables.id} was withdrawn by ${variables.submitterName} ${
 <br><b>Waiver Number:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>
 <br><b>Files</b>:
 <br>${formatAttachments("html", variables.attachments)}
@@ -249,7 +265,7 @@ Email Address: ${relatedEvent.submitterEmail ?? "Unknown"}
 Medicaid SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, 
 responses to Requests for Additional Information (RAI), and extension requests on Waivers only. 
@@ -260,12 +276,15 @@ If you have any questions, please contact spa@cms.hhs.gov or your state lead.
 Thank you!`,
       };
     },
-    state: async (variables: RaiWithdraw & CommonVariables) => {
+    state: async (
+      variables: RaiWithdraw & CommonVariables & { emails: EmailAddresses },
+    ) => {
       const relatedEvent = await getLatestMatchingEvent(
         variables.id,
         Action.RESPOND_TO_RAI,
       );
       return {
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`, // TODO: "All State Users"
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
         html: `
 <p>The OneMAC Submission Portal received a request to withdraw the Formal 
@@ -280,7 +299,7 @@ for ${variables.id} was withdrawn by ${variables.submitterName} ${
 <br><b>Waiver Number:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>
 <p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, 
 responses to Requests for Additional Information (RAI), and extension requests on Waivers only. 
@@ -301,7 +320,7 @@ Email Address: ${relatedEvent.submitterEmail ?? "Unknown"}
 Medicaid SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, 
 responses to Requests for Additional Information (RAI), and extension requests on Waivers only. 
@@ -314,12 +333,15 @@ Thank you!`,
     },
   },
   [Authority["1915c"]]: {
-    cms: async (variables: RaiWithdraw & CommonVariables) => {
+    cms: async (
+      variables: RaiWithdraw & CommonVariables & { emails: EmailAddresses },
+    ) => {
       const relatedEvent = await getLatestMatchingEvent(
         variables.id,
         Action.RESPOND_TO_RAI,
       );
       return {
+        to: `${variables.emails.osgEmail};${variables.emails.dhcbsooEmail}`, // TODO: also should go to CPOC and SRT
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id} `,
         html: `
 <p>The OneMAC Submission Portal received a request to withdraw the Formal 
@@ -334,12 +356,11 @@ for ${variables.id} was withdrawn by ${variables.submitterName} ${
 <br><b>Waiver Number:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <p>
 <br>Files:
 <br>${formatAttachments("html", variables.attachments)}
-<p>If the contents of this email seem suspicious, do not open them, and instead 
-forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
+
 <p>Thank you!</p>`,
         text: `
 The OneMAC Submission Portal received a request to withdraw the Formal 
@@ -354,12 +375,12 @@ Email Address: ${variables.submitterEmail}
 Waiver Number: ${variables.id}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 Files:
 ${formatAttachments("html", variables.attachments)}
 
-If the contents of this email seem suspicious, do not open them, and instead forward this email to SPAM@cms.hhs.gov.
+ .
 
 Thank you!`,
       };

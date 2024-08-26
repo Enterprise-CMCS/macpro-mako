@@ -61,10 +61,6 @@ export async function processRecord(
   };
 
   if (record?.origin === "micro") {
-    console.log(
-      `Handling event for ${id}: ` + JSON.stringify(record, null, 2),
-    );
-
     const action: Action | "new-submission" = determineAction(record);
     const authority: Authority = record.authority.toLowerCase() as Authority;
 
@@ -108,12 +104,20 @@ export async function processAndSendEmails(
     id,
     applicationEndpointUrl,
     territory: id.slice(0, 2),
+    emails: emailAddressLookup,
   };
+
+  console.log(
+    "template variables: ",
+    JSON.stringify(templateVariables, null, 2),
+  );
 
   const sendEmailPromises = templates.map(async (template) => {
     const filledTemplate = await template(templateVariables);
+
     await sendEmail({
-      to: "mako.stateuser@gmail.com",
+      to: filledTemplate.to,
+      ...(filledTemplate.cc ? { cc: filledTemplate.cc } : {}),
       from: emailAddressLookup.sourceEmail,
       subject: filledTemplate.subject,
       html: filledTemplate.html,
@@ -126,6 +130,7 @@ export async function processAndSendEmails(
 
 export async function sendEmail(emailDetails: {
   to: string;
+  cc?: string;
   from: string;
   subject: string;
   html: string;

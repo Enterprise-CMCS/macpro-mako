@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { Authority, OneMac } from "shared-types";
+import { Authority, EmailAddresses, OneMac } from "shared-types";
 import {
   CommonVariables,
   formatAttachments,
@@ -9,8 +9,14 @@ import {
 
 export const newSubmission = {
   [Authority.MED_SPA]: {
-    cms: async (variables: OneMac & CommonVariables) => {
+    cms: async (
+      variables: OneMac &
+        CommonVariables & { emails: EmailAddresses } & {
+          emails: EmailAddresses;
+        },
+    ) => {
       return {
+        to: variables.emails.osgEmail,
         subject: `Medicaid SPA ${variables.id} Submitted`,
         html: `
 <p>The OneMAC Submission Portal received a Medicaid SPA Submission:</p>
@@ -30,17 +36,16 @@ details by clicking on its ID number.</li>
 <br><b>Email:</b> ${variables.submitterEmail}
 <br><b>Medicaid SPA ID: ${variables.id}</b>
 <br><b>Proposed Effective Date:</b> ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
+          variables.notificationMetadata?.proposedEffectiveDate,
         )}
 </p>
 <b>Summary:</b>
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>
 <br><b>Files:</b>
 <br>${formatAttachments("html", variables.attachments)}
 <br>
-<p>If the contents of this email seem suspicious, do not open them, and instead 
-forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
+
 <p>Thank you!</p>`,
         text: `
 The OneMAC Submission Portal received a Medicaid SPA Submission:
@@ -61,11 +66,11 @@ Name: ${variables.submitterName}
 Email: ${variables.submitterEmail}
 Medicaid SPA ID: ${variables.id}
 Proposed Effective Date: ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
+          variables.notificationMetadata?.proposedEffectiveDate,
         )}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 Files:
 ${formatAttachments("text", variables.attachments)}
@@ -76,8 +81,11 @@ forward this email to SPAM@cms.hhs.gov.
 Thank you!`,
       };
     },
-    state: async (variables: OneMac & CommonVariables) => {
+    state: async (
+      variables: OneMac & CommonVariables & { emails: EmailAddresses },
+    ) => {
       return {
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
         subject: `Your SPA ${variables.id} has been submitted to CMS`,
         html: `
 <p>This response confirms that you submitted a Medicaid SPA to CMS for review:</p>
@@ -87,14 +95,14 @@ Thank you!`,
 <br><b>Email Address:</b> ${variables.submitterEmail}
 <br><b>Medicaid SPA ID: ${variables.id}</b>
 <br><b>Proposed Effective Date:</b> ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
+          variables.notificationMetadata?.proposedEffectiveDate,
         )}
 <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(
           variables.notificationMetadata?.submissionDate,
         )}
 </p>
 <b>Summary:</b>
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>
 <p>This response confirms the receipt of your Medicaid State Plan Amendment 
 (SPA or your response to a SPA Request for Additional Information (RAI)). 
@@ -116,14 +124,14 @@ Name: ${variables.submitterName}
 Email Address: ${variables.submitterEmail}
 Medicaid SPA ID: ${variables.id}
 Proposed Effective Date:  ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
+          variables.notificationMetadata?.proposedEffectiveDate,
         )}
 90th Day Deadline: ${formatNinetyDaysDate(
           variables.notificationMetadata?.submissionDate,
         )}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 This response confirms the receipt of your Medicaid State Plan Amendment 
 (SPA or your response to a SPA Request for Additional Information (RAI)). 
@@ -142,8 +150,12 @@ Thank you!`,
     },
   },
   [Authority.CHIP_SPA]: {
-    cms: async (variables: OneMac & CommonVariables) => {
+    cms: async (
+      variables: OneMac & CommonVariables & { emails: EmailAddresses },
+    ) => {
       return {
+        to: variables.emails.chipInbox,
+        cc: variables.emails.chipCcList,
         subject: `New CHIP SPA ${variables.id} Submitted`,
         html: `
 <p>The OneMAC Submission Portal received a CHIP State Plan Amendment:</p>
@@ -165,14 +177,13 @@ can view its details by clicking on its ID number.</li>
 <br><b>CHIP SPA Package ID:</b> ${variables.id}
 </p><br/>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>
 <p>
 <br>Files:
 <br>${formatAttachments("html", variables.attachments)}
 <br></p>
-<p>If the contents of this email seem suspicious, do not open them, and instead 
-forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
+
 <p>Thank you!</p>`,
         text: `
 The OneMAC Submission Portal received a CHIP State Plan Amendment:
@@ -192,7 +203,7 @@ Email: ${variables.submitterEmail}
 CHIP SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 Files:
 ${formatAttachments("html", variables.attachments)}
@@ -203,8 +214,11 @@ forward this email to SPAM@cms.hhs.gov.
 Thank you!`,
       };
     },
-    state: async (variables: OneMac & CommonVariables) => {
+    state: async (
+      variables: OneMac & CommonVariables & { emails: EmailAddresses },
+    ) => {
       return {
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
         subject: `Your CHIP SPA ${variables.id} has been submitted to CMS`,
         html: `
     <p>This is confirmation that you submitted a CHIP State Plan Amendment 
@@ -216,7 +230,7 @@ Thank you!`,
     <br><b>CHIP SPA Package ID:</b> ${variables.id}
     </p>
     Summary:
-    <br>${variables.additionalInformation}
+    <br>${variables.additionalInformation || "N/A"}
     <br>
     <p>This response confirms the receipt of your CHIP State Plan Amendment 
     (CHIP SPA). You can expect a formal response to your submittal from CMS 
@@ -235,7 +249,7 @@ Thank you!`,
     CHIP SPA Package ID: ${variables.id}
     
     Summary:
-    ${variables.additionalInformation}
+    ${variables.additionalInformation || "N/A"}
     
     This response confirms the receipt of your CHIP State Plan Amendment 
     (CHIP SPA). You can expect a formal response to your submittal from CMS 
@@ -249,12 +263,15 @@ Thank you!`,
     },
   },
   [Authority["1915b"]]: {
-    cms: async (variables: OneMac & CommonVariables) => {
+    cms: async (
+      variables: OneMac & CommonVariables & { emails: EmailAddresses },
+    ) => {
       return {
+        to: variables.emails.osgEmail,
         subject: `${variables.authority} ${variables.id} Submitted`,
         html: `
     <p>The OneMAC Submission Portal received a 1915(b) ${
-      variables.actionType
+      variables.authority
     } Submission:</p>
     <ul>
     <li>The submission can be accessed in the OneMAC application, which you 
@@ -272,14 +289,14 @@ Thank you!`,
     <br><b>State or territory:</b> ${variables.territory}
     <br><b>Name:</b> ${variables.submitterName}
     <br><b>Email Address:</b> ${variables.submitterEmail}
-    <br><b>${variables.actionType} Number:</b> ${variables.id}
+    <br><b>${variables.authority} Number:</b> ${variables.id}
     <br><br><b>Waiver Authority:</b> ${variables.authority}
     <br><b>Proposed Effective Date:</b> ${DateTime.fromMillis(
-      variables.notificationMetadata?.proposedEffectiveDate!,
+      variables.notificationMetadata?.proposedEffectiveDate as number,
     ).toFormat("DDDD")}
     </p>
     <b>Summary:</b>
-    <br>${variables.additionalInformation}
+    <br>${variables.additionalInformation || "N/A"}
     <br>
     <br><b>Files:</b>
     <br>${formatAttachments("html", variables.attachments)}
@@ -289,7 +306,7 @@ Thank you!`,
     <p>Thank you!</p>`,
         text: `
     The OneMAC Submission Portal received a 1915(b) ${
-      variables.actionType
+      variables.authority
     } submission:
     
     The submission can be accessed in the OneMAC application, which you 
@@ -307,47 +324,47 @@ Thank you!`,
     State or territory: ${variables.territory}
     Name: ${variables.submitterName}
     Email: ${variables.submitterEmail}
-    ${variables.actionType} Number: ${variables.id}
+    ${variables.authority} Number: ${variables.id}
     
     Waiver Authority: ${variables.authority}
     Proposed Effective Date: ${DateTime.fromMillis(
-      variables.notificationMetadata?.proposedEffectiveDate!,
+      variables.notificationMetadata?.proposedEffectiveDate as number,
     ).toFormat("DDDD")}
     
     Summary:
-    ${variables.additionalInformation}
+    ${variables.additionalInformation || "N/A"}
     
     Files:
     ${formatAttachments("html", variables.attachments)}
     
-    If the contents of this email seem suspicious, do not open them, and instead 
-    forward this email to SPAM@cms.hhs.gov.
-    
     Thank you!`,
       };
     },
-    state: async (variables: OneMac & CommonVariables) => {
+    state: async (
+      variables: OneMac & CommonVariables & { emails: EmailAddresses },
+    ) => {
       return {
-        subject: `Your ${variables.actionType} ${variables.id} has been submitted to CMS`,
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
+        subject: `Your ${variables.authority} ${variables.id} has been submitted to CMS`,
         html: `
-    <p>This response confirms the submission of your 1915(b) ${
-      variables.actionType
-    } to CMS for review:</p>
+    <p>This response confirms the submission of your ${
+      variables.authority
+    } Initial Waiver  to CMS for review:</p>
     <p>
     <br><b>State or territory:</b> ${variables.territory}
     <br><b>Name:</b> ${variables.submitterName}
     <br><b>Email Address:</b> ${variables.submitterEmail}
-    <br><b>${variables.actionType} Number:</b> ${variables.id}</b>
+    <br><b>${variables.authority} Number:</b> ${variables.id}</b>
     <br><b>Waiver Authority:</b> ${variables.authority}
     <br><b>Proposed Effective Date:</b> ${DateTime.fromMillis(
-      variables.notificationMetadata?.proposedEffectiveDate!,
+      variables.notificationMetadata?.proposedEffectiveDate as number,
     ).toFormat("DDDD")}
     <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(
       variables.notificationMetadata?.submissionDate,
     )}
     </p>
     <b>Summary:</b>
-    <br>${variables.additionalInformation}
+    <br>${variables.additionalInformation || "N/A"}
     <br>
     <p>This response confirms the receipt of your Waiver request or your response
     to a Waiver Request for Additional Information (RAI). You can expect a formal
@@ -363,23 +380,23 @@ Thank you!`,
     <p>Thank you!</p>`,
         text: `
     This response confirms the submission of your 1915(b) ${
-      variables.actionType
+      variables.authority
     } to CMS for review:
     
     State or territory: ${variables.territory}
     Name: ${variables.submitterName}
     Email Address: ${variables.submitterEmail}
-    ${variables.actionType} Number: ${variables.id}
+    ${variables.authority} Number: ${variables.id}
     Waiver Authority: ${variables.authority}
     Proposed Effective Date: ${DateTime.fromMillis(
-      variables.notificationMetadata?.proposedEffectiveDate!,
+      variables.notificationMetadata?.proposedEffectiveDate as number,
     ).toFormat("DDDD")}
     90th Day Deadline: ${formatNinetyDaysDate(
       variables.notificationMetadata?.submissionDate,
     )}
     
     Summary:
-    ${variables.additionalInformation}
+    ${variables.additionalInformation || "N/A"}
     
     This response confirms the receipt of your Waiver request or your response
     to a Waiver Request for Additional Information (RAI). You can expect a formal
@@ -400,8 +417,11 @@ Thank you!`,
     },
   },
   [Authority["1915c"]]: {
-    cms: async (variables: OneMac & CommonVariables) => {
+    cms: async (
+      variables: OneMac & CommonVariables & { emails: EmailAddresses },
+    ) => {
       return {
+        to: variables.emails.osgEmail,
         subject: `1915(c) ${variables.id} Submitted`,
         html: `
 <p>The OneMAC Submission Portal received a 1915(c) Appendix K Amendment Submission:</p>
@@ -423,15 +443,14 @@ details by clicking on its ID number.</li>
 <br><b>Waiver Amendment Number:</b> ${variables.id}
 <br><b>Waiver Authority:</b> 1915(c)
 <br><b>Proposed Effective Date: ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
+          variables.notificationMetadata?.proposedEffectiveDate,
         )}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>Files:
 <br>${formatAttachments("html", variables.attachments)}
-<p>If the contents of this email seem suspicious, do not open them, and instead 
-forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
+
 <p>Thank you!</p>`,
         text: `
 This response confirms the submission of your [insert Waiver Action] to CMS for review:
@@ -443,23 +462,26 @@ Amendment Title: ${variables.appkTitle}
 Waiver Amendment Number: ${variables.id}
 Waiver Authority: 1915(c)
 Proposed Effective Date: ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
+          variables.notificationMetadata?.proposedEffectiveDate,
         )}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 Files:
 ${formatAttachments("html", variables.attachments)}
 
-If the contents of this email seem suspicious, do not open them, and instead forward this email to SPAM@CMS.HHS.gov
+ 
 
 Thank you!
 `,
       };
     },
-    state: async (variables: OneMac & CommonVariables) => {
+    state: async (
+      variables: OneMac & CommonVariables & { emails: EmailAddresses },
+    ) => {
       return {
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
         subject: `Your 1915(c) ${variables.id} has been submitted to CMS`,
         html: `
 <p>This response confirms the submission of your 1915(c) Waiver to CMS for review:</p>
@@ -470,14 +492,14 @@ Thank you!
 <br><b>Initial Waiver Number:</b> ${variables.id}
 <br><b>Waiver Authority:</b> 1915(c)
 <br><b>Proposed Effective Date:</b> ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
+          variables.notificationMetadata?.proposedEffectiveDate,
         )}
 <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(
           variables.notificationMetadata?.submissionDate,
         )}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <p>
 This response confirms the receipt of your Waiver request or your response
 to a Waiver Request for Additional Information (RAI). You can expect a formal
@@ -502,14 +524,14 @@ Email Address: ${variables.submitterEmail}
 Initial Waiver Number: ${variables.id}
 Waiver Authority: 1915(c)
 Proposed Effective Date: ${formatDate(
-          variables.notificationMetadata?.proposedEffectiveDate!,
+          variables.notificationMetadata?.proposedEffectiveDate,
         )}
 90th Day Deadline: ${formatNinetyDaysDate(
           variables.notificationMetadata?.submissionDate,
         )}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 This response confirms the receipt of your Waiver request or your response
 to a Waiver Request for Additional Information (RAI). You can expect a formal

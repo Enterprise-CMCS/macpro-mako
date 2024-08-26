@@ -1,4 +1,4 @@
-import { Authority, RaiResponse } from "shared-types";
+import { Authority, EmailAddresses, RaiResponse } from "shared-types";
 import {
   CommonVariables,
   formatAttachments,
@@ -7,8 +7,11 @@ import {
 
 export const respondToRai = {
   [Authority.MED_SPA]: {
-    cms: async (variables: RaiResponse & CommonVariables) => {
+    cms: async (
+      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+    ) => {
       return {
+        to: variables.emails.osgEmail, // TODO: CPOC and SRT should be added
         subject: `Medicaid SPA RAI Response for ${variables.id} Submitted`,
         html: `
 <p>The OneMAC Submission Portal received a Medicaid SPA RAI Response Submission:</p>
@@ -29,13 +32,12 @@ details by clicking on its ID number.</li>
 <br><b>Medicaid SPA Package ID:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>
 <br>Files:
 <br>${formatAttachments("html", variables.attachments)}
 <br>
-<p>If the contents of this email seem suspicious, do not open them, and instead 
-forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
+
 <p>Thank you!</p>`,
         text: `
 The OneMAC Submission Portal received a Medicaid SPA RAI Response Submission:
@@ -57,7 +59,7 @@ Email: ${variables.submitterEmail}
 Medicaid SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 Files:
 ${formatAttachments("text", variables.attachments)}
@@ -68,8 +70,11 @@ forward this email to SPAM@cms.hhs.gov.
 Thank you!`,
       };
     },
-    state: async (variables: RaiResponse & CommonVariables) => {
+    state: async (
+      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+    ) => {
       return {
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
         subject: `Your Medicaid SPA RAI Response for ${variables.id} has been submitted to CMS`,
         html: `
 <p>This response confirms you submitted a Medicaid SPA RAI Response to CMS for review:</p>
@@ -81,7 +86,7 @@ Thank you!`,
 <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(variables.responseDate)}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>
 <p>This response confirms receipt of your Medicaid State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
@@ -103,7 +108,7 @@ Medicaid SPA ID: ${variables.id}
 90th Day Deadline: ${formatNinetyDaysDate(variables.responseDate)}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 This response confirms receipt of your Medicaid State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
@@ -121,8 +126,12 @@ Thank you!`,
     },
   },
   [Authority.CHIP_SPA]: {
-    cms: async (variables: RaiResponse & CommonVariables) => {
+    cms: async (
+      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+    ) => {
       return {
+        to: variables.emails.chipInbox, // TODO: CPOC and SRT should be added
+        cc: variables.emails.chipCcList,
         subject: `CHIP SPA RAI Response for ${variables.id} Submitted`,
         html: `
 <p>The OneMAC Submission Portal received a CHIP SPA RAI Response Submission:</p>
@@ -143,13 +152,12 @@ details by clicking on its ID number.</li>
 <br><b>CHIP SPA Package ID:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>
 <br>Files:
 <br>${formatAttachments("html", variables.attachments)}
 <br>
-<p>If the contents of this email seem suspicious, do not open them, and instead 
-forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
+
 <p>Thank you!</p>`,
         text: `
 The OneMAC Submission Portal received a CHIP SPA RAI Response Submission:
@@ -169,7 +177,7 @@ Email Address: ${variables.submitterEmail}
 CHIP SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 Files:
 ${formatAttachments("text", variables.attachments)}
@@ -180,8 +188,11 @@ forward this email to SPAM@cms.hhs.gov.
 Thank you!`,
       };
     },
-    state: async (variables: RaiResponse & CommonVariables) => {
+    state: async (
+      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+    ) => {
       return {
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
         subject: `Your CHIP SPA RAI Response for ${variables.id} has been submitted to CMS`,
         html: `
 <p>This response confirms you submitted a CHIP SPA RAI Response to CMS for review:</p>
@@ -193,7 +204,7 @@ Thank you!`,
 <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(variables.responseDate)}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>
 <p>This response confirms receipt of your CHIP State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
@@ -213,7 +224,7 @@ CHIP SPA Package ID: ${variables.id}
 90th Day Deadline: ${formatNinetyDaysDate(variables.responseDate)}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 This response confirms receipt of your CHIP State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
@@ -228,8 +239,11 @@ Thank you!`,
     },
   },
   [Authority["1915b"]]: {
-    cms: async (variables: RaiResponse & CommonVariables) => {
+    cms: async (
+      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+    ) => {
       return {
+        to: `${variables.emails.osgEmail};${variables.emails.dmcoEmail}`, // TODO: Should be also sent to CPOC and SRT
         subject: `Waiver RAI Response for ${variables.id} Submitted`,
         html: `
 <p>The OneMAC Submission Portal received a 1915(b) Waiver RAI Response Submission:</p>
@@ -250,12 +264,11 @@ details by clicking on its ID number.</li>
 <br><b>Waiver Number:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>
 <br>Files:
 <br>${formatAttachments("html", variables.attachments)}
-<p>If the contents of this email seem suspicious, do not open them, and instead 
-forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
+
 <p>Thank you!</p>`,
         text: `
 The OneMAC Submission Portal received a 1915(b) Waiver RAI Response Submission:
@@ -275,7 +288,7 @@ Email Address: ${variables.submitterEmail}
 Waiver Number: ${variables.id}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 Files:
 ${formatAttachments("text", variables.attachments)}
@@ -286,8 +299,11 @@ forward this email to SPAM@cms.hhs.gov.
 Thank you!`,
       };
     },
-    state: async (variables: RaiResponse & CommonVariables) => {
+    state: async (
+      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+    ) => {
       return {
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`, // TODO: suppose to go to all state users but we dont have that data
         subject: `Your 1915(b) Waiver RAI Response for ${variables.id} has been submitted to CMS`,
         html: `
 <p>This response confirms the submission of your 1915(b) Waiver RAI Response to CMS for review:</p>
@@ -300,7 +316,7 @@ Thank you!`,
 <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(variables.responseDate)}
 </p>
 Summary:
-<br>${variables.additionalInformation}
+<br>${variables.additionalInformation || "N/A"}
 <br>
 <p>This response confirms the receipt of your Waiver request or your
 response to a Waiver Request for Additional Information (RAI).
@@ -325,7 +341,7 @@ Waiver Authority: ${variables.authority}
 90th Day Deadline: ${formatNinetyDaysDate(variables.responseDate)}
 
 Summary:
-${variables.additionalInformation}
+${variables.additionalInformation || "N/A"}
 
 This response confirms the receipt of your Waiver request or your
 response to a Waiver Request for Additional Information (RAI).
@@ -341,5 +357,50 @@ If you have questions, please contact CHIPSPASubmissionMailbox@cms.hhs.gov or yo
 Thank you!`,
       };
     },
+  },
+  state: async (
+    variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+  ) => {
+    return {
+      to: `"${variables.submitterName}" <${variables.submitterEmail}>"`, // TODO: all state users
+      subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id} `,
+      html: `
+    <p>The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are receiving this email notification as the Formal RAI for ${
+      variables.id
+    } was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.
+    <p>
+    <br><b>State or territory:</b> ${variables.territory}
+    <br><b>Name:</b> ${variables.submitterName}
+    <br><b>Email Address:</b> ${variables.submitterEmail}
+    <br><b>Waiver Number:</b> ${variables.id}
+    </p>
+    Summary:
+    <br>${variables.additionalInformation || "N/A"}
+    <br>
+    <p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI), and extension requests on Waivers only. Any other correspondence will be disregarded.
+    </p>
+    <p>If you have questions or did not expect this email, please contact 
+    <a href='mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov'>CHIPSPASubmissionMailBox@CMS.HHS.gov</a> or your state lead.</p>
+    <p>Thank you!</p>`,
+      text: `
+    The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are receiving this email notification as the Formal RAI for ${
+      variables.id
+    } was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.
+    
+    State or territory: ${variables.territory}
+    Name: ${variables.submitterName}
+    Email Address: ${variables.submitterEmail}
+    CHIP SPA Package ID: ${variables.id}
+    
+    Summary:
+    ${variables.additionalInformation || "N/A"}
+    
+This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI), and extension requests on Waivers only. Any other correspondence will be disregarded.
+    
+    If you have questions or did not expect this email, please contact 
+    CHIPSPASubmissionMailBox@CMS.HHS.gov.
+    
+    Thank you!`,
+    };
   },
 };
