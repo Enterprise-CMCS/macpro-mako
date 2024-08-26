@@ -1,22 +1,46 @@
-// import { ReactNode } from "react";
+import { ReactNode } from "react";
 import { Link, MemoryRouter, Route, Routes, createMemoryRouter, RouterProvider } from "react-router-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, expect, test, beforeEach } from "vitest";
+import { describe, expect, test, beforeAll } from "vitest";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from ".";
 import { OsExportData } from "../Opensearch";
 
-describe("Tooltip Component", async () => {
-  beforeEach(() => {
-    const memoryRouter = createMemoryRouter(
-      [
-        { path: "/dashboard", element: <OsExportData columns={[]}/> },
-      ],
-      {
-        initialEntries: ["/dashboard"],
-      },
-    );
+// const wrapper = ({ children }: { children: ReactNode }) => (
+//   <MemoryRouter initialEntries={["/dashboard"]}>
+//     <Routes>
+//       <Route
+//         path="/dashboard"
+//         element={<OsExportData columns={[]}/>}
+//       />
+//     </Routes>
+//     {children}
+//   </MemoryRouter>
+// );
 
-    render(<RouterProvider router={memoryRouter} />);
+const renderWithRouter = (element) => (
+  render(
+    <MemoryRouter initialEntries={['/dashboard']}>
+      <Routes>
+        <Route path='/dashboard' element={element} />
+      </Routes>
+    </MemoryRouter>
+  )
+);
+
+describe("Tooltip Component", async () => {
+  beforeAll(() => {
+    // const memoryRouter = createMemoryRouter(
+    //   [
+    //     { path: "/dashboard", element: <OsExportData columns={[]}/> },
+    //   ],
+    //   {
+    //     initialEntries: ["/dashboard"],
+    //   },
+    // );
+    // render(<OsExportData columns={[]}/>)
+
+    // render(<RouterProvider router={memoryRouter} />);
+    // render(<OsExportData columns={[]}/>, { wrapper })
   });
     // render(
       // <OsExportData columns={[]}/>
@@ -33,6 +57,7 @@ describe("Tooltip Component", async () => {
     // );
   // });
   test("Tooltip content hidden when not hovering", () => {
+    renderWithRouter(<OsExportData columns={[]}/>)
     const tooltipTrigger = screen.getByRole("tooltip-trigger")
     expect(tooltipTrigger).toBeInTheDocument();
     // const tooltipContent = screen.queryByTestId("tooltip-content");

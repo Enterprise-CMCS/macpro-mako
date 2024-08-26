@@ -24,7 +24,6 @@ export const OsExportData: FC<{
 }> = ({ columns, disabled }) => {
   const [loading, setLoading] = useState(false);
   const url = useOsUrl();
-  console.log(columns, 'COLUMNS')
 
   const handleExport = async () => {
     setLoading(true);
