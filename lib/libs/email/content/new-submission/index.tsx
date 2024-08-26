@@ -40,7 +40,7 @@ details by clicking on its ID number.</li>
         )}
 </p>
 <b>Summary:</b>
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>
 <br><b>Files:</b>
 <br>${formatAttachments("html", variables.attachments)}
@@ -70,7 +70,7 @@ Proposed Effective Date: ${formatDate(
         )}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 Files:
 ${formatAttachments("text", variables.attachments)}
@@ -102,7 +102,7 @@ Thank you!`,
         )}
 </p>
 <b>Summary:</b>
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>
 <p>This response confirms the receipt of your Medicaid State Plan Amendment 
 (SPA or your response to a SPA Request for Additional Information (RAI)). 
@@ -131,7 +131,7 @@ Proposed Effective Date:  ${formatDate(
         )}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 This response confirms the receipt of your Medicaid State Plan Amendment 
 (SPA or your response to a SPA Request for Additional Information (RAI)). 
@@ -177,7 +177,7 @@ can view its details by clicking on its ID number.</li>
 <br><b>CHIP SPA Package ID:</b> ${variables.id}
 </p><br/>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>
 <p>
 <br>Files:
@@ -203,7 +203,7 @@ Email: ${variables.submitterEmail}
 CHIP SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 Files:
 ${formatAttachments("html", variables.attachments)}
@@ -230,7 +230,9 @@ Thank you!`,
     <br><b>CHIP SPA Package ID:</b> ${variables.id}
     </p>
     Summary:
-    <br>${variables.additionalInformation || "N/A"}
+    <br>${
+      variables.additionalInformation || "No additional information submitted"
+    }
     <br>
     <p>This response confirms the receipt of your CHIP State Plan Amendment 
     (CHIP SPA). You can expect a formal response to your submittal from CMS 
@@ -249,7 +251,7 @@ Thank you!`,
     CHIP SPA Package ID: ${variables.id}
     
     Summary:
-    ${variables.additionalInformation || "N/A"}
+    ${variables.additionalInformation || "No additional information submitted"}
     
     This response confirms the receipt of your CHIP State Plan Amendment 
     (CHIP SPA). You can expect a formal response to your submittal from CMS 
@@ -296,7 +298,9 @@ Thank you!`,
     ).toFormat("DDDD")}
     </p>
     <b>Summary:</b>
-    <br>${variables.additionalInformation || "N/A"}
+    <br>${
+      variables.additionalInformation || "No additional information submitted"
+    }
     <br>
     <br><b>Files:</b>
     <br>${formatAttachments("html", variables.attachments)}
@@ -332,7 +336,7 @@ Thank you!`,
     ).toFormat("DDDD")}
     
     Summary:
-    ${variables.additionalInformation || "N/A"}
+    ${variables.additionalInformation || "No additional information submitted"}
     
     Files:
     ${formatAttachments("html", variables.attachments)}
@@ -364,7 +368,9 @@ Thank you!`,
     )}
     </p>
     <b>Summary:</b>
-    <br>${variables.additionalInformation || "N/A"}
+    <br>${
+      variables.additionalInformation || "No additional information submitted"
+    }
     <br>
     <p>This response confirms the receipt of your Waiver request or your response
     to a Waiver Request for Additional Information (RAI). You can expect a formal
@@ -396,7 +402,7 @@ Thank you!`,
     )}
     
     Summary:
-    ${variables.additionalInformation || "N/A"}
+    ${variables.additionalInformation || "No additional information submitted"}
     
     This response confirms the receipt of your Waiver request or your response
     to a Waiver Request for Additional Information (RAI). You can expect a formal
@@ -447,7 +453,7 @@ details by clicking on its ID number.</li>
         )}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>Files:
 <br>${formatAttachments("html", variables.attachments)}
 
@@ -466,7 +472,7 @@ Proposed Effective Date: ${formatDate(
         )}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 Files:
 ${formatAttachments("html", variables.attachments)}
@@ -499,7 +505,7 @@ Thank you!
         )}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <p>
 This response confirms the receipt of your Waiver request or your response
 to a Waiver Request for Additional Information (RAI). You can expect a formal
@@ -531,7 +537,7 @@ Proposed Effective Date: ${formatDate(
         )}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 This response confirms the receipt of your Waiver request or your response
 to a Waiver Request for Additional Information (RAI). You can expect a formal

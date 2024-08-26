@@ -30,7 +30,7 @@ for ${variables.id} was withdrawn by ${variables.submitterName} ${
 <br><b>SPA Package ID:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>
 <br><b>Files</b>:
 <br>${formatAttachments("html", variables.attachments)}
@@ -51,7 +51,7 @@ Email Address: ${relatedEvent.submitterEmail ?? "Unknown"}
 SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 Files:
 ${formatAttachments("html", variables.attachments)}
@@ -85,7 +85,7 @@ for ${variables.id} was withdrawn by ${variables.submitterName} ${
 <br><b>Medicaid SPA Package ID:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>
 <p>If you have questions or did not expect this email, please contact 
 <a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.
@@ -103,7 +103,7 @@ Email Address: ${relatedEvent.submitterEmail ?? "Unknown"}
 Medicaid SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 If you have questions or did not expect this email, please contact 
 spa@cms.hhs.gov or your state lead.
@@ -137,7 +137,7 @@ for ${variables.id} was withdrawn by ${variables.submitterName} ${
 <br><b>CHIP SPA Package ID:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>
 <br><b>Files</b>:
 <br>${formatAttachments("html", variables.attachments)}
@@ -158,7 +158,7 @@ Email Address: ${relatedEvent.submitterEmail ?? "Unknown"}
 CHIP SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 Files:
 ${formatAttachments("html", variables.attachments)}
@@ -192,7 +192,7 @@ for ${variables.id} was withdrawn by ${variables.submitterName} ${
 <br><b>CHIP SPA Package ID:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>
 <p>If you have any questions, please contact 
 <a href='mailto:CHIPSPASubmissionMailbox@cms.hhs.gov'>CHIPSPASubmissionMailbox@cms.hhs.gov</a>
@@ -211,7 +211,7 @@ Email Address: ${relatedEvent.submitterEmail ?? "Unknown"}
 CHIP SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 If you have any questions, please contact CHIPSPASubmissionMailbox@cms.hhs.gov
 or your state lead.
@@ -244,7 +244,7 @@ for ${variables.id} was withdrawn by ${variables.submitterName} ${
 <br><b>Waiver Number:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>
 <br><b>Files</b>:
 <br>${formatAttachments("html", variables.attachments)}
@@ -265,7 +265,7 @@ Email Address: ${relatedEvent.submitterEmail ?? "Unknown"}
 Medicaid SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, 
 responses to Requests for Additional Information (RAI), and extension requests on Waivers only. 
@@ -299,7 +299,7 @@ for ${variables.id} was withdrawn by ${variables.submitterName} ${
 <br><b>Waiver Number:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>
 <p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, 
 responses to Requests for Additional Information (RAI), and extension requests on Waivers only. 
@@ -320,7 +320,7 @@ Email Address: ${relatedEvent.submitterEmail ?? "Unknown"}
 Medicaid SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, 
 responses to Requests for Additional Information (RAI), and extension requests on Waivers only. 
@@ -356,7 +356,7 @@ for ${variables.id} was withdrawn by ${variables.submitterName} ${
 <br><b>Waiver Number:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <p>
 <br>Files:
 <br>${formatAttachments("html", variables.attachments)}
@@ -375,7 +375,7 @@ Email Address: ${variables.submitterEmail}
 Waiver Number: ${variables.id}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 Files:
 ${formatAttachments("html", variables.attachments)}

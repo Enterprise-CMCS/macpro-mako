@@ -34,7 +34,7 @@ details by clicking on its ID number.</li>
 <br><b>Temporary Extension Type:</b> ${variables.authority}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>Files:
 <br>${formatAttachments("html", variables.attachments)}
 
@@ -89,7 +89,7 @@ This response confirms you have submitted a ${
       )}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <p>
 <p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
 responses to Requests for Additional Information (RAI) on Waivers,
@@ -111,7 +111,7 @@ Temporary Extension Type: ${variables.authority}
         variables.notificationMetadata?.submissionDate as number,
       )}
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI), 
 and extension requests on Waivers only. Any other correspondence will be disregarded.

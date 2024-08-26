@@ -103,6 +103,8 @@ ${variables.additionalInformation ?? "No additional information submitted"}
 Thank you!`,
       };
     },
+
+    // The confluence page shows this email should not be sent: https://qmacbis.atlassian.net/wiki/spaces/MACPRO/pages/3286138882/Email+Notifications+for+Package+Actions#State-Users.3
     //     state: async (
     //       variables: WithdrawPackage & CommonVariables & { emails: EmailAddresses },
     //     ) => {

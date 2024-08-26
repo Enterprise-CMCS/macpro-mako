@@ -32,7 +32,7 @@ details by clicking on its ID number.</li>
 <br><b>Medicaid SPA Package ID:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>
 <br>Files:
 <br>${formatAttachments("html", variables.attachments)}
@@ -59,7 +59,7 @@ Email: ${variables.submitterEmail}
 Medicaid SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 Files:
 ${formatAttachments("text", variables.attachments)}
@@ -86,7 +86,7 @@ Thank you!`,
 <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(variables.responseDate)}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>
 <p>This response confirms receipt of your Medicaid State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
@@ -108,7 +108,7 @@ Medicaid SPA ID: ${variables.id}
 90th Day Deadline: ${formatNinetyDaysDate(variables.responseDate)}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 This response confirms receipt of your Medicaid State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
@@ -152,7 +152,7 @@ details by clicking on its ID number.</li>
 <br><b>CHIP SPA Package ID:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>
 <br>Files:
 <br>${formatAttachments("html", variables.attachments)}
@@ -177,7 +177,7 @@ Email Address: ${variables.submitterEmail}
 CHIP SPA Package ID: ${variables.id}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 Files:
 ${formatAttachments("text", variables.attachments)}
@@ -204,7 +204,7 @@ Thank you!`,
 <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(variables.responseDate)}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>
 <p>This response confirms receipt of your CHIP State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
@@ -224,7 +224,7 @@ CHIP SPA Package ID: ${variables.id}
 90th Day Deadline: ${formatNinetyDaysDate(variables.responseDate)}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 This response confirms receipt of your CHIP State Plan Amendment (SPA 
 or your response to a SPA Request for Additional Information (RAI)). You can 
@@ -264,7 +264,7 @@ details by clicking on its ID number.</li>
 <br><b>Waiver Number:</b> ${variables.id}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>
 <br>Files:
 <br>${formatAttachments("html", variables.attachments)}
@@ -288,7 +288,7 @@ Email Address: ${variables.submitterEmail}
 Waiver Number: ${variables.id}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 Files:
 ${formatAttachments("text", variables.attachments)}
@@ -316,7 +316,7 @@ Thank you!`,
 <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(variables.responseDate)}
 </p>
 Summary:
-<br>${variables.additionalInformation || "N/A"}
+<br>${variables.additionalInformation || "No additional information submitted"}
 <br>
 <p>This response confirms the receipt of your Waiver request or your
 response to a Waiver Request for Additional Information (RAI).
@@ -341,7 +341,7 @@ Waiver Authority: ${variables.authority}
 90th Day Deadline: ${formatNinetyDaysDate(variables.responseDate)}
 
 Summary:
-${variables.additionalInformation || "N/A"}
+${variables.additionalInformation || "No additional information submitted"}
 
 This response confirms the receipt of your Waiver request or your
 response to a Waiver Request for Additional Information (RAI).
@@ -375,7 +375,9 @@ Thank you!`,
     <br><b>Waiver Number:</b> ${variables.id}
     </p>
     Summary:
-    <br>${variables.additionalInformation || "N/A"}
+    <br>${
+      variables.additionalInformation || "No additional information submitted"
+    }
     <br>
     <p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI), and extension requests on Waivers only. Any other correspondence will be disregarded.
     </p>
@@ -393,7 +395,7 @@ Thank you!`,
     CHIP SPA Package ID: ${variables.id}
     
     Summary:
-    ${variables.additionalInformation || "N/A"}
+    ${variables.additionalInformation || "No additional information submitted"}
     
 This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI), and extension requests on Waivers only. Any other correspondence will be disregarded.
     
