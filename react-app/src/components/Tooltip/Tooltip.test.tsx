@@ -1,24 +1,39 @@
 import { ReactNode } from "react";
 import { Link, MemoryRouter, Route, Routes, createMemoryRouter, RouterProvider } from "react-router-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, expect, test, beforeAll } from "vitest";
+import { describe, expect, test, beforeAll, vi } from "vitest";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from ".";
-import { OsExportData } from "../Opensearch";
+import { OsExportData, useOsUrl } from "../Opensearch";
+import { Dashboard, dashboardLoader } from "@/features";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
+
+const renderWithClient = (ui: ReactJSXElement) => {
+  const queryClient = new QueryClient();
+
+  return {
+    ...render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>),
+    queryClient,
+  };
+}
 
 describe("Tooltip Component", async () => {
   beforeAll(() => {
+    // const queryClient = new QueryClient();
     const memoryRouter = createMemoryRouter(
       [
-        { path: "/dashboard", element: <OsExportData columns={[]}/> },
+        { path: "/dashboard", element:<Dashboard/> },
       ],
       {
         initialEntries: ["/dashboard"],
       },
     );
-    render(<RouterProvider router={memoryRouter} />);
+    // renderWithClient(<RouterProvider router={memoryRouter} />);
+    renderWithClient(<Dashboard />);
   });
   test("Tooltip content hidden when not hovering", () => {
-    const tooltipTrigger = screen.getByRole("tooltip-trigger")
+    // renderWithClient(<Dashboard/>)
+    const tooltipTrigger = screen.getByText("Dashboard")
     expect(tooltipTrigger).toBeInTheDocument();
     // const tooltipContent = screen.queryByTestId("tooltip-content");
     // expect(tooltipContent).not.toBeInTheDocument();
