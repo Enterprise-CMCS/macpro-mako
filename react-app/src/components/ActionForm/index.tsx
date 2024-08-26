@@ -94,10 +94,11 @@ export const ActionForm = <
         body: formData,
       });
 
-      documentPoller(
+      const poller = documentPoller(
         documentPollerArgs.property,
         documentPollerArgs.documentChecker,
       );
+      await poller.startPollingData();
 
       const formOrigins = getFormOrigin({ authority, id });
       banner({
