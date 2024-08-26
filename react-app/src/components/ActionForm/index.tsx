@@ -45,7 +45,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps<z.ZodRawShape>> =
     title: string;
     fieldsLayout?: (props: { children: ReactNode; title: string }) => ReactNode;
     fields: (form: UseFormReturn<z.TypeOf<Schema>>) => ReactNode;
-    bannerPostSubmission: Omit<Banner, "pathnameToDisplayOn">;
+    bannerPostSubmission?: Omit<Banner, "pathnameToDisplayOn">;
     promptPreSubmission?: Omit<UserPrompt, "onAccept">;
     promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
     attachments: {
@@ -66,7 +66,11 @@ export const ActionForm = <
   title,
   fields: Fields,
   fieldsLayout: FieldsLayout,
-  bannerPostSubmission,
+  bannerPostSubmission = {
+    header: "Package submitted",
+    body: "Your submission has been received.",
+    variant: "success",
+  },
   promptOnLeavingForm,
   promptPreSubmission,
   documentPollerArgs,
@@ -90,10 +94,11 @@ export const ActionForm = <
         body: formData,
       });
 
-      documentPoller(
+      const poller = documentPoller(
         documentPollerArgs.property,
         documentPollerArgs.documentChecker,
       );
+      await poller.startPollingData();
 
       const formOrigins = getFormOrigin({ authority, id });
       banner({

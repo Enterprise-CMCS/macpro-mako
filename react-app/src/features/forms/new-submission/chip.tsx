@@ -1,23 +1,23 @@
-import { Link } from "react-router-dom";
 import {
+  ActionForm,
+  FAQ_TAB,
   FormControl,
   FormField,
-  FormLabel,
   FormItem,
-  RequiredIndicator,
-  DatePicker,
+  FormLabel,
   FormMessage,
-  Input,
-  FAQ_TAB,
+  RequiredIndicator,
   SpaIdFormattingDesc,
+  Input,
+  DatePicker,
 } from "@/components";
-import { newMedicaidSubmission } from "shared-types";
-import { ActionForm } from "@/components/ActionForm";
+import { Link } from "react-router-dom";
+import { newChipSubmission } from "shared-types";
 
-export const MedicaidForm = () => (
+export const ChipForm = () => (
   <ActionForm
-    schema={newMedicaidSubmission.feSchema}
-    title="Medicaid SPA Details"
+    title="CHIP SPA Details"
+    schema={newChipSubmission.feSchema}
     fields={({ control }) => (
       <>
         <FormField
@@ -57,15 +57,12 @@ export const MedicaidForm = () => (
           control={control}
           name="proposedEffectiveDate"
           render={({ field }) => (
-            <FormItem className="max-w-md">
+            <FormItem className="max-w-sm">
               <FormLabel className="text-lg font-semibold block">
-                Proposed Effective Date of Medicaid SPA <RequiredIndicator />
+                Proposed Effective Date of CHIP SPA <RequiredIndicator />
               </FormLabel>
               <FormControl>
-                <DatePicker
-                  onChange={(date) => field.onChange(date.getTime())}
-                  date={field.value ? new Date(field.value) : undefined}
-                />
+                <DatePicker onChange={field.onChange} date={field.value} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -75,9 +72,7 @@ export const MedicaidForm = () => (
     )}
     defaultValues={{ id: "" }}
     attachments={{
-      faqLink: "/faq/medicaid-spa-attachments",
-      specialInstructions:
-        "Maximum file size of 80 MB per attachment. You can add multiple files per attachment type except for the CMS Form 179.",
+      faqLink: "/faq/chip-spa-attachments",
     }}
     documentPollerArgs={{
       property: "id",

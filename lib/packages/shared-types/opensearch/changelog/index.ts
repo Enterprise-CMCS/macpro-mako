@@ -8,7 +8,7 @@ import {
 } from "./../_";
 import { z } from "zod";
 import {
-  newSubmission,
+  newMedicaidSubmission,
   RaiIssue,
   RaiResponse,
   RaiWithdraw,
@@ -18,7 +18,7 @@ import {
 } from "../../events";
 import { legacyAdminChange, legacyEvent } from "./transforms";
 
-export type Document = newSubmission.NewSubmission &
+export type Document = newMedicaidSubmission.NewSubmission &
   WithdrawPackage &
   RaiResponse &
   RaiIssue &
