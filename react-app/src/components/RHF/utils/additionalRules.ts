@@ -83,14 +83,16 @@ export const valReducer = (
       return {
         ...valSet,
         [valName]: (value, fields) => {
+          console.log("value: ", JSON.stringify(value, null, 2));
+          console.log("fields: ", JSON.stringify(fields, null, 2));
           const fieldArray = fields[rule.fieldName];
           if (!fieldArray || !Array.isArray(fieldArray)) {
             return true; // If the field is not an array, we can't check for gaps
           }
 
-          const fromField = (rule as any).fromField || "from-age";
-          const toField = (rule as any).toField || "to-age";
-          const optionsField = (rule as any).optionsField || fromField;
+          const fromField = (rule as any).fromField;
+          const toField = (rule as any).toField;
+          const optionsField = (rule as any).optionsField;
 
           const ageRanges = fieldArray.map((item: any) => ({
             from: parseInt(item[fromField], 10),
@@ -102,8 +104,8 @@ export const valReducer = (
 
           // Get the min and max values from the options
           const options = fields[optionsField]?.props?.options || [];
-          const minValue = parseInt(options[0]?.value, 10) || 0;
-          const maxValue = parseInt(options[options.length - 1]?.value, 10) || 19;
+          const minValue = parseInt(options[0]?.value, 10);
+          const maxValue = parseInt(options[options.length - 1]?.value, 10);
 
           // Check for gaps and overlaps
           for (let i = 0; i < ageRanges.length; i++) {

@@ -34,9 +34,12 @@ export type AdditionalRule =
       message: string;
     }
   | {
-      type: "noGapsOrOverlapdsInSelectOptions";
+      type: "noGapsOrOverlapsInSelectOptions";
       fieldName: string;
       message: string;
+      fromField: string;
+      toField: string;
+      optionsField: string;
     };
 
 export type RuleGenerator = (
