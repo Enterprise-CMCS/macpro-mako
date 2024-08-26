@@ -79,6 +79,55 @@ export const valReducer = (
           return rule.message;
         },
       };
+    case "noGapsOrOverlapsInSelectOptions":
+      return {
+        ...valSet,
+        [valName]: (value, fields) => {
+          const fieldArray = fields[rule.fieldName];
+          if (!fieldArray || !Array.isArray(fieldArray)) {
+            return true; // If the field is not an array, we can't check for gaps
+          }
+
+          const fromField = (rule as any).fromField || "from-age";
+          const toField = (rule as any).toField || "to-age";
+          const optionsField = (rule as any).optionsField || fromField;
+
+          const ageRanges = fieldArray.map((item: any) => ({
+            from: parseInt(item[fromField], 10),
+            to: parseInt(item[toField], 10),
+          }));
+
+          // Sort the age ranges
+          ageRanges.sort((a, b) => a.from - b.from);
+
+          // Get the min and max values from the options
+          const options = fields[optionsField]?.props?.options || [];
+          const minValue = parseInt(options[0]?.value, 10) || 0;
+          const maxValue = parseInt(options[options.length - 1]?.value, 10) || 19;
+
+          // Check for gaps and overlaps
+          for (let i = 0; i < ageRanges.length; i++) {
+            if (i === 0 && ageRanges[i].from !== minValue) {
+              return rule.message; // Gap at the beginning
+            }
+            if (i > 0) {
+              if (ageRanges[i].from > ageRanges[i - 1].to + 1) {
+                return rule.message; // Gap between ranges
+              }
+              if (ageRanges[i].from <= ageRanges[i - 1].to) {
+                return rule.message; // Overlap between ranges
+              }
+            }
+          }
+
+          // Check if the last range ends at the maximum value
+          if (ageRanges[ageRanges.length - 1].to !== maxValue) {
+            return rule.message; // Gap at the end
+          }
+
+          return true; // No gaps or overlaps found
+        },
+      };
     default:
       return { ...valSet };
   }

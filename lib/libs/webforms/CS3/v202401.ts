@@ -40,6 +40,16 @@ export const v202401: FormSchema = {
                       rules: {
                         required: "* Required",
                       },
+                      addtnlRules: [
+                        {
+                          type: "noGapsOrOverlapsInSelectOptions",
+                          fieldName: "cs3_inc-standards_age-and-house-inc-range",
+                          message: "All Ages 0 - 19  must be accounted for",
+                          fromField: "from-age",
+                          toField: "to-age",
+                          optionsField: "from-age",
+                        },
+                      ],
                       props: {
                         options: [
                           { value: "0", label: "0" },

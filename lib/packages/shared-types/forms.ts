@@ -32,6 +32,11 @@ export type AdditionalRule =
       type: "cannotCoexist";
       fieldName: string;
       message: string;
+    }
+  | {
+      type: "noGapsOrOverlapdsInSelectOptions";
+      fieldName: string;
+      message: string;
     };
 
 export type RuleGenerator = (
