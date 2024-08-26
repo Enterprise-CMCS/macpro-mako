@@ -79,10 +79,10 @@ export const router = createBrowserRouter([
         path: "/new-submission/spa/chip/create",
         element: <F.ChipForm />,
       },
-      // {
-      //   path: "/new-submission/waiver/b/capitated/amendment/create",
-      //   element: <F.Capitated1915BWaiverAmendmentPage />,
-      // },
+      {
+        path: "/new-submission/waiver/b/capitated/amendment/create",
+        element: <F.CapitatedWaivers.AmendmentForm />,
+      },
       // {
       //   path: "/new-submission/waiver/b/capitated/initial/create",
       //   element: <F.Capitated1915BWaiverInitialPage />,

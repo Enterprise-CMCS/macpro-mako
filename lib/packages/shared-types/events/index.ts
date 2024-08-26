@@ -12,3 +12,4 @@ export * from "./seatool";
 export * from "./remove-appk-child";
 export * from "./update-id";
 export * from "./complete-intake";
+export * as capitatedWaivers from "./capitated-waivers";
