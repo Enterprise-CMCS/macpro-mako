@@ -245,11 +245,20 @@ Thank you!`,
     cms: async (
       variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
     ) => {
+      console.log("we are at the item");
+      console.log("osDomain: ", process.env.osDomain);
+      console.log("indexNamespace: ", process.env.indexNamespace);
+      console.log("id: ", variables.id);
       const item = (await os.getItem(
         process.env.osDomain!,
         `${process.env.indexNamespace}main`,
         variables.id,
       )) as opensearch.main.Response;
+      console.log("item: ", item);
+      console.log(
+        "item source: ",
+        JSON.stringify(item.hits.hits[0]._source, null, 2),
+      );
       const cpoc = item.hits.hits[0]._source.leadAnalystName;
       const srts = item.hits.hits[0]._source.reviewTeam.map((SRT) => {
         console.log("cpoc", JSON.stringify(cpoc, null, 2));

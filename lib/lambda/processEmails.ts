@@ -16,7 +16,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
       throw new Error("Environment variables are not set properly.");
     }
 
-    console.log("Processing email event: " + JSON.stringify(event, null, 2));
+    console.log("Processing email event: ", JSON.stringify(event, null, 2));
 
     const processRecordsPromises = [];
 
