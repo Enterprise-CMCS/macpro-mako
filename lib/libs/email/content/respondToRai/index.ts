@@ -77,7 +77,7 @@ Thank you!`,
       variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your Medicaid SPA RAI Response for ${variables.id} has been submitted to CMS`,
         html: `
 <p>This response confirms you submitted a Medicaid SPA RAI Response to CMS for review:</p>
@@ -195,7 +195,7 @@ Thank you!`,
       variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your CHIP SPA RAI Response for ${variables.id} has been submitted to CMS`,
         html: `
 <p>This response confirms you submitted a CHIP SPA RAI Response to CMS for review:</p>
@@ -245,27 +245,18 @@ Thank you!`,
     cms: async (
       variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
     ) => {
-      console.log("we are at the item");
-      console.log("osDomain: ", process.env.osDomain);
-      console.log("indexNamespace: ", process.env.indexNamespace);
-      console.log("id: ", variables.id);
       const item = (await os.getItem(
         process.env.osDomain!,
         `${process.env.indexNamespace}main`,
         variables.id,
       )) as opensearch.main.Response;
-      console.log("item: ", item);
-      console.log(
-        "item source: ",
-        JSON.stringify(item.hits.hits[0]._source, null, 2),
-      );
+
       const cpoc = item.hits.hits[0]._source.leadAnalystName;
       const srts = item.hits.hits[0]._source.reviewTeam.map((SRT) => {
         console.log("cpoc", JSON.stringify(cpoc, null, 2));
         console.log("single srt", JSON.stringify(SRT, null, 2));
       });
       console.log("srts", JSON.stringify(srts, null, 2));
-      // get cpoc and srt from record using getItem(variable.id) -> add function and permissions
       return {
         to: `${variables.emails.osgEmail};${variables.emails.dmcoEmail}`, // TODO: Should be also sent to CPOC and SRT
         subject: `Waiver RAI Response for ${variables.id} Submitted`,
@@ -327,7 +318,7 @@ Thank you!`,
       variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`, // TODO: suppose to go to all state users but we dont have that data
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>`, // TODO: suppose to go to all state users but we dont have that data
         subject: `Your 1915(b) Waiver RAI Response for ${variables.id} has been submitted to CMS`,
         html: `
 <p>This response confirms the submission of your 1915(b) Waiver RAI Response to CMS for review:</p>
@@ -386,7 +377,7 @@ Thank you!`,
     variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
   ) => {
     return {
-      to: `"${variables.submitterName}" <${variables.submitterEmail}>"`, // TODO: all state users
+      to: `"${variables.submitterName}" <${variables.submitterEmail}>`, // TODO: all state users
       subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id} `,
       html: `
     <p>The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are receiving this email notification as the Formal RAI for ${

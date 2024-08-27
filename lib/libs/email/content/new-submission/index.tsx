@@ -85,7 +85,7 @@ Thank you!`,
       variables: OneMac & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your SPA ${variables.id} has been submitted to CMS`,
         html: `
 <p>This response confirms that you submitted a Medicaid SPA to CMS for review:</p>
@@ -218,7 +218,7 @@ Thank you!`,
       variables: OneMac & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your CHIP SPA ${variables.id} has been submitted to CMS`,
         html: `
     <p>This is confirmation that you submitted a CHIP State Plan Amendment 
@@ -348,7 +348,7 @@ Thank you!`,
       variables: OneMac & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your ${variables.authority} ${variables.id} has been submitted to CMS`,
         html: `
     <p>This response confirms the submission of your ${
@@ -487,7 +487,7 @@ Thank you!
       variables: OneMac & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your 1915(c) ${variables.id} has been submitted to CMS`,
         html: `
 <p>This response confirms the submission of your 1915(c) Waiver to CMS for review:</p>

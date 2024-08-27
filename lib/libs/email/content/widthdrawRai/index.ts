@@ -70,7 +70,7 @@ Thank you!`,
         Action.RESPOND_TO_RAI,
       );
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`, // TODO: should go to all state users, but we dont have that info
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>`, // TODO: should go to all state users, but we dont have that info
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         html: `
 <p>The OneMAC Submission Portal received a request to withdraw the Formal 
@@ -177,7 +177,7 @@ Thank you!`,
         Action.RESPOND_TO_RAI,
       );
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
         html: `
 <p>The OneMAC Submission Portal received a request to withdraw the Formal 
@@ -284,7 +284,7 @@ Thank you!`,
         Action.RESPOND_TO_RAI,
       );
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`, // TODO: "All State Users"
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>`, // TODO: "All State Users"
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
         html: `
 <p>The OneMAC Submission Portal received a request to withdraw the Formal 

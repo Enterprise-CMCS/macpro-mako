@@ -71,7 +71,7 @@ Thank you!`,
     variables: OneMac & CommonVariables & { emails: EmailAddresses },
   ) => {
     return {
-      to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
+      to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
       subject: `Your Request for the ${variables.authority} Waiver Extension ${variables.id} has been submitted to CMS`,
       html: `
 <p>	

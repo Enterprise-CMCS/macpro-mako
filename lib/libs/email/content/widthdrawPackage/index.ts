@@ -45,7 +45,7 @@ Thank you!`,
       variables: WithdrawPackage & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Medicaid SPA Package ${variables.id} Withdrawal Confirmation`,
         html: `
     <p>This email is to confirm Medicaid SPA ${variables.id} was withdrawn
@@ -109,7 +109,7 @@ Thank you!`,
     //       variables: WithdrawPackage & CommonVariables & { emails: EmailAddresses },
     //     ) => {
     //       return {
-    //         to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
+    //         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
     //         subject: `CHIP SPA Package ${variables.id} Withdrawal Confirmation`,
     //         html: `
     // <p>This email is to confirm CHIP SPA ${variables.id} was withdrawn
@@ -171,7 +171,7 @@ Thank you!`,
       variables: WithdrawPackage & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>"`,
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `1915(b) Waiver ${variables.id} Withdrawal Confirmation`,
         html: `
 <p>This email is to confirm 1915(b) Waiver ${variables.id} was withdrawn
