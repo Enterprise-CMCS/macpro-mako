@@ -39,7 +39,7 @@ export type AdditionalRule =
       message: string;
       fromField: string;
       toField: string;
-      optionsField: string;
+      options: { value: string; label: string }[];
     };
 
 export type RuleGenerator = (

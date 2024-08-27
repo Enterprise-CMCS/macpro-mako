@@ -8,6 +8,17 @@ export const sortFunctions: {
   reverseSort: (a, b) => b.localeCompare(a),
 };
 
+// New function to sort options from lowest to highest
+export function sortOptionsLowestToHighest<
+  T extends { value: string | number },
+>(options: T[]): T[] {
+  return [...options].sort((a, b) => {
+    const aValue = typeof a.value === "string" ? parseFloat(a.value) : a.value;
+    const bValue = typeof b.value === "string" ? parseFloat(b.value) : b.value;
+    return aValue - bValue;
+  });
+}
+
 export function stringCompare(
   a: { label: string },
   b: { label: string },
@@ -82,48 +93,46 @@ export const valReducer = (
     case "noGapsOrOverlapsInSelectOptions":
       return {
         ...valSet,
-        [valName]: (value, fields) => {
-          console.log("value: ", JSON.stringify(value, null, 2));
-          console.log("fields: ", JSON.stringify(fields, null, 2));
+        [valName]: (_, fields) => {
           const fieldArray = fields[rule.fieldName];
           if (!fieldArray || !Array.isArray(fieldArray)) {
-            return true; // If the field is not an array, we can't check for gaps
+            return true;
           }
 
-          const fromField = (rule as any).fromField;
-          const toField = (rule as any).toField;
-          const optionsField = (rule as any).optionsField;
+          const fromField = rule.fromField;
+          const toField = rule.toField;
 
-          const ageRanges = fieldArray.map((item: any) => ({
+          const range = fieldArray.map((item: any) => ({
             from: parseInt(item[fromField], 10),
             to: parseInt(item[toField], 10),
           }));
 
-          // Sort the age ranges
-          ageRanges.sort((a, b) => a.from - b.from);
+          range.sort((a, b) => a.from - b.from);
+          const sortedOptions = sortOptionsLowestToHighest(rule.options);
 
-          // Get the min and max values from the options
-          const options = fields[optionsField]?.props?.options || [];
-          const minValue = parseInt(options[0]?.value, 10);
-          const maxValue = parseInt(options[options.length - 1]?.value, 10);
+          const minValue = parseInt(sortedOptions[0]?.value, 10);
+          const maxValue = parseInt(
+            sortedOptions[sortedOptions.length - 1]?.value,
+            10,
+          );
 
           // Check for gaps and overlaps
-          for (let i = 0; i < ageRanges.length; i++) {
-            if (i === 0 && ageRanges[i].from !== minValue) {
+          for (let i = 0; i < range.length; i++) {
+            if (i === 0 && range[i].from !== minValue) {
               return rule.message; // Gap at the beginning
             }
             if (i > 0) {
-              if (ageRanges[i].from > ageRanges[i - 1].to + 1) {
+              if (range[i].from > range[i - 1].to + 1) {
                 return rule.message; // Gap between ranges
               }
-              if (ageRanges[i].from <= ageRanges[i - 1].to) {
-                return rule.message; // Overlap between ranges
+              if (range[i].from <= range[i - 1].to) {
+                return rule.message; // Overlaping age ranges
               }
             }
           }
 
           // Check if the last range ends at the maximum value
-          if (ageRanges[ageRanges.length - 1].to !== maxValue) {
+          if (range[range.length - 1].to !== maxValue) {
             return rule.message; // Gap at the end
           }
 
