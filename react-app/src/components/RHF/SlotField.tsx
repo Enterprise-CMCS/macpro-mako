@@ -130,34 +130,36 @@ export const SlotField = ({
     }
     case "DatePicker":
       return (
-        <Popover>
-          <PopoverTrigger asChild>
-            <FormControl>
+        <FormControl>
+          <Popover>
+            <PopoverTrigger asChild>
               <Button
                 variant={"outline"}
                 className={cn(
-                  "w-[240px] pl-3 text-left font-normal",
+                  "w-[240px] pl-3 text-left font-normal text-[#212121] justify-start",
                   !field.value && "text-muted-foreground",
                 )}
               >
+                <CalendarIcon className="h-4" />
                 {field.value ? (
-                  format(field.value, "PPP")
+                  format(new Date(field.value), "MM/dd/yyyy")
                 ) : (
                   <span>Pick a date</span>
                 )}
-                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
               </Button>
-            </FormControl>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              {...props}
-              selected={field.value}
-              // @ts-expect-error
-              onSelect={field.onChange}
-            />
-          </PopoverContent>
-        </Popover>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                {...props}
+                mode="single"
+                selected={field.value && new Date(field.value)}
+                defaultMonth={field.value && new Date(field.value)}
+                onSelect={(date) => field.onChange(date)}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+        </FormControl>
       );
     case "Checkbox":
       return (
