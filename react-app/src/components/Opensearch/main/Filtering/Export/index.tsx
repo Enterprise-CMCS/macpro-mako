@@ -81,7 +81,7 @@ export const OsExportData: FC<{
       <span className="prose-sm">Export</span>
     </Button>
     </TooltipTrigger>
-    {disabled && <TooltipContent>
+    {disabled && <TooltipContent role="tooltip-content">
       <p>No records available</p>
       </TooltipContent>}
     </Tooltip>

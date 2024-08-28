@@ -1,48 +1,38 @@
-import { ReactNode } from "react";
-import {
-  Link,
-  MemoryRouter,
-  Route,
-  Routes,
-  createMemoryRouter,
-  RouterProvider,
-  BrowserRouter,
-} from "react-router-dom";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, expect, test, vi } from "vitest";
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "../../../../Tooltip";
+import { describe, expect, test, vi, beforeEach } from "vitest";
 import { OsExportData } from "@/components";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 vi.mock("@/components/Opensearch/main/useOpensearch.ts", () => ({
   useOsUrl: vi.fn()
 }))
 
 describe("Tooltip Component", () => {
-  test("Tooltip content hidden when not hovering", async () => {
+  beforeEach(() => {
     render(
       <OsExportData columns={[]}/>
     );
-
+  })
+  test("Tooltip content hidden when not hovering", async () => {
     // confirm dashboard and export button is rendered
     // hover export button
     // mock no records showing
     // hover export button, should be disabled and tooltip content should show in doc
 
-    expect(1).toEqual(1);
-    // const tooltipTrigger = screen.getByText("SPAs");
-    // expect(tooltipTrigger).toBeInTheDocument();
-    // const tooltipContent = screen.queryByTestId("tooltip-content");
-    // expect(tooltipContent).not.toBeInTheDocument();
+    const tooltipTrigger = screen.getByText("Export");
+    expect(tooltipTrigger).toBeInTheDocument();
+    const tooltipContent = screen.queryByRole("tooltip-content");
+    expect(tooltipContent).not.toBeInTheDocument();
   });
 
+  // Disable export button first
   // test("Tooltip content shown on hover", async () => {
-  //   const tooltipTrigger = screen.queryByTestId("tooltip-trigger");
+  //   const tooltipTrigger = screen.queryByRole("tooltip-trigger");
   //   expect(tooltipTrigger).toBeInTheDocument();
 
-  //   fireEvent.mouseOver(tooltipTrigger);
-  //   const tooltipContent = screen.getByRole('tooltip-content', { name: /test tooltip info/i})
+  //   fireEvent.mouseOver(screen.getByText("Export"));
+  //   // const tooltipContent = screen.queryByRole('tooltip-content')
+  //   await waitFor(() => screen.queryByRole('tooltip-content'))
   //   // const tooltipContent = screen.queryByTestId("tooltip-content");
-  //   expect(tooltipContent).toBeInTheDocument();
+  //   expect(screen.queryByRole('tooltip-content')).toBeInTheDocument();
   // });
 });
