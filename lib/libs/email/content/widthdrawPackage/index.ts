@@ -20,7 +20,10 @@ export const withdrawPackage = {
             <br><b>Medicaid SPA Package ID:</b> ${variables.id}
           </p>
           Summary:
-          <br>${variables.additionalInformation ?? "No additional information submitted"}
+          <br>${
+            variables.additionalInformation ??
+            "No additional information submitted"
+          }
 
           <p>Thank you!</p>
         `,
@@ -34,7 +37,10 @@ export const withdrawPackage = {
           Medicaid SPA Package ID: ${variables.id}
 
           Summary:
-          ${variables.additionalInformation ?? "No additional information submitted"}
+          ${
+            variables.additionalInformation ??
+            "No additional information submitted"
+          }
 
           If the contents of this email seem suspicious, do not open them, and instead 
           forward this email to SPAM@cms.hhs.gov.
@@ -84,7 +90,10 @@ export const withdrawPackage = {
             <br><b>CHIP SPA Package ID:</b> ${variables.id}
           </p>
           Summary:
-          <br>${variables.additionalInformation ?? "No additional information submitted"}
+          <br>${
+            variables.additionalInformation ??
+            "No additional information submitted"
+          }
           <br>
           <p>If the contents of this email seem suspicious, do not open them, and instead forward this email to 
           <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>
@@ -101,7 +110,10 @@ export const withdrawPackage = {
           CHIP SPA Package ID: ${variables.id}
 
           Summary:
-          ${variables.additionalInformation ?? "No additional information submitted"}
+          ${
+            variables.additionalInformation ??
+            "No additional information submitted"
+          }
 
           Thank you!
         `,
@@ -149,7 +161,10 @@ export const withdrawPackage = {
             <br><b>${variables.authority} Package ID:</b> ${variables.id}
           </p>
           Summary:
-          <br>${variables.additionalInformation ?? "No additional information submitted"}
+          <br>${
+            variables.additionalInformation ??
+            "No additional information submitted"
+          }
           <br>
           <br>
 
@@ -165,7 +180,10 @@ export const withdrawPackage = {
           Waiver Number: ${variables.id}
 
           Summary:
-          ${variables.additionalInformation ?? "No additional information submitted"}
+          ${
+            variables.additionalInformation ??
+            "No additional information submitted"
+          }
 
           Thank you!
         `,
