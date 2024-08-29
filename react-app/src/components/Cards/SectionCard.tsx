@@ -16,7 +16,7 @@ export const SectionCard = ({
   return (
     <section
       id={id}
-      className={cn("mb-8 p-4 border rounded-sm border-cardBorder", className)}
+      className={cn("p-4 border rounded-sm border-cardBorder", className)}
     >
       {title && (
         <>
