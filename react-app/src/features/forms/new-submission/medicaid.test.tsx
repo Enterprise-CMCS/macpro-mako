@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import { MedicaidForm } from "./medicaid";
+import { MedicaidForm } from "./Medicaid";
 import { MemoryRouter } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import * as userPrompt from "@/components/ConfirmationDialog/userPrompt";
