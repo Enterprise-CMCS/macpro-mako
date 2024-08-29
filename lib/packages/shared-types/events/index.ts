@@ -4,6 +4,8 @@ export * from "./respond-to-rai";
 export * from "./withdraw-rai";
 export * from "./withdraw-package";
 export * as newChipSubmission from "./new-chip-submission";
+export * as capitatedWaivers from "./capitated-waivers";
+export * as contractingWaivers from "./contracting-waivers";
 export * from "./legacy-event";
 export * from "./legacy-package-view";
 export * from "./legacy-admin-change";
@@ -11,7 +13,6 @@ export * from "./seatool";
 export * from "./remove-appk-child";
 export * from "./update-id";
 export * from "./complete-intake";
-export * as capitatedWaivers from "./capitated-waivers";
 
 export const events: Record<string, any> = {};
 
