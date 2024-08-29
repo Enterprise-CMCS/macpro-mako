@@ -53,7 +53,9 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps<z.ZodRawShape>> =
       specialInstructions?: string;
     };
     documentPollerArgs: {
-      property: keyof z.TypeOf<Schema> & string;
+      property:
+        | (keyof z.TypeOf<Schema> & string)
+        | ((values: z.TypeOf<Schema>) => string);
       documentChecker: CheckDocumentFunction;
     };
   };
@@ -94,8 +96,13 @@ export const ActionForm = <
         body: formData,
       });
 
+      const documentPollerId =
+        typeof documentPollerArgs.property === "function"
+          ? documentPollerArgs.property(formData)
+          : documentPollerArgs.property;
+
       const poller = documentPoller(
-        documentPollerArgs.property,
+        documentPollerId,
         documentPollerArgs.documentChecker,
       );
       await poller.startPollingData();
