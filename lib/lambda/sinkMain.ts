@@ -63,7 +63,8 @@ const processAndIndex = async ({
   transforms: any;
   topicPartition: string;
 }) => {
-  const docs: any[] = [];
+  const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> =
+    [];
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
     const { value } = kafkaRecord;
