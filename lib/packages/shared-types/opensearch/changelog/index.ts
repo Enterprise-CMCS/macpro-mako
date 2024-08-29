@@ -18,7 +18,7 @@ import {
 } from "../../events";
 import { legacyAdminChange, legacyEvent } from "./transforms";
 
-export type Document = newMedicaidSubmission.NewSubmission &
+export type Document = newMedicaidSubmission.Schema &
   WithdrawPackage &
   RaiResponse &
   RaiIssue &

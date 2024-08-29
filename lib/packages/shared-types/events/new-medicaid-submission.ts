@@ -92,4 +92,4 @@ export const transform = async (event: APIGatewayEvent) => {
   return transformedData;
 };
 
-export type NewSubmission = Awaited<ReturnType<typeof transform>>;
+export type Schema = Awaited<ReturnType<typeof transform>>;

@@ -3,6 +3,7 @@ export * from "./issue-rai";
 export * from "./respond-to-rai";
 export * from "./withdraw-rai";
 export * from "./withdraw-package";
+export * as newMedicaidSubmission from "./new-medicaid-submission"; // this should be removed once no longer in use.  use const events below
 export * as newChipSubmission from "./new-chip-submission";
 export * as capitatedWaivers from "./capitated-waivers";
 export * as contractingWaivers from "./contracting-waivers";
@@ -14,12 +15,12 @@ export * from "./remove-appk-child";
 export * from "./update-id";
 export * from "./complete-intake";
 
-export const events: Record<string, any> = {};
+// const eventModules = {
+//   "new-medicaid-submission": "./new-medicaid-submission",
+// };
 
-const eventModules = {
-  "new-medicaid-submission": "./new-medicaid-submission",
+import * as newMedicaidSubmission from "./new-medicaid-submission";
+
+export const events = {
+  "new-medicaid-submission": newMedicaidSubmission,
 };
-
-for (const [eventName, modulePath] of Object.entries(eventModules)) {
-  events[eventName] = import(modulePath);
-}
