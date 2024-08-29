@@ -1,6 +1,5 @@
 import { Handler } from "aws-lambda";
-import * as os from "libs/opensearch-lib";
-import { Action, Authority, KafkaRecord, opensearch } from "shared-types";
+import { KafkaRecord, opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
 import {
   ErrorType,
