@@ -91,10 +91,10 @@ export const router = createBrowserRouter([
         path: "/new-submission/waiver/b/capitated/renewal/create",
         element: <F.CapitatedWaivers.Renewal />,
       },
-      // {
-      //   path: "/new-submission/waiver/b/b4/renewal/create",
-      //   element: <F.Contracting1915BWaiverRenewalPage />,
-      // },
+      {
+        path: "/new-submission/waiver/b/b4/renewal/create",
+        element: <F.ContractingWaivers.RenewalForm />,
+      },
       {
         path: "/new-submission/waiver/b/b4/initial/create",
         element: <F.ContractingWaivers.InitialForm />,
