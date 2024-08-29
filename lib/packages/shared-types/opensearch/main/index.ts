@@ -45,3 +45,7 @@ export type State = QueryState<Field>;
 export type Aggs = AggQuery<Field>;
 
 export * from "./transforms";
+
+export const transforms = {
+  "new-submission": newSubmission,
+};

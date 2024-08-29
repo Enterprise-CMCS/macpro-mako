@@ -27,6 +27,13 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           logError({ type: ErrorType.BADTOPIC });
           throw new Error();
         case "aws.onemac.migration.cdc":
+          await processAndIndex({
+            kafkaRecords: event.records[topicPartition],
+            index,
+            osDomain,
+            transforms: opensearch.main.transforms,
+            topicPartition: topicPartition,
+          });
           await onemac(event.records[topicPartition], topicPartition);
           break;
         case "aws.seatool.ksql.onemac.agg.State_Plan":
@@ -41,6 +48,65 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     logError({ type: ErrorType.UNKNOWN, metadata: { event: loggableEvent } });
     throw error;
   }
+};
+
+const processAndIndex = async ({
+  kafkaRecords,
+  index,
+  osDomain,
+  transforms,
+  topicPartition,
+}: {
+  kafkaRecords: KafkaRecord[];
+  index: Index;
+  osDomain: string;
+  transforms: any;
+  topicPartition: string;
+}) => {
+  const docs: any[] = [];
+  for (const kafkaRecord of kafkaRecords) {
+    console.log(JSON.stringify(kafkaRecord, null, 2));
+    const { value } = kafkaRecord;
+    try {
+      if (!value) {
+        // TODO:  handle legacy tombstones.  for now, just continue
+        // docs.push(opensearch.main.legacyPackageView.tombstone(id));
+        continue;
+      }
+      const record = JSON.parse(decodeBase64WithUtf8(value));
+      if (!record.event || record?.origin !== "mako") {
+        // TODO:  this indicates a legacy record or an old mako record.  May need to
+        continue;
+      }
+      if (record.event in transforms) {
+        const transformForEvent =
+          transforms[record.event as keyof typeof transforms];
+
+        const result = transformForEvent.transform().safeParse(record);
+
+        if (result.success && result.data === undefined) continue;
+        if (!result.success) {
+          logError({
+            type: ErrorType.VALIDATION,
+            error: result?.error,
+            metadata: { topicPartition, kafkaRecord, record },
+          });
+          continue;
+        }
+        console.log(JSON.stringify(result.data, null, 2));
+        docs.push(result.data);
+      } else {
+        console.log(`No transform found for event: ${record.event}`);
+      }
+    } catch (error) {
+      logError({
+        type: ErrorType.BADPARSE,
+        error,
+        metadata: { topicPartition, kafkaRecord },
+      });
+    }
+  }
+  await bulkUpdateDataWrapper(osDomain, index, docs);
 };
 
 const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
