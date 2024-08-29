@@ -1,38 +1,32 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, expect, test, vi, beforeEach } from "vitest";
 import { OsExportData } from "@/components";
+import userEvent from "@testing-library/user-event";
 
 vi.mock("@/components/Opensearch/main/useOpensearch.ts", () => ({
-  useOsUrl: vi.fn()
-}))
+  useOsUrl: vi.fn(),
+}));
 
-describe("Tooltip Component", () => {
+describe("Tooltip component within export button", () => {
   beforeEach(() => {
-    render(
-      <OsExportData columns={[]}/>
-    );
-  })
-  test("Tooltip content hidden when not hovering", async () => {
-    // confirm dashboard and export button is rendered
-    // hover export button
-    // mock no records showing
-    // hover export button, should be disabled and tooltip content should show in doc
+    render(<OsExportData columns={[]} disabled={true} />);
+  });
 
-    const tooltipTrigger = screen.getByText("Export");
+  test("Tooltip content hidden when not hovering", async () => {
+    const tooltipTrigger = screen.queryByRole("tooltip-trigger");
     expect(tooltipTrigger).toBeInTheDocument();
-    const tooltipContent = screen.queryByRole("tooltip-content");
+
+    const tooltipContent = screen.queryByText("No records available");
     expect(tooltipContent).not.toBeInTheDocument();
   });
 
-  // Disable export button first
-  // test("Tooltip content shown on hover", async () => {
-  //   const tooltipTrigger = screen.queryByRole("tooltip-trigger");
-  //   expect(tooltipTrigger).toBeInTheDocument();
+  test("Tooltip content shown on hover", async () => {
+    const tooltipTrigger = screen.queryByRole("tooltip-trigger");
+    expect(tooltipTrigger).toBeDisabled();
 
-  //   fireEvent.mouseOver(screen.getByText("Export"));
-  //   // const tooltipContent = screen.queryByRole('tooltip-content')
-  //   await waitFor(() => screen.queryByRole('tooltip-content'))
-  //   // const tooltipContent = screen.queryByTestId("tooltip-content");
-  //   expect(screen.queryByRole('tooltip-content')).toBeInTheDocument();
-  // });
+    userEvent.hover(screen.queryByRole("tooltip-trigger"));
+
+    await waitFor(() => screen.getByTestId("tooltip-content"));
+    expect(screen.queryAllByText("No records available")[0]).toBeVisible();
+  });
 });

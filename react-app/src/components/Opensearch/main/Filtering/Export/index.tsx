@@ -61,30 +61,32 @@ export const OsExportData: FC<{
   return (
     <TooltipProvider>
       <Tooltip disableHoverableContent={true}>
-      <TooltipTrigger asChild className='disabled:pointer-events-auto'>
-    <Button
-      variant="outline"
-      onClick={handleExport}
-      disabled={loading || disabled}
-      className="w-full xs:w-fit hover:bg-transparent self-center h-10 flex gap-2"
-      role="tooltip-trigger"
-    >
-      {loading && (
-        <motion.div
-          animate={{ rotate: "360deg" }}
-          transition={{ repeat: Infinity, duration: 0.5 }}
-        >
-          <Loader className="w-4 h-4" />
-        </motion.div>
-      )}
-      {!loading && <Download className="w-4 h-4" />}
-      <span className="prose-sm">Export</span>
-    </Button>
-    </TooltipTrigger>
-    {disabled && <TooltipContent role="tooltip-content">
-      <p>No records available</p>
-      </TooltipContent>}
-    </Tooltip>
+        <TooltipTrigger asChild className="disabled:pointer-events-auto">
+          <Button
+            variant="outline"
+            onClick={handleExport}
+            disabled={loading || disabled}
+            className="w-full xs:w-fit hover:bg-transparent self-center h-10 flex gap-2"
+            role="tooltip-trigger"
+          >
+            {loading && (
+              <motion.div
+                animate={{ rotate: "360deg" }}
+                transition={{ repeat: Infinity, duration: 0.5 }}
+              >
+                <Loader className="w-4 h-4" />
+              </motion.div>
+            )}
+            {!loading && <Download className="w-4 h-4" />}
+            <span className="prose-sm">Export</span>
+          </Button>
+        </TooltipTrigger>
+        {disabled && (
+          <TooltipContent data-testid="tooltip-content">
+            No records available
+          </TooltipContent>
+        )}
+      </Tooltip>
     </TooltipProvider>
   );
 };
