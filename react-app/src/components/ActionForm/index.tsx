@@ -95,7 +95,7 @@ export const ActionForm = <
       });
 
       const poller = documentPoller(
-        documentPollerArgs.property,
+        formData[documentPollerArgs.property],
         documentPollerArgs.documentChecker,
       );
       await poller.startPollingData();
