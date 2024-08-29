@@ -34,7 +34,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
             transforms: opensearch.main.transforms,
             topicPartition: topicPartition,
           });
-          await onemac(event.records[topicPartition], topicPartition);
           break;
         case "aws.seatool.ksql.onemac.agg.State_Plan":
           await ksql(event.records[topicPartition], topicPartition);
@@ -86,6 +85,9 @@ const processAndIndex = async ({
       }
 
       // If the event is a supported event, transform and push to docs array for indexing
+      console.log("event below");
+      console.log(record.event);
+
       if (record.event in transforms) {
         const transformForEvent =
           transforms[record.event as keyof typeof transforms];

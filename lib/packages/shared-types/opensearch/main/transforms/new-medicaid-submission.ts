@@ -1,5 +1,5 @@
 import { SEATOOL_STATUS, getStatus } from "shared-types";
-import * as newSubmission from "../../../events/new-medicaid-submission";
+import * as newMedicaidSubmission from "../../../events/new-medicaid-submission";
 import {
   getNextBusinessDayTimestamp,
   seaToolFriendlyTimestamp,
@@ -7,11 +7,14 @@ import {
 
 export const transform = () => {
   // any adhoc logic
-  return newSubmission.schema.transform((data) => {
+  return newMedicaidSubmission.schema.transform((data) => {
     const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.PENDING);
     const timestampDate = new Date(data.timestamp);
     const todayEpoch = seaToolFriendlyTimestamp(timestampDate);
     const nextBusinessDayEpoch = getNextBusinessDayTimestamp(timestampDate);
+    console.log("Pretransform data blow");
+    console.log(data);
+    console.log("Pretransform data above");
     return {
       additionalInformation: data.additionalInformation,
       attachments: data.attachments,
@@ -27,6 +30,7 @@ export const transform = () => {
       state: data.id.split("-")[0],
       stateStatus,
       statusDate: new Date(todayEpoch).toISOString(),
+      proposedDate: data.proposedEffectiveDate, // wish this was proposedEffectiveDate
       subject: null,
       submissionDate: new Date(nextBusinessDayEpoch).toISOString(),
       submitterEmail: data.submitterEmail,
