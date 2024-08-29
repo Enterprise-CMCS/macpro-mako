@@ -2,7 +2,7 @@ import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 import { isAuthorized } from "../libs/api/auth/user";
 
-import { newSubmission } from "shared-types";
+import { events } from "shared-types";
 import { produceMessage } from "../libs/api/kafka";
 
 export const submit = async (event: APIGatewayEvent) => {
@@ -13,13 +13,29 @@ export const submit = async (event: APIGatewayEvent) => {
     });
   }
 
-  // TODO: We should really type this, is would be hard, but not impossible
   const body = JSON.parse(event.body);
+
   console.log(body);
 
-  // Check that the caller has appropriate permissions
-  // Should his move to the transform?
+  // If there's no event, we reject
+  if (!body.event) {
+    return response({
+      statusCode: 400,
+      body: { message: "Bad Request - Missing event name in body" },
+    });
+  }
+
+  // If the event is unknown, we reject
+  if (!(body.event in events)) {
+    return response({
+      statusCode: 400,
+      body: { message: `Bad Request - Unknown event type ${body.event}` },
+    });
+  }
+
+  // If the user is not authorized, we reject
   if (!(await isAuthorized(event, body.id.slice(0, 2)))) {
+    // TODO:  move this to the transform
     return response({
       statusCode: 403,
       body: { message: "Unauthorized" },
@@ -35,8 +51,7 @@ export const submit = async (event: APIGatewayEvent) => {
   // );
 
   try {
-    // Safe parse the event; throws an error when malformed
-    const eventBody = await newSubmission.transform(event);
+    const eventBody = await events[body.event].transform(event);
 
     await produceMessage(
       process.env.topicName as string,
