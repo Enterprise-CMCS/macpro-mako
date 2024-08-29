@@ -68,16 +68,23 @@ const processAndIndex = async ({
     console.log(JSON.stringify(kafkaRecord, null, 2));
     const { value } = kafkaRecord;
     try {
+      // If a legacy tombstone, handle and continue
+      // TODO:  handle.  for now, just continue
       if (!value) {
-        // TODO:  handle legacy tombstones.  for now, just continue
         // docs.push(opensearch.main.legacyPackageView.tombstone(id));
         continue;
       }
+
+      // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
+
+      // If we're not a mako event, continue
+      // TODO:  handle legacy.  for now, just continue
       if (!record.event || record?.origin !== "mako") {
-        // TODO:  this indicates a legacy record or an old mako record.  May need to
         continue;
       }
+
+      // If the event is a supported event, transform and push to docs array for indexing
       if (record.event in transforms) {
         const transformForEvent =
           transforms[record.event as keyof typeof transforms];
@@ -106,6 +113,8 @@ const processAndIndex = async ({
       });
     }
   }
+
+  // Send all transformed records for indexing
   await bulkUpdateDataWrapper(osDomain, index, docs);
 };
 
