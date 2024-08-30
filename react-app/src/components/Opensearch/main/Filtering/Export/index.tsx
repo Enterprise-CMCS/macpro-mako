@@ -26,6 +26,9 @@ export const OsExportData: FC<{
   const url = useOsUrl();
 
   const handleExport = async () => {
+    if (disabled) {
+      return;
+    }
     setLoading(true);
 
     const exportData: Record<any, any>[] = [];
