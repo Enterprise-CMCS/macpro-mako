@@ -1,8 +1,7 @@
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
-import { isAuthorized } from "../libs/api/auth/user";
 
-import { events } from "shared-types";
+import { events, FeSchemas } from "shared-types";
 import { produceMessage } from "../libs/api/kafka";
 
 export const submit = async (event: APIGatewayEvent) => {
@@ -13,7 +12,7 @@ export const submit = async (event: APIGatewayEvent) => {
     });
   }
 
-  const body = JSON.parse(event.body);
+  const body: FeSchemas = JSON.parse(event.body);
 
   console.log(body);
 
@@ -32,23 +31,6 @@ export const submit = async (event: APIGatewayEvent) => {
       body: { message: `Bad Request - Unknown event type ${body.event}` },
     });
   }
-
-  // If the user is not authorized, we reject
-  if (!(await isAuthorized(event, body.id.slice(0, 2)))) {
-    // TODO:  move this to the transform
-    return response({
-      statusCode: 403,
-      body: { message: "Unauthorized" },
-    });
-  }
-
-  // TODO... run an action check, to make sure its allowed
-  // const originalWaiver = await getPackage(body.originalWaiverNumber);
-  // const authDetails = getAuthDetails(event);
-  // const userAttr = await lookupUserAttributes(
-  //   authDetails.userId,
-  //   authDetails.poolId,
-  // );
 
   try {
     const eventBody = await events[body.event].transform(event);

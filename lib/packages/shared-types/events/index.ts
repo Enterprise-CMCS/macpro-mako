@@ -24,3 +24,6 @@ import * as newMedicaidSubmission from "./new-medicaid-submission";
 export const events = {
   "new-medicaid-submission": newMedicaidSubmission,
 };
+
+export type FeSchemas = newMedicaidSubmission.FeSchema;
+// | newChipSubmission.FeSchema;

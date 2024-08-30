@@ -6,6 +6,7 @@ import {
 import { APIGatewayEvent } from "aws-lambda";
 import {
   getAuthDetails,
+  isAuthorized,
   lookupUserAttributes,
 } from "../../../libs/api/auth/user"; // this should move
 
@@ -61,6 +62,8 @@ export const feSchema = z.object({
   proposedEffectiveDate: z.number(),
 });
 
+export type FeSchema = z.infer<typeof feSchema>;
+
 export const schema = feSchema.extend({
   origin: z.literal("mako").default("mako"),
   submitterName: z.string(),
@@ -72,6 +75,11 @@ export const transform = async (event: APIGatewayEvent) => {
   const parsedResult = feSchema.safeParse(JSON.parse(event.body));
   if (!parsedResult.success) {
     throw parsedResult.error;
+  }
+
+  // This is the backend check for auth
+  if (!(await isAuthorized(event, parsedResult.data.id.slice(0, 2)))) {
+    throw "Unauthorized";
   }
 
   const authDetails = getAuthDetails(event);
