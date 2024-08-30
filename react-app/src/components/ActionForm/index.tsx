@@ -99,7 +99,7 @@ export const ActionForm = <
       const documentPollerId =
         typeof documentPollerArgs.property === "function"
           ? documentPollerArgs.property(formData)
-          : documentPollerArgs.property;
+          : formData[documentPollerArgs.property];
 
       const poller = documentPoller(
         documentPollerId,
