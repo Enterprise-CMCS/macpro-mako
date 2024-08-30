@@ -3,7 +3,8 @@ import * as newMedicaidSubmission from "../../../events/new-medicaid-submission"
 export const transform = (offset: number) => {
   return newMedicaidSubmission.schema.transform((data) => {
     const attachments = Object.entries(data.attachments).flatMap(
-      ([title, attachment]) => {
+      //eslint-disable-next-line
+      ([_title, attachment]) => {
         // Check if 'attachment' exists and has a non-empty 'files' array
         if (
           attachment &&
@@ -13,7 +14,7 @@ export const transform = (offset: number) => {
           // Map each file in 'files' array to the desired shape
           return attachment.files.map((file) => ({
             filename: file.filename,
-            title,
+            title: attachment.label,
             bucket: file.bucket,
             key: file.key,
             uploadDate: file.uploadDate,
