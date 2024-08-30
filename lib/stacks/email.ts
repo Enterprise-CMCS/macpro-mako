@@ -149,6 +149,13 @@ export class Email extends cdk.NestedStack {
           applicationEndpointUrl,
           emailAddressLookupSecretName,
         },
+        bundling: {
+          minify: true,
+          sourceMap: true,
+          define: {
+            __IS_FRONTEND__: "false",
+          },
+        },
       },
     );
 

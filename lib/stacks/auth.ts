@@ -95,7 +95,7 @@ export class Auth extends cdk.NestedStack {
       customAttributes: {
         state: new cdk.aws_cognito.StringAttribute({ mutable: true }),
         "cms-roles": new cdk.aws_cognito.StringAttribute({ mutable: true }),
-        "username": new cdk.aws_cognito.StringAttribute({ mutable: true }),
+        username: new cdk.aws_cognito.StringAttribute({ mutable: true }),
       },
     });
     let userPoolIdentityProviderOidc:
@@ -310,6 +310,9 @@ export class Auth extends cdk.NestedStack {
         bundling: {
           minify: true,
           sourceMap: true,
+          define: {
+            __IS_FRONTEND__: "false",
+          },
         },
       });
 

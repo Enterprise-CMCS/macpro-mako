@@ -7,4 +7,4 @@ declare module "*.png";
 
 declare module "*.pdf";
 
-declare const __IS_FRONTEND__: boolean;
+declare const __IS_FRONTEND__: string;

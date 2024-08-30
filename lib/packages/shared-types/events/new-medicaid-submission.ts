@@ -6,7 +6,7 @@ import {
 import { APIGatewayEvent } from "aws-lambda";
 
 // These are fields we expect the frontend to provide in the api request's payload
-export const feSchema = z.object({
+const baseSchema = z.object({
   event: z
     .literal("new-medicaid-submission")
     .default("new-medicaid-submission"),
@@ -62,9 +62,41 @@ export const feSchema = z.object({
     }),
 });
 
+export const feSchema = baseSchema.extend({
+  id: baseSchema.shape.id
+    .refine(
+      async (value) => {
+        if (__IS_FRONTEND__) {
+          const { isAuthorizedState } = await import(
+            "../../../../react-app/src/utils"
+          );
+          return isAuthorizedState(value);
+        }
+        return z.OK;
+      },
+      {
+        message:
+          "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
+      },
+    )
+    .refine(
+      async (value) => {
+        if (__IS_FRONTEND__) {
+          const { itemExists } = await import("../../../../react-app/src/api");
+          return !(await itemExists(value));
+        }
+        return z.OK;
+      },
+      {
+        message:
+          "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
+      },
+    ),
+});
+
 export type FeSchema = z.infer<typeof feSchema>;
 
-export const schema = feSchema.extend({
+export const schema = baseSchema.extend({
   origin: z.literal("mako").default("mako"),
   submitterName: z.string(),
   submitterEmail: z.string().email(),
@@ -72,13 +104,13 @@ export const schema = feSchema.extend({
 });
 
 export const transform = async (event: APIGatewayEvent) => {
-  if (typeof __IS_FRONTEND__ === "undefined" || !__IS_FRONTEND__) {
+  if (!__IS_FRONTEND__) {
     // Import backend-specific libraries conditionally
     const { isAuthorized, getAuthDetails, lookupUserAttributes } = await import(
       "../../../libs/api/auth/user"
     );
     const { itemExists } = await import("libs/api/package");
-    const parsedResult = feSchema.safeParse(JSON.parse(event.body));
+    const parsedResult = await feSchema.safeParseAsync(JSON.parse(event.body));
     if (!parsedResult.success) {
       throw parsedResult.error;
     }
@@ -101,7 +133,7 @@ export const transform = async (event: APIGatewayEvent) => {
     const submitterEmail = userAttr.email;
     const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
 
-    const transformedData = schema.parse({
+    const transformedData = await schema.parseAsync({
       ...parsedResult.data,
       submitterName,
       submitterEmail,

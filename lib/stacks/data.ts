@@ -346,6 +346,9 @@ export class Data extends cdk.NestedStack {
         bundling: {
           minify: true,
           sourceMap: true,
+          define: {
+            __IS_FRONTEND__: "false",
+          },
         },
       });
 
@@ -433,6 +436,9 @@ export class Data extends cdk.NestedStack {
         bundling: {
           minify: true,
           sourceMap: true,
+          define: {
+            __IS_FRONTEND__: "false",
+          },
         },
       });
 
@@ -882,6 +888,9 @@ export class Data extends cdk.NestedStack {
         bundling: {
           minify: true,
           sourceMap: true,
+          define: {
+            __IS_FRONTEND__: "false",
+          },
         },
       },
     );
