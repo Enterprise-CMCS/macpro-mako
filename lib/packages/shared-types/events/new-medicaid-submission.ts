@@ -9,6 +9,7 @@ import {
   isAuthorized,
   lookupUserAttributes,
 } from "../../../libs/api/auth/user"; // this should move
+import { itemExists } from "libs/api/package";
 
 // These are fields we expect the frontend to provide in the api request's payload
 export const feSchema = z.object({
@@ -58,8 +59,13 @@ export const feSchema = z.object({
     }),
   }),
   authority: z.string().default("Medicaid SPA"),
-  id: z.string(),
   proposedEffectiveDate: z.number(),
+  id: z
+    .string()
+    .min(1, { message: "Required" })
+    .refine((id) => /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/.test(id), {
+      message: "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-XXXX",
+    }),
 });
 
 export type FeSchema = z.infer<typeof feSchema>;
@@ -80,6 +86,11 @@ export const transform = async (event: APIGatewayEvent) => {
   // This is the backend check for auth
   if (!(await isAuthorized(event, parsedResult.data.id.slice(0, 2)))) {
     throw "Unauthorized";
+  }
+
+  // This is the backend check for the item already existing
+  if (await itemExists({ id: parsedResult.data.id })) {
+    throw "Item Already Exists";
   }
 
   const authDetails = getAuthDetails(event);
