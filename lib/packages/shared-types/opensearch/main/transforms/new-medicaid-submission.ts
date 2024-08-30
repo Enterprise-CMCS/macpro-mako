@@ -15,9 +15,9 @@ export const transform = () => {
     console.log("Pretransform data blow");
     console.log(data);
     console.log("Pretransform data above");
+
     return {
       additionalInformation: data.additionalInformation,
-      attachments: data.attachments,
       authority: data.authority,
       changedDate: new Date(data.timestamp).toISOString(),
       cmsStatus,
