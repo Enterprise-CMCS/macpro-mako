@@ -5,6 +5,7 @@ import * as LC from "local-constructs";
 import { readFileSync } from "fs";
 import { join } from "path";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { commonBundlingOptions } from "../config/bundling-config";
 
 interface DataStackProps extends cdk.NestedStackProps {
   project: string;
@@ -343,13 +344,7 @@ export class Data extends cdk.NestedStack {
           region: cdk.Stack.of(this).region,
           osDomain: `https://${openSearchDomain.attrDomainEndpoint}`,
         },
-        bundling: {
-          minify: true,
-          sourceMap: true,
-          define: {
-            __IS_FRONTEND__: "false",
-          },
-        },
+        bundling: commonBundlingOptions,
       });
 
       const customResourceProvider = new cdk.custom_resources.Provider(
@@ -433,13 +428,7 @@ export class Data extends cdk.NestedStack {
         environment,
         logGroup,
         timeout,
-        bundling: {
-          minify: true,
-          sourceMap: true,
-          define: {
-            __IS_FRONTEND__: "false",
-          },
-        },
+        bundling: commonBundlingOptions,
       });
 
       if (provisionedConcurrency > 0) {
@@ -885,13 +874,7 @@ export class Data extends cdk.NestedStack {
           },
         }),
         logGroup: runReindexLogGroup,
-        bundling: {
-          minify: true,
-          sourceMap: true,
-          define: {
-            __IS_FRONTEND__: "false",
-          },
-        },
+        bundling: commonBundlingOptions,
       },
     );
 

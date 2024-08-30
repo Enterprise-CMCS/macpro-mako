@@ -18,6 +18,7 @@ import { Duration, RemovalPolicy } from "aws-cdk-lib";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { ISecurityGroup, ISubnet, IVpc } from "aws-cdk-lib/aws-ec2";
+import { commonBundlingOptions } from "./../../config/bundling-config";
 
 interface CleanupKafkaProps {
   vpc: IVpc;
@@ -77,13 +78,7 @@ export class CleanupKafka extends Construct {
         subnets: privateSubnets,
       },
       securityGroups,
-      bundling: {
-        minify: true,
-        sourceMap: true,
-        define: {
-          __IS_FRONTEND__: "false",
-        },
-      },
+      bundling: commonBundlingOptions,
     });
 
     const customResourceLogGroup = new LogGroup(

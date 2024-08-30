@@ -19,6 +19,7 @@ import {
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
+import { commonBundlingOptions } from "../../config/bundling-config";
 
 interface EmptyBucketsProps extends StackProps {
   buckets: IBucket[];
@@ -76,13 +77,7 @@ export class EmptyBuckets extends Construct {
       timeout: Duration.minutes(15),
       logGroup: lambdaLogGroup,
       role: lambdaRole,
-      bundling: {
-        minify: true,
-        sourceMap: true,
-        define: {
-          __IS_FRONTEND__: "false",
-        },
-      },
+      bundling: commonBundlingOptions,
     });
 
     buckets.forEach((bucket) => {

@@ -4,8 +4,9 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 
-import { DeploymentConfigProperties } from "./deployment-config";
+import { DeploymentConfigProperties } from "../config/deployment-config";
 import { ManageUsers } from "local-constructs";
+import { commonBundlingOptions } from "../config/bundling-config";
 
 interface AuthStackProps extends cdk.NestedStackProps {
   project: string;
@@ -307,13 +308,7 @@ export class Auth extends cdk.NestedStack {
         securityGroups: [lambdaSecurityGroup],
         vpcSubnets: { subnets: privateSubnets },
         logGroup: postAuthLambdaLogGroup,
-        bundling: {
-          minify: true,
-          sourceMap: true,
-          define: {
-            __IS_FRONTEND__: "false",
-          },
-        },
+        bundling: commonBundlingOptions,
       });
 
       userPool.addTrigger(

@@ -3,7 +3,7 @@ import {
   DeploymentConfig,
   InjectedConfigOptions,
   DeploymentConfigProperties,
-} from "./deployment-config";
+} from "../config/deployment-config";
 import * as sharedUtils from "shared-utils";
 
 // Mock the shared-utils module
