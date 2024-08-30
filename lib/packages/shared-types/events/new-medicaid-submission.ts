@@ -4,12 +4,6 @@ import {
   attachmentArraySchemaOptional,
 } from "../attachments";
 import { APIGatewayEvent } from "aws-lambda";
-import {
-  getAuthDetails,
-  isAuthorized,
-  lookupUserAttributes,
-} from "../../../libs/api/auth/user"; // this should move
-import { itemExists } from "libs/api/package";
 
 // These are fields we expect the frontend to provide in the api request's payload
 export const feSchema = z.object({
@@ -78,37 +72,45 @@ export const schema = feSchema.extend({
 });
 
 export const transform = async (event: APIGatewayEvent) => {
-  const parsedResult = feSchema.safeParse(JSON.parse(event.body));
-  if (!parsedResult.success) {
-    throw parsedResult.error;
+  if (typeof __IS_FRONTEND__ === "undefined" || !__IS_FRONTEND__) {
+    // Import backend-specific libraries conditionally
+    const { isAuthorized, getAuthDetails, lookupUserAttributes } = await import(
+      "../../../libs/api/auth/user"
+    );
+    const { itemExists } = await import("libs/api/package");
+    const parsedResult = feSchema.safeParse(JSON.parse(event.body));
+    if (!parsedResult.success) {
+      throw parsedResult.error;
+    }
+
+    // This is the backend check for auth
+    if (!(await isAuthorized(event, parsedResult.data.id.slice(0, 2)))) {
+      throw "Unauthorized";
+    }
+
+    // This is the backend check for the item already existing
+    if (await itemExists({ id: parsedResult.data.id })) {
+      throw "Item Already Exists";
+    }
+
+    const authDetails = getAuthDetails(event);
+    const userAttr = await lookupUserAttributes(
+      authDetails.userId,
+      authDetails.poolId,
+    );
+    const submitterEmail = userAttr.email;
+    const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
+
+    const transformedData = schema.parse({
+      ...parsedResult.data,
+      submitterName,
+      submitterEmail,
+      timestamp: Date.now(),
+    });
+
+    return transformedData;
   }
-
-  // This is the backend check for auth
-  if (!(await isAuthorized(event, parsedResult.data.id.slice(0, 2)))) {
-    throw "Unauthorized";
-  }
-
-  // This is the backend check for the item already existing
-  if (await itemExists({ id: parsedResult.data.id })) {
-    throw "Item Already Exists";
-  }
-
-  const authDetails = getAuthDetails(event);
-  const userAttr = await lookupUserAttributes(
-    authDetails.userId,
-    authDetails.poolId,
-  );
-  const submitterEmail = userAttr.email;
-  const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
-
-  const transformedData = schema.parse({
-    ...parsedResult.data,
-    submitterName,
-    submitterEmail,
-    timestamp: Date.now(),
-  });
-
-  return transformedData;
+  return {};
 };
 
 export type Schema = Awaited<ReturnType<typeof transform>>;

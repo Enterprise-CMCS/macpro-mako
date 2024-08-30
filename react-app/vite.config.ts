@@ -38,5 +38,8 @@ export default defineConfig(({ mode }) => {
     build: {
       minify: env.VITE_NODE_ENV === "production",
     },
+    define: {
+      __IS_FRONTEND__: true,
+    },
   };
 });
