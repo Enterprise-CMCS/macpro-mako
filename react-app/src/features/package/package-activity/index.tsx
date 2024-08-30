@@ -11,9 +11,6 @@ import {
 import * as Table from "@/components";
 import { BLANK_VALUE } from "@/consts";
 import { usePackageActivities, useAttachmentService } from "./hook";
-// im unsure if legacy uses this map
-// import { attachmentTitleMap } from "shared-types";
-// import { Link } from "react-router-dom";
 
 const AttachmentDetails: FC<{
   id: string;
