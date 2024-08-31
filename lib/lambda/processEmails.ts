@@ -9,7 +9,7 @@ const sesClient = new SESClient({ region: process.env.REGION });
 export const handler: Handler<KafkaEvent> = async (event) => {
   try {
     // Validate environment variables
-    const emailAddressLookupSecretName =
+    const emailAddressLookupSecretName = // pragma: allowlist secret
       process.env.emailAddressLookupSecretName;
     const applicationEndpointUrl = process.env.applicationEndpointUrl;
 
