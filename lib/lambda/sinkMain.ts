@@ -10,7 +10,6 @@ import {
 } from "../libs/sink-lib";
 import { Index } from "shared-types/opensearch";
 import { decodeBase64WithUtf8 } from "shared-utils";
-import { compareAsc } from "date-fns";
 
 const osDomain = process.env.osDomain;
 if (!osDomain) {
@@ -55,6 +54,15 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   });
 
   const openSearchRecords = await os.getItems(osDomain, index, ids);
+  console.log(openSearchRecords);
+  const existingRecordsLookup = openSearchRecords.reduce(
+    (acc: any, item: any) => {
+      const epochDate = new Date(item.changedDate).getTime(); // Convert `changedDate` to epoch number
+      acc[item.id] = epochDate; // Use `id` as the key and epoch date as the value
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
   for (const kafkaRecord of kafkaRecords) {
     const { key, value } = kafkaRecord;
@@ -83,17 +91,12 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       }
       console.log("--------------------");
       console.log(`id: ${result.data.id}`);
-      console.log(
-        `mako: ` + openSearchRecords[result.data.id]?.makoChangedDate,
-      );
-      console.log(
-        `seatool: ` + openSearchRecords[result.data.id]?.makoChangedDate,
-      );
+      console.log(`mako: ` + existingRecordsLookup[result.data.id]);
+      console.log(`seatool: ` + result.data.changed_date);
       if (
-        !openSearchRecords[result.data.id]?.makoChangedDate ||
+        !existingRecordsLookup[result.data.id] ||
         (result.data.changed_date &&
-          result.data.changed_date >=
-            openSearchRecords[result.data.id].makoChangedDate)
+          result.data.changed_date >= existingRecordsLookup[result.data.id])
       ) {
         console.log("result: index");
         // see if there is a change date from seatool
