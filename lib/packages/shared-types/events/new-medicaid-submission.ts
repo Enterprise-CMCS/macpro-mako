@@ -5,7 +5,6 @@ import {
 } from "../attachments";
 import { APIGatewayEvent } from "aws-lambda";
 
-// These are fields we expect the frontend to provide in the api request's payload
 const baseSchema = z.object({
   event: z
     .literal("new-medicaid-submission")
