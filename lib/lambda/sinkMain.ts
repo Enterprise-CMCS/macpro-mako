@@ -46,28 +46,15 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
 const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   const docs: any[] = [];
+
   // fetch the date for all kafkaRecords in the list from opensearch
   const ids = kafkaRecords.map((record) => {
-    const decodedId = decodeBase64WithUtf8(record.key);
+    const decodedId = JSON.parse(decodeBase64WithUtf8(record.key));
 
     return decodedId;
   });
 
-  const openSearchRecords = (await os.getItems(osDomain, index, ids)) as any;
-  try {
-    const test = await os.getItem(osDomain, index, ids.at(0)!);
-    console.log("Does getting the first item work: ", JSON.stringify(test));
-  } catch (err: unknown) {
-    console.log("failed to fetch first item", err);
-  }
-  const filteredRecords = openSearchRecords.body.docs.filter(
-    (doc: any) => doc.found,
-  );
-  console.log("The ids for opensearch query are: ", JSON.stringify(ids));
-  console.log(
-    "The opensearch records are the following: ",
-    JSON.stringify(filteredRecords),
-  );
+  const openSearchRecords = await os.getItems(osDomain, index, ids);
 
   for (const kafkaRecord of kafkaRecords) {
     const { key, value } = kafkaRecord;
@@ -94,15 +81,30 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         });
         continue;
       }
-
-      if (result.data.changed_date) {
-        console.log("I am here", result.data.id, result.data.changed_date);
+      console.log("--------------------");
+      console.log(`id: ${result.data.id}`);
+      console.log(
+        `mako: ` + openSearchRecords[result.data.id]?.makoChangedDate,
+      );
+      console.log(
+        `seatool: ` + openSearchRecords[result.data.id]?.makoChangedDate,
+      );
+      if (
+        !openSearchRecords[result.data.id]?.makoChangedDate ||
+        (result.data.changed_date &&
+          result.data.changed_date >=
+            openSearchRecords[result.data.id].makoChangedDate)
+      ) {
+        console.log("result: index");
         // see if there is a change date from seatool
         // get the record with the id of this from open search
         // check the latest activity timestamp
         // if the change date is less than mako activity timestamp continue
         // see if the changed_date
+      } else {
+        console.log(`result: SKIP`);
       }
+      console.log("--------------------");
 
       if (
         result.data.authorityId &&

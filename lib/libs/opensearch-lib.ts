@@ -217,12 +217,24 @@ export async function getItems(
   try {
     client = client || (await getClient(host));
 
-    return await client.mget({
+    const response = await client.mget({
       index,
       body: {
         ids,
       },
     });
+
+    // Corrected map function to properly decode _source field if found
+    return response.body.docs
+      .map((doc: any) => {
+        if (doc.found) {
+          return decodeUtf8(doc._source); // Properly decode the _source field
+        } else {
+          console.error(`Document with ID ${doc._id} not found.`);
+          return null; // Handle 'not found' documents as needed
+        }
+      })
+      .filter((doc: any) => doc !== null); // Filter out any null entries
   } catch (e) {
     console.log({ e });
     return [];
