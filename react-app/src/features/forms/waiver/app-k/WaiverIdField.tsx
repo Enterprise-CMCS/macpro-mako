@@ -92,8 +92,7 @@ export const SlotWaiverId = <
           <div className="relative flex gap-2 items-center">
             <p className="text-sm font-semibold">{state} -</p>
             <Input
-              className={cn({
-                "w-[250px]": true,
+              className={cn("w-[250px]", {
                 "border-red-500": !!fieldState.error?.message,
                 "border-green-500": !!debounced && !fieldState.error?.message,
               })}
@@ -116,10 +115,9 @@ export const SlotWaiverId = <
               </motion.div>
             )}
           </div>
-          {onRemove && (
+          {onRemove ? (
             <XIcon size={20} onClick={onRemove} className={"cursor-pointer"} />
-          )}
-          {!onRemove && (
+          ) : (
             <div className="ml-1">
               <RequiredIndicator />
             </div>
