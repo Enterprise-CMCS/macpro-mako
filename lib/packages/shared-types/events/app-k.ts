@@ -6,7 +6,7 @@ import {
 
 export const appkSchema = z.object({
   state: z.string(),
-  waiverIds: z.array(z.number()).min(1),
+  waiverIds: z.array(z.string()).min(1),
   proposedEffectiveDate: z.date(),
   seaActionType: z.string().default("Amend"),
   title: z.string().trim().min(1, { message: "Required" }),

@@ -30,29 +30,31 @@ export const SlotWaiverId = <
 >({
   state,
   onRemove,
-  ...props
 }: {
   state: string;
   onRemove?: () => void;
   className?: string;
 }): ControllerProps<TFieldValues, TName>["render"] =>
   function Render({ field, fieldState }) {
-    const debounced = useDebounce(field.value, 750);
+    const debouncedValue = useDebounce(field.value, 750);
     const [loading, setLoading] = useState<boolean>(false);
     const context = useFormContext();
 
     const onValidate = useCallback(
       async (value: string) => {
-        const preExitConditions = !state || !value;
-        // if (preExitConditions) return context.clearErrors(field.name);
-        if (preExitConditions) return;
+        if (value.length === 0) {
+          return;
+        }
 
         setLoading(true);
 
-        const [, index] = field.name.split(".");
+        const [, currentWaiverIndex] = field.name.split(".");
         const childWaivers = context.getValues("waiverIds") || [];
+
         const existsInList = childWaivers
-          .filter((_: any, I: number) => I != Number(index))
+          .filter(
+            (_: string, index: number) => index !== Number(currentWaiverIndex),
+          )
           .includes(value);
 
         if (existsInList) {
@@ -63,7 +65,7 @@ export const SlotWaiverId = <
 
         const parsed = await zAppkWaiverNumberSchema.safeParseAsync(value);
 
-        if (!parsed.success) {
+        if (parsed.success === false) {
           const [err] = parsed.error.errors;
           return context.setError(field.name, err);
         }
@@ -79,22 +81,23 @@ export const SlotWaiverId = <
 
         context.clearErrors(field.name);
       },
-      [context, field.name],
+      [field.name, context],
     );
 
     useEffect(() => {
-      onValidate(debounced).then(() => setLoading(false));
-    }, [debounced, onValidate]);
+      onValidate(debouncedValue).then(() => setLoading(false));
+    }, [debouncedValue]);
 
     return (
-      <FormItem {...props}>
+      <FormItem>
         <div className="relative flex gap-1 items-center">
           <div className="relative flex gap-2 items-center">
             <p className="text-sm font-semibold">{state} -</p>
             <Input
               className={cn("w-[250px]", {
-                "border-red-500": !!fieldState.error?.message,
-                "border-green-500": !!debounced && !fieldState.error?.message,
+                "border-red-500": fieldState.error?.message !== undefined,
+                "border-green-500":
+                  debouncedValue && fieldState.error?.message === undefined,
               })}
               placeholder="#####.R##.##"
               autoFocus
@@ -116,7 +119,7 @@ export const SlotWaiverId = <
             )}
           </div>
           {onRemove ? (
-            <XIcon size={20} onClick={onRemove} className={"cursor-pointer"} />
+            <XIcon className="cursor-pointer" size={20} onClick={onRemove} />
           ) : (
             <div className="ml-1">
               <RequiredIndicator />
