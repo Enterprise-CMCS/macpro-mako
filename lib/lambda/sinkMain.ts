@@ -94,19 +94,14 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       console.log(`mako: ` + existingRecordsLookup[result.data.id]);
       console.log(`seatool: ` + result.data.changed_date);
       if (
-        !existingRecordsLookup[result.data.id] ||
-        (result.data.changed_date &&
-          result.data.changed_date >= existingRecordsLookup[result.data.id])
+        existingRecordsLookup[result.data.id] && // Check if defined
+        (!result.data.changed_date || // Check if not defined or...
+          result.data.changed_date < existingRecordsLookup[result.data.id]) // ...less than existingRecordsLookup[result.data.id]
       ) {
-        console.log("result: index");
-        // see if there is a change date from seatool
-        // get the record with the id of this from open search
-        // check the latest activity timestamp
-        // if the change date is less than mako activity timestamp continue
-        // see if the changed_date
-      } else {
-        console.log(`result: SKIP`);
+        console.log(`SKIP`);
+        continue;
       }
+      console.log(`INDEX`);
       console.log("--------------------");
 
       if (
