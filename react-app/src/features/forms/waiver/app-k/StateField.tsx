@@ -1,7 +1,17 @@
-import { z } from "zod";
-import { zAttachmentOptional, zAttachmentRequired } from "@/utils";
-import { zAppkWaiverNumberSchema } from "@/utils";
-export const OPTIONS_STATE = [
+import { useGetUser } from "@/api";
+import {
+  FormItem,
+  FormLabel,
+  FormMessage,
+  RequiredIndicator,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components";
+
+const OPTIONS_STATE = [
   { label: "Alabama", value: "AL" },
   { label: "Alaska", value: "AK" },
   { label: "American Samoa", value: "AS" },
@@ -58,20 +68,40 @@ export const OPTIONS_STATE = [
   { label: "West Virginia", value: "WV" },
   { label: "Wisconsin", value: "WI" },
   { label: "Wyoming", value: "WY" },
-  { label: "ZZ Test Data", value: "ZZ" },
 ];
 
-export const FORM = z.object({
-  state: z.string(),
-  waiverIds: z.array(zAppkWaiverNumberSchema).min(1),
-  additionalInformation: z.string().max(4000).optional(),
-  title: z.string().trim().min(1, { message: "Required" }),
-  attachments: z.object({
-    appk: zAttachmentRequired({ min: 1 }),
-    other: zAttachmentOptional,
-  }),
-  proposedEffectiveDate: z.date(),
-  seaActionType: z.string().default("Amend"),
-});
+type StateFieldProps = {
+  value: string;
+  onChange: (newValue: string) => void;
+};
 
-export type SchemaForm = z.infer<typeof FORM>;
+export const StateField = ({ value, onChange }: StateFieldProps) => {
+  const { data: user } = useGetUser();
+
+  if (user === undefined) {
+    return null;
+  }
+
+  const stateAccess = user.user["custom:state"].split(",");
+
+  return (
+    <FormItem className="w-[280px]">
+      <FormLabel className="font-bold">
+        State <RequiredIndicator />
+      </FormLabel>
+      <Select onValueChange={onChange} value={value}>
+        <SelectTrigger>
+          <SelectValue placeholder="Select State" />
+        </SelectTrigger>
+        <SelectContent className="overflow-auto max-h-60">
+          {stateAccess.map((state) => (
+            <SelectItem key={state} value={state}>
+              {OPTIONS_STATE.find((option) => option.value === state)?.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <FormMessage />
+    </FormItem>
+  );
+};

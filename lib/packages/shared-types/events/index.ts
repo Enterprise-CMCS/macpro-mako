@@ -7,6 +7,7 @@ export * as newMedicaidSubmission from "./new-medicaid-submission"; // this shou
 export * as newChipSubmission from "./new-chip-submission";
 export * as capitatedWaivers from "./capitated-waivers";
 export * as contractingWaivers from "./contracting-waivers";
+export * from "./app-k";
 export * from "./legacy-event";
 export * from "./legacy-package-view";
 export * from "./legacy-admin-change";
