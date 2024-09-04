@@ -90,7 +90,7 @@ export const valReducer = (
           return rule.message;
         },
       };
-    case "noGapsOrOverlapsInSelectOptions":
+    case "noGapsOrOrverlaps":
       return {
         ...valSet,
         [valName]: (_, fields) => {
@@ -107,36 +107,27 @@ export const valReducer = (
             to: parseInt(item[toField], 10),
           }));
 
+          // Check if from is less than to for each field array
+          for (const item of range) {
+            if (item.from >= item.to) {
+              return "From Age must be less than the To Age";
+            }
+          }
+
+          // Sort ranges by from value
           range.sort((a, b) => a.from - b.from);
-          const sortedOptions = sortOptionsLowestToHighest(rule.options);
 
-          const minValue = parseInt(sortedOptions[0]?.value, 10);
-          const maxValue = parseInt(
-            sortedOptions[sortedOptions.length - 1]?.value,
-            10,
-          );
-
-          // Check for gaps and overlaps
-          for (let i = 0; i < range.length; i++) {
-            if (i === 0 && range[i].from !== minValue) {
-              return rule.message; // Gap at the beginning
+          // Check for overlaps and gaps
+          for (let i = 1; i < range.length; i++) {
+            if (range[i].from <= range[i - 1].to) {
+              return "No age overlaps allowed";
             }
-            if (i > 0) {
-              if (range[i].from > range[i - 1].to + 1) {
-                return rule.message; // Gap between ranges
-              }
-              if (range[i].from <= range[i - 1].to) {
-                return rule.message; // Overlaping age ranges
-              }
+            if (range[i].from > range[i - 1].to + 1) {
+              return "No gaps between ages allowed";
             }
           }
 
-          // Check if the last range ends at the maximum value
-          if (range[range.length - 1].to !== maxValue) {
-            return rule.message; // Gap at the end
-          }
-
-          return true; // No gaps or overlaps found
+          return true; // No issues found
         },
       };
     default:

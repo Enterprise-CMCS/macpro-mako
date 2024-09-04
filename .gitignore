@@ -10,6 +10,7 @@ cdk.context.json
 .yarn_install
 build_run
 .build_run
+DS_Store
 
 # legacy ignores
 .serverless

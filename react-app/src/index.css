@@ -125,6 +125,10 @@
   margin: auto;
 }
 
+.age-and-house-inc-range {
+  width: max-content !important;
+}
+
 .usa-footer__secondary-section div:first-child {
   max-width: 80rem;
   margin: auto;
