@@ -7,24 +7,12 @@ import config from "@/config";
 import { LockIcon } from "../LockIcon";
 import { GovernmentBuildingIcon } from "../GovernmentBuildingIcon";
 import UsFlag from "@/assets/us_flag_small.png";
-import { getUserStateCodes } from "@/utils";
-import { usePopulationData } from "@/api";
-import { FULL_STATES } from "shared-types";
+
 export const UsaBanner = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 640px)");
   const userContext = useUserContext();
-  const stateCodes = getUserStateCodes(userContext?.user);
-  console.log(stateCodes);
-  const stateNumericCodesString = stateCodes
-    .map((code) => {
-      return FULL_STATES.find((state) => state.value === code)?.code;
-    })
-    .filter((code) => code !== "00")
-    ?.join();
-  console.log(stateNumericCodesString);
-  const { data, isLoading } = usePopulationData(stateNumericCodesString);
-  console.log(data);
+
   const role = useMemo(() => {
     return userContext?.user?.["custom:cms-roles"] ? false : true;
   }, []);

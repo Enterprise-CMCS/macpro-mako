@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { FULL_STATES } from "shared-types";
 
 const fetchPopulationData = async (stateStrings: string) => {
   const response = await fetch(
