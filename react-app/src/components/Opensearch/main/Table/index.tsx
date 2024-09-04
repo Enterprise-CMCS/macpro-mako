@@ -18,7 +18,7 @@ export const OsTable: FC<{
     <UI.Table className="overflow-scroll w-full">
       <UI.TableHeader className="sticky top-0 bg-white">
         <UI.TableRow>
-          <UI.TableHead
+          {/* <UI.TableHead
             className="w-[10px]"
             icon={
               <VisibilityPopover
@@ -26,7 +26,7 @@ export const OsTable: FC<{
                 onItemClick={props.onToggle}
               />
             }
-          />
+          /> */}
           {props.columns.map((TH) => {
             if (TH.hidden) return null;
             return (
@@ -79,7 +79,7 @@ export const OsTable: FC<{
         )}
         {context.data?.hits.map((DAT) => (
           <UI.TableRow className="max-h-1" key={DAT._source.id}>
-            <UI.TableCell className="fixed" />
+            {/* <UI.TableCell className="fixed" /> */}
             {props.columns.map((COL) => {
               if (COL.hidden) return null;
               return (

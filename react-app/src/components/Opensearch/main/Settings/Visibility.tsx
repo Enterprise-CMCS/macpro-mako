@@ -10,12 +10,18 @@ type Props<T extends UI.OsTableColumn> = {
 };
 
 export const VisibilityPopover = <T extends UI.OsTableColumn>(
-  props: Props<T>
+  props: Props<T>,
 ) => {
   return (
     <UI.Popover>
       <UI.PopoverTrigger>
-        <EyeIcon className="w-6 h-6" />
+        {/* <EyeIcon className="w-6 h-6" /> */}
+        <UI.Button
+          variant="outline"
+          className="w-full xs:w-fit hover:bg-transparent self-center h-10 flex gap-2"
+        >
+          Columns
+        </UI.Button>
         <p className="sr-only">Visibility Popover Icon</p>
       </UI.PopoverTrigger>
       <UI.PopoverContent className="bg-white">
@@ -28,7 +34,7 @@ export const VisibilityPopover = <T extends UI.OsTableColumn>(
 };
 
 export const VisiblityItem = <T extends UI.OsTableColumn>(
-  props: T & { onClick: () => void }
+  props: T & { onClick: () => void },
 ) => {
   const eyeStyles = cn("flex flex-row gap-2 cursor-pointer", {
     "text-gray-800": !props.hidden,
