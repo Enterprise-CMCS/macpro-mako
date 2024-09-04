@@ -572,7 +572,7 @@ export const v202402: FormSchema = {
                                                     label:
                                                       "Is there an additional incremental amount?",
                                                     labelClassName:
-                                                      "font-bold mt-3",
+                                                      "font-bold",
                                                     horizontalLayout: true,
 
                                                     props: {
@@ -733,7 +733,7 @@ export const v202402: FormSchema = {
                                                         label:
                                                           "Is there an additional incremental amount?",
                                                         labelClassName:
-                                                          "font-bold mt-3",
+                                                          "font-bold",
                                                         horizontalLayout: true,
 
                                                         props: {
@@ -905,7 +905,7 @@ export const v202402: FormSchema = {
                                                         label:
                                                           "Is there an additional incremental amount?",
                                                         labelClassName:
-                                                          "font-bold mt-3",
+                                                          "font-bold",
                                                         horizontalLayout: true,
 
                                                         props: {
@@ -1077,7 +1077,7 @@ export const v202402: FormSchema = {
                                                         label:
                                                           "Is there an additional incremental amount?",
                                                         labelClassName:
-                                                          "font-bold mt-3",
+                                                          "font-bold",
                                                         horizontalLayout: true,
 
                                                         props: {
