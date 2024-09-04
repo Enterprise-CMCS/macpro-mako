@@ -156,7 +156,7 @@ export const ActionForm = <
                 render={SlotAdditionalInfo({
                   withoutHeading: true,
                   label: (
-                    <p>Add anything else you would like to share with CMS</p>
+                    <p>Add anything else you would like to share with CMS.</p>
                   ),
                 })}
               />
