@@ -7,11 +7,24 @@ import config from "@/config";
 import { LockIcon } from "../LockIcon";
 import { GovernmentBuildingIcon } from "../GovernmentBuildingIcon";
 import UsFlag from "@/assets/us_flag_small.png";
-
+import { getUserStateCodes } from "@/utils";
+import { usePopulationData } from "@/api";
+import { FULL_STATES } from "shared-types";
 export const UsaBanner = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 640px)");
   const userContext = useUserContext();
+  const stateCodes = getUserStateCodes(userContext?.user);
+  console.log(stateCodes);
+  const stateNumericCodesString = stateCodes
+    .map((code) => {
+      return FULL_STATES.find((state) => state.value === code)?.code;
+    })
+    .filter((code) => code !== "00")
+    ?.join();
+  console.log(stateNumericCodesString);
+  const { data, isLoading } = usePopulationData(stateNumericCodesString);
+  console.log(data);
   const role = useMemo(() => {
     return userContext?.user?.["custom:cms-roles"] ? false : true;
   }, []);
@@ -26,77 +39,72 @@ export const UsaBanner = () => {
   const { error } = useLoaderData() as { error: string };
   return (
     <div className="bg-[#f0f0f0]" role="banner">
-        {/* Display for Desktop */}
-        {isDesktop && (
-          <div className="max-w-screen-xl px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center">
-              <img
-                className="w-4 h-[11px]"
-                src={UsFlag}
-                alt="A United States Flag icon"
-              />
-              <p>An official website of the United States government</p>
-              <button
-                className="flex"
-                onClick={() => setIsOpen((value) => !value)}
-              >
-                <span className="underline text-[#005ea2]">
-                  Here&apos;s how you know
-                </span>
-                {!isOpen && <ChevronDown className="w-4 h-4 text-[#005ea2]" />}
-                {isOpen && <ChevronUp className="w-4 h-4 text-[#005ea2]" />}
-              </button>
-            </div>
-        )}
-        {/* Display for Mobile */}
-        {!isDesktop && (
-          <button
-            className="w-full flex items-center text-[0.8rem] px-4 py-1 leading-4 gap-2"
-            onClick={() => setIsOpen((value) => !value)}
-          >
-            <img
-              className="w-4 h-[11px]"
-              src={UsFlag}
-              alt="A United States Flag icon"
-            />
-            <div>
-              <p>An official website of the United States government</p>
-              <div className="flex">
-                <span className="underline text-[#005ea2] block">
-                  Here&apos;s how you know
-                </span>
-                {!isOpen && <ChevronDown className="w-4 h-4 text-[#005ea2]" />}
-                {isOpen && <ChevronUp className="w-4 h-4 text-[#005ea2]" />}
-              </div>
-            </div>
+      {/* Display for Desktop */}
+      {isDesktop && (
+        <div className="max-w-screen-xl px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center">
+          <img
+            className="w-4 h-[11px]"
+            src={UsFlag}
+            alt="A United States Flag icon"
+          />
+          <p>An official website of the United States government</p>
+          <button className="flex" onClick={() => setIsOpen((value) => !value)}>
+            <span className="underline text-[#005ea2]">
+              Here&apos;s how you know
+            </span>
+            {!isOpen && <ChevronDown className="w-4 h-4 text-[#005ea2]" />}
+            {isOpen && <ChevronUp className="w-4 h-4 text-[#005ea2]" />}
           </button>
-        )}
-        {hasRole && <NoRole />}
-        {error?.length > 0 && <NoRole />}
-
-        {isOpen && (
-          <div className="flex flex-col gap-3 px-3 mt-3 sm:flex-row max-w-screen-lg mx-auto pb-4">
-            <div className="flex gap-2">
-              <GovernmentBuildingIcon className="min-w-[40px] min-h-[40px] w-10" />
-              <p className="text-sm max-w-md">
-                <strong className="block">Official websites use .gov</strong>A
-                <strong>.gov</strong> website belongs to an official government
-                organization in the United States.
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <LockIcon className="min-w-[40px] min-h-[40px] w-10" />
-              <p className="text-sm max-w-md">
-                <strong className="block">
-                  Secure .gov websites use HTTPS
-                </strong>
-                A lock (<MiniLock />) or <strong>https://</strong> means
-                you&apos;ve safely connected to the .gov website. Share
-                sensitive information only on official, secure websites.
-              </p>
+        </div>
+      )}
+      {/* Display for Mobile */}
+      {!isDesktop && (
+        <button
+          className="w-full flex items-center text-[0.8rem] px-4 py-1 leading-4 gap-2"
+          onClick={() => setIsOpen((value) => !value)}
+        >
+          <img
+            className="w-4 h-[11px]"
+            src={UsFlag}
+            alt="A United States Flag icon"
+          />
+          <div>
+            <p>An official website of the United States government</p>
+            <div className="flex">
+              <span className="underline text-[#005ea2] block">
+                Here&apos;s how you know
+              </span>
+              {!isOpen && <ChevronDown className="w-4 h-4 text-[#005ea2]" />}
+              {isOpen && <ChevronUp className="w-4 h-4 text-[#005ea2]" />}
             </div>
           </div>
-        )}
-      </div>
+        </button>
+      )}
+      {hasRole && <NoRole />}
+      {error?.length > 0 && <NoRole />}
+
+      {isOpen && (
+        <div className="flex flex-col gap-3 px-3 mt-3 sm:flex-row max-w-screen-lg mx-auto pb-4">
+          <div className="flex gap-2">
+            <GovernmentBuildingIcon className="min-w-[40px] min-h-[40px] w-10" />
+            <p className="text-sm max-w-md">
+              <strong className="block">Official websites use .gov</strong>A
+              <strong>.gov</strong> website belongs to an official government
+              organization in the United States.
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <LockIcon className="min-w-[40px] min-h-[40px] w-10" />
+            <p className="text-sm max-w-md">
+              <strong className="block">Secure .gov websites use HTTPS</strong>
+              A lock (<MiniLock />) or <strong>https://</strong> means
+              you&apos;ve safely connected to the .gov website. Share sensitive
+              information only on official, secure websites.
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
