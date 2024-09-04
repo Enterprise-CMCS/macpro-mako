@@ -1,11 +1,17 @@
-import { DateTime } from "luxon";
-import { Authority, EmailAddresses, OneMac } from "shared-types";
+import * as React from "react";
+import { Authority, OneMac } from "shared-types";
+import { CommonVariables } from "../..";
 import {
-  CommonVariables,
-  formatAttachments,
-  formatDate,
-  formatNinetyDaysDate,
-} from "../..";
+  MedSpaCMSEmail,
+  MedSpaStateEmail,
+  ChipSpaCMSEmail,
+  ChipSpaStateEmail,
+  Waiver1915bCMSEmail,
+  Waiver1915bStateEmail,
+  AppKCMSEmail,
+  AppKStateEmail,
+} from "./emailTemplate";
+import { render } from "@react-email/components";
 
 export const newSubmission = {
   [Authority.MED_SPA]: {
@@ -18,69 +24,12 @@ export const newSubmission = {
       return {
         to: variables.emails.osgEmail,
         subject: `Medicaid SPA ${variables.id} Submitted`,
-        html: `
-          <p>The OneMAC Submission Portal received a Medicaid SPA Submission:</p>
-          <ul>
-            <li>The submission can be accessed in the OneMAC application, which you 
-            can find at <a href='${variables.applicationEndpointUrl}'>this link</a>.</li>
-            <li>If you are not already logged in, please click the "Login" link 
-            at the top of the page and log in using your Enterprise User 
-            Administration (EUA) credentials.</li>
-            <li>After you have logged in, you will be taken to the OneMAC application. 
-            The submission will be listed on the dashboard page, and you can view its 
-            details by clicking on its ID number.</li>
-          </ul>
-          <p>
-            <br><b>State or territory:</b> ${variables.territory}
-            <br><b>Name:</b> ${variables.submitterName}
-            <br><b>Email:</b> ${variables.submitterEmail}
-            <br><b>Medicaid SPA ID: ${variables.id}</b>
-            <br><b>Proposed Effective Date:</b> ${formatDate(
-              variables.notificationMetadata?.proposedEffectiveDate,
-            )}
-          </p>
-          <b>Summary:</b>
-          <br>${variables.additionalInformation || "No additional information submitted"}
-          <br>
-          <br><b>Files:</b>
-          <br>${formatAttachments("html", variables.attachments)}
-          <br>
-
-          <p>Thank you!</p>
-        `,
-        text: `
-          The OneMAC Submission Portal received a Medicaid SPA Submission:
-
-          The submission can be accessed in the OneMAC application, which you can 
-          find at ${variables.applicationEndpointUrl}.
-
-          If you are not already logged in, please click the "Login" link at the top 
-          of the page and log in using your Enterprise User Administration (EUA) 
-          credentials.
-
-          After you have logged in, you will be taken to the OneMAC application. 
-          The submission will be listed on the dashboard page, and you can view its 
-          details by clicking on its ID number.
-
-          State or territory: ${variables.territory}
-          Name: ${variables.submitterName}
-          Email: ${variables.submitterEmail}
-          Medicaid SPA ID: ${variables.id}
-          Proposed Effective Date: ${formatDate(
-            variables.notificationMetadata?.proposedEffectiveDate,
-          )}
-
-          Summary:
-          ${variables.additionalInformation || "No additional information submitted"}
-
-          Files:
-          ${formatAttachments("text", variables.attachments)}
-
-          If the contents of this email seem suspicious, do not open them, and instead 
-          forward this email to SPAM@cms.hhs.gov.
-
-          Thank you!
-        `,
+        html: render(<MedSpaCMSEmail variables={variables} />, {
+          pretty: true,
+        }),
+        text: render(<MedSpaCMSEmail variables={variables} />, {
+          plainText: true,
+        }),
       };
     },
     state: async (
@@ -89,67 +38,12 @@ export const newSubmission = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your SPA ${variables.id} has been submitted to CMS`,
-        html: `
-          <p>This response confirms that you submitted a Medicaid SPA to CMS for review:</p>
-          <p>
-            <br><b>State or territory:</b> ${variables.territory}
-            <br><b>Name:</b> ${variables.submitterName}
-            <br><b>Email Address:</b> ${variables.submitterEmail}
-            <br><b>Medicaid SPA ID: ${variables.id}</b>
-            <br><b>Proposed Effective Date:</b> ${formatDate(
-              variables.notificationMetadata?.proposedEffectiveDate,
-            )}
-            <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(
-              variables.notificationMetadata?.submissionDate,
-            )}
-          </p>
-          <b>Summary:</b>
-          <br>${variables.additionalInformation || "No additional information submitted"}
-          <br>
-          <p>This response confirms the receipt of your Medicaid State Plan Amendment 
-          (SPA or your response to a SPA Request for Additional Information (RAI)). 
-          You can expect a formal response to your submittal to be issued within 90 days, 
-          before ${formatNinetyDaysDate(
-            variables.notificationMetadata?.submissionDate,
-          )}.</p>
-          <p>This mailbox is for the submittal of State Plan Amendments and non-web-based
-          responses to Requests for Additional Information (RAI) on submitted SPAs only.
-          Any other correspondence will be disregarded.</p>
-          <p>If you have questions or did not expect this email, please contact 
-          <a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a>.</p>
-          <p>Thank you!</p>
-        `,
-        text: `
-          This response confirms that you submitted a Medicaid SPA to CMS for review:
-
-          State or territory: ${variables.territory}
-          Name: ${variables.submitterName}
-          Email Address: ${variables.submitterEmail}
-          Medicaid SPA ID: ${variables.id}
-          Proposed Effective Date:  ${formatDate(
-            variables.notificationMetadata?.proposedEffectiveDate,
-          )}
-          90th Day Deadline: ${formatNinetyDaysDate(
-            variables.notificationMetadata?.submissionDate,
-          )}
-
-          Summary:
-          ${variables.additionalInformation || "No additional information submitted"}
-
-          This response confirms the receipt of your Medicaid State Plan Amendment 
-          (SPA or your response to a SPA Request for Additional Information (RAI)). 
-          You can expect a formal response to your submittal to be issued within 90 days, 
-          before ${formatNinetyDaysDate(variables.notificationMetadata?.submissionDate)}.
-
-          This mailbox is for the submittal of State Plan Amendments and non-web-based
-          responses to Requests for Additional Information (RAI) on submitted SPAs only.
-          Any other correspondence will be disregarded.
-
-          If you have questions or did not expect this email, please contact 
-          spa@cms.hhs.gov.
-
-          Thank you!
-        `,
+        html: render(<MedSpaStateEmail variables={variables} />, {
+          pretty: true,
+        }),
+        text: render(<MedSpaStateEmail variables={variables} />, {
+          plainText: true,
+        }),
       };
     },
   },
@@ -161,64 +55,12 @@ export const newSubmission = {
         to: variables.emails.chipInbox,
         cc: variables.emails.chipCcList,
         subject: `New CHIP SPA ${variables.id} Submitted`,
-        html: `
-          <p>The OneMAC Submission Portal received a CHIP State Plan Amendment:</p>
-          <ul>
-            <li>The submission can be accessed in the OneMAC Micro application, which 
-            you can find at <a href='${variables.applicationEndpointUrl}'>
-            ${variables.applicationEndpointUrl}</a>.</li>
-            <li>If you are not already logged in, please click the "Login" link at the 
-            top of the page and log in using your Enterprise User Administration (EUA) 
-            credentials.</li>
-            <li>After you have logged in, you will be taken to the OneMAC Micro 
-            application. The submission will be listed on the dashboard page, and you 
-            can view its details by clicking on its ID number.</li>
-          </ul>
-          <p>
-            <br><b>State or territory:</b> ${variables.territory}
-            <br><b>Name:</b> ${variables.submitterName}
-            <br><b>Email:</b> ${variables.submitterEmail}
-            <br><b>CHIP SPA Package ID:</b> ${variables.id}
-          </p><br/>
-          Summary:
-          <br>${variables.additionalInformation || "No additional information submitted"}
-          <br>
-          <p>
-            <br>Files:
-            <br>${formatAttachments("html", variables.attachments)}
-            <br>
-          </p>
-
-          <p>Thank you!</p>
-        `,
-        text: `
-          The OneMAC Submission Portal received a CHIP State Plan Amendment:
-
-          - The submission can be accessed in the OneMAC Micro application, which you can 
-            find at ${variables.applicationEndpointUrl}.
-          - If you are not already logged in, please click the "Login" link at the 
-            top of the page and log in using your Enterprise User Administration (EUA) 
-            credentials.
-          - After you have logged in, you will be taken to the OneMAC Micro 
-            application. The submission will be listed on the dashboard page, and you 
-            can view its details by clicking on its ID number.
-
-          State or territory: ${variables.territory}
-          Name: ${variables.submitterName}
-          Email: ${variables.submitterEmail}
-          CHIP SPA Package ID: ${variables.id}
-
-          Summary:
-          ${variables.additionalInformation || "No additional information submitted"}
-
-          Files:
-          ${formatAttachments("html", variables.attachments)}
-
-          If the contents of this email seem suspicious, do not open them, and instead 
-          forward this email to SPAM@cms.hhs.gov.
-
-          Thank you!
-        `,
+        html: render(<ChipSpaCMSEmail variables={variables} />, {
+          pretty: true,
+        }),
+        text: render(<ChipSpaCMSEmail variables={variables} />, {
+          plainText: true,
+        }),
       };
     },
     state: async (
@@ -227,49 +69,12 @@ export const newSubmission = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your CHIP SPA ${variables.id} has been submitted to CMS`,
-        html: `
-          <p>This is confirmation that you submitted a CHIP State Plan Amendment 
-          to CMS for review:</p>
-          <p>
-            <br><b>State or territory:</b> ${variables.territory}
-            <br><b>Name:</b> ${variables.submitterName}
-            <br><b>Email Address:</b> ${variables.submitterEmail}
-            <br><b>CHIP SPA Package ID:</b> ${variables.id}
-          </p>
-          Summary:
-          <br>${
-            variables.additionalInformation || "No additional information submitted"
-          }
-          <br>
-          <p>This response confirms the receipt of your CHIP State Plan Amendment 
-          (CHIP SPA). You can expect a formal response to your submittal from CMS 
-          at a later date.
-          </p>
-          <p>If you have questions or did not expect this email, please contact 
-          <a href='mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov'>CHIPSPASubmissionMailBox@CMS.HHS.gov</a> or your state lead.</p>
-          <p>Thank you!</p>
-        `,
-        text: `
-          This is confirmation that you submitted a CHIP State Plan Amendment 
-          to CMS for review:
-          
-          State or territory: ${variables.territory}
-          Name: ${variables.submitterName}
-          Email Address: ${variables.submitterEmail}
-          CHIP SPA Package ID: ${variables.id}
-          
-          Summary:
-          ${variables.additionalInformation || "No additional information submitted"}
-          
-          This response confirms the receipt of your CHIP State Plan Amendment 
-          (CHIP SPA). You can expect a formal response to your submittal from CMS 
-          at a later date.
-          
-          If you have questions or did not expect this email, please contact 
-          CHIPSPASubmissionMailBox@CMS.HHS.gov.
-          
-          Thank you!
-        `,
+        html: render(<ChipSpaStateEmail variables={variables} />, {
+          pretty: true,
+        }),
+        text: render(<ChipSpaStateEmail variables={variables} />, {
+          plainText: true,
+        }),
       };
     },
   },
@@ -280,158 +85,25 @@ export const newSubmission = {
       return {
         to: variables.emails.osgEmail,
         subject: `${variables.authority} ${variables.id} Submitted`,
-        html: `
-          <p>The OneMAC Submission Portal received a 1915(b) ${
-            variables.authority
-          } Submission:</p>
-          <ul>
-            <li>The submission can be accessed in the OneMAC application, which you 
-            can find at <a href='${
-              variables.applicationEndpointUrl
-            }'>this link</a>.</li>
-            <li>If you are not already logged in, please click the "Login" link 
-            at the top of the page and log in using your Enterprise User 
-            Administration (EUA) credentials.</li>
-            <li>After you have logged in, you will be taken to the OneMAC application. 
-            The submission will be listed on the dashboard page, and you can view its 
-            details by clicking on its ID number.</li>
-          </ul>
-          <p>
-            <br><b>State or territory:</b> ${variables.territory}
-            <br><b>Name:</b> ${variables.submitterName}
-            <br><b>Email Address:</b> ${variables.submitterEmail}
-            <br><b>${variables.authority} Number:</b> ${variables.id}
-            <br><br><b>Waiver Authority:</b> ${variables.authority}
-            <br><b>Proposed Effective Date:</b> ${DateTime.fromMillis(
-              variables.notificationMetadata?.proposedEffectiveDate as number,
-            ).toFormat("DDDD")}
-          </p>
-          <b>Summary:</b>
-          <br>${
-            variables.additionalInformation || "No additional information submitted"
-          }
-          <br>
-          <br><b>Files:</b>
-          <br>${formatAttachments("html", variables.attachments)}
-          <br>
-          <p>If the contents of this email seem suspicious, do not open them, and instead 
-          forward this email to <a href='mailto:SPAM@cms.hhs.gov'>SPAM@cms.hhs.gov</a>.</p>
-          <p>Thank you!</p>
-        `,
-        text: `
-          The OneMAC Submission Portal received a 1915(b) ${
-            variables.authority
-          } submission:
-          
-          The submission can be accessed in the OneMAC application, which you 
-          can find at ${variables.applicationEndpointUrl}.
-          
-          If you are not already logged in, please click the "Login" link
-          at the top of the page and log in using your Enterprise User 
-          Administration (EUA) credentials.
-          
-          After you have logged in, you will be taken to the OneMAC application.
-          The submission will be listed on the dashboard page, and you can view its 
-          details by clicking on its ID number.
-          
-          
-          State or territory: ${variables.territory}
-          Name: ${variables.submitterName}
-          Email: ${variables.submitterEmail}
-          ${variables.authority} Number: ${variables.id}
-          
-          Waiver Authority: ${variables.authority}
-          Proposed Effective Date: ${DateTime.fromMillis(
-            variables.notificationMetadata?.proposedEffectiveDate as number,
-          ).toFormat("DDDD")}
-          
-          Summary:
-          ${variables.additionalInformation || "No additional information submitted"}
-          
-          Files:
-          ${formatAttachments("html", variables.attachments)}
-          
-          Thank you!
-        `,
+        html: render(<Waiver1915bCMSEmail variables={variables} />, {
+          pretty: true,
+        }),
+        text: render(<Waiver1915bCMSEmail variables={variables} />, {
+          plainText: true,
+        }),
       };
     },
     state: async (
       variables: OneMac & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
-        subject: `Your ${variables.authority} ${variables.id} has been submitted to CMS`,
-        html: `
-          <p>This response confirms the submission of your ${
-            variables.authority
-          } Initial Waiver  to CMS for review:</p>
-          <p>
-            <br><b>State or territory:</b> ${variables.territory}
-            <br><b>Name:</b> ${variables.submitterName}
-            <br><b>Email Address:</b> ${variables.submitterEmail}
-            <br><b>${variables.authority} Number:</b> ${variables.id}</b>
-            <br><b>Waiver Authority:</b> ${variables.authority}
-            <br><b>Proposed Effective Date:</b> ${DateTime.fromMillis(
-              variables.notificationMetadata?.proposedEffectiveDate as number,
-            ).toFormat("DDDD")}
-            <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(
-              variables.notificationMetadata?.submissionDate,
-            )}
-          </p>
-          <b>Summary:</b>
-          <br>${
-            variables.additionalInformation || "No additional information submitted"
-          }
-          <br>
-          <p>This response confirms the receipt of your Waiver request or your response
-          to a Waiver Request for Additional Information (RAI). You can expect a formal
-          response to your submittal to be issued within 90 days,
-          before ${formatNinetyDaysDate(
-            variables.notificationMetadata?.submissionDate,
-          )}.</p>
-          <p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
-          responses to Requests for Additional Information (RAI) on Waivers,
-          and extension requests on Waivers only. Any other correspondence will be disregarded</p>
-          <p>If you have questions or did not expect this email, please contact 
-          <a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
-          <p>Thank you!</p>
-        `,
-        text: `
-          This response confirms the submission of your 1915(b) ${
-            variables.authority
-          } to CMS for review:
-          
-          State or territory: ${variables.territory}
-          Name: ${variables.submitterName}
-          Email Address: ${variables.submitterEmail}
-          ${variables.authority} Number: ${variables.id}
-          Waiver Authority: ${variables.authority}
-          Proposed Effective Date: ${DateTime.fromMillis(
-            variables.notificationMetadata?.proposedEffectiveDate as number,
-          ).toFormat("DDDD")}
-          90th Day Deadline: ${formatNinetyDaysDate(
-            variables.notificationMetadata?.submissionDate,
-          )}
-          
-          Summary:
-          ${variables.additionalInformation || "No additional information submitted"}
-          
-          This response confirms the receipt of your Waiver request or your response
-          to a Waiver Request for Additional Information (RAI). You can expect a formal
-          response to your submittal to be issued within 90 days,
-          before ${formatNinetyDaysDate(
-            variables.notificationMetadata?.submissionDate,
-          )}.
-          
-          This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
-          responses to Requests for Additional Information (RAI) on Waivers,
-          and extension requests on Waivers only. Any other correspondence will be disregarded
-          
-          If you have questions or did not expect this email, please contact
-          spa@cms.hhs.gov or your state lead.
-          
-          Thank you!
-        `,
+        subject: `Your ${variables.actionType} ${variables.id} has been submitted to CMS`,
+        html: render(<Waiver1915bStateEmail variables={variables} />, {
+          pretty: true,
+        }),
+        text: render(<Waiver1915bStateEmail variables={variables} />, {
+          plainText: true,
+        }),
       };
     },
   },
@@ -442,57 +114,12 @@ export const newSubmission = {
       return {
         to: variables.emails.osgEmail,
         subject: `1915(c) ${variables.id} Submitted`,
-        html: `
-          <p>The OneMAC Submission Portal received a 1915(c) Appendix K Amendment Submission:</p>
-          <ul>
-            <li>The submission can be accessed in the OneMAC application, which you 
-            can find at <a href='${variables.applicationEndpointUrl}'>this link</a>.</li>
-            <li>If you are not already logged in, please click the "Login" link 
-            at the top of the page and log in using your Enterprise User 
-            Administration (EUA) credentials.</li>
-            <li>After you have logged in, you will be taken to the OneMAC application. 
-            The submission will be listed on the dashboard page, and you can view its 
-            details by clicking on its ID number.</li>
-          </ul>
-          <p>
-            <br><b>State or territory:</b> ${variables.territory}
-            <br><b>Name:</b> ${variables.submitterName}
-            <br><b>Email Address:</b> ${variables.submitterEmail}
-            <br><b>Amendment Title:</b> ${variables.appkTitle}
-            <br><b>Waiver Amendment Number:</b> ${variables.id}
-            <br><b>Waiver Authority:</b> 1915(c)
-            <br><b>Proposed Effective Date: ${formatDate(
-              variables.notificationMetadata?.proposedEffectiveDate,
-            )}
-          </p>
-          Summary:
-          <br>${variables.additionalInformation || "No additional information submitted"}
-          <br>Files:
-          <br>${formatAttachments("html", variables.attachments)}
-
-          <p>Thank you!</p>
-        `,
-        text: `
-          This response confirms the submission of your [insert Waiver Action] to CMS for review:
-
-          State or territory: ${variables.territory}
-          Name: ${variables.submitterName}
-          Email Address: ${variables.submitterEmail}
-          Amendment Title: ${variables.appkTitle}
-          Waiver Amendment Number: ${variables.id}
-          Waiver Authority: 1915(c)
-          Proposed Effective Date: ${formatDate(
-            variables.notificationMetadata?.proposedEffectiveDate,
-          )}
-
-          Summary:
-          ${variables.additionalInformation || "No additional information submitted"}
-
-          Files:
-          ${formatAttachments("html", variables.attachments)}
-
-          Thank you!
-        `,
+        html: render(<AppKCMSEmail variables={variables} />, {
+          pretty: true,
+        }),
+        text: render(<AppKCMSEmail variables={variables} />, {
+          plainText: true,
+        }),
       };
     },
     state: async (
@@ -501,71 +128,12 @@ export const newSubmission = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your 1915(c) ${variables.id} has been submitted to CMS`,
-        html: `
-          <p>This response confirms the submission of your 1915(c) Waiver to CMS for review:</p>
-          <p>
-            <br><b>State or territory:</b> ${variables.territory}
-            <br><b>Name:</b> ${variables.submitterName}
-            <br><b>Email Address:</b> ${variables.submitterEmail}
-            <br><b>Initial Waiver Number:</b> ${variables.id}
-            <br><b>Waiver Authority:</b> 1915(c)
-            <br><b>Proposed Effective Date:</b> ${formatDate(
-              variables.notificationMetadata?.proposedEffectiveDate,
-            )}
-            <br><b>90th Day Deadline:</b> ${formatNinetyDaysDate(
-              variables.notificationMetadata?.submissionDate,
-            )}
-          </p>
-          Summary:
-          <br>${variables.additionalInformation || "No additional information submitted"}
-          <p>
-          This response confirms the receipt of your Waiver request or your response
-          to a Waiver Request for Additional Information (RAI). You can expect a formal
-          response to your submittal to be issued within 90 days, before ${formatNinetyDaysDate(
-            variables.notificationMetadata?.submissionDate,
-          )}.
-          </p>
-          <p>
-          This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
-          responses to Requests for Additional Information (RAI) on Waivers, and
-          extension requests on Waivers only.  Any other correspondence will be disregarded.
-          </p>
-          <p>If you have questions, please contact 
-          <a href='mailto:spa@cms.hhs.gov'>spa@cms.hhs.gov</a> or your state lead.</p>
-          <p>Thank you!</p>
-        `,
-        text: `
-          This response confirms the submission of your 1915(c) Waiver to CMS for review:
-
-          State or territory:${variables.territory}
-          Name: ${variables.submitterName}
-          Email Address: ${variables.submitterEmail}
-          Initial Waiver Number: ${variables.id}
-          Waiver Authority: 1915(c)
-          Proposed Effective Date: ${formatDate(
-            variables.notificationMetadata?.proposedEffectiveDate,
-          )}
-          90th Day Deadline: ${formatNinetyDaysDate(
-            variables.notificationMetadata?.submissionDate,
-          )}
-
-          Summary:
-          ${variables.additionalInformation || "No additional information submitted"}
-
-          This response confirms the receipt of your Waiver request or your response
-          to a Waiver Request for Additional Information (RAI). You can expect a formal
-          response to your submittal to be issued within 90 days, before ${formatNinetyDaysDate(
-            variables.notificationMetadata?.submissionDate,
-          )}.
-
-          This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
-          responses to Requests for Additional Information (RAI) on Waivers, and
-          extension requests on Waivers only.  Any other correspondence will be disregarded.
-
-          If you have questions, please contact SPA@cms.hhs.gov or your state lead.
-
-          Thank you!
-        `,
+        html: render(<AppKStateEmail variables={variables} />, {
+          pretty: true,
+        }),
+        text: render(<AppKStateEmail variables={variables} />, {
+          plainText: true,
+        }),
       };
     },
   },

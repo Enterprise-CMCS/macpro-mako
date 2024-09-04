@@ -35,11 +35,15 @@
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mako#readme",
   "dependencies": {
     "@aws-sdk/client-cloudformation": "^3.622.0",
+    "@react-email/components": "^0.0.23",
     "@types/aws-lambda": "^8.10.142",
     "aws-cdk-lib": "^2.153.0",
     "constructs": "^10.3.0",
     "esbuild": "^0.21.5",
+    "install": "^0.13.0",
     "luxon": "^3.5.0",
+    "npm": "^10.8.3",
+    "react-email": "^3.0.1",
     "source-map-support": "^0.5.21",
     "tsx": "4.15.7"
   },

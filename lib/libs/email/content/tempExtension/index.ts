@@ -13,10 +13,14 @@ export const tempExtention = {
       to: variables.emails.osgEmail,
       subject: `${variables.authority} Waiver Extension ${variables.id} Submitted`,
       html: `
-        <p>The OneMAC Submission Portal received a ${variables.authority} Waiver Extension Submission:</p>
+        <p>The OneMAC Submission Portal received a ${
+          variables.authority
+        } Waiver Extension Submission:</p>
         <ul>
           <li>The submission can be accessed in the OneMAC application, which you 
-          can find at <a href='${variables.applicationEndpointUrl}'>this link</a>.</li>
+          can find at <a href='${
+            variables.applicationEndpointUrl
+          }'>this link</a>.</li>
           <li>If you are not already logged in, please click the "Login" link 
           at the top of the page and log in using your Enterprise User 
           Administration (EUA) credentials.</li>
@@ -32,14 +36,19 @@ export const tempExtention = {
           <br><b>Temporary Extension Type:</b> ${variables.authority}
         </p>
         Summary:
-        <br>${variables.additionalInformation || "No additional information submitted"}
+        <br>${
+          variables.additionalInformation ||
+          "No additional information submitted"
+        }
         <br>Files:
         <br>${formatAttachments("html", variables.attachments)}
 
         <p>Thank you!</p>
       `,
       text: `
-        The Submission Portal received a ${variables.authority} Waiver Extension Submission:
+        The Submission Portal received a ${
+          variables.authority
+        } Waiver Extension Submission:
 
         - The submission can be accessed in the OneMAC application, which you 
         can find at ${variables.applicationEndpointUrl}.
@@ -71,7 +80,9 @@ export const tempExtention = {
       subject: `Your Request for the ${variables.authority} Waiver Extension ${variables.id} has been submitted to CMS`,
       html: `
         <p>	
-        This response confirms you have submitted a ${variables.authority} Waiver Extension to CMS for review:</p>
+        This response confirms you have submitted a ${
+          variables.authority
+        } Waiver Extension to CMS for review:</p>
         <p>
           <br><b>State or territory:</b> ${variables.territory}
           <br><b>Name:</b> ${variables.submitterName}
@@ -83,7 +94,10 @@ export const tempExtention = {
           )}
         </p>
         Summary:
-        <br>${variables.additionalInformation || "No additional information submitted"}
+        <br>${
+          variables.additionalInformation ||
+          "No additional information submitted"
+        }
         <p>
         <p>This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
         responses to Requests for Additional Information (RAI) on Waivers,
@@ -93,7 +107,9 @@ export const tempExtention = {
         <p>Thank you!</p>
       `,
       text: `
-        This response confirms you have submitted a ${variables.authority} Waiver Extension to CMS for review:
+        This response confirms you have submitted a ${
+          variables.authority
+        } Waiver Extension to CMS for review:
 
         State or territory: ${variables.territory}
         Name: ${variables.submitterName}
@@ -104,7 +120,10 @@ export const tempExtention = {
           variables.notificationMetadata?.submissionDate as number,
         )}
         Summary:
-        ${variables.additionalInformation || "No additional information submitted"}
+        ${
+          variables.additionalInformation ||
+          "No additional information submitted"
+        }
 
         This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI), 
         and extension requests on Waivers only. Any other correspondence will be disregarded.
