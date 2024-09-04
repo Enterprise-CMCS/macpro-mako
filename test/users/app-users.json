@@ -29,6 +29,35 @@
     ]
   },
   {
+    "username": "nodata@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "nodata@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "George"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Harrison"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": "VI"
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-micro-statesubmitter"
+      }
+    ]
+  },
+  {
     "username": "automated-state@example.com",
     "attributes": [
       {
