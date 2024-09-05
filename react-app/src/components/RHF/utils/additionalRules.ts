@@ -110,7 +110,7 @@ export const valReducer = (
           // Check if from is less than to for each field array
           for (const item of range) {
             if (item.from >= item.to) {
-              return "From Age must be less than the To Age";
+              return "From age must be less than To age";
             }
           }
 
