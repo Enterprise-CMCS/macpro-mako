@@ -18,7 +18,7 @@ export const VisibilityPopover = <T extends UI.OsTableColumn>(
       <UI.PopoverTrigger>
         <UI.Button
           variant="outline"
-          className="w-full xs:w-fit hover:bg-transparent self-center h-10 flex gap-2"
+          className="w-full xs:w-fit min-w-[187px] hover:bg-transparent self-center h-10 flex gap-2"
         >
           {props.hiddenColumns.length
             ? `Columns (${props.hiddenColumns.length} hidden)`
