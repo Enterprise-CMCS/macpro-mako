@@ -1,4 +1,5 @@
 import { FormSchema } from "shared-types";
+import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 export const v202401: FormSchema = {
   header: "ABP 9: Employer-sponsored insurance and payment of premiums",
@@ -31,7 +32,7 @@ export const v202401: FormSchema = {
               rules: {
                 required: "* Required",
                 pattern: {
-                  value: /^\S(.*\S)?$/,
+                  value: noLeadingTrailingWhitespace,
                   message: "Must not have leading or trailing whitespace.",
                 },
               },
@@ -76,7 +77,7 @@ export const v202401: FormSchema = {
               rules: {
                 required: "* Required",
                 pattern: {
-                  value: /^\S(.*\S)?$/,
+                  value: noLeadingTrailingWhitespace,
                   message: "Must not have leading or trailing whitespace.",
                 },
               },
@@ -111,7 +112,7 @@ export const v202401: FormSchema = {
               },
               rules: {
                 pattern: {
-                  value: /^\S(.*\S)?$/,
+                  value: noLeadingTrailingWhitespace,
                   message: "Must not have leading or trailing whitespace.",
                 },
               },
