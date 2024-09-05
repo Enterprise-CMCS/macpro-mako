@@ -124,7 +124,9 @@ export const Layout = () => {
   return (
     <div className="min-h-full flex flex-col">
       <UserPrompt />
-      <UsaBanner isUserMissingRole={customUserRoles === undefined} />
+      <UsaBanner
+        isUserMissingRole={user?.user && customUserRoles === undefined}
+      />
       <nav className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="h-[70px] flex gap-12 items-center text-white">
