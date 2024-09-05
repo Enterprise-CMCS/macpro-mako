@@ -118,11 +118,13 @@ const UserDropdownMenu = () => {
 
 export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const { data: user } = useGetUser();
+  const customUserRoles = user?.user?.["custom:cms-roles"];
 
   return (
     <div className="min-h-full flex flex-col">
       <UserPrompt />
-      <UsaBanner />
+      <UsaBanner isUserMissingRole={customUserRoles === undefined} />
       <nav className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="h-[70px] flex gap-12 items-center text-white">
