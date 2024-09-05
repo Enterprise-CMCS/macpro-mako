@@ -7,6 +7,7 @@ import * as UI from "@/components";
 type Props<T extends UI.OsTableColumn> = {
   list: T[];
   onItemClick: (field: string) => void;
+  hiddenColumns: T[];
 };
 
 export const VisibilityPopover = <T extends UI.OsTableColumn>(
@@ -15,12 +16,13 @@ export const VisibilityPopover = <T extends UI.OsTableColumn>(
   return (
     <UI.Popover>
       <UI.PopoverTrigger>
-        {/* <EyeIcon className="w-6 h-6" /> */}
         <UI.Button
           variant="outline"
           className="w-full xs:w-fit hover:bg-transparent self-center h-10 flex gap-2"
         >
-          Columns
+          {props.hiddenColumns.length
+            ? `Columns (${props.hiddenColumns.length} hidden)`
+            : "Columns"}
         </UI.Button>
         <p className="sr-only">Visibility Popover Icon</p>
       </UI.PopoverTrigger>

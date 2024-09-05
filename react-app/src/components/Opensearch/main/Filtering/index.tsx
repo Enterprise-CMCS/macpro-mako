@@ -34,6 +34,7 @@ export const OsFiltering: FC<{
           <VisibilityPopover
             list={props.columns.filter((COL) => !COL.locked || COL.field)}
             onItemClick={props.onToggle}
+            hiddenColumns={props.columns.filter((COL) => COL.hidden === true)}
           />
           <OsFilterDrawer />
           <OsExportData columns={props.columns} />
