@@ -1,4 +1,5 @@
 import { FormSchema, DefaultFieldGroupProps } from "shared-types";
+import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 export const v202401: FormSchema = {
   header:
@@ -137,6 +138,12 @@ export const v202401: FormSchema = {
                   name: "explanation",
                   labelClassName: "text-black font-bold",
                   label: "Explanation (optional)",
+                  rules: {
+                    pattern: {
+                      value: noLeadingTrailingWhitespace,
+                      message: "Must not have leading or trailing whitespace.",
+                    },
+                  },
                 },
               ],
             },
@@ -299,6 +306,13 @@ export const v202401: FormSchema = {
                       name: "explanation",
                       labelClassName: "text-black font-bold",
                       label: "Explanation (optional)",
+                      rules: {
+                        pattern: {
+                          value: noLeadingTrailingWhitespace,
+                          message:
+                            "Must not have leading or trailing whitespace.",
+                        },
+                      },
                     },
                   ],
                 },
@@ -452,6 +466,12 @@ export const v202401: FormSchema = {
                   name: "explanation",
                   labelClassName: "text-black font-bold",
                   label: "Explanation (optional)",
+                  rules: {
+                    pattern: {
+                      value: noLeadingTrailingWhitespace,
+                      message: "Must not have leading or trailing whitespace.",
+                    },
+                  },
                 },
               ],
             },
@@ -604,6 +624,12 @@ export const v202401: FormSchema = {
                   name: "explanation",
                   labelClassName: "text-black font-bold",
                   label: "Explanation (optional)",
+                  rules: {
+                    pattern: {
+                      value: noLeadingTrailingWhitespace,
+                      message: "Must not have leading or trailing whitespace.",
+                    },
+                  },
                 },
               ],
             },
