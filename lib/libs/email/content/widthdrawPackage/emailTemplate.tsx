@@ -2,7 +2,11 @@ import * as React from "react";
 import { Html } from "@react-email/components";
 import { OneMac } from "shared-types";
 import { CommonVariables } from "../..";
-import { SpamWarning } from "../email-components/spamWarning";
+import {
+  SpamWarning,
+  PackageDetails,
+  ContactStateLead,
+} from "../email-components";
 
 // **** MEDICAID SPA
 const MedSpaCMSEmail = (props: { variables: OneMac & CommonVariables }) => {
@@ -13,14 +17,15 @@ const MedSpaCMSEmail = (props: { variables: OneMac & CommonVariables }) => {
         The OneMAC Submission Portal received a request to withdraw the package
         below. The package will no longer be considered for CMS review:
       </p>
-      <p>
-        <b>State or territory:</b> {variables.territory}
-        <b>Name:</b> {variables.submitterName}
-        <b>Email:</b> {variables.submitterEmail}
-        <b>Medicaid SPA Package ID:</b> {variables.id}
-      </p>
-      Summary: $
-      {variables.additionalInformation ?? "No additional information submitted"}
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: variables.submitterName,
+          Email: variables.submitterEmail,
+          "Medicaid SPA Package ID": variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
       <SpamWarning />
     </Html>
   );
@@ -33,15 +38,11 @@ export const MedSpaStateEmail = (props: {
   return (
     <Html lang="en" dir="ltr">
       <p>
-        This email is to confirm Medicaid SPA {variables.id} was withdrawn by $
+        This email is to confirm Medicaid SPA {variables.id} was withdrawn by
         {variables.submitterName}. The review of Medicaid SPA {variables.id} has
         concluded.
       </p>
-      <p>
-        If you have questions or did not expect this email, please contact
-        <a href="mailto:SPA@cms.hhs.gov">spa@cms.hhs.gov</a> or your state lead.
-      </p>
-      <p>Thank you!</p>`,
+      <ContactStateLead />
     </Html>
   );
 };
@@ -57,20 +58,16 @@ export const ChipSpaCMSEmail = (props: {
         The OneMAC Submission Portal received a request to withdraw the package
         below. The package will no longer be considered for CMS review:
       </p>
-      <p>
-        <b>State or territory:</b> {variables.territory}
-        <b>Name:</b> {variables.submitterName}
-        <b>Email Address:</b> {variables.submitterEmail}
-        <b>CHIP SPA Package ID:</b> {variables.id}
-      </p>
-      Summary: $
-      {variables.additionalInformation ?? "No additional information submitted"}
-      <p>
-        If the contents of this email seem suspicious, do not open them, and
-        instead forward this email to
-        <a href="mailto:SPAM@cms.hhs.gov">SPAM@cms.hhs.gov</a>
-      </p>
-      <p>Thank you!</p>
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: variables.submitterName,
+          Email: variables.submitterEmail,
+          "CHIP SPA Package ID": variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <SpamWarning />
     </Html>
   );
 };
@@ -82,18 +79,11 @@ export const ChipSpaStateEmail = (props: {
   return (
     <Html lang="en" dir="ltr">
       <p>
-        This email is to confirm CHIP SPA {variables.id} was withdrawn by $
+        This email is to confirm CHIP SPA {variables.id} was withdrawn by
         {variables.submitterName}. The review of CHIP SPA {variables.id} has
         concluded.
       </p>
-      <p>
-        If you have any questions, please contact
-        <a href="mailto:CHIPSPASubmissionMailbox@cms.hhs.gov">
-          CHIPSPASubmissionMailbox@cms.hhs.gov
-        </a>
-        or your state lead.
-      </p>
-      <p>Thank you!</p>
+      <ContactStateLead isChip />
     </Html>
   );
 };
@@ -109,14 +99,15 @@ export const Waiver1915bCMSEmail = (props: {
         The OneMAC Submission Portal received a request to withdraw the package
         below. The package will no longer be considered for CMS review:
       </p>
-      <p>
-        <b>State or territory:</b> {variables.territory}
-        <b>Name:</b> {variables.submitterName}
-        <b>Email Address:</b> {variables.submitterEmail}
-        <b>{variables.authority} Package ID:</b> {variables.id}
-      </p>
-      Summary: $
-      {variables.additionalInformation ?? "No additional information submitted"}
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: variables.submitterName,
+          Email: variables.submitterEmail,
+          [`${variables.authority} Package ID`]: variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
       <SpamWarning />
     </Html>
   );
@@ -130,14 +121,10 @@ export const Waiver1915bStateEmail = (props: {
     <Html lang="en" dir="ltr">
       <p>
         This email is to confirm {variables.authority} Waiver {variables.id} was
-        withdrawn by {variables.submitterName}. The review of $
+        withdrawn by {variables.submitterName}. The review of
         {variables.authority} Waiver {variables.id} has concluded.
       </p>
-      <p>
-        If you have questions, please contact
-        <a href="mailto:spa@cms.hhs.gov">spa@cms.hhs.gov</a> or your state lead.
-      </p>
-      <p>Thank you!</p>
+      <ContactStateLead />
     </Html>
   );
 };

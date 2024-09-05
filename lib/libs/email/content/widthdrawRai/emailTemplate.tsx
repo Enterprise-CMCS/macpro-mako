@@ -2,8 +2,30 @@ import * as React from "react";
 import { Html } from "@react-email/components";
 import { RaiWithdraw } from "shared-types";
 import { CommonVariables, formatAttachments } from "../..";
-import { SpamWarning } from "../email-components/spamWarning";
-import { WithdrawRAI } from "../email-components/withdrawFormalRAI";
+import {
+  SpamWarning,
+  MailboxWaiver,
+  PackageDetails,
+  ContactStateLead,
+} from "../email-components";
+
+// reused text only for withdrawing RAI
+const WithdrawRAI = (props: {
+  id: string;
+  submitterName: string;
+  submitterEmail: string;
+}) => {
+  return (
+    <Html lang="en" dir="ltr">
+      <p>
+        The OneMAC Submission Portal received a request to withdraw the Formal
+        RAI Response. You are receiving this email notification as the Formal
+        RAI for {props.id} was withdrawn by {props.submitterName}{" "}
+        {props.submitterEmail}.
+      </p>
+    </Html>
+  );
+};
 
 // **** MEDICAID SPA
 export const MedSpaCMSEmail = (props: {
@@ -20,11 +42,15 @@ export const MedSpaCMSEmail = (props: {
         RAI for {variables.id} was withdrawn by {variables.submitterName}{" "}
         {variables.submitterEmail}.
       </p>
-      <b>State or territory:</b> {variables.territory}
-      <b>Name:</b> {relatedEvent.submitterName ?? "Unknown"}
-      <b>Email Address:</b> {relatedEvent.submitterEmail ?? "Unknown"}
-      <b>SPA Package ID:</b> {variables.id}
-      <p>Summary: {variables.additionalInformation}</p>
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: relatedEvent.submitterName,
+          "Email Address": relatedEvent.submitterEmail,
+          "SPA Package ID": variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
       <b>Files</b>:{formatAttachments("html", variables.attachments)}
       <SpamWarning />
     </Html>
@@ -39,17 +65,16 @@ export const MedSpaStateEmail = (props: {
   return (
     <Html lang="en" dir="ltr">
       <WithdrawRAI {...variables} />
-      <p>
-        <b>State or territory:</b> {variables.territory}
-        <b>Name:</b> {relatedEvent.submitterName ?? "Unknown"}
-        <b>Email Address:</b> {relatedEvent.submitterEmail ?? "Unknown"}
-        <b>Medicaid SPA Package ID:</b> {variables.id}
-      </p>
-      Summary:
-      {variables.additionalInformation}
-      <p>If you have questions or did not expect this email, please contact </p>
-      <a href="mailto:spa@cms.hhs.gov">spa@cms.hhs.gov</a> or your state lead.
-      <p>Thank you!</p>
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: relatedEvent.submitterName,
+          "Email Address": relatedEvent.submitterEmail,
+          "Medicaid SPA Package ID": variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <ContactStateLead />
     </Html>
   );
 };
@@ -63,14 +88,15 @@ export const ChipSpaCMSEmail = (props: {
   return (
     <Html lang="en" dir="ltr">
       <WithdrawRAI {...variables} />
-      <p>
-        <b>State or territory:</b> {variables.territory}
-        <b>Name:</b> {relatedEvent.submitterName ?? "Unknown"}
-        <b>Email Address:</b> {relatedEvent.submitterEmail ?? "Unknown"}
-        <b>CHIP SPA Package ID:</b> {variables.id}
-      </p>
-      Summary:
-      {variables.additionalInformation}
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: relatedEvent.submitterName,
+          "Email Address": relatedEvent.submitterEmail,
+          "CHIP SPA Package ID": variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
       <b>Files</b>:{formatAttachments("html", variables.attachments)}
       <SpamWarning />
     </Html>
@@ -85,22 +111,16 @@ export const ChipSpaStateEmail = (props: {
   return (
     <Html lang="en" dir="ltr">
       <WithdrawRAI {...variables} />
-      <p>
-        <b>State or territory:</b> {variables.territory}
-        <b>Name:</b> {relatedEvent.submitterName ?? "Unknown"}
-        <b>Email Address:</b> {relatedEvent.submitterEmail ?? "Unknown"}
-        <b>CHIP SPA Package ID:</b> {variables.id}
-      </p>
-      Summary:
-      {variables.additionalInformation}
-      <p>
-        If you have any questions, please contact
-        <a href="mailto:CHIPSPASubmissionMailbox@cms.hhs.gov">
-          CHIPSPASubmissionMailbox@cms.hhs.gov
-        </a>
-        or your state lead.
-      </p>
-      <p>Thank you!</p>
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: relatedEvent.submitterName,
+          "Email Address": relatedEvent.submitterEmail,
+          "CHIP SPA Package ID": variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <ContactStateLead isChip />
     </Html>
   );
 };
@@ -114,14 +134,15 @@ export const Waiver1915bCMSEmail = (props: {
   return (
     <Html lang="en" dir="ltr">
       <WithdrawRAI {...variables} />
-      <p>
-        <b>State or territory:</b> {variables.territory}
-        <b>Name:</b> {relatedEvent.submitterName ?? "Unknown"}
-        <b>Email Address:</b> {relatedEvent.submitterEmail ?? "Unknown"}
-        <b>Waiver Number:</b> {variables.id}
-      </p>
-      Summary:
-      {variables.additionalInformation}
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: relatedEvent.submitterName,
+          "Email Address": relatedEvent.submitterEmail,
+          "Waiver Number": variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
       <b>Files</b>:{formatAttachments("html", variables.attachments)}
       <SpamWarning />
     </Html>
@@ -136,39 +157,17 @@ export const Waiver1915bStateEmail = (props: {
   return (
     <Html lang="en" dir="ltr">
       <WithdrawRAI {...variables} />
-      <p>
-        <b>State or territory:</b> {variables.territory}
-        <b>Name:</b> {relatedEvent.submitterName ?? "Unknown"}
-        <b>Email Address:</b> {relatedEvent.submitterEmail ?? "Unknown"}
-        <b>Waiver Number:</b> {variables.id}
-      </p>
-      Summary:
-      {variables.additionalInformation}
-      <p>
-        This mailbox is for the submittal of Section 1915(b) and 1915(c)
-        Waivers, responses to Requests for Additional Information (RAI), and
-        extension requests on Waivers only. Any other correspondence will be
-        disregarded.
-      </p>
-      <p>
-        If you have questions, please contact
-        <a href="mailto:SPA@cms.hhs.gov">spa@cms.hhs.gov</a> or your state lead.
-      </p>
-      <p>Thank you!</p>`, text: ` The OneMAC Submission Portal received a
-      request to withdraw the Formal RAI Response. You are receiving this email
-      notification as the Formal RAI for {variables.id} was withdrawn by{" "}
-      {variables.submitterName} {variables.submitterEmail}. State or territory:{" "}
-      {variables.territory}
-      Name: {relatedEvent.submitterName ?? "Unknown"}
-      Email Address: {relatedEvent.submitterEmail ?? "Unknown"}
-      Medicaid SPA Package ID: {variables.id}
-      Summary:
-      {variables.additionalInformation}
-      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
-      responses to Requests for Additional Information (RAI), and extension
-      requests on Waivers only. Any other correspondence will be disregarded. If
-      you have any questions, please contact spa@cms.hhs.gov or your state lead.
-      Thank you!`
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: relatedEvent.submitterName,
+          "Email Address": relatedEvent.submitterEmail,
+          "Waiver Number": variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <MailboxWaiver />
+      <ContactStateLead />
     </Html>
   );
 };
@@ -182,14 +181,15 @@ export const AppKCMSEmail = (props: {
   return (
     <Html lang="en" dir="ltr">
       <WithdrawRAI {...variables} />
-      <p>
-        <b>State or territory:</b> {variables.territory}
-        <b>Name:</b> {relatedEvent.submitterName ?? "Unknown"}
-        <b>Email Address:</b> {relatedEvent.submitterEmail ?? "Unknown"}
-        <b>Waiver Number:</b> {variables.id}
-      </p>
-      Summary:
-      {variables.additionalInformation}
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: relatedEvent.submitterName,
+          "Email Address": relatedEvent.submitterEmail,
+          "Waiver Number": variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
       <p>
         Files:
         {formatAttachments("html", variables.attachments)}
