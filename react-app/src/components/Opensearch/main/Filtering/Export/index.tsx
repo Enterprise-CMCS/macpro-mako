@@ -70,7 +70,7 @@ export const OsExportData: FC<{
             onClick={handleExport}
             disabled={loading || disabled}
             className="w-full xs:w-fit hover:bg-transparent self-center h-10 flex gap-2"
-            role="tooltip-trigger"
+            data-testid="tooltip-trigger"
           >
             {loading && (
               <motion.div
