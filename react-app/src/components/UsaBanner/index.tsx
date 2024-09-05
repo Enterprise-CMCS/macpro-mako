@@ -3,7 +3,6 @@ import { useLoaderData } from "react-router-dom";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import config from "@/config";
 import { LockIcon } from "../LockIcon";
-import { GovernmentBuildingIcon } from "../GovernmentBuildingIcon";
 import UsFlag from "@/assets/us_flag_small.png";
 
 const MiniLock = () => {
@@ -23,6 +22,24 @@ const MiniLock = () => {
         fill="#000000"
         fillRule="evenodd"
         d="M26 0c10.493 0 19 8.507 19 19v9h3a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V32a4 4 0 0 1 4-4h3v-9C7 8.507 15.507 0 26 0zm0 8c-5.979 0-10.843 4.77-10.996 10.712L15 19v9h22v-9c0-6.075-4.925-11-11-11z"
+      ></path>
+    </svg>
+  );
+};
+
+const GovernmentBuildingIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="64"
+      height="64"
+      viewBox="0 0 64 64"
+      className="min-w-[40px] min-h-[40px] w-10"
+    >
+      <path
+        fill="#2378C3"
+        fillRule="evenodd"
+        d="M32 0c17.673 0 32 14.327 32 32 0 17.673-14.327 32-32 32C14.327 64 0 49.673 0 32 0 14.327 14.327 0 32 0zm0 1.208C14.994 1.208 1.208 14.994 1.208 32S14.994 62.792 32 62.792 62.792 49.006 62.792 32 49.006 1.208 32 1.208zm10.59 38.858a.857.857 0 01.882.822v1.642H18.886v-1.642a.857.857 0 01.882-.822H42.59zM25.443 27.774v9.829h1.642v-9.83h3.273v9.83H32v-9.83h3.272v9.83h1.643v-9.83h3.272v9.83h.76a.857.857 0 01.882.821v.821h-21.3v-.809a.857.857 0 01.88-.82h.762v-9.842h3.272zm5.736-8.188l12.293 4.915v1.642h-1.63a.857.857 0 01-.882.822H21.41a.857.857 0 01-.882-.822h-1.642v-1.642l12.293-4.915z"
       ></path>
     </svg>
   );
@@ -101,7 +118,7 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
       {isOpen && (
         <div className="flex flex-col gap-3 px-3 mt-3 sm:flex-row max-w-screen-lg mx-auto pb-4">
           <div className="flex gap-2">
-            <GovernmentBuildingIcon className="min-w-[40px] min-h-[40px] w-10" />
+            <GovernmentBuildingIcon />
             <p className="text-sm max-w-md">
               <strong className="block">Official websites use .gov</strong>A
               <strong>.gov</strong> website belongs to an official government
