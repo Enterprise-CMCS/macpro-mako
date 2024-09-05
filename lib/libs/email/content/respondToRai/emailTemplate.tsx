@@ -10,7 +10,7 @@ import LoginInstructions from "../email-components/loginInstructions";
 import { SpamWarning } from "../email-components/spamWarning";
 
 // **** MEDICAID SPA
-const MedSpaCMSEmail = (props: {
+export const MedSpaCMSEmail = (props: {
   variables: RaiResponse & CommonVariables;
 }) => {
   const variables = props.variables;

@@ -10,7 +10,9 @@ import LoginInstructions from "../email-components/loginInstructions";
 import { SpamWarning } from "../email-components/spamWarning";
 
 // **** MEDICAID SPA
-const TempExtCMSEmail = (props: { variables: OneMac & CommonVariables }) => {
+export const TempExtCMSEmail = (props: {
+  variables: OneMac & CommonVariables;
+}) => {
   const variables = props.variables;
   return (
     <Html lang="en" dir="ltr">

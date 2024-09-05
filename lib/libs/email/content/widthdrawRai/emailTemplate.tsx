@@ -6,7 +6,7 @@ import { SpamWarning } from "../email-components/spamWarning";
 import { WithdrawRAI } from "../email-components/withdrawFormalRAI";
 
 // **** MEDICAID SPA
-const MedSpaCMSEmail = (props: {
+export const MedSpaCMSEmail = (props: {
   variables: RaiWithdraw & CommonVariables;
   relatedEvent: any;
 }) => {
@@ -174,7 +174,7 @@ export const Waiver1915bStateEmail = (props: {
 };
 
 // 1915c - app K
-export const appKStateEmail = (props: {
+export const AppKCMSEmail = (props: {
   variables: RaiWithdraw & CommonVariables;
   relatedEvent: any;
 }) => {
