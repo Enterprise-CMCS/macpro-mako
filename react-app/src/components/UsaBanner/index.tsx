@@ -63,9 +63,7 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
         />
         <p>An official website of the United States government</p>
         <button className="flex" onClick={() => setIsOpen((value) => !value)}>
-          <span className="underline text-[#005ea2]">
-            Here&apos;s how you know
-          </span>
+          <span className="underline text-[#005ea2]">Here's how you know</span>
           {isOpen ? (
             <ChevronUp className="w-4 h-4 text-[#005ea2]" />
           ) : (
@@ -99,7 +97,7 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
       </button>
 
       {(isUserMissingRole || error?.length > 0) && (
-        <div className="w-full  px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center justify-center bg-red-200 ">
+        <div className="w-full  px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center justify-center bg-red-200">
           <p className="text-center text-base">
             You do not have access to view the entire application.{" "}
             <a
