@@ -153,8 +153,10 @@ export const Layout = () => {
     <div className="min-h-full flex flex-col">
       <ScrollToTop />
       <UserPrompt />
-      <UsaBanner isUserMissingRole={user?.user && customUserRoles === undefined} />
-      <nav data-testid="nav-banner-d" className="bg-primary">
+      <UsaBanner
+        isUserMissingRole={user?.user && customUserRoles === undefined}
+      />
+      <nav className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="h-[70px] flex gap-12 items-center text-white">
             {!isFaqPage ? (
