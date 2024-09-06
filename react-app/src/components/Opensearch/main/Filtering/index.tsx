@@ -37,7 +37,7 @@ export const OsFiltering: FC<{
             hiddenColumns={props.columns.filter((COL) => COL.hidden === true)}
           />
           <OsFilterDrawer />
-          <OsExportData columns={props.columns} />
+          <OsExportData columns={props.columns} disabled={context?.data?.total.value === 0}/>
         </div>
       </div>
     </div>
