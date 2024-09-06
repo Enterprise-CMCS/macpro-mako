@@ -10,7 +10,6 @@ import { cn } from "@/utils";
 export const RHFFieldArray = <TFields extends FieldValues>(
   props: FieldArrayProps<TFields>,
 ) => {
-  const isFieldArray = props.rhf === "FieldArray";
   const fieldArr = useFieldArray<any>({
     control: props.control,
     name: props.name,
@@ -31,10 +30,7 @@ export const RHFFieldArray = <TFields extends FieldValues>(
       {fieldArr.fields.map((FLD, index) => {
         return (
           <div
-            className={cn(
-              `flex flex-${isFieldArray ? "row" : "col"} gap-3 `,
-              props.fieldArrayClassName,
-            )}
+            className={cn("flex flex-row gap-3 ", props.fieldArrayClassName)}
             key={FLD.id}
           >
             {props.fields.map((SLOT, i) => {
@@ -48,15 +44,15 @@ export const RHFFieldArray = <TFields extends FieldValues>(
               );
             })}
             {/* FieldArray Removal */}
-            {index >= 1 && isFieldArray && (
+            {index >= 1 && !props.removeText && (
               <Trash2
-                className="self-end mb-4 cursor-pointer stroke-primary"
+                className="self-end mb-2 cursor-pointer stroke-primary"
                 data-testid={`removeRowButton-${index}`}
                 onClick={() => fieldArr.remove(index)}
               />
             )}
             {/* FieldGroup Removal */}
-            {index >= 1 && !isFieldArray && (
+            {index >= 1 && props.removeText && (
               <Button
                 className="self-end m-2 mr-0"
                 variant={"destructive"}
@@ -68,24 +64,22 @@ export const RHFFieldArray = <TFields extends FieldValues>(
                 {props.removeText ?? "Remove Group"}
               </Button>
             )}
-            {fieldArr.fields.length > 1 && !isFieldArray && (
+            {fieldArr.fields.length > 1 && props.divider && (
               <div className="w-full border-slate-300 border-2" />
             )}
           </div>
         );
       })}
-      <div
-        className={`flex items-center mt-2 ${isFieldArray ? "" : "self-end"}`}
-      >
+      <div className={cn("flex items-center mt-2", props.appendClassName)}>
         <Button
           type="button"
           size="sm"
           onClick={onAppend}
           data-testid={`appendRowButton-${props.name}`}
-          variant={isFieldArray ? "outline" : "default"}
+          variant={props.appendVariant ?? "outline"}
         >
           <Plus className="h-5 w-5 mr-2" />
-          {props.appendText || (isFieldArray ? "New Row" : "New Group")}
+          {props.appendText || "New Row"}
         </Button>
       </div>
     </div>

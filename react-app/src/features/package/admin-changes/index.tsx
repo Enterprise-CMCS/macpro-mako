@@ -133,7 +133,7 @@ export const AdminChanges = () => {
     ].includes(CL._source.actionType),
   );
 
-  if (!data?.length) return <></>;
+  if (!data?.length) return null;
 
   return (
     <DetailsSection

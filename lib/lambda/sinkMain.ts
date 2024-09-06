@@ -27,6 +27,13 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           logError({ type: ErrorType.BADTOPIC });
           throw new Error();
         case "aws.onemac.migration.cdc":
+          await processAndIndex({
+            kafkaRecords: event.records[topicPartition],
+            index,
+            osDomain,
+            transforms: opensearch.main.transforms,
+            topicPartition: topicPartition,
+          });
           await onemac(event.records[topicPartition], topicPartition);
           break;
         case "aws.seatool.ksql.onemac.three.agg.State_Plan":
@@ -41,6 +48,75 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     logError({ type: ErrorType.UNKNOWN, metadata: { event: loggableEvent } });
     throw error;
   }
+};
+
+const processAndIndex = async ({
+  kafkaRecords,
+  index,
+  osDomain,
+  transforms,
+  topicPartition,
+}: {
+  kafkaRecords: KafkaRecord[];
+  index: Index;
+  osDomain: string;
+  transforms: any;
+  topicPartition: string;
+}) => {
+  const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> =
+    [];
+  for (const kafkaRecord of kafkaRecords) {
+    console.log(JSON.stringify(kafkaRecord, null, 2));
+    const { value } = kafkaRecord;
+    try {
+      // If a legacy tombstone, handle and continue
+      // TODO:  handle.  for now, just continue
+      if (!value) {
+        // docs.push(opensearch.main.legacyPackageView.tombstone(id));
+        continue;
+      }
+
+      // Parse the kafka record's value
+      const record = JSON.parse(decodeBase64WithUtf8(value));
+
+      // If we're not a mako event, continue
+      // TODO:  handle legacy.  for now, just continue
+      if (!record.event || record?.origin !== "mako") {
+        continue;
+      }
+
+      // If the event is a supported event, transform and push to docs array for indexing
+      if (record.event in transforms) {
+        const transformForEvent =
+          transforms[record.event as keyof typeof transforms];
+
+        const result = transformForEvent.transform().safeParse(record);
+
+        if (result.success && result.data === undefined) continue;
+        if (!result.success) {
+          logError({
+            type: ErrorType.VALIDATION,
+            error: result?.error,
+            metadata: { topicPartition, kafkaRecord, record },
+          });
+          continue;
+        }
+        console.log(JSON.stringify(result.data, null, 2));
+        docs.push(result.data);
+      } else {
+        console.log(`No transform found for event: ${record.event}`);
+      }
+    } catch (error) {
+      logError({
+        type: ErrorType.BADPARSE,
+        error,
+        metadata: { topicPartition, kafkaRecord },
+      });
+    }
+  }
+
+  // Send all transformed records for indexing
+  await bulkUpdateDataWrapper(osDomain, index, docs);
 };
 
 const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
@@ -105,7 +181,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       console.log("--------------------");
 
       if (
-        result.data.authorityId &&
+        result.data.authority &&
         typeof result.data.seatoolStatus === "string" &&
         result.data.seatoolStatus != "Unknown"
       ) {
@@ -136,7 +212,7 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       }
       const record = { timestamp, ...JSON.parse(decodeBase64WithUtf8(value)) };
       // Process legacy events
-      if (record?.origin !== "micro") {
+      if (record?.origin !== "mako") {
         // Is a Package View from legacy onemac
         if (record?.sk === "Package" && record.submitterName) {
           const result = opensearch.main.legacyPackageView
@@ -157,13 +233,13 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       }
 
       // Handle everything else
-      if (record.origin === "micro") {
+      if (record.origin === "mako") {
         const result = await (async () => {
           switch (record?.actionType) {
             case "new-submission":
             case undefined:
               return opensearch.main.newSubmission
-                .transform(id)
+                .transform()
                 .safeParse(record);
             case Action.DISABLE_RAI_WITHDRAW:
             case Action.ENABLE_RAI_WITHDRAW:

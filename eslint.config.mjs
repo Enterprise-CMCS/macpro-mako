@@ -42,6 +42,7 @@ export default tseslint.config(
     rules: {
       "@typescript-eslint/no-empty-interface": "off",
       "react/react-in-jsx-scope": "off",
+      "react/jsx-no-useless-fragment": ["error", { allowExpressions: true }],
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
       "@typescript-eslint/no-explicit-any": "off",

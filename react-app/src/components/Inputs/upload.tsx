@@ -5,29 +5,110 @@ import * as I from "@/components/Inputs";
 import { X } from "lucide-react";
 import { FILE_TYPES } from "shared-types/uploads";
 import { v4 as uuidv4 } from "uuid";
+import { z } from "zod";
+import { API } from "aws-amplify";
+import { LoadingSpinner } from "@/components/LoadingSpinner"; // Import your LoadingSpinner component
+import { attachmentSchema } from "shared-types";
+
+type Attachment = z.infer<typeof attachmentSchema>;
 
 type UploadProps = {
   maxFiles?: number;
-  files: File[];
-  setFiles: (files: File[]) => void;
+  files: Attachment[];
+  setFiles: (files: Attachment[]) => void;
 };
 
 export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
+  const [isUploading, setIsUploading] = useState(false); // New state for tracking upload status
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const uniqueId = uuidv4();
 
+  const getPresignedUrl = async (fileName: string): Promise<string> => {
+    const response = await API.post("os", "/getUploadUrl", {
+      body: { fileName },
+    });
+    return response.url;
+  };
+
+  const uploadToS3 = async (file: File, url: string): Promise<void> => {
+    await fetch(url, {
+      body: file,
+      method: "PUT",
+    });
+  };
+
+  function extractBucketAndKeyFromUrl(url: string): {
+    bucket: string | null;
+    key: string | null;
+  } {
+    try {
+      const parsedUrl = new URL(url);
+
+      const hostnameParts = parsedUrl.hostname.split(".");
+      let bucket: string | null = null;
+      let key: string | null = null;
+
+      if (
+        hostnameParts.length > 3 &&
+        hostnameParts[1] === "s3" &&
+        hostnameParts[2] === "us-east-1"
+      ) {
+        bucket = hostnameParts[0]; // The bucket name is the first part of the hostname
+      }
+
+      // Extract key from the pathname
+      key = parsedUrl.pathname.slice(1); // Remove the leading slash
+
+      return { bucket, key };
+    } catch (error) {
+      console.error("Invalid URL format:", error);
+      return { bucket: null, key: null };
+    }
+  }
+
   const onDrop = useCallback(
-    (acceptedFiles: File[], fileRejections: FileRejection[]) => {
+    async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
       if (fileRejections.length > 0) {
         setErrorMessage(
           "Selected file(s) is too large or of a disallowed file type.",
         );
       } else {
         setErrorMessage(null);
-        setFiles([...files, ...acceptedFiles]);
+        setIsUploading(true); // Set uploading to true
+
+        const processedFiles = await Promise.all(
+          acceptedFiles.map(async (file) => {
+            try {
+              const url = await getPresignedUrl(file.name);
+              const { bucket, key } = extractBucketAndKeyFromUrl(url);
+              await uploadToS3(file, url);
+
+              const attachment: Attachment = {
+                filename: file.name,
+                title: file.name.split(".").slice(0, -1).join("."),
+                bucket,
+                key,
+                uploadDate: Date.now(),
+              };
+
+              return attachment;
+            } catch (error) {
+              setErrorMessage("Failed to upload one or more files.");
+              console.error("Upload error:", error);
+              return null;
+            }
+          }),
+        );
+
+        const validAttachments = processedFiles.filter(
+          (attachment) => attachment !== null,
+        ) as Attachment[];
+
+        setFiles([...files, ...validAttachments]);
+        setIsUploading(false); // Set uploading to false when done
       }
     },
-    [files],
+    [files, setFiles],
   );
 
   const accept: Accept = {};
@@ -42,6 +123,7 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
     accept,
     maxFiles,
     maxSize: 80 * 1024 * 1024, // 80MB,
+    disabled: isUploading, // Disable dropzone while uploading
   });
 
   return (
@@ -51,13 +133,13 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
           {files.map((file) => (
             <div
               className="flex border-2 rounded-md py-1 pl-2.5 pr-1 border-sky-500 items-center"
-              key={file.name}
+              key={file.filename}
             >
-              <span className="text-sky-700">{file.name}</span>
+              <span className="text-sky-700">{file.filename}</span>
               <I.Button
                 onClick={(e) => {
                   e.preventDefault();
-                  setFiles(files.filter((a) => a.name !== file.name));
+                  setFiles(files.filter((a) => a.filename !== file.filename));
                 }}
                 variant="ghost"
                 className="p-0 h-0"
@@ -69,26 +151,28 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
         </div>
       )}
       {errorMessage && <span className="text-red-500">{errorMessage}</span>}
-      <div
-        {...getRootProps()}
-        className={cn(
-          "w-full flex items-center justify-center border border-dashed border-[#71767a] py-6 rounded-sm",
-          isDragActive && "border-blue-700",
-        )}
-      >
-        <p>
-          Drag file here or{" "}
-          <span className="text-sky-700 underline hover:cursor-pointer">
-            choose from folder
-          </span>
-        </p>
-        <label htmlFor={`upload-${uniqueId}`} className="sr-only">
-          Drag file here or choose from folder
-        </label>
-        <input id={`upload-${uniqueId}`} {...getInputProps()} />
-
-        {/* {isDragActive && <p>Drag is Active</p>} */}
-      </div>
+      {isUploading ? (
+        <LoadingSpinner /> // Render the loading spinner when uploading
+      ) : (
+        <div
+          {...getRootProps()}
+          className={cn(
+            "w-full flex items-center justify-center border border-dashed border-[#71767a] py-6 rounded-sm",
+            isDragActive && "border-blue-700",
+          )}
+        >
+          <p>
+            Drag file here or{" "}
+            <span className="text-sky-700 underline hover:cursor-pointer">
+              choose from folder
+            </span>
+          </p>
+          <label htmlFor={`upload-${uniqueId}`} className="sr-only">
+            Drag file here or choose from folder
+          </label>
+          <input id={`upload-${uniqueId}`} {...getInputProps()} />
+        </div>
+      )}
     </>
   );
 };

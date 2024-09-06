@@ -1,0 +1,22 @@
+{
+  "eventSource": "SelfManagedKafka",
+  "bootstrapServers": "b-1.master-msk.abcdefg.a1.kafka.us-east-1.amazonaws.com:9094,b-2.master-msk.aster-msk.abcdefg.a1.kafka.us-east-1.amazonaws.com:9094,b-3.master-msk.aster-msk.abcdefg.a1.kafka.us-east-1.amazonaws.com:9094",
+  "records": {
+    "--mako--hmmm--aws.onemac.migration.cdc-0": [
+      {
+        "topic": "--mako--hmmm--aws.onemac.migration.cdc",
+        "partition": 0,
+        "offset": 10,
+        "timestamp": 1722734888826,
+        "timestampType": "CREATE_TIME",
+        "key": "TUQtOTktMTkzNQ==",
+        "value": "eyJ0aW1lc3RhbXAiOjE3MjI3MzQ4ODg1MzksImF1dGhvcml0eSI6Ik1lZGljYWlkIFNQQSIsIm9yaWdpbiI6Im1pY3JvIiwiYWRkaXRpb25hbEluZm9ybWF0aW9uIjoiYXNkZiIsImF0dGFjaG1lbnRzIjpbXSwic3VibWl0dGVyTmFtZSI6Ikdlb3JnZSBIYXJyaXNvbiIsInN1Ym1pdHRlckVtYWlsIjoiZ2VvcmdlQGV4YW1wbGUuY29tIiwiaWQiOiJNRC05OS0xOTM1IiwiYWN0aW9uVHlwZSI6IndpdGhkcmF3LXBhY2thZ2UifQ==",
+        "headers": [
+          {
+            "source": [109, 105, 99, 114, 111]
+          }
+        ]
+      }
+    ]
+  }
+}

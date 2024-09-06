@@ -16,6 +16,7 @@ import {
   RHFTextDisplay,
   ruleGenerator,
   sortFunctions,
+  stringCompare,
 } from ".";
 import {
   Button,
@@ -54,6 +55,7 @@ export const SlotField = ({
   fields,
   name,
   horizontalLayout,
+  index,
 }: SlotFieldProps) => {
   switch (rhf) {
     case "Input":
@@ -65,7 +67,7 @@ export const SlotField = ({
     case "TextDisplay":
       return (
         <p {...props} data-testid={field.name}>
-          <RHFTextDisplay text={text ?? "UNDEFINED TEXT FIELD"} />
+          <RHFTextDisplay text={text ?? "UNDEFINED TEXT FIELD"} index={index} />
         </p>
       );
     case "Upload":
@@ -77,7 +79,6 @@ export const SlotField = ({
         />
       );
     case "FieldArray":
-    case "FieldGroup":
       return (
         <RHFFieldArray
           control={control}
@@ -92,7 +93,7 @@ export const SlotField = ({
       const opts = props?.options.sort((a, b) =>
         props.customSort
           ? sortFunctions[props.customSort](a.label, b.label)
-          : a.label.localeCompare(b.label),
+          : stringCompare(a, b),
       );
 
       return (
@@ -129,34 +130,36 @@ export const SlotField = ({
     }
     case "DatePicker":
       return (
-        <Popover>
-          <PopoverTrigger asChild>
-            <FormControl>
+        <FormControl>
+          <Popover>
+            <PopoverTrigger asChild>
               <Button
                 variant={"outline"}
                 className={cn(
-                  "w-[240px] pl-3 text-left font-normal",
+                  "w-[240px] pl-3 text-left font-normal text-[#212121] justify-start",
                   !field.value && "text-muted-foreground",
                 )}
               >
+                <CalendarIcon className="h-4" />
                 {field.value ? (
-                  format(field.value, "PPP")
+                  format(new Date(field.value), "MM/dd/yyyy")
                 ) : (
                   <span>Pick a date</span>
                 )}
-                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
               </Button>
-            </FormControl>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              {...props}
-              selected={field.value}
-              // @ts-expect-error
-              onSelect={field.onChange}
-            />
-          </PopoverContent>
-        </Popover>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                {...props}
+                mode="single"
+                selected={field.value && new Date(field.value)}
+                defaultMonth={field.value && new Date(field.value)}
+                onSelect={(date) => field.onChange(date)}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+        </FormControl>
       );
     case "Checkbox":
       return (
@@ -249,6 +252,15 @@ export const SlotField = ({
             );
           })}
         </div>
+      );
+    case "Divider":
+      return (
+        <div
+          className={cn(
+            "w-full border-slate-400 border-2",
+            props?.wrapperClassName,
+          )}
+        />
       );
   }
 };

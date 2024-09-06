@@ -8,17 +8,17 @@ import {
 } from "./../_";
 import { z } from "zod";
 import {
-  OneMac,
+  newMedicaidSubmission,
   RaiIssue,
   RaiResponse,
   RaiWithdraw,
   WithdrawPackage,
   ToggleWithdrawRaiEnabled,
   UpdateId,
-} from "../../action-types";
+} from "../../events";
 import { legacyAdminChange, legacyEvent } from "./transforms";
 
-export type Document = OneMac &
+export type Document = newMedicaidSubmission.Schema &
   WithdrawPackage &
   RaiResponse &
   RaiIssue &
@@ -33,7 +33,10 @@ export type Document = OneMac &
     oldPackageId: string;
     newPackageId: string;
   } & z.infer<legacyEvent.Schema> &
-  z.infer<legacyAdminChange.Schema>;
+  z.infer<legacyAdminChange.Schema> & {
+    appkParentId: string;
+    appkParent: boolean;
+  };
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {

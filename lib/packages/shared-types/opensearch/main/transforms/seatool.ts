@@ -10,21 +10,6 @@ import {
 
 import { Authority, SEATOOL_AUTHORITIES } from "shared-types";
 
-type Flavor = "SPA" | "WAIVER" | "MEDICAID" | "CHIP";
-
-const flavorLookup = (val: number | null): null | string => {
-  if (!val) return null;
-
-  const lookup: Record<number, Flavor> = {
-    122: "WAIVER",
-    123: "WAIVER",
-    124: "CHIP",
-    125: "MEDICAID",
-  };
-
-  return lookup[val];
-};
-
 function getLeadAnalyst(eventData: SeaTool) {
   let leadAnalystOfficerId: null | number = null;
   let leadAnalystName: null | string = null;
@@ -107,7 +92,7 @@ const isInSecondClock = (
   authority: any,
 ) => {
   if (
-    authority != "CHIP" && // if it's not a chip
+    authority != Authority.CHIP_SPA && // if it's not a chip
     [
       SEATOOL_STATUS.PENDING,
       SEATOOL_STATUS.PENDING_CONCURRENCE,
@@ -121,12 +106,12 @@ const isInSecondClock = (
   return false; // otherwise, we're not
 };
 
-const getAuthority = (authorityId: number | null, id: string) => {
+const getAuthority = (authorityId: number | null) => {
   try {
     if (!authorityId) return null;
     return SEATOOL_AUTHORITIES[authorityId];
   } catch (error) {
-    console.log(`SEATOOL AUTHORITY LOOKUP ERROR: ${id} ${authorityId}`);
+    console.log(`SEATOOL AUTHORITY LOOKUP ERROR: ${authorityId}`);
     console.log(error);
     return null;
   }
@@ -141,12 +126,9 @@ export const transform = (id: string) => {
       ? SEATOOL_SPW_STATUS[data.STATE_PLAN.SPW_STATUS_ID]
       : "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-    const authorityId = data.STATE_PLAN?.PLAN_TYPE;
     const resp = {
       id,
-      flavor: flavorLookup(data.STATE_PLAN.PLAN_TYPE), // This is MEDICAID CHIP or WAIVER... our concept
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
-      actionTypeId: data.ACTIONTYPES?.[0].ACTION_ID,
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.APPROVED_EFFECTIVE_DATE ||
           data.STATE_PLAN.ACTUAL_EFFECTIVE_DATE,
@@ -158,8 +140,7 @@ export const transform = (id: string) => {
       initialIntakeNeeded:
         !leadAnalystName && !finalDispositionStatuses.includes(seatoolStatus),
       leadAnalystName,
-      authorityId: authorityId || null,
-      authority: getAuthority(authorityId, id) as Authority | null,
+      authority: getAuthority(data.STATE_PLAN?.PLAN_TYPE) as Authority | null,
       types:
         data.STATE_PLAN_SERVICETYPES?.filter(
           (type): type is NonNullable<typeof type> => type != null,
@@ -196,7 +177,7 @@ export const transform = (id: string) => {
         raiReceivedDate,
         raiWithdrawnDate,
         seatoolStatus,
-        flavorLookup(data.STATE_PLAN.PLAN_TYPE),
+        getAuthority(data.STATE_PLAN.PLAN_TYPE),
       ),
       raiWithdrawEnabled: finalDispositionStatuses.includes(seatoolStatus)
         ? false
@@ -209,9 +190,7 @@ export type Schema = ReturnType<typeof transform>;
 export const tombstone = (id: string) => {
   return {
     id,
-    flavor: null,
     actionType: null,
-    actionTypeId: null,
     approvedEffectiveDate: null,
     changedDate: null,
     description: null,
@@ -219,7 +198,6 @@ export const tombstone = (id: string) => {
     leadAnalystName: null,
     leadAnalystOfficerId: null,
     authority: null,
-    authorityId: null,
     proposedDate: null,
     raiReceivedDate: null,
     raiRequestedDate: null,

@@ -3,7 +3,7 @@ import { fireEvent, render } from "@testing-library/react";
 import { RHFSlot } from "..";
 import { Form, FormField } from "../../Inputs";
 import { Control, useForm } from "react-hook-form";
-import { RHFSlotProps } from "shared-types";
+import { DefaultFieldGroupProps, RHFSlotProps } from "shared-types";
 
 const TestWrapper = (props: RHFSlotProps & { defaultValues?: any }) => {
   const form = useForm<any>({
@@ -42,7 +42,8 @@ const testValues: RHFSlotProps = {
 
 const testValuesGroup: RHFSlotProps = {
   name: "testName",
-  rhf: "FieldGroup",
+  rhf: "FieldArray",
+  props: { ...DefaultFieldGroupProps },
   fields: [
     {
       name: "test",

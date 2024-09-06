@@ -13,8 +13,6 @@ export type InjectedConfigProperties = {
   domainCertificateArn: string;
   domainName: string;
   emailAddressLookupSecretName: string;
-  emailFromIdentity: string;
-  emailIdentityDomain: string;
   googleAnalyticsDisable: boolean;
   googleAnalyticsGTag: string;
   iamPath: string;
@@ -141,9 +139,7 @@ export class DeploymentConfig {
       typeof config.idmHomeUrl === "string" &&
       typeof config.legacyS3AccessRoleArn === "string" &&
       typeof config.useSharedOpenSearch === "boolean" &&
-      typeof config.vpcName === "string" &&
-      typeof config.emailFromIdentity === "string" &&
-      typeof config.emailIdentityDomain === "string"
+      typeof config.vpcName === "string"
     );
   }
 

@@ -15,6 +15,20 @@ interface WebformBodyProps {
   values: Record<any, any>;
 }
 
+const trimData = (data) => {
+  if (typeof data === "string") {
+    return data.trim();
+  } else if (Array.isArray(data)) {
+    return data.map(trimData);
+  } else if (typeof data === "object" && data !== null) {
+    return Object.keys(data).reduce((acc, key) => {
+      acc[key] = trimData(data[key]);
+      return acc;
+    }, {});
+  }
+  return data;
+};
+
 export function WebformBody({
   version,
   id,
@@ -31,7 +45,7 @@ export function WebformBody({
 
   const onSubmit = form.handleSubmit(
     (draft) => {
-      setSubData(JSON.stringify(draft, undefined, 2));
+      setSubData(JSON.stringify(trimData(draft), undefined, 2));
       /**
        * The validator is intended to be a replica of RHF validation.
        * To be used in backend api handlers to validate incoming/outgoing form data against document when...
@@ -51,7 +65,7 @@ export function WebformBody({
     <div className="max-w-screen-lg mx-auto p-4 py-8 lg:px-8">
       <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-6">
-          <fieldset disabled={readonly}>
+          <fieldset disabled={readonly} className="min-w-full">
             <RHFDocument document={data} {...form} />
             {!readonly && (
               <div className="flex justify-between text-blue-700 underline mb-2 mt-10">
