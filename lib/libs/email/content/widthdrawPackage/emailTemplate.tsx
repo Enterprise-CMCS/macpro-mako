@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Html } from "@react-email/components";
-import { OneMac } from "shared-types";
+import { WithdrawPackage } from "shared-types";
 import { CommonVariables } from "../..";
 import {
   SpamWarning,
@@ -9,7 +9,9 @@ import {
 } from "../email-components";
 
 // **** MEDICAID SPA
-const MedSpaCMSEmail = (props: { variables: OneMac & CommonVariables }) => {
+export const MedSpaCMSEmail = (props: {
+  variables: WithdrawPackage & CommonVariables;
+}) => {
   const variables = props.variables;
   return (
     <Html lang="en" dir="ltr">
@@ -23,7 +25,7 @@ const MedSpaCMSEmail = (props: { variables: OneMac & CommonVariables }) => {
           Name: variables.submitterName,
           Email: variables.submitterEmail,
           "Medicaid SPA Package ID": variables.id,
-          Summary: variables.additionalInformation,
+          Summary: variables.additionalInformation ?? null,
         }}
       />
       <SpamWarning />
@@ -32,7 +34,7 @@ const MedSpaCMSEmail = (props: { variables: OneMac & CommonVariables }) => {
 };
 
 export const MedSpaStateEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: WithdrawPackage & CommonVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -49,7 +51,7 @@ export const MedSpaStateEmail = (props: {
 
 // **** CHIP SPA
 export const ChipSpaCMSEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: WithdrawPackage & CommonVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -64,7 +66,7 @@ export const ChipSpaCMSEmail = (props: {
           Name: variables.submitterName,
           Email: variables.submitterEmail,
           "CHIP SPA Package ID": variables.id,
-          Summary: variables.additionalInformation,
+          Summary: variables.additionalInformation ?? null,
         }}
       />
       <SpamWarning />
@@ -73,7 +75,7 @@ export const ChipSpaCMSEmail = (props: {
 };
 
 export const ChipSpaStateEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: WithdrawPackage & CommonVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -90,7 +92,7 @@ export const ChipSpaStateEmail = (props: {
 
 // 1915b
 export const Waiver1915bCMSEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: WithdrawPackage & CommonVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -105,7 +107,7 @@ export const Waiver1915bCMSEmail = (props: {
           Name: variables.submitterName,
           Email: variables.submitterEmail,
           [`${variables.authority} Package ID`]: variables.id,
-          Summary: variables.additionalInformation,
+          Summary: variables.additionalInformation ?? null,
         }}
       />
       <SpamWarning />
@@ -114,7 +116,7 @@ export const Waiver1915bCMSEmail = (props: {
 };
 
 export const Waiver1915bStateEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: WithdrawPackage & CommonVariables;
 }) => {
   const variables = props.variables;
   return (

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Authority, OneMac } from "shared-types";
+import { Authority, EmailAddresses, OneMac } from "shared-types";
 import { CommonVariables } from "../..";
 import {
   MedSpaCMSEmail,
@@ -97,6 +97,7 @@ export const newSubmission = {
       variables: OneMac & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
+        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your ${variables.actionType} ${variables.id} has been submitted to CMS`,
         html: render(<Waiver1915bStateEmail variables={variables} />, {
           pretty: true,

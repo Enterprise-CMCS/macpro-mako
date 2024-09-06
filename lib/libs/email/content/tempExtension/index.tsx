@@ -1,12 +1,15 @@
-import { OneMac } from "shared-types";
+import { EmailAddresses, OneMac } from "shared-types";
 import { CommonVariables } from "../..";
 import { render } from "@react-email/components";
 import * as React from "react";
 import { TempExtCMSEmail, TempExtStateEmail } from "./emailTemplate";
 
 export const tempExtention = {
-  cms: async (variables: OneMac & CommonVariables) => {
+  cms: async (
+    variables: OneMac & CommonVariables & { emails: EmailAddresses },
+  ) => {
     return {
+      to: variables.emails.osgEmail,
       subject: `${variables.authority} Waiver Extension ${variables.id} Submitted`,
       html: render(<TempExtCMSEmail variables={variables} />, {
         pretty: true,
@@ -18,6 +21,7 @@ export const tempExtention = {
   },
   state: async (variables: OneMac & CommonVariables) => {
     return {
+      to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
       subject: `Your Request for the ${variables.authority} Waiver Extension ${variables.id} has been submitted to CMS`,
       html: render(<TempExtStateEmail variables={variables} />, {
         pretty: true,
