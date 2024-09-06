@@ -1,6 +1,10 @@
 import * as React from "react";
 import { Action, Authority, EmailAddresses, RaiWithdraw } from "shared-types";
-import { CommonVariables, getLatestMatchingEvent } from "../..";
+import {
+  CommonVariables,
+  AuthoritiesWithUserTypesTemplate,
+  getLatestMatchingEvent,
+} from "../..";
 import {
   MedSpaCMSEmail,
   MedSpaStateEmail,
@@ -12,7 +16,7 @@ import {
 } from "./emailTemplate";
 import { render } from "@react-email/components";
 
-export const withdrawRai = {
+export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
     cms: async (
       variables: RaiWithdraw &
@@ -27,13 +31,13 @@ export const withdrawRai = {
       return {
         to: `${variables.emails.osgEmail};${variables.emails.dpoEmail}`, // TODO Should also include CPOC and SRT
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
-        html: render(
+        html: await render(
           <MedSpaCMSEmail relatedEvent={relatedEvent} variables={variables} />,
           {
             pretty: true,
           },
         ),
-        text: render(
+        text: await render(
           <MedSpaCMSEmail relatedEvent={relatedEvent} variables={variables} />,
           {
             plainText: true,
@@ -54,7 +58,7 @@ export const withdrawRai = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`, // TODO: should go to all state users, but we dont have that info
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
-        html: render(
+        html: await render(
           <MedSpaStateEmail
             relatedEvent={relatedEvent}
             variables={variables}
@@ -63,7 +67,7 @@ export const withdrawRai = {
             pretty: true,
           },
         ),
-        text: render(
+        text: await render(
           <MedSpaStateEmail
             relatedEvent={relatedEvent}
             variables={variables}
@@ -90,13 +94,13 @@ export const withdrawRai = {
         to: variables.emails.chipInbox,
         cc: variables.emails.chipCcList, // TODO: Should also go to CPOC and SRT
         subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
-        html: render(
+        html: await render(
           <ChipSpaCMSEmail relatedEvent={relatedEvent} variables={variables} />,
           {
             pretty: true,
           },
         ),
-        text: render(
+        text: await render(
           <ChipSpaCMSEmail relatedEvent={relatedEvent} variables={variables} />,
           {
             plainText: true,
@@ -114,7 +118,7 @@ export const withdrawRai = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
-        html: render(
+        html: await render(
           <ChipSpaStateEmail
             relatedEvent={relatedEvent}
             variables={variables}
@@ -123,7 +127,7 @@ export const withdrawRai = {
             pretty: true,
           },
         ),
-        text: render(
+        text: await render(
           <ChipSpaStateEmail
             relatedEvent={relatedEvent}
             variables={variables}
@@ -146,7 +150,7 @@ export const withdrawRai = {
       return {
         to: `${variables.emails.dmcoEmail};${variables.emails.osgEmail}`, // TODO: add CPOC and SRT
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id} `,
-        html: render(
+        html: await render(
           <Waiver1915bCMSEmail
             relatedEvent={relatedEvent}
             variables={variables}
@@ -155,7 +159,7 @@ export const withdrawRai = {
             pretty: true,
           },
         ),
-        text: render(
+        text: await render(
           <Waiver1915bCMSEmail
             relatedEvent={relatedEvent}
             variables={variables}
@@ -176,7 +180,7 @@ export const withdrawRai = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`, // TODO: "All State Users"
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
-        html: render(
+        html: await render(
           <Waiver1915bStateEmail
             relatedEvent={relatedEvent}
             variables={variables}
@@ -185,7 +189,7 @@ export const withdrawRai = {
             pretty: true,
           },
         ),
-        text: render(
+        text: await render(
           <Waiver1915bStateEmail
             relatedEvent={relatedEvent}
             variables={variables}
@@ -208,13 +212,13 @@ export const withdrawRai = {
       return {
         to: `${variables.emails.osgEmail};${variables.emails.dhcbsooEmail}`, // TODO: also should go to CPOC and SRT
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id} `,
-        html: render(
+        html: await render(
           <AppKCMSEmail relatedEvent={relatedEvent} variables={variables} />,
           {
             pretty: true,
           },
         ),
-        text: render(
+        text: await render(
           <AppKCMSEmail relatedEvent={relatedEvent} variables={variables} />,
           {
             plainText: true,

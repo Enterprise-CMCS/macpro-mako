@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Authority, EmailAddresses, WithdrawPackage } from "shared-types";
-import { CommonVariables } from "../..";
+import { CommonVariables, AuthoritiesWithUserTypesTemplate } from "../..";
 import {
   MedSpaCMSEmail,
   MedSpaStateEmail,
@@ -10,7 +10,7 @@ import {
 } from "./emailTemplate";
 import { render } from "@react-email/components";
 
-export const withdrawPackage = {
+export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
     cms: async (
       variables: WithdrawPackage & CommonVariables & { emails: EmailAddresses },
@@ -19,10 +19,10 @@ export const withdrawPackage = {
         to: variables.emails.osgEmail,
         cc: variables.emails.dpoEmail,
         subject: `SPA Package ${variables.id} Withdraw Request`,
-        html: render(<MedSpaCMSEmail variables={variables} />, {
+        html: await render(<MedSpaCMSEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<MedSpaCMSEmail variables={variables} />, {
+        text: await render(<MedSpaCMSEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -33,10 +33,10 @@ export const withdrawPackage = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Medicaid SPA Package ${variables.id} Withdrawal Confirmation`,
-        html: render(<MedSpaStateEmail variables={variables} />, {
+        html: await render(<MedSpaStateEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<MedSpaStateEmail variables={variables} />, {
+        text: await render(<MedSpaStateEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -50,10 +50,10 @@ export const withdrawPackage = {
         to: variables.emails.chipCcList, // TODO: Suppose to get CPOC and SRT
         cc: variables.emails.chipCcList,
         subject: `CHIP SPA Package ${variables.id} Withdraw Request`,
-        html: render(<ChipSpaCMSEmail variables={variables} />, {
+        html: await render(<ChipSpaCMSEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<ChipSpaCMSEmail variables={variables} />, {
+        text: await render(<ChipSpaCMSEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -66,10 +66,10 @@ export const withdrawPackage = {
     //       return {
     //         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
     //         subject: `CHIP SPA Package ${variables.id} Withdrawal Confirmation`,
-    //         html: render(<ChipSpaCMSEmail variables={variables} />, {
+    //         html: await render(<ChipSpaCMSEmail variables={variables} />, {
     //           pretty: true,
     //        }),
-    //         text: render(<ChipSpaCMSEmail variables={variables} />, {
+    //         text: await render(<ChipSpaCMSEmail variables={variables} />, {
     //         plainText: true,
     //        }),
     //       };
@@ -82,10 +82,10 @@ export const withdrawPackage = {
       return {
         to: variables.emails.osgEmail,
         subject: `Waiver Package ${variables.id} Withdraw Request`,
-        html: render(<Waiver1915bCMSEmail variables={variables} />, {
+        html: await render(<Waiver1915bCMSEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<Waiver1915bCMSEmail variables={variables} />, {
+        text: await render(<Waiver1915bCMSEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -96,10 +96,10 @@ export const withdrawPackage = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `1915(b) Waiver ${variables.id} Withdrawal Confirmation`,
-        html: render(<Waiver1915bStateEmail variables={variables} />, {
+        html: await render(<Waiver1915bStateEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<Waiver1915bStateEmail variables={variables} />, {
+        text: await render(<Waiver1915bStateEmail variables={variables} />, {
           plainText: true,
         }),
       };

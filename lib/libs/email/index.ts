@@ -82,8 +82,10 @@ export interface EmailTemplate {
 }
 
 type EmailTemplateFunction<T> = (variables: T) => Promise<EmailTemplate>;
-type UserTypeOnlyTemplate = { [U in UserType]: EmailTemplateFunction<any> };
-type AuthoritiesWithUserTypesTemplate = {
+export type UserTypeOnlyTemplate = {
+  [U in UserType]: EmailTemplateFunction<any>;
+};
+export type AuthoritiesWithUserTypesTemplate = {
   [A in Authority]?: { [U in UserType]?: EmailTemplateFunction<any> };
 };
 

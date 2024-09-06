@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Authority, EmailAddresses, OneMac } from "shared-types";
-import { CommonVariables } from "../..";
+import { CommonVariables, AuthoritiesWithUserTypesTemplate } from "../..";
 import {
   MedSpaCMSEmail,
   MedSpaStateEmail,
@@ -13,7 +13,7 @@ import {
 } from "./emailTemplate";
 import { render } from "@react-email/components";
 
-export const newSubmission = {
+export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
     cms: async (
       variables: OneMac &
@@ -24,10 +24,10 @@ export const newSubmission = {
       return {
         to: variables.emails.osgEmail,
         subject: `Medicaid SPA ${variables.id} Submitted`,
-        html: render(<MedSpaCMSEmail variables={variables} />, {
+        html: await render(<MedSpaCMSEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<MedSpaCMSEmail variables={variables} />, {
+        text: await render(<MedSpaCMSEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -38,10 +38,10 @@ export const newSubmission = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your SPA ${variables.id} has been submitted to CMS`,
-        html: render(<MedSpaStateEmail variables={variables} />, {
+        html: await render(<MedSpaStateEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<MedSpaStateEmail variables={variables} />, {
+        text: await render(<MedSpaStateEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -55,10 +55,10 @@ export const newSubmission = {
         to: variables.emails.chipInbox,
         cc: variables.emails.chipCcList,
         subject: `New CHIP SPA ${variables.id} Submitted`,
-        html: render(<ChipSpaCMSEmail variables={variables} />, {
+        html: await render(<ChipSpaCMSEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<ChipSpaCMSEmail variables={variables} />, {
+        text: await render(<ChipSpaCMSEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -69,10 +69,10 @@ export const newSubmission = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your CHIP SPA ${variables.id} has been submitted to CMS`,
-        html: render(<ChipSpaStateEmail variables={variables} />, {
+        html: await render(<ChipSpaStateEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<ChipSpaStateEmail variables={variables} />, {
+        text: await render(<ChipSpaStateEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -85,10 +85,10 @@ export const newSubmission = {
       return {
         to: variables.emails.osgEmail,
         subject: `${variables.authority} ${variables.id} Submitted`,
-        html: render(<Waiver1915bCMSEmail variables={variables} />, {
+        html: await render(<Waiver1915bCMSEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<Waiver1915bCMSEmail variables={variables} />, {
+        text: await render(<Waiver1915bCMSEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -99,10 +99,10 @@ export const newSubmission = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your ${variables.actionType} ${variables.id} has been submitted to CMS`,
-        html: render(<Waiver1915bStateEmail variables={variables} />, {
+        html: await render(<Waiver1915bStateEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<Waiver1915bStateEmail variables={variables} />, {
+        text: await render(<Waiver1915bStateEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -115,10 +115,10 @@ export const newSubmission = {
       return {
         to: variables.emails.osgEmail,
         subject: `1915(c) ${variables.id} Submitted`,
-        html: render(<AppKCMSEmail variables={variables} />, {
+        html: await render(<AppKCMSEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<AppKCMSEmail variables={variables} />, {
+        text: await render(<AppKCMSEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -129,10 +129,10 @@ export const newSubmission = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your 1915(c) ${variables.id} has been submitted to CMS`,
-        html: render(<AppKStateEmail variables={variables} />, {
+        html: await render(<AppKStateEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<AppKStateEmail variables={variables} />, {
+        text: await render(<AppKStateEmail variables={variables} />, {
           plainText: true,
         }),
       };

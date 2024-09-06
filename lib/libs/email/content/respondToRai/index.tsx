@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Authority, EmailAddresses, RaiResponse } from "shared-types";
-import { CommonVariables } from "../..";
+import { CommonVariables, AuthoritiesWithUserTypesTemplate } from "../..";
 import {
   MedSpaCMSEmail,
   MedSpaStateEmail,
@@ -23,7 +23,7 @@ export const getContent = async (item: any) => {
   // gptta get the email from somewhere
 };
 
-export const respondToRai = {
+export const respondToRai: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
     cms: async (
       variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
@@ -31,10 +31,10 @@ export const respondToRai = {
       return {
         to: variables.emails.osgEmail, // TODO: CPOC and SRT should be added
         subject: `Medicaid SPA RAI Response for ${variables.id} Submitted`,
-        html: render(<MedSpaCMSEmail variables={variables} />, {
+        html: await render(<MedSpaCMSEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<MedSpaCMSEmail variables={variables} />, {
+        text: await render(<MedSpaCMSEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -48,10 +48,10 @@ export const respondToRai = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your Medicaid SPA RAI Response for ${variables.id} has been submitted to CMS`,
-        html: render(<MedSpaStateEmail variables={variables} />, {
+        html: await render(<MedSpaStateEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<MedSpaStateEmail variables={variables} />, {
+        text: await render(<MedSpaStateEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -65,10 +65,10 @@ export const respondToRai = {
         to: variables.emails.chipInbox, // TODO: CPOC and SRT should be added
         cc: variables.emails.chipCcList,
         subject: `CHIP SPA RAI Response for ${variables.id} Submitted`,
-        html: render(<ChipSpaCMSEmail variables={variables} />, {
+        html: await render(<ChipSpaCMSEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<ChipSpaCMSEmail variables={variables} />, {
+        text: await render(<ChipSpaCMSEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -79,10 +79,10 @@ export const respondToRai = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your CHIP SPA RAI Response for ${variables.id} has been submitted to CMS`,
-        html: render(<ChipSpaStateEmail variables={variables} />, {
+        html: await render(<ChipSpaStateEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<ChipSpaStateEmail variables={variables} />, {
+        text: await render(<ChipSpaStateEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -113,10 +113,10 @@ export const respondToRai = {
       return {
         to: `${variables.emails.osgEmail};${variables.emails.dmcoEmail}`, // TODO: Should be also sent to CPOC and SRT
         subject: `Waiver RAI Response for ${variables.id} Submitted`,
-        html: render(<Waiver1915bCMSEmail variables={variables} />, {
+        html: await render(<Waiver1915bCMSEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<Waiver1915bCMSEmail variables={variables} />, {
+        text: await render(<Waiver1915bCMSEmail variables={variables} />, {
           plainText: true,
         }),
       };
@@ -127,10 +127,10 @@ export const respondToRai = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`, // TODO: suppose to go to all state users but we dont have that data
         subject: `Your ${variables.authority} ${variables.authority} Response for ${variables.id} has been submitted to CMS`,
-        html: render(<Waiver1915bStateEmail variables={variables} />, {
+        html: await render(<Waiver1915bStateEmail variables={variables} />, {
           pretty: true,
         }),
-        text: render(<Waiver1915bStateEmail variables={variables} />, {
+        text: await render(<Waiver1915bStateEmail variables={variables} />, {
           plainText: true,
         }),
       };
