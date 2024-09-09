@@ -566,6 +566,7 @@ export class Api extends cdk.NestedStack {
       encryption: BucketEncryption.S3_MANAGED,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: isDev,
     });
 
     logBucket.addToResourcePolicy(
@@ -580,20 +581,15 @@ export class Api extends cdk.NestedStack {
       }),
     );
 
-    const emptyBuckets = new LC.EmptyBuckets(this, "EmptyBuckets", {
-      buckets: [logBucket],
+    new LC.EmptyBuckets(this, "EmptyBuckets", {
+      buckets: [],
     });
 
     if (!isDev) {
-      const cloudwatchToS3 = new LC.CloudWatchToS3(
-        this,
-        "CloudWatchToS3Construct",
-        {
-          logGroup: waf.logGroup,
-          bucket: logBucket,
-        },
-      );
-      cloudwatchToS3.node.addDependency(emptyBuckets);
+      new LC.CloudWatchToS3(this, "CloudWatchToS3Construct", {
+        logGroup: waf.logGroup,
+        bucket: logBucket,
+      });
     }
 
     return { apiGateway: api };
