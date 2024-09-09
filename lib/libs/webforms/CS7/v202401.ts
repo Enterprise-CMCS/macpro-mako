@@ -874,6 +874,10 @@ export const v202401: FormSchema = {
               },
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: noLeadingTrailingWhitespace,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
             },
             {
