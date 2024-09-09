@@ -1,4 +1,5 @@
 import { DependencyRule, RHFOption, RHFSlotProps, Section } from "shared-types";
+import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 export enum SectionName {
   HIO = "HIO",
@@ -323,6 +324,11 @@ export function deliverySystemCharactaristics({
                     name: "how-provided",
                     rules: {
                       required: "* Required",
+                      pattern: {
+                        value: noLeadingTrailingWhitespace,
+                        message:
+                          "Must not have leading or trailing whitespace.",
+                      },
                     },
                     props: {
                       className: "min-h-[76px]",
@@ -408,6 +414,11 @@ export function deliverySystemCharactaristics({
                       name: "other-description",
                       rules: {
                         required: "* Required",
+                        pattern: {
+                          value: noLeadingTrailingWhitespace,
+                          message:
+                            "Must not have leading or trailing whitespace.",
+                        },
                       },
                     },
                   ],
@@ -607,6 +618,11 @@ export function participationExclusions({
                       name: "other-exclusions",
                       rules: {
                         required: "* Required",
+                        pattern: {
+                          value: noLeadingTrailingWhitespace,
+                          message:
+                            "Must not have leading or trailing whitespace.",
+                        },
                       },
                       props: {
                         className: "min-h-[76px]",
@@ -660,6 +676,11 @@ export function participationRequirements({
                       labelClassName: "font-bold",
                       rules: {
                         required: "* Required",
+                        pattern: {
+                          value: noLeadingTrailingWhitespace,
+                          message:
+                            "Must not have leading or trailing whitespace.",
+                        },
                       },
                       props: {
                         className: "min-h-[133px]",
@@ -795,6 +816,10 @@ export function disenrollment({
             name: "disenrollment-notification",
             rules: {
               required: "* Required",
+              pattern: {
+                value: noLeadingTrailingWhitespace,
+                message: "Must not have leading or trailing whitespace.",
+              },
             },
             props: {
               className: "min-h-[114px]",
@@ -808,6 +833,12 @@ export function disenrollment({
             name: "additional-disenrollment-cause",
             props: {
               className: "min-h-[114px]",
+            },
+            rules: {
+              pattern: {
+                value: noLeadingTrailingWhitespace,
+                message: "Must not have leading or trailing whitespace.",
+              },
             },
           },
           {
@@ -883,6 +914,10 @@ export function disenrollment({
             name: "for-cause-reasons",
             rules: {
               required: "* Required",
+              pattern: {
+                value: noLeadingTrailingWhitespace,
+                message: "Must not have leading or trailing whitespace.",
+              },
             },
             props: {
               className: "min-h-[76px]",
@@ -896,6 +931,10 @@ export function disenrollment({
             name: "disenrollment-processes",
             rules: {
               required: "* Required",
+              pattern: {
+                value: noLeadingTrailingWhitespace,
+                message: "Must not have leading or trailing whitespace.",
+              },
             },
             props: {
               className: "min-h-[76px]",
@@ -941,6 +980,11 @@ export function disenrollment({
                                 name: "disenrollment-request-reasons",
                                 rules: {
                                   required: "* Required",
+                                  pattern: {
+                                    value: noLeadingTrailingWhitespace,
+                                    message:
+                                      "Must not have leading or trailing whitespace.",
+                                  },
                                 },
                               },
                             ],
@@ -998,6 +1042,12 @@ export function additionalInfo({
             name: "additional-details",
             props: {
               className: "min-h-[114px]",
+            },
+            rules: {
+              pattern: {
+                value: noLeadingTrailingWhitespace,
+                message: "Must not have leading or trailing whitespace.",
+              },
             },
           },
         ],
@@ -1059,6 +1109,11 @@ export function payments({
                       name: "other-payment",
                       rules: {
                         required: "* Required",
+                        pattern: {
+                          value: noLeadingTrailingWhitespace,
+                          message:
+                            "Must not have leading or trailing whitespace.",
+                        },
                       },
                     },
                   ],

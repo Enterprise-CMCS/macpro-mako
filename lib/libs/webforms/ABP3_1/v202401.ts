@@ -1,4 +1,5 @@
 import { FormSchema } from "shared-types";
+import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 export const v202401: FormSchema = {
   header:
@@ -225,7 +226,8 @@ export const v202401: FormSchema = {
                                           rules: {
                                             required: "* Required",
                                             pattern: {
-                                              value: /^\S(.*\S)?$/,
+                                              value:
+                                                noLeadingTrailingWhitespace,
                                               message:
                                                 "Must not have leading or trailing whitespace.",
                                             },
@@ -1862,7 +1864,7 @@ export const v202401: FormSchema = {
               },
               rules: {
                 pattern: {
-                  value: /^\S(.*\S)?$/,
+                  value: noLeadingTrailingWhitespace,
                   message: "Must not have leading or trailing whitespace.",
                 },
               },

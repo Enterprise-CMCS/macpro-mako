@@ -1,4 +1,5 @@
 import { FormSchema } from "shared-types";
+import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 export const v202401: FormSchema = {
   header: "ABP 4: Alternative Benefit Plan cost sharing",
@@ -100,7 +101,7 @@ export const v202401: FormSchema = {
               labelClassName: "font-bold",
               rules: {
                 pattern: {
-                  value: /^\S(.*\S)?$/,
+                  value: noLeadingTrailingWhitespace,
                   message: "Must not have leading or trailing whitespace.",
                 },
               },
