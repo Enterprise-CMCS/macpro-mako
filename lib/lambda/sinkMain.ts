@@ -132,11 +132,13 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
 
   const openSearchRecords = await os.getItems(osDomain, indexNamespace, ids);
   console.log(openSearchRecords);
-  const existingRecordsLookup = openSearchRecords.reduce((acc: any, item) => {
+  const existingRecordsLookup = openSearchRecords.reduce<
+    Record<string, number>
+  >((acc, item) => {
     const epochDate = new Date(item.changedDate).getTime(); // Convert `changedDate` to epoch number
     acc[item.id] = epochDate; // Use `id` as the key and epoch date as the value
     return acc;
-  }, {} as Record<string, number>);
+  }, {});
 
   for (const kafkaRecord of kafkaRecords) {
     const { key, value } = kafkaRecord;
