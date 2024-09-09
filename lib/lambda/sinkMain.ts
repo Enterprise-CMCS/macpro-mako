@@ -12,7 +12,8 @@ import { Index } from "shared-types/opensearch";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 const osDomain = process.env.osDomain;
-if (!osDomain) {
+const indexNamespace = process.env.indexNamespace;
+if (!indexNamespace || !osDomain) {
   throw new Error("Missing required environment variable(s)");
 }
 const index: Index = `${process.env.indexNamespace}main`;
@@ -129,16 +130,13 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
     return decodedId;
   });
 
-  const openSearchRecords = await os.getItems(osDomain, index, ids);
+  const openSearchRecords = await os.getItems(osDomain, indexNamespace, ids);
   console.log(openSearchRecords);
-  const existingRecordsLookup = openSearchRecords.reduce(
-    (acc: any, item: any) => {
-      const epochDate = new Date(item.changedDate).getTime(); // Convert `changedDate` to epoch number
-      acc[item.id] = epochDate; // Use `id` as the key and epoch date as the value
-      return acc;
-    },
-    {} as Record<string, number>,
-  );
+  const existingRecordsLookup = openSearchRecords.reduce((acc: any, item) => {
+    const epochDate = new Date(item.changedDate).getTime(); // Convert `changedDate` to epoch number
+    acc[item.id] = epochDate; // Use `id` as the key and epoch date as the value
+    return acc;
+  }, {} as Record<string, number>);
 
   for (const kafkaRecord of kafkaRecords) {
     const { key, value } = kafkaRecord;

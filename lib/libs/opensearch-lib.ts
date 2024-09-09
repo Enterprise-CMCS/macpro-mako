@@ -6,6 +6,8 @@ import { aws4Interceptor } from "aws4-axios";
 import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
 import { opensearch } from "shared-types";
 import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
+import * as main from "shared-types/opensearch/main";
+import { decodeBase64WithUtf8 } from "shared-utils";
 
 let client: Client;
 
@@ -211,12 +213,12 @@ export async function getItem(
 
 export async function getItems(
   host: string,
-  index: opensearch.Index,
+  indexNamespace: string,
   ids: string[],
-) {
+): Promise<main.Document[]> {
   try {
+    const index = `${indexNamespace}main`;
     client = client || (await getClient(host));
-
     const response = await client.mget({
       index,
       body: {
@@ -224,17 +226,16 @@ export async function getItems(
       },
     });
 
-    // Corrected map function to properly decode _source field if found
     return response.body.docs
-      .map((doc: any) => {
-        if (doc.found) {
-          return decodeUtf8(doc._source); // Properly decode the _source field
+      .map((doc: main.ItemResult) => {
+        if (doc.found && doc._source) {
+          return decodeBase64WithUtf8(doc._source);
         } else {
           console.error(`Document with ID ${doc._id} not found.`);
           return null; // Handle 'not found' documents as needed
         }
       })
-      .filter((doc: any) => doc !== null); // Filter out any null entries
+      .filter((doc: any): doc is Document => doc !== null); // Filter out any null entries
   } catch (e) {
     console.log({ e });
     return [];
