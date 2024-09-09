@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import {
   Banner,
   Button,
@@ -102,15 +102,14 @@ export const ActionForm = <
         body: formData,
       });
 
-      const documentPollerId =
-        typeof documentPollerArgs.property === "function"
-          ? documentPollerArgs.property(formData)
-          : formData[documentPollerArgs.property];
+      const { documentChecker, property } = documentPollerArgs;
 
-      const poller = documentPoller(
-        documentPollerId,
-        documentPollerArgs.documentChecker,
-      );
+      const documentPollerId =
+        typeof property === "function"
+          ? property(formData)
+          : formData[property];
+
+      const poller = documentPoller(documentPollerId, documentChecker);
       await poller.startPollingData();
 
       const formOrigins = getFormOrigin({ authority, id });
@@ -132,6 +131,13 @@ export const ActionForm = <
     }
   });
 
+  const hasProgressLossReminder = useMemo(
+    () =>
+      Fields({ ...form }) !== null ||
+      schema.shape.attachments instanceof z.ZodObject,
+    [schema.shape.attachments, Fields, form],
+  );
+
   return (
     <SimplePageContainer>
       <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
@@ -147,7 +153,9 @@ export const ActionForm = <
             </FieldsLayout>
           ) : (
             <SectionCard title={title}>
-              <FormIntroText />
+              <FormIntroText
+                hasProgressLossReminder={hasProgressLossReminder}
+              />
               <Fields {...form} />
             </SectionCard>
           )}
@@ -169,10 +177,7 @@ export const ActionForm = <
             </SectionCard>
           )}
           <PreSubmissionMessage
-            hasProgressLossReminder={
-              Fields.length > 0 ||
-              schema.shape.attachments instanceof z.ZodObject
-            }
+            hasProgressLossReminder={hasProgressLossReminder}
           />
           <section className="flex justify-end gap-2 p-4 ml-auto">
             <Button
