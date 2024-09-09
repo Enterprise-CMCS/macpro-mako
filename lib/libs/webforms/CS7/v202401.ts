@@ -560,7 +560,7 @@ export const v202401: FormSchema = {
                         dependency: {
                           conditions: [
                             {
-                              name: "cs7_income-standard-city-age-ranges-overlap",
+                              name: "cs7_income-standard-exceptions_city-age-ranges-overlap",
                               type: "expectedValue",
                               expectedValue: "yes",
                             },
@@ -698,7 +698,7 @@ export const v202401: FormSchema = {
                         dependency: {
                           conditions: [
                             {
-                              name: "cs7_income-standard-other-age-ranges-overlap",
+                              name: "cs7_income-standard-exceptions_other-age-ranges-overlap",
                               type: "expectedValue",
                               expectedValue: "yes",
                             },
