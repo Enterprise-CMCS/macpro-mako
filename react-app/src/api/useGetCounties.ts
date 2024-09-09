@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { FULL_STATES } from "shared-types";
 
 const fetchPopulationData = async (stateStrings: string) => {
   const response = await fetch(
@@ -10,12 +9,10 @@ const fetchPopulationData = async (stateStrings: string) => {
     throw new Error("Network response was not ok");
   }
   const data = await response.json();
-  //   return data;
   return data.filter((_, index) => index !== 0).map((item) => item[0]);
 };
 
 export const usePopulationData = (stateStrings: string) => {
-  console.log(stateStrings);
   return useQuery(
     ["populationData", stateStrings],
     () => fetchPopulationData(stateStrings),
