@@ -226,16 +226,32 @@ export async function getItems(
       },
     });
 
-    return response.body.docs
-      .map((doc: main.ItemResult) => {
-        if (doc.found && doc._source) {
-          return decodeBase64WithUtf8(doc._source);
-        } else {
-          console.error(`Document with ID ${doc._id} not found.`);
-          return null; // Handle 'not found' documents as needed
+    const retVal: main.Document[] = [];
+
+    response.body.docs.forEach((doc: any) => {
+      if (doc.found && doc._source) {
+        const decoded = decodeBase64WithUtf8(doc._source);
+        if (!decoded) {
+          console.error(
+            `Decoded value is null or empty for document with ID ${doc._id}.`,
+          );
+          return;
         }
-      })
-      .filter((doc: any): doc is Document => doc !== null); // Filter out any null entries
+        try {
+          const parsedDocument = JSON.parse(decoded) as main.Document;
+          retVal.push(parsedDocument);
+        } catch (e) {
+          console.error(
+            `Failed to parse JSON for document with ID ${doc._id}:`,
+            e,
+          );
+        }
+      } else {
+        console.error(`Document with ID ${doc._id} not found.`);
+      }
+    });
+
+    return retVal;
   } catch (e) {
     console.log({ e });
     return [];
