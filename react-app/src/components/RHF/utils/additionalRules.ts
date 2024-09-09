@@ -131,8 +131,21 @@ export const valReducer = (
       return {
         ...valSet,
         [valName]: (value, formValues) => {
-          const fromValue = parseInt(formValues[rule.fromField], 10);
-          const toValue = parseInt(value, 10);
+          const fromValue = parseInt(value, 10);
+          const fieldArray = formValues[rule.fieldName];
+
+          if (!fieldArray || !Array.isArray(fieldArray)) {
+            return true; // Skip validation if field array is not valid
+          }
+
+          const currentIndex = fieldArray.findIndex(
+            (item) => item[rule.fromField] === value,
+          );
+          if (currentIndex === -1) {
+            return true; // Skip validation if current item is not found
+          }
+
+          const toValue = parseInt(fieldArray[currentIndex][rule.toField], 10);
 
           if (isNaN(fromValue) || isNaN(toValue)) {
             return true; // Skip validation if values are not valid numbers
@@ -141,7 +154,7 @@ export const valReducer = (
           return (
             toValue > fromValue ||
             rule.message ||
-            "To value must be greater than From value"
+            "To age must be greater than From age"
           );
         },
       };

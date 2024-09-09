@@ -61,13 +61,6 @@ export const v202401: FormSchema = {
                       toField: "to-age",
                       options: ageOptions,
                     },
-                    {
-                      type: "toGreaterThanFrom",
-                      fieldName: "age-and-house-inc-range",
-                      fromField: "from-age",
-                      toField: "to-age",
-                      message: "To age must be greater than From age",
-                    },
                   ],
                   fields: [
                     {
@@ -83,6 +76,15 @@ export const v202401: FormSchema = {
                       props: {
                         options: ageOptions,
                       },
+                      addtnlRules: [
+                        {
+                          type: "toGreaterThanFrom",
+                          fieldName: "age-and-house-inc-range",
+                          fromField: "from-age",
+                          toField: "to-age",
+                          message: "To age must be greater than From age",
+                        },
+                      ],
                     },
                     {
                       rhf: "Select",
