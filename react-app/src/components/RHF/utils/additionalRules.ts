@@ -95,8 +95,12 @@ export const valReducer = (
         ...valSet,
         [valName]: (_, fields) => {
           const fieldArray = fields[rule.fieldName];
-          if (!fieldArray || !Array.isArray(fieldArray)) {
-            return true;
+          if (
+            !fieldArray ||
+            !Array.isArray(fieldArray) ||
+            fieldArray.length <= 1
+          ) {
+            return true; // No validation needed for 0 or 1 entry
           }
 
           const fromField = rule.fromField;
@@ -106,13 +110,6 @@ export const valReducer = (
             from: parseInt(item[fromField], 10),
             to: parseInt(item[toField], 10),
           }));
-
-          // Check if from is less than to for each field array
-          for (const item of range) {
-            if (item.from >= item.to) {
-              return "From age must be less than To age";
-            }
-          }
 
           // Sort ranges by from value
           range.sort((a, b) => a.from - b.from);
