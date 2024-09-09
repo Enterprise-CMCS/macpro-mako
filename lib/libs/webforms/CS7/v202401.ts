@@ -1,4 +1,5 @@
 import { FormSchema } from "shared-types";
+import { noLeadingTrailingWhitespace } from "shared-utils";
 
 // Creates an array of options for the age select field, 0-19 inclusive
 const ageOptions = Array.from({ length: 20 }, (_, i) => ({
@@ -205,6 +206,10 @@ export const v202401: FormSchema = {
               },
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: noLeadingTrailingWhitespace,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
               formItemClassName:
                 "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
@@ -260,6 +265,10 @@ export const v202401: FormSchema = {
               },
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: noLeadingTrailingWhitespace,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
               dependency: {
                 conditions: [
@@ -416,6 +425,11 @@ export const v202401: FormSchema = {
                         },
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: noLeadingTrailingWhitespace,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                         formItemClassName:
                           "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
@@ -554,6 +568,11 @@ export const v202401: FormSchema = {
                         },
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: noLeadingTrailingWhitespace,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                         formItemClassName:
                           "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
@@ -692,6 +711,11 @@ export const v202401: FormSchema = {
                         },
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: noLeadingTrailingWhitespace,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                         formItemClassName:
                           "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
@@ -850,6 +874,23 @@ export const v202401: FormSchema = {
               },
               rules: {
                 required: "* Required",
+              },
+            },
+            {
+              rhf: "Textarea",
+              label:
+                "Describe the program, including additional benefits offered.",
+              labelClassName: "font-bold",
+              name: "describe-the-program",
+              props: {
+                className: "min-h-[114px]",
+              },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: noLeadingTrailingWhitespace,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
             },
           ],
