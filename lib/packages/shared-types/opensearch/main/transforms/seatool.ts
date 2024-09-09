@@ -133,6 +133,7 @@ export const transform = (id: string) => {
         data.STATE_PLAN.APPROVED_EFFECTIVE_DATE ||
           data.STATE_PLAN.ACTUAL_EFFECTIVE_DATE,
       ),
+      changed_date: data.STATE_PLAN.CHANGED_DATE,
       description: data.STATE_PLAN.SUMMARY_MEMO,
       finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
       leadAnalystOfficerId,
