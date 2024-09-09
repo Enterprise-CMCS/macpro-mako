@@ -30,7 +30,7 @@ export const OsFiltering: FC<{
           disabled={!!props.disabled}
         />
         <div className="flex justify-center flex-row gap-2">
-          <OsExportData columns={props.columns} />
+          <OsExportData columns={props.columns} disabled={context?.data?.total.value === 0}/>
           <OsFilterDrawer />
         </div>
       </div>

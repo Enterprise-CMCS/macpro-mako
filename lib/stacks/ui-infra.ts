@@ -38,7 +38,7 @@ export class UiInfra extends cdk.NestedStack {
     distribution: cdk.aws_cloudfront.CloudFrontWebDistribution;
     bucket: cdk.aws_s3.Bucket;
   } {
-    const { project, stage, domainCertificateArn, domainName } = props;
+    const { project, stage, isDev, domainCertificateArn, domainName } = props;
 
     const domainCertificate =
       domainCertificateArn && domainCertificateArn.trim()
@@ -60,6 +60,7 @@ export class UiInfra extends cdk.NestedStack {
       websiteErrorDocument: "index.html",
       encryption: cdk.aws_s3.BucketEncryption.S3_MANAGED,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
     });
 
     // Deny insecure requests to the bucket
@@ -82,8 +83,9 @@ export class UiInfra extends cdk.NestedStack {
       encryption: cdk.aws_s3.BucketEncryption.S3_MANAGED,
       publicReadAccess: false,
       blockPublicAccess: cdk.aws_s3.BlockPublicAccess.BLOCK_ALL,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
       objectOwnership: cdk.aws_s3.ObjectOwnership.BUCKET_OWNER_PREFERRED,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: isDev,
     });
 
     // Deny insecure requests to the bucket
@@ -210,6 +212,7 @@ export class UiInfra extends cdk.NestedStack {
       encryption: BucketEncryption.S3_MANAGED,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: isDev,
     });
 
     logBucket.addToResourcePolicy(
@@ -224,19 +227,16 @@ export class UiInfra extends cdk.NestedStack {
       }),
     );
 
-    const emptyBuckets = new LC.EmptyBuckets(this, "EmptyBuckets", {
-      buckets: [bucket, loggingBucket, logBucket],
+    new LC.EmptyBuckets(this, "EmptyBuckets", {
+      buckets: [],
     });
 
-    const cloudwatchToS3 = new LC.CloudWatchToS3(
-      this,
-      "CloudWatchToS3Construct",
-      {
+    if (!isDev) {
+      new LC.CloudWatchToS3(this, "CloudWatchToS3Construct", {
         logGroup: waf.logGroup,
         bucket: logBucket,
-      },
-    );
-    cloudwatchToS3.node.addDependency(emptyBuckets);
+      });
+    }
 
     return { distribution, bucket };
   }

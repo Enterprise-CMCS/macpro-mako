@@ -9,6 +9,7 @@ import * as LC from "local-constructs";
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;
   stage: string;
+  isDev: boolean;
   stack: string;
   vpc: cdk.aws_ec2.IVpc;
   applicationEndpoint: string;
@@ -30,6 +31,7 @@ export class Email extends cdk.NestedStack {
     const {
       project,
       stage,
+      isDev,
       stack,
       vpc,
       emailFromIdentity,
@@ -90,6 +92,7 @@ export class Email extends cdk.NestedStack {
     const emailDataBucket = new cdk.aws_s3.Bucket(this, "EmailDataBucket", {
       versioned: true,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: isDev,
     });
 
     emailDataBucket.addToResourcePolicy(
