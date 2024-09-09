@@ -38,7 +38,7 @@ export class UiInfra extends cdk.NestedStack {
     distribution: cdk.aws_cloudfront.CloudFrontWebDistribution;
     bucket: cdk.aws_s3.Bucket;
   } {
-    const { project, stage, domainCertificateArn, domainName } = props;
+    const { project, stage, isDev, domainCertificateArn, domainName } = props;
 
     const domainCertificate =
       domainCertificateArn && domainCertificateArn.trim()
@@ -228,15 +228,17 @@ export class UiInfra extends cdk.NestedStack {
       buckets: [bucket, loggingBucket, logBucket],
     });
 
-    const cloudwatchToS3 = new LC.CloudWatchToS3(
-      this,
-      "CloudWatchToS3Construct",
-      {
-        logGroup: waf.logGroup,
-        bucket: logBucket,
-      },
-    );
-    cloudwatchToS3.node.addDependency(emptyBuckets);
+    if (!isDev) {
+      const cloudwatchToS3 = new LC.CloudWatchToS3(
+        this,
+        "CloudWatchToS3Construct",
+        {
+          logGroup: waf.logGroup,
+          bucket: logBucket,
+        },
+      );
+      cloudwatchToS3.node.addDependency(emptyBuckets);
+    }
 
     return { distribution, bucket };
   }
