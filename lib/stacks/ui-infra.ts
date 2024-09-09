@@ -228,7 +228,7 @@ export class UiInfra extends cdk.NestedStack {
       buckets: [bucket, loggingBucket, logBucket],
     });
 
-    if (isDev) {
+    if (!isDev) {
       const cloudwatchToS3 = new LC.CloudWatchToS3(
         this,
         "CloudWatchToS3Construct",
