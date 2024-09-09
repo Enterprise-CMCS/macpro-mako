@@ -44,7 +44,7 @@ export class Api extends cdk.NestedStack {
   private initializeResources(props: ApiStackProps): {
     apiGateway: cdk.aws_apigateway.RestApi;
   } {
-    const { project, stage, stack } = props;
+    const { project, stage, isDev, stack } = props;
     const {
       vpc,
       privateSubnets,
@@ -584,15 +584,17 @@ export class Api extends cdk.NestedStack {
       buckets: [logBucket],
     });
 
-    const cloudwatchToS3 = new LC.CloudWatchToS3(
-      this,
-      "CloudWatchToS3Construct",
-      {
-        logGroup: waf.logGroup,
-        bucket: logBucket,
-      },
-    );
-    cloudwatchToS3.node.addDependency(emptyBuckets);
+    if (isDev) {
+      const cloudwatchToS3 = new LC.CloudWatchToS3(
+        this,
+        "CloudWatchToS3Construct",
+        {
+          logGroup: waf.logGroup,
+          bucket: logBucket,
+        },
+      );
+      cloudwatchToS3.node.addDependency(emptyBuckets);
+    }
 
     return { apiGateway: api };
   }
