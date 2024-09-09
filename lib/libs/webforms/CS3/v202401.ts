@@ -53,6 +53,22 @@ export const v202401: FormSchema = {
                   props: {
                     appendText: "Add range",
                   },
+                  addtnlRules: [
+                    {
+                      type: "noGapsOrOrverlaps",
+                      fieldName: "age-and-house-inc-range",
+                      fromField: "from-age",
+                      toField: "to-age",
+                      options: ageOptions,
+                    },
+                    {
+                      type: "toGreaterThanFrom",
+                      fieldName: "age-and-house-inc-range",
+                      fromField: "from-age",
+                      toField: "to-age",
+                      message: "To age must be greater than From age",
+                    },
+                  ],
                   fields: [
                     {
                       rhf: "Select",
@@ -63,15 +79,7 @@ export const v202401: FormSchema = {
                       rules: {
                         required: "* Required",
                       },
-                      addtnlRules: [
-                        {
-                          type: "noGapsOrOrverlaps",
-                          fieldName: "age-and-house-inc-range",
-                          fromField: "from-age",
-                          toField: "to-age",
-                          options: ageOptions,
-                        },
-                      ],
+
                       props: {
                         options: ageOptions,
                       },

@@ -130,6 +130,24 @@ export const valReducer = (
           return true; // No issues found
         },
       };
+    case "toGreaterThanFrom":
+      return {
+        ...valSet,
+        [valName]: (value, formValues) => {
+          const fromValue = parseInt(formValues[rule.fromField], 10);
+          const toValue = parseInt(value, 10);
+
+          if (isNaN(fromValue) || isNaN(toValue)) {
+            return true; // Skip validation if values are not valid numbers
+          }
+
+          return (
+            toValue > fromValue ||
+            rule.message ||
+            "To value must be greater than From value"
+          );
+        },
+      };
     default:
       return { ...valSet };
   }
