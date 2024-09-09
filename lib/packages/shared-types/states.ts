@@ -65,7 +65,7 @@ export type StateCode = (typeof STATE_CODES)[number];
 export const FULL_STATES = [
   { label: "Alabama", value: "AL", code: "01" },
   { label: "Alaska", value: "AK", code: "02" },
-  { label: "American Samoa", value: "AS", code: "00" }, // Added for completeness
+  { label: "American Samoa", value: "AS", code: "00" },
   { label: "Arizona", value: "AZ", code: "04" },
   { label: "Arkansas", value: "AR", code: "05" },
   { label: "California", value: "CA", code: "06" },
@@ -75,7 +75,7 @@ export const FULL_STATES = [
   { label: "District of Columbia", value: "DC", code: "11" },
   { label: "Florida", value: "FL", code: "12" },
   { label: "Georgia", value: "GA", code: "13" },
-  { label: "Guam", value: "GU", code: "00" }, // Added for completeness
+  { label: "Guam", value: "GU", code: "00" },
   { label: "Hawaii", value: "HI", code: "15" },
   { label: "Idaho", value: "ID", code: "16" },
   { label: "Illinois", value: "IL", code: "17" },
@@ -100,7 +100,7 @@ export const FULL_STATES = [
   { label: "New York", value: "NY", code: "36" },
   { label: "North Carolina", value: "NC", code: "37" },
   { label: "North Dakota", value: "ND", code: "38" },
-  { label: "Northern Mariana Islands", value: "MP", code: "00" }, // Added for completeness
+  { label: "Northern Mariana Islands", value: "MP", code: "00" },
   { label: "Ohio", value: "OH", code: "39" },
   { label: "Oklahoma", value: "OK", code: "40" },
   { label: "Oregon", value: "OR", code: "41" },
@@ -113,7 +113,7 @@ export const FULL_STATES = [
   { label: "Texas", value: "TX", code: "48" },
   { label: "Utah", value: "UT", code: "49" },
   { label: "Vermont", value: "VT", code: "50" },
-  { label: "Virgin Islands", value: "VI", code: "00" }, // Added for completeness
+  { label: "Virgin Islands", value: "VI", code: "00" },
   { label: "Virginia", value: "VA", code: "51" },
   { label: "Washington", value: "WA", code: "53" },
   { label: "West Virginia", value: "WV", code: "54" },
