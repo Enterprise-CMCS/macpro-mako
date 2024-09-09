@@ -46,6 +46,7 @@ export class Uploads extends cdk.NestedStack {
       removalPolicy: isDev
         ? cdk.RemovalPolicy.DESTROY
         : cdk.RemovalPolicy.RETAIN,
+      autoDeleteObjects: isDev,
     });
 
     attachmentsBucket.addToResourcePolicy(
@@ -83,7 +84,7 @@ export class Uploads extends cdk.NestedStack {
     );
 
     new LC.EmptyBuckets(this, "EmptyBuckets", {
-      buckets: [attachmentsBucket, scanner.clamDefsBucket],
+      buckets: [],
     });
 
     return { attachmentsBucket };
