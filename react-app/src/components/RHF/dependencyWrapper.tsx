@@ -10,20 +10,19 @@ const checkTriggeringValue = (
     switch (d.type) {
       case "expectedValue":
         if (Array.isArray(dependentValue[i])) {
-          return (dependentValue[i] as unknown[]).includes(d.expectedValue);
+          return dependentValue[i].includes(d.expectedValue);
         } else {
           return dependentValue[i] === d?.expectedValue;
         }
       case "valueExists":
         return (
-          (Array.isArray(dependentValue[i]) &&
-            (dependentValue[i] as unknown[]).length > 0) ||
+          (Array.isArray(dependentValue[i]) && dependentValue[i].length > 0) ||
           (!Array.isArray(dependentValue[i]) && !!dependentValue[i])
         );
       case "valueNotExist":
         return (
           (Array.isArray(dependentValue[i]) &&
-            (dependentValue[i] as unknown[]).length === 0) ||
+            dependentValue[i].length === 0) ||
           !dependentValue[i]
         );
     }
