@@ -20,7 +20,7 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
 
   const { data: populationData } = usePopulationData(stateNumericCodesString);
   const objectOfCounties = populationData?.map((county) => {
-    return { label: county, value: county };
+    return { label: county.split(",")[0], value: county };
   });
 
   if (userData) {
