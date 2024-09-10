@@ -97,18 +97,25 @@ export const SlotField = ({
         />
       );
     case "Select": {
-      const opts =
-        props?.countySelect && userContext?.user?.counties
-          ? userContext.user.counties.sort((a, b) =>
+      let opts;
+      switch (props?.apiCall) {
+        case undefined:
+          opts = props?.options.sort((a, b) =>
+            props.customSort
+              ? sortFunctions[props.customSort](a.label, b.label)
+              : stringCompare(a, b),
+          );
+          break;
+
+        case "countySelect":
+          opts =
+            userContext?.user?.counties.sort((a, b) =>
               props.customSort
                 ? sortFunctions[props.customSort](a.label, b.label)
                 : stringCompare(a, b),
-            )
-          : props?.options.sort((a, b) =>
-              props.customSort
-                ? sortFunctions[props.customSort](a.label, b.label)
-                : stringCompare(a, b),
-            );
+            ) || [];
+          break;
+      }
 
       return (
         <Select

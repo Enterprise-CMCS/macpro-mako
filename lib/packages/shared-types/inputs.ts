@@ -32,7 +32,7 @@ export type SelectProps = React.ComponentPropsWithoutRef<
 > & {
   options?: { label: string; value: any }[];
   className?: string;
-  countySelect?: boolean;
+  apiCall?: string;
 };
 
 export interface MultiselectOption {

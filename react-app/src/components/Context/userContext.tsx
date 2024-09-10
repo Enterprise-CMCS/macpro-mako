@@ -24,7 +24,7 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
     return { label: county.split(",")[0], value: county };
   });
 
-  if (userData?.user && populationData) {
+  if (userData?.user && objectOfCounties) {
     userData.user.counties = objectOfCounties;
   }
 
