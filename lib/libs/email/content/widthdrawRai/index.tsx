@@ -14,7 +14,7 @@ import {
   Waiver1915bStateEmail,
   AppKCMSEmail,
 } from "./emailTemplate";
-import { render } from "@react-email/components";
+import { render } from "@react-email/render";
 
 export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {

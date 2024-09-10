@@ -1,6 +1,6 @@
 import { EmailAddresses, OneMac } from "shared-types";
 import { CommonVariables, UserTypeOnlyTemplate } from "../..";
-import { render } from "@react-email/components";
+import { render } from "@react-email/render";
 import * as React from "react";
 import { TempExtCMSEmail, TempExtStateEmail } from "./emailTemplate";
 

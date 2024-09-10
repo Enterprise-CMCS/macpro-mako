@@ -11,7 +11,7 @@ import {
   AppKCMSEmail,
   AppKStateEmail,
 } from "./emailTemplate";
-import { render } from "@react-email/components";
+import { render } from "@react-email/render";
 
 export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {

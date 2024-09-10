@@ -9,7 +9,7 @@ import {
   Waiver1915bCMSEmail,
   Waiver1915bStateEmail,
 } from "./emailTemplate";
-import { render } from "@react-email/components";
+import { render } from "@react-email/render";
 
 export const getContent = async (item: any) => {
   if (!item._source.leadAnalystOfficerId) {
