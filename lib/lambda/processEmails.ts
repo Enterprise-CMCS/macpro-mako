@@ -114,6 +114,7 @@ export async function processAndSendEmails(
 
   const sendEmailPromises = templates.map(async (template) => {
     const filledTemplate = await template(templateVariables);
+    console.log("filledTemplate: ", JSON.stringify(filledTemplate, null, 2));
 
     await sendEmail({
       to: filledTemplate.to,
@@ -125,7 +126,8 @@ export async function processAndSendEmails(
     });
   });
 
-  await Promise.all(sendEmailPromises);
+  const results = await Promise.all(sendEmailPromises);
+  console.log("results: ", JSON.stringify(results, null, 2));
 }
 
 export async function sendEmail(emailDetails: {
@@ -136,11 +138,32 @@ export async function sendEmail(emailDetails: {
   html: string;
   text?: string;
 }): Promise<void> {
-  const { to, from, subject, html, text } = emailDetails;
+  const { to, cc, from, subject, html, text } = emailDetails;
+
+  // Log email details for debugging
+  console.log(
+    "Sending email with details:",
+    JSON.stringify(emailDetails, null, 2),
+  );
+
+  // Validate email addresses
+  const validateEmail = (email: string) => {
+    if (email.includes(";")) {
+      throw new Error(`Invalid email address: ${email}. Contains semicolon.`);
+    }
+    // Add more validation if needed
+  };
+
+  validateEmail(to);
+  validateEmail(from);
+  if (cc) {
+    cc.split(";").forEach(validateEmail);
+  }
 
   const params = {
     Destination: {
       ToAddresses: [to],
+      ...(cc ? { CcAddresses: cc.split(";") } : {}),
     },
     Message: {
       Body: {
@@ -152,6 +175,15 @@ export async function sendEmail(emailDetails: {
     Source: from,
   };
 
+  // Log the final SES params
+  console.log("SES params:", JSON.stringify(params, null, 2));
+
   const command = new SendEmailCommand(params);
-  await sesClient.send(command);
+  try {
+    await sesClient.send(command);
+    console.log("Email sent successfully");
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw error;
+  }
 }
