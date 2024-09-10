@@ -15,7 +15,7 @@ export const VisibilityPopover = <T extends UI.OsTableColumn>(
 ) => {
   return (
     <UI.Popover>
-      <UI.PopoverTrigger>
+      <UI.PopoverTrigger asChild>
         <UI.Button
           variant="outline"
           className="w-full xs:w-fit min-w-[187px] hover:bg-transparent self-center h-10 flex gap-2"
@@ -26,7 +26,6 @@ export const VisibilityPopover = <T extends UI.OsTableColumn>(
               : "Columns"}
           </span>
         </UI.Button>
-        <p className="sr-only">Visibility Popover Icon</p>
       </UI.PopoverTrigger>
       <UI.PopoverContent className="bg-white">
         <div className="flex flex-col gap-2">
