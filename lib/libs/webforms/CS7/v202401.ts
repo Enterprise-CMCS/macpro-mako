@@ -399,52 +399,61 @@ export const v202401: FormSchema = {
                         ],
                       },
                       {
-                        rhf: "Select",
-                        label: "Do the age ranges overlap?",
-                        labelClassName: "font-bold",
-                        name: "county-age-ranges-overlap",
-                        rules: {
-                          required: "* Required",
-                        },
+                        rhf: "WrappedGroup",
+                        name: "county-overlap-group",
                         props: {
-                          options: [
-                            { value: "yes", label: "Yes" },
-                            { value: "no", label: "No" },
-                          ],
-                          className: "w-[125px]",
+                          wrapperClassName: "flex flex-col gap-6",
                         },
-                      },
-                      {
-                        rhf: "Textarea",
-                        label:
-                          "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
-                        labelClassName: "font-bold",
-                        name: "county-overlap-explanation",
-                        props: {
-                          className: "min-h-[114px]",
-                        },
-                        rules: {
-                          required: "* Required",
-                          pattern: {
-                            value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
-                          },
-                        },
-                        formItemClassName:
-                          "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
-                        dependency: {
-                          conditions: [
-                            {
-                              name: "cs7_income-standard-exceptions_county-age-ranges-overlap",
-                              type: "expectedValue",
-                              expectedValue: "yes",
+                        fields: [
+                          {
+                            rhf: "Select",
+                            label: "Do the age ranges overlap?",
+                            labelClassName: "font-bold",
+                            name: "county-age-ranges-overlap",
+                            rules: {
+                              required: "* Required",
                             },
-                          ],
-                          effect: {
-                            type: "show",
+                            props: {
+                              options: [
+                                { value: "yes", label: "Yes" },
+                                { value: "no", label: "No" },
+                              ],
+                              className: "w-[125px]",
+                            },
                           },
-                        },
+                          {
+                            rhf: "Textarea",
+                            label:
+                              "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
+                            labelClassName: "font-bold",
+                            name: "county-overlap-explanation",
+                            props: {
+                              className: "min-h-[114px]",
+                            },
+                            rules: {
+                              required: "* Required",
+                              pattern: {
+                                value: noLeadingTrailingWhitespace,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
+                            },
+                            formItemClassName:
+                              "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+                            dependency: {
+                              conditions: [
+                                {
+                                  name: "cs7_income-standard-exceptions_county-age-ranges-overlap",
+                                  type: "expectedValue",
+                                  expectedValue: "yes",
+                                },
+                              ],
+                              effect: {
+                                type: "show",
+                              },
+                            },
+                          },
+                        ],
                       },
                     ],
                   },
@@ -542,52 +551,61 @@ export const v202401: FormSchema = {
                         ],
                       },
                       {
-                        rhf: "Select",
-                        label: "Do the age ranges overlap?",
-                        labelClassName: "font-bold",
-                        name: "city-age-ranges-overlap",
-                        rules: {
-                          required: "* Required",
-                        },
+                        rhf: "WrappedGroup",
+                        name: "city-overlap-group",
                         props: {
-                          options: [
-                            { value: "yes", label: "Yes" },
-                            { value: "no", label: "No" },
-                          ],
-                          className: "w-[125px]",
+                          wrapperClassName: "flex flex-col gap-6",
                         },
-                      },
-                      {
-                        rhf: "Textarea",
-                        label:
-                          "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
-                        labelClassName: "font-bold",
-                        name: "city-overlap-explanation",
-                        props: {
-                          className: "min-h-[114px]",
-                        },
-                        rules: {
-                          required: "* Required",
-                          pattern: {
-                            value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
-                          },
-                        },
-                        formItemClassName:
-                          "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
-                        dependency: {
-                          conditions: [
-                            {
-                              name: "cs7_income-standard-exceptions_city-age-ranges-overlap",
-                              type: "expectedValue",
-                              expectedValue: "yes",
+                        fields: [
+                          {
+                            rhf: "Select",
+                            label: "Do the age ranges overlap?",
+                            labelClassName: "font-bold",
+                            name: "city-age-ranges-overlap",
+                            rules: {
+                              required: "* Required",
                             },
-                          ],
-                          effect: {
-                            type: "show",
+                            props: {
+                              options: [
+                                { value: "yes", label: "Yes" },
+                                { value: "no", label: "No" },
+                              ],
+                              className: "w-[125px]",
+                            },
                           },
-                        },
+                          {
+                            rhf: "Textarea",
+                            label:
+                              "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
+                            labelClassName: "font-bold",
+                            name: "city-overlap-explanation",
+                            props: {
+                              className: "",
+                            },
+                            rules: {
+                              required: "* Required",
+                              pattern: {
+                                value: noLeadingTrailingWhitespace,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
+                            },
+                            formItemClassName:
+                              "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+                            dependency: {
+                              conditions: [
+                                {
+                                  name: "cs7_income-standard-exceptions_city-age-ranges-overlap",
+                                  type: "expectedValue",
+                                  expectedValue: "yes",
+                                },
+                              ],
+                              effect: {
+                                type: "show",
+                              },
+                            },
+                          },
+                        ],
                       },
                     ],
                   },
@@ -685,52 +703,61 @@ export const v202401: FormSchema = {
                         ],
                       },
                       {
-                        rhf: "Select",
-                        label: "Do the age ranges overlap?",
-                        labelClassName: "font-bold",
-                        name: "other-age-ranges-overlap",
-                        rules: {
-                          required: "* Required",
-                        },
+                        rhf: "WrappedGroup",
+                        name: "other-overlap-group",
                         props: {
-                          options: [
-                            { value: "yes", label: "Yes" },
-                            { value: "no", label: "No" },
-                          ],
-                          className: "w-[125px]",
+                          wrapperClassName: "flex flex-col gap-6",
                         },
-                      },
-                      {
-                        rhf: "Textarea",
-                        label:
-                          "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
-                        labelClassName: "font-bold",
-                        name: "other-overlap-explanation",
-                        props: {
-                          className: "min-h-[114px]",
-                        },
-                        rules: {
-                          required: "* Required",
-                          pattern: {
-                            value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
-                          },
-                        },
-                        formItemClassName:
-                          "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
-                        dependency: {
-                          conditions: [
-                            {
-                              name: "cs7_income-standard-exceptions_other-age-ranges-overlap",
-                              type: "expectedValue",
-                              expectedValue: "yes",
+                        fields: [
+                          {
+                            rhf: "Select",
+                            label: "Do the age ranges overlap?",
+                            labelClassName: "font-bold",
+                            name: "other-age-ranges-overlap",
+                            rules: {
+                              required: "* Required",
                             },
-                          ],
-                          effect: {
-                            type: "show",
+                            props: {
+                              options: [
+                                { value: "yes", label: "Yes" },
+                                { value: "no", label: "No" },
+                              ],
+                              className: "w-[125px]",
+                            },
                           },
-                        },
+                          {
+                            rhf: "Textarea",
+                            label:
+                              "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
+                            labelClassName: "font-bold",
+                            name: "other-overlap-explanation",
+                            props: {
+                              className: "min-h-[114px]",
+                            },
+                            rules: {
+                              required: "* Required",
+                              pattern: {
+                                value: noLeadingTrailingWhitespace,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
+                            },
+                            formItemClassName:
+                              "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+                            dependency: {
+                              conditions: [
+                                {
+                                  name: "cs7_income-standard-exceptions_other-age-ranges-overlap",
+                                  type: "expectedValue",
+                                  expectedValue: "yes",
+                                },
+                              ],
+                              effect: {
+                                type: "show",
+                              },
+                            },
+                          },
+                        ],
                       },
                     ],
                   },
