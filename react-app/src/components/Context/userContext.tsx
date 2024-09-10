@@ -11,20 +11,19 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
   const { data: userData } = useGetUser();
   const stateCodes = getUserStateCodes(userData?.user);
 
-  const stateNumericCodesString =
-    stateCodes
-      .map((code) => {
-        return FULL_STATES.find((state) => state.value === code)?.code;
-      })
-      .filter((code) => code !== "00")
-      ?.join() || "";
+  const stateNumericCodesString = stateCodes
+    .map((code) => {
+      return FULL_STATES.find((state) => state.value === code)?.code;
+    })
+    .filter((code) => code !== "00")
+    ?.join();
 
   const { data: populationData } = usePopulationData(stateNumericCodesString);
   const objectOfCounties = populationData?.map((county) => {
     return { label: county.split(",")[0], value: county };
   });
 
-  if (userData) {
+  if (userData && populationData) {
     userData.user.counties = objectOfCounties;
   }
 
