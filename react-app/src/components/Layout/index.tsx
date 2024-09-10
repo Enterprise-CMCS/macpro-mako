@@ -127,7 +127,7 @@ export const Layout = () => {
       <UsaBanner
         isUserMissingRole={user?.user && customUserRoles === undefined}
       />
-      <nav className="bg-primary">
+      <nav data-test="nav-banner-d" className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="h-[70px] flex gap-12 items-center text-white">
             {!isFaqPage ? (
@@ -212,6 +212,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
       <>
         {links.map((link) => (
           <NavLink
+            data-testid={`${link.name}-d`}
             to={link.link}
             target={link.link === "/faq" ? "_blank" : "_self"}
             key={link.name}
@@ -229,12 +230,14 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             // When the user is not signed in
             <>
               <button
+                data-testid="sign-in-button-d"
                 className="text-white hover:text-white/70"
                 onClick={handleLogin}
               >
                 Sign In
               </button>
               <button
+                data-testid="register-button-d"
                 className="text-white hover:text-white/70"
                 onClick={handleRegister}
               >
@@ -256,6 +259,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             {links.map((link) => (
               <li key={link.link}>
                 <Link
+                  data-testid={`${link.name}-m`}
                   className="block py-2 pl-3 pr-4 text-white rounded"
                   to={link.link}
                   target={link.link === "/faq" ? "_blank" : "_self"}
