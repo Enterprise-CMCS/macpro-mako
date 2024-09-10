@@ -242,13 +242,15 @@ export const SlotField = ({
         <div className={props?.wrapperClassName}>
           {fields?.map((S, i) => {
             return (
-              <FormField
-                key={`wrappedSlot-${i}`}
-                control={control}
-                name={parentId + S.name}
-                rules={ruleGenerator(S.rules, S.addtnlRules)}
-                render={RHFSlot({ ...S, control, parentId })}
-              />
+              <DependencyWrapper {...S}>
+                <FormField
+                  key={`wrappedSlot-${i}`}
+                  control={control}
+                  name={parentId + S.name}
+                  rules={ruleGenerator(S.rules, S.addtnlRules)}
+                  render={RHFSlot({ ...S, control, parentId })}
+                />
+              </DependencyWrapper>
             );
           })}
         </div>
