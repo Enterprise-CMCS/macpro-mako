@@ -103,7 +103,9 @@ export const schema = baseSchema.extend({
 });
 
 export const transform = async (event: APIGatewayEvent) => {
-  if (!__IS_FRONTEND__) {
+  if (__IS_FRONTEND__) {
+    return {};
+  } else {
     // Import backend-specific libraries conditionally
     const { isAuthorized, getAuthDetails, lookupUserAttributes } = await import(
       "../../../libs/api/auth/user"
@@ -141,7 +143,6 @@ export const transform = async (event: APIGatewayEvent) => {
 
     return transformedData;
   }
-  return {};
 };
 
 export type Schema = Awaited<ReturnType<typeof transform>>;
