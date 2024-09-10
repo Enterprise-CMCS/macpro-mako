@@ -21,9 +21,9 @@ export const VisibilityPopover = <T extends UI.OsTableColumn>(
           className="w-full xs:w-fit min-w-[187px] hover:bg-transparent self-center h-10 flex gap-2"
         >
           <span className="prose-sm">
-          {props.hiddenColumns.length
-            ? `Columns (${props.hiddenColumns.length} hidden)`
-            : "Columns"}
+            {props.hiddenColumns.length
+              ? `Columns (${props.hiddenColumns.length} hidden)`
+              : "Columns"}
           </span>
         </UI.Button>
         <p className="sr-only">Visibility Popover Icon</p>
