@@ -100,7 +100,7 @@ export const SlotField = ({
       let opts;
       switch (props?.apiCall) {
         case undefined:
-          opts = props?.options.sort((a, b) =>
+          opts = props?.options?.sort((a, b) =>
             props.customSort
               ? sortFunctions[props.customSort](a.label, b.label)
               : stringCompare(a, b),
