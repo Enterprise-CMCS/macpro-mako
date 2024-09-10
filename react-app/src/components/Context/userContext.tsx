@@ -18,20 +18,13 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
     .filter((code) => code !== "00")
     ?.join();
 
-  const { data: populationData, isLoading: isPopulationLoading } =
-    usePopulationData(stateNumericCodesString);
-
-  if (isPopulationLoading) {
-    return (
-      <UserContext.Provider value={userData}>{children}</UserContext.Provider>
-    );
-  }
+  const { data: populationData } = usePopulationData(stateNumericCodesString);
 
   const objectOfCounties = populationData?.map((county) => {
     return { label: county.split(",")[0], value: county };
   });
 
-  if (userData) {
+  if (userData && populationData) {
     userData.user.counties = objectOfCounties;
   }
 
