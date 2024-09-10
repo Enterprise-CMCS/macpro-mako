@@ -3,7 +3,6 @@ import type { FC } from "react";
 import { OsTableColumn } from "./types";
 import { useOsContext } from "../Provider";
 import { useOsUrl, LoadingSpinner } from "@/components";
-import { VisibilityPopover } from "../Settings";
 import { BLANK_VALUE } from "@/consts";
 import { opensearch } from "shared-types";
 
@@ -18,15 +17,6 @@ export const OsTable: FC<{
     <UI.Table className="overflow-scroll w-full">
       <UI.TableHeader className="sticky top-0 bg-white">
         <UI.TableRow>
-          {/* <UI.TableHead
-            className="w-[10px]"
-            icon={
-              <VisibilityPopover
-                list={props.columns.filter((COL) => !COL.locked || COL.field)}
-                onItemClick={props.onToggle}
-              />
-            }
-          /> */}
           {props.columns.map((TH) => {
             if (TH.hidden) return null;
             return (
