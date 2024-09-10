@@ -13,6 +13,7 @@ import {
   SectionDependencyInfo,
   SectionName,
 } from "./sections/v202401";
+import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 const formId = "abp8";
 
@@ -143,6 +144,10 @@ export const v202401: FormSchema = {
               labelClassName: "font-bold",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: noLeadingTrailingWhitespace,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
               props: {
                 className: "min-h-[114px]",
@@ -185,6 +190,10 @@ export const v202401: FormSchema = {
               name: "voluntary-enrollment-info",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: noLeadingTrailingWhitespace,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
               props: {
                 className: "min-h-[114px]",
@@ -238,6 +247,11 @@ export const v202401: FormSchema = {
                         name: "passive-enrollment-method",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: noLeadingTrailingWhitespace,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                         props: {
                           className: "min-h-[114px]",
@@ -275,6 +289,10 @@ export const v202401: FormSchema = {
               name: "mandatory-enrollment-info",
               rules: {
                 required: "* Required",
+                pattern: {
+                  value: noLeadingTrailingWhitespace,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
               props: {
                 className: "min-h-[114px]",
@@ -320,6 +338,11 @@ export const v202401: FormSchema = {
                         name: "default-enrollment-method",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: noLeadingTrailingWhitespace,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                         props: {
                           className: "min-h-[114px]",
@@ -340,6 +363,11 @@ export const v202401: FormSchema = {
                         name: "passive-enrollment-method",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: noLeadingTrailingWhitespace,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                         props: {
                           className: "min-h-[114px]",

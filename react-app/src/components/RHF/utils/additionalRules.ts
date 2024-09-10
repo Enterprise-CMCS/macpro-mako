@@ -8,6 +8,17 @@ export const sortFunctions: {
   reverseSort: (a, b) => b.localeCompare(a),
 };
 
+// New function to sort options from lowest to highest
+export function sortOptionsLowestToHighest<
+  T extends { value: string | number },
+>(options: T[]): T[] {
+  return [...options].sort((a, b) => {
+    const aValue = typeof a.value === "string" ? parseFloat(a.value) : a.value;
+    const bValue = typeof b.value === "string" ? parseFloat(b.value) : b.value;
+    return aValue - bValue;
+  });
+}
+
 export function stringCompare(
   a: { label: string },
   b: { label: string },
@@ -79,26 +90,72 @@ export const valReducer = (
           return rule.message;
         },
       };
-    case "noOverlappingAges":
+    case "noGapsOrOrverlaps":
       return {
         ...valSet,
-        [valName]: (value: any[]) => {
-          if (!value || value.length < 2) return true;
-          
-          const sortedRanges = [...value].sort((a, b) => 
-            parseInt(a['from-age']) - parseInt(b['from-age'])
-          );
+        [valName]: (_, fields) => {
+          const fieldArray = fields[rule.fieldName];
+          if (
+            !fieldArray ||
+            !Array.isArray(fieldArray) ||
+            fieldArray.length <= 1
+          ) {
+            return true; // No validation needed for 0 or 1 entry
+          }
 
-          for (let i = 0; i < sortedRanges.length - 1; i++) {
-            const currentRange = sortedRanges[i];
-            const nextRange = sortedRanges[i + 1];
-            
-            if (parseInt(currentRange['to-age']) >= parseInt(nextRange['from-age'])) {
-              return false;
+          const fromField = rule.fromField;
+          const toField = rule.toField;
+
+          const range = fieldArray.map((item: any) => ({
+            from: parseInt(item[fromField], 10),
+            to: parseInt(item[toField], 10),
+          }));
+
+          // Sort ranges by from value
+          range.sort((a, b) => a.from - b.from);
+
+          // Check for overlaps and gaps
+          for (let i = 1; i < range.length; i++) {
+            if (range[i].from <= range[i - 1].to) {
+              return "No age overlaps allowed";
+            }
+            if (range[i].from > range[i - 1].to + 1) {
+              return "No gaps between ages allowed";
             }
           }
 
-          return true;
+          return true; // No issues found
+        },
+      };
+    case "toGreaterThanFrom":
+      return {
+        ...valSet,
+        [valName]: (value, formValues) => {
+          const fromValue = parseInt(value, 10);
+          const fieldArray = formValues[rule.fieldName];
+
+          if (!fieldArray || !Array.isArray(fieldArray)) {
+            return true; // Skip validation if field array is not valid
+          }
+
+          const currentIndex = fieldArray.findIndex(
+            (item) => item[rule.fromField] === value,
+          );
+          if (currentIndex === -1) {
+            return true; // Skip validation if current item is not found
+          }
+
+          const toValue = parseInt(fieldArray[currentIndex][rule.toField], 10);
+
+          if (isNaN(fromValue) || isNaN(toValue)) {
+            return true; // Skip validation if values are not valid numbers
+          }
+
+          return (
+            toValue > fromValue ||
+            rule.message ||
+            "To age must be greater than From age"
+          );
         },
       };
     default:

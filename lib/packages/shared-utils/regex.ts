@@ -44,3 +44,5 @@ export const reInsertRegex = (obj: any) => {
   }
   return obj;
 };
+
+export const noLeadingTrailingWhitespace = /^(?!\s)[\s\S]*\S$/;

@@ -32,6 +32,20 @@ export type AdditionalRule =
       type: "cannotCoexist";
       fieldName: string;
       message: string;
+    }
+  | {
+      type: "noGapsOrOrverlaps";
+      fieldName: string;
+      fromField: string;
+      toField: string;
+      options: { value: string; label: string }[];
+    }
+  | {
+      type: "toGreaterThanFrom";
+      fieldName: string;
+      fromField: string;
+      toField: string;
+      message: string;
     };
 
 export type RuleGenerator = (

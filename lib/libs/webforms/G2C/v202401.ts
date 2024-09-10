@@ -1,4 +1,5 @@
 import { FormSchema, DefaultFieldGroupProps } from "shared-types";
+import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 const subheaderStyling = "py-3 px-8 w-full bg-gray-300 text-2xl font-bold ";
 const rowStyling = "flex-row flex w-full gap-8";
@@ -71,7 +72,13 @@ export const v202401: FormSchema = {
                   rhf: "Textarea",
                   label: "Eligibility group(s) included",
                   labelClassName: "font-bold text-black",
-                  rules: { required: "* Required" },
+                  rules: {
+                    required: "* Required",
+                    pattern: {
+                      value: noLeadingTrailingWhitespace,
+                      message: "Must not have leading or trailing whitespace.",
+                    },
+                  },
                 },
                 {
                   name: "income-wrapper",
@@ -218,6 +225,13 @@ export const v202401: FormSchema = {
                           label: "Explanation (optional)",
                           labelClassName: "text-black font-bold",
                           rhf: "Textarea",
+                          rules: {
+                            pattern: {
+                              value: noLeadingTrailingWhitespace,
+                              message:
+                                "Must not have leading or trailing whitespace.",
+                            },
+                          },
                         },
                       ],
                     },

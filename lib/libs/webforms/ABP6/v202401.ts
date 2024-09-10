@@ -1,4 +1,5 @@
 import { FormSchema } from "shared-types";
+import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 export const v202401: FormSchema = {
   header: "ABP 6: Benchmark-equivalent benefit package",
@@ -101,6 +102,12 @@ export const v202401: FormSchema = {
               name: "other-info-related-bench-equiv",
               label:
                 "Other information related to this benchmark-equivalent benefit package (optional)",
+              rules: {
+                pattern: {
+                  value: noLeadingTrailingWhitespace,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
             },
           ],
         },
@@ -296,6 +303,12 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               props: {
                 className: "h-[114px]",
+              },
+              rules: {
+                pattern: {
+                  value: noLeadingTrailingWhitespace,
+                  message: "Must not have leading or trailing whitespace.",
+                },
               },
             },
           ],
