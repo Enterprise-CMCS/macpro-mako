@@ -26,6 +26,9 @@ const password = (
 
 const stateSubmitterAuthFile = "playwright/.auth/state-user.json";
 
+/**
+ * Rewrite without using a test. This throws off the report count
+ */
 setup("authenticate state submitter", async ({ page, context }) => {
   const loginPage = new LoginPage(page);
   await loginPage.goto();
@@ -36,6 +39,9 @@ setup("authenticate state submitter", async ({ page, context }) => {
 
 const reviewerAuthFile = "playwright/.auth/reviewer-user.json";
 
+/**
+ * Rewrite without using a test. This throws off the report count
+ */
 setup("authenticate cms reviewer", async ({ page, context }) => {
   const loginPage = new LoginPage(page);
   await loginPage.goto();
