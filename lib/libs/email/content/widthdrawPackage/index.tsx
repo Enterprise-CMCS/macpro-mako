@@ -19,9 +19,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
         to: variables.emails.osgEmail,
         cc: variables.emails.dpoEmail,
         subject: `SPA Package ${variables.id} Withdraw Request`,
-        html: await render(<MedSpaCMSEmail variables={variables} />, {
-          pretty: true,
-        }),
+        html: await render(<MedSpaCMSEmail variables={variables} />),
         text: await render(<MedSpaCMSEmail variables={variables} />, {
           plainText: true,
         }),
@@ -33,9 +31,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Medicaid SPA Package ${variables.id} Withdrawal Confirmation`,
-        html: await render(<MedSpaStateEmail variables={variables} />, {
-          pretty: true,
-        }),
+        html: await render(<MedSpaStateEmail variables={variables} />),
         text: await render(<MedSpaStateEmail variables={variables} />, {
           plainText: true,
         }),
@@ -50,9 +46,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
         to: variables.emails.chipCcList, // TODO: Suppose to get CPOC and SRT
         cc: variables.emails.chipCcList,
         subject: `CHIP SPA Package ${variables.id} Withdraw Request`,
-        html: await render(<ChipSpaCMSEmail variables={variables} />, {
-          pretty: true,
-        }),
+        html: await render(<ChipSpaCMSEmail variables={variables} />),
         text: await render(<ChipSpaCMSEmail variables={variables} />, {
           plainText: true,
         }),
@@ -67,7 +61,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
     //         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
     //         subject: `CHIP SPA Package ${variables.id} Withdrawal Confirmation`,
     //         html: await render(<ChipSpaCMSEmail variables={variables} />, {
-    //           pretty: true,
+    //
     //        }),
     //         text: await render(<ChipSpaCMSEmail variables={variables} />, {
     //         plainText: true,
@@ -82,9 +76,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       return {
         to: variables.emails.osgEmail,
         subject: `Waiver Package ${variables.id} Withdraw Request`,
-        html: await render(<Waiver1915bCMSEmail variables={variables} />, {
-          pretty: true,
-        }),
+        html: await render(<Waiver1915bCMSEmail variables={variables} />),
         text: await render(<Waiver1915bCMSEmail variables={variables} />, {
           plainText: true,
         }),
@@ -96,9 +88,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `1915(b) Waiver ${variables.id} Withdrawal Confirmation`,
-        html: await render(<Waiver1915bStateEmail variables={variables} />, {
-          pretty: true,
-        }),
+        html: await render(<Waiver1915bStateEmail variables={variables} />),
         text: await render(<Waiver1915bStateEmail variables={variables} />, {
           plainText: true,
         }),

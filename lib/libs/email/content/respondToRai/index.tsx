@@ -31,9 +31,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       return {
         to: variables.emails.osgEmail, // TODO: CPOC and SRT should be added
         subject: `Medicaid SPA RAI Response for ${variables.id} Submitted`,
-        html: await render(<MedSpaCMSEmail variables={variables} />, {
-          pretty: true,
-        }),
+        html: await render(<MedSpaCMSEmail variables={variables} />),
         text: await render(<MedSpaCMSEmail variables={variables} />, {
           plainText: true,
         }),
@@ -48,9 +46,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your Medicaid SPA RAI Response for ${variables.id} has been submitted to CMS`,
-        html: await render(<MedSpaStateEmail variables={variables} />, {
-          pretty: true,
-        }),
+        html: await render(<MedSpaStateEmail variables={variables} />),
         text: await render(<MedSpaStateEmail variables={variables} />, {
           plainText: true,
         }),
@@ -65,9 +61,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
         to: variables.emails.chipInbox, // TODO: CPOC and SRT should be added
         cc: variables.emails.chipCcList,
         subject: `CHIP SPA RAI Response for ${variables.id} Submitted`,
-        html: await render(<ChipSpaCMSEmail variables={variables} />, {
-          pretty: true,
-        }),
+        html: await render(<ChipSpaCMSEmail variables={variables} />),
         text: await render(<ChipSpaCMSEmail variables={variables} />, {
           plainText: true,
         }),
@@ -79,9 +73,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
         subject: `Your CHIP SPA RAI Response for ${variables.id} has been submitted to CMS`,
-        html: await render(<ChipSpaStateEmail variables={variables} />, {
-          pretty: true,
-        }),
+        html: await render(<ChipSpaStateEmail variables={variables} />),
         text: await render(<ChipSpaStateEmail variables={variables} />, {
           plainText: true,
         }),
@@ -113,9 +105,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       return {
         to: `${variables.emails.osgEmail};${variables.emails.dmcoEmail}`, // TODO: Should be also sent to CPOC and SRT
         subject: `Waiver RAI Response for ${variables.id} Submitted`,
-        html: await render(<Waiver1915bCMSEmail variables={variables} />, {
-          pretty: true,
-        }),
+        html: await render(<Waiver1915bCMSEmail variables={variables} />),
         text: await render(<Waiver1915bCMSEmail variables={variables} />, {
           plainText: true,
         }),
@@ -127,9 +117,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       return {
         to: `"${variables.submitterName}" <${variables.submitterEmail}>`, // TODO: suppose to go to all state users but we dont have that data
         subject: `Your ${variables.authority} ${variables.authority} Response for ${variables.id} has been submitted to CMS`,
-        html: await render(<Waiver1915bStateEmail variables={variables} />, {
-          pretty: true,
-        }),
+        html: await render(<Waiver1915bStateEmail variables={variables} />),
         text: await render(<Waiver1915bStateEmail variables={variables} />, {
           plainText: true,
         }),

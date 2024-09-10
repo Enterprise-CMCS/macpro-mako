@@ -33,9 +33,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         html: await render(
           <MedSpaCMSEmail relatedEvent={relatedEvent} variables={variables} />,
-          {
-            pretty: true,
-          },
+          {},
         ),
         text: await render(
           <MedSpaCMSEmail relatedEvent={relatedEvent} variables={variables} />,
@@ -63,9 +61,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
             relatedEvent={relatedEvent}
             variables={variables}
           />,
-          {
-            pretty: true,
-          },
+          {},
         ),
         text: await render(
           <MedSpaStateEmail
@@ -96,9 +92,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
         html: await render(
           <ChipSpaCMSEmail relatedEvent={relatedEvent} variables={variables} />,
-          {
-            pretty: true,
-          },
+          {},
         ),
         text: await render(
           <ChipSpaCMSEmail relatedEvent={relatedEvent} variables={variables} />,
@@ -123,9 +117,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
             relatedEvent={relatedEvent}
             variables={variables}
           />,
-          {
-            pretty: true,
-          },
+          {},
         ),
         text: await render(
           <ChipSpaStateEmail
@@ -155,9 +147,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
             relatedEvent={relatedEvent}
             variables={variables}
           />,
-          {
-            pretty: true,
-          },
+          {},
         ),
         text: await render(
           <Waiver1915bCMSEmail
@@ -185,9 +175,6 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
             relatedEvent={relatedEvent}
             variables={variables}
           />,
-          {
-            pretty: true,
-          },
         ),
         text: await render(
           <Waiver1915bStateEmail
@@ -214,9 +201,6 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id} `,
         html: await render(
           <AppKCMSEmail relatedEvent={relatedEvent} variables={variables} />,
-          {
-            pretty: true,
-          },
         ),
         text: await render(
           <AppKCMSEmail relatedEvent={relatedEvent} variables={variables} />,

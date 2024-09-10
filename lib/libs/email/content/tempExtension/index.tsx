@@ -11,9 +11,7 @@ export const tempExtention: UserTypeOnlyTemplate = {
     return {
       to: variables.emails.osgEmail,
       subject: `${variables.authority} Waiver Extension ${variables.id} Submitted`,
-      html: await render(<TempExtCMSEmail variables={variables} />, {
-        pretty: true,
-      }),
+      html: await render(<TempExtCMSEmail variables={variables} />),
       text: await render(<TempExtCMSEmail variables={variables} />, {
         plainText: true,
       }),
@@ -23,9 +21,7 @@ export const tempExtention: UserTypeOnlyTemplate = {
     return {
       to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
       subject: `Your Request for the ${variables.authority} Waiver Extension ${variables.id} has been submitted to CMS`,
-      html: await render(<TempExtStateEmail variables={variables} />, {
-        pretty: true,
-      }),
+      html: await render(<TempExtStateEmail variables={variables} />),
       text: await render(<TempExtStateEmail variables={variables} />, {
         plainText: true,
       }),
