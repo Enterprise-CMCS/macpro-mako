@@ -1,9 +1,8 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import { describe, expect, test, beforeEach } from "vitest";
-import userEvent from "@testing-library/user-event";
-import { type OsTableColumn, VisibilityPopover } from "../index";
 import { useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, test, beforeEach } from "vitest";
+import { type OsTableColumn, VisibilityPopover } from "../index";
 
 const MockOsFilteringWrapper = () => {
   const [columns, setColumns] = useState<OsTableColumn[]>([
@@ -35,13 +34,11 @@ const MockOsFilteringWrapper = () => {
   };
 
   return (
-    <QueryClientProvider client={new QueryClient()}>
-      <VisibilityPopover
-        list={columns.filter((COL) => !COL.locked || COL.field)}
-        onItemClick={onToggle}
-        hiddenColumns={columns.filter((COL) => COL.hidden === true)}
-      />
-    </QueryClientProvider>
+    <VisibilityPopover
+      list={columns.filter((COL) => !COL.locked || COL.field)}
+      onItemClick={onToggle}
+      hiddenColumns={columns.filter((COL) => COL.hidden === true)}
+    />
   );
 };
 
@@ -50,16 +47,23 @@ describe("Visibility button", () => {
     render(<MockOsFilteringWrapper />);
   });
 
-  test("Visibility button should show number of hidden columns", async () => {
+  test("Visibility button should show number of hidden columns if any", async () => {
     expect(screen.getByText("Columns (1 hidden)")).toBeInTheDocument();
+    await userEvent.click(screen.getByText("Columns (1 hidden)"));
+
+    const stateColumnMenuItem = screen.getByText("State");
+    await userEvent.click(stateColumnMenuItem);
+
+    expect(screen.getByText("Columns (2 hidden)")).toBeInTheDocument();
   });
 
-  test("Visibility button functionality", async () => {
+  test("Visibility button text should not show number if no hidden columns", async () => {
+    expect(screen.getByText("Columns (1 hidden)")).toBeInTheDocument();
     await userEvent.click(screen.getByText("Columns (1 hidden)"));
-    expect(screen.getByText("State")).toBeInTheDocument();
-    const stateButton = screen.getByText("State");
-    await userEvent.click(stateButton);
-    console.log(stateButton, "button skadsdlkfsdf");
-    await waitFor(() => screen.getByText("Columns 2 hidden"));
+
+    const statusColumnMenuItem = screen.getByText("Status");
+    await userEvent.click(statusColumnMenuItem);
+
+    expect(screen.getByText("Columns")).toBeInTheDocument();
   });
 });
