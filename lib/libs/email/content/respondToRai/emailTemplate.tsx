@@ -1,14 +1,10 @@
 import * as React from "react";
 import { Html } from "@react-email/components";
 import { RaiResponse } from "shared-types";
+import { CommonVariables, formatNinetyDaysDate } from "../..";
 import {
-  CommonVariables,
   formatAttachments,
-  formatNinetyDaysDate,
-} from "../..";
-import {
   LoginInstructions,
-  SpamWarning,
   PackageDetails,
   MailboxWaiver,
   ContactStateLead,
@@ -33,11 +29,11 @@ export const MedSpaCMSEmail = (props: {
           Name: variables.submitterName,
           Email: variables.submitterEmail,
           "Medicaid SPA Package ID": variables.id,
-          Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation}
       />
-      Files: {formatAttachments("html", variables.attachments)}
-      <SpamWarning />
+      <h3>Files:</h3>
+      {formatAttachments("html", variables.attachments)}
     </Html>
   );
 };
@@ -59,8 +55,8 @@ export const MedSpaStateEmail = (props: {
           "Email Address": variables.submitterEmail,
           "Medicaid SPA ID": variables.id,
           "90th Day Deadline": formatNinetyDaysDate(variables.responseDate),
-          Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation}
       />
       <p>
         This response confirms receipt of your Medicaid State Plan Amendment
@@ -92,11 +88,11 @@ export const ChipSpaCMSEmail = (props: {
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
           "CHIP SPA Package ID": variables.id,
-          Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation}
       />
-      Files: {formatAttachments("html", variables.attachments)}
-      <SpamWarning />
+      <h3>Files:</h3>
+      {formatAttachments("html", variables.attachments)}
     </Html>
   );
 };
@@ -118,8 +114,8 @@ export const ChipSpaStateEmail = (props: {
           "Email Address": variables.submitterEmail,
           "CHIP SPA Package ID": variables.id,
           "90th Day Deadline": formatNinetyDaysDate(variables.responseDate),
-          Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation}
       />
       <p>
         This response confirms receipt of your CHIP State Plan Amendment (SPA or
@@ -157,11 +153,11 @@ export const Waiver1915bCMSEmail = (props: {
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
           "Waiver Number": variables.id,
-          Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation}
       />
-      Files: {formatAttachments("html", variables.attachments)}
-      <SpamWarning />
+      <h3>Files:</h3>
+      {formatAttachments("html", variables.attachments)}
     </Html>
   );
 };
@@ -184,8 +180,8 @@ export const Waiver1915bStateEmail = (props: {
           "Initial Waiver Number": variables.id,
           "Waiver Authority": variables.authority,
           "90th Day Deadline": formatNinetyDaysDate(variables.responseDate),
-          Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation}
       />
       <p>
         This response confirms the receipt of your Waiver request or your

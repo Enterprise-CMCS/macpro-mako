@@ -2,19 +2,14 @@ import * as React from "react";
 import { DateTime } from "luxon";
 import { Html } from "@react-email/components";
 import { OneMac } from "shared-types";
-import {
-  CommonVariables,
-  formatDate,
-  formatAttachments,
-  formatNinetyDaysDate,
-} from "../..";
+import { CommonVariables, formatDate, formatNinetyDaysDate } from "../..";
 import {
   LoginInstructions,
-  SpamWarning,
   PackageDetails,
   MailboxSPA,
   ContactStateLead,
   MailboxWaiver,
+  formatAttachments,
 } from "../email-components";
 
 // **** MEDICAID SPA
@@ -27,6 +22,7 @@ export const MedSpaCMSEmail = (props: {
       <p>The OneMAC Submission Portal received a Medicaid SPA Submission:</p>
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
       <PackageDetails
+        summary={variables.additionalInformation}
         details={{
           "State or territory": variables.territory,
           Name: variables.submitterName,
@@ -35,12 +31,10 @@ export const MedSpaCMSEmail = (props: {
           "Proposed Effective Date": formatDate(
             variables.notificationMetadata?.proposedEffectiveDate,
           ),
-          Summary: variables.additionalInformation,
         }}
       />
       <b>Files:</b>
       {formatAttachments("html", variables.attachments)}
-      <SpamWarning />
     </Html>
   );
 };
@@ -56,6 +50,7 @@ export const MedSpaStateEmail = (props: {
         review:
       </p>
       <PackageDetails
+        summary={variables.additionalInformation}
         details={{
           "State or territory": variables.territory,
           Name: variables.submitterName,
@@ -67,7 +62,6 @@ export const MedSpaStateEmail = (props: {
           "90th Day Deadline": formatNinetyDaysDate(
             variables.notificationMetadata?.submissionDate,
           ),
-          Summary: variables.additionalInformation,
         }}
       />
       <p>
@@ -97,16 +91,16 @@ export const ChipSpaCMSEmail = (props: {
       <p>The OneMAC Submission Portal received a CHIP State Plan Amendment:</p>
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
       <PackageDetails
+        summary={variables.additionalInformation}
         details={{
           "State or territory": variables.territory,
           Name: variables.submitterName,
           Email: variables.submitterEmail,
           "CHIP SPA Package ID": variables.id,
-          Summary: variables.additionalInformation,
         }}
       />
-      <p>Files: {formatAttachments("html", variables.attachments)}</p>
-      <SpamWarning />
+      <h3>Files:</h3>
+      {formatAttachments("html", variables.attachments)}
     </Html>
   );
 };
@@ -122,12 +116,12 @@ export const ChipSpaStateEmail = (props: {
         CMS for review:
       </p>
       <PackageDetails
+        summary={variables.additionalInformation}
         details={{
           "State or territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
           "CHIP SPA Package ID": variables.id,
-          Summary: variables.additionalInformation,
         }}
       />
       <p>
@@ -153,6 +147,7 @@ export const Waiver1915bCMSEmail = (props: {
       </p>
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
       <PackageDetails
+        summary={variables.additionalInformation}
         details={{
           "State or territory": variables.territory,
           Name: variables.submitterName,
@@ -162,14 +157,10 @@ export const Waiver1915bCMSEmail = (props: {
           "Proposed Effective Date": DateTime.fromMillis(
             Number(variables.notificationMetadata?.proposedEffectiveDate),
           ).toFormat("DDDD"),
-          Summary: variables.additionalInformation,
         }}
       />
-      <b>Summary:</b>
-      {variables.additionalInformation}
-      <b>Files:</b>
+      <h3>Files:</h3>
       {formatAttachments("html", variables.attachments)}
-      <SpamWarning />
     </Html>
   );
 };
@@ -197,9 +188,8 @@ export const Waiver1915bStateEmail = (props: {
           "90th Day Deadline": formatNinetyDaysDate(
             variables.notificationMetadata?.submissionDate,
           ),
-
-          Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation ?? null}
       />
       <p>
         This response confirms the receipt of your Waiver request or your
@@ -237,11 +227,11 @@ export const AppKCMSEmail = (props: {
           "Proposed Effective Date": DateTime.fromMillis(
             Number(variables.notificationMetadata?.proposedEffectiveDate),
           ).toFormat("DDDD"),
-          Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation ?? null}
       />
-      Files: {formatAttachments("html", variables.attachments)}
-      <SpamWarning />
+      <h3>Files:</h3>
+      {formatAttachments("html", variables.attachments)}
     </Html>
   );
 };
@@ -269,8 +259,8 @@ export const AppKStateEmail = (props: {
           "90th Day Deadline": formatNinetyDaysDate(
             variables.notificationMetadata?.submissionDate,
           ),
-          Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation ?? null}
       />
       <p>
         This response confirms the receipt of your Waiver request or your

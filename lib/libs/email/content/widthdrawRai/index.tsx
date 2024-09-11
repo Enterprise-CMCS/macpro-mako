@@ -29,7 +29,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         Action.RESPOND_TO_RAI,
       );
       return {
-        to: `${variables.emails.osgEmail};${variables.emails.dpoEmail}`, // TODO Should also include CPOC and SRT
+        to: [...variables.emails.osgEmail, ...variables.emails.dpoEmail], // TODO Should also include CPOC and SRT
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         html: await render(
           <MedSpaCMSEmail relatedEvent={relatedEvent} variables={variables} />,
@@ -54,7 +54,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         Action.RESPOND_TO_RAI,
       );
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>`, // TODO: should go to all state users, but we dont have that info
+        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`], // TODO: should go to all state users, but we dont have that info
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         html: await render(
           <MedSpaStateEmail
@@ -110,7 +110,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         Action.RESPOND_TO_RAI,
       );
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
+        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
         subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
         html: await render(
           <ChipSpaStateEmail
@@ -140,7 +140,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         Action.RESPOND_TO_RAI,
       );
       return {
-        to: `${variables.emails.dmcoEmail};${variables.emails.osgEmail}`, // TODO: add CPOC and SRT
+        to: [...variables.emails.dmcoEmail, ...variables.emails.osgEmail], // TODO: add CPOC and SRT
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id} `,
         html: await render(
           <Waiver1915bCMSEmail
@@ -168,7 +168,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         Action.RESPOND_TO_RAI,
       );
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>`, // TODO: "All State Users"
+        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`], // TODO: "All State Users"
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
         html: await render(
           <Waiver1915bStateEmail
@@ -197,7 +197,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         Action.RESPOND_TO_RAI,
       );
       return {
-        to: `${variables.emails.osgEmail};${variables.emails.dhcbsooEmail}`, // TODO: also should go to CPOC and SRT
+        to: [...variables.emails.osgEmail, ...variables.emails.dhcbsooEmail], // TODO: also should go to CPOC and SRT
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id} `,
         html: await render(
           <AppKCMSEmail relatedEvent={relatedEvent} variables={variables} />,

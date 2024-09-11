@@ -19,7 +19,7 @@ export const tempExtention: UserTypeOnlyTemplate = {
   },
   state: async (variables: OneMac & CommonVariables) => {
     return {
-      to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
+      to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
       subject: `Your Request for the ${variables.authority} Waiver Extension ${variables.id} has been submitted to CMS`,
       html: await render(<TempExtStateEmail variables={variables} />),
       text: await render(<TempExtStateEmail variables={variables} />, {

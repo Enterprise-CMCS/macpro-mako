@@ -1,14 +1,10 @@
 import * as React from "react";
 import { Html } from "@react-email/components";
 import { OneMac } from "shared-types";
+import { CommonVariables, formatNinetyDaysDate } from "../..";
 import {
-  CommonVariables,
   formatAttachments,
-  formatNinetyDaysDate,
-} from "../..";
-import {
   LoginInstructions,
-  SpamWarning,
   PackageDetails,
   ContactStateLead,
   MailboxWaiver,
@@ -33,11 +29,11 @@ export const TempExtCMSEmail = (props: {
           Email: variables.submitterEmail,
           "Temporary Extension Request Number": variables.id,
           "Temporary Extension Type": variables.authority,
-          Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation}
       />
-      Files: {formatAttachments("html", variables.attachments)}
-      <SpamWarning />
+      <h3>Files:</h3>
+      {formatAttachments("html", variables.attachments)}
     </Html>
   );
 };
@@ -62,8 +58,8 @@ export const TempExtStateEmail = (props: {
           "90th Day Deadline": formatNinetyDaysDate(
             Number(variables.notificationMetadata?.submissionDate),
           ),
-          Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation}
       />
       <MailboxWaiver />
       <ContactStateLead />

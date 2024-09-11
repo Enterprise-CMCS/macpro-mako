@@ -29,7 +29,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       variables: WithdrawPackage & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
+        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
         subject: `Medicaid SPA Package ${variables.id} Withdrawal Confirmation`,
         html: await render(<MedSpaStateEmail variables={variables} />),
         text: await render(<MedSpaStateEmail variables={variables} />, {
@@ -58,7 +58,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
     //       variables: WithdrawPackage & CommonVariables & { emails: EmailAddresses },
     //     ) => {
     //       return {
-    //         to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
+    //         to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
     //         subject: `CHIP SPA Package ${variables.id} Withdrawal Confirmation`,
     //         html: await render(<ChipSpaCMSEmail variables={variables} />, {
     //
@@ -86,7 +86,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       variables: WithdrawPackage & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
+        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
         subject: `1915(b) Waiver ${variables.id} Withdrawal Confirmation`,
         html: await render(<Waiver1915bStateEmail variables={variables} />),
         text: await render(<Waiver1915bStateEmail variables={variables} />, {

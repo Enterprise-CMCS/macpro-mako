@@ -34,7 +34,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       variables: OneMac & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
+        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
         subject: `Your SPA ${variables.id} has been submitted to CMS`,
         html: await render(<MedSpaStateEmail variables={variables} />),
         text: await render(<MedSpaStateEmail variables={variables} />, {
@@ -61,7 +61,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       variables: OneMac & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
+        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
         subject: `Your CHIP SPA ${variables.id} has been submitted to CMS`,
         html: await render(<ChipSpaStateEmail variables={variables} />),
         text: await render(<ChipSpaStateEmail variables={variables} />, {
@@ -87,7 +87,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       variables: OneMac & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
+        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
         subject: `Your ${variables.actionType} ${variables.id} has been submitted to CMS`,
         html: await render(<Waiver1915bStateEmail variables={variables} />),
         text: await render(<Waiver1915bStateEmail variables={variables} />, {
@@ -113,7 +113,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       variables: OneMac & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: `"${variables.submitterName}" <${variables.submitterEmail}>`,
+        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
         subject: `Your 1915(c) ${variables.id} has been submitted to CMS`,
         html: await render(<AppKStateEmail variables={variables} />),
         text: await render(<AppKStateEmail variables={variables} />, {

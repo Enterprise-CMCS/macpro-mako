@@ -1,12 +1,5 @@
 import { DateTime } from "luxon";
-import {
-  Action,
-  Attachment,
-  AttachmentKey,
-  AttachmentTitle,
-  attachmentTitleMap,
-  Authority,
-} from "shared-types";
+import { Action, Authority } from "shared-types";
 import { getPackageChangelog } from "../api/package";
 import * as EmailContent from "./content";
 
@@ -18,42 +11,6 @@ export interface CommonVariables {
   applicationEndpointUrl: string;
   actionType: string;
 }
-
-export const formatAttachments = (
-  formatType: "text" | "html",
-  attachmentList?: Attachment[] | null,
-): string => {
-  const formatChoices = {
-    text: {
-      begin: "\n\n",
-      joiner: "\n",
-      end: "\n\n",
-    },
-    html: {
-      begin: "<ul><li>",
-      joiner: "</li><li>",
-      end: "</li></ul>",
-    },
-  };
-  const format = formatChoices[formatType];
-  if (!format) {
-    console.log("new format type? ", formatType);
-    return "attachment List";
-  }
-  if (!attachmentList || attachmentList.length === 0) return "no attachments";
-  else {
-    const attachmentFormat = attachmentList.map((a) => {
-      const attachmentTitle: AttachmentTitle =
-        a.title in attachmentTitleMap
-          ? attachmentTitleMap[a.title as AttachmentKey]
-          : a.title;
-      return `${attachmentTitle}: ${a.filename}`;
-    });
-    return `${format.begin}${attachmentFormat.join(format.joiner)}${
-      format.end
-    }`;
-  }
-};
 
 export function formatDate(date: number | null | undefined) {
   if (!date || date === undefined) {
@@ -74,8 +31,8 @@ export function formatNinetyDaysDate(date: number | null | undefined): string {
 }
 
 export interface EmailTemplate {
-  to: string;
-  cc?: string;
+  to: string[];
+  cc?: string[];
   subject: string;
   html: string;
   text?: string;

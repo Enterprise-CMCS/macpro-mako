@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Html } from "@react-email/components";
 import { RaiWithdraw } from "shared-types";
-import { CommonVariables, formatAttachments } from "../..";
+import { CommonVariables } from "../..";
 import {
-  SpamWarning,
+  formatAttachments,
   MailboxWaiver,
   PackageDetails,
   ContactStateLead,
@@ -17,12 +17,12 @@ const WithdrawRAI = (props: {
 }) => {
   return (
     <Html lang="en" dir="ltr">
-      <p>
+      <h3>
         The OneMAC Submission Portal received a request to withdraw the Formal
         RAI Response. You are receiving this email notification as the Formal
         RAI for {props.id} was withdrawn by {props.submitterName}{" "}
         {props.submitterEmail}.
-      </p>
+      </h3>
     </Html>
   );
 };
@@ -36,23 +36,22 @@ export const MedSpaCMSEmail = (props: {
   return (
     <Html lang="en" dir="ltr">
       <WithdrawRAI {...variables} />
-      <p>
+      <h3>
         The OneMAC Submission Portal received a request to withdraw the Formal
         RAI Response. You are receiving this email notification as the Formal
         RAI for {variables.id} was withdrawn by {variables.submitterName}{" "}
         {variables.submitterEmail}.
-      </p>
+      </h3>
       <PackageDetails
         details={{
           "State or territory": variables.territory,
           Name: relatedEvent.submitterName,
           "Email Address": relatedEvent.submitterEmail,
           "SPA Package ID": variables.id,
-          Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation ?? null}
       />
       <b>Files</b>:{formatAttachments("html", variables.attachments)}
-      <SpamWarning />
     </Html>
   );
 };
@@ -73,6 +72,7 @@ export const MedSpaStateEmail = (props: {
           "Medicaid SPA Package ID": variables.id,
           Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation ?? null}
       />
       <ContactStateLead />
     </Html>
@@ -96,9 +96,10 @@ export const ChipSpaCMSEmail = (props: {
           "CHIP SPA Package ID": variables.id,
           Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation ?? null}
       />
-      <b>Files</b>:{formatAttachments("html", variables.attachments)}
-      <SpamWarning />
+      <h3>Files:</h3>
+      {formatAttachments("html", variables.attachments)}
     </Html>
   );
 };
@@ -119,6 +120,7 @@ export const ChipSpaStateEmail = (props: {
           "CHIP SPA Package ID": variables.id,
           Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation ?? null}
       />
       <ContactStateLead isChip />
     </Html>
@@ -142,9 +144,10 @@ export const Waiver1915bCMSEmail = (props: {
           "Waiver Number": variables.id,
           Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation ?? null}
       />
-      <b>Files</b>:{formatAttachments("html", variables.attachments)}
-      <SpamWarning />
+      <h3>Files:</h3>
+      {formatAttachments("html", variables.attachments)}
     </Html>
   );
 };
@@ -165,6 +168,7 @@ export const Waiver1915bStateEmail = (props: {
           "Waiver Number": variables.id,
           Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation ?? null}
       />
       <MailboxWaiver />
       <ContactStateLead />
@@ -189,12 +193,10 @@ export const AppKCMSEmail = (props: {
           "Waiver Number": variables.id,
           Summary: variables.additionalInformation,
         }}
+        summary={variables.additionalInformation ?? null}
       />
-      <p>
-        Files:
-        {formatAttachments("html", variables.attachments)}
-      </p>
-      <SpamWarning />
+      <h3>Files:</h3>
+      {formatAttachments("html", variables.attachments)}
     </Html>
   );
 };

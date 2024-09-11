@@ -128,7 +128,7 @@ export async function processAndSendEmails(
 
     const params = {
       to: filledTemplate.to,
-      ...(filledTemplate.cc ? { cc: filledTemplate.cc } : {}),
+      cc: filledTemplate.cc,
       from: emailAddressLookup.sourceEmail,
       subject: filledTemplate.subject,
       html: filledTemplate.html,
@@ -142,8 +142,8 @@ export async function processAndSendEmails(
 }
 
 export async function sendEmail(emailDetails: {
-  to: string;
-  cc?: string;
+  to: string[];
+  cc?: string[];
   from: string;
   subject: string;
   html: string;
@@ -151,44 +151,10 @@ export async function sendEmail(emailDetails: {
 }): Promise<void> {
   const { to, cc, from, subject, html, text } = emailDetails;
 
-  // Log email details for debugging
-  console.log(
-    "Sending email with details:",
-    JSON.stringify(emailDetails, null, 2),
-  );
-
-  // Validate email addresses
-  const validateEmail = (email: string) => {
-    if (email.includes(";")) {
-      throw new Error(`Invalid email address: ${email}. Contains semicolon.`);
-    }
-    // Add more validation if needed
-  };
-
-  validateEmail(to);
-  validateEmail(from);
-
-  const CcAddresses: string[] = [];
-  if (cc) {
-    const result = cc.split(";");
-    result.forEach((email) => {
-      validateEmail(email);
-      CcAddresses.push(email);
-    });
-  }
-  const ToAddresses: string[] = [];
-  if (to) {
-    const result = to.split(";");
-    result.forEach((email) => {
-      validateEmail(email);
-      ToAddresses.push(email);
-    });
-  }
-
   const params: SendEmailCommandInput = {
     Destination: {
-      ToAddresses,
-      CcAddresses,
+      ToAddresses: to,
+      CcAddresses: cc,
     },
     Message: {
       Body: {
