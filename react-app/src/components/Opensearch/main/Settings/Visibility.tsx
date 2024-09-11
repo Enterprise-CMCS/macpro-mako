@@ -10,9 +10,11 @@ type Props<T extends UI.OsTableColumn> = {
   hiddenColumns: T[];
 };
 
-export const VisibilityPopover = <T extends UI.OsTableColumn>(
-  props: Props<T>,
-) => {
+export const VisibilityPopover = ({
+  list,
+  onItemClick,
+  hiddenColumns,
+}: Props<UI.OsTableColumn>) => {
   return (
     <UI.Popover>
       <UI.PopoverTrigger asChild>
@@ -21,15 +23,19 @@ export const VisibilityPopover = <T extends UI.OsTableColumn>(
           className="w-full xs:w-fit min-w-[187px] hover:bg-transparent self-center h-10 flex gap-2"
         >
           <span className="prose-sm">
-            {props.hiddenColumns.length
-              ? `Columns (${props.hiddenColumns.length} hidden)`
+            {hiddenColumns.length
+              ? `Columns (${hiddenColumns.length} hidden)`
               : "Columns"}
           </span>
         </UI.Button>
       </UI.PopoverTrigger>
       <UI.PopoverContent className="bg-white">
         <div className="flex flex-col gap-2">
-          <VisibilityMenu {...props} />
+          <VisibilityMenu
+            list={list}
+            onItemClick={onItemClick}
+            hiddenColumns={hiddenColumns}
+          />
         </div>
       </UI.PopoverContent>
     </UI.Popover>

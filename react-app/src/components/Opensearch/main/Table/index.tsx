@@ -69,7 +69,6 @@ export const OsTable: FC<{
         )}
         {context.data?.hits.map((DAT) => (
           <UI.TableRow className="max-h-1" key={DAT._source.id}>
-            {/* <UI.TableCell className="fixed" /> */}
             {props.columns.map((COL) => {
               if (COL.hidden) return null;
               return (
