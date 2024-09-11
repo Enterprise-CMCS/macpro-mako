@@ -20,7 +20,7 @@ export const VisibilityPopover = ({
       <UI.PopoverTrigger asChild>
         <UI.Button
           variant="outline"
-          className="w-full xs:w-fit min-w-[187px] hover:bg-transparent self-center h-10 flex gap-2"
+          className="w-full xs:w-fit min-w-0 whitespace-nowrap hover:bg-transparent self-center h-10 flex gap-2"
         >
           <span className="prose-sm">
             {hiddenColumns.length
