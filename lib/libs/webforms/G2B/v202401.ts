@@ -1,4 +1,5 @@
 import { FormSchema, DefaultFieldGroupProps } from "shared-types";
+import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 export const v202401: FormSchema = {
   header:
@@ -159,6 +160,12 @@ export const v202401: FormSchema = {
                   name: "explanation",
                   labelClassName: "text-black font-bold",
                   label: "Explanation (optional)",
+                  rules: {
+                    pattern: {
+                      value: noLeadingTrailingWhitespace,
+                      message: "Must not have leading or trailing whitespace.",
+                    },
+                  },
                 },
               ],
             },
@@ -200,11 +207,13 @@ export const v202401: FormSchema = {
                 {
                   rhf: "FieldArray",
                   name: "inc-range-cost-share-amount",
-                  formItemClassName:
-                    "ml-[0.6rem] px-4  border-l-4 border-l-primary mt-2",
                   props: {
                     appendText: "Add range",
-                    fieldArrayClassName: "flex-col",
+                    fieldArrayClassName:
+                      DefaultFieldGroupProps.fieldArrayClassName +
+                      "space-y-6 " +
+                      "ml-[0.6rem] px-4 border-l-4 border-l-primary mb-4",
+                    divider: true,
                   },
                   fields: [
                     {
@@ -322,6 +331,13 @@ export const v202401: FormSchema = {
                       name: "explanation",
                       labelClassName: "text-black font-bold",
                       label: "Explanation (optional)",
+                      rules: {
+                        pattern: {
+                          value: noLeadingTrailingWhitespace,
+                          message:
+                            "Must not have leading or trailing whitespace.",
+                        },
+                      },
                     },
                   ],
                 },
@@ -385,7 +401,11 @@ export const v202401: FormSchema = {
               rhf: "FieldArray",
               props: {
                 appendText: "Add charge",
-                fieldArrayClassName: "flex-col",
+                fieldArrayClassName:
+                  DefaultFieldGroupProps.fieldArrayClassName +
+                  "space-y-6 " +
+                  "ml-[0.6rem] px-4 border-l-4 border-l-primary mb-4",
+                divider: true,
               },
               dependency: {
                 conditions: [
@@ -397,8 +417,6 @@ export const v202401: FormSchema = {
                 ],
                 effect: { type: "show" },
               },
-              formItemClassName:
-                "ml-[0.6rem] px-4  border-l-4 border-l-primary mt-2",
               fields: [
                 {
                   rhf: "WrappedGroup",
@@ -476,6 +494,12 @@ export const v202401: FormSchema = {
                   name: "explanation",
                   labelClassName: "text-black font-bold",
                   label: "Explanation (optional)",
+                  rules: {
+                    pattern: {
+                      value: noLeadingTrailingWhitespace,
+                      message: "Must not have leading or trailing whitespace.",
+                    },
+                  },
                 },
               ],
             },
@@ -538,7 +562,11 @@ export const v202401: FormSchema = {
               rules: { required: "* Required" },
               props: {
                 appendText: "Add charge",
-                fieldArrayClassName: "flex-col",
+                fieldArrayClassName:
+                  DefaultFieldGroupProps.fieldArrayClassName +
+                  "space-y-6 " +
+                  "ml-[0.6rem] px-4 border-l-4 border-l-primary mb-4",
+                divider: true,
               },
               dependency: {
                 conditions: [
@@ -550,8 +578,6 @@ export const v202401: FormSchema = {
                 ],
                 effect: { type: "show" },
               },
-              formItemClassName:
-                "ml-[0.6rem] px-4 border-l-4 border-l-primary mt-2",
               fields: [
                 {
                   rhf: "WrappedGroup",
@@ -629,6 +655,12 @@ export const v202401: FormSchema = {
                   name: "explanation",
                   labelClassName: "text-black font-bold",
                   label: "Explanation (optional)",
+                  rules: {
+                    pattern: {
+                      value: noLeadingTrailingWhitespace,
+                      message: "Must not have leading or trailing whitespace.",
+                    },
+                  },
                 },
               ],
             },

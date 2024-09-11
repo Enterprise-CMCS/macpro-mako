@@ -5,6 +5,7 @@ import {
   Section,
   DefaultFieldGroupProps,
 } from "shared-types";
+import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 const formName = "abp5";
 
@@ -879,7 +880,15 @@ export const v202401: FormSchema = {
                                 label:
                                   "Why did the state/territory choose to exclude this benefit?",
                                 labelClassName: "font-bold",
-                                rules: { required: "* Required" },
+                                rules: {
+                                  required: "* Required",
+                                  pattern: {
+                                    value: noLeadingTrailingWhitespace,
+                                    message:
+                                      "Must not have leading or trailing whitespace.",
+                                  },
+                                },
+
                                 name: "explanation_textarea",
                               },
                             ],

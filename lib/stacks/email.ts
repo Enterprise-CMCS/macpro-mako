@@ -4,10 +4,13 @@ import * as path from "path";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { ISubnet } from "aws-cdk-lib/aws-ec2";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
+import * as LC from "local-constructs";
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;
   stage: string;
+  isDev: boolean;
   stack: string;
   vpc: cdk.aws_ec2.IVpc;
   applicationEndpointUrl: string;
@@ -29,6 +32,7 @@ export class Email extends cdk.NestedStack {
     const {
       project,
       stage,
+      isDev,
       stack,
       vpc,
       applicationEndpointUrl,
@@ -42,6 +46,74 @@ export class Email extends cdk.NestedStack {
       openSearchDomainEndpoint,
       openSearchDomainArn,
     } = props;
+
+    // KMS Key for SNS Topic
+    const kmsKeyForEmails = new cdk.aws_kms.Key(this, "KmsKeyForEmails", {
+      enableKeyRotation: true,
+      policy: new cdk.aws_iam.PolicyDocument({
+        statements: [
+          new cdk.aws_iam.PolicyStatement({
+            actions: ["kms:*"],
+            principals: [new cdk.aws_iam.AccountRootPrincipal()],
+            resources: ["*"],
+          }),
+          new cdk.aws_iam.PolicyStatement({
+            actions: ["kms:GenerateDataKey", "kms:Decrypt"],
+            principals: [new cdk.aws_iam.ServicePrincipal("sns.amazonaws.com")],
+            resources: ["*"],
+          }),
+          new cdk.aws_iam.PolicyStatement({
+            actions: ["kms:GenerateDataKey", "kms:Decrypt"],
+            principals: [new cdk.aws_iam.ServicePrincipal("ses.amazonaws.com")],
+            resources: ["*"],
+          }),
+        ],
+      }),
+    });
+
+    // SNS Topic for Email Events
+    const emailEventTopic = new cdk.aws_sns.Topic(this, "EmailEventTopic", {
+      displayName: "Monitoring the sending of emails",
+      masterKey: kmsKeyForEmails,
+    });
+
+    // Allow SES to publish to the SNS topic
+    const snsPublishPolicyStatement = new cdk.aws_iam.PolicyStatement({
+      actions: ["sns:Publish"],
+      principals: [new cdk.aws_iam.ServicePrincipal("ses.amazonaws.com")],
+      resources: [emailEventTopic.topicArn],
+      effect: cdk.aws_iam.Effect.ALLOW,
+    });
+    emailEventTopic.addToResourcePolicy(snsPublishPolicyStatement);
+    // const snsTopicPolicy = emailEventTopic.node.tryFindChild(
+    //   "Policy",
+    // ) as cdk.CfnResource;
+
+    // S3 Bucket for storing email event data
+    const emailDataBucket = new cdk.aws_s3.Bucket(this, "EmailDataBucket", {
+      versioned: true,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: isDev,
+    });
+
+    emailDataBucket.addToResourcePolicy(
+      new cdk.aws_iam.PolicyStatement({
+        effect: cdk.aws_iam.Effect.DENY,
+        principals: [new cdk.aws_iam.AnyPrincipal()],
+        actions: ["s3:*"],
+        resources: [
+          emailDataBucket.bucketArn,
+          `${emailDataBucket.bucketArn}/*`,
+        ],
+        conditions: {
+          Bool: { "aws:SecureTransport": "false" },
+        },
+      }),
+    );
+
+    new LC.EmptyBuckets(this, "EmptyBuckets", {
+      buckets: [emailDataBucket],
+    });
 
     // SES Configuration Set
     new cdk.aws_ses.CfnConfigurationSet(this, "ConfigurationSet", {
@@ -134,6 +206,13 @@ export class Email extends cdk.NestedStack {
       },
     );
 
+    // Create a DynamoDB table to track email send attempts
+    const emailAttemptsTable = new dynamodb.Table(this, "EmailAttemptsTable", {
+      partitionKey: { name: "emailId", type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      timeToLiveAttribute: "ttl",
+    });
+
     // Lambda Function for Processing Emails
     const processEmailsLambda = new NodejsFunction(
       this,
@@ -160,9 +239,14 @@ export class Email extends cdk.NestedStack {
           osDomain: `https://${openSearchDomainEndpoint}`,
           applicationEndpointUrl,
           emailAddressLookupSecretName,
+          EMAIL_ATTEMPTS_TABLE: emailAttemptsTable.tableName,
+          MAX_RETRY_ATTEMPTS: "3", // Set the maximum number of retry attempts
         },
       },
     );
+
+    // Grant the Lambda function read/write permissions to the DynamoDB table
+    emailAttemptsTable.grantReadWriteData(processEmailsLambda);
 
     new CfnEventSourceMapping(this, "SinkEmailTrigger", {
       batchSize: 1,

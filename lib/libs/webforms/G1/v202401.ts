@@ -1,4 +1,5 @@
 import { FormSchema } from "shared-types";
+import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 export const v202401: FormSchema = {
   header: "Premiums and cost sharing G1: Cost-sharing requirements",
@@ -147,6 +148,11 @@ export const v202401: FormSchema = {
                         labelClassName: "font-bold",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: noLeadingTrailingWhitespace,
+                            message:
+                              "Must not have leading or trailing whitespace.",
+                          },
                         },
                       },
                     ],
@@ -248,7 +254,13 @@ export const v202401: FormSchema = {
             {
               name: "assures-describe",
               rhf: "Textarea",
-              rules: { required: "* Required" },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: noLeadingTrailingWhitespace,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
               label: "Describe the process.",
               labelClassName: "font-bold text-black",
               formItemClassName: "pl-9",
@@ -446,7 +458,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               rules: {
                 pattern: {
-                  value: /^\S(.*\S)?$/,
+                  value: noLeadingTrailingWhitespace,
                   message: "Must not have leading or trailing whitespace.",
                 },
               },

@@ -1,4 +1,8 @@
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import {
+  SESClient,
+  SendEmailCommand,
+  SendEmailCommandInput,
+} from "@aws-sdk/client-ses";
 import { Action, Authority, KafkaEvent, KafkaRecord } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
@@ -93,8 +97,13 @@ export async function processAndSendEmails(
   applicationEndpointUrl: string,
 ) {
   console.log("processAndSendEmails has been called");
-  const emailAddressLookup = JSON.parse(
-    await getSecret(emailAddressLookupSecretName),
+
+  const sec = await getSecret(emailAddressLookupSecretName);
+  console.log("sec: ", JSON.stringify(sec, null, 2));
+  const emailAddressLookup = JSON.parse(sec);
+  console.log(
+    "emailAddressLookup: ",
+    JSON.stringify(emailAddressLookup, null, 2),
   );
 
   const templates = await getEmailTemplates<typeof record>(action, authority);
@@ -156,21 +165,27 @@ export async function sendEmail(emailDetails: {
 
   validateEmail(to);
   validateEmail(from);
+
+  const CcAddresses: string[] = [];
   if (cc) {
-    cc.split(";").forEach(validateEmail);
+    const result = cc.split(";");
+    result.forEach((email) => {
+      validateEmail(email);
+      CcAddresses.push(email);
+    });
   }
 
-  const params = {
+  const params: SendEmailCommandInput = {
     Destination: {
       ToAddresses: [to],
-      ...(cc ? { CcAddresses: cc.split(";") } : {}),
+      CcAddresses,
     },
     Message: {
       Body: {
-        Html: { Data: html },
-        Text: text ? { Data: text } : undefined,
+        Html: { Data: html, Charset: "UTF-8" },
+        Text: text ? { Data: text, Charset: "UTF-8" } : undefined,
       },
-      Subject: { Data: subject },
+      Subject: { Data: subject, Charset: "UTF-8" },
     },
     Source: from,
   };
