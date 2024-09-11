@@ -1,18 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 
 const fetchPopulationData = async (stateString: string) => {
-  if (stateString) {
-    const response = await fetch(
-      `https://api.census.gov/data/2019/pep/population?get=NAME&for=county:*&in=state:${stateString}`,
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch population data");
-    }
+  try {
+    if (stateString) {
+      const response = await fetch(
+        `https://api.census.gov/data/2019/pep/population?get=NAME&for=county:*&in=state:${stateString}`,
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch county data");
+      }
 
-    const data = await response.json();
-    return data.slice(1).map((item) => item[0]);
+      const data = await response.json();
+      return data.slice(1).map((item) => item[0]);
+    }
+    return [];
+  } catch (error) {
+    console.error("Error fetching county data:", error);
+    throw error;
   }
-  return [];
 };
 
 export const usePopulationData = (stateString: string) => {
