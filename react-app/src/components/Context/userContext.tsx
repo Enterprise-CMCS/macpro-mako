@@ -2,7 +2,7 @@ import { OneMacUser, useGetUser } from "@/api";
 import { PropsWithChildren, createContext, useContext } from "react";
 import { getUserStateCodes } from "@/utils";
 import { usePopulationData } from "@/api";
-import { FULL_STATES } from "shared-types";
+import { FULL_CENSUS_STATES } from "shared-types";
 
 const initialState = { user: null };
 
@@ -13,7 +13,7 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
 
   const stateNumericCodesString = stateCodes
     .map((code) => {
-      return FULL_STATES.find((state) => state.value === code)?.code;
+      return FULL_CENSUS_STATES.find((state) => state.value === code)?.code;
     })
     .filter((code) => code !== "00")
     ?.join();

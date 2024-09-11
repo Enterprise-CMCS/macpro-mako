@@ -62,7 +62,7 @@ export const STATE_CODES = [
 ] as const;
 export type StateCode = (typeof STATE_CODES)[number];
 
-export const FULL_STATES = [
+export const FULL_CENSUS_STATES = [
   { label: "Alabama", value: "AL", code: "01" },
   { label: "Alaska", value: "AK", code: "02" },
   { label: "American Samoa", value: "AS", code: "00" },
