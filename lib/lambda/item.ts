@@ -10,6 +10,7 @@ import { validateEnvVariable } from "shared-utils";
 
 export const getItemData = async (event: APIGatewayEvent) => {
   validateEnvVariable("osDomain");
+  console.log("Testing works!");
   if (!event.body) {
     return response({
       statusCode: 400,
@@ -24,6 +25,8 @@ export const getItemData = async (event: APIGatewayEvent) => {
     let appkChildren: any[] = [];
     if (packageResult._source.appkParent) {
       const children = await getAppkChildren(body.id);
+      //Testing
+      console.log("These are the children...", children);
       appkChildren = children.hits.hits;
     }
     const filter = [];
@@ -83,3 +86,11 @@ export const getItemData = async (event: APIGatewayEvent) => {
 };
 
 export const handler = getItemData;
+
+// Refactor to return appkchild title property with appkchild Document
+// When appkchild is withdrawn, check to the changelog to see if it was a
+// withdrawn appkchild ... And if it is withdrawn i should be looking 
+// for its parent to get the appropiate title. 
+
+// Check the changelog to see if its a withdrawn appkchild and if so pass 
+// the title to the return statement. 
