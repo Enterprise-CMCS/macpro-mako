@@ -109,7 +109,7 @@ export const SlotField = ({
 
         case "countySelect":
           opts =
-            userContext?.user?.counties.sort((a, b) =>
+            userContext?.counties?.sort((a, b) =>
               props.customSort
                 ? sortFunctions[props.customSort](a.label, b.label)
                 : stringCompare(a, b),

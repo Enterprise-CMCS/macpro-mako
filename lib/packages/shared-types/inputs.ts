@@ -30,7 +30,7 @@ export type RadioProps = React.ComponentPropsWithoutRef<
 export type SelectProps = React.ComponentPropsWithoutRef<
   typeof SelectPrimitive.Root
 > & {
-  options?: { label: string; value: any }[];
+  options: { label: string; value: any }[];
   className?: string;
   apiCall?: string;
 };

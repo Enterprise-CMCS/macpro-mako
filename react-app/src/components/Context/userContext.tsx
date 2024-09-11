@@ -1,35 +1,61 @@
 import { OneMacUser, useGetUser } from "@/api";
-import { PropsWithChildren, createContext, useContext } from "react";
+import { PropsWithChildren, createContext, useContext, useMemo } from "react";
 import { getUserStateCodes } from "@/utils";
 import { usePopulationData } from "@/api";
 import { FULL_CENSUS_STATES } from "shared-types";
 
-const initialState = { user: null };
+const initialState = { user: null, counties: [] };
 
 export const UserContext = createContext<OneMacUser | undefined>(initialState);
+
 export const UserContextProvider = ({ children }: PropsWithChildren) => {
-  const { data: userData } = useGetUser();
-  const stateCodes = getUserStateCodes(userData?.user);
+  const { data: userData, error: userError } = useGetUser();
 
-  const stateNumericCodesString = stateCodes
-    .map((code) => {
-      return FULL_CENSUS_STATES.find((state) => state.value === code)?.code;
-    })
-    .filter((code) => code !== "00")
-    ?.join();
+  const stateCodes = useMemo(
+    () => getUserStateCodes(userData?.user),
+    [userData],
+  );
 
-  const { data: populationData } = usePopulationData(stateNumericCodesString);
+  const stateNumericCodesString = useMemo(
+    () =>
+      stateCodes
+        .map(
+          (code) =>
+            FULL_CENSUS_STATES.find((state) => state.value === code)?.code,
+        )
+        .filter((code): code is string => code !== undefined && code !== "00")
+        .join(","),
+    [stateCodes],
+  );
 
-  const objectOfCounties = populationData?.map((county) => {
-    return { label: county.split(",")[0], value: county };
-  });
+  const { data: populationData, error: populationError } = usePopulationData(
+    stateNumericCodesString,
+  );
 
-  if (userData?.user && objectOfCounties) {
-    userData.user.counties = objectOfCounties;
+  const counties = useMemo(
+    () =>
+      populationData?.map((county) => {
+        const [label] = county.split(",");
+        return { label, value: county };
+      }) ?? [],
+    [populationData],
+  );
+
+  const contextValue = useMemo(
+    () => ({
+      user: userData?.user ?? null,
+      counties,
+    }),
+    [userData, counties],
+  );
+
+  if (userError || populationError) {
+    console.error("Error fetching data:", userError || populationError);
+    return null;
   }
 
   return (
-    <UserContext.Provider value={userData}>{children}</UserContext.Provider>
+    <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
   );
 };
 
