@@ -32,9 +32,6 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "chip-agency-operates-group",
-              rules: {
-                required: "* Required",
-              },
               props: {
                 options: [
                   {
