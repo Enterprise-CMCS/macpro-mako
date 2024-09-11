@@ -31,6 +31,10 @@ export const RHFTextDisplay = (props: RHFTextDisplayProps) => {
         return <b className={t.classname}>{t.text}</b>;
       case "italic":
         return <i className={t.classname}>{t.text}</i>;
+      case "numberedSet":
+        return (
+          <span className={t.classname}>{`${t.text} ${props.index + 1}`}</span>
+        );
       case "link":
         return (
           <Link
