@@ -9,7 +9,7 @@ export const OsFiltering: FC<{
   columns: OsTableColumn[];
   onToggle: (field: string) => void;
   disabled?: boolean;
-}> = (props) => {
+}> = ({ columns, onToggle, disabled }) => {
   const url = useOsUrl();
   const context = useOsContext();
 
@@ -28,16 +28,16 @@ export const OsFiltering: FC<{
               search,
             }))
           }
-          disabled={!!props.disabled}
+          disabled={!!disabled}
         />
         <div className="flex justify-center flex-row gap-2">
           <VisibilityPopover
-            list={props.columns.filter((COL) => !COL.locked || COL.field)}
-            onItemClick={props.onToggle}
-            hiddenColumns={props.columns.filter((COL) => COL.hidden === true)}
+            list={columns.filter((COL) => COL.locked === false || COL.field)}
+            onItemClick={onToggle}
+            hiddenColumns={columns.filter((COL) => COL.hidden === true)}
           />
           <OsFilterDrawer />
-          <OsExportData columns={props.columns} disabled={context?.data?.total.value === 0}/>
+          <OsExportData columns={columns} disabled={context?.data?.total.value === 0}/>
         </div>
       </div>
     </div>
