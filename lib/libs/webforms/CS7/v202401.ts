@@ -123,12 +123,12 @@ export const v202401: FormSchema = {
                       label: "From age",
                       labelClassName: "font-bold",
                       name: "from-age",
+                      formItemClassName: "w-[125px]",
                       rules: {
                         required: "* Required",
                       },
                       props: {
                         options: ageOptions,
-                        className: "w-[125px]",
                       },
                     },
                     {
@@ -136,12 +136,12 @@ export const v202401: FormSchema = {
                       label: "To age",
                       labelClassName: "font-bold",
                       name: "to-age",
+                      formItemClassName: "w-[125px]",
                       rules: {
                         required: "* Required",
                       },
                       props: {
                         options: ageOptions,
-                        className: "w-[125px]",
                       },
                     },
                     {
@@ -344,12 +344,12 @@ export const v202401: FormSchema = {
                             label: "From age",
                             labelClassName: "font-bold",
                             name: "from-age",
+                            formItemClassName: "w-[125px]",
                             rules: {
                               required: "* Required",
                             },
                             props: {
                               options: ageOptions,
-                              className: "w-[125px]",
                             },
                           },
                           {
@@ -357,12 +357,12 @@ export const v202401: FormSchema = {
                             label: "To age",
                             labelClassName: "font-bold",
                             name: "to-age",
+                            formItemClassName: "w-[125px]",
                             rules: {
                               required: "* Required",
                             },
                             props: {
                               options: ageOptions,
-                              className: "w-[125px]",
                             },
                           },
                           {
@@ -496,12 +496,12 @@ export const v202401: FormSchema = {
                             label: "From age",
                             labelClassName: "font-bold",
                             name: "from-age",
+                            formItemClassName: "w-[125px]",
                             rules: {
                               required: "* Required",
                             },
                             props: {
                               options: ageOptions,
-                              className: "w-[125px]",
                             },
                           },
                           {
@@ -509,12 +509,12 @@ export const v202401: FormSchema = {
                             label: "To age",
                             labelClassName: "font-bold",
                             name: "to-age",
+                            formItemClassName: "w-[125px]",
                             rules: {
                               required: "* Required",
                             },
                             props: {
                               options: ageOptions,
-                              className: "w-[125px]",
                             },
                           },
                           {
@@ -648,12 +648,12 @@ export const v202401: FormSchema = {
                             label: "From age",
                             labelClassName: "font-bold",
                             name: "from-age",
+                            formItemClassName: "w-[125px]",
                             rules: {
                               required: "* Required",
                             },
                             props: {
                               options: ageOptions,
-                              className: "w-[125px]",
                             },
                           },
                           {
@@ -661,12 +661,12 @@ export const v202401: FormSchema = {
                             label: "To age",
                             labelClassName: "font-bold",
                             name: "to-age",
+                            formItemClassName: "w-[125px]",
                             rules: {
                               required: "* Required",
                             },
                             props: {
                               options: ageOptions,
-                              className: "w-[125px]",
                             },
                           },
                           {
