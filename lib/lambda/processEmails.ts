@@ -3,7 +3,13 @@ import {
   SendEmailCommand,
   SendEmailCommandInput,
 } from "@aws-sdk/client-ses";
-import { Action, Authority, KafkaEvent, KafkaRecord } from "shared-types";
+import {
+  Action,
+  Authority,
+  EmailAddresses,
+  KafkaEvent,
+  KafkaRecord,
+} from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
 import { getEmailTemplates } from "./../libs/email";
@@ -99,12 +105,7 @@ export async function processAndSendEmails(
   console.log("processAndSendEmails has been called");
 
   const sec = await getSecret(emailAddressLookupSecretName);
-  console.log("sec: ", JSON.stringify(sec, null, 2));
-  const emailAddressLookup = JSON.parse(sec);
-  console.log(
-    "emailAddressLookup: ",
-    JSON.stringify(emailAddressLookup, null, 2),
-  );
+  const emailAddressLookup: EmailAddresses = JSON.parse(sec);
 
   const templates = await getEmailTemplates<typeof record>(action, authority);
 
@@ -175,10 +176,18 @@ export async function sendEmail(emailDetails: {
       CcAddresses.push(email);
     });
   }
+  const ToAddresses: string[] = [];
+  if (to) {
+    const result = to.split(";");
+    result.forEach((email) => {
+      validateEmail(email);
+      ToAddresses.push(email);
+    });
+  }
 
   const params: SendEmailCommandInput = {
     Destination: {
-      ToAddresses: [to],
+      ToAddresses,
       CcAddresses,
     },
     Message: {
