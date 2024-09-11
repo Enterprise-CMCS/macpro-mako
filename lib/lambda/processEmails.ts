@@ -125,14 +125,15 @@ export async function processAndSendEmails(
     const filledTemplate = await template(templateVariables);
     console.log("filledTemplate: ", JSON.stringify(filledTemplate, null, 2));
 
-    await sendEmail({
+    const params = {
       to: filledTemplate.to,
       ...(filledTemplate.cc ? { cc: filledTemplate.cc } : {}),
       from: emailAddressLookup.sourceEmail,
       subject: filledTemplate.subject,
       html: filledTemplate.html,
       text: filledTemplate.text,
-    });
+    };
+    await sendEmail(params);
   });
 
   const results = await Promise.all(sendEmailPromises);

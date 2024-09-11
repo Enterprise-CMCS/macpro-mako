@@ -204,19 +204,21 @@ export async function getEmailTemplates<T>(
   action: Action | "new-submission",
   authority: Authority,
 ): Promise<EmailTemplateFunction<T>[]> {
-  const template = emailTemplates[action];
   const emailTemplatesToSend: EmailTemplateFunction<T>[] = [];
+  if (action !== Action.ISSUE_RAI) {
+    const template = emailTemplates[action];
 
-  if (!template) {
-    throw new Error(`No templates found for action ${action}`);
-  }
+    if (!template) {
+      throw new Error(`No templates found for action ${action}`);
+    }
 
-  if (isAuthorityTemplate(template, authority)) {
-    emailTemplatesToSend.push(
-      ...Object.values(template[authority] as EmailTemplateFunction<T>),
-    );
-  } else {
-    emailTemplatesToSend.push(...Object.values(template));
+    if (isAuthorityTemplate(template, authority)) {
+      emailTemplatesToSend.push(
+        ...Object.values(template[authority] as EmailTemplateFunction<T>),
+      );
+    } else {
+      emailTemplatesToSend.push(...Object.values(template));
+    }
   }
 
   return emailTemplatesToSend;
