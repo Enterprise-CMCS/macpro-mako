@@ -147,6 +147,7 @@ export type RHFComponentMap = {
     removeText?: string;
     fieldArrayClassName?: string;
     divider?: boolean;
+    lastDivider?: string;
     appendClassName?: string;
     appendVariant?: "default" | "outline" | "ghost" | "secondary";
   };
@@ -189,6 +190,7 @@ export type FieldArrayProps<
   removeText?: string;
   fieldArrayClassName?: string;
   divider?: boolean;
+  lastDivider?: string;
   appendClassName?: string;
   appendVariant?: "default" | "outline" | "ghost" | "secondary";
 };

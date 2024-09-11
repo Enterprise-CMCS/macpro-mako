@@ -52,6 +52,7 @@ export const v202401: FormSchema = {
                 appendClassName: DefaultFieldGroupProps.appendClassName,
                 removeText: "Remove above population",
                 appendVariant: "default",
+                lastDivider: "border-primary border-b-[2px]",
               },
               fields: [
                 {
@@ -66,12 +67,19 @@ export const v202401: FormSchema = {
                   label: "Population name (optional)",
                   labelClassName: "text-black font-bold",
                   props: { className: "w-[40rem]" },
+                  rules: {
+                    pattern: {
+                      value: noLeadingTrailingWhitespace,
+                      message: "Must not have leading or trailing whitespace.",
+                    },
+                  },
                 },
                 {
                   name: "eligibile-group-list",
                   rhf: "Textarea",
                   label: "Eligibility group(s) included",
                   labelClassName: "font-bold text-black",
+                  props: { className: "w-[40rem]" },
                   rules: {
                     required: "* Required",
                     pattern: {
@@ -88,8 +96,9 @@ export const v202401: FormSchema = {
                     {
                       name: "inc-greater-than",
                       rhf: "Input",
-                      label: "Income greater than",
+                      label: "Income greater than ($)",
                       labelClassName: "text-black",
+                      formItemClassName: "w-60",
                       rules: {
                         required: "* Required",
                         pattern: {
@@ -102,8 +111,9 @@ export const v202401: FormSchema = {
                     {
                       name: "inc-lesser-than",
                       rhf: "Input",
-                      label: "Income less than or equal to",
+                      label: "Income less than or equal to ($)",
                       labelClassName: "text-black",
+                      formItemClassName: "w-64",
                       rules: {
                         required: "* Required",
                         pattern: {

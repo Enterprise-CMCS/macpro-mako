@@ -9,3 +9,4 @@ export * from "./useGetTypes";
 export * from "./amplifyConfig";
 export * from "./submissionService";
 export * from "./itemExists";
+export * from "./useGetCounties";
