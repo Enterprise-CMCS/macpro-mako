@@ -67,6 +67,12 @@ export const v202401: FormSchema = {
                   label: "Population name (optional)",
                   labelClassName: "text-black font-bold",
                   props: { className: "w-[40rem]" },
+                  rules: {
+                    pattern: {
+                      value: noLeadingTrailingWhitespace,
+                      message: "Must not have leading or trailing whitespace.",
+                    },
+                  },
                 },
                 {
                   name: "eligibile-group-list",
@@ -92,6 +98,7 @@ export const v202401: FormSchema = {
                       rhf: "Input",
                       label: "Income greater than ($)",
                       labelClassName: "text-black",
+                      formItemClassName: "w-60",
                       rules: {
                         required: "* Required",
                         pattern: {
@@ -106,6 +113,7 @@ export const v202401: FormSchema = {
                       rhf: "Input",
                       label: "Income less than or equal to ($)",
                       labelClassName: "text-black",
+                      formItemClassName: "w-64",
                       rules: {
                         required: "* Required",
                         pattern: {
