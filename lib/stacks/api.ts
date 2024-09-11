@@ -229,7 +229,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "submit",
-        entry: join(__dirname, "../lambda/submit.ts"),
+        entry: join(__dirname, "../lambda/submit/submit.ts"),
         environment: {
           dbInfoSecretName,
           topicName,
@@ -306,21 +306,18 @@ export class Api extends cdk.NestedStack {
       },
     ];
 
-    const lambdas = lambdaDefinitions.reduce(
-      (acc, lambdaDef) => {
-        acc[lambdaDef.id] = createNodeJsLambda(
-          lambdaDef.id,
-          lambdaDef.entry,
-          lambdaDef.environment,
-          vpc,
-          lambdaSecurityGroup,
-          privateSubnets,
-          !props.isDev ? lambdaDef.provisionedConcurrency : 0,
-        );
-        return acc;
-      },
-      {} as { [key: string]: NodejsFunction },
-    );
+    const lambdas = lambdaDefinitions.reduce((acc, lambdaDef) => {
+      acc[lambdaDef.id] = createNodeJsLambda(
+        lambdaDef.id,
+        lambdaDef.entry,
+        lambdaDef.environment,
+        vpc,
+        lambdaSecurityGroup,
+        privateSubnets,
+        !props.isDev ? lambdaDef.provisionedConcurrency : 0,
+      );
+      return acc;
+    }, {} as { [key: string]: NodejsFunction });
 
     // Create IAM role for API Gateway to invoke Lambda functions
     const apiGatewayRole = new cdk.aws_iam.Role(this, "ApiGatewayRole", {

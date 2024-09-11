@@ -1,8 +1,9 @@
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 
-import { events, FeSchemas } from "shared-types";
-import { produceMessage } from "../libs/api/kafka";
+import { events } from "./events";
+import { produceMessage } from "../../libs/api/kafka";
+import { BaseSchemas } from "shared-types/events";
 
 export const submit = async (event: APIGatewayEvent) => {
   if (!event.body) {
@@ -12,7 +13,7 @@ export const submit = async (event: APIGatewayEvent) => {
     });
   }
 
-  const body: FeSchemas = JSON.parse(event.body);
+  const body: BaseSchemas = JSON.parse(event.body);
 
   console.log(body);
 
@@ -33,7 +34,7 @@ export const submit = async (event: APIGatewayEvent) => {
   }
 
   try {
-    const eventBody = await events[body.event].transform(event);
+    const eventBody = await events[body.event](event);
 
     await produceMessage(
       process.env.topicName as string,

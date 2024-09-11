@@ -11,12 +11,13 @@ import {
   FAQ_TAB,
   SpaIdFormattingDesc,
 } from "@/components";
-import { newMedicaidSubmission } from "shared-types";
+// import { newMedicaidSubmission } from "shared-types";
 import { ActionForm } from "@/components/ActionForm";
+import { events } from "@/events";
 
 export const MedicaidForm = () => (
   <ActionForm
-    schema={newMedicaidSubmission.feSchema}
+    schema={events["new-medicaid-submission"].formSchema}
     title="Medicaid SPA Details"
     fields={({ control }) => (
       <>

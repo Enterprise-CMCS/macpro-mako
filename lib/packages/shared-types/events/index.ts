@@ -1,3 +1,6 @@
+import { z } from "zod";
+import * as newMedicaidSubmission from "./new-medicaid-submission";
+
 export * from "./toggle-withdraw-rai-enabled";
 export * from "./issue-rai";
 export * from "./respond-to-rai";
@@ -16,15 +19,8 @@ export * from "./remove-appk-child";
 export * from "./update-id";
 export * from "./complete-intake";
 
-// const eventModules = {
-//   "new-medicaid-submission": "./new-medicaid-submission",
-// };
-
-import * as newMedicaidSubmission from "./new-medicaid-submission";
-
 export const events = {
   "new-medicaid-submission": newMedicaidSubmission,
 };
 
-export type FeSchemas = newMedicaidSubmission.FeSchema;
-// | newChipSubmission.FeSchema;
+export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;
