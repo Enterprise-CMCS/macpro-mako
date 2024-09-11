@@ -48,7 +48,7 @@ export default defineConfig({
 
     {
       // we can have different projects for different users/use cases
-      name: "logged in state user",
+      name: "state-user-chrome",
       use: {
         ...devices["Desktop Chrome"],
         // Use prepared auth state for state submitter.
