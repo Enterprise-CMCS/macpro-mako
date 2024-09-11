@@ -114,6 +114,9 @@ export const v202401: FormSchema = {
                 {
                   rhf: "FieldArray",
                   name: "statewide-income-standards-fields",
+                  descriptionClassName: "statewide-income-standards-fields",
+                  formItemClassName:
+                    "statewide-income-standards-fields [&_.slot-form-message]:w-max",
                   props: {
                     appendText: "Add range",
                   },
@@ -130,6 +133,15 @@ export const v202401: FormSchema = {
                       props: {
                         options: ageOptions,
                       },
+                      addtnlRules: [
+                        {
+                          type: "toGreaterThanFrom",
+                          fieldName: "statewide-income-standards-fields",
+                          fromField: "from-age",
+                          toField: "to-age",
+                          message: "To age must be greater than From age",
+                        },
+                      ],
                     },
                     {
                       rhf: "Select",
@@ -334,7 +346,9 @@ export const v202401: FormSchema = {
                         description:
                           "Begin with the youngest age range first. The lower limit for CHIP eligibility should be the highest standard used for Medicaid children for the same age group(s) entered here.",
                         descriptionAbove: true,
-                        descriptionClassName: "mb-6",
+                        descriptionClassName: "county-field-ranges",
+                        formItemClassName:
+                          "county-field-ranges [&_.slot-form-message]:w-max",
                         props: {
                           appendText: "Add range",
                         },
@@ -351,6 +365,15 @@ export const v202401: FormSchema = {
                             props: {
                               options: ageOptions,
                             },
+                            addtnlRules: [
+                              {
+                                type: "toGreaterThanFrom",
+                                fieldName: "county-field-ranges",
+                                fromField: "from-age",
+                                toField: "to-age",
+                                message: "To age must be greater than From age",
+                              },
+                            ],
                           },
                           {
                             rhf: "Select",
@@ -486,7 +509,9 @@ export const v202401: FormSchema = {
                         description:
                           "Begin with the youngest age range first. The lower limit for CHIP eligibility should be the highest standard used for Medicaid children for the same age group(s) entered here.",
                         descriptionAbove: true,
-                        descriptionClassName: "mb-6",
+                        descriptionClassName: "city-field-ranges",
+                        formItemClassName:
+                          "city-field-ranges [&_.slot-form-message]:w-max",
                         props: {
                           appendText: "Add range",
                         },
@@ -503,6 +528,15 @@ export const v202401: FormSchema = {
                             props: {
                               options: ageOptions,
                             },
+                            addtnlRules: [
+                              {
+                                type: "toGreaterThanFrom",
+                                fieldName: "city-field-ranges",
+                                fromField: "from-age",
+                                toField: "to-age",
+                                message: "To age must be greater than From age",
+                              },
+                            ],
                           },
                           {
                             rhf: "Select",
@@ -638,7 +672,9 @@ export const v202401: FormSchema = {
                         description:
                           "Begin with the youngest age range first. The lower limit for CHIP eligibility should be the highest standard used for Medicaid children for the same age group(s) entered here.",
                         descriptionAbove: true,
-                        descriptionClassName: "mb-6",
+                        descriptionClassName: "other-field-ranges",
+                        formItemClassName:
+                          "other-field-ranges [&_.slot-form-message]:w-max",
                         props: {
                           appendText: "Add range",
                         },
@@ -655,6 +691,15 @@ export const v202401: FormSchema = {
                             props: {
                               options: ageOptions,
                             },
+                            addtnlRules: [
+                              {
+                                type: "toGreaterThanFrom",
+                                fieldName: "other-field-ranges",
+                                fromField: "from-age",
+                                toField: "to-age",
+                                message: "To age must be greater than From age",
+                              },
+                            ],
                           },
                           {
                             rhf: "Select",
