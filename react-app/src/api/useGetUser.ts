@@ -6,7 +6,7 @@ import { isCmsUser } from "shared-utils";
 export type OneMacUser = {
   isCms?: boolean;
   user: CognitoUserAttributes | null;
-  counties: { label: string; value: string }[];
+  counties?: { label: string; value: string }[];
 };
 
 export const getUser = async (): Promise<OneMacUser> => {
