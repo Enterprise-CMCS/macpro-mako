@@ -7,36 +7,21 @@ import {
   ExportHeaderOptions,
 } from "./../_";
 import { z } from "zod";
-import {
-  newMedicaidSubmission,
-  RaiIssue,
-  RaiResponse,
-  RaiWithdraw,
-  WithdrawPackage,
-  ToggleWithdrawRaiEnabled,
-  UpdateId,
-} from "../../events";
+
+import { newChipSubmission, newMedicaidSubmission } from "./transforms";
+
+// legacy
 import { legacyAdminChange, legacyEvent } from "./transforms";
 
-export type Document = newMedicaidSubmission.Schema &
-  WithdrawPackage &
-  RaiResponse &
-  RaiIssue &
-  RaiWithdraw &
-  ToggleWithdrawRaiEnabled &
-  UpdateId & {
-    actionType: string;
-    timestamp: string;
-    packageId: string;
-    appkChildId: string;
-    appkParentId: string;
-    oldPackageId: string;
-    newPackageId: string;
-  } & z.infer<legacyEvent.Schema> &
-  z.infer<legacyAdminChange.Schema> & {
-    appkParentId: string;
-    appkParent: boolean;
-  };
+export type Document = z.infer<newChipSubmission.Schema> &
+  z.infer<newMedicaidSubmission.Schema> &
+  z.infer<legacyEvent.Schema> &
+  z.infer<legacyAdminChange.Schema>;
+
+// & {
+//   appkParentId: string;
+//   appkParent: boolean;
+// };
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
@@ -50,3 +35,8 @@ export type Aggs = AggQuery<Field>;
 export type ExportHeader = ExportHeaderOptions<Document>;
 
 export * from "./transforms";
+
+export const transforms = {
+  "new-chip-submission": newChipSubmission,
+  "new-medicaid-submission": newMedicaidSubmission,
+};

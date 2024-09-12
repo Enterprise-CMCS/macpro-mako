@@ -8,7 +8,8 @@ import {
 import { z } from "zod";
 import { ItemResult as Changelog } from "./../changelog";
 import {
-  newSubmission,
+  newChipSubmission,
+  newMedicaidSubmission,
   legacyPackageView,
   withdrawPackage,
   issueRai,
@@ -19,7 +20,8 @@ import {
   changedDate,
 } from "./transforms";
 
-export type Document = z.infer<newSubmission.Schema> &
+export type Document = z.infer<newChipSubmission.Schema> &
+  z.infer<newMedicaidSubmission.Schema> &
   z.infer<legacyPackageView.Schema> &
   z.infer<issueRai.Schema> &
   z.infer<respondToRai.Schema> &
@@ -47,5 +49,6 @@ export type Aggs = AggQuery<Field>;
 export * from "./transforms";
 
 export const transforms = {
-  "new-submission": newSubmission,
+  "new-chip-submission": newChipSubmission,
+  "new-medicaid-submission": newMedicaidSubmission,
 };

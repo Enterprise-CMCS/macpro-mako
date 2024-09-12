@@ -38,9 +38,11 @@ export const defaultWithdrawRaiFields: ReactElement[] = [
   />,
 ];
 export const defaultWithdrawRaiContent: FormContentHydrator = (document) => {
-  const title = false
-    ? `${document.authority} Appendix K Withdraw Formal RAI Response Details`
-    : `${document.authority} Withdraw Formal RAI Response Details`;
+  // TODO:  Uncomment when appks are supported
+  // const title = document.appkParent
+  //   ? `${document.authority} Appendix K Withdraw Formal RAI Response Details`
+  //   : `${document.authority} Withdraw Formal RAI Response Details`;
+  const title = `${document.authority} Withdraw Formal RAI Response Details`;
   return {
     title,
     preSubmitNotice:

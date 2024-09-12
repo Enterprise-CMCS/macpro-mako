@@ -3,14 +3,9 @@ import {
   attachmentArraySchema,
   attachmentArraySchemaOptional,
 } from "../attachments";
-import { APIGatewayEvent } from "aws-lambda";
-import {
-  getAuthDetails,
-  lookupUserAttributes,
-} from "../../../libs/api/auth/user"; // this should move
+// import { APIGatewayEvent } from "aws-lambda";
 
-// These are fields we expect the frontend to provide in the api request's payload
-export const feSchema = z.object({
+export const baseSchema = z.object({
   event: z
     .literal("new-medicaid-submission")
     .default("new-medicaid-submission"),
@@ -57,39 +52,18 @@ export const feSchema = z.object({
     }),
   }),
   authority: z.string().default("Medicaid SPA"),
-  id: z.string(),
   proposedEffectiveDate: z.number(),
+  id: z
+    .string()
+    .min(1, { message: "Required" })
+    .refine((id) => /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/.test(id), {
+      message: "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-XXXX",
+    }),
 });
 
-export const schema = feSchema.extend({
+export const schema = baseSchema.extend({
   origin: z.literal("mako").default("mako"),
   submitterName: z.string(),
   submitterEmail: z.string().email(),
   timestamp: z.number(),
 });
-
-export const transform = async (event: APIGatewayEvent) => {
-  const parsedResult = feSchema.safeParse(JSON.parse(event.body));
-  if (!parsedResult.success) {
-    throw parsedResult.error;
-  }
-
-  const authDetails = getAuthDetails(event);
-  const userAttr = await lookupUserAttributes(
-    authDetails.userId,
-    authDetails.poolId,
-  );
-  const submitterEmail = userAttr.email;
-  const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
-
-  const transformedData = schema.parse({
-    ...parsedResult.data,
-    submitterName,
-    submitterEmail,
-    timestamp: Date.now(),
-  });
-
-  return transformedData;
-};
-
-export type Schema = Awaited<ReturnType<typeof transform>>;

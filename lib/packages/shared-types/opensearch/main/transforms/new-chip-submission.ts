@@ -1,5 +1,4 @@
-import { SEATOOL_STATUS, getStatus } from "shared-types";
-import * as newSubmission from "../../../events/new-medicaid-submission";
+import { events, SEATOOL_STATUS, getStatus } from "shared-types";
 import {
   getNextBusinessDayTimestamp,
   seaToolFriendlyTimestamp,
@@ -7,14 +6,14 @@ import {
 
 export const transform = () => {
   // any adhoc logic
-  return newSubmission.schema.transform((data) => {
+  return events["new-chip-submission"].schema.transform((data) => {
     const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.PENDING);
     const timestampDate = new Date(data.timestamp);
     const todayEpoch = seaToolFriendlyTimestamp(timestampDate);
     const nextBusinessDayEpoch = getNextBusinessDayTimestamp(timestampDate);
+
     return {
       additionalInformation: data.additionalInformation,
-      attachments: data.attachments,
       authority: data.authority,
       changedDate: new Date(data.timestamp).toISOString(),
       cmsStatus,
@@ -27,6 +26,7 @@ export const transform = () => {
       state: data.id.split("-")[0],
       stateStatus,
       statusDate: new Date(todayEpoch).toISOString(),
+      proposedDate: data.proposedEffectiveDate, // wish this was proposedEffectiveDate
       subject: null,
       submissionDate: new Date(nextBusinessDayEpoch).toISOString(),
       submitterEmail: data.submitterEmail,

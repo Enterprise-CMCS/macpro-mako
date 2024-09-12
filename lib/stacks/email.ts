@@ -4,6 +4,7 @@ import * as path from "path";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { ISubnet } from "aws-cdk-lib/aws-ec2";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
+import { commonBundlingOptions } from "../config/bundling-config";
 
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;
@@ -149,6 +150,7 @@ export class Email extends cdk.NestedStack {
           applicationEndpointUrl,
           emailAddressLookupSecretName,
         },
+        bundling: commonBundlingOptions,
       },
     );
 

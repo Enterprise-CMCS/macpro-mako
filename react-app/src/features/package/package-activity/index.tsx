@@ -1,5 +1,5 @@
 import { FC, useMemo } from "react";
-import { AttachmentKey, opensearch } from "shared-types";
+import { opensearch } from "shared-types";
 import { format } from "date-fns";
 import {
   Accordion,
@@ -11,10 +11,7 @@ import {
 import * as Table from "@/components";
 import { BLANK_VALUE } from "@/consts";
 import { usePackageActivities, useAttachmentService } from "./hook";
-import { attachmentTitleMap } from "shared-types";
-import { Link } from "react-router-dom";
 
-// id, attachments, hook
 const AttachmentDetails: FC<{
   id: string;
   attachments: opensearch.changelog.Document["attachments"];
@@ -24,12 +21,9 @@ const AttachmentDetails: FC<{
     <Table.TableBody>
       {attachments &&
         attachments.map((ATC) => {
-          // ATC.title *should* have type: AttachmentKey
-          const attachmentLabel =
-            attachmentTitleMap[ATC.title as AttachmentKey] || ATC.title;
           return (
             <Table.TableRow key={`${id}-${ATC.key}`}>
-              <Table.TableCell>{attachmentLabel}</Table.TableCell>
+              <Table.TableCell>{ATC.title}</Table.TableCell>
               <Table.TableCell>
                 <Table.Button
                   className="ml-[-15px]"
@@ -48,43 +42,42 @@ const AttachmentDetails: FC<{
   );
 };
 
-export const PA_AppkParentRemovedChild: FC<opensearch.changelog.Document> = (
-  props,
-) => {
-  return (
-    <div className="flex gap-1">
-      <Link
-        to={`/details/${props.authority}/${props.appkChildId}`}
-        className="hover:underline font-semibold text-blue-600"
-      >
-        {props.appkChildId}
-      </Link>
-      <p>was removed</p>
-    </div>
-  );
-};
+// export const PA_AppkParentRemovedChild: FC<opensearch.changelog.Document> = (
+//   props,
+// ) => {
+//   return (
+//     <div className="flex gap-1">
+//       <Link
+//         to={`/details/${props.authority}/${props.appkChildId}`}
+//         className="hover:underline font-semibold text-blue-600"
+//       >
+//         {props.appkChildId}
+//       </Link>
+//       <p>was removed</p>
+//     </div>
+//   );
+// };
 
-export const PA_AppkChildRemovedFromParent: FC<
-  opensearch.changelog.Document
-> = (props) => {
-  return (
-    <div className="flex gap-1">
-      <p>Removed from:</p>
-      <Link
-        to={`/details/${props.authority}/${props.appkParentId}`}
-        className="hover:underline font-semibold text-blue-600"
-      >
-        {props.appkParentId}
-      </Link>
-    </div>
-  );
-};
+// export const PA_AppkChildRemovedFromParent: FC<
+//   opensearch.changelog.Document
+// > = (props) => {
+//   return (
+//     <div className="flex gap-1">
+//       <p>Removed from:</p>
+//       <Link
+//         to={`/details/${props.authority}/${props.appkParentId}`}
+//         className="hover:underline font-semibold text-blue-600"
+//       >
+//         {props.appkParentId}
+//       </Link>
+//     </div>
+//   );
+// };
 
 export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
   props,
 ) => {
   const hook = useAttachmentService(props);
-
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -132,194 +125,195 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
   );
 };
 
-export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
-  props,
-) => {
-  const hook = useAttachmentService(props);
+// export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
+//   props,
+// ) => {
+//   const hook = useAttachmentService(props);
 
-  return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h2 className="font-bold text-lg mb-2">Attachments</h2>
-        {!props.attachments?.length && <p>No information submitted</p>}
-        {!!props.attachments?.length && (
-          <Table.Table>
-            <Table.TableHeader>
-              <Table.TableRow>
-                <Table.TableHead className="w-[300px]">
-                  Document Type
-                </Table.TableHead>
-                <Table.TableHead>Attached File</Table.TableHead>
-              </Table.TableRow>
-            </Table.TableHeader>
-            <AttachmentDetails
-              attachments={props.attachments}
-              id={props.id}
-              hook={hook}
-            />
-          </Table.Table>
-        )}
-      </div>
+//   return (
+//     <div className="flex flex-col gap-6">
+//       <div>
+//         <h2 className="font-bold text-lg mb-2">Attachments</h2>
+//         {!props.attachments?.length && <p>No information submitted</p>}
+//         {!!props.attachments?.length && (
+//           <Table.Table>
+//             <Table.TableHeader>
+//               <Table.TableRow>
+//                 <Table.TableHead className="w-[300px]">
+//                   Document Type
+//                 </Table.TableHead>
+//                 <Table.TableHead>Attached File</Table.TableHead>
+//               </Table.TableRow>
+//             </Table.TableHeader>
+//             <AttachmentDetails
+//               attachments={props.attachments}
+//               id={props.id}
+//               hook={hook}
+//             />
+//           </Table.Table>
+//         )}
+//       </div>
 
-      {props.attachments && props.attachments?.length > 1 && (
-        <Table.Button
-          variant="outline"
-          className="w-max"
-          disabled={!props.attachments?.length}
-          loading={hook.loading}
-          onClick={() => {
-            if (!props.attachments?.length) return;
-            hook.onZip(props.attachments);
-          }}
-        >
-          Download documents
-        </Table.Button>
-      )}
+//       {props.attachments && props.attachments?.length > 1 && (
+//         <Table.Button
+//           variant="outline"
+//           className="w-max"
+//           disabled={!props.attachments?.length}
+//           loading={hook.loading}
+//           onClick={() => {
+//             if (!props.attachments?.length) return;
+//             hook.onZip(props.attachments);
+//           }}
+//         >
+//           Download documents
+//         </Table.Button>
+//       )}
 
-      <div>
-        <h2 className="font-bold text-lg mb-2">Additional Information</h2>
-        <p>{props.additionalInformation || "No information submitted"}</p>
-      </div>
-    </div>
-  );
-};
+//       <div>
+//         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
+//         <p>{props.additionalInformation || "No information submitted"}</p>
+//       </div>
+//     </div>
+//   );
+// };
 
-export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
-  props,
-) => {
-  const hook = useAttachmentService(props);
+// export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
+//   props,
+// ) => {
+//   const hook = useAttachmentService(props);
 
-  return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h2 className="font-bold text-lg mb-2">Attachments</h2>
-        {!props.attachments?.length && <p>No information submitted</p>}
-        {!!props.attachments?.length && (
-          <Table.Table>
-            <Table.TableHeader>
-              <Table.TableRow>
-                <Table.TableHead className="w-[300px]">
-                  Document Type
-                </Table.TableHead>
-                <Table.TableHead>Attached File</Table.TableHead>
-              </Table.TableRow>
-            </Table.TableHeader>
-            <AttachmentDetails
-              attachments={props.attachments}
-              id={props.id}
-              hook={hook}
-            />
-          </Table.Table>
-        )}
-      </div>
+//   return (
+//     <div className="flex flex-col gap-6">
+//       <div>
+//         <h2 className="font-bold text-lg mb-2">Attachments</h2>
+//         {!props.attachments?.length && <p>No information submitted</p>}
+//         {!!props.attachments?.length && (
+//           <Table.Table>
+//             <Table.TableHeader>
+//               <Table.TableRow>
+//                 <Table.TableHead className="w-[300px]">
+//                   Document Type
+//                 </Table.TableHead>
+//                 <Table.TableHead>Attached File</Table.TableHead>
+//               </Table.TableRow>
+//             </Table.TableHeader>
+//             <AttachmentDetails
+//               attachments={props.attachments}
+//               id={props.id}
+//               hook={hook}
+//             />
+//           </Table.Table>
+//         )}
+//       </div>
 
-      {props.attachments && props.attachments?.length > 1 && (
-        <Table.Button
-          variant="outline"
-          className="w-max"
-          disabled={!props.attachments?.length}
-          loading={hook.loading}
-          onClick={() => {
-            if (!props.attachments?.length) return;
-            hook.onZip(props.attachments);
-          }}
-        >
-          Download documents
-        </Table.Button>
-      )}
+//       {props.attachments && props.attachments?.length > 1 && (
+//         <Table.Button
+//           variant="outline"
+//           className="w-max"
+//           disabled={!props.attachments?.length}
+//           loading={hook.loading}
+//           onClick={() => {
+//             if (!props.attachments?.length) return;
+//             hook.onZip(props.attachments);
+//           }}
+//         >
+//           Download documents
+//         </Table.Button>
+//       )}
 
-      <div>
-        <h2 className="font-bold text-lg mb-2">Additional Information</h2>
-        <p>{props.additionalInformation || "No information submitted"}</p>
-      </div>
-    </div>
-  );
-};
+//       <div>
+//         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
+//         <p>{props.additionalInformation || "No information submitted"}</p>
+//       </div>
+//     </div>
+//   );
+// };
 
-export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
-  const hook = useAttachmentService(props);
+// export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
+//   const hook = useAttachmentService(props);
 
-  return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h2 className="font-bold text-lg mb-2">Attachments</h2>
-        {!props.attachments?.length && <p>No information submitted</p>}
-        {!!props.attachments?.length && (
-          <Table.Table>
-            <Table.TableHeader>
-              <Table.TableRow>
-                <Table.TableHead className="w-[300px]">
-                  Document Type
-                </Table.TableHead>
-                <Table.TableHead>Attached File</Table.TableHead>
-              </Table.TableRow>
-            </Table.TableHeader>
-            <AttachmentDetails
-              attachments={props.attachments}
-              id={props.id}
-              hook={hook}
-            />
-          </Table.Table>
-        )}
-      </div>
+//   return (
+//     <div className="flex flex-col gap-6">
+//       <div>
+//         <h2 className="font-bold text-lg mb-2">Attachments</h2>
+//         {!props.attachments?.length && <p>No information submitted</p>}
+//         {!!props.attachments?.length && (
+//           <Table.Table>
+//             <Table.TableHeader>
+//               <Table.TableRow>
+//                 <Table.TableHead className="w-[300px]">
+//                   Document Type
+//                 </Table.TableHead>
+//                 <Table.TableHead>Attached File</Table.TableHead>
+//               </Table.TableRow>
+//             </Table.TableHeader>
+//             <AttachmentDetails
+//               attachments={props.attachments}
+//               id={props.id}
+//               hook={hook}
+//             />
+//           </Table.Table>
+//         )}
+//       </div>
 
-      {props.attachments && props.attachments?.length > 1 && (
-        <Table.Button
-          variant="outline"
-          className="w-max"
-          disabled={!props.attachments?.length}
-          loading={hook.loading}
-          onClick={() => {
-            if (!props.attachments?.length) return;
-            hook.onZip(props.attachments);
-          }}
-        >
-          Download documents
-        </Table.Button>
-      )}
+//       {props.attachments && props.attachments?.length > 1 && (
+//         <Table.Button
+//           variant="outline"
+//           className="w-max"
+//           disabled={!props.attachments?.length}
+//           loading={hook.loading}
+//           onClick={() => {
+//             if (!props.attachments?.length) return;
+//             hook.onZip(props.attachments);
+//           }}
+//         >
+//           Download documents
+//         </Table.Button>
+//       )}
 
-      <div>
-        <h2 className="font-bold text-lg mb-2">Additional Information</h2>
-        <p>{props.additionalInformation || "No information submitted"}</p>
-      </div>
-    </div>
-  );
-};
+//       <div>
+//         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
+//         <p>{props.additionalInformation || "No information submitted"}</p>
+//       </div>
+//     </div>
+//   );
+// };
 
 // Control Map
 export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
   const [LABEL, CONTENT] = useMemo(() => {
-    switch (props.actionType as string) {
-      case "new-submission":
+    switch (props.event as string) {
+      case "new-chip-submission":
+      case "new-medicaid-submission":
         return ["Initial package submitted", PA_InitialSubmission];
-      case "withdraw-rai":
-        return ["RAI response withdrawn", PA_ResponseWithdrawn];
-      case "withdraw-package":
-        return ["Package withdrawn", PA_ResponseWithdrawn];
-      case "issue-rai":
-        return ["RAI issued", PA_RaiIssued];
-      case "respond-to-rai":
-        return ["RAI response submitted", PA_ResponseSubmitted];
-      case "remove-appk-child": {
-        if (props.appkChildId) {
-          return [
-            `Package removed: ${props.appkChildId}`,
-            PA_AppkParentRemovedChild,
-          ];
-        }
+      // case "withdraw-rai":
+      //   return ["RAI response withdrawn", PA_ResponseWithdrawn];
+      // case "withdraw-package":
+      //   return ["Package withdrawn", PA_ResponseWithdrawn];
+      // case "issue-rai":
+      //   return ["RAI issued", PA_RaiIssued];
+      // case "respond-to-rai":
+      //   return ["RAI response submitted", PA_ResponseSubmitted];
+      // case "remove-appk-child": {
+      //   if (props.appkChildId) {
+      //     return [
+      //       `Package removed: ${props.appkChildId}`,
+      //       PA_AppkParentRemovedChild,
+      //     ];
+      //   }
 
-        return [
-          `Removed from: ${props.appkParentId}`,
-          PA_AppkChildRemovedFromParent,
-        ];
-      }
-      case "legacy-withdraw-rai-request":
-        return ["RAI response withdrawn requested", PA_ResponseWithdrawn];
+      //   return [
+      //     `Removed from: ${props.appkParentId}`,
+      //     PA_AppkChildRemovedFromParent,
+      //   ];
+      // }
+      // case "legacy-withdraw-rai-request":
+      //   return ["RAI response withdrawn requested", PA_ResponseWithdrawn];
 
       default:
-        return [BLANK_VALUE, PA_ResponseSubmitted];
+        return [BLANK_VALUE];
     }
-  }, [props.actionType]);
+  }, [props.event]);
 
   return (
     <AccordionItem key={props.id} value={props.id}>

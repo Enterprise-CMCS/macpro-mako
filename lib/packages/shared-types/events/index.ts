@@ -1,10 +1,11 @@
+import { z } from "zod";
+import * as newMedicaidSubmission from "./new-medicaid-submission";
+import * as newChipSubmission from "./new-chip-submission";
 export * from "./toggle-withdraw-rai-enabled";
 export * from "./issue-rai";
 export * from "./respond-to-rai";
 export * from "./withdraw-rai";
 export * from "./withdraw-package";
-export * as newMedicaidSubmission from "./new-medicaid-submission"; // this should be removed once no longer in use.  use const events below
-export * as newChipSubmission from "./new-chip-submission";
 export * as capitatedWaivers from "./capitated-waivers";
 export * as contractingWaivers from "./contracting-waivers";
 export * from "./app-k";
@@ -17,12 +18,9 @@ export * from "./update-id";
 export * from "./complete-intake";
 export * from "./temporary-extension";
 
-// const eventModules = {
-//   "new-medicaid-submission": "./new-medicaid-submission",
-// };
-
-import * as newMedicaidSubmission from "./new-medicaid-submission";
-
 export const events = {
+  "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
 };
+
+export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;

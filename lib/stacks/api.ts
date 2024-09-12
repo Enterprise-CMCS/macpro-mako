@@ -2,7 +2,7 @@ import * as cdk from "aws-cdk-lib";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 import { join } from "path";
-import { DeploymentConfigProperties } from "./deployment-config";
+import { DeploymentConfigProperties } from "../config/deployment-config";
 import * as LC from "local-constructs";
 import {
   BlockPublicAccess,
@@ -10,6 +10,7 @@ import {
   BucketEncryption,
 } from "aws-cdk-lib/aws-s3";
 import { AnyPrincipal, Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
+import { commonBundlingOptions } from "../config/bundling-config";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
@@ -164,10 +165,7 @@ export class Api extends cdk.NestedStack {
         securityGroups: securityGroup ? [securityGroup] : undefined,
         vpcSubnets: subnets ? { subnets } : undefined,
         logGroup,
-        bundling: {
-          minify: true,
-          sourceMap: true,
-        },
+        bundling: commonBundlingOptions,
       });
 
       if (provisionedConcurrency > 0) {
@@ -231,7 +229,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "submit",
-        entry: join(__dirname, "../lambda/submit.ts"),
+        entry: join(__dirname, "../lambda/submit/submit.ts"),
         environment: {
           dbInfoSecretName,
           topicName,
@@ -308,21 +306,18 @@ export class Api extends cdk.NestedStack {
       },
     ];
 
-    const lambdas = lambdaDefinitions.reduce(
-      (acc, lambdaDef) => {
-        acc[lambdaDef.id] = createNodeJsLambda(
-          lambdaDef.id,
-          lambdaDef.entry,
-          lambdaDef.environment,
-          vpc,
-          lambdaSecurityGroup,
-          privateSubnets,
-          !props.isDev ? lambdaDef.provisionedConcurrency : 0,
-        );
-        return acc;
-      },
-      {} as { [key: string]: NodejsFunction },
-    );
+    const lambdas = lambdaDefinitions.reduce((acc, lambdaDef) => {
+      acc[lambdaDef.id] = createNodeJsLambda(
+        lambdaDef.id,
+        lambdaDef.entry,
+        lambdaDef.environment,
+        vpc,
+        lambdaSecurityGroup,
+        privateSubnets,
+        !props.isDev ? lambdaDef.provisionedConcurrency : 0,
+      );
+      return acc;
+    }, {} as { [key: string]: NodejsFunction });
 
     // Create IAM role for API Gateway to invoke Lambda functions
     const apiGatewayRole = new cdk.aws_iam.Role(this, "ApiGatewayRole", {
