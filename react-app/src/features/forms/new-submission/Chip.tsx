@@ -12,12 +12,12 @@ import {
   DatePicker,
 } from "@/components";
 import { Link } from "react-router-dom";
-import { events } from "@/events";
+import { formSchemas } from "@/formSchemas";
 
 export const ChipForm = () => (
   <ActionForm
     title="CHIP SPA Details"
-    schema={events["new-chip-submission"].formSchema}
+    schema={formSchemas["new-chip-submission"]}
     fields={({ control }) => (
       <>
         <FormField

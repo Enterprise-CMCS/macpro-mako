@@ -1,7 +1,7 @@
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 
-import { events } from "./events";
+import { submissionPayloads } from "./submissionPayloads";
 import { produceMessage } from "../../libs/api/kafka";
 import { BaseSchemas } from "shared-types/events";
 
@@ -26,7 +26,7 @@ export const submit = async (event: APIGatewayEvent) => {
   }
 
   // If the event is unknown, we reject
-  if (!(body.event in events)) {
+  if (!(body.event in submissionPayloads)) {
     return response({
       statusCode: 400,
       body: { message: `Bad Request - Unknown event type ${body.event}` },
@@ -34,7 +34,7 @@ export const submit = async (event: APIGatewayEvent) => {
   }
 
   try {
-    const eventBody = await events[body.event](event);
+    const eventBody = await submissionPayloads[body.event](event);
 
     await produceMessage(
       process.env.topicName as string,
