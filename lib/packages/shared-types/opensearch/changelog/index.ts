@@ -8,12 +8,13 @@ import {
 } from "./../_";
 import { z } from "zod";
 
-import { newMedicaidSubmission } from "./transforms";
+import { newChipSubmission, newMedicaidSubmission } from "./transforms";
 
 // legacy
 import { legacyAdminChange, legacyEvent } from "./transforms";
 
-export type Document = z.infer<newMedicaidSubmission.Schema> &
+export type Document = z.infer<newChipSubmission.Schema> &
+  z.infer<newMedicaidSubmission.Schema> &
   z.infer<legacyEvent.Schema> &
   z.infer<legacyAdminChange.Schema>;
 
@@ -36,5 +37,6 @@ export type ExportHeader = ExportHeaderOptions<Document>;
 export * from "./transforms";
 
 export const transforms = {
+  "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
 };

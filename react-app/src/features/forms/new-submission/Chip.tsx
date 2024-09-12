@@ -12,12 +12,12 @@ import {
   DatePicker,
 } from "@/components";
 import { Link } from "react-router-dom";
-import { newChipSubmission } from "shared-types";
+import { events } from "@/events";
 
 export const ChipForm = () => (
   <ActionForm
     title="CHIP SPA Details"
-    schema={newChipSubmission.feSchema}
+    schema={events["new-chip-submission"].formSchema}
     fields={({ control }) => (
       <>
         <FormField
@@ -62,7 +62,10 @@ export const ChipForm = () => (
                 Proposed Effective Date of CHIP SPA <RequiredIndicator />
               </FormLabel>
               <FormControl>
-                <DatePicker onChange={field.onChange} date={field.value} />
+                <DatePicker
+                  onChange={(date) => field.onChange(date.getTime())}
+                  date={field.value ? new Date(field.value) : undefined}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

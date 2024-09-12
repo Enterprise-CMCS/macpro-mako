@@ -1,4 +1,5 @@
 export * as legacyPackageView from "./legacy-package-view";
+export * as newChipSubmission from "./new-chip-submission";
 export * as newMedicaidSubmission from "./new-medicaid-submission";
 export * as toggleWithdrawEnabled from "./toggle-withdraw-enabled";
 export * as withdrawPackage from "./withdraw-package";

@@ -283,6 +283,7 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
 export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
   const [LABEL, CONTENT] = useMemo(() => {
     switch (props.event as string) {
+      case "new-chip-submission":
       case "new-medicaid-submission":
         return ["Initial package submitted", PA_InitialSubmission];
       // case "withdraw-rai":

@@ -1,6 +1,7 @@
 import { events } from "shared-types";
+
 export const transform = (offset: number) => {
-  return events["new-medicaid-submission"].schema.transform((data) => {
+  return events["new-chip-submission"].schema.transform((data) => {
     const attachments = Object.entries(data.attachments).flatMap(
       //eslint-disable-next-line
       ([_title, attachment]) => {
