@@ -32,6 +32,7 @@ export type SelectProps = React.ComponentPropsWithoutRef<
 > & {
   options: { label: string; value: any }[];
   className?: string;
+  apiCall?: string;
 };
 
 export interface MultiselectOption {
