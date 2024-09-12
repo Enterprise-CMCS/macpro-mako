@@ -9,7 +9,7 @@ vi.mock("@aws-sdk/client-ses");
 
 describe("handler", () => {
   beforeEach(() => {
-    process.env.emailAddressLookupSecretName = "mockSecretName"; // pragma: allowlist secret
+    process.env.emailAddressLookupSecretName = "mockSecretName"; //pragma: allowlist secret
     process.env.applicationEndpointUrl = "http://mock-url.com";
   });
 

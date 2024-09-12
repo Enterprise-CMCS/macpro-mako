@@ -11,7 +11,8 @@ import { Index } from "shared-types/opensearch";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 const osDomain = process.env.osDomain;
-if (!osDomain) {
+const indexNamespace = process.env.indexNamespace;
+if (!indexNamespace || !osDomain) {
   throw new Error("Missing required environment variable(s)");
 }
 const index: Index = `${process.env.indexNamespace}main`;
@@ -34,7 +35,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
             topicPartition: topicPartition,
           });
           break;
-        case "aws.seatool.ksql.onemac.agg.State_Plan":
+        case "aws.seatool.ksql.onemac.three.agg.State_Plan":
           await ksql(event.records[topicPartition], topicPartition);
           break;
         case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
@@ -122,6 +123,23 @@ const processAndIndex = async ({
 
 const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   const docs: any[] = [];
+
+  // fetch the date for all kafkaRecords in the list from opensearch
+  const ids = kafkaRecords.map((record) => {
+    const decodedId = JSON.parse(decodeBase64WithUtf8(record.key));
+
+    return decodedId;
+  });
+
+  const openSearchRecords = await os.getItems(osDomain, indexNamespace, ids);
+  const existingRecordsLookup = openSearchRecords.reduce<
+    Record<string, number>
+  >((acc, item) => {
+    const epochDate = new Date(item.changedDate).getTime(); // Convert `changedDate` to epoch number
+    acc[item.id] = epochDate; // Use `id` as the key and epoch date as the value
+    return acc;
+  }, {});
+
   for (const kafkaRecord of kafkaRecords) {
     const { key, value } = kafkaRecord;
     try {
@@ -147,6 +165,21 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         });
         continue;
       }
+      console.log("--------------------");
+      console.log(`id: ${result.data.id}`);
+      console.log(`mako: ` + existingRecordsLookup[result.data.id]);
+      console.log(`seatool: ` + result.data.changed_date);
+      if (
+        existingRecordsLookup[result.data.id] && // Check if defined
+        (!result.data.changed_date || // Check if not defined or...
+          result.data.changed_date < existingRecordsLookup[result.data.id]) // ...less than existingRecordsLookup[result.data.id]
+      ) {
+        console.log(`SKIP`);
+        continue;
+      }
+      console.log(`INDEX`);
+      console.log("--------------------");
+
       if (
         result.data.authority &&
         typeof result.data.seatoolStatus === "string" &&

@@ -16,6 +16,7 @@ export * from "./seatool";
 export * from "./remove-appk-child";
 export * from "./update-id";
 export * from "./complete-intake";
+export * from "./temporary-extension";
 
 export const events = {
   "new-chip-submission": newChipSubmission,

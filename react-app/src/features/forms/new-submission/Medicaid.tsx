@@ -84,12 +84,5 @@ export const MedicaidForm = () => (
       property: "id",
       documentChecker: (check) => check.recordExists,
     }}
-    promptOnLeavingForm={{
-      header: "Stop form submission?",
-      body: "All information you've entered on this form will be lost if you leave this page.",
-      acceptButtonText: "Yes, leave form",
-      cancelButtonText: "Return to form",
-      areButtonsReversed: true,
-    }}
   />
 );

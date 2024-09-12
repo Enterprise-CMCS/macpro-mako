@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import {
   Banner,
   Button,
@@ -73,7 +73,13 @@ export const ActionForm = <
     body: "Your submission has been received.",
     variant: "success",
   },
-  promptOnLeavingForm,
+  promptOnLeavingForm = {
+    header: "Stop form submission?",
+    body: "All information you've entered on this form will be lost if you leave this page.",
+    acceptButtonText: "Yes, leave form",
+    cancelButtonText: "Return to form",
+    areButtonsReversed: true,
+  },
   promptPreSubmission,
   documentPollerArgs,
   attachments,
@@ -96,15 +102,14 @@ export const ActionForm = <
         body: formData,
       });
 
-      const documentPollerId =
-        typeof documentPollerArgs.property === "function"
-          ? documentPollerArgs.property(formData)
-          : formData[documentPollerArgs.property];
+      const { documentChecker, property } = documentPollerArgs;
 
-      const poller = documentPoller(
-        documentPollerId,
-        documentPollerArgs.documentChecker,
-      );
+      const documentPollerId =
+        typeof property === "function"
+          ? property(formData)
+          : formData[property];
+
+      const poller = documentPoller(documentPollerId, documentChecker);
       await poller.startPollingData();
 
       const formOrigins = getFormOrigin({ authority, id });
@@ -126,6 +131,13 @@ export const ActionForm = <
     }
   });
 
+  const hasProgressLossReminder = useMemo(
+    () =>
+      Fields({ ...form }) !== null ||
+      schema.shape.attachments instanceof z.ZodObject,
+    [schema.shape.attachments, Fields, form],
+  );
+
   return (
     <SimplePageContainer>
       <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
@@ -141,7 +153,9 @@ export const ActionForm = <
             </FieldsLayout>
           ) : (
             <SectionCard title={title}>
-              <FormIntroText />
+              <FormIntroText
+                hasProgressLossReminder={hasProgressLossReminder}
+              />
               <Fields {...form} />
             </SectionCard>
           )}
@@ -163,10 +177,7 @@ export const ActionForm = <
             </SectionCard>
           )}
           <PreSubmissionMessage
-            hasProgressLossReminder={
-              Fields.length > 0 ||
-              schema.shape.attachments instanceof z.ZodObject
-            }
+            hasProgressLossReminder={hasProgressLossReminder}
           />
           <section className="flex justify-end gap-2 p-4 ml-auto">
             <Button
