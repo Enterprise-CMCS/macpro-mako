@@ -8,12 +8,19 @@ import {
 } from "./../_";
 import { z } from "zod";
 
-import { newChipSubmission, newMedicaidSubmission } from "./transforms";
+import {
+  capitatedInitial,
+  contractingInitial,
+  newChipSubmission,
+  newMedicaidSubmission,
+} from "./transforms";
 
 // legacy
 import { legacyAdminChange, legacyEvent } from "./transforms";
 
-export type Document = z.infer<newChipSubmission.Schema> &
+export type Document = z.infer<capitatedInitial.Schema> &
+  z.infer<contractingInitial.Schema> &
+  z.infer<newChipSubmission.Schema> &
   z.infer<newMedicaidSubmission.Schema> &
   z.infer<legacyEvent.Schema> &
   z.infer<legacyAdminChange.Schema>;
@@ -37,6 +44,8 @@ export type ExportHeader = ExportHeaderOptions<Document>;
 export * from "./transforms";
 
 export const transforms = {
+  "capitated-initial": capitatedInitial,
+  "contracting-initial": contractingInitial,
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
 };

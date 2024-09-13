@@ -39,7 +39,7 @@ export const baseSchema = z.object({
   }),
   authority: z.string().default("CHIP SPA"),
   proposedEffectiveDate: z.number(),
-  seaActionType: z.string().default("Amend"),
+  actionType: z.string().default("Amend"),
   id: z
     .string()
     .min(1, { message: "Required" })
