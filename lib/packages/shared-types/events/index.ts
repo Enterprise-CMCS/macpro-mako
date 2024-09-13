@@ -3,8 +3,10 @@ import * as newMedicaidSubmission from "./new-medicaid-submission";
 import * as newChipSubmission from "./new-chip-submission";
 import * as capitatedAmendment from "./capitated-amendment";
 import * as capitatedIntial from "./capitated-initial";
+import * as capitatedRenewal from "./capitated-renewal";
 import * as contractingAmendment from "./contracting-amendment";
 import * as contractingInitial from "./contracting-initial";
+import * as contractingRenewal from "./contracting-renewal";
 
 export * from "./toggle-withdraw-rai-enabled";
 export * from "./issue-rai";
@@ -26,8 +28,10 @@ export * from "./temporary-extension";
 export const events = {
   "capitated-amendment": capitatedAmendment,
   "capitated-initial": capitatedIntial,
+  "capitated-renewal": capitatedRenewal,
   "contracting-amendment": contractingAmendment,
   "contracting-initial": contractingInitial,
+  "contracting-renewal": contractingRenewal,
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
 };

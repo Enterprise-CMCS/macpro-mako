@@ -11,11 +11,11 @@ import {
   FAQ_TAB,
 } from "@/components";
 import { Link } from "react-router-dom";
-import { capitatedWaivers } from "shared-types";
+import { formSchemas } from "@/formSchemas";
 
 export const Renewal = () => (
   <ActionForm
-    schema={capitatedWaivers.renewalFeSchema}
+    schema={formSchemas["capitated-renewal"]}
     title="1915(b) Comprehensive (Capitated) Renewal Waiver"
     fields={({ control }) => (
       <>
@@ -107,8 +107,8 @@ export const Renewal = () => (
               </FormLabel>
               <FormControl className="max-w-sm">
                 <DatePicker
-                  onChange={field.onChange}
-                  date={field.value}
+                  onChange={(date) => field.onChange(date.getTime())}
+                  date={field.value ? new Date(field.value) : undefined}
                   dataTestId="proposedEffectiveDate"
                 />
               </FormControl>
@@ -124,7 +124,7 @@ export const Renewal = () => (
     defaultValues={{ id: "" }}
     documentPollerArgs={{
       property: "id",
-      documentChecker: (checks) => checks.actionIs("Renew"),
+      documentChecker: (check) => check.recordExists,
     }}
   />
 );

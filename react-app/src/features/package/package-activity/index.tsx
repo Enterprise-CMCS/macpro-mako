@@ -285,8 +285,10 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
     switch (props.event as string) {
       case "capitated-amendment":
       case "capitated-initial":
+      case "capitated-renewal":
       case "contracting-amendment":
       case "contracting-initial":
+      case "contracting-renewal":
       case "new-chip-submission":
       case "new-medicaid-submission":
         return ["Initial package submitted", PA_InitialSubmission];

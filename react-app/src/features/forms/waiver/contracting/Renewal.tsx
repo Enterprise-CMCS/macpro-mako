@@ -11,12 +11,12 @@ import {
   RequiredIndicator,
 } from "@/components";
 import { Link } from "react-router-dom";
-import { contractingWaivers } from "shared-types";
+import { formSchemas } from "@/formSchemas";
 
 export const RenewalForm = () => {
   return (
     <ActionForm
-      schema={contractingWaivers.renewalFeSchema}
+      schema={formSchemas["contracting-renewal"]}
       title="1915(b)(4) FFS Selective Contracting Renewal Waiver"
       fields={({ control }) => (
         <>
@@ -112,8 +112,8 @@ export const RenewalForm = () => {
                 </FormLabel>
                 <FormControl className="max-w-sm">
                   <DatePicker
-                    onChange={field.onChange}
-                    date={field.value}
+                    onChange={(date) => field.onChange(date.getTime())}
+                    date={field.value ? new Date(field.value) : undefined}
                     dataTestId="proposedEffectiveDate"
                   />
                 </FormControl>
@@ -129,7 +129,7 @@ export const RenewalForm = () => {
       defaultValues={{ id: "" }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (checks) => checks.actionIs("Renew"),
+        documentChecker: (check) => check.recordExists,
       }}
     />
   );
