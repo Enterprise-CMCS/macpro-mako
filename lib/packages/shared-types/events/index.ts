@@ -13,8 +13,6 @@ export * from "./issue-rai";
 export * from "./respond-to-rai";
 export * from "./withdraw-rai";
 export * from "./withdraw-package";
-export * as capitatedWaivers from "./capitated-waivers";
-export * as contractingWaivers from "./contracting-waivers";
 export * from "./app-k";
 export * from "./legacy-event";
 export * from "./legacy-package-view";

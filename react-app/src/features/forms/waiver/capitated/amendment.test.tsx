@@ -5,7 +5,7 @@ import { renderForm } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { AmendmentForm } from "./Amendment";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { amendmentFeSchema } from "shared-types/events/capitated-waivers";
+import { formSchemas } from "@/formSchemas";
 
 vi.mock("@/components/Inputs/upload.utilities", () => ({
   getPresignedUrl: vi.fn(async () => "hello world"),
@@ -13,7 +13,7 @@ vi.mock("@/components/Inputs/upload.utilities", () => ({
   extractBucketAndKeyFromUrl: vi.fn(() => ({ bucket: "hello", key: "world" })),
 }));
 
-const upload = uploadFiles<typeof amendmentFeSchema>();
+const upload = uploadFiles<(typeof formSchemas)["capitated-amendment"]>();
 
 let container: HTMLElement;
 

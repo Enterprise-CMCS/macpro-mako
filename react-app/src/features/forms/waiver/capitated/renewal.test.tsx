@@ -5,7 +5,7 @@ import { renderForm } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { Renewal } from "./Renewal";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { renewalFeSchema } from "shared-types/events/capitated-waivers";
+import { formSchemas } from "@/formSchemas";
 
 vi.mock("@/components/Inputs/upload.utilities", () => ({
   getPresignedUrl: vi.fn(async () => "hello world"),
@@ -13,7 +13,7 @@ vi.mock("@/components/Inputs/upload.utilities", () => ({
   extractBucketAndKeyFromUrl: vi.fn(() => ({ bucket: "hello", key: "world" })),
 }));
 
-const upload = uploadFiles<typeof renewalFeSchema>();
+const upload = uploadFiles<(typeof formSchemas)["capitated-renewal"]>();
 
 let container: HTMLElement;
 
