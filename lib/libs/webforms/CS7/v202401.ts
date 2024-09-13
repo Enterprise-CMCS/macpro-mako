@@ -41,6 +41,9 @@ export const v202401: FormSchema = {
                   },
                 ],
               },
+              rules: {
+                required: "* Required",
+              },
             },
           ],
         },
