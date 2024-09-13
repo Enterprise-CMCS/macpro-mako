@@ -11,12 +11,12 @@ import {
   RequiredIndicator,
 } from "@/components";
 import { Link } from "react-router-dom";
-import { contractingWaivers } from "shared-types";
+import { formSchemas } from "@/formSchemas";
 
 export const AmendmentForm = () => {
   return (
     <ActionForm
-      schema={contractingWaivers.amendmentFeSchema}
+      schema={formSchemas["contracting-amendment"]}
       title="1915(b) Waiver Amendment Request Details"
       fields={({ control }) => (
         <>
@@ -107,8 +107,8 @@ export const AmendmentForm = () => {
                 </FormLabel>
                 <FormControl className="max-w-sm">
                   <DatePicker
-                    onChange={field.onChange}
-                    date={field.value}
+                    onChange={(date) => field.onChange(date.getTime())}
+                    date={field.value ? new Date(field.value) : undefined}
                     dataTestId="proposedEffectiveDate"
                   />
                 </FormControl>
@@ -124,7 +124,7 @@ export const AmendmentForm = () => {
       defaultValues={{ id: "" }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (checks) => checks.actionIs("Amend"),
+        documentChecker: (check) => check.recordExists,
       }}
     />
   );

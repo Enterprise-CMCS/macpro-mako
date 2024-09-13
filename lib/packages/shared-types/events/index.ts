@@ -1,7 +1,9 @@
 import { z } from "zod";
 import * as newMedicaidSubmission from "./new-medicaid-submission";
 import * as newChipSubmission from "./new-chip-submission";
+import * as capitatedAmendment from "./capitated-amendment";
 import * as capitatedIntial from "./capitated-initial";
+import * as contractingAmendment from "./contracting-amendment";
 import * as contractingInitial from "./contracting-initial";
 
 export * from "./toggle-withdraw-rai-enabled";
@@ -22,8 +24,10 @@ export * from "./complete-intake";
 export * from "./temporary-extension";
 
 export const events = {
-  "contracting-initial": contractingInitial,
+  "capitated-amendment": capitatedAmendment,
   "capitated-initial": capitatedIntial,
+  "contracting-amendment": contractingAmendment,
+  "contracting-initial": contractingInitial,
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
 };

@@ -11,11 +11,11 @@ import {
   RequiredIndicator,
 } from "@/components";
 import { Link } from "react-router-dom";
-import { capitatedWaivers } from "shared-types";
+import { formSchemas } from "@/formSchemas";
 
 export const AmendmentForm = () => (
   <ActionForm
-    schema={capitatedWaivers.amendmentFeSchema}
+    schema={formSchemas["capitated-amendment"]}
     title="1915(b) Comprehensive (Capitated) Waiver Amendment"
     fields={({ control }) => (
       <>
@@ -106,8 +106,8 @@ export const AmendmentForm = () => (
               </FormLabel>
               <FormControl className="max-w-sm">
                 <DatePicker
-                  onChange={field.onChange}
-                  date={field.value}
+                  onChange={(date) => field.onChange(date.getTime())}
+                  date={field.value ? new Date(field.value) : undefined}
                   dataTestId="proposedEffectiveDate"
                 />
               </FormControl>
@@ -123,7 +123,7 @@ export const AmendmentForm = () => (
     defaultValues={{ id: "" }}
     documentPollerArgs={{
       property: "id",
-      documentChecker: (checks) => checks.actionIs("Amend"),
+      documentChecker: (check) => check.recordExists,
     }}
   />
 );
