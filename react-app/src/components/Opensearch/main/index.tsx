@@ -33,7 +33,7 @@ export const OsMainView: FC<{
   return (
     <section className="flex flex-col h-[100vh] px-4 lg:px-8">
       {/* Questionable... */}
-      <div className="w-full my-2 max-w-screen-xl self-center lg:px-0 xl:px-8">
+      <div className="w-full my-2 max-w-screen-xl self-center md:px-0 lg:px-0 xl:px-8">
       <OsFiltering columns={osColumns} />
       </div>
       <FilterChips/>
