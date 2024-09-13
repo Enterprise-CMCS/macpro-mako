@@ -9,7 +9,9 @@ import {
 import { z } from "zod";
 
 import {
+  capitatedAmendment,
   capitatedInitial,
+  contractingAmendment,
   contractingInitial,
   newChipSubmission,
   newMedicaidSubmission,
@@ -18,7 +20,9 @@ import {
 // legacy
 import { legacyAdminChange, legacyEvent } from "./transforms";
 
-export type Document = z.infer<capitatedInitial.Schema> &
+export type Document = z.infer<capitatedAmendment.Schema> &
+  z.infer<capitatedInitial.Schema> &
+  z.infer<contractingAmendment.Schema> &
   z.infer<contractingInitial.Schema> &
   z.infer<newChipSubmission.Schema> &
   z.infer<newMedicaidSubmission.Schema> &
@@ -44,7 +48,9 @@ export type ExportHeader = ExportHeaderOptions<Document>;
 export * from "./transforms";
 
 export const transforms = {
+  "capitated-amendment": capitatedAmendment,
   "capitated-initial": capitatedInitial,
+  "contracting-amendment": contractingAmendment,
   "contracting-initial": contractingInitial,
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,

@@ -9,6 +9,9 @@ import { z } from "zod";
 import { ItemResult as Changelog } from "./../changelog";
 import {
   capitatedInitial,
+  capitatedAmendment,
+  contractingInitial,
+  contractingAmendment,
   newChipSubmission,
   newMedicaidSubmission,
   legacyPackageView,
@@ -19,10 +22,11 @@ import {
   toggleWithdrawEnabled,
   seatool,
   changedDate,
-  contractingInitial,
 } from "./transforms";
 
-export type Document = z.infer<capitatedInitial.Schema> &
+export type Document = z.infer<capitatedAmendment.Schema> &
+  z.infer<capitatedInitial.Schema> &
+  z.infer<contractingAmendment.Schema> &
   z.infer<contractingInitial.Schema> &
   z.infer<newChipSubmission.Schema> &
   z.infer<newMedicaidSubmission.Schema> &
@@ -56,5 +60,7 @@ export const transforms = {
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
   "capitated-initial": capitatedInitial,
+  "capitated-amendment": capitatedAmendment,
+  "contracting-amendment": contractingAmendment,
   "contracting-initial": contractingInitial,
 };
