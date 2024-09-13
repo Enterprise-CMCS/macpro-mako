@@ -9,6 +9,7 @@ import {
 } from "../libs/sink-lib";
 import { Index } from "shared-types/opensearch";
 import { decodeBase64WithUtf8 } from "shared-utils";
+import * as os from "./../libs/opensearch-lib";
 
 const osDomain = process.env.osDomain;
 const indexNamespace = process.env.indexNamespace;
