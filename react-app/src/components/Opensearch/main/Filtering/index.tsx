@@ -13,7 +13,8 @@ export const OsFiltering: FC<{
   const context = useOsContext();
 
   return (
-    <div className="w-full my-2 max-w-screen-xl self-center">
+    <div>
+    {/* <div className="w-full my-2 max-w-screen-xl self-center px-4 lg:px-8"> */}
       <p className="mb-1 text-sm">
         {"Search by Package ID, CPOC Name, or Submitter Name"}
       </p>

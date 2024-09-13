@@ -5,6 +5,7 @@ import { Pagination } from "@/components/Pagination";
 import { useOsContext } from "./Provider";
 import { useOsUrl } from "./useOpensearch";
 import { OsTableColumn } from "./types";
+import { FilterChips } from "./Filtering";
 
 export const OsMainView: FC<{
   columns: OsTableColumn[];
@@ -30,8 +31,12 @@ export const OsMainView: FC<{
   };
 
   return (
-    <section className="flex md:items-stretch items-center flex-col h-[100vh]">
+    <section className="flex flex-col h-[100vh] px-4 lg:px-8">
+      {/* Questionable... */}
+      <div className="w-full my-2 max-w-screen-xl self-center lg:px-0 xl:px-8">
       <OsFiltering columns={osColumns} />
+      </div>
+      <FilterChips/>
       <OsTable onToggle={onToggle} columns={osColumns} />
       <Pagination
         pageNumber={url.state.pagination.number}

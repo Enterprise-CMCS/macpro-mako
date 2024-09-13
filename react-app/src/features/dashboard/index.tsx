@@ -109,13 +109,13 @@ export const Dashboard = () => {
                   </TabsTrigger>
                 </TabsList>
                 </div>
-                {/* flex and flex-col from original parent div has no effect on this line */}
-                <TabsContent value="spas" className="w-full mx-auto px-4 lg:px-8">
-                  <FilterChips />
+                <TabsContent value="spas">
+                {/* <TabsContent value="spas" className="w-full mx-auto px-4 lg:px-8"> */}
+                  {/* <FilterChips /> */}
                   <SpasList />
                 </TabsContent>
                 <TabsContent value="waivers">
-                  <FilterChips />
+                  {/* <FilterChips /> */}
                   <WaiversList />
                 </TabsContent>
               </Tabs>
