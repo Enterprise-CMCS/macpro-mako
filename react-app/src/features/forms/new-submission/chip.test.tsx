@@ -2,12 +2,12 @@ import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/react";
 import { describe, vi, test, expect, beforeAll } from "vitest";
 import { ChipForm } from "./Chip";
-import { newChipSubmission } from "shared-types";
+import { formSchemas } from "@/formSchemas";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { renderForm } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 
-const upload = uploadFiles<typeof newChipSubmission.feSchema>();
+const upload = uploadFiles<(typeof formSchemas)["new-chip-submission"]>();
 
 vi.mock("@/components/Inputs/upload.utilities", () => ({
   getPresignedUrl: vi.fn(async () => "hello world"),

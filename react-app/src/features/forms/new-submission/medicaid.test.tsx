@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, vi, test, expect, beforeAll } from "vitest";
 import { MedicaidForm } from "./Medicaid";
-import { newMedicaidSubmission } from "shared-types";
+import { formSchemas } from "@/formSchemas";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { renderForm } from "@/utils/test-helpers/renderForm";
@@ -13,7 +13,7 @@ vi.mock("@/components/Inputs/upload.utilities", () => ({
   extractBucketAndKeyFromUrl: vi.fn(() => ({ bucket: "hello", key: "world" })),
 }));
 
-const upload = uploadFiles<typeof newMedicaidSubmission.feSchema>();
+const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
 
 // use container globally for tests to use same render and let each test fill out inputs
 // and at the end validate button is enabled for submit
