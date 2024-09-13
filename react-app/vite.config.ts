@@ -40,6 +40,9 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       minify: env.VITE_NODE_ENV === "production",
+      rollupOptions: {
+        treeshake: true,
+      },
     },
     define: {
       __IS_FRONTEND__: "true",

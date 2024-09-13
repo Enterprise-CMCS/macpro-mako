@@ -26,7 +26,7 @@ export const ChipForm = () => (
           render={({ field }) => (
             <FormItem>
               <div className="flex gap-4">
-                <FormLabel className="font-semibold">
+                <FormLabel className="font-semibold" data-testid="spaid-label">
                   SPA ID <RequiredIndicator />
                 </FormLabel>
                 <Link
@@ -63,6 +63,7 @@ export const ChipForm = () => (
               </FormLabel>
               <FormControl>
                 <DatePicker
+                  dataTestId="proposedEffectiveDate"
                   onChange={(date) => field.onChange(date.getTime())}
                   date={field.value ? new Date(field.value) : undefined}
                 />

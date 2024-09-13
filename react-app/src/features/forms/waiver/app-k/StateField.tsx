@@ -86,11 +86,11 @@ export const StateField = ({ value, onChange }: StateFieldProps) => {
 
   return (
     <FormItem className="w-[280px]">
-      <FormLabel className="font-bold">
+      <FormLabel htmlFor="stateDropDown" className="font-bold">
         State <RequiredIndicator />
       </FormLabel>
       <Select onValueChange={onChange} value={value}>
-        <SelectTrigger>
+        <SelectTrigger id="stateDropDown">
           <SelectValue placeholder="Select State" />
         </SelectTrigger>
         <SelectContent className="overflow-auto max-h-60">

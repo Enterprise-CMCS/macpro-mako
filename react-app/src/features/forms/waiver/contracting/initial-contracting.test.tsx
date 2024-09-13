@@ -1,8 +1,8 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, vi, test, expect, beforeAll } from "vitest";
-import { MedicaidForm } from "./Medicaid";
-import { formSchemas } from "@/formSchemas";
+import { InitialForm } from "./Initial";
+import { contractingWaivers } from "shared-types";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { renderForm } from "@/utils/test-helpers/renderForm";
@@ -13,30 +13,30 @@ vi.mock("@/components/Inputs/upload.utilities", () => ({
   extractBucketAndKeyFromUrl: vi.fn(() => ({ bucket: "hello", key: "world" })),
 }));
 
-const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
+const upload = uploadFiles<typeof contractingWaivers.initialFeSchema>();
 
 // use container globally for tests to use same render and let each test fill out inputs
 // and at the end validate button is enabled for submit
 let container: HTMLElement;
 
-describe("Medicaid SPA", () => {
+describe("INITIAL CONTRACTING WAIVER", () => {
   beforeAll(() => {
     skipCleanup();
 
-    const { container: renderedContainer } = renderForm(<MedicaidForm />);
+    const { container: renderedContainer } = renderForm(<InitialForm />);
 
     container = renderedContainer;
   });
 
-  test("SPA ID", async () => {
-    const spaIdInput = screen.getByLabelText(/SPA ID/);
-    const spaIdLabel = screen.getByTestId("spaid-label");
-    await userEvent.type(spaIdInput, "MD-24-9291");
+  test("WAIVER ID", async () => {
+    const waiverIdInput = screen.getByLabelText(/initial waiver number/i);
+    const waiverIdLabel = screen.getByTestId("waiverid-label");
+    await userEvent.type(waiverIdInput, "OH-0001.R00.00");
 
-    expect(spaIdLabel).not.toHaveClass("text-destructive");
+    expect(waiverIdLabel).not.toHaveClass("text-destructive");
   });
 
-  test("PROPOSED EFFECTIVE DATE OF MEDICAID SPA", async () => {
+  test("PROPOSED EFFECTIVE DATE OF INITIAL CONTRACTING WAIVER", async () => {
     await userEvent.click(
       screen.getByTestId("proposedEffectiveDate-datepicker"),
     );
@@ -48,15 +48,17 @@ describe("Medicaid SPA", () => {
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });
 
-  test("CMS FORM 179", async () => {
-    const cmsForm179PlanLabel = await upload("cmsForm179");
+  test("B4 WAIVER APPLICATION", async () => {
+    const cmsForm179PlanLabel = await upload("b4WaiverApplication");
     expect(cmsForm179PlanLabel).not.toHaveClass("text-destructive");
   });
-
-  test("SPA PAGES", async () => {
-    const spaPagesLabel = await upload("spaPages");
-
-    expect(spaPagesLabel).not.toHaveClass("text-destructive");
+  test("OTHER", async () => {
+    const cmsForm179PlanLabel = await upload("other");
+    expect(cmsForm179PlanLabel).not.toHaveClass("text-destructive");
+  });
+  test("TRIBAL CONSULTATION", async () => {
+    const cmsForm179PlanLabel = await upload("tribalConsultation");
+    expect(cmsForm179PlanLabel).not.toHaveClass("text-destructive");
   });
 
   test("submit button is enabled", async () => {

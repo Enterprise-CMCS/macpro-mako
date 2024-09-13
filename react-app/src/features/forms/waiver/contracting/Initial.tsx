@@ -34,7 +34,10 @@ export const InitialForm = () => {
             render={({ field }) => (
               <FormItem>
                 <div className="flex gap-4">
-                  <FormLabel className="text-lg font-semibold mr-1">
+                  <FormLabel
+                    className="text-lg font-semibold mr-1"
+                    data-testid="waiverid-label"
+                  >
                     Initial Waiver Number <RequiredIndicator />
                   </FormLabel>
                   <Link
@@ -71,12 +74,19 @@ export const InitialForm = () => {
             name="proposedEffectiveDate"
             render={({ field }) => (
               <FormItem className="max-w-lg">
-                <FormLabel className="text-lg font-semibold block">
+                <FormLabel
+                  className="text-lg font-semibold block"
+                  data-testid="proposedEffectiveDate-label"
+                >
                   Proposed Effective Date of 1915(b) Initial Waiver{" "}
                   <RequiredIndicator />
                 </FormLabel>
                 <FormControl className="max-w-sm">
-                  <DatePicker onChange={field.onChange} date={field.value} />
+                  <DatePicker
+                    onChange={field.onChange}
+                    date={field.value}
+                    dataTestId="proposedEffectiveDate"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

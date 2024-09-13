@@ -27,7 +27,7 @@ export const MedicaidForm = () => (
           render={({ field }) => (
             <FormItem>
               <div className="flex gap-4">
-                <FormLabel className="font-semibold">
+                <FormLabel className="font-semibold" data-testid="spaid-label">
                   SPA ID <RequiredIndicator />
                 </FormLabel>
                 <Link
@@ -59,13 +59,17 @@ export const MedicaidForm = () => (
           name="proposedEffectiveDate"
           render={({ field }) => (
             <FormItem className="max-w-md">
-              <FormLabel className="text-lg font-semibold block">
+              <FormLabel
+                className="text-lg font-semibold block"
+                data-testid="proposedEffectiveDate-label"
+              >
                 Proposed Effective Date of Medicaid SPA <RequiredIndicator />
               </FormLabel>
               <FormControl>
                 <DatePicker
                   onChange={(date) => field.onChange(date.getTime())}
                   date={field.value ? new Date(field.value) : undefined}
+                  dataTestId="proposedEffectiveDate"
                 />
               </FormControl>
               <FormMessage />

@@ -33,7 +33,10 @@ export const AmendmentForm = () => {
             name="waiverNumber"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-semibold">
+                <FormLabel
+                  className="font-semibold"
+                  data-testid="waiverid-existing-label"
+                >
                   Existing Waiver Number to Amend <RequiredIndicator />
                 </FormLabel>
                 <p className="text-gray-500 font-light">
@@ -60,7 +63,10 @@ export const AmendmentForm = () => {
             render={({ field }) => (
               <FormItem>
                 <div className="flex gap-4">
-                  <FormLabel className="font-semibold">
+                  <FormLabel
+                    className="font-semibold"
+                    data-testid="waiverid-amendment-label"
+                  >
                     1915(b) Waiver Amendment Number <RequiredIndicator />
                   </FormLabel>
                   <Link
@@ -100,7 +106,11 @@ export const AmendmentForm = () => {
                   <RequiredIndicator />
                 </FormLabel>
                 <FormControl className="max-w-sm">
-                  <DatePicker onChange={field.onChange} date={field.value} />
+                  <DatePicker
+                    onChange={field.onChange}
+                    date={field.value}
+                    dataTestId="proposedEffectiveDate"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

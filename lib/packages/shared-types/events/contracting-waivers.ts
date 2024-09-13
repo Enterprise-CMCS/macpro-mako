@@ -31,13 +31,13 @@ const baseContractingWaiverSchema = z.object({
 
 export const amendmentFeSchema = baseContractingWaiverSchema.extend({
   // zAmendmentOriginalWaiverNumberSchema
-  waiverNumber: z.number(),
+  waiverNumber: z.string(),
   seaActionType: z.string().default("Amend"),
 });
 
 export const renewalFeSchema = baseContractingWaiverSchema.extend({
   // zAmendmentOriginalWaiverNumberSchema
-  waiverNumber: z.number(),
+  waiverNumber: z.string(),
   seaActionType: z.string().default("Renew"),
   attachments: z.object({
     b4WaiverApplication: z.object({

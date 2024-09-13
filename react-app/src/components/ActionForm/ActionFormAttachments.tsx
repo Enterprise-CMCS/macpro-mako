@@ -81,14 +81,18 @@ export const ActionFormAttachments = <Schema extends z.ZodRawShape>({
             name={`attachments.${key}.files`}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
+                <FormLabel data-testid={`${key}-label`}>
                   {value.shape.label._def.defaultValue()}{" "}
                   {value.shape.files instanceof z.ZodOptional ? null : (
                     <RequiredIndicator />
                   )}
                 </FormLabel>
                 <FormMessage />
-                <Upload files={field.value ?? []} setFiles={field.onChange} />
+                <Upload
+                  files={field.value ?? []}
+                  setFiles={field.onChange}
+                  dataTestId={key}
+                />
               </FormItem>
             )}
           />

@@ -1,4 +1,5 @@
-import { Authority, SEATOOL_AUTHORITIES_MAP_TO_ID } from "shared-types";
+import { Authority } from "shared-types/authority";
+import { SEATOOL_AUTHORITIES_MAP_TO_ID } from "shared-types/seatool-statics";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 

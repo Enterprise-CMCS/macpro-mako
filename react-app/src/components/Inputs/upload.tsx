@@ -6,9 +6,13 @@ import { X } from "lucide-react";
 import { FILE_TYPES } from "shared-types/uploads";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
-import { API } from "aws-amplify";
 import { LoadingSpinner } from "@/components/LoadingSpinner"; // Import your LoadingSpinner component
 import { attachmentSchema } from "shared-types";
+import {
+  extractBucketAndKeyFromUrl,
+  getPresignedUrl,
+  uploadToS3,
+} from "./upload.utilities";
 
 type Attachment = z.infer<typeof attachmentSchema>;
 
@@ -16,55 +20,18 @@ type UploadProps = {
   maxFiles?: number;
   files: Attachment[];
   setFiles: (files: Attachment[]) => void;
+  dataTestId?: string;
 };
 
-export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
+export const Upload = ({
+  maxFiles,
+  files,
+  setFiles,
+  dataTestId,
+}: UploadProps) => {
   const [isUploading, setIsUploading] = useState(false); // New state for tracking upload status
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const uniqueId = uuidv4();
-
-  const getPresignedUrl = async (fileName: string): Promise<string> => {
-    const response = await API.post("os", "/getUploadUrl", {
-      body: { fileName },
-    });
-    return response.url;
-  };
-
-  const uploadToS3 = async (file: File, url: string): Promise<void> => {
-    await fetch(url, {
-      body: file,
-      method: "PUT",
-    });
-  };
-
-  function extractBucketAndKeyFromUrl(url: string): {
-    bucket: string | null;
-    key: string | null;
-  } {
-    try {
-      const parsedUrl = new URL(url);
-
-      const hostnameParts = parsedUrl.hostname.split(".");
-      let bucket: string | null = null;
-      let key: string | null = null;
-
-      if (
-        hostnameParts.length > 3 &&
-        hostnameParts[1] === "s3" &&
-        hostnameParts[2] === "us-east-1"
-      ) {
-        bucket = hostnameParts[0]; // The bucket name is the first part of the hostname
-      }
-
-      // Extract key from the pathname
-      key = parsedUrl.pathname.slice(1); // Remove the leading slash
-
-      return { bucket, key };
-    } catch (error) {
-      console.error("Invalid URL format:", error);
-      return { bucket: null, key: null };
-    }
-  }
 
   const onDrop = useCallback(
     async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
@@ -170,7 +137,11 @@ export const Upload = ({ maxFiles, files, setFiles }: UploadProps) => {
           <label htmlFor={`upload-${uniqueId}`} className="sr-only">
             Drag file here or choose from folder
           </label>
-          <input id={`upload-${uniqueId}`} {...getInputProps()} />
+          <input
+            id={`upload-${uniqueId}`}
+            {...getInputProps()}
+            data-testid={`${dataTestId}-upload`}
+          />
         </div>
       )}
     </>
