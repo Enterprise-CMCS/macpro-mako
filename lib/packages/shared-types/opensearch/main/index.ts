@@ -24,6 +24,7 @@ import {
   toggleWithdrawEnabled,
   seatool,
   changedDate,
+  temporaryExtension,
 } from "./transforms";
 
 export type Document = z.infer<capitatedAmendment.Schema> &
@@ -34,6 +35,7 @@ export type Document = z.infer<capitatedAmendment.Schema> &
   z.infer<contractingRenewal.Schema> &
   z.infer<newChipSubmission.Schema> &
   z.infer<newMedicaidSubmission.Schema> &
+  z.infer<temporaryExtension.Schema> &
   z.infer<legacyPackageView.Schema> &
   z.infer<issueRai.Schema> &
   z.infer<respondToRai.Schema> &
@@ -69,4 +71,5 @@ export const transforms = {
   "contracting-amendment": contractingAmendment,
   "contracting-initial": contractingInitial,
   "contracting-renewal": contractingRenewal,
+  "temporary-extension": temporaryExtension,
 };

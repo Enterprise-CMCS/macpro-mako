@@ -7,6 +7,7 @@ import * as capitatedRenewal from "./capitated-renewal";
 import * as contractingAmendment from "./contracting-amendment";
 import * as contractingInitial from "./contracting-initial";
 import * as contractingRenewal from "./contracting-renewal";
+import * as temporaryExtension from "./temporary-extension";
 
 export * from "./toggle-withdraw-rai-enabled";
 export * from "./issue-rai";
@@ -21,7 +22,6 @@ export * from "./seatool";
 export * from "./remove-appk-child";
 export * from "./update-id";
 export * from "./complete-intake";
-export * from "./temporary-extension";
 
 export const events = {
   "capitated-amendment": capitatedAmendment,
@@ -32,6 +32,7 @@ export const events = {
   "contracting-renewal": contractingRenewal,
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
+  "temporary-extension": temporaryExtension,
 };
 
 export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;

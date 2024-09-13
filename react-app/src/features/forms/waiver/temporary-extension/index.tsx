@@ -16,11 +16,11 @@ import {
   SelectValue,
 } from "@/components";
 import { Link } from "react-router-dom";
-import { temporaryExtensionFeSchema } from "shared-types";
+import { formSchemas } from "@/formSchemas";
 
 export const TemporaryExtensionForm = () => (
   <ActionForm
-    schema={temporaryExtensionFeSchema}
+    schema={formSchemas["temporary-extension"]}
     title="Temporary Extension Request Details"
     fields={(form) => (
       <>
@@ -49,7 +49,7 @@ export const TemporaryExtensionForm = () => (
           )}
         />
         <FormField
-          name="originalWaiverNumber"
+          name="waiverNumber"
           control={form.control}
           render={({ field }) => {
             return (
@@ -125,7 +125,7 @@ export const TemporaryExtensionForm = () => (
     }}
     documentPollerArgs={{
       property: "id",
-      documentChecker: (data) => data !== undefined,
+      documentChecker: (check) => check.recordExists,
     }}
     bannerPostSubmission={{
       header: "Temporary extension request submitted",

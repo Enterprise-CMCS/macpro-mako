@@ -17,6 +17,7 @@ import {
   contractingRenewal,
   newChipSubmission,
   newMedicaidSubmission,
+  temporaryExtension,
 } from "./transforms";
 
 // legacy
@@ -30,6 +31,7 @@ export type Document = z.infer<capitatedAmendment.Schema> &
   z.infer<contractingRenewal.Schema> &
   z.infer<newChipSubmission.Schema> &
   z.infer<newMedicaidSubmission.Schema> &
+  z.infer<temporaryExtension.Schema> &
   z.infer<legacyEvent.Schema> &
   z.infer<legacyAdminChange.Schema>;
 
@@ -60,4 +62,5 @@ export const transforms = {
   "contracting-renewal": contractingRenewal,
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
+  "temporary-extension": temporaryExtension,
 };

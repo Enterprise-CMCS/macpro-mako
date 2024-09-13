@@ -291,6 +291,7 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
       case "contracting-renewal":
       case "new-chip-submission":
       case "new-medicaid-submission":
+      case "temporary-extension":
         return ["Initial package submitted", PA_InitialSubmission];
 
       // case "withdraw-rai":

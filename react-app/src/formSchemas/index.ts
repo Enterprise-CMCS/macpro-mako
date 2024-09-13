@@ -6,6 +6,7 @@ import * as contractingAmendment from "./contracting-amendment";
 import * as contractingRenewal from "./contracting-renewal";
 import * as newMedicaidSubmission from "./new-medicaid-submission";
 import * as newChipSubmission from "./new-chip-submission";
+import * as temporaryExtension from "./temporary-extension";
 
 export const formSchemas = {
   "capitated-amendment": capitatedAmendment.formSchema,
@@ -16,4 +17,5 @@ export const formSchemas = {
   "contracting-renewal": contractingRenewal.formSchema,
   "new-chip-submission": newChipSubmission.formSchema,
   "new-medicaid-submission": newMedicaidSubmission.formSchema,
+  "temporary-extension": temporaryExtension.formSchema,
 };
