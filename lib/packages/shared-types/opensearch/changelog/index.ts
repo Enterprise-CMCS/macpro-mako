@@ -10,6 +10,7 @@ import { z } from "zod";
 
 import {
   capitatedInitial,
+  contractingInitial,
   newChipSubmission,
   newMedicaidSubmission,
 } from "./transforms";
@@ -18,6 +19,7 @@ import {
 import { legacyAdminChange, legacyEvent } from "./transforms";
 
 export type Document = z.infer<capitatedInitial.Schema> &
+  z.infer<contractingInitial.Schema> &
   z.infer<newChipSubmission.Schema> &
   z.infer<newMedicaidSubmission.Schema> &
   z.infer<legacyEvent.Schema> &
@@ -43,6 +45,7 @@ export * from "./transforms";
 
 export const transforms = {
   "capitated-initial": capitatedInitial,
+  "contracting-initial": contractingInitial,
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
 };

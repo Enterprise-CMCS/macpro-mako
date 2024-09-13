@@ -284,6 +284,7 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
   const [LABEL, CONTENT] = useMemo(() => {
     switch (props.event as string) {
       case "capitated-initial":
+      case "contracting-initial":
       case "new-chip-submission":
       case "new-medicaid-submission":
         return ["Initial package submitted", PA_InitialSubmission];

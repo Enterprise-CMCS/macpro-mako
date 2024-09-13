@@ -6,7 +6,7 @@ import {
 
 export const baseSchema = z.object({
   // zAmendmentWaiverNumberSchema
-  event: z.literal("capitated-initial").default("capitated-initial"),
+  event: z.literal("contracting-initial").default("contracting-initial"),
   authority: z.string().default("1915(b)"),
   id: z
     .string()
@@ -17,19 +17,11 @@ export const baseSchema = z.object({
     }),
   proposedEffectiveDate: z.number(),
   attachments: z.object({
-    bCapWaiverApplication: z.object({
+    b4WaiverApplication: z.object({
       label: z
         .string()
         .default(
-          "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
-        ),
-      files: attachmentArraySchema(),
-    }),
-    bCapCostSpreadsheets: z.object({
-      label: z
-        .string()
-        .default(
-          "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
+          "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
         ),
       files: attachmentArraySchema(),
     }),

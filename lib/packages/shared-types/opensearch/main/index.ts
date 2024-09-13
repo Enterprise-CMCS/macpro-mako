@@ -19,9 +19,11 @@ import {
   toggleWithdrawEnabled,
   seatool,
   changedDate,
+  contractingInitial,
 } from "./transforms";
 
 export type Document = z.infer<capitatedInitial.Schema> &
+  z.infer<contractingInitial.Schema> &
   z.infer<newChipSubmission.Schema> &
   z.infer<newMedicaidSubmission.Schema> &
   z.infer<legacyPackageView.Schema> &
@@ -54,4 +56,5 @@ export const transforms = {
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
   "capitated-initial": capitatedInitial,
+  "contracting-initial": contractingInitial,
 };

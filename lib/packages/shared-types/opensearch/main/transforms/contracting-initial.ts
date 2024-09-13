@@ -6,7 +6,7 @@ import {
 
 export const transform = () => {
   // any adhoc logic
-  return events["capitated-initial"].schema.transform((data) => {
+  return events["contracting-initial"].schema.transform((data) => {
     const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.PENDING);
     const timestampDate = new Date(data.timestamp);
     const todayEpoch = seaToolFriendlyTimestamp(timestampDate);

@@ -1,5 +1,6 @@
 export * as legacyPackageView from "./legacy-package-view";
 export * as capitatedInitial from "./capitated-initial";
+export * as contractingInitial from "./contracting-initial";
 export * as newChipSubmission from "./new-chip-submission";
 export * as newMedicaidSubmission from "./new-medicaid-submission";
 export * as toggleWithdrawEnabled from "./toggle-withdraw-enabled";
