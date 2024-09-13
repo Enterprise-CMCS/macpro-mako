@@ -81,7 +81,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               name: "statewide-income-standards-select",
               label: "Are income standards applied statewide?",
-              labelClassName: "font-bold",
+              labelClassName: "text-black font-bold",
               rules: {
                 required: "* Required",
               },
@@ -127,7 +127,7 @@ export const v202401: FormSchema = {
                     {
                       rhf: "Select",
                       label: "From age",
-                      labelClassName: "font-bold",
+                      labelClassName: "text-black font-bold",
                       name: "from-age",
                       formItemClassName: "w-[125px]",
                       rules: {
@@ -149,7 +149,7 @@ export const v202401: FormSchema = {
                     {
                       rhf: "Select",
                       label: "To age",
-                      labelClassName: "font-bold",
+                      labelClassName: "text-black font-bold",
                       name: "to-age",
                       formItemClassName: "w-[125px]",
                       rules: {
@@ -162,7 +162,7 @@ export const v202401: FormSchema = {
                     {
                       rhf: "Input",
                       label: "Above",
-                      labelClassName: "font-bold",
+                      labelClassName: "text-black font-bold",
                       name: "above",
                       rules: {
                         required: "* Required",
@@ -180,7 +180,7 @@ export const v202401: FormSchema = {
                     {
                       rhf: "Input",
                       label: "Up to and including",
-                      labelClassName: "font-bold",
+                      labelClassName: "text-black font-bold",
                       name: "up-to-and-including",
                       rules: {
                         required: "* Required",
@@ -202,7 +202,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Select",
               label: "Do the age ranges overlap?",
-              labelClassName: "font-bold",
+              labelClassName: "text-black font-bold",
               name: "age-ranges-overlap",
               rules: {
                 required: "* Required",
@@ -219,7 +219,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               label:
                 "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
-              labelClassName: "font-bold",
+              labelClassName: "text-black font-bold",
               name: "age-ranges-overlap-explanation",
               props: {
                 className: "min-h-[114px]",
@@ -261,7 +261,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Are there any exceptions, such as populations in a county that may qualify under either a statewide income standard or a county income standard?",
-              labelClassName: "font-bold",
+              labelClassName: "text-black font-bold",
               name: "are-there-any-exceptions",
               rules: {
                 required: "* Required",
@@ -278,7 +278,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               label:
                 "Explain, including a description of the overlapping geographic area and the reason for having different income standards.",
-              labelClassName: "font-bold",
+              labelClassName: "text-black font-bold",
               name: "explanation",
               props: {
                 className: "min-h-[76px]",
@@ -306,7 +306,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               label: "Method of geographic variation",
-              labelClassName: "font-bold",
+              labelClassName: "text-black font-bold",
               name: "method-of-geographic-variation",
               rules: {
                 required: "* Required",
@@ -351,7 +351,7 @@ export const v202401: FormSchema = {
                           {
                             rhf: "Input",
                             label: "County",
-                            labelClassName: "font-bold",
+                            labelClassName: "text-black font-bold",
                             props: {
                               className: "w-[527px]",
                             },
@@ -376,7 +376,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Select",
                                 label: "From age",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "from-age",
                                 formItemClassName: "w-[125px]",
                                 rules: {
@@ -399,7 +399,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Select",
                                 label: "To age",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "to-age",
                                 formItemClassName: "w-[125px]",
                                 rules: {
@@ -412,7 +412,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Input",
                                 label: "Above",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "above",
                                 rules: {
                                   required: "* Required",
@@ -430,7 +430,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Input",
                                 label: "Up to and including",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "up-to-and-including",
                                 rules: {
                                   required: "* Required",
@@ -457,7 +457,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Select",
                                 label: "Do the age ranges overlap?",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "county-age-ranges-overlap",
                                 rules: {
                                   required: "* Required",
@@ -474,7 +474,7 @@ export const v202401: FormSchema = {
                                 rhf: "Textarea",
                                 label:
                                   "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "county-overlap-explanation",
                                 props: {
                                   className: "min-h-[114px]",
@@ -534,7 +534,7 @@ export const v202401: FormSchema = {
                           {
                             rhf: "Input",
                             label: "City",
-                            labelClassName: "font-bold",
+                            labelClassName: "text-black font-bold",
                             props: {
                               className: "w-[527px]",
                             },
@@ -559,7 +559,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Select",
                                 label: "From age",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "from-age",
                                 formItemClassName: "w-[125px]",
                                 rules: {
@@ -582,7 +582,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Select",
                                 label: "To age",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "to-age",
                                 formItemClassName: "w-[125px]",
                                 rules: {
@@ -595,7 +595,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Input",
                                 label: "Above",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "above",
                                 rules: {
                                   required: "* Required",
@@ -613,7 +613,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Input",
                                 label: "Up to and including",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "up-to-and-including",
                                 rules: {
                                   required: "* Required",
@@ -640,7 +640,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Select",
                                 label: "Do the age ranges overlap?",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "city-age-ranges-overlap",
                                 rules: {
                                   required: "* Required",
@@ -657,7 +657,7 @@ export const v202401: FormSchema = {
                                 rhf: "Textarea",
                                 label:
                                   "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "city-overlap-explanation",
                                 props: {
                                   className: "",
@@ -717,7 +717,7 @@ export const v202401: FormSchema = {
                           {
                             rhf: "Input",
                             label: "Geographic area",
-                            labelClassName: "font-bold",
+                            labelClassName: "text-black font-bold",
                             props: {
                               className: "w-[527px]",
                             },
@@ -742,7 +742,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Select",
                                 label: "From age",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "from-age",
                                 formItemClassName: "w-[125px]",
                                 rules: {
@@ -765,7 +765,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Select",
                                 label: "To age",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "to-age",
                                 formItemClassName: "w-[125px]",
                                 rules: {
@@ -778,7 +778,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Input",
                                 label: "Above",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "above",
                                 rules: {
                                   required: "* Required",
@@ -796,7 +796,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Input",
                                 label: "Up to and including",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "up-to-and-including",
                                 rules: {
                                   required: "* Required",
@@ -823,7 +823,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Select",
                                 label: "Do the age ranges overlap?",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "other-age-ranges-overlap",
                                 rules: {
                                   required: "* Required",
@@ -840,7 +840,7 @@ export const v202401: FormSchema = {
                                 rhf: "Textarea",
                                 label:
                                   "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
-                                labelClassName: "font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "other-overlap-explanation",
                                 props: {
                                   className: "min-h-[114px]",
@@ -892,7 +892,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Does the state have a special program for children with disabilities?",
-              labelClassName: "font-bold",
+              labelClassName: "text-black font-bold",
               name: "special-program-for-children-with-disabilities",
               rules: {
                 required: "* Required",
@@ -909,7 +909,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               label:
                 "Is the program available to all eligible targeted low-income children?",
-              labelClassName: "font-bold",
+              labelClassName: "text-black font-bold",
               name: "program-available-to-all-eligible-targeted-low-income-children",
               rules: {
                 required: "* Required",
@@ -925,7 +925,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               label: "Is the program limited by age or income level?",
-              labelClassName: "font-bold",
+              labelClassName: "text-black font-bold",
               name: "program-limited-by-age-or-income-level",
               rules: {
                 required: "* Required",
@@ -954,7 +954,7 @@ export const v202401: FormSchema = {
                       {
                         rhf: "Select",
                         label: "Lower age limit",
-                        labelClassName: "font-bold",
+                        labelClassName: "text-black font-bold",
                         name: "lower-age-limit",
                         rules: {
                           required: "* Required",
@@ -967,7 +967,7 @@ export const v202401: FormSchema = {
                       {
                         rhf: "Select",
                         label: "Upper age limit",
-                        labelClassName: "font-bold",
+                        labelClassName: "text-black font-bold",
                         name: "upper-age-limit",
                         rules: {
                           required: "* Required",
@@ -988,7 +988,7 @@ export const v202401: FormSchema = {
                       {
                         rhf: "Input",
                         label: "Income level up to",
-                        labelClassName: "font-bold",
+                        labelClassName: "text-black font-bold",
                         name: "income-level-up-to",
                         rules: {
                           required: "* Required",
@@ -1011,7 +1011,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               label: "Describe the disability criteria used.",
-              labelClassName: "font-bold",
+              labelClassName: "text-black font-bold",
               name: "describe-the-disability-criteria-used",
               props: {
                 className: "min-h-[114px]",
@@ -1028,7 +1028,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               label:
                 "Describe the program, including additional benefits offered.",
-              labelClassName: "font-bold",
+              labelClassName: "text-black font-bold",
               name: "describe-the-program",
               props: {
                 className: "min-h-[114px]",
