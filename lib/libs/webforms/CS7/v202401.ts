@@ -163,6 +163,10 @@ export const v202401: FormSchema = {
                       name: "above",
                       rules: {
                         required: "* Required",
+                        pattern: {
+                          value: /^[0-9]\d*$/,
+                          message: "Must be a positive integer value",
+                        },
                       },
                       formItemClassName: "w-[159px]",
                       props: {
@@ -177,6 +181,10 @@ export const v202401: FormSchema = {
                       name: "up-to-and-including",
                       rules: {
                         required: "* Required",
+                        pattern: {
+                          value: /^[0-9]\d*$/,
+                          message: "Must be a positive integer value",
+                        },
                       },
                       formItemClassName: "w-[159px]",
                       props: {
@@ -395,6 +403,10 @@ export const v202401: FormSchema = {
                             name: "above",
                             rules: {
                               required: "* Required",
+                              pattern: {
+                                value: /^[0-9]\d*$/,
+                                message: "Must be a positive integer value",
+                              },
                             },
                             formItemClassName: "w-[159px]",
                             props: {
@@ -409,6 +421,10 @@ export const v202401: FormSchema = {
                             name: "up-to-and-including",
                             rules: {
                               required: "* Required",
+                              pattern: {
+                                value: /^[0-9]\d*$/,
+                                message: "Must be a positive integer value",
+                              },
                             },
                             formItemClassName: "w-[159px]",
                             props: {
@@ -558,6 +574,10 @@ export const v202401: FormSchema = {
                             name: "above",
                             rules: {
                               required: "* Required",
+                              pattern: {
+                                value: /^[0-9]\d*$/,
+                                message: "Must be a positive integer value",
+                              },
                             },
                             formItemClassName: "w-[159px]",
                             props: {
@@ -572,6 +592,10 @@ export const v202401: FormSchema = {
                             name: "up-to-and-including",
                             rules: {
                               required: "* Required",
+                              pattern: {
+                                value: /^[0-9]\d*$/,
+                                message: "Must be a positive integer value",
+                              },
                             },
                             formItemClassName: "w-[159px]",
                             props: {
@@ -721,6 +745,10 @@ export const v202401: FormSchema = {
                             name: "above",
                             rules: {
                               required: "* Required",
+                              pattern: {
+                                value: /^[0-9]\d*$/,
+                                message: "Must be a positive integer value",
+                              },
                             },
                             formItemClassName: "w-[159px]",
                             props: {
@@ -735,6 +763,10 @@ export const v202401: FormSchema = {
                             name: "up-to-and-including",
                             rules: {
                               required: "* Required",
+                              pattern: {
+                                value: /^[0-9]\d*$/,
+                                message: "Must be a positive integer value",
+                              },
                             },
                             formItemClassName: "w-[159px]",
                             props: {
@@ -921,6 +953,10 @@ export const v202401: FormSchema = {
                         name: "income-level-up-to",
                         rules: {
                           required: "* Required",
+                          pattern: {
+                            value: /^[0-9]\d*$/,
+                            message: "Must be a positive integer value",
+                          },
                         },
                         formItemClassName: "w-[159px]",
                         props: {
