@@ -1,4 +1,4 @@
-import { FormSchema } from "shared-types";
+import { DefaultFieldGroupProps, FormSchema } from "shared-types";
 import { noLeadingTrailingWhitespace } from "shared-utils";
 
 // Creates an array of options for the age select field, 0-19 inclusive
@@ -340,157 +340,169 @@ export const v202401: FormSchema = {
                         ],
                       },
                       {
-                        rhf: "Input",
-                        label: "County",
-                        labelClassName: "font-bold",
-                        props: {
-                          className: "w-[527px]",
-                        },
-                        name: "county",
-                        rules: {
-                          required: "* Required",
-                        },
-                      },
-                      {
                         rhf: "FieldArray",
-                        name: "county-field-ranges",
-                        description:
-                          "Begin with the youngest age range first. The lower limit for CHIP eligibility should be the highest standard used for Medicaid children for the same age group(s) entered here.",
-                        descriptionAbove: true,
-                        descriptionClassName: "county-field-ranges",
-                        formItemClassName:
-                          "county-field-ranges [&_.slot-form-message]:w-max",
+                        name: "cs7_income-standard-exceptions_counties",
                         props: {
-                          appendText: "Add range",
+                          ...DefaultFieldGroupProps,
+                          appendText: "Add county",
+                          removeText: "Remove",
                         },
                         fields: [
                           {
-                            rhf: "Select",
-                            label: "From age",
+                            rhf: "Input",
+                            label: "County",
                             labelClassName: "font-bold",
-                            name: "from-age",
-                            formItemClassName: "w-[125px]",
+                            props: {
+                              className: "w-[527px]",
+                            },
+                            name: "county",
                             rules: {
                               required: "* Required",
                             },
+                          },
+                          {
+                            rhf: "FieldArray",
+                            name: "county-field-ranges",
+                            description:
+                              "Begin with the youngest age range first. The lower limit for CHIP eligibility should be the highest standard used for Medicaid children for the same age group(s) entered here.",
+                            descriptionAbove: true,
+                            descriptionClassName: "county-field-ranges",
+                            formItemClassName:
+                              "county-field-ranges [&_.slot-form-message]:w-max",
                             props: {
-                              options: ageOptions,
+                              appendText: "Add range",
                             },
-                            addtnlRules: [
+                            fields: [
                               {
-                                type: "toGreaterThanFrom",
-                                fieldName: "county-field-ranges",
-                                fromField: "from-age",
-                                toField: "to-age",
-                                message: "To age must be greater than From age",
+                                rhf: "Select",
+                                label: "From age",
+                                labelClassName: "font-bold",
+                                name: "from-age",
+                                formItemClassName: "w-[125px]",
+                                rules: {
+                                  required: "* Required",
+                                },
+                                props: {
+                                  options: ageOptions,
+                                },
+                                addtnlRules: [
+                                  {
+                                    type: "toGreaterThanFrom",
+                                    fieldName: "county-field-ranges",
+                                    fromField: "from-age",
+                                    toField: "to-age",
+                                    message:
+                                      "To age must be greater than From age",
+                                  },
+                                ],
+                              },
+                              {
+                                rhf: "Select",
+                                label: "To age",
+                                labelClassName: "font-bold",
+                                name: "to-age",
+                                formItemClassName: "w-[125px]",
+                                rules: {
+                                  required: "* Required",
+                                },
+                                props: {
+                                  options: ageOptions,
+                                },
+                              },
+                              {
+                                rhf: "Input",
+                                label: "Above",
+                                labelClassName: "font-bold",
+                                name: "above",
+                                rules: {
+                                  required: "* Required",
+                                  pattern: {
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
+                                  },
+                                },
+                                formItemClassName: "w-[159px]",
+                                props: {
+                                  icon: "% FPL",
+                                  iconRight: true,
+                                },
+                              },
+                              {
+                                rhf: "Input",
+                                label: "Up to and including",
+                                labelClassName: "font-bold",
+                                name: "up-to-and-including",
+                                rules: {
+                                  required: "* Required",
+                                  pattern: {
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
+                                  },
+                                },
+                                formItemClassName: "w-[159px]",
+                                props: {
+                                  icon: "% FPL",
+                                  iconRight: true,
+                                },
                               },
                             ],
                           },
                           {
-                            rhf: "Select",
-                            label: "To age",
-                            labelClassName: "font-bold",
-                            name: "to-age",
-                            formItemClassName: "w-[125px]",
-                            rules: {
-                              required: "* Required",
-                            },
+                            rhf: "WrappedGroup",
+                            name: "county-overlap-group",
                             props: {
-                              options: ageOptions,
+                              wrapperClassName: "flex flex-col gap-6",
                             },
-                          },
-                          {
-                            rhf: "Input",
-                            label: "Above",
-                            labelClassName: "font-bold",
-                            name: "above",
-                            rules: {
-                              required: "* Required",
-                              pattern: {
-                                value: /^[0-9]\d*$/,
-                                message: "Must be a positive integer value",
-                              },
-                            },
-                            formItemClassName: "w-[159px]",
-                            props: {
-                              icon: "% FPL",
-                              iconRight: true,
-                            },
-                          },
-                          {
-                            rhf: "Input",
-                            label: "Up to and including",
-                            labelClassName: "font-bold",
-                            name: "up-to-and-including",
-                            rules: {
-                              required: "* Required",
-                              pattern: {
-                                value: /^[0-9]\d*$/,
-                                message: "Must be a positive integer value",
-                              },
-                            },
-                            formItemClassName: "w-[159px]",
-                            props: {
-                              icon: "% FPL",
-                              iconRight: true,
-                            },
-                          },
-                        ],
-                      },
-                      {
-                        rhf: "WrappedGroup",
-                        name: "county-overlap-group",
-                        props: {
-                          wrapperClassName: "flex flex-col gap-6",
-                        },
-                        fields: [
-                          {
-                            rhf: "Select",
-                            label: "Do the age ranges overlap?",
-                            labelClassName: "font-bold",
-                            name: "county-age-ranges-overlap",
-                            rules: {
-                              required: "* Required",
-                            },
-                            props: {
-                              options: [
-                                { value: "yes", label: "Yes" },
-                                { value: "no", label: "No" },
-                              ],
-                              className: "w-[125px]",
-                            },
-                          },
-                          {
-                            rhf: "Textarea",
-                            label:
-                              "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
-                            labelClassName: "font-bold",
-                            name: "county-overlap-explanation",
-                            props: {
-                              className: "min-h-[114px]",
-                            },
-                            rules: {
-                              required: "* Required",
-                              pattern: {
-                                value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
-                              },
-                            },
-                            formItemClassName:
-                              "ml-[0.6rem] px-4 border-l-4 border-l-primary",
-                            dependency: {
-                              conditions: [
-                                {
-                                  name: "cs7_income-standard-exceptions_county-age-ranges-overlap",
-                                  type: "expectedValue",
-                                  expectedValue: "yes",
+                            fields: [
+                              {
+                                rhf: "Select",
+                                label: "Do the age ranges overlap?",
+                                labelClassName: "font-bold",
+                                name: "county-age-ranges-overlap",
+                                rules: {
+                                  required: "* Required",
                                 },
-                              ],
-                              effect: {
-                                type: "show",
+                                props: {
+                                  options: [
+                                    { value: "yes", label: "Yes" },
+                                    { value: "no", label: "No" },
+                                  ],
+                                  className: "w-[125px]",
+                                },
                               },
-                            },
+                              {
+                                rhf: "Textarea",
+                                label:
+                                  "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
+                                labelClassName: "font-bold",
+                                name: "county-overlap-explanation",
+                                props: {
+                                  className: "min-h-[114px]",
+                                },
+                                rules: {
+                                  required: "* Required",
+                                  pattern: {
+                                    value: noLeadingTrailingWhitespace,
+                                    message:
+                                      "Must not have leading or trailing whitespace.",
+                                  },
+                                },
+                                formItemClassName:
+                                  "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+                                dependency: {
+                                  conditions: [
+                                    {
+                                      name: "county-age-ranges-overlap",
+                                      type: "expectedValue",
+                                      expectedValue: "yes",
+                                    },
+                                  ],
+                                  effect: {
+                                    type: "show",
+                                  },
+                                },
+                              },
+                            ],
                           },
                         ],
                       },
@@ -511,157 +523,169 @@ export const v202401: FormSchema = {
                         ],
                       },
                       {
-                        rhf: "Input",
-                        label: "City",
-                        labelClassName: "font-bold",
-                        props: {
-                          className: "w-[527px]",
-                        },
-                        name: "city-name",
-                        rules: {
-                          required: "* Required",
-                        },
-                      },
-                      {
                         rhf: "FieldArray",
-                        name: "city-field-ranges",
-                        description:
-                          "Begin with the youngest age range first. The lower limit for CHIP eligibility should be the highest standard used for Medicaid children for the same age group(s) entered here.",
-                        descriptionAbove: true,
-                        descriptionClassName: "city-field-ranges",
-                        formItemClassName:
-                          "city-field-ranges [&_.slot-form-message]:w-max",
+                        name: "cs7_income-standard-exceptions_cities",
                         props: {
-                          appendText: "Add range",
+                          ...DefaultFieldGroupProps,
+                          appendText: "Add city",
+                          removeText: "Remove",
                         },
                         fields: [
                           {
-                            rhf: "Select",
-                            label: "From age",
+                            rhf: "Input",
+                            label: "City",
                             labelClassName: "font-bold",
-                            name: "from-age",
-                            formItemClassName: "w-[125px]",
+                            props: {
+                              className: "w-[527px]",
+                            },
+                            name: "city-name",
                             rules: {
                               required: "* Required",
                             },
+                          },
+                          {
+                            rhf: "FieldArray",
+                            name: "city-field-ranges",
+                            description:
+                              "Begin with the youngest age range first. The lower limit for CHIP eligibility should be the highest standard used for Medicaid children for the same age group(s) entered here.",
+                            descriptionAbove: true,
+                            descriptionClassName: "city-field-ranges",
+                            formItemClassName:
+                              "city-field-ranges [&_.slot-form-message]:w-max",
                             props: {
-                              options: ageOptions,
+                              appendText: "Add range",
                             },
-                            addtnlRules: [
+                            fields: [
                               {
-                                type: "toGreaterThanFrom",
-                                fieldName: "city-field-ranges",
-                                fromField: "from-age",
-                                toField: "to-age",
-                                message: "To age must be greater than From age",
+                                rhf: "Select",
+                                label: "From age",
+                                labelClassName: "font-bold",
+                                name: "from-age",
+                                formItemClassName: "w-[125px]",
+                                rules: {
+                                  required: "* Required",
+                                },
+                                props: {
+                                  options: ageOptions,
+                                },
+                                addtnlRules: [
+                                  {
+                                    type: "toGreaterThanFrom",
+                                    fieldName: "city-field-ranges",
+                                    fromField: "from-age",
+                                    toField: "to-age",
+                                    message:
+                                      "To age must be greater than From age",
+                                  },
+                                ],
+                              },
+                              {
+                                rhf: "Select",
+                                label: "To age",
+                                labelClassName: "font-bold",
+                                name: "to-age",
+                                formItemClassName: "w-[125px]",
+                                rules: {
+                                  required: "* Required",
+                                },
+                                props: {
+                                  options: ageOptions,
+                                },
+                              },
+                              {
+                                rhf: "Input",
+                                label: "Above",
+                                labelClassName: "font-bold",
+                                name: "above",
+                                rules: {
+                                  required: "* Required",
+                                  pattern: {
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
+                                  },
+                                },
+                                formItemClassName: "w-[159px]",
+                                props: {
+                                  icon: "% FPL",
+                                  iconRight: true,
+                                },
+                              },
+                              {
+                                rhf: "Input",
+                                label: "Up to and including",
+                                labelClassName: "font-bold",
+                                name: "up-to-and-including",
+                                rules: {
+                                  required: "* Required",
+                                  pattern: {
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
+                                  },
+                                },
+                                formItemClassName: "w-[159px]",
+                                props: {
+                                  icon: "% FPL",
+                                  iconRight: true,
+                                },
                               },
                             ],
                           },
                           {
-                            rhf: "Select",
-                            label: "To age",
-                            labelClassName: "font-bold",
-                            name: "to-age",
-                            formItemClassName: "w-[125px]",
-                            rules: {
-                              required: "* Required",
-                            },
+                            rhf: "WrappedGroup",
+                            name: "city-overlap-group",
                             props: {
-                              options: ageOptions,
+                              wrapperClassName: "flex flex-col gap-6",
                             },
-                          },
-                          {
-                            rhf: "Input",
-                            label: "Above",
-                            labelClassName: "font-bold",
-                            name: "above",
-                            rules: {
-                              required: "* Required",
-                              pattern: {
-                                value: /^[0-9]\d*$/,
-                                message: "Must be a positive integer value",
-                              },
-                            },
-                            formItemClassName: "w-[159px]",
-                            props: {
-                              icon: "% FPL",
-                              iconRight: true,
-                            },
-                          },
-                          {
-                            rhf: "Input",
-                            label: "Up to and including",
-                            labelClassName: "font-bold",
-                            name: "up-to-and-including",
-                            rules: {
-                              required: "* Required",
-                              pattern: {
-                                value: /^[0-9]\d*$/,
-                                message: "Must be a positive integer value",
-                              },
-                            },
-                            formItemClassName: "w-[159px]",
-                            props: {
-                              icon: "% FPL",
-                              iconRight: true,
-                            },
-                          },
-                        ],
-                      },
-                      {
-                        rhf: "WrappedGroup",
-                        name: "city-overlap-group",
-                        props: {
-                          wrapperClassName: "flex flex-col gap-6",
-                        },
-                        fields: [
-                          {
-                            rhf: "Select",
-                            label: "Do the age ranges overlap?",
-                            labelClassName: "font-bold",
-                            name: "city-age-ranges-overlap",
-                            rules: {
-                              required: "* Required",
-                            },
-                            props: {
-                              options: [
-                                { value: "yes", label: "Yes" },
-                                { value: "no", label: "No" },
-                              ],
-                              className: "w-[125px]",
-                            },
-                          },
-                          {
-                            rhf: "Textarea",
-                            label:
-                              "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
-                            labelClassName: "font-bold",
-                            name: "city-overlap-explanation",
-                            props: {
-                              className: "",
-                            },
-                            rules: {
-                              required: "* Required",
-                              pattern: {
-                                value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
-                              },
-                            },
-                            formItemClassName:
-                              "ml-[0.6rem] px-4 border-l-4 border-l-primary",
-                            dependency: {
-                              conditions: [
-                                {
-                                  name: "cs7_income-standard-exceptions_city-age-ranges-overlap",
-                                  type: "expectedValue",
-                                  expectedValue: "yes",
+                            fields: [
+                              {
+                                rhf: "Select",
+                                label: "Do the age ranges overlap?",
+                                labelClassName: "font-bold",
+                                name: "city-age-ranges-overlap",
+                                rules: {
+                                  required: "* Required",
                                 },
-                              ],
-                              effect: {
-                                type: "show",
+                                props: {
+                                  options: [
+                                    { value: "yes", label: "Yes" },
+                                    { value: "no", label: "No" },
+                                  ],
+                                  className: "w-[125px]",
+                                },
                               },
-                            },
+                              {
+                                rhf: "Textarea",
+                                label:
+                                  "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
+                                labelClassName: "font-bold",
+                                name: "city-overlap-explanation",
+                                props: {
+                                  className: "",
+                                },
+                                rules: {
+                                  required: "* Required",
+                                  pattern: {
+                                    value: noLeadingTrailingWhitespace,
+                                    message:
+                                      "Must not have leading or trailing whitespace.",
+                                  },
+                                },
+                                formItemClassName:
+                                  "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+                                dependency: {
+                                  conditions: [
+                                    {
+                                      name: "city-age-ranges-overlap",
+                                      type: "expectedValue",
+                                      expectedValue: "yes",
+                                    },
+                                  ],
+                                  effect: {
+                                    type: "show",
+                                  },
+                                },
+                              },
+                            ],
                           },
                         ],
                       },
@@ -673,7 +697,7 @@ export const v202401: FormSchema = {
                     slots: [
                       {
                         rhf: "TextDisplay",
-                        name: "other-description",
+                        name: "cs7_income-standard-exceptions_other",
                         formItemClassName: "pb-6 border-b-2",
                         text: [
                           {
@@ -682,157 +706,169 @@ export const v202401: FormSchema = {
                         ],
                       },
                       {
-                        rhf: "Input",
-                        label: "Geographic area",
-                        labelClassName: "font-bold",
-                        props: {
-                          className: "w-[527px]",
-                        },
-                        name: "other-name",
-                        rules: {
-                          required: "* Required",
-                        },
-                      },
-                      {
                         rhf: "FieldArray",
-                        name: "other-field-ranges",
-                        description:
-                          "Begin with the youngest age range first. The lower limit for CHIP eligibility should be the highest standard used for Medicaid children for the same age group(s) entered here.",
-                        descriptionAbove: true,
-                        descriptionClassName: "other-field-ranges",
-                        formItemClassName:
-                          "other-field-ranges [&_.slot-form-message]:w-max",
+                        name: "other-geo",
                         props: {
-                          appendText: "Add range",
+                          ...DefaultFieldGroupProps,
+                          appendText: "Add city",
+                          removeText: "Remove",
                         },
                         fields: [
                           {
-                            rhf: "Select",
-                            label: "From age",
+                            rhf: "Input",
+                            label: "Geographic area",
                             labelClassName: "font-bold",
-                            name: "from-age",
-                            formItemClassName: "w-[125px]",
+                            props: {
+                              className: "w-[527px]",
+                            },
+                            name: "other-name",
                             rules: {
                               required: "* Required",
                             },
+                          },
+                          {
+                            rhf: "FieldArray",
+                            name: "other-field-ranges",
+                            description:
+                              "Begin with the youngest age range first. The lower limit for CHIP eligibility should be the highest standard used for Medicaid children for the same age group(s) entered here.",
+                            descriptionAbove: true,
+                            descriptionClassName: "other-field-ranges",
+                            formItemClassName:
+                              "other-field-ranges [&_.slot-form-message]:w-max",
                             props: {
-                              options: ageOptions,
+                              appendText: "Add range",
                             },
-                            addtnlRules: [
+                            fields: [
                               {
-                                type: "toGreaterThanFrom",
-                                fieldName: "other-field-ranges",
-                                fromField: "from-age",
-                                toField: "to-age",
-                                message: "To age must be greater than From age",
+                                rhf: "Select",
+                                label: "From age",
+                                labelClassName: "font-bold",
+                                name: "from-age",
+                                formItemClassName: "w-[125px]",
+                                rules: {
+                                  required: "* Required",
+                                },
+                                props: {
+                                  options: ageOptions,
+                                },
+                                addtnlRules: [
+                                  {
+                                    type: "toGreaterThanFrom",
+                                    fieldName: "other-field-ranges",
+                                    fromField: "from-age",
+                                    toField: "to-age",
+                                    message:
+                                      "To age must be greater than From age",
+                                  },
+                                ],
+                              },
+                              {
+                                rhf: "Select",
+                                label: "To age",
+                                labelClassName: "font-bold",
+                                name: "to-age",
+                                formItemClassName: "w-[125px]",
+                                rules: {
+                                  required: "* Required",
+                                },
+                                props: {
+                                  options: ageOptions,
+                                },
+                              },
+                              {
+                                rhf: "Input",
+                                label: "Above",
+                                labelClassName: "font-bold",
+                                name: "above",
+                                rules: {
+                                  required: "* Required",
+                                  pattern: {
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
+                                  },
+                                },
+                                formItemClassName: "w-[159px]",
+                                props: {
+                                  icon: "% FPL",
+                                  iconRight: true,
+                                },
+                              },
+                              {
+                                rhf: "Input",
+                                label: "Up to and including",
+                                labelClassName: "font-bold",
+                                name: "up-to-and-including",
+                                rules: {
+                                  required: "* Required",
+                                  pattern: {
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
+                                  },
+                                },
+                                formItemClassName: "w-[159px]",
+                                props: {
+                                  icon: "% FPL",
+                                  iconRight: true,
+                                },
                               },
                             ],
                           },
                           {
-                            rhf: "Select",
-                            label: "To age",
-                            labelClassName: "font-bold",
-                            name: "to-age",
-                            formItemClassName: "w-[125px]",
-                            rules: {
-                              required: "* Required",
-                            },
+                            rhf: "WrappedGroup",
+                            name: "other-overlap-group",
                             props: {
-                              options: ageOptions,
+                              wrapperClassName: "flex flex-col gap-6",
                             },
-                          },
-                          {
-                            rhf: "Input",
-                            label: "Above",
-                            labelClassName: "font-bold",
-                            name: "above",
-                            rules: {
-                              required: "* Required",
-                              pattern: {
-                                value: /^[0-9]\d*$/,
-                                message: "Must be a positive integer value",
-                              },
-                            },
-                            formItemClassName: "w-[159px]",
-                            props: {
-                              icon: "% FPL",
-                              iconRight: true,
-                            },
-                          },
-                          {
-                            rhf: "Input",
-                            label: "Up to and including",
-                            labelClassName: "font-bold",
-                            name: "up-to-and-including",
-                            rules: {
-                              required: "* Required",
-                              pattern: {
-                                value: /^[0-9]\d*$/,
-                                message: "Must be a positive integer value",
-                              },
-                            },
-                            formItemClassName: "w-[159px]",
-                            props: {
-                              icon: "% FPL",
-                              iconRight: true,
-                            },
-                          },
-                        ],
-                      },
-                      {
-                        rhf: "WrappedGroup",
-                        name: "other-overlap-group",
-                        props: {
-                          wrapperClassName: "flex flex-col gap-6",
-                        },
-                        fields: [
-                          {
-                            rhf: "Select",
-                            label: "Do the age ranges overlap?",
-                            labelClassName: "font-bold",
-                            name: "other-age-ranges-overlap",
-                            rules: {
-                              required: "* Required",
-                            },
-                            props: {
-                              options: [
-                                { value: "yes", label: "Yes" },
-                                { value: "no", label: "No" },
-                              ],
-                              className: "w-[125px]",
-                            },
-                          },
-                          {
-                            rhf: "Textarea",
-                            label:
-                              "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
-                            labelClassName: "font-bold",
-                            name: "other-overlap-explanation",
-                            props: {
-                              className: "min-h-[114px]",
-                            },
-                            rules: {
-                              required: "* Required",
-                              pattern: {
-                                value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
-                              },
-                            },
-                            formItemClassName:
-                              "ml-[0.6rem] px-4 border-l-4 border-l-primary",
-                            dependency: {
-                              conditions: [
-                                {
-                                  name: "cs7_income-standard-exceptions_other-age-ranges-overlap",
-                                  type: "expectedValue",
-                                  expectedValue: "yes",
+                            fields: [
+                              {
+                                rhf: "Select",
+                                label: "Do the age ranges overlap?",
+                                labelClassName: "font-bold",
+                                name: "other-age-ranges-overlap",
+                                rules: {
+                                  required: "* Required",
                                 },
-                              ],
-                              effect: {
-                                type: "show",
+                                props: {
+                                  options: [
+                                    { value: "yes", label: "Yes" },
+                                    { value: "no", label: "No" },
+                                  ],
+                                  className: "w-[125px]",
+                                },
                               },
-                            },
+                              {
+                                rhf: "Textarea",
+                                label:
+                                  "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
+                                labelClassName: "font-bold",
+                                name: "other-overlap-explanation",
+                                props: {
+                                  className: "min-h-[114px]",
+                                },
+                                rules: {
+                                  required: "* Required",
+                                  pattern: {
+                                    value: noLeadingTrailingWhitespace,
+                                    message:
+                                      "Must not have leading or trailing whitespace.",
+                                  },
+                                },
+                                formItemClassName:
+                                  "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+                                dependency: {
+                                  conditions: [
+                                    {
+                                      name: "other-age-ranges-overlap",
+                                      type: "expectedValue",
+                                      expectedValue: "yes",
+                                    },
+                                  ],
+                                  effect: {
+                                    type: "show",
+                                  },
+                                },
+                              },
+                            ],
                           },
                         ],
                       },
