@@ -70,12 +70,19 @@ export const AppKAmendmentForm = () => (
           name="proposedEffectiveDate"
           render={({ field }) => (
             <FormItem className="max-w-sm">
-              <FormLabel className="font-bold block">
+              <FormLabel
+                className="font-bold block"
+                data-testid="proposedEffectiveDate-label"
+              >
                 Proposed Effective Date of 1915(c) Appendix K Amendment{" "}
                 <RequiredIndicator />
               </FormLabel>
               <FormControl>
-                <DatePicker onChange={field.onChange} date={field.value} />
+                <DatePicker
+                  dataTestId="proposedEffectiveDate"
+                  onChange={field.onChange}
+                  date={field.value}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -1,11 +1,13 @@
-import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { screen } from "@testing-library/react";
 import { describe, vi, test, expect, beforeAll } from "vitest";
-import { MedicaidForm } from "./Medicaid";
-import { newMedicaidSubmission } from "shared-types";
+import { ChipForm } from "./Chip";
+import { newChipSubmission } from "shared-types";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { renderForm } from "@/utils/test-helpers/renderForm";
+import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
+
+const upload = uploadFiles<typeof newChipSubmission.feSchema>();
 
 vi.mock("@/components/Inputs/upload.utilities", () => ({
   getPresignedUrl: vi.fn(async () => "hello world"),
@@ -13,30 +15,26 @@ vi.mock("@/components/Inputs/upload.utilities", () => ({
   extractBucketAndKeyFromUrl: vi.fn(() => ({ bucket: "hello", key: "world" })),
 }));
 
-const upload = uploadFiles<typeof newMedicaidSubmission.feSchema>();
-
-// use container globally for tests to use same render and let each test fill out inputs
-// and at the end validate button is enabled for submit
 let container: HTMLElement;
 
-describe("Medicaid SPA", () => {
+describe("CHIP SPA", () => {
   beforeAll(() => {
     skipCleanup();
 
-    const { container: renderedContainer } = renderForm(<MedicaidForm />);
+    const { container: renderedContainer } = renderForm(<ChipForm />);
 
     container = renderedContainer;
   });
 
   test("SPA ID", async () => {
     const spaIdInput = screen.getByLabelText(/SPA ID/);
-    const spaIdLabel = screen.getByTestId("spaid-label");
     await userEvent.type(spaIdInput, "MD-24-9291");
+    const spaIdLabel = container.querySelector('[for="id"]');
 
     expect(spaIdLabel).not.toHaveClass("text-destructive");
   });
 
-  test("PROPOSED EFFECTIVE DATE OF MEDICAID SPA", async () => {
+  test("PROPOSED EFFECTIVE DATE OF CHIP SPA", async () => {
     await userEvent.click(
       screen.getByTestId("proposedEffectiveDate-datepicker"),
     );
@@ -48,18 +46,22 @@ describe("Medicaid SPA", () => {
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });
 
-  test("CMS FORM 179", async () => {
-    const cmsForm179PlanLabel = await upload("cmsForm179");
-    expect(cmsForm179PlanLabel).not.toHaveClass("text-destructive");
+  test("CURRENT STATE PLAN", async () => {
+    const currentStatePlanLabel = await upload("currentStatePlan");
+    expect(currentStatePlanLabel).not.toHaveClass("text-destructive");
   });
 
-  test("SPA PAGES", async () => {
-    const spaPagesLabel = await upload("spaPages");
-
-    expect(spaPagesLabel).not.toHaveClass("text-destructive");
+  test("AMENDED STATE PLAN LANGUAGE", async () => {
+    const amendedLanguageLabel = await upload("amendedLanguage");
+    expect(amendedLanguageLabel).not.toHaveClass("text-destructive");
   });
 
-  test("submit button is enabled", async () => {
+  test("COVER LETTER", async () => {
+    const coverLetterLabel = await upload("coverLetter");
+    expect(coverLetterLabel).not.toHaveClass("text-destructive");
+  });
+
+  test("submit button is enabled", () => {
     expect(screen.getByTestId("submit-action-form")).toBeEnabled();
   });
 });

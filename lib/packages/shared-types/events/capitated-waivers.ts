@@ -39,13 +39,13 @@ const baseCapitatedWaiverSchema = z.object({
 
 export const amendmentFeSchema = baseCapitatedWaiverSchema.extend({
   // zAmendmentOriginalWaiverNumberSchema
-  waiverNumber: z.number(),
+  waiverNumber: z.string(),
   seaActionType: z.string().default("Amend"),
 });
 
 export const renewalFeSchema = baseCapitatedWaiverSchema.extend({
   // zAmendmentOriginalWaiverNumberSchema
-  waiverNumber: z.number(),
+  waiverNumber: z.string(),
   seaActionType: z.string().default("Renew"),
   attachments: z.object({
     bCapWaiverApplication: z.object({

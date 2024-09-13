@@ -33,7 +33,10 @@ export const Renewal = () => (
           render={({ field }) => (
             <FormItem>
               <div className="flex gap-4">
-                <FormLabel className="font-semibold">
+                <FormLabel
+                  className="font-semibold"
+                  data-testid="existing-waiver-label"
+                >
                   Existing Waiver Number to Renew <RequiredIndicator />
                 </FormLabel>
               </div>
@@ -60,7 +63,10 @@ export const Renewal = () => (
           render={({ field }) => (
             <FormItem>
               <div className="flex gap-4">
-                <FormLabel className="font-semibold">
+                <FormLabel
+                  className="font-semibold"
+                  data-testid="1915b-waiver-renewal-label"
+                >
                   1915(b) Waiver Renewal Number <RequiredIndicator />
                 </FormLabel>
                 <Link
@@ -100,7 +106,11 @@ export const Renewal = () => (
                 <RequiredIndicator />
               </FormLabel>
               <FormControl className="max-w-sm">
-                <DatePicker onChange={field.onChange} date={field.value} />
+                <DatePicker
+                  onChange={field.onChange}
+                  date={field.value}
+                  dataTestId="proposedEffectiveDate"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

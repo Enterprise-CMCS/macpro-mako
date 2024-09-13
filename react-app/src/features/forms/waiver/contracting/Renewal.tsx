@@ -34,7 +34,10 @@ export const RenewalForm = () => {
             render={({ field }) => (
               <FormItem>
                 <div className="flex gap-4">
-                  <FormLabel className="font-semibold">
+                  <FormLabel
+                    className="font-semibold"
+                    data-testid="waiverid-existing-label"
+                  >
                     Existing Waiver Number to Renew <RequiredIndicator />
                   </FormLabel>
                 </div>
@@ -62,7 +65,10 @@ export const RenewalForm = () => {
             render={({ field }) => (
               <FormItem>
                 <div className="flex gap-4">
-                  <FormLabel className="font-semibold">
+                  <FormLabel
+                    className="font-semibold"
+                    data-testid="waiverid-renewal-label"
+                  >
                     1915(b) Waiver Renewal Number <RequiredIndicator />
                   </FormLabel>
                   <Link
@@ -97,12 +103,19 @@ export const RenewalForm = () => {
             name="proposedEffectiveDate"
             render={({ field }) => (
               <FormItem className="max-w-lg">
-                <FormLabel className="font-semibold block">
+                <FormLabel
+                  className="font-semibold block"
+                  data-testid="proposedEffectiveDate-label"
+                >
                   Proposed Effective Date of 1915(b) Waiver Renewal{" "}
                   <RequiredIndicator />
                 </FormLabel>
                 <FormControl className="max-w-sm">
-                  <DatePicker onChange={field.onChange} date={field.value} />
+                  <DatePicker
+                    onChange={field.onChange}
+                    date={field.value}
+                    dataTestId="proposedEffectiveDate"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -19,9 +19,11 @@ beforeAll(() => {
 });
 
 afterEach(() => {
+  if (process.env.SKIP_CLEANUP) return;
   cleanup();
 });
 
 afterAll(() => {
+  delete process.env.SKIP_CLEANUP;
   vi.restoreAllMocks();
 });

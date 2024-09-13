@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { zAdditionalInfoOptional, zAttachmentRequired } from "@/utils";
+import { zAdditionalInfoOptional, zAttachmentRequired } from "@/utils/zod";
 import { ReactElement } from "react";
 import {
   AdditionalInfoSection,
