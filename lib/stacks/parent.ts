@@ -113,6 +113,7 @@ export class ParentStack extends cdk.Stack {
       privateSubnets,
       brokerString: props.brokerString,
       topicNamespace,
+      userPoolId: authStack.userPool.userPoolId,
       indexNamespace,
       lambdaSecurityGroupId:
         networkingStack.lambdaSecurityGroup.securityGroupId,

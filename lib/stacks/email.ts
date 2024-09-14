@@ -12,6 +12,7 @@ interface EmailServiceStackProps extends cdk.StackProps {
   stage: string;
   isDev: boolean;
   stack: string;
+  userPoolId: string;
   vpc: cdk.aws_ec2.IVpc;
   applicationEndpointUrl: string;
   indexNamespace: string;
@@ -34,6 +35,7 @@ export class Email extends cdk.NestedStack {
       stage,
       isDev,
       stack,
+      userPoolId,
       vpc,
       applicationEndpointUrl,
       topicNamespace,
@@ -245,8 +247,36 @@ export class Email extends cdk.NestedStack {
       },
     );
 
-    // Grant the Lambda function read/write permissions to the DynamoDB table
+    // Create the Lambda function for getAllStateUsers
+    const getAllStateUsersLambda = new NodejsFunction(
+      this,
+      "GetAllStateUsersLambda",
+      {
+        functionName: `${project}-${stage}-${stack}-getAllStateUsers`,
+        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+        handler: "getAllStateUsers.handler",
+        entry: path.join(__dirname, "../lambda/getAllStateUsers.ts"),
+        memorySize: 1024,
+        timeout: cdk.Duration.seconds(60),
+        environment: {
+          USER_POOL_ID: userPoolId,
+        },
+      },
+    );
+
+    // Grant Cognito read permissions to the Lambda
+    getAllStateUsersLambda.addToRolePolicy(
+      new cdk.aws_iam.PolicyStatement({
+        actions: ["cognito-idp:ListUsers"],
+        resources: [
+          `arn:aws:cognito-idp:${this.region}:${this.account}:userpool/${userPoolId}`,
+        ],
+      }),
+    );
+
+    // Grant the Lambda function read/write permissions
     emailAttemptsTable.grantReadWriteData(processEmailsLambda);
+    emailAttemptsTable.grantReadWriteData(getAllStateUsersLambda);
 
     new CfnEventSourceMapping(this, "SinkEmailTrigger", {
       batchSize: 1,
