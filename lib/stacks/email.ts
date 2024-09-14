@@ -215,38 +215,6 @@ export class Email extends cdk.NestedStack {
       timeToLiveAttribute: "ttl",
     });
 
-    // Lambda Function for Processing Emails
-    const processEmailsLambda = new NodejsFunction(
-      this,
-      "ProcessEmailsLambda",
-      {
-        functionName: `${project}-${stage}-${stack}-processEmails`,
-        depsLockFilePath: path.join(__dirname, "../../bun.lockb"),
-        entry: path.join(__dirname, "../lambda/processEmails.ts"),
-        handler: "handler",
-        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
-        memorySize: 1024,
-        timeout: cdk.Duration.seconds(60),
-        role: lambdaRole,
-        vpc: vpc,
-        vpcSubnets: {
-          subnets: privateSubnets,
-        },
-        securityGroups: [lambdaSecurityGroup],
-        logGroup: processEmailsLambdaLogGroup,
-        environment: {
-          region: this.region,
-          stage,
-          indexNamespace,
-          osDomain: `https://${openSearchDomainEndpoint}`,
-          applicationEndpointUrl,
-          emailAddressLookupSecretName,
-          EMAIL_ATTEMPTS_TABLE: emailAttemptsTable.tableName,
-          MAX_RETRY_ATTEMPTS: "3", // Set the maximum number of retry attempts
-        },
-      },
-    );
-
     // Create the Lambda function for getAllStateUsers
     const getAllStateUsersLambda = new NodejsFunction(
       this,
@@ -272,6 +240,38 @@ export class Email extends cdk.NestedStack {
           `arn:aws:cognito-idp:${this.region}:${this.account}:userpool/${userPoolId}`,
         ],
       }),
+    );
+
+    const processEmailsLambda = new NodejsFunction(
+      this,
+      "ProcessEmailsLambda",
+      {
+        functionName: `${project}-${stage}-${stack}-processEmails`,
+        depsLockFilePath: path.join(__dirname, "../../bun.lockb"),
+        entry: path.join(__dirname, "../lambda/processEmails.ts"),
+        handler: "handler",
+        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+        memorySize: 1024,
+        timeout: cdk.Duration.seconds(60),
+        role: lambdaRole,
+        vpc: vpc,
+        vpcSubnets: {
+          subnets: privateSubnets,
+        },
+        securityGroups: [lambdaSecurityGroup],
+        logGroup: processEmailsLambdaLogGroup,
+        environment: {
+          region: this.region,
+          stage,
+          getAllStateUsersFunctionName: getAllStateUsersLambda.functionName,
+          indexNamespace,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          applicationEndpointUrl,
+          emailAddressLookupSecretName,
+          EMAIL_ATTEMPTS_TABLE: emailAttemptsTable.tableName,
+          MAX_RETRY_ATTEMPTS: "3", // Set the maximum number of retry attempts
+        },
+      },
     );
 
     // Grant the Lambda function read/write permissions

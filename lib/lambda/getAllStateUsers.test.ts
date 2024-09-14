@@ -1,18 +1,19 @@
+import { vitest } from "vitest";
 import { handler } from "./getAllStateUsers";
 import {
   CognitoIdentityProviderClient,
   ListUsersCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 
-jest.mock("@aws-sdk/client-cognito-identity-provider");
+vitest.mock("@aws-sdk/client-cognito-identity-provider");
 
 const mockCognitoClient = {
-  send: jest.fn(),
+  send: vitest.fn(),
 };
 
-(CognitoIdentityProviderClient as jest.Mock).mockImplementation(
-  () => mockCognitoClient,
-);
+vitest
+  .mocked(CognitoIdentityProviderClient)
+  .mockImplementation(() => mockCognitoClient as any);
 
 describe("getAllStateUsers Lambda", () => {
   const mockEvent = {
@@ -21,7 +22,7 @@ describe("getAllStateUsers Lambda", () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vitest.clearAllMocks();
   });
 
   it("should return filtered users for a given state", async () => {

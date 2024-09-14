@@ -30,7 +30,7 @@ export const handler = async (event: { state: string; userPoolId: string }) => {
 
     const formattedUsers = filteredUsers?.map((user) => {
       const attributes = user.Attributes?.reduce((acc, attr) => {
-        acc[attr.Name as string] = attr.Value;
+        acc[attr.Name as any] = attr.Value;
         return acc;
       }, {} as Record<string, string | undefined>);
 
