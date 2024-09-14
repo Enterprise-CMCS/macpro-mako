@@ -1,6 +1,6 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
-import * as path from "path";
+import { join } from "path";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { ISubnet } from "aws-cdk-lib/aws-ec2";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
@@ -223,7 +223,7 @@ export class Email extends cdk.NestedStack {
         functionName: `${project}-${stage}-${stack}-getAllStateUsers`,
         runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
         handler: "getAllStateUsers.handler",
-        entry: path.join(__dirname, "../lambda/getAllStateUsers.ts"),
+        entry: join(__dirname, "../lambda/getAllStateUsers.ts"),
         memorySize: 1024,
         timeout: cdk.Duration.seconds(60),
         environment: {
@@ -247,8 +247,8 @@ export class Email extends cdk.NestedStack {
       "ProcessEmailsLambda",
       {
         functionName: `${project}-${stage}-${stack}-processEmails`,
-        depsLockFilePath: path.join(__dirname, "../../bun.lockb"),
-        entry: path.join(__dirname, "../lambda/processEmails.ts"),
+        depsLockFilePath: join(__dirname, "../../bun.lockb"),
+        entry: join(__dirname, "../lambda/processEmails.ts"),
         handler: "handler",
         runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
         memorySize: 1024,
