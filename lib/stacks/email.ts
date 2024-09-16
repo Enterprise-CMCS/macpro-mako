@@ -218,10 +218,6 @@ export class Email extends cdk.NestedStack {
       memorySize?: number;
       provisionedConcurrency?: number;
     }) => {
-      const logGroup = new cdk.aws_logs.LogGroup(this, `${id}LogGroup`, {
-        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-${id}`,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      });
       const fn = new NodejsFunction(this, id, {
         functionName: `${project}-${stage}-${stack}-${id}`,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
@@ -234,7 +230,7 @@ export class Email extends cdk.NestedStack {
         vpcSubnets: useVpc ? { subnets: privateSubnets } : undefined,
         securityGroups: useVpc ? [lambdaSecurityGroup] : undefined,
         environment,
-        logGroup,
+        logRetention: cdk.aws_logs.RetentionDays.ONE_WEEK, // Add this line
         timeout,
         bundling: {
           minify: true,
