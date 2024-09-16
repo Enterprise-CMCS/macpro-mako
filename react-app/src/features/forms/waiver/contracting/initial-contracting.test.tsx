@@ -3,7 +3,10 @@ import userEvent from "@testing-library/user-event";
 import { describe, vi, test, expect, beforeAll } from "vitest";
 import { InitialForm } from "./Initial";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
+import {
+  skipCleanup,
+  mockApiRefinements,
+} from "@/utils/test-helpers/skipCleanup";
 import { renderForm } from "@/utils/test-helpers/renderForm";
 import { formSchemas } from "@/formSchemas";
 
@@ -22,6 +25,7 @@ let container: HTMLElement;
 describe("INITIAL CONTRACTING WAIVER", () => {
   beforeAll(() => {
     skipCleanup();
+    mockApiRefinements();
 
     const { container: renderedContainer } = renderForm(<InitialForm />);
 
@@ -48,7 +52,7 @@ describe("INITIAL CONTRACTING WAIVER", () => {
 
     await userEvent.clear(waiverIdInput);
 
-    await userEvent.type(waiverIdInput, "MD-0000.R00.00");
+    await userEvent.type(waiverIdInput, "MD-0006.R00.00");
 
     expect(waiverIdLabel).not.toHaveClass("text-destructive");
   });
