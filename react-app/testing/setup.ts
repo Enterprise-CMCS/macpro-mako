@@ -11,15 +11,32 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
 // extends Vitest's expect method with methods from react-testing-library
 expect.extend(matchers);
 
-// runs a cleanup after each test case (e.g. clearing jsdom)
-
 // Add this to remove all the expected errors in console when running unit tests.
 beforeAll(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
   if (process.env.MOCK_API_REFINES) {
-    vi.mock("@/api/itemExists", () => ({
+    vi.mock("@/api", () => ({
+      idIsApproved: vi.fn(async (id: string) => {
+        const idsThatAreApproved = ["MD-0000.R00.00", "MD-0001.R00.00"];
+
+        return idsThatAreApproved.includes(id);
+      }),
+      canBeRenewedOrAmended: vi.fn(async (id: string) => {
+        const idsThatCanBeRenewedOrAmended = [
+          "MD-0000.R00.00",
+          "MD-0002.R00.00",
+        ];
+
+        return idsThatCanBeRenewedOrAmended.includes(id);
+      }),
       itemExists: vi.fn(async (id: string) => {
-        const idsThatExist = ["MD-00-0000", "MD-0000.R00.01"];
+        const idsThatExist = [
+          "MD-00-0000",
+          "MD-0000.R00.00",
+          "MD-0000.R00.01",
+          "MD-0001.R00.00",
+          "MD-0002.R00.00",
+        ];
 
         return idsThatExist.includes(id);
       }),
