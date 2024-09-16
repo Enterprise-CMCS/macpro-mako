@@ -12,6 +12,12 @@ vi.mock("@/components/Inputs/upload.utilities", () => ({
   uploadToS3: vi.fn(async () => {}),
   extractBucketAndKeyFromUrl: vi.fn(() => ({ bucket: "hello", key: "world" })),
 }));
+vi.mock("@/api/itemExists", () => ({
+  itemExists: vi.fn(async () => false),
+}));
+vi.mock("@/utils/user", () => ({
+  isAuthorizedState: vi.fn(async () => true),
+}));
 
 const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
 
