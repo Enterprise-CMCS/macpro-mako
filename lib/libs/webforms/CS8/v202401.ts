@@ -350,6 +350,11 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "geo-variation",
+              label: "Method of geographic variation",
+              labelClassName: "font-bold",
+              rules: {
+                required: "* Required",
+              },
               props: {
                 options: [
                   {
