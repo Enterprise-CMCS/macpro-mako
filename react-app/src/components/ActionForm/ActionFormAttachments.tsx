@@ -15,32 +15,18 @@ import { FAQ_TAB } from "../Routing";
 const DEFAULT_ATTACHMENTS_INSTRUCTIONS =
   "Maximum file size of 80 MB per attachment. You can add multiple files per attachment type.";
 
-type EnforceSchemaProps<Shape extends z.ZodRawShape> = Shape & {
-  attachments?: z.ZodObject<{
-    [Key in keyof Shape]: z.ZodObject<{
-      label: z.ZodDefault<z.ZodString>;
-      files: z.ZodTypeAny;
-    }>;
-  }>;
-  additionalInformation?: z.ZodDefault<z.ZodNullable<z.ZodString>>;
-};
-
-export type SchemaWithEnforcableProps<Shape extends z.ZodRawShape> =
-  z.ZodObject<EnforceSchemaProps<Shape>, "strip", z.ZodTypeAny>;
-
-type ActionFormAttachmentsProps<Schema extends z.ZodRawShape> = {
-  schema: SchemaWithEnforcableProps<Schema>;
+type ActionFormAttachmentsProps = {
+  attachmentsFromSchema: [string, z.ZodObject<z.ZodRawShape, "strip">][];
   specialInstructions?: string;
   faqLink: string;
 };
 
-export const ActionFormAttachments = <Schema extends z.ZodRawShape>({
-  schema,
+export const ActionFormAttachments = ({
+  attachmentsFromSchema,
   specialInstructions = DEFAULT_ATTACHMENTS_INSTRUCTIONS,
   faqLink,
-}: ActionFormAttachmentsProps<Schema>) => {
+}: ActionFormAttachmentsProps) => {
   const form = useFormContext();
-  const attachementsFromSchema = Object.entries(schema.shape.attachments.shape);
 
   return (
     <SectionCard title="Attachments">
@@ -74,7 +60,7 @@ export const ActionFormAttachments = <Schema extends z.ZodRawShape>({
         </p>
       </div>
       <section className="space-y-8" data-testid="attachments-section">
-        {attachementsFromSchema.map(([key, value]) => (
+        {attachmentsFromSchema.map(([key, value]) => (
           <FormField
             key={key}
             control={form.control}

@@ -11,7 +11,6 @@ import {
   FAQ_TAB,
   SpaIdFormattingDesc,
 } from "@/components";
-// import { newMedicaidSubmission } from "shared-types";
 import { ActionForm } from "@/components/ActionForm";
 import { formSchemas } from "@/formSchemas";
 
