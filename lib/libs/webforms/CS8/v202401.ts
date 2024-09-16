@@ -274,8 +274,12 @@ export const v202401: FormSchema = {
                   },
                 },
               ],
-              label: "Statewide income standards",
               styledLabel: [
+                {
+                  text: "Statewide income standards",
+                  type: "bold",
+                  classname: "block pb-2",
+                },
                 {
                   text: "CHIP coverage for pregnant women may only be provided if the qualifying income standard under Medicaid for pregnant women is at least 185% FPL.",
                   type: "default",
@@ -561,7 +565,7 @@ export const v202401: FormSchema = {
                         fields: [
                           {
                             rhf: "FieldArray",
-                            name: "city-info",
+                            name: "other-geo-area",
                             props: { appendText: "Add geographic area" },
                             fields: [
                               {
