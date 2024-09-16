@@ -57,7 +57,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
       const stateUsers = await getAllStateUsers(variables.territory);
       return {
         to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
-        cc: await getAllStateUsers(variables.territory),
+        cc: stateUsers,
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         html: await render(
           <MedSpaStateEmail
