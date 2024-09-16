@@ -219,7 +219,9 @@ export class Email extends cdk.NestedStack {
       provisionedConcurrency?: number;
     }) => {
       const fn = new NodejsFunction(this, id, {
-        functionName: `${project}-${stage}-${stack}-${id}`,
+        functionName: `${project}-${stage}-${stack}-${id}-${cdk.Names.uniqueId(
+          this,
+        )}`, // Add a unique identifier
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry: join(__dirname, `../lambda/${entry}`),
         handler: "handler",
