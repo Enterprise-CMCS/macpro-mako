@@ -53,93 +53,29 @@ export const v202401: FormSchema = {
           descriptionClassName: "text-base",
           slots: [
             {
-              rhf: "Radio",
-              name: "age-range",
-              label: "Age range",
-              labelClassName: "font-bold",
-              descriptionAbove: true,
-              rules: {
-                required: "* Required",
-              },
-              props: {
-                options: [
-                  {
-                    label: "From age 19, up to specific age",
-                    value: "from-age-19",
-                    slots: [
-                      {
-                        rhf: "Input",
-                        name: "end-age-range",
-                        rules: {},
-                        label: "End of age range",
-                        labelClassName: "font-bold",
-                        props: {
-                          className: "w-[125px]",
-                        },
-                      },
-                    ],
+              rhf: "WrappedGroup",
+              name: "wrapped",
+              formItemClassName: "mt-0",
+              fields: [
+                {
+                  rhf: "Radio",
+                  name: "age-range",
+                  label: "Age range",
+                  labelClassName: "font-bold",
+                  descriptionAbove: true,
+                  rules: {
+                    required: "* Required",
                   },
-                  {
-                    label: "No age restriction",
-                    value: "no-age-restriction",
-                    slots: [
+                  props: {
+                    options: [
                       {
-                        rhf: "Textarea",
-                        name: "no-age-describe-applicant-child-preg-woman",
-                        rules: {
-                          required: "* Required",
-                          pattern: {
-                            value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
-                          },
-                        },
-                        label:
-                          "Describe how it’s determined whether the applicant will be provided coverage as a child or as a pregnant woman.",
-                        labelClassName: "font-bold",
-                        props: {
-                          className: "w-[696px]",
-                        },
-                      },
-                    ],
-                  },
-                  {
-                    label: "Another age range",
-                    value: "another-age-range",
-                    slots: [
-                      {
-                        rhf: "WrappedGroup",
-                        name: "wrapped",
-                        props: {
-                          wrapperClassName: "flex-row flex gap-5",
-                        },
-                        fields: [
-                          {
-                            rhf: "Input",
-                            name: "start-age-range",
-                            rules: {
-                              pattern: {
-                                value: /^\d*\.?\d+$/,
-                                message: "Must be a positive percentage",
-                              },
-                              required: "* Required",
-                            },
-                            label: "Start of age range",
-                            labelClassName: "font-bold",
-                            props: {
-                              className: "w-[125px]",
-                            },
-                          },
+                        label: "From age 19, up to specific age",
+                        value: "from-age-19",
+                        slots: [
                           {
                             rhf: "Input",
                             name: "end-age-range",
-                            rules: {
-                              pattern: {
-                                value: /^\d*\.?\d+$/,
-                                message: "Must be a positive percentage",
-                              },
-                              required: "* Required",
-                            },
+                            rules: {},
                             label: "End of age range",
                             labelClassName: "font-bold",
                             props: {
@@ -149,56 +85,137 @@ export const v202401: FormSchema = {
                         ],
                       },
                       {
-                        rhf: "Select",
-                        name: "does-preg-woman-range-overlap-with-child",
-                        rules: {
-                          required: "* Required",
-                        },
-                        label:
-                          "Does the age range for targeted low-income pregnant women overlap with the age range for targeted low-income children?",
-                        labelClassName: "font-bold",
-                        props: {
-                          className: "w-[125px]",
-                          options: [
-                            { label: "Yes", value: "yes" },
-                            { label: "No", value: "no" },
-                          ],
-                        },
+                        label: "No age restriction",
+                        value: "no-age-restriction",
+                        slots: [
+                          {
+                            rhf: "Textarea",
+                            name: "no-age-describe-applicant-child-preg-woman",
+                            rules: {
+                              required: "* Required",
+                              pattern: {
+                                value: noLeadingTrailingWhitespace,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
+                            },
+                            label:
+                              "Describe how it’s determined whether the applicant will be provided coverage as a child or as a pregnant woman.",
+                            labelClassName: "font-bold",
+                            props: {
+                              className: "w-[696px]",
+                            },
+                          },
+                        ],
                       },
                       {
-                        rhf: "Textarea",
-                        name: "describe-applicant-child-preg-woman",
-                        rules: {
-                          required: "* Required",
-                          pattern: {
-                            value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
-                          },
-                        },
-                        label:
-                          "Describe how it’s determined whether the applicant will be provided coverage as a child or as a pregnant woman.",
-                        labelClassName: "font-bold",
-                        formItemClassName:
-                          "ml-[0.6rem] px-4 border-l-4 border-l-primary mb-4",
-                        props: {
-                          className: "w-[658px]",
-                        },
-                        dependency: {
-                          conditions: [
-                            {
-                              type: "expectedValue",
-                              name: "cs8_age_does-preg-woman-range-overlap-with-child",
-                              expectedValue: "yes",
+                        label: "Another age range",
+                        value: "another-age-range",
+                        slots: [
+                          {
+                            rhf: "WrappedGroup",
+                            name: "wrapped",
+                            props: {
+                              wrapperClassName: "flex-row flex gap-5",
                             },
-                          ],
-                          effect: { type: "show" },
-                        },
+                            fields: [
+                              {
+                                rhf: "Input",
+                                name: "start-age-range",
+                                rules: {
+                                  pattern: {
+                                    value: /^\d*\.?\d+$/,
+                                    message: "Must be a positive percentage",
+                                  },
+                                  required: "* Required",
+                                },
+                                label: "Start of age range",
+                                labelClassName: "font-bold",
+                                props: {
+                                  className: "w-[125px]",
+                                },
+                              },
+                              {
+                                rhf: "Input",
+                                name: "end-age-range",
+                                rules: {
+                                  pattern: {
+                                    value: /^\d*\.?\d+$/,
+                                    message: "Must be a positive percentage",
+                                  },
+                                  required: "* Required",
+                                },
+                                label: "End of age range",
+                                labelClassName: "font-bold",
+                                props: {
+                                  className: "w-[125px]",
+                                },
+                              },
+                            ],
+                          },
+                          {
+                            rhf: "Select",
+                            name: "does-preg-woman-range-overlap-with-child",
+                            rules: {
+                              required: "* Required",
+                            },
+                            label:
+                              "Does the age range for targeted low-income pregnant women overlap with the age range for targeted low-income children?",
+                            labelClassName: "font-bold",
+                            props: {
+                              className: "w-[125px]",
+                              options: [
+                                { label: "Yes", value: "yes" },
+                                { label: "No", value: "no" },
+                              ],
+                            },
+                          },
+                        ],
                       },
                     ],
                   },
-                ],
-              },
+                },
+                {
+                  rhf: "WrappedGroup",
+                  name: "wrapped",
+                  props: {
+                    wrapperClassName:
+                      "ml-[0.6rem] px-4 border-l-4 border-l-primary mb-4",
+                  },
+                  fields: [
+                    {
+                      rhf: "Textarea",
+                      name: "describe-applicant-child-preg-woman",
+                      rules: {
+                        required: "* Required",
+                        pattern: {
+                          value: noLeadingTrailingWhitespace,
+                          message:
+                            "Must not have leading or trailing whitespace.",
+                        },
+                      },
+                      label:
+                        "Describe how it’s determined whether the applicant will be provided coverage as a child or as a pregnant woman.",
+                      labelClassName: "font-bold",
+                      formItemClassName:
+                        "ml-[0.6rem] px-4 border-l-4 border-l-primary my-4",
+                      props: {
+                        className: "w-[658px]",
+                      },
+                      dependency: {
+                        conditions: [
+                          {
+                            type: "expectedValue",
+                            name: "cs8_age_does-preg-woman-range-overlap-with-child",
+                            expectedValue: "yes",
+                          },
+                        ],
+                        effect: { type: "show" },
+                      },
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },
