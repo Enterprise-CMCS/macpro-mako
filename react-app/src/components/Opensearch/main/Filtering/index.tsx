@@ -19,7 +19,7 @@ export const OsFiltering: FC<{
       <p className="mb-1 text-sm">
         {"Search by Package ID, CPOC Name, or Submitter Name"}
       </p>
-      <div className="flex w-full md:flex-row flex-col flex-grow content-between gap-2 mb-4">
+      <div className="flex w-full lg:flex-row flex-col flex-grow content-between gap-2 mb-4">
         <SearchForm
           isSearching={context.isLoading}
           handleSearch={(search) =>
@@ -31,7 +31,7 @@ export const OsFiltering: FC<{
           }
           disabled={!!disabled}
         />
-        <div className="flex justify-center flex-row gap-2">
+        <div className="flex flex-wrap justify-center gap-2 max-w-full">
           <VisibilityPopover
             list={columns.filter((COL) => COL.locked === false || COL.field)}
             onItemClick={onToggle}
