@@ -50,7 +50,7 @@ describe("Capitated Initial", () => {
 
     await userEvent.clear(waiverInitialInput);
 
-    await userEvent.type(waiverInitialInput, "MD-0000.R00.00");
+    await userEvent.type(waiverInitialInput, "MD-0006.R00.00");
 
     expect(waiverInitialLabel).not.toHaveClass("text-destructive");
   });
