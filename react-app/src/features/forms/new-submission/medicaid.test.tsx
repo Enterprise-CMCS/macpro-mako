@@ -4,7 +4,10 @@ import { describe, vi, test, expect, beforeAll } from "vitest";
 import { MedicaidForm } from "./Medicaid";
 import { formSchemas } from "@/formSchemas";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
+import {
+  skipCleanup,
+  mockApiRefinements,
+} from "@/utils/test-helpers/skipCleanup";
 import { renderForm } from "@/utils/test-helpers/renderForm";
 
 vi.mock("@/components/Inputs/upload.utilities", () => ({
@@ -12,12 +15,12 @@ vi.mock("@/components/Inputs/upload.utilities", () => ({
   uploadToS3: vi.fn(async () => {}),
   extractBucketAndKeyFromUrl: vi.fn(() => ({ bucket: "hello", key: "world" })),
 }));
-vi.mock("@/api/itemExists", () => ({
-  itemExists: vi.fn(async () => false),
-}));
-vi.mock("@/utils/user", () => ({
-  isAuthorizedState: vi.fn(async () => true),
-}));
+// vi.mock("@/api/itemExists", () => ({
+//   itemExists: vi.fn(async () => false),
+// }));
+// vi.mock("@/utils/user", () => ({
+//   isAuthorizedState: vi.fn(async () => true),
+// }));
 
 const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
 
@@ -28,6 +31,7 @@ let container: HTMLElement;
 describe("Medicaid SPA", () => {
   beforeAll(() => {
     skipCleanup();
+    mockApiRefinements();
 
     const { container: renderedContainer } = renderForm(<MedicaidForm />);
 
@@ -37,7 +41,23 @@ describe("Medicaid SPA", () => {
   test("SPA ID", async () => {
     const spaIdInput = screen.getByLabelText(/SPA ID/);
     const spaIdLabel = screen.getByTestId("spaid-label");
-    await userEvent.type(spaIdInput, "MD-24-9291");
+    // test id validations
+    // fails if item exists
+    await userEvent.type(spaIdInput, "MD-00-0000");
+    const recordExistsErrorText = screen.getByText(
+      /According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again./,
+    );
+    expect(recordExistsErrorText).toBeInTheDocument();
+    await userEvent.clear(spaIdInput);
+    // fails if state entered is not a valid state
+    await userEvent.type(spaIdInput, "AK-00-0000");
+    const invalidStateErrorText = screen.getByText(
+      /You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access./,
+    );
+    expect(invalidStateErrorText).toBeInTheDocument();
+    await userEvent.clear(spaIdInput);
+    // end of test id validations
+    await userEvent.type(spaIdInput, "MD-00-0001");
 
     expect(spaIdLabel).not.toHaveClass("text-destructive");
   });

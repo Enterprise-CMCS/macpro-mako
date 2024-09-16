@@ -16,6 +16,24 @@ expect.extend(matchers);
 // Add this to remove all the expected errors in console when running unit tests.
 beforeAll(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
+  if (process.env.MOCK_API_REFINES) {
+    vi.mock("@/api/itemExists", () => ({
+      itemExists: vi.fn(async (id: string) => {
+        const idsThatExist = ["MD-00-0000"];
+
+        return idsThatExist.includes(id);
+      }),
+    }));
+    vi.mock("@/utils/user", () => ({
+      isAuthorizedState: vi.fn(async (id: string) => {
+        const validStates = ["MD"];
+
+        return validStates.includes(id.substring(0, 2));
+      }),
+    }));
+    // mock the api calls that the frontend uses here
+    // vi.mock("@/api/stuff")
+  }
 });
 
 afterEach(() => {
