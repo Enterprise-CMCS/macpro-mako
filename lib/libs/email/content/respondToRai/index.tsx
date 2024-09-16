@@ -1,6 +1,10 @@
 import * as React from "react";
 import { Authority, EmailAddresses, RaiResponse } from "shared-types";
-import { CommonVariables, AuthoritiesWithUserTypesTemplate } from "../..";
+import {
+  CommonVariables,
+  AuthoritiesWithUserTypesTemplate,
+  getAllStateUsers,
+} from "../..";
 import {
   MedSpaCMSEmail,
   MedSpaStateEmail,
@@ -114,8 +118,11 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
     state: async (
       variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
     ) => {
+      const stateUsers = await getAllStateUsers(variables.territory);
+
       return {
-        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`], // TODO: suppose to go to all state users but we dont have that data
+        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
+        cc: stateUsers,
         subject: `Your ${variables.authority} ${variables.authority} Response for ${variables.id} has been submitted to CMS`,
         html: await render(<Waiver1915bStateEmail variables={variables} />),
         text: await render(<Waiver1915bStateEmail variables={variables} />, {
