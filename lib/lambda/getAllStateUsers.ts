@@ -53,3 +53,5 @@ export const handler = async (event: { state: string; userPoolId: string }) => {
     };
   }
 };
+
+export default handler;

@@ -221,8 +221,9 @@ export class Email extends cdk.NestedStack {
       "GetAllStateUsersLambda",
       {
         functionName: `${project}-${stage}-${stack}-getAllStateUsers`,
+        depsLockFilePath: join(__dirname, "../../bun.lockb"),
         runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
-        handler: "getAllStateUsers.handler",
+        handler: "handler",
         entry: join(__dirname, "../lambda/getAllStateUsers.ts"),
         memorySize: 1024,
         timeout: cdk.Duration.seconds(60),
