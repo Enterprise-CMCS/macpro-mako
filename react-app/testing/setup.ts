@@ -1,6 +1,6 @@
 import { expect, afterEach, beforeAll, afterAll, vi } from "vitest";
 import { cleanup } from "@testing-library/react";
-import * as matchers from "@testing-library/jest-dom/matchers";
+import matchers from "@testing-library/jest-dom/matchers";
 
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
@@ -19,7 +19,7 @@ beforeAll(() => {
   if (process.env.MOCK_API_REFINES) {
     vi.mock("@/api/itemExists", () => ({
       itemExists: vi.fn(async (id: string) => {
-        const idsThatExist = ["MD-00-0000"];
+        const idsThatExist = ["MD-00-0000", "MD-0000.R00.01"];
 
         return idsThatExist.includes(id);
       }),
