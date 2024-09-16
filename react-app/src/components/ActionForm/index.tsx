@@ -33,36 +33,48 @@ import {
 } from "@/utils/Poller/documentPoller";
 import { API } from "aws-amplify";
 import { Authority } from "shared-types";
+import { ActionFormAttachments } from "./ActionFormAttachments";
 import {
-  ActionFormAttachments,
-  SchemaWithEnforcableProps,
-} from "./ActionFormAttachments";
+  getAttachments,
+  getAdditionalInformation,
+} from "./actionForm.utilities";
 
-type ActionFormProps<Schema extends SchemaWithEnforcableProps<z.ZodRawShape>> =
-  {
-    schema: Schema;
-    defaultValues?: DefaultValues<z.TypeOf<Schema>>;
-    title: string;
-    fieldsLayout?: (props: { children: ReactNode; title: string }) => ReactNode;
-    fields: (form: UseFormReturn<z.TypeOf<Schema>>) => ReactNode;
-    bannerPostSubmission?: Omit<Banner, "pathnameToDisplayOn">;
-    promptPreSubmission?: Omit<UserPrompt, "onAccept">;
-    promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
-    attachments: {
-      faqLink: string;
-      specialInstructions?: string;
-    };
-    documentPollerArgs: {
-      property:
-        | (keyof z.TypeOf<Schema> & string)
-        | ((values: z.TypeOf<Schema>) => string);
-      documentChecker: CheckDocumentFunction;
-    };
+type EnforceSchemaProps<Shape extends z.ZodRawShape> = Shape & {
+  attachments?: z.ZodObject<{
+    [Key in keyof Shape]: z.ZodObject<{
+      label: z.ZodDefault<z.ZodString>;
+      files: z.ZodTypeAny;
+    }>;
+  }>;
+  additionalInformation?: z.ZodDefault<z.ZodNullable<z.ZodString>>;
+};
+
+type SchemaWithEnforcableProps<Shape extends z.ZodRawShape = z.ZodRawShape> =
+  | z.ZodEffects<z.ZodObject<EnforceSchemaProps<Shape>, "strip", z.ZodTypeAny>>
+  | z.ZodObject<EnforceSchemaProps<Shape>, "strip", z.ZodTypeAny>;
+
+type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
+  schema: Schema;
+  defaultValues?: DefaultValues<z.TypeOf<Schema>>;
+  title: string;
+  fieldsLayout?: (props: { children: ReactNode; title: string }) => ReactNode;
+  fields: (form: UseFormReturn<z.TypeOf<Schema>>) => ReactNode;
+  bannerPostSubmission?: Omit<Banner, "pathnameToDisplayOn">;
+  promptPreSubmission?: Omit<UserPrompt, "onAccept">;
+  promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
+  attachments: {
+    faqLink: string;
+    specialInstructions?: string;
   };
+  documentPollerArgs: {
+    property:
+      | (keyof z.TypeOf<Schema> & string)
+      | ((values: z.TypeOf<Schema>) => string);
+    documentChecker: CheckDocumentFunction;
+  };
+};
 
-export const ActionForm = <
-  Schema extends SchemaWithEnforcableProps<z.ZodRawShape>,
->({
+export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   schema,
   defaultValues,
   title,
@@ -131,11 +143,14 @@ export const ActionForm = <
     }
   });
 
+  const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
+  const additionalInformationFromSchema = useMemo(
+    () => getAdditionalInformation(schema),
+    [schema],
+  );
   const hasProgressLossReminder = useMemo(
-    () =>
-      Fields({ ...form }) !== null ||
-      schema.shape.attachments instanceof z.ZodObject,
-    [schema.shape.attachments, Fields, form],
+    () => Fields({ ...form }) !== null || attachmentsFromSchema.length > 0,
+    [attachmentsFromSchema, Fields, form],
   );
 
   return (
@@ -159,10 +174,13 @@ export const ActionForm = <
               <Fields {...form} />
             </SectionCard>
           )}
-          {schema.shape.attachments && (
-            <ActionFormAttachments schema={schema} {...attachments} />
+          {attachmentsFromSchema.length > 0 && (
+            <ActionFormAttachments
+              attachmentsFromSchema={attachmentsFromSchema}
+              {...attachments}
+            />
           )}
-          {schema.shape.additionalInformation && (
+          {additionalInformationFromSchema && (
             <SectionCard title="Additional Information">
               <FormField
                 control={form.control}
