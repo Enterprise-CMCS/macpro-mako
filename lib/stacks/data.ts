@@ -551,7 +551,9 @@ export class Data extends cdk.NestedStack {
             new cdk.aws_iam.PolicyStatement({
               actions: ["lambda:InvokeFunction"],
               resources: [
-                `arn:aws:lambda:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:function:${project}-${stage}-${stack}-*`,
+                `arn:aws:lambda:${cdk.Stack.of(this).region}:${
+                  cdk.Stack.of(this).account
+                }:function:${project}-${stage}-${stack}-*`,
               ],
             }),
           ],

@@ -199,14 +199,62 @@ export class Email extends cdk.NestedStack {
       },
     });
 
-    const processEmailsLambdaLogGroup = new cdk.aws_logs.LogGroup(
-      this,
-      "ProcessEmailsLambdaLogGroup",
-      {
-        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-processEmails`,
+    const createLambda = ({
+      id,
+      entry = `${id}.ts`,
+      role,
+      useVpc = false,
+      environment = {},
+      timeout = cdk.Duration.minutes(5),
+      memorySize = 1024,
+      provisionedConcurrency = 0,
+    }: {
+      id: string;
+      entry?: string;
+      role: cdk.aws_iam.Role;
+      useVpc?: boolean;
+      environment?: { [key: string]: string };
+      timeout?: cdk.Duration;
+      memorySize?: number;
+      provisionedConcurrency?: number;
+    }) => {
+      const logGroup = new cdk.aws_logs.LogGroup(this, `${id}LogGroup`, {
+        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-${id}`,
         removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    );
+      });
+      const fn = new NodejsFunction(this, id, {
+        functionName: `${project}-${stage}-${stack}-${id}`,
+        depsLockFilePath: join(__dirname, "../../bun.lockb"),
+        entry: join(__dirname, `../lambda/${entry}`),
+        handler: "handler",
+        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+        role,
+        memorySize,
+        vpc: useVpc ? vpc : undefined,
+        vpcSubnets: useVpc ? { subnets: privateSubnets } : undefined,
+        securityGroups: useVpc ? [lambdaSecurityGroup] : undefined,
+        environment,
+        logGroup,
+        timeout,
+        bundling: {
+          minify: true,
+          sourceMap: true,
+        },
+      });
+
+      if (provisionedConcurrency > 0) {
+        const version = fn.currentVersion;
+
+        // Configure provisioned concurrency
+        new cdk.aws_lambda.Alias(this, `FunctionAlias${id}`, {
+          aliasName: "prod",
+          version: version,
+          provisionedConcurrentExecutions: provisionedConcurrency,
+        });
+      }
+
+      return fn;
+    };
 
     // Create a DynamoDB table to track email send attempts
     const emailAttemptsTable = new dynamodb.Table(this, "EmailAttemptsTable", {
@@ -215,26 +263,21 @@ export class Email extends cdk.NestedStack {
       timeToLiveAttribute: "ttl",
     });
 
-    // Create the Lambda function for getAllStateUsers
-    const getAllStateUsersLambda = new NodejsFunction(
-      this,
-      "GetAllStateUsersLambda",
-      {
-        functionName: `${project}-${stage}-${stack}-getAllStateUsers`,
-        depsLockFilePath: join(__dirname, "../../bun.lockb"),
-        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
-        handler: "handler",
-        entry: join(__dirname, "../lambda/getAllStateUsers.ts"),
-        memorySize: 1024,
-        timeout: cdk.Duration.seconds(60),
-        environment: {
-          USER_POOL_ID: userPoolId,
-        },
+    const getAllStateUsers = createLambda({
+      id: "getAllStateUsers",
+      role: lambdaRole,
+      timeout: cdk.Duration.minutes(15),
+      environment: {
+        topicNamespace,
+        indexNamespace,
+        osDomain: `https://${openSearchDomainEndpoint}`,
+        applicationEndpointUrl,
+        emailAddressLookupSecretName,
       },
-    );
+    });
 
     // Grant Cognito read permissions to the Lambda
-    getAllStateUsersLambda.addToRolePolicy(
+    getAllStateUsers.addToRolePolicy(
       new cdk.aws_iam.PolicyStatement({
         actions: ["cognito-idp:ListUsers"],
         resources: [
@@ -243,41 +286,30 @@ export class Email extends cdk.NestedStack {
       }),
     );
 
-    const processEmailsLambda = new NodejsFunction(
-      this,
-      "ProcessEmailsLambda",
-      {
-        functionName: `${project}-${stage}-${stack}-processEmails`,
-        depsLockFilePath: join(__dirname, "../../bun.lockb"),
-        entry: join(__dirname, "../lambda/processEmails.ts"),
-        handler: "handler",
-        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
-        memorySize: 1024,
-        timeout: cdk.Duration.seconds(60),
-        role: lambdaRole,
-        vpc: vpc,
-        vpcSubnets: {
-          subnets: privateSubnets,
-        },
-        securityGroups: [lambdaSecurityGroup],
-        logGroup: processEmailsLambdaLogGroup,
-        environment: {
-          region: this.region,
-          stage,
-          getAllStateUsersFunctionName: getAllStateUsersLambda.functionName,
-          indexNamespace,
-          osDomain: `https://${openSearchDomainEndpoint}`,
-          applicationEndpointUrl,
-          emailAddressLookupSecretName,
-          EMAIL_ATTEMPTS_TABLE: emailAttemptsTable.tableName,
-          MAX_RETRY_ATTEMPTS: "3", // Set the maximum number of retry attempts
-        },
+    const processEmails = createLambda({
+      id: "processEmails",
+      role: lambdaRole,
+      useVpc: true,
+      environment: {
+        topicNamespace,
+        indexNamespace,
+        osDomain: `https://${openSearchDomainEndpoint}`,
+        applicationEndpointUrl,
+        emailAddressLookupSecretName,
+        EMAIL_ATTEMPTS_TABLE: emailAttemptsTable.tableName,
+        MAX_RETRY_ATTEMPTS: "3", // Set the maximum number of retry attempts
       },
-    );
+    });
 
-    // Grant the Lambda function read/write permissions
-    emailAttemptsTable.grantReadWriteData(processEmailsLambda);
-    emailAttemptsTable.grantReadWriteData(getAllStateUsersLambda);
+    // Grant Cognito read permissions to the Lambda
+    processEmails.addToRolePolicy(
+      new cdk.aws_iam.PolicyStatement({
+        actions: ["cognito-idp:ListUsers"],
+        resources: [
+          `arn:aws:cognito-idp:${this.region}:${this.account}:userpool/${userPoolId}`,
+        ],
+      }),
+    );
 
     new CfnEventSourceMapping(this, "SinkEmailTrigger", {
       batchSize: 1,
@@ -287,7 +319,7 @@ export class Email extends cdk.NestedStack {
           kafkaBootstrapServers: brokerString.split(","),
         },
       },
-      functionName: processEmailsLambda.functionArn,
+      functionName: processEmails.functionArn,
       sourceAccessConfigurations: [
         ...privateSubnets.map((subnet) => ({
           type: "VPC_SUBNET",
