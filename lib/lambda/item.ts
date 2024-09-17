@@ -74,6 +74,20 @@ export const getItemData = async (event: APIGatewayEvent) => {
     const theChildren = packageResult._source.appkChildren;
     console.log('This title should pass to the ', theChildren);
 
+    /*
+    if(packageResult){
+      // get the pTitle
+      
+      // check to see if package is withdrawn
+      if(appChildWithdrawnState){
+
+      }
+    }
+      
+
+       
+    */
+
 
     if (!packageResult.found) {
       return response({
