@@ -13,9 +13,11 @@ const lambdaClient = new LambdaClient();
 export async function getAllStateUsers(state: string) {
   const params = {
     FunctionName: process.env.functionName,
-    Payload: JSON.stringify({ state, userPoolId: process.env.userPoolId }),
+    Payload: state,
   };
 
+  console.log("Params");
+  console.log(JSON.stringify(params, null, 2));
   const command = new InvokeCommand(params);
   const response = (await lambdaClient.send(command)) as InvokeCommandOutput;
   console.log("Response");

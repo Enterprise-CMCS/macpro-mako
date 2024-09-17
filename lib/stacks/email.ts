@@ -208,14 +208,9 @@ export class Email extends cdk.NestedStack {
       },
     });
 
-    const processEmailsLambdaLogGroup = new cdk.aws_logs.LogGroup(
-      this,
-      "ProcessEmailsLambdaLogGroup",
-      {
-        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-processEmails`,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    );
+    new cdk.aws_logs.LogGroup(this, "ProcessEmailsLambdaLogGroup", {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
 
     // Create a DynamoDB table to track email send attempts
     const emailAttemptsTable = new dynamodb.Table(this, "EmailAttemptsTable", {
@@ -229,14 +224,14 @@ export class Email extends cdk.NestedStack {
       this,
       "GetAllStateUsersLambda",
       {
-        functionName: `${project}-${stage}-${stack}-getAllStateUsers`,
+        functionName: `${project}-${stage}-${stack}-GetAllStateUsersLambda`,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
         handler: "handler",
         entry: join(__dirname, "../lambda/getAllStateUsers.ts"),
         memorySize: 1024,
         timeout: cdk.Duration.seconds(60),
-        role: new Role(this, "LambdaExecutionRole", {
+        role: new Role(this, "LambdaGetAllStateExecutionRole", {
           assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
           managedPolicies: [
             cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
@@ -282,6 +277,8 @@ export class Email extends cdk.NestedStack {
         }),
         environment: {
           USER_POOL_ID: userPoolId,
+          REGION: this.region,
+          functionName: `${project}-${stage}-${stack}-GetAllStateUsersLambda`,
         },
       },
     );
@@ -312,8 +309,6 @@ export class Email extends cdk.NestedStack {
           subnets: privateSubnets,
         },
         securityGroups: [lambdaSecurityGroup],
-        logGroup: processEmailsLambdaLogGroup,
-        logRetention: cdk.aws_logs.RetentionDays.ONE_WEEK,
         environment: {
           region: this.region,
           stage,
