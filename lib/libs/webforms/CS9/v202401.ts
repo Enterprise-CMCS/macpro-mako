@@ -212,7 +212,7 @@ export const v202401: FormSchema = {
               dependency: {
                 conditions: [
                   {
-                    name: "cs9_age-standard_age-standard",
+                    name: "cs9_income-standard-exceptions_are-there-exceptions",
                     type: "expectedValue",
                     expectedValue: "yes",
                   },
