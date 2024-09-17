@@ -27,8 +27,8 @@ export const getItemData = async (event: APIGatewayEvent) => {
     if (packageResult._source.appkParent) {
       const children = await getAppkChildren(body.id);
       //Testing
-      appkChildren.
-        console.log("These are the children...", children);
+
+      console.log("These are the children...", children);
       appkChildren = children.hits.hits;
     }
     const filter = [];
