@@ -476,27 +476,47 @@ export const v202401: FormSchema = {
         {
           slots: [
             {
-              rhf: "Checkbox",
-              label: "Policy exemptions",
-              labelClassName: "text-black font-bold",
-              name: "policy-exemptions",
-              rules: {
-                required: "* Required",
-              },
+              rhf: "WrappedGroup",
+              name: "policy-exemptions-group",
               props: {
-                options: [
-                  {
-                    label:
-                      "Exempt from requirement of providing or applying for a Social Security number (SSN)",
-                    value: "exempt-from-ssn",
-                  },
-                  {
-                    label:
-                      "Exempt from requirement of verifying citizenship status",
-                    value: "exempt-from-citizenship-status",
-                  },
-                ],
+                wrapperClassName: "flex flex-col gap-3",
               },
+              fields: [
+                {
+                  rhf: "Checkbox",
+                  label: "Policy exemptions",
+                  labelClassName: "text-black font-bold",
+                  name: "policy-exemptions-1",
+                  rules: {
+                    required: "* Required",
+                  },
+                  props: {
+                    options: [
+                      {
+                        label:
+                          "Exempt from requirement of providing or applying for a Social Security number (SSN)",
+                        value: "exempt-from-ssn",
+                      },
+                    ],
+                  },
+                },
+                {
+                  rhf: "Checkbox",
+                  name: "policy-exemptions-2",
+                  rules: {
+                    required: "* Required",
+                  },
+                  props: {
+                    options: [
+                      {
+                        label:
+                          "Exempt from requirement of verifying citizenship status",
+                        value: "exempt-from-citizenship-status",
+                      },
+                    ],
+                  },
+                },
+              ],
             },
           ],
         },
