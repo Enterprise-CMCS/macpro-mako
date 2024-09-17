@@ -39,19 +39,23 @@ import {
   getAdditionalInformation,
 } from "./actionForm.utilities";
 
-type EnforceSchemaProps<Shape extends z.ZodRawShape> = Shape & {
-  attachments?: z.ZodObject<{
-    [Key in keyof Shape]: z.ZodObject<{
-      label: z.ZodDefault<z.ZodString>;
-      files: z.ZodTypeAny;
+type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
+  Shape & {
+    attachments?: z.ZodObject<{
+      [Key in keyof Shape]: z.ZodObject<{
+        label: z.ZodDefault<z.ZodString>;
+        files: z.ZodTypeAny;
+      }>;
     }>;
-  }>;
-  additionalInformation?: z.ZodDefault<z.ZodNullable<z.ZodString>>;
-};
+    additionalInformation?: z.ZodDefault<z.ZodNullable<z.ZodString>>;
+  },
+  "strip",
+  z.ZodTypeAny
+>;
 
-type SchemaWithEnforcableProps<Shape extends z.ZodRawShape = z.ZodRawShape> =
-  | z.ZodEffects<z.ZodObject<EnforceSchemaProps<Shape>, "strip", z.ZodTypeAny>>
-  | z.ZodObject<EnforceSchemaProps<Shape>, "strip", z.ZodTypeAny>;
+export type SchemaWithEnforcableProps<
+  Shape extends z.ZodRawShape = z.ZodRawShape,
+> = z.ZodEffects<EnforceSchemaProps<Shape>> | EnforceSchemaProps<Shape>;
 
 type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   schema: Schema;
