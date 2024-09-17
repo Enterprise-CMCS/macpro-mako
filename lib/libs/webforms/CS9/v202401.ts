@@ -280,6 +280,7 @@ export const v202401: FormSchema = {
                                         message:
                                           "Must be a positive integer value",
                                       },
+                                      required: "* Required",
                                     },
                                     props: {
                                       icon: "% FPL",
@@ -342,6 +343,7 @@ export const v202401: FormSchema = {
                                         message:
                                           "Must be a positive integer value",
                                       },
+                                      required: "* Required",
                                     },
                                     props: {
                                       icon: "% FPL",
@@ -423,6 +425,14 @@ export const v202401: FormSchema = {
                                       iconRight: true,
                                       className: "w-[159px]",
                                     },
+                                    rules: {
+                                      pattern: {
+                                        value: /^[0-9]\d*$/,
+                                        message:
+                                          "Must be a positive integer value",
+                                      },
+                                      required: "* Required",
+                                    },
                                   },
                                   {
                                     rhf: "Input",
@@ -433,6 +443,14 @@ export const v202401: FormSchema = {
                                       icon: "% FPL",
                                       iconRight: true,
                                       className: "w-[159px]",
+                                    },
+                                    rules: {
+                                      pattern: {
+                                        value: /^[0-9]\d*$/,
+                                        message:
+                                          "Must be a positive integer value",
+                                      },
+                                      required: "* Required",
                                     },
                                   },
                                 ],
