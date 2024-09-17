@@ -414,7 +414,7 @@ export const v202401: FormSchema = {
                                   {
                                     rhf: "Input",
                                     name: "county-geo-var",
-                                    rules: {},
+                                    rules: { required: "* Required" },
                                     label: "County",
                                     labelClassName: "font-bold",
                                     props: {
@@ -507,7 +507,7 @@ export const v202401: FormSchema = {
                                   {
                                     rhf: "Input",
                                     name: "city-geo-var",
-                                    rules: {},
+                                    rules: { required: "* Required" },
                                     label: "City",
                                     labelClassName: "font-bold",
                                     props: {
@@ -600,7 +600,7 @@ export const v202401: FormSchema = {
                                   {
                                     rhf: "Input",
                                     name: "other-geo-var",
-                                    rules: {},
+                                    rules: { required: "* Required" },
                                     label: "Geographic Area",
                                     labelClassName: "font-bold",
                                     props: {
