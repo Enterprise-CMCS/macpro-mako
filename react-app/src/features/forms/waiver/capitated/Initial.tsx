@@ -95,5 +95,6 @@ export const InitialForm = () => (
       property: "id",
       documentChecker: (check) => check.recordExists,
     }}
+    tab={"waivers"}
   />
 );

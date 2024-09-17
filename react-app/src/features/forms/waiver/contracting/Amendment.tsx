@@ -126,6 +126,7 @@ export const AmendmentForm = () => {
         property: "id",
         documentChecker: (check) => check.recordExists,
       }}
+      tab={"waivers"}
     />
   );
 };

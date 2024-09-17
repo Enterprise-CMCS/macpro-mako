@@ -87,5 +87,6 @@ export const MedicaidForm = () => (
       property: "id",
       documentChecker: (check) => check.recordExists,
     }}
+    tab={"spas"}
   />
 );

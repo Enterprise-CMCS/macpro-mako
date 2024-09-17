@@ -126,5 +126,6 @@ export const Renewal = () => (
       property: "id",
       documentChecker: (check) => check.recordExists,
     }}
+    tab={"waivers"}
   />
 );

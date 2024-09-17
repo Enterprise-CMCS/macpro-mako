@@ -48,6 +48,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
+        tab={"waivers"}
       />,
     );
 
@@ -72,6 +73,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "hello-world-link" }}
+        tab={"waivers"}
       />,
     );
 
@@ -95,6 +97,7 @@ describe("ActionForm", () => {
         }}
         attachments={{ faqLink: "" }}
         defaultValues={{ id: "default value for id" }}
+        tab={"waivers"}
       />,
     );
 
@@ -122,6 +125,7 @@ describe("ActionForm", () => {
           faqLink: "",
           specialInstructions: "hello world special instructions.",
         }}
+        tab={"waivers"}
       />,
     );
 
@@ -147,6 +151,7 @@ describe("ActionForm", () => {
           header: "Hello World Header",
           body: "Hello World Body",
         }}
+        tab={"waivers"}
       />,
     );
 
@@ -185,6 +190,7 @@ describe("ActionForm", () => {
           header: "Hello World Header",
           body: "Hello World Body",
         }}
+        tab={"waivers"}
       />,
     );
 
@@ -221,6 +227,7 @@ describe("ActionForm", () => {
         attachments={{
           faqLink: "",
         }}
+        tab={"waivers"}
       />,
     );
 
@@ -256,6 +263,7 @@ describe("ActionForm", () => {
         attachments={{
           faqLink: "",
         }}
+        tab={"waivers"}
       />,
     );
 
@@ -299,6 +307,7 @@ describe("ActionForm", () => {
         attachments={{
           faqLink: "",
         }}
+        tab={"waivers"}
       />,
     );
 
@@ -320,6 +329,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
+        tab={"waivers"}
       />,
     );
 
@@ -337,6 +347,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
+        tab={"waivers"}
       />,
     );
 
@@ -361,6 +372,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
+        tab={"waivers"}
       />,
     );
 
@@ -379,6 +391,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
+        tab={"waivers"}
       />,
     );
 
@@ -403,6 +416,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
+        tab={"waivers"}
       />,
     );
 
@@ -425,6 +439,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
+        tab={"waivers"}
       />,
     );
 
@@ -442,6 +457,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
+        tab={"waivers"}
       />,
     );
 
@@ -464,6 +480,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
+        tab={"waivers"}
       />,
     );
 
@@ -491,6 +508,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
+        tab={"waivers"}
       />,
     );
 
@@ -515,6 +533,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
+        tab={"waivers"}
       />,
     );
 

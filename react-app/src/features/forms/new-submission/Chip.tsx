@@ -89,5 +89,6 @@ export const ChipForm = () => (
       cancelButtonText: "Return to form",
       areButtonsReversed: true,
     }}
+    tab={"spas"}
   />
 );

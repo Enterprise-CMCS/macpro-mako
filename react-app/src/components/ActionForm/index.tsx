@@ -72,6 +72,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
       | ((values: z.TypeOf<Schema>) => string);
     documentChecker: CheckDocumentFunction;
   };
+  tab: "spas" | "waivers";
 };
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
@@ -95,6 +96,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   promptPreSubmission,
   documentPollerArgs,
   attachments,
+  tab,
 }: ActionFormProps<Schema>) => {
   const { id, authority } = useParams<{ id: string; authority: Authority }>();
   const location = useLocation();
@@ -130,7 +132,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         pathnameToDisplayOn: formOrigins.pathname,
       });
 
-      navigate(formOrigins);
+      navigate(`/dashboard?tab=${tab}`);
     } catch (error) {
       console.error(error);
       banner({

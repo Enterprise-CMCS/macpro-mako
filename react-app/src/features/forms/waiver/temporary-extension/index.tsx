@@ -132,5 +132,6 @@ export const TemporaryExtensionForm = () => (
       body: "Your submission has been received.",
       variant: "success",
     }}
+    tab={"waivers"}
   />
 );
