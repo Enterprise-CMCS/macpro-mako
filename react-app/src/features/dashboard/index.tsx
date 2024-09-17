@@ -8,7 +8,6 @@ import {
   OsProvider,
   type OsTab,
   useOsData,
-  // FilterChips,
   FilterDrawerProvider,
   useUserContext,
   Tabs,
@@ -98,7 +97,6 @@ export const Dashboard = () => {
                   )
                 }
               >
-                {/* flex-col and w-full from original parent div has no effect on this line */}
                 <div className="flex max-w-screen-xl mx-auto px-4 lg:px-8">
                 <TabsList>
                   <TabsTrigger value="spas" className="px-6 py-2">
@@ -111,11 +109,9 @@ export const Dashboard = () => {
                 </div>
                 <TabsContent value="spas">
                 {/* <TabsContent value="spas" className="w-full mx-auto px-4 lg:px-8"> */}
-                  {/* <FilterChips /> */}
                   <SpasList />
                 </TabsContent>
                 <TabsContent value="waivers">
-                  {/* <FilterChips /> */}
                   <WaiversList />
                 </TabsContent>
               </Tabs>
