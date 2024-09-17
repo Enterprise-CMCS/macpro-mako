@@ -34,9 +34,9 @@ export const OsMainView: FC<{
     <div className="flex flex-col">
       <div className="w-full my-2 max-w-screen-xl self-center px-4 lg:px-8">
       <OsFiltering onToggle={onToggle} columns={osColumns} />
+      <FilterChips/>
       </div>
       <div className="px-4 lg:px-8">
-      <FilterChips/>
       <OsTable onToggle={onToggle} columns={osColumns} />
       <Pagination
         pageNumber={url.state.pagination.number}
