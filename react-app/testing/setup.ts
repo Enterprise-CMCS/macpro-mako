@@ -15,6 +15,14 @@ expect.extend(matchers);
 beforeAll(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
   if (process.env.MOCK_API_REFINES) {
+    vi.mock("@/components/Inputs/upload.utilities", () => ({
+      getPresignedUrl: vi.fn(async () => "hello world"),
+      uploadToS3: vi.fn(async () => {}),
+      extractBucketAndKeyFromUrl: vi.fn(() => ({
+        bucket: "hello",
+        key: "world",
+      })),
+    }));
     vi.mock("@/api", () => ({
       idIsApproved: vi.fn(async (id: string) => {
         const idsThatAreApproved = ["MD-0000.R00.00", "MD-0001.R00.00"];
