@@ -9,6 +9,7 @@ import { commonBundlingOptions } from "../config/bundling-config";
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;
   stage: string;
+  isDev: boolean;
   stack: string;
   vpc: cdk.aws_ec2.IVpc;
   applicationEndpointUrl: string;
@@ -30,6 +31,7 @@ export class Email extends cdk.NestedStack {
     const {
       project,
       stage,
+      isDev,
       stack,
       vpc,
       applicationEndpointUrl,

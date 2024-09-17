@@ -34,6 +34,35 @@ export class EmptyBuckets extends Construct {
     const bucketArns = buckets.map((bucket) => bucket.bucketArn);
     const bucketNames = buckets.map((bucket) => bucket.bucketName);
 
+    // Define the statements array and conditionally add the S3 policy statement
+    const statements = [];
+
+    // Add S3 policy only if bucketArns is not empty
+    if (bucketArns.length > 0) {
+      statements.push(
+        new PolicyStatement({
+          actions: [
+            "s3:ListBucket",
+            "s3:ListBucketVersions",
+            "s3:PutBucketPolicy",
+            "s3:GetBucketPolicy",
+            "s3:DeleteObject",
+            "s3:DeleteObjectVersion",
+          ],
+          resources: bucketArns,
+        }),
+      );
+    }
+
+    // Add the DENY logs:CreateLogGroup policy statement
+    statements.push(
+      new PolicyStatement({
+        effect: Effect.DENY,
+        actions: ["logs:CreateLogGroup"],
+        resources: ["*"],
+      }),
+    );
+
     const lambdaRole = new Role(this, "LambdaRole", {
       assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
       managedPolicies: [
@@ -43,24 +72,7 @@ export class EmptyBuckets extends Construct {
       ],
       inlinePolicies: {
         LambdaPolicy: new PolicyDocument({
-          statements: [
-            new PolicyStatement({
-              actions: [
-                "s3:ListBucket",
-                "s3:ListBucketVersions",
-                "s3:PutBucketPolicy",
-                "s3:GetBucketPolicy",
-                "s3:DeleteObject",
-                "s3:DeleteObjectVersion",
-              ],
-              resources: bucketArns,
-            }),
-            new PolicyStatement({
-              effect: Effect.DENY,
-              actions: ["logs:CreateLogGroup"],
-              resources: ["*"],
-            }),
-          ],
+          statements: statements,
         }),
       },
     });

@@ -7,7 +7,12 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/utils";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  useUserContext,
+} from "@/components";
 import {
   DependencyWrapper,
   RHFFieldArray,
@@ -57,6 +62,8 @@ export const SlotField = ({
   horizontalLayout,
   index,
 }: SlotFieldProps) => {
+  const userContext = useUserContext();
+
   switch (rhf) {
     case "Input":
       return <Input {...props} {...field} aria-label={field.name} />;
@@ -90,11 +97,25 @@ export const SlotField = ({
         />
       );
     case "Select": {
-      const opts = props?.options.sort((a, b) =>
-        props.customSort
-          ? sortFunctions[props.customSort](a.label, b.label)
-          : stringCompare(a, b),
-      );
+      let opts;
+      switch (props?.apiCall) {
+        case undefined:
+          opts = props?.options?.sort((a, b) =>
+            props.customSort
+              ? sortFunctions[props.customSort](a.label, b.label)
+              : stringCompare(a, b),
+          );
+          break;
+
+        case "countySelect":
+          opts =
+            userContext?.counties?.sort((a, b) =>
+              props.customSort
+                ? sortFunctions[props.customSort](a.label, b.label)
+                : stringCompare(a, b),
+            ) || [];
+          break;
+      }
 
       return (
         <Select
@@ -242,13 +263,15 @@ export const SlotField = ({
         <div className={props?.wrapperClassName}>
           {fields?.map((S, i) => {
             return (
-              <FormField
-                key={`wrappedSlot-${i}`}
-                control={control}
-                name={parentId + S.name}
-                rules={ruleGenerator(S.rules, S.addtnlRules)}
-                render={RHFSlot({ ...S, control, parentId })}
-              />
+              <DependencyWrapper {...S}>
+                <FormField
+                  key={`wrappedSlot-${i}`}
+                  control={control}
+                  name={parentId + S.name}
+                  rules={ruleGenerator(S.rules, S.addtnlRules)}
+                  render={RHFSlot({ ...S, control, parentId })}
+                />
+              </DependencyWrapper>
             );
           })}
         </div>

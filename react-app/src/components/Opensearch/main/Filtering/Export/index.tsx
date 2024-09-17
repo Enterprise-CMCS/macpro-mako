@@ -11,16 +11,24 @@ import {
   OsTableColumn,
   createSearchFilterable,
   useOsUrl,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from "@/components";
 import { FC } from "react";
 
 export const OsExportData: FC<{
   columns: OsTableColumn[];
-}> = ({ columns }) => {
+  disabled?: boolean;
+}> = ({ columns, disabled }) => {
   const [loading, setLoading] = useState(false);
   const url = useOsUrl();
 
   const handleExport = async () => {
+    if (disabled) {
+      return;
+    }
     setLoading(true);
 
     const exportData: Record<any, any>[] = [];
@@ -54,22 +62,34 @@ export const OsExportData: FC<{
   };
 
   return (
-    <Button
-      variant="outline"
-      onClick={handleExport}
-      disabled={loading}
-      className="w-full xs:w-fit hover:bg-transparent self-center h-10 flex gap-2"
-    >
-      {loading && (
-        <motion.div
-          animate={{ rotate: "360deg" }}
-          transition={{ repeat: Infinity, duration: 0.5 }}
-        >
-          <Loader className="w-4 h-4" />
-        </motion.div>
-      )}
-      {!loading && <Download className="w-4 h-4" />}
-      <span className="prose-sm">Export</span>
-    </Button>
+    <TooltipProvider>
+      <Tooltip disableHoverableContent={true}>
+        <TooltipTrigger asChild className="disabled:pointer-events-auto">
+          <Button
+            variant="outline"
+            onClick={handleExport}
+            disabled={loading || disabled}
+            className="w-full xs:w-fit hover:bg-transparent self-center h-10 flex gap-2"
+            data-testid="tooltip-trigger"
+          >
+            {loading && (
+              <motion.div
+                animate={{ rotate: "360deg" }}
+                transition={{ repeat: Infinity, duration: 0.5 }}
+              >
+                <Loader className="w-4 h-4" />
+              </motion.div>
+            )}
+            {!loading && <Download className="w-4 h-4" />}
+            <span className="prose-sm">Export</span>
+          </Button>
+        </TooltipTrigger>
+        {disabled && (
+          <TooltipContent data-testid="tooltip-content">
+            No records available
+          </TooltipContent>
+        )}
+      </Tooltip>
+    </TooltipProvider>
   );
 };

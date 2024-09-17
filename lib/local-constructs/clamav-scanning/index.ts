@@ -24,7 +24,6 @@ interface ClamScanScannerProps {
 }
 
 export class ClamScanScanner extends Construct {
-  public readonly clamDefsBucket: s3.Bucket;
   public readonly lambdaRole: iam.Role;
 
   constructor(scope: Construct, id: string, props: ClamScanScannerProps) {
@@ -32,20 +31,18 @@ export class ClamScanScanner extends Construct {
     const { fileBucket } = props;
 
     // S3 Bucket
-    this.clamDefsBucket = new s3.Bucket(this, `ClamDefsBucket`, {
+    const clamDefsBucket = new s3.Bucket(this, `ClamDefsBucket`, {
       versioned: true,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
     });
 
-    this.clamDefsBucket.addToResourcePolicy(
+    clamDefsBucket.addToResourcePolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.DENY,
         principals: [new iam.AnyPrincipal()],
         actions: ["s3:*"],
-        resources: [
-          this.clamDefsBucket.bucketArn,
-          `${this.clamDefsBucket.bucketArn}/*`,
-        ],
+        resources: [clamDefsBucket.bucketArn, `${clamDefsBucket.bucketArn}/*`],
         conditions: {
           Bool: { "aws:SecureTransport": "false" },
         },
@@ -142,8 +139,8 @@ export class ClamScanScanner extends Construct {
               resources: [
                 fileBucket.bucketArn,
                 `${fileBucket.bucketArn}/*`,
-                this.clamDefsBucket.bucketArn,
-                `${this.clamDefsBucket.bucketArn}/*`,
+                clamDefsBucket.bucketArn,
+                `${clamDefsBucket.bucketArn}/*`,
               ],
             }),
             new iam.PolicyStatement({
@@ -183,7 +180,7 @@ export class ClamScanScanner extends Construct {
       onSuccess: new destinations.SqsDestination(successQueue),
       onFailure: new destinations.SqsDestination(failureQueue),
       environment: {
-        CLAMAV_BUCKET_NAME: this.clamDefsBucket.bucketName,
+        CLAMAV_BUCKET_NAME: clamDefsBucket.bucketName,
         PATH_TO_AV_DEFINITIONS: "lambda/s3-antivirus/av-definitions",
       },
     });
@@ -205,7 +202,7 @@ export class ClamScanScanner extends Construct {
       onSuccess: new destinations.SqsDestination(successQueue),
       onFailure: new destinations.SqsDestination(failureQueue),
       environment: {
-        CLAMAV_BUCKET_NAME: this.clamDefsBucket.bucketName,
+        CLAMAV_BUCKET_NAME: clamDefsBucket.bucketName,
         PATH_TO_AV_DEFINITIONS: "lambda/s3-antivirus/av-definitions",
       },
       reservedConcurrentExecutions: 1,

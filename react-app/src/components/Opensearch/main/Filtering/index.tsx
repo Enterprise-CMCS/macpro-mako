@@ -4,11 +4,12 @@ import { useOsUrl } from "../useOpensearch";
 import { useOsContext } from "../Provider";
 import { OsFilterDrawer } from "./Drawer";
 import { OsExportData } from "./Export";
-
+import { VisibilityPopover } from "@/components";
 export const OsFiltering: FC<{
   columns: OsTableColumn[];
+  onToggle: (field: string) => void;
   disabled?: boolean;
-}> = (props) => {
+}> = ({ columns, onToggle, disabled }) => {
   const url = useOsUrl();
   const context = useOsContext();
 
@@ -27,11 +28,16 @@ export const OsFiltering: FC<{
               search,
             }))
           }
-          disabled={!!props.disabled}
+          disabled={!!disabled}
         />
         <div className="flex justify-center flex-row gap-2">
-          <OsExportData columns={props.columns} />
+          <VisibilityPopover
+            list={columns.filter((COL) => COL.locked === false || COL.field)}
+            onItemClick={onToggle}
+            hiddenColumns={columns.filter((COL) => COL.hidden === true)}
+          />
           <OsFilterDrawer />
+          <OsExportData columns={columns} disabled={context?.data?.total.value === 0}/>
         </div>
       </div>
     </div>

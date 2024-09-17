@@ -1,4 +1,5 @@
 import { FormSchema } from "shared-types";
+import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 export const v202401: FormSchema = {
   header:
@@ -18,14 +19,9 @@ export const v202401: FormSchema = {
               descriptionAbove: true,
               description: [
                 {
-                  text: "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan.",
+                  text: "The state/territory has fully aligned its EHB-defined Alternative Benefit Plan (ABP) benefits with its approved Medicaid state plan; therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
                   type: "default",
                   classname: "font-bold block pb-1",
-                },
-                {
-                  text: "Therefore, the state/territory meets the requirements for voluntary choice of benefit package for individuals exempt from mandatory participation in a Section 1937 ABP.",
-                  type: "default",
-                  classname: "font-bold block pt-4",
                 },
               ],
               rules: {
@@ -50,7 +46,7 @@ export const v202401: FormSchema = {
               rules: {
                 required: "* Required",
                 pattern: {
-                  value: /^\S(.*\S)?$/,
+                  value: noLeadingTrailingWhitespace,
                   message: "Must not have leading or trailing whitespace.",
                 },
               },
@@ -201,7 +197,7 @@ export const v202401: FormSchema = {
                         rules: {
                           required: "* Required",
                           pattern: {
-                            value: /^\S(.*\S)?$/,
+                            value: noLeadingTrailingWhitespace,
                             message:
                               "Must not have leading or trailing whitespace.",
                           },
@@ -249,7 +245,7 @@ export const v202401: FormSchema = {
               rules: {
                 required: "* Required",
                 pattern: {
-                  value: /^\S(.*\S)?$/,
+                  value: noLeadingTrailingWhitespace,
                   message: "Must not have leading or trailing whitespace.",
                 },
               },
@@ -321,7 +317,7 @@ export const v202401: FormSchema = {
                         rules: {
                           required: "* Required",
                           pattern: {
-                            value: /^\S(.*\S)?$/,
+                            value: noLeadingTrailingWhitespace,
                             message:
                               "Must not have leading or trailing whitespace.",
                           },
@@ -368,7 +364,7 @@ export const v202401: FormSchema = {
                         rules: {
                           required: "* Required",
                           pattern: {
-                            value: /^\S(.*\S)?$/,
+                            value: noLeadingTrailingWhitespace,
                             message:
                               "Must not have leading or trailing whitespace.",
                           },
@@ -422,7 +418,7 @@ export const v202401: FormSchema = {
               name: "addtnl-desc",
               rules: {
                 pattern: {
-                  value: /^\S(.*\S)?$/,
+                  value: noLeadingTrailingWhitespace,
                   message: "Must not have leading or trailing whitespace.",
                 },
               },

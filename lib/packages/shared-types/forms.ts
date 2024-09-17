@@ -32,6 +32,20 @@ export type AdditionalRule =
       type: "cannotCoexist";
       fieldName: string;
       message: string;
+    }
+  | {
+      type: "noGapsOrOrverlaps";
+      fieldName: string;
+      fromField: string;
+      toField: string;
+      options: { value: string; label: string }[];
+    }
+  | {
+      type: "toGreaterThanFrom";
+      fieldName: string;
+      fromField: string;
+      toField: string;
+      message: string;
     };
 
 export type RuleGenerator = (
@@ -133,6 +147,7 @@ export type RHFComponentMap = {
     removeText?: string;
     fieldArrayClassName?: string;
     divider?: boolean;
+    lastDivider?: string;
     appendClassName?: string;
     appendVariant?: "default" | "outline" | "ghost" | "secondary";
   };
@@ -175,6 +190,7 @@ export type FieldArrayProps<
   removeText?: string;
   fieldArrayClassName?: string;
   divider?: boolean;
+  lastDivider?: string;
   appendClassName?: string;
   appendVariant?: "default" | "outline" | "ghost" | "secondary";
 };
