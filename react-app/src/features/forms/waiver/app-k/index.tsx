@@ -99,5 +99,6 @@ export const AppKAmendmentForm = () => (
     attachments={{
       faqLink: "/faq/appk-attachments",
     }}
+    tab={"waivers"}
   />
 );
