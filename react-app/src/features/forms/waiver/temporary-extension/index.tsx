@@ -130,6 +130,7 @@ export const TemporaryExtensionForm = () => (
     bannerPostSubmission={{
       header: "Temporary extension request submitted",
       body: "Your submission has been received.",
+      variant: "success",
     }}
   />
 );
