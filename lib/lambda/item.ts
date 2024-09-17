@@ -59,6 +59,9 @@ export const getItemData = async (event: APIGatewayEvent) => {
       });
     }
 
+    // Return the whole package
+    console.log('This is the Package Result', packageResult);
+
     // Return the title from the parent
     const pTitle = packageResult._source.appkTitle;
     console.log("This is the", pTitle);
