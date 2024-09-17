@@ -1,4 +1,5 @@
 import { FormSchema } from "shared-types";
+import { noLeadingTrailingWhitespace } from "shared-utils";
 
 export const v202401: FormSchema = {
   header:
@@ -37,6 +38,71 @@ export const v202401: FormSchema = {
                     value: "chip-agency-operates-group",
                   },
                 ],
+              },
+              rules: {
+                required: "* Required",
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Age standard",
+      sectionId: "age-standard",
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Select",
+              label: "The age standard is from conception to end of pregnancy.",
+              labelClassName: "text-base",
+              description:
+                "Does the state have an additional age definition or other age-related conditions?",
+              descriptionAbove: true,
+              descriptionClassName: "font-bold",
+
+              name: "age-standard",
+              rules: {
+                required: "* Required",
+              },
+              props: {
+                options: [
+                  {
+                    label: "Yes",
+                    value: "yes",
+                  },
+                  {
+                    label: "No",
+                    value: "no",
+                  },
+                ],
+                className: "w-[125px]",
+              },
+            },
+            {
+              rhf: "Textarea",
+              label: "Describe",
+              labelClassName: "text-base font-bold",
+              name: "age-standard-description",
+              formItemClassName:
+                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              rules: {
+                pattern: {
+                  value: noLeadingTrailingWhitespace,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+                required: "* Required",
+              },
+              dependency: {
+                conditions: [
+                  {
+                    name: "cs9_age-standard_age-standard",
+                    type: "expectedValue",
+                    expectedValue: "yes",
+                  },
+                ],
+                effect: { type: "show" },
               },
             },
           ],
