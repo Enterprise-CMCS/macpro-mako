@@ -297,6 +297,7 @@ export class Email extends cdk.NestedStack {
       this,
       "ProcessEmailsLambda",
       {
+        functionName: `${project}-${stage}-${stack}-ProcessEmailsLambda`,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry: join(__dirname, "../lambda/processEmails.ts"),
         handler: "handler",
@@ -310,7 +311,7 @@ export class Email extends cdk.NestedStack {
         },
         securityGroups: [lambdaSecurityGroup],
         environment: {
-          region: this.region,
+          REGION: this.region,
           stage,
           getAllStateUsersFunctionName: getAllStateUsersLambda.functionName,
           indexNamespace,
@@ -319,6 +320,8 @@ export class Email extends cdk.NestedStack {
           emailAddressLookupSecretName,
           EMAIL_ATTEMPTS_TABLE: emailAttemptsTable.tableName,
           MAX_RETRY_ATTEMPTS: "3", // Set the maximum number of retry attempts
+          GET_ALL_STATE_USERS_FUNCTION_NAME:
+            getAllStateUsersLambda.functionName,
         },
       },
     );

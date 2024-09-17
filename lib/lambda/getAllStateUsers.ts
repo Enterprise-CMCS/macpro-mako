@@ -9,7 +9,6 @@ const cognitoClient = new CognitoIdentityProviderClient();
 export const handler: Handler = async (event) => {
   console.log("getAllStateUsers has been called");
   console.log(JSON.stringify(event, null, 2));
-  const state = event.queryStringParameters?.state;
   try {
     const params = {
       UserPoolId: process.env.USER_POOL_ID,
@@ -26,7 +25,7 @@ export const handler: Handler = async (event) => {
         user.Attributes?.some(
           (attr) =>
             attr.Name === "custom:state" &&
-            attr.Value?.split(",").includes(state),
+            attr.Value?.split(",").includes(event.state),
         ),
     );
 

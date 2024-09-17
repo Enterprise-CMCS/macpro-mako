@@ -12,8 +12,8 @@ const lambdaClient = new LambdaClient();
 
 export async function getAllStateUsers(state: string) {
   const params = {
-    FunctionName: process.env.functionName,
-    Payload: state,
+    FunctionName: process.env.GET_ALL_STATE_USERS_FUNCTION_NAME,
+    Payload: JSON.stringify({ state }),
   };
 
   console.log("Params");
