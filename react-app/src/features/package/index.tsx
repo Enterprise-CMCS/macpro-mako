@@ -65,10 +65,10 @@ export const Details = () => {
   }
 
   return (
-    <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row px-4 lg:px-8">
-      <div>
+    <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row">
+      <div className="lg:pl-4">
         <BreadCrumbs options={detailsAndActionsCrumbs({ id, authority })} />
-        <div className="hidden lg:block">
+        <div className="hidden lg:block pr-8">
           <DetailsSidebar id={id} />
         </div>
       </div>
@@ -81,7 +81,7 @@ const DetailsSidebar: FC<{ id: string }> = ({ id }) => {
   const links = useDetailsSidebarLinks(id);
 
   return (
-    <aside className="min-w-56 flex-none font-semibold m-4 mt-6 pr-8 pl-4">
+    <aside className="min-w-56 flex-none font-semibold m-4 mt-6">
       {links.map(({ id, href, displayName }) => (
         <a className="block mb-2 text-blue-900" key={id} href={href}>
           {displayName}
