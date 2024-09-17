@@ -2,15 +2,17 @@ import {
   CognitoIdentityProviderClient,
   ListUsersCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
+import { Handler } from "aws-lambda";
 
 const cognitoClient = new CognitoIdentityProviderClient();
 
-export const handler = async (event: { state: string; userPoolId: string }) => {
-  const { state, userPoolId } = event;
-
+export const handler: Handler = async (event) => {
+  console.log("getAllStateUsers has been called");
+  console.log(JSON.stringify(event, null, 2));
+  const state = event.queryStringParameters?.state;
   try {
     const params = {
-      UserPoolId: userPoolId,
+      UserPoolId: process.env.USER_POOL_ID,
       Filter: `cognito:user_status = "CONFIRMED"`,
     };
 

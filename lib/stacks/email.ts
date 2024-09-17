@@ -6,6 +6,8 @@ import { ISubnet } from "aws-cdk-lib/aws-ec2";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
 import * as LC from "local-constructs";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import { Duration } from "aws-cdk-lib";
+import { Role } from "aws-cdk-lib/aws-iam";
 
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;
@@ -13,6 +15,7 @@ interface EmailServiceStackProps extends cdk.StackProps {
   isDev: boolean;
   stack: string;
   userPoolId: string;
+  userPoolArn: string;
   vpc: cdk.aws_ec2.IVpc;
   applicationEndpointUrl: string;
   indexNamespace: string;
@@ -24,6 +27,11 @@ interface EmailServiceStackProps extends cdk.StackProps {
   lambdaSecurityGroup: cdk.aws_ec2.SecurityGroup;
   openSearchDomainEndpoint: string;
   openSearchDomainArn: string;
+  idmClientId: string;
+  idmClientIssuer: string;
+  idmAuthzApiEndpoint: string;
+  idmAuthzApiKeyArn: string;
+  idmClientSecretArn: string;
 }
 
 export class Email extends cdk.NestedStack {
@@ -36,6 +44,7 @@ export class Email extends cdk.NestedStack {
       isDev,
       stack,
       userPoolId,
+      userPoolArn,
       vpc,
       applicationEndpointUrl,
       topicNamespace,
@@ -199,60 +208,14 @@ export class Email extends cdk.NestedStack {
       },
     });
 
-    const createLambda = ({
-      id,
-      entry = `${id}.ts`,
-      role,
-      useVpc = false,
-      environment = {},
-      timeout = cdk.Duration.minutes(5),
-      memorySize = 1024,
-      provisionedConcurrency = 0,
-    }: {
-      id: string;
-      entry?: string;
-      role: cdk.aws_iam.Role;
-      useVpc?: boolean;
-      environment?: { [key: string]: string };
-      timeout?: cdk.Duration;
-      memorySize?: number;
-      provisionedConcurrency?: number;
-    }) => {
-      const fn = new NodejsFunction(this, id, {
-        functionName: `${project}-${stage}-${stack}-${id}-${cdk.Names.uniqueId(
-          this,
-        )}`, // Add a unique identifier
-        depsLockFilePath: join(__dirname, "../../bun.lockb"),
-        entry: join(__dirname, `../lambda/${entry}`),
-        handler: "handler",
-        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
-        role,
-        memorySize,
-        vpc: useVpc ? vpc : undefined,
-        vpcSubnets: useVpc ? { subnets: privateSubnets } : undefined,
-        securityGroups: useVpc ? [lambdaSecurityGroup] : undefined,
-        environment,
-        logRetention: cdk.aws_logs.RetentionDays.ONE_WEEK, // Add this line
-        timeout,
-        bundling: {
-          minify: true,
-          sourceMap: true,
-        },
-      });
-
-      if (provisionedConcurrency > 0) {
-        const version = fn.currentVersion;
-
-        // Configure provisioned concurrency
-        new cdk.aws_lambda.Alias(this, `FunctionAlias${id}`, {
-          aliasName: "prod",
-          version: version,
-          provisionedConcurrentExecutions: provisionedConcurrency,
-        });
-      }
-
-      return fn;
-    };
+    const processEmailsLambdaLogGroup = new cdk.aws_logs.LogGroup(
+      this,
+      "ProcessEmailsLambdaLogGroup",
+      {
+        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-processEmails`,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+      },
+    );
 
     // Create a DynamoDB table to track email send attempts
     const emailAttemptsTable = new dynamodb.Table(this, "EmailAttemptsTable", {
@@ -261,21 +224,70 @@ export class Email extends cdk.NestedStack {
       timeToLiveAttribute: "ttl",
     });
 
-    const getAllStateUsers = createLambda({
-      id: "getAllStateUsers",
-      role: lambdaRole,
-      timeout: cdk.Duration.minutes(15),
-      environment: {
-        topicNamespace,
-        indexNamespace,
-        osDomain: `https://${openSearchDomainEndpoint}`,
-        applicationEndpointUrl,
-        emailAddressLookupSecretName,
+    // Create the Lambda function for getAllStateUsers
+    const getAllStateUsersLambda = new NodejsFunction(
+      this,
+      "GetAllStateUsersLambda",
+      {
+        functionName: `${project}-${stage}-${stack}-getAllStateUsers`,
+        depsLockFilePath: join(__dirname, "../../bun.lockb"),
+        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+        handler: "handler",
+        entry: join(__dirname, "../lambda/getAllStateUsers.ts"),
+        memorySize: 1024,
+        timeout: cdk.Duration.seconds(60),
+        role: new Role(this, "LambdaExecutionRole", {
+          assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+          managedPolicies: [
+            cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+              "service-role/AWSLambdaBasicExecutionRole",
+            ),
+          ],
+          inlinePolicies: {
+            LambdaAssumeRolePolicy: new cdk.aws_iam.PolicyDocument({
+              statements: [
+                new cdk.aws_iam.PolicyStatement({
+                  effect: cdk.aws_iam.Effect.DENY,
+                  actions: ["logs:CreateLogGroup"],
+                  resources: ["*"],
+                }),
+                new cdk.aws_iam.PolicyStatement({
+                  effect: cdk.aws_iam.Effect.ALLOW,
+                  actions: [
+                    "cognito-idp:ListUsers",
+                    "cognito-idp:AdminGetUser",
+                    "cognito-idp:AdminCreateUser",
+                    "cognito-idp:AdminSetUserPassword",
+                    "cognito-idp:AdminUpdateUserAttributes",
+                    "cognito-idp:AdminDeleteUser",
+                    "cognito-idp:AdminListUsers",
+                    "cognito-idp:AdminRemoveUserFromGroup",
+                    "cognito-idp:AdminAddUserToGroup",
+                    "cognito-idp:AdminInitiateAuth",
+                    "cognito-idp:AdminRespondToAuthChallenge",
+                  ],
+                  resources: [userPoolArn],
+                }),
+                new cdk.aws_iam.PolicyStatement({
+                  effect: cdk.aws_iam.Effect.ALLOW,
+                  actions: [
+                    "secretsmanager:GetSecretValue",
+                    "secretsmanager:DescribeSecret",
+                  ],
+                  resources: ["*"],
+                }),
+              ],
+            }),
+          },
+        }),
+        environment: {
+          USER_POOL_ID: userPoolId,
+        },
       },
-    });
+    );
 
     // Grant Cognito read permissions to the Lambda
-    getAllStateUsers.addToRolePolicy(
+    getAllStateUsersLambda.addToRolePolicy(
       new cdk.aws_iam.PolicyStatement({
         actions: ["cognito-idp:ListUsers"],
         resources: [
@@ -284,30 +296,41 @@ export class Email extends cdk.NestedStack {
       }),
     );
 
-    const processEmails = createLambda({
-      id: "processEmails",
-      role: lambdaRole,
-      useVpc: true,
-      environment: {
-        topicNamespace,
-        indexNamespace,
-        osDomain: `https://${openSearchDomainEndpoint}`,
-        applicationEndpointUrl,
-        emailAddressLookupSecretName,
-        EMAIL_ATTEMPTS_TABLE: emailAttemptsTable.tableName,
-        MAX_RETRY_ATTEMPTS: "3", // Set the maximum number of retry attempts
+    const processEmailsLambda = new NodejsFunction(
+      this,
+      "ProcessEmailsLambda",
+      {
+        depsLockFilePath: join(__dirname, "../../bun.lockb"),
+        entry: join(__dirname, "../lambda/processEmails.ts"),
+        handler: "handler",
+        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+        memorySize: 1024,
+        timeout: Duration.minutes(5),
+        role: lambdaRole,
+        vpc: vpc,
+        vpcSubnets: {
+          subnets: privateSubnets,
+        },
+        securityGroups: [lambdaSecurityGroup],
+        logGroup: processEmailsLambdaLogGroup,
+        logRetention: cdk.aws_logs.RetentionDays.ONE_WEEK,
+        environment: {
+          region: this.region,
+          stage,
+          getAllStateUsersFunctionName: getAllStateUsersLambda.functionName,
+          indexNamespace,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          applicationEndpointUrl,
+          emailAddressLookupSecretName,
+          EMAIL_ATTEMPTS_TABLE: emailAttemptsTable.tableName,
+          MAX_RETRY_ATTEMPTS: "3", // Set the maximum number of retry attempts
+        },
       },
-    });
-
-    // Grant Cognito read permissions to the Lambda
-    processEmails.addToRolePolicy(
-      new cdk.aws_iam.PolicyStatement({
-        actions: ["cognito-idp:ListUsers"],
-        resources: [
-          `arn:aws:cognito-idp:${this.region}:${this.account}:userpool/${userPoolId}`,
-        ],
-      }),
     );
+
+    // Grant the Lambda function read/write permissions
+    emailAttemptsTable.grantReadWriteData(processEmailsLambda);
+    emailAttemptsTable.grantReadWriteData(getAllStateUsersLambda);
 
     new CfnEventSourceMapping(this, "SinkEmailTrigger", {
       batchSize: 1,
@@ -317,7 +340,7 @@ export class Email extends cdk.NestedStack {
           kafkaBootstrapServers: brokerString.split(","),
         },
       },
-      functionName: processEmails.functionArn,
+      functionName: processEmailsLambda.functionName,
       sourceAccessConfigurations: [
         ...privateSubnets.map((subnet) => ({
           type: "VPC_SUBNET",
