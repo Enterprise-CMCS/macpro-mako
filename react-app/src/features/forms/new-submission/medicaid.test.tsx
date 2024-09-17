@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, vi, test, expect, beforeAll } from "vitest";
+import { describe, test, expect, beforeAll } from "vitest";
 import { MedicaidForm } from "./Medicaid";
 import { formSchemas } from "@/formSchemas";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
@@ -9,12 +9,6 @@ import {
   mockApiRefinements,
 } from "@/utils/test-helpers/skipCleanup";
 import { renderForm } from "@/utils/test-helpers/renderForm";
-
-vi.mock("@/components/Inputs/upload.utilities", () => ({
-  getPresignedUrl: vi.fn(async () => "hello world"),
-  uploadToS3: vi.fn(async () => {}),
-  extractBucketAndKeyFromUrl: vi.fn(() => ({ bucket: "hello", key: "world" })),
-}));
 
 const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
 

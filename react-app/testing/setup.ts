@@ -11,6 +11,23 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
 // extends Vitest's expect method with methods from react-testing-library
 expect.extend(matchers);
 
+class MockPointerEvent extends Event {
+  button: number;
+  ctrlKey: boolean;
+  pointerType: string;
+
+  constructor(type: string, props: PointerEventInit) {
+    super(type, props);
+    this.button = props.button || 0;
+    this.ctrlKey = props.ctrlKey || false;
+    this.pointerType = props.pointerType || "mouse";
+  }
+}
+window.PointerEvent = MockPointerEvent as any;
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
+window.HTMLElement.prototype.releasePointerCapture = vi.fn();
+window.HTMLElement.prototype.hasPointerCapture = vi.fn();
+
 // Add this to remove all the expected errors in console when running unit tests.
 beforeAll(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});

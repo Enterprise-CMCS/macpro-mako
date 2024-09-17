@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react";
-import { beforeAll, describe, expect, test, vi } from "vitest";
+import { beforeAll, describe, expect, test } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { renderForm } from "@/utils/test-helpers/renderForm";
 import {
@@ -9,12 +9,6 @@ import {
 import { AmendmentForm } from "./Amendment";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { formSchemas } from "@/formSchemas";
-
-vi.mock("@/components/Inputs/upload.utilities", () => ({
-  getPresignedUrl: vi.fn(async () => "hello world"),
-  uploadToS3: vi.fn(async () => {}),
-  extractBucketAndKeyFromUrl: vi.fn(() => ({ bucket: "hello", key: "world" })),
-}));
 
 const upload = uploadFiles<(typeof formSchemas)["capitated-amendment"]>();
 

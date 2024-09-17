@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, test, vi } from "vitest";
+import { beforeAll, describe, expect, test } from "vitest";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
@@ -7,38 +7,16 @@ import { TemporaryExtensionForm } from ".";
 import { renderForm } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 
-class MockPointerEvent extends Event {
-  button: number;
-  ctrlKey: boolean;
-  pointerType: string;
-
-  constructor(type: string, props: PointerEventInit) {
-    super(type, props);
-    this.button = props.button || 0;
-    this.ctrlKey = props.ctrlKey || false;
-    this.pointerType = props.pointerType || "mouse";
-  }
-}
-window.PointerEvent = MockPointerEvent as any;
-window.HTMLElement.prototype.scrollIntoView = vi.fn();
-window.HTMLElement.prototype.releasePointerCapture = vi.fn();
-window.HTMLElement.prototype.hasPointerCapture = vi.fn();
-
 const upload = uploadFiles<(typeof formSchemas)["temporary-extension"]>();
 
 // use container globally for tests to use same render and let each test fill out inputs
 // and at the end validate button is enabled for submit
-let container: HTMLElement;
 
 describe("Temporary Extension", () => {
   beforeAll(() => {
     skipCleanup();
 
-    const { container: renderedContainer } = renderForm(
-      <TemporaryExtensionForm />,
-    );
-
-    container = renderedContainer;
+    renderForm(<TemporaryExtensionForm />);
   });
 
   test("TEMPORARY EXTENSION TYPE", async () => {
@@ -47,12 +25,12 @@ describe("Temporary Extension", () => {
     await userEvent.click(teTypeDropdown);
 
     const teOptionToClick = screen.getByRole("option", {
-      name: "1915(c)",
+      name: "1915(b)",
     });
 
     await userEvent.click(teOptionToClick);
 
-    expect(teTypeDropdown).toHaveTextContent("1915(c)");
+    expect(teTypeDropdown).toHaveTextContent("1915(b)");
   });
 
   test("APPROVED INITIAL OR RENEWAL WAIVER NUMBER", async () => {
@@ -99,5 +77,14 @@ describe("Temporary Extension", () => {
     await userEvent.type(requestNumberInput, "MD-0000.R00.TE00");
 
     expect(requestNumberLabel).not.toHaveClass("text-destructive");
+  });
+
+  test("WAIVER EXTENSION REQUEST", async () => {
+    const cmsForm179PlanLabel = await upload("waiverExtensionRequest");
+    expect(cmsForm179PlanLabel).not.toHaveClass("text-destructive");
+  });
+
+  test("submit button is enabled", async () => {
+    expect(screen.getByTestId("submit-action-form")).toBeEnabled();
   });
 });
