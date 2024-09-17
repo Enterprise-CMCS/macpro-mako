@@ -22,7 +22,7 @@ export const v202401: FormSchema = {
                   type: "bold",
                 },
                 {
-                  text: "when the mother is not otherwise eligible for Medicaid or CHIP",
+                  text: " when the mother is not otherwise eligible for Medicaid or CHIP",
                   type: "default",
                 },
               ],
@@ -57,7 +57,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Select",
               label: "The age standard is from conception to end of pregnancy.",
-              labelClassName: "text-black",
+              labelClassName: "text-black pb-4",
               description:
                 "Does the state have an additional age definition or other age-related conditions?",
               descriptionAbove: true,
