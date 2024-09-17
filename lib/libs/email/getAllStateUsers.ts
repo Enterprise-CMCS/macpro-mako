@@ -2,16 +2,15 @@ import {
   CognitoIdentityProviderClient,
   ListUsersCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
-import { Handler } from "aws-lambda";
 
 const cognitoClient = new CognitoIdentityProviderClient();
 
-export const handler: Handler = async (event) => {
+export const getAllStateUsers = async (state: string) => {
   console.log("getAllStateUsers has been called");
   console.log(JSON.stringify(event, null, 2));
   try {
     const params = {
-      UserPoolId: process.env.USER_POOL_ID,
+      UserPoolId: process.env.userPoolId,
       Filter: `cognito:user_status = "CONFIRMED"`,
     };
 
@@ -25,7 +24,7 @@ export const handler: Handler = async (event) => {
         user.Attributes?.some(
           (attr) =>
             attr.Name === "custom:state" &&
-            attr.Value?.split(",").includes(event.state),
+            attr.Value?.split(",").includes(state),
         ),
     );
 
@@ -39,6 +38,11 @@ export const handler: Handler = async (event) => {
         firstName: attributes?.["given_name"],
         lastName: attributes?.["family_name"],
         email: attributes?.["email"],
+        states: attributes?.["custom:state"],
+        roles: attributes?.["custom:roles"],
+        enabled: user.Enabled,
+        status: user.UserStatus,
+        username: user.Username,
       };
     });
 
@@ -54,5 +58,3 @@ export const handler: Handler = async (event) => {
     };
   }
 };
-
-export default handler;

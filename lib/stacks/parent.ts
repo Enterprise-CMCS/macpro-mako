@@ -123,11 +123,7 @@ export class ParentStack extends cdk.Stack {
       lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
       openSearchDomainEndpoint: dataStack.openSearchDomainEndpoint,
       openSearchDomainArn: dataStack.openSearchDomainArn,
-      idmClientId: props.idmClientId,
-      idmClientIssuer: props.idmClientIssuer,
-      idmAuthzApiEndpoint: props.idmAuthzApiEndpoint,
       idmAuthzApiKeyArn: props.idmAuthzApiKeyArn,
-      idmClientSecretArn: props.idmClientSecretArn,
     });
 
     new cdk.aws_ssm.StringParameter(this, "DeploymentOutput", {

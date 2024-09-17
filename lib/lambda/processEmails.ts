@@ -12,31 +12,8 @@ import {
 } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
-import { getEmailTemplates } from "./../libs/email";
-import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
+import { getEmailTemplates, getAllStateUsers } from "./../libs/email";
 
-const lambdaClient = new LambdaClient();
-
-async function getAllStateUsers(state: string) {
-  const params = {
-    FunctionName: process.env.FunctionName, // Replace with your actual Lambda function name
-    Payload: JSON.stringify({ state }),
-  };
-
-  const command = new InvokeCommand(params);
-  const response = await lambdaClient.send(command);
-
-  if (response.StatusCode !== 200) {
-    throw new Error("Failed to invoke Lambda function");
-  }
-
-  const payload = JSON.parse(new TextDecoder().decode(response.Payload));
-  if (payload.statusCode !== 200) {
-    throw new Error(payload.body);
-  }
-
-  return JSON.parse(payload.body);
-}
 export const sesClient = new SESClient({ region: process.env.REGION });
 
 export const handler: Handler<KafkaEvent> = async (event) => {
@@ -125,16 +102,13 @@ export async function processAndSendEmails(
   id: string,
   emailAddressLookupSecretName: string,
   applicationEndpointUrl: string,
-  getAllStateUsers: (state: string, userPoolId: string) => Promise<any>,
+  getAllStateUsers: (state: string) => Promise<any>,
 ) {
   console.log("processAndSendEmails has been called");
 
-  const stateUseInfo = await getAllStateUsers(
-    id.slice(0, 2),
-    process.env.userPoolId!,
-  );
+  const allStateUsers = await getAllStateUsers(id.slice(0, 2));
 
-  console.log("State user info: ", JSON.stringify(stateUseInfo, null, 2));
+  console.log("State user info: ", JSON.stringify(allStateUsers, null, 2));
 
   const sec = await getSecret(emailAddressLookupSecretName);
   const emailAddressLookup: EmailAddresses = JSON.parse(sec);

@@ -2,37 +2,6 @@ import { DateTime } from "luxon";
 import { Action, Authority } from "shared-types";
 import { getPackageChangelog } from "../api/package";
 import * as EmailContent from "./content";
-import {
-  LambdaClient,
-  InvokeCommand,
-  InvokeCommandOutput,
-} from "@aws-sdk/client-lambda";
-
-const lambdaClient = new LambdaClient();
-
-export async function getAllStateUsers(state: string) {
-  const params = {
-    FunctionName: process.env.GET_ALL_STATE_USERS_FUNCTION_NAME,
-    Payload: JSON.stringify({ state }),
-  };
-
-  console.log("Params");
-  console.log(JSON.stringify(params, null, 2));
-  const command = new InvokeCommand(params);
-  const response = (await lambdaClient.send(command)) as InvokeCommandOutput;
-  console.log("Response");
-  console.log(JSON.stringify(response, null, 2));
-  if (response.StatusCode !== 200) {
-    throw new Error("Failed to invoke Lambda function");
-  }
-
-  const payload = JSON.parse(new TextDecoder().decode(response.Payload));
-  if (payload.statusCode !== 200) {
-    throw new Error("Failed to invoke Lambda function");
-  }
-
-  return JSON.parse(payload.transformToString()) as UserType[];
-}
 
 export type UserType = "cms" | "state";
 export interface CommonVariables {
@@ -222,3 +191,5 @@ export async function getLatestMatchingEvent(id: string, actionType: string) {
   const latestMatchingEvent = events[0]._source;
   return latestMatchingEvent;
 }
+
+export * from "./getAllStateUsers";
