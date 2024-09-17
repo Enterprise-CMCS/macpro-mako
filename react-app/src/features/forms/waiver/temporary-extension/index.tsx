@@ -54,7 +54,7 @@ export const TemporaryExtensionForm = () => (
           render={({ field }) => {
             return (
               <FormItem className="max-w-md">
-                <FormLabel>
+                <FormLabel data-testid="waiverNumber-label">
                   <strong className="font-bold">
                     Approved Initial or Renewal Waiver Number
                   </strong>{" "}
@@ -86,7 +86,7 @@ export const TemporaryExtensionForm = () => (
           name="id"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
+              <FormLabel data-testid="requestNumber-label">
                 <strong className="font-bold">
                   Temporary Extension Request Number
                   <RequiredIndicator />
