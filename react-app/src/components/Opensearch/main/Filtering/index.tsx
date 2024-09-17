@@ -15,7 +15,6 @@ export const OsFiltering: FC<{
 
   return (
     <div className="my-2">
-    {/* <div className="w-full my-2 max-w-screen-xl self-center px-4 lg:px-8"> */}
       <p className="mb-1 text-sm">
         {"Search by Package ID, CPOC Name, or Submitter Name"}
       </p>

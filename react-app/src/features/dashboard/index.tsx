@@ -63,11 +63,9 @@ export const Dashboard = () => {
         isLoading: osData.isLoading,
       }}
     >
-      {/* <div className="flex flex-col w-full mx-auto px-4 lg:px-8"> */}
       <div>
         <FilterDrawerProvider>
           {/* Header  */}
-          {/* <div className="flex w-full self-center max-w-screen-xl xs:flex-row flex-col justify-between py-4"> */}
             <div className="flex flex-col w-full self-center mx-auto max-w-screen-xl xs:flex-row justify-between p-4 lg:px-8">
             <h1 className="text-xl font-bold mb-4 md:mb-0">Dashboard</h1>
             {!userContext?.isCms && (
@@ -108,7 +106,6 @@ export const Dashboard = () => {
                 </TabsList>
                 </div>
                 <TabsContent value="spas">
-                {/* <TabsContent value="spas" className="w-full mx-auto px-4 lg:px-8"> */}
                   <SpasList />
                 </TabsContent>
                 <TabsContent value="waivers">
