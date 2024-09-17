@@ -14,12 +14,12 @@ export const OsFiltering: FC<{
   const context = useOsContext();
 
   return (
-    <div>
+    <div className="my-2">
     {/* <div className="w-full my-2 max-w-screen-xl self-center px-4 lg:px-8"> */}
       <p className="mb-1 text-sm">
         {"Search by Package ID, CPOC Name, or Submitter Name"}
       </p>
-      <div className="flex w-full lg:flex-row flex-col flex-grow content-between gap-2 mb-4">
+      <div className="flex w-full lg:flex-row flex-col flex-grow content-between gap-2">
         <SearchForm
           isSearching={context.isLoading}
           handleSearch={(search) =>
