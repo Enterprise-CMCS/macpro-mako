@@ -223,6 +223,263 @@ export const v202401: FormSchema = {
                 className: "min-h-[76px]",
               },
             },
+            {
+              rhf: "Checkbox",
+              label: "Method of geographic variation",
+              labelClassName: "text-black font-bold",
+              name: "method-of-geographic-variation",
+              rules: {
+                required: "* Required",
+              },
+              props: {
+                options: [
+                  {
+                    label: "By county",
+                    value: "by-county",
+                    slots: [
+                      {
+                        rhf: "WrappedGroup",
+                        name: "wrapped",
+                        label:
+                          "Enter one county if the county has a unique income standard. If multiple counties share the same income standard, enter all the counties, then enter the income standard that applies to those counties.",
+                        fields: [
+                          {
+                            rhf: "FieldArray",
+                            name: "county-income-standard",
+                            props: {
+                              appendText: "Add county",
+                            },
+                            fields: [
+                              {
+                                rhf: "WrappedGroup",
+                                name: "wrapped",
+                                props: {
+                                  wrapperClassName: "flex-row flex gap-5",
+                                },
+                                fields: [
+                                  {
+                                    rhf: "Input",
+                                    label: "County",
+                                    labelClassName: "font-black font-bold",
+                                    name: "county",
+                                    rules: {
+                                      required: "* Required",
+                                    },
+                                    props: {
+                                      className: "w-[355px]",
+                                    },
+                                  },
+                                  {
+                                    rhf: "Input",
+                                    label: "From zero up to",
+                                    labelClassName: "font-black font-bold",
+                                    name: "county-up-to",
+                                    rules: {
+                                      pattern: {
+                                        value: /^[0-9]\d*$/,
+                                        message:
+                                          "Must be a positive integer value",
+                                      },
+                                    },
+                                    props: {
+                                      icon: "% FPL",
+                                      iconRight: true,
+                                      className: "w-[159px]",
+                                    },
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    label: "By city",
+                    value: "by-city",
+                    slots: [
+                      {
+                        rhf: "WrappedGroup",
+                        name: "wrapped",
+                        label:
+                          "Enter one city if the city has a unique income standard. If multiple cities share the same income standard, enter all the cities, then enter the income standard that applies to those cities.",
+                        fields: [
+                          {
+                            rhf: "FieldArray",
+                            name: "city-income-standard",
+                            props: {
+                              appendText: "Add city",
+                            },
+                            fields: [
+                              {
+                                rhf: "WrappedGroup",
+                                name: "wrapped",
+                                props: {
+                                  wrapperClassName: "flex-row flex gap-5",
+                                },
+                                fields: [
+                                  {
+                                    rhf: "Input",
+                                    label: "City",
+                                    labelClassName: "font-black font-bold",
+                                    name: "city",
+                                    rules: {
+                                      required: "* Required",
+                                    },
+                                    props: {
+                                      className: "w-[355px]",
+                                    },
+                                  },
+                                  {
+                                    rhf: "Input",
+                                    label: "From zero up to",
+                                    labelClassName: "font-black font-bold",
+                                    name: "city-up-to",
+                                    rules: {
+                                      pattern: {
+                                        value: /^[0-9]\d*$/,
+                                        message:
+                                          "Must be a positive integer value",
+                                      },
+                                    },
+                                    props: {
+                                      icon: "% FPL",
+                                      iconRight: true,
+                                      className: "w-[159px]",
+                                    },
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    label: "Other geographic area",
+                    value: "other-geographic-area",
+                    slots: [
+                      {
+                        rhf: "TextDisplay",
+                        text: "Enter each geographic area with a unique income standard.",
+                        name: "geographic-area-description-text",
+                      },
+                      {
+                        rhf: "FieldArray",
+                        name: "other-geo-income-standard",
+                        props: {
+                          appendText: "Add geographic area",
+                          fieldArrayClassName: "flex-col",
+                        },
+                        fields: [
+                          {
+                            rhf: "WrappedGroup",
+                            name: "wrapped",
+                            props: {
+                              wrapperClassName:
+                                "flex flex-col gap-5 ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+                            },
+                            fields: [
+                              {
+                                rhf: "Input",
+                                label: "Geographic area",
+                                labelClassName: "font-black font-bold",
+                                name: "geographic-area",
+                                rules: {
+                                  required: "* Required",
+                                },
+                                props: {
+                                  className: "w-[527px]",
+                                },
+                              },
+                              {
+                                rhf: "Textarea",
+                                label: "Describe",
+                                labelClassName: "font-black font-bold",
+                                name: "geographic-area-description",
+                                rules: {
+                                  required: "* Required",
+                                },
+                                props: {
+                                  className: "min-h-[76px] w-[527px]",
+                                },
+                              },
+                              {
+                                rhf: "WrappedGroup",
+                                name: "wrapped",
+                                props: {
+                                  wrapperClassName: "flex-row flex gap-5",
+                                },
+                                fields: [
+                                  {
+                                    rhf: "Input",
+                                    label: "Above",
+                                    labelClassName: "font-black font-bold",
+                                    name: "geographic-area-above",
+                                    props: {
+                                      icon: "% FPL",
+                                      iconRight: true,
+                                      className: "w-[159px]",
+                                    },
+                                  },
+                                  {
+                                    rhf: "Input",
+                                    label: "Up to and including",
+                                    labelClassName: "font-black font-bold",
+                                    name: "geographic-area-up-to-and-including",
+                                    props: {
+                                      icon: "% FPL",
+                                      iconRight: true,
+                                      className: "w-[159px]",
+                                    },
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Policy exemptions",
+      sectionId: "policy-exemptions",
+      subsection: true,
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Checkbox",
+              label: "Policy exemptions",
+              labelClassName: "text-black font-bold",
+              name: "policy-exemptions",
+              rules: {
+                required: "* Required",
+              },
+              props: {
+                options: [
+                  {
+                    label:
+                      "Exempt from requirement of providing or applying for a Social Security number (SSN)",
+                    value: "exempt-from-ssn",
+                  },
+                  {
+                    label:
+                      "Exempt from requirement of verifying citizenship status",
+                    value: "exempt-from-citizenship-status",
+                  },
+                ],
+              },
+            },
           ],
         },
       ],
