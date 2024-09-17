@@ -17,10 +17,10 @@ import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
 
 const lambdaClient = new LambdaClient();
 
-async function getAllStateUsers(state: string, userPoolId: string) {
+async function getAllStateUsers(state: string) {
   const params = {
     FunctionName: process.env.FunctionName, // Replace with your actual Lambda function name
-    Payload: JSON.stringify({ state, userPoolId }),
+    Payload: JSON.stringify({ state }),
   };
 
   const command = new InvokeCommand(params);
