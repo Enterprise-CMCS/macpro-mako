@@ -28,11 +28,13 @@ export const baseSchema = z.object({
     }),
     tribalEngagement: z.object({
       files: attachmentArraySchemaOptional(),
-      label: z.string().default("Tribal Engagement"),
+      label: z
+        .string()
+        .default("Document Demonstrating Good-Faith Tribal Engagement"),
     }),
     existingStatePlanPages: z.object({
       files: attachmentArraySchemaOptional(),
-      label: z.string().default("Existing State Plan Pages"),
+      label: z.string().default("Existing State Plan Page(s)"),
     }),
     publicNotice: z.object({
       files: attachmentArraySchemaOptional(),
@@ -40,7 +42,7 @@ export const baseSchema = z.object({
     }),
     sfq: z.object({
       files: attachmentArraySchemaOptional(),
-      label: z.string().default("SFQ"),
+      label: z.string().default("Standard Funding Questions (SFQs)"),
     }),
     tribalConsultation: z.object({
       files: attachmentArraySchemaOptional(),
