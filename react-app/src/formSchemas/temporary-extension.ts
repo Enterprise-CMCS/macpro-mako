@@ -3,6 +3,28 @@ import { isAuthorizedState } from "@/utils";
 import { getItem, idIsApproved, itemExists } from "@/api";
 import { z } from "zod";
 
+const baseSchema = events["temporary-extension"].baseSchema;
+type TranformShapeToSatisfy = z.infer<typeof baseSchema>;
+
+export const testFormSchema = baseSchema
+  .omit({
+    id: true,
+    waiverNumber: true,
+  })
+  .extend({
+    ids: z.object({
+      id: events["temporary-extension"].baseSchema.shape.id,
+      waiverNumber: events["temporary-extension"].baseSchema.shape.waiverNumber,
+    }), //.refines here
+  })
+  .transform((data) => {
+    const { ids, ...restOfForm } = data;
+    return {
+      ...restOfForm,
+      ...ids,
+    } satisfies TranformShapeToSatisfy;
+  });
+
 export const formSchema = events["temporary-extension"].baseSchema
   .extend({
     id: events["temporary-extension"].baseSchema.shape.id
