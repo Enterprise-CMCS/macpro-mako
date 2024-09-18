@@ -15,6 +15,20 @@ import { FAQ_TAB } from "../Routing";
 const DEFAULT_ATTACHMENTS_INSTRUCTIONS =
   "Maximum file size of 80 MB per attachment. You can add multiple files per attachment type.";
 
+const AttachmentInstructions = ({ fileValidation }) => {
+  const { maxLength, minLength } = fileValidation;
+
+  if (maxLength?.value === 1 && minLength?.value === 1) {
+    return <p>One attachment is required</p>;
+  }
+
+  if (minLength?.value) {
+    return <p>At least one attachment is required</p>;
+  }
+
+  return null;
+};
+
 type ActionFormAttachmentsProps = {
   attachmentsFromSchema: [string, z.ZodObject<z.ZodRawShape, "strip">][];
   specialInstructions?: string;
@@ -73,12 +87,15 @@ export const ActionFormAttachments = ({
                     <RequiredIndicator />
                   )}
                 </FormLabel>
-                <FormMessage />
+                <AttachmentInstructions
+                  fileValidation={value.shape.files._def}
+                />
                 <Upload
                   files={field.value ?? []}
                   setFiles={field.onChange}
                   dataTestId={key}
                 />
+                <FormMessage />
               </FormItem>
             )}
           />
