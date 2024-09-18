@@ -108,6 +108,7 @@ export async function processAndSendEmails(
 
   const allStateUsers = await getAllStateUsers(id.slice(0, 2));
 
+  console.log("allStateUsers: ");
   console.log("State user info: ", JSON.stringify(allStateUsers, null, 2));
 
   const sec = await getSecret(emailAddressLookupSecretName);

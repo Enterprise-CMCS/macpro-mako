@@ -48,15 +48,13 @@ export const RoleDescriptionStrings: { [key: string]: string } = {
   [UserRoles.CMS_SUPER_USER]: "Super User",
 };
 
-export type UserAttributes =
-  | {
-      firstName: string | undefined;
-      lastName: string | undefined;
-      email: string | undefined;
-      states: string | undefined;
-      roles: string | undefined;
-      enabled: boolean | undefined;
-      status: UserStatusType | undefined;
-      username: string | undefined;
-    }
-  | undefined;
+export type UserAttributes = {
+  firstName: string | undefined;
+  lastName: string | undefined;
+  email: string | undefined;
+  states: string | undefined;
+  roles: string | undefined;
+  enabled: boolean | undefined;
+  status: UserStatusType | undefined;
+  username: string | undefined;
+};

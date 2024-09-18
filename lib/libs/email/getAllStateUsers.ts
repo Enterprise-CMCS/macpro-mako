@@ -7,7 +7,7 @@ const cognitoClient = new CognitoIdentityProviderClient();
 
 export const getAllStateUsers = async (state: string) => {
   console.log("getAllStateUsers has been called");
-  console.log(JSON.stringify(event, null, 2));
+  console.log(JSON.stringify(state, null, 2));
   try {
     const params = {
       UserPoolId: process.env.userPoolId,
