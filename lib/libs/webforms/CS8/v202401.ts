@@ -145,6 +145,15 @@ export const v202401: FormSchema = {
                                   },
                                   required: "* Required",
                                 },
+                                addtnlRules: [
+                                  {
+                                    type: "greaterThanField",
+                                    strictGreater: true,
+                                    fieldName: "cs8_age_start-age-range",
+                                    message:
+                                      "Must be greater than start of age range",
+                                  },
+                                ],
                                 label: "End of age range",
                                 labelClassName: "font-bold",
                                 props: {
