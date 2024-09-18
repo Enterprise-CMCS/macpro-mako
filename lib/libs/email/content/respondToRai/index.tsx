@@ -1,10 +1,6 @@
 import * as React from "react";
 import { Authority, EmailAddresses, RaiResponse } from "shared-types";
-import {
-  CommonVariables,
-  AuthoritiesWithUserTypesTemplate,
-  getAllStateUsers,
-} from "../..";
+import { CommonVariables, AuthoritiesWithUserTypesTemplate } from "../..";
 import {
   MedSpaCMSEmail,
   MedSpaStateEmail,
@@ -22,9 +18,8 @@ export const getContent = async (item: any) => {
 
   const cpocName = item._source.leadAnalystName;
   const cpocId = item._source.leadAnalystOfficerId;
+  console.log(" cpocName, cpocId ");
   console.log({ cpocName, cpocId });
-
-  // gptta get the email from somewhere
 };
 
 export const respondToRai: AuthoritiesWithUserTypesTemplate = {
@@ -118,11 +113,9 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
     state: async (
       variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
     ) => {
-      const stateUsers = await getAllStateUsers(variables.territory);
-
       return {
         to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
-        cc: stateUsers,
+        cc: variables.allStateUsersEmails,
         subject: `Your ${variables.authority} ${variables.authority} Response for ${variables.id} has been submitted to CMS`,
         html: await render(<Waiver1915bStateEmail variables={variables} />),
         text: await render(<Waiver1915bStateEmail variables={variables} />, {

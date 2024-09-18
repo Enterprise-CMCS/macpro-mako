@@ -1,34 +1,35 @@
 import {
   CognitoIdentityProviderClient,
   ListUsersCommand,
+  ListUsersCommandInput,
+  ListUsersCommandOutput,
 } from "@aws-sdk/client-cognito-identity-provider";
+
+export type StateUser = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  formattedEmailAddress: string;
+};
 
 const cognitoClient = new CognitoIdentityProviderClient();
 
-export const getAllStateUsers = async (state: string) => {
-  console.log("getAllStateUsers has been called");
-  console.log(JSON.stringify(state, null, 2));
+export const getAllStateUsers = async (state: string): Promise<StateUser[]> => {
   try {
-    const params = {
+    const params: ListUsersCommandInput = {
       UserPoolId: process.env.userPoolId,
-      Filter: `cognito:user_status = "CONFIRMED"`,
+      Limit: 60,
+      Filter: `attribute_name = "custom:state" and contains(attribute_value, "${state}")`,
     };
 
     const command = new ListUsersCommand(params);
-    const response = await cognitoClient.send(command);
+    const response: ListUsersCommandOutput = await cognitoClient.send(command);
 
-    const filteredUsers = response.Users?.filter(
-      (user) =>
-        user.Enabled === true &&
-        user.UserStatus === "CONFIRMED" &&
-        user.Attributes?.some(
-          (attr) =>
-            attr.Name === "custom:state" &&
-            attr.Value?.split(",").includes(state),
-        ),
-    );
+    if (!response.Users || response.Users.length === 0) {
+      return [];
+    }
 
-    const formattedUsers = filteredUsers?.map((user) => {
+    const allStateUsers = response.Users.map((user) => {
       const attributes = user.Attributes?.reduce((acc, attr) => {
         acc[attr.Name as any] = attr.Value;
         return acc;
@@ -38,23 +39,13 @@ export const getAllStateUsers = async (state: string) => {
         firstName: attributes?.["given_name"],
         lastName: attributes?.["family_name"],
         email: attributes?.["email"],
-        states: attributes?.["custom:state"],
-        roles: attributes?.["custom:roles"],
-        enabled: user.Enabled,
-        status: user.UserStatus,
-        username: user.Username,
+        formattedEmailAddress: `${attributes?.["given_name"]} ${attributes?.["family_name"]} <${attributes?.["email"]}>`,
       };
     });
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(formattedUsers),
-    };
+    return allStateUsers as StateUser[];
   } catch (error) {
     console.error("Error fetching users:", error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: "Error fetching users" }),
-    };
+    throw new Error("Error fetching users");
   }
 };

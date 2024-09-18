@@ -10,6 +10,7 @@ export interface CommonVariables {
   territory: string;
   applicationEndpointUrl: string;
   actionType: string;
+  allStateUsersEmails: string[];
 }
 
 export function formatDate(date: number | null | undefined) {

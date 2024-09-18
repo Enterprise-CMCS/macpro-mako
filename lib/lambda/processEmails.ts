@@ -12,7 +12,11 @@ import {
 } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
-import { getEmailTemplates, getAllStateUsers } from "./../libs/email";
+import {
+  getEmailTemplates,
+  getAllStateUsers,
+  StateUser,
+} from "./../libs/email";
 
 export const sesClient = new SESClient({ region: process.env.REGION });
 
@@ -25,8 +29,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     if (!emailAddressLookupSecretName || !applicationEndpointUrl) {
       throw new Error("Environment variables are not set properly.");
     }
-
-    console.log("Processing email event: ", JSON.stringify(event, null, 2));
 
     const processRecordsPromises = [];
 
@@ -102,41 +104,37 @@ export async function processAndSendEmails(
   id: string,
   emailAddressLookupSecretName: string,
   applicationEndpointUrl: string,
-  getAllStateUsers: (state: string) => Promise<any>,
+  getAllStateUsers: (state: string) => Promise<StateUser[]>,
 ) {
   console.log("processAndSendEmails has been called");
-
-  const allStateUsers = await getAllStateUsers(id.slice(0, 2));
-
-  console.log("allStateUsers: ");
-  console.log("State user info: ", JSON.stringify(allStateUsers, null, 2));
+  const territory = id.slice(0, 2);
+  const allStateUsers = await getAllStateUsers(territory);
 
   const sec = await getSecret(emailAddressLookupSecretName);
-  const emailAddressLookup: EmailAddresses = JSON.parse(sec);
+  const emails: EmailAddresses = JSON.parse(sec);
 
   const templates = await getEmailTemplates<typeof record>(action, authority);
+
+  const allStateUsersEmails = allStateUsers.map(
+    (user) => user.formattedEmailAddress,
+  );
 
   const templateVariables = {
     ...record,
     id,
     applicationEndpointUrl,
-    territory: id.slice(0, 2),
-    emails: emailAddressLookup,
+    territory,
+    emails,
+    allStateUsersEmails,
   };
-
-  console.log(
-    "template variables: ",
-    JSON.stringify(templateVariables, null, 2),
-  );
 
   const sendEmailPromises = templates.map(async (template) => {
     const filledTemplate = await template(templateVariables);
-    console.log("filledTemplate: ", JSON.stringify(filledTemplate, null, 2));
 
     const params = {
       to: filledTemplate.to,
       cc: filledTemplate.cc,
-      from: emailAddressLookup.sourceEmail,
+      from: emails.sourceEmail,
       subject: filledTemplate.subject,
       html: filledTemplate.html,
       text: filledTemplate.text,

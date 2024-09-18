@@ -213,14 +213,6 @@ export class Email extends cdk.NestedStack {
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
     });
 
-    const processEmailsLogGroup = new cdk.aws_logs.LogGroup(
-      this,
-      "ProcessEmailsLambdaLogGroup",
-      {
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    );
-
     const processEmailsLambda = new NodejsFunction(
       this,
       "ProcessEmailsLambda",
@@ -229,7 +221,6 @@ export class Email extends cdk.NestedStack {
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry: join(__dirname, "../lambda/processEmails.ts"),
         handler: "handler",
-        logGroup: processEmailsLogGroup,
         runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
         memorySize: 1024,
         timeout: cdk.Duration.minutes(15),
@@ -238,6 +229,7 @@ export class Email extends cdk.NestedStack {
         vpcSubnets: {
           subnets: privateSubnets,
         },
+        logRetention: 30,
         securityGroups: [lambdaSecurityGroup],
         environment: {
           REGION: this.region,

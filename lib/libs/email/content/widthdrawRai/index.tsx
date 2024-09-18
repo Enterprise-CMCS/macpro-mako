@@ -4,7 +4,6 @@ import {
   CommonVariables,
   AuthoritiesWithUserTypesTemplate,
   getLatestMatchingEvent,
-  getAllStateUsers,
 } from "../..";
 import {
   MedSpaCMSEmail,
@@ -54,10 +53,10 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         variables.id,
         Action.RESPOND_TO_RAI,
       );
-      const stateUsers = await getAllStateUsers(variables.territory);
+
       return {
         to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
-        cc: stateUsers,
+        cc: variables.allStateUsersEmails,
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         html: await render(
           <MedSpaStateEmail
@@ -170,10 +169,9 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         variables.id,
         Action.RESPOND_TO_RAI,
       );
-      const stateUsers = await getAllStateUsers(variables.territory);
       return {
         to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
-        cc: stateUsers,
+        cc: variables.allStateUsersEmails,
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
         html: await render(
           <Waiver1915bStateEmail
