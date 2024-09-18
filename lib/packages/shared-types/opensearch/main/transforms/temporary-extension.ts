@@ -21,6 +21,7 @@ export const transform = () => {
       id: data.id,
       makoChangedDate: new Date(data.timestamp).toISOString(),
       origin: "OneMAC",
+      originalWaiverNumber: data.waiverNumber,
       raiWithdrawEnabled: false, // Set to false for new submissions
       seatoolStatus: SEATOOL_STATUS.PENDING,
       state: data.id.split("-")[0],
