@@ -1,4 +1,4 @@
-import { events, SEATOOL_STATUS, getStatus } from "shared-types";
+import { events, SEATOOL_STATUS } from "shared-types";
 import {
   getNextBusinessDayTimestamp,
   seaToolFriendlyTimestamp,

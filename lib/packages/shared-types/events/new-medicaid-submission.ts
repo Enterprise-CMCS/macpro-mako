@@ -3,7 +3,6 @@ import {
   attachmentArraySchema,
   attachmentArraySchemaOptional,
 } from "../attachments";
-// import { APIGatewayEvent } from "aws-lambda";
 
 export const baseSchema = z.object({
   event: z
