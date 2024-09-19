@@ -69,7 +69,8 @@ export const getItemData = async (event: APIGatewayEvent) => {
       // fetch parent id from it
       // await getPackage(appKChildRemoved._source.appkParentId)
       // packageResult: set the appkTitle
-      console.log("Step 1..", appKChildRemoved._source.appkParentId)
+      console.log("Step 1..check if childappk is removed", appKChildRemoved._source.appkParentId)
+      console.log("Step 2.. get parentid", appKChildRemoved._source)
     }
 
     // Return the title from the parent
@@ -88,7 +89,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
     // determine if this record is an app-k child
     // query for the parent id from that entry
 
-    //console.log("what the heck is in the changelog (B.F.):", JSON.stringify(changelog));
+    console.log("what the heck is in the changelog (B.F.):", JSON.stringify(changelog));
 
 
 
