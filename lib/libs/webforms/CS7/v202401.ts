@@ -893,7 +893,7 @@ export const v202401: FormSchema = {
               label:
                 "Does the state have a special program for children with disabilities?",
               labelClassName: "text-black font-bold",
-              name: "special-program-for-children-with-disabilities",
+              name: "does-state-have-special-program",
               rules: {
                 required: "* Required",
               },
