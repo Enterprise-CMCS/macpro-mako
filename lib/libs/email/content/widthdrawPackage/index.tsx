@@ -43,7 +43,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       variables: WithdrawPackage & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: variables.emails.chipCcList, // TODO: Suppose to get CPOC and SRT
+        to: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
         cc: variables.emails.chipCcList,
         subject: `CHIP SPA Package ${variables.id} Withdraw Request`,
         html: await render(<ChipSpaCMSEmail variables={variables} />),

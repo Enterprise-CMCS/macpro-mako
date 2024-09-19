@@ -6,4 +6,6 @@ export type EmailAddresses = {
   chipInbox: string[];
   chipCcList: string[];
   sourceEmail: string;
+  srtEmails: string[];
+  cpocEmail: string[];
 };

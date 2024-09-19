@@ -11,24 +11,17 @@ import {
 } from "./emailTemplate";
 import { render } from "@react-email/render";
 
-export const getContent = async (item: any) => {
-  if (!item._source.leadAnalystOfficerId) {
-    throw new Error("Invalid rai response");
-  }
-
-  const cpocName = item._source.leadAnalystName;
-  const cpocId = item._source.leadAnalystOfficerId;
-  console.log(" cpocName, cpocId ");
-  console.log({ cpocName, cpocId });
-};
-
 export const respondToRai: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
     cms: async (
       variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: variables.emails.osgEmail, // TODO: CPOC and SRT should be added
+        to: [
+          ...variables.emails.osgEmail,
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+        ],
         subject: `Medicaid SPA RAI Response for ${variables.id} Submitted`,
         html: await render(<MedSpaCMSEmail variables={variables} />),
         text: await render(<MedSpaCMSEmail variables={variables} />, {
@@ -57,7 +50,17 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: variables.emails.chipInbox, // TODO: CPOC and SRT should be added
+        to: [
+          ...(Array.isArray(variables.emails.chipInbox)
+            ? variables.emails.chipInbox
+            : []),
+          ...(Array.isArray(variables.emails.srtEmails)
+            ? variables.emails.srtEmails
+            : []),
+          ...(Array.isArray(variables.emails.cpocEmail)
+            ? variables.emails.cpocEmail
+            : []),
+        ],
         cc: variables.emails.chipCcList,
         subject: `CHIP SPA RAI Response for ${variables.id} Submitted`,
         html: await render(<ChipSpaCMSEmail variables={variables} />),
@@ -102,7 +105,12 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       // });
       // console.log("srts", JSON.stringify(srts, null, 2));
       return {
-        to: [...variables.emails.osgEmail, ...variables.emails.dmcoEmail], // TODO: Should be also sent to CPOC and SRT
+        to: [
+          ...variables.emails.osgEmail,
+          ...variables.emails.dmcoEmail,
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+        ],
         subject: `Waiver RAI Response for ${variables.id} Submitted`,
         html: await render(<Waiver1915bCMSEmail variables={variables} />),
         text: await render(<Waiver1915bCMSEmail variables={variables} />, {

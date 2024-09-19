@@ -17,6 +17,11 @@ import {
   getAllStateUsers,
   StateUser,
 } from "./../libs/email";
+import * as os from "../libs/opensearch-lib";
+import {
+  getCpocEmail,
+  getSrtEmails,
+} from "libs/email/content/email-components";
 
 export const sesClient = new SESClient({ region: process.env.REGION });
 
@@ -111,6 +116,18 @@ export async function processAndSendEmails(
   const allStateUsers = await getAllStateUsers(territory);
 
   const sec = await getSecret(emailAddressLookupSecretName);
+
+  const item = await os.getItem(
+    `https://${process.env.openSearchDomainEndpoint}`,
+    `${process.env.indexNamespace}main`,
+    id,
+  );
+  console.log("item", JSON.stringify(item, null, 2));
+
+  const cpocEmail = getCpocEmail(item);
+  const srtEmails = getSrtEmails(item);
+  console.log("cpocEmail", cpocEmail);
+  console.log("srtEmails", srtEmails);
   const emails: EmailAddresses = JSON.parse(sec);
 
   const templates = await getEmailTemplates<typeof record>(action, authority);
@@ -124,7 +141,7 @@ export async function processAndSendEmails(
     id,
     applicationEndpointUrl,
     territory,
-    emails,
+    emails: { ...emails, cpocEmail, srtEmails },
     allStateUsersEmails,
   };
 
@@ -142,8 +159,7 @@ export async function processAndSendEmails(
     await sendEmail(params);
   });
 
-  const results = await Promise.all(sendEmailPromises);
-  console.log("results: ", JSON.stringify(results, null, 2));
+  await Promise.all(sendEmailPromises);
 }
 
 export async function sendEmail(emailDetails: {

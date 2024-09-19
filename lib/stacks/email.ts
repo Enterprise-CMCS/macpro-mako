@@ -13,7 +13,6 @@ interface EmailServiceStackProps extends cdk.StackProps {
   isDev: boolean;
   stack: string;
   userPoolId: string;
-  userPoolArn: string;
   vpc: cdk.aws_ec2.IVpc;
   applicationEndpointUrl: string;
   indexNamespace: string;
@@ -37,7 +36,6 @@ export class Email extends cdk.NestedStack {
       isDev,
       stack,
       userPoolId,
-      userPoolArn,
       vpc,
       applicationEndpointUrl,
       topicNamespace,
@@ -185,7 +183,9 @@ export class Email extends cdk.NestedStack {
                 "cognito-idp:AdminGetUser",
                 "cognito-idp:AdminListUsers",
               ],
-              resources: [userPoolArn],
+              resources: [
+                `arn:aws:cognito-idp:${this.region}:${this.account}:userpool/us-east-*`,
+              ],
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
@@ -194,7 +194,7 @@ export class Email extends cdk.NestedStack {
                 "secretsmanager:GetSecretValue",
               ],
               resources: [
-                `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${emailAddressLookupSecretName}-*`,
+                `arn:aws:secretsmanager:${this.region}:${this.account}:secret:*`,
               ],
             }),
             new cdk.aws_iam.PolicyStatement({
@@ -217,7 +217,6 @@ export class Email extends cdk.NestedStack {
       this,
       "ProcessEmailsLambda",
       {
-        functionName: `${project}-${stage}-${stack}-ProcessEmailsLambda`,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry: join(__dirname, "../lambda/processEmails.ts"),
         handler: "handler",

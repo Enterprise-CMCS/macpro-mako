@@ -29,7 +29,12 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         Action.RESPOND_TO_RAI,
       );
       return {
-        to: [...variables.emails.osgEmail, ...variables.emails.dpoEmail], // TODO Should also include CPOC and SRT
+        to: [
+          ...variables.emails.osgEmail,
+          ...variables.emails.dpoEmail,
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+        ],
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         html: await render(
           <MedSpaCMSEmail relatedEvent={relatedEvent} variables={variables} />,
@@ -90,7 +95,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
       );
       return {
         to: variables.emails.chipInbox,
-        cc: variables.emails.chipCcList, // TODO: Should also go to CPOC and SRT
+        cc: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
         subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
         html: await render(
           <ChipSpaCMSEmail relatedEvent={relatedEvent} variables={variables} />,
@@ -142,7 +147,12 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         Action.RESPOND_TO_RAI,
       );
       return {
-        to: [...variables.emails.dmcoEmail, ...variables.emails.osgEmail], // TODO: add CPOC and SRT
+        to: [
+          ...variables.emails.dmcoEmail,
+          ...variables.emails.osgEmail,
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+        ],
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id} `,
         html: await render(
           <Waiver1915bCMSEmail
@@ -200,7 +210,12 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         Action.RESPOND_TO_RAI,
       );
       return {
-        to: [...variables.emails.osgEmail, ...variables.emails.dhcbsooEmail], // TODO: also should go to CPOC and SRT
+        to: [
+          ...variables.emails.osgEmail,
+          ...variables.emails.dhcbsooEmail,
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+        ],
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id} `,
         html: await render(
           <AppKCMSEmail relatedEvent={relatedEvent} variables={variables} />,

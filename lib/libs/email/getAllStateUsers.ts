@@ -19,7 +19,6 @@ export const getAllStateUsers = async (state: string): Promise<StateUser[]> => {
     const params: ListUsersCommandInput = {
       UserPoolId: process.env.userPoolId,
       Limit: 60,
-      Filter: `attribute_name = "custom:state" and contains(attribute_value, "${state}")`,
     };
 
     const command = new ListUsersCommand(params);
@@ -29,7 +28,12 @@ export const getAllStateUsers = async (state: string): Promise<StateUser[]> => {
       return [];
     }
 
-    const allStateUsers = response.Users.map((user) => {
+    const filteredStateUsers = response.Users.filter((user) => {
+      const stateAttribute = user.Attributes?.find(
+        (attr) => attr.Name === "custom:state",
+      );
+      return stateAttribute?.Value?.split(",").includes(state);
+    }).map((user) => {
       const attributes = user.Attributes?.reduce((acc, attr) => {
         acc[attr.Name as any] = attr.Value;
         return acc;
@@ -43,7 +47,7 @@ export const getAllStateUsers = async (state: string): Promise<StateUser[]> => {
       };
     });
 
-    return allStateUsers as StateUser[];
+    return filteredStateUsers as StateUser[];
   } catch (error) {
     console.error("Error fetching users:", error);
     throw new Error("Error fetching users");

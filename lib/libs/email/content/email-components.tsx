@@ -186,3 +186,20 @@ export const formatAttachments = (
 
   return formatter(formattedAttachments);
 };
+
+export const getCpocEmail = (item: any): string[] => {
+  const cpocName = item._source.leadAnalystName;
+  const cpocEmail = item._source.leadAnalystEmail;
+  const email = [`${cpocName} <${cpocEmail}>`];
+  return email ?? [];
+};
+
+export const getSrtEmails = (item: any): string[] => {
+  const reviewTeam = item._source.reviewTeam;
+  if (!reviewTeam) {
+    return [];
+  }
+  return reviewTeam.map(
+    (reviewer: any) => `${reviewer.name} <${reviewer.email}>`,
+  );
+};

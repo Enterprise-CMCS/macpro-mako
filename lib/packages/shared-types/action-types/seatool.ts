@@ -5,6 +5,7 @@ export const seatoolOfficerSchema = z.object({
   OFFICER_ID: z.number(),
   FIRST_NAME: z.string(),
   LAST_NAME: z.string(),
+  EMAIL: z.string(),
 });
 export type SeatoolOfficer = z.infer<typeof seatoolOfficerSchema>;
 
@@ -18,7 +19,7 @@ export const seatoolSchema = z.object({
           SPA_TYPE_ID: z.number(),
           SPA_TYPE_NAME: z.string(),
         })
-        .nullable()
+        .nullable(),
     )
     .nullable(),
   STATE_PLAN_SERVICE_SUBTYPES: z
@@ -28,7 +29,7 @@ export const seatoolSchema = z.object({
           TYPE_ID: z.number(),
           TYPE_NAME: z.string(),
         })
-        .nullable()
+        .nullable(),
     )
     .nullable(),
   STATE_PLAN: z.object({
@@ -50,7 +51,7 @@ export const seatoolSchema = z.object({
         RAI_RECEIVED_DATE: z.number().nullable(),
         RAI_REQUESTED_DATE: z.number().nullable(),
         RAI_WITHDRAWN_DATE: z.number().nullable(),
-      })
+      }),
     )
     .nullable(),
   ACTIONTYPES: z
@@ -59,7 +60,7 @@ export const seatoolSchema = z.object({
         ACTION_ID: z.number(),
         ACTION_NAME: z.string(),
         PLAN_TYPE_ID: z.number(),
-      })
+      }),
     )
     .nullable(),
 });
