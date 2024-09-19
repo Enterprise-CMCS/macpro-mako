@@ -7,7 +7,6 @@ import {
 export const transform = () => {
   // any adhoc logic
   return events["temporary-extension"].schema.transform((data) => {
-    const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.PENDING);
     const timestampDate = new Date(data.timestamp);
     const todayEpoch = seaToolFriendlyTimestamp(timestampDate);
     const nextBusinessDayEpoch = getNextBusinessDayTimestamp(timestampDate);
@@ -16,15 +15,16 @@ export const transform = () => {
       additionalInformation: data.additionalInformation,
       authority: data.authority,
       changedDate: new Date(data.timestamp).toISOString(),
-      cmsStatus,
+      cmsStatus: "Requested",
       description: null,
       id: data.id,
       makoChangedDate: new Date(data.timestamp).toISOString(),
       origin: "OneMAC",
+      originalWaiverNumber: data.waiverNumber,
       raiWithdrawEnabled: false, // Set to false for new submissions
       seatoolStatus: SEATOOL_STATUS.PENDING,
       state: data.id.split("-")[0],
-      stateStatus,
+      stateStatus: "Submitted",
       statusDate: new Date(todayEpoch).toISOString(),
       subject: null,
       submissionDate: new Date(nextBusinessDayEpoch).toISOString(),
