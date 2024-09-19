@@ -3,7 +3,7 @@ import { emailTemplateValue } from "../data";
 import { CommonVariables, formatNinetyDaysDate } from "../../..";
 import { RaiResponse } from "shared-types";
 import { Html, Container } from "@react-email/components";
-import { PackageDetails } from "../../email-components";
+import { ContactStateLead, PackageDetails } from "../../email-components";
 
 export const ChipSpaStateEmail = (props: {
   variables: RaiResponse & CommonVariables;
@@ -32,14 +32,7 @@ export const ChipSpaStateEmail = (props: {
           You can expect a formal response to your submittal to be issued within
           90 days, before {formatNinetyDaysDate(variables.responseDate)}.
         </p>
-        <p>
-          If you have questions, please contact
-          <a href="mailto:CHIPSPASubmissionMailbox@cms.hhs.gov">
-            CHIPSPASubmissionMailbox@cms.hhs.gov
-          </a>
-          or your state lead.
-        </p>
-        <p>Thank you!</p>
+        <ContactStateLead isChip />
       </Container>
     </Html>
   );
