@@ -10,7 +10,7 @@ import {
   Waiver1915bStateEmail,
   AppKCMSEmail,
   AppKStateEmail,
-} from "./emailTemplate";
+} from "./emailTemplates";
 import { render } from "@react-email/render";
 
 export const newSubmission: AuthoritiesWithUserTypesTemplate = {

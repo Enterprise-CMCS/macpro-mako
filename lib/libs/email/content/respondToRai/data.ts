@@ -1,6 +1,5 @@
-export const key = "C0-24-8110";
-
 export const emailTemplateValue = {
+  to: "TO",
   id: "PACKAGE ID",
   territory: "CO",
   applicationEndpointUrl: "https://onemac.cms.gov/",
@@ -9,7 +8,8 @@ export const emailTemplateValue = {
   seaActionType: "Amend",
   actionType: "ACTION TYPE",
   origin: "micro",
-  appkParentId: null,
+  requestedDate: 1723390633663,
+  responseDate: 1723390633663,
   originalWaiverNumber: null,
   additionalInformation: "This bens additional infornormaiton",
   submitterName: "George Harrison",
@@ -37,21 +37,8 @@ export const emailTemplateValue = {
       uploadDate: 1723390631509,
     },
   ],
-  raiWithdrawEnabled: false,
   notificationMetadata: {
     submissionDate: 1723420800000,
     proposedEffectiveDate: 1725062400000,
   },
-};
-
-export const sucessfullRepsonse = {
-  $metadata: {
-    httpStatusCode: 200,
-    requestId: "d1e89223-05e6-4aad-9c7a-c93ac045e2ef",
-    extendedRequestId: undefined,
-    cfId: undefined,
-    attempts: 1,
-    totalRetryDelay: 0,
-  },
-  MessageId: "0100019142162cb7-62fb677b-c27e-4ccc-b3d3-20b8776a2605-000000",
 };

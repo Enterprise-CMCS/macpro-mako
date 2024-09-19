@@ -8,7 +8,7 @@ import {
   ChipSpaStateEmail,
   Waiver1915bCMSEmail,
   Waiver1915bStateEmail,
-} from "./emailTemplate";
+} from "./emailTemplates";
 import { render } from "@react-email/render";
 
 export const respondToRai: AuthoritiesWithUserTypesTemplate = {

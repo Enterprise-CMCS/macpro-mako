@@ -13,7 +13,7 @@ import {
   Waiver1915bCMSEmail,
   Waiver1915bStateEmail,
   AppKCMSEmail,
-} from "./emailTemplate";
+} from "./emailTemplates";
 import { render } from "@react-email/render";
 
 export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
