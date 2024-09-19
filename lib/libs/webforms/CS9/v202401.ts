@@ -264,6 +264,11 @@ export const v202401: FormSchema = {
                                     name: "county",
                                     rules: {
                                       required: "* Required",
+                                      pattern: {
+                                        value: /^\S(.*\S)?$/,
+                                        message:
+                                          "Must not have leading or trailing whitespace.",
+                                      },
                                     },
                                     props: {
                                       className: "w-[355px]",
@@ -327,6 +332,11 @@ export const v202401: FormSchema = {
                                     name: "city",
                                     rules: {
                                       required: "* Required",
+                                      pattern: {
+                                        value: /^\S(.*\S)?$/,
+                                        message:
+                                          "Must not have leading or trailing whitespace.",
+                                      },
                                     },
                                     props: {
                                       className: "w-[355px]",
@@ -391,6 +401,11 @@ export const v202401: FormSchema = {
                                 name: "geographic-area",
                                 rules: {
                                   required: "* Required",
+                                  pattern: {
+                                    value: /^\S(.*\S)?$/,
+                                    message:
+                                      "Must not have leading or trailing whitespace.",
+                                  },
                                 },
                                 props: {
                                   className: "w-[527px]",
