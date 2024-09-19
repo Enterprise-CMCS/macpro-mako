@@ -90,6 +90,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
     // query for the parent id from that entry
 
     console.log("what the heck is in the changelog (B.F.):", JSON.stringify(changelog));
+    console.log("This is the parent id: ", packageResult._id)
 
 
 
