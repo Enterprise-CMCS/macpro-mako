@@ -31,7 +31,7 @@ export const OsMainView: FC<{
 
   return (
     <section className="flex md:items-stretch items-center flex-col h-[100vh]">
-      <OsFiltering columns={osColumns} />
+      <OsFiltering onToggle={onToggle} columns={osColumns}/>
       <OsTable onToggle={onToggle} columns={osColumns} />
       <Pagination
         pageNumber={url.state.pagination.number}
