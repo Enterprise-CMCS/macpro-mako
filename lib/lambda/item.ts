@@ -20,7 +20,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
   try {
     const body = JSON.parse(event.body);
     const stateFilter = await getStateFilter(event);
-    const packageResult = await getPackage(body.id);
+    const packageResult = await getPackage(body.id); // Add another line here for getting the intened parent to pass on later for the title
 
 
     let appkChildren: any[] = [];
@@ -60,15 +60,27 @@ export const getItemData = async (event: APIGatewayEvent) => {
     }
 
     // Return the whole package
-    console.log('This is the Package Result', packageResult);
+    //console.log('This is the Package Result', packageResult);
+
+    // see if its a child appk that has been withdrawn
+    const appKChildRemoved = changelog.hits.hits.find(changeLogItem => changeLogItem._source.actionType === "remove-appk-child");
+
+    if (appKChildRemoved) {
+      // fetch parent id from it
+      // await getPackage(appKChildRemoved._source.appkParentId)
+      // packageResult: set the appkTitle
+      console.log("Step 1..", appKChildRemoved._source.appkParentId)
+    }
 
     // Return the title from the parent
     const pTitle = packageResult._source.appkTitle;
-    console.log("This is the", pTitle);
+    //console.log("This is the", pTitle);
 
     // Check to see if appkchild is in withdrawn state
     const appChildWithdrawnState = packageResult._source.actionType;
-    console.log("This is the", appChildWithdrawnState);
+
+    //console.log("This is the", appChildWithdrawnState);
+
     // Probably have to loop over the change log to get the
 
     // array of the history of everything that has happened to the record
@@ -76,11 +88,13 @@ export const getItemData = async (event: APIGatewayEvent) => {
     // determine if this record is an app-k child
     // query for the parent id from that entry
 
-    console.log("what the heck is in the changelog (B.F.):", JSON.stringify(changelog));
+    //console.log("what the heck is in the changelog (B.F.):", JSON.stringify(changelog));
+
+
 
     // The title that you got from the parent pass to the child
     const theChildren = packageResult._source.appkChildren;
-    console.log('This title should pass to the ', theChildren);
+    //console.log('This title should pass to the ', theChildren);
 
     /*
     if(packageResult){
