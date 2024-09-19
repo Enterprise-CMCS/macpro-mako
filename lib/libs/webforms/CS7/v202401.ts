@@ -952,30 +952,49 @@ export const v202401: FormSchema = {
                     value: "limited-to-certain-age-groups",
                     slots: [
                       {
-                        rhf: "Select",
-                        label: "Lower age limit",
-                        labelClassName: "text-black font-bold",
-                        name: "lower-age-limit",
-                        rules: {
-                          required: "* Required",
-                        },
+                        rhf: "WrappedGroup",
+                        name: "wrapped",
                         props: {
-                          options: ageOptions,
-                          className: "w-[125px]",
+                          wrapperClassName: "flex flex-col gap-5",
                         },
-                      },
-                      {
-                        rhf: "Select",
-                        label: "Upper age limit",
-                        labelClassName: "text-black font-bold",
-                        name: "upper-age-limit",
-                        rules: {
-                          required: "* Required",
-                        },
-                        props: {
-                          options: ageOptions,
-                          className: "w-[125px]",
-                        },
+                        fields: [
+                          {
+                            rhf: "Select",
+                            label: "Lower age limit",
+                            labelClassName: "text-black font-bold",
+                            name: "lower-age-limit",
+                            rules: {
+                              required: "* Required",
+                            },
+                            props: {
+                              options: ageOptions,
+                              className: "w-[125px]",
+                            },
+                          },
+                          {
+                            rhf: "Select",
+                            label: "Upper age limit",
+                            labelClassName: "text-black font-bold",
+                            name: "upper-age-limit",
+                            rules: {
+                              required: "* Required",
+                            },
+                            props: {
+                              options: ageOptions,
+                              className: "w-[125px]",
+                            },
+                            addtnlRules: [
+                              {
+                                type: "greaterThanField",
+                                strictGreater: true,
+                                fieldName:
+                                  "cs7_special-program-for-children-with-disabilities_lower-age-limit",
+                                message:
+                                  "Upper age limit must be greater than lower age limit",
+                              },
+                            ],
+                          },
+                        ],
                       },
                     ],
                   },
