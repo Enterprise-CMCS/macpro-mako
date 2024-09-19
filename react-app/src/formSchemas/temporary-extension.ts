@@ -8,6 +8,7 @@ export const formSchema = events["temporary-extension"].baseSchema
   .omit({
     id: true,
     waiverNumber: true,
+    authority: true,
   })
   .extend({
     ids: z
@@ -32,7 +33,7 @@ export const formSchema = events["temporary-extension"].baseSchema
             message:
               "According to our records, this Approved Initial or Renewal Waiver Number is not approved. You must supply an approved Initial or Renewal Waiver Number.",
           }),
-        authority: z.string(),
+        authority: events["temporary-extension"].baseSchema.shape.authority,
       })
       .superRefine(async (data, ctx) => {
         // Check that the authorities match

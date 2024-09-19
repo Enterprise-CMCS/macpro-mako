@@ -77,8 +77,8 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   };
   documentPollerArgs: {
     property:
-      | (keyof z.infer<InferUntransformedSchema<Schema>> & string) // Ensures the type is inferred correctly
-      | ((values: z.infer<InferUntransformedSchema<Schema>>) => string);
+      | (keyof z.TypeOf<Schema> & string)
+      | ((values: z.TypeOf<Schema>) => string);
     documentChecker: CheckDocumentFunction;
   };
   tab: "spas" | "waivers";
