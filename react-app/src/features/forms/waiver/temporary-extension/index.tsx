@@ -49,7 +49,7 @@ export const TemporaryExtensionForm = () => (
           )}
         />
         <FormField
-          name="waiverNumber"
+          name="ids.waiverNumber"
           control={form.control}
           render={({ field }) => {
             return (
@@ -83,7 +83,7 @@ export const TemporaryExtensionForm = () => (
         />
         <FormField
           control={form.control}
-          name="id"
+          name="ids.id"
           render={({ field }) => (
             <FormItem>
               <FormLabel data-testid="requestNumber-label">
