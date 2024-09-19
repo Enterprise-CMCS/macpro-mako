@@ -2,7 +2,7 @@ import * as React from "react";
 import { emailTemplateValue } from "../data";
 import { OneMac } from "shared-types";
 import { CommonVariables, formatDate } from "../../..";
-import { Html } from "@react-email/components";
+import { Html, Container } from "@react-email/components";
 import {
   LoginInstructions,
   PackageDetails,
@@ -15,22 +15,26 @@ export const MedSpaCMSEmail = (props: {
   const variables = props.variables;
   return (
     <Html lang="en" dir="ltr">
-      <p>The OneMAC Submission Portal received a Medicaid SPA Submission:</p>
-      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
-      <PackageDetails
-        details={{
-          "State or territory": variables.territory,
-          Name: variables.submitterName,
-          Email: variables.submitterEmail,
-          "Medicaid SPA ID": variables.id,
-          "Proposed Effective Date": formatDate(
-            variables.notificationMetadata?.proposedEffectiveDate,
-          ),
-          Summary: variables.additionalInformation,
-        }}
-        attachments={variables.attachments}
-      />
-      <SpamWarning />
+      <Container>
+        <h3>
+          The OneMAC Submission Portal received a Medicaid SPA Submission:
+        </h3>
+        <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+        <PackageDetails
+          details={{
+            "State or territory": variables.territory,
+            Name: variables.submitterName,
+            Email: variables.submitterEmail,
+            "Medicaid SPA ID": variables.id,
+            "Proposed Effective Date": formatDate(
+              variables.notificationMetadata?.proposedEffectiveDate,
+            ),
+            Summary: variables.additionalInformation,
+          }}
+          attachments={variables.attachments}
+        />
+        <SpamWarning />
+      </Container>
     </Html>
   );
 };
