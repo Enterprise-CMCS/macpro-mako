@@ -17,7 +17,7 @@ export const RenewalForm = () => {
   return (
     <ActionForm
       schema={formSchemas["contracting-renewal"]}
-      title="1915(b)(4) FFS Selective Contracting Renewal Waiver"
+      title="1915(b)(4) FFS Selective Contracting Renewal Waiver Details"
       fields={({ control }) => (
         <>
           <div className="flex flex-col">

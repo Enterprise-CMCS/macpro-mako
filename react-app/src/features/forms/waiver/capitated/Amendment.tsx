@@ -16,7 +16,7 @@ import { formSchemas } from "@/formSchemas";
 export const AmendmentForm = () => (
   <ActionForm
     schema={formSchemas["capitated-amendment"]}
-    title="1915(b) Comprehensive (Capitated) Waiver Amendment"
+    title="1915(b) Comprehensive (Capitated) Waiver Amendment Details"
     fields={({ control }) => (
       <>
         <div className="flex flex-col">

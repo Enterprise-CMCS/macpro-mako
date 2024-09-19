@@ -16,7 +16,7 @@ import { formSchemas } from "@/formSchemas";
 export const Renewal = () => (
   <ActionForm
     schema={formSchemas["capitated-renewal"]}
-    title="1915(b) Comprehensive (Capitated) Renewal Waiver"
+    title="1915(b) Comprehensive (Capitated) Renewal Waiver Details"
     fields={({ control }) => (
       <>
         <div className="flex flex-col">
