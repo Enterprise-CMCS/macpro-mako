@@ -260,7 +260,7 @@ export const v202401: FormSchema = {
                                   {
                                     rhf: "Input",
                                     label: "County",
-                                    labelClassName: "font-black font-bold",
+                                    labelClassName: "text-black font-bold",
                                     name: "county",
                                     rules: {
                                       required: "* Required",
@@ -272,7 +272,7 @@ export const v202401: FormSchema = {
                                   {
                                     rhf: "Input",
                                     label: "From zero up to",
-                                    labelClassName: "font-black font-bold",
+                                    labelClassName: "text-black font-bold",
                                     name: "county-up-to",
                                     rules: {
                                       pattern: {
@@ -323,7 +323,7 @@ export const v202401: FormSchema = {
                                   {
                                     rhf: "Input",
                                     label: "City",
-                                    labelClassName: "font-black font-bold",
+                                    labelClassName: "text-black font-bold",
                                     name: "city",
                                     rules: {
                                       required: "* Required",
@@ -335,7 +335,7 @@ export const v202401: FormSchema = {
                                   {
                                     rhf: "Input",
                                     label: "From zero up to",
-                                    labelClassName: "font-black font-bold",
+                                    labelClassName: "text-black font-bold",
                                     name: "city-up-to",
                                     rules: {
                                       pattern: {
@@ -387,7 +387,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Input",
                                 label: "Geographic area",
-                                labelClassName: "font-black font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "geographic-area",
                                 rules: {
                                   required: "* Required",
@@ -399,7 +399,7 @@ export const v202401: FormSchema = {
                               {
                                 rhf: "Textarea",
                                 label: "Describe",
-                                labelClassName: "font-black font-bold",
+                                labelClassName: "text-black font-bold",
                                 name: "geographic-area-description",
                                 rules: {
                                   required: "* Required",
@@ -418,7 +418,7 @@ export const v202401: FormSchema = {
                                   {
                                     rhf: "Input",
                                     label: "Above",
-                                    labelClassName: "font-black font-bold",
+                                    labelClassName: "text-black font-bold",
                                     name: "geographic-area-above",
                                     props: {
                                       icon: "% FPL",
@@ -437,7 +437,7 @@ export const v202401: FormSchema = {
                                   {
                                     rhf: "Input",
                                     label: "Up to and including",
-                                    labelClassName: "font-black font-bold",
+                                    labelClassName: "text-black font-bold",
                                     name: "geographic-area-up-to-and-including",
                                     props: {
                                       icon: "% FPL",
