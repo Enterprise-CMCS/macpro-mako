@@ -28,7 +28,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
       const children = await getAppkChildren(body.id);
       //Testing
 
-      console.log("These are the children...", children);
+      //console.log("These are the children...", children);
       appkChildren = children.hits.hits;
     }
     const filter = [];
@@ -69,8 +69,8 @@ export const getItemData = async (event: APIGatewayEvent) => {
       // fetch parent id from it
       // await getPackage(appKChildRemoved._source.appkParentId)
       // packageResult: set the appkTitle
-      console.log("Step 1..check if childappk is removed", appKChildRemoved._source.appkParentId)
-      console.log("Step 2.. get parentid", appKChildRemoved._source)
+      //console.log("Step 1..check if childappk is removed", appKChildRemoved._source.appkParentId)
+      //console.log("Step 2.. get parentid", appKChildRemoved._source)
     }
 
     // Return the title from the parent
