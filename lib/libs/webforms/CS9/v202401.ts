@@ -484,7 +484,6 @@ export const v202401: FormSchema = {
               fields: [
                 {
                   rhf: "Checkbox",
-                  label: "Policy exemptions",
                   labelClassName: "text-black font-bold",
                   name: "policy-exemptions-1",
                   rules: {
