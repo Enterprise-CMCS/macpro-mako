@@ -1,14 +1,12 @@
 import { getIdsToUpdate } from "../get-id-to-update";
 import {
   IssueRaiDto as MakoIssueRaiDto,
-  CompleteIntakeDto as MakoCompleteIntake,
   RespondToRaiDto as MakoRespondToRai,
   WithdrawRaiDto as MakoWithdrawRai,
   ToggleRaiResponseDto,
   RemoveAppkChildDto as MakoRemoveAppkChild,
   WithdrawPackageDto as MakoWithdrawPackage,
   UpdateIdDto as MakoUpdateId,
-  completeIntakeMako,
   issueRaiMako,
   respondToRaiMako,
   withdrawPackageMako,
@@ -18,14 +16,12 @@ import {
 } from "./mako-write-service";
 import {
   IssueRaiDto as SeaIssueRaiDto,
-  CompleteIntakeDto as SeaCompleteIntake,
   RespondToRaiDto as SeaRespondToRai,
   WithdrawRaiDto as SeaWithdrawRai,
   RemoveAppkChildDto as SeaRemoveAppkChild,
   WithdrawPackageDto as SeaWithdrawPackage,
   UpdateIdDto as SeaUpdateId,
   getTrx,
-  completeIntakeSeatool,
   issueRaiSeatool,
   respondToRaiSeatool,
   withdrawRaiSeatool,
@@ -34,53 +30,12 @@ import {
   updateIdSeatool,
 } from "./seatool-write-service";
 
-export type CompleteIntakeDto = MakoCompleteIntake & SeaCompleteIntake;
 export type IssueRaiDto = SeaIssueRaiDto & MakoIssueRaiDto;
 export type RespondToRaiDto = SeaRespondToRai & MakoRespondToRai;
 export type WithdrawRaiDto = SeaWithdrawRai & MakoWithdrawRai;
 export type RemoveAppkChildDto = SeaRemoveAppkChild & MakoRemoveAppkChild;
 export type WithdrawPackageDto = SeaWithdrawPackage & MakoWithdrawPackage;
 export type UpdateIdDto = SeaUpdateId & MakoUpdateId;
-
-export const completeIntakeAction = async ({
-  action,
-  cpoc,
-  description,
-  id,
-  subTypeIds,
-  subject,
-  submitterName,
-  timestamp,
-  topicName,
-  typeIds,
-  ...data
-}: CompleteIntakeDto) => {
-  const { trx } = await getTrx();
-
-  try {
-    await trx.begin();
-    await completeIntakeSeatool({
-      typeIds,
-      subTypeIds,
-      id,
-      cpoc,
-      description,
-      subject,
-      submitterName,
-    });
-    await completeIntakeMako({
-      action,
-      id,
-      timestamp,
-      topicName,
-      ...data,
-    });
-    await trx.commit();
-  } catch (err: unknown) {
-    console.log("AN ERROR OCCURED: ", err);
-    trx.rollback();
-  }
-};
 
 export const issueRaiAction = async ({
   action,
