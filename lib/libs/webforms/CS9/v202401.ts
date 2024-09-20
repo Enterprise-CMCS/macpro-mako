@@ -417,6 +417,11 @@ export const v202401: FormSchema = {
                                 labelClassName: "text-black font-bold",
                                 name: "geographic-area-description",
                                 rules: {
+                                  pattern: {
+                                    value: noLeadingTrailingWhitespace,
+                                    message:
+                                      "Must not have leading or trailing whitespace.",
+                                  },
                                   required: "* Required",
                                 },
                                 props: {
