@@ -376,6 +376,7 @@ export const v202401: FormSchema = {
                               "county-field-ranges [&_.slot-form-message]:w-max",
                             props: {
                               appendText: "Add range",
+                              fieldArrayClassName: "pt-8",
                             },
                             fields: [
                               {
@@ -564,6 +565,7 @@ export const v202401: FormSchema = {
                               "city-field-ranges [&_.slot-form-message]:w-max",
                             props: {
                               appendText: "Add range",
+                              fieldArrayClassName: "pt-8",
                             },
                             fields: [
                               {
@@ -720,7 +722,7 @@ export const v202401: FormSchema = {
                         name: "other-geo",
                         props: {
                           ...DefaultFieldGroupProps,
-                          appendText: "Add city",
+                          appendText: "Add geographic area",
                           removeText: "Remove",
                         },
                         fields: [
@@ -752,6 +754,7 @@ export const v202401: FormSchema = {
                               "other-field-ranges [&_.slot-form-message]:w-max",
                             props: {
                               appendText: "Add range",
+                              fieldArrayClassName: "pt-8",
                             },
                             fields: [
                               {
