@@ -3,7 +3,11 @@ import { emailTemplateValue } from "../data";
 import { OneMac } from "shared-types";
 import { CommonVariables, formatDate, formatNinetyDaysDate } from "../../..";
 import { Html, Container } from "@react-email/components";
-import { PackageDetails, MailboxSPA } from "../../email-components";
+import {
+  PackageDetails,
+  MailboxSPA,
+  ContactStateLead,
+} from "../../email-components";
 
 export const MedSpaStateEmail = (props: {
   variables: OneMac & CommonVariables;
@@ -40,11 +44,7 @@ export const MedSpaStateEmail = (props: {
           .
         </p>
         <MailboxSPA />
-        <p>
-          If you have questions or did not expect this email, please contact{" "}
-          <a href="mailto:spa@cms.hhs.gov">spa@cms.hhs.gov</a>.
-        </p>
-        <p>Thank you!</p>
+        <ContactStateLead />
       </Container>
     </Html>
   );

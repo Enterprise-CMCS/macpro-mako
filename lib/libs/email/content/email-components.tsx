@@ -1,38 +1,28 @@
 import * as React from "react";
-import { Text, Html, Link, Section } from "@react-email/components";
+import { Text, Link, Section } from "@react-email/components";
 import { Attachment } from "shared-types";
-
-export const EmailContainer = (children?: React.ReactNode) => {
-  return (
-    <Html lang="en" dir="ltr">
-      {children}
-    </Html>
-  );
-};
 
 export const LoginInstructions = (props: { appEndpointURL: string }) => {
   return (
-    <Html lang="en" dir="ltr">
-      <Section>
-        <ul style={{ maxWidth: "760px" }}>
-          <li>
-            The submission can be accessed in the OneMAC application, which you
-            can find at{" "}
-            <Link href={props.appEndpointURL}>{props.appEndpointURL}</Link>.
-          </li>
-          <li>
-            If you are not already logged in, please click the "Login" link at
-            the top of the page and log in using your Enterprise User
-            Administration (EUA) credentials.
-          </li>
-          <li>
-            After you have logged in, you will be taken to the OneMAC
-            application. The submission will be listed on the dashboard page,
-            and you can view its details by clicking on its ID number.
-          </li>
-        </ul>
-      </Section>
-    </Html>
+    <Section>
+      <ul style={{ maxWidth: "760px" }}>
+        <li>
+          The submission can be accessed in the OneMAC application, which you
+          can find at{" "}
+          <Link href={props.appEndpointURL}>{props.appEndpointURL}</Link>.
+        </li>
+        <li>
+          If you are not already logged in, please click the "Login" link at the
+          top of the page and log in using your Enterprise User Administration
+          (EUA) credentials.
+        </li>
+        <li>
+          After you have logged in, you will be taken to the OneMAC application.
+          The submission will be listed on the dashboard page, and you can view
+          its details by clicking on its ID number.
+        </li>
+      </ul>
+    </Section>
   );
 };
 
@@ -61,98 +51,88 @@ export const PackageDetails = (props: {
   attachments?: Attachment[] | null;
 }) => {
   return (
-    <Html lang="en" dir="ltr">
-      <Section>
-        <br />
-        {Object.keys(props.details).map((label: string) => {
-          if (label === "Summary") {
-            const summary =
-              props.details[label] && props.details[label].length
-                ? props.details[label]
-                : "No additional information submitted";
-            return (
-              <>
-                <br />
-                <p style={{ margin: ".5em" }}>
-                  <b>Summary:</b>
-                </p>
-                <p style={{ margin: ".5em" }}>{summary}</p>
-              </>
-            );
-          }
+    <Section>
+      <br />
+      {Object.keys(props.details).map((label: string) => {
+        if (label === "Summary") {
+          const summary =
+            props.details[label] && props.details[label].length
+              ? props.details[label]
+              : "No additional information submitted";
           return (
-            <p style={{ margin: ".5em" }}>
-              <b>{label}:</b> {props.details[label] ?? "Unknown"}
-            </p>
+            <>
+              <br />
+              <p style={{ margin: ".5em" }}>
+                <b>Summary:</b>
+              </p>
+              <p style={{ margin: ".5em" }}>{summary}</p>
+            </>
           );
-        })}
-        {props.attachments && <Attachments attachments={props.attachments} />}
-        <br />
-      </Section>
-    </Html>
+        }
+        return (
+          <p style={{ margin: ".5em" }}>
+            <b>{label}:</b> {props.details[label] ?? "Unknown"}
+          </p>
+        );
+      })}
+      {props.attachments && <Attachments attachments={props.attachments} />}
+      <br />
+    </Section>
   );
 };
 
 export const MailboxSPA = () => {
   return (
-    <Html lang="en" dir="ltr">
-      <p>
-        This mailbox is for the submittal of State Plan Amendments and non-web
-        based responses to Requests for Additional Information (RAI) on
-        submitted SPAs only. Any other correspondence will be disregarded.
-      </p>
-    </Html>
+    <p>
+      This mailbox is for the submittal of State Plan Amendments and non-web
+      based responses to Requests for Additional Information (RAI) on submitted
+      SPAs only. Any other correspondence will be disregarded.
+    </p>
   );
 };
 
 export const MailboxWaiver = () => {
   return (
-    <Html lang="en" dir="ltr">
-      <p>
-        This mailbox is for the submittal of Section 1915(b) and 1915(c)
-        Waivers, responses to Requests for Additional Information (RAI) on
-        Waivers, and extension requests on Waivers only. Any other
-        correspondence will be disregarded.
-      </p>
-    </Html>
+    <p>
+      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
+      responses to Requests for Additional Information (RAI) on Waivers, and
+      extension requests on Waivers only. Any other correspondence will be
+      disregarded.
+    </p>
   );
 };
 
 export const ContactStateLead = (props: { isChip?: boolean }) => {
   return (
-    <Html lang="en" dir="ltr">
-      <Section>
-        <br />
-        <p style={{ textAlign: "center" }}>
-          If you have questions or did not expect this email, please contact{" "}
-          {props.isChip ? (
-            <a href="mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov">
-              CHIPSPASubmissionMailBox@CMS.HHS.gov
-            </a>
-          ) : (
-            <a href="mailto:spa@cms.hhs.gov">spa@cms.hhs.gov</a>
-          )}{" "}
-          or your state lead.
-        </p>
-        <p style={{ textAlign: "center" }}>Thank you!</p>
-      </Section>
-    </Html>
+    <Section>
+      <br />
+      <p style={{ textAlign: "center" }}>
+        If you have questions or did not expect this email, please contact{" "}
+        {props.isChip ? (
+          <a href="mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov">
+            CHIPSPASubmissionMailBox@CMS.HHS.gov
+          </a>
+        ) : (
+          <a href="mailto:spa@cms.hhs.gov">spa@cms.hhs.gov</a>
+        )}{" "}
+        or your state lead.
+      </p>
+      <p style={{ textAlign: "center" }}>Thank you!</p>
+    </Section>
   );
 };
 
 export const SpamWarning = () => {
   return (
-    <Html lang="en" dir="ltr">
-      <Section>
-        <br />
-        <p style={{ textAlign: "center" }}>
-          If the contents of this email seem suspicious, do not open them, and
-          instead forward this email to{" "}
-          <a href="mailto:SPAM@cms.hhs.gov">SPAM@cms.hhs.gov</a>.
-        </p>
-        <p style={{ textAlign: "center" }}>Thank you!</p>
-      </Section>
-    </Html>
+    <Section>
+      <br />
+      <p style={{ textAlign: "center" }}>
+        If the contents of this email seem suspicious, do not open them, and
+        instead forward this email to{" "}
+        <a href="mailto:SPAM@cms.hhs.gov">SPAM@cms.hhs.gov</a>.
+      </p>
+      <p style={{ textAlign: "center" }}>Thank you!</p>
+    </Section>
   );
 };
 
@@ -162,16 +142,14 @@ export const WithdrawRAI = (props: {
   submitterEmail: string;
 }) => {
   return (
-    <Html lang="en" dir="ltr">
-      <Section>
-        <h3>
-          The OneMAC Submission Portal received a request to withdraw the Formal
-          RAI Response. You are receiving this email notification as the Formal
-          RAI for {props.id} was withdrawn by {props.submitterName}{" "}
-          {props.submitterEmail}.
-        </h3>
-      </Section>
-    </Html>
+    <Section>
+      <h3>
+        The OneMAC Submission Portal received a request to withdraw the Formal
+        RAI Response. You are receiving this email notification as the Formal
+        RAI for {props.id} was withdrawn by {props.submitterName}{" "}
+        {props.submitterEmail}.
+      </h3>
+    </Section>
   );
 };
 
