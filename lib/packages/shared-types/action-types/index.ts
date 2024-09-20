@@ -10,4 +10,3 @@ export * from "./legacy-admin-change";
 export * from "./seatool";
 export * from "./remove-appk-child";
 export * from "./update-id";
-export * from "./complete-intake";

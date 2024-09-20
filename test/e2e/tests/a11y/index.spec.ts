@@ -52,6 +52,7 @@ const webformRoutes = [
   "/webform/g2b/202401",
   "/webform/g2a/202401",
   "/webform/g1/202401",
+  "/webform/cs8/202401",
   "/webform/cs3/202401",
   "/webform/cs7/202401",
   "/webform/abp11/202401",
