@@ -371,12 +371,11 @@ export const v202401: FormSchema = {
                             description:
                               "Begin with the youngest age range first. The lower limit for CHIP eligibility should be the highest standard used for Medicaid children for the same age group(s) entered here.",
                             descriptionAbove: true,
-                            descriptionClassName: "county-field-ranges",
+                            descriptionClassName: "county-field-ranges pb-8",
                             formItemClassName:
                               "county-field-ranges [&_.slot-form-message]:w-max",
                             props: {
                               appendText: "Add range",
-                              fieldArrayClassName: "pt-8",
                             },
                             fields: [
                               {
@@ -560,12 +559,11 @@ export const v202401: FormSchema = {
                             description:
                               "Begin with the youngest age range first. The lower limit for CHIP eligibility should be the highest standard used for Medicaid children for the same age group(s) entered here.",
                             descriptionAbove: true,
-                            descriptionClassName: "city-field-ranges",
+                            descriptionClassName: "city-field-ranges pb-8",
                             formItemClassName:
                               "city-field-ranges [&_.slot-form-message]:w-max",
                             props: {
                               appendText: "Add range",
-                              fieldArrayClassName: "pt-8",
                             },
                             fields: [
                               {
@@ -749,12 +747,11 @@ export const v202401: FormSchema = {
                             description:
                               "Begin with the youngest age range first. The lower limit for CHIP eligibility should be the highest standard used for Medicaid children for the same age group(s) entered here.",
                             descriptionAbove: true,
-                            descriptionClassName: "other-field-ranges",
+                            descriptionClassName: "other-field-ranges pb-8",
                             formItemClassName:
                               "other-field-ranges [&_.slot-form-message]:w-max",
                             props: {
                               appendText: "Add range",
-                              fieldArrayClassName: "pt-8",
                             },
                             fields: [
                               {
