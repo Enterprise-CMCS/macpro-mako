@@ -357,6 +357,11 @@ export const v202401: FormSchema = {
                             },
                             name: "county",
                             rules: {
+                              pattern: {
+                                value: /^\S(.*\S)?$/,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
                               required: "* Required",
                             },
                           },
@@ -540,6 +545,11 @@ export const v202401: FormSchema = {
                             },
                             name: "city-name",
                             rules: {
+                              pattern: {
+                                value: /^\S(.*\S)?$/,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
                               required: "* Required",
                             },
                           },
@@ -723,6 +733,11 @@ export const v202401: FormSchema = {
                             },
                             name: "other-name",
                             rules: {
+                              pattern: {
+                                value: /^\S(.*\S)?$/,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
                               required: "* Required",
                             },
                           },
