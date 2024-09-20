@@ -75,7 +75,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
 
     // Return the title from the parent
     const pTitle = packageResult._source.appkTitle;
-    //console.log("This is the", pTitle);
+    console.log("This is the", pTitle);
 
     // Check to see if appkchild is in withdrawn state
     const appChildWithdrawnState = packageResult._source.actionType;
