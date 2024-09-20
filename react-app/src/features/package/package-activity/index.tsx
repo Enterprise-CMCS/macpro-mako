@@ -126,7 +126,9 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
 
       <div>
         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
-        <p>{props.additionalInformation || "No information submitted"}</p>
+        <p className="whitespace-pre-line">
+          {props.additionalInformation || "No information submitted"}
+        </p>
       </div>
     </div>
   );
