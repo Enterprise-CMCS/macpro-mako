@@ -742,6 +742,23 @@ export const v202401: FormSchema = {
                             },
                           },
                           {
+                            rhf: "Textarea",
+                            label: "Describe",
+                            name: "other-description",
+                            labelClassName: "text-black font-bold",
+                            props: {
+                              className: "min-h-[76px]",
+                            },
+                            rules: {
+                              required: "* Required",
+                              pattern: {
+                                value: noLeadingTrailingWhitespace,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
+                            },
+                          },
+                          {
                             rhf: "FieldArray",
                             name: "other-field-ranges",
                             description:
