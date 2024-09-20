@@ -51,15 +51,9 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
     ) => {
       return {
         to: [
-          ...(Array.isArray(variables.emails.chipInbox)
-            ? variables.emails.chipInbox
-            : []),
-          ...(Array.isArray(variables.emails.srtEmails)
-            ? variables.emails.srtEmails
-            : []),
-          ...(Array.isArray(variables.emails.cpocEmail)
-            ? variables.emails.cpocEmail
-            : []),
+          ...variables.emails.chipInbox,
+          ...variables.emails.srtEmails,
+          ...variables.emails.cpocEmail,
         ],
         cc: variables.emails.chipCcList,
         subject: `CHIP SPA RAI Response for ${variables.id} Submitted`,
@@ -86,24 +80,6 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
     cms: async (
       variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
     ) => {
-      // const item = await os.getItem(
-      //   process.env.osDomain!,
-      //   `${process.env.indexNamespace}main`,
-      //   variables.id,
-      // );
-
-      // console.log("hits");
-      // console.log(JSON.stringify(item, null, 2));
-
-      // getContent();
-      // const cpocName = item._source.leadAnalystName;
-      // const cpocId = item._source.leadAnalystOfficerId;
-
-      // const srts = item._source.reviewTeam.map((SRT) => {
-      //   console.log("cpoc", JSON.stringify(cpoc, null, 2));
-      //   console.log("single srt", JSON.stringify(SRT, null, 2));
-      // });
-      // console.log("srts", JSON.stringify(srts, null, 2));
       return {
         to: [
           ...variables.emails.osgEmail,
