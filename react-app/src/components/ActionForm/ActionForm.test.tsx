@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { MemoryRouter } from "react-router-dom";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, test, expect, vi } from "vitest";
 import { ActionForm } from "./index";
@@ -238,7 +238,9 @@ describe("ActionForm", () => {
     const submitBtn = container.querySelector('button[type="submit"]');
     await userEvent.click(submitBtn);
 
-    expect(documentPollerSpy).toBeCalledWith("id", documentCheckerFunc);
+    waitFor(() =>
+      expect(documentPollerSpy).toBeCalledWith("id", documentCheckerFunc),
+    );
   });
 
   test("calls `banner` with `bannerPostSubmission`", async () => {
@@ -272,11 +274,13 @@ describe("ActionForm", () => {
     const submitBtn = container.querySelector('button[type="submit"]');
     await userEvent.click(submitBtn);
 
-    expect(bannerPollerSpy).toBeCalledWith({
-      header: "Hello World Header",
-      body: "Hello World Body",
-      pathnameToDisplayOn: "/dashboard",
-    });
+    waitFor(() =>
+      expect(bannerPollerSpy).toBeCalledWith({
+        header: "Hello World Header",
+        body: "Hello World Body",
+        pathnameToDisplayOn: "/dashboard",
+      }),
+    );
   });
 
   test("renders all attachment properties within `attachments`", async () => {
