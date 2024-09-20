@@ -47,7 +47,7 @@ export const buildAttachmentObject = (recipes?: UploadRecipe[]) => {
           title: r.title,
           bucket: r.bucket,
           uploadDate: Date.now(),
-        }) as Attachment,
+        } as Attachment),
     )
     .flat();
 };
@@ -101,13 +101,6 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
           data.proposedEffectiveDate as Date,
         ),
         attachments: attachments ? buildAttachmentObject(attachments) : null,
-        state: (data.id as string).split("-")[0],
-      };
-    case buildActionUrl(Action.COMPLETE_INTAKE):
-      return {
-        ...data,
-        ...baseProperties,
-        ...userDetails,
         state: (data.id as string).split("-")[0],
       };
     case buildActionUrl(Action.ISSUE_RAI):

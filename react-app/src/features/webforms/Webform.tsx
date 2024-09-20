@@ -4,6 +4,8 @@ import { useReadOnlyUser } from "../../hooks/useReadOnlyUser";
 import { WebformBody } from "./WebFormBody";
 import { useParams } from "react-router-dom";
 
+import { v202401 as CS7 } from "../../../../lib/libs/webforms/CS7/v202401";
+
 export function Webform() {
   const { id, version } = useParams<{ id: string; version: string }>();
 
@@ -23,7 +25,7 @@ export function Webform() {
 
   return (
     <WebformBody
-      data={data}
+      data={CS7 || data}
       readonly={readonly}
       id={id}
       version={version}

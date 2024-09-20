@@ -1,4 +1,3 @@
-export * from "./complete-intake";
 export * from "./issue-rai";
 export * from "./respond-to-rai";
 export * from "./temporary-extension";
