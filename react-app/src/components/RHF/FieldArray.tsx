@@ -22,7 +22,9 @@ export const RHFFieldArray = <TFields extends FieldValues>(
 
   useEffect(() => {
     if (fieldArr.fields.length) return;
-    fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never);
+    fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never, {
+      shouldFocus: false,
+    });
   }, [fieldArr, props.fields]);
 
   return (
