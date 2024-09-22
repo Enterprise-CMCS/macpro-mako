@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, vi, test, expect } from "vitest";
 import { Profile } from ".";
+import * as api from "@/api";
 
 vi.mock("@/api", async (importOriginals) => ({
   ...((await importOriginals()) as object),
@@ -8,7 +9,7 @@ vi.mock("@/api", async (importOriginals) => ({
     data: {
       user: {
         "custom:state": "MD,OH,NY",
-        "custom:cms-roles": "onemac-micro-statesubmitter,onemac-micro-readonly",
+        "custom:cms-roles": "onemac-micro-statesubmitter",
         given_name: "George",
         family_name: "Harrison",
         email: "george@example.com",
@@ -26,10 +27,31 @@ describe("Profile", () => {
     expect(states).toBeInTheDocument();
   });
 
+  test("renders nothing if user has no states", () => {
+    vi.spyOn(api, "useGetUser").mockImplementationOnce(() => ({
+      data: {
+        // @ts-expect-error - avoid mocking whole user object for test
+        user: {
+          "custom:state": undefined,
+          "custom:cms-roles": "onemac-micro-statesubmitter",
+          given_name: "George",
+          family_name: "Harrison",
+          email: "george@example.com",
+        },
+      },
+    }));
+
+    render(<Profile />);
+
+    const accessGranted = screen.queryByText("Access Granted");
+
+    expect(accessGranted).not.toBeInTheDocument();
+  });
+
   test("renders roles", () => {
     render(<Profile />);
 
-    const states = screen.getByText("State Submitter, Read Only");
+    const states = screen.getByText("State Submitter");
 
     expect(states).toBeInTheDocument();
   });
