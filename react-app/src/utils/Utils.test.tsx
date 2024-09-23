@@ -1,10 +1,7 @@
-import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, test, expect, vi, afterEach } from "vitest";
 import { DataPoller } from "./Poller/DataPoller";
 
 describe("DataPoller", () => {
-  // let fetcher: vi.Mock;
-  // let onPoll: vi.Mock;
-  // let poller: DataPoller<string>;
   const fetcher = vi.fn();
   const onPoll = vi.fn();
   const poller = new DataPoller({
@@ -13,17 +10,6 @@ describe("DataPoller", () => {
     interval: 50,
     pollAttempts: 5,
   });
-
-  // beforeEach(() => {
-  //   // fetcher = vi.fn();
-  //   // onPoll = vi.fn();
-  //   poller = new DataPoller({
-  //     fetcher,
-  //     onPoll,
-  //     interval: 50,
-  //     pollAttempts: 5,
-  //   });
-  // });
 
   afterEach(() => {
     vi.clearAllMocks();
