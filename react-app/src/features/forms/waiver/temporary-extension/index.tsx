@@ -25,7 +25,7 @@ export const TemporaryExtensionForm = () => (
     fields={(form) => (
       <>
         <FormField
-          name="ids.authority"
+          name="ids.validAuthority.authority"
           control={form.control}
           render={({ field }) => (
             <FormItem className="max-w-xs">
@@ -49,14 +49,14 @@ export const TemporaryExtensionForm = () => (
           )}
         />
         <FormField
-          name="ids.waiverNumber"
+          name="ids.validAuthority.waiverNumber"
           control={form.control}
           render={({ field }) => {
             return (
               <FormItem
                 className="max-w-md"
                 onChange={async () => {
-                  await form.trigger("ids.authority");
+                  await form.trigger("ids.validAuthority.authority");
                 }}
               >
                 <FormLabel data-testid="waiverNumber-label">
@@ -91,7 +91,7 @@ export const TemporaryExtensionForm = () => (
           render={({ field }) => (
             <FormItem
               onChange={async () => {
-                await form.trigger("ids.authority");
+                await form.trigger("ids.validAuthority.authority");
               }}
             >
               <FormLabel data-testid="requestNumber-label">
