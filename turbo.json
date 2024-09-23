@@ -27,6 +27,16 @@
         "STAGE_NAME",
         "PROJECT"
       ]
+    },
+    "test": {
+      "cache": false,
+      "env": [
+        "AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY",
+        "AWS_SESSION_TOKEN",
+        "STAGE_NAME",
+        "PROJECT"
+      ]
     }
   }
 }

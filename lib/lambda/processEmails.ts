@@ -21,7 +21,7 @@ import * as os from "../libs/opensearch-lib";
 import {
   getCpocEmail,
   getSrtEmails,
-} from "libs/email/content/email-components";
+} from "lib/libs/email/content/email-components";
 
 // Constants
 const REGION = process.env.REGION;
@@ -154,7 +154,7 @@ export async function processAndSendEmails(
   await Promise.all(sendEmailPromises);
 }
 
-function createEmailParams(
+export function createEmailParams(
   filledTemplate: any,
   sourceEmail: string,
 ): SendEmailCommandInput {

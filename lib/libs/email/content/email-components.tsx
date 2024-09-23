@@ -56,8 +56,8 @@ export const PackageDetails = (props: {
       {Object.keys(props.details).map((label: string) => {
         if (label === "Summary") {
           const summary =
-            props.details[label] && props.details[label].length
-              ? props.details[label]
+            "label" in props.details && props.details.label
+              ? props.details.label
               : "No additional information submitted";
           return (
             <>

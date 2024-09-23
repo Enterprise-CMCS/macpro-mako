@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi, Mock } from "vitest";
 import { DateTime } from "luxon";
-import { Action, Attachment, Authority } from "shared-types";
+import { Action, Authority } from "shared-types";
 import { getPackageChangelog } from "../api/package";
 import {
   formatDate,
@@ -9,8 +9,6 @@ import {
   getLatestMatchingEvent,
   emailTemplates,
 } from ".";
-
-import { formatAttachments } from "../email/content/email-components";
 
 vi.mock("luxon", () => {
   const originalLuxon = vi.importActual("luxon");
@@ -26,58 +24,7 @@ vi.mock("../api/package", () => ({
   getPackageChangelog: vi.fn(),
 }));
 
-describe.skip("formatAttachments", () => {
-  it("should return 'no attachments' when attachmentList is null or empty", () => {
-    expect(formatAttachments("text", null)).toBe("no attachments");
-    expect(formatAttachments("text", [])).toBe("no attachments");
-  });
-
-  it("should format attachments as text", () => {
-    const attachments: Attachment[] = [
-      {
-        title: "title1",
-        filename: "file1.txt",
-        bucket: "bucket1",
-        key: "key1",
-        uploadDate: 1628090400000,
-      },
-      {
-        title: "title2",
-        filename: "file2.txt",
-        bucket: "bucket2",
-        key: "key2",
-        uploadDate: 1628186800000,
-      },
-    ];
-    const result = formatAttachments("text", attachments);
-    expect(result).toBe("\n\ntitle1: file1.txt\ntitle2: file2.txt\n\n");
-  });
-
-  it("should format attachments as HTML", () => {
-    const attachments: Attachment[] = [
-      {
-        title: "title1",
-        filename: "file1.txt",
-        bucket: "bucket1",
-        key: "key1",
-        uploadDate: 1628090400000,
-      },
-      {
-        title: "title2",
-        filename: "file2.txt",
-        bucket: "bucket2",
-        key: "key2",
-        uploadDate: 1628186800000,
-      },
-    ];
-    const result = formatAttachments("html", attachments);
-    expect(result).toBe(
-      "<ul><li>title1: file1.txt</li><li>title2: file2.txt</li></ul>",
-    );
-  });
-});
-
-describe.skip("formatDate", () => {
+describe("formatDate", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -97,7 +44,7 @@ describe.skip("formatDate", () => {
   });
 });
 
-describe.skip("formatNinetyDaysDate", () => {
+describe("formatNinetyDaysDate", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -118,7 +65,7 @@ describe.skip("formatNinetyDaysDate", () => {
   });
 });
 
-describe.skip("getEmailTemplates", () => {
+describe("getEmailTemplates", () => {
   it("should throw an error if no templates are found for the action", async () => {
     await expect(
       getEmailTemplates("unknown-action" as Action, "cms" as Authority),
@@ -141,7 +88,7 @@ describe.skip("getEmailTemplates", () => {
   });
 });
 
-describe.skip("getLatestMatchingEvent", () => {
+describe("getLatestMatchingEvent", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });

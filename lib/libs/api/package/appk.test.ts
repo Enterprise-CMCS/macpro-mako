@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import * as os from "libs/opensearch-lib";
+import * as os from "lib/libs/opensearch-lib";
 import { getAppkChildren } from "./appk";
 import { opensearch } from "shared-types";
 
@@ -21,7 +21,7 @@ describe("getAppkChildren", () => {
         },
       ],
     },
-  } as opensearch.main.Response;
+  } as unknown as opensearch.main.Response;
 
   beforeEach(() => {
     process.env.osDomain = mockOsDomain;
@@ -74,7 +74,9 @@ describe("getAppkChildren", () => {
         query: {
           bool: {
             must: [{ term: { "appkParentId.keyword": mockPackageId } }].concat(
-              mockFilter,
+              mockFilter.map((filter) => ({
+                term: { "appkParentId.keyword": filter.term.status },
+              })),
             ),
           },
         },
