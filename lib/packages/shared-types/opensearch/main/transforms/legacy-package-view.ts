@@ -2,7 +2,6 @@ import {
   LegacyAdminChange,
   LegacyPackageAction,
   legacyPackageViewSchema,
-  SEATOOL_AUTHORITIES,
   SEATOOL_STATUS,
 } from "../../..";
 
@@ -21,13 +20,8 @@ export const transform = (id: string) => {
         submitterName: data.submitterName,
         origin: "OneMAC",
         originalWaiverNumber: data.parentId,
-        flavor: "WAIVER",
         state: id.slice(0, 2),
         actionType: "Extend",
-        actionTypeId: 9999,
-        authorityId: data.temporaryExtensionType
-          ? getIdByAuthorityName(data.temporaryExtensionType)
-          : null,
         authority: data.temporaryExtensionType,
         stateStatus: "Submitted",
         cmsStatus: "Requested",
@@ -61,19 +55,6 @@ export const tombstone = (id: string) => {
     submitterName: null,
     origin: null,
   };
-};
-
-const getIdByAuthorityName = (authorityName: string) => {
-  try {
-    const authorityId = Object.keys(SEATOOL_AUTHORITIES).find(
-      (key) => SEATOOL_AUTHORITIES[key] === authorityName,
-    );
-    return authorityId ? parseInt(authorityId, 10) : null;
-  } catch (error) {
-    console.error(`SEATOOL AUTHORITY ID LOOKUP ERROR: ${authorityName}`);
-    console.error(error);
-    return null;
-  }
 };
 
 const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>

@@ -11,49 +11,33 @@ import {
 import { BLANK_VALUE } from "@/consts";
 import { usePackageDetailsCache } from "..";
 
-export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (
-  props,
-) => {
-  return (
-    <div className="flex flex-col gap-2">
-      <p className="font-bold">Change made</p>
-      <p>
-        {props.submitterName} has enabled State package action to withdraw
-        formal RAI response
-      </p>
-    </div>
-  );
-};
+// export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (
+//   props,
+// ) => {
+//   return (
+//     <div className="flex flex-col gap-2">
+//       <p className="font-bold">Change made</p>
+//       <p>
+//         {props.submitterName} has enabled State package action to withdraw
+//         formal RAI response
+//       </p>
+//     </div>
+//   );
+// };
 
-export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = (
-  props,
-) => {
-  return (
-    <div className="flex flex-col gap-2">
-      <p className="font-bold">Change made</p>
-      <p>
-        {props.submitterName} has disabled State package action to withdraw
-        formal RAI response
-      </p>
-    </div>
-  );
-};
-
-export const AC_UpdateId: FC<opensearch.changelog.Document> = (props) => {
-  return (
-    <div className="flex flex-col gap-2">
-      <p className="font-bold">Change made</p>
-      <p>
-        {props.submitterName} updated the package ID from {props.oldPackageId}{" "}
-        to {props.newPackageId}
-      </p>
-      <div>
-        <h2 className="font-bold">Change Reason</h2>
-        <p>{props.additionalInformation}</p>
-      </div>
-    </div>
-  );
-};
+// export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = (
+//   props,
+// ) => {
+//   return (
+//     <div className="flex flex-col gap-2">
+//       <p className="font-bold">Change made</p>
+//       <p>
+//         {props.submitterName} has disabled State package action to withdraw
+//         formal RAI response
+//       </p>
+//     </div>
+//   );
+// };
 
 export const AC_LegacyAdminChange: FC<opensearch.changelog.Document> = (
   props,
@@ -81,14 +65,14 @@ export const AC_Update: FC<opensearch.changelog.Document> = () => {
 export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
   const [label, Content] = useMemo(() => {
     switch (props.actionType) {
-      case "disable-rai-withdraw":
-        return ["Disable formal RAI response withdraw", AC_WithdrawDisabled];
-      case "enable-rai-withdraw":
-        return ["Enable formal RAI response withdraw", AC_WithdrawEnabled];
-      case "update-id":
-        return ["Package ID Update", AC_UpdateId];
-      case "legacy-admin-change":
-        return [props.changeType || "Manual Update", AC_LegacyAdminChange];
+      // case "disable-rai-withdraw":
+      //   return ["Disable formal RAI response withdraw", AC_WithdrawDisabled];
+      // case "enable-rai-withdraw":
+      //   return ["Enable formal RAI response withdraw", AC_WithdrawEnabled];
+      // case "update-id":
+      //   return ["Package ID Update", AC_UpdateId];
+      // case "legacy-admin-change":
+      //   return [props.changeType || "Manual Update", AC_LegacyAdminChange];
       default:
         return [BLANK_VALUE, AC_Update];
     }
@@ -114,11 +98,11 @@ export const AdminChanges = () => {
   const cache = usePackageDetailsCache();
   const data = cache.data.changelog?.filter((CL) =>
     [
-      "disable-rai-withdraw",
-      "enable-rai-withdraw",
-      "legacy-admin-change",
-      "update-id",
-    ].includes(CL._source.actionType),
+      // "disable-rai-withdraw",
+      // "enable-rai-withdraw",
+      // "legacy-admin-change",
+      // "update-id",
+    ].includes(CL._source.event),
   );
 
   if (!data?.length) return null;
