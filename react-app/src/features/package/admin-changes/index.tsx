@@ -55,15 +55,6 @@ import { usePackageDetailsCache } from "..";
 //   );
 // };
 
-// export const AC_CompleteIntake: FC<opensearch.changelog.Document> = (props) => {
-//   return (
-//     <div className="flex flex-col gap-2">
-//       <p className="font-bold">Change made</p>
-//       <p>{props.submitterName} completed intake of the package.</p>
-//     </div>
-//   );
-// };
-
 export const AC_LegacyAdminChange: FC<opensearch.changelog.Document> = (
   props,
 ) => {
@@ -96,8 +87,6 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
       //   return ["Enable formal RAI response withdraw", AC_WithdrawEnabled];
       // case "update-id":
       //   return ["Package ID Update", AC_UpdateId];
-      // case "complete-intake":
-      //   return ["Intake Completed", AC_CompleteIntake];
       // case "legacy-admin-change":
       //   return [props.changeType || "Manual Update", AC_LegacyAdminChange];
       default:
@@ -128,7 +117,6 @@ export const AdminChanges = () => {
       // "disable-rai-withdraw",
       // "enable-rai-withdraw",
       // "legacy-admin-change",
-      // "complete-intake",
       // "update-id",
     ].includes(CL._source.event),
   );
@@ -151,7 +139,9 @@ export const AdminChanges = () => {
         defaultValue={[data?.[0]._source.id as string]}
         className="flex flex-col gap-2"
       >
-        {data?.map((CL) => <AdminChange {...CL._source} key={CL._source.id} />)}
+        {data?.map((CL) => (
+          <AdminChange {...CL._source} key={CL._source.id} />
+        ))}
       </Accordion>
     </DetailsSection>
   );

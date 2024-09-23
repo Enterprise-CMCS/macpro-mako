@@ -3,16 +3,6 @@ import { buildStatusMemoQuery } from "../../../libs/api/statusMemo";
 import { formatSeatoolDate, getSecret } from "shared-utils";
 import * as sql from "mssql";
 
-export type CompleteIntakeDto = {
-  id: string;
-  typeIds: number[];
-  subTypeIds: number[];
-  subject: string;
-  description: string;
-  cpoc: number;
-  submitterName: string;
-};
-
 export type IssueRaiDto = {
   id: string;
   today: number;
@@ -92,56 +82,6 @@ export const getTrx = async () => {
   return { trx: transaction };
 };
 
-export const completeIntakeSeatool = async ({
-  typeIds,
-  subTypeIds,
-  id,
-  cpoc,
-  description,
-  subject,
-  submitterName,
-}: CompleteIntakeDto) => {
-  const { trx } = await getTrx();
-
-  // Generate INSERT statements for typeIds
-  const typeIdsValues = typeIds
-    .map((typeId: number) => `('${id}', '${typeId}')`)
-    .join(",\n");
-  const typeIdsInsert = typeIdsValues
-    ? `INSERT INTO SEA.dbo.State_Plan_Service_Types (ID_Number, Service_Type_ID) VALUES ${typeIdsValues};`
-    : "";
-
-  // Generate INSERT statements for subTypeIds
-  const subTypeIdsValues = subTypeIds
-    .map((subTypeId: number) => `('${id}', '${subTypeId}')`)
-    .join(",\n");
-
-  const subTypeIdsInsert = subTypeIdsValues
-    ? `INSERT INTO SEA.dbo.State_Plan_Service_SubTypes (ID_Number, Service_SubType_ID) VALUES ${subTypeIdsValues};`
-    : "";
-
-  await trx.request().query(`
-      UPDATE SEA.dbo.State_Plan
-        SET 
-          Title_Name = ${subject ? `'${subject.replace("'", "''")}'` : "NULL"},
-          Summary_Memo = ${
-            description ? `'${description.replace("'", "''")}'` : "NULL"
-          },
-          Lead_Analyst_ID = ${cpoc ? cpoc : "NULL"},
-          Status_Memo = ${buildStatusMemoQuery(
-            id,
-            `Intake Completed:  Intake was completed by ${submitterName}`,
-          )}
-        WHERE ID_Number = '${id}'
-
-        -- Insert all types into State_Plan_Service_Types
-        ${typeIdsInsert}
-
-        -- Insert all types into State_Plan_Service_SubTypes
-        ${subTypeIdsInsert}
-    `);
-};
-
 export const issueRaiSeatool = async ({
   id,
   spwStatus,
@@ -183,12 +123,16 @@ export const respondToRaiSeatool = async ({
   if (raiReceivedDate && raiWithdrawnDate) {
     statusMemoUpdate = buildStatusMemoQuery(
       id,
-      `RAI Response Received.  This overwrites the previous response received on ${formatSeatoolDate(raiReceivedDate)} and withdrawn on ${formatSeatoolDate(raiWithdrawnDate)}`,
+      `RAI Response Received.  This overwrites the previous response received on ${formatSeatoolDate(
+        raiReceivedDate,
+      )} and withdrawn on ${formatSeatoolDate(raiWithdrawnDate)}`,
     );
   } else if (raiWithdrawnDate) {
     statusMemoUpdate = buildStatusMemoQuery(
       id,
-      `RAI Response Received.  This overwrites a previous response withdrawn on ${formatSeatoolDate(raiWithdrawnDate)}`,
+      `RAI Response Received.  This overwrites a previous response withdrawn on ${formatSeatoolDate(
+        raiWithdrawnDate,
+      )}`,
     );
   } else {
     statusMemoUpdate = buildStatusMemoQuery(id, "RAI Response Received");

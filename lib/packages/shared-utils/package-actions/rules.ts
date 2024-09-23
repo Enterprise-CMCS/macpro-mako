@@ -103,11 +103,6 @@ const arUpdateId: ActionRule = {
     !checker.hasStatus(finalDispositionStatuses) &&
     false,
 };
-const arCompleteIntake: ActionRule = {
-  action: Action.COMPLETE_INTAKE,
-  check: (checker, user) =>
-    isCmsWriteUser(user) && checker.needsIntake && false,
-};
 
 const arRemoveAppkChild: ActionRule = {
   action: Action.REMOVE_APPK_CHILD,
@@ -123,6 +118,5 @@ export default [
   arWithdrawPackage,
   arTempExtension,
   arUpdateId,
-  arCompleteIntake,
   arRemoveAppkChild,
 ];
