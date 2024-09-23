@@ -92,8 +92,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
     //console.log("what the heck is in the changelog (B.F.):", JSON.stringify(changelog));
 
     const checkActionType = changelog.hits.hits.find(action => action._source.actionType === "remove-appk-child");
-    console.log("this is the action type", checkActionType);
-
+    console.log("this is the action type", checkActionType?._source.actionType);
 
     //console.log("This is the parent id: ", packageResult._id);
 
