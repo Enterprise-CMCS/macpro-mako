@@ -4,12 +4,15 @@ import { DataPoller } from "./Poller/DataPoller";
 describe("DataPoller", () => {
   const fetcher = vi.fn();
   const onPoll = vi.fn();
-  const poller = new DataPoller({
-    fetcher,
-    onPoll,
-    interval: 50,
-    pollAttempts: 5,
-  });
+
+  const createPoller = (interval: number, pollAttempts: number) => {
+    return new DataPoller({
+      fetcher,
+      onPoll,
+      interval,
+      pollAttempts,
+    });
+  };
 
   afterEach(() => {
     vi.clearAllMocks();
@@ -21,6 +24,7 @@ describe("DataPoller", () => {
     fetcher.mockResolvedValueOnce("valid value");
     onPoll.mockReturnValueOnce(true);
 
+    const poller = createPoller(50, 5);
     const result = await poller.startPollingData();
 
     expect(result).toEqual({
@@ -35,6 +39,7 @@ describe("DataPoller", () => {
     fetcher.mockResolvedValue("invalid value");
     onPoll.mockReturnValue(false);
 
+    const poller = createPoller(50, 5);
     const result = await poller.startPollingData();
 
     expect(result).toEqual({
@@ -51,6 +56,7 @@ describe("DataPoller", () => {
     fetcher.mockResolvedValueOnce("valid value");
     onPoll.mockReturnValueOnce(true);
 
+    const poller = createPoller(50, 3);
     const result = await poller.startPollingData();
 
     expect(result).toEqual({
@@ -59,5 +65,17 @@ describe("DataPoller", () => {
     });
     expect(fetcher).toHaveBeenCalledTimes(2);
     expect(onPoll).toHaveBeenCalledTimes(2);
+  });
+
+  test("should stop polling when interval is reached", async () => {
+    setInterval(() => onPoll.mockReturnValue(true), 300)
+
+    const poller = createPoller(50, 3);
+    const result = await poller.startPollingData();
+
+    expect(result).toEqual({
+      correctDataStateFound: false,
+      maxAttemptsReached: true,
+    });
   });
 });
