@@ -39,22 +39,6 @@ import { usePackageDetailsCache } from "..";
 //   );
 // };
 
-// export const AC_UpdateId: FC<opensearch.changelog.Document> = (props) => {
-//   return (
-//     <div className="flex flex-col gap-2">
-//       <p className="font-bold">Change made</p>
-//       <p>
-//         {props.submitterName} updated the package ID from {props.oldPackageId}{" "}
-//         to {props.newPackageId}
-//       </p>
-//       <div>
-//         <h2 className="font-bold">Change Reason</h2>
-//         <p>{props.additionalInformation}</p>
-//       </div>
-//     </div>
-//   );
-// };
-
 export const AC_LegacyAdminChange: FC<opensearch.changelog.Document> = (
   props,
 ) => {
