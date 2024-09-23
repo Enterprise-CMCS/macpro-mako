@@ -31,7 +31,6 @@ export class Email extends cdk.NestedStack {
     const {
       project,
       stage,
-      isDev,
       stack,
       vpc,
       applicationEndpointUrl,

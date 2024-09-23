@@ -17,7 +17,7 @@ export const InitialForm = () => {
   return (
     <ActionForm
       schema={formSchemas["contracting-initial"]}
-      title="1915(b)(4) FFS Selective Contracting Initial Waiver"
+      title="1915(b)(4) FFS Selective Contracting Initial Waiver Details"
       fields={({ control }) => (
         <>
           <div className="flex flex-col">
