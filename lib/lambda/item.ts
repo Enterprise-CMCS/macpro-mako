@@ -64,7 +64,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
 
     // see if its a child appk that has been withdrawn
     const appKChildRemoved = changelog.hits.hits.find(changeLogItem => changeLogItem._source.actionType === "remove-appk-child");
-
+    console.log("appkChild Removed here action TYPE: ..", appKChildRemoved?._source.actionType);
     if (appKChildRemoved) {
       // fetch parent id from it
       // await getPackage(appKChildRemoved._source.appkParentId)
@@ -91,8 +91,8 @@ export const getItemData = async (event: APIGatewayEvent) => {
 
     //console.log("what the heck is in the changelog (B.F.):", JSON.stringify(changelog));
 
-    const checkActionType = changelog.hits.hits.find(action => action._source.actionType === "remove-appk-child");
-    console.log("this is the action type", checkActionType?._source.actionType);
+    //const checkActionType = changelog.hits.hits.find(action => action._source.actionType === "remove-appk-child");
+    //console.log("this is the action type", checkActionType?._source.actionType);
 
     //console.log("This is the parent id: ", packageResult._id);
 
