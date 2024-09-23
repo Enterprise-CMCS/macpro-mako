@@ -17,7 +17,7 @@ export const AmendmentForm = () => {
   return (
     <ActionForm
       schema={formSchemas["contracting-amendment"]}
-      title="1915(b) Waiver Amendment Request Details"
+      title="1915(b)(4) FFS Selective Contracting Waiver Amendment"
       fields={({ control }) => (
         <>
           <div className="flex flex-col">
