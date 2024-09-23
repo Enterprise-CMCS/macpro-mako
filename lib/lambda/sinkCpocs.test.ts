@@ -1,4 +1,3 @@
-import { type KafkaRecord } from "shared-types/lambda-events";
 import { describe, expect, it, vi } from "vitest";
 import { handler as sinkCpocLamda } from "./sinkCpocs";
 import * as sinkLib from "../libs/sink-lib";
