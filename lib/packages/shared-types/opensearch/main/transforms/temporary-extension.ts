@@ -31,7 +31,7 @@ export const transform = () => {
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
       actionType: data.actionType,
-      initialIntakeNeeded: true,
+      initialIntakeNeeded: false,
     };
   });
 };
