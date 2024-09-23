@@ -5,7 +5,7 @@ import {
   zExtensionOriginalWaiverNumberSchema,
   zExtensionWaiverNumberSchema,
   zodAlwaysRefine,
-} from "@/utils";
+} from "@/utils/zod";
 import { getItem } from "@/api";
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
 import { ReactElement } from "react";

@@ -4,7 +4,6 @@ import {
   bWaiverRaiFields,
   chipSpaRaiFields,
   chipWithdrawPackageFields,
-  defaultCompleteIntakeFields,
   defaultDisableRaiWithdrawFields,
   defaultEnableRaiWithdrawFields,
   defaultIssueRaiFields,
@@ -74,13 +73,6 @@ const updateIdFor: FieldsGroup = {
   "1915(c)": defaultUpdateIdFields,
 };
 
-const completeIntakeFor: FieldsGroup = {
-  "CHIP SPA": defaultCompleteIntakeFields,
-  "Medicaid SPA": defaultCompleteIntakeFields,
-  "1915(b)": defaultCompleteIntakeFields,
-  "1915(c)": defaultCompleteIntakeFields,
-};
-
 export const getFieldsFor = (a: Action, p: AuthorityUnion): ReactElement[] => {
   const fieldsGroupMap: Record<string, FieldsGroup> = {
     "issue-rai": issueRaiFor,
@@ -91,7 +83,6 @@ export const getFieldsFor = (a: Action, p: AuthorityUnion): ReactElement[] => {
     "withdraw-package": withdrawPackageFor,
     "temporary-extension": tempExtensionFor,
     "update-id": updateIdFor,
-    "complete-intake": completeIntakeFor,
   };
   const group = fieldsGroupMap?.[a];
   if (group === undefined) throw new Error(`No attachments group for "${a}"`);

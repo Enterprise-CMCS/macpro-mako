@@ -26,7 +26,8 @@ const arIssueRai: ActionRule = {
         // The package does not have RAI Response Withdraw enabled
         !checker.hasEnabledRaiWithdraw)) &&
     isCmsWriteUser(user) &&
-    !isIDM(user),
+    !isIDM(user) &&
+    false,
 };
 
 const arRespondToRai: ActionRule = {
@@ -37,7 +38,8 @@ const arRespondToRai: ActionRule = {
     checker.hasLatestRai &&
     // safety; prevent bad status from causing overwrite
     (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
-    isStateUser(user),
+    isStateUser(user) &&
+    false,
 };
 
 const arTempExtension: ActionRule = {
@@ -46,7 +48,8 @@ const arTempExtension: ActionRule = {
     checker.hasStatus(SEATOOL_STATUS.APPROVED) &&
     checker.isWaiver &&
     checker.isInitialOrRenewal &&
-    isStateUser(user),
+    isStateUser(user) &&
+    false,
 };
 
 const arEnableWithdrawRaiResponse: ActionRule = {
@@ -57,7 +60,8 @@ const arEnableWithdrawRaiResponse: ActionRule = {
     checker.hasRaiResponse &&
     !checker.hasEnabledRaiWithdraw &&
     isCmsWriteUser(user) &&
-    !checker.hasStatus(finalDispositionStatuses),
+    !checker.hasStatus(finalDispositionStatuses) &&
+    false,
 };
 
 const arDisableWithdrawRaiResponse: ActionRule = {
@@ -68,7 +72,8 @@ const arDisableWithdrawRaiResponse: ActionRule = {
     checker.hasRaiResponse &&
     checker.hasEnabledRaiWithdraw &&
     isCmsWriteUser(user) &&
-    !checker.hasStatus(finalDispositionStatuses),
+    !checker.hasStatus(finalDispositionStatuses) &&
+    false,
 };
 
 const arWithdrawRaiResponse: ActionRule = {
@@ -80,31 +85,29 @@ const arWithdrawRaiResponse: ActionRule = {
     // safety; prevent bad status from causing overwrite
     !checker.hasRaiWithdrawal &&
     checker.hasEnabledRaiWithdraw &&
-    isStateUser(user),
+    isStateUser(user) &&
+    false,
 };
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
     !checker.isTempExtension &&
     !checker.hasStatus(finalDispositionStatuses) &&
-    isStateUser(user),
+    isStateUser(user) &&
+    false,
 };
 const arUpdateId: ActionRule = {
   action: Action.UPDATE_ID,
   check: (checker, user) =>
-    isCmsSuperUser(user) && !checker.hasStatus(finalDispositionStatuses),
-};
-const arCompleteIntake: ActionRule = {
-  action: Action.COMPLETE_INTAKE,
-  check: (checker, user) => isCmsWriteUser(user) && checker.needsIntake,
+    isCmsSuperUser(user) &&
+    !checker.hasStatus(finalDispositionStatuses) &&
+    false,
 };
 
 const arRemoveAppkChild: ActionRule = {
   action: Action.REMOVE_APPK_CHILD,
-  check: (checker, user) =>
-    isStateUser(user) && !!checker.isAppkChild
-}
-
+  check: (checker, user) => isStateUser(user) && !!checker.isAppkChild && false,
+};
 
 export default [
   arIssueRai,
@@ -115,6 +118,5 @@ export default [
   arWithdrawPackage,
   arTempExtension,
   arUpdateId,
-  arCompleteIntake,
   arRemoveAppkChild,
 ];

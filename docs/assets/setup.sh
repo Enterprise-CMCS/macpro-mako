@@ -119,13 +119,10 @@ if ! which direnv > /dev/null ; then
   brew install direnv
 fi
 
-# Install and configure go, an open source programming language
-if ! which go > /dev/null ; then
-  brew install go
-fi
-
 # Install kion-cli, a go package used to authenticate to Kion and access AWS
-go install github.com/kionsoftware/kion-cli@latest
+if ! which kion > /dev/null ; then
+  brew install kionsoftware/tap/kion-cli
+fi
 touch ~/.kion.yml
 
 touch $macprorcfile
@@ -135,9 +132,6 @@ echo """
 export NVM_DIR="$HOME/.nvm"
   [ -s "$homebrewprefix/opt/nvm/nvm.sh" ] && \. "$homebrewprefix/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "$homebrewprefix/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$homebrewprefix/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-export PATH=/usr/local/go/bin:\$PATH
-export PATH=\$PATH:$(go env GOPATH)/bin
 
 export PATH="$homebrewprefix/bin:\$PATH"
 eval \"\$($homebrewprefix/bin/brew shellenv)\"

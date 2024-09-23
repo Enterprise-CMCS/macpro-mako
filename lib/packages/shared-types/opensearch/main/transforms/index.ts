@@ -1,5 +1,12 @@
 export * as legacyPackageView from "./legacy-package-view";
-export * as newSubmission from "./new-submission";
+export * as capitatedAmendment from "./capitated-amendment";
+export * as capitatedInitial from "./capitated-initial";
+export * as capitatedRenewal from "./capitated-renewal";
+export * as contractingAmendment from "./contracting-amendment";
+export * as contractingInitial from "./contracting-initial";
+export * as contractingRenewal from "./contracting-renewal";
+export * as newChipSubmission from "./new-chip-submission";
+export * as newMedicaidSubmission from "./new-medicaid-submission";
 export * as toggleWithdrawEnabled from "./toggle-withdraw-enabled";
 export * as withdrawPackage from "./withdraw-package";
 export * as issueRai from "./issue-rai";
@@ -8,3 +15,4 @@ export * as withdrawRai from "./withdraw-rai-response";
 export * as seatool from "./seatool";
 export * as removeAppkChild from "./remove-appk-child";
 export * as changedDate from "./changedDate";
+export * as temporaryExtension from "./temporary-extension";

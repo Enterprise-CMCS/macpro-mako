@@ -1,7 +1,6 @@
 import { Action } from "shared-types";
 import {
   idUpdated,
-  intakeCompleted,
   packageWithdrawn,
   raiIssued,
   raiRespondedTo,
@@ -22,7 +21,6 @@ export const successCheckSwitch = (a: Action) => {
     "withdraw-package": packageWithdrawn,
     "temporary-extension": temporaryExtensionRequested,
     "update-id": idUpdated,
-    "complete-intake": intakeCompleted,
   };
   const group = actionStatusMap?.[a];
   if (!group) throw new Error(`No status for group "${a}"`);
