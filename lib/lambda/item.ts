@@ -75,7 +75,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
 
     // Return the title from the parent
     const pTitle = packageResult._source.appkTitle;
-    console.log("This is the", pTitle);
+    //console.log("This is the", pTitle);
 
     // Check to see if appkchild is in withdrawn state
     const appChildWithdrawnState = packageResult._source.actionType;
@@ -89,13 +89,18 @@ export const getItemData = async (event: APIGatewayEvent) => {
     // determine if this record is an app-k child
     // query for the parent id from that entry
 
-    console.log("what the heck is in the changelog (B.F.):", JSON.stringify(changelog));
-    console.log("This is the parent id: ", packageResult._id);
+    //console.log("what the heck is in the changelog (B.F.):", JSON.stringify(changelog));
+
+    const checkActionType = changelog.hits.hits.find(action => action._source.actionType === "remove-appk-child");
+    console.log("this is the action type", checkActionType);
+
+
+    //console.log("This is the parent id: ", packageResult._id);
 
 
 
 
-    packageResult._source.appkParent
+    //packageResult._source.appkParent
     //           "appkParent": true,
 
 
