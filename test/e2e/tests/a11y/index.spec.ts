@@ -29,7 +29,7 @@ const staticRoutes = [
   "/new-submission/waiver/temporary-extensions",
 ];
 
-test.describe("test a11y on static routes", () => {
+describe("test a11y on static routes", () => {
   for (const route of staticRoutes) {
     test(`${route} should not have any automatically detectable accessibility issues`, async ({
       page,
@@ -70,7 +70,7 @@ const webformRoutes = [
   "/webform/abp1/202402",
 ];
 
-test.describe("test a11y on webform routes", () => {
+describe("test a11y on webform routes", () => {
   for (const route of webformRoutes) {
     test(`${route} should not have any automatically detectable accessibility issues`, async ({
       page,
