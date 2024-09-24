@@ -8,7 +8,6 @@ import {
   OsProvider,
   type OsTab,
   useOsData,
-  FilterChips,
   FilterDrawerProvider,
   useUserContext,
   Tabs,
@@ -64,10 +63,10 @@ export const Dashboard = () => {
         isLoading: osData.isLoading,
       }}
     >
-      <div className="flex flex-col w-full mx-auto px-4 lg:px-8">
+      <div>
         <FilterDrawerProvider>
           {/* Header  */}
-          <div className="flex w-full self-center max-w-screen-xl xs:flex-row flex-col justify-between py-4">
+            <div className="flex flex-col w-full self-center mx-auto max-w-screen-xl xs:flex-row justify-between p-4 lg:px-8">
             <h1 className="text-xl font-bold mb-4 md:mb-0">Dashboard</h1>
             {!userContext?.isCms && (
               <Link
@@ -96,6 +95,7 @@ export const Dashboard = () => {
                   )
                 }
               >
+                <div className="flex max-w-screen-xl mx-auto px-4 lg:px-8">
                 <TabsList>
                   <TabsTrigger value="spas" className="px-6 py-2">
                     <h2 className="font-bold text-[1.3em]">SPAs</h2>
@@ -104,12 +104,11 @@ export const Dashboard = () => {
                     <h2 className="font-bold text-[1.3em]">Waivers</h2>
                   </TabsTrigger>
                 </TabsList>
+                </div>
                 <TabsContent value="spas">
-                  <FilterChips />
                   <SpasList />
                 </TabsContent>
                 <TabsContent value="waivers">
-                  <FilterChips />
                   <WaiversList />
                 </TabsContent>
               </Tabs>
