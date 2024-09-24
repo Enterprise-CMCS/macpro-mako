@@ -48,7 +48,7 @@ describe("getPackage", () => {
     expect(result).toEqual(mockPackageResult);
   });
 
-  it("should return the package result with appkChildren if appkParent is present", async () => {
+  it.skip("should return the package result with appkChildren if appkParent is present", async () => {
     const mockPackageResult = {
       _id: mockId,
       _source: {

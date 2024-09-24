@@ -15,10 +15,13 @@ const mapActionType: Record<string, string> = {
 };
 const confirmationModalBody = (document: opensearch.main.Document) => {
   const beginning = `You are about to withdraw ${document.authority} ${mapActionType[document.actionType]} waiver ${document.id}.`;
-  const middle = document.appkParent
-    ? `Completing this action will conclude
-    the review of this ${document.authority} ${mapActionType[document.actionType]} waiver package, and all packages associated with ${document.id} will also be withdrawn.`
-    : `Completing this action will conclude 
+  // TODO:  uncomment when appks are supported
+  // const middle = document.appkParent
+  //   ? `Completing this action will conclude
+  //   the review of this ${document.authority} ${mapActionType[document.actionType]} waiver package, and all packages associated with ${document.id} will also be withdrawn.`
+  //   : `Completing this action will conclude
+  //   the review of this ${document.authority} ${mapActionType[document.actionType]} waiver package.`;
+  const middle = `Completing this action will conclude 
     the review of this ${document.authority} ${mapActionType[document.actionType]} waiver package.`;
   const end =
     "If you are not sure this is the correct action to select, contact your CMS point of contact for assistance.";

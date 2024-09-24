@@ -81,7 +81,7 @@ export const BreadCrumbBar = ({ children }: React.PropsWithChildren) => {
     <nav
       role="navigation"
       aria-label="breadcrumbs for spa or waiver choices"
-      className="m-4"
+      className="my-4"
     >
       <ul className="flex gap-1">{children}</ul>
     </nav>

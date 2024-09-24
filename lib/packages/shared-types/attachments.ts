@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { s3ParseUrl } from "shared-utils/s3-url-parser";
+import { s3ParseUrl } from "../shared-utils/s3-url-parser";
 
 export const attachmentTitleMap = {
   // SPA
@@ -77,3 +77,25 @@ export function handleLegacyAttachment(
     key,
   } as Attachment;
 }
+
+export const attachmentArraySchema = ({
+  max,
+  message = "Required",
+}: {
+  max?: number;
+  message?: string;
+} = {}) => {
+  const min = 1;
+  const baseSchema = z.array(attachmentSchema);
+  const noMax = max === 0 || max === undefined;
+  if (noMax) {
+    return baseSchema.min(min, { message });
+  }
+
+  return baseSchema.min(min, { message }).max(max, { message });
+};
+
+export const attachmentArraySchemaOptional = () => {
+  const baseSchema = z.array(attachmentSchema);
+  return baseSchema.optional();
+};

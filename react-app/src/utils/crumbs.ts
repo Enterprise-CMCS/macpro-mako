@@ -1,6 +1,7 @@
 import { BreadCrumbConfig, Route } from "@/components";
 import { mapActionLabel, mapSubmissionCrumb } from "@/utils";
-import { Action, Authority } from "shared-types";
+import { Action } from "shared-types/actions";
+import { Authority } from "shared-types/authority";
 
 type DetailsAndActionsBreadCrumbsArgs = {
   id: string;

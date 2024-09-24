@@ -20,7 +20,7 @@ export const handler: Handler = async (event, _, callback) => {
       for (const topic of [...new Set(trigger.topics)]) {
         const consumerGroupId = `${event.consumerGroupPrefix}${randomUUID()}`;
         console.log(
-          `Creating a mapping to trigger ${trigger.function} off ${topic} with consumer group ID ${consumerGroupId}`
+          `Creating a mapping to trigger ${trigger.function} off ${topic} with consumer group ID ${consumerGroupId}`,
         );
         const createEventSourceMappingParams = {
           BatchSize: trigger.batchSize || 1000,
@@ -48,7 +48,7 @@ export const handler: Handler = async (event, _, callback) => {
         };
         console.log(JSON.stringify(createEventSourceMappingParams, null, 2));
         const command = new CreateEventSourceMappingCommand(
-          createEventSourceMappingParams as CreateEventSourceMappingCommandInput
+          createEventSourceMappingParams as CreateEventSourceMappingCommandInput,
         );
         const result = await lambdaClient.send(command);
         console.log(result);

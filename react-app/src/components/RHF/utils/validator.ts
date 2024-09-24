@@ -4,7 +4,13 @@
  * - creating/saving form data
  * - retrieving form data
  */
-import * as T from "shared-types";
+import {
+  DependencyRule,
+  FormGroup,
+  FormSchema,
+  RHFOption,
+  RHFSlotProps,
+} from "shared-types/forms";
 import { RegisterOptions } from "react-hook-form";
 
 import {
@@ -156,7 +162,7 @@ export const validateOption = (optionValue: string, options: any[]) => {
 };
 
 // return true: run validation - false: skip validation
-export const dependencyCheck = (dep: T.DependencyRule, data: any) => {
+export const dependencyCheck = (dep: DependencyRule, data: any) => {
   const conditionMatched = dep.conditions.every((DC) => {
     if (DC.type === "valueNotExist") return !data[DC.name];
     if (DC.type === "expectedValue") {
@@ -171,7 +177,7 @@ export const dependencyCheck = (dep: T.DependencyRule, data: any) => {
 };
 
 export const formGroupValidator =
-  (data: any) => (ACC: ERROR, FORM: T.FormGroup) => {
+  (data: any) => (ACC: ERROR, FORM: FormGroup) => {
     if (FORM.dependency) {
       const depMatch = dependencyCheck(FORM.dependency, data);
       if (!depMatch) return ACC;
@@ -182,8 +188,8 @@ export const formGroupValidator =
 
 export const slotValidator =
   (data: any) =>
-  (ACC: ERROR, SLOT: T.RHFSlotProps): ERROR => {
-    const optionValidator = (OPT: T.RHFOption) => {
+  (ACC: ERROR, SLOT: RHFSlotProps): ERROR => {
+    const optionValidator = (OPT: RHFOption) => {
       if (OPT.form) OPT.form.reduce(formGroupValidator(data), ACC);
       if (OPT.slots) {
         OPT.slots.reduce(slotValidator(data), ACC);
@@ -191,7 +197,7 @@ export const slotValidator =
       return ACC;
     };
 
-    const fieldValidator = (FLD: any) => (SLOT1: T.RHFSlotProps) => {
+    const fieldValidator = (FLD: any) => (SLOT1: RHFSlotProps) => {
       if (SLOT1.rhf === "FieldArray") {
         FLD[SLOT1.name].forEach((DAT: any) => {
           SLOT1.fields?.forEach(fieldValidator(DAT));
@@ -264,7 +270,7 @@ export const slotValidator =
     return ACC;
   };
 
-export const documentValidator = (document: T.FormSchema) => (data: any) => {
+export const documentValidator = (document: FormSchema) => (data: any) => {
   return document.sections.reduce((ACC, SEC) => {
     if (SEC.dependency) {
       const depMatch = dependencyCheck(SEC.dependency, data);

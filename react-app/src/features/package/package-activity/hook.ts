@@ -8,11 +8,11 @@ import { usePackageDetailsCache } from "..";
 type Attachments = NonNullable<opensearch.changelog.Document["attachments"]>;
 
 export const useAttachmentService = (
-  props: Pick<opensearch.changelog.Document, "packageId">
+  props: Pick<opensearch.changelog.Document, "packageId">,
 ) => {
   const { mutateAsync, error, isLoading } = useMutation(
     (att: Attachments[number]) =>
-      getAttachmentUrl(props.packageId, att.bucket, att.key, att.filename)
+      getAttachmentUrl(props.packageId, att.bucket, att.key, att.filename),
   );
 
   const onZip = (attachments: Attachments) => {
@@ -39,7 +39,7 @@ export const useAttachmentService = (
         zip.generateAsync({ type: "blob" }).then((content) => {
           saveAs(
             content,
-            `${props.packageId} - ${new Date().toDateString()}.zip`
+            `${props.packageId} - ${new Date().toDateString()}.zip`,
           );
         });
       })
@@ -54,16 +54,7 @@ export const useAttachmentService = (
 export const usePackageActivities = () => {
   const cache = usePackageDetailsCache();
   const service = useAttachmentService({ packageId: cache.data.id });
-  const data = cache.data.changelog?.filter((CL) =>
-    [
-      "new-submission",
-      "withdraw-rai",
-      "withdraw-package",
-      "issue-rai",
-      "respond-to-rai",
-      "remove-appk-child",
-    ].includes(CL._source.actionType)
-  );
+  const data = cache.data.changelog;
 
   const onDownloadAll = () => {
     const attachmentsAggregate = cache.data.changelog?.reduce((ACC, ATT) => {

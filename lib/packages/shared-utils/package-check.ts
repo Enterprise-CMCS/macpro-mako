@@ -3,13 +3,9 @@ import {
   Authority,
   SEATOOL_STATUS,
   ActionType,
+  Action,
+  CognitoUserAttributes,
 } from "shared-types";
-
-const secondClockStatuses = [
-  SEATOOL_STATUS.PENDING,
-  SEATOOL_STATUS.PENDING_APPROVAL,
-  SEATOOL_STATUS.PENDING_CONCURRENCE,
-];
 
 const checkAuthority = (
   authority: Authority | null,
@@ -34,20 +30,26 @@ export const PackageCheck = ({
   raiWithdrawEnabled,
   authority,
   actionType,
-  appkParentId,
-  appkParent,
+  // appkParentId,
+  // appkParent,
   initialIntakeNeeded,
   submissionDate,
   leadAnalystName,
 }: opensearch.main.Document) => {
+  const secondClockStatuses = [
+    SEATOOL_STATUS.PENDING,
+    SEATOOL_STATUS.PENDING_APPROVAL,
+    SEATOOL_STATUS.PENDING_CONCURRENCE,
+  ];
+
   const planChecks = {
     isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
     isWaiver: checkAuthority(authority, [
       Authority["1915b"],
       Authority["1915c"],
     ]),
-    isAppk: appkParent,
-    isAppkChild: appkParentId,
+    isAppk: false,
+    isAppkChild: false,
     /** Keep excess methods to a minimum with `is` **/
     authorityIs: (validAuthorities: Authority[]) =>
       checkAuthority(authority, validAuthorities),
@@ -111,3 +113,13 @@ export const PackageCheck = ({
 };
 
 export type IPackageCheck = ReturnType<typeof PackageCheck>;
+
+export type ActionRule = {
+  action: Action;
+  check: (
+    checker: IPackageCheck,
+    user: CognitoUserAttributes,
+    /** Keep excess parameters to a minimum **/
+    ...any: any[]
+  ) => boolean;
+};
