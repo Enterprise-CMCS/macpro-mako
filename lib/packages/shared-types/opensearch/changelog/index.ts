@@ -7,33 +7,38 @@ import {
   ExportHeaderOptions,
 } from "./../_";
 import { z } from "zod";
+
 import {
-  OneMac,
-  RaiIssue,
-  RaiResponse,
-  RaiWithdraw,
-  WithdrawPackage,
-  ToggleWithdrawRaiEnabled,
-  UpdateId,
-} from "../../action-types";
+  capitatedAmendment,
+  capitatedInitial,
+  capitatedRenewal,
+  contractingAmendment,
+  contractingInitial,
+  contractingRenewal,
+  newChipSubmission,
+  newMedicaidSubmission,
+  temporaryExtension,
+} from "./transforms";
+
+// legacy
 import { legacyAdminChange, legacyEvent } from "./transforms";
 
-export type Document = OneMac &
-  WithdrawPackage &
-  RaiResponse &
-  RaiIssue &
-  RaiWithdraw &
-  ToggleWithdrawRaiEnabled &
-  UpdateId & {
-    actionType: string;
-    timestamp: string;
-    packageId: string;
-    appkChildId: string;
-    appkParentId: string;
-    oldPackageId: string;
-    newPackageId: string;
-  } & z.infer<legacyEvent.Schema> &
+export type Document = z.infer<capitatedAmendment.Schema> &
+  z.infer<capitatedInitial.Schema> &
+  z.infer<capitatedRenewal.Schema> &
+  z.infer<contractingAmendment.Schema> &
+  z.infer<contractingInitial.Schema> &
+  z.infer<contractingRenewal.Schema> &
+  z.infer<newChipSubmission.Schema> &
+  z.infer<newMedicaidSubmission.Schema> &
+  z.infer<temporaryExtension.Schema> &
+  z.infer<legacyEvent.Schema> &
   z.infer<legacyAdminChange.Schema>;
+
+// & {
+//   appkParentId: string;
+//   appkParent: boolean;
+// };
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
@@ -47,3 +52,15 @@ export type Aggs = AggQuery<Field>;
 export type ExportHeader = ExportHeaderOptions<Document>;
 
 export * from "./transforms";
+
+export const transforms = {
+  "capitated-amendment": capitatedAmendment,
+  "capitated-initial": capitatedInitial,
+  "capitated-renewal": capitatedRenewal,
+  "contracting-amendment": contractingAmendment,
+  "contracting-initial": contractingInitial,
+  "contracting-renewal": contractingRenewal,
+  "new-chip-submission": newChipSubmission,
+  "new-medicaid-submission": newMedicaidSubmission,
+  "temporary-extension": temporaryExtension,
+};

@@ -9,7 +9,6 @@ import {
   defaultWithdrawPackageSchema,
   defaultWithdrawRaiSchema,
   medSpaRaiSchema,
-  defaultCompleteIntakeSchema,
   defaultUpdateIdSchema,
 } from "@/features/package-actions/lib/modules";
 
@@ -72,13 +71,6 @@ const updateIdFor: SchemaGroup = {
   "1915(c)": defaultUpdateIdSchema,
 };
 
-const completeIntakeFor: SchemaGroup = {
-  "CHIP SPA": defaultCompleteIntakeSchema,
-  "Medicaid SPA": defaultCompleteIntakeSchema,
-  "1915(b)": defaultCompleteIntakeSchema,
-  "1915(c)": defaultCompleteIntakeSchema,
-};
-
 export const getSchemaFor = (a: Action, p: AuthorityUnion): Schema | null => {
   const actionSchemaMap: Record<string, SchemaGroup> = {
     "issue-rai": issueRaiFor,
@@ -89,7 +81,6 @@ export const getSchemaFor = (a: Action, p: AuthorityUnion): Schema | null => {
     "withdraw-package": withdrawPackageFor,
     "temporary-extension": tempExtensionFor,
     "update-id": updateIdFor,
-    "complete-intake": completeIntakeFor,
   };
 
   const group = actionSchemaMap[a];
