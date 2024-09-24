@@ -13,7 +13,7 @@ import {
   PopoverTrigger,
 } from "@/components";
 
-export const DatePicker = ({ date, onChange }: DatePickerProps) => {
+export const DatePicker = ({ date, onChange, dataTestId }: DatePickerProps) => {
   const [isCalendarOpen, setIsCalendarOpen] = React.useState<boolean>(false);
   const [selected, setSelected] = React.useState<Date>();
   return (
@@ -25,6 +25,7 @@ export const DatePicker = ({ date, onChange }: DatePickerProps) => {
             "w-[280px] justify-start text-left font-normal",
             !date && "text-muted-foreground",
           )}
+          data-testid={`${dataTestId}-datepicker`}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {date ? format(date, "MM/dd/yyyy") : <span>Pick a date</span>}

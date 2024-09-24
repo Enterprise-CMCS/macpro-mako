@@ -8,13 +8,6 @@ export type MessageProducer = (
   value: string,
 ) => Promise<void>;
 
-export type CompleteIntakeDto = {
-  topicName: string;
-  id: string;
-  action: Action;
-  timestamp: number;
-} & Record<string, unknown>;
-
 export type IssueRaiDto = {
   topicName: string;
   id: string;
@@ -58,23 +51,6 @@ export type UpdateIdDto = {
   newId: string;
   action: Action;
 } & Record<string, unknown>;
-
-export const completeIntakeMako = async ({
-  action,
-  id,
-  timestamp,
-  topicName,
-  ...data
-}: CompleteIntakeDto) =>
-  produceMessage(
-    topicName,
-    id,
-    JSON.stringify({
-      actionType: action,
-      timestamp,
-      ...data,
-    }),
-  );
 
 export const issueRaiMako = async ({
   action,

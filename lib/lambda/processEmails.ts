@@ -1,99 +1,178 @@
-import { SESClient, SendTemplatedEmailCommand } from "@aws-sdk/client-ses";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import * as EmailLib from "../libs/email";
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import { Action, Authority, KafkaEvent, KafkaRecord } from "shared-types";
+import { decodeBase64WithUtf8, getSecret } from "shared-utils";
+import { Handler } from "aws-lambda";
+import { getEmailTemplates } from "./../libs/email";
 
-const SES = new SESClient({ region: process.env.REGION });
-const S3 = new S3Client({ region: process.env.REGION });
+const sesClient = new SESClient({ region: process.env.REGION });
 
-// Helper function to prepare data for S3
-const prepareS3Data = (
-  result: any,
-  command: any,
-  status: string,
-  error?: string,
-) => ({
-  emailId: result?.MessageId || "unknown",
-  eventType: error ? "ERROR" : "SEND",
-  timestamp: new Date().toISOString(),
-  destination: command.Destination,
-  template: command.Template,
-  status,
-  ...(error && { error }),
-});
+export const handler: Handler<KafkaEvent> = async (event) => {
+  try {
+    // Validate environment variables
+    const emailAddressLookupSecretName =
+      process.env.emailAddressLookupSecretName;
+    const applicationEndpointUrl = process.env.applicationEndpointUrl;
 
-// Helper function to write data to S3
-const writeToS3 = async (data: any, key: string) => {
-  await S3.send(
-    new PutObjectCommand({
-      Bucket: process.env.EMAIL_DATA_BUCKET_NAME,
-      Key: key,
-      Body: JSON.stringify(data),
-      ContentType: "application/json",
-    }),
-  );
-};
-
-export const handler = E.emailHandler(
-  async (
-    record: EmailLib.DecodedRecord,
-  ): Promise<EmailLib.LambdaResponse[] | { message: string }> => {
-    const emailBundle = EmailLib.getBundle(record, process.env.STAGE!) as any;
-
-    if (!emailBundle || !!emailBundle?.message || !emailBundle?.emailCommands) {
-      return { message: "no eventToEmailMapping found, no email sent" };
+    if (!emailAddressLookupSecretName || !applicationEndpointUrl) {
+      throw new Error("Environment variables are not set properly.");
     }
 
-    const emailData = await EmailLib.buildEmailData(emailBundle, record);
+    // Log the event
+    console.log("Processing email event: " + JSON.stringify(event, null, 2));
 
-    const sendResults = await Promise.allSettled(
-      emailBundle.emailCommands.map(async (command: any) => {
-        try {
-          const result = await SES.send(
-            new SendTemplatedEmailCommand({
-              Source: process.env.EMAIL_SOURCE ?? "kgrue@fearless.tech",
-              Destination: EmailLib.buildDestination(command, emailData),
-              TemplateData: JSON.stringify(emailData),
-              Template: command.Template,
-              ConfigurationSetName: process.env.EMAIL_CONFIG_SET,
-            }),
-          );
+    // Process each record
+    const processRecordsPromises = [];
 
-          const s3Data = prepareS3Data(result, command, "Success");
-          await writeToS3(s3Data, `email_events/${result.MessageId}.json`);
+    for (const topicPartition of Object.keys(event.records)) {
+      for (const rec of event.records[topicPartition]) {
+        processRecordsPromises.push(
+          processRecord(
+            rec,
+            emailAddressLookupSecretName,
+            applicationEndpointUrl,
+          ),
+        );
+      }
+    }
 
-          return { statusCode: 200, data: result };
-        } catch (err) {
-          console.log(
-            "Failed to process the email.",
-            err,
-            JSON.stringify(command, null, 4),
-          );
+    await Promise.all(processRecordsPromises);
 
-          const s3ErrorData = prepareS3Data(
-            null,
-            command,
-            "Failed",
-            err.message,
-          );
-          await writeToS3(
-            s3ErrorData,
-            `email_events/${new Date().getTime()}_error.json`,
-          );
+    console.log("All emails processed successfully.");
+  } catch (error) {
+    console.error("Error processing email event:", error);
+  }
+};
 
-          return { statusCode: 400, data: null, reason: err.message };
-        }
-      }),
+async function processRecord(
+  kafkaRecord: KafkaRecord,
+  emailAddressLookupSecretName: string,
+  applicationEndpointUrl: string,
+) {
+  try {
+    const { key, value, timestamp } = kafkaRecord;
+
+    // Extract/decode the id
+    const id: string = decodeBase64WithUtf8(key);
+
+    // Handle tombstone events
+    if (!value) {
+      console.log("Tombstone detected. Doing nothing for this event");
+      return;
+    }
+
+    // Extract/decode the record value
+    const record = {
+      timestamp,
+      ...JSON.parse(decodeBase64WithUtf8(value)),
+    };
+
+    // Handle micro events
+    if (record?.origin === "micro") {
+      console.log(
+        `Handling event for ${id}: ` + JSON.stringify(record, null, 2),
+      );
+
+      // Set the action
+      const action: Action | "new-submission" = determineAction(record);
+
+      // Set the authority
+      const authority: Authority = record.authority.toLowerCase() as Authority;
+
+      await processAndSendEmails(
+        action,
+        authority,
+        record,
+        id,
+        emailAddressLookupSecretName,
+        applicationEndpointUrl,
+      );
+    }
+  } catch (error) {
+    console.error("Error processing record:", error);
+  }
+}
+
+function determineAction(record: any): Action | "new-submission" {
+  if (!record.actionType || record.actionType === "new-submission") {
+    return record.seaActionType === "Extend"
+      ? Action.TEMP_EXTENSION
+      : "new-submission";
+  }
+  return record.actionType;
+}
+
+async function processAndSendEmails(
+  action: Action | "new-submission",
+  authority: Authority,
+  record: any,
+  id: string,
+  emailAddressLookupSecretName: string,
+  applicationEndpointUrl: string,
+) {
+  try {
+    const emailAddressLookup = JSON.parse(
+      await getSecret(emailAddressLookupSecretName),
     );
 
-    const transformedResults = sendResults.map((result) => {
-      if (result.status === "fulfilled") {
-        return { statusCode: 200, data: result.value };
-      } else {
-        return { statusCode: 400, data: null, reason: result.reason };
-      }
+    // Get the templates
+    const templates = await getEmailTemplates<typeof record>(action, authority);
+
+    // Set the template variables; consists of the event data and some add-ons.
+    const templateVariables = {
+      ...record,
+      id,
+      applicationEndpointUrl,
+      territory: id.slice(0, 2),
+    };
+
+    // Generate and send emails concurrently
+    const sendEmailPromises = templates.map(async (template) => {
+      const filledTemplate = await template(templateVariables);
+      await sendEmail({
+        // to: record.submitterEmail,
+        to: "bpaige@fearless.tech",
+        from: emailAddressLookup.sourceEmail,
+        subject: filledTemplate.subject,
+        html: filledTemplate.html,
+        text: filledTemplate.text,
+      });
     });
 
-    console.log("sendResults: ", transformedResults);
-    return { results: transformedResults } as any;
-  },
-);
+    await Promise.all(sendEmailPromises);
+  } catch (error) {
+    console.error("Error processing and sending emails:", error);
+  }
+}
+
+async function sendEmail(emailDetails: {
+  to: string;
+  from: string;
+  subject: string;
+  html: string;
+  text?: string;
+}): Promise<void> {
+  const { to, from, subject, html, text } = emailDetails;
+
+  const params = {
+    Destination: {
+      ToAddresses: [to],
+    },
+    Message: {
+      Body: {
+        Html: { Data: html },
+        Text: text ? { Data: text } : undefined,
+      },
+      Subject: { Data: subject },
+    },
+    Source: from,
+  };
+
+  try {
+    const command = new SendEmailCommand(params);
+    const response = await sesClient.send(command);
+    console.log("Email sent successfully:", response);
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw error;
+  }
+}

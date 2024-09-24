@@ -4,7 +4,7 @@ import * as path from "path";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { ISubnet } from "aws-cdk-lib/aws-ec2";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
-import * as LC from "local-constructs";
+import { commonBundlingOptions } from "../config/bundling-config";
 
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;
@@ -12,9 +12,7 @@ interface EmailServiceStackProps extends cdk.StackProps {
   isDev: boolean;
   stack: string;
   vpc: cdk.aws_ec2.IVpc;
-  applicationEndpoint: string;
-  emailIdentityDomain: string;
-  emailFromIdentity: string;
+  applicationEndpointUrl: string;
   indexNamespace: string;
   emailAddressLookupSecretName: string;
   topicNamespace: string;
@@ -22,6 +20,8 @@ interface EmailServiceStackProps extends cdk.StackProps {
   lambdaSecurityGroupId: string;
   brokerString: string;
   lambdaSecurityGroup: cdk.aws_ec2.SecurityGroup;
+  openSearchDomainEndpoint: string;
+  openSearchDomainArn: string;
 }
 
 export class Email extends cdk.NestedStack {
@@ -31,12 +31,9 @@ export class Email extends cdk.NestedStack {
     const {
       project,
       stage,
-      isDev,
       stack,
       vpc,
-      emailFromIdentity,
-      emailIdentityDomain,
-      applicationEndpoint,
+      applicationEndpointUrl,
       topicNamespace,
       indexNamespace,
       emailAddressLookupSecretName,
@@ -44,121 +41,23 @@ export class Email extends cdk.NestedStack {
       lambdaSecurityGroupId,
       privateSubnets,
       lambdaSecurityGroup,
+      openSearchDomainEndpoint,
+      openSearchDomainArn,
     } = props;
 
-    // KMS Key for SNS Topic
-    const kmsKeyForEmails = new cdk.aws_kms.Key(this, "KmsKeyForEmails", {
-      enableKeyRotation: true,
-      policy: new cdk.aws_iam.PolicyDocument({
-        statements: [
-          new cdk.aws_iam.PolicyStatement({
-            actions: ["kms:*"],
-            principals: [new cdk.aws_iam.AccountRootPrincipal()],
-            resources: ["*"],
-          }),
-          new cdk.aws_iam.PolicyStatement({
-            actions: ["kms:GenerateDataKey", "kms:Decrypt"],
-            principals: [new cdk.aws_iam.ServicePrincipal("sns.amazonaws.com")],
-            resources: ["*"],
-          }),
-          new cdk.aws_iam.PolicyStatement({
-            actions: ["kms:GenerateDataKey", "kms:Decrypt"],
-            principals: [new cdk.aws_iam.ServicePrincipal("ses.amazonaws.com")],
-            resources: ["*"],
-          }),
-        ],
-      }),
-    });
-
-    // SNS Topic for Email Events
-    const emailEventTopic = new cdk.aws_sns.Topic(this, "EmailEventTopic", {
-      displayName: "Monitoring the sending of emails",
-      masterKey: kmsKeyForEmails,
-    });
-
-    // Allow SES to publish to the SNS topic
-    const snsPublishPolicyStatement = new cdk.aws_iam.PolicyStatement({
-      actions: ["sns:Publish"],
-      principals: [new cdk.aws_iam.ServicePrincipal("ses.amazonaws.com")],
-      resources: [emailEventTopic.topicArn],
-      effect: cdk.aws_iam.Effect.ALLOW,
-    });
-    emailEventTopic.addToResourcePolicy(snsPublishPolicyStatement);
-    const snsTopicPolicy = emailEventTopic.node.tryFindChild(
-      "Policy",
-    ) as cdk.CfnResource;
-
-    // S3 Bucket for storing email event data
-    const emailDataBucket = new cdk.aws_s3.Bucket(this, "EmailDataBucket", {
-      versioned: true,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: isDev,
-    });
-
-    emailDataBucket.addToResourcePolicy(
-      new cdk.aws_iam.PolicyStatement({
-        effect: cdk.aws_iam.Effect.DENY,
-        principals: [new cdk.aws_iam.AnyPrincipal()],
-        actions: ["s3:*"],
-        resources: [
-          emailDataBucket.bucketArn,
-          `${emailDataBucket.bucketArn}/*`,
-        ],
-        conditions: {
-          Bool: { "aws:SecureTransport": "false" },
-        },
-      }),
-    );
-
-    new LC.EmptyBuckets(this, "EmptyBuckets", {
-      buckets: [emailDataBucket],
-    });
-
     // SES Configuration Set
-    const configurationSet = new cdk.aws_ses.CfnConfigurationSet(
-      this,
-      "ConfigurationSet",
-      {
-        name: `${project}-${stage}-${stack}-email-configuration-set`,
-        reputationOptions: {
-          reputationMetricsEnabled: true,
-        },
-        sendingOptions: {
-          sendingEnabled: true,
-        },
-        suppressionOptions: {
-          suppressedReasons: ["BOUNCE", "COMPLAINT"],
-        },
+    new cdk.aws_ses.CfnConfigurationSet(this, "ConfigurationSet", {
+      name: `${project}-${stage}-${stack}-email-configuration-set`,
+      reputationOptions: {
+        reputationMetricsEnabled: true,
       },
-    );
-
-    // SES Event Destination for Configuration Set
-    const eventDestination =
-      new cdk.aws_ses.CfnConfigurationSetEventDestination(
-        this,
-        "ConfigurationSetEventDestination",
-        {
-          configurationSetName: configurationSet.name!,
-          eventDestination: {
-            enabled: true,
-            matchingEventTypes: [
-              "send",
-              "reject",
-              "bounce",
-              "complaint",
-              "delivery",
-              "open",
-              "click",
-              "renderingFailure",
-            ],
-            snsDestination: {
-              topicArn: emailEventTopic.topicArn,
-            },
-          },
-        },
-      );
-
-    eventDestination.node.addDependency(snsTopicPolicy);
+      sendingOptions: {
+        sendingEnabled: true,
+      },
+      suppressionOptions: {
+        suppressedReasons: ["BOUNCE", "COMPLAINT"],
+      },
+    });
 
     // IAM Role for Lambda
     const lambdaRole = new cdk.aws_iam.Role(this, "LambdaExecutionRole", {
@@ -188,8 +87,23 @@ export class Email extends cdk.NestedStack {
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["es:ESHttpHead", "es:ESHttpPost", "es:ESHttpGet"],
+              resources: [`${openSearchDomainArn}/*`],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["ec2:DescribeSecurityGroups", "ec2:DescribeVpcs"],
               resources: ["*"],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: [
+                "secretsmanager:DescribeSecret",
+                "secretsmanager:GetSecretValue",
+              ],
+              resources: [
+                `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${emailAddressLookupSecretName}-*`,
+              ],
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.DENY,
@@ -230,24 +144,19 @@ export class Email extends cdk.NestedStack {
         securityGroups: [lambdaSecurityGroup],
         logGroup: processEmailsLambdaLogGroup,
         environment: {
-          EMAIL_IDENTITY: emailFromIdentity,
-          CONFIGURATION_SET: configurationSet.name!,
-          REGION: cdk.Aws.REGION,
+          region: this.region,
+          stage,
           indexNamespace,
-          applicationEndpoint: applicationEndpoint,
-          emailAddressLookupSecretName: emailAddressLookupSecretName,
-          EMAIL_DATA_BUCKET_NAME: emailDataBucket.bucketName,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          applicationEndpointUrl,
+          emailAddressLookupSecretName,
         },
+        bundling: commonBundlingOptions,
       },
     );
 
-    // Grant permissions to the Lambda function to write to the S3 bucket
-    emailDataBucket.grantPut(processEmailsLambda);
-
-    // Additional configurations (e.g., Kafka event source mapping)...
-    // Example of Kafka Event Source Mapping
     new CfnEventSourceMapping(this, "SinkEmailTrigger", {
-      batchSize: 10,
+      batchSize: 1,
       enabled: true,
       selfManagedEventSource: {
         endpoints: {
@@ -268,15 +177,5 @@ export class Email extends cdk.NestedStack {
       startingPosition: "LATEST",
       topics: [`${topicNamespace}aws.onemac.migration.cdc`],
     });
-
-    // Grant permissions to the Lambda function to send emails using SES
-    processEmailsLambda.addToRolePolicy(
-      new cdk.aws_iam.PolicyStatement({
-        actions: ["ses:SendEmail", "ses:SendRawEmail"],
-        resources: [
-          `arn:aws:ses:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:identity/${emailIdentityDomain}`,
-        ],
-      }),
-    );
   }
 }

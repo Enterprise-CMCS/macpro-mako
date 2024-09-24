@@ -17,9 +17,10 @@ export const spaRaiContent: FormContentHydrator = (document) => ({
 export * from "./waiver/b-waiver-rai";
 // TODO: C waiver rai??
 export const waiverRaiContent: FormContentHydrator = (document) => {
-  const title = document.appkParent
-    ? `${document.authority} Appendix K Formal RAI Response Details`
-    : `${document.authority} Waiver Formal RAI Response Details`;
+  // const title = document.appkParent
+  //   ? `${document.authority} Appendix K Formal RAI Response Details`
+  //   : `${document.authority} Waiver Formal RAI Response Details`;
+  const title = "asdf";
   return {
     title,
     preSubmitNotice:

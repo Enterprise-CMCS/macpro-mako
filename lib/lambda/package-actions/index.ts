@@ -1,4 +1,3 @@
-export * from "./complete-intake/complete-intake";
 export * from "./consts";
 export * from "./get-id-to-update";
 export * from "./issue-rai/issue-rai";

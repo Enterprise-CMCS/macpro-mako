@@ -1,5 +1,5 @@
-import { Action } from "shared-types";
-import { AttachmentKey } from "shared-types";
+import { Action } from "shared-types/actions";
+import { AttachmentKey } from "shared-types/attachments";
 
 export type PackageActionEndpoint = `/action/${Action}`;
 export type FormSubmissionEndpoint = "/submit" | "/appk";
