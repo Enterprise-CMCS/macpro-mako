@@ -3,7 +3,7 @@ import { join } from "path";
 
 export default defineConfig({
   test: {
-    include: ["**/*.test.ts", "**/*.test.tsx"],
+    include: ["**/*.test.{ts,tsx}"],
     coverage: {
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),
@@ -23,7 +23,9 @@ export default defineConfig({
         "vitest.workspace.ts",
         "**/*/.eslintrc.{ts,js,cjs}",
         "**/*.config.{ts,js,cjs}",
-        "test",
+        "**/*.spec.ts",
+        "test/e2e",
+        "**/e2e/**",
       ],
     },
   },

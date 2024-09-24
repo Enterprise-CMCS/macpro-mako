@@ -10,6 +10,7 @@
     "e2e:ui": "playwright test --ui --project=state-user-chrome"
   },
   "dependencies": {
+    "@aws-sdk/credential-providers": "^3.654.0",
     "shared-utils": "*"
   },
   "author": "",

@@ -36,8 +36,8 @@ export const Attachments = (props: { attachments: Attachment[] }) => {
         <b>Files:</b>
       </p>
       <ul>
-        {props.attachments?.map((attachment) => (
-          <li>
+        {props.attachments?.map((attachment, idx: number) => (
+          <li key={attachment.key + idx}>
             {attachment.title}: {attachment.filename}
           </li>
         ))}
@@ -53,24 +53,24 @@ export const PackageDetails = (props: {
   return (
     <Section>
       <br />
-      {Object.keys(props.details).map((label: string) => {
+      {Object.keys(props.details).map((label: string, idx: number) => {
         if (label === "Summary") {
           const summary =
             "label" in props.details && props.details.label
               ? props.details.label
               : "No additional information submitted";
           return (
-            <>
+            <div key={label + idx}>
               <br />
               <p style={{ margin: ".5em" }}>
                 <b>Summary:</b>
               </p>
               <p style={{ margin: ".5em" }}>{summary}</p>
-            </>
+            </div>
           );
         }
         return (
-          <p style={{ margin: ".5em" }}>
+          <p key={label + idx} style={{ margin: ".5em" }}>
             <b>{label}:</b> {props.details[label] ?? "Unknown"}
           </p>
         );

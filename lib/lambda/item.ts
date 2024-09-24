@@ -1,4 +1,4 @@
-import { response } from "lib/libs/handler-lib";
+import { response } from "../libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 import { getStateFilter } from "../libs/api/auth/user";
 import {
@@ -60,7 +60,6 @@ export const getItemData = async (event: APIGatewayEvent) => {
         body: { message: "No record found for the given id" },
       });
     }
-    console.log(JSON.stringify(changelog, null, 2));
 
     return response<unknown>({
       statusCode: 200,
@@ -74,10 +73,9 @@ export const getItemData = async (event: APIGatewayEvent) => {
       },
     });
   } catch (error) {
-    console.error({ error });
     return response({
       statusCode: 500,
-      body: { message: "Internal server error" },
+      body: { error, message: error.message },
     });
   }
 };

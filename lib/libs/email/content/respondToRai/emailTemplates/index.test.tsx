@@ -1,5 +1,6 @@
+import { describe, it, expect } from "vitest";
 import * as React from "react";
-import { render } from "@testing-library/react";
+import { render } from "@react-email/render";
 import { MedSpaCMSEmail } from "./MedSpaCMS";
 import { MedSpaStateEmail } from "./MedSpaState";
 import { ChipSpaCMSEmail } from "./ChipSpaCMS";
@@ -35,65 +36,47 @@ const mockVariables: RaiResponse & CommonVariables = {
 };
 
 describe("Email Templates", () => {
-  it("renders MedSpaCMSEmail correctly", () => {
-    const { getByText } = render(<MedSpaCMSEmail variables={mockVariables} />);
-    expect(
-      getByText(
-        /The OneMAC Submission Portal received a Medicaid SPA RAI Response Submission:/i,
-      ),
-    ).toBeInTheDocument();
-  });
-
-  it("renders MedSpaStateEmail correctly", () => {
-    const { getByText } = render(
-      <MedSpaStateEmail variables={mockVariables} />,
+  it("renders MedSpaCMSEmail correctly", async () => {
+    const comp = await render(<MedSpaCMSEmail variables={mockVariables} />);
+    expect(comp).toMatch(
+      /The OneMAC Submission Portal received a Medicaid SPA RAI Response Submission:/,
     );
-    expect(
-      getByText(
-        /This response confirms you submitted a Medicaid SPA RAI Response to CMS for review:/i,
-      ),
-    ).toBeInTheDocument();
   });
 
-  it("renders ChipSpaCMSEmail correctly", () => {
-    const { getByText } = render(<ChipSpaCMSEmail variables={mockVariables} />);
-    expect(
-      getByText(
-        /The OneMAC Submission Portal received a CHIP SPA RAI Response Submission:/i,
-      ),
-    ).toBeInTheDocument();
-  });
-
-  it("renders ChipSpaStateEmail correctly", () => {
-    const { getByText } = render(
-      <ChipSpaStateEmail variables={mockVariables} />,
+  it("renders MedSpaStateEmail correctly", async () => {
+    const comp = await render(<MedSpaStateEmail variables={mockVariables} />);
+    expect(comp).toMatch(
+      /This response confirms you submitted a Medicaid SPA RAI Response to CMS for review:/,
     );
-    expect(
-      getByText(
-        /This response confirms you submitted a CHIP SPA RAI Response to CMS for review:/i,
-      ),
-    ).toBeInTheDocument();
   });
 
-  it("renders Waiver1915bCMSEmail correctly", () => {
-    const { getByText } = render(
+  it("renders ChipSpaCMSEmail correctly", async () => {
+    const comp = await render(<ChipSpaCMSEmail variables={mockVariables} />);
+    expect(comp).toMatch(
+      /The OneMAC Submission Portal received a CHIP SPA RAI Response Submission:/,
+    );
+  });
+
+  it("renders ChipSpaStateEmail correctly", async () => {
+    const comp = await render(<ChipSpaStateEmail variables={mockVariables} />);
+    expect(comp).toMatch(
+      /This response confirms you submitted a CHIP SPA RAI Response to CMS for review:/,
+    );
+  });
+
+  it("renders Waiver1915bCMSEmail correctly", async () => {
+    const comp = await render(
       <Waiver1915bCMSEmail variables={mockVariables} />,
     );
-    expect(
-      getByText(
-        /The OneMAC Submission Portal received a .* Waiver RAI Response Submission:/i,
-      ),
-    ).toBeInTheDocument();
+    expect(comp).toMatch(
+      /The OneMAC Submission Portal received a .* Waiver RAI Response Submission:/,
+    );
   });
 
-  it("renders Waiver1915bStateEmail correctly", () => {
-    const { getByText } = render(
+  it("renders Waiver1915bStateEmail correctly", async () => {
+    const comp = await render(
       <Waiver1915bStateEmail variables={mockVariables} />,
     );
-    expect(
-      getByText(
-        /This response confirms the submission of your .* Waiver RAI Response to CMS for review:/i,
-      ),
-    ).toBeInTheDocument();
+    expect(comp).toContain("Waiver RAI Response to CMS for review");
   });
 });

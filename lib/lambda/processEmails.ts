@@ -17,11 +17,11 @@ import {
   getAllStateUsers,
   StateUser,
 } from "./../libs/email";
-import * as os from "../libs/opensearch-lib";
+import * as os from "./../libs/opensearch-lib";
 import {
   getCpocEmail,
   getSrtEmails,
-} from "lib/libs/email/content/email-components";
+} from "./../libs/email/content/email-components";
 
 // Constants
 const REGION = process.env.REGION;
@@ -176,13 +176,13 @@ export function createEmailParams(
   };
 }
 
-export async function sendEmail(params: SendEmailCommandInput): Promise<void> {
+export async function sendEmail(params: SendEmailCommandInput): Promise<any> {
   console.log("SES params:", JSON.stringify(params, null, 2));
 
   const command = new SendEmailCommand(params);
   try {
-    await sesClient.send(command);
-    console.log("Email sent successfully");
+    const result = await sesClient.send(command);
+    return { status: result.$metadata.httpStatusCode };
   } catch (error) {
     console.error("Error sending email:", error);
     throw error;

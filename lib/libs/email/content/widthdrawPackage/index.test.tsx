@@ -10,7 +10,7 @@ import {
   Waiver1915bCMSEmail,
   Waiver1915bStateEmail,
 } from "./emailTemplates";
-import { vi } from "vitest";
+import { vi, describe, it, expect } from "vitest";
 vi.mock("@react-email/render", () => ({
   render: vi.fn().mockResolvedValue("<html></html>"),
 }));

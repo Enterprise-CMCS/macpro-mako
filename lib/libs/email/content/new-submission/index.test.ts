@@ -4,7 +4,9 @@ import { Authority, EmailAddresses, OneMac } from "shared-types";
 import { CommonVariables } from "../..";
 import { Mock, vi } from "vitest";
 
-vi.mock("@react-email/render");
+vi.mock("@react-email/render", () => ({
+  render: vi.fn(),
+}));
 
 const mockRender = render as Mock;
 
