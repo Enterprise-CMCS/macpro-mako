@@ -55,7 +55,7 @@ export const OsFilterDrawer = () => {
               <AccordionTrigger className="underline">
                 {PK.label}
               </AccordionTrigger>
-              <AccordionContent>
+              <AccordionContent className="px-0">
                 {PK.component === "multiSelect" && (
                   <F.FilterableSelect
                     value={hook.filters[PK.field]?.value as string[]}
