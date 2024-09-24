@@ -122,9 +122,14 @@ async function getLambdasWithTags(tags: Tag[]): Promise<string[]> {
     // Fetch Lambda function names from their ARNs
     const lambdaNames = await Promise.all(
       lambdaArns.map(async (arn) => {
-        const functionCommand = new GetFunctionCommand({ FunctionName: arn });
-        const functionData = await lambdaClient.send(functionCommand);
-        return functionData.Configuration?.FunctionName || "";
+        try {
+          const functionCommand = new GetFunctionCommand({ FunctionName: arn });
+          const functionData = await lambdaClient.send(functionCommand);
+          return functionData.Configuration?.FunctionName || "";
+        } catch {
+          console.log(`Ecluding function ${arn}.`);
+          return "";
+        }
       }),
     );
 

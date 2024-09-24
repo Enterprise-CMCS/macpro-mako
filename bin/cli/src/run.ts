@@ -11,6 +11,7 @@ import {
   test,
   ui,
   getCost,
+  watch,
 } from "./commands";
 
 yargs
@@ -19,6 +20,7 @@ yargs
     if (msg) console.error(msg);
     process.exit(1);
   })
+  .command(watch)
   .command(deploy)
   .command(destroy)
   .command(docs)

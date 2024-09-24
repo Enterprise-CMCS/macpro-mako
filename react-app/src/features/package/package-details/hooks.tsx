@@ -64,11 +64,12 @@ export const recordDetails = (
     value: convertStateAbbrToFullName(data.state),
     canView: () => true,
   },
-  {
-    label: "Amendment Title",
-    value: <p>{data?.appkTitle || BLANK_VALUE}</p>,
-    canView: () => !!data.appkTitle,
-  },
+  // TODO:  uncomment when appks are supported again
+  // {
+  //   label: "Amendment Title",
+  //   value: <p>{data?.appkTitle || BLANK_VALUE}</p>,
+  //   canView: () => false,
+  // },
   {
     label: "Subject",
     value: <p>{data?.subject || BLANK_VALUE}</p>,

@@ -11,9 +11,9 @@ export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
   spas: {
     filters: [
       {
-        field: "flavor.keyword",
+        field: "authority.keyword",
         type: "terms",
-        value: ["CHIP", "MEDICAID"],
+        value: ["Medicaid SPA", "CHIP SPA"],
         prefix: "must",
       },
     ],
@@ -21,17 +21,17 @@ export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
   waivers: {
     filters: [
       {
-        field: "flavor.keyword",
+        field: "authority.keyword",
         type: "terms",
-        value: ["WAIVER"],
+        value: ["1915(b)", "1915(c)"],
         prefix: "must",
       },
-      {
-        field: "appkParentId",
-        type: "exists",
-        value: true,
-        prefix: "must_not",
-      },
+      // {
+      //   field: "appkParentId",
+      //   type: "exists",
+      //   value: true,
+      //   prefix: "must_not",
+      // },
     ],
   },
 };

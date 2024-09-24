@@ -10,6 +10,9 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
 
   return {
+    optimizeDeps: {
+      exclude: ["@aws-sdk/client-sts", "@smithy/shared-ini-file-loader"],
+    },
     plugins: [
       react(),
       VitePluginRadar({
@@ -37,6 +40,12 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       minify: env.VITE_NODE_ENV === "production",
+      rollupOptions: {
+        treeshake: true,
+      },
+    },
+    define: {
+      __IS_FRONTEND__: "true",
     },
   };
 });

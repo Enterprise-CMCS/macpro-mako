@@ -38,12 +38,15 @@ export const defaultWithdrawRaiFields: ReactElement[] = [
   />,
 ];
 export const defaultWithdrawRaiContent: FormContentHydrator = (document) => {
-  const title = document.appkParent
-    ? `${document.authority} Appendix K Withdraw Formal RAI Response Details`
-    : `${document.authority} Withdraw Formal RAI Response Details`;
+  // TODO:  Uncomment when appks are supported
+  // const title = document.appkParent
+  //   ? `${document.authority} Appendix K Withdraw Formal RAI Response Details`
+  //   : `${document.authority} Withdraw Formal RAI Response Details`;
+  const title = `${document.authority} Withdraw Formal RAI Response Details`;
   return {
     title,
-    preSubmitNotice: "Once complete, you and CMS will receive an email confirmation.",
+    preSubmitNotice:
+      "Once complete, you and CMS will receive an email confirmation.",
     confirmationModal: {
       header: "Withdraw RAI response?",
       body: `The RAI response for ${document.id} will be withdrawn, and CMS will be notified.`,
