@@ -3,7 +3,7 @@ import {
   zAdditionalInfo,
   zAttachmentOptional,
   zAttachmentRequired,
-} from "@/utils";
+} from "@/utils/zod";
 import { FormContentHydrator } from "@/features/package-actions/lib/contentSwitch";
 import { ReactElement } from "react";
 import {

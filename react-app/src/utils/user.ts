@@ -1,4 +1,5 @@
-import { CognitoUserAttributes, STATE_CODES, StateCode } from "shared-types";
+import { STATE_CODES, StateCode } from "shared-types/states";
+import { type CognitoUserAttributes } from "shared-types/user";
 import { isCmsUser, isStateUser } from "shared-utils";
 import { getUser } from "@/api";
 

@@ -30,4 +30,5 @@ export * from "./ConfirmationDialog";
 export * from "./SearchForm";
 export * from "./TimeoutModal";
 export * from "./Banner";
+export * from "./ActionForm";
 export * from "./Tooltip";
