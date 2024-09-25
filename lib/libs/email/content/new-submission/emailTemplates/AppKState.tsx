@@ -26,7 +26,7 @@ export const AppKStateEmail = (props: {
             "State or territory": variables.territory,
             Name: variables.submitterName,
             "Email Address": variables.submitterEmail,
-            "Initial Waiver Number:": variables.id,
+            "Initial Waiver Number": variables.id,
             "Waiver Authority": variables.authority,
             "Proposed Effective Date": DateTime.fromMillis(
               Number(variables.notificationMetadata?.proposedEffectiveDate),
