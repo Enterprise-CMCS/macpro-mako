@@ -14,8 +14,9 @@ import * as ABP10 from "./ABP10";
 import * as ABP11 from "./ABP11";
 import * as CS3 from "./CS3";
 import * as CS7 from "./CS7";
-import * as G2A from "./G2A";
+import * as ER from "./ER";
 import * as G1 from "./G1";
+import * as G2A from "./G2A";
 import * as G2B from "./G2B";
 import * as G2C from "./G2C";
 import * as G3 from "./G3";
@@ -70,6 +71,9 @@ export const webformVersions: Record<string, Record<string, FormSchema>> = {
   },
   CS7: {
     v202401: CS7.v202401,
+  },
+  ER: {
+    v202401: ER.v202401,
   },
   G1: {
     v202401: G1.v202401,
