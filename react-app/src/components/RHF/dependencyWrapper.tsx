@@ -1,33 +1,68 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { DependencyRule, DependencyWrapperProps } from "shared-types";
+import {
+  Condition,
+  DependencyRule,
+  DependencyWrapperProps,
+} from "shared-types";
 
 const checkTriggeringValue = (
   dependentValue: unknown[],
   dependency?: DependencyRule,
 ) => {
-  return !!dependency?.conditions?.every((d, i) => {
-    switch (d.type) {
-      case "expectedValue":
-        if (Array.isArray(dependentValue[i])) {
-          return (dependentValue[i] as unknown[]).includes(d.expectedValue);
-        } else {
-          return dependentValue[i] === d?.expectedValue;
-        }
-      case "valueExists":
+  if (dependency?.looseConditions) {
+    return !!dependency?.conditions?.some((d, i) =>
+      triggerCheckSwitch(dependentValue, d, i),
+    );
+  }
+  return !!dependency?.conditions?.every((d, i) =>
+    triggerCheckSwitch(dependentValue, d, i),
+  );
+};
+
+const triggerCheckSwitch = (
+  dependentValue: unknown[],
+  d: Condition,
+  i: number,
+) => {
+  switch (d.type) {
+    case "expectedValue":
+      if (Array.isArray(dependentValue[i])) {
+        return (dependentValue[i] as unknown[]).includes(d.expectedValue);
+      } else {
+        return dependentValue[i] === d?.expectedValue;
+      }
+    case "notBadValue":
+      if (Array.isArray(dependentValue[i])) {
         return (
-          (Array.isArray(dependentValue[i]) &&
-            (dependentValue[i] as unknown[]).length > 0) ||
-          (!Array.isArray(dependentValue[i]) && !!dependentValue[i])
+          (dependentValue[i] as unknown[]).length > 0 &&
+          !(dependentValue[i] as unknown[]).includes(d.expectedValue)
         );
-      case "valueNotExist":
-        return (
-          (Array.isArray(dependentValue[i]) &&
-            (dependentValue[i] as unknown[]).length === 0) ||
-          !dependentValue[i]
+      } else {
+        return !!dependentValue[i] && !(dependentValue[i] === d?.expectedValue);
+      }
+    case "notOnlyBadValue":
+      if (Array.isArray(dependentValue[i])) {
+        return !(
+          (dependentValue[i] as unknown[]).length === 1 &&
+          (dependentValue[i] as unknown[]).includes(d.expectedValue)
         );
-    }
-  });
+      } else {
+        return !!dependentValue[i] && !(dependentValue[i] === d?.expectedValue);
+      }
+    case "valueExists":
+      return (
+        (Array.isArray(dependentValue[i]) &&
+          (dependentValue[i] as unknown[]).length > 0) ||
+        (!Array.isArray(dependentValue[i]) && !!dependentValue[i])
+      );
+    case "valueNotExist":
+      return (
+        (Array.isArray(dependentValue[i]) &&
+          (dependentValue[i] as unknown[]).length === 0) ||
+        !dependentValue[i]
+      );
+  }
 };
 
 export const DependencyWrapper = (
@@ -69,15 +104,19 @@ const DependencyWrapperHandler = ({
       const value = getValues(dependency.effect.fieldName);
       if (Array.isArray(value)) {
         if (Array.isArray(dependency.effect.newValue)) {
-          setValue(dependency.effect.fieldName, [
-            ...value,
-            ...dependency.effect.newValue,
-          ]);
+          let newValArr = [...value, ...dependency.effect.newValue];
+
+          if (dependency.effect.checkUnique)
+            newValArr = newValArr.filter((v, i, a) => a.indexOf(v) === i);
+
+          setValue(dependency.effect.fieldName, newValArr);
         } else {
-          setValue(dependency.effect.fieldName, [
-            ...value,
-            dependency.effect.newValue,
-          ]);
+          let newValArr = [...value, dependency.effect.newValue];
+
+          if (dependency.effect.checkUnique)
+            newValArr = newValArr.filter((v, i, a) => a.indexOf(v) === i);
+
+          setValue(dependency.effect.fieldName, newValArr);
         }
       } else {
         setValue(dependency.effect.fieldName, dependency.effect.newValue);
