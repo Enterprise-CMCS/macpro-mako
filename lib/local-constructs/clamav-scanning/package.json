@@ -23,6 +23,6 @@
     "@types/mime-types": "^2.1.4",
     "file-type": "^19.4.1",
     "mime-types": "^2.1.35",
-    "pino": "^9.3.2"
+    "pino": "^9.4.0"
   }
 }
