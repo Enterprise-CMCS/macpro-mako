@@ -114,7 +114,7 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
       )}
 
       {isOpen && (
-        <div className="flex flex-col gap-3 px-3 mt-3 sm:flex-row max-w-screen-lg mx-auto pb-4">
+        <div className="flex flex-col justify-between px-4 lg:px-8 mt-3 sm:flex-row max-w-screen-xl mx-auto pb-4">
           <div className="flex gap-2">
             <GovernmentBuildingIcon />
             <p data-testid="official-usage" className="text-sm max-w-md">

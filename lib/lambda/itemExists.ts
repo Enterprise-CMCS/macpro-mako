@@ -1,6 +1,6 @@
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
-import * as os from "../libs/opensearch-lib";
+import { itemExists } from "libs/api/package";
 
 export const handler = async (event: APIGatewayEvent) => {
   if (!event.body) {
@@ -11,22 +11,18 @@ export const handler = async (event: APIGatewayEvent) => {
   }
   try {
     const body = JSON.parse(event.body);
-    const packageResult = await os.getItem(
-      process.env.osDomain!,
-      `${process.env.indexNamespace}main`,
-      body.id,
-    );
-    if (packageResult?._source) {
-      return response({
-        statusCode: 200,
-        body: { message: "Record found for the given id", exists: true },
-      });
-    } else {
-      return response({
-        statusCode: 200,
-        body: { message: "No record found for the given id", exists: false },
-      });
-    }
+    const exists = await itemExists({
+      id: body.id,
+    });
+    return response({
+      statusCode: 200,
+      body: {
+        message: exists
+          ? "Record found for the given id"
+          : "No record found for the given id",
+        exists,
+      },
+    });
   } catch (error) {
     console.error({ error });
     return response({

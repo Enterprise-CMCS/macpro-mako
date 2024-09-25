@@ -9,7 +9,6 @@ import {
   waiverRaiContent,
   defaultDisableRaiWithdrawContent,
   defaultEnableRaiWithdrawContent,
-  defaultCompleteIntakeContent,
   defaultUpdateIdContent,
   waiverWithdrawPackageContent,
 } from "@/features/package-actions/lib/modules";
@@ -82,13 +81,6 @@ const updateIdFor: FormContentGroup = {
   "1915(c)": defaultUpdateIdContent,
 };
 
-const completeIntakeFor: FormContentGroup = {
-  "CHIP SPA": defaultCompleteIntakeContent,
-  "Medicaid SPA": defaultCompleteIntakeContent,
-  "1915(b)": defaultCompleteIntakeContent,
-  "1915(c)": defaultCompleteIntakeContent,
-};
-
 export const getContentFor = (
   a: Action,
   p: AuthorityUnion,
@@ -102,7 +94,6 @@ export const getContentFor = (
     "withdraw-package": withdrawPackageFor,
     "temporary-extension": tempExtensionFor,
     "update-id": updateIdFor,
-    "complete-intake": completeIntakeFor,
   };
   const group = actionContentMap?.[a];
   if (!group) throw new Error(`No content group for "${a}"`);

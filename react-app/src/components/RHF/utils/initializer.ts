@@ -1,25 +1,30 @@
-import * as T from "shared-types";
+import {
+  RHFOption,
+  RHFSlotProps,
+  FormGroup,
+  FormSchema,
+} from "shared-types/forms";
 
 type GL = Record<string, unknown>;
 
 export const formGroupInitializer =
-  (parentId?: string) => (ACC: GL, FORM: T.FormGroup) => {
+  (parentId?: string) => (ACC: GL, FORM: FormGroup) => {
     FORM.slots.reduce(slotInitializer(parentId), ACC);
     return ACC;
   };
 
 export const slotInitializer =
   (parentId?: string) =>
-  (ACC: GL, SLOT: T.RHFSlotProps): GL => {
+  (ACC: GL, SLOT: RHFSlotProps): GL => {
     const adjustedName = `${parentId ?? ""}${SLOT.name}`;
 
-    const optionReducer = (OPT: T.RHFOption) => {
+    const optionReducer = (OPT: RHFOption) => {
       if (OPT.form) OPT.form.reduce(formGroupInitializer(parentId), ACC);
       if (OPT.slots) OPT.slots.reduce(slotInitializer(parentId), ACC);
       return ACC;
     };
 
-    const fieldInitializer = (ACC1: GL, SLOTC: T.RHFSlotProps): GL => {
+    const fieldInitializer = (ACC1: GL, SLOTC: RHFSlotProps): GL => {
       if (SLOTC.rhf === "FieldArray") {
         return {
           ...ACC1,
@@ -70,7 +75,7 @@ export const slotInitializer =
     return ACC;
   };
 
-export const documentInitializer = (document: T.FormSchema) => {
+export const documentInitializer = (document: FormSchema) => {
   return document.sections.reduce((ACC, SEC) => {
     SEC.form.reduce(
       formGroupInitializer(`${document.formId}_${SEC.sectionId}_`),

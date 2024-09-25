@@ -40,7 +40,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     query.size = query.size || 100;
 
     const results = await os.search(
-      process.env.osDomain,
+      process.env.osDomain as string,
       `${process.env.indexNamespace}${event.pathParameters.index}` as Index,
       query,
     );

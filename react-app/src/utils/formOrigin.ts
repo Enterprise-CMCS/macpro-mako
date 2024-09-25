@@ -1,4 +1,4 @@
-import { Authority } from "shared-types";
+import { Authority } from "shared-types/authority";
 import { getDashboardTabForAuthority } from "./crumbs";
 
 /** Constant key for accessing origin in query string. */
@@ -29,7 +29,9 @@ export const getFormOrigin: GetFormOrigin = ({ id, authority } = {}) => {
 
   if (origin === DETAILS_ORIGIN && id && authority) {
     return {
-      pathname: `/${origin}/${encodeURIComponent(authority)}/${encodeURIComponent(id)}`,
+      pathname: `/${origin}/${encodeURIComponent(
+        authority,
+      )}/${encodeURIComponent(id)}`,
     };
   }
 

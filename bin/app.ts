@@ -2,7 +2,7 @@
 import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
 import { ParentStack } from "../lib/stacks/parent";
-import { DeploymentConfig } from "../lib/stacks/deployment-config";
+import { DeploymentConfig } from "../lib/config/deployment-config";
 import { getSecret, validateEnvVariable } from "shared-utils";
 import {
   IamPathAspect,

@@ -15,7 +15,6 @@ import {
   updateId,
   withdrawPackage,
   withdrawRai,
-  completeIntake,
   removeAppkChild,
 } from "./package-actions";
 
@@ -91,9 +90,6 @@ export const handler = async (event: APIGatewayEvent) => {
         break;
       case Action.UPDATE_ID:
         await updateId(body);
-        break;
-      case Action.COMPLETE_INTAKE:
-        await completeIntake(body);
         break;
       case Action.REMOVE_APPK_CHILD:
         await removeAppkChild(body);
