@@ -44,7 +44,7 @@ export default defineConfig({
   // Note: we can test on multiple browsers and resolutions defined here
   projects: [
     // Setup project
-    { name: "setup", testMatch: /.*\.setup\.ts/, fullyParallel: true },
+    { name: "setup", testMatch: /utils.setup.ts/, fullyParallel: true },
 
     {
       // we can have different projects for different users/use cases

@@ -1,9 +1,11 @@
-import { defineConfig, configDefaults } from "vitest/config";
 import { join } from "path";
+import { configDefaults, defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    include: ["**/*.test.{ts,tsx}"],
+    globals: true,
+    environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
+    setupFiles: ["./test/setup.ts"],
     coverage: {
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),
@@ -23,10 +25,12 @@ export default defineConfig({
         "vitest.workspace.ts",
         "**/*/.eslintrc.{ts,js,cjs}",
         "**/*.config.{ts,js,cjs}",
+        "test",
         "**/*.spec.ts",
-        "test/e2e",
-        "**/e2e/**",
+        "**/node_modules/**",
+        "e2e/tests/**",
       ],
     },
+    environment: "happy-dom",
   },
 });

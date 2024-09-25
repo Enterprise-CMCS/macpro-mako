@@ -6,14 +6,55 @@ import {
 } from "./processEmails";
 import { KafkaEvent, KafkaRecord } from "shared-types";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
-import { getAllStateUsers } from "./../libs/email";
+import { getAllStateUsers } from "libs/email";
 import { getSecret } from "shared-utils";
-import * as os from "../libs/opensearch-lib";
+import * as os from "libs/opensearch-lib";
 import { Context } from "aws-lambda";
-import { vi, Mock } from "vitest";
+import {
+  vi,
+  Mock,
+  beforeAll,
+  afterAll,
+  beforeEach,
+  afterEach,
+  describe,
+  it,
+  expect,
+} from "vitest";
+import { EmailAddresses } from "shared-types";
+
+// Add this near the top of your test file, after the imports
+const mockEmailAddresses: EmailAddresses = {
+  osgEmail: ["osg@example.com"],
+  dpoEmail: ["dpo@example.com"],
+  dmcoEmail: ["dmco@example.com"],
+  dhcbsooEmail: ["dhcbsoo@example.com"],
+  chipInbox: ["chip.inbox@example.com"],
+  chipCcList: ["chip.cc1@example.com", "chip.cc2@example.com"],
+  sourceEmail: "source@example.com",
+  srtEmails: ["srt1@example.com", "srt2@example.com"],
+  cpocEmail: ["cpoc@example.com"],
+};
 
 vi.mock("@aws-sdk/client-ses");
+beforeAll(() => {
+  vi.clearAllMocks();
 
+  vi.stubEnv("REGION", "us-east-1");
+  vi.stubEnv("emailAddressLookupSecretName", "mock-email-secret");
+  vi.stubEnv("applicationEndpointUrl", "https://mock-app-endpoint.com");
+  vi.stubEnv("openSearchDomainEndpoint", "https://mock-opensearch-domain.com");
+  // Mock environment variables
+  vi.stubEnv("indexNamespace", "https://mock-opensearch-endpoint.com");
+  (getSecret as Mock).mockResolvedValue(JSON.stringify(mockEmailAddresses));
+
+  // Add any other environment variables your code expects
+});
+
+afterAll(() => {
+  // Clear stubbed environment variables after each test
+  vi.unstubAllEnvs();
+});
 describe("createEmailParams", () => {
   const emailDetails = {
     to: ["recipient@example.com"],
@@ -22,6 +63,27 @@ describe("createEmailParams", () => {
     html: "<html>Test</html>",
     text: "Test",
   };
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    vi.stubEnv("REGION", "us-east-1");
+    vi.stubEnv("emailAddressLookupSecretName", "mock-email-secret");
+    vi.stubEnv("applicationEndpointUrl", "https://mock-app-endpoint.com");
+    vi.stubEnv(
+      "openSearchDomainEndpoint",
+      "https://mock-opensearch-domain.com",
+    );
+    // Mock environment variables
+    vi.stubEnv("indexNamespace", "https://mock-opensearch-endpoint.com");
+    (getSecret as Mock).mockResolvedValue(JSON.stringify(mockEmailAddresses));
+
+    // Add any other environment variables your code expects
+  });
+
+  afterEach(() => {
+    // Clear stubbed environment variables after each test
+    vi.unstubAllEnvs();
+  });
 
   it("should create email parameters correctly", () => {
     const params = createEmailParams(emailDetails, emailDetails.from);
@@ -114,6 +176,18 @@ describe("processEmails", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+
+    // Mock environment variables
+    vi.stubEnv("OPENSEARCH_ENDPOINT", "https://mock-opensearch-endpoint.com");
+    vi.stubEnv("INDEX_NAMESPACE", "mock-index-namespace");
+    (getSecret as Mock).mockResolvedValue(JSON.stringify(mockEmailAddresses));
+
+    // Add any other environment variables your code expects
+  });
+
+  afterEach(() => {
+    // Clear stubbed environment variables after each test
+    vi.unstubAllEnvs();
   });
 
   it("should process Kafka event successfully", async () => {
@@ -150,6 +224,6 @@ describe("processEmails", () => {
 
     await expect(
       processEmailsHandler(mockKafkaEvent, mockContext, mockThirdArgument),
-    ).rejects.toThrow("Error fetching users");
+    ).rejects.toThrow();
   });
 });

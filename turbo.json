@@ -29,11 +29,11 @@
       ]
     },
     "test": {
-      "cache": true,
+      "cache": false,
       "env": ["STAGE_NAME", "PROJECT"]
     },
     "test:coverage": {
-      "cache": true,
+      "cache": false,
       "env": ["STAGE_NAME", "PROJECT"]
     }
   }

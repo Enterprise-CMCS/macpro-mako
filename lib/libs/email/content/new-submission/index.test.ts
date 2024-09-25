@@ -2,7 +2,7 @@ import { newSubmission } from "./index";
 import { render } from "@react-email/render";
 import { Authority, EmailAddresses, OneMac } from "shared-types";
 import { CommonVariables } from "../..";
-import { Mock, vi } from "vitest";
+import { Mock, vi, describe, it, expect, beforeEach } from "vitest";
 
 vi.mock("@react-email/render", () => ({
   render: vi.fn(),
@@ -60,7 +60,7 @@ describe("newSubmission", () => {
       to: emailAddresses.osgEmail,
       subject: `Medicaid SPA ${variables.id} Submitted`,
       html: "<html>MedSpa CMS Email</html>",
-      text: "<html>MedSpa CMS Email</html>",
+      text: undefined,
     });
   });
 
@@ -71,7 +71,7 @@ describe("newSubmission", () => {
       to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
       subject: `Your SPA ${variables.id} has been submitted to CMS`,
       html: "<html>MedSpa State Email</html>",
-      text: "<html>MedSpa State Email</html>",
+      text: undefined,
     });
   });
 
@@ -83,7 +83,7 @@ describe("newSubmission", () => {
       cc: emailAddresses.chipCcList,
       subject: `New CHIP SPA ${variables.id} Submitted`,
       html: "<html>CHIP SPA CMS Email</html>",
-      text: "<html>CHIP SPA CMS Email</html>",
+      text: undefined,
     });
   });
 
@@ -94,7 +94,7 @@ describe("newSubmission", () => {
       to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
       subject: `Your CHIP SPA ${variables.id} has been submitted to CMS`,
       html: "<html>CHIP SPA State Email</html>",
-      text: "<html>CHIP SPA State Email</html>",
+      text: undefined,
     });
   });
 
@@ -105,7 +105,7 @@ describe("newSubmission", () => {
       to: emailAddresses.osgEmail,
       subject: `${variables.authority} ${variables.id} Submitted`,
       html: "<html>1915b CMS Email</html>",
-      text: "<html>1915b CMS Email</html>",
+      text: undefined,
     });
   });
 
@@ -116,7 +116,7 @@ describe("newSubmission", () => {
       to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
       subject: `Your ${variables.actionType} ${variables.id} has been submitted to CMS`,
       html: "<html>1915b State Email</html>",
-      text: "<html>1915b State Email</html>",
+      text: undefined,
     });
   });
 
@@ -127,7 +127,7 @@ describe("newSubmission", () => {
       to: emailAddresses.osgEmail,
       subject: `1915(c) ${variables.id} Submitted`,
       html: "<html>1915c CMS Email</html>",
-      text: "<html>1915c CMS Email</html>",
+      text: undefined,
     });
   });
 
@@ -138,7 +138,7 @@ describe("newSubmission", () => {
       to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
       subject: `Your 1915(c) ${variables.id} has been submitted to CMS`,
       html: "<html>1915c State Email</html>",
-      text: "<html>1915c State Email</html>",
+      text: undefined,
     });
   });
 });

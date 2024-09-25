@@ -112,7 +112,10 @@ describe("getItemData Handler", () => {
 
     expect(response).toHaveBeenCalledWith({
       statusCode: 500,
-      body: { message: "Internal server error" },
+      body: {
+        error: new Error("Test error"),
+        message: "Test error",
+      },
     });
   });
 });

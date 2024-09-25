@@ -14,9 +14,9 @@
     "e2e": "turbo e2e",
     "e2e:ui": "turbo e2e:ui",
     "test-tsc": "tsc --skipLibCheck --noEmit",
-    "test": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui",
+    "test": "vitest --exclude '**/*.spec.*'",
+    "test:coverage": "vitest run --coverage --exclude '**/*.spec.*'",
+    "test:ui": "vitest --ui --exclude '**/*.spec.*'",
     "cdk:watch": "cdk watch -c stage=${STAGE:-local} --no-rollback",
     "bun:dev": "cd react-app && bun run dev",
     "ui:watch": "npm-run-all --parallel cdk:watch bun:dev"
@@ -38,6 +38,7 @@
     "@react-email/components": "0.0.25",
     "@types/aws-lambda": "^8.10.145",
     "aws-cdk-lib": "^2.157.0",
+    "bun": "1.1.20",
     "cdk": "^2.157.0",
     "constructs": "^10.3.0",
     "esbuild": "^0.23.1",
@@ -67,6 +68,7 @@
     "eslint-plugin-react": "^7.35.2",
     "eslint-plugin-react-hooks": "^4.6.2",
     "globals": "^15.9.0",
+    "happy-dom": "^15.7.4",
     "jest": "^29.7.0",
     "npm-run-all": "^4.1.5",
     "semantic-release": "^21.1.2",
@@ -75,7 +77,7 @@
     "turbo": "^2.1.2",
     "typescript": "5.4.5",
     "typescript-eslint": "^8.5.0",
-    "vitest": "^2.0.5"
+    "vitest": "^2.1.1"
   },
   "release": {
     "branches": [
