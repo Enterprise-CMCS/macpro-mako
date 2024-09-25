@@ -133,7 +133,7 @@ export const v202401: FormSchema = {
                                 rules: {
                                   pattern: {
                                     value: /^[0-9]\d*$/,
-                                    message: "Must be a positive integer",
+                                    message: "Must be a positive integer value",
                                   },
                                   required: "* Required",
                                 },
@@ -149,7 +149,7 @@ export const v202401: FormSchema = {
                                 rules: {
                                   pattern: {
                                     value: /^[0-9]\d*$/,
-                                    message: "Must be a positive integer",
+                                    message: "Must be a positive integer value",
                                   },
                                   required: "* Required",
                                 },
@@ -277,7 +277,7 @@ export const v202401: FormSchema = {
                   rules: {
                     pattern: {
                       value: /^[0-9]\d*$/,
-                      message: "Must be a positive integer",
+                      message: "Must be a positive integer value",
                     },
                     required: "* Required",
                   },
@@ -295,7 +295,7 @@ export const v202401: FormSchema = {
                   rules: {
                     pattern: {
                       value: /^[0-9]\d*$/,
-                      message: "Must be a positive integer",
+                      message: "Must be a positive integer value",
                     },
                     required: "* Required",
                   },
@@ -450,8 +450,9 @@ export const v202401: FormSchema = {
                                     name: "above-county-geo-var",
                                     rules: {
                                       pattern: {
-                                        value: /^\d*\.?\d+$/,
-                                        message: "Must be a positive integer",
+                                        value: /^[0-9]\d*$/,
+                                        message:
+                                          "Must be a positive integer value",
                                       },
                                       required: "* Required",
                                     },
@@ -468,8 +469,9 @@ export const v202401: FormSchema = {
                                     name: "up-to-and-including-county-geo-var",
                                     rules: {
                                       pattern: {
-                                        value: /^\d*\.?\d+$/,
-                                        message: "Must be a positive integer",
+                                        value: /^[0-9]\d*$/,
+                                        message:
+                                          "Must be a positive integer value",
                                       },
                                       required: "* Required",
                                     },
@@ -540,7 +542,7 @@ export const v202401: FormSchema = {
                                     label: "City",
                                     labelClassName: "font-bold text-[#212121]",
                                     props: {
-                                      className: "w-[125px]",
+                                      className: "w-[229px]",
                                     },
                                   },
                                   {
@@ -548,8 +550,9 @@ export const v202401: FormSchema = {
                                     name: "above-city-geo-var",
                                     rules: {
                                       pattern: {
-                                        value: /^\d*\.?\d+$/,
-                                        message: "Must be a positive integer",
+                                        value: /^[0-9]\d*$/,
+                                        message:
+                                          "Must be a positive integer value",
                                       },
                                       required: "* Required",
                                     },
@@ -566,8 +569,9 @@ export const v202401: FormSchema = {
                                     name: "up-to-and-including-city-geo-var",
                                     rules: {
                                       pattern: {
-                                        value: /^\d*\.?\d+$/,
-                                        message: "Must be a positive integer",
+                                        value: /^[0-9]\d*$/,
+                                        message:
+                                          "Must be a positive integer value",
                                       },
                                       required: "* Required",
                                     },
@@ -628,7 +632,14 @@ export const v202401: FormSchema = {
                                   {
                                     rhf: "Input",
                                     name: "other-geo-var",
-                                    rules: { required: "* Required" },
+                                    rules: {
+                                      required: "* Required",
+                                      pattern: {
+                                        value: noLeadingTrailingWhitespace,
+                                        message:
+                                          "Must not have leading or trailing whitespace.",
+                                      },
+                                    },
                                     label: "Geographic Area",
                                     labelClassName: "font-bold text-[#212121]",
                                     props: {
@@ -664,9 +675,9 @@ export const v202401: FormSchema = {
                                         name: "other-above-geo-var",
                                         rules: {
                                           pattern: {
-                                            value: /^\d*\.?\d+$/,
+                                            value: /^[0-9]\d*$/,
                                             message:
-                                              "Must be a positive integer",
+                                              "Must be a positive integer value",
                                           },
                                           required: "* Required",
                                         },
@@ -684,9 +695,9 @@ export const v202401: FormSchema = {
                                         name: "up-to-and-including-other-geo-var",
                                         rules: {
                                           pattern: {
-                                            value: /^\d*\.?\d+$/,
+                                            value: /^[0-9]\d*$/,
                                             message:
-                                              "Must be a positive integer",
+                                              "Must be a positive integer value",
                                           },
                                           required: "* Required",
                                         },
