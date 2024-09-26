@@ -18,6 +18,8 @@ export const AmendmentForm = () => {
     <ActionForm
       schema={formSchemas["contracting-amendment"]}
       title="1915(b)(4) FFS Selective Contracting Waiver Amendment Details"
+      breadcrumbText="1915(b)(4) FFS Selective Contracting Waiver Amendment"
+      tabToRedirectTo="waivers"
       fields={({ control }) => (
         <>
           <div className="flex flex-col">
@@ -126,7 +128,6 @@ export const AmendmentForm = () => {
         property: "id",
         documentChecker: (check) => check.recordExists,
       }}
-      tab={"waivers"}
     />
   );
 };

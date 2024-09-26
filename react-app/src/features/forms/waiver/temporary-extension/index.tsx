@@ -22,6 +22,8 @@ export const TemporaryExtensionForm = () => (
   <ActionForm
     schema={formSchemas["temporary-extension"]}
     title="Temporary Extension Request Details"
+    breadcrumbText="Request 1915(b) or 1915(c) Temporary Extension"
+    tabToRedirectTo="waivers"
     fields={(form) => (
       <>
         <FormField
@@ -140,6 +142,5 @@ export const TemporaryExtensionForm = () => (
       body: "Your submission has been received.",
       variant: "success",
     }}
-    tab={"waivers"}
   />
 );

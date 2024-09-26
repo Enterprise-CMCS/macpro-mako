@@ -18,6 +18,8 @@ export const ChipForm = () => (
   <ActionForm
     title="CHIP SPA Details"
     schema={formSchemas["new-chip-submission"]}
+    breadcrumbText="Submit new CHIP SPA"
+    tabToRedirectTo="spas"
     fields={({ control }) => (
       <>
         <FormField
@@ -89,6 +91,5 @@ export const ChipForm = () => (
       cancelButtonText: "Return to form",
       areButtonsReversed: true,
     }}
-    tab={"spas"}
   />
 );

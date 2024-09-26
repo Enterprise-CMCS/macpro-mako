@@ -18,6 +18,8 @@ export const RenewalForm = () => {
     <ActionForm
       schema={formSchemas["contracting-renewal"]}
       title="1915(b)(4) FFS Selective Contracting Renewal Waiver Details"
+      breadcrumbText="1915(b)(4) FFS Selective Contracting Renewal Waiver"
+      tabToRedirectTo="waivers"
       fields={({ control }) => (
         <>
           <div className="flex flex-col">
@@ -131,7 +133,6 @@ export const RenewalForm = () => {
         property: "id",
         documentChecker: (check) => check.recordExists,
       }}
-      tab={"waivers"}
     />
   );
 };

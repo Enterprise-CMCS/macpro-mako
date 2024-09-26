@@ -17,6 +17,8 @@ import { StateField } from "./StateField";
 export const AppKAmendmentForm = () => (
   <ActionForm
     title="1915(c) Appendix K Amendment Request Details"
+    breadcrumbText="Request a 1915(c) Appendix K Amendment"
+    tabToRedirectTo="waivers"
     schema={appkSchema}
     fields={(form) => (
       <>
@@ -99,6 +101,5 @@ export const AppKAmendmentForm = () => (
     attachments={{
       faqLink: "/faq/appk-attachments",
     }}
-    tab={"waivers"}
   />
 );

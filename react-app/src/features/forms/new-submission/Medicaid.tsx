@@ -18,6 +18,8 @@ export const MedicaidForm = () => (
   <ActionForm
     schema={formSchemas["new-medicaid-submission"]}
     title="Medicaid SPA Details"
+    breadcrumbText="Submit new Medicaid SPA"
+    tabToRedirectTo="spas"
     fields={({ control }) => (
       <>
         <FormField
@@ -87,6 +89,5 @@ export const MedicaidForm = () => (
       property: "id",
       documentChecker: (check) => check.recordExists,
     }}
-    tab={"spas"}
   />
 );

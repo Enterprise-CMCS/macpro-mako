@@ -18,6 +18,8 @@ export const InitialForm = () => {
     <ActionForm
       schema={formSchemas["contracting-initial"]}
       title="1915(b)(4) FFS Selective Contracting Initial Waiver Details"
+      breadcrumbText="1915(b)(4) FFS Selective Contracting Initial Waiver"
+      tabToRedirectTo="waivers"
       fields={({ control }) => (
         <>
           <div className="flex flex-col">
@@ -102,7 +104,6 @@ export const InitialForm = () => {
         property: "id",
         documentChecker: (check) => check.recordExists,
       }}
-      tab={"waivers"}
     />
   );
 };
