@@ -44,6 +44,7 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
   const contextValue = useMemo(
     () => ({
       user: userData?.user ?? null,
+      isCms: userData?.isCms,
       counties,
     }),
     [userData, counties],
