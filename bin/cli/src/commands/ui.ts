@@ -18,7 +18,7 @@ export const ui = {
     const stage = options.stage || (await setStageFromBranch());
 
     await writeUiEnvFile(stage, true);
-
+    await runCommand("bun", ["run", "build"], "react-app");
     await runCommand(`bun`, ["run", "dev"], "react-app");
   },
 };

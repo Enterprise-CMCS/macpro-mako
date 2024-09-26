@@ -15,7 +15,6 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "s3-url-parser": "^1.0.3",
-    "shared-utils": "*"
+    "s3-url-parser": "^1.0.3"
   }
 }
