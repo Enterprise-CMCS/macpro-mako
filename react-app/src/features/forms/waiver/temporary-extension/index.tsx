@@ -23,7 +23,6 @@ export const TemporaryExtensionForm = () => (
     schema={formSchemas["temporary-extension"]}
     title="Temporary Extension Request Details"
     breadcrumbText="Request 1915(b) or 1915(c) Temporary Extension"
-    tabToRedirectTo="waivers"
     fields={(form) => (
       <>
         <FormField

@@ -19,7 +19,6 @@ export const AmendmentForm = () => {
       schema={formSchemas["contracting-amendment"]}
       title="1915(b)(4) FFS Selective Contracting Waiver Amendment Details"
       breadcrumbText="1915(b)(4) FFS Selective Contracting Waiver Amendment"
-      tabToRedirectTo="waivers"
       fields={({ control }) => (
         <>
           <div className="flex flex-col">

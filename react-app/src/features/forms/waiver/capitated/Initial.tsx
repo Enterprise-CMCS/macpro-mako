@@ -18,7 +18,6 @@ export const InitialForm = () => (
     schema={formSchemas["capitated-initial"]}
     title="1915(b) Comprehensive (Capitated) Initial Waiver Details"
     breadcrumbText="1915(b) Comprehensive (Capitated) Initial Waiver"
-    tabToRedirectTo="waivers"
     fields={({ control }) => (
       <>
         <div className="flex flex-col">

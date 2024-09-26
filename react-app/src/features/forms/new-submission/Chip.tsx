@@ -19,7 +19,6 @@ export const ChipForm = () => (
     title="CHIP SPA Details"
     schema={formSchemas["new-chip-submission"]}
     breadcrumbText="Submit new CHIP SPA"
-    tabToRedirectTo="spas"
     fields={({ control }) => (
       <>
         <FormField

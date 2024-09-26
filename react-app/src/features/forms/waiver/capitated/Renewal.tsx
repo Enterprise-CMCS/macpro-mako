@@ -18,7 +18,6 @@ export const Renewal = () => (
     schema={formSchemas["capitated-renewal"]}
     title="1915(b) Comprehensive (Capitated) Renewal Waiver Details"
     breadcrumbText="1915(b) Comprehensive (Capitated) Renewal Waiver"
-    tabToRedirectTo="waivers"
     fields={({ control }) => (
       <>
         <div className="flex flex-col">

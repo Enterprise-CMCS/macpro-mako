@@ -18,7 +18,6 @@ export const AmendmentForm = () => (
     schema={formSchemas["capitated-amendment"]}
     title="1915(b) Comprehensive (Capitated) Waiver Amendment Details"
     breadcrumbText="1915(b) Comprehensive (Capitated) Waiver Amendment"
-    tabToRedirectTo="waivers"
     fields={({ control }) => (
       <>
         <div className="flex flex-col">

@@ -19,7 +19,6 @@ export const MedicaidForm = () => (
     schema={formSchemas["new-medicaid-submission"]}
     title="Medicaid SPA Details"
     breadcrumbText="Submit new Medicaid SPA"
-    tabToRedirectTo="spas"
     fields={({ control }) => (
       <>
         <FormField
