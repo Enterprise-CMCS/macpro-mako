@@ -137,10 +137,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       const poller = documentPoller(documentPollerId, documentChecker);
       await poller.startPollingData();
 
-      const formOrigins = getFormOrigin({
-        authority,
-        id,
-      });
+     const formOrigins = getFormOrigin({ authority, id });
       banner({
         ...bannerPostSubmission,
         pathnameToDisplayOn: formOrigins.pathname,
