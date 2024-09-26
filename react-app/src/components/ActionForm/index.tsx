@@ -138,7 +138,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       await poller.startPollingData();
 
       const formOrigins = getFormOrigin({
-        authority: authority ?? authority,
+        authority,
         id,
       });
       banner({
