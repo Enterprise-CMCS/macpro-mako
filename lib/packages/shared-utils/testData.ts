@@ -100,7 +100,6 @@ export const testItemResult: opensearch.main.ItemResult = {
     subTypeIds: null,
     cmsStatus: "Pending",
     reviewTeam: [],
-    flavor: "MEDICAID",
     authorityId: 125,
     initialIntakeNeeded: true,
     authority: "Medicaid SPA" as Authority,

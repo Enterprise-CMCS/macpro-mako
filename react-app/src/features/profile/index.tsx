@@ -4,26 +4,35 @@ import { RoleDescriptionStrings } from "shared-types";
 import { convertStateAbbrToFullName } from "@/utils";
 import config from "@/config";
 
-export const Profile = () => {
-  const { data } = useGetUser();
-  const stateAbbreviations = data?.user?.["custom:state"];
-  const fullStateNames = stateAbbreviations
-    ?.split(",")
-    .map((abbr) => convertStateAbbrToFullName(abbr))
-    .join(", ");
-
-  // Returns comma-separated string of user role descriptions:
-  function rolesDescriptions(roles: string | undefined) {
-    const rolesArray: string[] | undefined = roles?.split(",");
-
-    const descriptiveRolesArray = rolesArray?.map((role) => {
-      return RoleDescriptionStrings[role];
-    });
-
-    if (descriptiveRolesArray) {
-      return descriptiveRolesArray.join(", ");
-    }
+const getRoleDescriptionsFromUser = (roles: string | undefined) => {
+  if (roles === undefined) {
+    return "";
   }
+
+  return roles
+    .split(",")
+    .map((role) => RoleDescriptionStrings[role])
+    .join(", ");
+};
+
+const getFullStateNamesFromUser = (states: string | undefined) => {
+  if (states === undefined) {
+    return "";
+  }
+
+  return states.split(",").map(convertStateAbbrToFullName).join(", ");
+};
+
+export const Profile = () => {
+  const { data: userData } = useGetUser();
+
+  const fullStateNames = getFullStateNamesFromUser(
+    userData.user["custom:state"],
+  );
+
+  const userRoles = getRoleDescriptionsFromUser(
+    userData.user["custom:cms-roles"],
+  );
 
   return (
     <>
@@ -32,7 +41,6 @@ export const Profile = () => {
       </SubNavHeader>
 
       <section className="block max-w-screen-xl m-auto px-4 lg:px-8 py-8 gap-10">
-        {/* using bg-sky-50 for a11y compliance */}
         <Alert className="mb-6 bg-sky-50 flex flex-row">
           <div className="py-1 mr-2 flex-none w-8">
             <svg
@@ -64,18 +72,18 @@ export const Profile = () => {
             <div className="leading-9">
               <h3 className="font-bold">Full Name</h3>
               <p>
-                {data?.user?.given_name} {data?.user?.family_name}
+                {userData?.user?.given_name} {userData?.user?.family_name}
               </p>
             </div>
 
             <div className="leading-9">
               <h3 className="font-bold">Role</h3>
-              <p>{rolesDescriptions(data?.user?.["custom:cms-roles"])}</p>
+              <p>{userRoles}</p>
             </div>
 
             <div className="leading-9">
               <h3 className="font-bold">Email</h3>
-              <p>{data?.user?.email}</p>
+              <p>{userData?.user?.email}</p>
             </div>
           </div>
 

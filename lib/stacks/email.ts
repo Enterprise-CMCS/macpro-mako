@@ -6,6 +6,7 @@ import { ISubnet } from "aws-cdk-lib/aws-ec2";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
 import * as LC from "local-constructs";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import { commonBundlingOptions } from "../config/bundling-config";
 
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;
@@ -33,7 +34,6 @@ export class Email extends cdk.NestedStack {
     const {
       project,
       stage,
-      isDev,
       stack,
       userPoolId,
       vpc,
@@ -48,71 +48,6 @@ export class Email extends cdk.NestedStack {
       openSearchDomainEndpoint,
       openSearchDomainArn,
     } = props;
-
-    // KMS Key for SNS Topic
-    const kmsKeyForEmails = new cdk.aws_kms.Key(this, "KmsKeyForEmails", {
-      enableKeyRotation: true,
-      policy: new cdk.aws_iam.PolicyDocument({
-        statements: [
-          new cdk.aws_iam.PolicyStatement({
-            actions: ["kms:*"],
-            principals: [new cdk.aws_iam.AccountRootPrincipal()],
-            resources: ["*"],
-          }),
-          new cdk.aws_iam.PolicyStatement({
-            actions: ["kms:GenerateDataKey", "kms:Decrypt"],
-            principals: [new cdk.aws_iam.ServicePrincipal("sns.amazonaws.com")],
-            resources: ["*"],
-          }),
-          new cdk.aws_iam.PolicyStatement({
-            actions: ["kms:GenerateDataKey", "kms:Decrypt"],
-            principals: [new cdk.aws_iam.ServicePrincipal("ses.amazonaws.com")],
-            resources: ["*"],
-          }),
-        ],
-      }),
-    });
-
-    // SNS Topic for Email Events
-    const emailEventTopic = new cdk.aws_sns.Topic(this, "EmailEventTopic", {
-      displayName: "Monitoring the sending of emails",
-      masterKey: kmsKeyForEmails,
-    });
-
-    // Allow SES to publish to the SNS topic
-    const snsPublishPolicyStatement = new cdk.aws_iam.PolicyStatement({
-      actions: ["sns:Publish"],
-      principals: [new cdk.aws_iam.ServicePrincipal("ses.amazonaws.com")],
-      resources: [emailEventTopic.topicArn],
-      effect: cdk.aws_iam.Effect.ALLOW,
-    });
-    emailEventTopic.addToResourcePolicy(snsPublishPolicyStatement);
-
-    // S3 Bucket for storing email event data
-    const emailDataBucket = new cdk.aws_s3.Bucket(this, "EmailDataBucket", {
-      versioned: true,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: isDev,
-    });
-
-    emailDataBucket.addToResourcePolicy(
-      new cdk.aws_iam.PolicyStatement({
-        effect: cdk.aws_iam.Effect.DENY,
-        principals: [new cdk.aws_iam.AnyPrincipal()],
-        actions: ["s3:*"],
-        resources: [
-          emailDataBucket.bucketArn,
-          `${emailDataBucket.bucketArn}/*`,
-        ],
-        conditions: {
-          Bool: { "aws:SecureTransport": "false" },
-        },
-      }),
-    );
-
-    new LC.EmptyBuckets(this, "EmptyBuckets", {
-      buckets: [emailDataBucket],
-    });
 
     // SES Configuration Set
     new cdk.aws_ses.CfnConfigurationSet(this, "ConfigurationSet", {
@@ -179,17 +114,6 @@ export class Email extends cdk.NestedStack {
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
               actions: [
-                "cognito-idp:ListUsers",
-                "cognito-idp:AdminGetUser",
-                "cognito-idp:AdminListUsers",
-              ],
-              resources: [
-                `arn:aws:cognito-idp:${this.region}:${this.account}:userpool/us-east-*`,
-              ],
-            }),
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
-              actions: [
                 "secretsmanager:DescribeSecret",
                 "secretsmanager:GetSecretValue",
               ],
@@ -198,7 +122,7 @@ export class Email extends cdk.NestedStack {
               ],
             }),
             new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
+              effect: cdk.aws_iam.Effect.DENY,
               actions: ["logs:CreateLogGroup"],
               resources: ["*"],
             }),
@@ -232,6 +156,7 @@ export class Email extends cdk.NestedStack {
         securityGroups: [lambdaSecurityGroup],
         environment: {
           REGION: this.region,
+          region: this.region,
           stage,
           indexNamespace,
           osDomain: `https://${openSearchDomainEndpoint}`,
@@ -241,6 +166,7 @@ export class Email extends cdk.NestedStack {
           MAX_RETRY_ATTEMPTS: "3", // Set the maximum number of retry attempts
           userPoolId,
         },
+        bundling: commonBundlingOptions,
       },
     );
 

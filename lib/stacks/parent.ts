@@ -2,7 +2,7 @@ import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { CloudWatchLogsResourcePolicy } from "local-constructs";
 
-import { DeploymentConfigProperties } from "./deployment-config";
+import { DeploymentConfigProperties } from "../config/deployment-config";
 import * as Stacks from "../stacks";
 
 export class ParentStack extends cdk.Stack {

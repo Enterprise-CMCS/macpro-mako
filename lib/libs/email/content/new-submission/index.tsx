@@ -16,10 +16,7 @@ import { render } from "@react-email/render";
 export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
     cms: async (
-      variables: OneMac &
-        CommonVariables & { emails: EmailAddresses } & {
-          emails: EmailAddresses;
-        },
+      variables: OneMac & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: variables.emails.osgEmail,

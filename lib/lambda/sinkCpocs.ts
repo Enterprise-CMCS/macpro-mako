@@ -10,12 +10,6 @@ import {
 import { decodeBase64WithUtf8 } from "shared-utils";
 import { Index } from "shared-types/opensearch";
 
-const osDomain = process.env.osDomain;
-if (!osDomain) {
-  throw new Error("Missing required environment variable(s)");
-}
-const index: Index = `${process.env.indexNamespace}cpocs`;
-
 export const handler: Handler<KafkaEvent> = async (event) => {
   const loggableEvent = { ...event, records: "too large to display" };
   try {
@@ -43,6 +37,7 @@ const officers = async (
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
     const { key, value } = kafkaRecord;
+
     try {
       // Handle delete events and continue
       if (value === undefined) {
@@ -85,5 +80,12 @@ const officers = async (
       });
     }
   }
+
+  const osDomain = process.env.osDomain;
+  if (!osDomain) {
+    throw new Error("Missing required environment variable(s)");
+  }
+
+  const index: Index = `${process.env.indexNamespace}cpocs`;
   await bulkUpdateDataWrapper(osDomain, index, docs);
 };

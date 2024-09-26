@@ -12,11 +12,7 @@ import {
 } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
-import {
-  getEmailTemplates,
-  getAllStateUsers,
-  StateUser,
-} from "./../libs/email";
+import { getEmailTemplates, getAllStateUsers, StateUser } from "../libs/email";
 import * as os from "./../libs/opensearch-lib";
 import {
   getCpocEmail,

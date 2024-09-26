@@ -50,9 +50,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
     },
     state: async (
       variables: RaiWithdraw &
-        CommonVariables & { emails: EmailAddresses } & {
-          emails: EmailAddresses;
-        },
+        CommonVariables & { emails: EmailAddresses },
     ) => {
       const relatedEvent = await getLatestMatchingEvent(
         variables.id,

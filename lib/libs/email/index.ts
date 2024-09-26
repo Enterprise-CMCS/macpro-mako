@@ -1,5 +1,12 @@
-import { DateTime } from "luxon";
-import { Action, Authority } from "shared-types";
+import * as dateFns from "date-fns";
+import {
+  Action,
+  Attachment,
+  AttachmentKey,
+  AttachmentTitle,
+  attachmentTitleMap,
+  Authority,
+} from "shared-types";
 import { getPackageChangelog } from "../api/package";
 import * as EmailContent from "./content";
 
@@ -13,11 +20,47 @@ export interface CommonVariables {
   allStateUsersEmails: string[];
 }
 
+export const formatAttachments = (
+  formatType: "text" | "html",
+  attachmentList?: Attachment[] | null,
+): string => {
+  const formatChoices = {
+    text: {
+      begin: "\n\n",
+      joiner: "\n",
+      end: "\n\n",
+    },
+    html: {
+      begin: "<ul><li>",
+      joiner: "</li><li>",
+      end: "</li></ul>",
+    },
+  };
+  const format = formatChoices[formatType];
+  if (!format) {
+    console.log("new format type? ", formatType);
+    return "attachment List";
+  }
+  if (!attachmentList || attachmentList.length === 0) return "no attachments";
+  else {
+    const attachmentFormat = attachmentList.map((a) => {
+      const attachmentTitle: AttachmentTitle =
+        a.title in attachmentTitleMap
+          ? attachmentTitleMap[a.title as AttachmentKey]
+          : a.title;
+      return `${attachmentTitle}: ${a.filename}`;
+    });
+    return `${format.begin}${attachmentFormat.join(format.joiner)}${
+      format.end
+    }`;
+  }
+};
+
 export function formatDate(date: number | null | undefined) {
   if (!date || date === undefined) {
     return "Pending";
   } else {
-    return DateTime.fromMillis(date).toFormat("DDDD");
+    return dateFns.format(date, "MMMM d, yyyy");
   }
 }
 
@@ -25,9 +68,10 @@ export function formatNinetyDaysDate(date: number | null | undefined): string {
   if (!date || date === undefined) {
     return "Pending";
   } else {
-    return DateTime.fromMillis(date)
-      .plus({ days: 90 })
-      .toFormat("DDDD '@ 11:59pm ET'");
+    return dateFns.format(
+      dateFns.add(date, { days: 90 }),
+      "MMMM d, yyyy '@ 11:59pm ET'",
+    );
   }
 }
 
@@ -39,7 +83,7 @@ export interface EmailTemplate {
   text?: string;
 }
 
-type EmailTemplateFunction<T> = (variables: T) => Promise<EmailTemplate>;
+export type EmailTemplateFunction<T> = (variables: T) => Promise<EmailTemplate>;
 export type UserTypeOnlyTemplate = {
   [U in UserType]: EmailTemplateFunction<any>;
 };
@@ -162,21 +206,19 @@ export async function getEmailTemplates<T>(
   action: Action | "new-submission",
   authority: Authority,
 ): Promise<EmailTemplateFunction<T>[]> {
+  const template = emailTemplates[action];
   const emailTemplatesToSend: EmailTemplateFunction<T>[] = [];
-  if (action !== Action.ISSUE_RAI) {
-    const template = emailTemplates[action];
 
-    if (!template) {
-      throw new Error(`No templates found for action ${action}`);
-    }
+  if (!template) {
+    throw new Error(`No templates found for action ${action}`);
+  }
 
-    if (isAuthorityTemplate(template, authority)) {
-      emailTemplatesToSend.push(
-        ...Object.values(template[authority] as EmailTemplateFunction<T>),
-      );
-    } else {
-      emailTemplatesToSend.push(...Object.values(template));
-    }
+  if (isAuthorityTemplate(template, authority)) {
+    emailTemplatesToSend.push(
+      ...Object.values(template[authority] as EmailTemplateFunction<T>),
+    );
+  } else {
+    emailTemplatesToSend.push(...Object.values(template));
   }
 
   return emailTemplatesToSend;
@@ -186,9 +228,9 @@ export async function getEmailTemplates<T>(
 export async function getLatestMatchingEvent(id: string, actionType: string) {
   const item = await getPackageChangelog(id);
   const events = item.hits.hits.filter(
-    (hit) => hit._source.actionType === actionType,
+    (hit: any) => hit._source.actionType === actionType,
   );
-  events.sort((a, b) => b._source.timestamp - a._source.timestamp);
+  events.sort((a: any, b: any) => b._source.timestamp - a._source.timestamp);
   const latestMatchingEvent = events[0]._source;
   return latestMatchingEvent;
 }
