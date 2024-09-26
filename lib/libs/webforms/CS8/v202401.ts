@@ -422,68 +422,57 @@ export const v202401: FormSchema = {
                             props: { appendText: "Add County" },
                             fields: [
                               {
-                                rhf: "WrappedGroup",
-                                name: "wrapped",
-                                props: {
-                                  wrapperClassName: "flex-row flex gap-5",
+                                rhf: "Input",
+                                name: "county-geo-var",
+                                rules: {
+                                  required: "* Required",
+                                  pattern: {
+                                    value: noLeadingTrailingWhitespace,
+                                    message:
+                                      "Must not have leading or trailing whitespace.",
+                                  },
                                 },
-                                fields: [
-                                  {
-                                    rhf: "Input",
-                                    name: "county-geo-var",
-                                    rules: {
-                                      required: "* Required",
-                                      pattern: {
-                                        value: noLeadingTrailingWhitespace,
-                                        message:
-                                          "Must not have leading or trailing whitespace.",
-                                      },
-                                    },
-                                    label: "County",
-                                    labelClassName: "font-bold text-[#212121]",
-                                    props: {
-                                      className: "w-[229px]",
-                                    },
+                                label: "County",
+                                labelClassName: "font-bold text-[#212121]",
+                                props: {
+                                  className: "w-[229px]",
+                                },
+                              },
+                              {
+                                rhf: "Input",
+                                name: "above-county-geo-var",
+                                rules: {
+                                  pattern: {
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
                                   },
-                                  {
-                                    rhf: "Input",
-                                    name: "above-county-geo-var",
-                                    rules: {
-                                      pattern: {
-                                        value: /^[0-9]\d*$/,
-                                        message:
-                                          "Must be a positive integer value",
-                                      },
-                                      required: "* Required",
-                                    },
-                                    label: "Above",
-                                    labelClassName: "font-bold text-[#212121]",
-                                    props: {
-                                      className: "w-[159px]",
-                                      icon: "% FPL",
-                                      iconRight: true,
-                                    },
+                                  required: "* Required",
+                                },
+                                label: "Above",
+                                labelClassName: "font-bold text-[#212121]",
+                                props: {
+                                  className: "w-[159px]",
+                                  icon: "% FPL",
+                                  iconRight: true,
+                                },
+                              },
+                              {
+                                rhf: "Input",
+                                name: "up-to-and-including-county-geo-var",
+                                rules: {
+                                  pattern: {
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
                                   },
-                                  {
-                                    rhf: "Input",
-                                    name: "up-to-and-including-county-geo-var",
-                                    rules: {
-                                      pattern: {
-                                        value: /^[0-9]\d*$/,
-                                        message:
-                                          "Must be a positive integer value",
-                                      },
-                                      required: "* Required",
-                                    },
-                                    label: "Up to and including",
-                                    labelClassName: "font-bold text-[#212121]",
-                                    props: {
-                                      icon: "% FPL",
-                                      iconRight: true,
-                                      className: "w-[159px]",
-                                    },
-                                  },
-                                ],
+                                  required: "* Required",
+                                },
+                                label: "Up to and including",
+                                labelClassName: "font-bold text-[#212121]",
+                                props: {
+                                  icon: "% FPL",
+                                  iconRight: true,
+                                  className: "w-[159px]",
+                                },
                               },
                             ],
                           },
@@ -520,70 +509,60 @@ export const v202401: FormSchema = {
                             rhf: "FieldArray",
                             name: "city-info",
                             props: { appendText: "Add City" },
+
                             fields: [
                               {
-                                rhf: "WrappedGroup",
-                                name: "wrapped",
-                                props: {
-                                  wrapperClassName: "flex-row flex gap-5",
+                                rhf: "Input",
+                                name: "city-geo-var",
+                                rules: {
+                                  required: "* Required",
+                                  pattern: {
+                                    value: noLeadingTrailingWhitespace,
+                                    message:
+                                      "Must not have leading or trailing whitespace.",
+                                  },
                                 },
-                                fields: [
-                                  {
-                                    rhf: "Input",
-                                    name: "city-geo-var",
-                                    rules: {
-                                      required: "* Required",
-                                      pattern: {
-                                        value: noLeadingTrailingWhitespace,
-                                        message:
-                                          "Must not have leading or trailing whitespace.",
-                                      },
-                                    },
-                                    label: "City",
-                                    labelClassName: "font-bold text-[#212121]",
-                                    props: {
-                                      className: "w-[229px]",
-                                    },
+                                label: "City",
+                                labelClassName: "font-bold text-[#212121]",
+                                props: {
+                                  className: "w-[229px]",
+                                },
+                              },
+                              {
+                                rhf: "Input",
+                                name: "above-city-geo-var",
+                                rules: {
+                                  pattern: {
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
                                   },
-                                  {
-                                    rhf: "Input",
-                                    name: "above-city-geo-var",
-                                    rules: {
-                                      pattern: {
-                                        value: /^[0-9]\d*$/,
-                                        message:
-                                          "Must be a positive integer value",
-                                      },
-                                      required: "* Required",
-                                    },
-                                    label: "Above",
-                                    labelClassName: "font-bold text-[#212121]",
-                                    props: {
-                                      className: "w-[159px]",
-                                      icon: "% FPL",
-                                      iconRight: true,
-                                    },
+                                  required: "* Required",
+                                },
+                                label: "Above",
+                                labelClassName: "font-bold text-[#212121]",
+                                props: {
+                                  className: "w-[159px]",
+                                  icon: "% FPL",
+                                  iconRight: true,
+                                },
+                              },
+                              {
+                                rhf: "Input",
+                                name: "up-to-and-including-city-geo-var",
+                                rules: {
+                                  pattern: {
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
                                   },
-                                  {
-                                    rhf: "Input",
-                                    name: "up-to-and-including-city-geo-var",
-                                    rules: {
-                                      pattern: {
-                                        value: /^[0-9]\d*$/,
-                                        message:
-                                          "Must be a positive integer value",
-                                      },
-                                      required: "* Required",
-                                    },
-                                    label: "Up to and including",
-                                    labelClassName: "font-bold text-[#212121]",
-                                    props: {
-                                      icon: "% FPL",
-                                      iconRight: true,
-                                      className: "w-[159px]",
-                                    },
-                                  },
-                                ],
+                                  required: "* Required",
+                                },
+                                label: "Up to and including",
+                                labelClassName: "font-bold text-[#212121]",
+                                props: {
+                                  icon: "% FPL",
+                                  iconRight: true,
+                                  className: "w-[159px]",
+                                },
                               },
                             ],
                           },
