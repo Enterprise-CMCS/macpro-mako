@@ -1,9 +1,9 @@
 import { useGetItem, useGetPackageActions } from "@/api";
-import { LoadingSpinner, Link } from "@/components";
-import { DETAILS_ORIGIN, mapActionLabel } from "@/utils";
+import { LoadingSpinner } from "@/components";
+import { DETAILS_ORIGIN, ORIGIN, mapActionLabel } from "@/utils";
 import { DetailCardWrapper } from "..";
 import { FC } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
   const location = useLocation();
@@ -32,14 +32,15 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
         <ul className="my-3">
           {data.actions.map((type, idx) => (
             <Link
+              key={`${idx}-${type}`}
               state={{
                 from: `${location.pathname}${location.search}`,
               }}
-              path="/action/:authority/:id/:type"
-              key={`${idx}-${type}`}
-              params={{ id, type, authority: item.data?._source.authority }}
-              query={{
-                origin: DETAILS_ORIGIN,
+              to={{
+                pathname: `/action/${item.data?._source.authority}/${id}/${type}`,
+                search: new URLSearchParams({
+                  [ORIGIN]: DETAILS_ORIGIN,
+                }).toString(),
               }}
               className="text-sky-700 font-semibold text-lg"
             >
