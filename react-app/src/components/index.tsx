@@ -3,7 +3,6 @@ export * from "./BreadCrumb";
 export * from "./Cards";
 export * from "./Chip";
 export * from "./Container";
-export * from "./Context";
 export * from "./DetailsSection";
 export * from "./Dialog";
 export * from "./ErrorAlert";

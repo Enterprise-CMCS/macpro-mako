@@ -1,7 +1,6 @@
-import { useMemo } from "react";
 import { QueryClient } from "@tanstack/react-query";
 import { Plus as PlusIcon } from "lucide-react";
-import { getUser } from "@/api";
+import { getUser, useGetUser } from "@/api";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
 import {
@@ -9,13 +8,13 @@ import {
   type OsTab,
   useOsData,
   FilterDrawerProvider,
-  useUserContext,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components";
 import { useScrollToTop } from "@/hooks";
+import { isStateUser } from "shared-utils";
 import { Link, Navigate, redirect } from "react-router-dom";
 
 const loader = (queryClient: QueryClient) => {
@@ -41,15 +40,11 @@ const loader = (queryClient: QueryClient) => {
 export const dashboardLoader = loader;
 
 export const Dashboard = () => {
-  const userContext = useUserContext();
+  const { data: userObj } = useGetUser();
   const osData = useOsData();
   useScrollToTop();
 
-  const role = useMemo(() => {
-    return userContext?.user?.["custom:cms-roles"] ? true : false;
-  }, []);
-
-  if (!role) {
+  if (userObj === undefined) {
     return <Navigate to="/" />;
   }
 
@@ -63,10 +58,9 @@ export const Dashboard = () => {
     >
       <div>
         <FilterDrawerProvider>
-          {/* Header  */}
           <div className="flex flex-col w-full self-center mx-auto max-w-screen-xl xs:flex-row justify-between p-4 lg:px-8">
             <h1 className="text-xl font-bold mb-4 md:mb-0">Dashboard</h1>
-            {!userContext?.isCms && (
+            {isStateUser(userObj.user) && (
               <Link
                 to="/new-submission"
                 className="flex items-center text-white font-bold bg-primary border-none px-10 py-2 rounded cursor-pointer"
@@ -76,7 +70,6 @@ export const Dashboard = () => {
               </Link>
             )}
           </div>
-          {/* Tabs */}
           <div className="w-full">
             <div className="flex flex-col">
               <Tabs

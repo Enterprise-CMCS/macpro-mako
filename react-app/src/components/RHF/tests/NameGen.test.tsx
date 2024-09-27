@@ -1,4 +1,4 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect, vi } from "vitest";
 import { render } from "@testing-library/react";
 import { RHFDocument } from "../.";
 import { Form } from "../../Inputs";
@@ -68,6 +68,16 @@ const TestWrapper = (props: { onSubmit: (d: any) => void }) => {
     </div>
   );
 };
+
+vi.mock("@/api", async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...(actual as object),
+    useGetCounties: vi.fn(() => {
+      return { data: [], isLoading: false, error: null };
+    }),
+  };
+});
 
 describe("Test Name Generation", () => {
   test("Generate Structure Correctly", () => {
