@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import { Info } from "lucide-react";
 import {
   Alert,
-  FAQ_TAB,
   RequiredFieldDescription,
   ActionFormDescription,
   ProgressLossReminder,
 } from "@/components";
+import { FAQ_TAB } from "@/router";
 
 type FormIntroTextProps = {
   hasProgressLossReminder?: boolean;

@@ -1,4 +1,10 @@
-import { NavLink, NavLinkProps, Outlet, Link } from "react-router-dom";
+import {
+  NavLink,
+  NavLinkProps,
+  Outlet,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import oneMacLogo from "@/assets/onemac_logo.svg";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -10,7 +16,6 @@ import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
-import { useNavigate } from "../Routing";
 import { SimplePageContainer, UserPrompt, Banner } from "@/components";
 import { isFaqPage, isProd } from "@/utils";
 
@@ -50,7 +55,7 @@ const UserDropdownMenu = () => {
   const navigate = useNavigate();
 
   const handleViewProfile = () => {
-    navigate({ path: "/profile" });
+    navigate("/profile");
   };
 
   const handleLogout = async () => {

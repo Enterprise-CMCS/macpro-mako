@@ -12,12 +12,10 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-  Link,
-  Navigate,
-  redirect,
 } from "@/components";
 import { useScrollToTop } from "@/hooks";
 import { isStateUser } from "shared-utils";
+import { Link, Navigate, redirect } from "react-router-dom";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -32,7 +30,7 @@ const loader = (queryClient: QueryClient) => {
       ReturnType<typeof getUser>
     >;
     if (!isUser.user) {
-      return redirect({ path: "/" });
+      return redirect("/");
     }
 
     return isUser;
@@ -47,7 +45,7 @@ export const Dashboard = () => {
   useScrollToTop();
 
   if (userObj === undefined) {
-    return <Navigate path={"/"} />;
+    return <Navigate to="/" />;
   }
 
   return (
@@ -64,7 +62,7 @@ export const Dashboard = () => {
             <h1 className="text-xl font-bold mb-4 md:mb-0">Dashboard</h1>
             {isStateUser(userObj.user) && (
               <Link
-                path="/new-submission"
+                to="/new-submission"
                 className="flex items-center text-white font-bold bg-primary border-none px-10 py-2 rounded cursor-pointer"
               >
                 <span className="mr-2">New Submission</span>

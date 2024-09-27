@@ -12,9 +12,9 @@ import {
   FormField,
   banner,
   userPrompt,
-  formCrumbsFromPath,
   FAQFooter,
   PreSubmissionMessage,
+  optionCrumbsFromPath,
 } from "@/components";
 import {
   DefaultValues,
@@ -69,12 +69,12 @@ type InferUntransformedSchema<T> = T extends z.ZodEffects<infer U> ? U : T;
 
 type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   schema: Schema;
-  defaultValues?: DefaultValues<z.infer<InferUntransformedSchema<Schema>>>; // Adjusted to infer the base schema type
+  defaultValues?: DefaultValues<z.infer<InferUntransformedSchema<Schema>>>;
   title: string;
   fieldsLayout?: (props: { children: ReactNode; title: string }) => ReactNode;
   fields: (
     form: UseFormReturn<z.infer<InferUntransformedSchema<Schema>>>,
-  ) => ReactNode; // Adjusted to use the untransformed schema type
+  ) => ReactNode;
   bannerPostSubmission?: Omit<Banner, "pathnameToDisplayOn">;
   promptPreSubmission?: Omit<UserPrompt, "onAccept">;
   promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
@@ -91,7 +91,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   conditionsDeterminingUserAccess?: ((
     user: CognitoUserAttributes | null,
   ) => boolean)[];
-  tab: "spas" | "waivers";
+  breadcrumbText: string;
 };
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
@@ -115,13 +115,15 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   promptPreSubmission,
   documentPollerArgs,
   attachments,
-  tab,
   conditionsDeterminingUserAccess = [isStateUser],
+  breadcrumbText,
 }: ActionFormProps<Schema>) => {
   const { id, authority } = useParams<{ id: string; authority: Authority }>();
-  const location = useLocation();
+  const { pathname } = useLocation();
   const navigate = useNavigate();
   const { data: userObj } = useGetUser();
+
+  const breadcrumbs = optionCrumbsFromPath(pathname, authority);
 
   const form = useForm<z.TypeOf<Schema>>({
     resolver: zodResolver(schema),
@@ -153,7 +155,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         pathnameToDisplayOn: formOrigins.pathname,
       });
 
-      navigate(`/dashboard?tab=${tab}`);
+      navigate(formOrigins);
     } catch (error) {
       console.error(error);
       banner({
@@ -186,7 +188,16 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   return (
     <SimplePageContainer>
-      <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
+      <BreadCrumbs
+        options={[
+          ...breadcrumbs,
+          {
+            to: pathname,
+            displayText: breadcrumbText,
+            order: breadcrumbs.length,
+          },
+        ]}
+      />
       {form.formState.isSubmitting && <LoadingSpinner />}
       <Form {...form}>
         <form
