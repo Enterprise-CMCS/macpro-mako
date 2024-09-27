@@ -17,6 +17,7 @@ import {
   redirect,
 } from "@/components";
 import { useScrollToTop } from "@/hooks";
+import { isStateUser } from "shared-utils";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -49,9 +50,6 @@ export const Dashboard = () => {
     return <Navigate path={"/"} />;
   }
 
-  const canUserSubmit =
-    userObj.user["custom:cms-roles"] === "onemac-micro-statesubmitter";
-
   return (
     <OsProvider
       value={{
@@ -64,7 +62,7 @@ export const Dashboard = () => {
         <FilterDrawerProvider>
           <div className="flex flex-col w-full self-center mx-auto max-w-screen-xl xs:flex-row justify-between p-4 lg:px-8">
             <h1 className="text-xl font-bold mb-4 md:mb-0">Dashboard</h1>
-            {canUserSubmit && (
+            {isStateUser(userObj.user) && (
               <Link
                 path="/new-submission"
                 className="flex items-center text-white font-bold bg-primary border-none px-10 py-2 rounded cursor-pointer"
