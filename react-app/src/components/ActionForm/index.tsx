@@ -24,7 +24,12 @@ import {
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { SlotAdditionalInfo } from "@/features";
 import { getFormOrigin } from "@/utils";
 import {
@@ -32,12 +37,14 @@ import {
   documentPoller,
 } from "@/utils/Poller/documentPoller";
 import { API } from "aws-amplify";
-import { Authority } from "shared-types";
+import { Authority, CognitoUserAttributes } from "shared-types";
 import { ActionFormAttachments } from "./ActionFormAttachments";
 import {
   getAttachments,
   getAdditionalInformation,
 } from "./actionForm.utilities";
+import { isCmsSuperUser, isStateUser } from "shared-utils";
+import { useGetUser } from "@/api";
 
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {
@@ -81,6 +88,9 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
       | ((values: z.TypeOf<Schema>) => string);
     documentChecker: CheckDocumentFunction;
   };
+  conditionsDeterminingUserAccess?: ((
+    user: CognitoUserAttributes | null,
+  ) => boolean)[];
   tab: "spas" | "waivers";
 };
 
@@ -106,10 +116,12 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   documentPollerArgs,
   attachments,
   tab,
+  conditionsDeterminingUserAccess = [isStateUser, isCmsSuperUser],
 }: ActionFormProps<Schema>) => {
   const { id, authority } = useParams<{ id: string; authority: Authority }>();
   const location = useLocation();
   const navigate = useNavigate();
+  const { data: userObj } = useGetUser();
 
   const form = useForm<z.TypeOf<Schema>>({
     resolver: zodResolver(schema),
@@ -163,6 +175,14 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     () => Fields({ ...form }) !== null || attachmentsFromSchema.length > 0,
     [attachmentsFromSchema, Fields, form],
   );
+
+  const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some(
+    (condition) => condition(userObj.user),
+  );
+
+  if (doesUserHaveAccessToForm === false) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   return (
     <SimplePageContainer>

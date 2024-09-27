@@ -66,6 +66,14 @@ beforeAll(() => {
 
         return idsThatExist.includes(id);
       }),
+      useGetUser: () => ({
+        data: {
+          user: {
+            "custom:cms-roles":
+              "onemac-micro-statesubmitter,onemac-micro-super",
+          },
+        },
+      }),
     }));
     vi.mock("@/utils/user", () => ({
       isAuthorizedState: vi.fn(async (id: string) => {
@@ -74,8 +82,6 @@ beforeAll(() => {
         return validStates.includes(id.substring(0, 2));
       }),
     }));
-    // mock the api calls that the frontend uses here
-    // vi.mock("@/api/stuff")
   }
 });
 
