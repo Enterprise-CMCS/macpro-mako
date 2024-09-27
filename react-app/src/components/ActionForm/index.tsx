@@ -181,7 +181,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   );
 
   if (doesUserHaveAccessToForm === false) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return (
