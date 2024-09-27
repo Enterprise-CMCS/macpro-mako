@@ -8,10 +8,10 @@ import {
   RequiredIndicator,
   Input,
   DatePicker,
-  FAQ_TAB,
 } from "@/components";
 import { Link } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
+import { FAQ_TAB } from "@/router";
 
 export const Renewal = () => (
   <ActionForm

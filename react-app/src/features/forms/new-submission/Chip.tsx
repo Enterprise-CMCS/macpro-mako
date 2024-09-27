@@ -1,6 +1,5 @@
 import {
   ActionForm,
-  FAQ_TAB,
   FormControl,
   FormField,
   FormItem,
@@ -13,6 +12,7 @@ import {
 } from "@/components";
 import { Link } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
+import { FAQ_TAB } from "@/router";
 
 export const ChipForm = () => (
   <ActionForm

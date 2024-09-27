@@ -19,7 +19,6 @@ export * from "./Opensearch";
 export * from "./Pagination";
 export * from "./Popover";
 export * from "./RHF";
-export * from "./Routing";
 export * from "./SearchForm";
 export * from "./Sheet";
 export * from "./Table";

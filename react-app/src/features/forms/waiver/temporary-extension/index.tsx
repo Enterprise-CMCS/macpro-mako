@@ -1,6 +1,5 @@
 import {
   ActionForm,
-  FAQ_TAB,
   FormControl,
   FormDescription,
   FormField,
@@ -17,6 +16,7 @@ import {
 } from "@/components";
 import { Link } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
+import { FAQ_TAB } from "@/router";
 
 export const TemporaryExtensionForm = () => (
   <ActionForm

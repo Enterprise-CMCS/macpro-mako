@@ -8,11 +8,11 @@ import {
   DatePicker,
   FormMessage,
   Input,
-  FAQ_TAB,
   SpaIdFormattingDesc,
 } from "@/components";
 import { ActionForm } from "@/components/ActionForm";
 import { formSchemas } from "@/formSchemas";
+import { FAQ_TAB } from "@/router";
 
 export const MedicaidForm = () => (
   <ActionForm

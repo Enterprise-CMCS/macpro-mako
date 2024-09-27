@@ -14,11 +14,9 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-  Link,
-  Navigate,
-  redirect,
 } from "@/components";
 import { useScrollToTop } from "@/hooks";
+import { Link, Navigate, redirect } from "react-router-dom";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -33,7 +31,7 @@ const loader = (queryClient: QueryClient) => {
       ReturnType<typeof getUser>
     >;
     if (!isUser.user) {
-      return redirect({ path: "/" });
+      return redirect("/");
     }
 
     return isUser;
@@ -52,7 +50,7 @@ export const Dashboard = () => {
   }, []);
 
   if (!role) {
-    return <Navigate path={"/"} />;
+    return <Navigate to="/" />;
   }
 
   return (
@@ -66,11 +64,11 @@ export const Dashboard = () => {
       <div>
         <FilterDrawerProvider>
           {/* Header  */}
-            <div className="flex flex-col w-full self-center mx-auto max-w-screen-xl xs:flex-row justify-between p-4 lg:px-8">
+          <div className="flex flex-col w-full self-center mx-auto max-w-screen-xl xs:flex-row justify-between p-4 lg:px-8">
             <h1 className="text-xl font-bold mb-4 md:mb-0">Dashboard</h1>
             {!userContext?.isCms && (
               <Link
-                path="/new-submission"
+                to="/new-submission"
                 className="flex items-center text-white font-bold bg-primary border-none px-10 py-2 rounded cursor-pointer"
               >
                 <span className="mr-2">New Submission</span>
@@ -96,14 +94,14 @@ export const Dashboard = () => {
                 }
               >
                 <div className="flex max-w-screen-xl mx-auto px-4 lg:px-8">
-                <TabsList>
-                  <TabsTrigger value="spas" className="px-6 py-2">
-                    <h2 className="font-bold text-[1.3em]">SPAs</h2>
-                  </TabsTrigger>
-                  <TabsTrigger value="waivers" className="px-6 py-2">
-                    <h2 className="font-bold text-[1.3em]">Waivers</h2>
-                  </TabsTrigger>
-                </TabsList>
+                  <TabsList>
+                    <TabsTrigger value="spas" className="px-6 py-2">
+                      <h2 className="font-bold text-[1.3em]">SPAs</h2>
+                    </TabsTrigger>
+                    <TabsTrigger value="waivers" className="px-6 py-2">
+                      <h2 className="font-bold text-[1.3em]">Waivers</h2>
+                    </TabsTrigger>
+                  </TabsList>
                 </div>
                 <TabsContent value="spas">
                   <SpasList />
