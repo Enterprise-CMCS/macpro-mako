@@ -33,7 +33,7 @@ const PROGRESS_REMINDER =
 
 describe("ActionForm", () => {
   test("renders `breadcrumbText`", () => {
-    const { queryByText } = renderWithMemoryRouter(
+    const { queryByText } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -114,8 +114,8 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "hello-world-link" }}
-        tab={"waivers"}
         conditionsDeterminingUserAccess={[isCmsReadonlyUser]}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
