@@ -43,7 +43,7 @@ import {
   getAttachments,
   getAdditionalInformation,
 } from "./actionForm.utilities";
-import { isCmsSuperUser, isStateUser } from "shared-utils";
+import { isStateUser } from "shared-utils";
 import { useGetUser } from "@/api";
 
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
@@ -116,7 +116,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   documentPollerArgs,
   attachments,
   tab,
-  conditionsDeterminingUserAccess = [isStateUser, isCmsSuperUser],
+  conditionsDeterminingUserAccess = [isStateUser],
 }: ActionFormProps<Schema>) => {
   const { id, authority } = useParams<{ id: string; authority: Authority }>();
   const location = useLocation();
