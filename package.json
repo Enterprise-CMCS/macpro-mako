@@ -14,9 +14,9 @@
     "e2e": "turbo e2e",
     "e2e:ui": "turbo e2e:ui",
     "test-tsc": "tsc --skipLibCheck --noEmit",
-    "test": "vitest --exclude '**/*.spec.*'",
-    "test:coverage": "vitest run --coverage --exclude '**/*.spec.*'",
-    "test:ui": "vitest --ui --exclude '**/*.spec.*'",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
     "cdk:watch": "cdk watch -c stage=${STAGE:-local} --no-rollback",
     "bun:dev": "cd react-app && bun run dev",
     "ui:watch": "npm-run-all --parallel cdk:watch bun:dev"
