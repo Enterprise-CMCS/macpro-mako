@@ -4,6 +4,8 @@ import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
 export const queryClient = new QueryClient();
 
+export const FAQ_TAB = "faq-tab";
+
 export const router = createBrowserRouter([
   {
     path: "/",

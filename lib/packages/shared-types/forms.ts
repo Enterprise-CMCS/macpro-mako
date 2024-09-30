@@ -34,7 +34,7 @@ export type AdditionalRule =
       message: string;
     }
   | {
-      type: "noGapsOrOrverlaps";
+      type: "noGapsOrOverlaps";
       fieldName: string;
       fromField: string;
       toField: string;
