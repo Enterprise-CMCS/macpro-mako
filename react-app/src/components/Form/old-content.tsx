@@ -99,17 +99,19 @@ export const AttachmentsSizeTypesDesc = ({
 
 type PreSubmissionMessageProps = {
   hasProgressLossReminder?: boolean;
+  preSubmissionMessage?: string;
 };
 export const PreSubmissionMessage = ({
   hasProgressLossReminder = true,
+  preSubmissionMessage = `Once you submit this form, a confirmation email is sent to you and to CMS.
+      CMS will use this content to review your package, and you will not be able
+      to edit this form. If CMS needs any additional information, they will
+      follow up by email.`
 }: PreSubmissionMessageProps) => (
   <Alert variant="infoBlock" className="my-2 flex-row text-sm">
     <Info />
     <p className="ml-2">
-      Once you submit this form, a confirmation email is sent to you and to CMS.
-      CMS will use this content to review your package, and you will not be able
-      to edit this form. If CMS needs any additional information, they will
-      follow up by email.
+      {preSubmissionMessage}
     </p>
     {hasProgressLossReminder && <ProgressLossReminder className="ml-2" />}
   </Alert>

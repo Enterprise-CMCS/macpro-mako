@@ -8,6 +8,7 @@ import * as contractingAmendment from "./contracting-amendment";
 import * as contractingInitial from "./contracting-initial";
 import * as contractingRenewal from "./contracting-renewal";
 import * as temporaryExtension from "./temporary-extension";
+import * as withdrawRai from "./withdraw-rai";
 
 export * from "./toggle-withdraw-rai-enabled";
 export * from "./issue-rai";
@@ -32,6 +33,7 @@ export const events = {
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
   "temporary-extension": temporaryExtension,
+  "withdraw-rai": withdrawRai,
 };
 
 export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;

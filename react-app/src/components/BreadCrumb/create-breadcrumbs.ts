@@ -61,12 +61,15 @@ export const optionCrumbsFromPath = (
   [dashboardCrumb(authority)].concat(
     path.split("/").reduce<BreadCrumbConfig[]>((acc, subPath, index) => {
       if (subPath in newSubmissionPageRouteMapper) {
+        console.log(subPath, "sub path");
+        console.log(newSubmissionPageRouteMapper, "page route mapper");
         return acc.concat({
           ...newSubmissionPageRouteMapper[subPath],
           order: index,
         });
       }
 
+      console.log(acc, "out here");
       return acc;
     }, []),
   );

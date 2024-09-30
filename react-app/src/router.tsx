@@ -109,6 +109,10 @@ export const router = createBrowserRouter([
       { path: "/webform/:id/:version", element: <F.Webform /> },
       { path: "/profile", element: <F.Profile /> },
       { path: "/guides/abp", element: <F.ABPGuide /> },
+      {
+        path: "testingwithdrawaction/:authority/:id/:type",
+        element: <F.WithdrawRaiForm />,
+      },
     ],
     loader: F.loader(queryClient),
   },
