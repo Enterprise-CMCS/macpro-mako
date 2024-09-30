@@ -20,14 +20,14 @@ import {
 } from "./../libs/email/content/email-components";
 
 // Constants
-const REGION = process.env.region;
+const region = process.env.region;
 const EMAIL_LOOKUP_SECRET_NAME = process.env.emailAddressLookupSecretName;
 const APPLICATION_ENDPOINT_URL = process.env.applicationEndpointUrl;
 const OPENSEARCH_DOMAIN_ENDPOINT = process.env.openSearchDomainEndpoint;
 const INDEX_NAMESPACE = process.env.indexNamespace;
 
 if (
-  !REGION ||
+  !region ||
   !EMAIL_LOOKUP_SECRET_NAME ||
   !APPLICATION_ENDPOINT_URL ||
   !OPENSEARCH_DOMAIN_ENDPOINT ||
@@ -36,7 +36,7 @@ if (
   throw new Error("Environment variables are not set properly.");
 }
 
-export const sesClient = new SESClient({ region: REGION });
+export const sesClient = new SESClient({ region: region });
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   try {

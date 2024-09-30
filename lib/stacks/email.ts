@@ -154,7 +154,7 @@ export class Email extends cdk.NestedStack {
         logRetention: 30,
         securityGroups: [lambdaSecurityGroup],
         environment: {
-          region: cdk.Aws.REGION,
+          region: this.region,
           stage,
           indexNamespace,
           osDomain: `https://${openSearchDomainEndpoint}`,

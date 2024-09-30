@@ -40,17 +40,22 @@ vi.mock("@aws-sdk/client-ses");
 beforeAll(() => {
   vi.clearAllMocks();
 
-  vi.stubEnv("REGION", "us-east-1");
-  vi.stubEnv("emailAddressLookupSecretName", "mock-email-secret");
-  vi.stubEnv("applicationEndpointUrl", "https://mock-app-endpoint.com");
-  vi.stubEnv("openSearchDomainEndpoint", "https://mock-opensearch-domain.com");
   // Mock environment variables
-  vi.stubEnv("indexNamespace", "https://mock-opensearch-endpoint.com");
+  vi.stubEnv("region", "us-east-1");
+  vi.stubEnv("stage", "test");
+  vi.stubEnv("indexNamespace", "test-index");
+  vi.stubEnv("osDomain", "https://mock-opensearch-domain.com");
+  vi.stubEnv("applicationEndpointUrl", "https://mock-app-endpoint.com");
+  vi.stubEnv("emailAddressLookupSecretName", "mock-email-secret");
+  vi.stubEnv("EMAIL_ATTEMPTS_TABLE", "mock-email-attempts-table");
+  vi.stubEnv("MAX_RETRY_ATTEMPTS", "3");
+  vi.stubEnv("userPoolId", "mock-user-pool-id");
+
+  // Mock the getSecret function
   (getSecret as Mock).mockResolvedValue(JSON.stringify(mockEmailAddresses));
 
-  // Add any other environment variables your code expects
+  // Add any other mocks or setup needed for your tests
 });
-
 afterAll(() => {
   // Clear stubbed environment variables after each test
   vi.unstubAllEnvs();
@@ -66,7 +71,7 @@ describe("createEmailParams", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    vi.stubEnv("REGION", "us-east-1");
+    vi.stubEnv("region", "us-east-1");
     vi.stubEnv("emailAddressLookupSecretName", "mock-email-secret");
     vi.stubEnv("applicationEndpointUrl", "https://mock-app-endpoint.com");
     vi.stubEnv(

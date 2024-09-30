@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
+    "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext", "ES2023"],
     "allowJs": false,
     "skipLibCheck": true,
-    "esModuleInterop": true,
+    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "target": "ESNext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
@@ -20,5 +20,6 @@
       "@/selectors": ["e2e/selectors"],
       "@/*": ["src/*"]
     }
-  }
+  },
+  "include": ["src", "e2e", "src/assets/_.d.ts"]
 }
