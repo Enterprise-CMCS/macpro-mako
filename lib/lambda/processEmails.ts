@@ -20,7 +20,7 @@ import {
 } from "./../libs/email/content/email-components";
 
 // Constants
-const REGION = process.env.REGION;
+const REGION = process.env.region;
 const EMAIL_LOOKUP_SECRET_NAME = process.env.emailAddressLookupSecretName;
 const APPLICATION_ENDPOINT_URL = process.env.applicationEndpointUrl;
 const OPENSEARCH_DOMAIN_ENDPOINT = process.env.openSearchDomainEndpoint;

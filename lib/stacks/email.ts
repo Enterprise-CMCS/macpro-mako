@@ -4,7 +4,6 @@ import { join } from "path";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { ISubnet } from "aws-cdk-lib/aws-ec2";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
-import * as LC from "local-constructs";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { commonBundlingOptions } from "../config/bundling-config";
 
@@ -155,8 +154,7 @@ export class Email extends cdk.NestedStack {
         logRetention: 30,
         securityGroups: [lambdaSecurityGroup],
         environment: {
-          REGION: this.region,
-          region: this.region,
+          region: cdk.Aws.REGION,
           stage,
           indexNamespace,
           osDomain: `https://${openSearchDomainEndpoint}`,
