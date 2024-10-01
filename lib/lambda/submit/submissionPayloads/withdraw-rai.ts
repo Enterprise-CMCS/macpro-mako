@@ -25,10 +25,10 @@ export const withdrawRai = async (event: APIGatewayEvent) => {
     throw "Unauthorized";
   }
 
-  // This is the backend check for the item already existing
-  if (await itemExists({ id: parsedResult.data.id })) {
-    throw "Item Already Exists";
-  }
+  // TODO: refactor for this action
+  // if (await itemExists({ id: parsedResult.data.id })) {
+  //   throw "Item Already Exists";
+  // }
 
   const authDetails = getAuthDetails(event);
   console.log(authDetails, 'AUTH DETAILS')
