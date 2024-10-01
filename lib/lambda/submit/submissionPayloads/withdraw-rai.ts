@@ -8,17 +8,20 @@ import { type APIGatewayEvent } from "aws-lambda";
 import { itemExists } from "libs/api/package";
 
 export const withdrawRai = async (event: APIGatewayEvent) => {
+  console.log('start of withdrawRai func')
   if (!event.body) return;
 
   const parsedResult = events["withdraw-rai"].baseSchema.safeParse(
     JSON.parse(event.body),
   );
+  console.log(parsedResult, 'PARSED RESULT')
   if (!parsedResult.success) {
     throw parsedResult.error;
   }
 
   // This is the backend check for auth
   if (!(await isAuthorized(event, parsedResult.data.id.slice(0, 2)))) {
+    console.log('in this isAuthorized')
     throw "Unauthorized";
   }
 
@@ -28,10 +31,12 @@ export const withdrawRai = async (event: APIGatewayEvent) => {
   }
 
   const authDetails = getAuthDetails(event);
+  console.log(authDetails, 'AUTH DETAILS')
   const userAttr = await lookupUserAttributes(
     authDetails.userId,
     authDetails.poolId,
   );
+  console.log(userAttr, 'USER ATTR')
   const submitterEmail = userAttr.email;
   const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
 
