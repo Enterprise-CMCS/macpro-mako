@@ -1,6 +1,4 @@
-import { ReactElement } from "react";
-import { MemoryRouter } from "react-router-dom";
-import { render, waitFor } from "@testing-library/react";
+import { waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, test, expect, vi } from "vitest";
 import { ActionForm } from "./index";
@@ -9,6 +7,8 @@ import { attachmentArraySchemaOptional } from "shared-types";
 import * as userPrompt from "@/components/ConfirmationDialog/userPrompt";
 import * as banner from "@/components/Banner/banner";
 import * as documentPoller from "@/utils/Poller/documentPoller";
+import { renderForm } from "@/utils/test-helpers/renderForm";
+import { isCmsReadonlyUser } from "shared-utils";
 
 vi.mock("aws-amplify", async (importOriginal) => {
   const actual = await importOriginal();
@@ -28,17 +28,12 @@ vi.mock("../../utils/Poller/DataPoller", () => {
   };
 });
 
-const renderWithMemoryRouter = (ActionFormArg: ReactElement) =>
-  render(ActionFormArg, {
-    wrapper: ({ children }) => <MemoryRouter>{children}</MemoryRouter>,
-  });
-
 const PROGRESS_REMINDER =
   /If you leave this page, you will lose your progress on this form./;
 
 describe("ActionForm", () => {
-  test("renders `title`", () => {
-    const { queryByText } = renderWithMemoryRouter(
+  test("renders `breadcrumbText`", () => {
+    const { queryByText } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -48,7 +43,25 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    expect(queryByText("Example Breadcrumb")).toBeInTheDocument();
+  });
+
+  test("renders `title`", () => {
+    const { queryByText } = renderForm(
+      <ActionForm
+        title="Action Form Title"
+        schema={z.object({})}
+        fields={() => null}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        attachments={{ faqLink: "" }}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -56,7 +69,7 @@ describe("ActionForm", () => {
   });
 
   test("renders `attachments.faqLink`", () => {
-    const { queryByText } = renderWithMemoryRouter(
+    const { queryByText } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -73,7 +86,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "hello-world-link" }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -83,8 +96,34 @@ describe("ActionForm", () => {
     );
   });
 
+  test("doesn't render form if user access is denied", () => {
+    const { queryByText } = renderForm(
+      <ActionForm
+        title="Action Form Title"
+        schema={z.object({
+          attachments: z.object({
+            other: z.object({
+              label: z.string().default("Other"),
+              files: attachmentArraySchemaOptional(),
+            }),
+          }),
+        })}
+        fields={() => null}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        attachments={{ faqLink: "hello-world-link" }}
+        conditionsDeterminingUserAccess={[isCmsReadonlyUser]}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    expect(queryByText("Action Form Title")).not.toBeInTheDocument();
+  });
+
   test("renders `defaultValues` in appropriate input", () => {
-    const { queryByDisplayValue } = renderWithMemoryRouter(
+    const { queryByDisplayValue } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -97,7 +136,7 @@ describe("ActionForm", () => {
         }}
         attachments={{ faqLink: "" }}
         defaultValues={{ id: "default value for id" }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -105,7 +144,7 @@ describe("ActionForm", () => {
   });
 
   test("renders `attachments.specialInstructions`", () => {
-    const { queryByText } = renderWithMemoryRouter(
+    const { queryByText } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -125,7 +164,7 @@ describe("ActionForm", () => {
           faqLink: "",
           specialInstructions: "hello world special instructions.",
         }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -135,7 +174,7 @@ describe("ActionForm", () => {
   });
 
   test("renders custom `promptOnLeavingForm` when clicking Cancel", async () => {
-    const { container } = renderWithMemoryRouter(
+    const { container } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -151,7 +190,7 @@ describe("ActionForm", () => {
           header: "Hello World Header",
           body: "Hello World Body",
         }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -171,7 +210,7 @@ describe("ActionForm", () => {
   });
 
   test("renders custom `promptPreSubmission` when clicking Submit", async () => {
-    const { container } = renderWithMemoryRouter(
+    const { container } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -190,7 +229,7 @@ describe("ActionForm", () => {
           header: "Hello World Header",
           body: "Hello World Body",
         }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -212,13 +251,13 @@ describe("ActionForm", () => {
   test("calls `documentPoller` with `documentPollerArgs`", async () => {
     const documentCheckerFunc = vi.fn();
 
-    const { container } = renderWithMemoryRouter(
+    const { container } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
           id: z.string(),
         })}
-        defaultValues={{ id: "hello world!" }}
+        defaultValues={{ id: "Example Breadcrumb" }}
         fields={() => null}
         documentPollerArgs={{
           property: () => "id",
@@ -227,7 +266,7 @@ describe("ActionForm", () => {
         attachments={{
           faqLink: "",
         }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -246,13 +285,13 @@ describe("ActionForm", () => {
   test("calls `banner` with `bannerPostSubmission`", async () => {
     const documentCheckerFunc = vi.fn();
 
-    const { container } = renderWithMemoryRouter(
+    const { container } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
           id: z.string(),
         })}
-        defaultValues={{ id: "hello world!" }}
+        defaultValues={{ id: "Example Breadcrumb" }}
         fields={() => null}
         documentPollerArgs={{
           property: () => "id",
@@ -265,7 +304,7 @@ describe("ActionForm", () => {
         attachments={{
           faqLink: "",
         }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -284,7 +323,7 @@ describe("ActionForm", () => {
   });
 
   test("renders all attachment properties within `attachments`", async () => {
-    const { queryAllByText } = renderWithMemoryRouter(
+    const { queryAllByText } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -311,7 +350,7 @@ describe("ActionForm", () => {
         attachments={{
           faqLink: "",
         }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -321,7 +360,7 @@ describe("ActionForm", () => {
   });
 
   test("renders Additional Information if `additionalInformation` is defined in schema", () => {
-    const { queryByText } = renderWithMemoryRouter(
+    const { queryByText } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -333,7 +372,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -341,7 +380,7 @@ describe("ActionForm", () => {
   });
 
   test("doesn't render Additional Information if `additionalInformation` is undefined in schema", () => {
-    const { queryByText } = renderWithMemoryRouter(
+    const { queryByText } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -351,7 +390,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -359,7 +398,7 @@ describe("ActionForm", () => {
   });
 
   test("renders Attachments if `attachments` is defined in schema", () => {
-    const { queryByText } = renderWithMemoryRouter(
+    const { queryByText } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -376,7 +415,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -385,7 +424,7 @@ describe("ActionForm", () => {
   });
 
   test("doesn't render Attachments if `attachments` is undefined in schema", () => {
-    const { queryByText } = renderWithMemoryRouter(
+    const { queryByText } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -395,7 +434,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -403,7 +442,7 @@ describe("ActionForm", () => {
   });
 
   test("renders ProgressReminder if schema has `attachments` property", () => {
-    const { queryAllByText } = renderWithMemoryRouter(
+    const { queryAllByText } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -420,7 +459,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -428,7 +467,7 @@ describe("ActionForm", () => {
   });
 
   test("renders ProgressReminder if `fields` property is defined", () => {
-    const { queryAllByText } = renderWithMemoryRouter(
+    const { queryAllByText } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -443,7 +482,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -451,7 +490,7 @@ describe("ActionForm", () => {
   });
 
   test("doesn't render ProgressReminder `fields` is undefined and `attachments` isn't defined in schema", () => {
-    const { queryByText } = renderWithMemoryRouter(
+    const { queryByText } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -461,7 +500,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -469,7 +508,7 @@ describe("ActionForm", () => {
   });
 
   test("renders default wrapper if `fieldsLayout` is undefined", () => {
-    const { queryAllByText } = renderWithMemoryRouter(
+    const { queryAllByText } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -484,7 +523,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -496,7 +535,7 @@ describe("ActionForm", () => {
   });
 
   test("renders `fieldsLayout`", () => {
-    const { queryByText } = renderWithMemoryRouter(
+    const { queryByText } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -512,16 +551,16 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
-    expect(queryByText("hello world!")).toBeInTheDocument();
+    expect(queryByText("Example Breadcrumb")).toBeInTheDocument();
     expect(queryByText("hello world within fields Layout")).toBeInTheDocument();
   });
 
   test("renders `fieldsLayout` with correct `title`", () => {
-    const { queryByText } = renderWithMemoryRouter(
+    const { queryByText } = renderForm(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -537,7 +576,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{ faqLink: "" }}
-        tab={"waivers"}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
