@@ -7,12 +7,7 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/utils";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  useUserContext,
-} from "@/components";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components";
 import {
   DependencyWrapper,
   RHFFieldArray,
@@ -43,6 +38,7 @@ import {
   Textarea,
   Upload,
 } from "@/components/Inputs";
+import { useGetCounties } from "@/api";
 
 type SlotFieldProps = RHFSlotProps & { control: any; field: any };
 type SelectedSubsetProps = RHFOption & {
@@ -62,7 +58,7 @@ export const SlotField = ({
   horizontalLayout,
   index,
 }: SlotFieldProps) => {
-  const userContext = useUserContext();
+  const counties = useGetCounties();
 
   switch (rhf) {
     case "Input":
@@ -109,7 +105,7 @@ export const SlotField = ({
 
         case "countySelect":
           opts =
-            userContext?.counties?.sort((a, b) =>
+            counties.sort((a, b) =>
               props.customSort
                 ? sortFunctions[props.customSort](a.label, b.label)
                 : stringCompare(a, b),
