@@ -1,4 +1,4 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect, vi } from "vitest";
 import { render, fireEvent } from "@testing-library/react";
 import { RHFSlot } from "../.";
 import { Form, FormField } from "../../Inputs";
@@ -34,6 +34,16 @@ const testValues: RHFSlotProps = {
   descriptionClassName: "py-2",
   formItemClassName: "py-4",
 };
+
+vi.mock("@/api", async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...(actual as object),
+    useGetCounties: vi.fn(() => {
+      return { data: [], isLoading: false, error: null };
+    }),
+  };
+});
 
 describe("Slot Input Field Tests", () => {
   test("renders Input", () => {

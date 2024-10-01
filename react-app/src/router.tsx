@@ -1,13 +1,10 @@
-import { RouteObject, createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import * as F from "@/features";
 import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
-import { type Route } from "./components/Routing/types";
-import {
-  TempExtensionWrapper,
-  onValidSubmission as tempExtensionAction,
-} from "@/features/package-actions/lib/modules/temporary-extension/legacy-page";
 export const queryClient = new QueryClient();
+
+export const FAQ_TAB = "faq-tab";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +20,46 @@ export const router = createBrowserRouter([
         loader: F.dashboardLoader(queryClient),
       },
       { path: "/details/:authority/:id", element: <F.Details /> },
+      {
+        path: "/new-submission/spa/medicaid/create",
+        element: <F.MedicaidForm />,
+      },
+      {
+        path: "/new-submission/spa/chip/create",
+        element: <F.ChipForm />,
+      },
+      {
+        path: "/new-submission/waiver/b/capitated/amendment/create",
+        element: <F.CapitatedWaivers.AmendmentForm />,
+      },
+      {
+        path: "/new-submission/waiver/b/capitated/initial/create",
+        element: <F.CapitatedWaivers.InitialForm />,
+      },
+      {
+        path: "/new-submission/waiver/b/capitated/renewal/create",
+        element: <F.CapitatedWaivers.Renewal />,
+      },
+      {
+        path: "/new-submission/waiver/b/b4/renewal/create",
+        element: <F.ContractingWaivers.RenewalForm />,
+      },
+      {
+        path: "/new-submission/waiver/b/b4/initial/create",
+        element: <F.ContractingWaivers.InitialForm />,
+      },
+      {
+        path: "/new-submission/waiver/b/b4/amendment/create",
+        element: <F.ContractingWaivers.AmendmentForm />,
+      },
+      {
+        path: "/new-submission/waiver/app-k",
+        element: <F.AppKAmendmentForm />,
+      },
+      {
+        path: "/new-submission/waiver/temporary-extensions",
+        element: <F.TemporaryExtensionForm />,
+      },
       {
         path: "/new-submission",
         element: <F.NewSubmissionInitialOptions />,
@@ -67,69 +104,12 @@ export const router = createBrowserRouter([
         path: "/new-submission/spa/chip/landing/chip-eligibility",
         element: <F.CHIPEligibilityLandingPage />,
       },
-      // {
-      //   path: "/new-submission/waiver/b/create",
-      //   element: <P.Waiver1915BFormPage />,
-      // },
-      {
-        path: "/new-submission/spa/medicaid/create",
-        element: <F.MedicaidSpaFormPage />,
-      },
-      {
-        path: "/new-submission/spa/chip/create",
-        element: <F.ChipSpaFormPage />,
-      },
-      {
-        path: "/new-submission/waiver/b/capitated/amendment/create",
-        element: <F.Capitated1915BWaiverAmendmentPage />,
-      },
-      {
-        path: "/new-submission/waiver/b/capitated/initial/create",
-        element: <F.Capitated1915BWaiverInitialPage />,
-      },
-      {
-        path: "/new-submission/waiver/b/capitated/renewal/create",
-        element: <F.Capitated1915BWaiverRenewalPage />,
-      },
-      {
-        path: "/new-submission/waiver/b/b4/renewal/create",
-        element: <F.Contracting1915BWaiverRenewalPage />,
-      },
-      {
-        path: "/new-submission/waiver/b/b4/initial/create",
-        element: <F.Contracting1915BWaiverInitialPage />,
-      },
-      {
-        path: "/new-submission/waiver/b/b4/amendment/create",
-        element: <F.Contracting1915BWaiverAmendmentPage />,
-      },
-      {
-        path: "/new-submission/spa/medicaid/create",
-        element: <F.MedicaidSpaFormPage />,
-      },
-      {
-        path: "/new-submission/spa/chip/create",
-        element: <F.ChipSpaFormPage />,
-      },
       { path: "/action/:authority/:id/:type", element: <F.ActionPage /> },
       { path: "/webforms", element: <F.WebformsList /> },
       { path: "/webform/:id/:version", element: <F.Webform /> },
       { path: "/profile", element: <F.Profile /> },
       { path: "/guides/abp", element: <F.ABPGuide /> },
-      {
-        path: "/new-submission/waiver/app-k",
-        element: <F.AppKSubmissionForm />,
-      },
-      {
-        path: "/new-submission/waiver/temporary-extensions",
-        element: <TempExtensionWrapper />,
-        action: tempExtensionAction,
-      },
     ],
     loader: F.loader(queryClient),
   },
-] satisfies TypedRouteObject[]);
-
-type TypedRouteObject = RouteObject & {
-  path: Route;
-};
+]);

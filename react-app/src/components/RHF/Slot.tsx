@@ -1,4 +1,3 @@
- 
 import { useEffect } from "react";
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
 import type { RHFSlotProps, RHFTextField } from "shared-types";
@@ -69,7 +68,7 @@ export const RHFSlot = <
             <RHFTextDisplay text={description} />
           </FormDescription>
         )}
-        <FormMessage />
+        <FormMessage className="slot-form-message" />
       </FormItem>
     );
   };

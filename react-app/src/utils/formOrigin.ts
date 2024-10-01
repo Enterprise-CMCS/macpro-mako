@@ -1,4 +1,4 @@
-import { Authority } from "shared-types";
+import { Authority } from "shared-types/authority";
 import { getDashboardTabForAuthority } from "./crumbs";
 
 /** Constant key for accessing origin in query string. */
@@ -7,6 +7,10 @@ export const ORIGIN = "origin";
 export const DASHBOARD_ORIGIN = "dashboard";
 /** Constant key for `details` origin. */
 export const DETAILS_ORIGIN = "details";
+/** Constant key for `spa` origin. */
+export const SPA_SUBMISSION_ORIGIN = "spa";
+/** Constant key for `waivers` origin. */
+export const WAIVER_SUBMISSION_ORIGIN = "waivers";
 
 type GetFormOriginArgs = {
   id?: string;
@@ -29,7 +33,9 @@ export const getFormOrigin: GetFormOrigin = ({ id, authority } = {}) => {
 
   if (origin === DETAILS_ORIGIN && id && authority) {
     return {
-      pathname: `/${origin}/${encodeURIComponent(authority)}/${encodeURIComponent(id)}`,
+      pathname: `/${origin}/${encodeURIComponent(
+        authority,
+      )}/${encodeURIComponent(id)}`,
     };
   }
 
@@ -38,6 +44,15 @@ export const getFormOrigin: GetFormOrigin = ({ id, authority } = {}) => {
       pathname: `/${origin}`,
       search: new URLSearchParams({
         tab: getDashboardTabForAuthority(authority),
+      }).toString(),
+    };
+  }
+
+  if (origin === SPA_SUBMISSION_ORIGIN || origin === WAIVER_SUBMISSION_ORIGIN) {
+    return {
+      pathname: `/${DASHBOARD_ORIGIN}`,
+      search: new URLSearchParams({
+        tab: origin,
       }).toString(),
     };
   }

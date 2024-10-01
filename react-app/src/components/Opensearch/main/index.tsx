@@ -5,6 +5,7 @@ import { Pagination } from "@/components/Pagination";
 import { useOsContext } from "./Provider";
 import { useOsUrl } from "./useOpensearch";
 import { OsTableColumn } from "./types";
+import { FilterChips } from "./Filtering";
 
 export const OsMainView: FC<{
   columns: OsTableColumn[];
@@ -30,27 +31,32 @@ export const OsMainView: FC<{
   };
 
   return (
-    <section className="flex md:items-stretch items-center flex-col h-[100vh]">
-      <OsFiltering columns={osColumns} />
-      <OsTable onToggle={onToggle} columns={osColumns} />
-      <Pagination
-        pageNumber={url.state.pagination.number}
-        count={context.data?.total?.value || 0}
-        pageSize={url.state.pagination.size}
-        onPageChange={(number) =>
-          url.onSet((s) => ({
-            ...s,
-            pagination: { ...s.pagination, number },
-          }))
-        }
-        onSizeChange={(size) =>
-          url.onSet((s) => ({
-            ...s,
-            pagination: { number: 0, size },
-          }))
-        }
-      />
-    </section>
+    <div className="flex flex-col">
+      <div className="w-full my-2 max-w-screen-xl self-center px-4 lg:px-8">
+        <OsFiltering onToggle={onToggle} columns={osColumns} />
+        <FilterChips />
+      </div>
+      <div className="px-4 lg:px-8">
+        <OsTable onToggle={onToggle} columns={osColumns} />
+        <Pagination
+          pageNumber={url.state.pagination.number}
+          count={context.data?.total?.value || 0}
+          pageSize={url.state.pagination.size}
+          onPageChange={(number) =>
+            url.onSet((s) => ({
+              ...s,
+              pagination: { ...s.pagination, number },
+            }))
+          }
+          onSizeChange={(size) =>
+            url.onSet((s) => ({
+              ...s,
+              pagination: { number: 0, size },
+            }))
+          }
+        />
+      </div>
+    </div>
   );
 };
 

@@ -35,9 +35,8 @@
     "@types/aws-lambda": "^8.10.142",
     "aws-cdk-lib": "^2.150.0",
     "cdk": "^2.156.0",
-    "cdk-serverless-clamscan": "^2.8.1",
     "constructs": "^10.3.0",
-    "esbuild": "^0.21.5",
+    "esbuild": "^0.23.1",
     "luxon": "^3.5.0",
     "source-map-support": "^0.5.21",
     "tsx": "4.15.7"

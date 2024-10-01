@@ -1,8 +1,7 @@
 import { PropsWithChildren, ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link, LinkProps } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { CardWithTopBorder } from "@/components";
-import { Route } from "../Routing/types";
 
 export type OptionCardFieldsetProps = PropsWithChildren<{
   legend: string;
@@ -10,7 +9,7 @@ export type OptionCardFieldsetProps = PropsWithChildren<{
 export type MACFieldsetOption = {
   title: string;
   description: ReactNode;
-  linkTo: Route;
+  to: LinkProps["to"];
   altBg?: boolean;
 };
 /** A fieldset for nesting {@link OptionCard} with MACCard styling */
@@ -32,12 +31,12 @@ export const OptionFieldset = ({
 export const OptionCard = ({
   title,
   description,
-  linkTo,
+  to,
   altBg = false,
 }: MACFieldsetOption) => {
   return (
     <label>
-      <Link to={linkTo} relative={"path"}>
+      <Link to={to} relative="path">
         <div
           data-testid={"card-inner-wrapper"}
           className={`flex items-center justify-between gap-6 px-6 py-4 ${

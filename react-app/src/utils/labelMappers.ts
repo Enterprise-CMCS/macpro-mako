@@ -1,7 +1,4 @@
-import { Action } from "shared-types";
-
-import { BLANK_VALUE } from "@/consts";
-import { Route } from "@/components";
+import { Action } from "shared-types/actions";
 
 export const mapActionLabel = (a: Action) => {
   switch (a) {
@@ -21,36 +18,7 @@ export const mapActionLabel = (a: Action) => {
       return "Request Temporary Extension";
     case Action.UPDATE_ID:
       return "Update ID";
-    case Action.COMPLETE_INTAKE:
-      return "Complete Intake";
     default:
       return "";
-  }
-};
-
-export const mapSubmissionCrumb = (path: Route) => {
-  switch (path) {
-    case "/new-submission/spa/medicaid/create":
-      return "Submit new Medicaid SPA";
-    case "/new-submission/spa/chip/create":
-      return "Submit new CHIP SPA";
-    case "/new-submission/waiver/b/capitated/initial/create":
-      return "1915(b) Comprehensive (Capitated) Initial Waiver";
-    case "/new-submission/waiver/b/capitated/renewal/create":
-      return "1915(b) Comprehensive (Capitated) Renewal Waiver";
-    case "/new-submission/waiver/b/capitated/amendment/create":
-      return "1915(b) Comprehensive (Capitated) Waiver Amendment";
-    case "/new-submission/waiver/b/b4/initial/create":
-      return "1915(b)(4) FFS Selective Contracting Initial Waiver";
-    case "/new-submission/waiver/b/b4/renewal/create":
-      return "1915(b)(4) FFS Selective Contracting Renewal Waiver";
-    case "/new-submission/waiver/b/b4/amendment/create":
-      return "1915(b)(4) FFS Selective Contracting Waiver Amendment";
-    case "/new-submission/waiver/app-k":
-      return "Request a 1915(c) Appendix K Amendment";
-    case "/new-submission/waiver/temporary-extensions":
-      return "Request 1915(b) or 1915(c) Temporary Extension";
-    default:
-      return BLANK_VALUE;
   }
 };

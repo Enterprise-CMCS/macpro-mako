@@ -61,8 +61,8 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
           src={UsFlag}
           alt="A United States Flag icon"
         />
-        <p>An official website of the United States government</p>
-        <button className="flex" onClick={() => setIsOpen((value) => !value)}>
+        <p data-testid="usa-statement-d">An official website of the United States government</p>
+        <button data-testid="usa-expand-btn-d" className="flex" onClick={() => setIsOpen((value) => !value)}>
           <span className="underline text-[#005ea2]">Here's how you know</span>
           {isOpen ? (
             <ChevronUp className="w-4 h-4 text-[#005ea2]" />
@@ -82,9 +82,9 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
           alt="A United States Flag icon"
         />
         <div>
-          <p>An official website of the United States government</p>
+          <p data-testid="usa-statement-m">An official website of the United States government</p>
           <div className="flex">
-            <span className="underline text-[#005ea2] block">
+            <span data-testid="usa-expand-btn-m" className="underline text-[#005ea2] block">
               Here's how you know
             </span>
             {isOpen ? (
@@ -114,10 +114,10 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
       )}
 
       {isOpen && (
-        <div className="flex flex-col gap-3 px-3 mt-3 sm:flex-row max-w-screen-lg mx-auto pb-4">
+        <div className="flex flex-col justify-between px-4 lg:px-8 mt-3 sm:flex-row max-w-screen-xl mx-auto pb-4">
           <div className="flex gap-2">
             <GovernmentBuildingIcon />
-            <p className="text-sm max-w-md">
+            <p data-testid="official-usage" className="text-sm max-w-md">
               <strong className="block">Official websites use .gov</strong>A
               <strong>.gov</strong> website belongs to an official government
               organization in the United States.
@@ -125,7 +125,7 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
           </div>
           <div className="flex gap-2">
             <LockIcon className="min-w-[40px] min-h-[40px] w-10" />
-            <p className="text-sm max-w-md">
+            <p data-testid="secure-usage" className="text-sm max-w-md">
               <strong className="block">Secure .gov websites use HTTPS</strong>
               A lock (<MiniLock />) or <strong>https://</strong> means you've
               safely connected to the .gov website. Share sensitive information

@@ -18,6 +18,7 @@ import { Duration, RemovalPolicy } from "aws-cdk-lib";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { UserPool } from "aws-cdk-lib/aws-cognito";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
+import { commonBundlingOptions } from "../../config/bundling-config";
 
 export class ManageUsers extends Construct {
   constructor(
@@ -77,10 +78,7 @@ export class ManageUsers extends Construct {
           }),
         },
       }),
-      bundling: {
-        minify: true,
-        sourceMap: true,
-      },
+      bundling: commonBundlingOptions,
     });
 
     const customResourceLogGroup = new LogGroup(

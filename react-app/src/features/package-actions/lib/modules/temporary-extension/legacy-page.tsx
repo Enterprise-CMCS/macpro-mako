@@ -16,10 +16,10 @@ import {
   BreadCrumbs,
   ActionFormHeaderCard,
   SimplePageContainer,
-  useLocationCrumbs,
   FormLoadingSpinner,
   ProgressLossReminder,
   FAQFooter,
+  optionCrumbsFromPath,
 } from "@/components";
 import {
   ActionFunction,
@@ -29,6 +29,7 @@ import {
 import { Info } from "lucide-react";
 import { documentPoller } from "@/utils/Poller/documentPoller";
 import { SubmitAndCancelBtnSection } from "@/features/submission/waiver/shared-components";
+import { useLocation } from "react-router-dom";
 
 export const onValidSubmission: ActionFunction = async ({ request }) => {
   try {
@@ -61,12 +62,22 @@ export const TempExtensionWrapper = () => {
     resolver: zodResolver(defaultTempExtSchema),
     mode: "onChange",
   });
-  const crumbs = useLocationCrumbs();
+  const { pathname } = useLocation();
+  const crumbs = optionCrumbsFromPath(pathname, Authority["1915b"]);
 
   return (
     <FormProvider {...methods}>
       <SimplePageContainer>
-        <BreadCrumbs options={crumbs} />
+        <BreadCrumbs
+          options={[
+            ...crumbs,
+            {
+              displayText: "Request 1915(b) or 1915(c) Temporary Extension",
+              to: pathname,
+              order: crumbs.length,
+            },
+          ]}
+        />
       </SimplePageContainer>
       <TemporaryExtension />
     </FormProvider>

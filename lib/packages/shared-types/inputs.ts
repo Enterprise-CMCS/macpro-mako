@@ -13,6 +13,7 @@ export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
 export type DatePickerProps = {
   date: Date | undefined;
   onChange: (date: Date | undefined) => void;
+  dataTestId?: string;
 };
 
 export interface InputProps
@@ -32,6 +33,7 @@ export type SelectProps = React.ComponentPropsWithoutRef<
 > & {
   options: { label: string; value: any }[];
   className?: string;
+  apiCall?: string;
 };
 
 export interface MultiselectOption {

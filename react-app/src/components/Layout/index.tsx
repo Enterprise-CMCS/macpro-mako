@@ -1,27 +1,26 @@
-import { NavLink, NavLinkProps, Outlet, Link } from "react-router-dom";
+import {
+  NavLink,
+  NavLinkProps,
+  Outlet,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import oneMacLogo from "@/assets/onemac_logo.svg";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useGetUser } from "@/api";
 import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
-import { useUserContext } from "../Context";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
-import { useNavigate } from "../Routing";
 import { SimplePageContainer, UserPrompt, Banner } from "@/components";
 import { isFaqPage, isProd } from "@/utils";
 
 const useGetLinks = () => {
-  const { isLoading, data } = useGetUser();
-  const userContext = useUserContext();
-
-  const role = useMemo(() => {
-    return userContext?.user?.["custom:cms-roles"] ? true : false;
-  }, []);
+  const { isLoading, data: userObj } = useGetUser();
 
   const links =
     isLoading || isFaqPage
@@ -35,7 +34,7 @@ const useGetLinks = () => {
           {
             name: "Dashboard",
             link: "/dashboard",
-            condition: !!data?.user && role,
+            condition: userObj.user && userObj.user["custom:cms-roles"],
           },
           {
             name: "FAQ",
@@ -45,7 +44,7 @@ const useGetLinks = () => {
           {
             name: "Webforms",
             link: "/webforms",
-            condition: !!data?.user && !isProd,
+            condition: userObj.user && !isProd,
           },
         ].filter((l) => l.condition);
 
@@ -56,7 +55,7 @@ const UserDropdownMenu = () => {
   const navigate = useNavigate();
 
   const handleViewProfile = () => {
-    navigate({ path: "/profile" });
+    navigate("/profile");
   };
 
   const handleLogout = async () => {
@@ -127,7 +126,7 @@ export const Layout = () => {
       <UsaBanner
         isUserMissingRole={user?.user && customUserRoles === undefined}
       />
-      <nav className="bg-primary">
+      <nav data-test="nav-banner-d" className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="h-[70px] flex gap-12 items-center text-white">
             {!isFaqPage ? (
@@ -212,6 +211,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
       <>
         {links.map((link) => (
           <NavLink
+            data-testid={`${link.name}-d`}
             to={link.link}
             target={link.link === "/faq" ? "_blank" : "_self"}
             key={link.name}
@@ -229,12 +229,14 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             // When the user is not signed in
             <>
               <button
+                data-testid="sign-in-button-d"
                 className="text-white hover:text-white/70"
                 onClick={handleLogin}
               >
                 Sign In
               </button>
               <button
+                data-testid="register-button-d"
                 className="text-white hover:text-white/70"
                 onClick={handleRegister}
               >
@@ -256,6 +258,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             {links.map((link) => (
               <li key={link.link}>
                 <Link
+                  data-testid={`${link.name}-m`}
                   className="block py-2 pl-3 pr-4 text-white rounded"
                   to={link.link}
                   target={link.link === "/faq" ? "_blank" : "_self"}

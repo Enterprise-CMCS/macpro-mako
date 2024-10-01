@@ -1,5 +1,28 @@
 import { FormSchema } from "shared-types";
 
+const ageOptions = [
+  { value: "0", label: "0" },
+  { value: "1", label: "1" },
+  { value: "2", label: "2" },
+  { value: "3", label: "3" },
+  { value: "4", label: "4" },
+  { value: "5", label: "5" },
+  { value: "6", label: "6" },
+  { value: "7", label: "7" },
+  { value: "8", label: "8" },
+  { value: "9", label: "9" },
+  { value: "10", label: "10" },
+  { value: "11", label: "11" },
+  { value: "12", label: "12" },
+  { value: "13", label: "13" },
+  { value: "14", label: "14" },
+  { value: "15", label: "15" },
+  { value: "16", label: "16" },
+  { value: "17", label: "17" },
+  { value: "18", label: "18" },
+  { value: "19", label: "19" },
+];
+
 export const v202401: FormSchema = {
   header: "CS 3: Eligibility for Medicaid expansion program",
   subheader: "42 CFR 457.320(a)(2) and (3)",
@@ -26,10 +49,21 @@ export const v202401: FormSchema = {
                 {
                   rhf: "FieldArray",
                   name: "age-and-house-inc-range",
-
+                  descriptionClassName: "age-and-house-inc-range",
+                  formItemClassName:
+                    "age-and-house-inc-range [&_.slot-form-message]:w-max",
                   props: {
                     appendText: "Add range",
                   },
+                  addtnlRules: [
+                    {
+                      type: "noGapsOrOverlaps",
+                      fieldName: "age-and-house-inc-range",
+                      fromField: "from-age",
+                      toField: "to-age",
+                      options: ageOptions,
+                    },
+                  ],
                   fields: [
                     {
                       rhf: "Select",
@@ -40,30 +74,19 @@ export const v202401: FormSchema = {
                       rules: {
                         required: "* Required",
                       },
+
                       props: {
-                        options: [
-                          { value: "0", label: "0" },
-                          { value: "1", label: "1" },
-                          { value: "2", label: "2" },
-                          { value: "3", label: "3" },
-                          { value: "4", label: "4" },
-                          { value: "5", label: "5" },
-                          { value: "6", label: "6" },
-                          { value: "7", label: "7" },
-                          { value: "8", label: "8" },
-                          { value: "9", label: "9" },
-                          { value: "10", label: "10" },
-                          { value: "11", label: "11" },
-                          { value: "12", label: "12" },
-                          { value: "13", label: "13" },
-                          { value: "14", label: "14" },
-                          { value: "15", label: "15" },
-                          { value: "16", label: "16" },
-                          { value: "17", label: "17" },
-                          { value: "18", label: "18" },
-                          { value: "19", label: "19" },
-                        ],
+                        options: ageOptions,
                       },
+                      addtnlRules: [
+                        {
+                          type: "toGreaterThanFrom",
+                          fieldName: "age-and-house-inc-range",
+                          fromField: "from-age",
+                          toField: "to-age",
+                          message: "To age must be greater than From age",
+                        },
+                      ],
                     },
                     {
                       rhf: "Select",
@@ -75,28 +98,7 @@ export const v202401: FormSchema = {
                         required: "* Required",
                       },
                       props: {
-                        options: [
-                          { value: "0", label: "0" },
-                          { value: "1", label: "1" },
-                          { value: "2", label: "2" },
-                          { value: "3", label: "3" },
-                          { value: "4", label: "4" },
-                          { value: "5", label: "5" },
-                          { value: "6", label: "6" },
-                          { value: "7", label: "7" },
-                          { value: "8", label: "8" },
-                          { value: "9", label: "9" },
-                          { value: "10", label: "10" },
-                          { value: "11", label: "11" },
-                          { value: "12", label: "12" },
-                          { value: "13", label: "13" },
-                          { value: "14", label: "14" },
-                          { value: "15", label: "15" },
-                          { value: "16", label: "16" },
-                          { value: "17", label: "17" },
-                          { value: "18", label: "18" },
-                          { value: "19", label: "19" },
-                        ],
+                        options: ageOptions,
                       },
                     },
                     {

@@ -7,20 +7,35 @@ import * as UI from "@/components";
 type Props<T extends UI.OsTableColumn> = {
   list: T[];
   onItemClick: (field: string) => void;
+  hiddenColumns: T[];
 };
 
-export const VisibilityPopover = <T extends UI.OsTableColumn>(
-  props: Props<T>
-) => {
+export const VisibilityPopover = ({
+  list,
+  onItemClick,
+  hiddenColumns,
+}: Props<UI.OsTableColumn>) => {
   return (
     <UI.Popover>
-      <UI.PopoverTrigger>
-        <EyeIcon className="w-6 h-6" />
-        <p className="sr-only">Visibility Popover Icon</p>
+      <UI.PopoverTrigger asChild>
+        <UI.Button
+          variant="outline"
+          className="w-full xs:w-fit whitespace-nowrap hover:bg-transparent self-center h-10 flex gap-2"
+        >
+          <span className="prose-sm">
+            {hiddenColumns.length
+              ? `Columns (${hiddenColumns.length} hidden)`
+              : "Columns"}
+          </span>
+        </UI.Button>
       </UI.PopoverTrigger>
       <UI.PopoverContent className="bg-white">
         <div className="flex flex-col gap-2">
-          <VisibilityMenu {...props} />
+          <VisibilityMenu
+            list={list}
+            onItemClick={onItemClick}
+            hiddenColumns={hiddenColumns}
+          />
         </div>
       </UI.PopoverContent>
     </UI.Popover>
@@ -28,7 +43,7 @@ export const VisibilityPopover = <T extends UI.OsTableColumn>(
 };
 
 export const VisiblityItem = <T extends UI.OsTableColumn>(
-  props: T & { onClick: () => void }
+  props: T & { onClick: () => void },
 ) => {
   const eyeStyles = cn("flex flex-row gap-2 cursor-pointer", {
     "text-gray-800": !props.hidden,

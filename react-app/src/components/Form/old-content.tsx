@@ -2,16 +2,22 @@ import { Link } from "react-router-dom";
 import { Info } from "lucide-react";
 import {
   Alert,
-  FAQ_TAB,
   RequiredFieldDescription,
   ActionFormDescription,
   ProgressLossReminder,
 } from "@/components";
+import { FAQ_TAB } from "@/router";
 
-export const FormIntroText = () => (
+type FormIntroTextProps = {
+  hasProgressLossReminder?: boolean;
+};
+
+export const FormIntroText = ({
+  hasProgressLossReminder = true,
+}: FormIntroTextProps) => (
   <div>
     <RequiredFieldDescription />
-    <ActionFormDescription boldReminder>
+    <ActionFormDescription boldReminder={hasProgressLossReminder}>
       Once you submit this form, a confirmation email is sent to you and to CMS.
       CMS will use this content to review your package, and you will not be able
       to edit this form. If CMS needs any additional information, they will
@@ -97,7 +103,7 @@ type PreSubmissionMessageProps = {
 export const PreSubmissionMessage = ({
   hasProgressLossReminder = true,
 }: PreSubmissionMessageProps) => (
-  <Alert variant={"infoBlock"} className="my-2 flex-row text-sm">
+  <Alert variant="infoBlock" className="my-2 flex-row text-sm">
     <Info />
     <p className="ml-2">
       Once you submit this form, a confirmation email is sent to you and to CMS.
