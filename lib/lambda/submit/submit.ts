@@ -38,6 +38,8 @@ export const submit = async (event: APIGatewayEvent) => {
   try {
     console.log('IN THIS TRY')
     const eventBody = await submissionPayloads[body.event](event);
+    console.log(body.event, 'BODY EVENT')
+    console.log(event, 'WHATS EVENT')
     console.log(eventBody, 'event body')
     await produceMessage(
       process.env.topicName as string,
