@@ -19,12 +19,12 @@ export const v202401: FormSchema = {
                 {
                   text: "Targeted low-income pregnant women",
                   type: "bold",
-                  classname: "text-[#212121]",
+                  classname: "text-black",
                 },
                 {
                   text: " are uninsured pregnant or postpartum women who do not have access to public employee coverage and whose household income is within standards established by the state.",
                   type: "default",
-                  classname: "text-[#212121]",
+                  classname: "text-black",
                 },
               ],
               rules: {
@@ -63,7 +63,7 @@ export const v202401: FormSchema = {
                   rhf: "Radio",
                   name: "age-range",
                   label: "Age range",
-                  labelClassName: "font-bold text-[#212121]",
+                  labelClassName: "font-bold text-black",
                   descriptionAbove: true,
                   rules: {
                     required: "* Required",
@@ -85,7 +85,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                             },
                             label: "End of age range",
-                            labelClassName: "font-bold text-[#212121]",
+                            labelClassName: "font-bold text-black",
                             props: {
                               className: "w-[125px]",
                             },
@@ -109,7 +109,7 @@ export const v202401: FormSchema = {
                             },
                             label:
                               "Describe how it’s determined whether the applicant will be provided coverage as a child or as a pregnant woman.",
-                            labelClassName: "font-bold text-[#212121]",
+                            labelClassName: "font-bold text-black",
                             props: {
                               className: "w-[696px]",
                             },
@@ -138,7 +138,7 @@ export const v202401: FormSchema = {
                                   required: "* Required",
                                 },
                                 label: "Start of age range",
-                                labelClassName: "font-bold text-[#212121]",
+                                labelClassName: "font-bold text-black",
                                 props: {
                                   className: "w-[125px]",
                                 },
@@ -163,7 +163,7 @@ export const v202401: FormSchema = {
                                   },
                                 ],
                                 label: "End of age range",
-                                labelClassName: "font-bold text-[#212121]",
+                                labelClassName: "font-bold text-black",
                                 props: {
                                   className: "w-[125px]",
                                 },
@@ -178,7 +178,7 @@ export const v202401: FormSchema = {
                             },
                             label:
                               "Does the age range for targeted low-income pregnant women overlap with the age range for targeted low-income children?",
-                            labelClassName: "font-bold text-[#212121]",
+                            labelClassName: "font-bold text-black",
                             props: {
                               className: "w-[125px]",
                               options: [
@@ -252,7 +252,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               name: "standards-applied-state",
               label: "Are income standards applied statewide?",
-              labelClassName: "font-bold text-[#212121]",
+              labelClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
               },
@@ -282,7 +282,7 @@ export const v202401: FormSchema = {
                     required: "* Required",
                   },
                   label: "Above",
-                  labelClassName: "font-bold text-[#212121]",
+                  labelClassName: "font-bold text-black",
                   props: {
                     className: "w-[159px]",
                     icon: "% FPL",
@@ -300,7 +300,7 @@ export const v202401: FormSchema = {
                     required: "* Required",
                   },
                   label: "Up to and including",
-                  labelClassName: "font-bold text-[#212121]",
+                  labelClassName: "font-bold text-black",
                   props: {
                     icon: "% FPL",
                     iconRight: true,
@@ -343,7 +343,7 @@ export const v202401: FormSchema = {
               },
               label:
                 "Are there any exceptions, such as populations in a county that may qualify under either a statewide income standard or a county income standard?",
-              labelClassName: "font-bold text-[#212121]",
+              labelClassName: "font-bold text-black",
               props: {
                 className: "w-[125px]",
                 options: [
@@ -364,7 +364,7 @@ export const v202401: FormSchema = {
               },
               label:
                 "Explain, including a description of the overlapping geographic area and the reason for having different income standards.",
-              labelClassName: "font-bold text-[#212121]",
+              labelClassName: "font-bold text-black",
               props: {
                 className: "w-[696px]",
               },
@@ -385,7 +385,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "geo-variation",
               label: "Method of geographic variation",
-              labelClassName: "font-bold text-[#212121]",
+              labelClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
               },
@@ -433,7 +433,7 @@ export const v202401: FormSchema = {
                                   },
                                 },
                                 label: "County",
-                                labelClassName: "font-bold text-[#212121]",
+                                labelClassName: "font-bold text-black",
                                 props: {
                                   className: "w-[229px]",
                                 },
@@ -449,7 +449,7 @@ export const v202401: FormSchema = {
                                   required: "* Required",
                                 },
                                 label: "Above",
-                                labelClassName: "font-bold text-[#212121]",
+                                labelClassName: "font-bold text-black",
                                 props: {
                                   className: "w-[159px]",
                                   icon: "% FPL",
@@ -467,7 +467,7 @@ export const v202401: FormSchema = {
                                   required: "* Required",
                                 },
                                 label: "Up to and including",
-                                labelClassName: "font-bold text-[#212121]",
+                                labelClassName: "font-bold text-black",
                                 props: {
                                   icon: "% FPL",
                                   iconRight: true,
@@ -523,7 +523,7 @@ export const v202401: FormSchema = {
                                   },
                                 },
                                 label: "City",
-                                labelClassName: "font-bold text-[#212121]",
+                                labelClassName: "font-bold text-black",
                                 props: {
                                   className: "w-[229px]",
                                 },
@@ -539,7 +539,7 @@ export const v202401: FormSchema = {
                                   required: "* Required",
                                 },
                                 label: "Above",
-                                labelClassName: "font-bold text-[#212121]",
+                                labelClassName: "font-bold text-black",
                                 props: {
                                   className: "w-[159px]",
                                   icon: "% FPL",
@@ -557,7 +557,7 @@ export const v202401: FormSchema = {
                                   required: "* Required",
                                 },
                                 label: "Up to and including",
-                                labelClassName: "font-bold text-[#212121]",
+                                labelClassName: "font-bold text-black",
                                 props: {
                                   icon: "% FPL",
                                   iconRight: true,
@@ -620,7 +620,7 @@ export const v202401: FormSchema = {
                                       },
                                     },
                                     label: "Geographic Area",
-                                    labelClassName: "font-bold text-[#212121]",
+                                    labelClassName: "font-bold text-black",
                                     props: {
                                       className: "w-[527px]",
                                     },
@@ -637,7 +637,7 @@ export const v202401: FormSchema = {
                                       },
                                     },
                                     label: "Describe",
-                                    labelClassName: "font-bold text-[#212121]",
+                                    labelClassName: "font-bold text-black",
                                     props: {
                                       className: "w-[527px]",
                                     },
@@ -661,8 +661,7 @@ export const v202401: FormSchema = {
                                           required: "* Required",
                                         },
                                         label: "Above",
-                                        labelClassName:
-                                          "font-bold text-[#212121]",
+                                        labelClassName: "font-bold text-black",
                                         props: {
                                           className: "w-[159px]",
                                           icon: "% FPL",
@@ -681,8 +680,7 @@ export const v202401: FormSchema = {
                                           required: "* Required",
                                         },
                                         label: "Up to and including",
-                                        labelClassName:
-                                          "font-bold text-[#212121]",
+                                        labelClassName: "font-bold text-black",
                                         props: {
                                           icon: "% FPL",
                                           iconRight: true,
