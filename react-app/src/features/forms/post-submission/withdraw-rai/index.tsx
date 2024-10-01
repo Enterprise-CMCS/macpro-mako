@@ -28,7 +28,7 @@ export const WithdrawRaiForm = () => {
     documentPollerArgs={{
       property: "id",
       documentChecker: (check) =>
-        check.hasStatus(SEATOOL_STATUS.PENDING_RAI) && check.hasRaiWithdrawal,
+        check.recordExists,
     }}
     breadcrumbText="Withdraw Formal RAI Response"
     formDescription="Complete this form to withdraw the Formal RAI response. Once complete,

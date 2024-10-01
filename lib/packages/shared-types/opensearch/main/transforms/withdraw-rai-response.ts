@@ -1,12 +1,13 @@
-import { raiWithdrawSchema } from "../../..";
+// import { schema } from "../../..";
+import { events } from "shared-types";
 
 export const transform = (id: string) => {
-  return raiWithdrawSchema.transform((data) => ({
+  return events["withdraw-rai"].schema.transform((data) => ({
     id,
     raiWithdrawEnabled: false,
-    // makoChangedDate: data.timestamp
-    //   ? new Date(data.timestamp).toISOString()
-    //   : null,
+    makoChangedDate: data.timestamp
+      ? new Date(data.timestamp).toISOString()
+      : null,
   }));
 };
 
