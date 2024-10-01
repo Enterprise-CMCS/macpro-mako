@@ -12,7 +12,6 @@ export const raiWithdrawSchema = z.object({
 });
 export type RaiWithdraw = z.infer<typeof raiWithdrawSchema>;
 
-//
 export const baseSchema = z.object({
   event: z.literal("withdraw-rai").default("withdraw-rai"),
   id: z.string(),

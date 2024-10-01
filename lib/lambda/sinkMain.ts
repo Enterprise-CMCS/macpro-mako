@@ -90,6 +90,7 @@ const processAndIndex = async ({
       console.log(record.event);
 
       console.log(transforms, 'TRANSFORMS')
+      console.log(record, 'RECORDDD')
       if (record.event in transforms) {
         const transformForEvent =
           transforms[record.event as keyof typeof transforms];
