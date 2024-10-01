@@ -29,7 +29,7 @@ export const baseSchema = z.object({
     .default(null),
   });
 
-export const schema = raiWithdrawSchema.extend({
+export const schema = baseSchema.extend({
   origin: z.literal("mako").default("mako"),
   submitterName: z.string(),
   submitterEmail: z.string().email(),
