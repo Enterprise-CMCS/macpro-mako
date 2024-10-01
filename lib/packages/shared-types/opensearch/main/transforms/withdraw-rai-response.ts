@@ -1,9 +1,9 @@
 // import { schema } from "../../..";
 import { events } from "shared-types";
 
-export const transform = (id: string) => {
+export const transform = () => {
   return events["withdraw-rai"].schema.transform((data) => ({
-    id,
+    id: data.id,
     raiWithdrawEnabled: false,
     makoChangedDate: data.timestamp
       ? new Date(data.timestamp).toISOString()
