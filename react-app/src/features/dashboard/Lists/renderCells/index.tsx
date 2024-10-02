@@ -1,10 +1,9 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Authority, CognitoUserAttributes, opensearch } from "shared-types";
 import { getAvailableActions, formatSeatoolDate } from "shared-utils";
-import { Link as TypedLink } from "@/components";
 import { Link } from "react-router-dom";
 import * as POP from "@/components";
-import { cn, DASHBOARD_ORIGIN, mapActionLabel } from "@/utils";
+import { cn, DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
 
 export const renderCellDate = (key: keyof opensearch.main.Document) =>
   function Cell(data: opensearch.main.Document) {
@@ -49,27 +48,24 @@ export const renderCellActions = (user: CognitoUserAttributes | null) => {
         <POP.PopoverContent>
           <div className="flex flex-col">
             {actions.map((action, idx) => (
-              <TypedLink
+              <Link
                 state={{
                   from: `${location.pathname}${location.search}`,
                 }}
-                path="/action/:authority/:id/:type"
-                key={`${idx}-${action}`}
-                params={{
-                  id: data.id,
-                  type: action,
-                  authority: data.authority,
+                to={{
+                  pathname: `/action/${data.authority}/${data.id}/${action}`,
+                  search: new URLSearchParams({
+                    [ORIGIN]: DASHBOARD_ORIGIN,
+                  }).toString(),
                 }}
+                key={`${idx}-${action}`}
                 className={cn(
                   "text-blue-500",
                   "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
                 )}
-                query={{
-                  origin: DASHBOARD_ORIGIN,
-                }}
               >
                 {mapActionLabel(action)}
-              </TypedLink>
+              </Link>
             ))}
           </div>
         </POP.PopoverContent>

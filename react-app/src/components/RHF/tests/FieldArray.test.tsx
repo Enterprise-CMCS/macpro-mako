@@ -1,4 +1,4 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect, vi } from "vitest";
 import { fireEvent, render } from "@testing-library/react";
 import { RHFSlot } from "..";
 import { Form, FormField } from "../../Inputs";
@@ -120,6 +120,16 @@ const testWrapperDependency: RHFSlotProps = {
     },
   ],
 };
+
+vi.mock("@/api", async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...(actual as object),
+    useGetCounties: vi.fn(() => {
+      return { data: [], isLoading: false, error: null };
+    }),
+  };
+});
 
 describe("Field Tests", () => {
   test("renders FieldArray", () => {
