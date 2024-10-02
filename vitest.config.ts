@@ -5,7 +5,7 @@ export default defineConfig({
   test: {
     globals: true,
     environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
-    setupFiles: ["./test/setup.ts"],
+    setupFiles: ["./react-app/testing/setup.ts"],
     coverage: {
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),
@@ -35,6 +35,7 @@ export default defineConfig({
         "**/coverage",
         "test/**",
         "**/*.js",
+        "**/assets/**",
       ],
     },
     environment: "happy-dom",

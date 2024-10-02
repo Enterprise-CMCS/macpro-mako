@@ -21,6 +21,7 @@ const baseURL = process.env.STAGE_NAME
 console.log(`Playwright configured to run against ${baseURL}`);
 export default defineConfig({
   testDir: ".",
+  // testMatch: "test/e2e/**/*.spec.ts",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -44,15 +45,19 @@ export default defineConfig({
   // Note: we can test on multiple browsers and resolutions defined here
   projects: [
     // Setup project
-    { name: "setup", testMatch: /utils.setup.ts/, fullyParallel: true },
+    {
+      name: "setup",
+      testMatch: "utils/setup.spec.ts",
+    },
 
     {
       // we can have different projects for different users/use cases
       name: "state-user-chrome",
+      testDir: "tests",
       use: {
         ...devices["Desktop Chrome"],
         // Use prepared auth state for state submitter.
-        storageState: "playwright/.auth/state-user.json",
+        storageState: ".auth/state-user.json",
       },
       // Tests start already authenticated because we specified storageState in the config.
       dependencies: ["setup"],

@@ -18,8 +18,7 @@
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
     "cdk:watch": "cdk watch -c stage=${STAGE:-local} --no-rollback",
-    "bun:dev": "cd react-app && bun run dev",
-    "ui:watch": "npm-run-all --parallel cdk:watch bun:dev"
+    "bun:dev": "cd react-app && bun run dev"
   },
   "repository": "https://github.com/Enterprise-CMCS/macpro-mako",
   "workspaces": [
@@ -38,7 +37,6 @@
     "@react-email/components": "0.0.25",
     "@types/aws-lambda": "^8.10.145",
     "aws-cdk-lib": "^2.150.0",
-    "bun": "1.1.20",
     "cdk": "^2.156.0",
     "constructs": "^10.3.0",
     "esbuild": "^0.23.1",
@@ -58,7 +56,7 @@
     "@semantic-release/git": "^10.0.1",
     "@types/jest": "^29.5.12",
     "@types/luxon": "^3.4.2",
-    "@types/node": "20.14.2",
+    "@types/node": "^22.7.4",
     "@vitest/coverage-c8": "^0.29.8",
     "@vitest/coverage-istanbul": "^2.0.5",
     "@vitest/coverage-v8": "^2.0.5",
@@ -75,7 +73,7 @@
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "turbo": "^2.1.2",
-    "typescript": "5.4.5",
+    "typescript": "^5.6.2",
     "typescript-eslint": "^8.5.0",
     "vitest": "^2.1.1"
   },

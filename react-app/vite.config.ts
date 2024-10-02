@@ -31,8 +31,9 @@ export default defineConfig(({ mode }) => {
     },
     test: {
       environment: "jsdom",
+      root: ".",
       setupFiles: "./testing/setup.ts",
-      exclude: ["**/e2e/**", "**/node_modules/**"],
+      exclude: ["**/node_modules/**"],
     },
     resolve: {
       alias: {

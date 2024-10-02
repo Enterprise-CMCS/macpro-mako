@@ -29,6 +29,10 @@ const staticRoutes = [
   "/new-submission/waiver/temporary-extensions",
 ];
 
+// test.beforeEach(async ({ page }) => {
+//   await page.route("**/*.{png,jpg,jpeg,gif,webp}", (route) => route.abort());
+// });
+
 test.describe("test a11y on static routes", () => {
   for (const route of staticRoutes) {
     test(`${route} should not have any automatically detectable accessibility issues`, async ({

@@ -8,7 +8,7 @@ import {
 } from "@aws-sdk/client-secrets-manager";
 import { fromEnv } from "@aws-sdk/credential-providers";
 
-const stage = process.env.STAGE_NAME || "main";
+const stage = process.env.STAGE_NAME || "brain";
 const deploymentConfig = JSON.parse(
   (
     await new SSMClient({
@@ -28,7 +28,7 @@ const password = (
   )
 ).SecretString!;
 
-const stateSubmitterAuthFile = "playwright/.auth/state-user.json";
+const stateSubmitterAuthFile = ".auth/state-user.json";
 
 /**
  * Rewrite without using a test. This throws off the report count
@@ -41,7 +41,7 @@ setup("authenticate state submitter", async ({ page, context }) => {
   await context.storageState({ path: stateSubmitterAuthFile });
 });
 
-const reviewerAuthFile = "playwright/.auth/reviewer-user.json";
+const reviewerAuthFile = ".auth/reviewer-user.json";
 
 /**
  * Rewrite without using a test. This throws off the report count
