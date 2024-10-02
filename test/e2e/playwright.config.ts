@@ -22,7 +22,7 @@ console.log(`Playwright configured to run against ${baseURL}`);
 export default defineConfig({
   // testMatch: "test/e2e/**/*.spec.ts",
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -47,6 +47,7 @@ export default defineConfig({
     {
       name: "setup",
       testMatch: "utils/setup.spec.ts",
+      fullyParallel: false,
     },
 
     {
@@ -60,6 +61,7 @@ export default defineConfig({
       },
       // Tests start already authenticated because we specified storageState in the config.
       dependencies: ["setup"],
+      fullyParallel: true,
     },
   ],
 });
