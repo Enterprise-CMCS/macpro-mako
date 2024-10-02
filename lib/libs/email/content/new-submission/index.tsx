@@ -1,5 +1,11 @@
-import * as React from "react";
-import { Authority, EmailAddresses, OneMac } from "shared-types";
+import {
+  Authority,
+  EmailAddresses,
+  BaseTemporaryExtension,
+  BaseMedSchema,
+  BaseChipSchema,
+  BaseAppk,
+} from "shared-types";
 import { CommonVariables, AuthoritiesWithUserTypesTemplate } from "../..";
 import {
   MedSpaCMSEmail,
@@ -16,7 +22,7 @@ import { render } from "@react-email/render";
 export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
     cms: async (
-      variables: OneMac & CommonVariables & { emails: EmailAddresses },
+      variables: BaseMedSchema & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: variables.emails.osgEmail,
@@ -28,7 +34,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       };
     },
     state: async (
-      variables: OneMac & CommonVariables & { emails: EmailAddresses },
+      variables: BaseMedSchema & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
@@ -42,7 +48,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   },
   [Authority.CHIP_SPA]: {
     cms: async (
-      variables: OneMac & CommonVariables & { emails: EmailAddresses },
+      variables: BaseChipSchema & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: variables.emails.chipInbox,
@@ -55,7 +61,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       };
     },
     state: async (
-      variables: OneMac & CommonVariables & { emails: EmailAddresses },
+      variables: BaseChipSchema & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
@@ -69,7 +75,8 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   },
   [Authority["1915b"]]: {
     cms: async (
-      variables: OneMac & CommonVariables & { emails: EmailAddresses },
+      variables: BaseTemporaryExtension &
+        CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: variables.emails.osgEmail,
@@ -81,7 +88,8 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       };
     },
     state: async (
-      variables: OneMac & CommonVariables & { emails: EmailAddresses },
+      variables: BaseTemporaryExtension &
+        CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
@@ -95,7 +103,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   },
   [Authority["1915c"]]: {
     cms: async (
-      variables: OneMac & CommonVariables & { emails: EmailAddresses },
+      variables: BaseAppk & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: variables.emails.osgEmail,
@@ -107,10 +115,10 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       };
     },
     state: async (
-      variables: OneMac & CommonVariables & { emails: EmailAddresses },
+      variables: BaseAppk & CommonVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
+        to: variables.emails.osgEmail,
         subject: `Your 1915(c) ${variables.id} has been submitted to CMS`,
         html: await render(<AppKStateEmail variables={variables} />),
         text: await render(<AppKStateEmail variables={variables} />, {

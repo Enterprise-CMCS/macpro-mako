@@ -46,7 +46,6 @@ const mockVariables: WithdrawPackage &
   },
   applicationEndpointUrl: "http://example.com",
   attachments: [],
-  to: "recipient@example.com",
   actionType: "Some Action",
   allStateUsersEmails: ["stateuser@example.com"],
 };

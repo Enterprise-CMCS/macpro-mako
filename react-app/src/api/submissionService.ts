@@ -70,7 +70,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
   };
   const baseProperties = {
     authority: authority,
-    origin: "micro",
+    origin: "OneMAC",
   };
 
   switch (endpoint) {

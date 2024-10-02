@@ -3,7 +3,7 @@ import { APIGatewayEvent } from "aws-lambda";
 
 import { submissionPayloads } from "./submissionPayloads";
 import { produceMessage } from "../../libs/api/kafka";
-import { BaseSchemas } from "shared-types/events";
+import { BaseMedSchema } from "shared-types/events";
 
 export const submit = async (event: APIGatewayEvent) => {
   if (!event.body) {
@@ -13,7 +13,7 @@ export const submit = async (event: APIGatewayEvent) => {
     });
   }
 
-  const body: BaseSchemas = JSON.parse(event.body);
+  const body: BaseMedSchema = JSON.parse(event.body);
 
   console.log(body);
 

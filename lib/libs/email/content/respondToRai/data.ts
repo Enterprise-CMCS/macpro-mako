@@ -7,7 +7,7 @@ export const emailTemplateValue = {
   timestamp: 1723390633663,
   authority: "AUTHORITY",
   actionType: "ACTION TYPE",
-  origin: "micro",
+  origin: "OneMAC",
   requestedDate: 1723390633663,
   responseDate: 1723390633663,
   additionalInformation: "This bens additional infornormaiton",

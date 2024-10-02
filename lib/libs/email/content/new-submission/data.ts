@@ -8,7 +8,7 @@ export const emailTemplateValue = {
   authority: "AUTHORITY",
   seaActionType: "Amend",
   actionType: "ACTION TYPE",
-  origin: "micro",
+  origin: "OneMAC",
   appkParentId: null,
   originalWaiverNumber: null,
   additionalInformation: "This bens additional infornormaiton",

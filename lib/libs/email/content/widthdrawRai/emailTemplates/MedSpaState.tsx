@@ -34,11 +34,12 @@ export const MedSpaStateEmail = (props: {
   );
 };
 
+// For Preview
 const MedSpaCMSEmailPreview = () => {
   return (
     <MedSpaStateEmail
       relatedEvent={relatedEvent}
-      variables={emailTemplateValue as RaiWithdraw & CommonVariables}
+      variables={emailTemplateValue as any}
     />
   );
 };

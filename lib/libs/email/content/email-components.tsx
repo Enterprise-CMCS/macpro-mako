@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Text, Link, Section } from "@react-email/components";
 import { Attachment } from "shared-types";
 

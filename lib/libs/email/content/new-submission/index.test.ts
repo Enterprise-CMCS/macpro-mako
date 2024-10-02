@@ -1,6 +1,6 @@
 import { newSubmission } from "./index";
 import { render } from "@react-email/render";
-import { Authority, EmailAddresses, OneMac } from "shared-types";
+import { Authority, EmailAddresses, BaseChipSchema } from "shared-types";
 import { CommonVariables } from "../..";
 import { Mock, vi, describe, it, expect, beforeEach } from "vitest";
 
@@ -15,6 +15,8 @@ describe("newSubmission", () => {
     id: "123",
     actionType: "submission",
     to: "example@example.com", // Add the missing properties
+    submitterName: "John Doe",
+    submitterEmail: "john.doe@example.com",
     territory: "someTerritory",
     applicationEndpointUrl: "http://example.com",
     allStateUsersEmails: ["user1@example.com", "user2@example.com"],
@@ -23,7 +25,7 @@ describe("newSubmission", () => {
   const emailAddresses: EmailAddresses = {
     osgEmail: ["osg@example.com"],
     chipInbox: ["chip@example.com"],
-    chipCcList: [], // Add this line to fix the error
+    chipCcList: ["chippCC@example.com"], // Add this line to fix the error
     srtEmails: ["srt@example.com"],
     cpocEmail: ["cpoc@example.com"],
     dpoEmail: ["dpo@example.com"],
@@ -32,20 +34,19 @@ describe("newSubmission", () => {
     sourceEmail: "source@example.com",
   };
 
-  const variables: OneMac & CommonVariables & { emails: EmailAddresses } = {
+  const variables: BaseChipSchema &
+    CommonVariables & { emails: EmailAddresses } = {
     ...commonVariables,
-    emails: {
-      ...emailAddresses,
-    },
+    event: "new-chip-submission",
+    attachments: [] as any,
+    proposedEffectiveDate: Date.now(),
+    timestamp: Date.now(),
+    emails: emailAddresses,
     authority: "1915b",
-    origin: "CMS",
-    appkParentId: "123",
-    originalWaiverNumber: "123",
+    origin: "mako",
     additionalInformation: "123",
     submitterName: "123",
     submitterEmail: "123",
-    changedDate: 123,
-    raiWithdrawEnabled: true,
     allStateUsersEmails: ["state1@example.com", "state2@example.com"],
   };
 
@@ -135,7 +136,7 @@ describe("newSubmission", () => {
     mockRender.mockResolvedValueOnce("<html>1915c State Email</html>");
     const result = await newSubmission[Authority["1915c"]]?.state?.(variables);
     expect(result).toEqual({
-      to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
+      to: ["osg@example.com"],
       subject: `Your 1915(c) ${variables.id} has been submitted to CMS`,
       html: "<html>1915c State Email</html>",
       text: undefined,

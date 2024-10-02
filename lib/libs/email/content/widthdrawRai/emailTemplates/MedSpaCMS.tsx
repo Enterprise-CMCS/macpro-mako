@@ -39,7 +39,7 @@ const MedSpaCMSEmailPreview = () => {
   return (
     <MedSpaCMSEmail
       relatedEvent={relatedEvent}
-      variables={emailTemplateValue as RaiWithdraw & CommonVariables}
+      variables={emailTemplateValue as any}
     />
   );
 };

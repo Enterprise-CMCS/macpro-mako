@@ -5,7 +5,7 @@ export const emailTemplateValue = {
   applicationEndpointUrl: "https://onemac.cms.gov/",
 
   authority: "AUTHORITY",
-  origin: "micro",
+  origin: "OneMAC",
   requestedDate: 1723390633663,
   withdrawnDate: 1723390633663,
   attachments: [
@@ -32,7 +32,11 @@ export const emailTemplateValue = {
     },
   ],
   additionalInformation: "This bens additional infornormaiton",
-  submitterName: "George Harrison",
-  submitterEmail: "george@example.com",
+  user: {
+    isCms: false,
+    family_name: "Harrison",
+    given_name: "George",
+    email: "george@example.com",
+  },
   timestamp: 1723390633663,
 };

@@ -43,7 +43,7 @@ const AppKCMSEmailPreview = () => {
   return (
     <AppKCMSEmail
       relatedEvent={relatedEvent}
-      variables={emailTemplateValue as RaiWithdraw & CommonVariables}
+      variables={{ ...emailTemplateValue, ...relatedEvent }}
     />
   );
 };

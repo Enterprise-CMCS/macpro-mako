@@ -22,3 +22,5 @@ export const appkSchema = z.object({
   }),
   additionalInformation: z.string().max(4000).nullable().default(null),
 });
+
+export type BaseAppk = z.infer<typeof appkSchema>;

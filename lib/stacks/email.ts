@@ -121,6 +121,13 @@ export class Email extends cdk.NestedStack {
               ],
             }),
             new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["cognito-idp:ListUsers"],
+              resources: [
+                `arn:aws:cognito-idp:${this.region}:${this.account}:userpool/${userPoolId}`,
+              ],
+            }),
+            new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.DENY,
               actions: ["logs:CreateLogGroup"],
               resources: ["*"],
@@ -140,6 +147,7 @@ export class Email extends cdk.NestedStack {
       this,
       "ProcessEmailsLambda",
       {
+        functionName: `${project}-${stage}-${stack}-processEmails`,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry: join(__dirname, "../lambda/processEmails.ts"),
         handler: "handler",
@@ -154,8 +162,9 @@ export class Email extends cdk.NestedStack {
         logRetention: 30,
         securityGroups: [lambdaSecurityGroup],
         environment: {
-          region: this.region,
+          region: cdk.Stack.of(this).region,
           stage,
+          stack,
           indexNamespace,
           osDomain: `https://${openSearchDomainEndpoint}`,
           applicationEndpointUrl,

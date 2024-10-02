@@ -1,5 +1,4 @@
 import { describe, it, expect } from "vitest";
-import * as React from "react";
 import { render } from "@react-email/render";
 import { MedSpaCMSEmail } from "./MedSpaCMS";
 import { MedSpaStateEmail } from "./MedSpaState";
