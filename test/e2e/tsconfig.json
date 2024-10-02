@@ -20,5 +20,6 @@
       "@/*": ["src/*"]
     },
     "types": ["vitest/globals"]
-  }
+  },
+  "include": ["**/*.ts", "utils/**/*.ts"]
 }
