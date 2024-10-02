@@ -90,7 +90,7 @@ export const valReducer = (
           return rule.message;
         },
       };
-    case "noGapsOrOrverlaps":
+    case "noGapsOrOverlaps":
       return {
         ...valSet,
         [valName]: (_, fields) => {

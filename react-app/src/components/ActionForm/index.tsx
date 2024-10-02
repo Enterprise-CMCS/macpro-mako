@@ -12,9 +12,9 @@ import {
   FormField,
   banner,
   userPrompt,
-  formCrumbsFromPath,
   FAQFooter,
   PreSubmissionMessage,
+  optionCrumbsFromPath,
 } from "@/components";
 import {
   DefaultValues,
@@ -24,7 +24,12 @@ import {
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { SlotAdditionalInfo } from "@/features";
 import { getFormOrigin } from "@/utils";
 import {
@@ -32,12 +37,14 @@ import {
   documentPoller,
 } from "@/utils/Poller/documentPoller";
 import { API } from "aws-amplify";
-import { Authority } from "shared-types";
+import { Authority, CognitoUserAttributes } from "shared-types";
 import { ActionFormAttachments } from "./ActionFormAttachments";
 import {
   getAttachments,
   getAdditionalInformation,
 } from "./actionForm.utilities";
+import { isStateUser } from "shared-utils";
+import { useGetUser } from "@/api";
 
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {
@@ -62,12 +69,12 @@ type InferUntransformedSchema<T> = T extends z.ZodEffects<infer U> ? U : T;
 
 type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   schema: Schema;
-  defaultValues?: DefaultValues<z.infer<InferUntransformedSchema<Schema>>>; // Adjusted to infer the base schema type
+  defaultValues?: DefaultValues<z.infer<InferUntransformedSchema<Schema>>>;
   title: string;
   fieldsLayout?: (props: { children: ReactNode; title: string }) => ReactNode;
   fields: (
     form: UseFormReturn<z.infer<InferUntransformedSchema<Schema>>>,
-  ) => ReactNode; // Adjusted to use the untransformed schema type
+  ) => ReactNode;
   bannerPostSubmission?: Omit<Banner, "pathnameToDisplayOn">;
   promptPreSubmission?: Omit<UserPrompt, "onAccept">;
   promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
@@ -81,7 +88,10 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
       | ((values: z.TypeOf<Schema>) => string);
     documentChecker: CheckDocumentFunction;
   };
-  tab: "spas" | "waivers";
+  conditionsDeterminingUserAccess?: ((
+    user: CognitoUserAttributes | null,
+  ) => boolean)[];
+  breadcrumbText: string;
 };
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
@@ -105,11 +115,15 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   promptPreSubmission,
   documentPollerArgs,
   attachments,
-  tab,
+  conditionsDeterminingUserAccess = [isStateUser],
+  breadcrumbText,
 }: ActionFormProps<Schema>) => {
   const { id, authority } = useParams<{ id: string; authority: Authority }>();
-  const location = useLocation();
+  const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { data: userObj } = useGetUser();
+
+  const breadcrumbs = optionCrumbsFromPath(pathname, authority);
 
   const form = useForm<z.TypeOf<Schema>>({
     resolver: zodResolver(schema),
@@ -141,7 +155,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         pathnameToDisplayOn: formOrigins.pathname,
       });
 
-      navigate(`/dashboard?tab=${tab}`);
+      navigate(formOrigins);
     } catch (error) {
       console.error(error);
       banner({
@@ -164,9 +178,26 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     [attachmentsFromSchema, Fields, form],
   );
 
+  const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some(
+    (condition) => condition(userObj.user),
+  );
+
+  if (doesUserHaveAccessToForm === false) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <SimplePageContainer>
-      <BreadCrumbs options={formCrumbsFromPath(location.pathname)} />
+      <BreadCrumbs
+        options={[
+          ...breadcrumbs,
+          {
+            to: pathname,
+            displayText: breadcrumbText,
+            order: breadcrumbs.length,
+          },
+        ]}
+      />
       {form.formState.isSubmitting && <LoadingSpinner />}
       <Form {...form}>
         <form

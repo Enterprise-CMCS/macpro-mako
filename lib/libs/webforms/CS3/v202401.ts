@@ -57,7 +57,7 @@ export const v202401: FormSchema = {
                   },
                   addtnlRules: [
                     {
-                      type: "noGapsOrOrverlaps",
+                      type: "noGapsOrOverlaps",
                       fieldName: "age-and-house-inc-range",
                       fromField: "from-age",
                       toField: "to-age",
