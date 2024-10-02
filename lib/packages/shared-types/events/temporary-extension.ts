@@ -38,7 +38,7 @@ export type TemporaryExtensionSchema = z.infer<typeof baseSchema>;
 
 export const schema = baseSchema.extend({
   actionType: z.string().default("Extend"),
-  origin: z.literal("mako").default("mako"),
+  origin: z.literal("OneMAC").default("OneMAC"),
   submitterName: z.string(),
   submitterEmail: z.string().email(),
   timestamp: z.number(),

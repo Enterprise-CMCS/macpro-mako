@@ -1,9 +1,10 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
-import * as path from "path";
+import { join } from "path";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { ISubnet } from "aws-cdk-lib/aws-ec2";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { commonBundlingOptions } from "../config/bundling-config";
 
 interface EmailServiceStackProps extends cdk.StackProps {
@@ -11,13 +12,13 @@ interface EmailServiceStackProps extends cdk.StackProps {
   stage: string;
   isDev: boolean;
   stack: string;
+  userPoolId: string;
   vpc: cdk.aws_ec2.IVpc;
   applicationEndpointUrl: string;
   indexNamespace: string;
   emailAddressLookupSecretName: string;
   topicNamespace: string;
   privateSubnets: ISubnet[];
-  lambdaSecurityGroupId: string;
   brokerString: string;
   lambdaSecurityGroup: cdk.aws_ec2.SecurityGroup;
   openSearchDomainEndpoint: string;
@@ -32,13 +33,13 @@ export class Email extends cdk.NestedStack {
       project,
       stage,
       stack,
+      userPoolId,
       vpc,
       applicationEndpointUrl,
       topicNamespace,
       indexNamespace,
       emailAddressLookupSecretName,
       brokerString,
-      lambdaSecurityGroupId,
       privateSubnets,
       lambdaSecurityGroup,
       openSearchDomainEndpoint,
@@ -74,6 +75,18 @@ export class Email extends cdk.NestedStack {
         EmailServicePolicy: new cdk.aws_iam.PolicyDocument({
           statements: [
             new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: [
+                "es:ESHttpHead",
+                "es:ESHttpPost",
+                "es:ESHttpGet",
+                "es:ESHttpPatch",
+                "es:ESHttpDelete",
+                "es:ESHttpPut",
+              ],
+              resources: [`${openSearchDomainArn}/*`],
+            }),
+            new cdk.aws_iam.PolicyStatement({
               actions: [
                 "ses:SendEmail",
                 "ses:SendRawEmail",
@@ -85,11 +98,7 @@ export class Email extends cdk.NestedStack {
               ],
               resources: ["*"],
             }),
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["es:ESHttpHead", "es:ESHttpPost", "es:ESHttpGet"],
-              resources: [`${openSearchDomainArn}/*`],
-            }),
+
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["ec2:DescribeSecurityGroups", "ec2:DescribeVpcs"],
@@ -102,7 +111,14 @@ export class Email extends cdk.NestedStack {
                 "secretsmanager:GetSecretValue",
               ],
               resources: [
-                `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${emailAddressLookupSecretName}-*`,
+                `arn:aws:secretsmanager:${this.region}:${this.account}:secret:*`,
+              ],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["cognito-idp:ListUsers"],
+              resources: [
+                `arn:aws:cognito-idp:${this.region}:${this.account}:userpool/${userPoolId}`,
               ],
             }),
             new cdk.aws_iam.PolicyStatement({
@@ -115,45 +131,46 @@ export class Email extends cdk.NestedStack {
       },
     });
 
-    const processEmailsLambdaLogGroup = new cdk.aws_logs.LogGroup(
-      this,
-      "ProcessEmailsLambdaLogGroup",
-      {
-        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-processEmails`,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    );
+    // Create a DynamoDB table to track email send attempts
+    const emailAttemptsTable = new dynamodb.Table(this, "EmailAttemptsTable", {
+      partitionKey: { name: "emailId", type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+    });
 
-    // Lambda Function for Processing Emails
     const processEmailsLambda = new NodejsFunction(
       this,
       "ProcessEmailsLambda",
       {
         functionName: `${project}-${stage}-${stack}-processEmails`,
-        depsLockFilePath: path.join(__dirname, "../../bun.lockb"),
-        entry: path.join(__dirname, "../lambda/processEmails.ts"),
+        depsLockFilePath: join(__dirname, "../../bun.lockb"),
+        entry: join(__dirname, "../lambda/processEmails.ts"),
         handler: "handler",
         runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
         memorySize: 1024,
-        timeout: cdk.Duration.seconds(60),
+        timeout: cdk.Duration.minutes(15),
         role: lambdaRole,
         vpc: vpc,
         vpcSubnets: {
           subnets: privateSubnets,
         },
+        logRetention: 30,
         securityGroups: [lambdaSecurityGroup],
-        logGroup: processEmailsLambdaLogGroup,
         environment: {
           region: this.region,
           stage,
+          stack,
           indexNamespace,
           osDomain: `https://${openSearchDomainEndpoint}`,
           applicationEndpointUrl,
           emailAddressLookupSecretName,
+          userPoolId,
         },
         bundling: commonBundlingOptions,
       },
     );
+
+    // Grant the Lambda function read/write permissions
+    emailAttemptsTable.grantReadWriteData(processEmailsLambda);
 
     new CfnEventSourceMapping(this, "SinkEmailTrigger", {
       batchSize: 1,
@@ -163,7 +180,7 @@ export class Email extends cdk.NestedStack {
           kafkaBootstrapServers: brokerString.split(","),
         },
       },
-      functionName: processEmailsLambda.functionArn,
+      functionName: processEmailsLambda.functionName,
       sourceAccessConfigurations: [
         ...privateSubnets.map((subnet) => ({
           type: "VPC_SUBNET",
@@ -171,7 +188,7 @@ export class Email extends cdk.NestedStack {
         })),
         {
           type: "VPC_SECURITY_GROUP",
-          uri: `security_group:${lambdaSecurityGroupId}`,
+          uri: `security_group:${lambdaSecurityGroup.securityGroupId}`,
         },
       ],
       startingPosition: "LATEST",

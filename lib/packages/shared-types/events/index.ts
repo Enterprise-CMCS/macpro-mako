@@ -34,4 +34,14 @@ export const events = {
   "temporary-extension": temporaryExtension,
 };
 
-export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;
+export type BaseMedSchema = z.infer<typeof newMedicaidSubmission.schema>;
+export type BaseChipSchema = z.infer<typeof newChipSubmission.schema>;
+export type BaseCapitatedAmendment = z.infer<typeof capitatedAmendment.schema>;
+export type BaseCapitatedIntial = z.infer<typeof capitatedIntial.schema>;
+export type BaseCapitatedRenewal = z.infer<typeof capitatedRenewal.schema>;
+export type BaseContractingAmendment = z.infer<
+  typeof contractingAmendment.schema
+>;
+export type BaseContractingInitial = z.infer<typeof contractingInitial.schema>;
+export type BaseContractingRenewal = z.infer<typeof contractingRenewal.schema>;
+export type BaseTemporaryExtension = z.infer<typeof temporaryExtension.schema>;

@@ -31,7 +31,7 @@ export const transform = () => {
       submissionDate: new Date(nextBusinessDayEpoch).toISOString(),
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
-      actionType: data.actionType,
+      seaActionType: data.seaActionType,
       initialIntakeNeeded: true,
     };
   });

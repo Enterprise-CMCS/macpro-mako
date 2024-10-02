@@ -12,10 +12,14 @@ import * as EmailContent from "./content";
 
 export type UserType = "cms" | "state";
 export interface CommonVariables {
+  to?: string;
+  submitterName: string;
+  submitterEmail: string;
   id: string;
   territory: string;
   applicationEndpointUrl: string;
   actionType: string;
+  allStateUsersEmails?: string[];
 }
 
 export const formatAttachments = (
@@ -74,14 +78,19 @@ export function formatNinetyDaysDate(date: number | null | undefined): string {
 }
 
 export interface EmailTemplate {
+  to: string[];
+  cc?: string[];
+  bcc?: string[];
   subject: string;
   html: string;
   text?: string;
 }
 
-type EmailTemplateFunction<T> = (variables: T) => Promise<EmailTemplate>;
-type UserTypeOnlyTemplate = { [U in UserType]: EmailTemplateFunction<any> };
-type AuthoritiesWithUserTypesTemplate = {
+export type EmailTemplateFunction<T> = (variables: T) => Promise<EmailTemplate>;
+export type UserTypeOnlyTemplate = {
+  [U in UserType]: EmailTemplateFunction<any>;
+};
+export type AuthoritiesWithUserTypesTemplate = {
   [A in Authority]?: { [U in UserType]?: EmailTemplateFunction<any> };
 };
 
@@ -150,6 +159,11 @@ export const emailTemplates: EmailTemplates = {
         "cms": "func",
         "state": "func"
       }
+        MISSING? :
+      "1915(b)": {
+        "cms": "func",
+        "state": "func"
+      }
     }
   */
 
@@ -196,8 +210,9 @@ export async function getEmailTemplates<T>(
   authority: Authority,
 ): Promise<EmailTemplateFunction<T>[]> {
   const template = emailTemplates[action];
+  console.log("template", template);
   const emailTemplatesToSend: EmailTemplateFunction<T>[] = [];
-
+  console.log("emailTemplatesToSend", emailTemplatesToSend);
   if (!template) {
     throw new Error(`No templates found for action ${action}`);
   }
@@ -209,17 +224,21 @@ export async function getEmailTemplates<T>(
   } else {
     emailTemplatesToSend.push(...Object.values(template));
   }
-
+  console.log("emailTemplatesToSend", emailTemplatesToSend);
   return emailTemplatesToSend;
 }
 
 // I think this needs to be written to handle not finding any matching events and so forth
 export async function getLatestMatchingEvent(id: string, actionType: string) {
   const item = await getPackageChangelog(id);
+  console.log("item", item);
   const events = item.hits.hits.filter(
-    (hit) => hit._source.actionType === actionType,
+    (hit: any) => hit._source.actionType === actionType,
   );
-  events.sort((a, b) => b._source.timestamp - a._source.timestamp);
+  console.log("events", events);
+  events.sort((a: any, b: any) => b._source.timestamp - a._source.timestamp);
   const latestMatchingEvent = events[0]._source;
   return latestMatchingEvent;
 }
+
+export * from "./getAllStateUsers";
