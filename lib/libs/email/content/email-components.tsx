@@ -1,5 +1,5 @@
 import { Text, Link, Section } from "@react-email/components";
-import { Attachment } from "shared-types";
+import { Attachment, AttachmentKey } from "shared-types";
 
 export const LoginInstructions = (props: { appEndpointURL: string }) => {
   return (
@@ -25,9 +25,16 @@ export const LoginInstructions = (props: { appEndpointURL: string }) => {
   );
 };
 
-export const Attachments = (props: { attachments: Attachment[] }) => {
-  if (!props.attachments || props.attachments?.length === 0)
-    return <Text>No attachments</Text>;
+export const Attachments = (props: {
+  attachments: Record<AttachmentKey, { files?: Attachment[]; label: string }>;
+}) => {
+  const attachmentEntries = Object.entries(props.attachments).filter(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ([_, value]) => value.files && value.files.length > 0,
+  );
+
+  if (attachmentEntries.length === 0) return <Text>No attachments</Text>;
+
   return (
     <>
       <br />
@@ -35,9 +42,16 @@ export const Attachments = (props: { attachments: Attachment[] }) => {
         <b>Files:</b>
       </p>
       <ul>
-        {props.attachments?.map((attachment, idx: number) => (
-          <li key={attachment.key + idx}>
-            {attachment.title}: {attachment.filename}
+        {attachmentEntries.map(([key, value]) => (
+          <li key={key}>
+            {value.label}:
+            <ul>
+              {value.files?.map((file) => (
+                <li key={file.key}>
+                  {file.title}: {file.filename}
+                </li>
+              ))}
+            </ul>
           </li>
         ))}
       </ul>
@@ -47,7 +61,10 @@ export const Attachments = (props: { attachments: Attachment[] }) => {
 
 export const PackageDetails = (props: {
   details: { [key: string]: string | null | undefined };
-  attachments?: Attachment[] | null;
+  attachments?: Record<
+    AttachmentKey,
+    { files?: Attachment[]; label: string }
+  > | null;
 }) => {
   return (
     <Section>
@@ -55,9 +72,7 @@ export const PackageDetails = (props: {
       {Object.keys(props.details).map((label: string, idx: number) => {
         if (label === "Summary") {
           const summary =
-            "label" in props.details && props.details.label
-              ? props.details.label
-              : "No additional information submitted";
+            props.details[label] || "No additional information submitted";
           return (
             <div key={label + idx}>
               <br />
@@ -153,14 +168,20 @@ export const WithdrawRAI = (props: {
 };
 
 export const getCpocEmail = (item: any): string[] => {
-  const cpocName = item._source.leadAnalystName;
-  const cpocEmail = item._source.leadAnalystEmail;
+  if (!item) {
+    return [];
+  }
+  const cpocName = item?._source.leadAnalystName;
+  const cpocEmail = item?._source.leadAnalystEmail;
   const email = [`${cpocName} <${cpocEmail}>`];
   return email ?? [];
 };
 
 export const getSrtEmails = (item: any): string[] => {
-  const reviewTeam = item._source.reviewTeam;
+  if (!item) {
+    return [];
+  }
+  const reviewTeam = item?._source.reviewTeam;
   if (!reviewTeam) {
     return [];
   }

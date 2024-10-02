@@ -124,7 +124,6 @@ export async function processAndSendEmails(
   console.log("allStateUsers", JSON.stringify(allStateUsers, null, 2));
 
   const sec = await getSecret(emailAddressLookupSecretName);
-
   const item = await os.getItem(
     OPENSEARCH_DOMAIN_ENDPOINT!,
     `${INDEX_NAMESPACE}main`,

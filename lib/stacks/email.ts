@@ -19,7 +19,6 @@ interface EmailServiceStackProps extends cdk.StackProps {
   emailAddressLookupSecretName: string;
   topicNamespace: string;
   privateSubnets: ISubnet[];
-  lambdaSecurityGroupId: string;
   brokerString: string;
   lambdaSecurityGroup: cdk.aws_ec2.SecurityGroup;
   openSearchDomainEndpoint: string;
@@ -41,7 +40,6 @@ export class Email extends cdk.NestedStack {
       indexNamespace,
       emailAddressLookupSecretName,
       brokerString,
-      lambdaSecurityGroupId,
       privateSubnets,
       lambdaSecurityGroup,
       openSearchDomainEndpoint,
@@ -100,11 +98,7 @@ export class Email extends cdk.NestedStack {
               ],
               resources: ["*"],
             }),
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["es:ESHttpHead", "es:ESHttpPost", "es:ESHttpGet"],
-              resources: [`${openSearchDomainArn}/*`],
-            }),
+
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["ec2:DescribeSecurityGroups", "ec2:DescribeVpcs"],
@@ -162,15 +156,13 @@ export class Email extends cdk.NestedStack {
         logRetention: 30,
         securityGroups: [lambdaSecurityGroup],
         environment: {
-          region: cdk.Stack.of(this).region,
+          region: this.region,
           stage,
           stack,
           indexNamespace,
           osDomain: `https://${openSearchDomainEndpoint}`,
           applicationEndpointUrl,
           emailAddressLookupSecretName,
-          EMAIL_ATTEMPTS_TABLE: emailAttemptsTable.tableName,
-          MAX_RETRY_ATTEMPTS: "3", // Set the maximum number of retry attempts
           userPoolId,
         },
         bundling: commonBundlingOptions,
@@ -196,7 +188,7 @@ export class Email extends cdk.NestedStack {
         })),
         {
           type: "VPC_SECURITY_GROUP",
-          uri: `security_group:${lambdaSecurityGroupId}`,
+          uri: `security_group:${lambdaSecurityGroup.securityGroupId}`,
         },
       ],
       startingPosition: "LATEST",

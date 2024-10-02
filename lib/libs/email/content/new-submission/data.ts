@@ -14,29 +14,56 @@ export const emailTemplateValue = {
   additionalInformation: "This bens additional infornormaiton",
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",
-  attachments: [
-    {
-      filename: "cat.png",
-      title: "currentStatePlan",
-      bucket: "mako-rain-attachments-635052997545",
-      key: "c76b4ddf-67d9-4df2-91f3-d329fe209c0c.png",
-      uploadDate: 1723390631509,
+  attachments: {
+    currentStatePlan: {
+      files: [
+        {
+          filename: "cat.png",
+          title: "cat",
+          bucket: "mako-drain-attachments-635052997545",
+          key: "48fce908-1003-45b9-8d77-1363f448e2b7.png",
+          uploadDate: 1727870727924,
+        },
+      ],
+      label: "Current State Plan",
     },
-    {
-      filename: "cat.png",
-      title: "amendedLanguage",
-      bucket: "mako-rain-attachments-635052997545",
-      key: "c79e69ea-9ec7-4f94-996a-4879fc366318.png",
-      uploadDate: 1723390631509,
+    amendedLanguage: {
+      files: [
+        {
+          filename: "cat.png",
+          title: "cat",
+          bucket: "mako-drain-attachments-635052997545",
+          key: "0611a03d-678b-4802-af93-2a5fbf058a47.png",
+          uploadDate: 1727870731463,
+        },
+      ],
+      label: "Amended State Plan Language",
     },
-    {
-      filename: "macpro work.pdf",
-      title: "coverLetter",
-      bucket: "mako-rain-attachments-635052997545",
-      key: "a3900734-5f57-4637-a9e6-105e25b1b02d.pdf",
-      uploadDate: 1723390631509,
+    coverLetter: {
+      files: [
+        {
+          filename: "cat.png",
+          title: "cat",
+          bucket: "mako-drain-attachments-635052997545",
+          key: "dc6a1729-ce88-4cb3-9326-bad185a35fb9.png",
+          uploadDate: 1727870735599,
+        },
+      ],
+      label: "Cover Letter",
     },
-  ],
+    budgetDocuments: {
+      label: "Budget Documents",
+    },
+    publicNotice: {
+      label: "Public Notice",
+    },
+    tribalConsultation: {
+      label: "Tribal Consultation",
+    },
+    other: {
+      label: "Other",
+    },
+  },
   raiWithdrawEnabled: false,
   notificationMetadata: {
     submissionDate: 1723420800000,

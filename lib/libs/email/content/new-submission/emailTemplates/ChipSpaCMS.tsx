@@ -1,6 +1,6 @@
 import * as React from "react";
 import { emailTemplateValue } from "../data";
-import { OneMac } from "shared-types";
+import { BaseChipSchema } from "shared-types";
 import { CommonVariables } from "../../..";
 import { Html, Container } from "@react-email/components";
 import {
@@ -10,9 +10,10 @@ import {
 } from "../../email-components";
 
 export const ChipSpaCMSEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: BaseChipSchema & CommonVariables;
 }) => {
   const variables = props.variables;
+
   return (
     <Html lang="en" dir="ltr">
       <Container>
@@ -28,7 +29,7 @@ export const ChipSpaCMSEmail = (props: {
             "CHIP SPA Package ID": variables.id,
             Summary: variables.additionalInformation,
           }}
-          attachments={variables.attachments}
+          attachments={variables.attachments as any}
         />
         <SpamWarning />
       </Container>
@@ -38,11 +39,7 @@ export const ChipSpaCMSEmail = (props: {
 
 // To preview with on 'email-dev'
 const ChipSpaCMSEmailPreview = () => {
-  return (
-    <ChipSpaCMSEmail
-      variables={emailTemplateValue as OneMac & CommonVariables}
-    />
-  );
+  return <ChipSpaCMSEmail variables={emailTemplateValue as any} />;
 };
 
 export default ChipSpaCMSEmailPreview;
