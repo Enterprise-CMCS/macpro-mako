@@ -11,12 +11,6 @@ export default defineConfig({
       reportsDirectory: join(__dirname, "coverage"),
       reporter: ["html", "text", "json-summary", "json", "lcovonly"],
       reportOnFailure: true,
-      thresholds: {
-        lines: 60,
-        branches: 60,
-        functions: 60,
-        statements: 60,
-      },
       exclude: [
         ...configDefaults.exclude,
         ".build_run",

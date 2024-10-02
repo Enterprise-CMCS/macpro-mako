@@ -117,8 +117,6 @@ jobs:
 
       - name: Test
         run: run test --coverage
-      - name: Report Coverage
-        uses: davelosert/vitest-coverage-report-action@v2.5.0
       - name: Upload Coverage
         uses: actions/upload-artifact@v4
         with:
