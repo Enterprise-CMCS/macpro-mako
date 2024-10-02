@@ -24,7 +24,7 @@
   "scripts": {
     "email-dev": "email dev --dir email/content",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "vitest run --coverage.enabled true",
     "test:ui": "vitest --ui"
   }
 }

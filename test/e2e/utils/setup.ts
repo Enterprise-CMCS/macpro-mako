@@ -1,4 +1,5 @@
-import { test as setup } from "@playwright/test";
+import { test as setup, Coverage } from "@playwright/test";
+
 import { testUsers } from "./users";
 import { LoginPage } from "../pages";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
@@ -29,7 +30,6 @@ const password = (
 ).SecretString!;
 
 const stateSubmitterAuthFile = ".auth/state-user.json";
-
 /**
  * Rewrite without using a test. This throws off the report count
  */
