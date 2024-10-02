@@ -47,7 +47,7 @@ export const baseSchema = z.object({
 
 export const schema = baseSchema.extend({
   actionType: z.string().default("New"),
-  origin: z.literal("mako").default("mako"),
+  origin: z.literal("OneMAC").default("OneMAC"),
   submitterName: z.string(),
   submitterEmail: z.string().email(),
   timestamp: z.number(),

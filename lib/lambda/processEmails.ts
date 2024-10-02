@@ -78,7 +78,7 @@ export async function processRecord(
     ...JSON.parse(decodeBase64WithUtf8(value)),
   };
   console.log("record", record);
-  if (record?.origin === "mako") {
+  if (record?.origin === "OneMAC") {
     const action: Action | "new-submission" = determineAction(record);
     const authority: Authority = record.authority.toLowerCase() as Authority;
     console.log("action", action);
