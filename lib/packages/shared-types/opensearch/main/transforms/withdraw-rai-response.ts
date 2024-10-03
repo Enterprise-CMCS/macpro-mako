@@ -12,6 +12,7 @@ export const transform = () => {
       cmsStatus,
       stateStatus,
       seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
+      locked: true,
     };
   });
 };
