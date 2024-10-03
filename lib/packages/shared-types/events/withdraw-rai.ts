@@ -1,16 +1,15 @@
 import { z } from "zod";
 import {
   attachmentArraySchemaOptional,
-  attachmentSchema,
+  // attachmentSchema,
 } from "../attachments";
-
-export const raiWithdrawSchema = z.object({
-  id: z.string(),
-  authority: z.string(),
-  attachments: z.array(attachmentSchema).nullish(),
-  additionalInformation: z.string().nullable().default(null),
-});
-export type RaiWithdraw = z.infer<typeof raiWithdrawSchema>;
+// export const raiWithdrawSchema = z.object({
+//   id: z.string(),
+//   authority: z.string(),
+//   attachments: z.array(attachmentSchema).nullish(),
+//   additionalInformation: z.string().nullable().default(null),
+// });
+// export type RaiWithdraw = z.infer<typeof raiWithdrawSchema>;
 
 export const baseSchema = z.object({
   event: z.literal("withdraw-rai").default("withdraw-rai"),
@@ -22,11 +21,8 @@ export const baseSchema = z.object({
       label: z.string().default("Supporting Documentation"),
     }),
   }),
-  additionalInformation: z
-    .string()
-    .nullable()
-    .default(null),
-  });
+  additionalInformation: z.string().max(4000).nullable().default(null),
+});
 
 export const schema = baseSchema.extend({
   origin: z.literal("mako").default("mako"),

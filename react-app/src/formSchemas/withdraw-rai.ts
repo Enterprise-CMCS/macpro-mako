@@ -1,25 +1,16 @@
 // import { z } from "zod";
 // import { attachmentSchema } from "shared-types";
-import { events } from "shared-types/events";
+// import { getAdditionalInformation } from "@/components/ActionForm/actionForm.utilities";
+// import { zAdditionalInfo } from "@/utils";
 // import { zAdditionalInfo, zAttachmentOptional } from "@/utils";
-// export const defaultWithdrawRaiSchema = z.object({
-//   additionalInformation: zAdditionalInfo,
-//   attachments: z.object({
-//     supportingDocumentation: zAttachmentOptional,
-//   }),
-// });
+import { events } from "shared-types/events";
 
-export const formSchema = events["withdraw-rai"].baseSchema;
-
-// export const raiWithdrawSchema = z.object({
-//   id: z.string(),
-//   authority: z.string(),
-//   origin: z.string(),
-//   requestedDate: z.number(),
-//   withdrawnDate: z.number(),
-//   attachments: z.array(attachmentSchema).nullish(),
-//   additionalInformation: z.string().nullable().default(null),
-//   submitterName: z.string(),
-//   submitterEmail: z.string(),
-//   timestamp: z.number().optional(),
-// });
+export const formSchema = events["withdraw-rai"].baseSchema.extend({
+  additionalInformation: events["withdraw-rai"].baseSchema.shape.additionalInformation
+  .refine((value) => value !== "", {
+    message: "Additional Information is required.",
+  })
+  .refine((value) => value.trim().length > 0, {
+    message: "Additional Information can not be only whitespace.",
+  })
+})

@@ -4,7 +4,7 @@ export const getAdditionalInformation = <
   Schema extends z.ZodObject<any, any, any> | z.ZodEffects<any>,
 >(
   schema: Schema,
-): z.ZodDefault<z.ZodNullable<z.ZodString>> | undefined => {
+) => {
   if (schema instanceof z.ZodEffects) {
     const innerSchema = schema._def.schema;
 
@@ -16,7 +16,10 @@ export const getAdditionalInformation = <
   }
 
   if (schema instanceof z.ZodObject) {
-    if (schema.shape.additionalInformation instanceof z.ZodDefault) {
+    if (
+      schema.shape.additionalInformation instanceof z.ZodDefault ||
+      schema.shape.additionalInformation instanceof z.ZodEffects
+    ) {
       return schema.shape.additionalInformation;
     }
   }

@@ -16,6 +16,7 @@ import {
   optionCrumbsFromPath,
   ActionFormDescription,
   RequiredFieldDescription,
+  RequiredIndicator,
 } from "@/components";
 import {
   DefaultValues,
@@ -140,6 +141,14 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority);
 
+  const getBaseSchemaWithoutEffects = (schema: z.ZodTypeAny): z.ZodTypeAny => {
+    // Traverse through ZodEffects (e.g., caused by `.refine()`)
+    while (schema instanceof z.ZodEffects) {
+      schema = schema._def.schema;
+    }
+    return schema;
+  };
+
   if (id) {
     breadcrumbs.push({
       displayText: id,
@@ -196,6 +205,14 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     () => getAdditionalInformation(schema),
     [schema],
   );
+
+  console.log(
+    "Tiffany",
+    getBaseSchemaWithoutEffects(additionalInformationFromSchema) instanceof
+      z.ZodOptional,
+    // getBaseSchema(additionalInformationFromSchema),
+    // additionalInformationFromSchema._def.isOptional(),
+  );
   const hasProgressLossReminder = useMemo(
     () => Fields({ ...form }) !== null || attachmentsFromSchema.length > 0,
     [attachmentsFromSchema, Fields, form],
@@ -249,15 +266,24 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             />
           )}
           {additionalInformationFromSchema && (
-            <SectionCard title="Additional Information">
+            <SectionCard
+              title={
+                <>
+                  {"Additional Information"}{" "}
+                  {!(
+                    getBaseSchemaWithoutEffects(
+                      additionalInformationFromSchema,
+                    ) instanceof z.ZodOptional
+                  ) && <RequiredIndicator />}
+                </>
+              }
+            >
               <FormField
                 control={form.control}
                 name={"additionalInformation" as FieldPath<z.TypeOf<Schema>>}
                 render={SlotAdditionalInfo({
                   withoutHeading: true,
-                  label: (
-                    <p>{additionalInfoLabel}</p>
-                  ),
+                  label: <p>{additionalInfoLabel}</p>,
                 })}
               />
             </SectionCard>
