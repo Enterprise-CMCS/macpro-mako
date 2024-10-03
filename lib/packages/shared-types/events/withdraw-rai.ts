@@ -1,8 +1,5 @@
 import { z } from "zod";
-import {
-  attachmentArraySchemaOptional,
-  // attachmentSchema,
-} from "../attachments";
+import { attachmentArraySchemaOptional } from "../attachments";
 // export const raiWithdrawSchema = z.object({
 //   id: z.string(),
 //   authority: z.string(),
@@ -22,6 +19,7 @@ export const baseSchema = z.object({
     }),
   }),
   additionalInformation: z.string().max(4000).nullable().default(null),
+  raiRequestedDate: z.string(),
 });
 
 export const schema = baseSchema.extend({
