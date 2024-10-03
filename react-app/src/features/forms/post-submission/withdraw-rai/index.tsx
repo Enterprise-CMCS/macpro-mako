@@ -1,12 +1,10 @@
 import { ActionForm, PackageSection } from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { useParams } from "react-router-dom";
-import { useGetItem } from "@/api";
 
 export const WithdrawRaiForm = () => {
   const { authority, id } = useParams();
-  const { data } = useGetItem(id);
-  console.log(data);
+
   return (
     <ActionForm
       schema={formSchemas["withdraw-rai"]}
@@ -15,7 +13,6 @@ export const WithdrawRaiForm = () => {
       defaultValues={{
         id,
         authority,
-        raiRequestedDate: data._source.raiRequestedDate,
       }}
       attachments={{
         faqLink: "/faq",

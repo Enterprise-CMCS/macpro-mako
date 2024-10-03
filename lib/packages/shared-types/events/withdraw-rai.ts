@@ -19,7 +19,6 @@ export const baseSchema = z.object({
     }),
   }),
   additionalInformation: z.string().max(4000).nullable().default(null),
-  raiRequestedDate: z.string(),
 });
 
 export const schema = baseSchema.extend({
