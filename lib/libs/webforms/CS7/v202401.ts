@@ -118,8 +118,7 @@ export const v202401: FormSchema = {
                   rhf: "FieldArray",
                   name: "statewide-income-standards-fields",
                   descriptionClassName: "statewide-income-standards-fields",
-                  formItemClassName:
-                    "statewide-income-standards-fields [&_.slot-form-message]:w-max",
+                  formItemClassName: "[&_select~.slot-form-message]:w-max",
                   props: {
                     appendText: "Add range",
                   },
@@ -373,7 +372,7 @@ export const v202401: FormSchema = {
                             descriptionAbove: true,
                             descriptionClassName: "county-field-ranges pb-8",
                             formItemClassName:
-                              "county-field-ranges [&_.slot-form-message]:w-max",
+                              "county-field-ranges [&_select~.slot-form-message]:w-max",
                             props: {
                               appendText: "Add range",
                             },
@@ -561,7 +560,7 @@ export const v202401: FormSchema = {
                             descriptionAbove: true,
                             descriptionClassName: "city-field-ranges pb-8",
                             formItemClassName:
-                              "city-field-ranges [&_.slot-form-message]:w-max",
+                              "city-field-ranges [&_select~.slot-form-message]:w-max",
                             props: {
                               appendText: "Add range",
                             },
@@ -766,7 +765,7 @@ export const v202401: FormSchema = {
                             descriptionAbove: true,
                             descriptionClassName: "other-field-ranges pb-8",
                             formItemClassName:
-                              "other-field-ranges [&_.slot-form-message]:w-max",
+                              "other-field-ranges [&_select~.slot-form-message]:w-max",
                             props: {
                               appendText: "Add range",
                             },
