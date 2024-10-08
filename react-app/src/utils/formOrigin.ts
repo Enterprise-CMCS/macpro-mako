@@ -8,7 +8,7 @@ export const DASHBOARD_ORIGIN = "dashboard";
 /** Constant key for `details` origin. */
 export const DETAILS_ORIGIN = "details";
 /** Constant key for `spa` origin. */
-export const SPA_SUBMISSION_ORIGIN = "spa";
+export const SPA_SUBMISSION_ORIGIN = "spas";
 /** Constant key for `waivers` origin. */
 export const WAIVER_SUBMISSION_ORIGIN = "waivers";
 
