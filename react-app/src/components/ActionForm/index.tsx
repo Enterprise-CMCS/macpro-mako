@@ -8,13 +8,15 @@ import {
   Form,
   LoadingSpinner,
   SectionCard,
-  FormIntroText,
   FormField,
   banner,
   userPrompt,
   FAQFooter,
   PreSubmissionMessage,
   optionCrumbsFromPath,
+  ActionFormDescription,
+  RequiredFieldDescription,
+  RequiredIndicator,
 } from "@/components";
 import {
   DefaultValues,
@@ -92,6 +94,9 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
     user: CognitoUserAttributes | null,
   ) => boolean)[];
   breadcrumbText: string;
+  formDescription?: string;
+  preSubmissionMessage?: string;
+  additionalInfoLabel?: string;
 };
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
@@ -117,13 +122,40 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   attachments,
   conditionsDeterminingUserAccess = [isStateUser],
   breadcrumbText,
+  formDescription = `Once you submit this form, a confirmation email is sent to you and to CMS.
+      CMS will use this content to review your package, and you will not be able
+      to edit this form. If CMS needs any additional information, they will
+      follow up by email.`,
+  preSubmissionMessage,
+  additionalInfoLabel = `Add anything else you would like to share with CMS.`,
 }: ActionFormProps<Schema>) => {
-  const { id, authority } = useParams<{ id: string; authority: Authority }>();
+  const { id, authority } = useParams<{
+    id: string;
+    authority: Authority;
+    type: string;
+  }>();
   const { pathname } = useLocation();
+
   const navigate = useNavigate();
   const { data: userObj } = useGetUser();
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority);
+
+  const getBaseSchemaWithoutEffects = (schema: z.ZodTypeAny): z.ZodTypeAny => {
+    // Traverse through ZodEffects (e.g., caused by `.refine()`)
+    while (schema instanceof z.ZodEffects) {
+      schema = schema._def.schema;
+    }
+    return schema;
+  };
+
+  if (id) {
+    breadcrumbs.push({
+      displayText: id,
+      to: `/details/${authority}/${id}`,
+      order: breadcrumbs.length,
+    });
+  }
 
   const form = useForm<z.TypeOf<Schema>>({
     resolver: zodResolver(schema),
@@ -173,6 +205,14 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     () => getAdditionalInformation(schema),
     [schema],
   );
+
+  console.log(
+    "Tiffany",
+    getBaseSchemaWithoutEffects(additionalInformationFromSchema) instanceof
+      z.ZodOptional,
+    // getBaseSchema(additionalInformationFromSchema),
+    // additionalInformationFromSchema._def.isOptional(),
+  );
   const hasProgressLossReminder = useMemo(
     () => Fields({ ...form }) !== null || attachmentsFromSchema.length > 0,
     [attachmentsFromSchema, Fields, form],
@@ -210,9 +250,12 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             </FieldsLayout>
           ) : (
             <SectionCard title={title}>
-              <FormIntroText
-                hasProgressLossReminder={hasProgressLossReminder}
-              />
+              <div>
+                {hasProgressLossReminder && <RequiredFieldDescription />}
+                <ActionFormDescription boldReminder={hasProgressLossReminder}>
+                  {formDescription}
+                </ActionFormDescription>
+              </div>
               <Fields {...form} />
             </SectionCard>
           )}
@@ -223,21 +266,31 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             />
           )}
           {additionalInformationFromSchema && (
-            <SectionCard title="Additional Information">
+            <SectionCard
+              title={
+                <>
+                  {"Additional Information"}{" "}
+                  {!(
+                    getBaseSchemaWithoutEffects(
+                      additionalInformationFromSchema,
+                    ) instanceof z.ZodOptional
+                  ) && <RequiredIndicator />}
+                </>
+              }
+            >
               <FormField
                 control={form.control}
                 name={"additionalInformation" as FieldPath<z.TypeOf<Schema>>}
                 render={SlotAdditionalInfo({
                   withoutHeading: true,
-                  label: (
-                    <p>Add anything else you would like to share with CMS.</p>
-                  ),
+                  label: <p>{additionalInfoLabel}</p>,
                 })}
               />
             </SectionCard>
           )}
           <PreSubmissionMessage
             hasProgressLossReminder={hasProgressLossReminder}
+            preSubmissionMessage={preSubmissionMessage}
           />
           <section className="flex justify-end gap-2 p-4 ml-auto">
             <Button
