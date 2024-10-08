@@ -7,8 +7,8 @@ export const WithdrawRaiForm = () => {
 
   return (
     <ActionForm
-      schema={formSchemas["withdraw-rai"]}
-      title={`${authority} Withdraw Formal RAI Response Details`}
+      schema={formSchemas["withdraw-package"]}
+      title={`${authority} Withdraw Package`}
       fields={() => <PackageSection />}
       defaultValues={{
         id,
