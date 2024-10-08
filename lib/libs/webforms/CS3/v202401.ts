@@ -49,7 +49,9 @@ export const v202401: FormSchema = {
                 {
                   rhf: "FieldArray",
                   name: "age-and-house-inc-range",
-                  formItemClassName: "[&_select~.slot-form-message]:w-max",
+                  descriptionClassName: "age-and-house-inc-range",
+                  formItemClassName:
+                    "age-and-house-inc-range [&_select~.slot-form-message]:w-max",
                   props: {
                     appendText: "Add range",
                   },

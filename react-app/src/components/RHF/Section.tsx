@@ -2,6 +2,7 @@ import { Control, FieldValues } from "react-hook-form";
 import { Section } from "shared-types";
 import { FormLabel } from "../Inputs";
 import { DependencyWrapper, RHFFormGroup } from ".";
+import { cn } from "@/utils";
 
 export const RHFSection = <TFieldValues extends FieldValues>(props: {
   section: Section;
@@ -24,7 +25,9 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
           </div>
         )}
         {props.section.form?.length > 0 && (
-          <div className="px-8 py-6">
+          <div
+            className={cn(props.section.sectionWrapperClassname, "px-8 py-6")}
+          >
             {props.section.form.map((FORM, index) => (
               <RHFFormGroup
                 key={`rhf-form-${index}-${FORM.description}`}
