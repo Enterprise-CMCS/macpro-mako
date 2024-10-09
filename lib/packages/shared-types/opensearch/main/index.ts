@@ -72,4 +72,5 @@ export const transforms = {
   "contracting-initial": contractingInitial,
   "contracting-renewal": contractingRenewal,
   "temporary-extension": temporaryExtension,
+  "respond-to-rai": respondToRai,
 };
