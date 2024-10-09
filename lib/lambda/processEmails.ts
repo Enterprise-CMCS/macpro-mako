@@ -23,14 +23,14 @@ import {
 const region = process.env.region;
 const EMAIL_LOOKUP_SECRET_NAME = process.env.emailAddressLookupSecretName;
 const APPLICATION_ENDPOINT_URL = process.env.applicationEndpointUrl;
-const OPENSEARCH_DOMAIN_ENDPOINT = process.env.openSearchDomainEndpoint;
+const OS_DOMAIN = process.env.osDomain;
 const INDEX_NAMESPACE = process.env.indexNamespace;
 
 if (
   !region ||
   !EMAIL_LOOKUP_SECRET_NAME ||
   !APPLICATION_ENDPOINT_URL ||
-  !OPENSEARCH_DOMAIN_ENDPOINT ||
+  !OS_DOMAIN ||
   !INDEX_NAMESPACE
 ) {
   throw new Error("Environment variables are not set properly.");
@@ -39,6 +39,8 @@ if (
 export const sesClient = new SESClient({ region: region });
 
 export const handler: Handler<KafkaEvent> = async (event) => {
+  console.log("RECEIVED EVENT");
+  console.log(JSON.stringify(event, null, 2));
   try {
     const processRecordsPromises = Object.values(event.records)
       .flat()
@@ -112,11 +114,7 @@ export async function processAndSendEmails(
 
   const sec = await getSecret(emailAddressLookupSecretName);
 
-  const item = await os.getItem(
-    `https://${OPENSEARCH_DOMAIN_ENDPOINT}`,
-    `${INDEX_NAMESPACE}main`,
-    id,
-  );
+  const item = await os.getItem(OS_DOMAIN!, `${INDEX_NAMESPACE}main`, id);
   console.log("item", JSON.stringify(item, null, 2));
 
   const cpocEmail = getCpocEmail(item);
