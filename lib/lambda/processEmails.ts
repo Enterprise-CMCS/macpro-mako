@@ -3,13 +3,7 @@ import {
   SendEmailCommand,
   SendEmailCommandInput,
 } from "@aws-sdk/client-ses";
-import {
-  Action,
-  Authority,
-  EmailAddresses,
-  KafkaEvent,
-  KafkaRecord,
-} from "shared-types";
+import { EmailAddresses, KafkaEvent, KafkaRecord } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
 import { getEmailTemplates, getAllStateUsers, StateUser } from "../libs/email";
@@ -74,34 +68,51 @@ export async function processRecord(
     ...JSON.parse(decodeBase64WithUtf8(value)),
   };
 
-  if (record?.origin === "micro") {
-    const action: Action | "new-submission" = determineAction(record);
-    const authority: Authority = record.authority.toLowerCase() as Authority;
-
-    await processAndSendEmails(
-      action,
-      authority,
-      record,
-      id,
-      emailAddressLookupSecretName,
-      applicationEndpointUrl,
-      getAllStateUsers,
-    );
+  if (record?.origin !== "mako") {
+    console.log("Kafka event is not of mako origin.  Doing nothing.");
+    return;
   }
+
+  // let action: string;
+  // switch (record.event) {
+  //   case "new-medicaid-submission":
+  //     action = "new-submission";
+  //     break;
+  //   default:
+  //     console.log(
+  //       `Event type ${record.event} is valid, but has no associated email support. Doing nothing`,
+  //     );
+  //     return;
+  // }
+
+  await processAndSendEmails(
+    record,
+    id,
+    emailAddressLookupSecretName,
+    applicationEndpointUrl,
+    getAllStateUsers,
+  );
 }
 
-function determineAction(record: any): Action | "new-submission" {
-  if (!record.actionType || record.actionType === "new-submission") {
-    return record.seaActionType === "Extend"
-      ? Action.TEMP_EXTENSION
-      : "new-submission";
-  }
-  return record.actionType;
-}
+// function determineAction(record: any): string | null {
+//   switch (record.event) {
+//     case "new-medicaid-submission":
+//       return "new-submission";
+//     default:
+//       console.log(
+//         `Event type ${record.event} is valid, but has no associated email support.  Doing nothing`,
+//       );
+//       return null;
+//   }
+//   // if (!record.actionType || record.actionType === "new-submission") {
+//   //   return record.seaActionType === "Extend"
+//   //     ? Action.TEMP_EXTENSION
+//   //     : "new-submission";
+//   // }
+//   // return record.actionType;
+// }
 
 export async function processAndSendEmails(
-  action: Action | "new-submission",
-  authority: Authority,
   record: any,
   id: string,
   emailAddressLookupSecretName: string,
@@ -109,6 +120,18 @@ export async function processAndSendEmails(
   getAllStateUsers: (state: string) => Promise<StateUser[]>,
 ) {
   console.log("processAndSendEmails has been called");
+
+  const templates = await getEmailTemplates<typeof record>(
+    record.event,
+    record.authority.toLowerCase(),
+  );
+  if (!templates) {
+    console.log(
+      `The kafka record has an event type that does not have email support.  event: ${record.event}.  Doing nothing.`,
+    );
+    return;
+  }
+
   const territory = id.slice(0, 2);
   const allStateUsers = await getAllStateUsers(territory);
 
@@ -122,8 +145,6 @@ export async function processAndSendEmails(
   console.log("cpocEmail", cpocEmail);
   console.log("srtEmails", srtEmails);
   const emails: EmailAddresses = JSON.parse(sec);
-
-  const templates = await getEmailTemplates<typeof record>(action, authority);
 
   const allStateUsersEmails = allStateUsers.map(
     (user) => user.formattedEmailAddress,

@@ -24,6 +24,7 @@ interface EmailServiceStackProps extends cdk.StackProps {
   lambdaSecurityGroup: cdk.aws_ec2.SecurityGroup;
   openSearchDomainEndpoint: string;
   openSearchDomainArn: string;
+  userPool: cdk.aws_cognito.UserPool;
 }
 
 export class Email extends cdk.NestedStack {
@@ -46,6 +47,7 @@ export class Email extends cdk.NestedStack {
       lambdaSecurityGroup,
       openSearchDomainEndpoint,
       openSearchDomainArn,
+      userPool,
     } = props;
 
     // SES Configuration Set
@@ -119,6 +121,11 @@ export class Email extends cdk.NestedStack {
               resources: [
                 `arn:aws:secretsmanager:${this.region}:${this.account}:secret:*`,
               ],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["cognito-idp:ListUsers"],
+              resources: [userPool.userPoolArn],
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.DENY,
