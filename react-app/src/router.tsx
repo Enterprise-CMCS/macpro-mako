@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import * as F from "@/features";
 import * as C from "@/components";
+import { PostSubmissionWrapper } from "@/features/forms/post-submission/post-submissions-form";
 import { QueryClient } from "@tanstack/react-query";
 export const queryClient = new QueryClient();
 
@@ -109,6 +110,10 @@ export const router = createBrowserRouter([
       { path: "/webform/:id/:version", element: <F.Webform /> },
       { path: "/profile", element: <F.Profile /> },
       { path: "/guides/abp", element: <F.ABPGuide /> },
+      {
+        path: "/actions/:type/:authority/:id",
+        element: <PostSubmissionWrapper />,
+      },
       {
         path: "testingwithdrawaction/:authority/:id/:type",
         element: <F.WithdrawRaiForm />,

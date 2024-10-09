@@ -54,14 +54,13 @@ const arTempExtension: ActionRule = {
 
 const arEnableWithdrawRaiResponse: ActionRule = {
   action: Action.ENABLE_RAI_WITHDRAW,
-  check: (checker, user) =>
-    !checker.isTempExtension &&
-    checker.isNotWithdrawn &&
-    checker.hasRaiResponse &&
-    !checker.hasEnabledRaiWithdraw &&
-    isCmsWriteUser(user) &&
-    !checker.hasStatus(finalDispositionStatuses) &&
-    false,
+  check: (checker, user) => true,
+  // !checker.isTempExtension &&
+  // checker.isNotWithdrawn &&
+  // checker.hasRaiResponse &&
+  // !checker.hasEnabledRaiWithdraw &&
+  // isCmsWriteUser(user) &&
+  // !checker.hasStatus(finalDispositionStatuses)
 };
 
 const arDisableWithdrawRaiResponse: ActionRule = {
