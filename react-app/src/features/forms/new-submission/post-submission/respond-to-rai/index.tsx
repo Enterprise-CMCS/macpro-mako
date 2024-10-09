@@ -14,14 +14,14 @@ export const RespondToRai = () => {
     console.log({ authority })
     return (
         <ActionForm
-            schema={formSchemas["withdraw-rai"]}
+            schema={formSchemas["respond-to-rai"]}
             title={`${authority} Withdraw Formal RAI Response Details`}
             fields={({ control }) => (
                 <>
                     <PackageSection />
                 </>
             )}
-            defaultValues={{ id, authority }}
+            defaultValues={{ id }}
             attachments={{
                 faqLink: "/faq",
             }}
