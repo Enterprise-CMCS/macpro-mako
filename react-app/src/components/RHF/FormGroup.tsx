@@ -25,7 +25,7 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
             </FormLabel>
           </div>
         )}
-        <div className={cn(props.form.wrapperClassName, "gap-y-6")}>
+        <div className={cn(props.form.wrapperClassName, "space-y-6")}>
           {props.form.slots.map((SLOT) => (
             <DependencyWrapper key={props.parentId + SLOT.name} {...SLOT}>
               <FormField

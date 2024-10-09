@@ -26,10 +26,7 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
         )}
         {props.section.form?.length > 0 && (
           <div
-            className={cn(
-              props.section.sectionWrapperClassname,
-              "px-8 py-6 gap-y-6",
-            )}
+            className={cn(props.section.sectionWrapperClassname, "px-8 py-6")}
           >
             {props.section.form.map((FORM, index) => (
               <RHFFormGroup
