@@ -41,21 +41,6 @@ export const PackageStatusCard: FC<{ id: string }> = ({ id }) => {
               <p className="text-xs opacity-80">Initial Intake Needed</p>
             </div>
           )}
-
-          {user?.isCms && data._source.locked && (
-            <div className="flex flex-row gap-1">
-              <p className="text-xs font-bold opacity-80">·</p>
-              {/* TODO: rename */}
-              <p className="text-xs opacity-80">SEATool update needed</p>
-            </div>
-          )}
-          {/* TODO: update language */}
-          {!user?.isCms && data._source.locked && (
-            <div className="flex flex-row gap-1">
-              <p className="text-xs font-bold opacity-80">·</p>
-              <p className="text-xs opacity-80">Requested. Waiting for CMS</p>
-            </div>
-          )}
         </div>
       </div>
     </DetailCardWrapper>
