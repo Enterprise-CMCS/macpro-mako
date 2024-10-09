@@ -32,14 +32,13 @@ const arIssueRai: ActionRule = {
 
 const arRespondToRai: ActionRule = {
   action: Action.RESPOND_TO_RAI,
-  check: (checker, user) =>
-    !checker.isTempExtension &&
-    checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) &&
-    checker.hasLatestRai &&
-    // safety; prevent bad status from causing overwrite
-    (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
-    isStateUser(user) &&
-    false,
+  check: (checker, user) => true,
+  // !checker.isTempExtension &&
+  // checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) &&
+  // checker.hasLatestRai &&
+  // // safety; prevent bad status from causing overwrite
+  // (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
+  // isStateUser(user)
 };
 
 const arTempExtension: ActionRule = {
