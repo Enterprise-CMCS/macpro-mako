@@ -1,6 +1,6 @@
 import { withdrawRai } from "./withdraw-rai";
 import { vi, describe, it, expect } from "vitest";
-import { raiWithdrawSchema } from "shared-types";
+import { events } from "shared-types/events";
 import { generateMock } from "@anatine/zod-mock";
 import * as packageActionWriteService from "../services/package-action-write-service";
 
@@ -54,7 +54,7 @@ describe("withdrawRai", async () => {
 
   it("should return a 400 when a bad requestDate is sent", async () => {
     const goodDate = new Date().toISOString();
-    const mockData = generateMock(raiWithdrawSchema);
+    const mockData = generateMock(events["withdraw-rai"].baseSchema);
     const response = await withdrawRai(mockData, {
       raiRequestedDate: "123456789",
       raiReceivedDate: goodDate,
@@ -65,7 +65,7 @@ describe("withdrawRai", async () => {
 
   it.skip("should return a 400 when a bad receivedDate is sent", async () => {
     const goodDate = new Date().toISOString();
-    const mockData = generateMock(raiWithdrawSchema);
+    const mockData = generateMock(events["withdraw-rai"].baseSchema);
     const response = await withdrawRai(mockData, {
       raiRequestedDate: goodDate,
       raiReceivedDate: "123456789",
@@ -74,13 +74,14 @@ describe("withdrawRai", async () => {
     expect(JSON.parse(response.body).message).toBe("Event validation error");
   });
 
+  // raiRequestedDate no longer being sent in payload
   it("should return a 200 when a good payload is sent", async () => {
     const goodDate = new Date().toISOString();
     const packageWriteSpy = vi.spyOn(
       packageActionWriteService,
       "withdrawRaiAction",
     );
-    const mockData = generateMock(raiWithdrawSchema);
+    const mockData = generateMock(events["withdraw-rai"].baseSchema);
     const response = await withdrawRai(mockData, {
       raiRequestedDate: goodDate,
       raiReceivedDate: goodDate,

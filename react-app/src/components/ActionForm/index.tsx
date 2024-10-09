@@ -56,7 +56,9 @@ type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
         files: z.ZodTypeAny;
       }>;
     }>;
-    additionalInformation?: z.ZodDefault<z.ZodNullable<z.ZodString>>;
+    additionalInformation?:
+      | z.ZodDefault<z.ZodNullable<z.ZodString>>
+      | z.ZodEffects<z.ZodTypeAny>;
   },
   "strip",
   z.ZodTypeAny
@@ -206,13 +208,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     [schema],
   );
 
-  console.log(
-    "Tiffany",
-    getBaseSchemaWithoutEffects(additionalInformationFromSchema) instanceof
-      z.ZodOptional,
-    // getBaseSchema(additionalInformationFromSchema),
-    // additionalInformationFromSchema._def.isOptional(),
-  );
   const hasProgressLossReminder = useMemo(
     () => Fields({ ...form }) !== null || attachmentsFromSchema.length > 0,
     [attachmentsFromSchema, Fields, form],

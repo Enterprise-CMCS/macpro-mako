@@ -1,12 +1,5 @@
 import { z } from "zod";
 import { attachmentArraySchemaOptional } from "../attachments";
-// export const raiWithdrawSchema = z.object({
-//   id: z.string(),
-//   authority: z.string(),
-//   attachments: z.array(attachmentSchema).nullish(),
-//   additionalInformation: z.string().nullable().default(null),
-// });
-// export type RaiWithdraw = z.infer<typeof raiWithdrawSchema>;
 
 export const baseSchema = z.object({
   event: z.literal("withdraw-rai").default("withdraw-rai"),
@@ -18,7 +11,18 @@ export const baseSchema = z.object({
       label: z.string().default("Supporting Documentation"),
     }),
   }),
-  additionalInformation: z.string().max(4000).nullable().default(null),
+  additionalInformation: z.preprocess(
+    (value) => (typeof value === "string" ? value.trimStart() : value),
+    z
+      .string()
+      .max(4000)
+      .refine((value) => value !== "", {
+        message: "Additional Information is required.",
+      })
+      .refine((value) => value.trim().length > 0, {
+        message: "Additional Information can not be only whitespace.",
+      }),
+  ),
 });
 
 export const schema = baseSchema.extend({
@@ -26,6 +30,4 @@ export const schema = baseSchema.extend({
   submitterName: z.string(),
   submitterEmail: z.string().email(),
   timestamp: z.number(),
-})
-
-// export type RaiWithdraw = z.infer<typeof baseSchema>;
+});

@@ -86,11 +86,6 @@ const processAndIndex = async ({
       }
 
       // If the event is a supported event, transform and push to docs array for indexing
-      console.log("event below");
-      console.log(record.event);
-
-      console.log(transforms, 'TRANSFORMS')
-      console.log(record, 'RECORDDD')
       if (record.event in transforms) {
         const transformForEvent =
           transforms[record.event as keyof typeof transforms];
