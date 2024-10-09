@@ -73,18 +73,6 @@ export async function processRecord(
     return;
   }
 
-  // let action: string;
-  // switch (record.event) {
-  //   case "new-medicaid-submission":
-  //     action = "new-submission";
-  //     break;
-  //   default:
-  //     console.log(
-  //       `Event type ${record.event} is valid, but has no associated email support. Doing nothing`,
-  //     );
-  //     return;
-  // }
-
   await processAndSendEmails(
     record,
     id,
@@ -93,24 +81,6 @@ export async function processRecord(
     getAllStateUsers,
   );
 }
-
-// function determineAction(record: any): string | null {
-//   switch (record.event) {
-//     case "new-medicaid-submission":
-//       return "new-submission";
-//     default:
-//       console.log(
-//         `Event type ${record.event} is valid, but has no associated email support.  Doing nothing`,
-//       );
-//       return null;
-//   }
-//   // if (!record.actionType || record.actionType === "new-submission") {
-//   //   return record.seaActionType === "Extend"
-//   //     ? Action.TEMP_EXTENSION
-//   //     : "new-submission";
-//   // }
-//   // return record.actionType;
-// }
 
 export async function processAndSendEmails(
   record: any,
@@ -158,6 +128,8 @@ export async function processAndSendEmails(
     emails: { ...emails, cpocEmail, srtEmails },
     allStateUsersEmails,
   };
+
+  console.log(JSON.stringify(allStateUsers, null, 2));
 
   const sendEmailPromises = templates.map(async (template) => {
     const filledTemplate = await template(templateVariables);

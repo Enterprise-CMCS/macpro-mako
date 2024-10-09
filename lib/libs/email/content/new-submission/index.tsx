@@ -4,8 +4,8 @@ import { CommonVariables, AuthoritiesWithUserTypesTemplate } from "../..";
 import {
   MedSpaCMSEmail,
   MedSpaStateEmail,
-  // ChipSpaCMSEmail,
-  // ChipSpaStateEmail,
+  ChipSpaCMSEmail,
+  ChipSpaStateEmail,
   // Waiver1915bCMSEmail,
   // Waiver1915bStateEmail,
   // AppKCMSEmail,
@@ -42,35 +42,35 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       };
     },
   },
-  // [Authority.CHIP_SPA]: {
-  //   cms: async (
-  //     variables: Events["NewChipSubmission"] &
-  //       CommonVariables & { emails: EmailAddresses },
-  //   ) => {
-  //     return {
-  //       to: variables.emails.chipInbox,
-  //       cc: variables.emails.chipCcList,
-  //       subject: `New CHIP SPA ${variables.id} Submitted`,
-  //       html: await render(<ChipSpaCMSEmail variables={variables} />),
-  //       text: await render(<ChipSpaCMSEmail variables={variables} />, {
-  //         plainText: true,
-  //       }),
-  //     };
-  //   },
-  //   state: async (
-  //     variables: Events["NewChipSubmission"] &
-  //       CommonVariables & { emails: EmailAddresses },
-  //   ) => {
-  //     return {
-  //       to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
-  //       subject: `Your CHIP SPA ${variables.id} has been submitted to CMS`,
-  //       html: await render(<ChipSpaStateEmail variables={variables} />),
-  //       text: await render(<ChipSpaStateEmail variables={variables} />, {
-  //         plainText: true,
-  //       }),
-  //     };
-  //   },
-  // },
+  [Authority.CHIP_SPA]: {
+    cms: async (
+      variables: Events["NewChipSubmission"] &
+        CommonVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: variables.emails.chipInbox,
+        cc: variables.emails.chipCcList,
+        subject: `New CHIP SPA ${variables.id} Submitted`,
+        html: await render(<ChipSpaCMSEmail variables={variables} />),
+        text: await render(<ChipSpaCMSEmail variables={variables} />, {
+          plainText: true,
+        }),
+      };
+    },
+    state: async (
+      variables: Events["NewChipSubmission"] &
+        CommonVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
+        subject: `Your CHIP SPA ${variables.id} has been submitted to CMS`,
+        html: await render(<ChipSpaStateEmail variables={variables} />),
+        text: await render(<ChipSpaStateEmail variables={variables} />, {
+          plainText: true,
+        }),
+      };
+    },
+  },
   // [Authority["1915b"]]: {
   //   cms: async (
   //     variables: Events["CapitatedInitial"] &

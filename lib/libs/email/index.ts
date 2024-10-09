@@ -94,10 +94,14 @@ export type EmailTemplates = {
   "new-medicaid-submission":
     | AuthoritiesWithUserTypesTemplate
     | UserTypeOnlyTemplate;
+  "new-chip-submission":
+    | AuthoritiesWithUserTypesTemplate
+    | UserTypeOnlyTemplate;
 };
 
 export const emailTemplates = {
   "new-medicaid-submission": EmailContent.newSubmission,
+  "new-chip-submission": EmailContent.newSubmission,
 };
 
 function isAuthorityTemplate(
