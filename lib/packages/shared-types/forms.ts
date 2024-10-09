@@ -168,6 +168,7 @@ export interface Section {
   title: string;
   form: FormGroup[];
   sectionId: string;
+  sectionWrapperClassname?: string;
   dependency?: DependencyRule;
   subsection?: boolean;
 }
@@ -210,7 +211,7 @@ type ConditionRules =
       type: "valueExists" | "valueNotExist";
     }
   | {
-      type: "expectedValue";
+      type: "expectedValue" | "notBadValue" | "notOnlyBadValue";
       expectedValue: unknown;
     };
 
@@ -224,11 +225,13 @@ type Effects =
       type: "setValue";
       newValue: string | string[];
       fieldName: string;
+      checkUnique?: boolean;
     };
 
 export interface DependencyRule {
   conditions: Condition[];
   effect: Effects;
+  looseConditions?: boolean;
 }
 
 export interface DependencyWrapperProps {
