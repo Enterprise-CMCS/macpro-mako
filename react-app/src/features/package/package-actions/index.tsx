@@ -37,7 +37,7 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
                 from: `${location.pathname}${location.search}`,
               }}
               to={{
-                pathname: `/action/${item.data?._source.authority}/${id}/${type}`,
+                pathname: `/actions/${type}/${item.data?._source.authority}/${id}`,
                 search: new URLSearchParams({
                   [ORIGIN]: DETAILS_ORIGIN,
                 }).toString(),

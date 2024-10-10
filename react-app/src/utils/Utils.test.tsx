@@ -68,7 +68,7 @@ describe("DataPoller", () => {
   });
 
   test("should stop polling when interval is reached", async () => {
-    setInterval(() => onPoll.mockReturnValue(true), 300)
+    setInterval(() => onPoll.mockReturnValue(true), 300);
 
     const poller = createPoller(50, 3);
     const result = await poller.startPollingData();

@@ -15,8 +15,6 @@ export const submit = async (event: APIGatewayEvent) => {
 
   const body: BaseSchemas = JSON.parse(event.body);
 
-  console.log(body);
-
   // If there's no event, we reject
   if (!body.event) {
     return response({
@@ -35,7 +33,6 @@ export const submit = async (event: APIGatewayEvent) => {
 
   try {
     const eventBody = await submissionPayloads[body.event](event);
-
     await produceMessage(
       process.env.topicName as string,
       body.id,

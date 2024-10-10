@@ -7,6 +7,7 @@ import { contractingAmendment } from "./contracting-amendment";
 import { contractingInitial } from "./contracting-initial";
 import { contractingRenewal } from "./contracting-renewal";
 import { temporaryExtension } from "./temporary-extension";
+import { withdrawRai } from "./withdraw-rai";
 
 export const submissionPayloads = {
   "capitated-amendment": capitatedAmendment,
@@ -18,4 +19,5 @@ export const submissionPayloads = {
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
   "temporary-extension": temporaryExtension,
+  "withdraw-rai": withdrawRai,
 };
