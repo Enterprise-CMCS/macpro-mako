@@ -20,4 +20,5 @@ export const formSchemas = {
   "new-medicaid-submission": newMedicaidSubmission.formSchema,
   "temporary-extension": temporaryExtension.formSchema,
   "withdraw-package": withdrawPackage.formSchema,
+  "withdraw-package-chip": withdrawPackage.formSchemaChip,
 };

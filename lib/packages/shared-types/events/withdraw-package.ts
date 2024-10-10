@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   attachmentSchema,
   attachmentArraySchemaOptional,
+  attachmentArraySchema,
 } from "../attachments";
 
 // Temporary, will be refactored to an extendable schema with Brian/Mike's back-end
@@ -22,17 +23,25 @@ export const withdrawPackageSchema = z.object({
 
 export type WithdrawPackage = z.infer<typeof withdrawPackageSchema>;
 
+export const attachmentsDefault = z.object({
+  supportingDocumentation: z.object({
+    files: attachmentArraySchemaOptional(),
+    label: z.string().default("Supporting Documentation"),
+  }),
+});
+export const attachmentsChip = z.object({
+  officialWithdrawalLetter: z.object({
+    files: attachmentArraySchema(),
+    label: z.string().default("Official Withdrawal Letter"),
+  }),
+});
+
 export const baseSchema = z.object({
   event: z.literal("withdraw-package").default("withdraw-package"),
   id: z.string(),
   authority: z.string(),
-  attachments: z.object({
-    supportingDocumentation: z.object({
-      files: attachmentArraySchemaOptional(),
-      label: z.string().default("Supporting Documentation"),
-    }),
-  }),
   additionalInformation: z.string().max(4000).nullable().default(null),
+  attachments: attachmentsDefault.or(attachmentsChip),
 });
 
 export const schema = baseSchema.extend({

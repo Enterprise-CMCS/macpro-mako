@@ -29,3 +29,31 @@ export const WithdrawPackageAction = () => {
     />
   );
 };
+
+export const WithdrawPackageActionChip = () => {
+  const { authority, id } = useParams();
+
+  return (
+    <ActionForm
+      schema={formSchemas["withdraw-package-chip"]}
+      title={`${authority} Withdraw Package`}
+      fields={() => <PackageSection />}
+      defaultValues={{
+        id,
+        authority,
+      }}
+      attachments={{
+        faqLink: "/faq",
+      }}
+      documentPollerArgs={{
+        property: "id",
+        documentChecker: (check) => check.recordExists,
+      }}
+      breadcrumbText="Withdraw Formal RAI Response"
+      formDescription="Complete this form to withdraw the Formal RAI response. Once complete,
+          you and CMS will receive an email confirmation."
+      preSubmissionMessage="Once complete, you and CMS will receive an email confirmation."
+      additionalInfoLabel="Explain your need for withdrawal."
+    />
+  );
+};
