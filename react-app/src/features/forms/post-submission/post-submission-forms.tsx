@@ -13,7 +13,7 @@ export const postSubmissionForms: Record<
     ["1915(b)"]: WithdrawPackageAction,
     ["1915(c)"]: WithdrawPackageAction,
     ["Medicaid SPA"]: WithdrawPackageAction,
-    ["Chip SPA"]: WithdrawPackageActionChip,
+    ["CHIP SPA"]: WithdrawPackageActionChip,
   },
 };
 
