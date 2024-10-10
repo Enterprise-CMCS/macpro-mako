@@ -114,10 +114,6 @@ export const router = createBrowserRouter([
         path: "/actions/:type/:authority/:id",
         element: <PostSubmissionWrapper />,
       },
-      {
-        path: "testingwithdrawaction/:authority/:id/:type",
-        element: <F.WithdrawRaiForm />,
-      },
     ],
     loader: F.loader(queryClient),
   },
