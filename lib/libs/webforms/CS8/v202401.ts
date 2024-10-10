@@ -19,10 +19,12 @@ export const v202401: FormSchema = {
                 {
                   text: "Targeted low-income pregnant women",
                   type: "bold",
+                  classname: "text-black",
                 },
                 {
                   text: " are uninsured pregnant or postpartum women who do not have access to public employee coverage and whose household income is within standards established by the state.",
                   type: "default",
+                  classname: "text-black",
                 },
               ],
               rules: {
@@ -61,7 +63,7 @@ export const v202401: FormSchema = {
                   rhf: "Radio",
                   name: "age-range",
                   label: "Age range",
-                  labelClassName: "font-bold",
+                  labelClassName: "font-bold text-black",
                   descriptionAbove: true,
                   rules: {
                     required: "* Required",
@@ -75,9 +77,15 @@ export const v202401: FormSchema = {
                           {
                             rhf: "Input",
                             name: "end-age-range",
-                            rules: {},
+                            rules: {
+                              pattern: {
+                                value: /^[0-9]\d*$/,
+                                message: "Must be a positive integer value",
+                              },
+                              required: "* Required",
+                            },
                             label: "End of age range",
-                            labelClassName: "font-bold",
+                            labelClassName: "font-bold text-black",
                             props: {
                               className: "w-[125px]",
                             },
@@ -101,7 +109,7 @@ export const v202401: FormSchema = {
                             },
                             label:
                               "Describe how it’s determined whether the applicant will be provided coverage as a child or as a pregnant woman.",
-                            labelClassName: "font-bold",
+                            labelClassName: "font-bold text-black",
                             props: {
                               className: "w-[696px]",
                             },
@@ -124,13 +132,13 @@ export const v202401: FormSchema = {
                                 name: "start-age-range",
                                 rules: {
                                   pattern: {
-                                    value: /^\d*\.?\d+$/,
-                                    message: "Must be a positive percentage",
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
                                   },
                                   required: "* Required",
                                 },
                                 label: "Start of age range",
-                                labelClassName: "font-bold",
+                                labelClassName: "font-bold text-black",
                                 props: {
                                   className: "w-[125px]",
                                 },
@@ -140,8 +148,8 @@ export const v202401: FormSchema = {
                                 name: "end-age-range",
                                 rules: {
                                   pattern: {
-                                    value: /^\d*\.?\d+$/,
-                                    message: "Must be a positive percentage",
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
                                   },
                                   required: "* Required",
                                 },
@@ -155,7 +163,7 @@ export const v202401: FormSchema = {
                                   },
                                 ],
                                 label: "End of age range",
-                                labelClassName: "font-bold",
+                                labelClassName: "font-bold text-black",
                                 props: {
                                   className: "w-[125px]",
                                 },
@@ -170,7 +178,7 @@ export const v202401: FormSchema = {
                             },
                             label:
                               "Does the age range for targeted low-income pregnant women overlap with the age range for targeted low-income children?",
-                            labelClassName: "font-bold",
+                            labelClassName: "font-bold text-black",
                             props: {
                               className: "w-[125px]",
                               options: [
@@ -244,7 +252,7 @@ export const v202401: FormSchema = {
               rhf: "Select",
               name: "standards-applied-state",
               label: "Are income standards applied statewide?",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
               },
@@ -268,13 +276,13 @@ export const v202401: FormSchema = {
                   name: "above",
                   rules: {
                     pattern: {
-                      value: /^\d*\.?\d+$/,
-                      message: "Must be a positive percentage",
+                      value: /^[0-9]\d*$/,
+                      message: "Must be a positive integer value",
                     },
                     required: "* Required",
                   },
                   label: "Above",
-                  labelClassName: "font-bold",
+                  labelClassName: "font-bold text-black",
                   props: {
                     className: "w-[159px]",
                     icon: "% FPL",
@@ -286,13 +294,13 @@ export const v202401: FormSchema = {
                   name: "up-to-and-including",
                   rules: {
                     pattern: {
-                      value: /^\d*\.?\d+$/,
-                      message: "Must be a positive percentage",
+                      value: /^[0-9]\d*$/,
+                      message: "Must be a positive integer value",
                     },
                     required: "* Required",
                   },
                   label: "Up to and including",
-                  labelClassName: "font-bold",
+                  labelClassName: "font-bold text-black",
                   props: {
                     icon: "% FPL",
                     iconRight: true,
@@ -335,7 +343,7 @@ export const v202401: FormSchema = {
               },
               label:
                 "Are there any exceptions, such as populations in a county that may qualify under either a statewide income standard or a county income standard?",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               props: {
                 className: "w-[125px]",
                 options: [
@@ -356,7 +364,7 @@ export const v202401: FormSchema = {
               },
               label:
                 "Explain, including a description of the overlapping geographic area and the reason for having different income standards.",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               props: {
                 className: "w-[696px]",
               },
@@ -377,7 +385,7 @@ export const v202401: FormSchema = {
               rhf: "Checkbox",
               name: "geo-variation",
               label: "Method of geographic variation",
-              labelClassName: "font-bold",
+              labelClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
               },
@@ -414,61 +422,57 @@ export const v202401: FormSchema = {
                             props: { appendText: "Add County" },
                             fields: [
                               {
-                                rhf: "WrappedGroup",
-                                name: "wrapped",
-                                props: {
-                                  wrapperClassName: "flex-row flex gap-5",
+                                rhf: "Input",
+                                name: "county-geo-var",
+                                rules: {
+                                  required: "* Required",
+                                  pattern: {
+                                    value: noLeadingTrailingWhitespace,
+                                    message:
+                                      "Must not have leading or trailing whitespace.",
+                                  },
                                 },
-                                fields: [
-                                  {
-                                    rhf: "Input",
-                                    name: "county-geo-var",
-                                    rules: { required: "* Required" },
-                                    label: "County",
-                                    labelClassName: "font-bold",
-                                    props: {
-                                      className: "w-[125px]",
-                                    },
+                                label: "County",
+                                labelClassName: "font-bold text-black",
+                                props: {
+                                  className: "w-[229px]",
+                                },
+                              },
+                              {
+                                rhf: "Input",
+                                name: "above-county-geo-var",
+                                rules: {
+                                  pattern: {
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
                                   },
-                                  {
-                                    rhf: "Input",
-                                    name: "above-county-geo-var",
-                                    rules: {
-                                      pattern: {
-                                        value: /^\d*\.?\d+$/,
-                                        message:
-                                          "Must be a positive percentage",
-                                      },
-                                      required: "* Required",
-                                    },
-                                    label: "Above",
-                                    labelClassName: "font-bold",
-                                    props: {
-                                      className: "w-[159px]",
-                                      icon: "% FPL",
-                                      iconRight: true,
-                                    },
+                                  required: "* Required",
+                                },
+                                label: "Above",
+                                labelClassName: "font-bold text-black",
+                                props: {
+                                  className: "w-[159px]",
+                                  icon: "% FPL",
+                                  iconRight: true,
+                                },
+                              },
+                              {
+                                rhf: "Input",
+                                name: "up-to-and-including-county-geo-var",
+                                rules: {
+                                  pattern: {
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
                                   },
-                                  {
-                                    rhf: "Input",
-                                    name: "up-to-and-including-county-geo-var",
-                                    rules: {
-                                      pattern: {
-                                        value: /^\d*\.?\d+$/,
-                                        message:
-                                          "Must be a positive percentage",
-                                      },
-                                      required: "* Required",
-                                    },
-                                    label: "Up to and including",
-                                    labelClassName: "font-bold",
-                                    props: {
-                                      icon: "% FPL",
-                                      iconRight: true,
-                                      className: "w-[159px]",
-                                    },
-                                  },
-                                ],
+                                  required: "* Required",
+                                },
+                                label: "Up to and including",
+                                labelClassName: "font-bold text-black",
+                                props: {
+                                  icon: "% FPL",
+                                  iconRight: true,
+                                  className: "w-[159px]",
+                                },
                               },
                             ],
                           },
@@ -505,63 +509,60 @@ export const v202401: FormSchema = {
                             rhf: "FieldArray",
                             name: "city-info",
                             props: { appendText: "Add City" },
+
                             fields: [
                               {
-                                rhf: "WrappedGroup",
-                                name: "wrapped",
-                                props: {
-                                  wrapperClassName: "flex-row flex gap-5",
+                                rhf: "Input",
+                                name: "city-geo-var",
+                                rules: {
+                                  required: "* Required",
+                                  pattern: {
+                                    value: noLeadingTrailingWhitespace,
+                                    message:
+                                      "Must not have leading or trailing whitespace.",
+                                  },
                                 },
-                                fields: [
-                                  {
-                                    rhf: "Input",
-                                    name: "city-geo-var",
-                                    rules: { required: "* Required" },
-                                    label: "City",
-                                    labelClassName: "font-bold",
-                                    props: {
-                                      className: "w-[125px]",
-                                    },
+                                label: "City",
+                                labelClassName: "font-bold text-black",
+                                props: {
+                                  className: "w-[229px]",
+                                },
+                              },
+                              {
+                                rhf: "Input",
+                                name: "above-city-geo-var",
+                                rules: {
+                                  pattern: {
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
                                   },
-                                  {
-                                    rhf: "Input",
-                                    name: "above-city-geo-var",
-                                    rules: {
-                                      pattern: {
-                                        value: /^\d*\.?\d+$/,
-                                        message:
-                                          "Must be a positive percentage",
-                                      },
-                                      required: "* Required",
-                                    },
-                                    label: "Above",
-                                    labelClassName: "font-bold",
-                                    props: {
-                                      className: "w-[159px]",
-                                      icon: "% FPL",
-                                      iconRight: true,
-                                    },
+                                  required: "* Required",
+                                },
+                                label: "Above",
+                                labelClassName: "font-bold text-black",
+                                props: {
+                                  className: "w-[159px]",
+                                  icon: "% FPL",
+                                  iconRight: true,
+                                },
+                              },
+                              {
+                                rhf: "Input",
+                                name: "up-to-and-including-city-geo-var",
+                                rules: {
+                                  pattern: {
+                                    value: /^[0-9]\d*$/,
+                                    message: "Must be a positive integer value",
                                   },
-                                  {
-                                    rhf: "Input",
-                                    name: "up-to-and-including-city-geo-var",
-                                    rules: {
-                                      pattern: {
-                                        value: /^\d*\.?\d+$/,
-                                        message:
-                                          "Must be a positive percentage",
-                                      },
-                                      required: "* Required",
-                                    },
-                                    label: "Up to and including",
-                                    labelClassName: "font-bold",
-                                    props: {
-                                      icon: "% FPL",
-                                      iconRight: true,
-                                      className: "w-[159px]",
-                                    },
-                                  },
-                                ],
+                                  required: "* Required",
+                                },
+                                label: "Up to and including",
+                                labelClassName: "font-bold text-black",
+                                props: {
+                                  icon: "% FPL",
+                                  iconRight: true,
+                                  className: "w-[159px]",
+                                },
                               },
                             ],
                           },
@@ -603,15 +604,23 @@ export const v202401: FormSchema = {
                                 rhf: "WrappedGroup",
                                 name: "wrapped",
                                 props: {
-                                  wrapperClassName: "flex flex-col gap-7",
+                                  wrapperClassName:
+                                    "flex flex-col gap-7 ml-[0.6rem] px-4 border-l-4 border-l-primary mb-4",
                                 },
                                 fields: [
                                   {
                                     rhf: "Input",
                                     name: "other-geo-var",
-                                    rules: { required: "* Required" },
+                                    rules: {
+                                      required: "* Required",
+                                      pattern: {
+                                        value: noLeadingTrailingWhitespace,
+                                        message:
+                                          "Must not have leading or trailing whitespace.",
+                                      },
+                                    },
                                     label: "Geographic Area",
-                                    labelClassName: "font-bold",
+                                    labelClassName: "font-bold text-black",
                                     props: {
                                       className: "w-[527px]",
                                     },
@@ -628,7 +637,7 @@ export const v202401: FormSchema = {
                                       },
                                     },
                                     label: "Describe",
-                                    labelClassName: "font-bold",
+                                    labelClassName: "font-bold text-black",
                                     props: {
                                       className: "w-[527px]",
                                     },
@@ -645,14 +654,14 @@ export const v202401: FormSchema = {
                                         name: "other-above-geo-var",
                                         rules: {
                                           pattern: {
-                                            value: /^\d*\.?\d+$/,
+                                            value: /^[0-9]\d*$/,
                                             message:
-                                              "Must be a positive percentage",
+                                              "Must be a positive integer value",
                                           },
                                           required: "* Required",
                                         },
                                         label: "Above",
-                                        labelClassName: "font-bold",
+                                        labelClassName: "font-bold text-black",
                                         props: {
                                           className: "w-[159px]",
                                           icon: "% FPL",
@@ -664,14 +673,14 @@ export const v202401: FormSchema = {
                                         name: "up-to-and-including-other-geo-var",
                                         rules: {
                                           pattern: {
-                                            value: /^\d*\.?\d+$/,
+                                            value: /^[0-9]\d*$/,
                                             message:
-                                              "Must be a positive percentage",
+                                              "Must be a positive integer value",
                                           },
                                           required: "* Required",
                                         },
                                         label: "Up to and including",
-                                        labelClassName: "font-bold",
+                                        labelClassName: "font-bold text-black",
                                         props: {
                                           icon: "% FPL",
                                           iconRight: true,

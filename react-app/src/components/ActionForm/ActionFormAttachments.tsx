@@ -10,7 +10,7 @@ import {
   Upload,
 } from "@/components";
 import { Link } from "react-router-dom";
-import { FAQ_TAB } from "../Routing";
+import { FAQ_TAB } from "@/router";
 
 const DEFAULT_ATTACHMENTS_INSTRUCTIONS =
   "Maximum file size of 80 MB per attachment. You can add multiple files per attachment type.";

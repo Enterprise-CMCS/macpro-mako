@@ -8,15 +8,16 @@ import {
   RequiredIndicator,
   Input,
   DatePicker,
-  FAQ_TAB,
 } from "@/components";
 import { Link } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
+import { FAQ_TAB } from "@/router";
 
 export const InitialForm = () => (
   <ActionForm
     schema={formSchemas["capitated-initial"]}
     title="1915(b) Comprehensive (Capitated) Initial Waiver Details"
+    breadcrumbText="1915(b) Comprehensive (Capitated) Initial Waiver"
     fields={({ control }) => (
       <>
         <div className="flex flex-col">
@@ -95,6 +96,5 @@ export const InitialForm = () => (
       property: "id",
       documentChecker: (check) => check.recordExists,
     }}
-    tab={"waivers"}
   />
 );

@@ -2,11 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import "@fontsource/open-sans";
-import "./index.css"; // this one second
+import "./index.css";
 import { queryClient, router } from "./router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { UserContextProvider, TimeoutModal } from "@/components";
+import { TimeoutModal } from "@/components";
 import config from "@/config";
 import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 
@@ -31,12 +31,10 @@ const initializeLaunchDarkly = async () => {
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-        <UserContextProvider>
-          <LDProvider>
-            <TimeoutModal />
-            <RouterProvider router={router} />
-          </LDProvider>
-        </UserContextProvider>
+        <LDProvider>
+          <TimeoutModal />
+          <RouterProvider router={router} />
+        </LDProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </React.StrictMode>,

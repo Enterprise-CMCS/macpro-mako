@@ -8,16 +8,17 @@ import {
   DatePicker,
   FormMessage,
   Input,
-  FAQ_TAB,
   SpaIdFormattingDesc,
 } from "@/components";
 import { ActionForm } from "@/components/ActionForm";
 import { formSchemas } from "@/formSchemas";
+import { FAQ_TAB } from "@/router";
 
 export const MedicaidForm = () => (
   <ActionForm
     schema={formSchemas["new-medicaid-submission"]}
     title="Medicaid SPA Details"
+    breadcrumbText="Submit new Medicaid SPA"
     fields={({ control }) => (
       <>
         <FormField
@@ -87,6 +88,5 @@ export const MedicaidForm = () => (
       property: "id",
       documentChecker: (check) => check.recordExists,
     }}
-    tab={"spas"}
   />
 );

@@ -112,5 +112,53 @@ describe("Additional Rules Tests", () => {
       expect(valFunc2(undefined, testData)).toBeTruthy();
       expect(valFunc2("test", testData)).toBeTruthy();
     });
+
+    test("No gaps or overlaps", () => {
+      const rules = ruleGenerator(undefined, [
+        {
+          type: "noGapsOrOverlaps",
+          fieldName: "testField",
+          fromField: "from",
+          toField: "to",
+          options: [
+            { value: "1", label: "Option 1" },
+            { value: "2", label: "Option 2" },
+          ],
+        },
+      ]);
+
+      if (!rules) throw new Error("Failed to create rule set.");
+
+      const valFunc = (rules.validate as VO)["noGapsOrOverlaps_0"];
+      expect(valFunc).toBeTruthy();
+
+      // Test case: no gaps or overlaps
+      const noGapsOrOverlapsData = {
+        testField: [
+          { from: 1, to: 3 },
+          { from: 3, to: 5 },
+          { from: 5, to: 7 },
+        ],
+      };
+      expect(valFunc(undefined, noGapsOrOverlapsData.testField)).toBeTruthy();
+
+      // Test case: gap between 3 and 5
+      const gapData = {
+        testField: [
+          { from: 1, to: 3 },
+          { from: 5, to: 7 },
+        ],
+      };
+      expect(valFunc("test", gapData)).toBe("No gaps between ages allowed");
+
+      // Test case: overlap between 3 and 5
+      const overlapData = {
+        testField: [
+          { from: 1, to: 4 },
+          { from: 3, to: 6 },
+        ],
+      };
+      expect(valFunc("test", overlapData)).toBe("No age overlaps allowed");
+    });
   });
 });

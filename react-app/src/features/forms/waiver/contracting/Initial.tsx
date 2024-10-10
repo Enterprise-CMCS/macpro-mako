@@ -1,7 +1,6 @@
 import {
   ActionForm,
   DatePicker,
-  FAQ_TAB,
   FormControl,
   FormField,
   FormItem,
@@ -12,12 +11,14 @@ import {
 } from "@/components";
 import { Link } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
+import { FAQ_TAB } from "@/router";
 
 export const InitialForm = () => {
   return (
     <ActionForm
       schema={formSchemas["contracting-initial"]}
       title="1915(b)(4) FFS Selective Contracting Initial Waiver Details"
+      breadcrumbText="1915(b)(4) FFS Selective Contracting Initial Waiver"
       fields={({ control }) => (
         <>
           <div className="flex flex-col">
@@ -102,7 +103,6 @@ export const InitialForm = () => {
         property: "id",
         documentChecker: (check) => check.recordExists,
       }}
-      tab={"waivers"}
     />
   );
 };
