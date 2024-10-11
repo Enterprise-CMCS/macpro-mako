@@ -19,6 +19,7 @@ import {
   newMedicaidSubmission,
   temporaryExtension,
   withdrawRai,
+  toggleWithdrawRai,
 } from "./transforms";
 
 // legacy
@@ -65,4 +66,5 @@ export const transforms = {
   "new-medicaid-submission": newMedicaidSubmission,
   "temporary-extension": temporaryExtension,
   "withdraw-rai": withdrawRai,
+  "toggle-withdraw-rai": toggleWithdrawRai,
 };

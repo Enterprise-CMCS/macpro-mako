@@ -7,10 +7,10 @@ import {
 import { type APIGatewayEvent } from "aws-lambda";
 import { itemExists } from "libs/api/package";
 
-export const withdrawRai = async (event: APIGatewayEvent) => {
+export const toggleWithdrawRai = async (event: APIGatewayEvent) => {
   if (!event.body) return;
 
-  const parsedResult = events["withdraw-rai"].baseSchema.safeParse(
+  const parsedResult = events["toggle-withdraw-rai"].baseSchema.safeParse(
     JSON.parse(event.body),
   );
 
@@ -35,7 +35,7 @@ export const withdrawRai = async (event: APIGatewayEvent) => {
   const submitterEmail = userAttr.email;
   const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
 
-  const transformedData = events["withdraw-rai"].schema.parse({
+  const transformedData = events["toggle-withdraw-rai"].schema.parse({
     ...parsedResult.data,
     submitterName,
     submitterEmail,
