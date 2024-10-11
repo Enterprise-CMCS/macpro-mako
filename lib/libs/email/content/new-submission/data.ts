@@ -14,29 +14,67 @@ export const emailTemplateValue = {
   additionalInformation: "This bens additional infornormaiton",
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",
-  attachments: [
-    {
-      filename: "cat.png",
-      title: "currentStatePlan",
-      bucket: "mako-rain-attachments-635052997545",
-      key: "c76b4ddf-67d9-4df2-91f3-d329fe209c0c.png",
-      uploadDate: 1723390631509,
+  attachments: {
+    cmsForm179: {
+      files: [
+        {
+          filename: "test.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          uploadDate: 1728493782785,
+        },
+      ],
+      label: "CMS Form 179",
     },
-    {
-      filename: "cat.png",
-      title: "amendedLanguage",
-      bucket: "mako-rain-attachments-635052997545",
-      key: "c79e69ea-9ec7-4f94-996a-4879fc366318.png",
-      uploadDate: 1723390631509,
+    spaPages: {
+      files: [
+        {
+          filename: "test1.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
+          uploadDate: 1728493784252,
+        },
+        {
+          filename: "test2.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
+          uploadDate: 1728493784252,
+        },
+        {
+          filename: "test3.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
+          uploadDate: 1728493784252,
+        },
+      ],
+      label: "SPA Pages",
     },
-    {
-      filename: "macpro work.pdf",
-      title: "coverLetter",
-      bucket: "mako-rain-attachments-635052997545",
-      key: "a3900734-5f57-4637-a9e6-105e25b1b02d.pdf",
-      uploadDate: 1723390631509,
+    coverLetter: {
+      label: "Cover Letter",
     },
-  ],
+    tribalEngagement: {
+      label: "Document Demonstrating Good-Faith Tribal Engagement",
+    },
+    existingStatePlanPages: {
+      label: "Existing State Plan Page(s)",
+    },
+    publicNotice: {
+      label: "Public Notice",
+    },
+    sfq: {
+      label: "Standard Funding Questions (SFQs)",
+    },
+    tribalConsultation: {
+      label: "Tribal Consultation",
+    },
+    other: {
+      label: "Other",
+    },
+  },
   raiWithdrawEnabled: false,
   notificationMetadata: {
     submissionDate: 1723420800000,

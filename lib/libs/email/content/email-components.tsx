@@ -2,6 +2,8 @@ import * as React from "react";
 import { Text, Link, Section } from "@react-email/components";
 import { Attachment } from "shared-types";
 
+type AttachmentsType = { ["string"]: { files: Attachment[]; label: "string" } };
+
 export const LoginInstructions = (props: { appEndpointURL: string }) => {
   return (
     <Section>
@@ -26,89 +28,65 @@ export const LoginInstructions = (props: { appEndpointURL: string }) => {
   );
 };
 
-// Example record below... can see the new shape of attachments
-// {
-//   "event": "new-medicaid-submission",
-//   "additionalInformation": "asdf",
-//   "attachments": {
-//     "cmsForm179": {
-//       "files": [
-//         {
-//           "filename": "test.pdf",
-//           "title": "test",
-//           "bucket": "mako-outbox-attachments-635052997545",
-//           "key": "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
-//           "uploadDate": 1728493782785
-//         }
-//       ],
-//       "label": "CMS Form 179"
-//     },
-//     "spaPages": {
-//       "files": [
-//         {
-//           "filename": "test.pdf",
-//           "title": "test",
-//           "bucket": "mako-outbox-attachments-635052997545",
-//           "key": "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
-//           "uploadDate": 1728493784252
-//         }
-//       ],
-//       "label": "SPA Pages"
-//     },
-//     "coverLetter": {
-//       "label": "Cover Letter"
-//     },
-//     "tribalEngagement": {
-//       "label": "Document Demonstrating Good-Faith Tribal Engagement"
-//     },
-//     "existingStatePlanPages": {
-//       "label": "Existing State Plan Page(s)"
-//     },
-//     "publicNotice": {
-//       "label": "Public Notice"
-//     },
-//     "sfq": {
-//       "label": "Standard Funding Questions (SFQs)"
-//     },
-//     "tribalConsultation": {
-//       "label": "Tribal Consultation"
-//     },
-//     "other": {
-//       "label": "Other"
-//     }
-//   },
-//   "authority": "Medicaid SPA",
-//   "proposedEffectiveDate": 1729828800000,
-//   "id": "SC-38-2982",
-//   "origin": "mako",
-//   "submitterName": "George Harrison",
-//   "submitterEmail": "george@example.com",
-//   "timestamp": 1728493789104
-// }
+export const Attachments = (props: { attachments: AttachmentsType }) => {
+  //check if empty
+  const areAllAttachmentsEmpty = (attachments: AttachmentsType) => {
+    let key: keyof typeof attachments;
+    for (key in attachments) {
+      if (attachments[key].files.length > 0) {
+        return false;
+      }
+    }
+    return true;
+  };
 
-export const Attachments = (props: { attachments: Attachment[] }) => {
-  // if (!props.attachments || props.attachments?.length === 0)
-  return <Text>No attachments</Text>;
-  // return (
-  //   <>
-  //     <br />
-  //     <p style={{ margin: ".5em" }}>
-  //       <b>Files:</b>
-  //     </p>
-  //     <ul>
-  //       {props.attachments?.map((attachment, idx: number) => (
-  //         <li key={attachment.key + idx}>
-  //           {attachment.title}: {attachment.filename}
-  //         </li>
-  //       ))}
-  //     </ul>
-  //   </>
-  // );
+  // return if empty
+  if (areAllAttachmentsEmpty(props.attachments)) {
+    return <Text>No attachments</Text>;
+  }
+
+  // used in loop
+  const attachmentKeys = Object.keys(props.attachments);
+  // creating a string list of all the attachment filenames in the array
+  const createAttachementList = (files: Attachment[]) => {
+    let fileString: string = "";
+    let i = 0;
+    for (i = 0; i <= files.length - 2; i++) {
+      fileString += files[i].filename + ", ";
+    }
+    fileString += files[i].filename;
+    return fileString;
+  };
+
+  return (
+    <>
+      <br />
+      <p style={{ margin: ".5em" }}>
+        <b>Files:</b>
+      </p>
+      <ul>
+        {attachmentKeys?.map(
+          (key: keyof typeof props.attachments, idx: number) => {
+            if (!props.attachments[key].files) return;
+            const title = props.attachments[key].label;
+            const filenames = createAttachementList(
+              props.attachments[key].files,
+            );
+            return (
+              <li key={key + idx}>
+                {title}: {filenames}
+              </li>
+            );
+          },
+        )}
+      </ul>
+    </>
+  );
 };
 
 export const PackageDetails = (props: {
   details: { [key: string]: string | null | undefined };
-  attachments?: Attachment[] | null;
+  attachments?: AttachmentsType | null;
 }) => {
   return (
     <Section>
