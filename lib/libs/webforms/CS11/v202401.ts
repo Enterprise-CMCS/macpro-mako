@@ -177,5 +177,35 @@ export const v202401: FormSchema = {
         },
       ],
     },
+    {
+      title: "Statewide income standards",
+      subsection: true,
+      sectionId: "statewide-income-standards",
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Select",
+              label: "Are income standards applied statewide?",
+              labelClassName: "font-bold text-black",
+              name: "standards-applied-statewide",
+              props: {
+                className: "w-[125px]",
+                options: [
+                  {
+                    label: "Yes",
+                    value: "yes",
+                  },
+                  {
+                    label: "No",
+                    value: "no",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
   ],
 };
