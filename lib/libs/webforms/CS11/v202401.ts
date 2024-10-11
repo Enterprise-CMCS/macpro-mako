@@ -15,7 +15,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Checkbox",
-              name: "",
+              name: "chip-cover-group-follow-provisions",
               styledLabel: [
                 {
                   text: "Otherwise eligible",
@@ -42,6 +42,69 @@ export const v202401: FormSchema = {
                     label:
                       "The CHIP agency operates this covered group in accordance with the following provisions.",
                     value: "true",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Conditions",
+      sectionId: "conditions",
+      subsection: true,
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Radio",
+              label: "Conditions as described in Section 2110(b)(6) of the SSA",
+              labelClassName: "font-bold text-black",
+              name: "conditions",
+              rules: {
+                required: "* Required",
+              },
+              props: {
+                options: [
+                  {
+                    label:
+                      "Maintenance of agency contribution as provided in Section 2110(b)(6)(B)",
+                    value: "maintenance",
+                    slots: [
+                      {
+                        rhf: "Upload",
+                        name: "maintenance-upload",
+                        description:
+                          "Attach the state’s methodology for calculating the maintenance of agency contribution.",
+                        descriptionAbove: true,
+                        descriptionClassName: "font-bold text-black",
+                        rules: {
+                          required: "* Required",
+                        },
+                      },
+                      {
+                        rhf: "Checkbox",
+                        name: "state-assures-recalculate",
+                        props: {
+                          options: [
+                            {
+                              label:
+                                "The state assures it will recalculate expenditures for each participating public agency on an annual basis to determine if the maintenance of agency contribution continues to be met.",
+                              value: "true",
+                            },
+                          ],
+                        },
+                        rules: {
+                          required: "* Required",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label:
+                      "Hardship criteria as provided in Section 2110(b)(6)(C)",
+                    value: "hardship-criteria",
                   },
                 ],
               },
