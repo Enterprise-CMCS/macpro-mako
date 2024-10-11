@@ -85,7 +85,7 @@ export const v202401: FormSchema = {
                       },
                       {
                         rhf: "Checkbox",
-                        name: "state-assures-recalculate",
+                        name: "state-assures-recalculate-maintenance",
                         props: {
                           options: [
                             {
@@ -105,6 +105,35 @@ export const v202401: FormSchema = {
                     label:
                       "Hardship criteria as provided in Section 2110(b)(6)(C)",
                     value: "hardship-criteria",
+                    slots: [
+                      {
+                        rhf: "Upload",
+                        name: "hardship-criteria-upload",
+                        description:
+                          "Attach the state's methodology for calculating the hardship condition.",
+                        descriptionAbove: true,
+                        descriptionClassName: "font-bold text-black",
+                        rules: {
+                          required: "* Required",
+                        },
+                      },
+                      {
+                        rhf: "Checkbox",
+                        name: "state-assures-recalculate-hardship",
+                        props: {
+                          options: [
+                            {
+                              label:
+                                "The state assures it will recalculate the financial status on an annual basis to determine if the hardship condition continues to be met.",
+                              value: "true",
+                            },
+                          ],
+                        },
+                        rules: {
+                          required: "* Required",
+                        },
+                      },
+                    ],
                   },
                 ],
               },
