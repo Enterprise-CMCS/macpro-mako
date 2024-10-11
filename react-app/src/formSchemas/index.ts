@@ -19,5 +19,7 @@ export const formSchemas = {
   "new-chip-submission": newChipSubmission.formSchema,
   "new-medicaid-submission": newMedicaidSubmission.formSchema,
   "temporary-extension": temporaryExtension.formSchema,
-  "respond-to-rai": respondtoRAI.formSchema,
+  "respond-to-rai-chip": respondtoRAI.formSchemaChip,
+  "respond-to-rai-waiver": respondtoRAI.formSchemaWaivers,
+  "respond-to-rai-medicaid": respondtoRAI.formSchemaMedicaid,
 };

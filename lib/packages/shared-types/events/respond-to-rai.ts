@@ -18,6 +18,75 @@ export const raiResponseSchema = z.object({
 });
 export type RaiResponse = z.infer<typeof raiResponseSchema>;
 
+// attachments: z.object({
+//   revisedAmendedStatePlanLanguage: zAttachmentRequired({ min: 1 }),
+//   officialRaiResponse: zAttachmentRequired({ min: 1 }),
+//   budgetDocuments: zAttachmentOptional,
+//   publicNotice: zAttachmentOptional,
+//   tribalConsultation: zAttachmentOptional,
+//   other: zAttachmentOptional,
+// })
+
+export const medicaidSpaAttachments = z.object({
+  raiResponseLetter: z.object({
+    files: attachmentArraySchema({
+      max: 1,
+      message: "Required: You must submit exactly one file for CMS Form 179.",
+    }),
+    label: z.string().default("RAI Response Letter"),
+  }),
+  other: z.object({
+    files: attachmentArraySchemaOptional(),
+    label: z.string().default("Other"),
+  })
+})
+
+export const waiverAttachments = z.object({
+  raiResponseLetterWaiver: z.object({
+    files: attachmentArraySchema({
+      max: 1,
+      message: "Required: You must submit exactly one file for CMS Form 179.",
+    }),
+    label: z.string().default("RAI Response Letter Waiver"),
+  }),
+  other: z.object({
+    files: attachmentArraySchemaOptional(),
+    label: z.string().default("Other"),
+  }),
+});
+
+export const chipSpaAttachments = z.object({
+  cmsForm179: z.object({
+    files: attachmentArraySchema({
+      max: 1,
+      message: "Required: You must submit exactly one file for CMS Form 179.",
+    }),
+    label: z.string().default("Revised Amended State Plan Language"),
+  }),
+  spaPages: z.object({
+    files: attachmentArraySchema(),
+    label: z.string().default("Official RAI Response"),
+  }),
+  coverLetter: z.object({
+    files: attachmentArraySchemaOptional(),
+    label: z.string().default("Budget Documents"),
+  }),
+  tribalEngagement: z.object({
+    files: attachmentArraySchemaOptional(),
+    label: z
+      .string()
+      .default("Public Notice"),
+  }),
+  existingStatePlanPages: z.object({
+    files: attachmentArraySchemaOptional(),
+    label: z.string().default("Tribal Consultation"),
+  }),
+  publicNotice: z.object({
+    files: attachmentArraySchemaOptional(),
+    label: z.string().default("Other"),
+  }),
+})
+
 
 // REference 
 
@@ -26,37 +95,7 @@ export const baseSchema = z.object({
     .literal("respond-to-rai")
     .default("respond-to-rai"),
   additionalInformation: z.string().max(4000).nullable().default(null),
-  attachments: z.object({
-    cmsForm179: z.object({
-      files: attachmentArraySchema({
-        max: 1,
-        message: "Required: You must submit exactly one file for CMS Form 179.",
-      }),
-      label: z.string().default("Revised Amended State Plan Language"),
-    }),
-    spaPages: z.object({
-      files: attachmentArraySchema(),
-      label: z.string().default("Official RAI Response"),
-    }),
-    coverLetter: z.object({
-      files: attachmentArraySchemaOptional(),
-      label: z.string().default("Budget Documents"),
-    }),
-    tribalEngagement: z.object({
-      files: attachmentArraySchemaOptional(),
-      label: z
-        .string()
-        .default("Public Notice"),
-    }),
-    existingStatePlanPages: z.object({
-      files: attachmentArraySchemaOptional(),
-      label: z.string().default("Tribal Consultation"),
-    }),
-    publicNotice: z.object({
-      files: attachmentArraySchemaOptional(),
-      label: z.string().default("Other"),
-    }),
-  }),
+  attachments: chipSpaAttachments.or(waiverAttachments).or(medicaidSpaAttachments),
   id: z
     .string()
 });
