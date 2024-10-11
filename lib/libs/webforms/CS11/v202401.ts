@@ -113,5 +113,40 @@ export const v202401: FormSchema = {
         },
       ],
     },
+    {
+      title: "Household income standards",
+      subsection: true,
+      sectionId: "household-income-standards",
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Radio",
+              label:
+                "Coverage under this option is extended to pregnant women whose household income is:",
+              labelClassName: "font-bold text-black",
+              name: "household-income-is",
+              rules: {
+                required: "* Required",
+              },
+              props: {
+                options: [
+                  {
+                    label:
+                      "The same as the income standards for targeted low-income pregnant women",
+                    value: "same",
+                  },
+                  {
+                    label:
+                      "Lower than the income standards for targeted low-income pregnant women",
+                    value: "lower",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
   ],
 };
