@@ -317,11 +317,13 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
       // case "legacy-withdraw-rai-request":
       //   return ["RAI response withdrawn requested", PA_ResponseWithdrawn];
 
+      // return needs another parameter
       default:
         return [BLANK_VALUE];
     }
   }, [props.event]);
 
+  if (LABEL === BLANK_VALUE) return null;
   return (
     <AccordionItem key={props.id} value={props.id}>
       <AccordionTrigger className="bg-gray-100 px-3">
@@ -371,9 +373,11 @@ export const PackageActivities = () => {
         className="flex flex-col gap-2"
         defaultValue={hook.accordianDefault}
       >
-        {hook.data?.map((CL) => (
-          <PackageActivity {...CL._source} key={CL._source.id} />
-        ))}
+        {hook.data?.map((CL) => {
+          console.log({ ...CL._source }, "CLLLL");
+          console.log(CL._source.id, "idddd");
+          return <PackageActivity {...CL._source} key={CL._source.id} />;
+        })}
       </Accordion>
     </DetailsSection>
   );

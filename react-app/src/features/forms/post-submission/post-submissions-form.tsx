@@ -16,13 +16,13 @@ export const postSubmissionForms: Record<
     ["Medicaid SPA"]: WithdrawRaiForm,
     ["CHIP SPA"]: WithdrawRaiForm,
   },
-  "enable-withdraw-rai": {
+  "enable-rai-withdraw": {
     ["1915(b)"]: EnableWithdrawRaiForm,
     ["1915(c)"]: EnableWithdrawRaiForm,
     ["Medicaid SPA"]: EnableWithdrawRaiForm,
     ["CHIP SPA"]: EnableWithdrawRaiForm,
   },
-  "disable-withdraw-rai": {
+  "disable-rai-withdraw": {
     ["1915(b)"]: DisableWithdrawRaiForm,
     ["1915(c)"]: DisableWithdrawRaiForm,
     ["Medicaid SPA"]: DisableWithdrawRaiForm,
