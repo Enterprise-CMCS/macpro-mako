@@ -56,7 +56,9 @@ type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
         files: z.ZodTypeAny;
       }>;
     }>;
-    additionalInformation?: z.ZodDefault<z.ZodNullable<z.ZodString>>;
+    additionalInformation?:
+      | z.ZodDefault<z.ZodNullable<z.ZodString>>
+      | z.ZodEffects<z.ZodTypeAny>;
   },
   "strip",
   z.ZodTypeAny
@@ -80,7 +82,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   bannerPostSubmission?: Omit<Banner, "pathnameToDisplayOn">;
   promptPreSubmission?: Omit<UserPrompt, "onAccept">;
   promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
-  attachments: {
+  attachments?: {
     faqLink: string;
     specialInstructions?: string;
   };
@@ -97,6 +99,8 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   formDescription?: string;
   preSubmissionMessage?: string;
   additionalInfoLabel?: string;
+  showPreSubmissionMessage?: boolean;
+  requiredFields?: boolean;
 };
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
@@ -128,6 +132,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       follow up by email.`,
   preSubmissionMessage,
   additionalInfoLabel = `Add anything else you would like to share with CMS.`,
+  showPreSubmissionMessage = true,
+  requiredFields = true,
 }: ActionFormProps<Schema>) => {
   const { id, authority } = useParams<{
     id: string;
@@ -206,17 +212,12 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     [schema],
   );
 
-  console.log(
-    "Tiffany",
-    getBaseSchemaWithoutEffects(additionalInformationFromSchema) instanceof
-      z.ZodOptional,
-    // getBaseSchema(additionalInformationFromSchema),
-    // additionalInformationFromSchema._def.isOptional(),
-  );
   const hasProgressLossReminder = useMemo(
     () => Fields({ ...form }) !== null || attachmentsFromSchema.length > 0,
     [attachmentsFromSchema, Fields, form],
   );
+
+  const areRequiredFields = requiredFields && hasProgressLossReminder;
 
   const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some(
     (condition) => condition(userObj.user),
@@ -251,8 +252,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           ) : (
             <SectionCard title={title}>
               <div>
-                {hasProgressLossReminder && <RequiredFieldDescription />}
-                <ActionFormDescription boldReminder={hasProgressLossReminder}>
+                {areRequiredFields && <RequiredFieldDescription />}
+                <ActionFormDescription boldReminder={areRequiredFields}>
                   {formDescription}
                 </ActionFormDescription>
               </div>
@@ -288,10 +289,12 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               />
             </SectionCard>
           )}
-          <PreSubmissionMessage
-            hasProgressLossReminder={hasProgressLossReminder}
-            preSubmissionMessage={preSubmissionMessage}
-          />
+          {showPreSubmissionMessage && (
+            <PreSubmissionMessage
+              hasProgressLossReminder={hasProgressLossReminder}
+              preSubmissionMessage={preSubmissionMessage}
+            />
+          )}
           <section className="flex justify-end gap-2 p-4 ml-auto">
             <Button
               className="px-12"
