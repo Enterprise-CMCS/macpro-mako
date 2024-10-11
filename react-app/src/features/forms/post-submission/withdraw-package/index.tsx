@@ -8,7 +8,7 @@ export const WithdrawPackageAction = () => {
   return (
     <ActionForm
       schema={formSchemas["withdraw-package"]}
-      title={`${authority} Withdraw Package`}
+      title={`Withdraw ${authority}`}
       fields={() => <PackageSection />}
       defaultValues={{
         id,
@@ -16,15 +16,14 @@ export const WithdrawPackageAction = () => {
       }}
       attachments={{
         faqLink: "/faq",
+        outerInstructions:
+          "Upload your supporting documentation for withdrawal or explain your need for withdrawal in the Additional Information section.",
       }}
       documentPollerArgs={{
         property: "id",
         documentChecker: (check) => check.recordExists,
       }}
-      breadcrumbText="Withdraw Formal RAI Response"
-      formDescription="Complete this form to withdraw the Formal RAI response. Once complete,
-          you and CMS will receive an email confirmation."
-      preSubmissionMessage="Once complete, you and CMS will receive an email confirmation."
+      breadcrumbText="Withdraw Package"
       additionalInfoLabel="Explain your need for withdrawal."
     />
   );
@@ -36,7 +35,7 @@ export const WithdrawPackageActionChip = () => {
   return (
     <ActionForm
       schema={formSchemas["withdraw-package-chip"]}
-      title={`${authority} Withdraw Package`}
+      title={`Withdraw ${authority}`}
       fields={() => <PackageSection />}
       defaultValues={{
         id,
@@ -44,15 +43,14 @@ export const WithdrawPackageActionChip = () => {
       }}
       attachments={{
         faqLink: "/faq",
+        outerInstructions:
+          "Official withdrawal letters are required and must be on state letterhead signed by the State Medicaid Director or CHIP Director.",
       }}
       documentPollerArgs={{
         property: "id",
         documentChecker: (check) => check.recordExists,
       }}
-      breadcrumbText="Withdraw Formal RAI Response"
-      formDescription="Complete this form to withdraw the Formal RAI response. Once complete,
-          you and CMS will receive an email confirmation."
-      preSubmissionMessage="Once complete, you and CMS will receive an email confirmation."
+      breadcrumbText="Withdraw Package"
       additionalInfoLabel="Explain your need for withdrawal."
     />
   );
