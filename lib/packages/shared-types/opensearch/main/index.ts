@@ -6,7 +6,7 @@ import {
   AggQuery,
 } from "./../_";
 import { z } from "zod";
-import { ItemResult as Changelog, toggleWithdrawRai } from "./../changelog";
+import { ItemResult as Changelog } from "./../changelog";
 import {
   capitatedInitial,
   capitatedAmendment,
