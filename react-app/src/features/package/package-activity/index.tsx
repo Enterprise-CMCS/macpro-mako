@@ -374,8 +374,6 @@ export const PackageActivities = () => {
         defaultValue={hook.accordianDefault}
       >
         {hook.data?.map((CL) => {
-          console.log({ ...CL._source }, "CLLLL");
-          console.log(CL._source.id, "idddd");
           return <PackageActivity {...CL._source} key={CL._source.id} />;
         })}
       </Accordion>
