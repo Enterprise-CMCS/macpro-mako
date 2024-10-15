@@ -54,36 +54,36 @@ const arTempExtension: ActionRule = {
 
 const arEnableWithdrawRaiResponse: ActionRule = {
   action: Action.ENABLE_RAI_WITHDRAW,
-  check: (checker, user) => true,
-  // !checker.isTempExtension &&
-  // checker.isNotWithdrawn &&
-  // checker.hasRaiResponse &&
-  // !checker.hasEnabledRaiWithdraw &&
-  // isCmsWriteUser(user) &&
-  // !checker.hasStatus(finalDispositionStatuses),
+  check: (checker, user) =>
+    !checker.isTempExtension &&
+    checker.isNotWithdrawn &&
+    checker.hasRaiResponse &&
+    !checker.hasEnabledRaiWithdraw &&
+    isCmsWriteUser(user) &&
+    !checker.hasStatus(finalDispositionStatuses),
 };
 
 const arDisableWithdrawRaiResponse: ActionRule = {
   action: Action.DISABLE_RAI_WITHDRAW,
-  check: (checker, user) => true,
-  // !checker.isTempExtension &&
-  // checker.isNotWithdrawn &&
-  // checker.hasRaiResponse &&
-  // checker.hasEnabledRaiWithdraw &&
-  // isCmsWriteUser(user) &&
-  // !checker.hasStatus(finalDispositionStatuses)
+  check: (checker, user) =>
+    !checker.isTempExtension &&
+    checker.isNotWithdrawn &&
+    checker.hasRaiResponse &&
+    checker.hasEnabledRaiWithdraw &&
+    isCmsWriteUser(user) &&
+    !checker.hasStatus(finalDispositionStatuses),
 };
 
 const arWithdrawRaiResponse: ActionRule = {
   action: Action.WITHDRAW_RAI,
-  check: (checker, user) => true,
-  // !checker.isTempExtension &&
-  // checker.isInActivePendingStatus &&
-  // checker.hasRaiResponse &&
-  // // safety; prevent bad status from causing overwrite
-  // !checker.hasRaiWithdrawal &&
-  // checker.hasEnabledRaiWithdraw &&
-  // isStateUser(user)
+  check: (checker, user) =>
+    !checker.isTempExtension &&
+    checker.isInActivePendingStatus &&
+    checker.hasRaiResponse &&
+    // safety; prevent bad status from causing overwrite
+    !checker.hasRaiWithdrawal &&
+    checker.hasEnabledRaiWithdraw &&
+    isStateUser(user),
 };
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
