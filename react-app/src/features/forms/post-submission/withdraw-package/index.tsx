@@ -13,6 +13,11 @@ export const WithdrawPackageAction = () => {
       defaultValues={{
         id,
         authority,
+        attachments: {
+          supportingDocumentation: {
+            files: [],
+          },
+        },
       }}
       attachments={{
         faqLink: "/faq",

@@ -4,6 +4,7 @@ import { z } from "zod";
 export const formSchema = events["withdraw-package"].baseSchema
   .extend({
     attachments: events["withdraw-package"].attachmentsDefault,
+    additionalInformation: z.string().max(4000).optional(),
   })
   .superRefine((data, ctx) => {
     if (

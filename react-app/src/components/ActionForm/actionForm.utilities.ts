@@ -9,6 +9,11 @@ export const getAdditionalInformation = <
     const innerSchema = schema._def.schema;
 
     if (innerSchema instanceof z.ZodObject) {
+      if (
+        innerSchema._def.shape().additionalInformation instanceof z.ZodOptional
+      ) {
+        return innerSchema._def.shape().additionalInformation;
+      }
       if (innerSchema.shape.additionalInformation instanceof z.ZodDefault) {
         return innerSchema.shape.additionalInformation;
       }
