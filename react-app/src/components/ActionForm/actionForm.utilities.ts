@@ -26,6 +26,7 @@ export const getAdditionalInformation = <
     if (
       schema._def.shape().additionalInformation instanceof z.ZodOptional ||
       schema._def.shape().additionalInformation instanceof z.ZodDefault ||
+      schema._def.shape().additionalInformation instanceof z.ZodString ||
       schema._def.shape().additionalInformation instanceof z.ZodEffects
     ) {
       return schema._def.shape().additionalInformation;
