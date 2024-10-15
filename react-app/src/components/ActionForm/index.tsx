@@ -57,6 +57,7 @@ type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
       }>;
     }>;
     additionalInformation?:
+      | z.ZodOptional<z.ZodString>
       | z.ZodDefault<z.ZodNullable<z.ZodString>>
       | z.ZodEffects<z.ZodTypeAny>;
   },
