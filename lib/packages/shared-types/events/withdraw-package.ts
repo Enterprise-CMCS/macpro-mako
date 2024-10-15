@@ -40,7 +40,7 @@ export const baseSchema = z.object({
   event: z.literal("withdraw-package").default("withdraw-package"),
   id: z.string(),
   authority: z.string(),
-  additionalInformation: z.string().max(4000),
+  additionalInformation: z.string().max(4000).optional(),
   attachments: attachmentsDefault.or(attachmentsChip),
 });
 

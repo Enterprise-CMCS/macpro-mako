@@ -7,8 +7,7 @@ import {
 import { type APIGatewayEvent } from "aws-lambda";
 import { itemExists } from "libs/api/package";
 
-export const withdrawRai = async (event: APIGatewayEvent) => {
-  console.log("start of withdrawRai func");
+export const withdrawPackage = async (event: APIGatewayEvent) => {
   if (!event.body) return;
 
   const parsedResult = events["withdraw-package"].baseSchema.safeParse(
