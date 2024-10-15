@@ -29,7 +29,15 @@ export const WithdrawPackageAction = () => {
         documentChecker: (check) => check.recordExists,
       }}
       breadcrumbText="Withdraw Package"
-      additionalInfoLabel="Explain your need for withdrawal."
+      formDescription="Complete this form to withdraw a package. Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email."
+      preSubmissionMessage="Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email."
+      additionalInfoLabel="Explain your need for withdrawal, or upload supporting documentation."
+      promptPreSubmission={{
+        header: "Withdraw package?",
+        body: `You are about to withdraw ${authority} ${id}. Completing this action will conclude the review of this ${authority} ${
+          ["Medicaid SPA"].includes(authority) ? "SPA" : "Waiver"
+        } package. If you are not sure this is the correct action to select, contact your CMS point of contact for assistance.`,
+      }}
     />
   );
 };
@@ -57,6 +65,11 @@ export const WithdrawPackageActionChip = () => {
       }}
       breadcrumbText="Withdraw Package"
       additionalInfoLabel="Explain your need for withdrawal."
+      formDescription="Complete this form to withdraw a package. Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email."
+      promptPreSubmission={{
+        header: "Withdraw package?",
+        body: `You are about to withdraw ${authority} ${id}. Completing this action will conclude the review of this ${authority} SPA package. If you are not sure this is the correct action to select, contact your CMS point of contact for assistance.`,
+      }}
     />
   );
 };

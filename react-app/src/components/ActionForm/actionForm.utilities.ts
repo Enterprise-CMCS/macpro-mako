@@ -9,23 +9,26 @@ export const getAdditionalInformation = <
     const innerSchema = schema._def.schema;
 
     if (innerSchema instanceof z.ZodObject) {
+      // for some reason if the schema has an optional on additional information
+      // it changes the way that you get the shape of the schema
       if (
+        innerSchema._def.shape().additionalInformation instanceof
+          z.ZodDefault ||
+        innerSchema._def.shape().additionalInformation instanceof z.ZodString ||
         innerSchema._def.shape().additionalInformation instanceof z.ZodOptional
       ) {
         return innerSchema._def.shape().additionalInformation;
-      }
-      if (innerSchema.shape.additionalInformation instanceof z.ZodDefault) {
-        return innerSchema.shape.additionalInformation;
       }
     }
   }
 
   if (schema instanceof z.ZodObject) {
     if (
-      schema.shape.additionalInformation instanceof z.ZodDefault ||
-      schema.shape.additionalInformation instanceof z.ZodEffects
+      schema._def.shape().additionalInformation instanceof z.ZodOptional ||
+      schema._def.shape().additionalInformation instanceof z.ZodDefault ||
+      schema._def.shape().additionalInformation instanceof z.ZodEffects
     ) {
-      return schema.shape.additionalInformation;
+      return schema._def.shape().additionalInformation;
     }
   }
 
