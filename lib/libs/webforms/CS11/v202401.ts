@@ -627,5 +627,111 @@ export const v202401: FormSchema = {
         },
       ],
     },
+    {
+      title: "Access to public employee coverage",
+      subsection: true,
+      sectionId: "access-to-public-employee-coverage",
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Radio",
+              label: "Coverage under this option is extended to:",
+              labelClassName: "font-bold text-black",
+              name: "coverage-extended-to",
+              rules: {
+                required: "* Required",
+              },
+              props: {
+                options: [
+                  {
+                    label:
+                      "All pregnant women who have access to public employee coverage",
+                    value: "all-pregnant-women",
+                  },
+                  {
+                    label:
+                      "Certain pregnant women who have access to public employee coverage",
+                    value: "certain-pregnant-women",
+                    slots: [
+                      {
+                        rhf: "Checkbox",
+                        name: "type-of-employee-coverage",
+                        rules: {
+                          required: "* Required",
+                        },
+                        props: {
+                          options: [
+                            {
+                              label: "Employees of certain public agencies",
+                              value: "employees-of-certain-public-agencies",
+                              slots: [
+                                {
+                                  rhf: "FieldArray",
+                                  name: "agencies",
+                                  props: { appendText: "Add type" },
+                                  fields: [
+                                    {
+                                      rhf: "Input",
+                                      label: "Type of agency",
+                                      labelClassName: "font-bold text-black",
+                                      name: "agency-type",
+                                      props: {
+                                        className: "w-[527px]",
+                                      },
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                            {
+                              label:
+                                "Certain types of public employees or dependents of certain types of public employees",
+                              value: "certain-types-of-public-employees",
+                              slots: [
+                                {
+                                  rhf: "FieldArray",
+                                  name: "types-of-public-employees",
+                                  props: { appendText: "Add type" },
+                                  fields: [
+                                    {
+                                      rhf: "Input",
+                                      label: "Type of public employee",
+                                      labelClassName: "font-bold text-black",
+                                      name: "public-employee-type",
+                                      props: {
+                                        className: "w-[527px]",
+                                      },
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Age standard",
+      subsection: true,
+      sectionId: "age-standard",
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Select",
+            },
+          ],
+        },
+      ],
+    },
   ],
 };
