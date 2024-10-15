@@ -373,9 +373,9 @@ export const PackageActivities = () => {
         className="flex flex-col gap-2"
         defaultValue={hook.accordianDefault}
       >
-        {hook.data?.map((CL) => {
-          return <PackageActivity {...CL._source} key={CL._source.id} />;
-        })}
+         {hook.data?.map((CL) => (
+          <PackageActivity {...CL._source} key={CL._source.id} />
+        ))}
       </Accordion>
     </DetailsSection>
   );
