@@ -952,5 +952,47 @@ export const v202401: FormSchema = {
         },
       ],
     },
+    {
+      title: "Assurances",
+      subsection: true,
+      sectionId: "assurances",
+      form: [
+        {
+          slots: [
+            {
+              rhf: "Checkbox",
+              name: "public-employee-coverage-assurances",
+              props: {
+                options: [
+                  {
+                    label:
+                      "Pregnant women considered to have access to public employee coverage, and therefore not excluded from CHIP through this option, otherwise meet the definition of targeted low-income pregnant woman in accordance with Section 2112(d)(2) of the SSA.",
+                    value: "meet-definition",
+                  },
+                  {
+                    label:
+                      "Pregnant women who are eligible for public employee health benefits coverage who are not described above are excluded from eligibility under the plan.",
+                    value: "excluded-from-eligibility",
+                    dependency: {
+                      conditions: [
+                        {
+                          name: "cs11_access-to-public-employee-coverage_coverage-extended-to",
+                          type: "expectedValue",
+                          expectedValue: "certain-pregnant-women",
+                        },
+                      ],
+                      effect: { type: "show" },
+                    },
+                  },
+                ],
+              },
+              rules: {
+                required: "* Required",
+              },
+            },
+          ],
+        },
+      ],
+    },
   ],
 };
