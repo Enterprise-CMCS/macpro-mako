@@ -214,7 +214,9 @@ export const v202401: FormSchema = {
               name: "upload-approval-documentation",
               label:
                 "Upload approval documentation of converted MAGI-equivalent income standards.",
-              labelClassName: "font-bold",
+              labelClassName: "text-black font-bold",
+              rules: { required: "* Required" },
+              formItemClassName: "pb-16",
             },
           ],
         },
