@@ -27,6 +27,8 @@ export const RHFTextDisplay = (props: RHFTextDisplayProps) => {
             <br /> <span className={t.classname}>{t.text}</span> <br />
           </>
         );
+      case "paragraph":
+        return <p className={cn("bock pb-4", t.classname)}>{t.text}</p>;
       case "bold":
         return <b className={t.classname}>{t.text}</b>;
       case "italic":
