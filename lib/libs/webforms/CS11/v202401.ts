@@ -203,6 +203,9 @@ export const v202401: FormSchema = {
                   },
                 ],
               },
+              rules: {
+                required: "* Required",
+              },
             },
             {
               rhf: "WrappedGroup",
@@ -283,6 +286,9 @@ export const v202401: FormSchema = {
                     value: "no",
                   },
                 ],
+              },
+              rules: {
+                required: "* Required",
               },
             },
             {
@@ -679,6 +685,14 @@ export const v202401: FormSchema = {
                                       props: {
                                         className: "w-[527px]",
                                       },
+                                      rules: {
+                                        required: "* Required",
+                                        pattern: {
+                                          value: noLeadingTrailingWhitespace,
+                                          message:
+                                            "Must not have leading or trailing whitespace.",
+                                        },
+                                      },
                                     },
                                   ],
                                 },
@@ -701,6 +715,14 @@ export const v202401: FormSchema = {
                                       name: "public-employee-type",
                                       props: {
                                         className: "w-[527px]",
+                                      },
+                                      rules: {
+                                        pattern: {
+                                          value: noLeadingTrailingWhitespace,
+                                          message:
+                                            "Must not have leading or trailing whitespace.",
+                                        },
+                                        required: "* Required",
                                       },
                                     },
                                   ],
@@ -789,6 +811,14 @@ export const v202401: FormSchema = {
                                     "Describe how it’s determined whether the applicant will be provided coverage as a child or as a pregnant woman.",
                                   labelClassName: "font-bold text-black",
                                   name: "describe-determination",
+                                  rules: {
+                                    pattern: {
+                                      value: noLeadingTrailingWhitespace,
+                                      message:
+                                        "Must not have leading or trailing whitespace.",
+                                    },
+                                    required: "* Required",
+                                  },
                                 },
                               ],
                             },
