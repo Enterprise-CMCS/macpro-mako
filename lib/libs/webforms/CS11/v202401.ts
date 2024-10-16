@@ -790,9 +790,9 @@ export const v202401: FormSchema = {
                                   rules: {
                                     required: "* Required",
                                     pattern: {
-                                      value: /^[0-9]\d*$/,
+                                      value: /^(2[0-9]|[3-9]\d|\d{3,})$/,
                                       message:
-                                        "Must be a positive integer value",
+                                        "Must be a positive integer value greater than 19",
                                     },
                                   },
                                   props: {
