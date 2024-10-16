@@ -105,10 +105,6 @@ export const router = createBrowserRouter([
         path: "/new-submission/spa/chip/landing/chip-eligibility",
         element: <F.CHIPEligibilityLandingPage />,
       },
-      // {
-      //   path: "respondtorai/:authority/:id/:type",
-      //   element: <F.RespondToRai />,
-      // },
       {
         path: "/actions/:type/:authority/:id",
         element: <PostSubmissionWrapper />,

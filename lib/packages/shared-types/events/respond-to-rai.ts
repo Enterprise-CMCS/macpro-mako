@@ -18,15 +18,6 @@ export const raiResponseSchema = z.object({
 });
 export type RaiResponse = z.infer<typeof raiResponseSchema>;
 
-// attachments: z.object({
-//   revisedAmendedStatePlanLanguage: zAttachmentRequired({ min: 1 }),
-//   officialRaiResponse: zAttachmentRequired({ min: 1 }),
-//   budgetDocuments: zAttachmentOptional,
-//   publicNotice: zAttachmentOptional,
-//   tribalConsultation: zAttachmentOptional,
-//   other: zAttachmentOptional,
-// })
-
 export const medicaidSpaAttachments = z.object({
   raiResponseLetter: z.object({
     files: attachmentArraySchema({
@@ -86,9 +77,6 @@ export const chipSpaAttachments = z.object({
     label: z.string().default("Other"),
   }),
 })
-
-
-// REference 
 
 export const baseSchema = z.object({
   event: z
