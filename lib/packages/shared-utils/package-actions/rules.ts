@@ -1,34 +1,34 @@
 import {
   Action,
   ActionRule,
-  Authority,
+  // Authority,
   SEATOOL_STATUS,
   finalDispositionStatuses,
 } from "shared-types";
 import {
   isStateUser,
   isCmsWriteUser,
-  isIDM,
+  // isIDM,
   isCmsSuperUser,
 } from "../user-helper";
 
-const arIssueRai: ActionRule = {
-  action: Action.ISSUE_RAI,
-  check: (checker, user) =>
-    !checker.isTempExtension &&
-    checker.isInActivePendingStatus &&
-    // Doesn't have any RAIs
-    (!checker.hasLatestRai ||
-      // The latest RAI is complete
-      (checker.hasCompletedRai &&
-        // The package is a chip (chips can have more than 1 rai)
-        checker.authorityIs([Authority.CHIP_SPA]) &&
-        // The package does not have RAI Response Withdraw enabled
-        !checker.hasEnabledRaiWithdraw)) &&
-    isCmsWriteUser(user) &&
-    !isIDM(user) &&
-    false,
-};
+// const arIssueRai: ActionRule = {
+//   action: Action.ISSUE_RAI,
+//   check: (checker, user) =>
+//     !checker.isTempExtension &&
+//     checker.isInActivePendingStatus &&
+//     // Doesn't have any RAIs
+//     (!checker.hasLatestRai ||
+//       // The latest RAI is complete
+//       (checker.hasCompletedRai &&
+//         // The package is a chip (chips can have more than 1 rai)
+//         checker.authorityIs([Authority.CHIP_SPA]) &&
+//         // The package does not have RAI Response Withdraw enabled
+//         !checker.hasEnabledRaiWithdraw)) &&
+//     isCmsWriteUser(user) &&
+//     !isIDM(user) &&
+//     false,
+// };
 
 const arRespondToRai: ActionRule = {
   action: Action.RESPOND_TO_RAI,
@@ -110,7 +110,7 @@ const arRemoveAppkChild: ActionRule = {
 };
 
 export default [
-  arIssueRai,
+  // arIssueRai,
   arRespondToRai,
   arEnableWithdrawRaiResponse,
   arDisableWithdrawRaiResponse,

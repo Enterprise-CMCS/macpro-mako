@@ -8,11 +8,11 @@ export type MessageProducer = (
   value: string,
 ) => Promise<void>;
 
-export type IssueRaiDto = {
-  topicName: string;
-  id: string;
-  action: Action;
-} & Record<string, unknown>;
+// export type IssueRaiDto = {
+//   topicName: string;
+//   id: string;
+//   action: Action;
+// } & Record<string, unknown>;
 
 export type RespondToRaiDto = {
   topicName: string;
@@ -52,21 +52,21 @@ export type UpdateIdDto = {
   action: Action;
 } & Record<string, unknown>;
 
-export const issueRaiMako = async ({
-  action,
-  id,
-  topicName,
-  ...data
-}: IssueRaiDto) =>
-  produceMessage(
-    topicName,
-    id,
-    JSON.stringify({
-      ...data,
-      id,
-      actionType: action,
-    }),
-  );
+// export const issueRaiMako = async ({
+//   action,
+//   id,
+//   topicName,
+//   ...data
+// }: IssueRaiDto) =>
+//   produceMessage(
+//     topicName,
+//     id,
+//     JSON.stringify({
+//       ...data,
+//       id,
+//       actionType: action,
+//     }),
+//   );
 
 export const respondToRaiMako = async ({
   action,

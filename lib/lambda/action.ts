@@ -9,7 +9,7 @@ import {
 import { getAvailableActions } from "shared-utils";
 import { Action } from "shared-types";
 import {
-  issueRai,
+  // issueRai,
   respondToRai,
   toggleRaiResponseWithdraw,
   updateId,
@@ -73,9 +73,9 @@ export const handler = async (event: APIGatewayEvent) => {
       case Action.WITHDRAW_PACKAGE:
         await withdrawPackage(body);
         break;
-      case Action.ISSUE_RAI:
-        await issueRai(body);
-        break;
+      // case Action.ISSUE_RAI:
+      //   await issueRai(body);
+      //   break;
       case Action.RESPOND_TO_RAI:
         await respondToRai(body, result._source);
         break;

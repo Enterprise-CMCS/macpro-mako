@@ -1,7 +1,7 @@
 import { Banner, UserPrompt } from "@/components";
 import { Action, AuthorityUnion, opensearch } from "shared-types";
 import {
-  defaultIssueRaiContent,
+  // defaultIssueRaiContent,
   defaultTempExtContent,
   defaultWithdrawPackageContent,
   defaultWithdrawRaiContent,
@@ -25,12 +25,12 @@ type FormContent = {
 export type FormContentHydrator = (d: opensearch.main.Document) => FormContent;
 type FormContentGroup = Record<AuthorityUnion, FormContentHydrator | undefined>;
 
-const issueRaiFor: FormContentGroup = {
-  "CHIP SPA": defaultIssueRaiContent,
-  "Medicaid SPA": defaultIssueRaiContent,
-  "1915(b)": defaultIssueRaiContent,
-  "1915(c)": defaultIssueRaiContent,
-};
+// const issueRaiFor: FormContentGroup = {
+//   "CHIP SPA": defaultIssueRaiContent,
+//   "Medicaid SPA": defaultIssueRaiContent,
+//   "1915(b)": defaultIssueRaiContent,
+//   "1915(c)": defaultIssueRaiContent,
+// };
 
 const respondToRaiFor: FormContentGroup = {
   "CHIP SPA": spaRaiContent,
@@ -86,7 +86,7 @@ export const getContentFor = (
   p: AuthorityUnion,
 ): FormContentHydrator => {
   const actionContentMap: Record<string, FormContentGroup> = {
-    "issue-rai": issueRaiFor,
+    // "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,
     "enable-rai-withdraw": enableRaiWithdrawFor,
     "disable-rai-withdraw": disableRaiWithdrawFor,

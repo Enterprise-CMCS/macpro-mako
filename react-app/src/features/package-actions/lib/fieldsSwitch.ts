@@ -6,7 +6,7 @@ import {
   chipWithdrawPackageFields,
   defaultDisableRaiWithdrawFields,
   defaultEnableRaiWithdrawFields,
-  defaultIssueRaiFields,
+  // defaultIssueRaiFields,
   defaultTempExtFields,
   defaultUpdateIdFields,
   defaultWithdrawPackageFields,
@@ -17,12 +17,12 @@ import {
 
 type FieldsGroup = Record<AuthorityUnion, ReactElement[] | undefined>;
 
-const issueRaiFor: FieldsGroup = {
-  "CHIP SPA": defaultIssueRaiFields,
-  "Medicaid SPA": defaultIssueRaiFields,
-  "1915(b)": defaultIssueRaiFields,
-  "1915(c)": defaultIssueRaiFields,
-};
+// const issueRaiFor: FieldsGroup = {
+//   "CHIP SPA": defaultIssueRaiFields,
+//   "Medicaid SPA": defaultIssueRaiFields,
+//   "1915(b)": defaultIssueRaiFields,
+//   "1915(c)": defaultIssueRaiFields,
+// };
 
 const respondToRaiFor: FieldsGroup = {
   "CHIP SPA": chipSpaRaiFields,
