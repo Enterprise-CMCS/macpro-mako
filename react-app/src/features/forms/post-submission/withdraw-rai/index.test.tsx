@@ -3,12 +3,9 @@ import { vi, describe, test, expect, beforeAll } from "vitest";
 import { WithdrawRaiForm } from "@/features/forms/post-submission/withdraw-rai";
 import { renderForm } from "@/utils/test-helpers/renderForm";
 
-let container: HTMLElement;
-
 describe("Withdraw RAI for Medicaid SPAs", () => {
   beforeAll(() => {
-    const { container: renderedContainer } = renderForm(<WithdrawRaiForm />);
-    container = renderedContainer;
+    renderForm(<WithdrawRaiForm />);
   });
 
   test('should display "No document" when documentChecker returns false', () => {
