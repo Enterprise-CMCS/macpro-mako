@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import {
   MACFieldsetOption,
   OptionCard,
@@ -17,6 +17,8 @@ import {
   SPA_OPTIONS,
   WAIVER_OPTIONS,
 } from "@/features";
+import { useGetUser } from "@/api";
+import { isStateUser } from "shared-utils";
 
 /** Can be removed once page title bar with back nav is integrated */
 export const SimplePageTitle = ({ title }: { title: string }) => (
@@ -34,6 +36,12 @@ type OptionsPageProps = {
 /** A page for rendering an array of {@link OptionData} */
 const OptionsPage = ({ options, title, fieldsetLegend }: OptionsPageProps) => {
   const location = useLocation();
+  const { data: userObj } = useGetUser();
+
+  if (userObj && isStateUser(userObj.user) === false) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <SimplePageContainer>
       <BreadCrumbs options={optionCrumbsFromPath(location.pathname)} />

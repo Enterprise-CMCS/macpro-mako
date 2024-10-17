@@ -8,17 +8,17 @@ describe("OptionFieldset", () => {
     render(
       <OptionFieldset legend={"Test Legend"}>
         Testing rendering of children
-      </OptionFieldset>
+      </OptionFieldset>,
     );
   });
   test("legend prop populates legend element in fieldset", () => {
     expect(
-      screen.getByRole("group", { name: "Test Legend" })
+      screen.getByRole("group", { name: "Test Legend" }),
     ).toBeInTheDocument();
   });
   test("renders children", () => {
     expect(
-      screen.getByText("Testing rendering of children")
+      screen.getByText("Testing rendering of children"),
     ).toBeInTheDocument();
   });
 });
@@ -28,12 +28,12 @@ describe("OptionCard", () => {
     render(
       <BrowserRouter>
         <OptionCard
-          linkTo={"/"}
+          to={"/"}
           title={"Test Card Title"}
           description={"Test Card Description"}
           altBg={altBg}
         />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   };
   test("default background is white", () => {

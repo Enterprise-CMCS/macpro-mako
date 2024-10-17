@@ -21,7 +21,7 @@ export const ReviewTeamList: FC<opensearch.main.Document> = (props) => {
   ) : (
     <ul>
       {displayTeam.map((reviewer, idx) => (
-        <li key={`reviewteam-ul-${reviewer}-${idx}`}>{reviewer}</li>
+        <li key={`reviewteam-ul-${reviewer.name}-${idx}`}>{reviewer.name}</li>
       ))}
       {props.reviewTeam && props.reviewTeam?.length > 3 && (
         <li className={"text-xs text-sky-700 hover:cursor-pointer"}>

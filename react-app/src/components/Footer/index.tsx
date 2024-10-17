@@ -1,6 +1,7 @@
 import MedicaidLogo from "@/assets/MedicaidLogo.svg";
 import DepartmentOfHealthLogo from "@/assets/DepartmentOfHealthLogo.svg";
-import { Alert, Button, Link } from "@/components";
+import { Alert, Button } from "@/components";
+import { Link } from "react-router-dom";
 
 type Props = {
   email: string;
@@ -63,7 +64,7 @@ export const FAQFooter = () => {
       className="mb-8 items-center flex py-8 px-14 flex-row text-sm justify-center gap-24"
     >
       <p className="text-lg">Do you have questions or need support?</p>
-      <Link path="/faq" target="_blank">
+      <Link to="/faq" target="_blank">
         <Button className="mx-4" size="lg">
           View FAQ
         </Button>

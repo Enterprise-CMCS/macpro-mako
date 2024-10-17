@@ -16,8 +16,9 @@ import * as CS3 from "./CS3";
 import * as CS7 from "./CS7";
 import * as CS9 from "./CS9";
 import * as CS8 from "./CS8";
-import * as G2A from "./G2A";
+import * as ER from "./ER";
 import * as G1 from "./G1";
+import * as G2A from "./G2A";
 import * as G2B from "./G2B";
 import * as G2C from "./G2C";
 import * as G3 from "./G3";
@@ -78,6 +79,9 @@ export const webformVersions: Record<string, Record<string, FormSchema>> = {
   },
   CS9: {
     v202401: CS9.v202401,
+  },
+  ER: {
+    v202401: ER.v202401,
   },
   G1: {
     v202401: G1.v202401,

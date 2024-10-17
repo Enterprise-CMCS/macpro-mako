@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { getExport } from ".";
+import { getExport } from "./cloudformation";
 
 const mockSend = vi.fn();
 

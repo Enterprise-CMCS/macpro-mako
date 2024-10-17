@@ -1,8 +1,8 @@
 import { useGetAllForms } from "@/api";
-import { Link } from "@/components";
 import { SubNavHeader } from "../../components/Layout";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { MaintenanceBanner } from "@/components/MaintenanceBanner";
+import { Link } from "react-router-dom";
 
 export const WebformsList = () => {
   const { data, isLoading } = useGetAllForms();
@@ -40,8 +40,7 @@ export const WebformsList = () => {
                       <td>
                         <Link
                           className="cursor-pointer text-blue-600"
-                          path="/webform/:id/:version"
-                          params={{ id: key.toLowerCase(), version: version }}
+                          to={`/webform/${key.toLowerCase()}/${version}`}
                         >
                           link
                         </Link>
@@ -55,7 +54,7 @@ export const WebformsList = () => {
           <div className="mt-2">
             <Link
               className="cursor-pointer text-blue-600 ml-0"
-              path="/guides/abp"
+              to="/guides/abp"
             >
               Implementation Guide
             </Link>

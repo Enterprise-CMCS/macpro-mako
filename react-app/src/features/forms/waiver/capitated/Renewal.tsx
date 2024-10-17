@@ -8,15 +8,16 @@ import {
   RequiredIndicator,
   Input,
   DatePicker,
-  FAQ_TAB,
 } from "@/components";
 import { Link } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
+import { FAQ_TAB } from "@/router";
 
 export const Renewal = () => (
   <ActionForm
     schema={formSchemas["capitated-renewal"]}
     title="1915(b) Comprehensive (Capitated) Renewal Waiver Details"
+    breadcrumbText="1915(b) Comprehensive (Capitated) Renewal Waiver"
     fields={({ control }) => (
       <>
         <div className="flex flex-col">
@@ -126,6 +127,5 @@ export const Renewal = () => (
       property: "id",
       documentChecker: (check) => check.recordExists,
     }}
-    tab={"waivers"}
   />
 );

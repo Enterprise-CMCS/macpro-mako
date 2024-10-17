@@ -1,4 +1,4 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect, vi } from "vitest";
 import { render } from "@testing-library/react";
 import { RHFDocument, documentInitializer } from "..";
 import { Form } from "../../Inputs";
@@ -48,6 +48,16 @@ const testDocData: FormSchema = {
     },
   ],
 };
+
+vi.mock("@/api", async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...(actual as object),
+    useGetCounties: vi.fn(() => {
+      return { data: [], isLoading: false, error: null };
+    }),
+  };
+});
 
 describe("Section Tests", () => {
   test("renders, subsections distinct", () => {

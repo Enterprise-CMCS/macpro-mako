@@ -1,6 +1,5 @@
 import * as dateFns from "date-fns";
 import {
-  Action,
   Attachment,
   AttachmentKey,
   AttachmentTitle,
@@ -12,10 +11,12 @@ import * as EmailContent from "./content";
 
 export type UserType = "cms" | "state";
 export interface CommonVariables {
+  to: string;
   id: string;
   territory: string;
   applicationEndpointUrl: string;
   actionType: string;
+  allStateUsersEmails: string[];
 }
 
 export const formatAttachments = (
@@ -74,114 +75,33 @@ export function formatNinetyDaysDate(date: number | null | undefined): string {
 }
 
 export interface EmailTemplate {
+  to: string[];
+  cc?: string[];
   subject: string;
   html: string;
   text?: string;
 }
 
-type EmailTemplateFunction<T> = (variables: T) => Promise<EmailTemplate>;
-type UserTypeOnlyTemplate = { [U in UserType]: EmailTemplateFunction<any> };
-type AuthoritiesWithUserTypesTemplate = {
+export type EmailTemplateFunction<T> = (variables: T) => Promise<EmailTemplate>;
+export type UserTypeOnlyTemplate = {
+  [U in UserType]: EmailTemplateFunction<any>;
+};
+export type AuthoritiesWithUserTypesTemplate = {
   [A in Authority]?: { [U in UserType]?: EmailTemplateFunction<any> };
 };
 
 export type EmailTemplates = {
-  [K in Action | "new-submission"]?:
+  "new-medicaid-submission":
+    | AuthoritiesWithUserTypesTemplate
+    | UserTypeOnlyTemplate;
+  "new-chip-submission":
     | AuthoritiesWithUserTypesTemplate
     | UserTypeOnlyTemplate;
 };
 
-export const emailTemplates: EmailTemplates = {
-  "new-submission": EmailContent.newSubmission,
-
-  /* 
-    {
-      "medicaid spa": {
-        "cms": "func",
-        "state": "func"
-      },
-      "chip spa": {
-        "cms": "func",
-        "state": "func"
-      },
-      "1915(b)": {
-        "cms": "func",
-        "state": "func"
-      },
-      "1915(c)": {
-        "cms": "func",
-        "state": "func"
-      }
-    }
-  */
-
-  [Action.WITHDRAW_PACKAGE]: EmailContent.withdrawPackage,
-
-  /* 
-    {
-      "medicaid spa": {
-        "cms": "func",
-        "state": "func"
-      },
-      "chip spa": {
-        "cms": "func",
-        "state": "func"
-      },
-      "1915(b)": {
-        "cms": "func",
-        "state": "func"
-      }
-    }
-  */
-
-  [Action.RESPOND_TO_RAI]: EmailContent.respondToRai,
-
-  /* 
-    {
-      "medicaid spa": {
-        "cms": "func",
-        "state": "func"
-      },
-      "chip spa": {
-        "cms": "func",
-        "state": "func"
-      },
-      "1915(b)": {
-        "cms": "func",
-        "state": "func"
-      }
-    }
-  */
-
-  [Action.WITHDRAW_RAI]: EmailContent.withdrawRai,
-
-  /* 
-    {
-      "medicaid spa": {
-        "cms": "func",
-        "state": "func"
-      },
-      "chip spa": {
-        "cms": "func",
-        "state": "func"
-      },
-      "1915(b)": {
-        "cms": "func",
-        "state": "func"
-      },
-      "1915(c)": {
-        "cms": "func"
-      }
-    }
-  */
-
-  [Action.TEMP_EXTENSION]: EmailContent.tempExtention,
-  /* 
-    {
-      "cms": "func",
-      "state": "func"
-    } 
-  */
+export const emailTemplates = {
+  "new-medicaid-submission": EmailContent.newSubmission,
+  "new-chip-submission": EmailContent.newSubmission,
 };
 
 function isAuthorityTemplate(
@@ -192,22 +112,25 @@ function isAuthorityTemplate(
 }
 
 export async function getEmailTemplates<T>(
-  action: Action | "new-submission",
+  action: keyof EmailTemplates,
   authority: Authority,
-): Promise<EmailTemplateFunction<T>[]> {
+): Promise<EmailTemplateFunction<T>[] | null> {
   const template = emailTemplates[action];
-  const emailTemplatesToSend: EmailTemplateFunction<T>[] = [];
-
   if (!template) {
-    throw new Error(`No templates found for action ${action}`);
+    console.log("No template found");
+    return null;
   }
+
+  const emailTemplatesToSend: EmailTemplateFunction<T>[] = [];
 
   if (isAuthorityTemplate(template, authority)) {
     emailTemplatesToSend.push(
       ...Object.values(template[authority] as EmailTemplateFunction<T>),
     );
   } else {
-    emailTemplatesToSend.push(...Object.values(template));
+    emailTemplatesToSend.push(
+      ...Object.values(template as EmailTemplateFunction<T>),
+    );
   }
 
   return emailTemplatesToSend;
@@ -217,9 +140,11 @@ export async function getEmailTemplates<T>(
 export async function getLatestMatchingEvent(id: string, actionType: string) {
   const item = await getPackageChangelog(id);
   const events = item.hits.hits.filter(
-    (hit) => hit._source.actionType === actionType,
+    (hit: any) => hit._source.actionType === actionType,
   );
-  events.sort((a, b) => b._source.timestamp - a._source.timestamp);
+  events.sort((a: any, b: any) => b._source.timestamp - a._source.timestamp);
   const latestMatchingEvent = events[0]._source;
   return latestMatchingEvent;
 }
+
+export * from "./getAllStateUsers";

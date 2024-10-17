@@ -1,7 +1,6 @@
 import {
   ActionForm,
   DatePicker,
-  FAQ_TAB,
   FormControl,
   FormField,
   FormItem,
@@ -12,12 +11,14 @@ import {
 } from "@/components";
 import { Link } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
+import { FAQ_TAB } from "@/router";
 
 export const AmendmentForm = () => {
   return (
     <ActionForm
       schema={formSchemas["contracting-amendment"]}
       title="1915(b)(4) FFS Selective Contracting Waiver Amendment Details"
+      breadcrumbText="1915(b)(4) FFS Selective Contracting Waiver Amendment"
       fields={({ control }) => (
         <>
           <div className="flex flex-col">
@@ -126,7 +127,6 @@ export const AmendmentForm = () => {
         property: "id",
         documentChecker: (check) => check.recordExists,
       }}
-      tab={"waivers"}
     />
   );
 };

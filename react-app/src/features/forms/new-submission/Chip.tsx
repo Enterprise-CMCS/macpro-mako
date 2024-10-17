@@ -1,6 +1,5 @@
 import {
   ActionForm,
-  FAQ_TAB,
   FormControl,
   FormField,
   FormItem,
@@ -13,11 +12,13 @@ import {
 } from "@/components";
 import { Link } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
+import { FAQ_TAB } from "@/router";
 
 export const ChipForm = () => (
   <ActionForm
     title="CHIP SPA Details"
     schema={formSchemas["new-chip-submission"]}
+    breadcrumbText="Submit new CHIP SPA"
     fields={({ control }) => (
       <>
         <FormField
@@ -89,6 +90,5 @@ export const ChipForm = () => (
       cancelButtonText: "Return to form",
       areButtonsReversed: true,
     }}
-    tab={"spas"}
   />
 );

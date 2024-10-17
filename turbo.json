@@ -1,5 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "daemon": false,
   "tasks": {
     "lint": {
       "cache": false
@@ -27,6 +28,14 @@
         "STAGE_NAME",
         "PROJECT"
       ]
+    },
+    "test": {
+      "cache": false,
+      "env": ["STAGE_NAME", "PROJECT"]
+    },
+    "test:coverage": {
+      "cache": false,
+      "env": ["STAGE_NAME", "PROJECT"]
     }
   }
 }

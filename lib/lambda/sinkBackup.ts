@@ -1,7 +1,7 @@
 import { Handler } from "aws-lambda";
 import { KafkaEvent, KafkaRecord } from "shared-types";
 import { ErrorType, logError } from "../libs/sink-lib";
-import _ from "lodash";
+import { sortBy } from "lodash";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 const client = new S3Client({
   maxAttempts: 3,
@@ -13,7 +13,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   try {
     for (const topicPartition of Object.keys(event.records)) {
       const events: KafkaRecord[] = event.records[topicPartition];
-      const orderedEvents = _.sortBy(events, "offset");
+      const orderedEvents = sortBy(events, "offset");
       let consecutiveEvents: KafkaRecord[] = [];
       for (let i = 0; i < orderedEvents.length; i++) {
         consecutiveEvents.push(orderedEvents[i]);

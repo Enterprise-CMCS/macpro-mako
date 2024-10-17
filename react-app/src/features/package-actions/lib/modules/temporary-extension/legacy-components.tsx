@@ -2,7 +2,6 @@ import { Link, useParams } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 import {
-  FAQ_TAB,
   FormControl,
   FormDescription,
   FormField,
@@ -18,6 +17,7 @@ import {
   SelectValue,
 } from "@/components";
 import type { defaultTempExtSchema } from "@/features/package-actions/lib/modules";
+import { FAQ_TAB } from "@/router";
 
 export const TEPackageSection = () => {
   const { id, authority } = useParams();

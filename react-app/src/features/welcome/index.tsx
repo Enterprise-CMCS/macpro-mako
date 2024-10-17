@@ -3,7 +3,9 @@ import OneMacLogo from "@/assets/onemac_logo.svg";
 import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api";
-import { Link, Button, FAQ_TAB } from "@/components";
+import { Button } from "@/components";
+import { Link } from "react-router-dom";
+import { FAQ_TAB } from "@/router";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -186,7 +188,7 @@ export const Welcome = () => {
       <section>
         <div className="flex justify-around items-center text-xl px-10 py-2 max-w-screen-xl mx-auto">
           <h4>Do you have questions or need support?</h4>
-          <Link path={"/faq"} target={FAQ_TAB}>
+          <Link to="/faq" target={FAQ_TAB}>
             <Button>View FAQ</Button>
           </Link>
         </div>

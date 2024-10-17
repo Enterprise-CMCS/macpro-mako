@@ -1,6 +1,5 @@
 import {
   ActionForm,
-  FAQ_TAB,
   FormControl,
   FormDescription,
   FormField,
@@ -17,11 +16,13 @@ import {
 } from "@/components";
 import { Link } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
+import { FAQ_TAB } from "@/router";
 
 export const TemporaryExtensionForm = () => (
   <ActionForm
     schema={formSchemas["temporary-extension"]}
     title="Temporary Extension Request Details"
+    breadcrumbText="Request 1915(b) or 1915(c) Temporary Extension"
     fields={(form) => (
       <>
         <FormField
@@ -140,6 +141,5 @@ export const TemporaryExtensionForm = () => (
       body: "Your submission has been received.",
       variant: "success",
     }}
-    tab={"waivers"}
   />
 );
