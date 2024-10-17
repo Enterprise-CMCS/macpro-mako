@@ -4,12 +4,12 @@
   "private": true,
   "type": "module",
   "description": "",
+  "main": "index.js",
   "scripts": {
     "e2e": "playwright test --project=state-user-chrome",
     "e2e:ui": "playwright test --ui --project=state-user-chrome"
   },
   "dependencies": {
-    "@aws-sdk/credential-providers": "^3.654.0",
     "shared-utils": "*"
   },
   "author": "",

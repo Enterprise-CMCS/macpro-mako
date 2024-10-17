@@ -20,17 +20,17 @@ const baseURL = process.env.STAGE_NAME
 
 console.log(`Playwright configured to run against ${baseURL}`);
 export default defineConfig({
-  // testMatch: "test/e2e/**/*.spec.ts",
+  testDir: ".",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 1 : 0,
+  retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [["html", { outputFolder: "coverage" }]],
+  reporter: "dot",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -44,19 +44,15 @@ export default defineConfig({
   // Note: we can test on multiple browsers and resolutions defined here
   projects: [
     // Setup project
-    {
-      name: "setup",
-      testMatch: "utils/setup.spec.ts",
-    },
+    { name: "setup", testMatch: /.*\.setup\.ts/, fullyParallel: true },
 
     {
       // we can have different projects for different users/use cases
       name: "state-user-chrome",
-      testDir: "tests",
       use: {
         ...devices["Desktop Chrome"],
         // Use prepared auth state for state submitter.
-        storageState: ".auth/state-user.json",
+        storageState: "playwright/.auth/state-user.json",
       },
       // Tests start already authenticated because we specified storageState in the config.
       dependencies: ["setup"],
