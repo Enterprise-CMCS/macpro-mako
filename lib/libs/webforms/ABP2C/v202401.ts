@@ -15,12 +15,12 @@ export const v202401: FormSchema = {
               name: "mandatory-identify-exempt",
               rhf: "Checkbox",
               descriptionAbove: true,
-              descriptionClassName: "text-black text-base",
-              description: [
+              labelClassName: "text-black text-base",
+              styledLabel: [
                 "These assurances must be made by the state/territory if enrollment is mandatory for any of the target populations or subpopulations.",
                 {
                   type: "br",
-                  classname: "font-bold block py-4",
+                  classname: "font-bold block pt-4",
                   text: "When mandatorily enrolling eligibility groups in an Alternative Benefit Plan (ABP) (benchmark or benchmark-equivalent plan) that could have exempt individuals, prior to enrollment:",
                 },
               ],
@@ -283,6 +283,9 @@ export const v202401: FormSchema = {
                   value: noLeadingTrailingWhitespace,
                   message: "Must not have leading or trailing whitespace.",
                 },
+              },
+              props: {
+                className: "min-h-[114px]",
               },
               label: "Describe the process for processing requests.",
               labelClassName: "font-bold text-black",
