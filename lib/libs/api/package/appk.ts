@@ -1,4 +1,4 @@
-import * as os from "libs/opensearch-lib";
+import * as os from "../../opensearch-lib";
 import { opensearch } from "shared-types";
 
 export const getAppkChildren = async (

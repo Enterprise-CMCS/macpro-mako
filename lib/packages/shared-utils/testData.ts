@@ -17,6 +17,7 @@ export const testStateCognitoUser: OneMacUser = {
 export const testStateIDMUser: OneMacUser = {
   isCms: testStateCognitoUser.isCms,
   user: {
+    sub: "0000aaaa-0000-00aa-0a0a-aaaaaa000000",
     ...testStateCognitoUser.user,
     username: "IDM_0000aaaa-0000-00aa-0a0a-aaaaaa000000",
     // @ts-expect-error
@@ -40,6 +41,7 @@ export const testCMSCognitoUser: OneMacUser = {
 export const testCMSIDMUser: OneMacUser = {
   isCms: testCMSCognitoUser.isCms,
   user: {
+    sub: "0000aaaa-0000-00aa-0a0a-aaaaaa000000",
     ...testCMSCognitoUser.user,
     username: "IDM_0000aaaa-0000-00aa-0a0a-aaaaaa000000",
     // @ts-expect-error

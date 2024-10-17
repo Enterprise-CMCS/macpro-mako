@@ -13,71 +13,74 @@ import {
   testStateCognitoUser,
   testStateIDMUser,
 } from "./testData";
-import { CognitoUserAttributes } from "shared-types";
+import type { CognitoUserAttributes, OneMac } from "shared-types";
 
-const cmsHelpDeskUser: CognitoUserAttributes = {
+type User = OneMac & CognitoUserAttributes;
+const cmsHelpDeskUser = {
   ...testCMSCognitoUser.user,
   "custom:cms-roles": "onemac-micro-helpdesk",
 };
-const cmsReadOnlyUser: CognitoUserAttributes = {
+const cmsReadOnlyUser = {
   ...testCMSCognitoUser.user,
   "custom:cms-roles": "onemac-micro-readonly",
 };
-const cmsReviewerUser: CognitoUserAttributes = {
+const cmsReviewerUser = {
   ...testCMSCognitoUser.user,
   "custom:cms-roles": "onemac-micro-reviewer",
 };
-const cmsSuperUser: CognitoUserAttributes = {
+const cmsSuperUser = {
   ...testCMSCognitoUser.user,
   "custom:cms-roles": "onemac-micro-super",
+  sub: testCMSCognitoUser?.user?.sub || "",
+  // Add other required properties with default values if needed
 };
-const stateSubmitterUser: CognitoUserAttributes = testStateCognitoUser.user;
+const stateSubmitterUser = testStateCognitoUser.user;
 
 describe("isCmsUser", () => {
   it("returns true for CMS users", () => {
-    expect(isCmsUser(cmsHelpDeskUser)).toEqual(true);
-    expect(isCmsUser(cmsReadOnlyUser)).toEqual(true);
-    expect(isCmsUser(cmsReviewerUser)).toEqual(true);
-    expect(isCmsUser(cmsSuperUser)).toEqual(true);
+    expect(isCmsUser(cmsHelpDeskUser as User)).toEqual(true);
+    expect(isCmsUser(cmsReadOnlyUser as User)).toEqual(true);
+    expect(isCmsUser(cmsReviewerUser as User)).toEqual(true);
+    expect(isCmsUser(cmsSuperUser as User)).toEqual(true);
   });
   it("returns false for State users", () => {
-    expect(isCmsUser(stateSubmitterUser)).toEqual(false);
+    expect(isCmsUser(stateSubmitterUser as User)).toEqual(false);
   });
 });
 
 describe("isCmsWriteUser", () => {
   it("returns true for CMS Write users", () => {
-    expect(isCmsWriteUser(cmsReviewerUser)).toEqual(true);
+    expect(isCmsWriteUser(cmsReviewerUser as User)).toEqual(true);
   });
   it("returns false for CMS Read-Only users", () => {
-    expect(isCmsWriteUser(cmsReadOnlyUser)).toEqual(false);
-    expect(isCmsWriteUser(cmsHelpDeskUser)).toEqual(false);
+    expect(isCmsWriteUser(cmsReadOnlyUser as User)).toEqual(false);
+    expect(isCmsWriteUser(cmsHelpDeskUser as User)).toEqual(false);
   });
   it("returns false for State users", () => {
-    expect(isCmsWriteUser(stateSubmitterUser)).toEqual(false);
+    expect(isCmsWriteUser(stateSubmitterUser as User)).toEqual(false);
   });
 });
 
 describe("isCmsReadonlyUser", () => {
   it("returns false for CMS Write users", () => {
-    expect(isCmsReadonlyUser(cmsReviewerUser)).toEqual(false);
+    expect(isCmsReadonlyUser(cmsReviewerUser as User)).toEqual(false);
   });
   it("returns true for CMS Read-Only users", () => {
-    expect(isCmsReadonlyUser(cmsReadOnlyUser)).toEqual(true);
-    expect(isCmsReadonlyUser(cmsHelpDeskUser)).toEqual(true);
+    expect(isCmsReadonlyUser(cmsReadOnlyUser as User)).toEqual(true);
+    expect(isCmsReadonlyUser(cmsHelpDeskUser as User)).toEqual(true);
   });
   it("returns false for State users", () => {
-    expect(isCmsReadonlyUser(stateSubmitterUser)).toEqual(false);
+    expect(isCmsReadonlyUser(stateSubmitterUser as User)).toEqual(false);
   });
 });
 
 describe("isStateUser", () => {
   it("returns false for CMS Write users", () => {
-    expect(isStateUser(cmsReviewerUser)).toEqual(false);
+    expect(isStateUser(cmsReviewerUser as User)).toEqual(false);
   });
   it("returns false for CMS Read-Only users", () => {
-    expect(isStateUser(cmsReadOnlyUser)).toEqual(false);
-    expect(isStateUser(cmsHelpDeskUser)).toEqual(false);
+    expect(isStateUser(cmsReadOnlyUser as User)).toEqual(false);
+    expect(isStateUser(cmsHelpDeskUser as User)).toEqual(false);
   });
   it("returns true for State users", () => {
     expect(isStateUser(stateSubmitterUser)).toEqual(true);
@@ -90,7 +93,7 @@ describe("isStateUser", () => {
 
 describe("isCmsSuperUser", () => {
   it("returns true for CMS Super Users", () => {
-    expect(isCmsSuperUser(cmsSuperUser)).toEqual(true);
+    expect(isCmsSuperUser(cmsSuperUser as User)).toEqual(true);
   });
 });
 
