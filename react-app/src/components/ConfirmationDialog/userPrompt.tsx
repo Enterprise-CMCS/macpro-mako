@@ -37,22 +37,18 @@ export const UserPrompt = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Immediate;
     const unsubscribe = userPromptState.subscribe((userPrompt) => {
       if (userPrompt) {
         setActiveUserPrompt(userPrompt);
         setIsOpen(true);
       } else {
         // artificial delay to prevent content from disappearing first
-        timeoutId = setImmediate(() => setActiveUserPrompt(null));
+        setTimeout(() => setActiveUserPrompt(null), 100);
         setIsOpen(false);
       }
     });
 
-    return () => {
-      unsubscribe();
-      if (timeoutId) clearImmediate(timeoutId);
-    };
+    return unsubscribe;
   }, []);
 
   const onCancel = () => {
