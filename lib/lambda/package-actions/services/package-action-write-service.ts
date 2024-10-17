@@ -1,13 +1,13 @@
 import { getIdsToUpdate } from "../get-id-to-update";
 import {
-  IssueRaiDto as MakoIssueRaiDto,
+  // IssueRaiDto as MakoIssueRaiDto,
   RespondToRaiDto as MakoRespondToRai,
   WithdrawRaiDto as MakoWithdrawRai,
   ToggleRaiResponseDto,
   RemoveAppkChildDto as MakoRemoveAppkChild,
   WithdrawPackageDto as MakoWithdrawPackage,
   UpdateIdDto as MakoUpdateId,
-  issueRaiMako,
+  // issueRaiMako,
   respondToRaiMako,
   withdrawPackageMako,
   toggleRaiResponseWithdrawMako,
@@ -15,14 +15,14 @@ import {
   updateIdMako,
 } from "./mako-write-service";
 import {
-  IssueRaiDto as SeaIssueRaiDto,
+  // IssueRaiDto as SeaIssueRaiDto,
   RespondToRaiDto as SeaRespondToRai,
   WithdrawRaiDto as SeaWithdrawRai,
   RemoveAppkChildDto as SeaRemoveAppkChild,
   WithdrawPackageDto as SeaWithdrawPackage,
   UpdateIdDto as SeaUpdateId,
   getTrx,
-  issueRaiSeatool,
+  // issueRaiSeatool,
   respondToRaiSeatool,
   withdrawRaiSeatool,
   removeAppkChildSeatool,
@@ -30,46 +30,46 @@ import {
   updateIdSeatool,
 } from "./seatool-write-service";
 
-export type IssueRaiDto = SeaIssueRaiDto & MakoIssueRaiDto;
+// export type IssueRaiDto = SeaIssueRaiDto & MakoIssueRaiDto;
 export type RespondToRaiDto = SeaRespondToRai & MakoRespondToRai;
 export type WithdrawRaiDto = SeaWithdrawRai & MakoWithdrawRai;
 export type RemoveAppkChildDto = SeaRemoveAppkChild & MakoRemoveAppkChild;
 export type WithdrawPackageDto = SeaWithdrawPackage & MakoWithdrawPackage;
 export type UpdateIdDto = SeaUpdateId & MakoUpdateId;
 
-export const issueRaiAction = async ({
-  action,
-  id,
-  spwStatus,
-  today,
-  timestamp,
-  topicName,
-  ...data
-}: IssueRaiDto) => {
-  const { trx } = await getTrx();
+// export const issueRaiAction = async ({
+//   action,
+//   id,
+//   spwStatus,
+//   today,
+//   timestamp,
+//   topicName,
+//   ...data
+// }: IssueRaiDto) => {
+//   const { trx } = await getTrx();
 
-  try {
-    await trx.begin();
-    const idsToUpdate = await getIdsToUpdate(id);
+//   try {
+//     await trx.begin();
+//     const idsToUpdate = await getIdsToUpdate(id);
 
-    for (const id of idsToUpdate) {
-      await issueRaiSeatool({ id, spwStatus, today });
-      await issueRaiMako({
-        action,
-        id,
-        timestamp,
-        topicName,
-        ...data,
-      });
-    }
+//     for (const id of idsToUpdate) {
+//       await issueRaiSeatool({ id, spwStatus, today });
+//       await issueRaiMako({
+//         action,
+//         id,
+//         timestamp,
+//         topicName,
+//         ...data,
+//       });
+//     }
 
-    await trx.commit();
-  } catch (err: unknown) {
-    await trx.rollback();
+//     await trx.commit();
+//   } catch (err: unknown) {
+//     await trx.rollback();
 
-    console.error(err);
-  }
-};
+//     console.error(err);
+//   }
+// };
 
 export const respondToRaiAction = async ({
   action,

@@ -3,11 +3,11 @@ import { buildStatusMemoQuery } from "../../../libs/api/statusMemo";
 import { formatSeatoolDate, getSecret } from "shared-utils";
 import * as sql from "mssql";
 
-export type IssueRaiDto = {
-  id: string;
-  today: number;
-  spwStatus: string;
-};
+// export type IssueRaiDto = {
+//   id: string;
+//   today: number;
+//   spwStatus: string;
+// };
 
 export type RespondToRaiDto = {
   id: string;
@@ -82,32 +82,32 @@ export const getTrx = async () => {
   return { trx: transaction };
 };
 
-export const issueRaiSeatool = async ({
-  id,
-  spwStatus,
-  today,
-}: IssueRaiDto) => {
-  const { trx } = await getTrx();
+// export const issueRaiSeatool = async ({
+//   id,
+//   spwStatus,
+//   today,
+// }: IssueRaiDto) => {
+//   const { trx } = await getTrx();
 
-  // Issue RAI
-  const query1 = `
-    Insert into SEA.dbo.RAI (ID_Number, RAI_Requested_Date)
-      values ('${id}'
-      ,dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)))
-    `;
-  await trx.request().query(query1);
+//   // Issue RAI
+//   const query1 = `
+//     Insert into SEA.dbo.RAI (ID_Number, RAI_Requested_Date)
+//       values ('${id}'
+//       ,dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)))
+//     `;
+//   await trx.request().query(query1);
 
-  // Update Status
-  const query2 = `
-    UPDATE SEA.dbo.State_Plan
-    SET 
-      SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${spwStatus}'),
-      Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
-      Status_Memo = ${buildStatusMemoQuery(id, "RAI Issued")}
-    WHERE ID_Number = '${id}'
-    `;
-  await trx.request().query(query2);
-};
+//   // Update Status
+//   const query2 = `
+//     UPDATE SEA.dbo.State_Plan
+//     SET 
+//       SPW_Status_ID = (SELECT SPW_Status_ID FROM SEA.dbo.SPW_Status WHERE SPW_Status_DESC = '${spwStatus}'),
+//       Status_Date = dateadd(s, convert(int, left(${today}, 10)), cast('19700101' as datetime)),
+//       Status_Memo = ${buildStatusMemoQuery(id, "RAI Issued")}
+//     WHERE ID_Number = '${id}'
+//     `;
+//   await trx.request().query(query2);
+// };
 
 export const respondToRaiSeatool = async ({
   id,
