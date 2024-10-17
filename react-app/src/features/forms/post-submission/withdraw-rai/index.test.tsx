@@ -7,7 +7,7 @@ let container: HTMLElement;
 
 describe("Withdraw RAI for Medicaid SPAs", () => {
   beforeAll(() => {
-    const { container } = renderForm(<WithdrawRaiForm />);
+    const { container: renderedContainer } = renderForm(<WithdrawRaiForm />);
     container = renderedContainer;
   });
 
