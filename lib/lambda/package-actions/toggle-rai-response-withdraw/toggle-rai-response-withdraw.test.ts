@@ -1,6 +1,6 @@
 import { toggleRaiResponseWithdraw } from "./toggle-rai-response-withdraw";
 import { vi, describe, it, expect } from "vitest";
-import { Action, toggleWithdrawRaiEnabledSchema } from "shared-types";
+import { Action, events } from "shared-types";
 import { generateMock } from "@anatine/zod-mock";
 import * as packageActionWriteService from "../services/package-action-write-service";
 
@@ -25,7 +25,7 @@ describe("toggleRaiResponseWithdraw", async () => {
       "toggleRaiResponseWithdrawAction",
     );
 
-    const mockData = generateMock(toggleWithdrawRaiEnabledSchema);
+    const mockData = generateMock(events["toggle-withdraw-rai"].baseSchema);
     const toggleRaiWithdraw = await toggleRaiResponseWithdraw(mockData);
 
     expect(packageWriteSpy).toHaveBeenCalledOnce();
@@ -38,7 +38,7 @@ describe("toggleRaiResponseWithdraw", async () => {
       "toggleRaiResponseWithdrawAction",
     );
 
-    const mockData = generateMock(toggleWithdrawRaiEnabledSchema);
+    const mockData = generateMock(events["toggle-withdraw-rai"].baseSchema);
     await toggleRaiResponseWithdraw({ ...mockData, toggle: true });
 
     expect(packageWriteSpy).toHaveBeenCalledWith(
@@ -49,7 +49,7 @@ describe("toggleRaiResponseWithdraw", async () => {
   });
 
   it("calls package write service with action set to Disable RAI when toggle set to false", async () => {
-    const mockData = generateMock(toggleWithdrawRaiEnabledSchema);
+    const mockData = generateMock(events["toggle-withdraw-rai"].baseSchema);
     await toggleRaiResponseWithdraw(mockData);
   });
 });

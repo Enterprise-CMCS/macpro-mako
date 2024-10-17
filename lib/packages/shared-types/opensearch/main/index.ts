@@ -21,7 +21,7 @@ import {
   issueRai,
   respondToRai,
   withdrawRai,
-  toggleWithdrawEnabled,
+  toggleWithdrawRai,
   seatool,
   changedDate,
   temporaryExtension,
@@ -41,7 +41,7 @@ export type Document = z.infer<capitatedAmendment.Schema> &
   z.infer<respondToRai.Schema> &
   z.infer<withdrawRai.Schema> &
   z.infer<withdrawPackage.Schema> &
-  z.infer<toggleWithdrawEnabled.Schema> &
+  z.infer<toggleWithdrawRai.Schema> &
   z.infer<seatool.Schema> &
   z.infer<changedDate.Schema> & {
     makoChangedDate: string;
@@ -72,4 +72,6 @@ export const transforms = {
   "contracting-initial": contractingInitial,
   "contracting-renewal": contractingRenewal,
   "temporary-extension": temporaryExtension,
+  "withdraw-rai": withdrawRai,
+  "toggle-withdraw-rai": toggleWithdrawRai,
 };

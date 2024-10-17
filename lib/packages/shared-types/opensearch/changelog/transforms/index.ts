@@ -9,3 +9,5 @@ export * as contractingRenewal from "./contracting-renewal";
 export * as newChipSubmission from "./new-chip-submission";
 export * as newMedicaidSubmission from "./new-medicaid-submission";
 export * as temporaryExtension from "./temporary-extension";
+export * as withdrawRai from "./withdraw-rai";
+export * as toggleWithdrawRai from "./toggle-withdraw-rai";

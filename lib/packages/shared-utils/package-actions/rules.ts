@@ -60,8 +60,7 @@ const arEnableWithdrawRaiResponse: ActionRule = {
     checker.hasRaiResponse &&
     !checker.hasEnabledRaiWithdraw &&
     isCmsWriteUser(user) &&
-    !checker.hasStatus(finalDispositionStatuses) &&
-    false,
+    !checker.hasStatus(finalDispositionStatuses),
 };
 
 const arDisableWithdrawRaiResponse: ActionRule = {
@@ -72,8 +71,7 @@ const arDisableWithdrawRaiResponse: ActionRule = {
     checker.hasRaiResponse &&
     checker.hasEnabledRaiWithdraw &&
     isCmsWriteUser(user) &&
-    !checker.hasStatus(finalDispositionStatuses) &&
-    false,
+    !checker.hasStatus(finalDispositionStatuses),
 };
 
 const arWithdrawRaiResponse: ActionRule = {
@@ -85,8 +83,7 @@ const arWithdrawRaiResponse: ActionRule = {
     // safety; prevent bad status from causing overwrite
     !checker.hasRaiWithdrawal &&
     checker.hasEnabledRaiWithdraw &&
-    isStateUser(user) &&
-    false,
+    isStateUser(user),
 };
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
