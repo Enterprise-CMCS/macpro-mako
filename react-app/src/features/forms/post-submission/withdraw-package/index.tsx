@@ -62,6 +62,11 @@ export const WithdrawPackageActionChip = () => {
         outerInstructions:
           "Official withdrawal letters are required and must be on state letterhead signed by the State Medicaid Director or CHIP Director.",
       }}
+      bannerPostSubmission={{
+        header: "Package withdrawn",
+        body: `The package ${id} has been withdrawn.`,
+        variant: "success",
+      }}
       documentPollerArgs={{
         property: "id",
         documentChecker: (check) => check.recordExists,
