@@ -5,6 +5,7 @@ export const seatoolOfficerSchema = z.object({
   OFFICER_ID: z.number(),
   FIRST_NAME: z.string(),
   LAST_NAME: z.string(),
+  EMAIL: z.string(),
 });
 export type SeatoolOfficer = z.infer<typeof seatoolOfficerSchema>;
 

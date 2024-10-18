@@ -19,10 +19,16 @@ if (!indexNamespace || !osDomain) {
 const index: Index = `${process.env.indexNamespace}main`;
 
 export const handler: Handler<KafkaEvent> = async (event) => {
+  console.log("event");
+  console.log(JSON.stringify(event, null, 2));
   const loggableEvent = { ...event, records: "too large to display" };
+  console.log("loggableEvent");
+  console.log(loggableEvent);
   try {
     for (const topicPartition of Object.keys(event.records)) {
       const topic = getTopic(topicPartition);
+      console.log("topics");
+      console.log(topic);
       switch (topic) {
         case undefined:
           logError({ type: ErrorType.BADTOPIC });
