@@ -1,6 +1,5 @@
 export * from "./consts";
 export * from "./get-id-to-update";
-export * from "./issue-rai/issue-rai";
 export * from "./remove-appk-child/remove-appk-child";
 export * from "./respond-to-rai/respond-to-rai";
 export * from "./toggle-rai-response-withdraw/toggle-rai-response-withdraw";

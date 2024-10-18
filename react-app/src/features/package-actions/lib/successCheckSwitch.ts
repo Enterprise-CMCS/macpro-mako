@@ -2,7 +2,6 @@ import { Action } from "shared-types";
 import {
   idUpdated,
   packageWithdrawn,
-  raiIssued,
   raiRespondedTo,
   raiWithdrawalDisabled,
   raiWithdrawalEnabled,
@@ -13,7 +12,6 @@ import { CheckDocumentFunction } from "@/utils/Poller/documentPoller";
 
 export const successCheckSwitch = (a: Action) => {
   const actionStatusMap: Record<string, CheckDocumentFunction> = {
-    "issue-rai": raiIssued,
     "respond-to-rai": raiRespondedTo,
     "enable-rai-withdraw": raiWithdrawalEnabled,
     "disable-rai-withdraw": raiWithdrawalDisabled,

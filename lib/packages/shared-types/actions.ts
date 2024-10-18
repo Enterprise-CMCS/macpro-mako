@@ -2,7 +2,6 @@ import { CognitoUserAttributes } from "./user";
 import { IPackageCheck } from "shared-utils";
 
 export enum Action {
-  ISSUE_RAI = "issue-rai",
   RESPOND_TO_RAI = "respond-to-rai",
   ENABLE_RAI_WITHDRAW = "enable-rai-withdraw",
   DISABLE_RAI_WITHDRAW = "disable-rai-withdraw",
