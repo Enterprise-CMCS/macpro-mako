@@ -6,7 +6,6 @@ import {
   chipWithdrawPackageFields,
   defaultDisableRaiWithdrawFields,
   defaultEnableRaiWithdrawFields,
-  // defaultIssueRaiFields,
   defaultTempExtFields,
   defaultUpdateIdFields,
   defaultWithdrawPackageFields,
@@ -16,13 +15,6 @@ import {
 } from "@/features/package-actions/lib/modules";
 
 type FieldsGroup = Record<AuthorityUnion, ReactElement[] | undefined>;
-
-// const issueRaiFor: FieldsGroup = {
-//   "CHIP SPA": defaultIssueRaiFields,
-//   "Medicaid SPA": defaultIssueRaiFields,
-//   "1915(b)": defaultIssueRaiFields,
-//   "1915(c)": defaultIssueRaiFields,
-// };
 
 const respondToRaiFor: FieldsGroup = {
   "CHIP SPA": chipSpaRaiFields,
@@ -75,7 +67,6 @@ const updateIdFor: FieldsGroup = {
 
 export const getFieldsFor = (a: Action, p: AuthorityUnion): ReactElement[] => {
   const fieldsGroupMap: Record<string, FieldsGroup> = {
-    // "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,
     "enable-rai-withdraw": enableRaiWithdrawFor,
     "disable-rai-withdraw": disableRaiWithdrawFor,

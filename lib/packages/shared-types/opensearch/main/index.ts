@@ -17,8 +17,6 @@ import {
   newChipSubmission,
   newMedicaidSubmission,
   legacyPackageView,
-  withdrawPackage,
-  // issueRai,
   respondToRai,
   withdrawRai,
   toggleWithdrawEnabled,
@@ -37,7 +35,6 @@ export type Document = z.infer<capitatedAmendment.Schema> &
   z.infer<newMedicaidSubmission.Schema> &
   z.infer<temporaryExtension.Schema> &
   z.infer<legacyPackageView.Schema> &
-  // z.infer<issueRai.Schema> &
   z.infer<respondToRai.Schema> &
   z.infer<withdrawRai.Schema> &
   z.infer<withdrawPackage.Schema> &

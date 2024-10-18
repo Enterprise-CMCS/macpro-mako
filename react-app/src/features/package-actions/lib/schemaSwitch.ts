@@ -4,7 +4,6 @@ import {
   bWaiverRaiSchema,
   chipSpaRaiSchema,
   chipWithdrawPackageSchema,
-  // defaultIssueRaiSchema,
   defaultTempExtSchema,
   defaultWithdrawPackageSchema,
   defaultWithdrawRaiSchema,
@@ -14,13 +13,6 @@ import {
 
 type Schema = ZodObject<ZodRawShape> | ZodEffects<ZodType>;
 type SchemaGroup = Record<AuthorityUnion, Schema | undefined | null>;
-
-// const issueRaiFor: SchemaGroup = {
-//   "CHIP SPA": defaultIssueRaiSchema,
-//   "Medicaid SPA": defaultIssueRaiSchema,
-//   "1915(b)": defaultIssueRaiSchema,
-//   "1915(c)": defaultIssueRaiSchema,
-// };
 
 const respondToRaiFor: SchemaGroup = {
   "CHIP SPA": chipSpaRaiSchema,
@@ -73,7 +65,6 @@ const updateIdFor: SchemaGroup = {
 
 export const getSchemaFor = (a: Action, p: AuthorityUnion): Schema | null => {
   const actionSchemaMap: Record<string, SchemaGroup> = {
-    // "issue-rai": issueRaiFor,
     "respond-to-rai": respondToRaiFor,
     "enable-rai-withdraw": enableRaiWithdrawFor,
     "disable-rai-withdraw": disableRaiWithdrawFor,
