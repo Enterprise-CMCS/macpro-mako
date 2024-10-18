@@ -19,6 +19,7 @@ export const withdrawPackageSchema = z.object({
   submitterName: z.string(),
   submitterEmail: z.string(),
   timestamp: z.number().optional(),
+  submissionDate: z.number().optional(),
 });
 
 export type WithdrawPackage = z.infer<typeof withdrawPackageSchema>;

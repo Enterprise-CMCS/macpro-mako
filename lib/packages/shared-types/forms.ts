@@ -23,7 +23,7 @@ export interface FormSchema {
 
 export type AdditionalRule =
   | {
-      type: "lessThanField" | "greaterThanField";
+      type: "lessThanField" | "greaterThanField" | "noOverlappingAges";
       strictGreater?: boolean;
       fieldName: string;
       message: string;

@@ -13,7 +13,7 @@ import { Authority, SEATOOL_AUTHORITIES } from "shared-types";
 function getLeadAnalyst(eventData: SeaTool) {
   let leadAnalystOfficerId: null | number = null;
   let leadAnalystName: null | string = null;
-
+  let leadAnalystEmail: null | string = null;
   if (
     eventData.LEAD_ANALYST &&
     Array.isArray(eventData.LEAD_ANALYST) &&
@@ -26,11 +26,13 @@ function getLeadAnalyst(eventData: SeaTool) {
     if (leadAnalyst) {
       leadAnalystOfficerId = leadAnalyst.OFFICER_ID;
       leadAnalystName = `${leadAnalyst.FIRST_NAME} ${leadAnalyst.LAST_NAME}`;
+      leadAnalystEmail = leadAnalyst.EMAIL;
     }
   }
   return {
     leadAnalystOfficerId,
     leadAnalystName,
+    leadAnalystEmail,
   };
 }
 
@@ -76,8 +78,13 @@ const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
 
 const compileSrtList = (
   officers: SeatoolOfficer[] | null | undefined,
-): string[] =>
-  officers?.length ? officers.map((o) => `${o.FIRST_NAME} ${o.LAST_NAME}`) : [];
+): { name: string; email: string }[] =>
+  officers?.length
+    ? officers.map((o) => ({
+        name: `${o.FIRST_NAME} ${o.LAST_NAME}`,
+        email: o.EMAIL,
+      }))
+    : [];
 
 const getFinalDispositionDate = (status: string, record: SeaTool) => {
   return status && finalDispositionStatuses.includes(status)
@@ -119,7 +126,8 @@ const getAuthority = (authorityId: number | null) => {
 
 export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
-    const { leadAnalystName, leadAnalystOfficerId } = getLeadAnalyst(data);
+    const { leadAnalystName, leadAnalystOfficerId, leadAnalystEmail } =
+      getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
       getRaiDate(data);
     const seatoolStatus = data.STATE_PLAN.SPW_STATUS_ID
@@ -137,6 +145,7 @@ export const transform = (id: string) => {
       description: data.STATE_PLAN.SUMMARY_MEMO,
       finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
       leadAnalystOfficerId,
+      leadAnalystEmail,
       initialIntakeNeeded:
         !leadAnalystName && !finalDispositionStatuses.includes(seatoolStatus),
       leadAnalystName,
