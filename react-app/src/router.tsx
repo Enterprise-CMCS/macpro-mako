@@ -2,7 +2,10 @@ import { createBrowserRouter } from "react-router-dom";
 import * as F from "@/features";
 import * as C from "@/components";
 import { QueryClient } from "@tanstack/react-query";
-import { PostSubmissionWrapper } from "@/features/forms/post-submission/post-submission-forms";
+import {
+  postSubmissionLoader,
+  PostSubmissionWrapper,
+} from "@/features/forms/post-submission/post-submission-forms";
 export const queryClient = new QueryClient();
 
 export const FAQ_TAB = "faq-tab";
@@ -107,8 +110,8 @@ export const router = createBrowserRouter([
       },
       {
         path: "/actions/:type/:authority/:id",
-        // element: <h1>Hello</h1>,
         element: <PostSubmissionWrapper />,
+        loader: postSubmissionLoader,
       },
       { path: "/action/:authority/:id/:type", element: <F.ActionPage /> },
       { path: "/webforms", element: <F.WebformsList /> },
