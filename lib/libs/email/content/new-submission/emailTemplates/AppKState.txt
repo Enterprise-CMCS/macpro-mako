@@ -1,7 +1,7 @@
 import * as React from "react";
 import { DateTime } from "luxon";
 import { Html, Container } from "@react-email/components";
-import { OneMac } from "shared-types";
+// import { OneMac } from "shared-types";
 import { CommonVariables, formatNinetyDaysDate } from "../../..";
 import {
   PackageDetails,
@@ -11,7 +11,8 @@ import {
 import { emailTemplateValue } from "../data";
 
 export const AppKStateEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: // Onemac &&
+  CommonVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -56,7 +57,10 @@ export const AppKStateEmail = (props: {
 const AppKStateEmailPreview = () => {
   return (
     <AppKStateEmail
-      variables={emailTemplateValue as OneMac & CommonVariables}
+      variables={
+        emailTemplateValue as // OneMac &
+        CommonVariables
+      }
     />
   );
 };

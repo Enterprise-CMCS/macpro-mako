@@ -2,7 +2,7 @@ import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 
 import { submissionPayloads } from "./submissionPayloads";
-import { produceMessage } from "../../libs/api/kafka";
+import { produceMessage } from "libs/api/kafka";
 import { BaseSchemas } from "shared-types/events";
 
 export const submit = async (event: APIGatewayEvent) => {

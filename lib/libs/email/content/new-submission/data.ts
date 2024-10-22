@@ -1,21 +1,15 @@
-export const key = "C0-24-8110";
-
 export const emailTemplateValue = {
-  id: "PACKAGE ID",
+  to: "George Harrison <george@example.com>",
+  id: "C0-24-8110",
   territory: "CO",
   applicationEndpointUrl: "https://onemac.cms.gov/",
-  timestamp: 1723390633663,
-  authority: "AUTHORITY",
-  seaActionType: "Amend",
-  actionType: "ACTION TYPE",
-  origin: "micro",
-  appkParentId: null,
-  originalWaiverNumber: null,
-  additionalInformation: "This bens additional infornormaiton",
+  authority: "CHIP SPA",
+  timestamp: 1121234556,
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",
+  additionalInformation: "This is additional information",
   attachments: {
-    cmsForm179: {
+    currentStatePlan: {
       files: [
         {
           filename: "test.pdf",
@@ -27,7 +21,7 @@ export const emailTemplateValue = {
       ],
       label: "CMS Form 179",
     },
-    spaPages: {
+    amendedLanguage: {
       files: [
         {
           filename: "test1.pdf",
@@ -54,19 +48,22 @@ export const emailTemplateValue = {
       label: "SPA Pages",
     },
     coverLetter: {
+      files: [
+        {
+          filename: "cover-leter.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
+          uploadDate: 1728493784252,
+        },
+      ],
       label: "Cover Letter",
     },
-    tribalEngagement: {
+    budgetDocuments: {
       label: "Document Demonstrating Good-Faith Tribal Engagement",
     },
-    existingStatePlanPages: {
-      label: "Existing State Plan Page(s)",
-    },
     publicNotice: {
-      label: "Public Notice",
-    },
-    sfq: {
-      label: "Standard Funding Questions (SFQs)",
+      label: "Existing State Plan Page(s)",
     },
     tribalConsultation: {
       label: "Tribal Consultation",
@@ -75,14 +72,10 @@ export const emailTemplateValue = {
       label: "Other",
     },
   },
-  raiWithdrawEnabled: false,
-  notificationMetadata: {
-    submissionDate: 1723420800000,
-    proposedEffectiveDate: 1725062400000,
-  },
+  proposedEffectiveDate: 1725062400000,
 };
 
-export const sucessfullRepsonse = {
+export const successfulResponse = {
   $metadata: {
     httpStatusCode: 200,
     requestId: "d1e89223-05e6-4aad-9c7a-c93ac045e2ef",

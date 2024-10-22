@@ -1,6 +1,5 @@
-import * as React from "react";
 import { emailTemplateValue } from "../data";
-import { OneMac } from "shared-types";
+import { Events } from "shared-types";
 import { CommonVariables } from "../../..";
 import { Html, Container } from "@react-email/components";
 import {
@@ -10,7 +9,7 @@ import {
 } from "../../email-components";
 
 export const ChipSpaCMSEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: Events["NewChipSubmission"] & CommonVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -40,7 +39,12 @@ export const ChipSpaCMSEmail = (props: {
 const ChipSpaCMSEmailPreview = () => {
   return (
     <ChipSpaCMSEmail
-      variables={emailTemplateValue as OneMac & CommonVariables}
+      variables={{
+        ...emailTemplateValue,
+        event: "new-chip-submission",
+        actionType: "Amend",
+        origin: "mako",
+      }}
     />
   );
 };

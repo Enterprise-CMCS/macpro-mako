@@ -1,8 +1,9 @@
-import * as React from "react";
 import { Text, Link, Section } from "@react-email/components";
 import { Attachment } from "shared-types";
 
-type AttachmentsType = { ["string"]: { files: Attachment[]; label: "string" } };
+type AttachmentsType = {
+  [key: string]: { files?: Attachment[]; label: string };
+};
 
 export const LoginInstructions = (props: { appEndpointURL: string }) => {
   return (
@@ -30,14 +31,10 @@ export const LoginInstructions = (props: { appEndpointURL: string }) => {
 
 export const Attachments = (props: { attachments: AttachmentsType }) => {
   //check if empty
-  const areAllAttachmentsEmpty = (attachments: AttachmentsType) => {
-    let key: keyof typeof attachments;
-    for (key in attachments) {
-      if (attachments[key].files.length > 0) {
-        return false;
-      }
-    }
-    return true;
+  const areAllAttachmentsEmpty = (attachments: AttachmentsType): boolean => {
+    return Object.values(attachments).every(
+      ({ files }) => !files || files.length === 0,
+    );
   };
 
   // return if empty
@@ -73,7 +70,7 @@ export const Attachments = (props: { attachments: AttachmentsType }) => {
               props.attachments[key].files,
             );
             return (
-              <li key={key + idx}>
+              <li key={key + String(idx)}>
                 {title}: {filenames}
               </li>
             );
@@ -86,7 +83,7 @@ export const Attachments = (props: { attachments: AttachmentsType }) => {
 
 export const PackageDetails = (props: {
   details: { [key: string]: string | null | undefined };
-  attachments?: AttachmentsType | null;
+  attachments: AttachmentsType | null;
 }) => {
   return (
     <Section>

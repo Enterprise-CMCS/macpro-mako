@@ -16,7 +16,7 @@ export interface CommonVariables {
   territory: string;
   applicationEndpointUrl: string;
   actionType: string;
-  allStateUsersEmails: string[];
+  allStateUsersEmails?: string[];
 }
 
 export const formatAttachments = (
