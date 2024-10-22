@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
 import { handler } from "./item";
-import { response } from "libs/handler-lib";
+import { response } from "../libs/handler-lib";
 import { getStateFilter } from "../libs/api/auth/user";
 import {
   getAppkChildren,
@@ -42,8 +42,8 @@ describe("getItemData Handler", () => {
 
   it("should return 401 if not authorized to view this resource", async () => {
     const packageData = { found: true, _source: { state: "test-state" } };
-    (getPackage as vi.Mock).mockResolvedValueOnce(packageData);
-    (getStateFilter as vi.Mock).mockResolvedValueOnce({
+    (getPackage as Mock).mockResolvedValueOnce(packageData);
+    (getStateFilter as Mock).mockResolvedValueOnce({
       terms: { state: ["other-state"] },
     });
 
@@ -75,12 +75,12 @@ describe("getItemData Handler", () => {
       hits: { hits: [{ _source: { change: "change-data" } }] },
     };
 
-    (getPackage as vi.Mock).mockResolvedValueOnce(packageData);
-    (getStateFilter as vi.Mock).mockResolvedValueOnce({
+    (getPackage as Mock).mockResolvedValueOnce(packageData);
+    (getStateFilter as Mock).mockResolvedValueOnce({
       terms: { state: ["test-state"] },
     });
-    (getAppkChildren as vi.Mock).mockResolvedValueOnce(childrenData);
-    (getPackageChangelog as vi.Mock).mockResolvedValueOnce(changelogData);
+    (getAppkChildren as Mock).mockResolvedValueOnce(childrenData);
+    (getPackageChangelog as Mock).mockResolvedValueOnce(changelogData);
 
     const event = {
       body: JSON.stringify({ id: "test-id" }),
@@ -102,7 +102,7 @@ describe("getItemData Handler", () => {
   });
 
   it("should return 500 if an error occurs during processing", async () => {
-    (getPackage as vi.Mock).mockRejectedValueOnce(new Error("Test error"));
+    (getPackage as Mock).mockRejectedValueOnce(new Error("Test error"));
 
     const event = {
       body: JSON.stringify({ id: "test-id" }),
@@ -112,7 +112,10 @@ describe("getItemData Handler", () => {
 
     expect(response).toHaveBeenCalledWith({
       statusCode: 500,
-      body: { message: "Internal server error" },
+      body: {
+        error: new Error("Test error"),
+        message: "Test error",
+      },
     });
   });
 });

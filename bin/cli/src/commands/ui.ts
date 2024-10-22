@@ -12,11 +12,13 @@ export const ui = {
   builder: (yargs: Argv) => {
     return yargs.option("stage", { type: "string", demandOption: false });
   },
+
   handler: async (options: { stage?: string }) => {
     await checkIfAuthenticated();
     const stage = options.stage || (await setStageFromBranch());
+
     await writeUiEnvFile(stage, true);
     await runCommand("bun", ["run", "build"], "react-app");
-    await runCommand("bun", ["run", "dev"], `react-app`);
+    await runCommand(`bun`, ["run", "dev"], "react-app");
   },
 };
