@@ -11,6 +11,7 @@ export const transform = () => {
         : null,
       cmsStatus,
       stateStatus,
+      finalDispositionDate: new Date(data.timestamp).toISOString(),
       seatoolStatus: SEATOOL_STATUS.WITHDRAWN,
       locked: true,
     };
