@@ -47,7 +47,6 @@ import {
 } from "./actionForm.utilities";
 import { isStateUser } from "shared-utils";
 import { useGetUser } from "@/api";
-
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {
     attachments?: z.ZodObject<{
@@ -57,8 +56,11 @@ type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
       }>;
     }>;
     additionalInformation?:
-    | z.ZodDefault<z.ZodNullable<z.ZodString>>
-    | z.ZodEffects<z.ZodTypeAny>;
+      | z.ZodOptional<z.ZodString>
+      | z.ZodOptional<z.ZodDefault<z.ZodNullable<z.ZodString>>>
+      | z.ZodDefault<z.ZodNullable<z.ZodString>>
+      | z.ZodEffects<z.ZodTypeAny>
+      | z.ZodNullable<z.ZodAny>;
   },
   "strip",
   z.ZodTypeAny
@@ -85,11 +87,12 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   attachments?: {
     faqLink: string;
     specialInstructions?: string;
+    outerInstructions?: string;
   };
   documentPollerArgs: {
     property:
-    | (keyof z.TypeOf<Schema> & string)
-    | ((values: z.TypeOf<Schema>) => string);
+      | (keyof z.TypeOf<Schema> & string)
+      | ((values: z.TypeOf<Schema>) => string);
     documentChecker: CheckDocumentFunction;
   };
   conditionsDeterminingUserAccess?: ((
@@ -302,7 +305,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               onClick={
                 promptPreSubmission
                   ? () =>
-                    userPrompt({ ...promptPreSubmission, onAccept: onSubmit })
+                      userPrompt({ ...promptPreSubmission, onAccept: onSubmit })
                   : undefined
               }
               disabled={form.formState.isValid === false}
