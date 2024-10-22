@@ -1,7 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import * as F from "@/features";
 import * as C from "@/components";
-import { PostSubmissionWrapper } from "@/features/forms/post-submission/post-submissions-form";
+import {
+  postSubmissionLoader,
+  PostSubmissionWrapper,
+} from "@/features/forms/post-submission/post-submissions-form";
 import { QueryClient } from "@tanstack/react-query";
 export const queryClient = new QueryClient();
 
@@ -105,7 +108,6 @@ export const router = createBrowserRouter([
         path: "/new-submission/spa/chip/landing/chip-eligibility",
         element: <F.CHIPEligibilityLandingPage />,
       },
-      { path: "/action/:authority/:id/:type", element: <F.ActionPage /> },
       { path: "/webforms", element: <F.WebformsList /> },
       { path: "/webform/:id/:version", element: <F.Webform /> },
       { path: "/profile", element: <F.Profile /> },
@@ -113,6 +115,7 @@ export const router = createBrowserRouter([
       {
         path: "/actions/:type/:authority/:id",
         element: <PostSubmissionWrapper />,
+        loader: postSubmissionLoader,
       },
     ],
     loader: F.loader(queryClient),

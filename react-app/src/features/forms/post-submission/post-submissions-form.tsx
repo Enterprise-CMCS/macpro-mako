@@ -1,9 +1,11 @@
-import { useParams } from "react-router-dom";
+import { LoaderFunction, useParams } from "react-router-dom";
 import { WithdrawRaiForm } from "./withdraw-rai";
 import {
   EnableWithdrawRaiForm,
   DisableWithdrawRaiForm,
 } from "./toggle-withdraw-rai";
+import { queryClient } from "../../../router";
+import { getItem } from "@/api";
 
 // the keys will relate to this part of the route /actions/{key of postSubmissionForms}/authority/id
 export const postSubmissionForms: Record<
@@ -37,4 +39,11 @@ export const PostSubmissionWrapper = () => {
   const PostSubmissionForm = postSubmissionForms[type][authority];
 
   return <PostSubmissionForm />;
+};
+
+export const postSubmissionLoader: LoaderFunction = async ({ params }) => {
+  return await queryClient.fetchQuery({
+    queryKey: ["record", params.id],
+    queryFn: async () => getItem(params.id),
+  });
 };

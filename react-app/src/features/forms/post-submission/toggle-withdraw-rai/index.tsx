@@ -2,6 +2,7 @@ import { ActionForm } from "@/components/ActionForm";
 import { formSchemas } from "@/formSchemas";
 import { PackageSection } from "@/components/Form/content/PackageSection";
 import { useParams } from "react-router-dom";
+import { isCmsUser } from "shared-utils";
 
 export const EnableWithdrawRaiForm = () => {
   const { authority, id } = useParams();
@@ -26,6 +27,7 @@ export const EnableWithdrawRaiForm = () => {
         body: `The state will be able to withdraw its RAI response. It may take up to a minute for this change to be applied.`,
         variant: "success",
       }}
+      conditionsDeterminingUserAccess={[isCmsUser]}
     />
   );
 };
@@ -51,6 +53,7 @@ export const DisableWithdrawRaiForm = () => {
         body: `The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied.`,
         variant: "success",
       }}
+      conditionsDeterminingUserAccess={[isCmsUser]}
     />
   );
 };
