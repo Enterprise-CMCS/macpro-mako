@@ -83,7 +83,8 @@ const arWithdrawRaiResponse: ActionRule = {
     // safety; prevent bad status from causing overwrite
     !checker.hasRaiWithdrawal &&
     checker.hasEnabledRaiWithdraw &&
-    isStateUser(user),
+    isStateUser(user) &&
+    !checker.isLocked,
 };
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
