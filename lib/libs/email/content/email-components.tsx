@@ -30,18 +30,18 @@ export const getToAddress = ({
 export const EmailNav = (props: { appEndpointUrl: string }) => {
   return (
     <Section>
-      <Row className="bg-primary ">
-        <Column>
-          <div className="h-[70px] text-white">
-            <Link href={props.appEndpointUrl}>
-              <Img
-                className="h-10 w-28 min-w-[112px] resize-none"
-                src={"https://mako-dev.cms.gov/assets/onemac_logo-BFuMCpJm.svg"}
-                alt="OneMAC Logo"
-              />
-            </Link>
-          </div>
+      <Row style={{ backgroundColor: "#0071BD", padding: "16px" }}>
+        <Column style={{ maxWidth: "112px" }}>
+          <Link href={props.appEndpointUrl}>
+            <Img
+              height={40}
+              width={112}
+              src={"https://mako-dev.cms.gov/assets/onemac_logo-BFuMCpJm.svg"}
+              alt="OneMAC Logo"
+            />
+          </Link>
         </Column>
+        <Column style={{ flex: 1 }}></Column>
       </Row>
     </Section>
   );
@@ -105,7 +105,7 @@ export const Attachments = (props: { attachments: AttachmentsType }) => {
 
   return (
     <>
-      <Hr className="my-[16px] border-t-2 border-primary" />
+      <Hr style={{ margin: "16px 0", borderTop: "2px solid #0071BD" }} />
       <Heading as="h3">Files:</Heading>
       <Section>
         {attachmentKeys?.map(
@@ -117,11 +117,11 @@ export const Attachments = (props: { attachments: AttachmentsType }) => {
             );
             return (
               <Row key={key + String(idx)}>
-                <Column>
-                  <Text>{title}</Text>
+                <Column style={{ width: "200px", paddingTop: "8px" }}>
+                  <Text style={styles.textTitle}>{title}</Text>
                 </Column>
                 <Column>
-                  <Text>{filenames}</Text>
+                  <Text style={styles.textDescription}>{filenames}</Text>
                 </Column>
               </Row>
             );
@@ -138,14 +138,15 @@ export const PackageDetails = (props: {
 }) => {
   return (
     <Section>
-      <br />
       {Object.keys(props.details).map((label: string, idx: number) => {
         if (label === "Summary") {
           const summary =
             props.details[label] ?? "No additional information submitted";
           return (
             <Row>
-              <Hr className="my-[16px] border-t-2 border-primary" />
+              <Hr
+                style={{ margin: "16px 0", borderTop: "2px solid #0071BD" }}
+              />
               <Text style={{ margin: ".5em" }}>
                 <Heading as="h3">Summary:</Heading>
               </Text>
@@ -155,13 +156,11 @@ export const PackageDetails = (props: {
         }
         return (
           <Row key={label + idx}>
-            <Column>
-              <Text style={{ margin: ".5em", fontWeight: "bold" }}>
-                {label}:
-              </Text>
+            <Column align="left" style={{ width: "200px", paddingTop: "8px" }}>
+              <Text style={styles.textTitle}>{label}</Text>
             </Column>
             <Column>
-              <Text style={{ margin: ".5em" }}>
+              <Text style={styles.textDescription}>
                 {props.details[label] ?? "Unknown"}
               </Text>
             </Column>
@@ -169,7 +168,7 @@ export const PackageDetails = (props: {
         );
       })}
       {props.attachments && <Attachments attachments={props.attachments} />}
-      <Hr className="my-[16px] border-t-2 border-primary" />
+      <Hr style={{ margin: "16px 0", borderTop: "2px solid #0071BD" }} />
     </Section>
   );
 };
@@ -198,7 +197,7 @@ export const MailboxWaiver = () => {
 export const ContactStateLead = (props: { isChip?: boolean }) => {
   return (
     <Section>
-      <Hr className="my-[16px] border-t-2 border-primary" />
+      <Hr style={{ margin: "16px 0", borderTop: "2px solid #0071BD" }} />
       <Text>
         If you have questions or did not expect this email, please contact{" "}
         {props.isChip ? (
@@ -218,7 +217,6 @@ export const ContactStateLead = (props: { isChip?: boolean }) => {
 export const SpamWarning = () => {
   return (
     <Section>
-      <Hr className="my-[16px] border-t-2 border-primary" />
       <Text>
         If the contents of this email seem suspicious, do not open them, and
         instead forward this email to{" "}
@@ -261,4 +259,128 @@ export const getSrtEmails = (item: any): string[] => {
   return reviewTeam.map(
     (reviewer: any) => `${reviewer.name} <${reviewer.email}>`,
   );
+};
+
+const resetText = {
+  margin: "0",
+  padding: "0",
+  lineHeight: 1.4,
+};
+
+const main = {
+  fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+  backgroundColor: "#ffffff",
+  ...resetText,
+  fontSize: "12px",
+  color: "rgb(102,102,102)",
+};
+
+const container = {
+  margin: "0 auto",
+  padding: "20px 0 48px",
+  width: "660px",
+  maxWidth: "100%",
+};
+
+const tableCell = { display: "table-cell" };
+
+const heading = {
+  fontSize: "24px",
+  fontWeight: "300",
+  color: "#888888",
+};
+
+const informationTable = {
+  borderCollapse: "collapse" as const,
+  borderSpacing: "0px",
+  color: "rgb(51,51,51)",
+  backgroundColor: "rgb(250,250,250)",
+  borderRadius: "3px",
+  fontSize: "12px",
+};
+
+const informationTableRow = {
+  height: "46px",
+};
+
+const informationTableColumn = {
+  paddingLeft: "20px",
+  borderStyle: "solid",
+  borderColor: "white",
+  borderWidth: "0px 1px 1px 0px",
+  height: "44px",
+};
+
+const informationTableLabel = {
+  ...resetText,
+  color: "rgb(102,102,102)",
+  fontSize: "10px",
+};
+
+const informationTableValue = {
+  fontSize: "12px",
+  margin: "0",
+  padding: "0",
+  lineHeight: 1.4,
+};
+
+const productTitleTable = {
+  ...informationTable,
+  margin: "30px 0 15px 0",
+  height: "24px",
+};
+
+const productsTitle = {
+  background: "#fafafa",
+  paddingLeft: "10px",
+  fontSize: "14px",
+  fontWeight: "500",
+  margin: "0",
+};
+
+const productIcon = {
+  margin: "0 0 0 20px",
+  borderRadius: "14px",
+  border: "1px solid rgba(128,128,128,0.2)",
+};
+
+const textTitle = { fontSize: "14px", fontWeight: "600", ...resetText };
+
+const textDescription = {
+  fontSize: "14px",
+  color: "rgb(102,102,102)",
+  ...resetText,
+};
+
+const productLink = {
+  fontSize: "12px",
+  color: "rgb(0,112,201)",
+  textDecoration: "none",
+};
+
+const divisor = {
+  marginLeft: "4px",
+  marginRight: "4px",
+  color: "rgb(51,51,51)",
+  fontWeight: 200,
+};
+
+export const styles = {
+  main,
+  resetText,
+  container,
+  tableCell,
+  heading,
+  informationTable,
+  informationTableRow,
+  informationTableColumn,
+  informationTableLabel,
+  informationTableValue,
+  productTitleTable,
+  productsTitle,
+  productIcon,
+  textTitle,
+  textDescription,
+  productLink,
+  divisor,
 };

@@ -7,7 +7,6 @@ import {
   Head,
   Body,
   Heading,
-  Tailwind,
   Hr,
   Preview,
 } from "@react-email/components";
@@ -16,6 +15,7 @@ import {
   PackageDetails,
   SpamWarning,
   EmailNav,
+  styles,
 } from "../../email-components";
 export const ChipSpaCMSEmail = (props: {
   variables: Events["NewChipSubmission"] & CommonVariables;
@@ -24,33 +24,31 @@ export const ChipSpaCMSEmail = (props: {
   const previewText = `CHIP SPA &${variables.id} Submitted`;
   return (
     <Html>
-      <Head />
+      <Head style={styles.main} />
       <Preview>{previewText}</Preview>
-      <Tailwind>
-        <Body>
-          <Container>
-            <EmailNav appEndpointUrl={variables.applicationEndpointUrl} />
-            <Heading>
-              The OneMAC Submission Portal received a CHIP State Plan Amendment:
-            </Heading>
-            <Hr className="my-[16px] border-t-2 border-primary" />
-            <LoginInstructions
-              appEndpointURL={variables.applicationEndpointUrl}
-            />
-            <PackageDetails
-              details={{
-                "State or territory": variables.territory,
-                Name: variables.submitterName,
-                Email: variables.submitterEmail,
-                "CHIP SPA Package ID": variables.id,
-                Summary: variables.additionalInformation,
-              }}
-              attachments={variables.attachments}
-            />
-            <SpamWarning />
-          </Container>
-        </Body>
-      </Tailwind>
+      <Body>
+        <Container style={styles.container}>
+          <EmailNav appEndpointUrl={variables.applicationEndpointUrl} />
+          <Heading style={styles.heading}>
+            The OneMAC Submission Portal received a CHIP State Plan Amendment:
+          </Heading>
+          <Hr style={{ margin: "16px 0", borderTop: "2px solid #0071BD" }} />
+          <LoginInstructions
+            appEndpointURL={variables.applicationEndpointUrl}
+          />
+          <PackageDetails
+            details={{
+              "State or territory": variables.territory,
+              Name: variables.submitterName,
+              Email: variables.submitterEmail,
+              "CHIP SPA Package ID": variables.id,
+              Summary: variables.additionalInformation,
+            }}
+            attachments={variables.attachments}
+          />
+          <SpamWarning />
+        </Container>
+      </Body>
     </Html>
   );
 };

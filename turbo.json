@@ -36,6 +36,10 @@
     "test:coverage": {
       "cache": false,
       "env": ["STAGE_NAME", "PROJECT"]
+    },
+    "email-dev": {
+      "cache": false,
+      "persistent": true
     }
   }
 }
