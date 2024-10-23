@@ -8,9 +8,31 @@ import {
   Heading,
   Img,
 } from "@react-email/components";
-import { Attachment } from "shared-types";
+import { Attachment, TextareaProps } from "shared-types";
+
 type AttachmentsType = {
   [key: string]: { files?: Attachment[]; label: string };
+};
+
+export const Textarea: React.FC<TextareaProps> = ({
+  children,
+}: TextareaProps) => {
+  return (
+    <Text
+      style={{
+        width: "100%",
+        backgroundColor: "transparent",
+        padding: "8px 12px",
+        fontSize: "16px",
+        boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+        outline: "none",
+        whiteSpace: "pre-line",
+        wordWrap: "break-word",
+      }}
+    >
+      {children}
+    </Text>
+  );
 };
 
 export const getToAddress = ({
@@ -150,7 +172,7 @@ export const PackageDetails = (props: {
               <Text style={{ margin: ".5em" }}>
                 <Heading as="h3">Summary:</Heading>
               </Text>
-              <Text style={{ margin: ".5em" }}>{summary}</Text>
+              <Textarea>{summary}</Textarea>
             </Row>
           );
         }
@@ -383,4 +405,5 @@ export const styles = {
   textDescription,
   productLink,
   divisor,
+  Textarea,
 };

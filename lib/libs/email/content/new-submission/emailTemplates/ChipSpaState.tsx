@@ -1,12 +1,11 @@
-import * as React from "react";
-import { emailTemplateValue } from "../data";
+import { emailTemplateValue } from "./ChipSpaCMS/data";
 import { Events } from "shared-types";
-import { CommonVariables } from "../../..";
+import { CommonEmailVariables } from "shared-types";
 import { Html, Container } from "@react-email/components";
 import { PackageDetails, ContactStateLead } from "../../email-components";
 
 export const ChipSpaStateEmail = (props: {
-  variables: Events["NewChipSubmission"] & CommonVariables;
+  variables: Events["NewChipSubmission"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -42,7 +41,7 @@ const ChipSpaStateEmailPreview = () => {
   return (
     <ChipSpaStateEmail
       variables={
-        emailTemplateValue as Events["NewChipSubmission"] & CommonVariables
+        emailTemplateValue as Events["NewChipSubmission"] & CommonEmailVariables
       }
     />
   );

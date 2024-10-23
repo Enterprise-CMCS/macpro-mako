@@ -1,6 +1,6 @@
-import { emailTemplateValue } from "../data";
+import { emailTemplateValue } from "./data";
 import { Events } from "shared-types";
-import { CommonVariables } from "../../..";
+import { CommonEmailVariables } from "shared-types";
 import {
   Html,
   Container,
@@ -16,9 +16,9 @@ import {
   SpamWarning,
   EmailNav,
   styles,
-} from "../../email-components";
+} from "../../../email-components";
 export const ChipSpaCMSEmail = (props: {
-  variables: Events["NewChipSubmission"] & CommonVariables;
+  variables: Events["NewChipSubmission"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   const previewText = `CHIP SPA &${variables.id} Submitted`;
@@ -55,16 +55,7 @@ export const ChipSpaCMSEmail = (props: {
 
 // To preview with on 'email-dev'
 const ChipSpaCMSEmailPreview = () => {
-  return (
-    <ChipSpaCMSEmail
-      variables={{
-        ...emailTemplateValue,
-        event: "new-chip-submission",
-        actionType: "Amend",
-        origin: "mako",
-      }}
-    />
-  );
+  return <ChipSpaCMSEmail variables={emailTemplateValue} />;
 };
 
 export default ChipSpaCMSEmailPreview;

@@ -1,5 +1,11 @@
-import { Events, Authority, EmailAddresses } from "shared-types";
-import { CommonVariables, AuthoritiesWithUserTypesTemplate } from "../..";
+import {
+  Events,
+  Authority,
+  EmailAddresses,
+  CommonEmailVariables,
+} from "shared-types";
+import { AuthoritiesWithUserTypesTemplate } from "../..";
+
 import {
   MedSpaCMSEmail,
   MedSpaStateEmail,
@@ -13,7 +19,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
     cms: async (
       variables: Events["NewMedicaidSubmission"] &
-        CommonVariables & { emails: EmailAddresses },
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: variables.emails.osgEmail,
@@ -26,7 +32,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
     },
     state: async (
       variables: Events["NewMedicaidSubmission"] &
-        CommonVariables & { emails: EmailAddresses },
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: getToAddress({
@@ -44,7 +50,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   [Authority.CHIP_SPA]: {
     cms: async (
       variables: Events["NewChipSubmission"] &
-        CommonVariables & { emails: EmailAddresses },
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: variables.emails.chipInbox,
@@ -58,7 +64,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
     },
     state: async (
       variables: Events["NewChipSubmission"] &
-        CommonVariables & { emails: EmailAddresses },
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: getToAddress({
@@ -77,7 +83,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   //   cms: async (
   //     variables: Events["CapitatedInitial"] &
   //       Events["ContractingInitial"] &
-  //       CommonVariables & { emails: EmailAddresses },
+  //       CommonEmailVariables & { emails: EmailAddresses },
   //   ) => {
   //     return {
   //       to: variables.emails.osgEmail,
@@ -91,7 +97,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   //   state: async (
   //     variables: Events["CapitatedInitial"] &
   //       Events["ContractingInitial"] &
-  //       CommonVariables & { emails: EmailAddresses },
+  //       CommonEmailVariables & { emails: EmailAddresses },
   //   ) => {
   //     return {
   //       to: getToAddress({ name: variables.submitterName, email: variables.submitterEmail }),
@@ -107,7 +113,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   //   cms: async (
   //     variables: Events["CapitatedInitial"] &
   //       Events["ContractingInitial"] &
-  //       CommonVariables & { emails: EmailAddresses },
+  //       CommonEmailVariables & { emails: EmailAddresses },
   //   ) => {
   //     return {
   //       to: variables.emails.osgEmail,
@@ -121,7 +127,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   //   state: async (
   //     variables: Events["CapitatedInitial"] &
   //       Events["ContractingInitial"] &
-  //       CommonVariables & { emails: EmailAddresses },
+  //       CommonEmailVariables & { emails: EmailAddresses },
   //   ) => {
   //     return {
   //       to: getToAddress({ name: variables.submitterName, email: variables.submitterEmail }),

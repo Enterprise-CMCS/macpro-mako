@@ -1,5 +1,5 @@
-import { MedicaidSubmissionSchema } from "shared-types";
-import { CommonVariables, formatDate } from "../../..";
+import { MedicaidSubmissionSchema, CommonEmailVariables } from "shared-types";
+import { formatDate } from "../../..";
 import { Html, Container } from "@react-email/components";
 import {
   LoginInstructions,
@@ -8,7 +8,7 @@ import {
 } from "../../email-components";
 
 export const MedSpaCMSEmail = (props: {
-  variables: MedicaidSubmissionSchema & CommonVariables;
+  variables: MedicaidSubmissionSchema & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   return (

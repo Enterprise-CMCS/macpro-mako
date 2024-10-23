@@ -1,5 +1,9 @@
 import { Events } from "shared-types";
-import { CommonVariables, formatDate, formatNinetyDaysDate } from "../../..";
+import {
+  CommonEmailVariables,
+  formatDate,
+  formatNinetyDaysDate,
+} from "../../..";
 import {
   Html,
   Container,
@@ -18,7 +22,7 @@ import {
 } from "../../email-components";
 
 export const MedSpaStateEmail = (props: {
-  variables: Events["NewMedicaidSubmission"] & CommonVariables;
+  variables: Events["NewMedicaidSubmission"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   const previewText = `Medicaid SPA &${variables.id} Submitted`;

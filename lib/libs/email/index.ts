@@ -4,14 +4,6 @@ import { getPackageChangelog } from "../api/package";
 import * as EmailContent from "./content";
 
 export type UserType = "cms" | "state";
-export interface CommonVariables {
-  to: string;
-  id: string;
-  territory: string;
-  applicationEndpointUrl: string;
-  actionType: string;
-  allStateUsersEmails?: string[];
-}
 
 export function formatDate(date: number | null | undefined) {
   if (!date || date === undefined) {
