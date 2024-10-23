@@ -15,6 +15,7 @@ import * as ABP11 from "./ABP11";
 import * as CS3 from "./CS3";
 import * as CS7 from "./CS7";
 import * as CS9 from "./CS9";
+import * as CS11 from "./CS11";
 import * as CS8 from "./CS8";
 import * as CS15 from "./CS15";
 import * as ER from "./ER";
@@ -80,6 +81,9 @@ export const webformVersions: Record<string, Record<string, FormSchema>> = {
   },
   CS9: {
     v202401: CS9.v202401,
+  },
+  CS11: {
+    v202401: CS11.v202401,
   },
   CS15: {
     v202401: CS15.v202401,
