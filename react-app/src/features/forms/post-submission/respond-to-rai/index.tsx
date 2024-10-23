@@ -12,14 +12,17 @@ export const RespondToRaiMedicaid = () => {
       fields={() => <PackageSection />}
       defaultValues={{ id }}
       attachments={{
-        faqLink: "/faq",
+        faqLink: "/faq/medicaid-spa-rai-attachments",
       }}
       documentPollerArgs={{
         property: "id",
         documentChecker: (check) => check.recordExists,
       }}
       breadcrumbText="Respond to Formal RAI"
-      preSubmissionMessage="Once complete, you and CMS will receive an email confirmation."
+      preSubmissionMessage="Once you submit this form, a confirmation email is sent to you and to CMS.
+      CMS will use this content to review your package, and you will not be able
+      to edit this form. If CMS needs any additional information, they will
+      follow up by email."
       bannerPostSubmission={{
         header: "RAI response submitted",
         body: `The RAI response for ${id} has been submitted.`,
@@ -38,7 +41,7 @@ export const RespondToRaiWaiver = () => {
       fields={() => <PackageSection />}
       defaultValues={{ id }}
       attachments={{
-        faqLink: "/faq",
+        faqLink: "/faq/waiverb-rai-attachments",
       }}
       documentPollerArgs={{
         property: "id",
@@ -63,7 +66,7 @@ export const RespondToRaiChip = () => {
       fields={() => <PackageSection />}
       defaultValues={{ id }}
       attachments={{
-        faqLink: "/faq",
+        faqLink: "/faq/chip-spa-rai-attachments",
       }}
       documentPollerArgs={{
         property: "id",

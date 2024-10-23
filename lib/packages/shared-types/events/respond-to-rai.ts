@@ -20,10 +20,7 @@ export type RaiResponse = z.infer<typeof raiResponseSchema>;
 
 export const medicaidSpaAttachments = z.object({
   raiResponseLetter: z.object({
-    files: attachmentArraySchema({
-      max: 1,
-      message: "Required: You must submit exactly one file for CMS Form 179.",
-    }),
+    files: attachmentArraySchema(),
     label: z.string().default("RAI Response Letter"),
   }),
   other: z.object({
@@ -34,11 +31,8 @@ export const medicaidSpaAttachments = z.object({
 
 export const waiverAttachments = z.object({
   raiResponseLetterWaiver: z.object({
-    files: attachmentArraySchema({
-      max: 1,
-      message: "Required: You must submit exactly one file for CMS Form 179.",
-    }),
-    label: z.string().default("RAI Response Letter Waiver"),
+    files: attachmentArraySchema(),
+    label: z.string().default("Waiver RAI Response Letter"),
   }),
   other: z.object({
     files: attachmentArraySchemaOptional(),
@@ -48,10 +42,7 @@ export const waiverAttachments = z.object({
 
 export const chipSpaAttachments = z.object({
   cmsForm179: z.object({
-    files: attachmentArraySchema({
-      max: 1,
-      message: "Required: You must submit exactly one file for CMS Form 179.",
-    }),
+    files: attachmentArraySchema(),
     label: z.string().default("Revised Amended State Plan Language"),
   }),
   spaPages: z.object({

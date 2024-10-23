@@ -38,7 +38,8 @@ const arRespondToRai: ActionRule = {
     checker.hasLatestRai &&
     // safety; prevent bad status from causing overwrite
     (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
-    isStateUser(user)
+    isStateUser(user) &&
+    !checker.isLocked
 };
 
 const arTempExtension: ActionRule = {
