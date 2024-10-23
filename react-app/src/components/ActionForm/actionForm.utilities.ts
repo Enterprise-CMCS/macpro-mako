@@ -15,7 +15,9 @@ export const getAdditionalInformation = <
         innerSchema._def.shape().additionalInformation instanceof
           z.ZodDefault ||
         innerSchema._def.shape().additionalInformation instanceof z.ZodString ||
-        innerSchema._def.shape().additionalInformation instanceof z.ZodOptional
+        innerSchema._def.shape().additionalInformation instanceof
+          z.ZodOptional ||
+        innerSchema._def.shape().additionalInformation instanceof z.ZodEffects
       ) {
         return innerSchema._def.shape().additionalInformation;
       }

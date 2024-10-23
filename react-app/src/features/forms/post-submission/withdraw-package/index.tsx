@@ -7,9 +7,9 @@ export const WithdrawPackageActionWaiver = () => {
   const { authority, id } = useParams();
   const { data } = useGetItem(id);
   const waiverActionType = {
-    New: "initial",
-    Renew: "renewal",
-    Amend: "amendment",
+    New: "initial waiver",
+    Renew: "waiver renewal",
+    Amend: "waiver amendment",
   };
 
   return (
@@ -49,9 +49,9 @@ export const WithdrawPackageActionWaiver = () => {
         header: "Withdraw package?",
         body: `You are about to withdraw ${authority} ${
           waiverActionType[data._source.actionType]
-        } waiver ${id}. Completing this action will conclude the review of this ${authority} ${
+        } ${id}. Completing this action will conclude the review of this ${authority} ${
           waiverActionType[data._source.actionType]
-        } waiver package. If you are not sure this is the correct action to select, contact your CMS point of contact for assistance.`,
+        } package. If you are not sure this is the correct action to select, contact your CMS point of contact for assistance.`,
       }}
     />
   );
