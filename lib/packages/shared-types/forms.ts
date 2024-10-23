@@ -171,6 +171,8 @@ export interface Section {
   sectionWrapperClassname?: string;
   dependency?: DependencyRule;
   subsection?: boolean;
+  subsections?: Section[];
+  collapsible?: boolean;
 }
 
 export interface Document {

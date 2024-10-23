@@ -684,6 +684,7 @@ export const v202401: FormSchema = {
       sectionId: "a-eligible",
       sectionWrapperClassname: "bg-gray-100",
       title: "A - Eligibility",
+      collapsible: true,
       form: [
         {
           slots: [
@@ -725,251 +726,41 @@ export const v202401: FormSchema = {
           ],
         },
       ],
-    },
-    {
-      sectionId: "a-options-elected",
-      subsection: true,
-      title: "A - Eligibility options elected",
-      dependency: {
-        conditions: [
-          { type: "valueExists", name: "ers_a-eligible_options-elected" },
-        ],
-        effect: { type: "show" },
-      },
-      form: [
+      subsections: [
         {
-          description:
-            "1. Expand medical assistance to optional groups that are not already covered in the state plan during the public health emergency.",
+          sectionId: "a-options-elected",
+          subsection: true,
+          title: "A - Eligibility options elected",
           dependency: {
             conditions: [
-              {
-                expectedValue: "1-medical_assistance",
-                type: "expectedValue",
-                name: "ers_a-eligible_options-elected",
-              },
+              { type: "valueExists", name: "ers_a-eligible_options-elected" },
             ],
             effect: { type: "show" },
           },
-          slots: [
+          form: [
             {
-              rhf: "TextDisplay",
-              text: "Optional eligibility group(s) to which the agency provides medical assistance during the period of the public health emergency",
-              name: "test-desc",
-            },
-            {
-              rhf: "Select",
-              name: "add-medical-needy-cov",
-              label: "Does the state want to add medically needy coverage?",
-              labelClassName: "text-black font-bold",
-              rules: { required: "* Required" },
-              props: {
-                className: "w-36",
-                options: [
-                  {
-                    label: "Yes",
-                    value: "yes",
-                  },
-                  {
-                    label: "No",
-                    value: "no",
-                  },
-                ],
-              },
-            },
-            {
-              rhf: "WrappedGroup",
-              name: "child-wrapper-needy",
-              props: {
-                wrapperClassName: childStyle + wrappedGroupSpacing,
-              },
-              dependency: {
-                conditions: [
-                  {
-                    expectedValue: "yes",
-                    type: "expectedValue",
-                    name: "ers_a-options-elected_add-medical-needy-cov",
-                  },
-                ],
-                effect: { type: "show" },
-              },
-              fields: [
-                {
-                  rhf: "Select",
-                  name: "cover-mandatory-needy",
-                  label:
-                    "Does the state already cover all mandatory medically needy groups (medically needy pregnant individuals, medically needy children under age 18, and protected medically needy individuals who were eligible in 1973?",
-                  labelClassName: "text-black font-bold",
-                  rules: { required: "* Required" },
-                  props: {
-                    className: "w-36",
-                    options: [
-                      {
-                        label: "Yes",
-                        value: "yes",
-                      },
-                      {
-                        label: "No",
-                        value: "no",
-                      },
-                    ],
-                  },
-                },
-                {
-                  name: "yes-wrapped-needy",
-                  rhf: "WrappedGroup",
-                  props: {
-                    wrapperClassName: childStyle + wrappedGroupSpacing,
-                  },
-                  dependency: {
-                    conditions: [
-                      {
-                        expectedValue: "yes",
-                        type: "expectedValue",
-                        name: "ers_a-options-elected_cover-mandatory-needy",
-                      },
-                    ],
-                    effect: { type: "show" },
-                  },
-                  fields: [
-                    {
-                      rhf: "Checkbox",
-                      name: "addtnl-needy-covered",
-                      label:
-                        "Which additional group(s) does the state want to add to medically needy coverage?",
-                      labelClassName: "text-black font-bold",
-                      rules: { required: "* Required" },
-                      props: {
-                        options: [
-                          {
-                            value: "under-21",
-                            label:
-                              "Medically needy reasonable classifications of individuals under age 21",
-                          },
-                          {
-                            value: "parents-caretakers",
-                            label:
-                              "Medically needy parents and other caretaker relatives",
-                          },
-                          {
-                            value: "age-blind-disability",
-                            label:
-                              "Medically needy populations based on age, blindness, or disability",
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-                {
-                  name: "no-wrapped-needy",
-                  rhf: "WrappedGroup",
-                  props: {
-                    wrapperClassName: childStyle + wrappedGroupSpacing,
-                  },
-                  dependency: {
-                    conditions: [
-                      {
-                        expectedValue: "no",
-                        type: "expectedValue",
-                        name: "ers_a-options-elected_cover-mandatory-needy",
-                      },
-                    ],
-                    effect: { type: "show" },
-                  },
-                  fields: [
-                    {
-                      rhf: "Checkbox",
-                      name: "assure-provide-coverage",
-                      rules: { required: "* Required" },
-                      props: {
-                        options: [
-                          {
-                            value: "assured",
-                            styledLabel:
-                              "The state assures that it will provide coverage to all mandatory medically needy groups, including medically needy pregnant individuals, medically needy children under age 18, and protected medically needy individuals who were eligible in 1973.",
-                          },
-                        ],
-                      },
-                    },
-                    {
-                      rhf: "Checkbox",
-                      name: "addtnl-needy-covered",
-                      label:
-                        "Which additional group(s) does the state want to add to medically needy coverage? (optional)",
-                      labelClassName: "text-black font-bold",
-                      description:
-                        "All mandatory medically needy groups must be covered if additional medically needy groups will be covered.",
-                      descriptionAbove: true,
-                      props: {
-                        options: [
-                          {
-                            value: "under-21",
-                            label:
-                              "Medically needy reasonable classifications of individuals under age 21",
-                          },
-                          {
-                            value: "parents-caretakers",
-                            label:
-                              "Medically needy parents and other caretaker relatives",
-                          },
-                          {
-                            value: "age-blind-disability",
-                            label:
-                              "Medically needy populations based on age, blindness, or disability",
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              rhf: "Select",
-              name: "add-medical-pace-cov",
-              label:
-                "Does the state want to add coverage for individuals receiving home and community-based waiver services and/or for PACE (individuals receiving home and community based services under institutional rules, 42 CFR 435.217) participants?",
-              labelClassName: "text-black font-bold",
               description:
-                "The state must cover individuals receiving home and community-based waiver services under institutional rules (42 CFR 435.217) if also electing to cover PACE participants.",
-              descriptionAbove: true,
-              rules: { required: "* Required" },
-              props: {
-                className: "w-36",
-                options: [
-                  {
-                    label: "Yes",
-                    value: "yes",
-                  },
-                  {
-                    label: "No",
-                    value: "no",
-                  },
-                ],
-              },
-            },
-            {
-              rhf: "WrappedGroup",
-              name: "child-wrapper-pace",
-              props: {
-                wrapperClassName: childStyle + wrappedGroupSpacing,
-              },
+                "1. Expand medical assistance to optional groups that are not already covered in the state plan during the public health emergency.",
               dependency: {
                 conditions: [
                   {
-                    expectedValue: "yes",
+                    expectedValue: "1-medical_assistance",
                     type: "expectedValue",
-                    name: "ers_a-options-elected_add-medical-pace-cov",
+                    name: "ers_a-eligible_options-elected",
                   },
                 ],
                 effect: { type: "show" },
               },
-              fields: [
+              slots: [
+                {
+                  rhf: "TextDisplay",
+                  text: "Optional eligibility group(s) to which the agency provides medical assistance during the period of the public health emergency",
+                  name: "test-desc",
+                },
                 {
                   rhf: "Select",
-                  name: "cover-home-comm-services",
-                  label:
-                    "Does the state already cover individuals receiving home and community-based waiver services?",
+                  name: "add-medical-needy-cov",
+                  label: "Does the state want to add medically needy coverage?",
                   labelClassName: "text-black font-bold",
                   rules: { required: "* Required" },
                   props: {
@@ -987,72 +778,29 @@ export const v202401: FormSchema = {
                   },
                 },
                 {
-                  name: "want-pace-coverage",
-                  rhf: "Select",
-                  rules: { required: "* Required" },
-                  label: "Does the state want to cover PACE participants?",
-                  labelClassName: "text-black font-bold",
-                  dependency: {
-                    conditions: [
-                      {
-                        expectedValue: "yes",
-                        type: "expectedValue",
-                        name: "ers_a-options-elected_cover-home-comm-services",
-                      },
-                    ],
-                    effect: { type: "show" },
-                  },
-                  props: {
-                    className: "w-36",
-                    options: [
-                      {
-                        label: "Yes",
-                        value: "yes",
-                      },
-                      {
-                        label: "No",
-                        value: "no",
-                      },
-                    ],
-                  },
-                },
-                {
-                  name: "no-wrapped-pace",
                   rhf: "WrappedGroup",
+                  name: "child-wrapper-needy",
                   props: {
                     wrapperClassName: childStyle + wrappedGroupSpacing,
                   },
                   dependency: {
                     conditions: [
                       {
-                        expectedValue: "no",
+                        expectedValue: "yes",
                         type: "expectedValue",
-                        name: "ers_a-options-elected_cover-home-comm-services",
+                        name: "ers_a-options-elected_add-medical-needy-cov",
                       },
                     ],
                     effect: { type: "show" },
                   },
                   fields: [
                     {
-                      rhf: "Checkbox",
-                      name: "assure-provide-home-comm-coverage",
-                      rules: { required: "* Required" },
-                      props: {
-                        options: [
-                          {
-                            value: "assured",
-                            styledLabel:
-                              "The state assures that it will provide coverage to individuals receiving home and community-based waiver services.",
-                          },
-                        ],
-                      },
-                    },
-                    {
-                      name: "want-pace-coverage",
                       rhf: "Select",
-                      rules: { required: "* Required" },
-                      label: "Does the state want to cover PACE participants?",
+                      name: "cover-mandatory-needy",
+                      label:
+                        "Does the state already cover all mandatory medically needy groups (medically needy pregnant individuals, medically needy children under age 18, and protected medically needy individuals who were eligible in 1973?",
                       labelClassName: "text-black font-bold",
+                      rules: { required: "* Required" },
                       props: {
                         className: "w-36",
                         options: [
@@ -1067,227 +815,485 @@ export const v202401: FormSchema = {
                         ],
                       },
                     },
+                    {
+                      name: "yes-wrapped-needy",
+                      rhf: "WrappedGroup",
+                      props: {
+                        wrapperClassName: childStyle + wrappedGroupSpacing,
+                      },
+                      dependency: {
+                        conditions: [
+                          {
+                            expectedValue: "yes",
+                            type: "expectedValue",
+                            name: "ers_a-options-elected_cover-mandatory-needy",
+                          },
+                        ],
+                        effect: { type: "show" },
+                      },
+                      fields: [
+                        {
+                          rhf: "Checkbox",
+                          name: "addtnl-needy-covered",
+                          label:
+                            "Which additional group(s) does the state want to add to medically needy coverage?",
+                          labelClassName: "text-black font-bold",
+                          rules: { required: "* Required" },
+                          props: {
+                            options: [
+                              {
+                                value: "under-21",
+                                label:
+                                  "Medically needy reasonable classifications of individuals under age 21",
+                              },
+                              {
+                                value: "parents-caretakers",
+                                label:
+                                  "Medically needy parents and other caretaker relatives",
+                              },
+                              {
+                                value: "age-blind-disability",
+                                label:
+                                  "Medically needy populations based on age, blindness, or disability",
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      name: "no-wrapped-needy",
+                      rhf: "WrappedGroup",
+                      props: {
+                        wrapperClassName: childStyle + wrappedGroupSpacing,
+                      },
+                      dependency: {
+                        conditions: [
+                          {
+                            expectedValue: "no",
+                            type: "expectedValue",
+                            name: "ers_a-options-elected_cover-mandatory-needy",
+                          },
+                        ],
+                        effect: { type: "show" },
+                      },
+                      fields: [
+                        {
+                          rhf: "Checkbox",
+                          name: "assure-provide-coverage",
+                          rules: { required: "* Required" },
+                          props: {
+                            options: [
+                              {
+                                value: "assured",
+                                styledLabel:
+                                  "The state assures that it will provide coverage to all mandatory medically needy groups, including medically needy pregnant individuals, medically needy children under age 18, and protected medically needy individuals who were eligible in 1973.",
+                              },
+                            ],
+                          },
+                        },
+                        {
+                          rhf: "Checkbox",
+                          name: "addtnl-needy-covered",
+                          label:
+                            "Which additional group(s) does the state want to add to medically needy coverage? (optional)",
+                          labelClassName: "text-black font-bold",
+                          description:
+                            "All mandatory medically needy groups must be covered if additional medically needy groups will be covered.",
+                          descriptionAbove: true,
+                          props: {
+                            options: [
+                              {
+                                value: "under-21",
+                                label:
+                                  "Medically needy reasonable classifications of individuals under age 21",
+                              },
+                              {
+                                value: "parents-caretakers",
+                                label:
+                                  "Medically needy parents and other caretaker relatives",
+                              },
+                              {
+                                value: "age-blind-disability",
+                                label:
+                                  "Medically needy populations based on age, blindness, or disability",
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
                   ],
+                },
+                {
+                  rhf: "Select",
+                  name: "add-medical-pace-cov",
+                  label:
+                    "Does the state want to add coverage for individuals receiving home and community-based waiver services and/or for PACE (individuals receiving home and community based services under institutional rules, 42 CFR 435.217) participants?",
+                  labelClassName: "text-black font-bold",
+                  description:
+                    "The state must cover individuals receiving home and community-based waiver services under institutional rules (42 CFR 435.217) if also electing to cover PACE participants.",
+                  descriptionAbove: true,
+                  rules: { required: "* Required" },
+                  props: {
+                    className: "w-36",
+                    options: [
+                      {
+                        label: "Yes",
+                        value: "yes",
+                      },
+                      {
+                        label: "No",
+                        value: "no",
+                      },
+                    ],
+                  },
+                },
+                {
+                  rhf: "WrappedGroup",
+                  name: "child-wrapper-pace",
+                  props: {
+                    wrapperClassName: childStyle + wrappedGroupSpacing,
+                  },
+                  dependency: {
+                    conditions: [
+                      {
+                        expectedValue: "yes",
+                        type: "expectedValue",
+                        name: "ers_a-options-elected_add-medical-pace-cov",
+                      },
+                    ],
+                    effect: { type: "show" },
+                  },
+                  fields: [
+                    {
+                      rhf: "Select",
+                      name: "cover-home-comm-services",
+                      label:
+                        "Does the state already cover individuals receiving home and community-based waiver services?",
+                      labelClassName: "text-black font-bold",
+                      rules: { required: "* Required" },
+                      props: {
+                        className: "w-36",
+                        options: [
+                          {
+                            label: "Yes",
+                            value: "yes",
+                          },
+                          {
+                            label: "No",
+                            value: "no",
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      name: "want-pace-coverage",
+                      rhf: "Select",
+                      rules: { required: "* Required" },
+                      label: "Does the state want to cover PACE participants?",
+                      labelClassName: "text-black font-bold",
+                      dependency: {
+                        conditions: [
+                          {
+                            expectedValue: "yes",
+                            type: "expectedValue",
+                            name: "ers_a-options-elected_cover-home-comm-services",
+                          },
+                        ],
+                        effect: { type: "show" },
+                      },
+                      props: {
+                        className: "w-36",
+                        options: [
+                          {
+                            label: "Yes",
+                            value: "yes",
+                          },
+                          {
+                            label: "No",
+                            value: "no",
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      name: "no-wrapped-pace",
+                      rhf: "WrappedGroup",
+                      props: {
+                        wrapperClassName: childStyle + wrappedGroupSpacing,
+                      },
+                      dependency: {
+                        conditions: [
+                          {
+                            expectedValue: "no",
+                            type: "expectedValue",
+                            name: "ers_a-options-elected_cover-home-comm-services",
+                          },
+                        ],
+                        effect: { type: "show" },
+                      },
+                      fields: [
+                        {
+                          rhf: "Checkbox",
+                          name: "assure-provide-home-comm-coverage",
+                          rules: { required: "* Required" },
+                          props: {
+                            options: [
+                              {
+                                value: "assured",
+                                styledLabel:
+                                  "The state assures that it will provide coverage to individuals receiving home and community-based waiver services.",
+                              },
+                            ],
+                          },
+                        },
+                        {
+                          name: "want-pace-coverage",
+                          rhf: "Select",
+                          rules: { required: "* Required" },
+                          label:
+                            "Does the state want to cover PACE participants?",
+                          labelClassName: "text-black font-bold",
+                          props: {
+                            className: "w-36",
+                            options: [
+                              {
+                                label: "Yes",
+                                value: "yes",
+                              },
+                              {
+                                label: "No",
+                                value: "no",
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  rhf: "Multiselect",
+                  name: "other-opt-eligibility-groups",
+                  label: "Other optional eligibility groups",
+                  labelClassName: "text-black font-bold",
+                  props: {
+                    options: a1DropdownOptions,
+                  },
+                },
+                {
+                  rhf: "Textarea",
+                  name: "addtnl-info-1905a-standards",
+                  label:
+                    "Additional information about income/resource standard and populations described in Section 1905(a) of the Act (optional)",
+                  labelClassName: "text-black font-bold",
+                  props: {
+                    className: "h-[76px]",
+                  },
                 },
               ],
             },
             {
-              rhf: "Multiselect",
-              name: "other-opt-eligibility-groups",
-              label: "Other optional eligibility groups",
-              labelClassName: "text-black font-bold",
-              props: {
-                options: a1DropdownOptions,
-              },
-            },
-            {
-              rhf: "Textarea",
-              name: "addtnl-info-1905a-standards",
-              label:
-                "Additional information about income/resource standard and populations described in Section 1905(a) of the Act (optional)",
-              labelClassName: "text-black font-bold",
-              props: {
-                className: "h-[76px]",
-              },
-            },
-          ],
-        },
-        {
-          description:
-            "2. Apply less restrictive financial methodologies to individuals excepted from financial methodologies based on modified adjusted gross income (MAGI).",
-          dependency: {
-            conditions: [
-              {
-                expectedValue: "2-finance_method",
-                type: "expectedValue",
-                name: "ers_a-eligible_options-elected",
-              },
-            ],
-            effect: { type: "show" },
-          },
-          slots: [
-            {
-              rhf: "TextDisplay",
-              name: "a2-desc",
-              text: "The agency applies the following additional less restrictive financial methodologies not currently included in the state plan during the period of the public health emergency to individuals excepted from financial methodologies based on MAGI:",
-            },
-            {
-              rhf: "Checkbox",
-              name: "adjusted-methodologies",
-              rules: { required: "* Required" },
-              props: {
-                options: [
+              description:
+                "2. Apply less restrictive financial methodologies to individuals excepted from financial methodologies based on modified adjusted gross income (MAGI).",
+              dependency: {
+                conditions: [
                   {
-                    value: "income",
-                    label: "Income methodologies",
-                    slots: [
-                      {
-                        rhf: "Textarea",
-                        name: "income-methodology",
-                        label:
-                          "What are the less restrictive income methodologies applied by the agency?",
-                        rules: {
-                          required: "* Required",
-                          pattern: {
-                            value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
-                          },
-                        },
-                        labelClassName: "text-black font-bold",
-                        props: { className: "h-[76px]" },
-                      },
-                      {
-                        rhf: "WrappedGroup",
-                        name: "income-wrapped",
-                        props: {
-                          wrapperClassName: childStyle + wrappedGroupSpacing,
-                        },
-                        fields: [
-                          {
-                            rhf: "Multiselect",
-                            name: "income-eligibility-groups",
-                            label:
-                              "Eligibility groups to which the less restrictive income methodologies are applied",
-                            labelClassName: "text-black font-bold",
-                            rules: { required: "* Required" },
-                            props: { options: a2DroppdownOptionsIncome },
-                          },
-                          {
-                            rhf: "Textarea",
-                            name: "addtnl-income-info",
-                            label:
-                              "Additional information about applicable methodology if more than one is provided and/or a 1905(a) population to which the methodology is limited (optional)",
-                            labelClassName: "text-black font-bold",
-                            props: { className: "h-[76px]" },
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                  {
-                    value: "resource",
-                    label: "Resource methodologies",
-                    slots: [
-                      {
-                        rhf: "Textarea",
-                        name: "resource-methodology",
-                        label:
-                          "What are the less restrictive resource methodologies applied by the agency?",
-                        rules: {
-                          required: "* Required",
-                          pattern: {
-                            value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
-                          },
-                        },
-                        labelClassName: "text-black font-bold",
-                        props: { className: "h-[76px]" },
-                      },
-                      {
-                        rhf: "WrappedGroup",
-                        name: "resource-wrapped",
-                        props: {
-                          wrapperClassName: childStyle + wrappedGroupSpacing,
-                        },
-                        fields: [
-                          {
-                            rhf: "Multiselect",
-                            name: "resource-eligibility-groups",
-                            label:
-                              "Eligibility groups to which the less restrictive resource methodologies are applied",
-                            labelClassName: "text-black font-bold",
-                            rules: { required: "* Required" },
-                            props: { options: a2DroppdownOptionsResource },
-                          },
-                          {
-                            rhf: "Textarea",
-                            name: "addtnl-resource-info",
-                            label:
-                              "Additional information about applicable methodology if more than one is provided and/or a 1905(a) population to which the methodology is limited (optional)",
-                            labelClassName: "text-black font-bold",
-                            props: { className: "h-[76px]" },
-                          },
-                        ],
-                      },
-                    ],
+                    expectedValue: "2-finance_method",
+                    type: "expectedValue",
+                    name: "ers_a-eligible_options-elected",
                   },
                 ],
+                effect: { type: "show" },
               },
-            },
-          ],
-        },
-        {
-          description:
-            "3. Establish residency for individuals temporarily out of state due to a public health emergency.",
-          dependency: {
-            conditions: [
-              {
-                expectedValue: "3-residency_out_of_state",
-                type: "expectedValue",
-                name: "ers_a-eligible_options-elected",
-              },
-            ],
-            effect: { type: "show" },
-          },
-          slots: [
-            {
-              rhf: "TextDisplay",
-              name: "a3-desc",
-              text: "The agency considers individuals who are evacuated from the state, who leave the state for medical reasons related to the public health emergency, or who are otherwise absent from the state due to the public health emergency and who intend to return to the state to continue to be residents of the state under 42 CFR 435.403(j)(3).",
-            },
-          ],
-        },
-        {
-          description:
-            "4. Extend residency to individuals who may be considered residents of other states.",
-          dependency: {
-            conditions: [
-              {
-                expectedValue: "4-residency_visitors",
-                type: "expectedValue",
-                name: "ers_a-eligible_options-elected",
-              },
-            ],
-            effect: { type: "show" },
-          },
-          slots: [
-            {
-              rhf: "Textarea",
-              name: "desc-non-residents",
-              label:
-                "To which nonresident individuals living in the state during the public health emergency does the agency provide Medicaid coverage?",
-              rules: {
-                required: "* Required",
-                pattern: {
-                  value: noLeadingTrailingWhitespace,
-                  message: "Must not have leading or trailing whitespace.",
+              slots: [
+                {
+                  rhf: "TextDisplay",
+                  name: "a2-desc",
+                  text: "The agency applies the following additional less restrictive financial methodologies not currently included in the state plan during the period of the public health emergency to individuals excepted from financial methodologies based on MAGI:",
                 },
-              },
-              labelClassName: "text-black font-bold",
-              props: { className: "h-[76px]" },
+                {
+                  rhf: "Checkbox",
+                  name: "adjusted-methodologies",
+                  rules: { required: "* Required" },
+                  props: {
+                    options: [
+                      {
+                        value: "income",
+                        label: "Income methodologies",
+                        slots: [
+                          {
+                            rhf: "Textarea",
+                            name: "income-methodology",
+                            label:
+                              "What are the less restrictive income methodologies applied by the agency?",
+                            rules: {
+                              required: "* Required",
+                              pattern: {
+                                value: noLeadingTrailingWhitespace,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
+                            },
+                            labelClassName: "text-black font-bold",
+                            props: { className: "h-[76px]" },
+                          },
+                          {
+                            rhf: "WrappedGroup",
+                            name: "income-wrapped",
+                            props: {
+                              wrapperClassName:
+                                childStyle + wrappedGroupSpacing,
+                            },
+                            fields: [
+                              {
+                                rhf: "Multiselect",
+                                name: "income-eligibility-groups",
+                                label:
+                                  "Eligibility groups to which the less restrictive income methodologies are applied",
+                                labelClassName: "text-black font-bold",
+                                rules: { required: "* Required" },
+                                props: { options: a2DroppdownOptionsIncome },
+                              },
+                              {
+                                rhf: "Textarea",
+                                name: "addtnl-income-info",
+                                label:
+                                  "Additional information about applicable methodology if more than one is provided and/or a 1905(a) population to which the methodology is limited (optional)",
+                                labelClassName: "text-black font-bold",
+                                props: { className: "h-[76px]" },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        value: "resource",
+                        label: "Resource methodologies",
+                        slots: [
+                          {
+                            rhf: "Textarea",
+                            name: "resource-methodology",
+                            label:
+                              "What are the less restrictive resource methodologies applied by the agency?",
+                            rules: {
+                              required: "* Required",
+                              pattern: {
+                                value: noLeadingTrailingWhitespace,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
+                            },
+                            labelClassName: "text-black font-bold",
+                            props: { className: "h-[76px]" },
+                          },
+                          {
+                            rhf: "WrappedGroup",
+                            name: "resource-wrapped",
+                            props: {
+                              wrapperClassName:
+                                childStyle + wrappedGroupSpacing,
+                            },
+                            fields: [
+                              {
+                                rhf: "Multiselect",
+                                name: "resource-eligibility-groups",
+                                label:
+                                  "Eligibility groups to which the less restrictive resource methodologies are applied",
+                                labelClassName: "text-black font-bold",
+                                rules: { required: "* Required" },
+                                props: { options: a2DroppdownOptionsResource },
+                              },
+                              {
+                                rhf: "Textarea",
+                                name: "addtnl-resource-info",
+                                label:
+                                  "Additional information about applicable methodology if more than one is provided and/or a 1905(a) population to which the methodology is limited (optional)",
+                                labelClassName: "text-black font-bold",
+                                props: { className: "h-[76px]" },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                },
+              ],
             },
-          ],
-        },
-        {
-          description:
-            "5. Extend the reasonable opportunity period (ROP) for noncitizens making a good faith effort to verify status.",
-          dependency: {
-            conditions: [
-              {
-                expectedValue: "5-good_faith",
-                type: "expectedValue",
-                name: "ers_a-eligible_options-elected",
-              },
-            ],
-            effect: { type: "show" },
-          },
-          slots: [
             {
-              rhf: "TextDisplay",
-              name: "a5-desc",
-              text: "The agency provides for an extension of the reasonable opportunity period for noncitizens declaring to be in a satisfactory immigration status if the noncitizen is making a good faith effort to resolve any inconsistencies or obtain any necessary documentation or if the agency is unable to complete the verification process within the 90-day reasonable opportunity period due to the public health emergency.",
+              description:
+                "3. Establish residency for individuals temporarily out of state due to a public health emergency.",
+              dependency: {
+                conditions: [
+                  {
+                    expectedValue: "3-residency_out_of_state",
+                    type: "expectedValue",
+                    name: "ers_a-eligible_options-elected",
+                  },
+                ],
+                effect: { type: "show" },
+              },
+              slots: [
+                {
+                  rhf: "TextDisplay",
+                  name: "a3-desc",
+                  text: "The agency considers individuals who are evacuated from the state, who leave the state for medical reasons related to the public health emergency, or who are otherwise absent from the state due to the public health emergency and who intend to return to the state to continue to be residents of the state under 42 CFR 435.403(j)(3).",
+                },
+              ],
+            },
+            {
+              description:
+                "4. Extend residency to individuals who may be considered residents of other states.",
+              dependency: {
+                conditions: [
+                  {
+                    expectedValue: "4-residency_visitors",
+                    type: "expectedValue",
+                    name: "ers_a-eligible_options-elected",
+                  },
+                ],
+                effect: { type: "show" },
+              },
+              slots: [
+                {
+                  rhf: "Textarea",
+                  name: "desc-non-residents",
+                  label:
+                    "To which nonresident individuals living in the state during the public health emergency does the agency provide Medicaid coverage?",
+                  rules: {
+                    required: "* Required",
+                    pattern: {
+                      value: noLeadingTrailingWhitespace,
+                      message: "Must not have leading or trailing whitespace.",
+                    },
+                  },
+                  labelClassName: "text-black font-bold",
+                  props: { className: "h-[76px]" },
+                },
+              ],
+            },
+            {
+              description:
+                "5. Extend the reasonable opportunity period (ROP) for noncitizens making a good faith effort to verify status.",
+              dependency: {
+                conditions: [
+                  {
+                    expectedValue: "5-good_faith",
+                    type: "expectedValue",
+                    name: "ers_a-eligible_options-elected",
+                  },
+                ],
+                effect: { type: "show" },
+              },
+              slots: [
+                {
+                  rhf: "TextDisplay",
+                  name: "a5-desc",
+                  text: "The agency provides for an extension of the reasonable opportunity period for noncitizens declaring to be in a satisfactory immigration status if the noncitizen is making a good faith effort to resolve any inconsistencies or obtain any necessary documentation or if the agency is unable to complete the verification process within the 90-day reasonable opportunity period due to the public health emergency.",
+                },
+              ],
             },
           ],
         },
