@@ -35,3 +35,15 @@ export const events = {
 };
 
 export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;
+
+export type Events = {
+  CapitatedInitial: z.infer<typeof capitatedIntial.schema>;
+  CapitatedRenewal: z.infer<typeof capitatedRenewal.schema>;
+  CapitatedAmendment: z.infer<typeof capitatedAmendment.schema>;
+  ContractingInitial: z.infer<typeof contractingInitial.schema>;
+  ContractingRenewal: z.infer<typeof contractingRenewal.schema>;
+  ContractingAmendment: z.infer<typeof contractingAmendment.schema>;
+  NewChipSubmission: z.infer<typeof newChipSubmission.schema>;
+  NewMedicaidSubmission: z.infer<typeof newMedicaidSubmission.schema>;
+  TempExtension: z.infer<typeof temporaryExtension.schema>;
+};

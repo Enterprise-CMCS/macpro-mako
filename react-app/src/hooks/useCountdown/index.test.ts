@@ -1,8 +1,28 @@
 import { act, renderHook } from "@testing-library/react";
-import { beforeEach, describe, expect, test, vi } from "vitest";
+import {
+  beforeEach,
+  describe,
+  test,
+  vi,
+  expect,
+  beforeAll,
+  afterAll,
+} from "vitest";
 import { useCountdown } from ".";
 
+import { cleanup } from "@testing-library/react";
+
 const COUNTDOWN_TIME = 10;
+
+beforeAll(() => {
+  // Set up a fake DOM environment
+  global.document = window.document;
+  global.window = window;
+});
+
+afterAll(() => {
+  cleanup();
+});
 
 describe("useCountdown", () => {
   beforeEach(() => {

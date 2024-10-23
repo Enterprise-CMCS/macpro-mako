@@ -1,3 +1,5 @@
+import { UserStatusType } from "@aws-sdk/client-cognito-identity-provider";
+
 export enum UserRoles {
   CMS_READ_ONLY = "onemac-micro-readonly",
   CMS_REVIEWER = "onemac-micro-reviewer",
@@ -44,4 +46,15 @@ export const RoleDescriptionStrings: { [key: string]: string } = {
   [UserRoles.HELPDESK]: "Helpdesk",
   [UserRoles.STATE_SUBMITTER]: "State Submitter",
   [UserRoles.CMS_SUPER_USER]: "Super User",
+};
+
+export type UserAttributes = {
+  firstName: string | undefined;
+  lastName: string | undefined;
+  email: string | undefined;
+  states: string | undefined;
+  roles: string | undefined;
+  enabled: boolean | undefined;
+  status: UserStatusType | undefined;
+  username: string | undefined;
 };

@@ -286,7 +286,7 @@
     "subject": "XX_SEA_VAL_XX Attachment 4.19-C Reimbursemen",
     "description": "XX_SEA_VAL_XX This is some text",
     "waiverExtensions": [],
-    "reviewTeam": ["Billy Bob Farrell"],
+    "reviewTeam": [{ "name": "Billy Bob Farrell", "email": "billy@bob.com" }],
     "submissionTimestamp": 0,
     "proposedEffectiveDate": "2013-07-01",
     "lastEventTimestamp": 1657824888790,
@@ -1602,7 +1602,9 @@
     "subject": "XX_SEA_VAL_XX Addition of adult preventative",
     "description": "XX_SEA_VAL_XX This is some text",
     "waiverExtensions": [],
-    "reviewTeam": ["Frances Crystal"],
+    "reviewTeam": [
+      { "name": "Frances Crystal", "email": "frances@crystal.com" }
+    ],
     "submissionTimestamp": 0,
     "proposedEffectiveDate": "2014-07-01",
     "lastEventTimestamp": 1657824888790,
@@ -1622,7 +1624,10 @@
     "subject": "XX_SEA_VAL_XX WY CHIP MAGI XXI Medicaid Expa",
     "description": "XX_SEA_VAL_XX This is some text",
     "waiverExtensions": [],
-    "reviewTeam": ["Stacey Green", "Janice Adams"],
+    "reviewTeam": [
+      { "name": "Stacey Green", "email": "stacey@green.com" },
+      { "name": "Janice Adams", "email": "janice@adams.com" }
+    ],
     "submissionTimestamp": 0,
     "proposedEffectiveDate": "2014-01-01",
     "lastEventTimestamp": 1657824888790,
@@ -1671,7 +1676,11 @@
     "subject": "XX_SEA_VAL_XX Federally Qualified Health Cen",
     "description": "XX_SEA_VAL_XX This is some text",
     "waiverExtensions": [],
-    "reviewTeam": ["Frances Crystal", "Marguerite Schervish", "Sidney Staton"],
+    "reviewTeam": [
+      { "name": "Frances Crystal", "email": "frances@crystal.com" },
+      { "name": "Marguerite Schervish", "email": "marguerite@schervish.com" },
+      { "name": "Sidney Staton", "email": "sidney@staton.com" }
+    ],
     "submissionTimestamp": 0,
     "proposedEffectiveDate": "2012-12-06",
     "lastEventTimestamp": 1657824888790,
@@ -2842,7 +2851,7 @@
     "subject": null,
     "description": "XX_SEA_VAL_XX This is some text",
     "waiverExtensions": [],
-    "reviewTeam": ["Billy Bob Farrell"],
+    "reviewTeam": [{ "name": "Billy Bob Farrell", "email": "billy@bob.com" }],
     "submissionTimestamp": 0,
     "proposedEffectiveDate": "2014-07-01",
     "lastEventTimestamp": 1657824888790,
@@ -2994,7 +3003,7 @@
     "subject": "XX_SEA_VAL_XX MAGI Based Eligibility Groups ",
     "description": "XX_SEA_VAL_XX This is some text",
     "waiverExtensions": [],
-    "reviewTeam": ["Mary Corddry"],
+    "reviewTeam": [{ "name": "Mary Corddry", "email": "mary@corddry.com" }],
     "submissionTimestamp": 0,
     "proposedEffectiveDate": "2014-01-01",
     "lastEventTimestamp": 1657824888790,
