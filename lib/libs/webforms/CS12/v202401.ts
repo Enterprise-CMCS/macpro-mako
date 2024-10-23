@@ -26,9 +26,9 @@ const ageOptions = [
 
 const childStyle = " ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary ";
 
-const ageRangeGroup: RHFSlotProps[] = [
+const ageRangeGroup = (nameMod: string, fullMod: string): RHFSlotProps[] => [
   {
-    name: "inc-age-standard",
+    name: nameMod + "inc-age-standard",
     descriptionAbove: true,
     description:
       "Begin with the youngest age range first. The upper end of the income range cannot be more than the highest income level for targeted low-income children of the same age.",
@@ -39,7 +39,7 @@ const ageRangeGroup: RHFSlotProps[] = [
     addtnlRules: [
       {
         type: "noGapsOrOverlaps",
-        fieldName: "inc-range",
+        fieldName: nameMod + "inc-age-standard",
         fromField: "from-age",
         toField: "to-age",
         options: ageOptions,
@@ -62,7 +62,7 @@ const ageRangeGroup: RHFSlotProps[] = [
         addtnlRules: [
           {
             type: "toGreaterThanFrom",
-            fieldName: "inc-range",
+            fieldName: nameMod + "inc-age-standard",
             fromField: "from-age",
             toField: "to-age",
             message: "To age must be greater than From age",
@@ -121,9 +121,10 @@ const ageRangeGroup: RHFSlotProps[] = [
     ],
   },
   {
-    name: "overlap",
+    name: nameMod + "overlap",
     rhf: "Select",
     props: {
+      className: "w-[125px]",
       options: [
         { label: "Yes", value: "yes" },
         { label: "No", value: "no" },
@@ -134,12 +135,28 @@ const ageRangeGroup: RHFSlotProps[] = [
     labelClassName: "font-bold text-black",
   },
   {
-    name: "overlap-desc",
+    name: nameMod + "overlap-desc",
     rhf: "Textarea",
     label:
       "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
     labelClassName: "font-bold text-black",
-    rules: { required: "* Required" },
+    dependency: {
+      conditions: [
+        {
+          type: "expectedValue",
+          expectedValue: "yes",
+          name: fullMod + "_" + nameMod + "overlap",
+        },
+      ],
+      effect: { type: "show" },
+    },
+    rules: {
+      required: "* Required",
+      pattern: {
+        value: noLeadingTrailingWhitespace,
+        message: "Must not have leading or trailing whitespace.",
+      },
+    },
     props: {
       className: "h-[114px]",
     },
@@ -201,6 +218,7 @@ export const v202401: FormSchema = {
                 "Does the state use the same income standards for dental-only supplemental coverage as for other targeted low-income children?",
               labelClassName: "font-bold text-black",
               props: {
+                className: "w-[125px]",
                 options: [
                   { label: "Yes", value: "yes" },
                   { label: "No", value: "no" },
@@ -235,6 +253,7 @@ export const v202401: FormSchema = {
               name: "statewide",
               rhf: "Select",
               props: {
+                className: "w-[125px]",
                 options: [
                   { label: "Yes", value: "yes" },
                   { label: "No", value: "no" },
@@ -247,9 +266,9 @@ export const v202401: FormSchema = {
             {
               name: "stand-label",
               rhf: "TextDisplay",
-              text: [{ type: "bold", text: "Statewide income standard" }],
+              text: [{ type: "bold", text: "Statewide income standards" }],
             },
-            ...ageRangeGroup,
+            ...ageRangeGroup("standard", "cs12_standards"),
           ],
         },
       ],
@@ -275,6 +294,7 @@ export const v202401: FormSchema = {
               name: "exceptions",
               rhf: "Select",
               props: {
+                className: "w-[125px]",
                 options: [
                   { label: "Yes", value: "yes" },
                   { label: "No", value: "no" },
@@ -324,6 +344,7 @@ export const v202401: FormSchema = {
                             name: "county-label",
                             rhf: "Input",
                             label: "County",
+                            formItemClassName: "w-[700px]",
                             labelClassName: "font-bold text-black",
                             rules: {
                               required: "* Required",
@@ -334,7 +355,7 @@ export const v202401: FormSchema = {
                               },
                             },
                           },
-                          ...ageRangeGroup,
+                          ...ageRangeGroup("county", "cs12_inc-exception"),
                         ],
                       },
                     ],
@@ -349,6 +370,7 @@ export const v202401: FormSchema = {
                         description:
                           "Enter one city if the city has a unique income standard. If multiple cities share the same income standard, enter all the cities, then enter the income standard that applies to those cities.",
                         descriptionAbove: true,
+                        formItemClassName: "w-[700px]",
                         props: {
                           ...DefaultFieldGroupProps,
                           appendText: "Add city",
@@ -369,7 +391,7 @@ export const v202401: FormSchema = {
                               },
                             },
                           },
-                          ...ageRangeGroup,
+                          ...ageRangeGroup("city", "cs12_inc-exception"),
                         ],
                       },
                     ],
@@ -393,6 +415,7 @@ export const v202401: FormSchema = {
                           {
                             name: "geo-label",
                             rhf: "Input",
+                            formItemClassName: "w-[700px]",
                             label: "Geographic area",
                             labelClassName: "font-bold text-black",
                             rules: {
@@ -409,12 +432,19 @@ export const v202401: FormSchema = {
                             rhf: "Textarea",
                             label: "Describe",
                             labelClassName: "font-bold text-black",
-                            rules: { required: "* Required" },
+                            rules: {
+                              required: "* Required",
+                              pattern: {
+                                value: noLeadingTrailingWhitespace,
+                                message:
+                                  "Must not have leading or trailing whitespace.",
+                              },
+                            },
                             props: {
                               className: "h-[114px]",
                             },
                           },
-                          ...ageRangeGroup,
+                          ...ageRangeGroup("geo", "cs12_inc-exception"),
                         ],
                       },
                     ],
