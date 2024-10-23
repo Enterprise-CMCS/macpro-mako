@@ -1,6 +1,4 @@
-import * as React from "react";
-import { emailTemplateValue } from "../data";
-import { OneMac } from "shared-types";
+import { MedicaidSubmissionSchema } from "shared-types";
 import { CommonVariables, formatDate } from "../../..";
 import { Html, Container } from "@react-email/components";
 import {
@@ -10,7 +8,7 @@ import {
 } from "../../email-components";
 
 export const MedSpaCMSEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: MedicaidSubmissionSchema & CommonVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -27,7 +25,7 @@ export const MedSpaCMSEmail = (props: {
             Email: variables.submitterEmail,
             "Medicaid SPA ID": variables.id,
             "Proposed Effective Date": formatDate(
-              variables.notificationMetadata?.proposedEffectiveDate,
+              variables.proposedEffectiveDate,
             ),
             Summary: variables.additionalInformation,
           }}
@@ -38,14 +36,3 @@ export const MedSpaCMSEmail = (props: {
     </Html>
   );
 };
-
-// To preview with 'email-dev'
-const MedSpaCMSEmailPreview = () => {
-  return (
-    <MedSpaCMSEmail
-      variables={emailTemplateValue as OneMac & CommonVariables}
-    />
-  );
-};
-
-export default MedSpaCMSEmailPreview;
