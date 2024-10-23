@@ -162,6 +162,7 @@ export class Email extends cdk.NestedStack {
         logRetention: 30,
         securityGroups: [lambdaSecurityGroup],
         environment: {
+          isDev: props.isDev.toString(),
           region: this.region,
           stage,
           indexNamespace,

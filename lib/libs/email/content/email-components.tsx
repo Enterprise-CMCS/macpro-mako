@@ -13,6 +13,20 @@ type AttachmentsType = {
   [key: string]: { files?: Attachment[]; label: string };
 };
 
+export const getToAddress = ({
+  name,
+  email,
+}: {
+  name: string;
+  email: string;
+}) => {
+  if (process.env.isDev === "true") {
+    return [`"${name}" <mako.stateuser+dev-to@gmail.com>`];
+  }
+
+  return [`"${name}" <${email}>`];
+};
+
 export const EmailNav = (props: { appEndpointUrl: string }) => {
   return (
     <Section>
