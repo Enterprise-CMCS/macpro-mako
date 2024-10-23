@@ -46,8 +46,7 @@ export const v202401: FormSchema = {
               name: "pop-array",
               rhf: "FieldArray",
               props: {
-                fieldArrayClassName:
-                  DefaultFieldGroupProps.fieldArrayClassName + "space-y-6",
+                fieldArrayClassName: DefaultFieldGroupProps.fieldArrayClassName,
                 appendText: "Add population",
                 appendClassName: DefaultFieldGroupProps.appendClassName,
                 removeText: "Remove above population",
@@ -136,7 +135,7 @@ export const v202401: FormSchema = {
                     appendText: "Add service",
                     fieldArrayClassName:
                       DefaultFieldGroupProps.fieldArrayClassName +
-                      "space-y-6 divider-parent-element",
+                      "divider-parent-element",
                   },
                   fields: [
                     {
@@ -144,7 +143,7 @@ export const v202401: FormSchema = {
                       rhf: "WrappedGroup",
                       props: {
                         wrapperClassName:
-                          "ml-[0.6rem] mt-4 pl-6 px-4 space-y-6 border-l-4 border-l-primary",
+                          "ml-[0.6rem] space-y-6 pl-6 px-4 border-l-4 border-l-primary",
                       },
                       fields: [
                         {

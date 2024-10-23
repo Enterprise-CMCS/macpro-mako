@@ -58,7 +58,7 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
           <div
             className={cn(
               props.section.sectionWrapperClassname,
-              "px-8 py-6",
+              "px-8 py-6 space-y-6",
               isCollapsed ? "hidden" : "",
             )}
           >

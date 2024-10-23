@@ -16,7 +16,7 @@ export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
     <DependencyWrapper {...props.form}>
       <div className={props.className}>
         {props.form.description && (
-          <div className="mb-3">
+          <div className="mb-4">
             <FormLabel
               className={props.form.descriptionClassName || "font-bold"}
             >

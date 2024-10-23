@@ -28,14 +28,11 @@ export const RHFFieldArray = <TFields extends FieldValues>(
   }, [fieldArr, props.fields]);
 
   return (
-    <div className={"flex flex-col gap-3 w-full"}>
+    <div className={"flex flex-col gap-6 w-full"}>
       {fieldArr.fields.map((FLD, index) => {
         return (
           <div
-            className={cn(
-              "flex flex-row gap-5 mb-4",
-              props.fieldArrayClassName,
-            )}
+            className={cn("flex flex-row gap-6", props.fieldArrayClassName)}
             key={FLD.id}
           >
             {props.fields.map((SLOT, i) => {
@@ -78,12 +75,12 @@ export const RHFFieldArray = <TFields extends FieldValues>(
       {props.lastDivider && (
         <div
           className={cn(
-            "w-full border-slate-300 border-b-[1px] my-4",
+            "w-full border-slate-300 border-b-[1px]",
             props.lastDivider,
           )}
         />
       )}
-      <div className={cn("flex items-center mt-3", props.appendClassName)}>
+      <div className={cn("flex items-center", props.appendClassName)}>
         <Button
           type="button"
           size="sm"
