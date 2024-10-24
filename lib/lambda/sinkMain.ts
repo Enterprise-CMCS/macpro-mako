@@ -139,6 +139,10 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   });
 
   const openSearchRecords = await os.getItems(osDomain, indexNamespace, ids);
+  console.log(
+    "what is the opensearch records",
+    JSON.stringify(openSearchRecords),
+  );
   const existingRecordsLookup = openSearchRecords.reduce<
     Record<string, number>
   >((acc, item) => {
