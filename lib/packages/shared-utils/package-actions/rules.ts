@@ -15,7 +15,7 @@ const arRespondToRai: ActionRule = {
     // safety; prevent bad status from causing overwrite
     (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
     isStateUser(user) &&
-    false,
+    !checker.isLocked
 };
 
 const arTempExtension: ActionRule = {
