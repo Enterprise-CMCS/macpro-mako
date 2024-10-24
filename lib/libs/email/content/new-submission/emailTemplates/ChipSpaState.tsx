@@ -1,12 +1,11 @@
-import * as React from "react";
 import { emailTemplateValue } from "../data";
-import { OneMac } from "shared-types";
-import { CommonVariables } from "../../..";
+import { Events } from "shared-types";
+import { CommonEmailVariables } from "shared-types";
 import { Html, Container } from "@react-email/components";
 import { PackageDetails, ContactStateLead } from "../../email-components";
 
 export const ChipSpaStateEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: Events["NewChipSubmission"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -24,6 +23,7 @@ export const ChipSpaStateEmail = (props: {
             "CHIP SPA Package ID": variables.id,
             Summary: variables.additionalInformation,
           }}
+          attachments={variables.attachments}
         />
         <p>
           This response confirms the receipt of your CHIP State Plan Amendment
@@ -40,7 +40,9 @@ export const ChipSpaStateEmail = (props: {
 const ChipSpaStateEmailPreview = () => {
   return (
     <ChipSpaStateEmail
-      variables={emailTemplateValue as OneMac & CommonVariables}
+      variables={
+        emailTemplateValue as Events["NewChipSubmission"] & CommonEmailVariables
+      }
     />
   );
 };

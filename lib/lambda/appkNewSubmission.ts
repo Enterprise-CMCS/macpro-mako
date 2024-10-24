@@ -1,7 +1,7 @@
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 import * as sql from "mssql";
-import { isAuthorized } from "../libs/api/auth/user";
+import { isAuthorized } from "libs/api/auth/user";
 
 import { events } from "shared-types";
 import {
@@ -9,8 +9,8 @@ import {
   getNextBusinessDayTimestamp,
   seaToolFriendlyTimestamp,
 } from "shared-utils";
-import { produceMessage } from "../libs/api/kafka";
-import { search } from "../libs/opensearch-lib";
+import { produceMessage } from "libs/api/kafka";
+import { search } from "libs/opensearch-lib";
 
 let config: sql.config;
 const secretName = process.env.dbInfoSecretName;
@@ -28,7 +28,7 @@ export const submit = async (event: APIGatewayEvent) => {
     attachments: z.object({
       appk: zAttachmentRequired({ min: 1 }),
       other: zAttachmentRequired({ min: 1 }),
-    }),
+    }), 
     proposedEffectiveDate: z.date(),
     seaActionType: z.string().default("Amend"),
    */
@@ -76,7 +76,7 @@ export const submit = async (event: APIGatewayEvent) => {
       proposedEffectiveDate: body.proposedEffectiveDate,
     };
 
-    const validateZod = events["new-submission"].feSchema.safeParse({
+    const validateZod = events["new-chip-submission"]?.schema?.safeParse({
       ...body,
       ...(!!Number(WINDEX) && {
         appkParentId: `${body.state}-${body.waiverIds[0]}`,

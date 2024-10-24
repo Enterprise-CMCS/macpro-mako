@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Action, Authority, EmailAddresses, RaiWithdraw } from "shared-types";
 import {
-  CommonVariables,
+  CommonEmailVariables,
   AuthoritiesWithUserTypesTemplate,
   getLatestMatchingEvent,
 } from "../..";
@@ -20,7 +20,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
     cms: async (
       variables: RaiWithdraw &
-        CommonVariables & { emails: EmailAddresses } & {
+        CommonEmailVariables & { emails: EmailAddresses } & {
           emails: EmailAddresses;
         },
     ) => {
@@ -50,7 +50,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
     },
     state: async (
       variables: RaiWithdraw &
-        CommonVariables & { emails: EmailAddresses },
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       const relatedEvent = await getLatestMatchingEvent(
         variables.id,
@@ -83,7 +83,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
   [Authority.CHIP_SPA]: {
     cms: async (
       variables: RaiWithdraw &
-        CommonVariables & { emails: EmailAddresses } & {
+        CommonEmailVariables & { emails: EmailAddresses } & {
           emails: EmailAddresses;
         },
     ) => {
@@ -108,7 +108,8 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
       };
     },
     state: async (
-      variables: RaiWithdraw & CommonVariables & { emails: EmailAddresses },
+      variables: RaiWithdraw &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       const relatedEvent = await getLatestMatchingEvent(
         variables.id,
@@ -138,7 +139,8 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
   },
   [Authority["1915b"]]: {
     cms: async (
-      variables: RaiWithdraw & CommonVariables & { emails: EmailAddresses },
+      variables: RaiWithdraw &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       const relatedEvent = await getLatestMatchingEvent(
         variables.id,
@@ -171,7 +173,8 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
       };
     },
     state: async (
-      variables: RaiWithdraw & CommonVariables & { emails: EmailAddresses },
+      variables: RaiWithdraw &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       const relatedEvent = await getLatestMatchingEvent(
         variables.id,
@@ -201,7 +204,8 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
   },
   [Authority["1915c"]]: {
     cms: async (
-      variables: RaiWithdraw & CommonVariables & { emails: EmailAddresses },
+      variables: RaiWithdraw &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       const relatedEvent = await getLatestMatchingEvent(
         variables.id,

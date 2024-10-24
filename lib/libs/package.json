@@ -14,7 +14,8 @@
     "lodash": "^4.17.21",
     "luxon": "^3.4.4",
     "pino": "^9.2.0",
-    "shared-types": "*"
+    "shared-types": "*",
+    "shared-utils": "*"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.5",
@@ -22,7 +23,7 @@
     "vitest": "2.0.5"
   },
   "scripts": {
-    "email-dev": "email dev --dir email/content",
+    "email-dev": "email dev --dir content",
     "test": "vitest",
     "test:coverage": "vitest run --coverage.enabled true",
     "test:ui": "vitest --ui"

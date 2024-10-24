@@ -1,8 +1,7 @@
 import * as React from "react";
 import { DateTime } from "luxon";
 import { emailTemplateValue } from "../data";
-import { OneMac } from "shared-types";
-import { CommonVariables } from "../../..";
+import { CommonEmailVariables } from "shared-types";
 import { Html, Container } from "@react-email/components";
 import {
   LoginInstructions,
@@ -11,7 +10,7 @@ import {
 } from "../../email-components";
 
 export const Waiver1915bCMSEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: any & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -46,7 +45,7 @@ export const Waiver1915bCMSEmail = (props: {
 const Waiver1915bCMSEmailPreview = () => {
   return (
     <Waiver1915bCMSEmail
-      variables={emailTemplateValue as OneMac & CommonVariables}
+      variables={emailTemplateValue as any & CommonEmailVariables}
     />
   );
 };

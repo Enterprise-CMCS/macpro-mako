@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Authority, EmailAddresses, WithdrawPackage } from "shared-types";
-import { CommonVariables, AuthoritiesWithUserTypesTemplate } from "../..";
+import { CommonEmailVariables, AuthoritiesWithUserTypesTemplate } from "../..";
 import {
   MedSpaCMSEmail,
   MedSpaStateEmail,
@@ -13,7 +13,8 @@ import { render } from "@react-email/render";
 export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
     cms: async (
-      variables: WithdrawPackage & CommonVariables & { emails: EmailAddresses },
+      variables: WithdrawPackage &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: variables.emails.osgEmail,
@@ -26,7 +27,8 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       };
     },
     state: async (
-      variables: WithdrawPackage & CommonVariables & { emails: EmailAddresses },
+      variables: WithdrawPackage &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
@@ -40,7 +42,8 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
   },
   [Authority.CHIP_SPA]: {
     cms: async (
-      variables: WithdrawPackage & CommonVariables & { emails: EmailAddresses },
+      variables: WithdrawPackage &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
@@ -55,7 +58,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
 
     // The confluence page shows this email should not be sent: https://qmacbis.atlassian.net/wiki/spaces/MACPRO/pages/3286138882/Email+Notifications+for+Package+Actions#State-Users.3
     //     state: async (
-    //       variables: WithdrawPackage & CommonVariables & { emails: EmailAddresses },
+    //       variables: WithdrawPackage & CommonEmailVariables & { emails: EmailAddresses },
     //     ) => {
     //       return {
     //         to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
@@ -71,7 +74,8 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
   },
   [Authority["1915b"]]: {
     cms: async (
-      variables: WithdrawPackage & CommonVariables & { emails: EmailAddresses },
+      variables: WithdrawPackage &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: variables.emails.osgEmail,
@@ -83,7 +87,8 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       };
     },
     state: async (
-      variables: WithdrawPackage & CommonVariables & { emails: EmailAddresses },
+      variables: WithdrawPackage &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],

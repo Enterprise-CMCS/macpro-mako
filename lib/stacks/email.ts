@@ -147,6 +147,7 @@ export class Email extends cdk.NestedStack {
       this,
       "ProcessEmailsLambda",
       {
+        functionName: `${project}-${stage}-${stack}-processEmails`,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry: join(__dirname, "../lambda/processEmails.ts"),
         handler: "handler",
@@ -161,6 +162,7 @@ export class Email extends cdk.NestedStack {
         logRetention: 30,
         securityGroups: [lambdaSecurityGroup],
         environment: {
+          isDev: props.isDev.toString(),
           region: this.region,
           stage,
           indexNamespace,

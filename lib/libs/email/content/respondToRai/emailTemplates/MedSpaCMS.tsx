@@ -1,6 +1,6 @@
 import * as React from "react";
 import { emailTemplateValue } from "../data";
-import { CommonVariables } from "../../..";
+import { CommonEmailVariables } from "../../..";
 import { RaiResponse } from "shared-types";
 import { Container, Html } from "@react-email/components";
 import {
@@ -10,7 +10,7 @@ import {
 } from "../../email-components";
 
 export const MedSpaCMSEmail = (props: {
-  variables: RaiResponse & CommonVariables;
+  variables: RaiResponse & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -40,7 +40,7 @@ export const MedSpaCMSEmail = (props: {
 const MedSpaCMSEmailPreview = () => {
   return (
     <MedSpaCMSEmail
-      variables={emailTemplateValue as RaiResponse & CommonVariables}
+      variables={emailTemplateValue as RaiResponse & CommonEmailVariables}
     />
   );
 };

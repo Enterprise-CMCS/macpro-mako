@@ -1,12 +1,12 @@
 import * as React from "react";
 import { emailTemplateValue } from "../data";
-import { CommonVariables } from "../../..";
+import { CommonEmailVariables } from "../../..";
 import { WithdrawPackage } from "shared-types";
 import { Html, Container } from "@react-email/components";
 import { PackageDetails, SpamWarning } from "../../email-components";
 
 export const Waiver1915bCMSEmail = (props: {
-  variables: WithdrawPackage & CommonVariables;
+  variables: WithdrawPackage & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -35,7 +35,7 @@ export const Waiver1915bCMSEmail = (props: {
 const Waiver1915bCMSEmailPreview = () => {
   return (
     <Waiver1915bCMSEmail
-      variables={emailTemplateValue as WithdrawPackage & CommonVariables}
+      variables={emailTemplateValue as WithdrawPackage & CommonEmailVariables}
     />
   );
 };

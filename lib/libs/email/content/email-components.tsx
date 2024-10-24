@@ -1,27 +1,98 @@
-import * as React from "react";
-import { Text, Link, Section } from "@react-email/components";
-import { Attachment } from "shared-types";
+import {
+  Text,
+  Link,
+  Section,
+  Row,
+  Column,
+  Hr,
+  Heading,
+  Img,
+} from "@react-email/components";
+import { Attachment, TextareaProps } from "shared-types";
 
-type AttachmentsType = { ["string"]: { files: Attachment[]; label: "string" } };
+type AttachmentsType = {
+  [key: string]: { files?: Attachment[]; label: string };
+};
+
+export const Textarea: React.FC<TextareaProps> = ({
+  children,
+}: TextareaProps) => {
+  return (
+    <Text
+      style={{
+        width: "100%",
+        backgroundColor: "transparent",
+        padding: "8px 12px",
+        fontSize: "16px",
+        boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+        outline: "none",
+        whiteSpace: "pre-line",
+        wordWrap: "break-word",
+      }}
+    >
+      {children}
+    </Text>
+  );
+};
+
+export const getToAddress = ({
+  name,
+  email,
+}: {
+  name: string;
+  email: string;
+}) => {
+  if (process.env.isDev === "true") {
+    return [`"${name}" <mako.stateuser+dev-to@gmail.com>`];
+  }
+
+  return [`"${name}" <${email}>`];
+};
+
+export const EmailNav = (props: { appEndpointUrl: string }) => {
+  return (
+    <Section>
+      <Row style={{ backgroundColor: "#0071BD", padding: "16px" }}>
+        <Column style={{ maxWidth: "112px" }}>
+          <Link href={props.appEndpointUrl}>
+            <Img
+              height={40}
+              width={112}
+              src={"https://mako-dev.cms.gov/assets/onemac_logo-BFuMCpJm.svg"}
+              alt="OneMAC Logo"
+            />
+          </Link>
+        </Column>
+        <Column style={{ flex: 1 }}></Column>
+      </Row>
+    </Section>
+  );
+};
 
 export const LoginInstructions = (props: { appEndpointURL: string }) => {
   return (
     <Section>
       <ul style={{ maxWidth: "760px" }}>
         <li>
-          The submission can be accessed in the OneMAC application, which you
-          can find at{" "}
-          <Link href={props.appEndpointURL}>{props.appEndpointURL}</Link>.
+          <Text>
+            The submission can be accessed in the OneMAC application, which you
+            can find at{" "}
+            <Link href={props.appEndpointURL}>{props.appEndpointURL}</Link>.
+          </Text>
         </li>
         <li>
-          If you are not already logged in, please click the "Login" link at the
-          top of the page and log in using your Enterprise User Administration
-          (EUA) credentials.
+          <Text>
+            If you are not already logged in, please click the "Login" link at
+            the top of the page and log in using your Enterprise User
+            Administration (EUA) credentials.
+          </Text>
         </li>
         <li>
-          After you have logged in, you will be taken to the OneMAC application.
-          The submission will be listed on the dashboard page, and you can view
-          its details by clicking on its ID number.
+          <Text>
+            After you have logged in, you will be taken to the OneMAC
+            application. The submission will be listed on the dashboard page,
+            and you can view its details by clicking on its ID number.
+          </Text>
         </li>
       </ul>
     </Section>
@@ -30,14 +101,10 @@ export const LoginInstructions = (props: { appEndpointURL: string }) => {
 
 export const Attachments = (props: { attachments: AttachmentsType }) => {
   //check if empty
-  const areAllAttachmentsEmpty = (attachments: AttachmentsType) => {
-    let key: keyof typeof attachments;
-    for (key in attachments) {
-      if (attachments[key].files.length > 0) {
-        return false;
-      }
-    }
-    return true;
+  const areAllAttachmentsEmpty = (attachments: AttachmentsType): boolean => {
+    return Object.values(attachments).every(
+      ({ files }) => !files || files.length === 0,
+    );
   };
 
   // return if empty
@@ -60,11 +127,9 @@ export const Attachments = (props: { attachments: AttachmentsType }) => {
 
   return (
     <>
-      <br />
-      <p style={{ margin: ".5em" }}>
-        <b>Files:</b>
-      </p>
-      <ul>
+      <Hr style={{ margin: "16px 0", borderTop: "2px solid #0071BD" }} />
+      <Heading as="h3">Files:</Heading>
+      <Section>
         {attachmentKeys?.map(
           (key: keyof typeof props.attachments, idx: number) => {
             if (!props.attachments[key].files) return;
@@ -73,89 +138,100 @@ export const Attachments = (props: { attachments: AttachmentsType }) => {
               props.attachments[key].files,
             );
             return (
-              <li key={key + idx}>
-                {title}: {filenames}
-              </li>
+              <Row key={key + String(idx)}>
+                <Column style={{ width: "200px", paddingTop: "8px" }}>
+                  <Text style={styles.textTitle}>{title}</Text>
+                </Column>
+                <Column>
+                  <Text style={styles.textDescription}>{filenames}</Text>
+                </Column>
+              </Row>
             );
           },
         )}
-      </ul>
+      </Section>
     </>
   );
 };
 
 export const PackageDetails = (props: {
   details: { [key: string]: string | null | undefined };
-  attachments?: AttachmentsType | null;
+  attachments: AttachmentsType | null;
 }) => {
   return (
     <Section>
-      <br />
       {Object.keys(props.details).map((label: string, idx: number) => {
         if (label === "Summary") {
           const summary =
-            "label" in props.details && props.details.label
-              ? props.details.label
-              : "No additional information submitted";
+            props.details[label] ?? "No additional information submitted";
           return (
-            <div key={label + idx}>
-              <br />
-              <p style={{ margin: ".5em" }}>
-                <b>Summary:</b>
-              </p>
-              <p style={{ margin: ".5em" }}>{summary}</p>
-            </div>
+            <Row>
+              <Hr
+                style={{ margin: "16px 0", borderTop: "2px solid #0071BD" }}
+              />
+              <Text style={{ margin: ".5em" }}>
+                <Heading as="h3">Summary:</Heading>
+              </Text>
+              <Textarea>{summary}</Textarea>
+            </Row>
           );
         }
         return (
-          <p key={label + idx} style={{ margin: ".5em" }}>
-            <b>{label}:</b> {props.details[label] ?? "Unknown"}
-          </p>
+          <Row key={label + idx}>
+            <Column align="left" style={{ width: "200px", paddingTop: "8px" }}>
+              <Text style={styles.textTitle}>{label}</Text>
+            </Column>
+            <Column>
+              <Text style={styles.textDescription}>
+                {props.details[label] ?? "Unknown"}
+              </Text>
+            </Column>
+          </Row>
         );
       })}
       {props.attachments && <Attachments attachments={props.attachments} />}
-      <br />
+      <Hr style={{ margin: "16px 0", borderTop: "2px solid #0071BD" }} />
     </Section>
   );
 };
 
 export const MailboxSPA = () => {
   return (
-    <p>
+    <Text>
       This mailbox is for the submittal of State Plan Amendments and non-web
       based responses to Requests for Additional Information (RAI) on submitted
       SPAs only. Any other correspondence will be disregarded.
-    </p>
+    </Text>
   );
 };
 
 export const MailboxWaiver = () => {
   return (
-    <p>
+    <Text>
       This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
       responses to Requests for Additional Information (RAI) on Waivers, and
       extension requests on Waivers only. Any other correspondence will be
       disregarded.
-    </p>
+    </Text>
   );
 };
 
 export const ContactStateLead = (props: { isChip?: boolean }) => {
   return (
     <Section>
-      <br />
-      <p style={{ textAlign: "center" }}>
+      <Hr style={{ margin: "16px 0", borderTop: "2px solid #0071BD" }} />
+      <Text>
         If you have questions or did not expect this email, please contact{" "}
         {props.isChip ? (
-          <a href="mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov">
+          <Link href="mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov">
             CHIPSPASubmissionMailBox@CMS.HHS.gov
-          </a>
+          </Link>
         ) : (
-          <a href="mailto:spa@cms.hhs.gov">spa@cms.hhs.gov</a>
+          <Link href="mailto:spa@cms.hhs.gov">spa@cms.hhs.gov</Link>
         )}{" "}
         or your state lead.
-      </p>
-      <p style={{ textAlign: "center" }}>Thank you!</p>
+      </Text>
+      <Text>Thank you!</Text>
     </Section>
   );
 };
@@ -163,13 +239,12 @@ export const ContactStateLead = (props: { isChip?: boolean }) => {
 export const SpamWarning = () => {
   return (
     <Section>
-      <br />
-      <p style={{ textAlign: "center" }}>
+      <Text>
         If the contents of this email seem suspicious, do not open them, and
         instead forward this email to{" "}
-        <a href="mailto:SPAM@cms.hhs.gov">SPAM@cms.hhs.gov</a>.
-      </p>
-      <p style={{ textAlign: "center" }}>Thank you!</p>
+        <Link href="mailto:SPAM@cms.hhs.gov">SPAM@cms.hhs.gov</Link>.
+      </Text>
+      <Text>Thank you!</Text>
     </Section>
   );
 };
@@ -181,12 +256,12 @@ export const WithdrawRAI = (props: {
 }) => {
   return (
     <Section>
-      <h3>
+      <Heading as="h3">
         The OneMAC Submission Portal received a request to withdraw the Formal
         RAI Response. You are receiving this email notification as the Formal
         RAI for {props.id} was withdrawn by {props.submitterName}{" "}
         {props.submitterEmail}.
-      </h3>
+      </Heading>
     </Section>
   );
 };
@@ -206,4 +281,129 @@ export const getSrtEmails = (item: any): string[] => {
   return reviewTeam.map(
     (reviewer: any) => `${reviewer.name} <${reviewer.email}>`,
   );
+};
+
+const resetText = {
+  margin: "0",
+  padding: "0",
+  lineHeight: 1.4,
+};
+
+const main = {
+  fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+  backgroundColor: "#ffffff",
+  ...resetText,
+  fontSize: "12px",
+  color: "rgb(102,102,102)",
+};
+
+const container = {
+  margin: "0 auto",
+  padding: "20px 0 48px",
+  width: "660px",
+  maxWidth: "100%",
+};
+
+const tableCell = { display: "table-cell" };
+
+const heading = {
+  fontSize: "24px",
+  fontWeight: "300",
+  color: "#888888",
+};
+
+const informationTable = {
+  borderCollapse: "collapse" as const,
+  borderSpacing: "0px",
+  color: "rgb(51,51,51)",
+  backgroundColor: "rgb(250,250,250)",
+  borderRadius: "3px",
+  fontSize: "12px",
+};
+
+const informationTableRow = {
+  height: "46px",
+};
+
+const informationTableColumn = {
+  paddingLeft: "20px",
+  borderStyle: "solid",
+  borderColor: "white",
+  borderWidth: "0px 1px 1px 0px",
+  height: "44px",
+};
+
+const informationTableLabel = {
+  ...resetText,
+  color: "rgb(102,102,102)",
+  fontSize: "10px",
+};
+
+const informationTableValue = {
+  fontSize: "12px",
+  margin: "0",
+  padding: "0",
+  lineHeight: 1.4,
+};
+
+const productTitleTable = {
+  ...informationTable,
+  margin: "30px 0 15px 0",
+  height: "24px",
+};
+
+const productsTitle = {
+  background: "#fafafa",
+  paddingLeft: "10px",
+  fontSize: "14px",
+  fontWeight: "500",
+  margin: "0",
+};
+
+const productIcon = {
+  margin: "0 0 0 20px",
+  borderRadius: "14px",
+  border: "1px solid rgba(128,128,128,0.2)",
+};
+
+const textTitle = { fontSize: "14px", fontWeight: "600", ...resetText };
+
+const textDescription = {
+  fontSize: "14px",
+  color: "rgb(102,102,102)",
+  ...resetText,
+};
+
+const productLink = {
+  fontSize: "12px",
+  color: "rgb(0,112,201)",
+  textDecoration: "none",
+};
+
+const divisor = {
+  marginLeft: "4px",
+  marginRight: "4px",
+  color: "rgb(51,51,51)",
+  fontWeight: 200,
+};
+
+export const styles = {
+  main,
+  resetText,
+  container,
+  tableCell,
+  heading,
+  informationTable,
+  informationTableRow,
+  informationTableColumn,
+  informationTableLabel,
+  informationTableValue,
+  productTitleTable,
+  productsTitle,
+  productIcon,
+  textTitle,
+  textDescription,
+  productLink,
+  divisor,
+  Textarea,
 };

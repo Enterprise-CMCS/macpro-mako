@@ -1,6 +1,6 @@
 import * as React from "react";
 import { emailTemplateValue } from "../data";
-import { CommonVariables } from "../../..";
+import { CommonEmailVariables } from "../../..";
 import { RaiWithdraw } from "shared-types";
 import { Container, Html } from "@react-email/components";
 import {
@@ -12,7 +12,7 @@ import {
 import { relatedEvent } from "./AppKCMS";
 
 export const Waiver1915bStateEmail = (props: {
-  variables: RaiWithdraw & CommonVariables;
+  variables: RaiWithdraw & CommonEmailVariables;
   relatedEvent: any;
 }) => {
   const { variables, relatedEvent } = { ...props };
@@ -40,7 +40,7 @@ const Waiver1915bStateEmailPreview = () => {
   return (
     <Waiver1915bStateEmail
       relatedEvent={relatedEvent}
-      variables={emailTemplateValue as RaiWithdraw & CommonVariables}
+      variables={emailTemplateValue as RaiWithdraw & CommonEmailVariables}
     />
   );
 };

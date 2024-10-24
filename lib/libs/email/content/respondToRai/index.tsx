@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Authority, EmailAddresses, RaiResponse } from "shared-types";
-import { CommonVariables, AuthoritiesWithUserTypesTemplate } from "../..";
+import { CommonEmailVariables, AuthoritiesWithUserTypesTemplate } from "../..";
 import {
   MedSpaCMSEmail,
   MedSpaStateEmail,
@@ -14,7 +14,8 @@ import { render } from "@react-email/render";
 export const respondToRai: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
     cms: async (
-      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+      variables: RaiResponse &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [
@@ -31,7 +32,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
     },
     state: async (
       variables: RaiResponse &
-        CommonVariables & { emails: EmailAddresses } & {
+        CommonEmailVariables & { emails: EmailAddresses } & {
           emails: EmailAddresses;
         },
     ) => {
@@ -47,7 +48,8 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
   },
   [Authority.CHIP_SPA]: {
     cms: async (
-      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+      variables: RaiResponse &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [
@@ -64,7 +66,8 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       };
     },
     state: async (
-      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+      variables: RaiResponse &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
@@ -78,7 +81,8 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
   },
   [Authority["1915b"]]: {
     cms: async (
-      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+      variables: RaiResponse &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [
@@ -95,7 +99,8 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       };
     },
     state: async (
-      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+      variables: RaiResponse &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],

@@ -229,7 +229,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "submit",
-        entry: join(__dirname, "../lambda/submit/submit.ts"),
+        entry: join(__dirname, "../lambda/submit/index.ts"),
         environment: {
           dbInfoSecretName,
           topicName,

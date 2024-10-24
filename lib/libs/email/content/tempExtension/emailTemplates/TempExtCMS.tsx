@@ -1,7 +1,4 @@
-import * as React from "react";
-import { emailTemplateValue } from "../../new-submission/data";
-import { OneMac } from "shared-types";
-import { CommonVariables } from "../../..";
+import { CommonEmailVariables } from "shared-types";
 import { Html, Container } from "@react-email/components";
 import {
   PackageDetails,
@@ -10,7 +7,7 @@ import {
 } from "../../email-components";
 
 export const TempExtCMSEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: any & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -38,12 +35,12 @@ export const TempExtCMSEmail = (props: {
   );
 };
 
-const TempExtCMSPreview = () => {
-  return (
-    <TempExtCMSEmail
-      variables={emailTemplateValue as OneMac & CommonVariables}
-    />
-  );
-};
+// const TempExtCMSPreview = () => {
+//   return (
+//     <TempExtCMSEmail
+//       variables={emailTemplateValue as OneMac & CommonEmailVariables}
+//     />
+//   );
+// };
 
-export default TempExtCMSPreview;
+// export default TempExtCMSPreview;

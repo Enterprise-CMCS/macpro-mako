@@ -1,7 +1,6 @@
 import * as React from "react";
 import { emailTemplateValue } from "../data";
-import { OneMac } from "shared-types";
-import { CommonVariables } from "../../..";
+import { CommonEmailVariables } from "shared-types";
 import { DateTime } from "luxon";
 import { Html, Container } from "@react-email/components";
 import {
@@ -12,7 +11,7 @@ import {
 
 // 1915c - app K
 export const AppKCMSEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: any & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -47,7 +46,9 @@ export const AppKCMSEmail = (props: {
 // To preview with on 'email-dev'
 const AppKCMSEmailPreview = () => {
   return (
-    <AppKCMSEmail variables={emailTemplateValue as OneMac & CommonVariables} />
+    <AppKCMSEmail
+      variables={emailTemplateValue as any & CommonEmailVariables}
+    />
   );
 };
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { emailTemplateValue } from "../data";
-import { CommonVariables } from "../../..";
+import { CommonEmailVariables } from "../../..";
 import { RaiResponse } from "shared-types";
 import { Html, Container } from "@react-email/components";
 import {
@@ -11,7 +11,7 @@ import {
 
 // 1915b
 export const Waiver1915bCMSEmail = (props: {
-  variables: RaiResponse & CommonVariables;
+  variables: RaiResponse & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -41,7 +41,7 @@ export const Waiver1915bCMSEmail = (props: {
 const Waiver1915bCMSEmailPreview = () => {
   return (
     <Waiver1915bCMSEmail
-      variables={emailTemplateValue as RaiResponse & CommonVariables}
+      variables={emailTemplateValue as RaiResponse & CommonEmailVariables}
     />
   );
 };

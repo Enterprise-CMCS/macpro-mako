@@ -1,8 +1,8 @@
 import * as React from "react";
 import { DateTime } from "luxon";
 import { Html, Container } from "@react-email/components";
-import { OneMac } from "shared-types";
-import { CommonVariables, formatNinetyDaysDate } from "../../..";
+import { CommonEmailVariables } from "shared-types";
+import { formatNinetyDaysDate } from "../../..";
 import {
   PackageDetails,
   ContactStateLead,
@@ -11,7 +11,7 @@ import {
 import { emailTemplateValue } from "../data";
 
 export const AppKStateEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: any & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -36,6 +36,7 @@ export const AppKStateEmail = (props: {
             ),
             Summary: variables.additionalInformation,
           }}
+          attachments={variables.attachments}
         />
         <p>
           This response confirms the receipt of your Waiver request or your
@@ -56,7 +57,7 @@ export const AppKStateEmail = (props: {
 const AppKStateEmailPreview = () => {
   return (
     <AppKStateEmail
-      variables={emailTemplateValue as OneMac & CommonVariables}
+      variables={emailTemplateValue as any & CommonEmailVariables}
     />
   );
 };

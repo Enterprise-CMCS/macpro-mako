@@ -12,6 +12,7 @@ import {
   ui,
   getCost,
   watch,
+  emails,
 } from "./commands";
 
 yargs
@@ -31,6 +32,7 @@ yargs
   .command(openKibana)
   .command(test)
   .command(ui)
+  .command(emails)
   .command(getCost)
   .strict()
   .scriptName("run")

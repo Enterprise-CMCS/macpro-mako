@@ -1,8 +1,7 @@
-import * as React from "react";
 import { DateTime } from "luxon";
 import { emailTemplateValue } from "../data";
-import { OneMac } from "shared-types";
-import { CommonVariables, formatNinetyDaysDate } from "../../..";
+import { CommonEmailVariables } from "shared-types";
+import { formatNinetyDaysDate } from "../../..";
 import { Container, Html } from "@react-email/components";
 import {
   MailboxWaiver,
@@ -11,7 +10,7 @@ import {
 } from "../../email-components";
 
 export const Waiver1915bStateEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: any & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -36,6 +35,7 @@ export const Waiver1915bStateEmail = (props: {
             ),
             Summary: variables.additionalInformation,
           }}
+          attachments={variables.attachments}
         />
         <p>
           This response confirms the receipt of your Waiver request or your
@@ -56,7 +56,7 @@ export const Waiver1915bStateEmail = (props: {
 const Waiver1915bStateEmailPreview = () => {
   return (
     <Waiver1915bStateEmail
-      variables={emailTemplateValue as OneMac & CommonVariables}
+      variables={emailTemplateValue as any & CommonEmailVariables}
     />
   );
 };

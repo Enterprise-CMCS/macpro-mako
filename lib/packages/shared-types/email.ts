@@ -9,3 +9,11 @@ export type EmailAddresses = {
   srtEmails: string[];
   cpocEmail: string[];
 };
+
+export interface CommonEmailVariables {
+  id: string;
+  territory: string;
+  applicationEndpointUrl: string;
+  actionType: string;
+  allStateUsersEmails?: string[];
+}

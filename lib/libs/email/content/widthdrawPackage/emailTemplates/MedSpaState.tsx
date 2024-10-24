@@ -1,12 +1,12 @@
 import * as React from "react";
 import { emailTemplateValue } from "../data";
-import { CommonVariables } from "../../..";
+import { CommonEmailVariables } from "../../..";
 import { WithdrawPackage } from "shared-types";
 import { Container, Html } from "@react-email/components";
 import { ContactStateLead } from "../../email-components";
 
 export const MedSpaStateEmail = (props: {
-  variables: WithdrawPackage & CommonVariables;
+  variables: WithdrawPackage & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   return (
@@ -26,7 +26,7 @@ export const MedSpaStateEmail = (props: {
 const MedSpaCMSEmailPreview = () => {
   return (
     <MedSpaStateEmail
-      variables={emailTemplateValue as WithdrawPackage & CommonVariables}
+      variables={emailTemplateValue as WithdrawPackage & CommonEmailVariables}
     />
   );
 };
