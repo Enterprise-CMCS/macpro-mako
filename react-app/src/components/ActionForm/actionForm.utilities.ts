@@ -4,20 +4,34 @@ export const getAdditionalInformation = <
   Schema extends z.ZodObject<any, any, any> | z.ZodEffects<any>,
 >(
   schema: Schema,
-): z.ZodDefault<z.ZodNullable<z.ZodString>> | undefined => {
+) => {
   if (schema instanceof z.ZodEffects) {
     const innerSchema = schema._def.schema;
 
     if (innerSchema instanceof z.ZodObject) {
-      if (innerSchema.shape.additionalInformation instanceof z.ZodDefault) {
-        return innerSchema.shape.additionalInformation;
+      // for some reason if the schema has an optional on additional information
+      // it changes the way that you get the shape of the schema
+      if (
+        innerSchema._def.shape().additionalInformation instanceof
+          z.ZodDefault ||
+        innerSchema._def.shape().additionalInformation instanceof z.ZodString ||
+        innerSchema._def.shape().additionalInformation instanceof
+          z.ZodOptional ||
+        innerSchema._def.shape().additionalInformation instanceof z.ZodEffects
+      ) {
+        return innerSchema._def.shape().additionalInformation;
       }
     }
   }
 
   if (schema instanceof z.ZodObject) {
-    if (schema.shape.additionalInformation instanceof z.ZodDefault) {
-      return schema.shape.additionalInformation;
+    if (
+      schema._def.shape().additionalInformation instanceof z.ZodOptional ||
+      schema._def.shape().additionalInformation instanceof z.ZodDefault ||
+      schema._def.shape().additionalInformation instanceof z.ZodString ||
+      schema._def.shape().additionalInformation instanceof z.ZodEffects
+    ) {
+      return schema._def.shape().additionalInformation;
     }
   }
 
