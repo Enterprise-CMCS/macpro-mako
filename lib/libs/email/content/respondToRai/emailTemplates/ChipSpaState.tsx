@@ -1,19 +1,20 @@
+import * as React from "react";
 import { emailTemplateValue } from "../data";
-import { Events } from "shared-types";
-import { CommonEmailVariables } from "shared-types";
+import { CommonEmailVariables, formatNinetyDaysDate } from "../../..";
+import { RaiResponse } from "shared-types";
 import { Html, Container } from "@react-email/components";
-import { PackageDetails, ContactStateLead } from "../../email-components";
+import { ContactStateLead, PackageDetails } from "../../email-components";
 
 export const ChipSpaStateEmail = (props: {
-  variables: Events["NewChipSubmission"] & CommonEmailVariables;
+  variables: RaiResponse & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   return (
     <Html lang="en" dir="ltr">
       <Container>
         <h3>
-          This is confirmation that you submitted a CHIP State Plan Amendment to
-          CMS for review:
+          This response confirms you submitted a CHIP SPA RAI Response to CMS
+          for review:
         </h3>
         <PackageDetails
           details={{
@@ -21,14 +22,15 @@ export const ChipSpaStateEmail = (props: {
             Name: variables.submitterName,
             "Email Address": variables.submitterEmail,
             "CHIP SPA Package ID": variables.id,
+            "90th Day Deadline": formatNinetyDaysDate(variables.responseDate),
             Summary: variables.additionalInformation,
           }}
-          attachments={variables.attachments}
         />
         <p>
-          This response confirms the receipt of your CHIP State Plan Amendment
-          (CHIP SPA). You can expect a formal response to your submittal from
-          CMS at a later date.
+          This response confirms receipt of your CHIP State Plan Amendment (SPA
+          or your response to a SPA Request for Additional Information (RAI)).
+          You can expect a formal response to your submittal to be issued within
+          90 days, before {formatNinetyDaysDate(variables.responseDate)}.
         </p>
         <ContactStateLead isChip />
       </Container>
@@ -36,13 +38,10 @@ export const ChipSpaStateEmail = (props: {
   );
 };
 
-// to preview on 'email-dev'
 const ChipSpaStateEmailPreview = () => {
   return (
     <ChipSpaStateEmail
-      variables={
-        emailTemplateValue as Events["NewChipSubmission"] & CommonEmailVariables
-      }
+      variables={emailTemplateValue as RaiResponse & CommonEmailVariables}
     />
   );
 };
