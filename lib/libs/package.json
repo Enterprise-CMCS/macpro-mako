@@ -13,16 +13,18 @@
     "kafkajs": "^2.2.4",
     "lodash": "^4.17.21",
     "luxon": "^3.4.4",
-    "pino": "^9.2.0"
+    "pino": "^9.2.0",
+    "shared-types": "*"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.5",
-    "@vitest/ui": "^1.6.0",
-    "vitest": "^1.6.0"
+    "@vitest/ui": "^2.0.5",
+    "vitest": "2.0.5"
   },
   "scripts": {
+    "email-dev": "email dev --dir email/content",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "vitest run --coverage.enabled true",
     "test:ui": "vitest --ui"
   }
 }

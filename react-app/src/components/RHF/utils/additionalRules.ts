@@ -90,7 +90,7 @@ export const valReducer = (
           return rule.message;
         },
       };
-    case "noGapsOrOrverlaps":
+    case "noGapsOrOverlaps":
       return {
         ...valSet,
         [valName]: (_, fields) => {
@@ -116,10 +116,10 @@ export const valReducer = (
 
           // Check for overlaps and gaps
           for (let i = 1; i < range.length; i++) {
-            if (range[i].from <= range[i - 1].to) {
+            if (range[i].from < range[i - 1].to) {
               return "No age overlaps allowed";
             }
-            if (range[i].from > range[i - 1].to + 1) {
+            if (range[i].from > range[i - 1].to) {
               return "No gaps between ages allowed";
             }
           }

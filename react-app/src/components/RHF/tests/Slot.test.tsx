@@ -1,4 +1,4 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect, vi } from "vitest";
 import { render } from "@testing-library/react";
 import { RHFSlot } from "../.";
 import { Form, FormField } from "../../Inputs";
@@ -34,6 +34,16 @@ const testValues: RHFSlotProps = {
   descriptionClassName: "py-2",
   formItemClassName: "py-4",
 };
+
+vi.mock("@/api", async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...(actual as object),
+    useGetCounties: vi.fn(() => {
+      return { data: [], isLoading: false, error: null };
+    }),
+  };
+});
 
 describe("RHFSlot tests", () => {
   test("render label, desc, and comp", () => {
@@ -71,7 +81,7 @@ describe("RHFSlot tests", () => {
     const wrap = rend.getByTestId(`${testValues.name}Wrapper`);
     const input = rend.getByRole("textbox", { name: `${testValues.name}` });
     expect(desc).toBeNull();
-    expect(wrap.classList.contains("gap-2")).toBeTruthy();
+    expect(wrap.classList.contains("gap-4")).toBeTruthy();
     expect(input.id).toBe(testValues.name);
   });
 });

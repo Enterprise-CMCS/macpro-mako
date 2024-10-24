@@ -1,7 +1,6 @@
 import { itemExists } from "@/api";
 import {
   Button,
-  FAQ_TAB,
   FormField,
   FormItem,
   FormLabel,
@@ -23,6 +22,7 @@ import {
 import { motion } from "framer-motion";
 import { Loader, Plus, XIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+import { FAQ_TAB } from "@/router";
 
 export const SlotWaiverId = <
   TFieldValues extends FieldValues = FieldValues,

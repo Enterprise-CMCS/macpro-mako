@@ -1,6 +1,6 @@
-import { expect, afterEach, beforeAll, afterAll, vi } from "vitest";
+import { afterEach, beforeAll, afterAll, vi, expect } from "vitest";
 import { cleanup } from "@testing-library/react";
-import matchers from "@testing-library/jest-dom/matchers";
+import * as matchers from "@testing-library/jest-dom/matchers";
 
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
@@ -66,6 +66,14 @@ beforeAll(() => {
 
         return idsThatExist.includes(id);
       }),
+      useGetUser: () => ({
+        data: {
+          user: {
+            "custom:cms-roles":
+              "onemac-micro-statesubmitter,onemac-micro-super",
+          },
+        },
+      }),
     }));
     vi.mock("@/utils/user", () => ({
       isAuthorizedState: vi.fn(async (id: string) => {
@@ -74,8 +82,6 @@ beforeAll(() => {
         return validStates.includes(id.substring(0, 2));
       }),
     }));
-    // mock the api calls that the frontend uses here
-    // vi.mock("@/api/stuff")
   }
 });
 
