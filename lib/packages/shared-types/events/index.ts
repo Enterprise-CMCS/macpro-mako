@@ -10,7 +10,6 @@ import * as contractingRenewal from "./contracting-renewal";
 import * as temporaryExtension from "./temporary-extension";
 
 export * from "./toggle-withdraw-rai-enabled";
-export * from "./issue-rai";
 export * from "./respond-to-rai";
 export * from "./withdraw-rai";
 export * from "./withdraw-package";
