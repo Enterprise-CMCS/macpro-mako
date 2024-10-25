@@ -11,6 +11,11 @@ import {
 } from "./respond-to-rai";
 import { queryClient } from "../../../router";
 import { getItem } from "@/api";
+import { WithdrawRaiForm } from "./withdraw-rai";
+import {
+  DisableWithdrawRaiForm,
+  EnableWithdrawRaiForm,
+} from "./toggle-withdraw-rai";
 
 // the keys will relate to this part of the route /actions/{key of postSubmissionForms}/authority/id
 export const postSubmissionForms: Record<
@@ -28,6 +33,24 @@ export const postSubmissionForms: Record<
     ["1915(c)"]: RespondToRaiWaiver,
     ["Medicaid SPA"]: RespondToRaiMedicaid,
     ["CHIP SPA"]: RespondToRaiChip,
+  },
+  "withdraw-rai": {
+    ["1915(b)"]: WithdrawRaiForm,
+    ["1915(c)"]: WithdrawRaiForm,
+    ["Medicaid SPA"]: WithdrawRaiForm,
+    ["CHIP SPA"]: WithdrawRaiForm,
+  },
+  "enable-rai-withdraw": {
+    ["1915(b)"]: EnableWithdrawRaiForm,
+    ["1915(c)"]: EnableWithdrawRaiForm,
+    ["Medicaid SPA"]: EnableWithdrawRaiForm,
+    ["CHIP SPA"]: EnableWithdrawRaiForm,
+  },
+  "disable-rai-withdraw": {
+    ["1915(b)"]: DisableWithdrawRaiForm,
+    ["1915(c)"]: DisableWithdrawRaiForm,
+    ["Medicaid SPA"]: DisableWithdrawRaiForm,
+    ["CHIP SPA"]: DisableWithdrawRaiForm,
   },
 };
 
