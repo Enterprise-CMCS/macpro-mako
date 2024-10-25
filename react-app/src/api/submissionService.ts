@@ -103,7 +103,6 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         attachments: attachments ? buildAttachmentObject(attachments) : null,
         state: (data.id as string).split("-")[0],
       };
-    case buildActionUrl(Action.ISSUE_RAI):
     case buildActionUrl(Action.RESPOND_TO_RAI):
     case buildActionUrl(Action.ENABLE_RAI_WITHDRAW):
     case buildActionUrl(Action.DISABLE_RAI_WITHDRAW):
