@@ -1,4 +1,4 @@
-import { withdrawPackageSchema, SEATOOL_STATUS, Action } from "shared-types";
+import { events, SEATOOL_STATUS, Action } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 import { response } from "../../../libs/handler-lib";
 import { TOPIC_NAME } from "../consts";
@@ -10,7 +10,7 @@ export async function withdrawPackage(body: unknown) {
   const now = new Date().getTime();
   const today = seaToolFriendlyTimestamp();
 
-  const result = withdrawPackageSchema.safeParse(body);
+  const result = events["withdraw-package"].baseSchema.safeParse(body);
   if (result.success === false) {
     console.error(
       "Withdraw Package event validation error. The following record failed to parse: ",
