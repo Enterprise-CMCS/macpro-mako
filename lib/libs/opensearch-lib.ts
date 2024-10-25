@@ -245,6 +245,10 @@ export async function getItems(
         //   return;
         // }
         try {
+          console.log(
+            "getItem what is the document?",
+            JSON.stringify(doc._source),
+          );
           const parsedDocument = JSON.parse(doc._source) as main.Document;
           retVal.push(parsedDocument);
         } catch (e) {
