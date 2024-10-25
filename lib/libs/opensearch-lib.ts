@@ -234,18 +234,18 @@ export async function getItems(
       console.log("getItems are we here 3?");
 
       if (doc.found && doc._source) {
-        console.log("getItems are we here 4?");
-        console.log("getItems what is the doc._source value", doc._source);
+        // console.log("getItems are we here 4?");
+        // console.log("getItems what is the doc._source value", doc._source);
 
-        const decoded = decodeBase64WithUtf8(doc._source);
-        if (!decoded) {
-          console.error(
-            `Decoded value is null or empty for document with ID ${doc._id}.`,
-          );
-          return;
-        }
+        // const decoded = decodeBase64WithUtf8(doc._source);
+        // if (!decoded) {
+        //   console.error(
+        //     `Decoded value is null or empty for document with ID ${doc._id}.`,
+        //   );
+        //   return;
+        // }
         try {
-          const parsedDocument = JSON.parse(decoded) as main.Document;
+          const parsedDocument = JSON.parse(doc._source) as main.Document;
           retVal.push(parsedDocument);
         } catch (e) {
           console.error(
