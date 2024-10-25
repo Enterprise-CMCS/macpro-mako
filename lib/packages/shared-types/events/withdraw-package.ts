@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { attachmentSchema } from "../attachments";
 
 // Temporary, will be refactored to an extendable schema with Brian/Mike's back-end
 // work.
@@ -11,7 +10,7 @@ export const withdrawPackageSchema = z.object({
     .string()
     .max(4000, "This field may only be up to 4000 characters.")
     .optional(),
-  attachments: z.array(attachmentSchema).nullish(),
+  attachments: z.object({}).optional(),
   submitterName: z.string(),
   submitterEmail: z.string(),
   timestamp: z.number().optional(),

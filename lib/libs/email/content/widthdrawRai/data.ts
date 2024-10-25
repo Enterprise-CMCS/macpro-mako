@@ -5,7 +5,7 @@ export const emailTemplateValue = {
   applicationEndpointUrl: "https://onemac.cms.gov/",
 
   authority: "AUTHORITY",
-  origin: "micro",
+  origin: "mako",
   requestedDate: 1723390633663,
   withdrawnDate: 1723390633663,
   attachments: {

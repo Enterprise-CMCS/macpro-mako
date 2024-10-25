@@ -1,12 +1,12 @@
-import * as React from "react";
 import { emailTemplateValue } from "../data";
-import { CommonEmailVariables } from "../../..";
-import { WithdrawPackage } from "shared-types";
+import { CommonEmailVariables, Events } from "shared-types";
 import { Html, Container } from "@react-email/components";
 import { ContactStateLead } from "../../email-components";
 
 export const Waiver1915bStateEmail = (props: {
-  variables: WithdrawPackage & CommonEmailVariables;
+  variables:
+    | (Events["CapitatedInitial"] & CommonEmailVariables)
+    | (Events["ContractingInitial"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
   return (
@@ -26,7 +26,14 @@ export const Waiver1915bStateEmail = (props: {
 const Waiver1915bStateEmailPreview = () => {
   return (
     <Waiver1915bStateEmail
-      variables={emailTemplateValue as WithdrawPackage & CommonEmailVariables}
+      variables={{
+        ...emailTemplateValue,
+        actionType: "Withdraw",
+        origin: "mako",
+        submitterEmail: "george@example.com",
+        submitterName: "George Harrison",
+        event: "capitated-initial",
+      }}
     />
   );
 };

@@ -14,6 +14,10 @@ import {
 } from "./emailTemplates";
 import { render } from "@react-email/render";
 import { getToAddress } from "../email-components";
+import {
+  Waiver1915bCMSEmail,
+  Waiver1915bStateEmail,
+} from "../widthdrawPackage/emailTemplates";
 
 export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
@@ -79,64 +83,77 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       };
     },
   },
-  // [Authority["1915b"]]: {
-  //   cms: async (
-  //     variables: Events["CapitatedInitial"] &
-  //       Events["ContractingInitial"] &
-  //       CommonEmailVariables & { emails: EmailAddresses },
-  //   ) => {
-  //     return {
-  //       to: variables.emails.osgEmail,
-  //       subject: `${variables.authority} ${variables.id} Submitted`,
-  //       html: await render(<Waiver1915bCMSEmail variables={variables} />),
-  //       text: await render(<Waiver1915bCMSEmail variables={variables} />, {
-  //         plainText: true,
-  //       }),
-  //     };
-  //   },
-  //   state: async (
-  //     variables: Events["CapitatedInitial"] &
-  //       Events["ContractingInitial"] &
-  //       CommonEmailVariables & { emails: EmailAddresses },
-  //   ) => {
-  //     return {
-  //       to: getToAddress({ name: variables.submitterName, email: variables.submitterEmail }),
-  //       subject: `Your ${variables.actionType} ${variables.id} has been submitted to CMS`,
-  //       html: await render(<Waiver1915bStateEmail variables={variables} />),
-  //       text: await render(<Waiver1915bStateEmail variables={variables} />, {
-  //         plainText: true,
-  //       }),
-  //     };
-  //   },
-  // },
-  // [Authority["1915c"]]: {
-  //   cms: async (
-  //     variables: Events["CapitatedInitial"] &
-  //       Events["ContractingInitial"] &
-  //       CommonEmailVariables & { emails: EmailAddresses },
-  //   ) => {
-  //     return {
-  //       to: variables.emails.osgEmail,
-  //       subject: `1915(c) ${variables.id} Submitted`,
-  //       html: await render(<AppKCMSEmail variables={variables} />),
-  //       text: await render(<AppKCMSEmail variables={variables} />, {
-  //         plainText: true,
-  //       }),
-  //     };
-  //   },
-  //   state: async (
-  //     variables: Events["CapitatedInitial"] &
-  //       Events["ContractingInitial"] &
-  //       CommonEmailVariables & { emails: EmailAddresses },
-  //   ) => {
-  //     return {
-  //       to: getToAddress({ name: variables.submitterName, email: variables.submitterEmail }),
-  //       subject: `Your 1915(c) ${variables.id} has been submitted to CMS`,
-  //       html: await render(<AppKStateEmail variables={variables} />),
-  //       text: await render(<AppKStateEmail variables={variables} />, {
-  //         plainText: true,
-  //       }),
-  //     };
-  //   },
-  // },
+  [Authority["1915b"]]: {
+    cms: async (
+      variables:
+        | (Events["CapitatedInitial"] &
+            CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["ContractingInitial"] &
+            CommonEmailVariables & { emails: EmailAddresses }),
+    ) => {
+      return {
+        to: variables.emails.osgEmail,
+        subject: `${variables.authority} ${variables.id} Submitted`,
+        html: await render(<Waiver1915bCMSEmail variables={variables} />),
+        text: await render(<Waiver1915bCMSEmail variables={variables} />, {
+          plainText: true,
+        }),
+      };
+    },
+    state: async (
+      variables:
+        | (Events["CapitatedInitial"] &
+            CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["ContractingInitial"] &
+            CommonEmailVariables & { emails: EmailAddresses }),
+    ) => {
+      return {
+        to: getToAddress({
+          name: variables.submitterName,
+          email: variables.submitterEmail,
+        }),
+        subject: `Your ${variables.actionType} ${variables.id} has been submitted to CMS`,
+        html: await render(<Waiver1915bStateEmail variables={variables} />),
+        text: await render(<Waiver1915bStateEmail variables={variables} />, {
+          plainText: true,
+        }),
+      };
+    },
+  },
 };
+//   [Authority["1915c"]]: {
+//     cms: async (
+//       variables:
+//         | Events["CapitatedInitial"]
+//         | (Events["ContractingInitial"] &
+//             CommonEmailVariables & { emails: EmailAddresses }),
+//     ) => {
+//       return {
+//         to: variables.emails.osgEmail,
+//         subject: `1915(c) ${variables.id} Submitted`,
+//         html: await render(<AppKCMSEmail variables={variables} />),
+//         text: await render(<AppKCMSEmail variables={variables} />, {
+//           plainText: true,
+//         }),
+//       };
+//     },
+//     state: async (
+//       variables:
+//         | Events["CapitatedInitial"]
+//         | (Events["ContractingInitial"] &
+//             CommonEmailVariables & { emails: EmailAddresses }),
+//     ) => {
+//       return {
+//         to: getToAddress({
+//           name: variables.submitterName,
+//           email: variables.submitterEmail,
+//         }),
+//         subject: `Your 1915(c) ${variables.id} has been submitted to CMS`,
+//         html: await render(<AppKStateEmail variables={variables} />),
+//         text: await render(<AppKStateEmail variables={variables} />, {
+//           plainText: true,
+//         }),
+//       };
+//     },
+//   },
+// };

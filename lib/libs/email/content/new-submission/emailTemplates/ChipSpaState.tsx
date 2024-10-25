@@ -1,5 +1,5 @@
 import { emailTemplateValue } from "../data";
-import { MedicaidSubmissionSchema } from "shared-types";
+import { Events } from "shared-types";
 import { CommonEmailVariables } from "shared-types";
 import {
   Html,
@@ -20,7 +20,7 @@ import {
 } from "../../email-components";
 
 export const ChipSpaStateEmail = (props: {
-  variables: MedicaidSubmissionSchema & CommonEmailVariables;
+  variables: Events["NewChipSubmission"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   const previewText = `CHIP SPA ${variables.id} Submitted`;
@@ -71,7 +71,7 @@ const ChipSpaStateEmailPreview = () => {
       variables={{
         ...emailTemplateValue,
         authority: "Medicaid SPA",
-        event: "new-medicaid-submission",
+        event: "new-chip-submission",
         actionType: "Amend",
         origin: "mako",
       }}

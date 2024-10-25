@@ -1,13 +1,15 @@
 export const emailTemplateValue = {
-  to: "TO",
-  id: "PACKAGE ID",
+  id: "MD-0000.R00.00",
   territory: "CO",
-  applicationEndpointUrl: "https://onemac.cms.gov/",
+  applicationEndpointUrl: "https://d6ebj6bya6i3k.cloudfront.net",
+  timestamp: 1121234556,
+  submitterName: "George Harrison",
+  submitterEmail: "george@example.com",
   actionType: "ACTION TYPE",
-
   authority: "AUTHORITY",
-  origin: "micro",
-  additionalInformation: "This bens additional infornormaiton",
+  origin: "mako",
+  additionalInformation:
+    "This bens additional information, i like the costco granola bars, like... a lot. I eat maybe 12 a day, thats 1200 calories i could probably do without, but at least im getting my daily dose of fiber.",
   attachments: {
     cmsForm179: {
       files: [
@@ -33,8 +35,35 @@ export const emailTemplateValue = {
       ],
       label: "SPA Pages",
     },
+    tribalEngagement: {
+      label: "Document Demonstrating Good-Faith Tribal Engagement",
+    },
+    existingStatePlanPages: {
+      label: "Existing State Plan Page(s)",
+    },
+    publicNotice: {
+      label: "Public Notice",
+    },
+    coverLetter: {
+      label: "Cover Letter",
+    },
+    sfq: {
+      label: "Standard Funding Questions (SFQs)",
+    },
+    tribalConsultation: {
+      label: "Tribal Consultation",
+    },
+    other: {
+      label: "Other",
+    },
+    bCapWaiverApplication: {
+      label: "B-CAP Waiver Application",
+      files: [],
+    },
+    bCapCostSpreadsheets: {
+      label: "B-CAP Cost Spreadsheets",
+      files: [],
+    },
   },
-  submitterName: "George Harrison",
-  submitterEmail: "george@example.com",
-  timestamp: 1723390633663,
+  proposedEffectiveDate: 1723390633663,
 };

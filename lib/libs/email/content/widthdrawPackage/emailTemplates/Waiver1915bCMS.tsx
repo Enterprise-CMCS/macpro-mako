@@ -1,12 +1,12 @@
-import * as React from "react";
 import { emailTemplateValue } from "../data";
-import { CommonEmailVariables } from "../../..";
-import { WithdrawPackage } from "shared-types";
+import { CommonEmailVariables, Events } from "shared-types";
 import { Html, Container } from "@react-email/components";
 import { PackageDetails, SpamWarning } from "../../email-components";
 
 export const Waiver1915bCMSEmail = (props: {
-  variables: WithdrawPackage & CommonEmailVariables;
+  variables:
+    | Events["CapitatedInitial"]
+    | (Events["ContractingInitial"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
   return (
@@ -25,6 +25,7 @@ export const Waiver1915bCMSEmail = (props: {
             [`${variables.authority} Package ID`]: variables.id,
             Summary: variables.additionalInformation,
           }}
+          attachments={variables.attachments}
         />
         <SpamWarning />
       </Container>
@@ -35,7 +36,14 @@ export const Waiver1915bCMSEmail = (props: {
 const Waiver1915bCMSEmailPreview = () => {
   return (
     <Waiver1915bCMSEmail
-      variables={emailTemplateValue as WithdrawPackage & CommonEmailVariables}
+      variables={{
+        ...emailTemplateValue,
+        event: "capitated-initial",
+        authority: "Medicaid Waiver",
+        origin: "mako",
+        submitterEmail: "george@example.com",
+        submitterName: "George Harrison",
+      }}
     />
   );
 };
