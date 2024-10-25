@@ -205,6 +205,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         typeof result.data.seatoolStatus === "string" &&
         result.data.seatoolStatus != "Unknown"
       ) {
+        console.log("what status are we writing", JSON.stringify(result.data));
         docs.push({ ...result.data });
       }
     } catch (error) {
