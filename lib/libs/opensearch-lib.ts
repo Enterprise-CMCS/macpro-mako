@@ -249,8 +249,8 @@ export async function getItems(
             "getItem what is the document?",
             JSON.stringify(doc._source),
           );
-          const parsedDocument = JSON.parse(doc._source) as main.Document;
-          retVal.push(parsedDocument);
+          // const parsedDocument = JSON.parse(doc._source) as main.Document;
+          retVal.push(doc._source);
         } catch (e) {
           console.error(
             `Failed to parse JSON for document with ID ${doc._id}:`,
