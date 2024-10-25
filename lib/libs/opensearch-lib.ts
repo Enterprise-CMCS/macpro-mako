@@ -218,6 +218,7 @@ export async function getItems(
 ): Promise<main.Document[]> {
   try {
     const index = `${indexNamespace}main`;
+    console.log("getItems are we here 1?");
     client = client || (await getClient(host));
     const response = await client.mget({
       index,
@@ -225,11 +226,16 @@ export async function getItems(
         ids,
       },
     });
+    console.log("getItems are we here 2?");
 
     const retVal: main.Document[] = [];
 
     response.body.docs.forEach((doc: any) => {
+      console.log("getItems are we here 3?");
+
       if (doc.found && doc._source) {
+        console.log("getItems are we here 4?");
+
         const decoded = decodeBase64WithUtf8(doc._source);
         if (!decoded) {
           console.error(
