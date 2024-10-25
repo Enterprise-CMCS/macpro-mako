@@ -140,6 +140,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   });
 
   console.log("are we here 2");
+  console.log("what is osDomain?", osDomain);
 
   const openSearchRecords = await os.getItems(osDomain, indexNamespace, ids);
   console.log(
