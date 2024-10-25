@@ -5,7 +5,7 @@ import {
   Link,
   useNavigate,
 } from "react-router-dom";
-import oneMacLogo from "@/assets/onemac_logo.svg";
+import oneMacLogo from "@/assets/onemac-logo.png";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";

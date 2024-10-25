@@ -1,54 +1,73 @@
-import * as React from "react";
 import { DateTime } from "luxon";
-import { Html, Container } from "@react-email/components";
-import { CommonEmailVariables } from "shared-types";
+import {
+  Html,
+  Container,
+  Head,
+  Section,
+  Preview,
+  Text,
+  Hr,
+  Body,
+  Heading,
+} from "@react-email/components";
+import { CommonEmailVariables, Events } from "shared-types";
 import { formatNinetyDaysDate } from "../../..";
 import {
   PackageDetails,
   ContactStateLead,
   MailboxWaiver,
+  styles,
+  EmailNav,
 } from "../../email-components";
 import { emailTemplateValue } from "../data";
 
 export const AppKStateEmail = (props: {
-  variables: any & CommonEmailVariables;
+  variables: Events["NewAppKSubmission"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
+  const previewText = `Appendix K Amendment Submitted `;
   return (
-    <Html lang="en" dir="ltr">
-      <Container>
-        <h3>
-          This response confirms the submission of your 1915(c) Waiver to CMS
-          for review:
-        </h3>
-        <PackageDetails
-          details={{
-            "State or territory": variables.territory,
-            Name: variables.submitterName,
-            "Email Address": variables.submitterEmail,
-            "Initial Waiver Number": variables.id,
-            "Waiver Authority": variables.authority,
-            "Proposed Effective Date": DateTime.fromMillis(
-              Number(variables.notificationMetadata?.proposedEffectiveDate),
-            ).toFormat("DDDD"),
-            "90th Day Deadline": formatNinetyDaysDate(
-              variables.notificationMetadata?.submissionDate,
-            ),
-            Summary: variables.additionalInformation,
-          }}
-          attachments={variables.attachments}
-        />
-        <p>
-          This response confirms the receipt of your Waiver request or your
-          response to a Waiver Request for Additional Information (RAI). You can
-          expect a formal response to your submittal to be issued within 90
-          days, before
-          {formatNinetyDaysDate(variables.notificationMetadata?.submissionDate)}
-          .
-        </p>
-        <MailboxWaiver />
-        <ContactStateLead />
-      </Container>
+    <Html>
+      <Head />
+      <Preview>{previewText}</Preview>
+      <Body style={styles.main}>
+        <Container style={styles.container}>
+          <EmailNav appEndpointUrl={variables.applicationEndpointUrl} />
+          <Section style={styles.upperSection}>
+            <Heading style={styles.h1}>
+              This response confirms the submission of your 1915(c) Waiver to
+              CMS for review:
+            </Heading>
+            <Hr style={styles.divider} />
+            <PackageDetails
+              details={{
+                "State or territory": variables.territory,
+                Name: variables.submitterName,
+                "Email Address": variables.submitterEmail,
+                "Initial Waiver Numbers": variables.waiverIds.join(", "),
+                "Waiver Authority": variables.seaActionType,
+                "Proposed Effective Date": DateTime.fromMillis(
+                  Number(variables.proposedEffectiveDate),
+                ).toFormat("DDDD"),
+                "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
+                Summary: variables.additionalInformation,
+              }}
+              attachments={variables.attachments}
+            />
+            <Section style={styles.primarySection}>
+              <Text style={styles.text}>
+                `This response confirms the receipt of your Waiver request or
+                your response to a Waiver Request for Additional Information
+                (RAI). You can expect a formal response to your submittal to be
+                issued within 90 days, before $
+                {formatNinetyDaysDate(variables.timestamp)}.`
+              </Text>
+            </Section>
+            <MailboxWaiver />
+            <ContactStateLead />
+          </Section>
+        </Container>
+      </Body>
     </Html>
   );
 };
@@ -57,7 +76,14 @@ export const AppKStateEmail = (props: {
 const AppKStateEmailPreview = () => {
   return (
     <AppKStateEmail
-      variables={emailTemplateValue as any & CommonEmailVariables}
+      variables={{
+        ...emailTemplateValue,
+        origin: "mako",
+        state: "CO",
+        waiverIds: ["1234-56768", "1234-56769"],
+        seaActionType: "Amend",
+        title: "Title",
+      }}
     />
   );
 };

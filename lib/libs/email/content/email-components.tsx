@@ -9,7 +9,6 @@ import {
   Img,
 } from "@react-email/components";
 import { Attachment, TextareaProps } from "shared-types";
-
 type AttachmentsType = {
   [key: string]: { files?: Attachment[]; label: string };
 };
@@ -22,8 +21,7 @@ export const Textarea: React.FC<TextareaProps> = ({
       style={{
         width: "100%",
         backgroundColor: "transparent",
-        padding: "8px 12px",
-        fontSize: "16px",
+        fontSize: "14px",
         boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
         outline: "none",
         whiteSpace: "pre-line",
@@ -54,16 +52,20 @@ export const EmailNav = (props: { appEndpointUrl: string }) => {
     <Section>
       <Row style={{ backgroundColor: "#0071BD", padding: "16px" }}>
         <Column style={{ maxWidth: "112px" }}>
-          <Link href={props.appEndpointUrl}>
+          <Link
+            href={props.appEndpointUrl}
+            target="_blank"
+            style={{ display: "block", maxWidth: "112px" }}
+          >
             <Img
               height={40}
               width={112}
-              src={"https://mako-dev.cms.gov/assets/onemac_logo-BFuMCpJm.svg"}
+              style={{ maxWidth: "112px" }}
+              src={`${props.appEndpointUrl}/assets/onemac-logo-BdXmNUXn.png`}
               alt="OneMAC Logo"
             />
           </Link>
         </Column>
-        <Column style={{ flex: 1 }}></Column>
       </Row>
     </Section>
   );
@@ -72,12 +74,12 @@ export const EmailNav = (props: { appEndpointUrl: string }) => {
 export const LoginInstructions = (props: { appEndpointURL: string }) => {
   return (
     <Section>
-      <ul style={{ maxWidth: "760px" }}>
+      <ul style={{ marginLeft: "-20px" }}>
         <li>
           <Text>
             The submission can be accessed in the OneMAC application, which you
             can find at{" "}
-            <Link href={props.appEndpointURL}>{props.appEndpointURL}</Link>.
+            <Link href={props.appEndpointURL}>{props.appEndpointURL}</Link>
           </Text>
         </li>
         <li>
@@ -127,9 +129,11 @@ export const Attachments = (props: { attachments: AttachmentsType }) => {
 
   return (
     <>
-      <Hr style={{ margin: "16px 0", borderTop: "2px solid #0071BD" }} />
-      <Heading as="h3">Files:</Heading>
-      <Section>
+      <Hr style={styles.divider} />
+      <Heading as="h3" style={{ fontSize: "16px" }}>
+        Files:
+      </Heading>
+      <Section style={{ marginBottom: "8px" }}>
         {attachmentKeys?.map(
           (key: keyof typeof props.attachments, idx: number) => {
             if (!props.attachments[key].files) return;
@@ -139,11 +143,16 @@ export const Attachments = (props: { attachments: AttachmentsType }) => {
             );
             return (
               <Row key={key + String(idx)}>
-                <Column style={{ width: "200px", paddingTop: "8px" }}>
-                  <Text style={styles.textTitle}>{title}</Text>
+                <Column
+                  align="left"
+                  style={{ width: "40%", paddingTop: "8px" }}
+                >
+                  <Text style={textTitle}>{title}</Text>
                 </Column>
                 <Column>
-                  <Text style={styles.textDescription}>{filenames}</Text>
+                  <Text style={{ ...textDescription, paddingTop: "8px" }}>
+                    {filenames}
+                  </Text>
                 </Column>
               </Row>
             );
@@ -159,18 +168,18 @@ export const PackageDetails = (props: {
   attachments: AttachmentsType | null;
 }) => {
   return (
-    <Section>
+    <Section style={primarySection}>
       {Object.keys(props.details).map((label: string, idx: number) => {
         if (label === "Summary") {
           const summary =
             props.details[label] ?? "No additional information submitted";
           return (
             <Row>
-              <Hr
-                style={{ margin: "16px 0", borderTop: "2px solid #0071BD" }}
-              />
+              <Hr style={styles.divider} />
               <Text style={{ margin: ".5em" }}>
-                <Heading as="h3">Summary:</Heading>
+                <Heading as="h3" style={{ fontSize: "16px" }}>
+                  Summary:
+                </Heading>
               </Text>
               <Textarea>{summary}</Textarea>
             </Row>
@@ -178,11 +187,11 @@ export const PackageDetails = (props: {
         }
         return (
           <Row key={label + idx}>
-            <Column align="left" style={{ width: "200px", paddingTop: "8px" }}>
-              <Text style={styles.textTitle}>{label}</Text>
+            <Column align="left" style={{ width: "40%", paddingTop: "8px" }}>
+              <Text style={textTitle}>{label}</Text>
             </Column>
             <Column>
-              <Text style={styles.textDescription}>
+              <Text style={{ ...textDescription, paddingTop: "8px" }}>
                 {props.details[label] ?? "Unknown"}
               </Text>
             </Column>
@@ -190,14 +199,13 @@ export const PackageDetails = (props: {
         );
       })}
       {props.attachments && <Attachments attachments={props.attachments} />}
-      <Hr style={{ margin: "16px 0", borderTop: "2px solid #0071BD" }} />
     </Section>
   );
 };
 
 export const MailboxSPA = () => {
   return (
-    <Text>
+    <Text style={styles.text}>
       This mailbox is for the submittal of State Plan Amendments and non-web
       based responses to Requests for Additional Information (RAI) on submitted
       SPAs only. Any other correspondence will be disregarded.
@@ -207,7 +215,7 @@ export const MailboxSPA = () => {
 
 export const MailboxWaiver = () => {
   return (
-    <Text>
+    <Text style={styles.text}>
       This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
       responses to Requests for Additional Information (RAI) on Waivers, and
       extension requests on Waivers only. Any other correspondence will be
@@ -218,16 +226,23 @@ export const MailboxWaiver = () => {
 
 export const ContactStateLead = (props: { isChip?: boolean }) => {
   return (
-    <Section>
-      <Hr style={{ margin: "16px 0", borderTop: "2px solid #0071BD" }} />
-      <Text>
+    <Section style={styles.footer}>
+      <Text style={{ fontSize: "14px" }}>
         If you have questions or did not expect this email, please contact{" "}
         {props.isChip ? (
-          <Link href="mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov">
+          <Link
+            href="mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov"
+            style={{ color: "#fff", textDecoration: "underline" }}
+          >
             CHIPSPASubmissionMailBox@CMS.HHS.gov
           </Link>
         ) : (
-          <Link href="mailto:spa@cms.hhs.gov">spa@cms.hhs.gov</Link>
+          <Link
+            href="mailto:spa@cms.hhs.gov"
+            style={{ color: "#fff", textDecoration: "underline" }}
+          >
+            spa@cms.hhs.gov
+          </Link>
         )}{" "}
         or your state lead.
       </Text>
@@ -238,11 +253,17 @@ export const ContactStateLead = (props: { isChip?: boolean }) => {
 
 export const SpamWarning = () => {
   return (
-    <Section>
-      <Text>
+    <Section style={styles.footer}>
+      <Text style={{ fontSize: "14px" }}>
         If the contents of this email seem suspicious, do not open them, and
         instead forward this email to{" "}
-        <Link href="mailto:SPAM@cms.hhs.gov">SPAM@cms.hhs.gov</Link>.
+        <a
+          href="mailto:SPAM@cms.hhs.gov"
+          style={{ color: "#fff", textDecoration: "underline" }}
+        >
+          SPAM@cms.hhs.gov
+        </a>
+        .
       </Text>
       <Text>Thank you!</Text>
     </Section>
@@ -290,120 +311,68 @@ const resetText = {
 };
 
 const main = {
-  fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
-  backgroundColor: "#ffffff",
-  ...resetText,
-  fontSize: "12px",
-  color: "rgb(102,102,102)",
+  backgroundColor: "#fff",
+  color: "#212121",
+  fontFamily:
+    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
 };
 
 const container = {
   margin: "0 auto",
-  padding: "20px 0 48px",
-  width: "660px",
-  maxWidth: "100%",
+  backgroundColor: "#F5F5F5",
 };
 
-const tableCell = { display: "table-cell" };
-
-const heading = {
-  fontSize: "24px",
-  fontWeight: "300",
-  color: "#888888",
-};
-
-const informationTable = {
-  borderCollapse: "collapse" as const,
-  borderSpacing: "0px",
-  color: "rgb(51,51,51)",
-  backgroundColor: "rgb(250,250,250)",
-  borderRadius: "3px",
-  fontSize: "12px",
-};
-
-const informationTableRow = {
-  height: "46px",
-};
-
-const informationTableColumn = {
-  paddingLeft: "20px",
-  borderStyle: "solid",
-  borderColor: "white",
-  borderWidth: "0px 1px 1px 0px",
-  height: "44px",
-};
-
-const informationTableLabel = {
-  ...resetText,
-  color: "rgb(102,102,102)",
-  fontSize: "10px",
-};
-
-const informationTableValue = {
-  fontSize: "12px",
-  margin: "0",
-  padding: "0",
-  lineHeight: 1.4,
-};
-
-const productTitleTable = {
-  ...informationTable,
-  margin: "30px 0 15px 0",
-  height: "24px",
-};
-
-const productsTitle = {
-  background: "#fafafa",
-  paddingLeft: "10px",
+const textTitle = {
   fontSize: "14px",
-  fontWeight: "500",
-  margin: "0",
+  fontWeight: "600",
+  letterSpacing: "-0.5px",
+  ...resetText,
 };
-
-const productIcon = {
-  margin: "0 0 0 20px",
-  borderRadius: "14px",
-  border: "1px solid rgba(128,128,128,0.2)",
-};
-
-const textTitle = { fontSize: "14px", fontWeight: "600", ...resetText };
 
 const textDescription = {
   fontSize: "14px",
-  color: "rgb(102,102,102)",
+  color: "#333",
   ...resetText,
 };
 
-const productLink = {
-  fontSize: "12px",
-  color: "rgb(0,112,201)",
-  textDecoration: "none",
+const h1 = {
+  color: "#333",
+  fontSize: "20px",
+  padding: "0 24px",
+  fontWeight: "bold",
+  marginBottom: "15px",
 };
 
-const divisor = {
-  marginLeft: "4px",
-  marginRight: "4px",
-  color: "rgb(51,51,51)",
-  fontWeight: 200,
+const text = {
+  color: "#333",
+  fontSize: "14px",
+  margin: "12px 0",
 };
+
+const upperSection = { padding: "8px" };
+
+const primarySection = { padding: "0px 16px" };
+
+const footer = {
+  fontSize: "14px",
+  padding: "0 24px",
+  fontWeight: "300",
+  backgroundColor: "#0071BD",
+  color: "#fff",
+  textAlign: "center" as const,
+};
+
+const divider = { margin: "16px 0", borderTop: "2px solid #0071BD" };
 
 export const styles = {
+  divider,
   main,
-  resetText,
   container,
-  tableCell,
-  heading,
-  informationTable,
-  informationTableRow,
-  informationTableColumn,
-  informationTableLabel,
-  informationTableValue,
-  productTitleTable,
-  productsTitle,
-  productIcon,
+  upperSection,
+  h1,
+  footer,
   textTitle,
   textDescription,
-  productLink,
-  divisor,
-  Textarea,
+  text,
+  primarySection,
 };

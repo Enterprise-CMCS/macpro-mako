@@ -1,13 +1,17 @@
+export const key = "C0-24-8110";
 export const emailTemplateValue = {
-  id: "C0-24-8110",
+  id: key,
   territory: "CO",
-  applicationEndpointUrl: "https://mako-dev.cms.gov/",
+  applicationEndpointUrl: "https://d6ebj6bya6i3k.cloudfront.net",
   timestamp: 1121234556,
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",
+  authority: "AUTHORITY",
+  actionType: "ACTION TYPE",
   additionalInformation:
-    "Lorem ipsum odor amet, consectetuer adipiscing elit. Vivamus ante natoque mollis molestie blandit facilisi augue. Sagittis mauris a lacus ultrices scelerisque massa. Sem laoreet maximus proin ornare varius feugiat tempor; mollis est. Scelerisque turpis urna; suscipit magna dis posuere. Ultricies viverra quis pellentesque ac tortor. Tortor duis fringilla sapien lobortis porta sem libero tempus metus. Adipiscing mauris pharetra eget montes quis scelerisque quisque suscipit per. Rutrum luctus condimentum et; purus ante massa adipiscing libero morbi.\n\nHabitasse lacus praesent tempor urna magna etiam senectus posuere. Pretium sociosqu magnis eleifend eros maecenas. Cras curae vehicula nunc consequat donec egestas nisi. Praesent conubia id pulvinar, per aenean vulputate fames. Ligula eu ultrices tristique, leo feugiat lacus. Malesuada blandit himenaeos natoque tempor, ligula magna.\n\nSed nulla senectus euismod tincidunt morbi faucibus maecenas efficitur. Orci consequat tempus suscipit himenaeos; dictum laoreet. Augue himenaeos semper, dignissim arcu tempus elit scelerisque. Quis elit porta nascetur elementum sagittis gravida vestibulum turpis massa. Aplatea nam tempus praesent quisque tempus ridiculus. Fames mus primis cras praesent congue. Potenti habitasse maecenas urna donec scelerisque luctus bibendum enim.\n\nFermentum euismod primis non orci porttitor rutrum. Curabitur elementum imperdiet egestas potenti tortor. Nisi posuere donec elit; dui dis lobortis consequat tempor laoreet. Nibh at et iaculis turpis aliquet ultrices inceptos. Erat ante diam egestas justo; mauris volutpat nam. Accumsan nunc etiam a lacinia ad. Malesuada bibendum dictum consequat justo; diam nascetur massa vehicula. Eu platea pulvinar metus nam convallis congue aenean potenti netus.\n\nNisi feugiat erat mauris sed potenti suspendisse diam? Potenti suspendisse finibus ut vestibulum potenti dignissim. Nascetur mauris consequat conubia porta porta imperdiet nisl. Class vel pharetra commodo integer; sit euismod sed. Porttitor penatibus quis ligula donec congue neque ultrices faucibus. Dui eu ut donec elementum imperdiet sollicitudin fringilla.",
+    "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin.\n\nHe lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections.\n\nThe bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. What's happened to me? he thought. It wasn't a dream. His room, a proper human",
   origin: "mako",
+  appkParentId: null,
   attachments: {
     currentStatePlan: {
       files: [
@@ -20,6 +24,65 @@ export const emailTemplateValue = {
         },
       ],
       label: "CMS Form 179",
+    },
+    tribalEngagement: {
+      label: "Document Demonstrating Good-Faith Tribal Engagement",
+    },
+    existingStatePlanPages: {
+      label: "Existing State Plan Page(s)",
+    },
+    publicNotice: {
+      label: "Public Notice",
+    },
+    spaPages: {
+      files: [
+        {
+          filename: "test1.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
+          uploadDate: 1728493784252,
+        },
+        {
+          filename: "test2.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
+          uploadDate: 1728493784252,
+        },
+        {
+          filename: "test3.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
+          uploadDate: 1728493784252,
+        },
+      ],
+      label: "SPA Pages",
+    },
+    cmsForm179: {
+      files: [
+        {
+          filename: "test.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          uploadDate: 1728493782785,
+        },
+      ],
+      label: "CMS Form 179",
+    },
+    appk: {
+      files: [
+        {
+          filename: "test.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          uploadDate: 1728493782785,
+        },
+      ],
+      label: "1915(c) Appendix K Amendment Waiver Template",
     },
     amendedLanguage: {
       files: [
@@ -62,14 +125,14 @@ export const emailTemplateValue = {
     budgetDocuments: {
       label: "Document Demonstrating Good-Faith Tribal Engagement",
     },
-    publicNotice: {
-      label: "Existing State Plan Page(s)",
-    },
     tribalConsultation: {
       label: "Tribal Consultation",
     },
     other: {
       label: "Other",
+    },
+    sfq: {
+      label: "Standard Funding Questions (SFQs)",
     },
   },
   proposedEffectiveDate: 1725062400000,
