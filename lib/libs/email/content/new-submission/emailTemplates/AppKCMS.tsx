@@ -5,8 +5,6 @@ import {
   Html,
   Container,
   Heading,
-  Hr,
-  Section,
   Body,
   Head,
   Preview,
@@ -17,6 +15,7 @@ import {
   SpamWarning,
   styles,
   EmailNav,
+  DetailsHeading,
 } from "../../email-components";
 
 // 1915c - app K
@@ -32,12 +31,12 @@ export const AppKCMSEmail = (props: {
       <Body style={styles.main}>
         <Container style={styles.container}>
           <EmailNav appEndpointUrl={variables.applicationEndpointUrl} />
-          <Section style={styles.upperSection}>
+          <div style={styles.primarySection}>
             <Heading style={styles.h1}>
               The OneMAC Submission Portal received a 1915(c) Appendix K
               Amendment Submission:
             </Heading>
-            <Hr style={styles.divider} />
+            <DetailsHeading />
             <LoginInstructions
               appEndpointURL={variables.applicationEndpointUrl}
             />
@@ -56,7 +55,7 @@ export const AppKCMSEmail = (props: {
               }}
               attachments={variables.attachments}
             />
-          </Section>
+          </div>
           <SpamWarning />
         </Container>
       </Body>

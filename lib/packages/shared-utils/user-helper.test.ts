@@ -13,7 +13,7 @@ import {
   testStateCognitoUser,
   testStateIDMUser,
 } from "./testData";
-import type { CognitoUserAttributes, OneMac } from "shared-types";
+import type { CognitoUserAttributes } from "shared-types";
 
 type User = any & CognitoUserAttributes;
 const cmsHelpDeskUser = {

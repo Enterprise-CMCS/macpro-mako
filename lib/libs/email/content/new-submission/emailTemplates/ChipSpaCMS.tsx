@@ -7,9 +7,7 @@ import {
   Head,
   Body,
   Heading,
-  Hr,
   Preview,
-  Section,
 } from "@react-email/components";
 import {
   LoginInstructions,
@@ -17,13 +15,14 @@ import {
   SpamWarning,
   EmailNav,
   styles,
+  DetailsHeading,
 } from "../../email-components";
 
 export const ChipSpaCMSEmail = (props: {
   variables: Events["NewChipSubmission"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
-  const previewText = `CHIP SPA &${variables.id} Submitted`;
+  const previewText = `CHIP SPA ${variables.id} Submitted`;
   return (
     <Html>
       <Head />
@@ -31,11 +30,11 @@ export const ChipSpaCMSEmail = (props: {
       <Body style={styles.main}>
         <Container style={styles.container}>
           <EmailNav appEndpointUrl={variables.applicationEndpointUrl} />
-          <Section style={styles.upperSection}>
+          <div style={styles.primarySection}>
             <Heading style={styles.h1}>
               The OneMAC Submission Portal received a CHIP State Plan Amendment:
             </Heading>
-            <Hr style={styles.divider} />
+            <DetailsHeading />
             <LoginInstructions
               appEndpointURL={variables.applicationEndpointUrl}
             />
@@ -49,7 +48,7 @@ export const ChipSpaCMSEmail = (props: {
               }}
               attachments={variables.attachments}
             />
-          </Section>
+          </div>
           <SpamWarning />
         </Container>
       </Body>

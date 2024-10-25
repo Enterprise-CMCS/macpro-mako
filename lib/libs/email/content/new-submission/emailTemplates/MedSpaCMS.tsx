@@ -3,14 +3,13 @@ import { formatDate } from "../../..";
 import {
   Html,
   Container,
-  Section,
   Body,
   Head,
   Heading,
-  Hr,
   Preview,
 } from "@react-email/components";
 import {
+  DetailsHeading,
   EmailNav,
   LoginInstructions,
   PackageDetails,
@@ -31,11 +30,11 @@ export const MedSpaCMSEmail = (props: {
       <Body style={styles.main}>
         <Container style={styles.container}>
           <EmailNav appEndpointUrl={variables.applicationEndpointUrl} />
-          <Section style={styles.upperSection}>
+          <div style={styles.primarySection}>
             <Heading style={styles.h1}>
               The OneMAC Submission Portal received a Medicaid SPA Submission:
             </Heading>
-            <Hr style={styles.divider} />
+            <DetailsHeading />
             <LoginInstructions
               appEndpointURL={variables.applicationEndpointUrl}
             />
@@ -52,7 +51,7 @@ export const MedSpaCMSEmail = (props: {
               }}
               attachments={variables.attachments}
             />
-          </Section>
+          </div>
           <SpamWarning />
         </Container>
       </Body>

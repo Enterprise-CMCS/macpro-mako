@@ -3,10 +3,8 @@ import {
   Html,
   Container,
   Head,
-  Section,
   Preview,
   Text,
-  Hr,
   Body,
   Heading,
 } from "@react-email/components";
@@ -18,6 +16,7 @@ import {
   MailboxWaiver,
   styles,
   EmailNav,
+  DetailsHeading,
 } from "../../email-components";
 import { emailTemplateValue } from "../data";
 
@@ -33,12 +32,12 @@ export const AppKStateEmail = (props: {
       <Body style={styles.main}>
         <Container style={styles.container}>
           <EmailNav appEndpointUrl={variables.applicationEndpointUrl} />
-          <Section style={styles.upperSection}>
+          <div style={styles.primarySection}>
             <Heading style={styles.h1}>
               This response confirms the submission of your 1915(c) Waiver to
               CMS for review:
             </Heading>
-            <Hr style={styles.divider} />
+            <DetailsHeading />
             <PackageDetails
               details={{
                 "State or territory": variables.territory,
@@ -54,18 +53,15 @@ export const AppKStateEmail = (props: {
               }}
               attachments={variables.attachments}
             />
-            <Section style={styles.primarySection}>
-              <Text style={styles.text}>
-                `This response confirms the receipt of your Waiver request or
-                your response to a Waiver Request for Additional Information
-                (RAI). You can expect a formal response to your submittal to be
-                issued within 90 days, before $
-                {formatNinetyDaysDate(variables.timestamp)}.`
-              </Text>
-            </Section>
+            <Text style={styles.text}>
+              This response confirms the receipt of your Waiver request or your
+              response to a Waiver Request for Additional Information (RAI). You
+              can expect a formal response to your submittal to be issued within
+              90 days, before ${formatNinetyDaysDate(variables.timestamp)}.
+            </Text>
             <MailboxWaiver />
             <ContactStateLead />
-          </Section>
+          </div>
         </Container>
       </Body>
     </Html>

@@ -9,6 +9,7 @@ import {
   Img,
 } from "@react-email/components";
 import { Attachment, TextareaProps } from "shared-types";
+import { createRef, forwardRef } from "react";
 type AttachmentsType = {
   [key: string]: { files?: Attachment[]; label: string };
 };
@@ -47,57 +48,73 @@ export const getToAddress = ({
   return [`"${name}" <${email}>`];
 };
 
+const LogoContainer = forwardRef<HTMLSpanElement, { url: string }>(
+  ({ url }, ref) => {
+    return (
+      <header ref={ref} style={{ backgroundColor: "#0071BD", padding: "16px" }}>
+        <Link
+          href={url}
+          target="_blank"
+          style={{ display: "block", maxWidth: "112px" }}
+        >
+          <Img
+            height={40}
+            width={112}
+            style={{ maxWidth: "112px" }}
+            src={`${url}/assets/onemac-logo-BdXmNUXn.png`}
+            alt="OneMAC Logo"
+          />
+        </Link>
+      </header>
+    );
+  },
+);
+
 export const EmailNav = (props: { appEndpointUrl: string }) => {
+  const ref = createRef<HTMLSpanElement>();
   return (
     <Section>
-      <Row style={{ backgroundColor: "#0071BD", padding: "16px" }}>
-        <Column style={{ maxWidth: "112px" }}>
-          <Link
-            href={props.appEndpointUrl}
-            target="_blank"
-            style={{ display: "block", maxWidth: "112px" }}
-          >
-            <Img
-              height={40}
-              width={112}
-              style={{ maxWidth: "112px" }}
-              src={`${props.appEndpointUrl}/assets/onemac-logo-BdXmNUXn.png`}
-              alt="OneMAC Logo"
-            />
-          </Link>
-        </Column>
-      </Row>
+      <LogoContainer ref={ref} url={props.appEndpointUrl} />
     </Section>
   );
 };
 
 export const LoginInstructions = (props: { appEndpointURL: string }) => {
   return (
-    <Section>
-      <ul style={{ marginLeft: "-20px" }}>
-        <li>
-          <Text>
-            The submission can be accessed in the OneMAC application, which you
-            can find at{" "}
-            <Link href={props.appEndpointURL}>{props.appEndpointURL}</Link>
-          </Text>
-        </li>
-        <li>
-          <Text>
-            If you are not already logged in, please click the "Login" link at
-            the top of the page and log in using your Enterprise User
-            Administration (EUA) credentials.
-          </Text>
-        </li>
-        <li>
-          <Text>
-            After you have logged in, you will be taken to the OneMAC
-            application. The submission will be listed on the dashboard page,
-            and you can view its details by clicking on its ID number.
-          </Text>
-        </li>
-      </ul>
-    </Section>
+    <ul style={{ marginLeft: "-20px" }}>
+      <li>
+        <Text>
+          The submission can be accessed in the OneMAC application, which you
+          can find at{" "}
+          <Link href={props.appEndpointURL}>{props.appEndpointURL}</Link>
+        </Text>
+      </li>
+      <li>
+        <Text>
+          If you are not already logged in, please click the "Login" link at the
+          top of the page and log in using your Enterprise User Administration
+          (EUA) credentials.
+        </Text>
+      </li>
+      <li>
+        <Text>
+          After you have logged in, you will be taken to the OneMAC application.
+          The submission will be listed on the dashboard page, and you can view
+          its details by clicking on its ID number.
+        </Text>
+      </li>
+    </ul>
+  );
+};
+
+export const DetailsHeading = () => {
+  return (
+    <div>
+      <Hr style={styles.divider} />
+      <Heading as="h2" style={{ fontSize: "16px" }}>
+        Details:
+      </Heading>
+    </div>
   );
 };
 
@@ -130,35 +147,29 @@ export const Attachments = (props: { attachments: AttachmentsType }) => {
   return (
     <>
       <Hr style={styles.divider} />
-      <Heading as="h3" style={{ fontSize: "16px" }}>
+      <Heading as="h2" style={{ fontSize: "16px" }}>
         Files:
       </Heading>
-      <Section style={{ marginBottom: "8px" }}>
-        {attachmentKeys?.map(
-          (key: keyof typeof props.attachments, idx: number) => {
-            if (!props.attachments[key].files) return;
-            const title = props.attachments[key].label;
-            const filenames = createAttachementList(
-              props.attachments[key].files,
-            );
-            return (
-              <Row key={key + String(idx)}>
-                <Column
-                  align="left"
-                  style={{ width: "40%", paddingTop: "8px" }}
-                >
-                  <Text style={textTitle}>{title}</Text>
-                </Column>
-                <Column>
-                  <Text style={{ ...textDescription, paddingTop: "8px" }}>
-                    {filenames}
-                  </Text>
-                </Column>
-              </Row>
-            );
-          },
-        )}
-      </Section>
+
+      {attachmentKeys?.map(
+        (key: keyof typeof props.attachments, idx: number) => {
+          if (!props.attachments[key].files) return;
+          const title = props.attachments[key].label;
+          const filenames = createAttachementList(props.attachments[key].files);
+          return (
+            <Row key={key + String(idx)}>
+              <Column align="left" style={{ width: "50%", paddingTop: "8px" }}>
+                <Text style={textTitle}>{title}</Text>
+              </Column>
+              <Column>
+                <Text style={{ ...textDescription, paddingTop: "8px" }}>
+                  {filenames}
+                </Text>
+              </Column>
+            </Row>
+          );
+        },
+      )}
     </>
   );
 };
@@ -168,7 +179,7 @@ export const PackageDetails = (props: {
   attachments: AttachmentsType | null;
 }) => {
   return (
-    <Section style={primarySection}>
+    <Section>
       {Object.keys(props.details).map((label: string, idx: number) => {
         if (label === "Summary") {
           const summary =
@@ -177,7 +188,7 @@ export const PackageDetails = (props: {
             <Row>
               <Hr style={styles.divider} />
               <Text style={{ margin: ".5em" }}>
-                <Heading as="h3" style={{ fontSize: "16px" }}>
+                <Heading as="h2" style={{ fontSize: "16px" }}>
                   Summary:
                 </Heading>
               </Text>
@@ -187,7 +198,7 @@ export const PackageDetails = (props: {
         }
         return (
           <Row key={label + idx}>
-            <Column align="left" style={{ width: "40%", paddingTop: "8px" }}>
+            <Column align="left" style={{ width: "50%", paddingTop: "8px" }}>
               <Text style={textTitle}>{label}</Text>
             </Column>
             <Column>
@@ -277,7 +288,7 @@ export const WithdrawRAI = (props: {
 }) => {
   return (
     <Section>
-      <Heading as="h3">
+      <Heading as="h2">
         The OneMAC Submission Portal received a request to withdraw the Formal
         RAI Response. You are receiving this email notification as the Formal
         RAI for {props.id} was withdrawn by {props.submitterName}{" "}
@@ -315,10 +326,10 @@ const main = {
   color: "#212121",
   fontFamily:
     "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  ...resetText,
 };
 
 const container = {
-  margin: "0 auto",
   backgroundColor: "#F5F5F5",
 };
 
@@ -338,7 +349,6 @@ const textDescription = {
 const h1 = {
   color: "#333",
   fontSize: "20px",
-  padding: "0 24px",
   fontWeight: "bold",
   marginBottom: "15px",
 };
@@ -349,9 +359,7 @@ const text = {
   margin: "12px 0",
 };
 
-const upperSection = { padding: "8px" };
-
-const primarySection = { padding: "0px 16px" };
+const primarySection = { margin: "8px", padding: "8px" };
 
 const footer = {
   fontSize: "14px",
@@ -368,7 +376,6 @@ export const styles = {
   divider,
   main,
   container,
-  upperSection,
   h1,
   footer,
   textTitle,
