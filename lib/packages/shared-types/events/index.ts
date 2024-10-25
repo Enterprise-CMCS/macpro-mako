@@ -12,9 +12,9 @@ import * as withdrawPackage from "./withdraw-package";
 
 import * as withdrawRai from "./withdraw-rai";
 import * as toggleWithdrawRai from "./toggle-withdraw-rai";
+import * as respondToRai from "./respond-to-rai";
 
 export * from "./respond-to-rai";
-export * from "./withdraw-rai";
 export * from "./app-k";
 export * from "./legacy-event";
 export * from "./legacy-package-view";
@@ -36,6 +36,7 @@ export const events = {
   "withdraw-package": withdrawPackage,
   "withdraw-rai": withdrawRai,
   "toggle-withdraw-rai": toggleWithdrawRai,
+  "respond-to-rai": respondToRai,
 };
 
 export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;

@@ -21,6 +21,7 @@ import {
   withdrawPackage,
   withdrawRai,
   toggleWithdrawRai,
+  respondToRai,
 } from "./transforms";
 
 // legacy
@@ -69,4 +70,5 @@ export const transforms = {
   "withdraw-package": withdrawPackage,
   "withdraw-rai": withdrawRai,
   "toggle-withdraw-rai": toggleWithdrawRai,
+  "respond-to-rai": respondToRai,
 };

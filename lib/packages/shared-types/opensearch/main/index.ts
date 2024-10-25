@@ -73,4 +73,5 @@ export const transforms = {
   "withdraw-package": withdrawPackage,
   "withdraw-rai": withdrawRai,
   "toggle-withdraw-rai": toggleWithdrawRai,
+  "respond-to-rai": respondToRai,
 };

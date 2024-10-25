@@ -12,3 +12,4 @@ export * as temporaryExtension from "./temporary-extension";
 export * as withdrawPackage from "./withdraw-package";
 export * as withdrawRai from "./withdraw-rai";
 export * as toggleWithdrawRai from "./toggle-withdraw-rai";
+export * as respondToRai from "./respond-to-rai";

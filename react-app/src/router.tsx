@@ -6,10 +6,6 @@ import {
   PostSubmissionWrapper,
 } from "@/features/forms/post-submission/post-submissions-form";
 import { QueryClient } from "@tanstack/react-query";
-import {
-  postSubmissionLoader,
-  PostSubmissionWrapper,
-} from "@/features/forms/post-submission/post-submission-forms";
 export const queryClient = new QueryClient();
 
 export const FAQ_TAB = "faq-tab";
@@ -111,6 +107,10 @@ export const router = createBrowserRouter([
       {
         path: "/new-submission/spa/chip/landing/chip-eligibility",
         element: <F.CHIPEligibilityLandingPage />,
+      },
+      {
+        path: "/actions/:type/:authority/:id",
+        element: <PostSubmissionWrapper />,
       },
       { path: "/action/:authority/:id/:type", element: <F.ActionPage /> },
       { path: "/webforms", element: <F.WebformsList /> },

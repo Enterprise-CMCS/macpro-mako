@@ -10,6 +10,7 @@ import * as temporaryExtension from "./temporary-extension";
 import * as withdrawPackage from "./withdraw-package";
 import * as withdrawRai from "./withdraw-rai";
 import * as toggleWithdrawRai from "./toggle-withdraw-rai";
+import * as respondtoRAI from "./respond-to-rai";
 
 export const formSchemas = {
   "capitated-amendment": capitatedAmendment.formSchema,
@@ -25,4 +26,7 @@ export const formSchemas = {
   "withdraw-package-chip": withdrawPackage.formSchemaChip,
   "withdraw-rai": withdrawRai.formSchema,
   "toggle-withdraw-rai": toggleWithdrawRai.formSchema,
+  "respond-to-rai-chip": respondtoRAI.formSchemaChip,
+  "respond-to-rai-waiver": respondtoRAI.formSchemaWaivers,
+  "respond-to-rai-medicaid": respondtoRAI.formSchemaMedicaid,
 };

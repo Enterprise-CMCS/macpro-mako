@@ -1,9 +1,10 @@
-import { raiResponseSchema, SEATOOL_STATUS, Action } from "shared-types";
+import { events, SEATOOL_STATUS, Action } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 import { response } from "../../../libs/handler-lib";
 import { TOPIC_NAME } from "../consts";
 import { ExtendedItemResult } from "../../../libs/api/package";
 import { respondToRaiAction } from "../services/package-action-write-service";
+
 
 export async function respondToRai(
   body: any,
@@ -24,7 +25,7 @@ export async function respondToRai(
   const raiToRespondTo = new Date(document.raiRequestedDate).getTime();
   const now = new Date().getTime();
   const today = seaToolFriendlyTimestamp();
-  const result = raiResponseSchema.safeParse({
+  const result = events['respond-to-rai'].baseSchema.safeParse({
     ...body,
     responseDate: today,
     requestedDate: raiToRespondTo,

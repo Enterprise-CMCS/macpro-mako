@@ -4,6 +4,11 @@ import {
   WithdrawPackageActionChip,
   WithdrawPackageActionWaiver,
 } from "./withdraw-package";
+import {
+  RespondToRaiChip,
+  RespondToRaiMedicaid,
+  RespondToRaiWaiver,
+} from "./respond-to-rai";
 import { queryClient } from "../../../router";
 import { getItem } from "@/api";
 
@@ -18,9 +23,13 @@ export const postSubmissionForms: Record<
     ["Medicaid SPA"]: WithdrawPackageAction,
     ["CHIP SPA"]: WithdrawPackageActionChip,
   },
+  "respond-to-rai": {
+    ["1915(b)"]: RespondToRaiWaiver,
+    ["1915(c)"]: RespondToRaiWaiver,
+    ["Medicaid SPA"]: RespondToRaiMedicaid,
+    ["CHIP SPA"]: RespondToRaiChip,
+  },
 };
-
-// /actions/withdraw-package/Medicaid SPA/MD-95-1000
 
 export const PostSubmissionWrapper = () => {
   const { type, authority } = useParams();
