@@ -300,6 +300,10 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
       //   return ["RAI response withdrawn", PA_ResponseWithdrawn];
       case "withdraw-package":
         return ["Package withdrawn", PA_ResponseWithdrawn];
+      case "withdraw-rai":
+        return ["RAI response withdrawn", PA_ResponseWithdrawn];
+      // case "withdraw-package":
+      //   return ["Package withdrawn", PA_ResponseWithdrawn];
       // case "issue-rai":
       //   return ["RAI issued", PA_RaiIssued];
       // case "respond-to-rai":
@@ -320,11 +324,13 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
       // case "legacy-withdraw-rai-request":
       //   return ["RAI response withdrawn requested", PA_ResponseWithdrawn];
 
+      // return needs another parameter
       default:
         return [BLANK_VALUE];
     }
   }, [props.event]);
 
+  if (LABEL === BLANK_VALUE) return null;
   return (
     <AccordionItem key={props.id} value={props.id}>
       <AccordionTrigger className="bg-gray-100 px-3">

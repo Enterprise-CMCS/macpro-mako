@@ -1,4 +1,4 @@
-import { toggleWithdrawRaiEnabledSchema, Action } from "shared-types";
+import { Action, events } from "shared-types";
 import { response } from "../../../libs/handler-lib";
 import { TOPIC_NAME } from "../consts";
 import { toggleRaiResponseWithdrawAction } from "../services/package-action-write-service";
@@ -8,7 +8,7 @@ export async function toggleRaiResponseWithdraw({
   ...body
 }: Record<string, unknown> & { toggle?: boolean }) {
   const now = new Date().getTime();
-  const result = toggleWithdrawRaiEnabledSchema.safeParse({
+  const result = events["toggle-withdraw-rai"].baseSchema.safeParse({
     ...body,
     raiWithdrawEnabled: toggle,
   });

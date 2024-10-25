@@ -1,4 +1,4 @@
-import { raiWithdrawSchema, SEATOOL_STATUS, Action } from "shared-types";
+import { events, SEATOOL_STATUS, Action } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 import { response } from "../../../libs/handler-lib";
 import { TOPIC_NAME } from "../consts";
@@ -28,7 +28,7 @@ export async function withdrawRai(
   const now = new Date().getTime();
   const today = seaToolFriendlyTimestamp();
 
-  const result = raiWithdrawSchema.safeParse({
+  const result = events["withdraw-rai"].baseSchema.safeParse({
     ...body,
     requestedDate: raiToWithdraw,
     withdrawnDate: today,

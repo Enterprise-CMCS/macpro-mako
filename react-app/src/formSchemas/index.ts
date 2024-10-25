@@ -8,6 +8,8 @@ import * as newMedicaidSubmission from "./new-medicaid-submission";
 import * as newChipSubmission from "./new-chip-submission";
 import * as temporaryExtension from "./temporary-extension";
 import * as withdrawPackage from "./withdraw-package";
+import * as withdrawRai from "./withdraw-rai";
+import * as toggleWithdrawRai from "./toggle-withdraw-rai";
 
 export const formSchemas = {
   "capitated-amendment": capitatedAmendment.formSchema,
@@ -21,4 +23,6 @@ export const formSchemas = {
   "temporary-extension": temporaryExtension.formSchema,
   "withdraw-package": withdrawPackage.formSchema,
   "withdraw-package-chip": withdrawPackage.formSchemaChip,
+  "withdraw-rai": withdrawRai.formSchema,
+  "toggle-withdraw-rai": toggleWithdrawRai.formSchema,
 };

@@ -36,8 +36,7 @@ const arEnableWithdrawRaiResponse: ActionRule = {
     checker.hasRaiResponse &&
     !checker.hasEnabledRaiWithdraw &&
     isCmsWriteUser(user) &&
-    !checker.hasStatus(finalDispositionStatuses) &&
-    false,
+    !checker.hasStatus(finalDispositionStatuses),
 };
 
 const arDisableWithdrawRaiResponse: ActionRule = {
@@ -48,8 +47,7 @@ const arDisableWithdrawRaiResponse: ActionRule = {
     checker.hasRaiResponse &&
     checker.hasEnabledRaiWithdraw &&
     isCmsWriteUser(user) &&
-    !checker.hasStatus(finalDispositionStatuses) &&
-    false,
+    !checker.hasStatus(finalDispositionStatuses),
 };
 
 const arWithdrawRaiResponse: ActionRule = {
@@ -62,7 +60,7 @@ const arWithdrawRaiResponse: ActionRule = {
     !checker.hasRaiWithdrawal &&
     checker.hasEnabledRaiWithdraw &&
     isStateUser(user) &&
-    false,
+    !checker.isLocked,
 };
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
