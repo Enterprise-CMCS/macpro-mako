@@ -18,6 +18,7 @@ import {
   newChipSubmission,
   newMedicaidSubmission,
   temporaryExtension,
+  withdrawPackage,
 } from "./transforms";
 
 // legacy
@@ -63,4 +64,5 @@ export const transforms = {
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
   "temporary-extension": temporaryExtension,
+  "withdraw-package": withdrawPackage,
 };

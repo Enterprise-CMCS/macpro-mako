@@ -32,12 +32,14 @@ const AttachmentInstructions = ({ fileValidation }) => {
 type ActionFormAttachmentsProps = {
   attachmentsFromSchema: [string, z.ZodObject<z.ZodRawShape, "strip">][];
   specialInstructions?: string;
+  outerInstructions?: string;
   faqLink: string;
 };
 
 export const ActionFormAttachments = ({
   attachmentsFromSchema,
   specialInstructions = DEFAULT_ATTACHMENTS_INSTRUCTIONS,
+  outerInstructions,
   faqLink,
 }: ActionFormAttachmentsProps) => {
   const form = useFormContext();
@@ -45,6 +47,9 @@ export const ActionFormAttachments = ({
   return (
     <SectionCard title="Attachments">
       <div className="text-gray-700 font-light">
+        {outerInstructions && (
+          <p className="font-medium mb-8">{outerInstructions}</p>
+        )}
         <p data-testid="attachments-instructions">
           {specialInstructions} Read the description for each of the attachment
           types on the{" "}

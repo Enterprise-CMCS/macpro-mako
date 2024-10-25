@@ -70,7 +70,7 @@ const arWithdrawPackage: ActionRule = {
     !checker.isTempExtension &&
     !checker.hasStatus(finalDispositionStatuses) &&
     isStateUser(user) &&
-    false,
+    !checker.isLocked,
 };
 const arUpdateId: ActionRule = {
   action: Action.UPDATE_ID,
