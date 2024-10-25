@@ -235,6 +235,7 @@ export async function getItems(
 
       if (doc.found && doc._source) {
         console.log("getItems are we here 4?");
+        console.log("getItems what is the doc._source value", doc._source);
 
         const decoded = decodeBase64WithUtf8(doc._source);
         if (!decoded) {
