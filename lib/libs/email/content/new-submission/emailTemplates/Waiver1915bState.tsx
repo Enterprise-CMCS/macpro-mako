@@ -77,7 +77,11 @@ export const Waiver1915bStateEmail = (props: {
 const Waiver1915bStateEmailPreview = () => {
   return (
     <Waiver1915bStateEmail
-      variables={emailTemplateValue as any & CommonEmailVariables}
+      variables={{
+        ...emailTemplateValue,
+        authority: "1915(b)",
+        actionType: "RAI",
+      }}
     />
   );
 };

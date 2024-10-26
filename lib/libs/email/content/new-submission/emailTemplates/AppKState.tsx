@@ -24,7 +24,7 @@ export const AppKStateEmail = (props: {
   variables: Events["NewAppKSubmission"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
-  const previewText = `Appendix K Amendment Submitted `;
+  const previewText = `Appendix K Amendment Submitted`;
   return (
     <Html>
       <Head />
@@ -77,8 +77,9 @@ const AppKStateEmailPreview = () => {
         origin: "mako",
         state: "CO",
         waiverIds: ["1234-56768", "1234-56769"],
+        actionType: "Amend",
         seaActionType: "Amend",
-        title: "Title",
+        title: "App K Title",
       }}
     />
   );

@@ -74,6 +74,7 @@ const AppKCMSEmailPreview = () => {
         waiverIds: ["123"],
         state: "State",
         origin: "mako",
+        actionType: "Amend",
       }}
     />
   );
