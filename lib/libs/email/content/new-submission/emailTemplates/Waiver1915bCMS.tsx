@@ -68,8 +68,8 @@ const Waiver1915bCMSEmailPreview = () => {
         ...emailTemplateValue,
         event: "new-medicaid-submission",
         origin: "mako",
-        authority: "Medicaid Waiver",
-        actionType: "Amend",
+        authority: "1915(b)",
+        actionType: "Initial Waiver",
       }}
     />
   );
