@@ -6,7 +6,6 @@ import {
   Column,
   Hr,
   Heading,
-  Img,
 } from "@react-email/components";
 import { Attachment, TextareaProps } from "shared-types";
 import { createRef, forwardRef } from "react";
@@ -57,7 +56,7 @@ const LogoContainer = forwardRef<HTMLSpanElement, { url: string }>(
           target="_blank"
           style={{ display: "block", maxWidth: "112px" }}
         >
-          <Img
+          <img
             height={40}
             width={112}
             style={{ maxWidth: "112px" }}
@@ -176,7 +175,7 @@ export const Attachments = (props: { attachments: AttachmentsType }) => {
 
 export const PackageDetails = (props: {
   details: { [key: string]: string | null | undefined };
-  attachments: AttachmentsType | null;
+  attachments?: AttachmentsType | null;
 }) => {
   return (
     <Section>

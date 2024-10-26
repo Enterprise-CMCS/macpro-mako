@@ -1,11 +1,11 @@
 import * as React from "react";
 import { emailTemplateValue } from "../data";
-import { CommonEmailVariables } from "../../..";
-import { WithdrawPackage } from "shared-types";
+import { CommonEmailVariables } from "shared-types";
 import { Html, Container } from "@react-email/components";
 import { PackageDetails, SpamWarning } from "../../email-components";
+import { WithdrawPackage } from "shared-types";
 
-// **** CHIP SPA
+// **** CHIP SPAh
 export const ChipSpaCMSEmail = (props: {
   variables: WithdrawPackage & CommonEmailVariables;
 }) => {
@@ -36,7 +36,7 @@ export const ChipSpaCMSEmail = (props: {
 const ChipSpaCMSEmailPreview = () => {
   return (
     <ChipSpaCMSEmail
-      variables={emailTemplateValue as WithdrawPackage & CommonEmailVariables}
+      variables={emailTemplateValue as any & CommonEmailVariables}
     />
   );
 };

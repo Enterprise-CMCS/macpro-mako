@@ -1,6 +1,6 @@
 import * as React from "react";
 import { emailTemplateValue } from "../data";
-import { CommonEmailVariables } from "../../..";
+import { CommonEmailVariables } from "shared-types";
 import { RaiWithdraw } from "shared-types";
 import { Container, Html } from "@react-email/components";
 import {
