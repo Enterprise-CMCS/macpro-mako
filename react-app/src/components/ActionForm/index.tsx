@@ -52,7 +52,6 @@ type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
         files: z.ZodTypeAny;
       }>;
     }>;
-    additionalInformation?: z.ZodTypeAny;
   },
   "strip",
   z.ZodTypeAny
