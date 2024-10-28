@@ -41,10 +41,7 @@ import {
 import { API } from "aws-amplify";
 import { Authority, CognitoUserAttributes } from "shared-types";
 import { ActionFormAttachments } from "./ActionFormAttachments";
-import {
-  getAttachments,
-  getAdditionalInformation,
-} from "./actionForm.utilities";
+import { getAttachments } from "./actionForm.utilities";
 import { isStateUser } from "shared-utils";
 import { useGetUser } from "@/api";
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
@@ -55,12 +52,12 @@ type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
         files: z.ZodTypeAny;
       }>;
     }>;
-    additionalInformation?:
-      | z.ZodOptional<z.ZodString>
-      | z.ZodOptional<z.ZodDefault<z.ZodNullable<z.ZodString>>>
-      | z.ZodDefault<z.ZodNullable<z.ZodString>>
-      | z.ZodEffects<z.ZodTypeAny>
-      | z.ZodNullable<z.ZodAny>;
+    additionalInformation?: z.ZodTypeAny;
+    // | z.ZodOptional<z.ZodString>
+    // | z.ZodOptional<z.ZodDefault<z.ZodNullable<z.ZodString>>>
+    // | z.ZodDefault<z.ZodNullable<z.ZodString>>
+    // | z.ZodEffects<z.ZodTypeAny>
+    // | z.ZodNullable<z.ZodAny>;
   },
   "strip",
   z.ZodTypeAny
@@ -89,6 +86,14 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
     specialInstructions?: string;
     outerInstructions?: string;
   };
+  additionalInformation?:
+    | {
+        required: boolean;
+        title: string;
+        label: string;
+      }
+    | false;
+  // additionalInfo prop that defines the J
   documentPollerArgs: {
     property:
       | (keyof z.TypeOf<Schema> & string)
@@ -101,7 +106,6 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   breadcrumbText: string;
   formDescription?: string;
   preSubmissionMessage?: string;
-  additionalInfoLabel?: string;
   showPreSubmissionMessage?: boolean;
   requiredFields?: boolean;
 };
@@ -134,7 +138,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       to edit this form. If CMS needs any additional information, they will
       follow up by email.`,
   preSubmissionMessage,
-  additionalInfoLabel = `Add anything else you would like to share with CMS.`,
+  additionalInformation = {
+    required: true,
+    label: "Add anything else you would like to share with CMS.",
+    title: "Additional Information",
+  },
   showPreSubmissionMessage = true,
   requiredFields = true,
 }: ActionFormProps<Schema>) => {
@@ -149,14 +157,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const { data: userObj } = useGetUser();
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority);
-
-  const getBaseSchemaWithoutEffects = (schema: z.ZodTypeAny): z.ZodTypeAny => {
-    // Traverse through ZodEffects (e.g., caused by `.refine()`)
-    while (schema instanceof z.ZodEffects) {
-      schema = schema._def.schema;
-    }
-    return schema;
-  };
 
   if (id) {
     breadcrumbs.push({
@@ -210,10 +210,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   });
 
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
-  const additionalInformationFromSchema = useMemo(
-    () => getAdditionalInformation(schema),
-    [schema],
-  );
 
   const hasProgressLossReminder = useMemo(
     () => Fields({ ...form }) !== null || attachmentsFromSchema.length > 0,
@@ -269,16 +265,12 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               {...attachments}
             />
           )}
-          {additionalInformationFromSchema && (
+          {additionalInformation && (
             <SectionCard
               title={
                 <>
-                  {"Additional Information"}{" "}
-                  {!(
-                    getBaseSchemaWithoutEffects(
-                      additionalInformationFromSchema,
-                    ) instanceof z.ZodOptional
-                  ) && <RequiredIndicator />}
+                  {additionalInformation.title}{" "}
+                  {additionalInformation.required && <RequiredIndicator />}
                 </>
               }
             >
@@ -287,7 +279,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                 name={"additionalInformation" as FieldPath<z.TypeOf<Schema>>}
                 render={SlotAdditionalInfo({
                   withoutHeading: true,
-                  label: <p>{additionalInfoLabel}</p>,
+                  label: <p>{additionalInformation.label}</p>,
                 })}
               />
             </SectionCard>
