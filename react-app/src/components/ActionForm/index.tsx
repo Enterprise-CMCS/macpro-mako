@@ -53,11 +53,6 @@ type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
       }>;
     }>;
     additionalInformation?: z.ZodTypeAny;
-    // | z.ZodOptional<z.ZodString>
-    // | z.ZodOptional<z.ZodDefault<z.ZodNullable<z.ZodString>>>
-    // | z.ZodDefault<z.ZodNullable<z.ZodString>>
-    // | z.ZodEffects<z.ZodTypeAny>
-    // | z.ZodNullable<z.ZodAny>;
   },
   "strip",
   z.ZodTypeAny
@@ -93,7 +88,6 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
         label: string;
       }
     | false;
-  // additionalInfo prop that defines the J
   documentPollerArgs: {
     property:
       | (keyof z.TypeOf<Schema> & string)
