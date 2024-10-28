@@ -31,7 +31,11 @@ export const WithdrawRaiForm = () => {
         body: `The RAI response for ${id} has been withdrawn. CMS may follow up if additional information is needed.`,
         variant: "success",
       }}
-      additionalInfoLabel="Explain your need for withdrawal."
+      additionalInformation={{
+        required: true,
+        title: "Additional Information",
+        label: "Explain your need for withdrawal.",
+      }}
       promptPreSubmission={{
         header: "Withdraw RAI response?",
         body: `The RAI response for ${id} will be withdrawn, and CMS will be notified.`,
