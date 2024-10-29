@@ -95,8 +95,8 @@ describe("Pagination", () => {
     );
 
     // on UI says page 3, but code is index at 0
-    const page2Button = screen.getByRole("button", { name: "3" });
-    fireEvent.click(page2Button);
+    const page3Button = screen.getByRole("button", { name: "3" });
+    fireEvent.click(page3Button);
     expect(onPageChangeMock).toHaveBeenCalledWith(2);
   });
 
@@ -112,8 +112,6 @@ describe("Pagination", () => {
       />,
     );
 
-    // const ellipseButton = screen.("button", { name: "..." });
-    // fireEvent.click(ellipseButton);
     const selectElement = screen.getByTestId("morePagesButton");
     fireEvent.change(selectElement, { target: { value: "6" } });
     expect(onPageChangeMock).toHaveBeenCalledWith(5);
