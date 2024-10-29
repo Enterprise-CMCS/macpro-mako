@@ -1,10 +1,10 @@
 import { ActionForm, PackageSection } from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { useParams } from "react-router-dom";
+import { SEATOOL_STATUS } from "shared-types";
 
 export const RespondToRaiMedicaid = () => {
   const { authority, id } = useParams();
-  console.log({ authority });
   return (
     <ActionForm
       schema={formSchemas["respond-to-rai-medicaid"]}
@@ -16,7 +16,7 @@ export const RespondToRaiMedicaid = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) => check.hasStatus(SEATOOL_STATUS.PENDING),
       }}
       breadcrumbText="Respond to Formal RAI"
       preSubmissionMessage="Once you submit this form, a confirmation email is sent to you and to CMS.
@@ -33,7 +33,6 @@ export const RespondToRaiMedicaid = () => {
 };
 export const RespondToRaiWaiver = () => {
   const { authority, id } = useParams();
-  console.log({ authority });
   return (
     <ActionForm
       schema={formSchemas["respond-to-rai-waiver"]}
@@ -45,7 +44,7 @@ export const RespondToRaiWaiver = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) => check.hasStatus(SEATOOL_STATUS.PENDING),
       }}
       breadcrumbText="Respond to Formal RAI"
       preSubmissionMessage="Once complete, you and CMS will receive an email confirmation."
@@ -70,7 +69,7 @@ export const RespondToRaiChip = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) => check.hasStatus(SEATOOL_STATUS.PENDING),
       }}
       breadcrumbText="Respond to Formal RAI"
       preSubmissionMessage="Once complete, you and CMS will receive an email confirmation."

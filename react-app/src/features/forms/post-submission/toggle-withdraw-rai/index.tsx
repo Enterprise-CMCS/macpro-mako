@@ -10,6 +10,7 @@ export const EnableWithdrawRaiForm = () => {
   return (
     <ActionForm
       schema={formSchemas["toggle-withdraw-rai"]}
+      additionalInformation={false}
       title="Enable Formal RAI Response Withdraw Details"
       fields={() => <PackageSection />}
       defaultValues={{ id, authority, raiWithdrawEnabled: true }}
@@ -37,6 +38,7 @@ export const DisableWithdrawRaiForm = () => {
   return (
     <ActionForm
       schema={formSchemas["toggle-withdraw-rai"]}
+      additionalInformation={false}
       title="Disable Formal RAI Response Withdraw Details"
       fields={() => <PackageSection />}
       defaultValues={{ id, authority, raiWithdrawEnabled: false }}

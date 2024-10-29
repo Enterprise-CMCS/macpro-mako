@@ -2,6 +2,7 @@ import { useGetItem } from "@/api";
 import { ActionForm, PackageSection } from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { useParams } from "react-router-dom";
+import { SEATOOL_STATUS } from "shared-types";
 
 export const WithdrawPackageActionWaiver = () => {
   const { authority, id } = useParams();
@@ -135,7 +136,7 @@ export const WithdrawPackageActionChip = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) => check.hasStatus(SEATOOL_STATUS.WITHDRAWN),
       }}
       breadcrumbText="Withdraw Package"
       additionalInformation={{
