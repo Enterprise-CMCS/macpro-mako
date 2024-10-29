@@ -149,7 +149,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const navigate = useNavigate();
   const { data: userObj } = useGetUser();
-  console.log("what is instructions?", attachments.instructions);
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority);
 

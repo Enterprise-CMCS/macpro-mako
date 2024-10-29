@@ -45,7 +45,6 @@ export const ActionFormAttachments = ({
   faqLink,
 }: ActionFormAttachmentsProps) => {
   const form = useFormContext();
-  console.log(instructions);
 
   return (
     <SectionCard title={title}>
