@@ -10,10 +10,10 @@ export const transform = () => {
         : null,
       cmsStatus,
       stateStatus,
+      raiReceivedDate: new Date(data.timestamp).toISOString(),
       seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
       locked: true,
     };
   });
 };
 export type Schema = ReturnType<typeof transform>;
-
