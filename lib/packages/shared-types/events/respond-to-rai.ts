@@ -15,4 +15,5 @@ export const raiResponseSchema = z.object({
   notificationMetadata: notificationMetadataSchema.nullish(),
   timestamp: z.number().optional(),
 });
+
 export type RaiResponse = z.infer<typeof raiResponseSchema>;

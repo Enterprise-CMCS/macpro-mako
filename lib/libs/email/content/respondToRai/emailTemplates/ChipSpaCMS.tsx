@@ -1,48 +1,44 @@
-import * as React from "react";
 import { emailTemplateValue } from "../data";
-import { CommonEmailVariables } from "shared-types";
-import { RaiResponse } from "shared-types";
-import { Container, Html } from "@react-email/components";
+import { CommonEmailVariables, Events } from "shared-types";
 import {
+  Attachments,
   LoginInstructions,
   PackageDetails,
   SpamWarning,
 } from "../../email-components";
+import { BaseEmailTemplate } from "../../email-templates";
 
 export const ChipSpaCMSEmail = (props: {
-  variables: RaiResponse & CommonEmailVariables;
+  variables: Events["NewChipSubmission"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
+  const previewText = `CHIP SPA ${variables.id} RAI Response Submitted`;
+  const heading =
+    "The OneMAC Submission Portal received a CHIP SPA RAI Response Submission";
   return (
-    <Html lang="en" dir="ltr">
-      <Container>
-        <h3>
-          The OneMAC Submission Portal received a CHIP SPA RAI Response
-          Submission:
-        </h3>
-        <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
-        <PackageDetails
-          details={{
-            "State or territory": variables.territory,
-            Name: variables.submitterName,
-            "Email Address": variables.submitterEmail,
-            "CHIP SPA Package ID": variables.id,
-            Summary: variables.additionalInformation,
-          }}
-          attachments={variables.attachments}
-        />
-        <SpamWarning />
-      </Container>
-    </Html>
+    <BaseEmailTemplate
+      previewText={previewText}
+      heading={heading}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<SpamWarning />}
+    >
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: variables.submitterName,
+          "Email Address": variables.submitterEmail,
+          "CHIP SPA Package ID": variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <Attachments attachments={variables.attachments as any} />
+    </BaseEmailTemplate>
   );
 };
 
 const ChipSpaCMSEmailPreview = () => {
-  return (
-    <ChipSpaCMSEmail
-      variables={emailTemplateValue as RaiResponse & CommonEmailVariables}
-    />
-  );
+  return <ChipSpaCMSEmail variables={emailTemplateValue as any} />;
 };
 
 export default ChipSpaCMSEmailPreview;

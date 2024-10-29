@@ -1,38 +1,44 @@
-import * as React from "react";
 import { emailTemplateValue } from "../data";
 import { CommonEmailVariables } from "shared-types";
 import { RaiWithdraw } from "shared-types";
-import { Container, Html } from "@react-email/components";
 import {
   WithdrawRAI,
   PackageDetails,
   ContactStateLead,
-  MailboxWaiver,
+  MailboxNotice,
+  Attachments,
 } from "../../email-components";
 import { relatedEvent } from "./AppKCMS";
+import { BaseEmailTemplate } from "../../email-templates";
 
 export const Waiver1915bStateEmail = (props: {
   variables: RaiWithdraw & CommonEmailVariables;
   relatedEvent: any;
 }) => {
   const { variables, relatedEvent } = { ...props };
+  const previewText = `Waiver ${variables.id} Withdrawn`;
+  const heading =
+    "This response confirms you have withdrawn a Waiver from CMS for review";
   return (
-    <Html lang="en" dir="ltr">
-      <Container>
-        <WithdrawRAI {...variables} />
-        <PackageDetails
-          details={{
-            "State or territory": variables.territory,
-            Name: relatedEvent.submitterName,
-            "Email Address": relatedEvent.submitterEmail,
-            "Waiver Number": variables.id,
-            Summary: variables.additionalInformation,
-          }}
-        />
-        <MailboxWaiver />
-        <ContactStateLead />
-      </Container>
-    </Html>
+    <BaseEmailTemplate
+      previewText={previewText}
+      heading={heading}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<ContactStateLead />}
+    >
+      <WithdrawRAI {...variables} />
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: relatedEvent.submitterName,
+          "Email Address": relatedEvent.submitterEmail,
+          "Waiver Number": variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <Attachments attachments={variables.attachments as any} />
+      <MailboxNotice type="Waiver" />
+    </BaseEmailTemplate>
   );
 };
 
@@ -40,7 +46,7 @@ const Waiver1915bStateEmailPreview = () => {
   return (
     <Waiver1915bStateEmail
       relatedEvent={relatedEvent}
-      variables={emailTemplateValue as RaiWithdraw & CommonEmailVariables}
+      variables={emailTemplateValue as any}
     />
   );
 };

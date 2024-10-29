@@ -1,66 +1,50 @@
 import { emailTemplateValue } from "../data";
 import { Events } from "shared-types";
 import { CommonEmailVariables } from "shared-types";
-import {
-  Html,
-  Container,
-  Heading,
-  Section,
-  Head,
-  Preview,
-  Text,
-  Body,
-} from "@react-email/components";
+import { Text } from "@react-email/components";
 import {
   PackageDetails,
   ContactStateLead,
-  EmailNav,
-  styles,
   DetailsHeading,
+  MailboxNotice,
+  Attachments,
 } from "../../email-components";
+import { BaseEmailTemplate } from "../../email-templates";
+import { styles } from "../../email-styles";
 
 export const ChipSpaStateEmail = (props: {
   variables: Events["NewChipSubmission"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   const previewText = `CHIP SPA ${variables.id} Submitted`;
+  const heading =
+    "This response confirms the submission of your CHIP State Plan Amendment to CMS for review";
 
   return (
-    <Html>
-      <Head />
-      <Preview>{previewText}</Preview>
-      <Body style={styles.main}>
-        <Container style={styles.container}>
-          <EmailNav appEndpointUrl={variables.applicationEndpointUrl} />
-          <Section>
-            <div style={styles.primarySection}>
-              <Heading style={styles.h1}>
-                This is confirmation that you submitted a CHIP State Plan
-                Amendment to CMS for review:
-              </Heading>
-              <DetailsHeading />
-              <PackageDetails
-                details={{
-                  "State or territory": variables.territory,
-                  Name: variables.submitterName,
-                  Email: variables.submitterEmail,
-                  "CHIP SPA Package ID": variables.id,
-                  Summary: variables.additionalInformation,
-                }}
-                attachments={variables.attachments}
-              />
-
-              <Text style={{ ...styles.text, marginTop: "16px" }}>
-                This response confirms the receipt of your CHIP State Plan
-                Amendment (CHIP SPA). You can expect a formal response to your
-                submittal from CMS at a later date.
-              </Text>
-            </div>
-          </Section>
-          <ContactStateLead isChip />
-        </Container>
-      </Body>
-    </Html>
+    <BaseEmailTemplate
+      previewText={previewText}
+      heading={heading}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<ContactStateLead isChip />}
+    >
+      <DetailsHeading />
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: variables.submitterName,
+          Email: variables.submitterEmail,
+          "CHIP SPA Package ID": variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <Attachments attachments={variables.attachments as any} />
+      <Text style={{ ...styles.text.base, marginTop: "16px" }}>
+        This response confirms the receipt of your CHIP State Plan Amendment
+        (CHIP SPA). You can expect a formal response to your submittal from CMS
+        at a later date.
+      </Text>
+      <MailboxNotice type="SPA" />
+    </BaseEmailTemplate>
   );
 };
 

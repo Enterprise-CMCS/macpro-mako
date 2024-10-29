@@ -1,35 +1,39 @@
 import { emailTemplateValue } from "../data";
 import { CommonEmailVariables, Events } from "shared-types";
-import { Html, Container } from "@react-email/components";
-import { PackageDetails, SpamWarning } from "../../email-components";
+import {
+  Attachments,
+  PackageDetails,
+  SpamWarning,
+} from "../../email-components";
+import { BaseEmailTemplate } from "../../email-templates";
 
 export const Waiver1915bCMSEmail = (props: {
   variables:
-    | Events["CapitatedInitial"]
+    | (Events["CapitatedInitial"] & CommonEmailVariables)
     | (Events["ContractingInitial"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
+  const previewText = `Withdrawal of ${variables.authority} ${variables.id}`;
+  const heading =
+    "The OneMAC Submission Portal received a request to withdraw the package below. The package will no longer be considered for CMS review:";
   return (
-    <Html lang="en" dir="ltr">
-      <Container>
-        <h3>
-          The OneMAC Submission Portal received a request to withdraw the
-          package below. The package will no longer be considered for CMS
-          review:
-        </h3>
-        <PackageDetails
-          details={{
-            "State or territory": variables.territory,
-            Name: variables.submitterName,
-            Email: variables.submitterEmail,
-            [`${variables.authority} Package ID`]: variables.id,
-            Summary: variables.additionalInformation,
-          }}
-          attachments={variables.attachments}
-        />
-        <SpamWarning />
-      </Container>
-    </Html>
+    <BaseEmailTemplate
+      previewText={previewText}
+      heading={heading}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<SpamWarning />}
+    >
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: variables.submitterName,
+          Email: variables.submitterEmail,
+          [`${variables.authority} Package ID`]: variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <Attachments attachments={variables.attachments as any} />
+    </BaseEmailTemplate>
   );
 };
 

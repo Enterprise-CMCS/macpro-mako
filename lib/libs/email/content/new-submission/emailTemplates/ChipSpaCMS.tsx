@@ -1,58 +1,41 @@
 import { emailTemplateValue } from "../data";
-import { Events } from "shared-types";
-import { CommonEmailVariables } from "shared-types";
-import {
-  Html,
-  Container,
-  Head,
-  Body,
-  Heading,
-  Preview,
-} from "@react-email/components";
+import { CommonEmailVariables, Events } from "shared-types";
 import {
   LoginInstructions,
   PackageDetails,
   SpamWarning,
-  EmailNav,
-  styles,
   DetailsHeading,
+  Attachments,
 } from "../../email-components";
+import { BaseEmailTemplate } from "../../email-templates";
 
 export const ChipSpaCMSEmail = (props: {
   variables: Events["NewChipSubmission"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   const previewText = `CHIP SPA ${variables.id} Submitted`;
+  const heading =
+    "The OneMAC Submission Portal received a CHIP State Plan Amendment";
   return (
-    <Html>
-      <Head />
-      <Preview>{previewText}</Preview>
-      <Body style={styles.main}>
-        <Container style={styles.container}>
-          <EmailNav appEndpointUrl={variables.applicationEndpointUrl} />
-          <div style={styles.primarySection}>
-            <Heading style={styles.h1}>
-              The OneMAC Submission Portal received a CHIP State Plan Amendment:
-            </Heading>
-            <DetailsHeading />
-            <LoginInstructions
-              appEndpointURL={variables.applicationEndpointUrl}
-            />
-            <PackageDetails
-              details={{
-                "State or territory": variables.territory,
-                Name: variables.submitterName,
-                Email: variables.submitterEmail,
-                "CHIP SPA Package ID": variables.id,
-                Summary: variables.additionalInformation,
-              }}
-              attachments={variables.attachments}
-            />
-          </div>
-          <SpamWarning />
-        </Container>
-      </Body>
-    </Html>
+    <BaseEmailTemplate
+      previewText={previewText}
+      heading={heading}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<SpamWarning />}
+    >
+      <DetailsHeading />
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: variables.submitterName,
+          Email: variables.submitterEmail,
+          "CHIP SPA Package ID": variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <Attachments attachments={variables.attachments as any} />
+    </BaseEmailTemplate>
   );
 };
 

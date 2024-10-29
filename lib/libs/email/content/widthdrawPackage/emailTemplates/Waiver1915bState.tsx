@@ -1,7 +1,7 @@
 import { emailTemplateValue } from "../data";
 import { CommonEmailVariables, Events } from "shared-types";
-import { Html, Container } from "@react-email/components";
 import { ContactStateLead } from "../../email-components";
+import { BaseEmailTemplate } from "../../email-templates";
 
 export const Waiver1915bStateEmail = (props: {
   variables:
@@ -9,17 +9,15 @@ export const Waiver1915bStateEmail = (props: {
     | (Events["ContractingInitial"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
+  const previewText = `Withdrawal of ${variables.authority} ${variables.id}`;
+  const heading = `This email is to confirm $ {variables.authority} Waiver ${variables.id} was withdrawn by ${variables.submitterName}. The review of ${variables.authority} Waiver ${variables.id} has concluded`;
   return (
-    <Html lang="en" dir="ltr">
-      <Container>
-        <h3>
-          This email is to confirm {variables.authority} Waiver {variables.id}{" "}
-          was withdrawn by {variables.submitterName}. The review of
-          {variables.authority} Waiver {variables.id} has concluded.
-        </h3>
-        <ContactStateLead />
-      </Container>
-    </Html>
+    <BaseEmailTemplate
+      previewText={previewText}
+      heading={heading}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<ContactStateLead />}
+    ></BaseEmailTemplate>
   );
 };
 

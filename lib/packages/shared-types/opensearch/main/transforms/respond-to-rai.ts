@@ -1,4 +1,4 @@
-import { raiResponseSchema } from "../../..";
+import { raiResponseSchema } from "shared-types";
 
 export const transform = (id: string) => {
   return raiResponseSchema.transform((data) => ({

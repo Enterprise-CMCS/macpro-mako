@@ -2,7 +2,7 @@ export const key = "C0-24-8110";
 export const emailTemplateValue = {
   id: key,
   territory: "CO",
-  applicationEndpointUrl: "https://d6ebj6bya6i3k.cloudfront.net",
+  applicationEndpointUrl: "https://mako-dev.cms.gov/",
   timestamp: 1121234556,
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",
@@ -25,12 +25,39 @@ export const emailTemplateValue = {
     },
     tribalEngagement: {
       label: "Document Demonstrating Good-Faith Tribal Engagement",
+      files: [
+        {
+          filename: "test.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          uploadDate: 1728493782785,
+        },
+      ],
     },
     existingStatePlanPages: {
       label: "Existing State Plan Page(s)",
+      files: [
+        {
+          filename: "test.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          uploadDate: 1728493782785,
+        },
+      ],
     },
     publicNotice: {
       label: "Public Notice",
+      files: [
+        {
+          filename: "test.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          uploadDate: 1728493782785,
+        },
+      ],
     },
     spaPages: {
       files: [
@@ -122,15 +149,51 @@ export const emailTemplateValue = {
     },
     budgetDocuments: {
       label: "Document Demonstrating Good-Faith Tribal Engagement",
+      files: [
+        {
+          filename: "test.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          uploadDate: 1728493782785,
+        },
+      ],
     },
     tribalConsultation: {
       label: "Tribal Consultation",
+      files: [
+        {
+          filename: "test.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          uploadDate: 1728493782785,
+        },
+      ],
     },
     other: {
       label: "Other",
+      files: [
+        {
+          filename: "test.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          uploadDate: 1728493782785,
+        },
+      ],
     },
     sfq: {
       label: "Standard Funding Questions (SFQs)",
+      files: [
+        {
+          filename: "test.pdf",
+          title: "test",
+          bucket: "mako-outbox-attachments-635052997545",
+          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          uploadDate: 1728493782785,
+        },
+      ],
     },
   },
   proposedEffectiveDate: 1725062400000,

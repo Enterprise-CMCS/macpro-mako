@@ -1,50 +1,49 @@
 import { formatNinetyDaysDate } from "../../..";
-import { Html, Container } from "@react-email/components";
 import { CommonEmailVariables } from "shared-types";
 import {
   PackageDetails,
-  MailboxWaiver,
+  MailboxNotice,
   ContactStateLead,
+  Attachments,
 } from "../../email-components";
+import { emailTemplateValue } from "../../new-submission/data";
+import { BaseEmailTemplate } from "../../email-templates";
 
 export const TempExtStateEmail = (props: {
   variables: any & CommonEmailVariables;
 }) => {
   const variables = props.variables;
+  const previewText = `Temporary Extension ${variables.id} Submitted`;
+  const heading =
+    "This response confirms you have submitted a Temporary Extension to CMS for review";
   return (
-    <Html lang="en" dir="ltr">
-      <Container>
-        <h3>
-          This response confirms you have submitted a {variables.authority}{" "}
-          Waiver Extension to CMS for review:
-        </h3>
-        <PackageDetails
-          details={{
-            "State or territory": variables.territory,
-            Name: variables.submitterName,
-            "Email Address": variables.submitterEmail,
-            "Temporary Extension Request Number": variables.id,
-            "Temporary Extension Type": variables.authority,
-            "90th Day Deadline": formatNinetyDaysDate(
-              Number(variables.notificationMetadata?.submissionDate),
-            ),
-            summary: variables.additionalInformation,
-          }}
-          attachments={variables.attachments}
-        />
-        <MailboxWaiver />
-        <ContactStateLead />
-      </Container>
-    </Html>
+    <BaseEmailTemplate
+      previewText={previewText}
+      heading={heading}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<ContactStateLead />}
+    >
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: variables.submitterName,
+          "Email Address": variables.submitterEmail,
+          "Temporary Extension Request Number": variables.id,
+          "Temporary Extension Type": variables.authority,
+          "90th Day Deadline": formatNinetyDaysDate(
+            Number(variables.notificationMetadata?.submissionDate),
+          ),
+          summary: variables.additionalInformation,
+        }}
+      />
+      <Attachments attachments={variables.attachments as any} />
+      <MailboxNotice type="Waiver" />
+    </BaseEmailTemplate>
   );
 };
 
-// const TempExtCMS = () => {
-//   return (
-//     <TempExtStateEmail
-//       variables={emailTemplateValue as any & CommonEmailVariables}
-//     />
-//   );
-// };
+const TempExtCMS = () => {
+  return <TempExtStateEmail variables={emailTemplateValue as any} />;
+};
 
-// export default TempExtCMS;
+export default TempExtCMS;

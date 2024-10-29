@@ -1,80 +1,59 @@
-import { emailTemplateValue } from "../data";
 import { Events, CommonEmailVariables } from "shared-types";
-import { DateTime } from "luxon";
-import {
-  Html,
-  Container,
-  Heading,
-  Body,
-  Head,
-  Preview,
-} from "@react-email/components";
+
 import {
   LoginInstructions,
   PackageDetails,
   SpamWarning,
-  styles,
-  EmailNav,
   DetailsHeading,
+  Attachments,
 } from "../../email-components";
+import { BaseEmailTemplate } from "../../email-templates";
+import { emailTemplateValue } from "../data";
+import { DateTime } from "luxon";
+
+type AppKEmailProps = Events["NewAppKSubmission"] & CommonEmailVariables;
 
 // 1915c - app K
-export const AppKCMSEmail = (props: {
-  variables: Events["NewAppKSubmission"] & CommonEmailVariables;
-}) => {
-  const variables = props.variables;
-  const previewText = `Appendix K Amendment Submitted `;
+export const AppKCMSEmail: React.FC<AppKEmailProps> = (variables) => {
   return (
-    <Html>
-      <Head />
-      <Preview>{previewText}</Preview>
-      <Body style={styles.main}>
-        <Container style={styles.container}>
-          <EmailNav appEndpointUrl={variables.applicationEndpointUrl} />
-          <div style={styles.primarySection}>
-            <Heading style={styles.h1}>
-              The OneMAC Submission Portal received a 1915(c) Appendix K
-              Amendment Submission:
-            </Heading>
-            <DetailsHeading />
-            <LoginInstructions
-              appEndpointURL={variables.applicationEndpointUrl}
-            />
-            <PackageDetails
-              details={{
-                "State or territory": variables.territory,
-                Name: variables.submitterName,
-                "Email Address": variables.submitterEmail,
-                "Amendment Title": variables.title ?? null,
-                "Waiver Amendment Number": variables.id,
-                "Waiver Authority": variables.seaActionType,
-                "Proposed Effective Date": DateTime.fromMillis(
-                  Number(variables.proposedEffectiveDate),
-                ).toFormat("DDDD"),
-                Summary: variables.additionalInformation,
-              }}
-              attachments={variables.attachments}
-            />
-          </div>
-          <SpamWarning />
-        </Container>
-      </Body>
-    </Html>
+    <BaseEmailTemplate
+      previewText="Appendix K Amendment Submitted"
+      heading="The OneMAC Submission Portal received a 1915(c) Appendix K Amendment Submission:"
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<SpamWarning />}
+    >
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: variables.submitterName,
+          "Email Address": variables.submitterEmail,
+          "Amendment Title": variables.title ?? null,
+          "Waiver Amendment Number": variables.id,
+          "Waiver Authority": variables.seaActionType,
+          "Proposed Effective Date": DateTime.fromMillis(
+            Number(variables.proposedEffectiveDate),
+          ).toFormat("DDDD"),
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <Attachments attachments={variables.attachments as any} />
+      <DetailsHeading />
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+    </BaseEmailTemplate>
   );
 };
 
-// To preview with on 'email-dev'
 const AppKCMSEmailPreview = () => {
   return (
     <AppKCMSEmail
-      variables={{
+      {...{
         ...emailTemplateValue,
-        seaActionType: "Amend",
-        title: "Title",
-        waiverIds: ["123"],
-        state: "State",
+        waiverIds: ["CO-1234.R21.01", "CO-12345.R03.09", "CO-4567.R15.42"],
+        actionType: "New",
+        state: "CO",
+        seaActionType: "New",
+        title: "A Perfect Appendix K Amendment Title",
         origin: "mako",
-        actionType: "Amend",
       }}
     />
   );

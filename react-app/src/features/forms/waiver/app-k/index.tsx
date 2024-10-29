@@ -10,7 +10,8 @@ import {
   RequiredIndicator,
   Textarea,
 } from "@/components";
-import { Authority, appkSchema } from "shared-types";
+import { schema as appkSchema } from "shared-types/events/app-k";
+import { Authority } from "shared-types";
 import { WaiverIdField } from "./WaiverIdField";
 import { StateField } from "./StateField";
 
