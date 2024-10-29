@@ -7,7 +7,6 @@ import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
 import { opensearch } from "shared-types";
 import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
 import * as main from "shared-types/opensearch/main";
-import { decodeBase64WithUtf8 } from "shared-utils";
 
 let client: Client;
 

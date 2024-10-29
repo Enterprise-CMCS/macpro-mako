@@ -31,28 +31,29 @@ const AttachmentInstructions = ({ fileValidation }) => {
 
 type ActionFormAttachmentsProps = {
   attachmentsFromSchema: [string, z.ZodObject<z.ZodRawShape, "strip">][];
-  specialInstructions?: string;
-  outerInstructions?: string;
+  title?: string;
+  instructions?: React.ReactNode;
+  callout?: string;
   faqLink: string;
 };
 
 export const ActionFormAttachments = ({
   attachmentsFromSchema,
-  specialInstructions = DEFAULT_ATTACHMENTS_INSTRUCTIONS,
-  outerInstructions,
+  title = "Attachments",
+  instructions = DEFAULT_ATTACHMENTS_INSTRUCTIONS,
+  callout,
   faqLink,
 }: ActionFormAttachmentsProps) => {
   const form = useFormContext();
 
   return (
-    <SectionCard title="Attachments">
+    <SectionCard title={title}>
       <div className="text-gray-700 font-light">
-        {outerInstructions && (
-          <p className="font-medium mb-8">{outerInstructions}</p>
-        )}
+        {callout && <p className="font-medium mb-8">{callout}</p>}
+
         <p data-testid="attachments-instructions">
-          {specialInstructions} Read the description for each of the attachment
-          types on the{" "}
+          {instructions} Read the description for each of the attachment types
+          on the{" "}
           <Link
             to={faqLink}
             target={FAQ_TAB}

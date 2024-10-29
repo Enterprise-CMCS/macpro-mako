@@ -143,7 +143,7 @@ describe("ActionForm", () => {
     expect(queryByDisplayValue("default value for id")).toBeInTheDocument();
   });
 
-  test("renders `attachments.specialInstructions`", () => {
+  test("renders `attachments.instructions`", () => {
     const { queryByText } = renderForm(
       <ActionForm
         title="Action Form Title"
@@ -162,7 +162,7 @@ describe("ActionForm", () => {
         }}
         attachments={{
           faqLink: "",
-          specialInstructions: "hello world special instructions.",
+          instructions: "hello world special instructions.",
         }}
         breadcrumbText="Example Breadcrumb"
       />,

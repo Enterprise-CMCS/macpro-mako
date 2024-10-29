@@ -28,7 +28,7 @@ export const WithdrawPackageActionWaiver = () => {
       }}
       attachments={{
         faqLink: "/faq",
-        outerInstructions:
+        callout:
           "Upload your supporting documentation for withdrawal or explain your need for withdrawal in the Additional Information section.",
       }}
       documentPollerArgs={{
@@ -43,7 +43,12 @@ export const WithdrawPackageActionWaiver = () => {
       breadcrumbText="Withdraw Package"
       formDescription="Complete this form to withdraw a package. Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email."
       preSubmissionMessage="Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email."
-      additionalInfoLabel="Explain your need for withdrawal, or upload supporting documentation."
+      additionalInformation={{
+        required: false,
+        title: "Additional Information",
+        label:
+          "Explain your need for withdrawal, or upload supporting documentation.",
+      }}
       promptPreSubmission={{
         acceptButtonText: "Yes, withdraw package",
         header: "Withdraw package?",
@@ -76,7 +81,7 @@ export const WithdrawPackageAction = () => {
       }}
       attachments={{
         faqLink: "/faq",
-        outerInstructions:
+        callout:
           "Upload your supporting documentation for withdrawal or explain your need for withdrawal in the Additional Information section.",
       }}
       documentPollerArgs={{
@@ -91,7 +96,12 @@ export const WithdrawPackageAction = () => {
       breadcrumbText="Withdraw Package"
       formDescription="Complete this form to withdraw a package. Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email."
       preSubmissionMessage="Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email."
-      additionalInfoLabel="Explain your need for withdrawal, or upload supporting documentation."
+      additionalInformation={{
+        required: false,
+        title: "Additional Information",
+        label:
+          "Explain your need for withdrawal, or upload supporting documentation.",
+      }}
       promptPreSubmission={{
         acceptButtonText: "Yes, withdraw package",
         header: "Withdraw package?",
@@ -115,7 +125,7 @@ export const WithdrawPackageActionChip = () => {
       }}
       attachments={{
         faqLink: "/faq",
-        outerInstructions:
+        callout:
           "Official withdrawal letters are required and must be on state letterhead signed by the State Medicaid Director or CHIP Director.",
       }}
       bannerPostSubmission={{
@@ -128,7 +138,11 @@ export const WithdrawPackageActionChip = () => {
         documentChecker: (check) => check.recordExists,
       }}
       breadcrumbText="Withdraw Package"
-      additionalInfoLabel="Explain your need for withdrawal."
+      additionalInformation={{
+        required: false,
+        title: "Additional Information",
+        label: "Explain your need for withdrawal.",
+      }}
       formDescription="Complete this form to withdraw a package. Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email."
       promptPreSubmission={{
         acceptButtonText: "Yes, withdraw package",
