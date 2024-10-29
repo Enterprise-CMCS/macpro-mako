@@ -50,14 +50,7 @@ export const baseSchema = z.object({
   event: z.literal("withdraw-package").default("withdraw-package"),
   id: z.string(),
   authority: z.string(),
-  additionalInformation: z
-    .string()
-    .trim()
-    .max(4000)
-    .optional()
-    .refine((value) => value?.length === 0 || value?.length > 0, {
-      message: "Additional Information can not be only whitespace.",
-    }),
+  additionalInformation: z.string().trim().max(4000).optional(),
   attachments: attachmentsDefault.or(attachmentsChip),
 });
 
