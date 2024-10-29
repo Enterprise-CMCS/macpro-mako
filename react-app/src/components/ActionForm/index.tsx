@@ -76,9 +76,10 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   promptPreSubmission?: Omit<UserPrompt, "onAccept">;
   promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
   attachments?: {
+    title?: string;
+    callout?: string;
+    instructions?: React.ReactNode;
     faqLink: string;
-    specialInstructions?: string;
-    outerInstructions?: string;
   };
   additionalInformation?:
     | {
@@ -148,6 +149,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const navigate = useNavigate();
   const { data: userObj } = useGetUser();
+  console.log("what is instructions?", attachments.instructions);
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority);
 

@@ -28,7 +28,7 @@ export const WithdrawPackageActionWaiver = () => {
       }}
       attachments={{
         faqLink: "/faq",
-        outerInstructions:
+        callout:
           "Upload your supporting documentation for withdrawal or explain your need for withdrawal in the Additional Information section.",
       }}
       documentPollerArgs={{
@@ -81,7 +81,7 @@ export const WithdrawPackageAction = () => {
       }}
       attachments={{
         faqLink: "/faq",
-        outerInstructions:
+        callout:
           "Upload your supporting documentation for withdrawal or explain your need for withdrawal in the Additional Information section.",
       }}
       documentPollerArgs={{
@@ -125,7 +125,7 @@ export const WithdrawPackageActionChip = () => {
       }}
       attachments={{
         faqLink: "/faq",
-        outerInstructions:
+        callout:
           "Official withdrawal letters are required and must be on state letterhead signed by the State Medicaid Director or CHIP Director.",
       }}
       bannerPostSubmission={{
