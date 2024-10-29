@@ -24,27 +24,27 @@ vi.mock("aws-amplify", () => ({
   },
 }));
 
-beforeEach(() => {
-  vi.useFakeTimers({ shouldAdvanceTime: true });
-  vi.mock("@/hooks", () => ({
-    useIdle: vi.fn().mockReturnValue(true),
-    useCountdown: vi.fn().mockReturnValue([
-      200,
-      {
-        startCountdown: vi.fn(),
-        stopCountdown: vi.fn(),
-        resetCountdown: vi.fn(),
-      },
-    ]),
-  }));
-});
-
-afterEach(() => {
-  vi.useRealTimers();
-  vi.clearAllMocks();
-});
-
 describe("Timeout Modal", () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    vi.mock("@/hooks", () => ({
+      useIdle: vi.fn().mockReturnValue(true),
+      useCountdown: vi.fn().mockReturnValue([
+        200,
+        {
+          startCountdown: vi.fn(),
+          stopCountdown: vi.fn(),
+          resetCountdown: vi.fn(),
+        },
+      ]),
+    }));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.clearAllMocks();
+  });
+
   it("closes after user extends session", async () => {
     render(<ParentComponent />);
 
