@@ -15,7 +15,7 @@ const arRespondToRai: ActionRule = {
     // safety; prevent bad status from causing overwrite
     (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
     isStateUser(user) &&
-    !checker.isLocked
+    !checker.isLocked,
 };
 
 const arTempExtension: ActionRule = {
@@ -67,8 +67,7 @@ const arWithdrawPackage: ActionRule = {
   check: (checker, user) =>
     !checker.isTempExtension &&
     !checker.hasStatus(finalDispositionStatuses) &&
-    isStateUser(user) &&
-    !checker.isLocked,
+    isStateUser(user),
 };
 const arUpdateId: ActionRule = {
   action: Action.UPDATE_ID,
