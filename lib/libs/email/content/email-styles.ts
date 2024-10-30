@@ -45,7 +45,7 @@ export const styles = {
     footer: {
       color: "#fff",
       fontSize: "14px",
-      margin: "o 0",
+      margin: "0 0",
     },
     list: {
       marginLeft: "-20px",

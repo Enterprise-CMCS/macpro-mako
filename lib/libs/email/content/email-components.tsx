@@ -245,9 +245,10 @@ export const EmailFooter: React.FC<{ children: React.ReactNode }> = ({
 const BasicFooter: React.FC = () => (
   <EmailFooter>
     <Text style={styles.text.footer}>
-      U.S. Centers for Medicare & Medicaid Services <br />©{" "}
-      {new Date().getFullYear()} | 7500 Security Boulevard, Baltimore, MD 21244
-      | cms.gov
+      {`U.S. Centers for Medicare & Medicaid Services`}
+    </Text>
+    <Text style={styles.text.footer}>
+      {`© ${new Date().getFullYear()} | 7500 Security Boulevard, Baltimore, MD 21244 | cms.gov`}
     </Text>
   </EmailFooter>
 );
