@@ -18,7 +18,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
 import { SimplePageContainer, UserPrompt, Banner } from "@/components";
 import { isFaqPage, isProd } from "@/utils";
-import { useEffect } from "react";
+import { useScrollToTop } from "@/hooks";
 import { useLocation } from "react-router-dom";
 
 const useGetLinks = () => {
@@ -117,24 +117,15 @@ const UserDropdownMenu = () => {
   );
 };
 
-const ScrollToTop = () => {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  return null;
-};
-
 export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"];
+  const { pathname } = useLocation();
+  useScrollToTop(pathname);
 
   return (
     <div className="min-h-full flex flex-col">
-      <ScrollToTop />
       <UserPrompt />
       <UsaBanner
         isUserMissingRole={user?.user && customUserRoles === undefined}
