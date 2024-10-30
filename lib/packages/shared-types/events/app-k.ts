@@ -6,6 +6,10 @@ import {
 
 export const appkSchema = z.object({
   id: z.string(),
+  state: z.string().transform((_, ctx: any) => {
+    const id = ctx.input.id as string;
+    return id.slice(0, 2).toUpperCase();
+  }),
   actionType: z.string().default("New"),
   waiverIds: z.array(z.string()).min(1),
   proposedEffectiveDate: z.date(),

@@ -56,6 +56,7 @@ const AppKCMSEmailPreview = () => {
         state: "CO",
         seaActionType: "New",
         title: "A Perfect Appendix K Amendment Title",
+        proposedEffectiveDate: new Date(),
         origin: "mako",
         attachments: {
           other: {

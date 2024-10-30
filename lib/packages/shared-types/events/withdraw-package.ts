@@ -5,6 +5,10 @@ import { attachmentSchema } from "../attachments";
 // work.
 export const withdrawPackageSchema = z.object({
   id: z.string(),
+  state: z.string().transform((_, ctx: any) => {
+    const id = ctx.input.id as string;
+    return id.slice(0, 2).toUpperCase();
+  }),
   authority: z.string(),
   origin: z.string(),
   additionalInformation: z
