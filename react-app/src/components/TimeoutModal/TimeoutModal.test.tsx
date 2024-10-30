@@ -13,9 +13,9 @@ const ParentComponent = () => (
 );
 
 vi.mock("@/api", () => ({
-  useGetUser: vi
-    .fn()
-    .mockReturnValue({ data: { user: { name: "reviewer" }, isCms: true } }),
+  useGetUser: vi.fn().mockReturnValue({
+    data: { user: { "custom:cms-roles": "onemac-micro-super" }, isCms: true },
+  }),
 }));
 
 vi.mock("aws-amplify", () => ({
