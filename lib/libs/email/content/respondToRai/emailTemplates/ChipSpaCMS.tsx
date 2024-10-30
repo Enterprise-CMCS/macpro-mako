@@ -4,7 +4,7 @@ import {
   Attachments,
   LoginInstructions,
   PackageDetails,
-  SpamWarning,
+  BasicFooter,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
@@ -20,7 +20,7 @@ export const ChipSpaCMSEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<SpamWarning />}
+      footerContent={<BasicFooter />}
     >
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
       <PackageDetails

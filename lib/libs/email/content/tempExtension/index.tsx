@@ -1,13 +1,13 @@
-import { EmailAddresses } from "shared-types";
+import { EmailAddresses, Events } from "shared-types";
 import { CommonEmailVariables } from "shared-types";
 import { UserTypeOnlyTemplate } from "../..";
 import { render } from "@react-email/render";
-import * as React from "react";
 import { TempExtCMSEmail, TempExtStateEmail } from "./emailTemplates";
 
 export const tempExtention: UserTypeOnlyTemplate = {
   cms: async (
-    variables: any & CommonEmailVariables & { emails: EmailAddresses },
+    variables: Events["TempExtension"] &
+      CommonEmailVariables & { emails: EmailAddresses },
   ) => {
     return {
       to: variables.emails.osgEmail,
@@ -18,7 +18,10 @@ export const tempExtention: UserTypeOnlyTemplate = {
       }),
     };
   },
-  state: async (variables: any & CommonEmailVariables) => {
+  state: async (
+    variables: Events["TempExtension"] &
+      CommonEmailVariables & { emails: EmailAddresses },
+  ) => {
     return {
       to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
       subject: `Your Request for the ${variables.authority} Waiver Extension ${variables.id} has been submitted to CMS`,

@@ -1,6 +1,6 @@
 import { emailTemplateValue } from "../data";
-import { formatNinetyDaysDate } from "../../..";
-import { CommonEmailVariables, Events } from "shared-types";
+import { formatNinetyDaysDate } from "shared-utils";
+import { CommonEmailVariables, RaiResponse } from "shared-types";
 import { Text } from "@react-email/components";
 import {
   PackageDetails,
@@ -11,7 +11,7 @@ import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
 export const MedSpaStateEmail = (props: {
-  variables: Events["RespondToRai"] & CommonEmailVariables;
+  variables: RaiResponse & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   const previewText = `Medicaid SPA ${variables.id} RAI Response Submitted`;

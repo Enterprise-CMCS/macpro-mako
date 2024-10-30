@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { Text } from "@react-email/components";
 import { CommonEmailVariables, Events } from "shared-types";
-import { formatNinetyDaysDate } from "../../..";
+import { formatNinetyDaysDate } from "shared-utils";
 import {
   PackageDetails,
   ContactStateLead,
@@ -19,7 +19,7 @@ export const AppKStateEmail = (props: {
   const variables = props.variables;
   const previewText = `Appendix K Amendment Submitted`;
   const heading =
-    "This response confirms the submission of your 1915(c) Waiver to CMS for review";
+    "This response confirms the submission of your 1915(c) Waiver to CMS for review:";
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -44,10 +44,10 @@ export const AppKStateEmail = (props: {
       />
       <Attachments attachments={variables.attachments as any} />
       <Text style={styles.text.base}>
-        This response confirms the receipt of your Waiver request or your
+        {`This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before ${formatNinetyDaysDate(variables.timestamp)}.
+        before ${formatNinetyDaysDate(variables.timestamp)}.`}
       </Text>
       <MailboxNotice type="Waiver" />
     </BaseEmailTemplate>
@@ -60,6 +60,7 @@ const AppKStateEmailPreview = () => {
     <AppKStateEmail
       variables={{
         ...emailTemplateValue,
+        id: "CO-1234.R21.00",
         origin: "mako",
         state: "CO",
         waiverIds: ["1234-56768", "1234-56769"],

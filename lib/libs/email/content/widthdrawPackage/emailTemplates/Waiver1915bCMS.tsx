@@ -3,7 +3,7 @@ import { CommonEmailVariables, Events } from "shared-types";
 import {
   Attachments,
   PackageDetails,
-  SpamWarning,
+  BasicFooter,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
@@ -21,7 +21,7 @@ export const Waiver1915bCMSEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<SpamWarning />}
+      footerContent={<BasicFooter />}
     >
       <PackageDetails
         details={{

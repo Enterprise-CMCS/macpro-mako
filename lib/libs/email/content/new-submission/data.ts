@@ -1,23 +1,21 @@
-export const key = "C0-24-8110";
 export const emailTemplateValue = {
-  id: key,
   territory: "CO",
   applicationEndpointUrl: "https://mako-dev.cms.gov/",
   timestamp: 1121234556,
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",
   additionalInformation:
-    "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin.\n\nHe lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections.\n\nThe bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. What's happened to me? he thought. It wasn't a dream. His room, a proper human",
+    "Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.",
   origin: "mako",
   appkParentId: null,
   attachments: {
     currentStatePlan: {
       files: [
         {
-          filename: "test.pdf",
-          title: "test",
+          filename: "state-plan-2024.pdf",
+          title: "State Plan 2024",
           bucket: "mako-outbox-attachments-635052997545",
-          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
           uploadDate: 1728493782785,
         },
       ],
@@ -27,10 +25,10 @@ export const emailTemplateValue = {
       label: "Document Demonstrating Good-Faith Tribal Engagement",
       files: [
         {
-          filename: "test.pdf",
-          title: "test",
+          filename: "tribal-engagement-summary.docx",
+          title: "Tribal Engagement Summary",
           bucket: "mako-outbox-attachments-635052997545",
-          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          key: "5b02dcea-4723-4dba-b2c1-15bde348f1f2.docx",
           uploadDate: 1728493782785,
         },
       ],
@@ -39,10 +37,10 @@ export const emailTemplateValue = {
       label: "Existing State Plan Page(s)",
       files: [
         {
-          filename: "test.pdf",
-          title: "test",
+          filename: "page-23-update.pdf",
+          title: "Page 23 Update",
           bucket: "mako-outbox-attachments-635052997545",
-          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          key: "2c46eaa6-abb2-4987-9b24-16a4f8c2825a.pdf",
           uploadDate: 1728493782785,
         },
       ],
@@ -51,10 +49,10 @@ export const emailTemplateValue = {
       label: "Public Notice",
       files: [
         {
-          filename: "test.pdf",
-          title: "test",
+          filename: "public-notice-oct-2024.pdf",
+          title: "Public Notice - October 2024",
           bucket: "mako-outbox-attachments-635052997545",
-          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          key: "7dd0e2bb-c5d3-47d4-bf23-dae48229f1b2.pdf",
           uploadDate: 1728493782785,
         },
       ],
@@ -62,24 +60,17 @@ export const emailTemplateValue = {
     spaPages: {
       files: [
         {
-          filename: "test1.pdf",
-          title: "test",
+          filename: "spa-page1.pdf",
+          title: "SPA Page 1",
           bucket: "mako-outbox-attachments-635052997545",
-          key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
+          key: "3aa8c5ec-a6de-4415-bc5a-eef752d68af2.pdf",
           uploadDate: 1728493784252,
         },
         {
-          filename: "test2.pdf",
-          title: "test",
+          filename: "spa-page2.pdf",
+          title: "SPA Page 2",
           bucket: "mako-outbox-attachments-635052997545",
-          key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
-          uploadDate: 1728493784252,
-        },
-        {
-          filename: "test3.pdf",
-          title: "test",
-          bucket: "mako-outbox-attachments-635052997545",
-          key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
+          key: "4aa8c5ec-a6de-4415-bc5a-eef752d68af2.pdf",
           uploadDate: 1728493784252,
         },
       ],
@@ -88,10 +79,10 @@ export const emailTemplateValue = {
     cmsForm179: {
       files: [
         {
-          filename: "test.pdf",
-          title: "test",
+          filename: "cms-form-179.pdf",
+          title: "CMS Form 179 Submission",
           bucket: "mako-outbox-attachments-635052997545",
-          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          key: "12fb2e5d-7d01-441c-a5b1-bbcc72a8adf1.pdf",
           uploadDate: 1728493782785,
         },
       ],
@@ -100,10 +91,10 @@ export const emailTemplateValue = {
     appk: {
       files: [
         {
-          filename: "test.pdf",
-          title: "test",
+          filename: "appendix-k-amendment.docx",
+          title: "Appendix K Amendment",
           bucket: "mako-outbox-attachments-635052997545",
-          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          key: "8b56f7ab-e1ad-4782-87f4-d43ab9d2f5d7.docx",
           uploadDate: 1728493782785,
         },
       ],
@@ -112,24 +103,17 @@ export const emailTemplateValue = {
     amendedLanguage: {
       files: [
         {
-          filename: "test1.pdf",
-          title: "test",
+          filename: "amended-language-1.pdf",
+          title: "Amended Language - Section 1",
           bucket: "mako-outbox-attachments-635052997545",
-          key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
+          key: "1df7c8ef-a28d-41b8-9327-21767c16a11a.pdf",
           uploadDate: 1728493784252,
         },
         {
-          filename: "test2.pdf",
-          title: "test",
+          filename: "amended-language-2.pdf",
+          title: "Amended Language - Section 2",
           bucket: "mako-outbox-attachments-635052997545",
-          key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
-          uploadDate: 1728493784252,
-        },
-        {
-          filename: "test3.pdf",
-          title: "test",
-          bucket: "mako-outbox-attachments-635052997545",
-          key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
+          key: "23df1f2c-9927-4d82-a58f-31fd4729b2e5.pdf",
           uploadDate: 1728493784252,
         },
       ],
@@ -138,23 +122,23 @@ export const emailTemplateValue = {
     coverLetter: {
       files: [
         {
-          filename: "cover-leter.pdf",
-          title: "test",
+          filename: "cover-letter-george-harrison.pdf",
+          title: "Cover Letter - George Harrison",
           bucket: "mako-outbox-attachments-635052997545",
-          key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
+          key: "8c7e8d9f-c332-499c-bb21-d14fb9f8e20b.pdf",
           uploadDate: 1728493784252,
         },
       ],
       label: "Cover Letter",
     },
     budgetDocuments: {
-      label: "Document Demonstrating Good-Faith Tribal Engagement",
+      label: "Budget Documents",
       files: [
         {
-          filename: "test.pdf",
-          title: "test",
+          filename: "fy2024-budget.xlsx",
+          title: "FY2024 Budget Overview",
           bucket: "mako-outbox-attachments-635052997545",
-          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          key: "5e9dc2f3-71f4-4145-95b6-f6371cdea3ef.xlsx",
           uploadDate: 1728493782785,
         },
       ],
@@ -163,10 +147,10 @@ export const emailTemplateValue = {
       label: "Tribal Consultation",
       files: [
         {
-          filename: "test.pdf",
-          title: "test",
+          filename: "tribal-consultation-sept-2024.pdf",
+          title: "Tribal Consultation - September 2024",
           bucket: "mako-outbox-attachments-635052997545",
-          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          key: "7a71e2b3-1d87-429c-99c8-f872ffdbb3f3.pdf",
           uploadDate: 1728493782785,
         },
       ],
@@ -175,10 +159,10 @@ export const emailTemplateValue = {
       label: "Other",
       files: [
         {
-          filename: "test.pdf",
-          title: "test",
+          filename: "misc-documents.pdf",
+          title: "Miscellaneous Documents",
           bucket: "mako-outbox-attachments-635052997545",
-          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          key: "c22aa4dc-e1b6-41d5-bf64-e45b6f74f5af.pdf",
           uploadDate: 1728493782785,
         },
       ],
@@ -187,10 +171,10 @@ export const emailTemplateValue = {
       label: "Standard Funding Questions (SFQs)",
       files: [
         {
-          filename: "test.pdf",
-          title: "test",
+          filename: "funding-questions-sfq.docx",
+          title: "Standard Funding Questions",
           bucket: "mako-outbox-attachments-635052997545",
-          key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
+          key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.docx",
           uploadDate: 1728493782785,
         },
       ],

@@ -1,28 +1,8 @@
-import * as dateFns from "date-fns";
 import { Authority } from "shared-types";
 import { getPackageChangelog } from "../api/package";
 import * as EmailContent from "./content";
 
 export type UserType = "cms" | "state";
-
-export function formatDate(date: number | null | undefined) {
-  if (!date || date === undefined) {
-    return "Pending";
-  } else {
-    return dateFns.format(date, "MMMM d, yyyy");
-  }
-}
-
-export function formatNinetyDaysDate(date: number | null | undefined): string {
-  if (!date || date === undefined) {
-    return "Pending";
-  } else {
-    return dateFns.format(
-      dateFns.add(date, { days: 90 }),
-      "MMMM d, yyyy '@ 11:59pm ET'",
-    );
-  }
-}
 
 export interface EmailTemplate {
   to: string[];

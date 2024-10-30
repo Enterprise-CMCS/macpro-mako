@@ -1,4 +1,3 @@
-import * as React from "react";
 import { emailTemplateValue } from "../data";
 import { CommonEmailVariables } from "shared-types";
 import { RaiResponse } from "shared-types";
@@ -6,7 +5,8 @@ import { Container, Html } from "@react-email/components";
 import {
   PackageDetails,
   LoginInstructions,
-  SpamWarning,
+  BasicFooter,
+  Attachments,
 } from "../../email-components";
 
 export const MedSpaCMSEmail = (props: {
@@ -29,20 +29,16 @@ export const MedSpaCMSEmail = (props: {
             "Medicaid SPA Package ID": variables.id,
             Summary: variables.additionalInformation,
           }}
-          attachments={variables.attachments}
         />
-        <SpamWarning />
+        <Attachments attachments={variables.attachments as any} />
+        <BasicFooter />
       </Container>
     </Html>
   );
 };
 
 const MedSpaCMSEmailPreview = () => {
-  return (
-    <MedSpaCMSEmail
-      variables={emailTemplateValue as RaiResponse & CommonEmailVariables}
-    />
-  );
+  return <MedSpaCMSEmail variables={emailTemplateValue as any} />;
 };
 
 export default MedSpaCMSEmailPreview;

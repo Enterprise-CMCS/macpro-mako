@@ -24,27 +24,33 @@ export const styles = {
     title: {
       fontSize: "14px",
       fontWeight: "600",
-      lineHeight: "16px",
+      lineHeight: "1.4",
       letterSpacing: "-0.5px",
-      marginBottom: "2px",
-      marginTop: "2px",
+      marginBottom: "4px",
+      marginTop: "4px",
     },
     description: {
       fontSize: "14px",
-      lineHeight: "16px",
+      lineHeight: "1.4",
       color: "#333",
-      marginBottom: "2px",
-      marginTop: "2px",
+      marginBottom: "4px",
+      marginTop: "4px",
     },
     base: {
       color: "#333",
+      lineHeight: "1.4",
       fontSize: "14px",
       margin: "12px 0",
+    },
+    footer: {
+      color: "#fff",
+      fontSize: "14px",
+      margin: "o 0",
     },
     list: {
       marginLeft: "-20px",
       fontSize: "14px",
-      lineHeight: "16px",
+      lineHeight: "1.4",
     },
   },
   heading: {
@@ -61,11 +67,12 @@ export const styles = {
   section: {
     primary: {
       margin: "8px",
+      marginTop: "0",
       padding: "8px",
     },
     footer: {
       fontSize: "14px",
-      padding: "0 24px",
+      padding: "0 0px",
       fontWeight: "300",
       backgroundColor: "#0071BD",
       color: "#fff",
@@ -85,5 +92,5 @@ export const styles = {
       display: "block",
       maxWidth: "112px",
     },
-  },
-} as const;
+  } as const,
+};

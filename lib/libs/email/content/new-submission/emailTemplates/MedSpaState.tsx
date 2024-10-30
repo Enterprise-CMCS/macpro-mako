@@ -1,5 +1,5 @@
 import { Events } from "shared-types";
-import { formatDate, formatNinetyDaysDate } from "../../..";
+import { formatDate, formatNinetyDaysDate } from "shared-utils";
 import { CommonEmailVariables } from "shared-types";
 import {
   PackageDetails,
@@ -19,7 +19,7 @@ export const MedSpaStateEmail = (props: {
   const variables = props.variables;
   const previewText = `Medicaid SPA &${variables.id} Submitted`;
   const heading =
-    "This response confirms that you submitted a Medicaid SPA to CMS for review";
+    "This response confirms that you submitted a Medicaid SPA to CMS for review:";
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -43,10 +43,10 @@ export const MedSpaStateEmail = (props: {
       />
       <Attachments attachments={variables.attachments} />
       <Text style={styles.text.base}>
-        This response confirms the receipt of your Medicaid State Plan Amendment
+        {`This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information
         (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before {formatNinetyDaysDate(variables.timestamp)}.
+        within 90 days, before ${formatNinetyDaysDate(variables.timestamp)}.`}
       </Text>
       <MailboxNotice type="SPA" />
     </BaseEmailTemplate>
@@ -58,6 +58,7 @@ const MedSpaStateEmailPreview = () => {
     <MedSpaStateEmail
       variables={{
         ...emailTemplateValue,
+        id: "CO-24-1234",
         origin: "mako",
         event: "new-medicaid-submission",
         authority: "Medicaid SPA",

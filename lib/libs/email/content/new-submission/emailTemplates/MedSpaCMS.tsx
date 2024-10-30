@@ -4,7 +4,7 @@ import {
   DetailsHeading,
   LoginInstructions,
   PackageDetails,
-  SpamWarning,
+  BasicFooter,
 } from "../../email-components";
 import { emailTemplateValue } from "../data";
 import { BaseEmailTemplate } from "../../email-templates";
@@ -15,14 +15,14 @@ export const MedSpaCMSEmail = (props: {
   const variables = props.variables;
   const previewText = `Medicaid SPA ${variables.id} Submitted`;
   const heading =
-    "The OneMAC Submission Portal received a Medicaid SPA Submission";
+    "The OneMAC Submission Portal received a Medicaid SPA Submission:";
 
   return (
     <BaseEmailTemplate
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<SpamWarning />}
+      footerContent={<BasicFooter />}
     >
       <DetailsHeading />
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
@@ -47,6 +47,7 @@ const MedSpaCMSEmailPreview = () => {
     <MedSpaCMSEmail
       variables={{
         ...emailTemplateValue,
+        id: "CO-24-1234",
         authority: "Medicaid SPA",
         event: "new-medicaid-submission",
         actionType: "Amend",

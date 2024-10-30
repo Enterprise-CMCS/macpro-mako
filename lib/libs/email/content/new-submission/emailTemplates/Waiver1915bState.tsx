@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { emailTemplateValue } from "../data";
 import { CommonEmailVariables } from "shared-types";
-import { formatNinetyDaysDate } from "../../..";
+import { formatNinetyDaysDate } from "shared-utils";
 import { Text } from "@react-email/components";
 import {
   PackageDetails,
@@ -18,7 +18,7 @@ export const Waiver1915bStateEmail = (props: {
 }) => {
   const variables = props.variables;
   const previewText = `${variables.authority} ${variables.actionType} Submitted`;
-  const heading = `This response confirms the submission of your ${variables.authority} ${variables.actionType} to CMS for review`;
+  const heading = `This response confirms the submission of your ${variables.authority} ${variables.actionType} to CMS for review:`;
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -51,7 +51,6 @@ export const Waiver1915bStateEmail = (props: {
               .`}
       </Text>
       <MailboxNotice type="Waiver" />
-      <ContactStateLead />
     </BaseEmailTemplate>
   );
 };
@@ -62,6 +61,7 @@ const Waiver1915bStateEmailPreview = () => {
     <Waiver1915bStateEmail
       variables={{
         ...emailTemplateValue,
+        id: "CO-1234.R21.00",
         authority: "1915(b)",
         actionType: "RAI",
       }}

@@ -7,7 +7,12 @@ import {
   Hr,
   Heading,
 } from "@react-email/components";
-import { Attachment, TextareaProps, AttachmentTitle } from "shared-types";
+import {
+  Attachment,
+  TextareaProps,
+  AttachmentTitle,
+  AttachmentKey,
+} from "shared-types";
 import { createRef, forwardRef } from "react";
 import { styles } from "./email-styles";
 // Constants
@@ -25,7 +30,7 @@ interface EmailAddress {
 }
 
 interface AttachmentGroup {
-  files: Attachment[];
+  files?: Attachment[];
   label: string;
 }
 
@@ -38,10 +43,11 @@ const getToAddress = ({ name, email }: EmailAddress): string[] => {
 };
 
 const areAllAttachmentsEmpty = (
-  attachments: Record<AttachmentTitle, AttachmentGroup | null>,
+  attachments: Partial<Record<AttachmentTitle, AttachmentGroup | null>>,
 ): boolean => {
+  if (!attachments) return true;
   return Object.values(attachments).every(
-    (att) => !att || att.files.length === 0,
+    (att) => !att || att.files?.length === 0,
   );
 };
 
@@ -52,6 +58,7 @@ const Textarea: React.FC<TextareaProps> = ({ children }) => (
       width: "100%",
       backgroundColor: "transparent",
       fontSize: "14px",
+      lineHeight: "1.4",
       boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
       outline: "none",
       whiteSpace: "pre-line",
@@ -89,19 +96,19 @@ const LoginInstructions: React.FC<{ appEndpointURL: string }> = ({
 }) => (
   <ul style={{ marginLeft: "-20px" }}>
     <li>
-      <Text>
-        The submission can be accessed in the OneMAC application at{" "}
+      <Text style={styles.text.description}>
+        The submission can be acce.ssed in the OneMAC application at{" "}
         <Link href={appEndpointURL}>{appEndpointURL}</Link>
       </Text>
     </li>
     <li>
-      <Text>
+      <Text style={styles.text.description}>
         If not logged in, click "Login" at the top and use your Enterprise User
         Administration (EUA) credentials.
       </Text>
     </li>
     <li>
-      <Text>
+      <Text style={styles.text.description}>
         After logging in, you'll see the submission listed on the dashboard.
         Click its ID number to view details.
       </Text>
@@ -119,9 +126,9 @@ const DetailsHeading: React.FC = () => (
 );
 
 const Attachments: React.FC<{
-  attachments: Record<AttachmentTitle, AttachmentGroup>;
+  attachments: Partial<Record<AttachmentKey, AttachmentGroup>>;
 }> = ({ attachments }) => {
-  if (areAllAttachmentsEmpty(attachments)) {
+  if (!attachments || areAllAttachmentsEmpty(attachments)) {
     return <Text>No attachments</Text>;
   }
 
@@ -132,20 +139,26 @@ const Attachments: React.FC<{
         Files:
       </Heading>
 
-      {Object.entries(attachments).map(([key, { files, label }]) => {
-        if (!files?.length) return null;
+      {Object.entries(attachments).map(([key, group]) => {
+        if (!group?.files?.length) return null;
 
         return (
           <Row key={key} style={{ marginBottom: "2px", marginTop: "2px" }}>
-            <Column align="left" style={{ width: "60%", paddingTop: "8px" }}>
-              <Text style={styles.text.title}>{label}</Text>
+            <Column
+              align="left"
+              style={{
+                width: "50%",
+                verticalAlign: "top",
+              }}
+            >
+              <Text style={{ ...styles.text.title }}>{group.label}:</Text>
             </Column>
-            <Column>
-              <Text style={{ ...styles.text.description, paddingTop: "8px" }}>
-                {files.map((file, index) => (
+            <Column style={{ verticalAlign: "top" }}>
+              <Text style={styles.text.description}>
+                {group.files.map((file, index) => (
                   <>
                     {file.filename}
-                    {index < files.length - 1 && <br />}
+                    {index < (group.files?.length ?? 0) - 1 && <br />}
                   </>
                 ))}
               </Text>
@@ -180,13 +193,11 @@ const PackageDetails: React.FC<{
 
       return (
         <Row key={label}>
-          <Column align="left" style={{ width: "50%", paddingTop: "8px" }}>
+          <Column align="left" style={{ width: "40%" }}>
             <Text style={styles.text.title}>{label}</Text>
           </Column>
           <Column>
-            <Text style={{ ...styles.text.description }}>
-              {value ?? "Unknown"}
-            </Text>
+            <Text style={styles.text.description}>{value ?? "Unknown"}</Text>
           </Column>
         </Row>
       );
@@ -204,7 +215,13 @@ const MailboxNotice: React.FC<{ type: "SPA" | "Waiver" }> = ({ type }) => (
 );
 
 const ContactStateLead: React.FC<{ isChip?: boolean }> = ({ isChip }) => (
-  <Section style={styles.section.footer}>
+  <Section
+    style={{
+      ...styles.section.footer,
+      paddingLeft: "16px",
+      paddingRight: "16px",
+    }}
+  >
     <Text style={{ fontSize: "14px" }}>
       If you have questions or did not expect this email, please contact{" "}
       <Link
@@ -225,20 +242,13 @@ export const EmailFooter: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => <Section style={styles.section.footer}>{children}</Section>;
 
-const SpamWarning: React.FC = () => (
+const BasicFooter: React.FC = () => (
   <EmailFooter>
-    <Text style={{ fontSize: "14px" }}>
-      If the contents of this email seem suspicious, do not open them, and
-      instead forward this email to{" "}
-      <Link
-        href={`mailto:${EMAIL_CONFIG.SPAM_EMAIL}`}
-        style={{ color: "#fff", textDecoration: "underline" }}
-      >
-        {EMAIL_CONFIG.SPAM_EMAIL}
-      </Link>
-      .
+    <Text style={styles.text.footer}>
+      U.S. Centers for Medicare & Medicaid Services <br />©{" "}
+      {new Date().getFullYear()} | 7500 Security Boulevard, Baltimore, MD 21244
+      | cms.gov
     </Text>
-    <Text>Thank you!</Text>
   </EmailFooter>
 );
 
@@ -281,7 +291,7 @@ export {
   PackageDetails,
   MailboxNotice,
   ContactStateLead,
-  SpamWarning,
+  BasicFooter,
   WithdrawRAI,
   getCpocEmail,
   getSrtEmails,

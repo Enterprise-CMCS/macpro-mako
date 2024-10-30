@@ -3,7 +3,7 @@ import { Html, Container } from "@react-email/components";
 import {
   PackageDetails,
   LoginInstructions,
-  SpamWarning,
+  BasicFooter,
 } from "../../email-components";
 
 export const TempExtCMSEmail = (props: {
@@ -27,9 +27,9 @@ export const TempExtCMSEmail = (props: {
             "Temporary Extension Type": variables.authority,
             summary: variables.additionalInformation,
           }}
-          attachments={variables.attachments}
+          // attachments={variables.attachments}
         />
-        <SpamWarning />
+        <BasicFooter />
       </Container>
     </Html>
   );

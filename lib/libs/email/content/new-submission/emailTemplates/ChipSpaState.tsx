@@ -18,7 +18,7 @@ export const ChipSpaStateEmail = (props: {
   const variables = props.variables;
   const previewText = `CHIP SPA ${variables.id} Submitted`;
   const heading =
-    "This response confirms the submission of your CHIP State Plan Amendment to CMS for review";
+    "This response confirms the submission of your CHIP State Plan Amendment to CMS :";
 
   return (
     <BaseEmailTemplate
@@ -54,6 +54,7 @@ const ChipSpaStateEmailPreview = () => {
     <ChipSpaStateEmail
       variables={{
         ...emailTemplateValue,
+        id: "CO-24-1234",
         authority: "Medicaid SPA",
         event: "new-chip-submission",
         actionType: "Amend",

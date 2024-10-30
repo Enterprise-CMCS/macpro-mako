@@ -5,7 +5,7 @@ import { Text } from "@react-email/components";
 import {
   ContactStateLead,
   PackageDetails,
-  SpamWarning,
+  BasicFooter,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
@@ -22,7 +22,7 @@ export const ChipSpaStateEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<SpamWarning />}
+      footerContent={<BasicFooter />}
     >
       <PackageDetails
         details={{

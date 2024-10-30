@@ -6,7 +6,7 @@ import {
   DetailsHeading,
   LoginInstructions,
   PackageDetails,
-  SpamWarning,
+  BasicFooter,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
@@ -15,13 +15,13 @@ export const Waiver1915bCMSEmail = (props: {
 }) => {
   const variables = props.variables;
   const previewText = `${variables.authority} ${variables.actionType} Submitted`;
-  const heading = `The OneMAC Submission Portal received a ${variables.authority} ${variables.actionType} Submission`;
+  const heading = `The OneMAC Submission Portal received a ${variables.authority} ${variables.actionType} Submission:`;
   return (
     <BaseEmailTemplate
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<SpamWarning />}
+      footerContent={<BasicFooter />}
     >
       <DetailsHeading />
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
@@ -38,7 +38,7 @@ export const Waiver1915bCMSEmail = (props: {
           Summary: variables.additionalInformation,
         }}
       />
-      <Attachments attachments={variables.attachments} />
+      <Attachments attachments={variables.attachments as any} />
     </BaseEmailTemplate>
   );
 };
@@ -49,6 +49,7 @@ const Waiver1915bCMSEmailPreview = () => {
     <Waiver1915bCMSEmail
       variables={{
         ...emailTemplateValue,
+        id: "CO-1234.R21.00",
         event: "new-medicaid-submission",
         origin: "mako",
         authority: "1915(b)",

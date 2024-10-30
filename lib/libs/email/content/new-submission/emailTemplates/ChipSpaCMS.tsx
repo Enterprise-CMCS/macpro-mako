@@ -3,7 +3,7 @@ import { CommonEmailVariables, Events } from "shared-types";
 import {
   LoginInstructions,
   PackageDetails,
-  SpamWarning,
+  BasicFooter,
   DetailsHeading,
   Attachments,
 } from "../../email-components";
@@ -21,7 +21,7 @@ export const ChipSpaCMSEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<SpamWarning />}
+      footerContent={<BasicFooter />}
     >
       <DetailsHeading />
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
@@ -45,6 +45,7 @@ const ChipSpaCMSEmailPreview = () => {
     <ChipSpaCMSEmail
       variables={{
         ...emailTemplateValue,
+        id: "CO-24-1234",
         authority: "CHIP SPA",
         event: "new-chip-submission",
         actionType: "Amend",
