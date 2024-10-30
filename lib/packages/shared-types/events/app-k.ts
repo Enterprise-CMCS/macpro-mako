@@ -4,17 +4,12 @@ import {
   attachmentArraySchemaOptional,
 } from "../attachments";
 
-export const zAppkWaiverNumberSchema = z
-  .string()
-  .regex(/^\d{4,5}\.R\d{2}\.(0[1-9]|[1-9][0-9])$/);
-
 export const appkSchema = z.object({
   id: z.string(),
   actionType: z.string().default("New"),
-  state: z.string(),
-  waiverIds: z.array(zAppkWaiverNumberSchema),
-  proposedEffectiveDate: z.number(),
-  seaActionType: z.string().default("New"),
+  waiverIds: z.array(z.string()).min(1),
+  proposedEffectiveDate: z.date(),
+  seaActionType: z.string().default("Amend"),
   title: z.string().trim().min(1, { message: "Required" }),
   attachments: z.object({
     appk: z.object({

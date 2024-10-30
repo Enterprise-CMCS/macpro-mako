@@ -37,15 +37,10 @@ export const baseSchema = z.object({
   additionalInformation: z.string().max(4000).nullable().default(null),
 });
 
-export const schema = baseSchema
-  .extend({
-    actionType: z.string().default("New"),
-    origin: z.literal("mako").default("mako"),
-    submitterName: z.string(),
-    submitterEmail: z.string().email(),
-    timestamp: z.number(),
-  })
-  .transform((data) => ({
-    ...data,
-    territory: data.id.slice(0, 2).toUpperCase(),
-  }));
+export const schema = baseSchema.extend({
+  actionType: z.string().default("New"),
+  origin: z.literal("mako").default("mako"),
+  submitterName: z.string(),
+  submitterEmail: z.string().email(),
+  timestamp: z.number(),
+});
