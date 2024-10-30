@@ -1,4 +1,4 @@
-import { formatNinetyDaysDate } from "../../..";
+import { formatNinetyDaysDate } from "shared-utils";
 import { CommonEmailVariables } from "shared-types";
 import {
   PackageDetails,
