@@ -16,11 +16,13 @@ import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
-import { SimplePageContainer, UserPrompt, Banner } from "@/components";
+import {
+  ScrollToTop,
+  SimplePageContainer,
+  UserPrompt,
+  Banner,
+} from "@/components";
 import { isFaqPage, isProd } from "@/utils";
-import { useScrollToTop } from "@/hooks";
-import { useLocation } from "react-router-dom";
-
 const useGetLinks = () => {
   const { isLoading, data: userObj } = useGetUser();
 
@@ -121,11 +123,10 @@ export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"];
-  const { pathname } = useLocation();
-  useScrollToTop(pathname);
 
   return (
     <div className="min-h-full flex flex-col">
+      <ScrollToTop />
       <UserPrompt />
       <UsaBanner
         isUserMissingRole={user?.user && customUserRoles === undefined}
