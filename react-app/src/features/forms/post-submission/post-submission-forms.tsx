@@ -16,6 +16,7 @@ import {
   DisableWithdrawRaiForm,
   EnableWithdrawRaiForm,
 } from "./toggle-withdraw-rai";
+import { UploadSubsequentDocuments } from "./upload-subsequent-documents";
 
 // the keys will relate to this part of the route /actions/{key of postSubmissionForms}/authority/id
 export const postSubmissionForms: Record<
@@ -51,6 +52,12 @@ export const postSubmissionForms: Record<
     ["1915(c)"]: DisableWithdrawRaiForm,
     ["Medicaid SPA"]: DisableWithdrawRaiForm,
     ["CHIP SPA"]: DisableWithdrawRaiForm,
+  },
+  "upload-subsequent-documents": {
+    ["1915(b)"]: UploadSubsequentDocuments,
+    ["1915(c)"]: UploadSubsequentDocuments,
+    ["Medicaid SPA"]: UploadSubsequentDocuments,
+    ["CHIP SPA"]: UploadSubsequentDocuments,
   },
 };
 
