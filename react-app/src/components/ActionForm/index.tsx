@@ -197,10 +197,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
 
-  const hasProgressLossReminder = useMemo(
-    () => Fields({ ...form }) !== null || attachmentsFromSchema.length > 0,
-    [attachmentsFromSchema, Fields, form],
-  );
+  const hasProgressLossReminder =
+    Fields({ ...form }) !== null || attachmentsFromSchema.length > 0;
 
   const areRequiredFields = requiredFields && hasProgressLossReminder;
 
