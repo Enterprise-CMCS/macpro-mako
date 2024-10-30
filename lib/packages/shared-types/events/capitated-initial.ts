@@ -60,15 +60,3 @@ export const schema = baseSchema
     ...data,
     territory: data.id.slice(0, 2).toUpperCase(),
   }));
-
-export const successfulResponse = {
-  $metadata: {
-    httpStatusCode: 200,
-    requestId: "d1e89223-05e6-4aad-9c7a-c93ac045e2ef",
-    extendedRequestId: undefined,
-    cfId: undefined,
-    attempts: 1,
-    totalRetryDelay: 0,
-  },
-  MessageId: "0100019142162cb7-62fb677b-c27e-4ccc-b3d3-20b8776a2605-000000",
-};

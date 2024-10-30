@@ -15,7 +15,7 @@ import {
 } from "./testData";
 import type { CognitoUserAttributes } from "shared-types";
 
-type User = any & CognitoUserAttributes;
+type User = CognitoUserAttributes;
 const cmsHelpDeskUser = {
   ...testCMSCognitoUser.user,
   "custom:cms-roles": "onemac-micro-helpdesk",
