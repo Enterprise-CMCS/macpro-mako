@@ -5,7 +5,6 @@ import {
 } from "../attachments";
 
 export const baseSchema = z.object({
-  // zAmendmentWaiverNumberSchema
   event: z.literal("capitated-amendment").default("capitated-amendment"),
   authority: z.string().default("1915(b)"),
   id: z
