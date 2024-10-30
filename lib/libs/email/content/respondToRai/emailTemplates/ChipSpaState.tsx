@@ -1,5 +1,5 @@
 import { emailTemplateValue } from "../data";
-import { formatNinetyDaysDate } from "../../..";
+import { formatNinetyDaysDate } from "shared-utils";
 import { CommonEmailVariables, RaiResponse } from "shared-types";
 import { Text } from "@react-email/components";
 import {

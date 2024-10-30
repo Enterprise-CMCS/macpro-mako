@@ -6,7 +6,7 @@ import { Html, Container } from "@react-email/components";
 import {
   PackageDetails,
   LoginInstructions,
-  SpamWarning,
+  BasicFooter,
 } from "../../email-components";
 
 // 1915b
@@ -30,20 +30,16 @@ export const Waiver1915bCMSEmail = (props: {
             "Waiver Number": variables.id,
             Summary: variables.additionalInformation,
           }}
-          attachments={variables.attachments}
+          // attachments={variables.attachments}
         />
-        <SpamWarning />
+        <BasicFooter />
       </Container>
     </Html>
   );
 };
 
 const Waiver1915bCMSEmailPreview = () => {
-  return (
-    <Waiver1915bCMSEmail
-      variables={emailTemplateValue as RaiResponse & CommonEmailVariables}
-    />
-  );
+  return <Waiver1915bCMSEmail variables={emailTemplateValue as any} />;
 };
 
 export default Waiver1915bCMSEmailPreview;

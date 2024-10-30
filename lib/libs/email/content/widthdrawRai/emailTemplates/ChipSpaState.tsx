@@ -38,7 +38,7 @@ const ChipSpaStateEmailPreview = () => {
   return (
     <ChipSpaStateEmail
       relatedEvent={relatedEvent}
-      variables={emailTemplateValue as RaiWithdraw & CommonEmailVariables}
+      variables={emailTemplateValue as any}
     />
   );
 };

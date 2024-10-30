@@ -6,7 +6,7 @@ import { Container, Html } from "@react-email/components";
 import {
   WithdrawRAI,
   PackageDetails,
-  SpamWarning,
+  BasicFooter,
 } from "../../email-components";
 import { relatedEvent } from "./AppKCMS";
 
@@ -27,9 +27,9 @@ export const ChipSpaCMSEmail = (props: {
             "CHIP SPA Package ID": variables.id,
             Summary: variables.additionalInformation,
           }}
-          attachments={variables.attachments}
+          // attachments={variables.attachments}
         />
-        <SpamWarning />
+        <BasicFooter />
       </Container>
     </Html>
   );
@@ -39,7 +39,7 @@ const ChipSpaCMSEmailPreview = () => {
   return (
     <ChipSpaCMSEmail
       relatedEvent={relatedEvent}
-      variables={emailTemplateValue as RaiWithdraw & CommonEmailVariables}
+      variables={emailTemplateValue as any}
     />
   );
 };

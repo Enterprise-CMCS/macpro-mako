@@ -6,7 +6,7 @@ import { Html, Container } from "@react-email/components";
 import {
   WithdrawRAI,
   PackageDetails,
-  SpamWarning,
+  BasicFooter,
 } from "../../email-components";
 
 export const AppKCMSEmail = (props: {
@@ -26,9 +26,9 @@ export const AppKCMSEmail = (props: {
             "Waiver Number": variables.id,
             Summary: variables.additionalInformation,
           }}
-          attachments={variables.attachments}
+          // attachments={variables.attachments}
         />
-        <SpamWarning />
+        <BasicFooter />
       </Container>
     </Html>
   );
@@ -43,7 +43,7 @@ const AppKCMSEmailPreview = () => {
   return (
     <AppKCMSEmail
       relatedEvent={relatedEvent}
-      variables={emailTemplateValue as RaiWithdraw & CommonEmailVariables}
+      variables={emailTemplateValue as any}
     />
   );
 };
