@@ -15,7 +15,7 @@ const arRespondToRai: ActionRule = {
     // safety; prevent bad status from causing overwrite
     (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
     isStateUser(user) &&
-    !checker.isLocked
+    !checker.isLocked,
 };
 
 const arTempExtension: ActionRule = {
@@ -62,6 +62,7 @@ const arWithdrawRaiResponse: ActionRule = {
     isStateUser(user) &&
     !checker.isLocked,
 };
+
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
@@ -70,6 +71,7 @@ const arWithdrawPackage: ActionRule = {
     isStateUser(user) &&
     !checker.isLocked,
 };
+
 const arUpdateId: ActionRule = {
   action: Action.UPDATE_ID,
   check: (checker, user) =>
@@ -83,6 +85,27 @@ const arRemoveAppkChild: ActionRule = {
   check: (checker, user) => isStateUser(user) && !!checker.isAppkChild && false,
 };
 
+const arUploadSubsequentDocuments: ActionRule = {
+  action: Action.UPLOAD_SUBSEQUENT_DOCUMENTS,
+  check: (checker, user) => {
+    if (checker.hasStatus(SEATOOL_STATUS.PENDING)) {
+      if (isStateUser(user)) {
+        if (
+          checker.hasStatus(SEATOOL_STATUS.PENDING_CONCURRENCE) ||
+          checker.hasStatus(SEATOOL_STATUS.PENDING_APPROVAL) ||
+          checker.hasLatestRai
+        ) {
+          return false;
+        }
+
+        return true;
+      }
+    }
+
+    return false;
+  },
+};
+
 export default [
   arRespondToRai,
   arEnableWithdrawRaiResponse,
@@ -92,4 +115,5 @@ export default [
   arTempExtension,
   arUpdateId,
   arRemoveAppkChild,
+  arUploadSubsequentDocuments,
 ];
