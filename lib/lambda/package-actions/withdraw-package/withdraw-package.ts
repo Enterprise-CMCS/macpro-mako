@@ -24,7 +24,7 @@ export async function withdrawPackage(body: unknown) {
     });
   }
 
-  await withdrawPackageAction({
+  return await withdrawPackageAction({
     ...result.data,
     action: Action.WITHDRAW_PACKAGE,
     id: result.data.id,
