@@ -55,7 +55,7 @@ export const ActionFormAttachments = ({
           {instructions} Read the description for each of the attachment types
           on the{" "}
           <Link
-            to={faqLink}
+            to={faqLink || "/faq"}
             target={FAQ_TAB}
             rel="noopener noreferrer"
             className="text-blue-900 underline"
