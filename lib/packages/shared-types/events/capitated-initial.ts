@@ -14,10 +14,6 @@ export const baseSchema = z.object({
       message:
         "The Initial Waiver Number must be in the format of SS-####.R00.00 or SS-#####.R00.00",
     }),
-  territory: z
-    .string()
-    .length(2)
-    .transform((val) => val.toUpperCase()),
   proposedEffectiveDate: z.number(),
   attachments: z.object({
     bCapWaiverApplication: z.object({
