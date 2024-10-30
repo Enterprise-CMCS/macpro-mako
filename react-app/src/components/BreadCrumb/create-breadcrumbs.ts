@@ -57,8 +57,9 @@ const newSubmissionPageRouteMapper: Record<
 export const optionCrumbsFromPath = (
   path: string,
   authority?: Authority,
-): BreadCrumbConfig[] =>
-  [dashboardCrumb(authority)].concat(
+  id?: string,
+): BreadCrumbConfig[] => {
+  const breadcrumbs = [dashboardCrumb(authority)].concat(
     path.split("/").reduce<BreadCrumbConfig[]>((acc, subPath, index) => {
       if (subPath in newSubmissionPageRouteMapper) {
         return acc.concat({
@@ -70,3 +71,14 @@ export const optionCrumbsFromPath = (
       return acc;
     }, []),
   );
+
+  if (id) {
+    return breadcrumbs.concat({
+      displayText: id,
+      to: `/details/${authority}/${id}`,
+      order: breadcrumbs.length,
+    });
+  }
+
+  return breadcrumbs;
+};

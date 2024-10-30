@@ -150,15 +150,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const navigate = useNavigate();
   const { data: userObj } = useGetUser();
 
-  const breadcrumbs = optionCrumbsFromPath(pathname, authority);
-
-  if (id) {
-    breadcrumbs.push({
-      displayText: id,
-      to: `/details/${authority}/${id}`,
-      order: breadcrumbs.length,
-    });
-  }
+  const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
 
   const form = useForm<z.TypeOf<Schema>>({
     resolver: zodResolver(schema),
