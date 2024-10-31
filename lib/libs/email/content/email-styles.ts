@@ -80,7 +80,7 @@ export const styles = {
   },
   divider: {
     margin: "16px 0",
-    borderTop: "2px solid #0071BD",
+    borderTop: "1px solid #0071BD",
   },
   logo: {
     container: {

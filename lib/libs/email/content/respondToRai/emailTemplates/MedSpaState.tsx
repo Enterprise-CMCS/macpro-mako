@@ -2,21 +2,14 @@ import { emailTemplateValue } from "../data";
 import { formatNinetyDaysDate } from "shared-utils";
 import { CommonEmailVariables, RaiResponse } from "shared-types";
 import { Text } from "@react-email/components";
-import {
-  PackageDetails,
-  MailboxNotice,
-  ContactStateLead,
-} from "../../email-components";
+import { PackageDetails, MailboxNotice, ContactStateLead } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
-export const MedSpaStateEmail = (props: {
-  variables: RaiResponse & CommonEmailVariables;
-}) => {
+export const MedSpaStateEmail = (props: { variables: RaiResponse & CommonEmailVariables }) => {
   const variables = props.variables;
   const previewText = `Medicaid SPA ${variables.id} RAI Response Submitted`;
-  const heading =
-    "This response confirms you submitted a Medicaid SPA RAI Response to CMS for review";
+  const heading = "This response confirms you submitted a Medicaid SPA RAI Response to CMS for review";
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -35,10 +28,8 @@ export const MedSpaStateEmail = (props: {
         }}
       />
       <Text style={styles.text.base}>
-        This response confirms receipt of your Medicaid State Plan Amendment
-        (SPA or your response to a SPA Request for Additional Information
-        (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before {formatNinetyDaysDate(variables.responseDate)}.
+        This response confirms receipt of your Medicaid State Plan Amendment (SPA) or your response to a SPA Request for Additional Information (RAI).
+        You can expect a formal response to your submittal to be issued within 90 days, before {formatNinetyDaysDate(variables.responseDate)}.
       </Text>
       <MailboxNotice type="SPA" />
     </BaseEmailTemplate>
@@ -46,11 +37,7 @@ export const MedSpaStateEmail = (props: {
 };
 
 const MedSpaCMSEmailPreview = () => {
-  return (
-    <MedSpaStateEmail
-      variables={{ ...emailTemplateValue, origin: "mako", attachments: [] }}
-    />
-  );
+  return <MedSpaStateEmail variables={{ ...emailTemplateValue, origin: "mako", attachments: [] }} />;
 };
 
 export default MedSpaCMSEmailPreview;

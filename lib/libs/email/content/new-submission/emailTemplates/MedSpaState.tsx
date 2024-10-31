@@ -34,7 +34,7 @@ export const MedSpaStateEmail = (props: { variables: Events["NewMedicaidSubmissi
       <Text style={styles.text.base}>
         {`This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information
-        (RAI)). You can expect a formal response to your submittal to be issued
+        (RAI). You can expect a formal response to your submittal to be issued
         within 90 days, before ${formatNinetyDaysDate(variables.timestamp)}.`}
       </Text>
       <MailboxNotice type="SPA" />
