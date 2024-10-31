@@ -11,6 +11,4 @@ describe("UseReadOnlyUser", () => {
   it("returns false if user has more than read only access", () => {
     expect(useReadOnlyUser()).toBe(false);
   });
-
-  // mock return value again
 });
