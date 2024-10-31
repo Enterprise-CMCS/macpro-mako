@@ -96,6 +96,31 @@ describe("ActionForm", () => {
     );
   });
 
+  test("renders `attachments.title`", () => {
+    const { queryByText } = renderForm(
+      <ActionForm
+        title="Action Form Title"
+        schema={z.object({
+          attachments: z.object({
+            other: z.object({
+              label: z.string().default("Other"),
+              files: attachmentArraySchemaOptional(),
+            }),
+          }),
+        })}
+        fields={() => null}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        attachments={{ title: "this is an attachments title" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    expect(queryByText("this is an attachments title")).not.toBeInTheDocument();
+  });
+
   test("doesn't render form if user access is denied", () => {
     const { queryByText } = renderForm(
       <ActionForm
@@ -171,6 +196,33 @@ describe("ActionForm", () => {
     expect(
       queryByText(/hello world special instructions./),
     ).toBeInTheDocument();
+  });
+
+  test("renders `attachments.callout`", () => {
+    const { queryByText } = renderForm(
+      <ActionForm
+        title="Action Form Title"
+        schema={z.object({
+          attachments: z.object({
+            other: z.object({
+              files: attachmentArraySchemaOptional(),
+              label: z.string().default("Other"),
+            }),
+          }),
+        })}
+        fields={() => null}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        attachments={{
+          callout: "this is a callout",
+        }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    expect(queryByText(/this is a callout/)).toBeInTheDocument();
   });
 
   test("renders custom `promptOnLeavingForm` when clicking Cancel", async () => {
