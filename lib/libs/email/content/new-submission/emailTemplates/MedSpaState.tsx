@@ -30,7 +30,6 @@ export const MedSpaStateEmail = (props: { variables: Events["NewMedicaidSubmissi
           Summary: variables.additionalInformation,
         }}
       />
-      {/* <Attachments attachments={variables.attachments} /> */}
       <Text style={styles.text.base}>
         {`This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information
