@@ -8,9 +8,9 @@ export const WithdrawPackageActionWaiver = () => {
   const { authority, id } = useParams();
   const { data } = useGetItem(id);
   const waiverActionType = {
-    New: "initial waiver",
-    Renew: "waiver renewal",
-    Amend: "waiver amendment",
+    New: "Initial Waiver",
+    Renew: "Waiver Renewal",
+    Amend: "Waiver Amendment",
   };
 
   return (
