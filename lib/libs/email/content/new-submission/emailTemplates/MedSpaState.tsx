@@ -1,7 +1,7 @@
 import { Events } from "shared-types";
 import { formatNinetyDaysDate, getDateFromMillis } from "shared-utils";
 import { CommonEmailVariables } from "shared-types";
-import { PackageDetails, ContactStateLead, DetailsHeading, Attachments, MailboxNotice } from "../../email-components";
+import { PackageDetails, ContactStateLead, DetailsHeading, MailboxNotice } from "../../email-components";
 import { emailTemplateValue } from "../data";
 import { BaseEmailTemplate } from "../../email-templates";
 import { Text } from "@react-email/components";
@@ -30,7 +30,7 @@ export const MedSpaStateEmail = (props: { variables: Events["NewMedicaidSubmissi
           Summary: variables.additionalInformation,
         }}
       />
-      <Attachments attachments={variables.attachments} />
+      {/* <Attachments attachments={variables.attachments} /> */}
       <Text style={styles.text.base}>
         {`This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information
