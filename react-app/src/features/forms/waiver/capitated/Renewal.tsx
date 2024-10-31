@@ -76,7 +76,11 @@ export const Renewal = () => (
                 Proposed Effective Date of 1915(b) Waiver Renewal <RequiredIndicator />
               </FormLabel>
               <FormControl className="max-w-sm">
-                <DatePicker onChange={field.onChange} date={field.value ? new Date(field.value) : undefined} dataTestId="proposedEffectiveDate" />
+                <DatePicker
+                  onChange={(date) => field.onChange(date.getTime())}
+                  date={field.value ? new Date(field.value) : undefined}
+                  dataTestId="proposedEffectiveDate"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
