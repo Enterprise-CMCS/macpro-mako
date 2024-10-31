@@ -40,10 +40,14 @@ import {
 } from "@/utils/Poller/documentPoller";
 import { API } from "aws-amplify";
 import { Authority, CognitoUserAttributes } from "shared-types";
-import { ActionFormAttachments } from "./ActionFormAttachments";
+import {
+  ActionFormAttachments,
+  AttachmentsOptions,
+} from "./ActionFormAttachments";
 import { getAttachments } from "./actionForm.utilities";
 import { isStateUser } from "shared-utils";
 import { useGetUser } from "@/api";
+
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {
     attachments?: z.ZodObject<{
@@ -75,12 +79,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   bannerPostSubmission?: Omit<Banner, "pathnameToDisplayOn">;
   promptPreSubmission?: Omit<UserPrompt, "onAccept">;
   promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
-  attachments?: {
-    title?: string;
-    callout?: string;
-    instructions?: React.ReactNode;
-    faqLink: string;
-  };
+  attachments?: AttachmentsOptions;
   additionalInformation?:
     | {
         required: boolean;

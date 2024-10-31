@@ -29,25 +29,36 @@ const AttachmentInstructions = ({ fileValidation }) => {
   return null;
 };
 
-type ActionFormAttachmentsProps = {
-  attachmentsFromSchema: [string, z.ZodObject<z.ZodRawShape, "strip">][];
+export type AttachmentsOptions = {
   title?: string;
+  requiredIndicatorForTitle?: boolean;
   instructions?: React.ReactNode;
   callout?: string;
-  faqLink: string;
+  faqLink?: string;
 };
+
+type ActionFormAttachmentsProps = {
+  attachmentsFromSchema: [string, z.ZodObject<z.ZodRawShape, "strip">][];
+} & AttachmentsOptions;
 
 export const ActionFormAttachments = ({
   attachmentsFromSchema,
   title = "Attachments",
+  faqLink,
+  requiredIndicatorForTitle,
   instructions = DEFAULT_ATTACHMENTS_INSTRUCTIONS,
   callout,
-  faqLink,
 }: ActionFormAttachmentsProps) => {
   const form = useFormContext();
 
   return (
-    <SectionCard title={title}>
+    <SectionCard
+      title={
+        <>
+          {title} {requiredIndicatorForTitle && <RequiredIndicator />}
+        </>
+      }
+    >
       <div className="text-gray-700 font-light">
         {callout && <p className="font-medium mb-8">{callout}</p>}
 
