@@ -1,21 +1,13 @@
 import { CommonEmailVariables, Events } from "shared-types";
-import {
-  Attachments,
-  DetailsHeading,
-  LoginInstructions,
-  PackageDetails,
-  BasicFooter,
-} from "../../email-components";
+import { Attachments, DetailsHeading, LoginInstructions, PackageDetails, BasicFooter } from "../../email-components";
 import { emailTemplateValue } from "../data";
 import { BaseEmailTemplate } from "../../email-templates";
+import { getDateFromMillis } from "lib/packages/shared-utils";
 
-export const MedSpaCMSEmail = (props: {
-  variables: Events["NewMedicaidSubmission"] & CommonEmailVariables;
-}) => {
+export const MedSpaCMSEmail = (props: { variables: Events["NewMedicaidSubmission"] & CommonEmailVariables }) => {
   const variables = props.variables;
   const previewText = `Medicaid SPA ${variables.id} Submitted`;
-  const heading =
-    "The OneMAC Submission Portal received a Medicaid SPA Submission:";
+  const heading = "The OneMAC Submission Portal received a Medicaid SPA Submission:";
 
   return (
     <BaseEmailTemplate
@@ -32,7 +24,7 @@ export const MedSpaCMSEmail = (props: {
           Name: variables.submitterName,
           Email: variables.submitterEmail,
           "Medicaid SPA ID": variables.id,
-          "Proposed Effective Date": variables.proposedEffectiveDate,
+          "Proposed Effective Date": getDateFromMillis(variables.proposedEffectiveDate),
           Summary: variables.additionalInformation,
         }}
       />

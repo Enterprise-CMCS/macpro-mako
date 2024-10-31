@@ -1,18 +1,5 @@
-import {
-  Text,
-  Link,
-  Section,
-  Row,
-  Column,
-  Hr,
-  Heading,
-} from "@react-email/components";
-import {
-  Attachment,
-  TextareaProps,
-  AttachmentTitle,
-  AttachmentKey,
-} from "shared-types";
+import { Text, Link, Section, Row, Column, Hr, Heading } from "@react-email/components";
+import { Attachment, TextareaProps, AttachmentTitle, AttachmentKey } from "shared-types";
 import { createRef, forwardRef } from "react";
 import { styles } from "./email-styles";
 // Constants
@@ -36,19 +23,13 @@ interface AttachmentGroup {
 
 // Utility Functions
 const getToAddress = ({ name, email }: EmailAddress): string[] => {
-  const formattedEmail = `"${name}" <${
-    process.env.isDev === "true" ? EMAIL_CONFIG.DEV_EMAIL : email
-  }>`;
+  const formattedEmail = `"${name}" <${process.env.isDev === "true" ? EMAIL_CONFIG.DEV_EMAIL : email}>`;
   return [formattedEmail];
 };
 
-const areAllAttachmentsEmpty = (
-  attachments: Partial<Record<AttachmentTitle, AttachmentGroup | null>>,
-): boolean => {
+const areAllAttachmentsEmpty = (attachments: Partial<Record<AttachmentTitle, AttachmentGroup | null>>): boolean => {
   if (!attachments) return true;
-  return Object.values(attachments).every(
-    (att) => !att || att.files?.length === 0,
-  );
+  return Object.values(attachments).every((att) => !att || att.files?.length === 0);
 };
 
 // Components
@@ -69,21 +50,13 @@ const Textarea: React.FC<TextareaProps> = ({ children }) => (
   </Text>
 );
 
-const LogoContainer = forwardRef<HTMLSpanElement, { url: string }>(
-  ({ url }, ref) => (
-    <header ref={ref} style={styles.logo.container}>
-      <Link href={url} target="_blank" style={styles.logo.link}>
-        <img
-          height={40}
-          width={112}
-          style={{ maxWidth: "112px" }}
-          src={`${url}onemac-logo.png`}
-          alt="OneMAC Logo"
-        />
-      </Link>
-    </header>
-  ),
-);
+const LogoContainer = forwardRef<HTMLSpanElement, { url: string }>(({ url }, ref) => (
+  <header ref={ref} style={styles.logo.container}>
+    <Link href={url} target="_blank" style={styles.logo.link}>
+      <img height={40} width={112} style={{ maxWidth: "112px" }} src={`${url}onemac-logo.png`} alt="OneMAC Logo" />
+    </Link>
+  </header>
+));
 
 const EmailNav: React.FC<{ appEndpointUrl: string }> = ({ appEndpointUrl }) => (
   <Section>
@@ -91,26 +64,21 @@ const EmailNav: React.FC<{ appEndpointUrl: string }> = ({ appEndpointUrl }) => (
   </Section>
 );
 
-const LoginInstructions: React.FC<{ appEndpointURL: string }> = ({
-  appEndpointURL,
-}) => (
+const LoginInstructions: React.FC<{ appEndpointURL: string }> = ({ appEndpointURL }) => (
   <ul style={{ marginLeft: "-20px" }}>
     <li>
       <Text style={styles.text.description}>
-        The submission can be acce.ssed in the OneMAC application at{" "}
-        <Link href={appEndpointURL}>{appEndpointURL}</Link>
+        The submission can be accessed in the OneMAC application at <Link href={appEndpointURL}>{appEndpointURL}</Link>
       </Text>
     </li>
     <li>
       <Text style={styles.text.description}>
-        If not logged in, click "Login" at the top and use your Enterprise User
-        Administration (EUA) credentials.
+        If not logged in, click "Login" at the top and use your Enterprise User Administration (EUA) credentials.
       </Text>
     </li>
     <li>
       <Text style={styles.text.description}>
-        After logging in, you'll see the submission listed on the dashboard.
-        Click its ID number to view details.
+        After logging in, you'll see the submission listed on the dashboard. Click its ID number to view details.
       </Text>
     </li>
   </ul>
@@ -184,9 +152,7 @@ const PackageDetails: React.FC<{
                 Summary:
               </Heading>
             </Text>
-            <Textarea>
-              {value ?? "No additional information submitted"}
-            </Textarea>
+            <Textarea>{value ?? "No additional information submitted"}</Textarea>
           </Row>
         );
       }
@@ -224,12 +190,7 @@ const ContactStateLead: React.FC<{ isChip?: boolean }> = ({ isChip }) => (
   >
     <Text style={{ fontSize: "14px" }}>
       If you have questions or did not expect this email, please contact{" "}
-      <Link
-        href={`mailto:${
-          isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL
-        }`}
-        style={{ color: "#fff", textDecoration: "underline" }}
-      >
+      <Link href={`mailto:${isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}`} style={{ color: "#fff", textDecoration: "underline" }}>
         {isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}
       </Link>{" "}
       or your state lead.
@@ -238,18 +199,12 @@ const ContactStateLead: React.FC<{ isChip?: boolean }> = ({ isChip }) => (
   </Section>
 );
 
-export const EmailFooter: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => <Section style={styles.section.footer}>{children}</Section>;
+export const EmailFooter: React.FC<{ children: React.ReactNode }> = ({ children }) => <Section style={styles.section.footer}>{children}</Section>;
 
 const BasicFooter: React.FC = () => (
   <EmailFooter>
-    <Text style={styles.text.footer}>
-      {`U.S. Centers for Medicare & Medicaid Services`}
-    </Text>
-    <Text style={styles.text.footer}>
-      {`© ${new Date().getFullYear()} | 7500 Security Boulevard, Baltimore, MD 21244 | cms.gov`}
-    </Text>
+    <Text style={styles.text.footer}>{`U.S. Centers for Medicare & Medicaid Services`}</Text>
+    <Text style={styles.text.footer}>{`© ${new Date().getFullYear()} | 7500 Security Boulevard, Baltimore, MD 21244 | cms.gov`}</Text>
   </EmailFooter>
 );
 
@@ -260,9 +215,8 @@ const WithdrawRAI: React.FC<{
 }> = ({ id, submitterName, submitterEmail }) => (
   <Section>
     <Heading as="h2">
-      The OneMAC Submission Portal received a request to withdraw the Formal RAI
-      Response. You are receiving this email notification as the Formal RAI for{" "}
-      {id} was withdrawn by {submitterName} {submitterEmail}.
+      The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are receiving this email notification as the Formal RAI
+      for {id} was withdrawn by {submitterName} {submitterEmail}.
     </Heading>
   </Section>
 );
@@ -277,9 +231,7 @@ const getSrtEmails = (item: any): string[] => {
   const reviewTeam = item._source.reviewTeam;
   if (!reviewTeam) return [];
 
-  return reviewTeam.map(
-    (reviewer: any) => `${reviewer.name} <${reviewer.email}>`,
-  );
+  return reviewTeam.map((reviewer: any) => `${reviewer.name} <${reviewer.email}>`);
 };
 
 export {

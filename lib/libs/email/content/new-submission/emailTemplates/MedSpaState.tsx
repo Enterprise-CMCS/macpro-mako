@@ -1,25 +1,16 @@
 import { Events } from "shared-types";
-import { formatDate, formatNinetyDaysDate } from "shared-utils";
+import { formatNinetyDaysDate, getDateFromMillis } from "shared-utils";
 import { CommonEmailVariables } from "shared-types";
-import {
-  PackageDetails,
-  ContactStateLead,
-  DetailsHeading,
-  Attachments,
-  MailboxNotice,
-} from "../../email-components";
+import { PackageDetails, ContactStateLead, DetailsHeading, Attachments, MailboxNotice } from "../../email-components";
 import { emailTemplateValue } from "../data";
 import { BaseEmailTemplate } from "../../email-templates";
 import { Text } from "@react-email/components";
 import { styles } from "../../email-styles";
 
-export const MedSpaStateEmail = (props: {
-  variables: Events["NewMedicaidSubmission"] & CommonEmailVariables;
-}) => {
+export const MedSpaStateEmail = (props: { variables: Events["NewMedicaidSubmission"] & CommonEmailVariables }) => {
   const variables = props.variables;
   const previewText = `Medicaid SPA &${variables.id} Submitted`;
-  const heading =
-    "This response confirms that you submitted a Medicaid SPA to CMS for review:";
+  const heading = "This response confirms that you submitted a Medicaid SPA to CMS for review:";
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -34,9 +25,7 @@ export const MedSpaStateEmail = (props: {
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
           "Medicaid SPA ID": variables.id,
-          "Proposed Effective Date": formatDate(
-            variables.proposedEffectiveDate,
-          ),
+          "Proposed Effective Date": getDateFromMillis(variables.proposedEffectiveDate),
           "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
           Summary: variables.additionalInformation,
         }}

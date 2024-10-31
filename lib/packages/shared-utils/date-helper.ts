@@ -1,4 +1,5 @@
 import * as dateFns from "date-fns";
+import { DateTime } from "luxon";
 export function formatDate(date: number | null | undefined) {
   if (!date || date === undefined) {
     return "Pending";
@@ -17,3 +18,8 @@ export function formatNinetyDaysDate(date: number | null | undefined): string {
     );
   }
 }
+
+export const getDateFromMillis = (D: number | Date) =>
+  typeof D === "number"
+    ? DateTime.fromMillis(D).toFormat("LLL dd yyyy")
+    : DateTime.fromJSDate(D).toFormat("LLL dd yyyy");

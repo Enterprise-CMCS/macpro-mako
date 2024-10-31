@@ -1,8 +1,5 @@
 import { z } from "zod";
-import {
-  attachmentArraySchema,
-  attachmentArraySchemaOptional,
-} from "../attachments";
+import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
 
 export const appkSchema = z.object({
   id: z.string(),
@@ -12,7 +9,7 @@ export const appkSchema = z.object({
   }),
   actionType: z.string().default("New"),
   waiverIds: z.array(z.string()).min(1),
-  proposedEffectiveDate: z.date(),
+  proposedEffectiveDate: z.union([z.number(), z.date()]),
   seaActionType: z.string().default("Amend"),
   title: z.string().trim().min(1, { message: "Required" }),
   attachments: z.object({

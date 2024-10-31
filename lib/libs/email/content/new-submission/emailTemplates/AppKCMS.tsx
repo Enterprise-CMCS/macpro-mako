@@ -1,22 +1,14 @@
 import { Events, CommonEmailVariables } from "shared-types";
 
-import {
-  LoginInstructions,
-  PackageDetails,
-  BasicFooter,
-  DetailsHeading,
-  Attachments,
-} from "../../email-components";
+import { LoginInstructions, PackageDetails, BasicFooter, DetailsHeading, Attachments } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { emailTemplateValue } from "../data";
-import { DateTime } from "luxon";
+import { getDateFromMillis } from "shared-utils";
 
 type AppKEmailProps = Events["NewAppKSubmission"] & CommonEmailVariables;
 
 // 1915c - app K
-export const AppKCMSEmail: React.FC<{ variables: AppKEmailProps }> = ({
-  variables,
-}) => {
+export const AppKCMSEmail: React.FC<{ variables: AppKEmailProps }> = ({ variables }) => {
   return (
     <BaseEmailTemplate
       previewText="Appendix K Amendment Submitted"
@@ -32,9 +24,7 @@ export const AppKCMSEmail: React.FC<{ variables: AppKEmailProps }> = ({
           "Amendment Title": variables.title ?? null,
           "Waiver Amendment Number": variables.id,
           "Waiver Authority": variables.seaActionType,
-          "Proposed Effective Date": DateTime.fromMillis(
-            Number(variables.proposedEffectiveDate),
-          ).toFormat("DDDD"),
+          "Proposed Effective Date": getDateFromMillis(variables.proposedEffectiveDate),
           Summary: variables.additionalInformation,
         }}
       />

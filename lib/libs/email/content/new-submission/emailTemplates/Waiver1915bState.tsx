@@ -1,21 +1,12 @@
-import { DateTime } from "luxon";
 import { emailTemplateValue } from "../data";
 import { CommonEmailVariables } from "shared-types";
-import { formatNinetyDaysDate } from "shared-utils";
+import { formatNinetyDaysDate, getDateFromMillis } from "shared-utils";
 import { Text } from "@react-email/components";
-import {
-  PackageDetails,
-  ContactStateLead,
-  DetailsHeading,
-  Attachments,
-  MailboxNotice,
-} from "../../email-components";
+import { PackageDetails, ContactStateLead, DetailsHeading, Attachments, MailboxNotice } from "../../email-components";
 import { styles } from "../../email-styles";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const Waiver1915bStateEmail = (props: {
-  variables: any & CommonEmailVariables;
-}) => {
+export const Waiver1915bStateEmail = (props: { variables: any & CommonEmailVariables }) => {
   const variables = props.variables;
   const previewText = `${variables.authority} ${variables.actionType} Submitted`;
   const heading = `This response confirms the submission of your ${variables.authority} ${variables.actionType} to CMS for review:`;
@@ -34,9 +25,7 @@ export const Waiver1915bStateEmail = (props: {
           "Email Address": variables.submitterEmail,
           [`${variables.actionType} Number`]: variables.id,
           "Waiver Authority": variables.authority,
-          "Proposed Effective Date": DateTime.fromMillis(
-            Number(variables.proposedEffectiveDate),
-          ).toFormat("DDDD"),
+          "Proposed Effective Date": getDateFromMillis(variables.proposedEffectiveDate),
           "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
           Summary: variables.additionalInformation,
         }}

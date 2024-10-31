@@ -1,25 +1,15 @@
-import { DateTime } from "luxon";
 import { Text } from "@react-email/components";
 import { CommonEmailVariables, Events } from "shared-types";
-import { formatNinetyDaysDate } from "shared-utils";
-import {
-  PackageDetails,
-  ContactStateLead,
-  DetailsHeading,
-  Attachments,
-  MailboxNotice,
-} from "../../email-components";
+import { formatNinetyDaysDate, getDateFromMillis } from "shared-utils";
+import { PackageDetails, ContactStateLead, DetailsHeading, Attachments, MailboxNotice } from "../../email-components";
 import { emailTemplateValue } from "../data";
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
-export const AppKStateEmail = (props: {
-  variables: Events["NewAppKSubmission"] & CommonEmailVariables;
-}) => {
+export const AppKStateEmail = (props: { variables: Events["NewAppKSubmission"] & CommonEmailVariables }) => {
   const variables = props.variables;
   const previewText = `Appendix K Amendment Submitted`;
-  const heading =
-    "This response confirms the submission of your 1915(c) Waiver to CMS for review:";
+  const heading = "This response confirms the submission of your 1915(c) Waiver to CMS for review:";
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -35,9 +25,7 @@ export const AppKStateEmail = (props: {
           "Email Address": variables.submitterEmail,
           "Initial Waiver Numbers": variables.waiverIds.join(", "),
           "Waiver Authority": variables.seaActionType,
-          "Proposed Effective Date": DateTime.fromMillis(
-            Number(variables.proposedEffectiveDate),
-          ).toFormat("DDDD"),
+          "Proposed Effective Date": getDateFromMillis(variables.proposedEffectiveDate),
           "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
           Summary: variables.additionalInformation,
         }}
