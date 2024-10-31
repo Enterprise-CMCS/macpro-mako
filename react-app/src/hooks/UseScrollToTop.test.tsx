@@ -12,7 +12,4 @@ describe("UseScrollToTop", () => {
 
     scrollToSpy.mockRestore();
   });
-
-  //The actual effect of window.scrollTo on scrollY is not visible in the test environment.
-  // Thus, you simulate the expected outcome by directly modifying scrollY after the hook is invoked.
 });
