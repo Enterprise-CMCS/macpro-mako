@@ -92,6 +92,7 @@ export const Pagination: FC<Props> = (props) => {
                       }
                       className="absolute w-auto h-auto opacity-0 cursor-pointer"
                       aria-labelledby="morePagesButton"
+                      data-testid="morePagesButton"
                       id="pagesDropdown"
                     >
                       {PAGE.map((P) => (
