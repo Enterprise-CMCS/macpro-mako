@@ -53,15 +53,15 @@ describe("Timeout Modal", () => {
     );
     expect(sessionExpirationWarning).toBeInTheDocument();
 
-    // const extendBtn = screen.getByText(/Yes, extend session/i);
-    // expect(extendBtn).toBeInTheDocument();
+    const extendBtn = screen.getByText(/Yes, extend session/i);
+    expect(extendBtn).toBeInTheDocument();
 
-    // await userEvent.click(extendBtn);
-    // await waitFor(() => {
-    //   expect(
-    //     screen.queryByText(/Your session will expire in/i),
-    //   ).not.toBeInTheDocument();
-    // });
+    await userEvent.click(extendBtn);
+    await waitFor(() => {
+      expect(
+        screen.queryByText(/Your session will expire in/i),
+      ).not.toBeInTheDocument();
+    });
   });
 
   it("closes the modal if user clicks sign out", async () => {
