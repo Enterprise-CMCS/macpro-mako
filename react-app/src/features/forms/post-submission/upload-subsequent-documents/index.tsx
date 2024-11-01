@@ -4,6 +4,10 @@ import {
   PackageSection,
   SchemaWithEnforcableProps,
 } from "@/components";
+import {
+  AttachmentFAQInstructions,
+  AttachmentFileFormatInstructions,
+} from "@/components/ActionForm/actionForm.components";
 import { formSchemas } from "@/formSchemas";
 import { Navigate, useParams } from "react-router-dom";
 import { z } from "zod";
@@ -100,6 +104,11 @@ export const UploadSubsequentDocuments = () => {
       attachments={{
         title: "Subsequent Medicaid SPA Documents",
         requiredIndicatorForTitle: true,
+        instructions: [
+          <AttachmentFAQInstructions />,
+          <AttachmentFileFormatInstructions />,
+          <p>At least one attachment is required to submit.</p>,
+        ],
       }}
       documentPollerArgs={{
         property: "id",
