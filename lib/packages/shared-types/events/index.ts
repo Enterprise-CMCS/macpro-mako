@@ -1,5 +1,6 @@
 import { z } from "zod";
 import * as newMedicaidSubmission from "./new-medicaid-submission";
+import * as uploadSubsequentDocuments from "./upload-subsequent-documents";
 import * as newChipSubmission from "./new-chip-submission";
 import * as capitatedAmendment from "./capitated-amendment";
 import * as capitatedIntial from "./capitated-initial";
@@ -37,6 +38,7 @@ export const events = {
   "withdraw-rai": withdrawRai,
   "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
+  "upload-subsequent-documents": uploadSubsequentDocuments,
 };
 
 export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;
