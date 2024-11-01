@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { attachmentSchema } from "../attachments";
+import { attachmentArraySchemaOptional } from "../attachments";
 
 export const baseSchema = z.object({
   event: z
@@ -9,7 +9,7 @@ export const baseSchema = z.object({
   attachments: z.record(
     z.string(),
     z.object({
-      files: attachmentSchema,
+      files: attachmentArraySchemaOptional(),
       label: z.string(),
     }),
   ),
