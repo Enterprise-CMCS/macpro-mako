@@ -22,6 +22,7 @@ import {
   withdrawRai,
   toggleWithdrawRai,
   respondToRai,
+  uploadSubsequentDocuments,
 } from "./transforms";
 
 // legacy
@@ -38,11 +39,6 @@ export type Document = z.infer<capitatedAmendment.Schema> &
   z.infer<temporaryExtension.Schema> &
   z.infer<legacyEvent.Schema> &
   z.infer<legacyAdminChange.Schema>;
-
-// & {
-//   appkParentId: string;
-//   appkParent: boolean;
-// };
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
@@ -71,4 +67,5 @@ export const transforms = {
   "withdraw-rai": withdrawRai,
   "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
+  "upload-subsequent-transforms": uploadSubsequentDocuments,
 };
