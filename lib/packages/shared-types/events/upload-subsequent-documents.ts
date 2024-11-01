@@ -6,7 +6,13 @@ export const baseSchema = z.object({
     .literal("upload-subsequent-documents")
     .default("upload-subsequent-documents"),
   additionalInformation: z.string().max(4000).default(null),
-  attachments: z.array(attachmentSchema),
+  attachments: z.record(
+    z.string(),
+    z.object({
+      files: attachmentSchema,
+      label: z.string(),
+    }),
+  ),
   id: z.string(),
 });
 
