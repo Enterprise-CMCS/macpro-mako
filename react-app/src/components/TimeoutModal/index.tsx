@@ -27,6 +27,7 @@ export const TimeoutModal = () => {
   const { data: user } = useGetUser();
 
   const onLogOut = () => {
+    setIsModalOpen(false);
     Auth.signOut();
   };
 
