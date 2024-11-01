@@ -27,7 +27,7 @@ export const uploadSubsequentDocuments = async (event: APIGatewayEvent) => {
   const submitterEmail = userAttr.email;
   const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
 
-  const transformedData = events["new-chip-submission"].schema.parse({
+  const transformedData = events["upload-subsequent-documents"].schema.parse({
     ...parsedResult.data,
     submitterName,
     submitterEmail,

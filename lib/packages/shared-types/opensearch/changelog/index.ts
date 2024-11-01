@@ -67,5 +67,5 @@ export const transforms = {
   "withdraw-rai": withdrawRai,
   "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
-  "upload-subsequent-transforms": uploadSubsequentDocuments,
+  "upload-subsequent-documents": uploadSubsequentDocuments,
 };
