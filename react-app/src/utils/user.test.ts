@@ -4,19 +4,21 @@ import { isCmsUser, isStateUser } from "shared-utils";
 import { getUserStateCodes, isAuthorizedState } from "./user";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { type CognitoUserAttributes } from "shared-types/user";
-import {
-  testCMSCognitoUser,
-  testStateCognitoUser,
-} from "shared-utils/testData";
 
 // Mock users with different roles
 const cmsReviewerUser = {
-  ...testCMSCognitoUser.user,
   "custom:cms-roles": "onemac-micro-reviewer",
 };
-const stateSubmitterUser = {
-  ...testStateCognitoUser.user,
+
+const stateSubmitterUser: CognitoUserAttributes = {
+  sub: "12345678-1234-1234-1234-123456789012",
+  email_verified: true,
   "custom:state": "CA",
+  email: "stateuser@example.com",
+  given_name: "State",
+  family_name: "User",
+  "custom:cms-roles": "",
+  username: "stateuser",
 };
 
 // Partial mock setup
@@ -75,7 +77,9 @@ describe("isAuthorizedState", () => {
   });
 
   it("should return true if the user is authorized", async () => {
-    vi.mocked(getUser).mockResolvedValue({ user: stateSubmitterUser });
+    vi.mocked(getUser).mockResolvedValue({
+      user: stateSubmitterUser as CognitoUserAttributes,
+    });
     expect(await isAuthorizedState("CA-1234.R00.00")).toBe(true);
   });
 
