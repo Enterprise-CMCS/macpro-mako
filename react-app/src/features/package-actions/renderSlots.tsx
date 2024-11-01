@@ -2,6 +2,7 @@ import {
   FormDescription,
   FormItem,
   FormLabel,
+  FormMessage,
   RequiredIndicator,
   Textarea,
   Upload,
@@ -85,6 +86,7 @@ export const SlotAdditionalInfo = <
           className="h-[200px] resize-none"
           id="additional-info"
         />
+        <FormMessage />
         <FormDescription>
           <span
             tabIndex={0}
