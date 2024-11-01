@@ -37,7 +37,8 @@ export type Document = z.infer<capitatedAmendment.Schema> &
   z.infer<newMedicaidSubmission.Schema> &
   z.infer<temporaryExtension.Schema> &
   z.infer<legacyEvent.Schema> &
-  z.infer<legacyAdminChange.Schema>;
+  z.infer<legacyAdminChange.Schema> &
+  z.infer<toggleWithdrawRai.Schema>;
 
 // & {
 //   appkParentId: string;
