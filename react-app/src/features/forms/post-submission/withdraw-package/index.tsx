@@ -2,14 +2,15 @@ import { useGetItem } from "@/api";
 import { ActionForm, PackageSection } from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { useParams } from "react-router-dom";
+import { SEATOOL_STATUS } from "shared-types";
 
 export const WithdrawPackageActionWaiver = () => {
   const { authority, id } = useParams();
   const { data } = useGetItem(id);
   const waiverActionType = {
-    New: "initial waiver",
-    Renew: "waiver renewal",
-    Amend: "waiver amendment",
+    New: "Initial Waiver",
+    Renew: "Waiver Renewal",
+    Amend: "Waiver Amendment",
   };
 
   return (
@@ -135,7 +136,7 @@ export const WithdrawPackageActionChip = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) => check.hasStatus(SEATOOL_STATUS.WITHDRAWN),
       }}
       breadcrumbText="Withdraw Package"
       additionalInformation={{
@@ -144,6 +145,7 @@ export const WithdrawPackageActionChip = () => {
         label: "Explain your need for withdrawal.",
       }}
       formDescription="Complete this form to withdraw a package. Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email."
+      preSubmissionMessage="Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email."
       promptPreSubmission={{
         acceptButtonText: "Yes, withdraw package",
         header: "Withdraw package?",

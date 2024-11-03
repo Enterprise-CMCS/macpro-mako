@@ -13,6 +13,7 @@ export const transform = () => {
       stateStatus,
       finalDispositionDate: new Date(data.timestamp).toISOString(),
       seatoolStatus: SEATOOL_STATUS.WITHDRAWN,
+      initialIntakeNeeded: false,
       locked: true,
     };
   });
