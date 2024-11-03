@@ -42,7 +42,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -60,7 +59,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -118,7 +116,7 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByText("this is an attachments title")).not.toBeInTheDocument();
+    expect(queryByText("this is an attachments title")).toBeInTheDocument();
   });
 
   test("doesn't render form if user access is denied", () => {
@@ -159,7 +157,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         defaultValues={{ id: "default value for id" }}
         breadcrumbText="Example Breadcrumb"
       />,
@@ -186,8 +183,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{
-          faqLink: "",
-          instructions: "hello world special instructions.",
+          instructions: [<>hello world special instructions.</>],
         }}
         breadcrumbText="Example Breadcrumb"
       />,
@@ -235,9 +231,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{
-          faqLink: "",
-        }}
         promptOnLeavingForm={{
           header: "Hello World Header",
           body: "Hello World Body",
@@ -272,9 +265,6 @@ describe("ActionForm", () => {
         documentPollerArgs={{
           property: () => "id",
           documentChecker: () => true,
-        }}
-        attachments={{
-          faqLink: "",
         }}
         defaultValues={{ id: "hello world" }}
         promptPreSubmission={{
@@ -315,9 +305,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: documentCheckerFunc,
         }}
-        attachments={{
-          faqLink: "",
-        }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -352,9 +339,6 @@ describe("ActionForm", () => {
         bannerPostSubmission={{
           header: "Hello World Header",
           body: "Hello World Body",
-        }}
-        attachments={{
-          faqLink: "",
         }}
         breadcrumbText="Example Breadcrumb"
       />,
@@ -399,9 +383,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{
-          faqLink: "",
-        }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -423,7 +404,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -441,7 +421,7 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
+        additionalInformation={false}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -466,7 +446,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -485,7 +464,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -510,7 +488,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -533,7 +510,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -551,7 +527,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -574,7 +549,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -602,7 +576,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -627,7 +600,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
