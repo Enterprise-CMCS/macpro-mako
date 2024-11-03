@@ -495,7 +495,7 @@ describe("ActionForm", () => {
     expect(queryAllByText(PROGRESS_REMINDER).length).toBe(2);
   });
 
-  test("renders ProgressReminder if `fields` property is defined", () => {
+  test("renders ProgressReminder if `areFieldsRequired` property is undefined", () => {
     const { queryAllByText } = renderForm(
       <ActionForm
         title="Action Form Title"
@@ -517,7 +517,7 @@ describe("ActionForm", () => {
     expect(queryAllByText(PROGRESS_REMINDER).length).toBe(2);
   });
 
-  test("doesn't render ProgressReminder `fields` is undefined and `attachments` isn't defined in schema", () => {
+  test("doesn't render ProgressReminder if `areFieldsRequired` is false", () => {
     const { queryByText } = renderForm(
       <ActionForm
         title="Action Form Title"
@@ -528,6 +528,7 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         breadcrumbText="Example Breadcrumb"
+        areFieldsRequired={false}
       />,
     );
 

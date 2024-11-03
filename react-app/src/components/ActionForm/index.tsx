@@ -100,7 +100,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   formDescription?: string;
   preSubmissionMessage?: string;
   showPreSubmissionMessage?: boolean;
-  requiredFields?: boolean;
+  areFieldsRequired?: boolean;
 };
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
@@ -137,7 +137,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     title: "Additional Information",
   },
   showPreSubmissionMessage = true,
-  requiredFields = true,
+  areFieldsRequired = true,
 }: ActionFormProps<Schema>) => {
   const { id, authority } = useParams<{
     id: string;
@@ -196,11 +196,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
 
-  const hasProgressLossReminder =
-    Fields({ ...form }) !== null || attachmentsFromSchema.length > 0;
-
-  const areRequiredFields = requiredFields && hasProgressLossReminder;
-
   const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some(
     (condition) => condition(userObj.user),
   );
@@ -234,8 +229,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           ) : (
             <SectionCard title={title}>
               <div>
-                {areRequiredFields && <RequiredFieldDescription />}
-                <ActionFormDescription boldReminder={areRequiredFields}>
+                {areFieldsRequired && <RequiredFieldDescription />}
+                <ActionFormDescription boldReminder={areFieldsRequired}>
                   {formDescription}
                 </ActionFormDescription>
               </div>
@@ -269,7 +264,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           )}
           {showPreSubmissionMessage && (
             <PreSubmissionMessage
-              hasProgressLossReminder={hasProgressLossReminder}
+              hasProgressLossReminder={areFieldsRequired}
               preSubmissionMessage={preSubmissionMessage}
             />
           )}

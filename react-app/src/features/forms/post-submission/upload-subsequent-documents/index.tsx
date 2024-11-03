@@ -100,6 +100,7 @@ export const UploadSubsequentDocuments = () => {
       bannerPostSubmission={{
         header: "Documents submitted",
         body: "CMS reviewers will follow up by email if additional information is needed",
+        variant: "success",
       }}
       attachments={{
         title: "Subsequent Medicaid SPA Documents",
