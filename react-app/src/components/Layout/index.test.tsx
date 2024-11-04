@@ -1,10 +1,26 @@
 import { describe, it, expect, beforeAll, vi } from "vitest";
 import { Layout } from "./index";
 import { render } from "@testing-library/react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-// Mock the useGetUser hook
+// Mock components
+vi.mock("../UsaBanner", () => ({
+  UsaBanner: () => null,
+}));
+
+vi.mock("../Footer", () => ({
+  Footer: () => null,
+}));
+
+vi.mock("@/components", () => ({
+  SimplePageContainer: ({ children }: { children: React.ReactNode }) =>
+    children,
+  UserPrompt: () => null,
+  Banner: () => null,
+}));
+
+// Mock the API module
 vi.mock("@/api", () => ({
   useGetUser: () => ({
     isLoading: false,
@@ -13,6 +29,13 @@ vi.mock("@/api", () => ({
       user: null,
     },
   }),
+  getUser: vi.fn().mockResolvedValue({ user: null }),
+}));
+
+// Mock features
+vi.mock("@/features/welcome", () => ({
+  Welcome: () => null,
+  loader: () => ({ error: null }),
 }));
 
 const queryClient = new QueryClient({
@@ -23,13 +46,24 @@ const queryClient = new QueryClient({
   },
 });
 
-const router = createBrowserRouter([
+const routes = [
   {
     path: "/",
     element: <Layout />,
-    loader: () => ({ error: null }),
+    errorElement: <div>Error</div>,
+    children: [
+      {
+        index: true,
+        element: <div>Welcome</div>,
+      },
+    ],
   },
-]);
+];
+
+const router = createMemoryRouter(routes, {
+  initialEntries: ["/"],
+  initialIndex: 0,
+});
 
 const renderWithProviders = () => {
   return render(
