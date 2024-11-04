@@ -13,15 +13,14 @@ import { testStateCognitoUser } from "shared-utils/testData";
 import { OneMacUser } from "@/api/useGetUser";
 import { Auth } from "aws-amplify";
 
-// Mock components
-vi.mock("../UsaBanner", () => ({
-  UsaBanner: () => null,
-}));
+/**
+ * Mock Configurations
+ * -------------------
+ */
 
-vi.mock("../Footer", () => ({
-  Footer: () => null,
-}));
-
+// Component mocks
+vi.mock("../UsaBanner", () => ({ UsaBanner: () => null }));
+vi.mock("../Footer", () => ({ Footer: () => null }));
 vi.mock("@/components", () => ({
   SimplePageContainer: ({ children }: { children: React.ReactNode }) =>
     children,
@@ -29,58 +28,17 @@ vi.mock("@/components", () => ({
   Banner: () => null,
 }));
 
-// Complete mock user response with all required UseQueryResult properties
-const mockUserResponse: UseQueryResult<OneMacUser, unknown> = {
-  data: testStateCognitoUser,
-  error: null,
-  isError: false,
-  isLoading: false,
-  isLoadingError: false,
-  isRefetchError: false,
-  isSuccess: true,
-  status: "success",
-  dataUpdatedAt: Date.now(),
-  errorUpdatedAt: 0,
-  failureCount: 0,
-  failureReason: null,
-  errorUpdateCount: 0,
-  fetchStatus: "idle",
-  isInitialLoading: false,
-  isPaused: false,
-  isPlaceholderData: false,
-  isPreviousData: false,
-  isRefetching: false,
-  isStale: false,
-  isFetched: true,
-  isFetchedAfterMount: true,
-  isFetching: false,
-  refetch: vi.fn(),
-  remove: vi.fn(),
-};
-
-// Add logged out mock response
-const mockLoggedOutResponse: UseQueryResult<OneMacUser, unknown> = {
-  ...mockUserResponse,
-  data: {
-    user: null,
-    isCms: false,
-  },
-};
-
-// Mock the API module
+// API and Auth mocks
 vi.mock("@/api", () => ({
   useGetUser: vi.fn(() => mockUserResponse),
   getUser: vi.fn().mockResolvedValue({ user: null }),
 }));
 
-// Mock Auth
 vi.mock("aws-amplify", () => ({
-  Auth: {
-    signOut: vi.fn(),
-  },
+  Auth: { signOut: vi.fn() },
 }));
 
-// Add navigation mock
+// Navigation mock
 const mockNavigate = vi.fn();
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual<typeof import("react-router-dom")>(
@@ -92,43 +50,118 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
+/**
+ * Test Data
+ * ---------
+ */
+
+// Base query result for all user responses
+const baseQueryResult: Partial<UseQueryResult> = {
+  error: null,
+  isError: false,
+  isLoading: false,
+  status: "success",
+  fetchStatus: "idle",
+  isSuccess: true,
+};
+
+// User response mocks
+const mockUserResponse: UseQueryResult<OneMacUser, unknown> = {
+  ...baseQueryResult,
+  data: testStateCognitoUser,
+} as UseQueryResult<OneMacUser, unknown>;
+
+const mockLoggedOutResponse: UseQueryResult<OneMacUser, unknown> = {
+  ...baseQueryResult,
+  data: { user: null, isCms: false },
+} as UseQueryResult<OneMacUser, unknown>;
+
+/**
+ * View Mode Configuration
+ * ----------------------
+ */
+
+const VIEW_MODES = {
+  DESKTOP: { desktop: true, mobile: false },
+  MOBILE: { desktop: false, mobile: true },
+} as const;
+
+type ViewMode = (typeof VIEW_MODES)[keyof typeof VIEW_MODES];
+
+// Helper to configure media query mocks based on view mode
+const mockMediaQuery = (viewMode: ViewMode) => {
+  window.matchMedia = vi.fn().mockImplementation((query) => ({
+    matches:
+      query === "(min-width: 768px)" ? viewMode.desktop : viewMode.mobile,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  }));
+};
+
+/**
+ * Test Setup Helpers
+ * ------------------
+ */
+
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-    },
-  },
+  defaultOptions: { queries: { retry: false } },
 });
 
-const routes = [
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
+// Router setup with basic routes
+const createTestRouter = () =>
+  createMemoryRouter(
+    [
       {
-        index: true,
-        element: <div>Welcome</div>,
-      },
-      {
-        path: "profile",
-        element: <div>Profile Page</div>,
+        path: "/",
+        element: <Layout />,
+        children: [
+          { index: true, element: <div>Welcome</div> },
+          { path: "profile", element: <div>Profile Page</div> },
+        ],
       },
     ],
-  },
-];
+    { initialEntries: ["/"], initialIndex: 0 },
+  );
 
-const router = createMemoryRouter(routes, {
-  initialEntries: ["/"],
-  initialIndex: 0,
-});
-
+// Render helper with all required providers
 const renderWithProviders = () => {
   return render(
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <RouterProvider router={createTestRouter()} />
     </QueryClientProvider>,
   );
 };
+
+// Test setup helpers
+const setupTest = (viewMode: ViewMode = VIEW_MODES.DESKTOP) => {
+  mockMediaQuery(viewMode);
+  return renderWithProviders();
+};
+
+const setupUserDropdownTest = async (
+  viewMode: ViewMode = VIEW_MODES.DESKTOP,
+) => {
+  setupTest(viewMode);
+
+  if (!viewMode.desktop) {
+    await userEvent.click(screen.getByRole("button"));
+  }
+
+  const myAccountButton = screen.getByText("My Account");
+  await userEvent.click(myAccountButton);
+
+  return { myAccountButton };
+};
+
+/**
+ * Tests
+ * -----
+ */
 
 beforeAll(() => {
   // Mock window.matchMedia
@@ -158,102 +191,38 @@ describe("Layout", () => {
   describe("UserDropdownMenu", () => {
     beforeEach(() => {
       vi.mocked(useGetUser).mockReturnValue(mockUserResponse);
-
-      // Mock window.matchMedia for desktop view by default
-      window.matchMedia = vi.fn().mockImplementation((query) => ({
-        matches: query === "(min-width: 768px)",
-        media: query,
-        onchange: null,
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-        dispatchEvent: vi.fn(),
-      }));
     });
 
-    it("renders UserDropdownMenu for logged-in user in desktop view", async () => {
-      renderWithProviders();
+    it.each([
+      ["desktop", VIEW_MODES.DESKTOP],
+      ["mobile", VIEW_MODES.MOBILE],
+    ])(
+      "renders UserDropdownMenu for logged-in user in %s view",
+      async (_, viewMode) => {
+        await setupUserDropdownTest(viewMode);
 
-      const myAccountButton = screen.getByText("My Account");
-      expect(myAccountButton).toBeInTheDocument();
-
-      await userEvent.click(myAccountButton);
-
-      expect(screen.getByText("View Profile")).toBeInTheDocument();
-      expect(screen.getByText("Sign Out")).toBeInTheDocument();
-    });
-
-    it("renders UserDropdownMenu for logged-in user in mobile view", async () => {
-      // Override matchMedia for mobile view
-      window.matchMedia = vi.fn().mockImplementation((query) => ({
-        matches: query !== "(min-width: 768px)",
-        media: query,
-        onchange: null,
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-        dispatchEvent: vi.fn(),
-      }));
-
-      renderWithProviders();
-
-      // Click hamburger menu first
-      const menuButton = screen.getByRole("button");
-      await userEvent.click(menuButton);
-
-      const myAccountButton = screen.getByText("My Account");
-      expect(myAccountButton).toBeInTheDocument();
-
-      await userEvent.click(myAccountButton);
-
-      expect(screen.getByText("View Profile")).toBeInTheDocument();
-      expect(screen.getByText("Sign Out")).toBeInTheDocument();
-    });
+        expect(screen.getByText("View Profile")).toBeInTheDocument();
+        expect(screen.getByText("Sign Out")).toBeInTheDocument();
+      },
+    );
   });
 
   describe("UserDropdownMenu actions", () => {
     beforeEach(() => {
       vi.mocked(useGetUser).mockReturnValue(mockUserResponse);
       mockNavigate.mockClear();
-      window.matchMedia = vi.fn().mockImplementation((query) => ({
-        matches: query === "(min-width: 768px)",
-        media: query,
-        onchange: null,
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-        dispatchEvent: vi.fn(),
-      }));
+      mockMediaQuery(VIEW_MODES.DESKTOP);
     });
 
     it("navigates to profile page when View Profile is clicked", async () => {
-      renderWithProviders();
-
-      const myAccountButton = screen.getByText("My Account");
-      await userEvent.click(myAccountButton);
-
-      const viewProfileButton = screen.getByText("View Profile");
-      await userEvent.click(viewProfileButton);
-
-      // Check if navigation was called with correct path
+      await setupUserDropdownTest();
+      await userEvent.click(screen.getByText("View Profile"));
       expect(mockNavigate).toHaveBeenCalledWith("/profile");
     });
 
     it("calls Auth.signOut when Sign Out is clicked", async () => {
-      renderWithProviders();
-
-      // Open dropdown menu
-      const myAccountButton = screen.getByText("My Account");
-      await userEvent.click(myAccountButton);
-
-      // Click Sign Out
-      const signOutButton = screen.getByText("Sign Out");
-      await userEvent.click(signOutButton);
-
-      // Verify Auth.signOut was called
+      await setupUserDropdownTest();
+      await userEvent.click(screen.getByText("Sign Out"));
       expect(Auth.signOut).toHaveBeenCalled();
     });
   });
@@ -264,48 +233,22 @@ describe("Layout", () => {
       mockNavigate.mockClear();
     });
 
-    it("renders Sign In and Register buttons in desktop view", () => {
-      // Mock desktop view
-      window.matchMedia = vi.fn().mockImplementation((query) => ({
-        matches: query === "(min-width: 768px)",
-        media: query,
-        onchange: null,
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-        dispatchEvent: vi.fn(),
-      }));
+    it.each([
+      ["desktop", VIEW_MODES.DESKTOP],
+      ["mobile", VIEW_MODES.MOBILE],
+    ])(
+      "renders Sign In and Register buttons in %s view",
+      async (_, viewMode) => {
+        setupTest(viewMode);
 
-      renderWithProviders();
+        if (!viewMode.desktop) {
+          await userEvent.click(screen.getByRole("button"));
+        }
 
-      expect(screen.getByTestId("sign-in-button-d")).toBeInTheDocument();
-      expect(screen.getByTestId("register-button-d")).toBeInTheDocument();
-      expect(screen.queryByText("My Account")).not.toBeInTheDocument();
-    });
-
-    it("renders Sign In and Register buttons in mobile view", async () => {
-      // Mock mobile view
-      window.matchMedia = vi.fn().mockImplementation((query) => ({
-        matches: query !== "(min-width: 768px)",
-        media: query,
-        onchange: null,
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-        dispatchEvent: vi.fn(),
-      }));
-
-      renderWithProviders();
-
-      // Click hamburger menu
-      const menuButton = screen.getByRole("button");
-      await userEvent.click(menuButton);
-
-      expect(screen.getByText("Sign In")).toBeInTheDocument();
-      expect(screen.getByText("Register")).toBeInTheDocument();
-      expect(screen.queryByText("My Account")).not.toBeInTheDocument();
-    });
+        expect(screen.getByText("Sign In")).toBeInTheDocument();
+        expect(screen.getByText("Register")).toBeInTheDocument();
+        expect(screen.queryByText("My Account")).not.toBeInTheDocument();
+      },
+    );
   });
 });
