@@ -28,12 +28,11 @@ export const MedSpaCMSEmail = (props: { variables: Events["NewMedicaidSubmission
           Summary: variables.additionalInformation,
         }}
       />
-      <Attachments attachments={variables.attachments as any} />
+      <Attachments attachments={variables.attachments} />
     </BaseEmailTemplate>
   );
 };
 
-// To preview with on 'email-dev'
 const MedSpaCMSEmailPreview = () => {
   return (
     <MedSpaCMSEmail

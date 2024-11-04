@@ -33,7 +33,6 @@ export const Waiver1915bCMSEmail = (props: { variables: Events["NewMedicaidSubmi
   );
 };
 
-// To preview with 'email-dev'
 const Waiver1915bCMSEmailPreview = () => {
   return (
     <Waiver1915bCMSEmail

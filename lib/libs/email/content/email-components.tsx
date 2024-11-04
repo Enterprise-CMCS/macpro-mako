@@ -159,7 +159,7 @@ const PackageDetails: React.FC<{
 
       return (
         <Row key={label}>
-          <Column align="left" style={{ width: "40%" }}>
+          <Column align="left" style={{ width: "50%" }}>
             <Text style={styles.text.title}>{label}</Text>
           </Column>
           <Column>

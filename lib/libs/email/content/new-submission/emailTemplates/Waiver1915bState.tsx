@@ -44,7 +44,6 @@ export const Waiver1915bStateEmail = (props: { variables: any & CommonEmailVaria
   );
 };
 
-// To preview with 'email-dev'
 const Waiver1915bStateEmailPreview = () => {
   return (
     <Waiver1915bStateEmail

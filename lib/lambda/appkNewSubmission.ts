@@ -4,11 +4,7 @@ import * as sql from "mssql";
 import { isAuthorized } from "libs/api/auth/user";
 
 import { events } from "shared-types";
-import {
-  getSecret,
-  getNextBusinessDayTimestamp,
-  seaToolFriendlyTimestamp,
-} from "shared-utils";
+import { getSecret, getNextBusinessDayTimestamp, seaToolFriendlyTimestamp } from "shared-utils";
 import { produceMessage } from "libs/api/kafka";
 import { search } from "libs/opensearch-lib";
 
@@ -65,10 +61,7 @@ export const submit = async (event: APIGatewayEvent) => {
     const validateRegex = /^\d{4,5}\.R\d{2}\.\d{2}$/.test(ID);
     // Reject invalid ID
     if (!validateRegex) {
-      throw console.error(
-        "MAKO Validation Error. The following APP-K Id format is incorrect: ",
-        ID,
-      );
+      throw console.error("MAKO Validation Error. The following APP-K Id format is incorrect: ", ID);
     }
 
     const notificationMetadata = {
@@ -76,7 +69,7 @@ export const submit = async (event: APIGatewayEvent) => {
       proposedEffectiveDate: body.proposedEffectiveDate,
     };
 
-    const validateZod = events["app-k"]?.schema?.safeParse({
+    const validateZod = events["app-k"].schema.safeParse({
       ...body,
       ...(!!Number(WINDEX) && {
         appkParentId: `${body.state}-${body.waiverIds[0]}`,
@@ -97,19 +90,12 @@ export const submit = async (event: APIGatewayEvent) => {
       );
     }
 
-    const validateOpensearch = await search(
-      process.env.osDomain!,
-      `${process.env.indexNamespace}main`,
-      {
-        query: { match_phrase: { id: { query: `${body.state}-${ID}` } } },
-      },
-    );
+    const validateOpensearch = await search(process.env.osDomain!, `${process.env.indexNamespace}main`, {
+      query: { match_phrase: { id: { query: `${body.state}-${ID}` } } },
+    });
     const existsInOpensearch = validateOpensearch?.hits.total.value !== 0;
     if (existsInOpensearch) {
-      throw console.error(
-        "MAKO Validation Error. The following APP-K Id already exists ",
-        `${body.state}-${ID}`,
-      );
+      throw console.error("MAKO Validation Error. The following APP-K Id already exists ", `${body.state}-${ID}`);
     }
 
     schemas.push({ data: validateZod.data, id: `${body.state}-${ID}` });
@@ -141,21 +127,11 @@ export const submit = async (event: APIGatewayEvent) => {
               FROM SEA.dbo.Plan_Types
               WHERE Plan_Type_Name = '${body.authority}'
             ))
-          ,(Select Region_ID from SEA.dbo.States where State_Code = '${
-            body.state
-          }')
-          ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${
-            body.authority
-          }')
-          ,dateadd(s, convert(int, left(${
-            dates.submission
-          }, 10)), cast('19700101' as datetime))
-          ,dateadd(s, convert(int, left(${
-            dates.status
-          }, 10)), cast('19700101' as datetime))
-          ,dateadd(s, convert(int, left(${
-            dates.effectiveDate
-          }, 10)), cast('19700101' as datetime))
+          ,(Select Region_ID from SEA.dbo.States where State_Code = '${body.state}')
+          ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${body.authority}')
+          ,dateadd(s, convert(int, left(${dates.submission}, 10)), cast('19700101' as datetime))
+          ,dateadd(s, convert(int, left(${dates.status}, 10)), cast('19700101' as datetime))
+          ,dateadd(s, convert(int, left(${dates.effectiveDate}, 10)), cast('19700101' as datetime))
           ,(Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = 'Pending')
           ,0
         )
@@ -167,11 +143,7 @@ export const submit = async (event: APIGatewayEvent) => {
     // for await const kafka events
     for (const WINDEX in schemas) {
       const SCHEMA = schemas[Number(WINDEX)];
-      await produceMessage(
-        process.env.topicName as string,
-        SCHEMA.id,
-        JSON.stringify(SCHEMA.data),
-      );
+      await produceMessage(process.env.topicName as string, SCHEMA.id, JSON.stringify(SCHEMA.data));
     }
 
     return response({ statusCode: 200, body: { message: "success" } });

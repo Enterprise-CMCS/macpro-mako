@@ -30,7 +30,7 @@ export const AppKStateEmail = (props: { variables: Events["NewAppKSubmission"] &
           Summary: variables.additionalInformation,
         }}
       />
-      <Attachments attachments={variables.attachments as any} />
+      <Attachments attachments={variables.attachments} />
       <Text style={styles.text.base}>
         {`This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
@@ -42,7 +42,6 @@ export const AppKStateEmail = (props: { variables: Events["NewAppKSubmission"] &
   );
 };
 
-// To preview with on 'email-dev'
 const AppKStateEmailPreview = () => {
   return (
     <AppKStateEmail
