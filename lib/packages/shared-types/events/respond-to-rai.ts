@@ -1,7 +1,10 @@
 import { z } from "zod";
 import { attachmentSchema } from "../attachments";
 import { notificationMetadataSchema } from "../notification-metadata";
-import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
+import {
+  attachmentArraySchema,
+  attachmentArraySchemaOptional,
+} from "../attachments";
 
 export const raiResponseSchema = z.object({
   id: z.string(),
@@ -26,8 +29,8 @@ export const medicaidSpaAttachments = z.object({
   other: z.object({
     files: attachmentArraySchemaOptional(),
     label: z.string().default("Other"),
-  })
-})
+  }),
+});
 
 export const waiverAttachments = z.object({
   raiResponseLetterWaiver: z.object({
@@ -41,42 +44,39 @@ export const waiverAttachments = z.object({
 });
 
 export const chipSpaAttachments = z.object({
-  cmsForm179: z.object({
+  revisedAmendedStatePlanLanguage: z.object({
     files: attachmentArraySchema(),
     label: z.string().default("Revised Amended State Plan Language"),
   }),
-  spaPages: z.object({
+  officialRAIResponse: z.object({
     files: attachmentArraySchema(),
     label: z.string().default("Official RAI Response"),
   }),
-  coverLetter: z.object({
+  budgetDocuments: z.object({
     files: attachmentArraySchemaOptional(),
     label: z.string().default("Budget Documents"),
   }),
-  tribalEngagement: z.object({
+  publicNotice: z.object({
     files: attachmentArraySchemaOptional(),
-    label: z
-      .string()
-      .default("Public Notice"),
+    label: z.string().default("Public Notice"),
   }),
-  existingStatePlanPages: z.object({
+  tribalConsultation: z.object({
     files: attachmentArraySchemaOptional(),
     label: z.string().default("Tribal Consultation"),
   }),
-  publicNotice: z.object({
+  other: z.object({
     files: attachmentArraySchemaOptional(),
     label: z.string().default("Other"),
   }),
-})
+});
 
 export const baseSchema = z.object({
-  event: z
-    .literal("respond-to-rai")
-    .default("respond-to-rai"),
+  event: z.literal("respond-to-rai").default("respond-to-rai"),
   additionalInformation: z.string().max(4000).nullable().default(null),
-  attachments: chipSpaAttachments.or(waiverAttachments).or(medicaidSpaAttachments),
-  id: z
-    .string()
+  attachments: chipSpaAttachments
+    .or(waiverAttachments)
+    .or(medicaidSpaAttachments),
+  id: z.string(),
 });
 
 export const schema = baseSchema.extend({
@@ -85,4 +85,3 @@ export const schema = baseSchema.extend({
   submitterEmail: z.string().email(),
   timestamp: z.number(),
 });
-
