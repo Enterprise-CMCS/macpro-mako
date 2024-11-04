@@ -5,6 +5,7 @@ export const transform = (offset: number) => {
       ...data,
       packageId: data.id,
       id: `${data.id}-${offset}`,
+      isAdminChange: true,
     };
   });
 };

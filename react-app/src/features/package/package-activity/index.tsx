@@ -358,7 +358,10 @@ export const PackageActivities = () => {
       title={
         // needed to do this for the download all button
         <div className="flex justify-between">
-          {`Package Activity (${hook.data?.length})`}
+          {`Package Activity (${
+            hook.data?.filter((activity) => !activity._source.isAdminChange)
+              .length
+          })`}
           {!!hook.data?.length && (
             <Table.Button
               loading={hook.loading}
