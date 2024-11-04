@@ -1,14 +1,15 @@
-import { waitFor } from "@testing-library/react";
+import { fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, test, expect, vi } from "vitest";
 import { ActionForm } from "./index";
 import { z } from "zod";
-import { attachmentArraySchemaOptional } from "shared-types";
+import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
 import * as userPrompt from "@/components/ConfirmationDialog/userPrompt";
 import * as banner from "@/components/Banner/banner";
 import * as documentPoller from "@/utils/Poller/documentPoller";
 import { renderForm } from "@/utils/test-helpers/renderForm";
 import { isCmsReadonlyUser } from "shared-utils";
+import { API as awsAmplifyAPI } from "aws-amplify";
 
 vi.mock("aws-amplify", async (importOriginal) => {
   const actual = await importOriginal();
@@ -291,7 +292,26 @@ describe("ActionForm", () => {
   });
 
   test("calls `documentPoller` with `documentPollerArgs`", async () => {
-    const documentCheckerFunc = vi.fn();
+    const mockStatusChecks = {
+      recordExists: true,
+      hasStatus: vi.fn(() => true),
+    };
+
+    const documentPollerSpy = vi
+      .spyOn(documentPoller, "documentPoller")
+      // @ts-ignore - mocking documentPollerSpy expects private class members
+      .mockImplementation(() => ({
+        startPollingData: vi.fn().mockResolvedValue({
+          maxAttemptsReached: false,
+          correctDataStateFound: true,
+        }),
+        options: {
+          fetcher: vi.fn().mockResolvedValue({}),
+          onPoll: vi.fn().mockImplementationOnce(() => mockStatusChecks),
+          pollAttempts: 1,
+          interval: 1000,
+        },
+      }));
 
     const { container } = renderForm(
       <ActionForm
@@ -303,27 +323,36 @@ describe("ActionForm", () => {
         fields={() => null}
         documentPollerArgs={{
           property: () => "id",
-          documentChecker: documentCheckerFunc,
+          documentChecker: (checker) =>
+            checker.hasStatus(SEATOOL_STATUS.PENDING),
         }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
 
-    const documentPollerSpy = vi
-      .spyOn(documentPoller, "documentPoller")
-      .mockImplementationOnce(vi.fn());
+    const form = container.querySelector("form");
+    fireEvent.submit(form);
 
-    const submitBtn = container.querySelector('button[type="submit"]');
-    await userEvent.click(submitBtn);
+    await waitFor(() => {
+      expect(documentPollerSpy).toHaveBeenCalledWith(
+        "id",
+        expect.any(Function),
+      );
+    });
 
-    waitFor(() =>
-      expect(documentPollerSpy).toBeCalledWith("id", documentCheckerFunc),
+    const [, checkerFn] = documentPollerSpy.mock.lastCall;
+
+    // @ts-expect-error - mocking status checks expects all declared status checks
+    const resultValue = checkerFn(mockStatusChecks);
+
+    expect(mockStatusChecks.hasStatus).toHaveBeenCalledWith(
+      SEATOOL_STATUS.PENDING,
     );
+
+    expect(resultValue).toBe(true);
   });
 
   test("calls `banner` with `bannerPostSubmission`", async () => {
-    const documentCheckerFunc = vi.fn();
-
     const { container } = renderForm(
       <ActionForm
         title="Action Form Title"
@@ -334,7 +363,7 @@ describe("ActionForm", () => {
         fields={() => null}
         documentPollerArgs={{
           property: () => "id",
-          documentChecker: documentCheckerFunc,
+          documentChecker: () => true,
         }}
         bannerPostSubmission={{
           header: "Hello World Header",
@@ -346,14 +375,50 @@ describe("ActionForm", () => {
 
     const bannerPollerSpy = vi.spyOn(banner, "banner");
 
-    const submitBtn = container.querySelector('button[type="submit"]');
-    await userEvent.click(submitBtn);
+    const form = container.querySelector("form");
+    fireEvent.submit(form);
 
-    waitFor(() =>
+    await waitFor(() =>
       expect(bannerPollerSpy).toBeCalledWith({
         header: "Hello World Header",
         body: "Hello World Body",
         pathnameToDisplayOn: "/dashboard",
+      }),
+    );
+  });
+
+  test("calls error banner if submission fails", async () => {
+    vi.spyOn(awsAmplifyAPI, "post").mockImplementationOnce(
+      vi.fn().mockRejectedValue("Intentional failure"),
+    );
+
+    const { container } = renderForm(
+      <ActionForm
+        title="Action Form Title"
+        schema={z.object({
+          id: z.string(),
+        })}
+        defaultValues={{ id: "Example Breadcrumb" }}
+        fields={() => null}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    const bannerPollerSpy = vi.spyOn(banner, "banner");
+
+    const form = container.querySelector("form");
+    fireEvent.submit(form);
+
+    await waitFor(() =>
+      expect(bannerPollerSpy).toBeCalledWith({
+        header: "An unexpected error has occurred:",
+        body: "Intentional failure",
+        pathnameToDisplayOn: "/",
+        variant: "destructive",
       }),
     );
   });
