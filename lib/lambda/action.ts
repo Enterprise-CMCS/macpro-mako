@@ -1,21 +1,10 @@
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 import { getPackage } from "../libs/api/package/getPackage";
-import {
-  getAuthDetails,
-  isAuthorized,
-  lookupUserAttributes,
-} from "../libs/api/auth/user";
+import { getAuthDetails, isAuthorized, lookupUserAttributes } from "../libs/api/auth/user";
 import { getAvailableActions } from "shared-utils";
 import { Action } from "shared-types";
-import {
-  respondToRai,
-  toggleRaiResponseWithdraw,
-  updateId,
-  withdrawPackage,
-  withdrawRai,
-  removeAppkChild,
-} from "./package-actions";
+import { respondToRai, toggleRaiResponseWithdraw, updateId, withdrawPackage, withdrawRai, removeAppkChild } from "./package-actions";
 
 export const handler = async (event: APIGatewayEvent) => {
   if (!event.pathParameters || !event.pathParameters.actionType) {
@@ -49,10 +38,7 @@ export const handler = async (event: APIGatewayEvent) => {
         body: { message: "No record found for the given id" },
       });
     const authDetails = getAuthDetails(event);
-    const userAttr = await lookupUserAttributes(
-      authDetails.userId,
-      authDetails.poolId,
-    );
+    const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
 
     // Check that the package action is available
     const actions: Action[] = getAvailableActions(userAttr, result._source);

@@ -8,8 +8,7 @@ export interface EmailTemplate {
   to: string[];
   cc?: string[];
   subject: string;
-  html: string;
-  text?: string;
+  body: string;
 }
 
 export type EmailTemplateFunction<T> = (variables: T) => Promise<EmailTemplate>;

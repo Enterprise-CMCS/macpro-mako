@@ -1,11 +1,8 @@
-import { raiResponseSchema } from "shared-types";
-
+import { events } from "shared-types";
 export const transform = (id: string) => {
-  return raiResponseSchema.transform((data) => ({
+  return events["respond-to-rai"].schema.transform((data) => ({
     id,
-    makoChangedDate: data.timestamp
-      ? new Date(data.timestamp).toISOString()
-      : null,
+    makoChangedDate: data.timestamp ? new Date(data.timestamp).toISOString() : null,
   }));
 };
 

@@ -8,8 +8,8 @@ import * as contractingAmendment from "./contracting-amendment";
 import * as contractingInitial from "./contracting-initial";
 import * as contractingRenewal from "./contracting-renewal";
 import * as temporaryExtension from "./temporary-extension";
-import * as respondToRai from "./respond-to-rai";
 import * as appk from "./app-k";
+import * as respondToRai from "./respond-to-rai";
 export * from "./toggle-withdraw-rai-enabled";
 export * from "./respond-to-rai";
 export * from "./withdraw-rai";
@@ -48,4 +48,5 @@ export type Events = {
   NewMedicaidSubmission: z.infer<typeof newMedicaidSubmission.schema>;
   TempExtension: z.infer<typeof temporaryExtension.schema>;
   NewAppKSubmission: z.infer<typeof appk.schema>;
+  RespondToRai: z.infer<typeof respondToRai.schema>;
 };

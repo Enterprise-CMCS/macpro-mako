@@ -1,20 +1,12 @@
 import { emailTemplateValue } from "../data";
 import { CommonEmailVariables, Events } from "shared-types";
-import {
-  Attachments,
-  LoginInstructions,
-  PackageDetails,
-  BasicFooter,
-} from "../../email-components";
+import { Attachments, LoginInstructions, PackageDetails, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const ChipSpaCMSEmail = (props: {
-  variables: Events["NewChipSubmission"] & CommonEmailVariables;
-}) => {
-  const variables = props.variables;
+export const ChipSpaCMSEmail = (props: { variables: Events["RespondToRai"] & CommonEmailVariables }) => {
+  const { variables } = props;
   const previewText = `CHIP SPA ${variables.id} RAI Response Submitted`;
-  const heading =
-    "The OneMAC Submission Portal received a CHIP SPA RAI Response Submission";
+  const heading = "The OneMAC Submission Portal received a CHIP SPA RAI Response Submission";
   return (
     <BaseEmailTemplate
       previewText={previewText}

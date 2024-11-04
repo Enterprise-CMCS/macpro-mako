@@ -1,16 +1,12 @@
-import { raiResponseSchema, SEATOOL_STATUS, Action } from "shared-types";
+import { SEATOOL_STATUS, Action } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 import { response } from "../../../libs/handler-lib";
 import { TOPIC_NAME } from "../consts";
 import { ExtendedItemResult } from "../../../libs/api/package";
 import { respondToRaiAction } from "../services/package-action-write-service";
-
 export async function respondToRai(
   body: any,
-  document: Pick<
-    ExtendedItemResult["_source"],
-    "raiReceivedDate" | "raiRequestedDate" | "raiWithdrawnDate"
-  >,
+  document: Pick<ExtendedItemResult["_source"], "raiReceivedDate" | "raiRequestedDate" | "raiWithdrawnDate">,
 ) {
   console.log("State responding to RAI");
   if (!document.raiRequestedDate) {
@@ -24,17 +20,13 @@ export async function respondToRai(
   const raiToRespondTo = new Date(document.raiRequestedDate).getTime();
   const now = new Date().getTime();
   const today = seaToolFriendlyTimestamp();
-  const result = raiResponseSchema.safeParse({
-    ...body,
-    responseDate: today,
-    requestedDate: raiToRespondTo,
-  });
-  if (result.success === false) {
+  const result = await respondToRai(body, document);
+  if (result.statusCode !== 200) {
     console.error(
       "validation error:  The following record failed to parse: ",
       JSON.stringify(body),
       "Because of the following Reason(s):",
-      result.error.message,
+      result.body,
     );
     return response({
       statusCode: 400,
@@ -45,17 +37,17 @@ export async function respondToRai(
   }
   try {
     await respondToRaiAction({
-      ...result.data,
       action: Action.RESPOND_TO_RAI,
-      id: result.data.id,
       raiReceivedDate: document.raiReceivedDate!,
-      raiToRespondTo: raiToRespondTo,
+      raiRequestedDate: raiToRespondTo,
       raiWithdrawnDate: document.raiWithdrawnDate!,
-      responseDate: today,
       spwStatus: SEATOOL_STATUS.PENDING,
       today,
       timestamp: now,
       topicName: TOPIC_NAME,
+      responseDate: today,
+      id: body.id,
+      raiToRespondTo,
     });
     return response({
       statusCode: 200,

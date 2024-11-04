@@ -1,25 +1,14 @@
 import { emailTemplateValue } from "../data";
-import { CommonEmailVariables } from "shared-types";
-import { RaiResponse } from "shared-types";
+import { CommonEmailVariables, Events } from "shared-types";
 import { Container, Html } from "@react-email/components";
-import {
-  PackageDetails,
-  LoginInstructions,
-  BasicFooter,
-  Attachments,
-} from "../../email-components";
+import { PackageDetails, LoginInstructions, BasicFooter, Attachments } from "../../email-components";
 
-export const MedSpaCMSEmail = (props: {
-  variables: RaiResponse & CommonEmailVariables;
-}) => {
+export const MedSpaCMSEmail = (props: { variables: Events["RespondToRai"] & CommonEmailVariables }) => {
   const variables = props.variables;
   return (
     <Html lang="en" dir="ltr">
       <Container>
-        <h3>
-          The OneMAC Submission Portal received a Medicaid SPA RAI Response
-          Submission:
-        </h3>
+        <h3>The OneMAC Submission Portal received a Medicaid SPA RAI Response Submission:</h3>
         <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
         <PackageDetails
           details={{

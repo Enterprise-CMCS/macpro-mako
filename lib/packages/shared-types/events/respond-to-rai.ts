@@ -1,8 +1,7 @@
 import { z } from "zod";
 import { attachmentSchema } from "../attachments";
-import { notificationMetadataSchema } from "../notification-metadata";
 
-export const raiResponseSchema = z.object({
+export const respondToRaiBaseSchema = z.object({
   id: z.string(),
   authority: z.string(),
   origin: z.string(),
@@ -12,8 +11,17 @@ export const raiResponseSchema = z.object({
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),
-  notificationMetadata: notificationMetadataSchema.nullish(),
+  proposedEffectiveDate: z.number().optional(),
+  submittedDate: z.number().optional(),
   timestamp: z.number().optional(),
 });
 
-export type RaiResponse = z.infer<typeof raiResponseSchema>;
+export type RespondToRaiSchema = z.infer<typeof respondToRaiBaseSchema>;
+
+export const schema = respondToRaiBaseSchema.extend({
+  actionType: z.string().default("Respond"),
+  origin: z.literal("mako").default("mako"),
+  submitterName: z.string(),
+  submitterEmail: z.string().email(),
+  timestamp: z.number(),
+});
