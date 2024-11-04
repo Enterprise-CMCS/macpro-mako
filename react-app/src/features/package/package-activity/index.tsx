@@ -160,12 +160,16 @@ export const PackageActivities = () => {
     accordianDefault,
   } = usePackageActivities();
 
+  const activitiesWithAdminChange = packageActivity.filter(
+    (activity) => activity._source.isAdminChange === false,
+  );
+
   return (
     <DetailsSection
       id="package_activity"
       title={
         <div className="flex justify-between">
-          {`Package Activity (${packageActivity.length})`}
+          Package Activity {activitiesWithAdminChange.length}
           {packageActivity.length && (
             <Table.Button
               loading={loading}
