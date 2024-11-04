@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { describe, test, expect, beforeAll } from "vitest";
 import { formSchemas } from "@/formSchemas";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
@@ -7,8 +7,8 @@ import {
   skipCleanup,
 } from "@/utils/test-helpers/skipCleanup";
 import { UploadSubsequentDocuments } from ".";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
+import { renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
 
 const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
 
@@ -17,15 +17,7 @@ describe("Upload Subsequent Documents (for Medicaid SPA)", () => {
     skipCleanup();
     mockApiRefinements();
 
-    render(<UploadSubsequentDocuments />, {
-      wrapper: ({ children }) => (
-        <MemoryRouter initialEntries={["/test/12345/Medicaid SPA"]}>
-          <Routes>
-            <Route path="/test/:id/:authority" element={children} />
-          </Routes>
-        </MemoryRouter>
-      ),
-    });
+    renderFormWithPackageSection(<UploadSubsequentDocuments />);
   });
 
   test("CMS FORM 179", async () => {
