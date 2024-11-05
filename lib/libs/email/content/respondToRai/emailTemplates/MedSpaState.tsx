@@ -1,12 +1,12 @@
 import { emailTemplateValue } from "../data";
 import { formatNinetyDaysDate } from "shared-utils";
-import { CommonEmailVariables, RaiResponse } from "shared-types";
+import { CommonEmailVariables, Events } from "shared-types";
 import { Text } from "@react-email/components";
 import { PackageDetails, MailboxNotice, ContactStateLead } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
-export const MedSpaStateEmail = (props: { variables: RaiResponse & CommonEmailVariables }) => {
+export const MedSpaStateEmail = (props: { variables: Events["RespondToRai"] & CommonEmailVariables }) => {
   const variables = props.variables;
   const previewText = `Medicaid SPA ${variables.id} RAI Response Submitted`;
   const heading = "This response confirms you submitted a Medicaid SPA RAI Response to CMS for review";
@@ -36,8 +36,12 @@ export const MedSpaStateEmail = (props: { variables: RaiResponse & CommonEmailVa
   );
 };
 
-const MedSpaCMSEmailPreview = () => {
+export const MedSpaStateEmailPreview = () => {
   return <MedSpaStateEmail variables={{ ...emailTemplateValue, origin: "mako", attachments: [] }} />;
 };
 
-export default MedSpaCMSEmailPreview;
+MedSpaStateEmailPreview.displayName = "MedSpaStateEmailPreview";
+
+MedSpaStateEmail.displayName = "MedSpaStateEmail";
+
+export default MedSpaStateEmailPreview;

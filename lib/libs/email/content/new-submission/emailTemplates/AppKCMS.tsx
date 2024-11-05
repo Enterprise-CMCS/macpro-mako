@@ -4,11 +4,13 @@ import { LoginInstructions, PackageDetails, BasicFooter, DetailsHeading, Attachm
 import { BaseEmailTemplate } from "../../email-templates";
 import { emailTemplateValue } from "../data";
 import { getDateFromMillis } from "shared-utils";
+import { styles } from "../../email-styles";
+import { Hr } from "node_modules/@react-email/components/dist";
 
 type AppKEmailProps = Events["NewAppKSubmission"] & CommonEmailVariables;
 
 // 1915c - app K
-export const AppKCMSEmail: React.FC<{ variables: AppKEmailProps }> = ({ variables }) => {
+export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
   return (
     <BaseEmailTemplate
       previewText="Appendix K Amendment Submitted"
@@ -16,6 +18,7 @@ export const AppKCMSEmail: React.FC<{ variables: AppKEmailProps }> = ({ variable
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
+      <Hr style={styles.divider} />
       <PackageDetails
         details={{
           "State or territory": variables.territory,

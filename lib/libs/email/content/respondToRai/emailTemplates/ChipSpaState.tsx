@@ -1,12 +1,12 @@
 import { emailTemplateValue } from "../data";
 import { formatNinetyDaysDate } from "shared-utils";
-import { CommonEmailVariables, RaiResponse } from "shared-types";
+import { CommonEmailVariables, Events } from "shared-types";
 import { Text } from "@react-email/components";
 import { ContactStateLead, PackageDetails, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
-export const ChipSpaStateEmail = (props: { variables: RaiResponse & CommonEmailVariables }) => {
+export const ChipSpaStateEmail = (props: { variables: Events["RespondToRai"] & CommonEmailVariables }) => {
   const variables = props.variables;
   const previewText = `CHIP SPA ${variables.id} RAI Response Submitted`;
   const heading = "The OneMAC Submission Portal received a CHIP SPA RAI Response Submission";

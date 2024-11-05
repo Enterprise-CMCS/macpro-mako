@@ -1,6 +1,6 @@
 import { emailTemplateValue } from "../data";
 import { CommonEmailVariables, Events } from "shared-types";
-import { Attachments, LoginInstructions, PackageDetails, BasicFooter } from "../../email-components";
+import { PackageDetails, BasicFooter, DetailsHeading, LoginInstructions } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const ChipSpaCMSEmail = (props: { variables: Events["RespondToRai"] & CommonEmailVariables }) => {
@@ -14,6 +14,7 @@ export const ChipSpaCMSEmail = (props: { variables: Events["RespondToRai"] & Com
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
+      <DetailsHeading />
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
       <PackageDetails
         details={{
@@ -22,15 +23,59 @@ export const ChipSpaCMSEmail = (props: { variables: Events["RespondToRai"] & Com
           "Email Address": variables.submitterEmail,
           "CHIP SPA Package ID": variables.id,
           Summary: variables.additionalInformation,
+          attachments: [
+            {
+              filename: "rai-response.pdf",
+              title: "RAI Response",
+              bucket: "test-bucket",
+              key: "rai-response.pdf",
+              uploadDate: Date.now(),
+            },
+            {
+              filename: "spa-pages.pdf",
+              title: "SPA Pages",
+              bucket: "test-bucket",
+              key: "spa-pages.pdf",
+              ploadDate: Date.now(),
+            },
+          ],
         }}
       />
-      <Attachments attachments={variables.attachments as any} />
     </BaseEmailTemplate>
   );
 };
 
-const ChipSpaCMSEmailPreview = () => {
-  return <ChipSpaCMSEmail variables={emailTemplateValue as any} />;
+export const ChipSpaCMSEmailPreview = () => {
+  return (
+    <ChipSpaCMSEmail
+      variables={{
+        ...emailTemplateValue,
+        proposedEffectiveDate: 1725062400000,
+        submittedDate: 1723420800000,
+        attachments: [
+          {
+            filename: "rai-response.pdf",
+            title: "RAI Response",
+            bucket: "test-bucket",
+            key: "rai-response.pdf",
+            uploadDate: Date.now(),
+          },
+          {
+            filename: "spa-pages.pdf",
+            title: "SPA Pages",
+            bucket: "test-bucket",
+            key: "spa-pages.pdf",
+            uploadDate: Date.now(),
+          },
+        ],
+        origin: "mako",
+      }}
+    />
+  );
 };
+
+ChipSpaCMSEmailPreview.displayName = "ChipSpaCMSEmailPreview";
+
+ChipSpaCMSEmail.displayName = "ChipSpaCMSEmail";
 
 export default ChipSpaCMSEmailPreview;

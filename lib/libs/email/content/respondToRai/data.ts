@@ -17,8 +17,8 @@ export const emailTemplateValue = {
     cmsForm179: {
       files: [
         {
-          filename: "test.pdf",
-          title: "test",
+          filename: "CMS_Form_179_RAI_Response.pdf",
+          title: "CMS Form 179 Form",
           bucket: "mako-outbox-attachments-635052997545",
           key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
           uploadDate: 1728493782785,
@@ -30,7 +30,7 @@ export const emailTemplateValue = {
       files: [
         {
           filename: "test.pdf",
-          title: "test",
+          title: "SPA Pages",
           bucket: "mako-outbox-attachments-635052997545",
           key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
           uploadDate: 1728493784252,

@@ -9,7 +9,7 @@ import { styles } from "../../email-styles";
 export const ChipSpaStateEmail = (props: { variables: Events["NewChipSubmission"] & CommonEmailVariables }) => {
   const variables = props.variables;
   const previewText = `CHIP SPA ${variables.id} Submitted`;
-  const heading = "This response confirms the submission of your CHIP State Plan Amendment to CMS :";
+  const heading = "This response confirms the submission of your CHIP State Plan Amendment to CMS:";
 
   return (
     <BaseEmailTemplate
