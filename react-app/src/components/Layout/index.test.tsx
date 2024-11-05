@@ -44,7 +44,7 @@ vi.mock("@/api", () => ({
 }));
 
 vi.mock("aws-amplify", () => ({
-  Auth: { signOut: vi.fn() },
+  Auth: { signOut: vi.fn(), configure: vi.fn() },
 }));
 
 // Navigation mock
@@ -355,6 +355,49 @@ describe("Layout", () => {
 
       // Desktop menu items should be visible
       expect(screen.getByText("Home")).toBeVisible();
+    });
+  });
+
+  describe("ResponsiveNav login action", () => {
+    beforeEach(() => {
+      vi.mocked(useGetUser).mockReturnValue(mockLoggedOutResponse);
+      mockMediaQuery(VIEW_MODES.DESKTOP);
+    });
+
+    it("redirect to login URL when Sign In is clicked", async () => {
+      // Mock Auth.configure
+      const authConfigMock = {
+        oauth: {
+          domain: "test-domain",
+          redirectSignIn: "http://localhost/",
+          redirectSignOut: "http://localhost/",
+          responseType: "code",
+          scope: [],
+        },
+        userPoolWebClientId: "test-client-id",
+      };
+      vi.spyOn(Auth, "configure").mockReturnValue(authConfigMock);
+
+      // Mock window.location.assign
+      const originalLocation = window.location;
+      delete (window as any).location;
+      window.location = { assign: vi.fn() } as any;
+
+      // Render the component
+      renderWithProviders();
+
+      // Click the "Sign In" button
+      const signInButton = screen.getByText("Sign In");
+      await userEvent.click(signInButton);
+
+      // Construct the expected URL
+      const expectedUrl = `https://${authConfigMock.oauth.domain}/oauth2/authorize?redirect_uri=${authConfigMock.oauth.redirectSignIn}&response_type=${authConfigMock.oauth.responseType}&client_id=${authConfigMock.userPoolWebClientId}`;
+
+      // Assert that window.location.assign was called with the expected URL
+      expect(window.location.assign).toHaveBeenCalledWith(expectedUrl);
+
+      // Restore original window.location
+      window.location = originalLocation;
     });
   });
 });
