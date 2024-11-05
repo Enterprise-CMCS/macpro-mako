@@ -1,11 +1,4 @@
-import {
-  Body,
-  Container,
-  Head,
-  Heading,
-  Html,
-  Preview,
-} from "@react-email/components";
+import { Body, Container, Head, Heading, Html, Preview } from "@react-email/components";
 import { EmailNav, EmailFooter } from "./email-components";
 import { styles } from "./email-styles";
 import { ReactNode } from "react";
@@ -17,13 +10,7 @@ export const BaseEmailTemplate: React.FC<{
   children?: ReactNode;
   footerContent?: ReactNode;
   applicationEndpointUrl: string;
-}> = ({
-  previewText,
-  heading,
-  children,
-  applicationEndpointUrl,
-  footerContent,
-}) => (
+}> = ({ previewText, heading, children, applicationEndpointUrl, footerContent }) => (
   <Html>
     <Head />
     <Preview>{previewText}</Preview>
