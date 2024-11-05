@@ -11,6 +11,7 @@ export const transform = () => {
         : null,
       cmsStatus,
       stateStatus,
+      raiReceivedDate: null,
       seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
       locked: true,
     };

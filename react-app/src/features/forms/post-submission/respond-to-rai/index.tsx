@@ -47,7 +47,10 @@ export const RespondToRaiWaiver = () => {
         documentChecker: (check) => check.hasStatus(SEATOOL_STATUS.PENDING),
       }}
       breadcrumbText="Respond to Formal RAI"
-      preSubmissionMessage="Once complete, you and CMS will receive an email confirmation."
+      preSubmissionMessage="Once you submit this form, a confirmation email is sent to you and to CMS.
+      CMS will use this content to review your package, and you will not be able
+      to edit this form. If CMS needs any additional information, they will
+      follow up by email."
       bannerPostSubmission={{
         header: "RAI response submitted",
         body: `The RAI response for ${id} has been submitted.`,
@@ -72,7 +75,10 @@ export const RespondToRaiChip = () => {
         documentChecker: (check) => check.hasStatus(SEATOOL_STATUS.PENDING),
       }}
       breadcrumbText="Respond to Formal RAI"
-      preSubmissionMessage="Once complete, you and CMS will receive an email confirmation."
+      preSubmissionMessage="Once you submit this form, a confirmation email is sent to you and to CMS.
+      CMS will use this content to review your package, and you will not be able
+      to edit this form. If CMS needs any additional information, they will
+      follow up by email."
       bannerPostSubmission={{
         header: "RAI response submitted",
         body: `The RAI response for ${id} has been submitted.`,

@@ -488,6 +488,7 @@ describe("ActionForm", () => {
         }}
         additionalInformation={false}
         breadcrumbText="Example Breadcrumb"
+        additionalInformation={false}
       />,
     );
 

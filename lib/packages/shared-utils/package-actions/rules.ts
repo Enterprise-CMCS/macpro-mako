@@ -1,6 +1,7 @@
 import {
   Action,
   ActionRule,
+  Authority,
   SEATOOL_STATUS,
   finalDispositionStatuses,
 } from "shared-types";
@@ -30,13 +31,29 @@ const arTempExtension: ActionRule = {
 
 const arEnableWithdrawRaiResponse: ActionRule = {
   action: Action.ENABLE_RAI_WITHDRAW,
-  check: (checker, user) =>
-    !checker.isTempExtension &&
-    checker.isNotWithdrawn &&
-    checker.hasRaiResponse &&
-    !checker.hasEnabledRaiWithdraw &&
-    isCmsWriteUser(user) &&
-    !checker.hasStatus(finalDispositionStatuses),
+  check: (checker, user) => {
+    if (checker.authorityIs([Authority["CHIP_SPA"]])) {
+      return (
+        !checker.isTempExtension &&
+        checker.isNotWithdrawn &&
+        checker.hasRaiResponse &&
+        !checker.hasEnabledRaiWithdraw &&
+        isCmsWriteUser(user) &&
+        checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) &&
+        !checker.hasStatus(finalDispositionStatuses)
+      );
+    }
+
+    return (
+      !checker.isTempExtension &&
+      checker.isNotWithdrawn &&
+      checker.hasRaiResponse &&
+      !checker.hasEnabledRaiWithdraw &&
+      checker.isInSecondClock &&
+      isCmsWriteUser(user) &&
+      !checker.hasStatus(finalDispositionStatuses)
+    );
+  },
 };
 
 const arDisableWithdrawRaiResponse: ActionRule = {
