@@ -104,18 +104,22 @@ const arRemoveAppkChild: ActionRule = {
 const arUploadSubsequentDocuments: ActionRule = {
   action: Action.UPLOAD_SUBSEQUENT_DOCUMENTS,
   check: (checker, user) => {
-    if (checker.hasStatus(SEATOOL_STATUS.PENDING)) {
-      if (isStateUser(user)) {
-        if (
-          checker.hasStatus(SEATOOL_STATUS.PENDING_CONCURRENCE) ||
-          checker.hasStatus(SEATOOL_STATUS.PENDING_APPROVAL) ||
-          checker.hasLatestRai
-        ) {
-          return false;
-        }
+    if (isStateUser(user) === false) {
+      return false;
+    }
 
-        return true;
+    if (checker.isTempExtension) {
+      return false;
+    }
+
+    if (
+      checker.hasStatus([SEATOOL_STATUS.PENDING, SEATOOL_STATUS.PENDING_RAI])
+    ) {
+      if (checker.hasRequestedRai) {
+        return false;
       }
+
+      return true;
     }
 
     return false;
