@@ -95,7 +95,7 @@ describe("zAttachmentOptional", () => {
   });
 });
 
-describe("zAttachemtnRequired", () => {
+describe("zAttachmentRequired", () => {
   const schema = zAttachmentRequired({ min: 1, max: 3 });
 
   it("validates an array within file count bounds", () => {
