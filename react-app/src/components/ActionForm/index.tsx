@@ -32,7 +32,6 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { SlotAdditionalInfo } from "@/features";
 import { getFormOrigin } from "@/utils";
 import {
   CheckDocumentFunction,
@@ -47,6 +46,7 @@ import {
 import { getAttachments } from "./actionForm.utilities";
 import { isStateUser } from "shared-utils";
 import { useGetUser } from "@/api";
+import { AdditionalInformation } from "./AdditionalInformation";
 
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {
@@ -72,7 +72,6 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   schema: Schema;
   defaultValues?: DefaultValues<z.infer<InferUntransformedSchema<Schema>>>;
   title: string;
-  fieldsLayout?: (props: { children: ReactNode; title: string }) => ReactNode;
   fields: (
     form: UseFormReturn<z.infer<InferUntransformedSchema<Schema>>>,
   ) => ReactNode;
@@ -108,7 +107,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   defaultValues,
   title,
   fields: Fields,
-  fieldsLayout: FieldsLayout,
   bannerPostSubmission = {
     header: "Package submitted",
     body: "Your submission has been received.",
@@ -222,21 +220,15 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           onSubmit={onSubmit}
           className="my-6 space-y-8 mx-auto justify-center flex flex-col"
         >
-          {FieldsLayout ? (
-            <FieldsLayout title={title}>
-              <Fields {...form} />
-            </FieldsLayout>
-          ) : (
-            <SectionCard title={title}>
-              <div>
-                {areFieldsRequired && <RequiredFieldDescription />}
-                <ActionFormDescription boldReminder={areFieldsRequired}>
-                  {formDescription}
-                </ActionFormDescription>
-              </div>
-              <Fields {...form} />
-            </SectionCard>
-          )}
+          <SectionCard title={title}>
+            <div>
+              {areFieldsRequired && <RequiredFieldDescription />}
+              <ActionFormDescription boldReminder={areFieldsRequired}>
+                {formDescription}
+              </ActionFormDescription>
+            </div>
+            <Fields {...form} />
+          </SectionCard>
           {attachmentsFromSchema.length > 0 && (
             <ActionFormAttachments
               attachmentsFromSchema={attachmentsFromSchema}
@@ -255,10 +247,12 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               <FormField
                 control={form.control}
                 name={"additionalInformation" as FieldPath<z.TypeOf<Schema>>}
-                render={SlotAdditionalInfo({
-                  withoutHeading: true,
-                  label: <p>{additionalInformation.label}</p>,
-                })}
+                render={({ field }) => (
+                  <AdditionalInformation
+                    label={additionalInformation.label}
+                    field={field}
+                  />
+                )}
               />
             </SectionCard>
           )}

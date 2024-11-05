@@ -488,7 +488,6 @@ describe("ActionForm", () => {
         }}
         additionalInformation={false}
         breadcrumbText="Example Breadcrumb"
-        additionalInformation={false}
       />,
     );
 
@@ -625,53 +624,5 @@ describe("ActionForm", () => {
         /Once you submit this form, a confirmation email is sent to you and to CMS./,
       ).length,
     ).toBe(2);
-  });
-
-  test("renders `fieldsLayout`", () => {
-    const { queryByText } = renderForm(
-      <ActionForm
-        title="Action Form Title"
-        schema={z.object({})}
-        fieldsLayout={({ children }) => (
-          <>
-            hello world!
-            {children}
-          </>
-        )}
-        fields={() => <p>hello world within fields Layout</p>}
-        documentPollerArgs={{
-          property: () => "id",
-          documentChecker: () => true,
-        }}
-        breadcrumbText="Example Breadcrumb"
-      />,
-    );
-
-    expect(queryByText("Example Breadcrumb")).toBeInTheDocument();
-    expect(queryByText("hello world within fields Layout")).toBeInTheDocument();
-  });
-
-  test("renders `fieldsLayout` with correct `title`", () => {
-    const { queryByText } = renderForm(
-      <ActionForm
-        title="Action Form Title"
-        schema={z.object({})}
-        fieldsLayout={({ children, title }) => (
-          <>
-            {title}
-            {children}
-          </>
-        )}
-        fields={() => <p>hello world within fields Layout</p>}
-        documentPollerArgs={{
-          property: () => "id",
-          documentChecker: () => true,
-        }}
-        breadcrumbText="Example Breadcrumb"
-      />,
-    );
-
-    expect(queryByText("Action Form Title")).toBeInTheDocument();
-    expect(queryByText("hello world within fields Layout")).toBeInTheDocument();
   });
 });
