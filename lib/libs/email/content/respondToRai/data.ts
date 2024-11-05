@@ -1,13 +1,11 @@
 export const emailTemplateValue = {
-  to: "TO",
-  id: "PACKAGE ID",
+  id: "CO-1234.R21.00",
   territory: "CO",
-  applicationEndpointUrl: "https://onemac.cms.gov/",
-
+  applicationEndpointUrl: "https://mako-dev.cms.gov",
   timestamp: Date.now(),
-  authority: "AUTHORITY",
-  actionType: "ACTION TYPE",
-  origin: "mako",
+  authority: "1915(b)",
+  actionType: "Respond to Formal RAI",
+  origin: "mako" as const,
   requestedDate: Date.now(),
   responseDate: Date.now(),
   additionalInformation: "This bens additional infornormaiton",
@@ -37,6 +35,10 @@ export const emailTemplateValue = {
         },
       ],
       label: "SPA Pages",
+    },
+    other: {
+      files: [],
+      label: "Other",
     },
   },
 

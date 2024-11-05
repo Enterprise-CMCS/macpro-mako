@@ -3,13 +3,18 @@ import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachm
 
 export const appkSchema = z.object({
   id: z.string(),
-  state: z.string().transform((_, ctx: any) => {
+  state: z.string().transform((_, ctx: z.RefinementCtx & { input: { id: string } }) => {
     const id = ctx.input.id as string;
     return id.slice(0, 2).toUpperCase();
   }),
   actionType: z.string().default("New"),
   waiverIds: z.array(z.string()).min(1),
-  proposedEffectiveDate: z.union([z.number(), z.date()]),
+  proposedEffectiveDate: z.union([z.number(), z.date()]).transform((date) => {
+    if (date instanceof Date) {
+      return date.getTime();
+    }
+    return date;
+  }),
   seaActionType: z.string().default("Amend"),
   title: z.string().trim().min(1, { message: "Required" }),
   attachments: z.object({

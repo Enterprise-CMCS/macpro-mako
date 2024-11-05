@@ -9,7 +9,7 @@ import {
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { emailTemplateValue } from "../data";
-import { getDateFromMillis } from "shared-utils";
+import { formatDate } from "shared-utils";
 
 type AppKEmailProps = Events["NewAppKSubmission"] & CommonEmailVariables;
 
@@ -32,7 +32,7 @@ export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
           "Amendment Title": variables.title ?? null,
           "Waiver Amendment Number": variables.id,
           "Waiver Authority": variables.seaActionType,
-          "Proposed Effective Date": getDateFromMillis(variables.proposedEffectiveDate),
+          "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           Summary: variables.additionalInformation,
         }}
       />
@@ -52,7 +52,6 @@ const AppKCMSEmailPreview = () => {
         state: "CO",
         seaActionType: "New",
         title: "A Perfect Appendix K Amendment Title",
-        proposedEffectiveDate: new Date(),
         origin: "mako",
         attachments: {
           other: {

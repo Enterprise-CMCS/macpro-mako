@@ -1,8 +1,14 @@
 import { emailTemplateValue } from "../data";
 import { CommonEmailVariables } from "shared-types";
-import { formatNinetyDaysDate, getDateFromMillis } from "shared-utils";
+import { formatNinetyDaysDate, formatDate } from "shared-utils";
 import { Text } from "@react-email/components";
-import { PackageDetails, ContactStateLead, DetailsHeading, Attachments, MailboxNotice } from "../../email-components";
+import {
+  PackageDetails,
+  ContactStateLead,
+  DetailsHeading,
+  Attachments,
+  MailboxNotice,
+} from "../../email-components";
 import { styles } from "../../email-styles";
 import { BaseEmailTemplate } from "../../email-templates";
 
@@ -25,7 +31,7 @@ export const Waiver1915bStateEmail = (props: { variables: any & CommonEmailVaria
           "Email Address": variables.submitterEmail,
           [`${variables.actionType} Number`]: variables.id,
           "Waiver Authority": variables.authority,
-          "Proposed Effective Date": getDateFromMillis(variables.proposedEffectiveDate),
+          "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
           Summary: variables.additionalInformation,
         }}

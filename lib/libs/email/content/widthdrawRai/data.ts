@@ -2,7 +2,7 @@ export const emailTemplateValue = {
   to: "TO",
   id: "PACKAGE ID",
   territory: "CO",
-  applicationEndpointUrl: "https://onemac.cms.gov/",
+  applicationEndpointUrl: "https://mako-dev.cms.gov",
   actionType: "Withdrawal",
   authority: "AUTHORITY",
   origin: "mako",

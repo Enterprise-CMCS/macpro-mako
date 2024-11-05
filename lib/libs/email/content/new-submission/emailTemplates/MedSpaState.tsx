@@ -1,5 +1,5 @@
 import { Events } from "shared-types";
-import { formatNinetyDaysDate, getDateFromMillis } from "shared-utils";
+import { formatNinetyDaysDate, formatDate } from "shared-utils";
 import { CommonEmailVariables } from "shared-types";
 import {
   PackageDetails,
@@ -32,7 +32,7 @@ export const MedSpaStateEmail = (props: {
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
           "Medicaid SPA ID": variables.id,
-          "Proposed Effective Date": getDateFromMillis(variables.proposedEffectiveDate),
+          "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
           Summary: variables.additionalInformation,
         }}

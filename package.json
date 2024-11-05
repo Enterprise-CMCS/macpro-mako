@@ -40,7 +40,6 @@
     "cdk": "^2.156.0",
     "constructs": "^10.3.0",
     "esbuild": "^0.23.1",
-    "luxon": "^3.5.0",
     "react-email": "^3.0.1",
     "source-map-support": "^0.5.21",
     "tsx": "4.15.7"
@@ -56,7 +55,6 @@
     "@semantic-release/git": "^10.0.1",
     "@types/html-to-text": "^9.0.4",
     "@types/jest": "^29.5.12",
-    "@types/luxon": "^3.4.2",
     "@types/node": "^22.7.4",
     "@vitest/coverage-c8": "^0.29.8",
     "@vitest/coverage-istanbul": "^2.0.5",

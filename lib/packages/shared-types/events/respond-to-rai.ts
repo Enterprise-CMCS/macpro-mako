@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { attachmentSchema } from "../attachments";
+import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
 
 export const respondToRaiBaseSchema = z.object({
   id: z.string(),
@@ -7,7 +7,22 @@ export const respondToRaiBaseSchema = z.object({
   origin: z.string(),
   requestedDate: z.number(),
   responseDate: z.number(),
-  attachments: z.array(attachmentSchema).nullish(),
+  attachments: z.object({
+    cmsForm179: z.object({
+      label: z
+        .string()
+        .default("1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print"),
+      files: attachmentArraySchema(),
+    }),
+    spaPages: z.object({
+      label: z.string().default(""),
+      files: attachmentArraySchemaOptional(),
+    }),
+    other: z.object({
+      label: z.string().default("Other"),
+      files: attachmentArraySchemaOptional(),
+    }),
+  }),
   additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),

@@ -1,9 +1,16 @@
 import { emailTemplateValue } from "../data";
 import { CommonEmailVariables, Events } from "shared-types";
-import { PackageDetails, LoginInstructions, BasicFooter, Attachments } from "../../email-components";
+import {
+  PackageDetails,
+  LoginInstructions,
+  BasicFooter,
+  Attachments,
+} from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const MedSpaCMSEmail = (props: { variables: Events["NewMedicaidSubmission"] & CommonEmailVariables }) => {
+export const MedSpaCMSEmail = (props: {
+  variables: Events["RespondToRai"] & CommonEmailVariables;
+}) => {
   const variables = props.variables;
   const previewText = `Medicaid SPA ${variables.id} RAI Response Submitted`;
   const heading = "The OneMAC Submission Portal received a Medicaid SPA RAI Response Submission:";
@@ -31,7 +38,7 @@ export const MedSpaCMSEmail = (props: { variables: Events["NewMedicaidSubmission
 };
 
 const MedSpaCMSEmailPreview = () => {
-  return <MedSpaCMSEmail variables={emailTemplateValue as any} />;
+  return <MedSpaCMSEmail variables={emailTemplateValue} />;
 };
 
 export default MedSpaCMSEmailPreview;

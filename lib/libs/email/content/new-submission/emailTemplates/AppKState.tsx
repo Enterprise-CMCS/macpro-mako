@@ -1,6 +1,6 @@
 import { Text } from "@react-email/components";
 import { CommonEmailVariables, Events } from "shared-types";
-import { formatNinetyDaysDate, getDateFromMillis } from "shared-utils";
+import { formatNinetyDaysDate, formatDate } from "shared-utils";
 import {
   PackageDetails,
   ContactStateLead,
@@ -33,7 +33,7 @@ export const AppKStateEmail = (props: {
           "Email Address": variables.submitterEmail,
           "Initial Waiver Numbers": variables.waiverIds.join(", "),
           "Waiver Authority": variables.seaActionType,
-          "Proposed Effective Date": getDateFromMillis(variables.proposedEffectiveDate),
+          "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
           Summary: variables.additionalInformation,
         }}
