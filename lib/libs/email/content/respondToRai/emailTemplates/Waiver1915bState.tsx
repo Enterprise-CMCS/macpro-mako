@@ -6,7 +6,9 @@ import { PackageDetails, MailboxNotice, ContactStateLead } from "../../email-com
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
-export const Waiver1915bStateEmail = (props: { variables: Events["RespondToRai"] & CommonEmailVariables }) => {
+export const Waiver1915bStateEmail = (props: {
+  variables: Events["RespondToRai"] & CommonEmailVariables;
+}) => {
   const variables = props.variables;
   const previewText = `Appendix K Amendment Submitted`;
   const heading = "This response confirms the submission of your 1915(c) Waiver to CMS for review";
@@ -28,9 +30,11 @@ export const Waiver1915bStateEmail = (props: { variables: Events["RespondToRai"]
           Summary: variables.additionalInformation,
         }}
       />
-      <Text style={styles.text.base}>
-        This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You can
-        expect a formal response to your submittal to be issued within 90 days, before {formatNinetyDaysDate(variables.timestamp)}.
+      <Text style={styles.text.description}>
+        {`This response confirms the receipt of your Waiver request or your response to a Waiver
+        Request for Additional Information (RAI). You can expect a formal response to your submittal
+        to be issued within 90 days, before ${formatNinetyDaysDate(variables.timestamp)}`}
+        .
       </Text>
       <MailboxNotice type="Waiver" />
       <ContactStateLead />

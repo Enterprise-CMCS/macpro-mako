@@ -23,11 +23,15 @@ interface AttachmentGroup {
 
 // Utility Functions
 const getToAddress = ({ name, email }: EmailAddress): string[] => {
-  const formattedEmail = `"${name}" <${process.env.isDev === "true" ? EMAIL_CONFIG.DEV_EMAIL : email}>`;
+  const formattedEmail = `"${name}" <${
+    process.env.isDev === "true" ? EMAIL_CONFIG.DEV_EMAIL : email
+  }>`;
   return [formattedEmail];
 };
 
-const areAllAttachmentsEmpty = (attachments: Partial<Record<AttachmentTitle, AttachmentGroup | null>>): boolean => {
+const areAllAttachmentsEmpty = (
+  attachments: Partial<Record<AttachmentTitle, AttachmentGroup | null>>,
+): boolean => {
   if (!attachments) return true;
   return Object.values(attachments).every((att) => !att || att.files?.length === 0);
 };
@@ -51,16 +55,32 @@ const Textarea: React.FC<TextareaProps> = ({ children }) => (
 );
 
 const LogoContainer = forwardRef<HTMLSpanElement, { url: string }>(({ url }, ref) => (
-  <header ref={ref} style={styles.logo.container}>
-    <Link href={url} target="_blank" style={styles.logo.link}>
-      <img height={40} width={112} style={{ maxWidth: "112px" }} src={`${url}onemac-logo.png`} alt="OneMAC Logo" />
+  <header
+    ref={ref}
+    style={styles.logo.container}
+  >
+    <Link
+      href={url}
+      target="_blank"
+      style={styles.logo.link}
+    >
+      <img
+        height={40}
+        width={112}
+        style={{ maxWidth: "112px" }}
+        src={`${url}onemac-logo.png`}
+        alt="OneMAC Logo"
+      />
     </Link>
   </header>
 ));
 
 const EmailNav: React.FC<{ appEndpointUrl: string }> = ({ appEndpointUrl }) => (
   <Section>
-    <LogoContainer ref={createRef()} url={appEndpointUrl} />
+    <LogoContainer
+      ref={createRef()}
+      url={appEndpointUrl}
+    />
   </Section>
 );
 
@@ -68,17 +88,20 @@ const LoginInstructions: React.FC<{ appEndpointURL: string }> = ({ appEndpointUR
   <ul style={{ marginLeft: "-20px" }}>
     <li>
       <Text style={styles.text.description}>
-        The submission can be accessed in the OneMAC application at <Link href={appEndpointURL}>{appEndpointURL}</Link>
+        The submission can be accessed in the OneMAC application at{" "}
+        <Link href={appEndpointURL}>{appEndpointURL}</Link>
       </Text>
     </li>
     <li>
       <Text style={styles.text.description}>
-        If not logged in, click "Login" at the top and use your Enterprise User Administration (EUA) credentials.
+        If not logged in, click "Login" at the top and use your Enterprise User Administration (EUA)
+        credentials.
       </Text>
     </li>
     <li>
       <Text style={styles.text.description}>
-        After logging in, you'll see the submission listed on the dashboard. Click its ID number to view details.
+        After logging in, you'll see the submission listed on the dashboard. Click its ID number to
+        view details.
       </Text>
     </li>
   </ul>
@@ -87,7 +110,10 @@ const LoginInstructions: React.FC<{ appEndpointURL: string }> = ({ appEndpointUR
 const DetailsHeading: React.FC = () => (
   <div>
     <Hr style={styles.divider} />
-    <Heading as="h2" style={styles.heading.h2}>
+    <Heading
+      as="h2"
+      style={styles.heading.h2}
+    >
       Details:
     </Heading>
   </div>
@@ -103,7 +129,10 @@ const Attachments: React.FC<{
   return (
     <>
       <Hr style={styles.divider} />
-      <Heading as="h2" style={styles.heading.h2}>
+      <Heading
+        as="h2"
+        style={styles.heading.h2}
+      >
         Files:
       </Heading>
 
@@ -111,7 +140,10 @@ const Attachments: React.FC<{
         if (!group?.files?.length) return null;
 
         return (
-          <Row key={key} style={{ marginBottom: "2px", marginTop: "2px" }}>
+          <Row
+            key={key}
+            style={{ marginBottom: "2px", marginTop: "2px" }}
+          >
             <Column
               align="left"
               style={{
@@ -148,7 +180,10 @@ const PackageDetails: React.FC<{
           <Row key={label}>
             <Hr style={styles.divider} />
             <Text style={{ margin: ".5em" }}>
-              <Heading as="h2" style={styles.heading.h2}>
+              <Heading
+                as="h2"
+                style={styles.heading.h2}
+              >
                 Summary:
               </Heading>
             </Text>
@@ -159,11 +194,14 @@ const PackageDetails: React.FC<{
 
       return (
         <Row key={label}>
-          <Column align="left" style={{ width: "50%" }}>
+          <Column
+            align="left"
+            style={{ width: "50%" }}
+          >
             <Text style={styles.text.title}>{label}</Text>
           </Column>
           <Column>
-            <Text style={styles.text.description}>{value ?? "Unknown"}</Text>
+            <Text style={styles.text.description}>{value ?? "Not provided"}</Text>
           </Column>
         </Row>
       );
@@ -172,7 +210,7 @@ const PackageDetails: React.FC<{
 );
 
 const MailboxNotice: React.FC<{ type: "SPA" | "Waiver" }> = ({ type }) => (
-  <Text style={styles.text.base}>
+  <Text style={{ ...styles.text.description, marginTop: "16px", marginBottom: "16px" }}>
     {type === "SPA"
       ? "This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only."
       : "This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only."}
@@ -190,7 +228,10 @@ const ContactStateLead: React.FC<{ isChip?: boolean }> = ({ isChip }) => (
   >
     <Text style={{ fontSize: "14px" }}>
       If you have questions or did not expect this email, please contact{" "}
-      <Link href={`mailto:${isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}`} style={{ color: "#fff", textDecoration: "underline" }}>
+      <Link
+        href={`mailto:${isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}`}
+        style={{ color: "#fff", textDecoration: "underline" }}
+      >
         {isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}
       </Link>{" "}
       or your state lead.
@@ -199,12 +240,18 @@ const ContactStateLead: React.FC<{ isChip?: boolean }> = ({ isChip }) => (
   </Section>
 );
 
-export const EmailFooter: React.FC<{ children: React.ReactNode }> = ({ children }) => <Section style={styles.section.footer}>{children}</Section>;
+export const EmailFooter: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <Section style={styles.section.footer}>{children}</Section>
+);
 
 const BasicFooter: React.FC = () => (
   <EmailFooter>
-    <Text style={{ ...styles.text.footer, margin: "8px" }}>{`U.S. Centers for Medicare & Medicaid Services`}</Text>
-    <Text style={{ ...styles.text.footer, margin: "8px" }}>© {new Date().getFullYear()} | 7500 Security Boulevard, Baltimore, MD 21244</Text>
+    <Text
+      style={{ ...styles.text.footer, margin: "8px" }}
+    >{`U.S. Centers for Medicare & Medicaid Services`}</Text>
+    <Text style={{ ...styles.text.footer, margin: "8px" }}>
+      © {new Date().getFullYear()} | 7500 Security Boulevard, Baltimore, MD 21244
+    </Text>
   </EmailFooter>
 );
 
@@ -215,8 +262,9 @@ const WithdrawRAI: React.FC<{
 }> = ({ id, submitterName, submitterEmail }) => (
   <Section>
     <Heading as="h2">
-      The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are receiving this email notification as the Formal RAI
-      for {id} was withdrawn by {submitterName} {submitterEmail}.
+      The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are
+      receiving this email notification as the Formal RAI for {id} was withdrawn by {submitterName}{" "}
+      {submitterEmail}.
     </Heading>
   </Section>
 );

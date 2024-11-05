@@ -1,13 +1,20 @@
 import { Events } from "shared-types";
 import { formatNinetyDaysDate, getDateFromMillis } from "shared-utils";
 import { CommonEmailVariables } from "shared-types";
-import { PackageDetails, ContactStateLead, DetailsHeading, MailboxNotice } from "../../email-components";
+import {
+  PackageDetails,
+  ContactStateLead,
+  DetailsHeading,
+  MailboxNotice,
+} from "../../email-components";
 import { emailTemplateValue } from "../data";
 import { BaseEmailTemplate } from "../../email-templates";
 import { Text } from "@react-email/components";
 import { styles } from "../../email-styles";
 
-export const MedSpaStateEmail = (props: { variables: Events["NewMedicaidSubmission"] & CommonEmailVariables }) => {
+export const MedSpaStateEmail = (props: {
+  variables: Events["NewMedicaidSubmission"] & CommonEmailVariables;
+}) => {
   const variables = props.variables;
   const previewText = `Medicaid SPA &${variables.id} Submitted`;
   const heading = "This response confirms that you submitted a Medicaid SPA to CMS for review:";
@@ -30,7 +37,7 @@ export const MedSpaStateEmail = (props: { variables: Events["NewMedicaidSubmissi
           Summary: variables.additionalInformation,
         }}
       />
-      <Text style={styles.text.base}>
+      <Text style={styles.text.description}>
         {`This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information
         (RAI). You can expect a formal response to your submittal to be issued

@@ -1,7 +1,7 @@
 export const emailTemplateValue = {
   id: "MD-0000.R00.00",
   territory: "CO",
-  applicationEndpointUrl: "https://mako-dev.cms.gov/",
+  applicationEndpointUrl: "https://mako-dev.cms.gov",
   timestamp: 1121234556,
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",

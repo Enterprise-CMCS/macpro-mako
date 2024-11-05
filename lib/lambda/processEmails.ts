@@ -151,14 +151,6 @@ const htmlToTextOptions = (baseUrl: string): HtmlToTextOptions => ({
       },
     },
     {
-      selector: "h2,h3,h4",
-      options: {
-        uppercase: true,
-        leadingLineBreaks: 2,
-        trailingLineBreaks: 1,
-      },
-    },
-    {
       selector: "p",
       options: {
         leadingLineBreaks: 1,
@@ -171,14 +163,6 @@ const htmlToTextOptions = (baseUrl: string): HtmlToTextOptions => ({
         linkBrackets: ["[", "]"],
         baseUrl,
         hideLinkHrefIfSameAsText: true,
-      },
-    },
-    {
-      selector: "ul,ol",
-      options: {
-        itemPrefix: " • ", // Bullet for list items
-        leadingLineBreaks: 1,
-        trailingLineBreaks: 1,
       },
     },
   ],

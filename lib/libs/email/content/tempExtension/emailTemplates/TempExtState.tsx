@@ -6,12 +6,11 @@ import {
   ContactStateLead,
   Attachments,
 } from "../../email-components";
-import { emailTemplateValue } from "../../new-submission/data";
-import { BaseEmailTemplate } from "../../email-templates";
 
-export const TempExtStateEmail = (props: {
-  variables: any & CommonEmailVariables;
-}) => {
+import { BaseEmailTemplate } from "../../email-templates";
+import { emailTemplateValue } from "../data";
+
+export const TempExtStateEmail = (props: { variables: any & CommonEmailVariables }) => {
   const variables = props.variables;
   const previewText = `Temporary Extension ${variables.id} Submitted`;
   const heading =
@@ -36,14 +35,14 @@ export const TempExtStateEmail = (props: {
           summary: variables.additionalInformation,
         }}
       />
-      <Attachments attachments={variables.attachments as any} />
+      <Attachments attachments={variables.attachments} />
       <MailboxNotice type="Waiver" />
     </BaseEmailTemplate>
   );
 };
 
-const TempExtCMS = () => {
-  return <TempExtStateEmail variables={emailTemplateValue as any} />;
+const TempExtStatePreview = () => {
+  return <TempExtStateEmail variables={emailTemplateValue} />;
 };
 
-export default TempExtCMS;
+export default TempExtStatePreview;
