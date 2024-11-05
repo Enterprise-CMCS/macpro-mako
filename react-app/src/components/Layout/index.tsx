@@ -19,6 +19,13 @@ import config from "@/config";
 import { SimplePageContainer, UserPrompt, Banner } from "@/components";
 import { isFaqPage, isProd } from "@/utils";
 
+/**
+ * Custom hook that generates a list of navigation links based on the user's status and whether the current page is the FAQ page.
+ *
+ * @returns {Object} An object containing:
+ * - `links`: An array of link objects with `name`, `link`, and `condition` properties.
+ * - `isFaqPage`: A boolean indicating if the current page is the FAQ page.
+ */
 const useGetLinks = () => {
   const { isLoading, data: userObj } = useGetUser();
 
@@ -51,6 +58,22 @@ const useGetLinks = () => {
   return { links, isFaqPage };
 };
 
+/**
+ * UserDropdownMenu component renders a dropdown menu for user actions.
+ *
+ * This component provides options for viewing the user's profile and signing out.
+ * It uses the `useNavigate` hook for navigation and `Auth.signOut` for logging out.
+ *
+ * The dropdown menu is not rendered on the FAQ page.
+ *
+ * @component
+ * @example
+ * return (
+ *   <UserDropdownMenu />
+ * )
+ *
+ * @returns {JSX.Element} The rendered dropdown menu component.
+ */
 const UserDropdownMenu = () => {
   const navigate = useNavigate();
 
@@ -115,6 +138,28 @@ const UserDropdownMenu = () => {
   );
 };
 
+/**
+ * Layout component that serves as the main structure of the application.
+ * It includes a navigation bar, main content area, and footer.
+ *
+ * @returns {JSX.Element} The rendered Layout component.
+ *
+ * @component
+ * @example
+ * return (
+ *   <Layout />
+ * )
+ *
+ * @remarks
+ * - Uses `useMediaQuery` to determine if the screen width is at least 768px.
+ * - Fetches user data using `useGetUser` hook.
+ * - Displays a `UserPrompt` component.
+ * - Displays a `UsaBanner` component, indicating if the user is missing a role.
+ * - Contains a navigation bar with a logo and a `ResponsiveNav` component.
+ * - The logo is a clickable `Link` unless on the FAQ page, where it is a non-clickable `div`.
+ * - The main content area includes a `SimplePageContainer` with a `Banner` and an `Outlet` for nested routes.
+ * - The footer displays contact information.
+ */
 export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
@@ -175,6 +220,27 @@ type ResponsiveNavProps = {
   isDesktop: boolean;
 };
 
+/**
+ * ResponsiveNav component renders a navigation bar that adapts to desktop and mobile views.
+ * It displays navigation links and user authentication buttons (Sign In/Register) based on the user's authentication status.
+ *
+ * @param {ResponsiveNavProps} props - The properties for the ResponsiveNav component.
+ * @param {boolean} props.isDesktop - A boolean indicating if the current view is desktop.
+ *
+ * @returns {JSX.Element | null} The rendered navigation bar component.
+ *
+ * @component
+ *
+ * @example
+ * // Usage example:
+ * <ResponsiveNav isDesktop={true} />
+ *
+ * @remarks
+ * - The component uses `useGetLinks` to fetch navigation links.
+ * - The component uses `useGetUser` to fetch user data.
+ * - The component conditionally renders different layouts for desktop and mobile views.
+ * - The component handles user authentication redirection for login and registration.
+ */
 const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const [prevMediaQuery, setPrevMediaQuery] = useState(isDesktop);
   const [isOpen, setIsOpen] = useState(false);
@@ -304,6 +370,17 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   );
 };
 
+/**
+ * SubNavHeader component
+ *
+ * This component renders a sub-navigation header with a background color and
+ * centers its children content within a maximum width container.
+ *
+ * @param {Object} props - The properties object.
+ * @param {React.ReactNode} props.children - The content to be displayed inside the sub-navigation header.
+ *
+ * @returns {JSX.Element} The rendered sub-navigation header component.
+ */
 export const SubNavHeader = ({ children }: { children: React.ReactNode }) => (
   <div className="bg-sky-100">
     <div className="max-w-screen-xl m-auto px-4 lg:px-8">
