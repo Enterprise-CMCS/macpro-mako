@@ -351,6 +351,9 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
 
 export const PackageActivities = () => {
   const hook = usePackageActivities();
+  const packageActivities = hook.data?.filter(
+    (activity) => !activity._source.isAdminChange,
+  );
 
   return (
     <DetailsSection
@@ -358,11 +361,8 @@ export const PackageActivities = () => {
       title={
         // needed to do this for the download all button
         <div className="flex justify-between">
-          {`Package Activity (${
-            hook.data?.filter((activity) => !activity._source.isAdminChange)
-              .length
-          })`}
-          {!!hook.data?.length && (
+          {`Package Activity (${packageActivities.length})`}
+          {!!packageActivities?.length && (
             <Table.Button
               loading={hook.loading}
               onClick={hook.onDownloadAll}
@@ -374,14 +374,14 @@ export const PackageActivities = () => {
         </div>
       }
     >
-      {!hook.data?.length && (
+      {!packageActivities?.length && (
         <p className="text-gray-500">No package activity recorded</p>
       )}
       <Accordion
-        key={hook.accordianDefault[0]}
+        key={packageActivities[0]._id}
         type="multiple"
         className="flex flex-col gap-2"
-        defaultValue={hook.accordianDefault}
+        defaultValue={[packageActivities[0]._id]}
       >
         {hook.data?.map((CL) => (
           <PackageActivity {...CL._source} key={CL._source.id} />

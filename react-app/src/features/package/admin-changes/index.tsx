@@ -101,7 +101,6 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
 export const AdminChanges = () => {
   const cache = usePackageDetailsCache();
   const data = cache.data.changelog?.filter((CL) => CL._source.isAdminChange);
-  console.log("what is data", data);
 
   if (!data?.length) return null;
 
