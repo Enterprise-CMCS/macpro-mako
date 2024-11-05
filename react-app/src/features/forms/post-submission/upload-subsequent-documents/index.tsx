@@ -9,7 +9,9 @@ import {
   AttachmentFileFormatInstructions,
 } from "@/components/ActionForm/actionForm.components";
 import { formSchemas } from "@/formSchemas";
+import { getAuthorityLabel } from "@/utils";
 import { Navigate, useParams } from "react-router-dom";
+import { AuthorityUnion } from "shared-types";
 import { z } from "zod";
 
 const pickAttachmentsAndAdditionalInfo = (
@@ -66,7 +68,10 @@ const pickAttachmentsAndAdditionalInfo = (
 };
 
 export const UploadSubsequentDocuments = () => {
-  const { authority, id } = useParams();
+  const { authority, id } = useParams<{
+    id: string;
+    authority: AuthorityUnion;
+  }>();
   const { data: submission } = useGetItem(id);
 
   if (submission === undefined) {
@@ -91,6 +96,12 @@ export const UploadSubsequentDocuments = () => {
       title={`Upload Subsequent ${authority} Document Details`}
       schema={pickedSchema}
       breadcrumbText="New Subsequent Documentation"
+      formDescription={`
+        Provide revised or additional documentation for your submission. 
+        Once you submit this form, a confirmation email is sent to you and to CMS. 
+        CMS will use this content to review your package, and you will not be able to edit this form. 
+        If CMS needs any additional information, they will follow up buy email.
+      `}
       fields={PackageSection}
       promptPreSubmission={{
         header: "Submit additional documents?",
@@ -99,11 +110,11 @@ export const UploadSubsequentDocuments = () => {
       }}
       bannerPostSubmission={{
         header: "Documents submitted",
-        body: "CMS reviewers will follow up by email if additional information is needed",
+        body: "CMS reviewers will follow up by email if additional information is needed.",
         variant: "success",
       }}
       attachments={{
-        title: "Subsequent Medicaid SPA Documents",
+        title: `Subsequent ${getAuthorityLabel(authority)} Documents`,
         requiredIndicatorForTitle: true,
         instructions: [
           <AttachmentFAQInstructions />,
@@ -118,7 +129,7 @@ export const UploadSubsequentDocuments = () => {
       additionalInformation={{
         required: true,
         title: "Reason for subsequent documents",
-        label: "Explain why additional documents are being submitted",
+        label: "Explain why additional documents are being submitted.",
       }}
     />
   );
