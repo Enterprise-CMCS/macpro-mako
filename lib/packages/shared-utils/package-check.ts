@@ -66,8 +66,8 @@ export const PackageCheck = ({
     isInSecondClock:
       !planChecks.authorityIs([Authority.CHIP_SPA]) &&
       checkStatus(seatoolStatus, secondClockStatuses) &&
-      raiRequestedDate &&
-      raiReceivedDate &&
+      !!raiRequestedDate &&
+      !!raiReceivedDate &&
       !raiWithdrawnDate,
     /** Is in any status except Package Withdrawn **/
     isNotWithdrawn: !checkStatus(seatoolStatus, SEATOOL_STATUS.WITHDRAWN),

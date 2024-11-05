@@ -35,6 +35,7 @@ const arEnableWithdrawRaiResponse: ActionRule = {
     checker.isNotWithdrawn &&
     checker.hasRaiResponse &&
     !checker.hasEnabledRaiWithdraw &&
+    checker.isInSecondClock &&
     isCmsWriteUser(user) &&
     !checker.hasStatus(finalDispositionStatuses),
 };
