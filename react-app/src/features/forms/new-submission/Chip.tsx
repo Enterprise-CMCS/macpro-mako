@@ -13,6 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
+import { getFAQLinkForAttachments } from "../faqLinks";
 
 export const ChipForm = () => (
   <ActionForm
@@ -77,7 +78,7 @@ export const ChipForm = () => (
     )}
     defaultValues={{ id: "" }}
     attachments={{
-      faqLink: "/faq/chip-spa-attachments",
+      faqLink: getFAQLinkForAttachments("new-chip-submission"),
     }}
     documentPollerArgs={{
       property: "id",

@@ -17,6 +17,7 @@ import {
 import { Link } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
+import { getFAQLinkForAttachments } from "../../faqLinks";
 
 export const TemporaryExtensionForm = () => (
   <ActionForm
@@ -130,7 +131,7 @@ export const TemporaryExtensionForm = () => (
       </>
     )}
     attachments={{
-      faqLink: "/faq/temporary-extensions-b-attachments",
+      faqLink: getFAQLinkForAttachments("temporary-extension"),
     }}
     documentPollerArgs={{
       property: (data) => data.id,

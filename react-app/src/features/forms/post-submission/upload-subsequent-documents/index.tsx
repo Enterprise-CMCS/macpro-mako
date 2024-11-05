@@ -13,6 +13,7 @@ import { getAuthorityLabel } from "@/utils";
 import { Navigate, useParams } from "react-router-dom";
 import { AuthorityUnion } from "shared-types";
 import { z } from "zod";
+import { getFAQLinkForAttachments } from "../../faqLinks";
 
 const pickAttachmentsAndAdditionalInfo = (
   schema: SchemaWithEnforcableProps,
@@ -90,6 +91,7 @@ export const UploadSubsequentDocuments = () => {
   }
 
   const pickedSchema = pickAttachmentsAndAdditionalInfo(schema, submission._id);
+  const faqLink = getFAQLinkForAttachments(originalSubmissionEvent);
 
   return (
     <ActionForm
@@ -117,7 +119,7 @@ export const UploadSubsequentDocuments = () => {
         title: `Subsequent ${getAuthorityLabel(authority)} Documents`,
         requiredIndicatorForTitle: true,
         instructions: [
-          <AttachmentFAQInstructions />,
+          <AttachmentFAQInstructions faqLink={faqLink} />,
           <AttachmentFileFormatInstructions />,
           <p>At least one attachment is required to submit.</p>,
         ],
