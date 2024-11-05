@@ -24,6 +24,7 @@ import {
   seatool,
   changedDate,
   temporaryExtension,
+  uploadSubsequentDocuments,
 } from "./transforms";
 
 export type Document = z.infer<capitatedAmendment.Schema> &
@@ -41,7 +42,8 @@ export type Document = z.infer<capitatedAmendment.Schema> &
   z.infer<withdrawPackage.Schema> &
   z.infer<toggleWithdrawRai.Schema> &
   z.infer<seatool.Schema> &
-  z.infer<changedDate.Schema> & {
+  z.infer<changedDate.Schema> &
+  z.infer<uploadSubsequentDocuments.Schema> & {
     makoChangedDate: string;
     changelog?: Changelog[];
     appkChildren?: OmitFoundItemResult[];
@@ -74,4 +76,5 @@ export const transforms = {
   "withdraw-rai": withdrawRai,
   "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
+  "upload-subsequent-documents": uploadSubsequentDocuments,
 };
