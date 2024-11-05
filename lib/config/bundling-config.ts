@@ -9,7 +9,6 @@ export const commonBundlingOptions: lambda.BundlingOptions = {
     '--define:canvas="undefined"': true,
   },
   define: {
-    "process.env.NODE_ENV": JSON.stringify("production"),
     "global.window": "undefined",
     "global.document": "undefined",
     "global.navigator": "undefined",

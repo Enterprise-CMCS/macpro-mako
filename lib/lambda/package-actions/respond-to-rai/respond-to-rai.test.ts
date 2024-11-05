@@ -1,8 +1,8 @@
-import { respondToRai } from "./respond-to-rai";
 import { vi, describe, it, expect, beforeEach } from "vitest";
-import { raiResponseSchema } from "shared-types";
+import { events } from "shared-types";
 import { generateMock } from "@anatine/zod-mock";
 import * as packageActionWriteService from "../services/package-action-write-service";
+import { respondToRai } from "./respond-to-rai";
 
 vi.mock("../services/package-action-write-service", () => {
   return {
@@ -28,7 +28,7 @@ describe("respondToRai", async () => {
   });
 
   it("should return a 400 when no requested date is sent", async () => {
-    const mockData = generateMock(raiResponseSchema);
+    const mockData = generateMock(events["respond-to-rai"].schema);
     const response = await respondToRai(mockData, {
       raiRequestedDate: null,
       raiReceivedDate: null,
@@ -38,7 +38,7 @@ describe("respondToRai", async () => {
   });
 
   it("should return a 400 when a bad requestDate is sent", async () => {
-    const mockData = generateMock(raiResponseSchema);
+    const mockData = generateMock(events["respond-to-rai"].schema);
     const response = await respondToRai(mockData, {
       raiRequestedDate: "123456789", // should be an isoString
       raiReceivedDate: null,
@@ -49,11 +49,8 @@ describe("respondToRai", async () => {
   });
 
   it("should return a 200 when a good payload is sent", async () => {
-    const packageWriteSpy = vi.spyOn(
-      packageActionWriteService,
-      "respondToRaiAction",
-    );
-    const mockData = generateMock(raiResponseSchema);
+    const packageWriteSpy = vi.spyOn(packageActionWriteService, "respondToRaiAction");
+    const mockData = generateMock(events["respond-to-rai"].schema);
     const response = await respondToRai(mockData, {
       raiRequestedDate: new Date().toISOString(),
       raiReceivedDate: null,
