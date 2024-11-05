@@ -1,6 +1,14 @@
-import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
+import {
+  describe,
+  it,
+  expect,
+  beforeAll,
+  beforeEach,
+  afterEach,
+  vi,
+} from "vitest";
 import { Layout } from "./index";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import {
   QueryClient,
@@ -12,6 +20,7 @@ import { useGetUser } from "@/api";
 import { testStateCognitoUser } from "shared-utils/testData";
 import { OneMacUser } from "@/api/useGetUser";
 import { Auth } from "aws-amplify";
+import * as hooks from "@/hooks";
 
 /**
  * Mock Configurations
@@ -49,6 +58,14 @@ vi.mock("react-router-dom", async () => {
     useNavigate: () => mockNavigate,
   };
 });
+
+// Mock for ResizeObserver (used by radix-ui)
+class ResizeObserverMock {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+global.ResizeObserver = ResizeObserverMock;
 
 /**
  * Test Data
@@ -165,21 +182,28 @@ const setupUserDropdownTest = async (
 
 beforeAll(() => {
   // Mock window.matchMedia
-  window.matchMedia = vi.fn().mockImplementation((query) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  }));
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: vi.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
 });
 
 describe("Layout", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it("renders without errors", () => {
@@ -297,6 +321,40 @@ describe("Layout", () => {
       // Close the menu
       await userEvent.click(menuButton);
       expect(screen.queryByText("Home")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("ResponsiveNav screen size changes", () => {
+    beforeEach(() => {
+      vi.clearAllMocks();
+      vi.mocked(useGetUser).mockReturnValue(mockUserResponse);
+    });
+
+    it("shows mobile menu when in mobile view", async () => {
+      vi.spyOn(hooks, "useMediaQuery").mockReturnValue(false);
+
+      renderWithProviders();
+
+      // Mobile menu button should be present
+      expect(screen.getByTestId("mobile-menu-button")).toBeInTheDocument();
+
+      // Open the mobile menu
+      await userEvent.click(screen.queryByTestId("mobile-menu-button"));
+      expect(screen.getByText("Home")).toBeVisible();
+    });
+
+    it("does not show mobile menu when in desktop view", () => {
+      vi.spyOn(hooks, "useMediaQuery").mockReturnValue(true);
+
+      renderWithProviders();
+
+      // Mobile menu button should not be present
+      expect(
+        screen.queryByTestId("mobile-menu-button"),
+      ).not.toBeInTheDocument();
+
+      // Desktop menu items should be visible
+      expect(screen.getByText("Home")).toBeVisible();
     });
   });
 });

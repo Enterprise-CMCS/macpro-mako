@@ -359,6 +359,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
         </div>
       )}
       <button
+        data-testid="mobile-menu-button"
         onClick={() => {
           setIsOpen((prev) => !prev);
         }}
