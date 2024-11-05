@@ -189,6 +189,8 @@ export const PackageActivities = () => {
       )}
 
       <Accordion
+        // `key` to re-render the `defaultValue` whenever `accordionDefault` changes
+        key={accordianDefault[0]}
         type="multiple"
         className="flex flex-col gap-2"
         defaultValue={accordianDefault}

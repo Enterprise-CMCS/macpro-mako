@@ -47,6 +47,8 @@ import { getAttachments } from "./actionForm.utilities";
 import { isStateUser } from "shared-utils";
 import { useGetUser } from "@/api";
 import { AdditionalInformation } from "./AdditionalInformation";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "@/router";
 
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {
@@ -157,11 +159,19 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     },
   });
 
+  const { mutateAsync } = useMutation({
+    mutationFn: (formData: z.TypeOf<Schema>) =>
+      API.post("os", "/submit", {
+        body: formData,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["record"] });
+    },
+  });
+
   const onSubmit = form.handleSubmit(async (formData) => {
     try {
-      await API.post("os", "/submit", {
-        body: formData,
-      });
+      await mutateAsync(formData);
 
       const { documentChecker, property } = documentPollerArgs;
 
