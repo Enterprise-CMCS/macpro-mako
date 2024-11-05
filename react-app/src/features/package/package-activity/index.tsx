@@ -160,8 +160,10 @@ export const PackageActivities = () => {
     accordianDefault,
   } = usePackageActivities();
 
-  const activitiesWithAdminChange = packageActivity.filter(
-    (activity) => activity._source.isAdminChange === false,
+  const activitiesWithoutAdminChange = packageActivity.filter(
+    (activity) =>
+      activity._source.isAdminChange === undefined ||
+      activity._source.isAdminChange === false,
   );
 
   return (
@@ -169,8 +171,8 @@ export const PackageActivities = () => {
       id="package_activity"
       title={
         <div className="flex justify-between">
-          Package Activity {activitiesWithAdminChange.length}
-          {packageActivity.length && (
+          Package Activity {activitiesWithoutAdminChange.length}
+          {activitiesWithoutAdminChange.length && (
             <Table.Button
               loading={loading}
               onClick={onDownloadAll}
@@ -182,7 +184,7 @@ export const PackageActivities = () => {
         </div>
       }
     >
-      {packageActivity.length === 0 && (
+      {activitiesWithoutAdminChange.length === 0 && (
         <p className="text-gray-500">No package activity recorded</p>
       )}
 
@@ -191,7 +193,7 @@ export const PackageActivities = () => {
         className="flex flex-col gap-2"
         defaultValue={accordianDefault}
       >
-        {packageActivity.map((submission) => (
+        {activitiesWithoutAdminChange.map((submission) => (
           <PackageActivity
             key={submission._source.id}
             {...submission._source}
