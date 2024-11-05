@@ -34,11 +34,7 @@ export const getAvailableActions = (
     (date, _, arr) => date === arr[0],
   );
   if (!isRaiRequestedDateIdentical) {
-    const actionsToRemove = [
-      Action.RESPOND_TO_RAI,
-      Action.WITHDRAW_RAI,
-      Action.ISSUE_RAI,
-    ];
+    const actionsToRemove = [Action.RESPOND_TO_RAI, Action.WITHDRAW_RAI];
     commonActions = commonActions.filter(
       (action: any) => !actionsToRemove.includes(action),
     );

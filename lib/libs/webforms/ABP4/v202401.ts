@@ -45,23 +45,25 @@ export const v202401: FormSchema = {
             {
               rhf: "WrappedGroup",
               name: "wrapped",
+              props: {
+                wrapperClassName:
+                  "ml-[0.6rem] px-4 border-l-4 border-l-primary pb-6",
+              },
+              dependency: {
+                conditions: [
+                  {
+                    name: "abp4_cost-sharing_abp-for-individuals-income-over-100-poverty",
+                    type: "expectedValue",
+                    expectedValue: "yes",
+                  },
+                ],
+                effect: { type: "show" },
+              },
               fields: [
                 {
                   rhf: "Checkbox",
                   name: "see-approved-attachment",
                   rules: { required: "* Required" },
-                  formItemClassName:
-                    "ml-[0.6rem] px-4 border-l-4 border-l-primary pb-6",
-                  dependency: {
-                    conditions: [
-                      {
-                        name: "abp4_cost-sharing_abp-for-individuals-income-over-100-poverty",
-                        type: "expectedValue",
-                        expectedValue: "yes",
-                      },
-                    ],
-                    effect: { type: "show" },
-                  },
                   props: {
                     options: [
                       {
@@ -78,18 +80,6 @@ export const v202401: FormSchema = {
                   label: "Attachment 4.18-F or G",
                   labelClassName: "font-bold",
                   rules: { required: "* Required" },
-                  formItemClassName:
-                    "ml-[0.6rem] px-4 border-l-4 border-l-primary",
-                  dependency: {
-                    conditions: [
-                      {
-                        name: "abp4_cost-sharing_abp-for-individuals-income-over-100-poverty",
-                        type: "expectedValue",
-                        expectedValue: "yes",
-                      },
-                    ],
-                    effect: { type: "show" },
-                  },
                 },
               ],
             },
