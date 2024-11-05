@@ -26,7 +26,11 @@ const ageOptions = [
 
 const childStyle = " ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary ";
 
-const ageRangeGroup = (nameMod: string, fullMod: string): RHFSlotProps[] => [
+const ageRangeGroup = (
+  nameMod: string,
+  fullMod: string,
+  wrapperDep = true,
+): RHFSlotProps[] => [
   {
     name: nameMod + "inc-age-standard",
     descriptionAbove: true,
@@ -140,16 +144,18 @@ const ageRangeGroup = (nameMod: string, fullMod: string): RHFSlotProps[] => [
     label:
       "Explain, including the age ranges for each income standard that has overlapping ages and the reason for having different income standards.",
     labelClassName: "font-bold text-black",
-    dependency: {
-      conditions: [
-        {
-          type: "expectedValue",
-          expectedValue: "yes",
-          name: fullMod + "_" + nameMod + "overlap",
-        },
-      ],
-      effect: { type: "show" },
-    },
+    dependency: wrapperDep
+      ? {
+          conditions: [
+            {
+              type: "expectedValue",
+              expectedValue: "yes",
+              name: fullMod + "_" + nameMod + "overlap",
+            },
+          ],
+          effect: { type: "show" },
+        }
+      : undefined,
     rules: {
       required: "* Required",
       pattern: {
@@ -311,7 +317,23 @@ export const v202401: FormSchema = {
               label:
                 "Explain, including a description of the overlapping geographic area and the reason for having different income standards.",
               labelClassName: "font-bold text-black",
-              rules: { required: "* Required" },
+              rules: {
+                required: "* Required",
+                pattern: {
+                  value: noLeadingTrailingWhitespace,
+                  message: "Must not have leading or trailing whitespace.",
+                },
+              },
+              dependency: {
+                conditions: [
+                  {
+                    type: "expectedValue",
+                    expectedValue: "yes",
+                    name: "cs12_inc-exception_exceptions",
+                  },
+                ],
+                effect: { type: "show" },
+              },
               formItemClassName: childStyle,
               props: {
                 className: "h-[114px]",
@@ -344,7 +366,7 @@ export const v202401: FormSchema = {
                             name: "county-label",
                             rhf: "Input",
                             label: "County",
-                            formItemClassName: "w-[700px]",
+                            formItemClassName: "w-[520px]",
                             labelClassName: "font-bold text-black",
                             rules: {
                               required: "* Required",
@@ -355,7 +377,11 @@ export const v202401: FormSchema = {
                               },
                             },
                           },
-                          ...ageRangeGroup("county", "cs12_inc-exception"),
+                          ...ageRangeGroup(
+                            "county",
+                            "cs12_inc-exception",
+                            false,
+                          ),
                         ],
                       },
                     ],
@@ -365,12 +391,12 @@ export const v202401: FormSchema = {
                     value: "city",
                     slots: [
                       {
-                        name: "county-group",
+                        name: "city-group",
                         rhf: "FieldArray",
                         description:
                           "Enter one city if the city has a unique income standard. If multiple cities share the same income standard, enter all the cities, then enter the income standard that applies to those cities.",
                         descriptionAbove: true,
-                        formItemClassName: "w-[700px]",
+                        formItemClassName: "w-[520px]",
                         props: {
                           ...DefaultFieldGroupProps,
                           appendText: "Add city",
@@ -391,7 +417,7 @@ export const v202401: FormSchema = {
                               },
                             },
                           },
-                          ...ageRangeGroup("city", "cs12_inc-exception"),
+                          ...ageRangeGroup("city", "cs12_inc-exception", false),
                         ],
                       },
                     ],
@@ -401,7 +427,7 @@ export const v202401: FormSchema = {
                     value: "geo-area",
                     slots: [
                       {
-                        name: "county-group",
+                        name: "geo-group",
                         rhf: "FieldArray",
                         description:
                           "Enter each geographic area with a unique income standard.",
@@ -415,7 +441,7 @@ export const v202401: FormSchema = {
                           {
                             name: "geo-label",
                             rhf: "Input",
-                            formItemClassName: "w-[700px]",
+                            formItemClassName: "w-[520px]",
                             label: "Geographic area",
                             labelClassName: "font-bold text-black",
                             rules: {
@@ -444,7 +470,7 @@ export const v202401: FormSchema = {
                               className: "h-[114px]",
                             },
                           },
-                          ...ageRangeGroup("geo", "cs12_inc-exception"),
+                          ...ageRangeGroup("geo", "cs12_inc-exception", false),
                         ],
                       },
                     ],
