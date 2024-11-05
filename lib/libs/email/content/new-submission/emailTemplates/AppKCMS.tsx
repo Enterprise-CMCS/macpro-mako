@@ -1,11 +1,15 @@
 import { Events, CommonEmailVariables } from "shared-types";
 
-import { LoginInstructions, PackageDetails, BasicFooter, DetailsHeading, Attachments } from "../../email-components";
+import {
+  LoginInstructions,
+  PackageDetails,
+  BasicFooter,
+  DetailsHeading,
+  Attachments,
+} from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { emailTemplateValue } from "../data";
 import { getDateFromMillis } from "shared-utils";
-import { styles } from "../../email-styles";
-import { Hr } from "node_modules/@react-email/components/dist";
 
 type AppKEmailProps = Events["NewAppKSubmission"] & CommonEmailVariables;
 
@@ -18,7 +22,8 @@ export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <Hr style={styles.divider} />
+      <DetailsHeading />
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
       <PackageDetails
         details={{
           "State or territory": variables.territory,
@@ -32,8 +37,6 @@ export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
         }}
       />
       <Attachments attachments={variables.attachments} />
-      <DetailsHeading />
-      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
     </BaseEmailTemplate>
   );
 };

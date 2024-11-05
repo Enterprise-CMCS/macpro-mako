@@ -68,7 +68,7 @@ const LogoContainer = forwardRef<HTMLSpanElement, { url: string }>(({ url }, ref
         height={40}
         width={112}
         style={{ maxWidth: "112px" }}
-        src={`${url}onemac-logo.png`}
+        src={`${url}/onemac-logo.png`}
         alt="OneMAC Logo"
       />
     </Link>
