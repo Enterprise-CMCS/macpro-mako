@@ -251,4 +251,52 @@ describe("Layout", () => {
       },
     );
   });
+
+  describe("Navigation links and mobile view", () => {
+    const setupLayoutTest = (
+      viewMode: ViewMode = VIEW_MODES.DESKTOP,
+      userData = mockUserResponse,
+    ) => {
+      vi.mocked(useGetUser).mockReturnValue(userData);
+      mockMediaQuery(viewMode);
+      return renderWithProviders();
+    };
+
+    it("renders nav links for authenticated user in desktop view", async () => {
+      setupLayoutTest(VIEW_MODES.DESKTOP);
+      expect(screen.getByText("Home")).toBeInTheDocument();
+      expect(screen.getByText("Dashboard")).toBeInTheDocument();
+      expect(screen.getByText("FAQ")).toBeInTheDocument();
+      expect(screen.getByText("Webforms")).toBeInTheDocument();
+      expect(screen.queryByText("Sign In")).not.toBeInTheDocument();
+      expect(screen.queryByText("Register")).not.toBeInTheDocument();
+    });
+
+    it("renders nav links for unauthenticated user in desktop view", async () => {
+      setupLayoutTest(VIEW_MODES.DESKTOP, mockLoggedOutResponse);
+      expect(screen.getByText("Home")).toBeInTheDocument();
+      expect(screen.getByText("FAQ")).toBeInTheDocument();
+      expect(screen.queryByText("Dashboard")).not.toBeInTheDocument();
+      expect(screen.queryByText("Webforms")).not.toBeInTheDocument();
+    });
+
+    it("toggles the mobile menu for authenticaed users when the button is clicked", async () => {
+      setupLayoutTest(VIEW_MODES.MOBILE);
+
+      expect(screen.queryByText("Home")).not.toBeInTheDocument();
+
+      // Open the menu
+      const menuButton = screen.getByRole("button");
+      await userEvent.click(menuButton);
+
+      expect(screen.getByText("Home")).toBeInTheDocument();
+      expect(screen.getByText("Dashboard")).toBeInTheDocument();
+      expect(screen.getByText("FAQ")).toBeInTheDocument();
+      expect(screen.getByText("Webforms")).toBeInTheDocument();
+
+      // Close the menu
+      await userEvent.click(menuButton);
+      expect(screen.queryByText("Home")).not.toBeInTheDocument();
+    });
+  });
 });
