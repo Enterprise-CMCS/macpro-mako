@@ -8,7 +8,7 @@ import {
   vi,
 } from "vitest";
 import { Layout } from "./index";
-import { render, screen, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import {
   QueryClient,
