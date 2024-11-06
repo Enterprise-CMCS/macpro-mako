@@ -8,12 +8,23 @@ vi.mock("react-router-dom", () => ({
 }));
 
 describe("UsaBanner", () => {
-  test("clicking on button expands banner information", async () => {
+  test("clicking on button expands banner information(small)", async () => {
     const { queryAllByRole, queryByText } = render(
       <UsaBanner isUserMissingRole={false} />,
     );
 
     const button = queryAllByRole("button")[0];
+    await userEvent.click(button);
+
+    expect(queryByText("Official websites use .gov")).toBeInTheDocument();
+  });
+
+  test("clicking on button expands banner information (large)", async () => {
+    const { queryAllByRole, queryByText } = render(
+      <UsaBanner isUserMissingRole={false} />,
+    );
+
+    const button = queryAllByRole("button")[1];
     await userEvent.click(button);
 
     expect(queryByText("Official websites use .gov")).toBeInTheDocument();
@@ -33,5 +44,16 @@ describe("UsaBanner", () => {
     expect(
       queryByText(/You do not have access to view the entire application/),
     ).not.toBeInTheDocument();
+  });
+
+  test("government building icon renders", async () => {
+    const { queryByTestId, queryAllByRole } = render(
+      <UsaBanner isUserMissingRole={true} />,
+    );
+
+    const button = queryAllByRole("button")[0];
+    await userEvent.click(button);
+
+    expect(queryByTestId("gov-build-icon")).toBeInTheDocument();
   });
 });
