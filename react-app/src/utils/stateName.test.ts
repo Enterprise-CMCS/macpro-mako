@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
-import { convertStateAbbrToFullName } from "./stateNames"; // Adjust the path as needed
+import { convertStateAbbrToFullName } from "./stateNames"; 
 
-// Correct usage of `vi.mock` with a factory function to mock `STATES`
+// vi.mock to mock `STATES`
 vi.mock("@/hooks", () => ({
   STATES: {
     CA: "California, CA",
