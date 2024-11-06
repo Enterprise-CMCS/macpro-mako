@@ -240,17 +240,6 @@ export class Api extends cdk.NestedStack {
         provisionedConcurrency: 2,
       },
       {
-        id: "action",
-        entry: join(__dirname, "../lambda/action.ts"),
-        environment: {
-          dbInfoSecretName,
-          topicName,
-          brokerString,
-          osDomain: `https://${openSearchDomainEndpoint}`,
-          indexNamespace,
-        },
-      },
-      {
         id: "getTypes",
         entry: join(__dirname, "../lambda/getTypes.ts"),
         environment: {

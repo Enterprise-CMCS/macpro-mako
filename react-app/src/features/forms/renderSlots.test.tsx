@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { useForm, FormProvider } from "react-hook-form";
 import { FormField } from "@/components";
-import { SlotAdditionalInfo } from "@/features";
+import { SlotAdditionalInfo } from "@/features/forms/renderSlots";
 import { PropsWithChildren } from "react";
 
 type TestFormSchema = { additionalInfo: string };

@@ -32,7 +32,7 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { SlotAdditionalInfo } from "@/features";
+import { SlotAdditionalInfo } from "@/features/forms/renderSlots";
 import { getFormOrigin } from "@/utils";
 import {
   CheckDocumentFunction,
