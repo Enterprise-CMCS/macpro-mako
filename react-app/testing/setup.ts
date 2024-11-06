@@ -82,6 +82,15 @@ beforeAll(() => {
         return validStates.includes(id.substring(0, 2));
       }),
     }));
+    vi.mock("aws-amplify", async (importOriginal) => {
+      const actual = await importOriginal();
+      return {
+        ...(actual as object),
+        API: {
+          post: vi.fn().mockResolvedValue(() => true),
+        },
+      };
+    });
   }
 });
 

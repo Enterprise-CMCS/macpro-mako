@@ -14,6 +14,8 @@ import { ActionForm } from "@/components/ActionForm";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
 
+export const documentChecker = (checks) => checks.recordExists;
+
 export const MedicaidForm = () => (
   <ActionForm
     schema={formSchemas["new-medicaid-submission"]}
@@ -86,7 +88,7 @@ export const MedicaidForm = () => (
     }}
     documentPollerArgs={{
       property: "id",
-      documentChecker: (check) => check.recordExists,
+      documentChecker,
     }}
   />
 );

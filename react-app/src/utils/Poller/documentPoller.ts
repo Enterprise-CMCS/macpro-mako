@@ -14,8 +14,8 @@ export const documentPoller = (
     interval: 1000,
     pollAttempts: 20,
     onPoll: (data) => {
+      console.log("in the poll");
       const check = PackageCheck(data._source);
-
       return documentChecker({ ...check, recordExists: !!data });
     },
     fetcher: () => getItem(id),

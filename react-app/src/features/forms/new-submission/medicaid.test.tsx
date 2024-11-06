@@ -1,7 +1,7 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, test, expect, beforeAll } from "vitest";
-import { MedicaidForm } from "./Medicaid";
+import { describe, test, expect, beforeAll, vi, afterEach } from "vitest";
+import * as MedicaidForm from "./Medicaid";
 import { formSchemas } from "@/formSchemas";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import {
@@ -9,6 +9,8 @@ import {
   mockApiRefinements,
 } from "@/utils/test-helpers/skipCleanup";
 import { renderForm } from "@/utils/test-helpers/renderForm";
+import * as documentPoller from "@/utils/Poller/documentPoller";
+import { PackageCheck } from "shared-utils/package-check";
 
 const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
 
@@ -18,12 +20,19 @@ let container: HTMLElement;
 
 describe("Medicaid SPA", () => {
   beforeAll(() => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
     skipCleanup();
     mockApiRefinements();
 
-    const { container: renderedContainer } = renderForm(<MedicaidForm />);
+    const { container: renderedContainer } = renderForm(
+      <MedicaidForm.MedicaidForm />,
+    );
 
     container = renderedContainer;
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   test("SPA ID", async () => {
@@ -80,5 +89,43 @@ describe("Medicaid SPA", () => {
 
   test("submit button is enabled", async () => {
     expect(screen.getByTestId("submit-action-form")).toBeEnabled();
+  });
+
+  test("does this work", async () => {});
+
+  test("submission occurs", async () => {
+    const mockStatusChecks = {
+      recordExists: true,
+      hasStatus: vi.fn(() => true),
+    };
+
+    let spy;
+
+    vi.spyOn(documentPoller, "documentPoller")
+      ///@ts-ignore - mocking documentPollerSpy expects private class members
+      .mockImplementation((id, checker) => {
+        spy = vi.spyOn({ checker }, "checker");
+        return {
+          startPollingData: vi.fn().mockResolvedValue({
+            maxAttemptsReached: false,
+            correctDataStateFound: true,
+          }),
+          options: {
+            fetcher: vi.fn().mockResolvedValue({}),
+            onPoll: vi.fn().mockImplementationOnce(() => {
+              return spy(mockStatusChecks);
+            }),
+            pollAttempts: 5,
+            interval: 100,
+          },
+        };
+      });
+
+    const form = container.querySelector("form");
+    fireEvent.submit(form);
+
+    await waitFor(() => {
+      expect(spy).toHaveBeenCalled();
+    });
   });
 });
