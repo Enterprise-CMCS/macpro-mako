@@ -19,10 +19,7 @@ describe("Footer", () => {
     );
 
     expect(screen.queryByText("testEmail@email.com")).toBeInTheDocument();
-    // expect(screen.queryByText("testState")).toBeInTheDocument();
     expect(screen.queryByText("testCity, testState 1234")).toBeInTheDocument();
-    // expect(screen.queryByText("testStreet")).toBeInTheDocument();
-    // expect(screen.queryByText("1234")).toBeInTheDocument();
   });
 });
 

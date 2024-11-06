@@ -8,7 +8,7 @@ vi.mock("react-router-dom", () => ({
 }));
 
 describe("UsaBanner", () => {
-  test("clicking on button expands banner information(small)", async () => {
+  test("clicking on button expands banner information (small)", async () => {
     const { queryAllByRole, queryByText } = render(
       <UsaBanner isUserMissingRole={false} />,
     );
