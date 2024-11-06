@@ -1,5 +1,4 @@
 export * from "./feature-flags";
-export * from "./package-actions/getAvailableActions";
 export * from "./package-check";
 export * from "./regex";
 export * from "./s3-url-parser";
@@ -10,3 +9,4 @@ export * from "./cloudformation";
 export * from "./decode";
 export * from "./validate-env-variable";
 export * from "./date-helper";
+export * from "./package-actions/getAvailableActions";

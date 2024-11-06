@@ -10,10 +10,11 @@ import * as contractingRenewal from "./contracting-renewal";
 import * as temporaryExtension from "./temporary-extension";
 import * as appk from "./app-k";
 import * as respondToRai from "./respond-to-rai";
-export * from "./toggle-withdraw-rai-enabled";
+import * as withdrawPackage from "./withdraw-package";
+import * as withdrawRai from "./withdraw-rai";
+import * as toggleWithdrawRai from "./toggle-withdraw-rai";
+
 export * from "./respond-to-rai";
-export * from "./withdraw-rai";
-export * from "./withdraw-package";
 export * from "./legacy-event";
 export * from "./legacy-package-view";
 export * from "./legacy-admin-change";
@@ -33,6 +34,9 @@ export const events = {
   "temporary-extension": temporaryExtension,
   "respond-to-rai": respondToRai,
   "app-k": appk,
+  "withdraw-package": withdrawPackage,
+  "withdraw-rai": withdrawRai,
+  "toggle-withdraw-rai": toggleWithdrawRai,
 };
 
 export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;

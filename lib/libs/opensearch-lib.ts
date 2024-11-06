@@ -7,7 +7,6 @@ import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
 import { opensearch } from "shared-types";
 import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
 import * as main from "shared-types/opensearch/main";
-import { decodeBase64WithUtf8 } from "shared-utils";
 
 let client: Client;
 
@@ -230,16 +229,8 @@ export async function getItems(
 
     response.body.docs.forEach((doc: any) => {
       if (doc.found && doc._source) {
-        const decoded = decodeBase64WithUtf8(doc._source);
-        if (!decoded) {
-          console.error(
-            `Decoded value is null or empty for document with ID ${doc._id}.`,
-          );
-          return;
-        }
         try {
-          const parsedDocument = JSON.parse(decoded) as main.Document;
-          retVal.push(parsedDocument);
+          retVal.push(doc._source);
         } catch (e) {
           console.error(
             `Failed to parse JSON for document with ID ${doc._id}:`,

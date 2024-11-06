@@ -8,13 +8,15 @@ import {
   Form,
   LoadingSpinner,
   SectionCard,
-  FormIntroText,
   FormField,
   banner,
   userPrompt,
   FAQFooter,
   PreSubmissionMessage,
   optionCrumbsFromPath,
+  ActionFormDescription,
+  RequiredFieldDescription,
+  RequiredIndicator,
 } from "@/components";
 import {
   DefaultValues,
@@ -30,7 +32,7 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { SlotAdditionalInfo } from "@/features";
+import { SlotAdditionalInfo } from "@/features/forms/renderSlots";
 import { getFormOrigin } from "@/utils";
 import {
   CheckDocumentFunction,
@@ -39,13 +41,9 @@ import {
 import { API } from "aws-amplify";
 import { Authority, CognitoUserAttributes } from "shared-types";
 import { ActionFormAttachments } from "./ActionFormAttachments";
-import {
-  getAttachments,
-  getAdditionalInformation,
-} from "./actionForm.utilities";
+import { getAttachments } from "./actionForm.utilities";
 import { isStateUser } from "shared-utils";
 import { useGetUser } from "@/api";
-
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {
     attachments?: z.ZodObject<{
@@ -54,7 +52,6 @@ type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
         files: z.ZodTypeAny;
       }>;
     }>;
-    additionalInformation?: z.ZodDefault<z.ZodNullable<z.ZodString>>;
   },
   "strip",
   z.ZodTypeAny
@@ -78,10 +75,19 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   bannerPostSubmission?: Omit<Banner, "pathnameToDisplayOn">;
   promptPreSubmission?: Omit<UserPrompt, "onAccept">;
   promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
-  attachments: {
+  attachments?: {
+    title?: string;
+    callout?: string;
+    instructions?: React.ReactNode;
     faqLink: string;
-    specialInstructions?: string;
   };
+  additionalInformation?:
+    | {
+        required: boolean;
+        title: string;
+        label: string;
+      }
+    | false;
   documentPollerArgs: {
     property:
       | (keyof z.TypeOf<Schema> & string)
@@ -92,6 +98,10 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
     user: CognitoUserAttributes | null,
   ) => boolean)[];
   breadcrumbText: string;
+  formDescription?: string;
+  preSubmissionMessage?: string;
+  showPreSubmissionMessage?: boolean;
+  requiredFields?: boolean;
 };
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
@@ -117,13 +127,38 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   attachments,
   conditionsDeterminingUserAccess = [isStateUser],
   breadcrumbText,
+  formDescription = `Once you submit this form, a confirmation email is sent to you and to CMS.
+      CMS will use this content to review your package, and you will not be able
+      to edit this form. If CMS needs any additional information, they will
+      follow up by email.`,
+  preSubmissionMessage,
+  additionalInformation = {
+    required: false,
+    label: "Add anything else you would like to share with CMS.",
+    title: "Additional Information",
+  },
+  showPreSubmissionMessage = true,
+  requiredFields = true,
 }: ActionFormProps<Schema>) => {
-  const { id, authority } = useParams<{ id: string; authority: Authority }>();
+  const { id, authority } = useParams<{
+    id: string;
+    authority: Authority;
+    type: string;
+  }>();
   const { pathname } = useLocation();
+
   const navigate = useNavigate();
   const { data: userObj } = useGetUser();
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority);
+
+  if (id) {
+    breadcrumbs.push({
+      displayText: id,
+      to: `/details/${authority}/${id}`,
+      order: breadcrumbs.length,
+    });
+  }
 
   const form = useForm<z.TypeOf<Schema>>({
     resolver: zodResolver(schema),
@@ -169,14 +204,13 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   });
 
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
-  const additionalInformationFromSchema = useMemo(
-    () => getAdditionalInformation(schema),
-    [schema],
-  );
+
   const hasProgressLossReminder = useMemo(
     () => Fields({ ...form }) !== null || attachmentsFromSchema.length > 0,
     [attachmentsFromSchema, Fields, form],
   );
+
+  const areRequiredFields = requiredFields && hasProgressLossReminder;
 
   const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some(
     (condition) => condition(userObj.user),
@@ -210,9 +244,12 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             </FieldsLayout>
           ) : (
             <SectionCard title={title}>
-              <FormIntroText
-                hasProgressLossReminder={hasProgressLossReminder}
-              />
+              <div>
+                {areRequiredFields && <RequiredFieldDescription />}
+                <ActionFormDescription boldReminder={areRequiredFields}>
+                  {formDescription}
+                </ActionFormDescription>
+              </div>
               <Fields {...form} />
             </SectionCard>
           )}
@@ -222,23 +259,31 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               {...attachments}
             />
           )}
-          {additionalInformationFromSchema && (
-            <SectionCard title="Additional Information">
+          {additionalInformation && (
+            <SectionCard
+              title={
+                <>
+                  {additionalInformation.title}{" "}
+                  {additionalInformation.required && <RequiredIndicator />}
+                </>
+              }
+            >
               <FormField
                 control={form.control}
                 name={"additionalInformation" as FieldPath<z.TypeOf<Schema>>}
                 render={SlotAdditionalInfo({
                   withoutHeading: true,
-                  label: (
-                    <p>Add anything else you would like to share with CMS.</p>
-                  ),
+                  label: <p>{additionalInformation.label}</p>,
                 })}
               />
             </SectionCard>
           )}
-          <PreSubmissionMessage
-            hasProgressLossReminder={hasProgressLossReminder}
-          />
+          {showPreSubmissionMessage && (
+            <PreSubmissionMessage
+              hasProgressLossReminder={hasProgressLossReminder}
+              preSubmissionMessage={preSubmissionMessage}
+            />
+          )}
           <section className="flex justify-end gap-2 p-4 ml-auto">
             <Button
               className="px-12"

@@ -1,13 +1,21 @@
-import { raiWithdrawSchema } from "../../..";
+import { events, getStatus, SEATOOL_STATUS } from "shared-types";
 
-export const transform = (id: string) => {
-  return raiWithdrawSchema.transform((data) => ({
-    id,
-    raiWithdrawEnabled: false,
-    makoChangedDate: data.timestamp
-      ? new Date(data.timestamp).toISOString()
-      : null,
-  }));
+export const transform = () => {
+  return events["withdraw-rai"].schema.transform((data) => {
+    const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.PENDING_RAI);
+    return {
+      id: data.id,
+      raiWithdrawEnabled: false,
+      makoChangedDate: data.timestamp
+        ? new Date(data.timestamp).toISOString()
+        : null,
+      cmsStatus,
+      stateStatus,
+      raiReceivedDate: null,
+      seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
+      locked: true,
+    };
+  });
 };
 
 export type Schema = ReturnType<typeof transform>;
