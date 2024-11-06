@@ -178,6 +178,7 @@ export const transform = (id: string) => {
       statusDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.STATUS_DATE),
       cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
       seatoolStatus,
+      locked: false,
       submissionDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.SUBMISSION_DATE,
       ),

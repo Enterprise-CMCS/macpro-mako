@@ -35,6 +35,7 @@ export const PackageCheck = ({
   initialIntakeNeeded,
   submissionDate,
   leadAnalystName,
+  locked,
 }: opensearch.main.Document) => {
   const secondClockStatuses = [
     SEATOOL_STATUS.PENDING,
@@ -65,8 +66,8 @@ export const PackageCheck = ({
     isInSecondClock:
       !planChecks.authorityIs([Authority.CHIP_SPA]) &&
       checkStatus(seatoolStatus, secondClockStatuses) &&
-      raiRequestedDate &&
-      raiReceivedDate &&
+      !!raiRequestedDate &&
+      !!raiReceivedDate &&
       !raiWithdrawnDate,
     /** Is in any status except Package Withdrawn **/
     isNotWithdrawn: !checkStatus(seatoolStatus, SEATOOL_STATUS.WITHDRAWN),
@@ -76,6 +77,7 @@ export const PackageCheck = ({
       checkStatus(seatoolStatus, authorizedStatuses),
     /** If submission date exists */
     hasSubmissionDate: submissionDate !== undefined,
+    isLocked: locked,
   };
   const subStatusChecks = {
     /** Is in any of our pending statuses, sans Pending-RAI **/
