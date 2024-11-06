@@ -79,7 +79,6 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
     // end of error validations
 
     await userEvent.type(waiverIdInput, "MD-0006.R01.00");
-    screen.debug();
 
     expect(waiverIdLabel).not.toHaveClass("text-destructive");
   });

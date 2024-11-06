@@ -18,6 +18,10 @@ import {
   newChipSubmission,
   newMedicaidSubmission,
   temporaryExtension,
+  withdrawPackage,
+  withdrawRai,
+  toggleWithdrawRai,
+  respondToRai,
 } from "./transforms";
 
 // legacy
@@ -33,12 +37,8 @@ export type Document = z.infer<capitatedAmendment.Schema> &
   z.infer<newMedicaidSubmission.Schema> &
   z.infer<temporaryExtension.Schema> &
   z.infer<legacyEvent.Schema> &
-  z.infer<legacyAdminChange.Schema>;
-
-// & {
-//   appkParentId: string;
-//   appkParent: boolean;
-// };
+  z.infer<legacyAdminChange.Schema> &
+  z.infer<toggleWithdrawRai.Schema>;
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
@@ -63,4 +63,8 @@ export const transforms = {
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
   "temporary-extension": temporaryExtension,
+  "withdraw-package": withdrawPackage,
+  "withdraw-rai": withdrawRai,
+  "toggle-withdraw-rai": toggleWithdrawRai,
+  "respond-to-rai": respondToRai,
 };

@@ -53,7 +53,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) => {
                   from: `${location.pathname}${location.search}`,
                 }}
                 to={{
-                  pathname: `/action/${data.authority}/${data.id}/${action}`,
+                  pathname: `/actions/${action}/${data.authority}/${data.id}`,
                   search: new URLSearchParams({
                     [ORIGIN]: DASHBOARD_ORIGIN,
                   }).toString(),

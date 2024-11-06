@@ -7,6 +7,10 @@ import * as contractingRenewal from "./contracting-renewal";
 import * as newMedicaidSubmission from "./new-medicaid-submission";
 import * as newChipSubmission from "./new-chip-submission";
 import * as temporaryExtension from "./temporary-extension";
+import * as withdrawPackage from "./withdraw-package";
+import * as withdrawRai from "./withdraw-rai";
+import * as toggleWithdrawRai from "./toggle-withdraw-rai";
+import * as respondtoRAI from "./respond-to-rai";
 
 export const formSchemas = {
   "capitated-amendment": capitatedAmendment.formSchema,
@@ -18,4 +22,11 @@ export const formSchemas = {
   "new-chip-submission": newChipSubmission.formSchema,
   "new-medicaid-submission": newMedicaidSubmission.formSchema,
   "temporary-extension": temporaryExtension.formSchema,
+  "withdraw-package": withdrawPackage.formSchema,
+  "withdraw-package-chip": withdrawPackage.formSchemaChip,
+  "withdraw-rai": withdrawRai.formSchema,
+  "toggle-withdraw-rai": toggleWithdrawRai.formSchema,
+  "respond-to-rai-chip": respondtoRAI.formSchemaChip,
+  "respond-to-rai-waiver": respondtoRAI.formSchemaWaivers,
+  "respond-to-rai-medicaid": respondtoRAI.formSchemaMedicaid,
 };

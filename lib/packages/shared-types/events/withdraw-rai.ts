@@ -1,16 +1,33 @@
 import { z } from "zod";
-import { attachmentSchema } from "../attachments";
+import { attachmentArraySchemaOptional } from "../attachments";
 
-export const raiWithdrawSchema = z.object({
+export const baseSchema = z.object({
+  event: z.literal("withdraw-rai").default("withdraw-rai"),
   id: z.string(),
   authority: z.string(),
-  origin: z.string(),
-  requestedDate: z.number(),
-  withdrawnDate: z.number(),
-  attachments: z.array(attachmentSchema).nullish(),
-  additionalInformation: z.string().nullable().default(null),
-  submitterName: z.string(),
-  submitterEmail: z.string(),
-  timestamp: z.number().optional(),
+  attachments: z.object({
+    supportingDocumentation: z.object({
+      files: attachmentArraySchemaOptional(),
+      label: z.string().default("Supporting Documentation"),
+    }),
+  }),
+  additionalInformation: z.preprocess(
+    (value) => (typeof value === "string" ? value.trimStart() : value),
+    z
+      .string()
+      .max(4000)
+      .refine((value) => value !== "", {
+        message: "Additional Information is required.",
+      })
+      .refine((value) => value.trim().length > 0, {
+        message: "Additional Information can not be only whitespace.",
+      }),
+  ),
 });
-export type RaiWithdraw = z.infer<typeof raiWithdrawSchema>;
+
+export const schema = baseSchema.extend({
+  origin: z.literal("mako").default("mako"),
+  submitterName: z.string(),
+  submitterEmail: z.string().email(),
+  timestamp: z.number(),
+});

@@ -31,7 +31,6 @@ export default defineConfig({
         "vitest.workspace.ts",
         "**/*/.eslintrc.{ts,js,cjs}",
         "**/*.config.{ts,js,cjs}",
-        "lib/lambda/package-actions/services/seatool-write-service.ts",
         "**/coverage/**",
         "test/e2e/**",
         "**/*.js",

@@ -7,7 +7,7 @@ export * as contractingInitial from "./contracting-initial";
 export * as contractingRenewal from "./contracting-renewal";
 export * as newChipSubmission from "./new-chip-submission";
 export * as newMedicaidSubmission from "./new-medicaid-submission";
-export * as toggleWithdrawEnabled from "./toggle-withdraw-enabled";
+export * as toggleWithdrawRai from "./toggle-withdraw-rai";
 export * as withdrawPackage from "./withdraw-package";
 export * as respondToRai from "./respond-to-rai";
 export * as withdrawRai from "./withdraw-rai-response";
