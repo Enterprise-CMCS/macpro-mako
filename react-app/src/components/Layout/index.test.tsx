@@ -35,6 +35,7 @@ vi.mock("@/components", () => ({
     children,
   UserPrompt: () => null,
   Banner: () => null,
+  ScrollToTop: () => null,
 }));
 
 // API and Auth mocks
