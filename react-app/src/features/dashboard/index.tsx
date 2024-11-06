@@ -13,7 +13,6 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components";
-import { useScrollToTop } from "@/hooks";
 import { isStateUser } from "shared-utils";
 import { Link, Navigate, redirect } from "react-router-dom";
 
@@ -42,7 +41,6 @@ export const dashboardLoader = loader;
 export const Dashboard = () => {
   const { data: userObj } = useGetUser();
   const osData = useOsData();
-  useScrollToTop();
 
   if (userObj === undefined) {
     return <Navigate to="/" />;
