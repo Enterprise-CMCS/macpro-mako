@@ -1,9 +1,17 @@
 import { emailTemplateValue } from "../data";
 import { CommonEmailVariables, Events } from "shared-types";
-import { PackageDetails, BasicFooter, DetailsHeading, LoginInstructions } from "../../email-components";
+import {
+  PackageDetails,
+  BasicFooter,
+  DetailsHeading,
+  LoginInstructions,
+  Attachments,
+} from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const ChipSpaCMSEmail = (props: { variables: Events["RespondToRai"] & CommonEmailVariables }) => {
+export const ChipSpaCMSEmail = (props: {
+  variables: Events["RespondToRai"] & CommonEmailVariables;
+}) => {
   const { variables } = props;
   const previewText = `CHIP SPA ${variables.id} RAI Response Submitted`;
   const heading = "The OneMAC Submission Portal received a CHIP SPA RAI Response Submission";
@@ -23,24 +31,9 @@ export const ChipSpaCMSEmail = (props: { variables: Events["RespondToRai"] & Com
           "Email Address": variables.submitterEmail,
           "CHIP SPA Package ID": variables.id,
           Summary: variables.additionalInformation,
-          attachments: [
-            {
-              filename: "rai-response.pdf",
-              title: "RAI Response",
-              bucket: "test-bucket",
-              key: "rai-response.pdf",
-              uploadDate: Date.now(),
-            },
-            {
-              filename: "spa-pages.pdf",
-              title: "SPA Pages",
-              bucket: "test-bucket",
-              key: "spa-pages.pdf",
-              ploadDate: Date.now(),
-            },
-          ],
         }}
       />
+      <Attachments attachments={variables.attachments} />
     </BaseEmailTemplate>
   );
 };
@@ -52,30 +45,34 @@ export const ChipSpaCMSEmailPreview = () => {
         ...emailTemplateValue,
         proposedEffectiveDate: 1725062400000,
         submittedDate: 1723420800000,
-        attachments: [
-          {
-            filename: "rai-response.pdf",
-            title: "RAI Response",
-            bucket: "test-bucket",
-            key: "rai-response.pdf",
-            uploadDate: Date.now(),
+        attachments: {
+          appk: {
+            label: "1915(c) Appendix K Amendment Waiver Template",
+            files: [
+              {
+                filename: "rai-response.pdf",
+                title: "RAI Response",
+                bucket: "test-bucket",
+                key: "rai-response.pdf",
+                uploadDate: Date.now(),
+              },
+              {
+                filename: "spa-pages.pdf",
+                title: "SPA Pages",
+                bucket: "test-bucket",
+                key: "spa-pages.pdf",
+                uploadDate: Date.now(),
+              },
+            ],
           },
-          {
-            filename: "spa-pages.pdf",
-            title: "SPA Pages",
-            bucket: "test-bucket",
-            key: "spa-pages.pdf",
-            uploadDate: Date.now(),
+          other: {
+            label: "Other",
+            files: [],
           },
-        ],
-        origin: "mako",
+        },
       }}
     />
   );
 };
-
-ChipSpaCMSEmailPreview.displayName = "ChipSpaCMSEmailPreview";
-
-ChipSpaCMSEmail.displayName = "ChipSpaCMSEmail";
 
 export default ChipSpaCMSEmailPreview;

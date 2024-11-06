@@ -8,15 +8,9 @@ export const respondToRaiBaseSchema = z.object({
   requestedDate: z.number(),
   responseDate: z.number(),
   attachments: z.object({
-    cmsForm179: z.object({
-      label: z
-        .string()
-        .default("1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print"),
+    appk: z.object({
+      label: z.string().default("1915(c) Appendix K Amendment Waiver Template"),
       files: attachmentArraySchema(),
-    }),
-    spaPages: z.object({
-      label: z.string().default(""),
-      files: attachmentArraySchemaOptional(),
     }),
     other: z.object({
       label: z.string().default("Other"),

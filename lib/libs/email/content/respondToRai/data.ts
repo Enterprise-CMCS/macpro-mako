@@ -8,7 +8,8 @@ export const emailTemplateValue = {
   origin: "mako" as const,
   requestedDate: Date.now(),
   responseDate: Date.now(),
-  additionalInformation: "This bens additional infornormaiton",
+  additionalInformation:
+    "Octopuses are usually very antisocial but when they’re under the influence of ecstasy they are more willing to spend time around each other or even hug other octopuses",
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",
   attachments: {
