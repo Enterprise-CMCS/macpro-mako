@@ -4,12 +4,14 @@ import { useReadOnlyUser } from "../../hooks/useReadOnlyUser";
 import { WebformBody } from "./WebFormBody";
 import { useParams } from "react-router-dom";
 
+import { v202401 as D } from "./v202401";
+
 export function Webform() {
   const { id, version } = useParams<{ id: string; version: string }>();
 
   const { data, isLoading, error } = useGetForm(id as string, version);
   const readonly = useReadOnlyUser();
-  const defaultValues = data ? documentInitializer(data) : {};
+  const defaultValues = data ? documentInitializer(D) : {};
   const savedData = localStorage.getItem(`${id}v${version}`);
 
   if (isLoading) return <LoadingSpinner />;
@@ -23,7 +25,7 @@ export function Webform() {
 
   return (
     <WebformBody
-      data={data}
+      data={D}
       readonly={readonly}
       id={id}
       version={version}
