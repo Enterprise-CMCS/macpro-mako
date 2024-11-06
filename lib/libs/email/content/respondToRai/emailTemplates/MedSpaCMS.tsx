@@ -1,4 +1,4 @@
-import { emailTemplateValue } from "../data";
+import { emailTemplateValue } from "../../../mock-data/respond-to-rai";
 import { CommonEmailVariables, Events } from "shared-types";
 import {
   PackageDetails,

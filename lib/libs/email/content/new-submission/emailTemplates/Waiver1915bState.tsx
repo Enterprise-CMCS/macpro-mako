@@ -1,5 +1,4 @@
-import { emailTemplateValue } from "../data";
-import { CommonEmailVariables } from "shared-types";
+import { CommonEmailVariables, Events } from "shared-types";
 import { formatNinetyDaysDate, formatDate } from "shared-utils";
 import { Text } from "@react-email/components";
 import {
@@ -12,7 +11,11 @@ import {
 import { styles } from "../../email-styles";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const Waiver1915bStateEmail = (props: { variables: any & CommonEmailVariables }) => {
+export const Waiver1915bStateEmail = (props: {
+  variables:
+    | (Events["CapitatedInitial"] & CommonEmailVariables)
+    | (Events["ContractingInitial"] & CommonEmailVariables);
+}) => {
   const variables = props.variables;
   const previewText = `${variables.authority} ${variables.actionType} Submitted`;
   const heading = `This response confirms the submission of your ${variables.authority} ${variables.actionType} to CMS for review:`;
@@ -38,8 +41,7 @@ export const Waiver1915bStateEmail = (props: { variables: any & CommonEmailVaria
       />
       <Attachments attachments={variables.attachments} />
       <Text style={{ ...styles.text, marginTop: "16px" }}>
-        {`This response confirms the receipt of your Waiver request or your
-              response to a Waiver Request for Additional Information (RAI). You
+        {`This response confirms the receipt of your Waiver request. You
               can expect a formal response to your submittal to be issued within
               90 days, before
               ${formatNinetyDaysDate(variables.timestamp)}
@@ -49,18 +51,3 @@ export const Waiver1915bStateEmail = (props: { variables: any & CommonEmailVaria
     </BaseEmailTemplate>
   );
 };
-
-const Waiver1915bStateEmailPreview = () => {
-  return (
-    <Waiver1915bStateEmail
-      variables={{
-        ...emailTemplateValue,
-        id: "CO-1234.R21.00",
-        authority: "1915(b)",
-        actionType: "New",
-      }}
-    />
-  );
-};
-
-export default Waiver1915bStateEmailPreview;

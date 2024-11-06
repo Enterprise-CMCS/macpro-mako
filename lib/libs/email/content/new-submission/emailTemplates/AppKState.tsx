@@ -8,7 +8,6 @@ import {
   Attachments,
   MailboxNotice,
 } from "../../email-components";
-import { emailTemplateValue } from "../data";
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
@@ -49,21 +48,3 @@ export const AppKStateEmail = (props: {
     </BaseEmailTemplate>
   );
 };
-
-const AppKStateEmailPreview = () => {
-  return (
-    <AppKStateEmail
-      variables={{
-        ...emailTemplateValue,
-        id: "CO-1234.R21.00",
-        state: "CO",
-        waiverIds: ["1234-56768", "1234-56769"],
-        actionType: "Amend",
-        seaActionType: "amend",
-        title: "App K Title",
-      }}
-    />
-  );
-};
-
-export default AppKStateEmailPreview;

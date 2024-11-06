@@ -8,7 +8,6 @@ import {
 } from "../../email-components";
 
 import { BaseEmailTemplate } from "../../email-templates";
-import { emailTemplateValue } from "../data";
 
 export const TempExtStateEmail = (props: { variables: any & CommonEmailVariables }) => {
   const variables = props.variables;
@@ -29,7 +28,7 @@ export const TempExtStateEmail = (props: { variables: any & CommonEmailVariables
           "Email Address": variables.submitterEmail,
           "Temporary Extension Request Number": variables.id,
           "Temporary Extension Type": variables.authority,
-          "90th Day Deadline": formatNinetyDaysDate(variables.submissionDate),
+          "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
           Summary: variables.additionalInformation,
         }}
       />
@@ -38,9 +37,3 @@ export const TempExtStateEmail = (props: { variables: any & CommonEmailVariables
     </BaseEmailTemplate>
   );
 };
-
-const TempExtStatePreview = () => {
-  return <TempExtStateEmail variables={emailTemplateValue} />;
-};
-
-export default TempExtStatePreview;

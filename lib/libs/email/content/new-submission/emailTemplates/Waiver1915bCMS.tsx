@@ -1,4 +1,3 @@
-import { emailTemplateValue } from "../data";
 import { CommonEmailVariables, Events } from "shared-types";
 import {
   Attachments,
@@ -11,7 +10,9 @@ import { BaseEmailTemplate } from "../../email-templates";
 import { formatDate } from "shared-utils";
 
 export const Waiver1915bCMSEmail = (props: {
-  variables: Events["NewMedicaidSubmission"] & CommonEmailVariables;
+  variables:
+    | (Events["CapitatedInitial"] & CommonEmailVariables)
+    | (Events["ContractingInitial"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
   const previewText = `${variables.authority} ${variables.actionType} Submitted`;
@@ -40,19 +41,3 @@ export const Waiver1915bCMSEmail = (props: {
     </BaseEmailTemplate>
   );
 };
-
-const Waiver1915bCMSEmailPreview = () => {
-  return (
-    <Waiver1915bCMSEmail
-      variables={{
-        ...emailTemplateValue,
-        id: "CO-1234.R21.00",
-        event: "new-medicaid-submission",
-        origin: "mako",
-        authority: "1915(b)",
-        actionType: "New",
-      }}
-    />
-  );
-};
-export default Waiver1915bCMSEmailPreview;

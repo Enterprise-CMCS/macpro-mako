@@ -21,7 +21,7 @@
     "vitest": "2.0.5"
   },
   "scripts": {
-    "email-dev": "email dev --dir content",
+    "email-dev": "email dev --dir preview",
     "test": "vitest",
     "test:coverage": "vitest run --coverage.enabled true",
     "test:ui": "vitest --ui"

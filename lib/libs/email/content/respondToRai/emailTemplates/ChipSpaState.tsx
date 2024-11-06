@@ -1,4 +1,4 @@
-import { emailTemplateValue } from "../data";
+import { emailTemplateValue } from "../../../mock-data/respond-to-rai";
 import { formatNinetyDaysDate } from "shared-utils";
 import { CommonEmailVariables, Events } from "shared-types";
 import { Text } from "@react-email/components";

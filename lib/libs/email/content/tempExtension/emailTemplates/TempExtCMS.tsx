@@ -6,7 +6,6 @@ import {
   Attachments,
   DetailsHeading,
 } from "../../email-components";
-import { emailTemplateValue } from "../data";
 import { BaseEmailTemplate } from "../../email-templates";
 import { formatNinetyDaysDate } from "lib/packages/shared-utils";
 
@@ -40,15 +39,3 @@ export const TempExtCMSEmail = (props: {
     </BaseEmailTemplate>
   );
 };
-
-const TempExtCMSPreview = () => {
-  return (
-    <TempExtCMSEmail
-      variables={{
-        ...emailTemplateValue,
-      }}
-    />
-  );
-};
-
-export default TempExtCMSPreview;

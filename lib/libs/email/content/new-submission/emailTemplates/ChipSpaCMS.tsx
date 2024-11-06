@@ -1,4 +1,3 @@
-import { emailTemplateValue } from "../data";
 import { CommonEmailVariables, Events } from "shared-types";
 import {
   LoginInstructions,
@@ -37,19 +36,3 @@ export const ChipSpaCMSEmail = (props: {
     </BaseEmailTemplate>
   );
 };
-
-const ChipSpaCMSEmailPreview = () => {
-  return (
-    <ChipSpaCMSEmail
-      variables={{
-        ...emailTemplateValue,
-        id: "CO-24-1234",
-        authority: "CHIP SPA",
-        event: "new-chip-submission",
-        actionType: "Amend",
-      }}
-    />
-  );
-};
-
-export default ChipSpaCMSEmailPreview;

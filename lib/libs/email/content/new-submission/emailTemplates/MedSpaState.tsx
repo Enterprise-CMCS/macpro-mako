@@ -7,7 +7,6 @@ import {
   DetailsHeading,
   MailboxNotice,
 } from "../../email-components";
-import { emailTemplateValue } from "../data";
 import { BaseEmailTemplate } from "../../email-templates";
 import { Text } from "@react-email/components";
 import { styles } from "../../email-styles";
@@ -39,27 +38,10 @@ export const MedSpaStateEmail = (props: {
       />
       <Text style={styles.text.description}>
         {`This response confirms the receipt of your Medicaid State Plan Amendment
-        (SPA or your response to a SPA Request for Additional Information
-        (RAI). You can expect a formal response to your submittal to be issued
+        (SPA). You can expect a formal response to your submittal to be issued
         within 90 days, before ${formatNinetyDaysDate(variables.timestamp)}.`}
       </Text>
       <MailboxNotice type="SPA" />
     </BaseEmailTemplate>
   );
 };
-
-const MedSpaStateEmailPreview = () => {
-  return (
-    <MedSpaStateEmail
-      variables={{
-        ...emailTemplateValue,
-        id: "CO-24-1234",
-        event: "new-medicaid-submission",
-        authority: "Medicaid SPA",
-        actionType: "Amend",
-      }}
-    />
-  );
-};
-
-export default MedSpaStateEmailPreview;

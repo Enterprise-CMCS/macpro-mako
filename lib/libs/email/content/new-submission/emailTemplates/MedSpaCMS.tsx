@@ -6,7 +6,6 @@ import {
   PackageDetails,
   BasicFooter,
 } from "../../email-components";
-import { emailTemplateValue } from "../data";
 import { BaseEmailTemplate } from "../../email-templates";
 import { formatDate } from "lib/packages/shared-utils";
 
@@ -40,19 +39,3 @@ export const MedSpaCMSEmail = (props: {
     </BaseEmailTemplate>
   );
 };
-
-const MedSpaCMSEmailPreview = () => {
-  return (
-    <MedSpaCMSEmail
-      variables={{
-        ...emailTemplateValue,
-        id: "CO-24-1234",
-        authority: "Medicaid SPA",
-        event: "new-medicaid-submission",
-        actionType: "Amend",
-      }}
-    />
-  );
-};
-
-export default MedSpaCMSEmailPreview;

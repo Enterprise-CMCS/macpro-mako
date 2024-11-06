@@ -1,4 +1,3 @@
-import { emailTemplateValue } from "../data";
 import { Events } from "shared-types";
 import { CommonEmailVariables } from "shared-types";
 import { Text } from "@react-email/components";
@@ -43,20 +42,3 @@ export const ChipSpaStateEmail = (props: {
     </BaseEmailTemplate>
   );
 };
-
-// to preview on 'email-dev'
-const ChipSpaStateEmailPreview = () => {
-  return (
-    <ChipSpaStateEmail
-      variables={{
-        ...emailTemplateValue,
-        id: "CO-24-1234",
-        authority: "CHIP SPA",
-        event: "new-chip-submission",
-        actionType: "Amend",
-      }}
-    />
-  );
-};
-
-export default ChipSpaStateEmailPreview;

@@ -1,4 +1,4 @@
-import { emailTemplateValue } from "../data";
+import { emailTemplateValue } from "../../../mock-data/respond-to-rai";
 import { formatNinetyDaysDate } from "shared-utils";
 import { CommonEmailVariables, Events } from "shared-types";
 import { Text } from "@react-email/components";
@@ -40,45 +40,3 @@ export const Waiver1915bStateEmail = (props: {
     </BaseEmailTemplate>
   );
 };
-
-const Waiver1915bStateEmailPreview = () => {
-  return (
-    <Waiver1915bStateEmail
-      variables={{
-        ...emailTemplateValue,
-        id: "CO-1234.R21.00",
-        territory: "CO",
-        authority: "Waiver 1915b",
-        attachments: {
-          cmsForm179: {
-            label: "CMS Form 179",
-            files: [
-              {
-                filename: "cms-form-179.pdf",
-                title: "CMS Form 179",
-                bucket: "test-bucket",
-                key: "cms-form-179.pdf",
-                uploadDate: Date.now(),
-              },
-            ],
-          },
-          spaPages: { label: "SPA Pages", files: [] },
-          other: {
-            label: "Other",
-            files: [
-              {
-                filename: "other.pdf",
-                title: "Other",
-                bucket: "test-bucket",
-                key: "other.pdf",
-                uploadDate: Date.now(),
-              },
-            ],
-          },
-        },
-      }}
-    />
-  );
-};
-
-export default Waiver1915bStateEmailPreview;
