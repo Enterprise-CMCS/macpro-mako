@@ -1,4 +1,3 @@
-import { useScrollToTop } from "@/hooks";
 import { SectionCard } from "../Cards";
 
 interface DetailsSectionProps {
@@ -14,7 +13,6 @@ export const DetailsSection: React.FC<DetailsSectionProps> = ({
   description,
   id,
 }: DetailsSectionProps) => {
-  useScrollToTop();
   return (
     <SectionCard id={id} title={title}>
       {description && <p className="text-sm">{description}</p>}
