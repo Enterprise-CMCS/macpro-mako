@@ -2,7 +2,7 @@ import { Text, Link, Section, Row, Column, Hr, Heading } from "@react-email/comp
 import { Attachment, TextareaProps, AttachmentTitle, AttachmentKey } from "shared-types";
 import { createRef, forwardRef } from "react";
 import { styles } from "./email-styles";
-// Constants
+
 const EMAIL_CONFIG = {
   DEV_EMAIL: "mako.stateuser+dev-to@gmail.com",
   CHIP_EMAIL: "CHIPSPASubmissionMailBox@cms.hhs.gov",
@@ -10,7 +10,6 @@ const EMAIL_CONFIG = {
   SPAM_EMAIL: "SPAM@cms.hhs.gov",
 } as const;
 
-// Utility Types
 interface EmailAddress {
   name: string;
   email: string;
@@ -21,7 +20,6 @@ interface AttachmentGroup {
   label: string;
 }
 
-// Utility Functions
 const getToAddress = ({ name, email }: EmailAddress): string[] => {
   const formattedEmail = `"${name}" <${
     process.env.isDev === "true" ? EMAIL_CONFIG.DEV_EMAIL : email
@@ -36,7 +34,6 @@ const areAllAttachmentsEmpty = (
   return Object.values(attachments).every((att) => !att || att.files?.length === 0);
 };
 
-// Components
 const Textarea: React.FC<TextareaProps> = ({ children }) => (
   <Text
     style={{
@@ -245,7 +242,6 @@ const WithdrawRAI: React.FC<{
   </Section>
 );
 
-// Helper functions for getting emails
 const getCpocEmail = (item: any): string[] => {
   const { leadAnalystName, leadAnalystEmail } = item._source;
   return [`${leadAnalystName} <${leadAnalystEmail}>`];
