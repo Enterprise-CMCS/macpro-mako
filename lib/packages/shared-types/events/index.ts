@@ -9,10 +9,12 @@ import * as contractingInitial from "./contracting-initial";
 import * as contractingRenewal from "./contracting-renewal";
 import * as temporaryExtension from "./temporary-extension";
 import * as appk from "./app-k";
-import * as respondToRai from "./respond-to-rai";
+
 import * as withdrawPackage from "./withdraw-package";
+
 import * as withdrawRai from "./withdraw-rai";
 import * as toggleWithdrawRai from "./toggle-withdraw-rai";
+import * as respondToRai from "./respond-to-rai";
 
 export * from "./respond-to-rai";
 export * from "./legacy-event";
