@@ -8,7 +8,12 @@ export const baseSchema = z.object({
   event: z
     .literal("new-medicaid-submission")
     .default("new-medicaid-submission"),
-  additionalInformation: z.string().max(4000).nullable().default(null),
+  additionalInformation: z
+    .string()
+    .max(4000)
+    .nullable()
+    .default(null)
+    .optional(),
   attachments: z.object({
     cmsForm179: z.object({
       files: attachmentArraySchema({
