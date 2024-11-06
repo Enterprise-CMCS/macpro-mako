@@ -174,6 +174,13 @@ const htmlToTextOptions = (baseUrl: string): HtmlToTextOptions => ({
       },
     },
     {
+      selector: "img",
+      options: {
+        ignoreHref: true,
+        src: true,
+      },
+    },
+    {
       selector: "p",
       options: {
         leadingLineBreaks: 1,
@@ -189,7 +196,6 @@ const htmlToTextOptions = (baseUrl: string): HtmlToTextOptions => ({
       },
     },
   ],
-  decodeEntities: true,
   limits: {
     maxInputLength: 50000, // Protect against huge emails
     ellipsis: "...",
