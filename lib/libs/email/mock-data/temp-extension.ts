@@ -5,7 +5,7 @@ export const emailTemplateValue = {
   waiverNumber: "MD-2343.R00.TE00",
   authority: "1915(b)",
   actionType: "Extend",
-  applicationEndpointUrl: "https://mako-dev.cms.gov",
+  applicationEndpointUrl: "https://mako-dev.cms.gov/",
   timestamp: Date.now(),
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",

@@ -1,5 +1,5 @@
 export const emailTemplateValue = {
-  applicationEndpointUrl: "https://mako-dev.cms.gov",
+  applicationEndpointUrl: "https://mako-dev.cms.gov/",
   timestamp: Date.now(),
   actionType: "Respond to Formal RAI",
   origin: "mako" as const,

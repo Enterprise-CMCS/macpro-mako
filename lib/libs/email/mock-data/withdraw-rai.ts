@@ -1,6 +1,6 @@
 export const emailTemplateValue = {
   territory: "CO",
-  applicationEndpointUrl: "https://mako-dev.cms.gov",
+  applicationEndpointUrl: "https://mako-dev.cms.gov/",
   actionType: "Withdrawal",
   origin: "mako",
   requestedDate: Date.now() - 5 * 24 * 60 * 60,
