@@ -1,5 +1,5 @@
 import { Text, Link, Section, Row, Column, Hr, Heading } from "@react-email/components";
-import { Attachment, TextareaProps, AttachmentTitle, AttachmentKey } from "shared-types";
+import { Attachment, AttachmentTitle, AttachmentKey } from "shared-types";
 import { createRef, forwardRef } from "react";
 import { styles } from "./email-styles";
 
