@@ -50,7 +50,7 @@ const Waiver1915bCMSEmailPreview = () => {
         event: "new-medicaid-submission",
         origin: "mako",
         authority: "1915(b)",
-        actionType: "Initial Waiver",
+        actionType: "New",
       }}
     />
   );

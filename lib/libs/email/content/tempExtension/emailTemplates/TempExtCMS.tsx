@@ -33,7 +33,7 @@ export const TempExtCMSEmail = (props: {
           "Temporary Extension Request Number": variables.id,
           "Temporary Extension Type": variables.authority,
           "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
-          summary: variables.additionalInformation,
+          Summary: variables.additionalInformation,
         }}
       />
       <Attachments attachments={variables.attachments} />

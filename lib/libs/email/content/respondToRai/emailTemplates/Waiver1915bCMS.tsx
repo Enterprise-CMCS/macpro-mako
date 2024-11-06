@@ -1,15 +1,21 @@
-import * as React from "react";
-import { emailTemplateValue } from "../data";
 import { CommonEmailVariables, Events } from "shared-types";
 import { Html, Container } from "@react-email/components";
 import { PackageDetails, LoginInstructions, BasicFooter } from "../../email-components";
 
-export const Waiver1915bCMSEmail = (props: { variables: Events["RespondToRai"] & CommonEmailVariables }) => {
+export const Waiver1915bCMSEmail = (props: {
+  variables: Events["RespondToRai"] & CommonEmailVariables;
+}) => {
   const variables = props.variables;
   return (
-    <Html lang="en" dir="ltr">
+    <Html
+      lang="en"
+      dir="ltr"
+    >
       <Container>
-        <h3>The OneMAC Submission Portal received a {variables.authority} Waiver RAI Response Submission:</h3>
+        <h3>
+          The OneMAC Submission Portal received a {variables.authority} Waiver RAI Response
+          Submission:
+        </h3>
         <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
         <PackageDetails
           details={{
@@ -25,9 +31,3 @@ export const Waiver1915bCMSEmail = (props: { variables: Events["RespondToRai"] &
     </Html>
   );
 };
-
-const Waiver1915bCMSEmailPreview = () => {
-  return <Waiver1915bCMSEmail variables={{ ...emailTemplateValue, origin: "mako", attachments: [] }} />;
-};
-
-export default Waiver1915bCMSEmailPreview;

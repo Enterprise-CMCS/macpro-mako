@@ -6,7 +6,7 @@ export const emailTemplateValue = {
   submitterEmail: "george@example.com",
   additionalInformation:
     "Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.",
-  origin: "mako",
+  origin: "mako" as const,
   appkParentId: null,
   attachments: {
     currentStatePlan: {

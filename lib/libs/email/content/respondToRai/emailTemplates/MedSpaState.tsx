@@ -43,12 +43,20 @@ export const MedSpaStateEmail = (props: {
 
 export const MedSpaStateEmailPreview = () => {
   return (
-    <MedSpaStateEmail variables={{ ...emailTemplateValue, origin: "mako", attachments: [] }} />
+    <MedSpaStateEmail
+      variables={{
+        ...emailTemplateValue,
+        id: "CO-1234.R21.00",
+        territory: "CO",
+        authority: "Medicaid SPA",
+        attachments: {
+          cmsForm179: { label: "CMS Form 179", files: [] },
+          spaPages: { label: "SPA Pages", files: [] },
+          other: { label: "Other", files: [] },
+        },
+      }}
+    />
   );
 };
-
-MedSpaStateEmailPreview.displayName = "MedSpaStateEmailPreview";
-
-MedSpaStateEmail.displayName = "MedSpaStateEmail";
 
 export default MedSpaStateEmailPreview;

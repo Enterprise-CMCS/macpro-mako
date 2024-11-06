@@ -54,7 +54,6 @@ const MedSpaStateEmailPreview = () => {
       variables={{
         ...emailTemplateValue,
         id: "CO-24-1234",
-        origin: "mako",
         event: "new-medicaid-submission",
         authority: "Medicaid SPA",
         actionType: "Amend",

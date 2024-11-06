@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
+import { attachmentArraySchemaOptional } from "../attachments";
 
 export const respondToRaiBaseSchema = z.object({
   id: z.string(),
@@ -8,9 +8,13 @@ export const respondToRaiBaseSchema = z.object({
   requestedDate: z.number(),
   responseDate: z.number(),
   attachments: z.object({
-    appk: z.object({
-      label: z.string().default("1915(c) Appendix K Amendment Waiver Template"),
-      files: attachmentArraySchema(),
+    cmsForm179: z.object({
+      label: z.string().default("CMS Form 179"),
+      files: attachmentArraySchemaOptional(),
+    }),
+    spaPages: z.object({
+      label: z.string().default("SPA Pages"),
+      files: attachmentArraySchemaOptional(),
     }),
     other: z.object({
       label: z.string().default("Other"),

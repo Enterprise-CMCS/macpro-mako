@@ -1,4 +1,3 @@
-import { emailTemplateValue } from "../data";
 import { CommonEmailVariables, Events } from "shared-types";
 import { ContactStateLead } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
@@ -17,23 +16,6 @@ export const Waiver1915bStateEmail = (props: {
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<ContactStateLead />}
-    ></BaseEmailTemplate>
-  );
-};
-
-const Waiver1915bStateEmailPreview = () => {
-  return (
-    <Waiver1915bStateEmail
-      variables={{
-        ...emailTemplateValue,
-        actionType: "Withdraw",
-        origin: "mako",
-        submitterEmail: "george@example.com",
-        submitterName: "George Harrison",
-        event: "capitated-initial",
-      }}
     />
   );
 };
-
-export default Waiver1915bStateEmailPreview;

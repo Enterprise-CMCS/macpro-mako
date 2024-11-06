@@ -1,9 +1,17 @@
 import { emailTemplateValue } from "../data";
 import { CommonEmailVariables, Events } from "shared-types";
-import { LoginInstructions, PackageDetails, BasicFooter, DetailsHeading, Attachments } from "../../email-components";
+import {
+  LoginInstructions,
+  PackageDetails,
+  BasicFooter,
+  DetailsHeading,
+  Attachments,
+} from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const ChipSpaCMSEmail = (props: { variables: Events["NewChipSubmission"] & CommonEmailVariables }) => {
+export const ChipSpaCMSEmail = (props: {
+  variables: Events["NewChipSubmission"] & CommonEmailVariables;
+}) => {
   const variables = props.variables;
   const previewText = `CHIP SPA ${variables.id} Submitted`;
   const heading = "The OneMAC Submission Portal received a CHIP State Plan Amendment";
@@ -25,7 +33,7 @@ export const ChipSpaCMSEmail = (props: { variables: Events["NewChipSubmission"] 
           Summary: variables.additionalInformation,
         }}
       />
-      <Attachments attachments={variables.attachments as any} />
+      <Attachments attachments={variables.attachments} />
     </BaseEmailTemplate>
   );
 };
@@ -39,7 +47,6 @@ const ChipSpaCMSEmailPreview = () => {
         authority: "CHIP SPA",
         event: "new-chip-submission",
         actionType: "Amend",
-        origin: "mako",
       }}
     />
   );

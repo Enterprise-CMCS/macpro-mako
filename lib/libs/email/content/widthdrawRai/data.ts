@@ -1,13 +1,10 @@
 export const emailTemplateValue = {
-  to: "TO",
-  id: "PACKAGE ID",
   territory: "CO",
   applicationEndpointUrl: "https://mako-dev.cms.gov",
   actionType: "Withdrawal",
-  authority: "AUTHORITY",
   origin: "mako",
-  requestedDate: 1723390633663,
-  withdrawnDate: 1723390633663,
+  requestedDate: Date.now() - 5 * 24 * 60 * 60,
+  withdrawnDate: Date.now(),
   attachments: {
     cmsForm179: {
       files: [

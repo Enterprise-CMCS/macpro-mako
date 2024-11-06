@@ -2,7 +2,7 @@ import { emailTemplateValue } from "../data";
 import { formatNinetyDaysDate } from "shared-utils";
 import { CommonEmailVariables, Events } from "shared-types";
 import { Text } from "@react-email/components";
-import { ContactStateLead, PackageDetails, BasicFooter } from "../../email-components";
+import { PackageDetails, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
@@ -35,7 +35,6 @@ export const ChipSpaStateEmail = (props: {
         submittal to be issued within 90 days, before ${formatNinetyDaysDate(variables.timestamp)}
         .`}
       </Text>
-      <ContactStateLead isChip />
     </BaseEmailTemplate>
   );
 };
@@ -45,11 +44,12 @@ const ChipSpaStateEmailPreview = () => {
     <ChipSpaStateEmail
       variables={{
         ...emailTemplateValue,
-        proposedEffectiveDate: 1725062400000,
-        submittedDate: 1723420800000,
+        id: "CO-1234.R21.00",
+        territory: "CO",
+        authority: "CHIP SPA",
         attachments: {
-          appk: {
-            label: "1915(c) Appendix K Amendment Waiver Template",
+          cmsForm179: {
+            label: "CMS Form 179",
             files: [
               {
                 filename: "rai-response.pdf",
@@ -66,6 +66,10 @@ const ChipSpaStateEmailPreview = () => {
                 uploadDate: Date.now(),
               },
             ],
+          },
+          spaPages: {
+            label: "SPA Pages",
+            files: [],
           },
           other: {
             label: "Other",

@@ -5,7 +5,7 @@ import { styles } from "./email-styles";
 // Constants
 const EMAIL_CONFIG = {
   DEV_EMAIL: "mako.stateuser+dev-to@gmail.com",
-  CHIP_EMAIL: "CHIPSPASubmissionMailBox@CMS.HHS.gov",
+  CHIP_EMAIL: "CHIPSPASubmissionMailBox@cms.hhs.gov",
   SPA_EMAIL: "spa@cms.hhs.gov",
   SPAM_EMAIL: "SPAM@cms.hhs.gov",
 } as const;
@@ -55,15 +55,8 @@ const Textarea: React.FC<TextareaProps> = ({ children }) => (
 );
 
 const LogoContainer = forwardRef<HTMLSpanElement, { url: string }>(({ url }, ref) => (
-  <header
-    ref={ref}
-    style={styles.logo.container}
-  >
-    <Link
-      href={url}
-      target="_blank"
-      style={styles.logo.link}
-    >
+  <header ref={ref} style={styles.logo.container}>
+    <Link href={url} target="_blank" style={styles.logo.link}>
       <img
         height={40}
         width={112}
@@ -77,10 +70,7 @@ const LogoContainer = forwardRef<HTMLSpanElement, { url: string }>(({ url }, ref
 
 const EmailNav: React.FC<{ appEndpointUrl: string }> = ({ appEndpointUrl }) => (
   <Section>
-    <LogoContainer
-      ref={createRef()}
-      url={appEndpointUrl}
-    />
+    <LogoContainer ref={createRef()} url={appEndpointUrl} />
   </Section>
 );
 
@@ -110,10 +100,7 @@ const LoginInstructions: React.FC<{ appEndpointURL: string }> = ({ appEndpointUR
 const DetailsHeading: React.FC = () => (
   <div>
     <Hr style={styles.divider} />
-    <Heading
-      as="h2"
-      style={styles.heading.h2}
-    >
+    <Heading as="h2" style={styles.heading.h2}>
       Details:
     </Heading>
   </div>
@@ -129,10 +116,7 @@ const Attachments: React.FC<{
   return (
     <>
       <Hr style={styles.divider} />
-      <Heading
-        as="h2"
-        style={styles.heading.h2}
-      >
+      <Heading as="h2" style={styles.heading.h2}>
         Files:
       </Heading>
 
@@ -140,10 +124,7 @@ const Attachments: React.FC<{
         if (!group?.files?.length) return null;
 
         return (
-          <Row
-            key={key}
-            style={{ marginBottom: "2px", marginTop: "2px" }}
-          >
+          <Row key={key} style={{ marginBottom: "2px", marginTop: "2px" }}>
             <Column
               align="left"
               style={{
@@ -180,10 +161,7 @@ const PackageDetails: React.FC<{
           <Row key={label}>
             <Hr style={styles.divider} />
             <Text style={{ margin: ".5em" }}>
-              <Heading
-                as="h2"
-                style={styles.heading.h2}
-              >
+              <Heading as="h2" style={styles.heading.h2}>
                 Summary:
               </Heading>
             </Text>
@@ -194,10 +172,7 @@ const PackageDetails: React.FC<{
 
       return (
         <Row key={label}>
-          <Column
-            align="left"
-            style={{ width: "50%" }}
-          >
+          <Column align="left" style={{ width: "50%" }}>
             <Text style={styles.text.title}>{label}</Text>
           </Column>
           <Column>

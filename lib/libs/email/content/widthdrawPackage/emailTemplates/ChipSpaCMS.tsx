@@ -1,22 +1,20 @@
-import * as React from "react";
-import { emailTemplateValue } from "../data";
 import { CommonEmailVariables } from "shared-types";
 import { Html, Container } from "@react-email/components";
 import { PackageDetails, BasicFooter } from "../../email-components";
 import { WithdrawPackage } from "shared-types";
 
 // **** CHIP SPAh
-export const ChipSpaCMSEmail = (props: {
-  variables: WithdrawPackage & CommonEmailVariables;
-}) => {
+export const ChipSpaCMSEmail = (props: { variables: WithdrawPackage & CommonEmailVariables }) => {
   const variables = props.variables;
   return (
-    <Html lang="en" dir="ltr">
+    <Html
+      lang="en"
+      dir="ltr"
+    >
       <Container>
         <h3>
-          The OneMAC Submission Portal received a request to withdraw the
-          package below. The package will no longer be considered for CMS
-          review:
+          The OneMAC Submission Portal received a request to withdraw the package below. The package
+          will no longer be considered for CMS review:
         </h3>
         <PackageDetails
           details={{
@@ -32,13 +30,3 @@ export const ChipSpaCMSEmail = (props: {
     </Html>
   );
 };
-
-const ChipSpaCMSEmailPreview = () => {
-  return (
-    <ChipSpaCMSEmail
-      variables={emailTemplateValue as any & CommonEmailVariables}
-    />
-  );
-};
-
-export default ChipSpaCMSEmailPreview;

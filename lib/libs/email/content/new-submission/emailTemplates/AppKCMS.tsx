@@ -48,11 +48,10 @@ const AppKCMSEmailPreview = () => {
         ...emailTemplateValue,
         id: "CO-1234.R21.00",
         waiverIds: ["CO-1234.R21.01", "CO-12345.R03.09", "CO-4567.R15.42"],
-        actionType: "New",
+        actionType: "Amend",
+        seaActionType: "amend",
         state: "CO",
-        seaActionType: "New",
         title: "A Perfect Appendix K Amendment Title",
-        origin: "mako",
         attachments: {
           other: {
             files: [],

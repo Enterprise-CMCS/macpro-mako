@@ -14,7 +14,13 @@ const APPLICATION_ENDPOINT_URL = process.env.applicationEndpointUrl;
 const OS_DOMAIN = process.env.osDomain;
 const INDEX_NAMESPACE = process.env.indexNamespace;
 
-if (!region || !EMAIL_LOOKUP_SECRET_NAME || !APPLICATION_ENDPOINT_URL || !OS_DOMAIN || !INDEX_NAMESPACE) {
+if (
+  !region ||
+  !EMAIL_LOOKUP_SECRET_NAME ||
+  !APPLICATION_ENDPOINT_URL ||
+  !OS_DOMAIN ||
+  !INDEX_NAMESPACE
+) {
   throw new Error("Environment variables are not set properly.");
 }
 
@@ -36,7 +42,11 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   }
 };
 
-export async function processRecord(kafkaRecord: KafkaRecord, emailAddressLookupSecretName: string, applicationEndpointUrl: string) {
+export async function processRecord(
+  kafkaRecord: KafkaRecord,
+  emailAddressLookupSecretName: string,
+  applicationEndpointUrl: string,
+) {
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
 
@@ -55,7 +65,13 @@ export async function processRecord(kafkaRecord: KafkaRecord, emailAddressLookup
     return;
   }
 
-  await processAndSendEmails(record, id, emailAddressLookupSecretName, applicationEndpointUrl, getAllStateUsers);
+  await processAndSendEmails(
+    record,
+    id,
+    emailAddressLookupSecretName,
+    applicationEndpointUrl,
+    getAllStateUsers,
+  );
 }
 
 export async function processAndSendEmails(
@@ -65,11 +81,14 @@ export async function processAndSendEmails(
   applicationEndpointUrl: string,
   getAllStateUsers: (state: string) => Promise<StateUser[]>,
 ) {
-  console.log("processAndSendEmails has been called");
-
-  const templates = await getEmailTemplates<typeof record>(record.event, record.authority.toLowerCase());
+  const templates = await getEmailTemplates<typeof record>(
+    record.event,
+    record.authority.toLowerCase(),
+  );
   if (!templates) {
-    console.log(`The kafka record has an event type that does not have email support.  event: ${record.event}.  Doing nothing.`);
+    console.log(
+      `The kafka record has an event type that does not have email support.  event: ${record.event}.  Doing nothing.`,
+    );
     return;
   }
 
@@ -79,12 +98,9 @@ export async function processAndSendEmails(
   const sec = await getSecret(emailAddressLookupSecretName);
 
   const item = await os.getItem(OS_DOMAIN!, `${INDEX_NAMESPACE}main`, id);
-  console.log("item", JSON.stringify(item, null, 2));
 
   const cpocEmail = getCpocEmail(item);
   const srtEmails = getSrtEmails(item);
-  console.log("cpocEmail", cpocEmail);
-  console.log("srtEmails", srtEmails);
   const emails: EmailAddresses = JSON.parse(sec);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
@@ -108,7 +124,11 @@ export async function processAndSendEmails(
   await Promise.all(sendEmailPromises);
 }
 
-export function createEmailParams(filledTemplate: any, sourceEmail: string, baseUrl: string): SendEmailCommandInput {
+export function createEmailParams(
+  filledTemplate: any,
+  sourceEmail: string,
+  baseUrl: string,
+): SendEmailCommandInput {
   return {
     Destination: {
       ToAddresses: filledTemplate.to,
@@ -117,7 +137,10 @@ export function createEmailParams(filledTemplate: any, sourceEmail: string, base
     Message: {
       Body: {
         Html: { Data: filledTemplate.body, Charset: "UTF-8" },
-        Text: { Data: htmlToText(filledTemplate.body, htmlToTextOptions(baseUrl)), Charset: "UTF-8" },
+        Text: {
+          Data: htmlToText(filledTemplate.body, htmlToTextOptions(baseUrl)),
+          Charset: "UTF-8",
+        },
       },
       Subject: { Data: filledTemplate.subject, Charset: "UTF-8" },
     },
@@ -126,7 +149,7 @@ export function createEmailParams(filledTemplate: any, sourceEmail: string, base
 }
 
 export async function sendEmail(params: SendEmailCommandInput): Promise<any> {
-  console.log("SES params:", JSON.stringify(params, null, 2));
+  console.log("sendEmail called with params:", JSON.stringify(params, null, 2));
 
   const command = new SendEmailCommand(params);
   try {

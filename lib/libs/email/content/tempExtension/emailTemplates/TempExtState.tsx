@@ -29,10 +29,8 @@ export const TempExtStateEmail = (props: { variables: any & CommonEmailVariables
           "Email Address": variables.submitterEmail,
           "Temporary Extension Request Number": variables.id,
           "Temporary Extension Type": variables.authority,
-          "90th Day Deadline": formatNinetyDaysDate(
-            Number(variables.notificationMetadata?.submissionDate),
-          ),
-          summary: variables.additionalInformation,
+          "90th Day Deadline": formatNinetyDaysDate(variables.submissionDate),
+          Summary: variables.additionalInformation,
         }}
       />
       <Attachments attachments={variables.attachments} />

@@ -57,7 +57,7 @@ const Waiver1915bStateEmailPreview = () => {
         ...emailTemplateValue,
         id: "CO-1234.R21.00",
         authority: "1915(b)",
-        actionType: "RAI",
+        actionType: "New",
       }}
     />
   );

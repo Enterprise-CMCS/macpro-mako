@@ -1,14 +1,7 @@
-import * as React from "react";
-import { emailTemplateValue } from "../data";
 import { CommonEmailVariables } from "shared-types";
 import { RaiWithdraw } from "shared-types";
 import { Container, Html } from "@react-email/components";
-import {
-  WithdrawRAI,
-  PackageDetails,
-  ContactStateLead,
-} from "../../email-components";
-import { relatedEvent } from "./AppKCMS";
+import { WithdrawRAI, PackageDetails, ContactStateLead } from "../../email-components";
 
 export const ChipSpaStateEmail = (props: {
   variables: RaiWithdraw & CommonEmailVariables;
@@ -33,14 +26,3 @@ export const ChipSpaStateEmail = (props: {
     </Html>
   );
 };
-
-const ChipSpaStateEmailPreview = () => {
-  return (
-    <ChipSpaStateEmail
-      relatedEvent={relatedEvent}
-      variables={emailTemplateValue as any}
-    />
-  );
-};
-
-export default ChipSpaStateEmailPreview;

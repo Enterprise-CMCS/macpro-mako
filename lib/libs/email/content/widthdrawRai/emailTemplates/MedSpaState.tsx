@@ -1,14 +1,7 @@
-import * as React from "react";
-import { emailTemplateValue } from "../data";
 import { CommonEmailVariables } from "shared-types";
 import { RaiWithdraw } from "shared-types";
 import { Container, Html } from "@react-email/components";
-import {
-  WithdrawRAI,
-  PackageDetails,
-  ContactStateLead,
-} from "../../email-components";
-import { relatedEvent } from "./AppKCMS";
+import { WithdrawRAI, PackageDetails, ContactStateLead } from "../../email-components";
 
 export const MedSpaStateEmail = (props: {
   variables: RaiWithdraw & CommonEmailVariables;
@@ -33,14 +26,3 @@ export const MedSpaStateEmail = (props: {
     </Html>
   );
 };
-
-const MedSpaCMSEmailPreview = () => {
-  return (
-    <MedSpaStateEmail
-      relatedEvent={relatedEvent}
-      variables={emailTemplateValue as any}
-    />
-  );
-};
-
-export default MedSpaCMSEmailPreview;

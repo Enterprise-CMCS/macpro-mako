@@ -37,7 +37,6 @@ export const Waiver1915bStateEmail = (props: {
         .
       </Text>
       <MailboxNotice type="Waiver" />
-      <ContactStateLead />
     </BaseEmailTemplate>
   );
 };
@@ -47,8 +46,36 @@ const Waiver1915bStateEmailPreview = () => {
     <Waiver1915bStateEmail
       variables={{
         ...emailTemplateValue,
-        origin: "mako",
-        attachments: [],
+        id: "CO-1234.R21.00",
+        territory: "CO",
+        authority: "Waiver 1915b",
+        attachments: {
+          cmsForm179: {
+            label: "CMS Form 179",
+            files: [
+              {
+                filename: "cms-form-179.pdf",
+                title: "CMS Form 179",
+                bucket: "test-bucket",
+                key: "cms-form-179.pdf",
+                uploadDate: Date.now(),
+              },
+            ],
+          },
+          spaPages: { label: "SPA Pages", files: [] },
+          other: {
+            label: "Other",
+            files: [
+              {
+                filename: "other.pdf",
+                title: "Other",
+                bucket: "test-bucket",
+                key: "other.pdf",
+                uploadDate: Date.now(),
+              },
+            ],
+          },
+        },
       }}
     />
   );

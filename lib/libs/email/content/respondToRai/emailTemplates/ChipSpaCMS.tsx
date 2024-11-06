@@ -43,33 +43,39 @@ export const ChipSpaCMSEmailPreview = () => {
     <ChipSpaCMSEmail
       variables={{
         ...emailTemplateValue,
-        proposedEffectiveDate: 1725062400000,
-        submittedDate: 1723420800000,
+        id: "CO-1234.R21.00",
+        territory: "CO",
         attachments: {
-          appk: {
-            label: "1915(c) Appendix K Amendment Waiver Template",
+          cmsForm179: {
             files: [
               {
-                filename: "rai-response.pdf",
-                title: "RAI Response",
+                filename: "CMS_Form_179_RAI_Response.pdf",
+                title: "CMS Form 179",
                 bucket: "test-bucket",
-                key: "rai-response.pdf",
+                key: "cms-form-179.pdf",
                 uploadDate: Date.now(),
               },
+            ],
+            label: "CMS Form 179",
+          },
+          spaPages: {
+            files: [
               {
-                filename: "spa-pages.pdf",
+                filename: "test.pdf",
                 title: "SPA Pages",
                 bucket: "test-bucket",
                 key: "spa-pages.pdf",
                 uploadDate: Date.now(),
               },
             ],
+            label: "SPA Pages",
           },
           other: {
-            label: "Other",
             files: [],
+            label: "Other",
           },
         },
+        authority: "CHIP SPA",
       }}
     />
   );

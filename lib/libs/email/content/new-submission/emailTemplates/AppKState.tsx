@@ -56,11 +56,10 @@ const AppKStateEmailPreview = () => {
       variables={{
         ...emailTemplateValue,
         id: "CO-1234.R21.00",
-        origin: "mako",
         state: "CO",
         waiverIds: ["1234-56768", "1234-56769"],
         actionType: "Amend",
-        seaActionType: "Amend",
+        seaActionType: "amend",
         title: "App K Title",
       }}
     />

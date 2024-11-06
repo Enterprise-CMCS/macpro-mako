@@ -1,10 +1,5 @@
-import { emailTemplateValue } from "../data";
 import { CommonEmailVariables, Events } from "shared-types";
-import {
-  Attachments,
-  PackageDetails,
-  BasicFooter,
-} from "../../email-components";
+import { Attachments, PackageDetails, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const Waiver1915bCMSEmail = (props: {
@@ -36,20 +31,3 @@ export const Waiver1915bCMSEmail = (props: {
     </BaseEmailTemplate>
   );
 };
-
-const Waiver1915bCMSEmailPreview = () => {
-  return (
-    <Waiver1915bCMSEmail
-      variables={{
-        ...emailTemplateValue,
-        event: "capitated-initial",
-        authority: "Medicaid Waiver",
-        origin: "mako",
-        submitterEmail: "george@example.com",
-        submitterName: "George Harrison",
-      }}
-    />
-  );
-};
-
-export default Waiver1915bCMSEmailPreview;

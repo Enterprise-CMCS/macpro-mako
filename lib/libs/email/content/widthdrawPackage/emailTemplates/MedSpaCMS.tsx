@@ -1,21 +1,19 @@
-import * as React from "react";
-import { emailTemplateValue } from "../data";
 import { CommonEmailVariables } from "shared-types";
 import { WithdrawPackage } from "shared-types";
 import { Html, Container } from "@react-email/components";
 import { PackageDetails, BasicFooter } from "../../email-components";
 
-export const MedSpaCMSEmail = (props: {
-  variables: WithdrawPackage & CommonEmailVariables;
-}) => {
+export const MedSpaCMSEmail = (props: { variables: WithdrawPackage & CommonEmailVariables }) => {
   const variables = props.variables;
   return (
-    <Html lang="en" dir="ltr">
+    <Html
+      lang="en"
+      dir="ltr"
+    >
       <Container>
         <h3>
-          The OneMAC Submission Portal received a request to withdraw the
-          package below. The package will no longer be considered for CMS
-          review:
+          The OneMAC Submission Portal received a request to withdraw the package below. The package
+          will no longer be considered for CMS review:
         </h3>
         <PackageDetails
           details={{
@@ -31,13 +29,3 @@ export const MedSpaCMSEmail = (props: {
     </Html>
   );
 };
-
-const MedSpaCMSEmailPreview = () => {
-  return (
-    <MedSpaCMSEmail
-      variables={emailTemplateValue as WithdrawPackage & CommonEmailVariables}
-    />
-  );
-};
-
-export default MedSpaCMSEmailPreview;

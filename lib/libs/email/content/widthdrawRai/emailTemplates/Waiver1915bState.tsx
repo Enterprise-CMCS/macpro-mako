@@ -1,4 +1,3 @@
-import { emailTemplateValue } from "../data";
 import { CommonEmailVariables } from "shared-types";
 import { RaiWithdraw } from "shared-types";
 import {
@@ -8,7 +7,6 @@ import {
   MailboxNotice,
   Attachments,
 } from "../../email-components";
-import { relatedEvent } from "./AppKCMS";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const Waiver1915bStateEmail = (props: {
@@ -17,8 +15,7 @@ export const Waiver1915bStateEmail = (props: {
 }) => {
   const { variables, relatedEvent } = { ...props };
   const previewText = `Waiver ${variables.id} Withdrawn`;
-  const heading =
-    "This response confirms you have withdrawn a Waiver from CMS for review";
+  const heading = "This response confirms you have withdrawn a Waiver from CMS for review";
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -41,14 +38,3 @@ export const Waiver1915bStateEmail = (props: {
     </BaseEmailTemplate>
   );
 };
-
-const Waiver1915bStateEmailPreview = () => {
-  return (
-    <Waiver1915bStateEmail
-      relatedEvent={relatedEvent}
-      variables={emailTemplateValue as any}
-    />
-  );
-};
-
-export default Waiver1915bStateEmailPreview;

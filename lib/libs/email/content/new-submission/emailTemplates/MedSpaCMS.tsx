@@ -50,7 +50,6 @@ const MedSpaCMSEmailPreview = () => {
         authority: "Medicaid SPA",
         event: "new-medicaid-submission",
         actionType: "Amend",
-        origin: "mako",
       }}
     />
   );
