@@ -1,42 +1,54 @@
-import { MedSpaCMSEmail } from "../../content/respondToRai/emailTemplates";
+import { Waiver1915bCMSEmail } from "../../content/respondToRai/emailTemplates";
 import { emailTemplateValue } from "../../mock-data/respond-to-rai";
 
-const MedSpaCMSEmailPreview = () => {
+const Waiver1915bCMSEmailPreview = () => {
   return (
-    <MedSpaCMSEmail
+    <Waiver1915bCMSEmail
       variables={{
         ...emailTemplateValue,
         id: "CO-1234.R21.00",
         territory: "CO",
-        authority: "Medicaid SPA",
+        event: "respond-to-rai",
         attachments: {
-          cmsForm179: {
-            label: "CMS Form 179",
-            files: [],
-          },
-          spaPages: {
-            label: "SPA Pages",
+          revisedAmendedStatePlanLanguage: {
             files: [
               {
-                filename: "spa-pages.pdf",
-                title: "SPA Pages",
+                filename: "revised-amended-state-plan-language.pdf",
+                title: "Revised Amended State Plan Language",
                 bucket: "test-bucket",
-                key: "spa-pages.pdf",
+                key: "revised-amended-state-plan-language.pdf",
                 uploadDate: Date.now(),
               },
             ],
+            label: "Revised Amended State Plan Language",
+          },
+          officialRAIResponse: {
+            files: [
+              {
+                filename: "official-rai-response.pdf",
+                title: "Official RAI Response",
+                bucket: "test-bucket",
+                key: "official-rai-response.pdf",
+                uploadDate: Date.now(),
+              },
+            ],
+            label: "Official RAI Response",
+          },
+          budgetDocuments: {
+            files: [],
+            label: "Budget Documents",
+          },
+          publicNotice: {
+            files: [],
+            label: "Public Notice",
+          },
+          tribalConsultation: {
+            files: [],
+            label: "Tribal Consultation",
           },
           other: {
+            files: [],
             label: "Other",
-            files: [
-              {
-                filename: "other.pdf",
-                title: "Other",
-                bucket: "test-bucket",
-                key: "other.pdf",
-                uploadDate: Date.now(),
-              },
-            ],
           },
         },
       }}
@@ -44,4 +56,4 @@ const MedSpaCMSEmailPreview = () => {
   );
 };
 
-export default MedSpaCMSEmailPreview;
+export default Waiver1915bCMSEmailPreview;

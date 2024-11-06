@@ -9,10 +9,13 @@ export const MedSpaStateEmailPreview = () => {
         ...RAIResponse.emailTemplateValue,
         id: "CO-1234.R21.00",
         territory: "CO",
-        authority: "Medicaid SPA",
+        event: "respond-to-rai",
         attachments: {
-          cmsForm179: attachments.cmsForm179,
-          spaPages: attachments.spaPages,
+          revisedAmendedStatePlanLanguage: attachments.cmsForm179,
+          officialRAIResponse: attachments.spaPages,
+          budgetDocuments: attachments.other,
+          publicNotice: attachments.other,
+          tribalConsultation: attachments.other,
           other: attachments.other,
         },
       }}

@@ -8,10 +8,9 @@ const Waiver1915bStateEmailPreview = () => {
         ...emailTemplateValue,
         id: "CO-1234.R21.00",
         territory: "CO",
-        authority: "Waiver 1915(b)",
+        event: "respond-to-rai",
         attachments: {
-          cmsForm179: {
-            label: "CMS Form 179",
+          revisedAmendedStatePlanLanguage: {
             files: [
               {
                 filename: "waiver-rai-response.pdf",
@@ -28,14 +27,27 @@ const Waiver1915bStateEmailPreview = () => {
                 uploadDate: Date.now(),
               },
             ],
+            label: "Revised Amended State Plan Language",
           },
-          spaPages: {
-            label: "SPA Pages",
+          officialRAIResponse: {
             files: [],
+            label: "Official RAI Response",
+          },
+          budgetDocuments: {
+            files: [],
+            label: "Budget Documents",
+          },
+          publicNotice: {
+            files: [],
+            label: "Public Notice",
+          },
+          tribalConsultation: {
+            files: [],
+            label: "Tribal Consultation",
           },
           other: {
-            label: "Other",
             files: [],
+            label: "Other",
           },
         },
       }}

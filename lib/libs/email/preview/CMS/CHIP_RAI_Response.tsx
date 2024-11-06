@@ -8,8 +8,9 @@ export const ChipSpaCMSEmailPreview = () => {
         ...emailTemplateValue,
         id: "CO-24-1055-0001",
         territory: "CO",
+        event: "respond-to-rai",
         attachments: {
-          cmsForm179: {
+          revisedAmendedStatePlanLanguage: {
             files: [
               {
                 filename: "CMS_Form_179_RAI_Response.pdf",
@@ -21,7 +22,7 @@ export const ChipSpaCMSEmailPreview = () => {
             ],
             label: "CMS Form 179",
           },
-          spaPages: {
+          officialRAIResponse: {
             files: [
               {
                 filename: "test.pdf",
@@ -33,12 +34,23 @@ export const ChipSpaCMSEmailPreview = () => {
             ],
             label: "SPA Pages",
           },
+          budgetDocuments: {
+            files: [],
+            label: "Budget Documents",
+          },
+          publicNotice: {
+            files: [],
+            label: "Public Notice",
+          },
+          tribalConsultation: {
+            files: [],
+            label: "Tribal Consultation",
+          },
           other: {
             files: [],
             label: "Other",
           },
         },
-        authority: "CHIP SPA",
       }}
     />
   );
