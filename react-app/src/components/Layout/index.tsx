@@ -16,7 +16,12 @@ import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
-import { SimplePageContainer, UserPrompt, Banner } from "@/components";
+import {
+  ScrollToTop,
+  SimplePageContainer,
+  UserPrompt,
+  Banner,
+} from "@/components";
 import { isFaqPage, isProd } from "@/utils";
 
 /**
@@ -167,6 +172,7 @@ export const Layout = () => {
 
   return (
     <div className="min-h-full flex flex-col">
+      <ScrollToTop />
       <UserPrompt />
       <UsaBanner
         isUserMissingRole={user?.user && customUserRoles === undefined}

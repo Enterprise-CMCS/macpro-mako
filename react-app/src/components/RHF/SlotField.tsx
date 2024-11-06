@@ -317,7 +317,12 @@ export const OptChildren = ({
                 control={control}
                 name={parentId + SLOT.name}
                 rules={ruleGenerator(SLOT.rules, SLOT.addtnlRules)}
-                render={RHFSlot({ ...SLOT, control, parentId })}
+                render={RHFSlot({
+                  ...SLOT,
+                  control,
+                  parentId,
+                  name: parentId + SLOT.name,
+                })}
               />
             </div>
           ))}
