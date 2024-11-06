@@ -17,7 +17,6 @@ import {
 } from "@tanstack/react-query";
 import userEvent from "@testing-library/user-event";
 import { useGetUser } from "@/api";
-import { testStateCognitoUser } from "shared-utils/testData";
 import { OneMacUser } from "@/api/useGetUser";
 import { Auth } from "aws-amplify";
 import * as hooks from "@/hooks";
@@ -81,6 +80,20 @@ const baseQueryResult: Partial<UseQueryResult> = {
   status: "success",
   fetchStatus: "idle",
   isSuccess: true,
+};
+
+const testStateCognitoUser: OneMacUser = {
+  isCms: false,
+  user: {
+    sub: "0000aaaa-0000-00aa-0a0a-aaaaaa000000",
+    "custom:cms-roles": "onemac-micro-statesubmitter",
+    "custom:state": "VA,OH,SC,CO,GA,MD",
+    email_verified: true,
+    given_name: "State",
+    family_name: "Person",
+    username: "0000aaaa-0000-00aa-0a0a-aaaaaa000000",
+    email: "stateperson@example.com",
+  },
 };
 
 // User response mocks
