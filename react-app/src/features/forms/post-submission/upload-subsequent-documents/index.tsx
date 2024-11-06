@@ -95,7 +95,9 @@ export const UploadSubsequentDocuments = () => {
 
   return (
     <ActionForm
-      title={`Upload Subsequent ${authority} Document Details`}
+      title={`Upload Subsequent ${getAuthorityLabel(
+        authority,
+      )} Document Details`}
       schema={pickedSchema}
       breadcrumbText="New Subsequent Documentation"
       formDescription={`
