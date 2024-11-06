@@ -92,9 +92,6 @@ const processAndIndex = async ({
       }
 
       // If the event is a supported event, transform and push to docs array for indexing
-      console.log("event below");
-      console.log(record.event);
-
       if (record.event in transforms) {
         const transformForEvent =
           transforms[record.event as keyof typeof transforms];
@@ -139,6 +136,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   });
 
   const openSearchRecords = await os.getItems(osDomain, indexNamespace, ids);
+
   const existingRecordsLookup = openSearchRecords.reduce<
     Record<string, number>
   >((acc, item) => {

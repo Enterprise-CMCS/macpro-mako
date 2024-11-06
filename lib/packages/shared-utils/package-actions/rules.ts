@@ -1,6 +1,7 @@
 import {
   Action,
   ActionRule,
+  Authority,
   SEATOOL_STATUS,
   finalDispositionStatuses,
 } from "shared-types";
@@ -15,7 +16,7 @@ const arRespondToRai: ActionRule = {
     // safety; prevent bad status from causing overwrite
     (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
     isStateUser(user) &&
-    false,
+    !checker.isLocked,
 };
 
 const arTempExtension: ActionRule = {
@@ -30,14 +31,29 @@ const arTempExtension: ActionRule = {
 
 const arEnableWithdrawRaiResponse: ActionRule = {
   action: Action.ENABLE_RAI_WITHDRAW,
-  check: (checker, user) =>
-    !checker.isTempExtension &&
-    checker.isNotWithdrawn &&
-    checker.hasRaiResponse &&
-    !checker.hasEnabledRaiWithdraw &&
-    isCmsWriteUser(user) &&
-    !checker.hasStatus(finalDispositionStatuses) &&
-    false,
+  check: (checker, user) => {
+    if (checker.authorityIs([Authority["CHIP_SPA"]])) {
+      return (
+        !checker.isTempExtension &&
+        checker.isNotWithdrawn &&
+        checker.hasRaiResponse &&
+        !checker.hasEnabledRaiWithdraw &&
+        isCmsWriteUser(user) &&
+        checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) &&
+        !checker.hasStatus(finalDispositionStatuses)
+      );
+    }
+
+    return (
+      !checker.isTempExtension &&
+      checker.isNotWithdrawn &&
+      checker.hasRaiResponse &&
+      !checker.hasEnabledRaiWithdraw &&
+      checker.isInSecondClock &&
+      isCmsWriteUser(user) &&
+      !checker.hasStatus(finalDispositionStatuses)
+    );
+  },
 };
 
 const arDisableWithdrawRaiResponse: ActionRule = {
@@ -48,8 +64,7 @@ const arDisableWithdrawRaiResponse: ActionRule = {
     checker.hasRaiResponse &&
     checker.hasEnabledRaiWithdraw &&
     isCmsWriteUser(user) &&
-    !checker.hasStatus(finalDispositionStatuses) &&
-    false,
+    !checker.hasStatus(finalDispositionStatuses),
 };
 
 const arWithdrawRaiResponse: ActionRule = {
@@ -62,15 +77,14 @@ const arWithdrawRaiResponse: ActionRule = {
     !checker.hasRaiWithdrawal &&
     checker.hasEnabledRaiWithdraw &&
     isStateUser(user) &&
-    false,
+    !checker.isLocked,
 };
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
     !checker.isTempExtension &&
     !checker.hasStatus(finalDispositionStatuses) &&
-    isStateUser(user) &&
-    false,
+    isStateUser(user),
 };
 const arUpdateId: ActionRule = {
   action: Action.UPDATE_ID,
