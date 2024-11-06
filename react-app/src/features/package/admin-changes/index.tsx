@@ -121,7 +121,6 @@ export const AdminChanges = () => {
         className="flex flex-col gap-2"
       >
         {data?.map((CL) => {
-          console.log("what is CL?", CL);
           return <AdminChange {...CL._source} key={CL._source.id} />;
         })}
       </Accordion>
