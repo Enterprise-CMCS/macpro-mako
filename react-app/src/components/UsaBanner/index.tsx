@@ -35,6 +35,7 @@ const GovernmentBuildingIcon = () => {
       height="64"
       viewBox="0 0 64 64"
       className="min-w-[40px] min-h-[40px] w-10"
+      data-testid="gov-build-icon"
     >
       <path
         fill="#2378C3"
@@ -61,8 +62,14 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
           src={UsFlag}
           alt="A United States Flag icon"
         />
-        <p data-testid="usa-statement-d">An official website of the United States government</p>
-        <button data-testid="usa-expand-btn-d" className="flex" onClick={() => setIsOpen((value) => !value)}>
+        <p data-testid="usa-statement-d">
+          An official website of the United States government
+        </p>
+        <button
+          data-testid="usa-expand-btn-d"
+          className="flex"
+          onClick={() => setIsOpen((value) => !value)}
+        >
           <span className="underline text-[#005ea2]">Here's how you know</span>
           {isOpen ? (
             <ChevronUp className="w-4 h-4 text-[#005ea2]" />
@@ -82,9 +89,14 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
           alt="A United States Flag icon"
         />
         <div>
-          <p data-testid="usa-statement-m">An official website of the United States government</p>
+          <p data-testid="usa-statement-m">
+            An official website of the United States government
+          </p>
           <div className="flex">
-            <span data-testid="usa-expand-btn-m" className="underline text-[#005ea2] block">
+            <span
+              data-testid="usa-expand-btn-m"
+              className="underline text-[#005ea2] block"
+            >
               Here's how you know
             </span>
             {isOpen ? (
