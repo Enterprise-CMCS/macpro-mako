@@ -8,3 +8,4 @@ export * from "./secrets-manager";
 export * from "./cloudformation";
 export * from "./decode";
 export * from "./validate-env-variable";
+export * from "./package-actions/getAvailableActions";
