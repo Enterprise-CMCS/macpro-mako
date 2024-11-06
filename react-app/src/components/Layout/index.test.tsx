@@ -399,6 +399,28 @@ describe("Layout", () => {
       // Restore original window.location
       window.location = originalLocation;
     });
+
+    it("should redirect to the login URL when Register is clicked", async () => {
+      const expectedUrl = "https://test.home.idm.cms.gov/signin/login.html"; // Adjusted URL
+
+      // Mock window.location.assign
+      const originalLocation = window.location;
+      delete (window as any).location;
+      window.location = { assign: vi.fn() } as any;
+
+      // Render the component
+      renderWithProviders();
+
+      // Click the "Register" button
+      const registerButton = screen.getByText("Register");
+      await userEvent.click(registerButton);
+
+      // Assert that window.location.assign was called with the expected URL
+      expect(window.location.assign).toHaveBeenCalledWith(expectedUrl);
+
+      // Restore original window.location
+      window.location = originalLocation;
+    });
   });
 
   describe("SubNavHeader", () => {
