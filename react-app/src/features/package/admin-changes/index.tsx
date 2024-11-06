@@ -66,7 +66,6 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
   const [label, Content] = useMemo(() => {
     switch (props.event) {
       case "toggle-withdraw-rai": {
-        console.log("what is props", props.raiWithdrawEnabled);
         if (props.raiWithdrawEnabled) {
           return ["Enable formal RAI response withdraw", AC_WithdrawEnabled];
         }
