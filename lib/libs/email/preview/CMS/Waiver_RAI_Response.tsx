@@ -1,25 +1,22 @@
-import { Waiver1915bStateEmail } from "../../content/respondToRai/emailTemplates";
+import { MedSpaCMSEmail } from "../../content/respondToRai/emailTemplates";
 import { emailTemplateValue } from "../../mock-data/respond-to-rai";
 
-const Waiver1915bStateEmailPreview = () => {
+const MedSpaCMSEmailPreview = () => {
   return (
-    <Waiver1915bStateEmail
+    <MedSpaCMSEmail
       variables={{
         ...emailTemplateValue,
         id: "CO-1234.R21.00",
         territory: "CO",
-        authority: "Waiver 1915(b)",
+        authority: "Medicaid SPA",
         attachments: {
           cmsForm179: {
             label: "CMS Form 179",
+            files: [],
+          },
+          spaPages: {
+            label: "SPA Pages",
             files: [
-              {
-                filename: "waiver-rai-response.pdf",
-                title: "Waiver RAI Response",
-                bucket: "test-bucket",
-                key: "waiver-rai-response.pdf",
-                uploadDate: Date.now(),
-              },
               {
                 filename: "spa-pages.pdf",
                 title: "SPA Pages",
@@ -29,13 +26,17 @@ const Waiver1915bStateEmailPreview = () => {
               },
             ],
           },
-          spaPages: {
-            label: "SPA Pages",
-            files: [],
-          },
           other: {
             label: "Other",
-            files: [],
+            files: [
+              {
+                filename: "other.pdf",
+                title: "Other",
+                bucket: "test-bucket",
+                key: "other.pdf",
+                uploadDate: Date.now(),
+              },
+            ],
           },
         },
       }}
@@ -43,4 +44,4 @@ const Waiver1915bStateEmailPreview = () => {
   );
 };
 
-export default Waiver1915bStateEmailPreview;
+export default MedSpaCMSEmailPreview;

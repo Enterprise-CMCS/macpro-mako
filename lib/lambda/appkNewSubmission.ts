@@ -15,19 +15,6 @@ if (!secretName) {
 }
 
 export const submit = async (event: APIGatewayEvent) => {
-  // reject no body
-  /**
-    state: z.string(),
-    waiverIds:z.array(zAppkWaiverNumberSchema)
-    additionalInformation: z.string().max(4000).optional(),
-    title: z.string(),
-    attachments: z.object({
-      appk: zAttachmentRequired({ min: 1 }),
-      other: zAttachmentRequired({ min: 1 }),
-    }), 
-    proposedEffectiveDate: z.date(),
-    seaActionType: z.string().default("Amend"),
-   */
   if (!event.body) {
     return response({
       statusCode: 400,
@@ -61,7 +48,10 @@ export const submit = async (event: APIGatewayEvent) => {
     const validateRegex = /^\d{4,5}\.R\d{2}\.\d{2}$/.test(ID);
     // Reject invalid ID
     if (!validateRegex) {
-      throw console.error("MAKO Validation Error. The following APP-K Id format is incorrect: ", ID);
+      throw console.error(
+        "MAKO Validation Error. The following APP-K Id format is incorrect: ",
+        ID,
+      );
     }
 
     const notificationMetadata = {
@@ -90,12 +80,19 @@ export const submit = async (event: APIGatewayEvent) => {
       );
     }
 
-    const validateOpensearch = await search(process.env.osDomain!, `${process.env.indexNamespace}main`, {
-      query: { match_phrase: { id: { query: `${body.state}-${ID}` } } },
-    });
+    const validateOpensearch = await search(
+      process.env.osDomain!,
+      `${process.env.indexNamespace}main`,
+      {
+        query: { match_phrase: { id: { query: `${body.state}-${ID}` } } },
+      },
+    );
     const existsInOpensearch = validateOpensearch?.hits.total.value !== 0;
     if (existsInOpensearch) {
-      throw console.error("MAKO Validation Error. The following APP-K Id already exists ", `${body.state}-${ID}`);
+      throw console.error(
+        "MAKO Validation Error. The following APP-K Id already exists ",
+        `${body.state}-${ID}`,
+      );
     }
 
     schemas.push({ data: validateZod.data, id: `${body.state}-${ID}` });

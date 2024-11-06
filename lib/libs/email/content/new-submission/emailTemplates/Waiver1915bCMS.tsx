@@ -37,7 +37,7 @@ export const Waiver1915bCMSEmail = (props: {
           Summary: variables.additionalInformation,
         }}
       />
-      <Attachments attachments={variables.attachments as any} />
+      <Attachments attachments={variables.attachments} />
     </BaseEmailTemplate>
   );
 };

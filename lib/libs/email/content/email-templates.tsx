@@ -3,14 +3,21 @@ import { EmailNav, EmailFooter } from "./email-components";
 import { styles } from "./email-styles";
 import { ReactNode } from "react";
 
-// Base email template that can be reused for different email types
-export const BaseEmailTemplate: React.FC<{
+interface BaseEmailTemplateProps {
   previewText: string;
   heading: string;
   children?: ReactNode;
   footerContent?: ReactNode;
   applicationEndpointUrl: string;
-}> = ({ previewText, heading, children, applicationEndpointUrl, footerContent }) => (
+}
+
+export const BaseEmailTemplate = ({
+  previewText,
+  heading,
+  children,
+  footerContent,
+  applicationEndpointUrl,
+}: BaseEmailTemplateProps) => (
   <Html>
     <Head />
     <Preview>{previewText}</Preview>

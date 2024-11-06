@@ -5,7 +5,7 @@ interface CardsProps {
   cards: CardProps[];
 }
 
-export const Cards: React.FC<CardsProps> = ({ cards }) => {
+export const Cards = ({ cards }: CardsProps) => {
   return (
     <Table variant={"simple"}>
       <Thead>

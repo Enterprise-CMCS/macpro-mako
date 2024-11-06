@@ -34,7 +34,7 @@ const areAllAttachmentsEmpty = (
   return Object.values(attachments).every((att) => !att || att.files?.length === 0);
 };
 
-const Textarea: React.FC<TextareaProps> = ({ children }) => (
+const Textarea = ({ children }: { children: React.ReactNode }) => (
   <Text
     style={{
       width: "100%",
@@ -66,13 +66,13 @@ const LogoContainer = forwardRef<HTMLSpanElement, { url: string }>(({ url }, ref
   </header>
 ));
 
-const EmailNav: React.FC<{ appEndpointUrl: string }> = ({ appEndpointUrl }) => (
+const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
   <Section>
     <LogoContainer ref={createRef()} url={appEndpointUrl} />
   </Section>
 );
 
-const LoginInstructions: React.FC<{ appEndpointURL: string }> = ({ appEndpointURL }) => (
+const LoginInstructions = ({ appEndpointURL }: { appEndpointURL: string }) => (
   <ul style={{ marginLeft: "-20px" }}>
     <li>
       <Text style={styles.text.description}>
@@ -95,7 +95,7 @@ const LoginInstructions: React.FC<{ appEndpointURL: string }> = ({ appEndpointUR
   </ul>
 );
 
-const DetailsHeading: React.FC = () => (
+const DetailsHeading = () => (
   <div>
     <Hr style={styles.divider} />
     <Heading as="h2" style={styles.heading.h2}>
@@ -104,9 +104,11 @@ const DetailsHeading: React.FC = () => (
   </div>
 );
 
-const Attachments: React.FC<{
+const Attachments = ({
+  attachments,
+}: {
   attachments: Partial<Record<AttachmentKey, AttachmentGroup>>;
-}> = ({ attachments }) => {
+}) => {
   if (!attachments || areAllAttachmentsEmpty(attachments)) {
     return <Text>No attachments</Text>;
   }
@@ -149,9 +151,7 @@ const Attachments: React.FC<{
   );
 };
 
-const PackageDetails: React.FC<{
-  details: Record<any, any>;
-}> = ({ details }) => (
+const PackageDetails = ({ details }: { details: Record<any, any> }) => (
   <Section>
     {Object.entries(details).map(([label, value]) => {
       if (label === "Summary") {
@@ -182,7 +182,7 @@ const PackageDetails: React.FC<{
   </Section>
 );
 
-const MailboxNotice: React.FC<{ type: "SPA" | "Waiver" }> = ({ type }) => (
+const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
   <Text style={{ ...styles.text.description, marginTop: "16px", marginBottom: "16px" }}>
     {type === "SPA"
       ? "This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only."
@@ -191,7 +191,7 @@ const MailboxNotice: React.FC<{ type: "SPA" | "Waiver" }> = ({ type }) => (
   </Text>
 );
 
-const ContactStateLead: React.FC<{ isChip?: boolean }> = ({ isChip }) => (
+const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
   <Section
     style={{
       ...styles.section.footer,
@@ -213,11 +213,11 @@ const ContactStateLead: React.FC<{ isChip?: boolean }> = ({ isChip }) => (
   </Section>
 );
 
-export const EmailFooter: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+const EmailFooter = ({ children }: { children: React.ReactNode }) => (
   <Section style={styles.section.footer}>{children}</Section>
 );
 
-const BasicFooter: React.FC = () => (
+const BasicFooter = () => (
   <EmailFooter>
     <Text
       style={{ ...styles.text.footer, margin: "8px" }}
@@ -228,11 +228,15 @@ const BasicFooter: React.FC = () => (
   </EmailFooter>
 );
 
-const WithdrawRAI: React.FC<{
+const WithdrawRAI = ({
+  id,
+  submitterName,
+  submitterEmail,
+}: {
   id: string;
   submitterName: string;
   submitterEmail: string;
-}> = ({ id, submitterName, submitterEmail }) => (
+}) => (
   <Section>
     <Heading as="h2">
       The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are
@@ -268,4 +272,5 @@ export {
   WithdrawRAI,
   getCpocEmail,
   getSrtEmails,
+  EmailFooter,
 };

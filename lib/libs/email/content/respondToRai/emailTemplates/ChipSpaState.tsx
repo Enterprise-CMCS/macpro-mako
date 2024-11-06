@@ -1,4 +1,3 @@
-import { emailTemplateValue } from "../../../mock-data/respond-to-rai";
 import { formatNinetyDaysDate } from "shared-utils";
 import { CommonEmailVariables, Events } from "shared-types";
 import { Text } from "@react-email/components";
@@ -38,47 +37,3 @@ export const ChipSpaStateEmail = (props: {
     </BaseEmailTemplate>
   );
 };
-
-const ChipSpaStateEmailPreview = () => {
-  return (
-    <ChipSpaStateEmail
-      variables={{
-        ...emailTemplateValue,
-        id: "CO-1234.R21.00",
-        territory: "CO",
-        authority: "CHIP SPA",
-        attachments: {
-          cmsForm179: {
-            label: "CMS Form 179",
-            files: [
-              {
-                filename: "rai-response.pdf",
-                title: "RAI Response",
-                bucket: "test-bucket",
-                key: "rai-response.pdf",
-                uploadDate: Date.now(),
-              },
-              {
-                filename: "spa-pages.pdf",
-                title: "SPA Pages",
-                bucket: "test-bucket",
-                key: "spa-pages.pdf",
-                uploadDate: Date.now(),
-              },
-            ],
-          },
-          spaPages: {
-            label: "SPA Pages",
-            files: [],
-          },
-          other: {
-            label: "Other",
-            files: [],
-          },
-        },
-      }}
-    />
-  );
-};
-
-export default ChipSpaStateEmailPreview;

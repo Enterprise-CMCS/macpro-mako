@@ -1,46 +1,47 @@
-import { Waiver1915bStateEmail } from "../../content/respondToRai/emailTemplates";
+import { ChipSpaCMSEmail } from "../../content/respondToRai/emailTemplates";
 import { emailTemplateValue } from "../../mock-data/respond-to-rai";
 
-const Waiver1915bStateEmailPreview = () => {
+export const ChipSpaCMSEmailPreview = () => {
   return (
-    <Waiver1915bStateEmail
+    <ChipSpaCMSEmail
       variables={{
         ...emailTemplateValue,
-        id: "CO-1234.R21.00",
+        id: "CO-24-1055-0001",
         territory: "CO",
-        authority: "Waiver 1915(b)",
         attachments: {
           cmsForm179: {
-            label: "CMS Form 179",
             files: [
               {
-                filename: "waiver-rai-response.pdf",
-                title: "Waiver RAI Response",
+                filename: "CMS_Form_179_RAI_Response.pdf",
+                title: "CMS Form 179",
                 bucket: "test-bucket",
-                key: "waiver-rai-response.pdf",
+                key: "cms-form-179.pdf",
                 uploadDate: Date.now(),
               },
+            ],
+            label: "CMS Form 179",
+          },
+          spaPages: {
+            files: [
               {
-                filename: "spa-pages.pdf",
+                filename: "test.pdf",
                 title: "SPA Pages",
                 bucket: "test-bucket",
                 key: "spa-pages.pdf",
                 uploadDate: Date.now(),
               },
             ],
-          },
-          spaPages: {
             label: "SPA Pages",
-            files: [],
           },
           other: {
-            label: "Other",
             files: [],
+            label: "Other",
           },
         },
+        authority: "CHIP SPA",
       }}
     />
   );
 };
 
-export default Waiver1915bStateEmailPreview;
+export default ChipSpaCMSEmailPreview;
