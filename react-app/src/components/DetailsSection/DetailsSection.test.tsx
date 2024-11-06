@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import { DetailsSection } from "./index";
 
 describe("DetailsSection", () => {
-  it("renders with descrription", () => {
+  it("renders with description", () => {
     render(
       <DetailsSection
         id="test"
