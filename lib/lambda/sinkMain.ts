@@ -128,7 +128,6 @@ const processAndIndex = async ({
 const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   const docs: any[] = [];
 
-  console.log("are we here 1");
   // fetch the date for all kafkaRecords in the list from opensearch
   const ids = kafkaRecords.map((record) => {
     const decodedId = JSON.parse(decodeBase64WithUtf8(record.key));
@@ -136,16 +135,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
     return decodedId;
   });
 
-  console.log("are we here 2");
-  console.log("what is osDomain?", osDomain);
-
   const openSearchRecords = await os.getItems(osDomain, indexNamespace, ids);
-  console.log(
-    "what is the opensearch records",
-    JSON.stringify(openSearchRecords),
-  );
-
-  console.log("are we here 3");
 
   const existingRecordsLookup = openSearchRecords.reduce<
     Record<string, number>
@@ -154,8 +144,6 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
     acc[item.id] = epochDate; // Use `id` as the key and epoch date as the value
     return acc;
   }, {});
-
-  console.log("are we here 4");
 
   for (const kafkaRecord of kafkaRecords) {
     const { key, value } = kafkaRecord;
@@ -202,7 +190,6 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         typeof result.data.seatoolStatus === "string" &&
         result.data.seatoolStatus != "Unknown"
       ) {
-        console.log("what status are we writing", JSON.stringify(result.data));
         docs.push({ ...result.data });
       }
     } catch (error) {
