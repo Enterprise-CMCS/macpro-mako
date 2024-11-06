@@ -6,7 +6,7 @@ export interface CardProps {
   questionAnswer: string;
 }
 
-export const Card: React.FC<CardProps> = ({ questionAnswer, questionText }) => {
+export const Card = ({ questionAnswer, questionText }: CardProps) => {
   return (
     <Box shadow="lg" borderRadius="md" py="4" px="5">
       <Text fontSize={"lg"}>{questionText}</Text>

@@ -1,34 +1,21 @@
-import * as React from "react";
-import { emailTemplateValue } from "../data";
-import { CommonVariables } from "../../..";
-import { WithdrawPackage } from "shared-types";
-import { Html, Container } from "@react-email/components";
+import { CommonEmailVariables, Events } from "shared-types";
 import { ContactStateLead } from "../../email-components";
+import { BaseEmailTemplate } from "../../email-templates";
 
 export const Waiver1915bStateEmail = (props: {
-  variables: WithdrawPackage & CommonVariables;
+  variables:
+    | (Events["CapitatedInitial"] & CommonEmailVariables)
+    | (Events["ContractingInitial"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
+  const previewText = `Withdrawal of ${variables.authority} ${variables.id}`;
+  const heading = `This email is to confirm $ {variables.authority} Waiver ${variables.id} was withdrawn by ${variables.submitterName}. The review of ${variables.authority} Waiver ${variables.id} has concluded`;
   return (
-    <Html lang="en" dir="ltr">
-      <Container>
-        <h3>
-          This email is to confirm {variables.authority} Waiver {variables.id}{" "}
-          was withdrawn by {variables.submitterName}. The review of
-          {variables.authority} Waiver {variables.id} has concluded.
-        </h3>
-        <ContactStateLead />
-      </Container>
-    </Html>
-  );
-};
-
-const Waiver1915bStateEmailPreview = () => {
-  return (
-    <Waiver1915bStateEmail
-      variables={emailTemplateValue as WithdrawPackage & CommonVariables}
+    <BaseEmailTemplate
+      previewText={previewText}
+      heading={heading}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<ContactStateLead />}
     />
   );
 };
-
-export default Waiver1915bStateEmailPreview;

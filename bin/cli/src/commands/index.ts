@@ -9,3 +9,4 @@ export * from "./test";
 export * from "./ui";
 export * from "./get-cost";
 export * from "./watch";
+export * from "./emails";

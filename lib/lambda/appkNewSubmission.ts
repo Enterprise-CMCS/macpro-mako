@@ -1,16 +1,12 @@
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 import * as sql from "mssql";
-import { isAuthorized } from "../libs/api/auth/user";
+import { isAuthorized } from "libs/api/auth/user";
 
 import { events } from "shared-types";
-import {
-  getSecret,
-  getNextBusinessDayTimestamp,
-  seaToolFriendlyTimestamp,
-} from "shared-utils";
-import { produceMessage } from "../libs/api/kafka";
-import { search } from "../libs/opensearch-lib";
+import { getSecret, getNextBusinessDayTimestamp, seaToolFriendlyTimestamp } from "shared-utils";
+import { produceMessage } from "libs/api/kafka";
+import { search } from "libs/opensearch-lib";
 
 let config: sql.config;
 const secretName = process.env.dbInfoSecretName;
@@ -19,19 +15,6 @@ if (!secretName) {
 }
 
 export const submit = async (event: APIGatewayEvent) => {
-  // reject no body
-  /**
-    state: z.string(),
-    waiverIds:z.array(zAppkWaiverNumberSchema)
-    additionalInformation: z.string().max(4000).optional(),
-    title: z.string(),
-    attachments: z.object({
-      appk: zAttachmentRequired({ min: 1 }),
-      other: zAttachmentRequired({ min: 1 }),
-    }),
-    proposedEffectiveDate: z.date(),
-    seaActionType: z.string().default("Amend"),
-   */
   if (!event.body) {
     return response({
       statusCode: 400,
@@ -76,7 +59,7 @@ export const submit = async (event: APIGatewayEvent) => {
       proposedEffectiveDate: body.proposedEffectiveDate,
     };
 
-    const validateZod = events["new-submission"].feSchema.safeParse({
+    const validateZod = events["app-k"].schema.safeParse({
       ...body,
       ...(!!Number(WINDEX) && {
         appkParentId: `${body.state}-${body.waiverIds[0]}`,
@@ -141,21 +124,11 @@ export const submit = async (event: APIGatewayEvent) => {
               FROM SEA.dbo.Plan_Types
               WHERE Plan_Type_Name = '${body.authority}'
             ))
-          ,(Select Region_ID from SEA.dbo.States where State_Code = '${
-            body.state
-          }')
-          ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${
-            body.authority
-          }')
-          ,dateadd(s, convert(int, left(${
-            dates.submission
-          }, 10)), cast('19700101' as datetime))
-          ,dateadd(s, convert(int, left(${
-            dates.status
-          }, 10)), cast('19700101' as datetime))
-          ,dateadd(s, convert(int, left(${
-            dates.effectiveDate
-          }, 10)), cast('19700101' as datetime))
+          ,(Select Region_ID from SEA.dbo.States where State_Code = '${body.state}')
+          ,(Select Plan_Type_ID from SEA.dbo.Plan_Types where Plan_Type_Name = '${body.authority}')
+          ,dateadd(s, convert(int, left(${dates.submission}, 10)), cast('19700101' as datetime))
+          ,dateadd(s, convert(int, left(${dates.status}, 10)), cast('19700101' as datetime))
+          ,dateadd(s, convert(int, left(${dates.effectiveDate}, 10)), cast('19700101' as datetime))
           ,(Select SPW_Status_ID from SEA.dbo.SPW_Status where SPW_Status_DESC = 'Pending')
           ,0
         )
@@ -167,11 +140,7 @@ export const submit = async (event: APIGatewayEvent) => {
     // for await const kafka events
     for (const WINDEX in schemas) {
       const SCHEMA = schemas[Number(WINDEX)];
-      await produceMessage(
-        process.env.topicName as string,
-        SCHEMA.id,
-        JSON.stringify(SCHEMA.data),
-      );
+      await produceMessage(process.env.topicName as string, SCHEMA.id, JSON.stringify(SCHEMA.data));
     }
 
     return response({ statusCode: 200, body: { message: "success" } });

@@ -1,11 +1,5 @@
-import {
-  NavLink,
-  NavLinkProps,
-  Outlet,
-  Link,
-  useNavigate,
-} from "react-router-dom";
-import oneMacLogo from "@/assets/onemac_logo.svg";
+import { NavLink, NavLinkProps, Outlet, Link, useNavigate } from "react-router-dom";
+import oneMacLogo from "@/assets/onemac-logo.png";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
@@ -16,12 +10,7 @@ import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
-import {
-  ScrollToTop,
-  SimplePageContainer,
-  UserPrompt,
-  Banner,
-} from "@/components";
+import { ScrollToTop, SimplePageContainer, UserPrompt, Banner } from "@/components";
 import { isFaqPage, isProd } from "@/utils";
 
 /**
@@ -108,11 +97,7 @@ const UserDropdownMenu = () => {
             stroke="currentColor"
             className="w-4 h-4 flex"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
           </svg>
         </button>
       </DropdownMenu.Trigger>
@@ -122,18 +107,12 @@ const UserDropdownMenu = () => {
           className="bg-white z-50 flex flex-col gap-4 px-10 py-4 shadow-md rounded-b-sm "
         >
           <DropdownMenu.Item className="flex">
-            <button
-              className="text-primary hover:text-primary/70"
-              onClick={handleViewProfile}
-            >
+            <button className="text-primary hover:text-primary/70" onClick={handleViewProfile}>
               View Profile
             </button>
           </DropdownMenu.Item>
           <DropdownMenu.Item className="flex">
-            <button
-              className="text-primary hover:text-primary/70"
-              onClick={handleLogout}
-            >
+            <button className="text-primary hover:text-primary/70" onClick={handleLogout}>
               Sign Out
             </button>
           </DropdownMenu.Item>
@@ -174,9 +153,7 @@ export const Layout = () => {
     <div className="min-h-full flex flex-col">
       <ScrollToTop />
       <UserPrompt />
-      <UsaBanner
-        isUserMissingRole={user?.user && customUserRoles === undefined}
-      />
+      <UsaBanner isUserMissingRole={user?.user && customUserRoles === undefined} />
       <nav data-testid="nav-banner-d" className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="h-[70px] flex gap-12 items-center text-white">
@@ -255,8 +232,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
 
   const handleLogin = () => {
     const authConfig = Auth.configure();
-    const { domain, redirectSignIn, responseType } =
-      authConfig.oauth as AwsCognitoOAuthOpts;
+    const { domain, redirectSignIn, responseType } = authConfig.oauth as AwsCognitoOAuthOpts;
     const clientId = authConfig.userPoolWebClientId;
     const url = `https://${domain}/oauth2/authorize?redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
     window.location.assign(url);
@@ -352,10 +328,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                   >
                     Sign In
                   </button>
-                  <button
-                    className="text-white hover:text-white/70"
-                    onClick={handleRegister}
-                  >
+                  <button className="text-white hover:text-white/70" onClick={handleRegister}>
                     Register
                   </button>
                 </>

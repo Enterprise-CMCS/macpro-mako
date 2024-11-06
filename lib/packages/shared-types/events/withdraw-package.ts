@@ -1,8 +1,5 @@
 import { z } from "zod";
-import {
-  attachmentArraySchemaOptional,
-  attachmentArraySchema,
-} from "../attachments";
+import { attachmentArraySchemaOptional, attachmentArraySchema } from "../attachments";
 
 export const attachmentsDefault = z.object({
   supportingDocumentation: z.object({

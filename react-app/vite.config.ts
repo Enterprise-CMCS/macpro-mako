@@ -40,7 +40,10 @@ export default defineConfig(({ mode }) => {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
       },
     },
+    root: "./",
+    publicDir: "src/assets",
     build: {
+      outDir: "dist",
       minify: env.VITE_NODE_ENV === "production",
       rollupOptions: {
         treeshake: true,
