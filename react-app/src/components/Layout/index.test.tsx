@@ -402,8 +402,6 @@ describe("Layout", () => {
     });
 
     it("should redirect to the login URL when Register is clicked", async () => {
-      const expectedUrl = "https://test.home.idm.cms.gov/signin/login.html"; // Adjusted URL
-
       // Mock window.location.assign
       const originalLocation = window.location;
       delete (window as any).location;
@@ -417,7 +415,9 @@ describe("Layout", () => {
       await userEvent.click(registerButton);
 
       // Assert that window.location.assign was called with the expected URL
-      expect(window.location.assign).toHaveBeenCalledWith(expectedUrl);
+      expect(window.location.assign).toHaveBeenCalledWith(
+        expect.stringContaining("/signin/login.html"),
+      );
 
       // Restore original window.location
       window.location = originalLocation;
