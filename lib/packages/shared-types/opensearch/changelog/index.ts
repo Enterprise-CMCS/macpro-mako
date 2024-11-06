@@ -40,11 +40,6 @@ export type Document = z.infer<capitatedAmendment.Schema> &
   z.infer<legacyAdminChange.Schema> &
   z.infer<toggleWithdrawRai.Schema>;
 
-// & {
-//   appkParentId: string;
-//   appkParent: boolean;
-// };
-
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
   found: boolean;
