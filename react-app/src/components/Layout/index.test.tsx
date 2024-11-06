@@ -7,7 +7,7 @@ import {
   afterEach,
   vi,
 } from "vitest";
-import { Layout } from "./index";
+import { Layout, SubNavHeader } from "./index";
 import { render, screen } from "@testing-library/react";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import {
@@ -398,6 +398,15 @@ describe("Layout", () => {
 
       // Restore original window.location
       window.location = originalLocation;
+    });
+  });
+
+  describe("SubNavHeader", () => {
+    it("should render with the bg-sky-100 class", () => {
+      render(<SubNavHeader>Test Content</SubNavHeader>);
+
+      const subNavHeaderDiv = screen.getByTestId("sub-nav-header");
+      expect(subNavHeaderDiv).toHaveClass("bg-sky-100");
     });
   });
 });

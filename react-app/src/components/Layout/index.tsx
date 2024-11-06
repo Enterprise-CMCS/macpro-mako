@@ -383,7 +383,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
  * @returns {JSX.Element} The rendered sub-navigation header component.
  */
 export const SubNavHeader = ({ children }: { children: React.ReactNode }) => (
-  <div className="bg-sky-100">
+  <div className="bg-sky-100" data-testid="sub-nav-header">
     <div className="max-w-screen-xl m-auto px-4 lg:px-8">
       <div className="flex items-center">
         <div className="flex align-middle py-4">{children}</div>
