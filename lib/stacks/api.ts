@@ -430,11 +430,6 @@ export class Api extends cdk.NestedStack {
       },
       item: { path: "item", lambda: lambdas.item, method: "POST" },
       submit: { path: "submit", lambda: lambdas.submit, method: "POST" },
-      action: {
-        path: "action/{actionType}",
-        lambda: lambdas.action,
-        method: "POST",
-      },
       getTypes: {
         path: "getTypes",
         lambda: lambdas.getTypes,
