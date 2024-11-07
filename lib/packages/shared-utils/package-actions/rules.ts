@@ -83,17 +83,13 @@ const arWithdrawRaiResponse: ActionRule = {
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
-    !checker.isTempExtension &&
-    !checker.hasStatus(finalDispositionStatuses) &&
-    isStateUser(user),
+    !checker.isTempExtension && !checker.hasStatus(finalDispositionStatuses) && isStateUser(user),
 };
 
 const arUpdateId: ActionRule = {
   action: Action.UPDATE_ID,
   check: (checker, user) =>
-    isCmsSuperUser(user) &&
-    !checker.hasStatus(finalDispositionStatuses) &&
-    false,
+    isCmsSuperUser(user) && !checker.hasStatus(finalDispositionStatuses) && false,
 };
 
 const arRemoveAppkChild: ActionRule = {
@@ -108,13 +104,15 @@ const arUploadSubsequentDocuments: ActionRule = {
       return false;
     }
 
+    if (checker.needsIntake) {
+      return false;
+    }
+
     if (checker.isTempExtension) {
       return false;
     }
 
-    if (
-      checker.hasStatus([SEATOOL_STATUS.PENDING, SEATOOL_STATUS.PENDING_RAI])
-    ) {
+    if (checker.hasStatus([SEATOOL_STATUS.PENDING, SEATOOL_STATUS.PENDING_RAI])) {
       if (checker.hasRequestedRai) {
         return false;
       }
