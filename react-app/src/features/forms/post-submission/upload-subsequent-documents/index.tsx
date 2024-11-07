@@ -1,17 +1,11 @@
 import { useGetItem } from "@/api";
-import {
-  ActionForm,
-  PackageSection,
-  SchemaWithEnforcableProps,
-} from "@/components";
+import { ActionForm, PackageSection, SchemaWithEnforcableProps } from "@/components";
 import {
   AttachmentFAQInstructions,
   AttachmentFileFormatInstructions,
 } from "@/components/ActionForm/actionForm.components";
 import { formSchemas } from "@/formSchemas";
-import { getAuthorityLabel } from "@/utils";
 import { Navigate, useParams } from "react-router-dom";
-import { AuthorityUnion } from "shared-types";
 import { z } from "zod";
 import { getFAQLinkForAttachments } from "../../faqLinks";
 
@@ -39,9 +33,7 @@ const pickAttachmentsAndAdditionalInfo = (
     return z
       .object({
         id: z.string().default(submissionId),
-        event: z
-          .literal("upload-subsequent-documents")
-          .default("upload-subsequent-documents"),
+        event: z.literal("upload-subsequent-documents").default("upload-subsequent-documents"),
         attachments: z.object(optionalAttachmentsShape),
         additionalInformation: z
           .string()
@@ -55,8 +47,7 @@ const pickAttachmentsAndAdditionalInfo = (
         (data) =>
           data.attachments &&
           Object.values(data.attachments).some(
-            (attachment) =>
-              attachment && attachment.files && attachment.files.length > 0,
+            (attachment) => attachment && attachment.files && attachment.files.length > 0,
           ),
         {
           message: "At least one attachment must have files.",
@@ -68,23 +59,42 @@ const pickAttachmentsAndAdditionalInfo = (
   throw new Error("No attachments property found in schema");
 };
 
+const getTitle = (originalSubmissionEvent: string) => {
+  switch (true) {
+    case originalSubmissionEvent === "new-medicaid-submission":
+      return "Medicaid SPA";
+    case originalSubmissionEvent === "new-chip-submission":
+      return "CHIP SPA";
+    case originalSubmissionEvent === "appk":
+      return "Appendix K";
+    case originalSubmissionEvent.includes("amendment"):
+      return "1915(b) Waiver Amendment";
+    case originalSubmissionEvent.includes("initial"):
+      return "1915(b) Waiver Initial";
+    case originalSubmissionEvent.includes("renewal"):
+      return "1915(b) Waiver Renewal";
+
+    default:
+      return "";
+  }
+};
+
 export const UploadSubsequentDocuments = () => {
-  const { authority, id } = useParams<{
-    id: string;
-    authority: AuthorityUnion;
-  }>();
+  const { id } = useParams<{ id: string }>();
   const { data: submission } = useGetItem(id);
 
   if (submission === undefined) {
     return <Navigate to="/dashboard" />;
   }
 
-  const originalSubmissionEvent = (submission._source.changelog ?? []).reduce<
-    string | null
-  >((acc, { _source }) => (_source.event ? _source.event : acc), null);
+  console.log(submission._source.actionType);
 
-  const schema: SchemaWithEnforcableProps | undefined =
-    formSchemas[originalSubmissionEvent];
+  const originalSubmissionEvent = (submission._source.changelog ?? []).reduce<string | null>(
+    (acc, { _source }) => (_source.event ? _source.event : acc),
+    null,
+  );
+
+  const schema: SchemaWithEnforcableProps | undefined = formSchemas[originalSubmissionEvent];
 
   if (schema === undefined) {
     return <Navigate to="/dashboard" />;
@@ -95,9 +105,7 @@ export const UploadSubsequentDocuments = () => {
 
   return (
     <ActionForm
-      title={`Upload Subsequent ${getAuthorityLabel(
-        authority,
-      )} Document Details`}
+      title={`Subsequent ${getTitle(originalSubmissionEvent)} Document Details`}
       schema={pickedSchema}
       breadcrumbText="New Subsequent Documentation"
       formDescription={`
@@ -118,7 +126,7 @@ export const UploadSubsequentDocuments = () => {
         variant: "success",
       }}
       attachments={{
-        title: `Subsequent ${getAuthorityLabel(authority)} Documents`,
+        title: `Subsequent ${getTitle(originalSubmissionEvent)} Documents`,
         requiredIndicatorForTitle: true,
         instructions: [
           <AttachmentFAQInstructions faqLink={faqLink} />,
