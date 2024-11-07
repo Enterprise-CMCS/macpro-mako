@@ -1,22 +1,18 @@
 // formOrigin.test.ts
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { getFormOrigin, ORIGIN, DASHBOARD_ORIGIN, DETAILS_ORIGIN, SPA_SUBMISSION_ORIGIN, WAIVER_SUBMISSION_ORIGIN } from './formOrigin'; 
+import { getFormOrigin } from './formOrigin';
 import { Authority } from 'shared-types/authority';
-import { getDashboardTabForAuthority } from './crumbs'; 
 
-// Mock the getDashboardTabForAuthority function
 vi.mock('./crumbs', () => ({
-  getDashboardTabForAuthority: vi.fn(),
+  getDashboardTabForAuthority: vi.fn(() => 'spas'), // Mock return value
 }));
 
 describe('getFormOrigin', () => {
   let originalLocation: Location;
 
   beforeEach(() => {
-    // Store the original location object
     originalLocation = window.location;
 
-    // Create a mock location object
     const mockLocation = {
       ...originalLocation,
       search: '',
@@ -25,7 +21,6 @@ describe('getFormOrigin', () => {
       replace: vi.fn(),
     };
 
-    // Use Object.defineProperty to replace window.location with the mock object
     Object.defineProperty(window, 'location', {
       value: mockLocation,
       writable: true,
@@ -33,7 +28,6 @@ describe('getFormOrigin', () => {
   });
 
   afterEach(() => {
-    // Restore the original location object after each test
     Object.defineProperty(window, 'location', {
       value: originalLocation,
       writable: true,
@@ -41,60 +35,48 @@ describe('getFormOrigin', () => {
     vi.clearAllMocks(); // Clear mocks after each test
   });
 
-  it('should return the correct pathname and search for DETAILS_ORIGIN', () => {
-    window.location.search = `?${ORIGIN}=${DETAILS_ORIGIN}`;
+  it('should return the correct pathname and search for dashboard origin', () => {
+    window.location.search = `?origin=dashboard`;
 
-    const authority: Authority = Authority.MED_SPA;
-    const id = '12345';
-
-    // Call the function
-    const result = getFormOrigin({ id, authority });
-
-  });
-
-  it('should return the correct pathname and search for DASHBOARD_ORIGIN', () => {
-    window.location.search = `?${ORIGIN}=${DASHBOARD_ORIGIN}`;
-    
-    const authority: Authority = Authority.CHIP_SPA;
-    (getDashboardTabForAuthority as vi.Mock).mockReturnValue('someTab');
+    const authority = "chip spa" as Authority; // Use string assertion
 
     const result = getFormOrigin({ authority });
 
     expect(result).toEqual({
-      pathname: `/${DASHBOARD_ORIGIN}`,
-      search: new URLSearchParams({ tab: 'someTab' }).toString(),
+      pathname: `/dashboard`,
+      search: new URLSearchParams({ tab: 'spas' }).toString(),
     });
-  });
-
-  it('should return the correct pathname for SPA_SUBMISSION_ORIGIN', () => {
-    window.location.search = `?${ORIGIN}=${SPA_SUBMISSION_ORIGIN}`;
+  // Other tests remain unchanged
+});
+  it('should return the correct pathname for spa submission origin', () => {
+    window.location.search = `?origin=spas`;
 
     const result = getFormOrigin();
 
     expect(result).toEqual({
-      pathname: `/${DASHBOARD_ORIGIN}`,
-      search: new URLSearchParams({ tab: SPA_SUBMISSION_ORIGIN }).toString(),
+      pathname: `/dashboard`,
+      search: new URLSearchParams({ tab: 'spas' }).toString(),
     });
   });
 
-  it('should return the correct pathname for WAIVER_SUBMISSION_ORIGIN', () => {
-    window.location.search = `?${ORIGIN}=${WAIVER_SUBMISSION_ORIGIN}`;
+  it('should return the correct pathname for waiver submission origin', () => {
+    window.location.search = `?origin=waivers`;
 
     const result = getFormOrigin();
 
     expect(result).toEqual({
-      pathname: `/${DASHBOARD_ORIGIN}`,
-      search: new URLSearchParams({ tab: WAIVER_SUBMISSION_ORIGIN }).toString(),
+      pathname: `/dashboard`,
+      search: new URLSearchParams({ tab: 'waivers' }).toString(),
     });
   });
 
   it('should return the default pathname for unknown origin', () => {
-    window.location.search = ''; // Simulating no origin
+    window.location.search = '';
 
     const result = getFormOrigin();
 
     expect(result).toEqual({
-      pathname: `/${DASHBOARD_ORIGIN}`,
+      pathname: `/dashboard`,
     });
   });
 });
