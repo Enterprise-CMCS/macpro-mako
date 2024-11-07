@@ -6,39 +6,44 @@ import { getEmailTemplates, getAllStateUsers, StateUser } from "../libs/email";
 import * as os from "./../libs/opensearch-lib";
 import { getCpocEmail, getSrtEmails } from "./../libs/email/content/email-components";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
+import pLimit from "p-limit";
 
-// Constants
-const region = process.env.region;
-const EMAIL_LOOKUP_SECRET_NAME = process.env.emailAddressLookupSecretName;
-const APPLICATION_ENDPOINT_URL = process.env.applicationEndpointUrl;
-const OS_DOMAIN = process.env.osDomain;
-const INDEX_NAMESPACE = process.env.indexNamespace;
-
-if (
-  !region ||
-  !EMAIL_LOOKUP_SECRET_NAME ||
-  !APPLICATION_ENDPOINT_URL ||
-  !OS_DOMAIN ||
-  !INDEX_NAMESPACE
-) {
-  throw new Error("Environment variables are not set properly.");
+class TemporaryError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "TemporaryError";
+  }
 }
 
-export const sesClient = new SESClient({ region: region });
-
 export const handler: Handler<KafkaEvent> = async (event) => {
-  console.log("RECEIVED EVENT");
-  console.log(JSON.stringify(event, null, 2));
   try {
-    const processRecordsPromises = Object.values(event.records)
-      .flat()
-      .map((rec) => processRecord(rec, EMAIL_LOOKUP_SECRET_NAME, APPLICATION_ENDPOINT_URL));
+    const results = await Promise.allSettled(
+      Object.values(event.records)
+        .flat()
+        .map((rec) =>
+          processRecord(
+            rec,
+            process.env.emailAddressLookupSecretName!,
+            process.env.applicationEndpointUrl!,
+            process.env.osDomain!,
+            process.env.indexNamespace!,
+            process.env.region!,
+          ),
+        ),
+    );
 
-    await Promise.all(processRecordsPromises);
-    console.log("All emails processed successfully.");
+    const failures = results.filter((r) => r.status === "rejected");
+    if (failures.length > 0) {
+      console.error("Some records failed:", failures);
+      // Throw TemporaryError if we want to retry the batch
+      throw new TemporaryError("Some records failed processing");
+    }
   } catch (error) {
-    console.error("Error processing email event:", error);
-    throw error;
+    if (error instanceof TemporaryError) {
+      throw error; // Retry
+    }
+    console.error("Permanent failure:", error);
+    // Handle permanent failures
   }
 };
 
@@ -46,6 +51,9 @@ export async function processRecord(
   kafkaRecord: KafkaRecord,
   emailAddressLookupSecretName: string,
   applicationEndpointUrl: string,
+  osDomain: string,
+  indexNamespace: string,
+  region: string,
 ) {
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
@@ -70,6 +78,9 @@ export async function processRecord(
     id,
     emailAddressLookupSecretName,
     applicationEndpointUrl,
+    osDomain,
+    indexNamespace,
+    region,
     getAllStateUsers,
   );
 }
@@ -79,6 +90,9 @@ export async function processAndSendEmails(
   id: string,
   emailAddressLookupSecretName: string,
   applicationEndpointUrl: string,
+  osDomain: string,
+  indexNamespace: string,
+  region: string,
   getAllStateUsers: (state: string) => Promise<StateUser[]>,
 ) {
   const templates = await getEmailTemplates<typeof record>(
@@ -97,7 +111,7 @@ export async function processAndSendEmails(
 
   const sec = await getSecret(emailAddressLookupSecretName);
 
-  const item = await os.getItem(OS_DOMAIN!, `${INDEX_NAMESPACE}main`, id);
+  const item = await os.getItem(osDomain, `${indexNamespace}main`, id);
 
   const cpocEmail = getCpocEmail(item);
   const srtEmails = getSrtEmails(item);
@@ -114,12 +128,14 @@ export async function processAndSendEmails(
     allStateUsersEmails,
   };
 
-  const sendEmailPromises = templates.map(async (template) => {
-    const filledTemplate = await template(templateVariables);
-
-    const params = createEmailParams(filledTemplate, emails.sourceEmail, applicationEndpointUrl);
-    await sendEmail(params);
-  });
+  const limit = pLimit(5); // Limit concurrent emails
+  const sendEmailPromises = templates.map((template) =>
+    limit(async () => {
+      const filledTemplate = await template(templateVariables);
+      const params = createEmailParams(filledTemplate, emails.sourceEmail, applicationEndpointUrl);
+      await sendEmail(params, region);
+    }),
+  );
 
   await Promise.all(sendEmailPromises);
 }
@@ -148,7 +164,8 @@ export function createEmailParams(
   };
 }
 
-export async function sendEmail(params: SendEmailCommandInput): Promise<any> {
+export async function sendEmail(params: SendEmailCommandInput, region: string): Promise<any> {
+  const sesClient = new SESClient({ region: region });
   console.log("sendEmail called with params:", JSON.stringify(params, null, 2));
 
   const command = new SendEmailCommand(params);
