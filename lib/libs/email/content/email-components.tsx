@@ -1,209 +1,276 @@
-import * as React from "react";
-import { Text, Link, Section } from "@react-email/components";
-import { Attachment } from "shared-types";
+import { Text, Link, Section, Row, Column, Hr, Heading } from "@react-email/components";
+import { Attachment, AttachmentTitle, AttachmentKey } from "shared-types";
+import { createRef, forwardRef } from "react";
+import { styles } from "./email-styles";
 
-type AttachmentsType = { ["string"]: { files: Attachment[]; label: "string" } };
+const EMAIL_CONFIG = {
+  DEV_EMAIL: "mako.stateuser+dev-to@gmail.com",
+  CHIP_EMAIL: "CHIPSPASubmissionMailBox@cms.hhs.gov",
+  SPA_EMAIL: "spa@cms.hhs.gov",
+  SPAM_EMAIL: "SPAM@cms.hhs.gov",
+} as const;
 
-export const LoginInstructions = (props: { appEndpointURL: string }) => {
-  return (
-    <Section>
-      <ul style={{ maxWidth: "760px" }}>
-        <li>
-          The submission can be accessed in the OneMAC application, which you
-          can find at{" "}
-          <Link href={props.appEndpointURL}>{props.appEndpointURL}</Link>.
-        </li>
-        <li>
-          If you are not already logged in, please click the "Login" link at the
-          top of the page and log in using your Enterprise User Administration
-          (EUA) credentials.
-        </li>
-        <li>
-          After you have logged in, you will be taken to the OneMAC application.
-          The submission will be listed on the dashboard page, and you can view
-          its details by clicking on its ID number.
-        </li>
-      </ul>
-    </Section>
-  );
+interface EmailAddress {
+  name: string;
+  email: string;
+}
+
+interface AttachmentGroup {
+  files?: Attachment[];
+  label: string;
+}
+
+const getToAddress = ({ name, email }: EmailAddress): string[] => {
+  const formattedEmail = `"${name}" <${
+    process.env.isDev === "true" ? EMAIL_CONFIG.DEV_EMAIL : email
+  }>`;
+  return [formattedEmail];
 };
 
-export const Attachments = (props: { attachments: AttachmentsType }) => {
-  //check if empty
-  const areAllAttachmentsEmpty = (attachments: AttachmentsType) => {
-    let key: keyof typeof attachments;
-    for (key in attachments) {
-      if (attachments[key].files.length > 0) {
-        return false;
-      }
-    }
-    return true;
-  };
+const areAllAttachmentsEmpty = (
+  attachments: Partial<Record<AttachmentTitle, AttachmentGroup | null>>,
+): boolean => {
+  if (!attachments) return true;
+  return Object.values(attachments).every((att) => !att || att.files?.length === 0);
+};
 
-  // return if empty
-  if (areAllAttachmentsEmpty(props.attachments)) {
+const Textarea = ({ children }: { children: React.ReactNode }) => (
+  <Text
+    style={{
+      width: "100%",
+      backgroundColor: "transparent",
+      fontSize: "14px",
+      lineHeight: "1.4",
+      boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      outline: "none",
+      whiteSpace: "pre-line",
+      wordWrap: "break-word",
+    }}
+  >
+    {children}
+  </Text>
+);
+
+const LogoContainer = forwardRef<HTMLSpanElement, { url: string }>(({ url }, ref) => (
+  <header ref={ref} style={styles.logo.container}>
+    <Link href={url} target="_blank" style={styles.logo.link}>
+      <img
+        height={40}
+        width={112}
+        style={{ maxWidth: "112px" }}
+        src={`${url}onemac-logo.png`}
+        alt="OneMAC Logo"
+      />
+      <img alt="" />
+    </Link>
+  </header>
+));
+
+const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
+  <Section>
+    <LogoContainer ref={createRef()} url={appEndpointUrl} />
+  </Section>
+);
+
+const LoginInstructions = ({ appEndpointURL }: { appEndpointURL: string }) => (
+  <ul style={{ marginLeft: "-20px" }}>
+    <li>
+      <Text style={styles.text.description}>
+        The submission can be accessed in the OneMAC application at{" "}
+        <Link href={appEndpointURL}>{appEndpointURL}</Link>
+      </Text>
+    </li>
+    <li>
+      <Text style={styles.text.description}>
+        If not logged in, click "Login" at the top and use your Enterprise User Administration (EUA)
+        credentials.
+      </Text>
+    </li>
+    <li>
+      <Text style={styles.text.description}>
+        After logging in, you'll see the submission listed on the dashboard. Click its ID number to
+        view details.
+      </Text>
+    </li>
+  </ul>
+);
+
+const DetailsHeading = () => (
+  <div>
+    <Hr style={styles.divider} />
+    <Heading as="h2" style={styles.heading.h2}>
+      Details:
+    </Heading>
+  </div>
+);
+
+const Attachments = ({
+  attachments,
+}: {
+  attachments: Partial<Record<AttachmentKey, AttachmentGroup>>;
+}) => {
+  if (!attachments || areAllAttachmentsEmpty(attachments)) {
     return <Text>No attachments</Text>;
   }
 
-  // used in loop
-  const attachmentKeys = Object.keys(props.attachments);
-  // creating a string list of all the attachment filenames in the array
-  const createAttachementList = (files: Attachment[]) => {
-    let fileString: string = "";
-    let i = 0;
-    for (i = 0; i <= files.length - 2; i++) {
-      fileString += files[i].filename + ", ";
-    }
-    fileString += files[i].filename;
-    return fileString;
-  };
-
   return (
     <>
-      <br />
-      <p style={{ margin: ".5em" }}>
-        <b>Files:</b>
-      </p>
-      <ul>
-        {attachmentKeys?.map(
-          (key: keyof typeof props.attachments, idx: number) => {
-            if (!props.attachments[key].files) return;
-            const title = props.attachments[key].label;
-            const filenames = createAttachementList(
-              props.attachments[key].files,
-            );
-            return (
-              <li key={key + idx}>
-                {title}: {filenames}
-              </li>
-            );
-          },
-        )}
-      </ul>
+      <Hr style={styles.divider} />
+      <Heading as="h2" style={styles.heading.h2}>
+        Files:
+      </Heading>
+
+      {Object.entries(attachments).map(([key, group]) => {
+        if (!group?.files?.length) return null;
+
+        return (
+          <Row key={key} style={{ marginBottom: "2px", marginTop: "2px" }}>
+            <Column
+              align="left"
+              style={{
+                width: "50%",
+                verticalAlign: "top",
+              }}
+            >
+              <Text style={{ ...styles.text.title }}>{group.label}:</Text>
+            </Column>
+            <Column style={{ verticalAlign: "top" }}>
+              <Text style={styles.text.description}>
+                {group.files.map((file, index) => (
+                  <>
+                    {file.filename}
+                    {index < (group.files?.length ?? 0) - 1 && <br />}
+                  </>
+                ))}
+              </Text>
+            </Column>
+          </Row>
+        );
+      })}
     </>
   );
 };
 
-export const PackageDetails = (props: {
-  details: { [key: string]: string | null | undefined };
-  attachments?: AttachmentsType | null;
-}) => {
-  return (
-    <Section>
-      <br />
-      {Object.keys(props.details).map((label: string, idx: number) => {
-        if (label === "Summary") {
-          const summary =
-            "label" in props.details && props.details.label
-              ? props.details.label
-              : "No additional information submitted";
-          return (
-            <div key={label + idx}>
-              <br />
-              <p style={{ margin: ".5em" }}>
-                <b>Summary:</b>
-              </p>
-              <p style={{ margin: ".5em" }}>{summary}</p>
-            </div>
-          );
-        }
+const PackageDetails = ({ details }: { details: Record<any, any> }) => (
+  <Section>
+    {Object.entries(details).map(([label, value]) => {
+      if (label === "Summary") {
         return (
-          <p key={label + idx} style={{ margin: ".5em" }}>
-            <b>{label}:</b> {props.details[label] ?? "Unknown"}
-          </p>
+          <Row key={label}>
+            <Hr style={styles.divider} />
+            <Text style={{ margin: ".5em" }}>
+              <Heading as="h2" style={styles.heading.h2}>
+                Summary:
+              </Heading>
+            </Text>
+            <Textarea>{value ?? "No additional information submitted"}</Textarea>
+          </Row>
         );
-      })}
-      {props.attachments && <Attachments attachments={props.attachments} />}
-      <br />
-    </Section>
-  );
-};
+      }
 
-export const MailboxSPA = () => {
-  return (
-    <p>
-      This mailbox is for the submittal of State Plan Amendments and non-web
-      based responses to Requests for Additional Information (RAI) on submitted
-      SPAs only. Any other correspondence will be disregarded.
-    </p>
-  );
-};
+      return (
+        <Row key={label}>
+          <Column align="left" style={{ width: "50%" }}>
+            <Text style={styles.text.title}>{label}</Text>
+          </Column>
+          <Column>
+            <Text style={styles.text.description}>{value ?? "Not provided"}</Text>
+          </Column>
+        </Row>
+      );
+    })}
+  </Section>
+);
 
-export const MailboxWaiver = () => {
-  return (
-    <p>
-      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers,
-      responses to Requests for Additional Information (RAI) on Waivers, and
-      extension requests on Waivers only. Any other correspondence will be
-      disregarded.
-    </p>
-  );
-};
+const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
+  <Text style={{ ...styles.text.description, marginTop: "16px", marginBottom: "16px" }}>
+    {type === "SPA"
+      ? "This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only."
+      : "This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only."}
+    {" Any other correspondence will be disregarded."}
+  </Text>
+);
 
-export const ContactStateLead = (props: { isChip?: boolean }) => {
-  return (
-    <Section>
-      <br />
-      <p style={{ textAlign: "center" }}>
-        If you have questions or did not expect this email, please contact{" "}
-        {props.isChip ? (
-          <a href="mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov">
-            CHIPSPASubmissionMailBox@CMS.HHS.gov
-          </a>
-        ) : (
-          <a href="mailto:spa@cms.hhs.gov">spa@cms.hhs.gov</a>
-        )}{" "}
-        or your state lead.
-      </p>
-      <p style={{ textAlign: "center" }}>Thank you!</p>
-    </Section>
-  );
-};
+const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
+  <Section
+    style={{
+      ...styles.section.footer,
+      paddingLeft: "16px",
+      paddingRight: "16px",
+    }}
+  >
+    <Text style={{ fontSize: "14px" }}>
+      If you have questions or did not expect this email, please contact{" "}
+      <Link
+        href={`mailto:${isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}`}
+        style={{ color: "#fff", textDecoration: "underline" }}
+      >
+        {isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}
+      </Link>{" "}
+      or your state lead.
+    </Text>
+    <Text>Thank you!</Text>
+  </Section>
+);
 
-export const SpamWarning = () => {
-  return (
-    <Section>
-      <br />
-      <p style={{ textAlign: "center" }}>
-        If the contents of this email seem suspicious, do not open them, and
-        instead forward this email to{" "}
-        <a href="mailto:SPAM@cms.hhs.gov">SPAM@cms.hhs.gov</a>.
-      </p>
-      <p style={{ textAlign: "center" }}>Thank you!</p>
-    </Section>
-  );
-};
+const EmailFooter = ({ children }: { children: React.ReactNode }) => (
+  <Section style={styles.section.footer}>{children}</Section>
+);
 
-export const WithdrawRAI = (props: {
+const BasicFooter = () => (
+  <EmailFooter>
+    <Text
+      style={{ ...styles.text.footer, margin: "8px" }}
+    >{`U.S. Centers for Medicare & Medicaid Services`}</Text>
+    <Text style={{ ...styles.text.footer, margin: "8px" }}>
+      © {new Date().getFullYear()} | 7500 Security Boulevard, Baltimore, MD 21244
+    </Text>
+  </EmailFooter>
+);
+
+const WithdrawRAI = ({
+  id,
+  submitterName,
+  submitterEmail,
+}: {
   id: string;
   submitterName: string;
   submitterEmail: string;
-}) => {
-  return (
-    <Section>
-      <h3>
-        The OneMAC Submission Portal received a request to withdraw the Formal
-        RAI Response. You are receiving this email notification as the Formal
-        RAI for {props.id} was withdrawn by {props.submitterName}{" "}
-        {props.submitterEmail}.
-      </h3>
-    </Section>
-  );
+}) => (
+  <Section>
+    <Heading as="h2">
+      The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are
+      receiving this email notification as the Formal RAI for {id} was withdrawn by {submitterName}{" "}
+      {submitterEmail}.
+    </Heading>
+  </Section>
+);
+
+const getCpocEmail = (item: any): string[] => {
+  const { leadAnalystName, leadAnalystEmail } = item._source;
+  return [`${leadAnalystName} <${leadAnalystEmail}>`];
 };
 
-export const getCpocEmail = (item: any): string[] => {
-  const cpocName = item._source.leadAnalystName;
-  const cpocEmail = item._source.leadAnalystEmail;
-  const email = [`${cpocName} <${cpocEmail}>`];
-  return email ?? [];
-};
-
-export const getSrtEmails = (item: any): string[] => {
+const getSrtEmails = (item: any): string[] => {
   const reviewTeam = item._source.reviewTeam;
-  if (!reviewTeam) {
-    return [];
-  }
-  return reviewTeam.map(
-    (reviewer: any) => `${reviewer.name} <${reviewer.email}>`,
-  );
+  if (!reviewTeam) return [];
+
+  return reviewTeam.map((reviewer: any) => `${reviewer.name} <${reviewer.email}>`);
+};
+
+export {
+  Textarea,
+  getToAddress,
+  EmailNav,
+  LoginInstructions,
+  DetailsHeading,
+  Attachments,
+  PackageDetails,
+  MailboxNotice,
+  ContactStateLead,
+  BasicFooter,
+  WithdrawRAI,
+  getCpocEmail,
+  getSrtEmails,
+  EmailFooter,
 };

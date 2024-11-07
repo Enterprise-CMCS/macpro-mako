@@ -57,9 +57,7 @@ const Submission = (props: opensearch.changelog.Document) => {
           <Table.Table>
             <Table.TableHeader>
               <Table.TableRow>
-                <Table.TableHead className="w-[300px]">
-                  Document Type
-                </Table.TableHead>
+                <Table.TableHead className="w-[300px]">Document Type</Table.TableHead>
                 <Table.TableHead>Attached File</Table.TableHead>
               </Table.TableRow>
             </Table.TableHeader>
@@ -125,6 +123,7 @@ const PackageActivity = (props: opensearch.changelog.Document) => {
       case "upload-subsequent-documents":
         return "Subsequent documentation uploaded";
 
+      // return needs another parameter
       default:
         return BLANK_VALUE;
     }
@@ -162,8 +161,7 @@ export const PackageActivities = () => {
 
   const activitiesWithoutAdminChange = packageActivity.filter(
     (activity) =>
-      activity._source.isAdminChange === undefined ||
-      activity._source.isAdminChange === false,
+      activity._source.isAdminChange === undefined || activity._source.isAdminChange === false,
   );
 
   return (
@@ -173,11 +171,7 @@ export const PackageActivities = () => {
         <div className="flex justify-between">
           Package Activity {activitiesWithoutAdminChange.length}
           {activitiesWithoutAdminChange.length && (
-            <Table.Button
-              loading={loading}
-              onClick={onDownloadAll}
-              variant="outline"
-            >
+            <Table.Button loading={loading} onClick={onDownloadAll} variant="outline">
               Download all documents
             </Table.Button>
           )}
@@ -196,10 +190,7 @@ export const PackageActivities = () => {
         defaultValue={accordianDefault}
       >
         {activitiesWithoutAdminChange.map((submission) => (
-          <PackageActivity
-            key={submission._source.id}
-            {...submission._source}
-          />
+          <PackageActivity key={submission._source.id} {...submission._source} />
         ))}
       </Accordion>
     </DetailsSection>

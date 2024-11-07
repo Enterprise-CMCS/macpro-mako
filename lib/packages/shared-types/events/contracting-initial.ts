@@ -1,8 +1,5 @@
 import { z } from "zod";
-import {
-  attachmentArraySchema,
-  attachmentArraySchemaOptional,
-} from "../attachments";
+import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
 
 export const baseSchema = z.object({
   event: z.literal("contracting-initial").default("contracting-initial"),
@@ -19,9 +16,7 @@ export const baseSchema = z.object({
     b4WaiverApplication: z.object({
       label: z
         .string()
-        .default(
-          "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
-        ),
+        .default("1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print"),
       files: attachmentArraySchema(),
     }),
     tribalConsultation: z.object({

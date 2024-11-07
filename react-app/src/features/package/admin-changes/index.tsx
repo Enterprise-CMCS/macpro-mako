@@ -11,37 +11,25 @@ import {
 import { BLANK_VALUE } from "@/consts";
 import { usePackageDetailsCache } from "..";
 
-export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (
-  props,
-) => {
+export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (props) => {
   return (
     <div className="flex flex-col gap-2">
       <p className="font-bold">Change made</p>
-      <p>
-        {props.submitterName} has enabled State package action to withdraw
-        formal RAI response
-      </p>
+      <p>{props.submitterName} has enabled State package action to withdraw formal RAI response</p>
     </div>
   );
 };
 
-export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = (
-  props,
-) => {
+export const AC_WithdrawDisabled: FC<opensearch.changelog.Document> = (props) => {
   return (
     <div className="flex flex-col gap-2">
       <p className="font-bold">Change made</p>
-      <p>
-        {props.submitterName} has disabled State package action to withdraw
-        formal RAI response
-      </p>
+      <p>{props.submitterName} has disabled State package action to withdraw formal RAI response</p>
     </div>
   );
 };
 
-export const AC_LegacyAdminChange: FC<opensearch.changelog.Document> = (
-  props,
-) => {
+export const AC_LegacyAdminChange: FC<opensearch.changelog.Document> = (props) => {
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -66,7 +54,6 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
   const [label, Content] = useMemo(() => {
     switch (props.event) {
       case "toggle-withdraw-rai": {
-        console.log("what is props", props.raiWithdrawEnabled);
         if (props.raiWithdrawEnabled) {
           return ["Enable formal RAI response withdraw", AC_WithdrawEnabled];
         }

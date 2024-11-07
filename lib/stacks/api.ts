@@ -229,7 +229,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "submit",
-        entry: join(__dirname, "../lambda/submit/submit.ts"),
+        entry: join(__dirname, "../lambda/submit/index.ts"),
         environment: {
           dbInfoSecretName,
           topicName,
@@ -238,17 +238,6 @@ export class Api extends cdk.NestedStack {
           indexNamespace,
         },
         provisionedConcurrency: 2,
-      },
-      {
-        id: "action",
-        entry: join(__dirname, "../lambda/action.ts"),
-        environment: {
-          dbInfoSecretName,
-          topicName,
-          brokerString,
-          osDomain: `https://${openSearchDomainEndpoint}`,
-          indexNamespace,
-        },
       },
       {
         id: "getTypes",
@@ -441,11 +430,6 @@ export class Api extends cdk.NestedStack {
       },
       item: { path: "item", lambda: lambdas.item, method: "POST" },
       submit: { path: "submit", lambda: lambdas.submit, method: "POST" },
-      action: {
-        path: "action/{actionType}",
-        lambda: lambdas.action,
-        method: "POST",
-      },
       getTypes: {
         path: "getTypes",
         lambda: lambdas.getTypes,

@@ -10,13 +10,13 @@ import * as contractingInitial from "./contracting-initial";
 import * as contractingRenewal from "./contracting-renewal";
 import * as temporaryExtension from "./temporary-extension";
 import * as withdrawPackage from "./withdraw-package";
+import * as appk from "./app-k";
 
 import * as withdrawRai from "./withdraw-rai";
 import * as toggleWithdrawRai from "./toggle-withdraw-rai";
 import * as respondToRai from "./respond-to-rai";
 
 export * from "./respond-to-rai";
-export * from "./app-k";
 export * from "./legacy-event";
 export * from "./legacy-package-view";
 export * from "./legacy-admin-change";
@@ -39,6 +39,7 @@ export const events = {
   "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
   "upload-subsequent-documents": uploadSubsequentDocuments,
+  "app-k": appk,
 };
 
 export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;
@@ -53,4 +54,6 @@ export type Events = {
   NewChipSubmission: z.infer<typeof newChipSubmission.schema>;
   NewMedicaidSubmission: z.infer<typeof newMedicaidSubmission.schema>;
   TempExtension: z.infer<typeof temporaryExtension.schema>;
+  NewAppKSubmission: z.infer<typeof appk.schema>;
+  RespondToRai: z.infer<typeof respondToRai.schema>;
 };

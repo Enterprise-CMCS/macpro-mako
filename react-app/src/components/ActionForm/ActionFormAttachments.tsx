@@ -76,18 +76,10 @@ export const ActionFormAttachments = ({
               <FormItem>
                 <FormLabel data-testid={`${key}-label`}>
                   {value.shape.label._def.defaultValue()}{" "}
-                  {value.shape.files instanceof z.ZodOptional ? null : (
-                    <RequiredIndicator />
-                  )}
+                  {value.shape.files instanceof z.ZodOptional ? null : <RequiredIndicator />}
                 </FormLabel>
-                <AttachmentInstructions
-                  fileValidation={value.shape.files._def}
-                />
-                <Upload
-                  files={field.value ?? []}
-                  setFiles={field.onChange}
-                  dataTestId={key}
-                />
+                <AttachmentInstructions fileValidation={value.shape.files._def} />
+                <Upload files={field.value ?? []} setFiles={field.onChange} dataTestId={key} />
                 <FormMessage />
               </FormItem>
             )}

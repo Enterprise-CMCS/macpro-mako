@@ -1,10 +1,4 @@
-import {
-  Response as Res,
-  Hit,
-  Filterable as FIL,
-  QueryState,
-  AggQuery,
-} from "./../_";
+import { Response as Res, Hit, Filterable as FIL, QueryState, AggQuery } from "./../_";
 import { z } from "zod";
 import { ItemResult as Changelog } from "./../changelog";
 import {
@@ -46,14 +40,13 @@ export type Document = z.infer<capitatedAmendment.Schema> &
   z.infer<uploadSubsequentDocuments.Schema> & {
     makoChangedDate: string;
     changelog?: Changelog[];
-    appkChildren?: OmitFoundItemResult[];
+    appkChildren?: Omit<ItemResult, "found">[];
   };
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
   found: boolean;
 };
-export type OmitFoundItemResult = Omit<ItemResult, "found">;
 
 export type Field = keyof Document | `${keyof Document}.keyword`;
 export type Filterable = FIL<Field>;

@@ -1,49 +1,41 @@
-import * as React from "react";
-import { emailTemplateValue } from "../../new-submission/data";
-import { OneMac } from "shared-types";
-import { CommonVariables } from "../../..";
-import { Html, Container } from "@react-email/components";
+import { CommonEmailVariables, Events } from "shared-types";
 import {
   PackageDetails,
   LoginInstructions,
-  SpamWarning,
+  BasicFooter,
+  Attachments,
+  DetailsHeading,
 } from "../../email-components";
+import { BaseEmailTemplate } from "../../email-templates";
+import { formatNinetyDaysDate } from "lib/packages/shared-utils";
 
 export const TempExtCMSEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: Events["TempExtension"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
+  const previewText = `Temporary Extension ${variables.id} Submitted`;
+  const heading = `The Submission Portal received a ${variables.authority} Temporary Extension Submission:`;
   return (
-    <Html lang="en" dir="ltr">
-      <Container>
-        <h3>
-          The Submission Portal received a {variables.authority} Waiver
-          Extension Submission:
-        </h3>
-        <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
-        <PackageDetails
-          details={{
-            "State or territory": variables.territory,
-            Name: variables.submitterName,
-            Email: variables.submitterEmail,
-            "Temporary Extension Request Number": variables.id,
-            "Temporary Extension Type": variables.authority,
-            summary: variables.additionalInformation,
-          }}
-          attachments={variables.attachments}
-        />
-        <SpamWarning />
-      </Container>
-    </Html>
+    <BaseEmailTemplate
+      previewText={previewText}
+      heading={heading}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<BasicFooter />}
+    >
+      <DetailsHeading />
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: variables.submitterName,
+          "Email Address": variables.submitterEmail,
+          "Temporary Extension Request Number": variables.id,
+          "Temporary Extension Type": variables.authority,
+          "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <Attachments attachments={variables.attachments} />
+    </BaseEmailTemplate>
   );
 };
-
-const TempExtCMSPreview = () => {
-  return (
-    <TempExtCMSEmail
-      variables={emailTemplateValue as OneMac & CommonVariables}
-    />
-  );
-};
-
-export default TempExtCMSPreview;

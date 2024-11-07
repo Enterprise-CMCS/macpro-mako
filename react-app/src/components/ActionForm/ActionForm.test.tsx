@@ -29,8 +29,7 @@ vi.mock("../../utils/Poller/DataPoller", () => {
   };
 });
 
-const PROGRESS_REMINDER =
-  /If you leave this page, you will lose your progress on this form./;
+const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
 
 describe("ActionForm", () => {
   test("renders `breadcrumbText`", () => {
@@ -89,10 +88,7 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByText("FAQ Page")).toHaveAttribute(
-      "href",
-      "/hello-world-link",
-    );
+    expect(queryByText("FAQ Page")).toHaveAttribute("href", "/hello-world-link");
   });
 
   test("renders `attachments.title`", () => {
@@ -190,9 +186,7 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(
-      queryByText(/hello world special instructions./),
-    ).toBeInTheDocument();
+    expect(queryByText(/hello world special instructions./)).toBeInTheDocument();
   });
 
   test("renders `attachments.callout`", () => {
@@ -323,8 +317,7 @@ describe("ActionForm", () => {
         fields={() => null}
         documentPollerArgs={{
           property: () => "id",
-          documentChecker: (checker) =>
-            checker.hasStatus(SEATOOL_STATUS.PENDING),
+          documentChecker: (checker) => checker.hasStatus(SEATOOL_STATUS.PENDING),
         }}
         breadcrumbText="Example Breadcrumb"
       />,
@@ -334,10 +327,7 @@ describe("ActionForm", () => {
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(documentPollerSpy).toHaveBeenCalledWith(
-        "id",
-        expect.any(Function),
-      );
+      expect(documentPollerSpy).toHaveBeenCalledWith("id", expect.any(Function));
     });
 
     const [, checkerFn] = documentPollerSpy.mock.lastCall;
@@ -345,9 +335,7 @@ describe("ActionForm", () => {
     // @ts-expect-error - mocking status checks expects all declared status checks
     const resultValue = checkerFn(mockStatusChecks);
 
-    expect(mockStatusChecks.hasStatus).toHaveBeenCalledWith(
-      SEATOOL_STATUS.PENDING,
-    );
+    expect(mockStatusChecks.hasStatus).toHaveBeenCalledWith(SEATOOL_STATUS.PENDING);
 
     expect(resultValue).toBe(true);
   });
@@ -620,9 +608,8 @@ describe("ActionForm", () => {
     );
 
     expect(
-      queryAllByText(
-        /Once you submit this form, a confirmation email is sent to you and to CMS./,
-      ).length,
+      queryAllByText(/Once you submit this form, a confirmation email is sent to you and to CMS./)
+        .length,
     ).toBe(2);
   });
 });

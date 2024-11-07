@@ -15,8 +15,10 @@ export const baseSchema = z.object({
     (value) => (typeof value === "string" ? value.trimStart() : value),
     z
       .string()
-      .min(1, { message: "Additional Information is required." })
       .max(4000)
+      .refine((value) => value !== "", {
+        message: "Additional Information is required.",
+      })
       .refine((value) => value.trim().length > 0, {
         message: "Additional Information can not be only whitespace.",
       }),

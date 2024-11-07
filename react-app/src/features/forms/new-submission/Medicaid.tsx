@@ -46,9 +46,7 @@ export const MedicaidForm = () => (
                   className="max-w-sm"
                   ref={field.ref}
                   value={field.value}
-                  onChange={(e) =>
-                    field.onChange(e.currentTarget.value.toUpperCase())
-                  }
+                  onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                 />
               </FormControl>
               <FormMessage />
@@ -83,9 +81,8 @@ export const MedicaidForm = () => (
     attachments={{
       instructions: [
         <p data-testid="attachments-instructions">
-          Maximum file size of 80 MB per attachment. You can add multiple files
-          per attachment type except for the CMS Form 179. Read the description
-          for each of the attachment types on the{" "}
+          Maximum file size of 80 MB per attachment. You can add multiple files per attachment type
+          except for the CMS Form 179. Read the description for each of the attachment types on the{" "}
           <Link
             to="/faq/medicaid-spa-attachments"
             target={FAQ_TAB}
