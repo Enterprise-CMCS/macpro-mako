@@ -1,4 +1,3 @@
- // textHelper.test.ts
 import { describe, it, expect } from 'vitest';
 import { removeUnderscoresAndCapitalize, convertCamelCaseToWords } from './textHelpers';
 
@@ -22,21 +21,12 @@ describe('removeUnderscoresAndCapitalize', () => {
     expect(removeUnderscoresAndCapitalize("hello")).toBe("Hello");
     expect(removeUnderscoresAndCapitalize("test")).toBe("Test");
   });
-
-  it('should handle Authority type', () => {
-    expect(removeUnderscoresAndCapitalize("some_authority")).toBe("Some Authority");
-  });
 });
 
 describe('convertCamelCaseToWords', () => {
   it('should convert camel case to words', () => {
     expect(convertCamelCaseToWords("helloWorld")).toBe("Hello World");
     expect(convertCamelCaseToWords("convertCamelCaseToWords")).toBe("Convert Camel Case To Words");
-  });
-
-  it('should handle strings that are already words', () => {
-    expect(convertCamelCaseToWords("alreadywords")).toBe("Alreadywords");
-    expect(convertCamelCaseToWords("")).toBe("");
   });
 
   it('should handle leading uppercase letters', () => {

@@ -9,20 +9,6 @@ import {
 } from './crumbs';
 import { Action } from 'shared-types/actions';
 
-// Mocking `mapActionLabel` function
-vi.mock('@/utils', () => ({
-  mapActionLabel: (action: Action) => {
-    switch (action) {
-      case Action.RESPOND_TO_RAI:
-        return "Respond to Formal RAI";
-      case Action.WITHDRAW_RAI:
-        return "Withdraw Formal RAI";
-      default:
-        return "Unknown Action";
-    }
-  },
-}));
-
 describe('getDashboardTabForAuthority', () => {
   it('should return "spas" for "CHIP SPA"', () => {
     const result = getDashboardTabForAuthority("CHIP SPA" as any);

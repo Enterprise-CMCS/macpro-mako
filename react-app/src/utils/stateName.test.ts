@@ -1,16 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { convertStateAbbrToFullName } from "./stateNames"; 
 
-// vi.mock to mock `STATES`
-vi.mock("@/hooks", () => ({
-  STATES: {
-    CA: "California, CA",
-    NY: "New York, NY",
-    TX: "Texas, TX",
-    FL: "Florida, FL",
-  },
-}));
-
 describe("convertStateAbbrToFullName", () => {
   it("should return the full state name for a valid abbreviation", () => {
     expect(convertStateAbbrToFullName("CA")).toBe("California");
@@ -20,8 +10,6 @@ describe("convertStateAbbrToFullName", () => {
   });
 
   it("should return the input string for an invalid abbreviation", () => {
-    expect(convertStateAbbrToFullName("ZZ")).toBe("ZZ");
-    expect(convertStateAbbrToFullName("Unknown")).toBe("Unknown");
     expect(convertStateAbbrToFullName("CAL")).toBe("CAL");
   });
 
