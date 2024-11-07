@@ -87,8 +87,6 @@ export const UploadSubsequentDocuments = () => {
     return <Navigate to="/dashboard" />;
   }
 
-  console.log(submission._source.actionType);
-
   const originalSubmissionEvent = (submission._source.changelog ?? []).reduce<string | null>(
     (acc, { _source }) => (_source.event ? _source.event : acc),
     null,
