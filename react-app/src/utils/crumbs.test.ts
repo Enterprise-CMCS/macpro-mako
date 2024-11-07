@@ -9,6 +9,7 @@ import {
 import { Action } from 'shared-types/actions';
 
 describe('getDashboardTabForAuthority', () => {
+   //test for authority  
   it('should return "spas" for "CHIP SPA"', () => {
     const result = getDashboardTabForAuthority("CHIP SPA" as any);
     expect(result).toBe("spas");
