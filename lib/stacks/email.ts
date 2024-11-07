@@ -114,13 +114,8 @@ export class Email extends cdk.NestedStack {
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
-              actions: [
-                "secretsmanager:DescribeSecret",
-                "secretsmanager:GetSecretValue",
-              ],
-              resources: [
-                `arn:aws:secretsmanager:${this.region}:${this.account}:secret:*`,
-              ],
+              actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
+              resources: [`arn:aws:secretsmanager:${this.region}:${this.account}:secret:*`],
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
@@ -143,37 +138,35 @@ export class Email extends cdk.NestedStack {
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
     });
 
-    const processEmailsLambda = new NodejsFunction(
-      this,
-      "ProcessEmailsLambda",
-      {
-        depsLockFilePath: join(__dirname, "../../bun.lockb"),
-        entry: join(__dirname, "../lambda/processEmails.ts"),
-        handler: "handler",
-        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
-        memorySize: 1024,
-        timeout: cdk.Duration.minutes(15),
-        role: lambdaRole,
-        vpc: vpc,
-        vpcSubnets: {
-          subnets: privateSubnets,
-        },
-        logRetention: 30,
-        securityGroups: [lambdaSecurityGroup],
-        environment: {
-          region: this.region,
-          stage,
-          indexNamespace,
-          osDomain: `https://${openSearchDomainEndpoint}`,
-          applicationEndpointUrl,
-          emailAddressLookupSecretName,
-          EMAIL_ATTEMPTS_TABLE: emailAttemptsTable.tableName,
-          MAX_RETRY_ATTEMPTS: "3", // Set the maximum number of retry attempts
-          userPoolId,
-        },
-        bundling: commonBundlingOptions,
+    const processEmailsLambda = new NodejsFunction(this, "ProcessEmailsLambda", {
+      functionName: `${project}-${stage}-${stack}-processEmails`,
+      depsLockFilePath: join(__dirname, "../../bun.lockb"),
+      entry: join(__dirname, "../lambda/processEmails.ts"),
+      handler: "handler",
+      runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+      memorySize: 1024,
+      timeout: cdk.Duration.minutes(15),
+      role: lambdaRole,
+      vpc: vpc,
+      vpcSubnets: {
+        subnets: privateSubnets,
       },
-    );
+      logRetention: 30,
+      securityGroups: [lambdaSecurityGroup],
+      environment: {
+        isDev: props.isDev.toString(),
+        region: this.region,
+        stage,
+        indexNamespace,
+        osDomain: `https://${openSearchDomainEndpoint}`,
+        applicationEndpointUrl,
+        emailAddressLookupSecretName,
+        EMAIL_ATTEMPTS_TABLE: emailAttemptsTable.tableName,
+        MAX_RETRY_ATTEMPTS: "3", // Set the maximum number of retry attempts
+        userPoolId,
+      },
+      bundling: commonBundlingOptions,
+    });
 
     // Grant the Lambda function read/write permissions
     emailAttemptsTable.grantReadWriteData(processEmailsLambda);

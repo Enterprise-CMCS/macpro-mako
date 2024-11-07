@@ -1,12 +1,17 @@
-import { raiResponseSchema } from "../../..";
-
-export const transform = (id: string) => {
-  return raiResponseSchema.transform((data) => ({
-    id,
-    makoChangedDate: data.timestamp
-      ? new Date(data.timestamp).toISOString()
-      : null,
-  }));
+import { events, getStatus, SEATOOL_STATUS } from "shared-types";
+export const transform = () => {
+  return events["respond-to-rai"].schema.transform((data) => {
+    const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.PENDING);
+    return {
+      id: data.id,
+      raiWithdrawEnabled: false,
+      makoChangedDate: data.timestamp ? new Date(data.timestamp).toISOString() : null,
+      cmsStatus,
+      stateStatus,
+      raiReceivedDate: new Date(data.timestamp).toISOString(),
+      seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
+      locked: true,
+    };
+  });
 };
-
 export type Schema = ReturnType<typeof transform>;

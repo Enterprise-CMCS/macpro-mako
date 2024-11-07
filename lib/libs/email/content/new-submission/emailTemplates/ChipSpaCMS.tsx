@@ -1,48 +1,38 @@
-import * as React from "react";
-import { emailTemplateValue } from "../data";
-import { OneMac } from "shared-types";
-import { CommonVariables } from "../../..";
-import { Html, Container } from "@react-email/components";
+import { CommonEmailVariables, Events } from "shared-types";
 import {
   LoginInstructions,
   PackageDetails,
-  SpamWarning,
+  BasicFooter,
+  DetailsHeading,
+  Attachments,
 } from "../../email-components";
+import { BaseEmailTemplate } from "../../email-templates";
 
 export const ChipSpaCMSEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: Events["NewChipSubmission"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
+  const previewText = `CHIP SPA ${variables.id} Submitted`;
+  const heading = "The OneMAC Submission Portal received a CHIP State Plan Amendment";
   return (
-    <Html lang="en" dir="ltr">
-      <Container>
-        <h3>
-          The OneMAC Submission Portal received a CHIP State Plan Amendment:
-        </h3>
-        <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
-        <PackageDetails
-          details={{
-            "State or territory": variables.territory,
-            Name: variables.submitterName,
-            Email: variables.submitterEmail,
-            "CHIP SPA Package ID": variables.id,
-            Summary: variables.additionalInformation,
-          }}
-          attachments={variables.attachments}
-        />
-        <SpamWarning />
-      </Container>
-    </Html>
+    <BaseEmailTemplate
+      previewText={previewText}
+      heading={heading}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<BasicFooter />}
+    >
+      <DetailsHeading />
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: variables.submitterName,
+          Email: variables.submitterEmail,
+          "CHIP SPA Package ID": variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <Attachments attachments={variables.attachments} />
+    </BaseEmailTemplate>
   );
 };
-
-// To preview with on 'email-dev'
-const ChipSpaCMSEmailPreview = () => {
-  return (
-    <ChipSpaCMSEmail
-      variables={emailTemplateValue as OneMac & CommonVariables}
-    />
-  );
-};
-
-export default ChipSpaCMSEmailPreview;

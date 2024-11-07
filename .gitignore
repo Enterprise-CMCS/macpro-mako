@@ -11,6 +11,8 @@ cdk.context.json
 build_run
 .build_run
 DS_Store
+.DS_Store
+**/*.DS_Store
 
 # legacy ignores
 .serverless

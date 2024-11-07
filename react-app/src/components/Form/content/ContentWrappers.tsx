@@ -1,12 +1,6 @@
 import { ReactElement, ReactNode } from "react";
 import { Info } from "lucide-react";
-import {
-  Alert,
-  RequiredIndicator,
-  PackageSection,
-  SectionCard,
-} from "@/components";
-import { TEPackageSection } from "@/features/package-actions/lib/modules/temporary-extension/legacy-components";
+import { Alert, RequiredIndicator, SectionCard } from "@/components";
 import clsx from "clsx";
 
 export const FormSectionCard = ({
@@ -69,28 +63,6 @@ export const ActionFormDescription = ({
 
 export const ActionFormHeading = ({ title }: { title: string }) => {
   return <h1 className="text-2xl font-semibold mt-4 mb-2">{title}</h1>;
-};
-
-export const ActionFormHeaderCard = ({
-  title,
-  hasRequiredField,
-  isTE,
-  children,
-}: {
-  title: string;
-  hasRequiredField?: boolean;
-  isTE?: boolean;
-  children: ReactNode;
-}) => {
-  return (
-    <FormSectionCard id="action-form-header-card" title={title}>
-      <div className="font-light">
-        {hasRequiredField && <RequiredFieldDescription />}
-        {children}
-      </div>
-      {isTE ? <TEPackageSection /> : <PackageSection />}
-    </FormSectionCard>
-  );
 };
 
 export const PreSubmitNotice = ({
