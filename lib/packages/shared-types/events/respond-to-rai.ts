@@ -1,10 +1,5 @@
 import { z } from "zod";
-<<<<<<< HEAD
-import { attachmentSchema } from "../attachments";
-import { notificationMetadataSchema } from "../notification-metadata";
-=======
 import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
->>>>>>> 96c494f1 (feat(new-sub-email: Add email notifications for new-submission events (#818))
 
 export const respondToRaiBaseSchema = z.object({
   id: z.string(),
@@ -33,9 +28,6 @@ export const respondToRaiBaseSchema = z.object({
   submittedDate: z.number().optional(),
   timestamp: z.number().optional(),
 });
-<<<<<<< HEAD
-export type RaiResponse = z.infer<typeof raiResponseSchema>;
-=======
 export type RaiResponse = z.infer<typeof respondToRaiBaseSchema>;
 
 export const medicaidSpaAttachments = z.object({
@@ -100,4 +92,3 @@ export const schema = baseSchema.extend({
   submitterEmail: z.string().email(),
   timestamp: z.number(),
 });
->>>>>>> 96c494f1 (feat(new-sub-email: Add email notifications for new-submission events (#818))
