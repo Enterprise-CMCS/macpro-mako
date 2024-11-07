@@ -13,11 +13,11 @@ export const getDashboardTabForAuthority = (
   authority: Authority,
 ): "spas" | "waivers" => {
   switch (authority) {
-    case Authority.CHIP_SPA:
-    case Authority.MED_SPA:
+    case "CHIP SPA" as Authority:
+    case "Medicaid SPA" as Authority:
       return "spas";
-    case Authority["1915b"]:
-    case Authority["1915c"]:
+    case "1915(b)":
+    case "1915(c)":
       return "waivers";
     default:
       throw new Error("Invalid authority");
