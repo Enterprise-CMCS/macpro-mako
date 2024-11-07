@@ -123,7 +123,6 @@ const PackageActivity = (props: opensearch.changelog.Document) => {
       case "upload-subsequent-documents":
         return "Subsequent documentation uploaded";
 
-      // return needs another parameter
       default:
         return BLANK_VALUE;
     }
@@ -169,7 +168,7 @@ export const PackageActivities = () => {
       id="package_activity"
       title={
         <div className="flex justify-between">
-          Package Activity {activitiesWithoutAdminChange.length}
+          Package Activity ({activitiesWithoutAdminChange.length})
           {activitiesWithoutAdminChange.length && (
             <Table.Button loading={loading} onClick={onDownloadAll} variant="outline">
               Download all documents
