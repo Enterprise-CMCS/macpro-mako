@@ -105,7 +105,7 @@ export const UploadSubsequentDocuments = () => {
 
   return (
     <ActionForm
-      title={`Subsequent ${getTitle(originalSubmissionEvent)} Document Details`}
+      title={`${getTitle(originalSubmissionEvent)} Subsequent Documents Details`}
       schema={pickedSchema}
       breadcrumbText="New Subsequent Documentation"
       formDescription={`
