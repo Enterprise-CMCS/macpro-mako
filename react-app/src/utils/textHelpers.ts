@@ -11,10 +11,10 @@ export function removeUnderscoresAndCapitalize(
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
-
+      
   // Remove 's' from the end if it exists
   return capitalized.endsWith("s") ? capitalized.slice(0, -1) : capitalized;
-}
+  }
 
 export function convertCamelCaseToWords(input: string) {
   return input

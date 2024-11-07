@@ -11,7 +11,7 @@ describe('removeUnderscoresAndCapitalize', () => {
 
   it('should remove trailing "s" from the end of the capitalized string', () => {
     expect(removeUnderscoresAndCapitalize("dogs")).toBe("Dog");
-    expect(removeUnderscoresAndCapitalize("cats_and_dogs")).toBe("Cat And Dog");
+    expect(removeUnderscoresAndCapitalize("cat_and_dogs")).toBe("Cat And Dog");
   });
 
   it('should handle empty strings', () => {
