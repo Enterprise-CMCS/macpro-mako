@@ -70,7 +70,7 @@ const getTitle = (originalSubmissionEvent: string) => {
     case originalSubmissionEvent.includes("amendment"):
       return "1915(b) Waiver Amendment";
     case originalSubmissionEvent.includes("initial"):
-      return "1915(b) Waiver Initial";
+      return "1915(b) Initial Waiver";
     case originalSubmissionEvent.includes("renewal"):
       return "1915(b) Waiver Renewal";
 
