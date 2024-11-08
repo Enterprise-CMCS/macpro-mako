@@ -176,7 +176,7 @@ export class Email extends cdk.NestedStack {
     });
 
     const emailAttemptsTable = new dynamodb.Table(this, "EmailAttemptsTable", {
-      tableName: `${project}-${stage}-${stack}-email-attempts`,
+      tableName: `${project}-${stage}-${stack}-attempt-records`,
       partitionKey: { name: "emailId", type: dynamodb.AttributeType.STRING },
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       timeToLiveAttribute: "ttl",
@@ -211,7 +211,6 @@ export class Email extends cdk.NestedStack {
       tracing: cdk.aws_lambda.Tracing.ACTIVE,
     });
 
-    // Grant the Lambda function read/write permissions
     emailAttemptsTable.grantReadWriteData(processEmailsLambda);
 
     const alarmTopic = new cdk.aws_sns.Topic(this, "EmailErrorAlarmTopic");
