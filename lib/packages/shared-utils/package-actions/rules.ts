@@ -25,8 +25,7 @@ const arTempExtension: ActionRule = {
     checker.hasStatus(SEATOOL_STATUS.APPROVED) &&
     checker.isWaiver &&
     checker.isInitialOrRenewal &&
-    isStateUser(user) &&
-    false,
+    isStateUser(user),
 };
 
 const arEnableWithdrawRaiResponse: ActionRule = {
@@ -82,16 +81,12 @@ const arWithdrawRaiResponse: ActionRule = {
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
-    !checker.isTempExtension &&
-    !checker.hasStatus(finalDispositionStatuses) &&
-    isStateUser(user),
+    !checker.isTempExtension && !checker.hasStatus(finalDispositionStatuses) && isStateUser(user),
 };
 const arUpdateId: ActionRule = {
   action: Action.UPDATE_ID,
   check: (checker, user) =>
-    isCmsSuperUser(user) &&
-    !checker.hasStatus(finalDispositionStatuses) &&
-    false,
+    isCmsSuperUser(user) && !checker.hasStatus(finalDispositionStatuses) && false,
 };
 
 const arRemoveAppkChild: ActionRule = {
