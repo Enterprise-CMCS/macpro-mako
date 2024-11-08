@@ -24,6 +24,7 @@ import {
   seatool,
   changedDate,
   temporaryExtension,
+  appK,
 } from "./transforms";
 
 export type Document = z.infer<capitatedAmendment.Schema> &
@@ -45,7 +46,7 @@ export type Document = z.infer<capitatedAmendment.Schema> &
     makoChangedDate: string;
     changelog?: Changelog[];
     appkChildren?: OmitFoundItemResult[];
-  };
+  } & z.infer<appK.Schema>;
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
@@ -74,4 +75,5 @@ export const transforms = {
   "withdraw-rai": withdrawRai,
   "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
+  "app-k": appK,
 };

@@ -11,6 +11,7 @@ import { withdrawPackage } from "./withdraw-package";
 import { withdrawRai } from "./withdraw-rai";
 import { toggleWithdrawRai } from "./toggle-withdraw-rai";
 import { respondToRai } from "./respond-to-rai";
+import { appK } from "./app-k";
 
 export const submissionPayloads = {
   "capitated-amendment": capitatedAmendment,
@@ -26,4 +27,5 @@ export const submissionPayloads = {
   "withdraw-rai": withdrawRai,
   "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
+  "app-k": appK,
 };

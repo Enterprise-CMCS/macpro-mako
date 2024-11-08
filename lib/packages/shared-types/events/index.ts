@@ -9,13 +9,14 @@ import * as contractingInitial from "./contracting-initial";
 import * as contractingRenewal from "./contracting-renewal";
 import * as temporaryExtension from "./temporary-extension";
 import * as withdrawPackage from "./withdraw-package";
+import * as appK from "./app-k";
 
 import * as withdrawRai from "./withdraw-rai";
 import * as toggleWithdrawRai from "./toggle-withdraw-rai";
 import * as respondToRai from "./respond-to-rai";
 
 export * from "./respond-to-rai";
-export * from "./app-k";
+// export * from "./app-k";
 export * from "./legacy-event";
 export * from "./legacy-package-view";
 export * from "./legacy-admin-change";
@@ -37,6 +38,7 @@ export const events = {
   "withdraw-rai": withdrawRai,
   "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
+  "app-k": appK,
 };
 
 export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;

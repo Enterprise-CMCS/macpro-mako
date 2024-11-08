@@ -11,6 +11,7 @@ import * as withdrawPackage from "./withdraw-package";
 import * as withdrawRai from "./withdraw-rai";
 import * as toggleWithdrawRai from "./toggle-withdraw-rai";
 import * as respondtoRAI from "./respond-to-rai";
+import * as appK from "./app-k";
 
 export const formSchemas = {
   "capitated-amendment": capitatedAmendment.formSchema,
@@ -29,4 +30,5 @@ export const formSchemas = {
   "respond-to-rai-chip": respondtoRAI.formSchemaChip,
   "respond-to-rai-waiver": respondtoRAI.formSchemaWaivers,
   "respond-to-rai-medicaid": respondtoRAI.formSchemaMedicaid,
+  "app-k": appK.formSchema,
 };
