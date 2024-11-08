@@ -35,11 +35,11 @@ beforeAll(() => {
   vi.stubEnv("stage", "test");
   vi.stubEnv("indexNamespace", "test-index");
   vi.stubEnv("osDomain", "https://mock-opensearch-domain.com");
-  vi.stubEnv("applicationEndpointUrl", "https://mock-app-endpoint.com");
-  vi.stubEnv("emailAddressLookupSecretName", "mock-email-secret");
+  vi.stubEnv("applicationEndpointUrl", "https://mock-app-endpoint.com"); //pragma: allowlist secret
+  vi.stubEnv("emailAddressLookupSecretName", "mock-email-secret"); //pragma: allowlist secret
   vi.stubEnv("EMAIL_ATTEMPTS_TABLE", "mock-email-attempts-table");
   vi.stubEnv("MAX_RETRY_ATTEMPTS", "3");
-  vi.stubEnv("userPoolId", "mock-user-pool-id");
+  vi.stubEnv("userPoolId", "mock-user-pool-id"); //pragma: allowlist secret
 
   // Mock the getSecret function
   (getSecret as Mock).mockResolvedValue(JSON.stringify(mockEmailAddresses));
@@ -62,7 +62,7 @@ describe("createEmailParams", () => {
     vi.clearAllMocks();
 
     vi.stubEnv("region", "us-east-1");
-    vi.stubEnv("emailAddressLookupSecretName", "mock-email-secret");
+    vi.stubEnv("emailAddressLookupSecretName", "mock-email-secret"); //pragma: allowlist secret
     vi.stubEnv("applicationEndpointUrl", "https://mock-app-endpoint.com");
     vi.stubEnv("openSearchDomainEndpoint", "https://mock-opensearch-domain.com");
     // Mock environment variables
@@ -202,8 +202,8 @@ describe("processEmails", () => {
     };
 
     await processRecord(tombstoneRecord, {
-      emailAddressLookupSecretName: "emailAddressLookupSecretName",
-      applicationEndpointUrl: "applicationEndpointUrl",
+      emailAddressLookupSecretName: "emailAddressLookupSecretName", //pragma: allowlist secret
+      applicationEndpointUrl: "applicationEndpointUrl", //pragma: allowlist secret
       osDomain: "osDomain",
       indexNamespace: "indexNamespace",
       region: "region",
