@@ -36,14 +36,14 @@ interface EnvironmentConfig {
 const envConfig: Record<string, EnvironmentConfig> = {
   dev: {
     memorySize: 1024,
-    timeout: 15,
+    timeout: 5,
     logRetention: 7,
     maxRetryAttempts: 3,
     dailySendQuota: 1000,
   },
   prod: {
     memorySize: 2048,
-    timeout: 30,
+    timeout: 10,
     logRetention: 30,
     maxRetryAttempts: 5,
     dailySendQuota: 2000,
@@ -189,7 +189,7 @@ export class Email extends cdk.NestedStack {
       handler: "handler",
       runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
       memorySize: envConfig[props.isDev ? "dev" : "prod"].memorySize,
-      timeout: cdk.Duration.minutes(envConfig[props.isDev ? "dev" : "prod"].timeout),
+      timeout: cdk.Duration.seconds(envConfig[props.isDev ? "dev" : "prod"].timeout),
       role: lambdaRole,
       vpc: vpc,
       vpcSubnets: {
