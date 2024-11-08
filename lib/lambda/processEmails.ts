@@ -2,11 +2,12 @@ import { SESClient, SendEmailCommand, SendEmailCommandInput } from "@aws-sdk/cli
 import { EmailAddresses, KafkaEvent, KafkaRecord } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
-import { getEmailTemplates, getAllStateUsers, StateUser } from "../libs/email";
+import { getEmailTemplates, getAllStateUsers } from "libs/email";
 import * as os from "./../libs/opensearch-lib";
-import { getCpocEmail, getSrtEmails } from "./../libs/email/content/email-components";
+import { getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
 import pLimit from "p-limit";
+import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -15,46 +16,88 @@ class TemporaryError extends Error {
   }
 }
 
+interface ProcessEmailConfig {
+  emailAddressLookupSecretName: string;
+  applicationEndpointUrl: string;
+  osDomain: string;
+  indexNamespace: string;
+  region: string;
+  DLQ_URL: string;
+  userPoolId: string;
+}
+
 export const handler: Handler<KafkaEvent> = async (event) => {
+  const requiredEnvVars = [
+    "emailAddressLookupSecretName",
+    "applicationEndpointUrl",
+    "osDomain",
+    "indexNamespace",
+    "region",
+    "DLQ_URL",
+    "userPoolId",
+  ] as const;
+
+  const missingVars = requiredEnvVars.filter((varName) => !process.env[varName]);
+  if (missingVars.length > 0) {
+    throw new Error(`Missing required environment variables: ${missingVars.join(", ")}`);
+  }
+
+  const emailAddressLookupSecretName = process.env.emailAddressLookupSecretName!;
+  const applicationEndpointUrl = process.env.applicationEndpointUrl!;
+  const osDomain = process.env.osDomain!;
+  const indexNamespace = process.env.indexNamespace!;
+  const region = process.env.region!;
+  const DLQ_URL = process.env.DLQ_URL!;
+  const userPoolId = process.env.userPoolId!;
+  const config: ProcessEmailConfig = {
+    emailAddressLookupSecretName,
+    applicationEndpointUrl,
+    osDomain,
+    indexNamespace,
+    region,
+    DLQ_URL,
+    userPoolId,
+  };
+
   try {
     const results = await Promise.allSettled(
       Object.values(event.records)
         .flat()
-        .map((rec) =>
-          processRecord(
-            rec,
-            process.env.emailAddressLookupSecretName!,
-            process.env.applicationEndpointUrl!,
-            process.env.osDomain!,
-            process.env.indexNamespace!,
-            process.env.region!,
-          ),
-        ),
+        .map((rec) => processRecord(rec, config)),
     );
 
     const failures = results.filter((r) => r.status === "rejected");
     if (failures.length > 0) {
       console.error("Some records failed:", failures);
-      // Throw TemporaryError if we want to retry the batch
       throw new TemporaryError("Some records failed processing");
     }
   } catch (error) {
-    if (error instanceof TemporaryError) {
-      throw error; // Retry
-    }
     console.error("Permanent failure:", error);
-    // Handle permanent failures
+
+    if (config.DLQ_URL) {
+      const sqsClient = new SQSClient({ region: config.region });
+      try {
+        await sqsClient.send(
+          new SendMessageCommand({
+            QueueUrl: config.DLQ_URL,
+            MessageBody: JSON.stringify({
+              error: error.message,
+              originalEvent: event,
+              timestamp: new Date().toISOString(),
+            }),
+          }),
+        );
+        console.log("Failed message sent to DLQ");
+      } catch (dlqError) {
+        console.error("Failed to send to DLQ:", dlqError);
+        throw dlqError;
+      }
+    }
+    throw error;
   }
 };
 
-export async function processRecord(
-  kafkaRecord: KafkaRecord,
-  emailAddressLookupSecretName: string,
-  applicationEndpointUrl: string,
-  osDomain: string,
-  indexNamespace: string,
-  region: string,
-) {
+export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
 
@@ -73,28 +116,10 @@ export async function processRecord(
     return;
   }
 
-  await processAndSendEmails(
-    record,
-    id,
-    emailAddressLookupSecretName,
-    applicationEndpointUrl,
-    osDomain,
-    indexNamespace,
-    region,
-    getAllStateUsers,
-  );
+  await processAndSendEmails(record, id, config);
 }
 
-export async function processAndSendEmails(
-  record: any,
-  id: string,
-  emailAddressLookupSecretName: string,
-  applicationEndpointUrl: string,
-  osDomain: string,
-  indexNamespace: string,
-  region: string,
-  getAllStateUsers: (state: string) => Promise<StateUser[]>,
-) {
+export async function processAndSendEmails(record: any, id: string, config: ProcessEmailConfig) {
   const templates = await getEmailTemplates<typeof record>(
     record.event,
     record.authority.toLowerCase(),
@@ -107,11 +132,14 @@ export async function processAndSendEmails(
   }
 
   const territory = id.slice(0, 2);
-  const allStateUsers = await getAllStateUsers(territory);
+  const allStateUsers = await getAllStateUsers({
+    userPoolId: config.userPoolId,
+    state: territory,
+  });
 
-  const sec = await getSecret(emailAddressLookupSecretName);
+  const sec = await getSecret(config.emailAddressLookupSecretName);
 
-  const item = await os.getItem(osDomain, `${indexNamespace}main`, id);
+  const item = await os.getItem(config.osDomain, `${config.indexNamespace}main`, id);
 
   const cpocEmail = getCpocEmail(item);
   const srtEmails = getSrtEmails(item);
@@ -122,7 +150,7 @@ export async function processAndSendEmails(
   const templateVariables = {
     ...record,
     id,
-    applicationEndpointUrl,
+    applicationEndpointUrl: config.applicationEndpointUrl,
     territory,
     emails: { ...emails, cpocEmail, srtEmails },
     allStateUsersEmails,
@@ -132,8 +160,12 @@ export async function processAndSendEmails(
   const sendEmailPromises = templates.map((template) =>
     limit(async () => {
       const filledTemplate = await template(templateVariables);
-      const params = createEmailParams(filledTemplate, emails.sourceEmail, applicationEndpointUrl);
-      await sendEmail(params, region);
+      const params = createEmailParams(
+        filledTemplate,
+        emails.sourceEmail,
+        config.applicationEndpointUrl,
+      );
+      await sendEmail(params, config.region);
     }),
   );
 
@@ -179,8 +211,8 @@ export async function sendEmail(params: SendEmailCommandInput, region: string): 
 }
 
 const htmlToTextOptions = (baseUrl: string): HtmlToTextOptions => ({
-  wordwrap: 80, // Standard readable line length
-  preserveNewlines: true, // Keeps intended line breaks from HTML
+  wordwrap: 80,
+  preserveNewlines: true,
   selectors: [
     {
       selector: "h1",
@@ -214,12 +246,12 @@ const htmlToTextOptions = (baseUrl: string): HtmlToTextOptions => ({
     },
   ],
   limits: {
-    maxInputLength: 50000, // Protect against huge emails
+    maxInputLength: 50000,
     ellipsis: "...",
     maxBaseElements: 1000,
   },
   longWordSplit: {
     forceWrapOnLimit: false,
-    wrapCharacters: ["-", "/"], // Break long words at these characters
+    wrapCharacters: ["-", "/"],
   },
 });

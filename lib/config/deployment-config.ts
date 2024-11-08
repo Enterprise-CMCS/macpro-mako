@@ -41,25 +41,18 @@ export type DeploymentConfigProperties = InjectedConfigProperties & {
 export class DeploymentConfig {
   public config: DeploymentConfigProperties;
 
-  private constructor(
-    options: InjectedConfigOptions,
-    config: DeploymentConfigProperties,
-  ) {
+  private constructor(_options: InjectedConfigOptions, config: DeploymentConfigProperties) {
     this.config = config;
   }
 
-  public static async fetch(
-    options: InjectedConfigOptions,
-  ): Promise<DeploymentConfig> {
+  public static async fetch(options: InjectedConfigOptions): Promise<DeploymentConfig> {
     const injectedConfig = await DeploymentConfig.loadConfig(options);
     const appConfig: DeploymentConfigProperties = {
       ...injectedConfig,
       project: options.project,
       stage: options.stage,
       isDev: !["main", "val", "production"].includes(options.stage),
-      terminationProtection: ["main", "val", "production"].includes(
-        options.stage,
-      ),
+      terminationProtection: ["main", "val", "production"].includes(options.stage),
       sharedOpenSearchDomainArn: "",
       sharedOpenSearchDomainEndpoint: "",
     };
@@ -89,9 +82,7 @@ export class DeploymentConfig {
     try {
       stageSecret = JSON.parse(await getSecret(stageSecretName));
     } catch (error) {
-      console.warn(
-        `Optional stage secret ${stageSecretName} not found: ${error.message}`,
-      );
+      console.warn(`Optional stage secret ${stageSecretName} not found: ${error.message}`);
     }
 
     // Merge secrets with stageSecret taking precedence

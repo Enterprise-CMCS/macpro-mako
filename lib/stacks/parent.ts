@@ -111,8 +111,12 @@ export class ParentStack extends cdk.Stack {
       lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
       applicationEndpointUrl: uiInfraStack.applicationEndpointUrl,
       emailAddressLookupSecretName: props.emailAddressLookupSecretName,
-      openSearchDomainEndpoint: dataStack.openSearchDomainEndpoint,
-      openSearchDomainArn: dataStack.openSearchDomainArn,
+      openSearchDomainEndpoint: props.isDev
+        ? `https://${props.sharedOpenSearchDomainEndpoint}`
+        : `https://${dataStack.openSearchDomainEndpoint}`,
+      openSearchDomainArn: props.isDev
+        ? props.sharedOpenSearchDomainArn
+        : dataStack.openSearchDomainArn,
       userPool: authStack.userPool,
     });
 
@@ -139,7 +143,7 @@ export class ParentStack extends cdk.Stack {
       description: `Deployment config for the ${props.stage} environment.`,
     });
 
-    if (props.stage === "main") {
+    if (!commonProps.isDev) {
       this.exportValue(dataStack.openSearchDomainEndpoint, {
         name: `${props.project}-sharedOpenSearchDomainEndpoint`,
       });

@@ -31,7 +31,6 @@ interface EnvironmentConfig {
   logRetention: number;
   maxRetryAttempts: number;
   dailySendQuota: number;
-  // ... other env-specific configs
 }
 
 const envConfig: Record<string, EnvironmentConfig> = {
@@ -69,6 +68,7 @@ export class Email extends cdk.NestedStack {
       openSearchDomainEndpoint,
       openSearchDomainArn,
       userPool,
+      isDev,
     } = props;
 
     if (!brokerString || !brokerString.includes(",")) {
@@ -78,7 +78,7 @@ export class Email extends cdk.NestedStack {
     const lambdaSecurityGroup = new cdk.aws_ec2.SecurityGroup(this, "LambdaSG", {
       vpc,
       description: "Security group for email processing lambda",
-      allowAllOutbound: true, // Or restrict to specific services
+      allowAllOutbound: true,
     });
 
     // SES Configuration Set
@@ -158,13 +158,25 @@ export class Email extends cdk.NestedStack {
               actions: ["logs:CreateLogGroup"],
               resources: ["*"],
             }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["sqs:SendMessage"],
+              resources: ["*"],
+            }),
           ],
         }),
       },
     });
 
-    // Create a DynamoDB table to track email send attempts
+    const dlq = new cdk.aws_sqs.Queue(this, "DeadLetterQueue", {
+      queueName: `${project}-${stage}-${stack}-email-dlq`,
+      encryption: cdk.aws_sqs.QueueEncryption.KMS_MANAGED,
+      retentionPeriod: cdk.Duration.days(14),
+      visibilityTimeout: cdk.Duration.seconds(300),
+    });
+
     const emailAttemptsTable = new dynamodb.Table(this, "EmailAttemptsTable", {
+      tableName: `${project}-${stage}-${stack}-email-attempts`,
       partitionKey: { name: "emailId", type: dynamodb.AttributeType.STRING },
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       timeToLiveAttribute: "ttl",
@@ -183,19 +195,17 @@ export class Email extends cdk.NestedStack {
       vpcSubnets: {
         subnets: privateSubnets,
       },
-      logRetention: envConfig[props.isDev ? "dev" : "prod"].logRetention,
+      logRetention: envConfig[isDev ? "dev" : "prod"].logRetention,
       securityGroups: [lambdaSecurityGroup],
       environment: {
-        isDev: props.isDev.toString(),
-        region: this.region,
+        region: cdk.Stack.of(this).region,
         stage,
         indexNamespace,
-        osDomain: `https://${openSearchDomainEndpoint}`,
+        osDomain: openSearchDomainEndpoint,
         applicationEndpointUrl,
         emailAddressLookupSecretName,
-        EMAIL_ATTEMPTS_TABLE: emailAttemptsTable.tableName,
-        MAX_RETRY_ATTEMPTS: envConfig[props.isDev ? "dev" : "prod"].maxRetryAttempts.toString(),
         userPoolId: userPool.userPoolId,
+        DLQ_URL: dlq.queueUrl,
       },
       bundling: commonBundlingOptions,
       tracing: cdk.aws_lambda.Tracing.ACTIVE,
@@ -203,12 +213,6 @@ export class Email extends cdk.NestedStack {
 
     // Grant the Lambda function read/write permissions
     emailAttemptsTable.grantReadWriteData(processEmailsLambda);
-
-    const dlq = new cdk.aws_sqs.Queue(this, "DeadLetterQueue", {
-      encryption: cdk.aws_sqs.QueueEncryption.KMS_MANAGED,
-      retentionPeriod: cdk.Duration.days(14),
-      visibilityTimeout: cdk.Duration.seconds(300),
-    });
 
     const alarmTopic = new cdk.aws_sns.Topic(this, "EmailErrorAlarmTopic");
 
