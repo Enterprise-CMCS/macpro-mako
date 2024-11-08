@@ -10,17 +10,7 @@ import { getAllStateUsers } from "libs/email";
 import { getSecret } from "shared-utils";
 import * as os from "libs/opensearch-lib";
 import { Context } from "aws-lambda";
-import {
-  vi,
-  Mock,
-  beforeAll,
-  afterAll,
-  beforeEach,
-  afterEach,
-  describe,
-  it,
-  expect,
-} from "vitest";
+import { vi, Mock, beforeAll, afterAll, beforeEach, afterEach, describe, it, expect } from "vitest";
 import { EmailAddresses } from "shared-types";
 
 // Add this near the top of your test file, after the imports
@@ -74,10 +64,7 @@ describe("createEmailParams", () => {
     vi.stubEnv("region", "us-east-1");
     vi.stubEnv("emailAddressLookupSecretName", "mock-email-secret");
     vi.stubEnv("applicationEndpointUrl", "https://mock-app-endpoint.com");
-    vi.stubEnv(
-      "openSearchDomainEndpoint",
-      "https://mock-opensearch-domain.com",
-    );
+    vi.stubEnv("openSearchDomainEndpoint", "https://mock-opensearch-domain.com");
     // Mock environment variables
     vi.stubEnv("indexNamespace", "https://mock-opensearch-endpoint.com");
     (getSecret as Mock).mockResolvedValue(JSON.stringify(mockEmailAddresses));
@@ -91,7 +78,7 @@ describe("createEmailParams", () => {
   });
 
   it("should create email parameters correctly", () => {
-    const params = createEmailParams(emailDetails, emailDetails.from);
+    const params = createEmailParams(emailDetails, emailDetails.from, "topicName");
     expect(params).toEqual({
       Destination: {
         ToAddresses: emailDetails.to,
@@ -133,21 +120,17 @@ describe("sendEmail", () => {
 
   it("should send email successfully", async () => {
     (mockSesClient.send as Mock).mockResolvedValue({});
-    const params = createEmailParams(emailDetails, emailDetails.from);
+    const params = createEmailParams(emailDetails, emailDetails.from, "topicName");
 
-    await sendEmail(params);
-    expect(mockSesClient.send).toHaveBeenCalledWith(
-      expect.any(SendEmailCommand),
-    );
+    await sendEmail(params, "topicName");
+    expect(mockSesClient.send).toHaveBeenCalledWith(expect.any(SendEmailCommand));
   });
 
   it("should throw an error when there is an issue sending an email", async () => {
-    (mockSesClient.send as Mock).mockRejectedValue(
-      new Error("Error sending email"),
-    );
-    const params = createEmailParams(emailDetails, emailDetails.from);
+    (mockSesClient.send as Mock).mockRejectedValue(new Error("Error sending email"));
+    const params = createEmailParams(emailDetails, emailDetails.from, "topicName");
 
-    await expect(sendEmail(params)).rejects.toThrow("Error sending email");
+    await expect(sendEmail(params, "topicName")).rejects.toThrow("Error sending email");
   });
 });
 
@@ -218,14 +201,20 @@ describe("processEmails", () => {
       headers: {},
     };
 
-    await processRecord(tombstoneRecord, "secret-name", "endpoint-url");
+    await processRecord(tombstoneRecord, {
+      emailAddressLookupSecretName: "emailAddressLookupSecretName",
+      applicationEndpointUrl: "applicationEndpointUrl",
+      osDomain: "osDomain",
+      indexNamespace: "indexNamespace",
+      region: "region",
+      DLQ_URL: "DLQ_URL",
+      userPoolId: "userPoolId",
+    });
     expect(getAllStateUsers).not.toHaveBeenCalled();
   });
 
   it("should throw an error when there is an issue processing email event", async () => {
-    (getAllStateUsers as Mock).mockRejectedValue(
-      new Error("Error fetching users"),
-    );
+    (getAllStateUsers as Mock).mockRejectedValue(new Error("Error fetching users"));
 
     await expect(
       processEmailsHandler(mockKafkaEvent, mockContext, mockThirdArgument),
