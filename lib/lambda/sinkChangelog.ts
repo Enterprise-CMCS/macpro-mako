@@ -133,7 +133,7 @@ const processAndIndex = async ({
 //       const record = JSON.parse(decodeBase64WithUtf8(value));
 
 //       // Process legacy events
-//       if (record?.origin !== "micro") {
+//       if (record?.origin !== "mako") {
 //         // Skip if it's not a submission event with a good GSIpk
 //         if (
 //           record?.sk === "Package" ||
@@ -263,7 +263,7 @@ const processAndIndex = async ({
 //       const record = JSON.parse(decodeBase64WithUtf8(value));
 
 //       // Process legacy events
-//       if (record?.origin !== "micro") {
+//       if (record?.origin !== "mako") {
 //         // Skip if it's not a package view from onemac with adminChanges
 //         if (
 //           !(

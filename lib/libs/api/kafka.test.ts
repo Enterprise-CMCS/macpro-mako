@@ -52,7 +52,7 @@ describe("Kafka producer functions", () => {
           key,
           value,
           partition: 0,
-          headers: { source: "micro" },
+          headers: { source: "mako" },
         },
       ],
     });
@@ -77,7 +77,7 @@ describe("Kafka producer functions", () => {
           key,
           value,
           partition: 0,
-          headers: { source: "micro" },
+          headers: { source: "mako" },
         },
       ],
     });

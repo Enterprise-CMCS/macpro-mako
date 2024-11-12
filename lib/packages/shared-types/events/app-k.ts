@@ -32,7 +32,6 @@ export const baseSchema = z.object({
 });
 
 export const schema = baseSchema.extend({
-  // double check
   actionType: z.string().default("Amend"),
   origin: z.literal("mako").default("mako"),
   submitterName: z.string(),

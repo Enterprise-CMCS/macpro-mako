@@ -1,54 +1,43 @@
-import * as React from "react";
-import { DateTime } from "luxon";
-import { emailTemplateValue } from "../data";
-import { OneMac } from "shared-types";
-import { CommonVariables } from "../../..";
-import { Html, Container } from "@react-email/components";
+import { CommonEmailVariables, Events } from "shared-types";
 import {
+  Attachments,
+  DetailsHeading,
   LoginInstructions,
   PackageDetails,
-  SpamWarning,
+  BasicFooter,
 } from "../../email-components";
+import { BaseEmailTemplate } from "../../email-templates";
+import { formatDate } from "shared-utils";
 
 export const Waiver1915bCMSEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables:
+    | (Events["CapitatedInitial"] & CommonEmailVariables)
+    | (Events["ContractingInitial"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
+  const previewText = `${variables.authority} ${variables.actionType} Submitted`;
+  const heading = `The OneMAC Submission Portal received a ${variables.authority} ${variables.actionType} Submission:`;
   return (
-    <Html lang="en" dir="ltr">
-      <Container>
-        <h3>
-          The OneMAC Submission Portal received a {variables.authority}{" "}
-          {variables.actionType} Submission:
-        </h3>
-        <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
-        <PackageDetails
-          details={{
-            "State or territory": variables.territory,
-            Name: variables.submitterName,
-            "Email Address": variables.submitterEmail,
-            [`${variables.actionType} Number`]: variables.id,
-            "Waiver Authority": variables.authority,
-            "Proposed Effective Date": DateTime.fromMillis(
-              Number(variables.notificationMetadata?.proposedEffectiveDate),
-            ).toFormat("DDDD"),
-            Summary: variables.additionalInformation,
-          }}
-          attachments={variables.attachments}
-        />
-        <SpamWarning />
-      </Container>
-    </Html>
+    <BaseEmailTemplate
+      previewText={previewText}
+      heading={heading}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<BasicFooter />}
+    >
+      <DetailsHeading />
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+      <PackageDetails
+        details={{
+          "State or territory": variables.territory,
+          Name: variables.submitterName,
+          "Email Address": variables.submitterEmail,
+          [`${variables.actionType} Number`]: variables.id,
+          "Waiver Authority": variables.authority,
+          "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <Attachments attachments={variables.attachments} />
+    </BaseEmailTemplate>
   );
 };
-
-// To preview with 'email-dev'
-const Waiver1915bCMSEmailPreview = () => {
-  return (
-    <Waiver1915bCMSEmail
-      variables={emailTemplateValue as OneMac & CommonVariables}
-    />
-  );
-};
-
-export default Waiver1915bCMSEmailPreview;

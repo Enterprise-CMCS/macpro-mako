@@ -31,7 +31,7 @@ export async function produceMessage(
     key: key,
     value: value,
     partition: 0,
-    headers: { source: "micro" },
+    headers: { source: "mako" },
   };
   console.log(
     "About to send the following message to kafka\n" +
