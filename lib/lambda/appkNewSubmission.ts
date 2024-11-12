@@ -59,7 +59,8 @@ export const submit = async (event: APIGatewayEvent) => {
   } as sql.config;
 
   const schemas = [];
-
+  console.log("IDS??");
+  console.log(body.waiverIds, "IDS");
   for (const WINDEX in body.waiverIds) {
     const ID = body.waiverIds[WINDEX].trim();
     const validateRegex = /^\d{4,5}\.R\d{2}\.\d{2}$/.test(ID);
@@ -117,8 +118,9 @@ export const submit = async (event: APIGatewayEvent) => {
 
   const pool = await sql.connect(config);
   const transaction = new sql.Transaction(pool);
-
+  console.log("before try");
   try {
+    console.log("in try");
     await transaction.begin();
 
     const dates = {
