@@ -13,8 +13,8 @@ import {
 } from "@/components";
 import { Authority } from "shared-types";
 import { formSchemas } from "@/formSchemas";
-import { WaiverIdField } from "./WaiverIdField";
-import { StateField } from "./StateField";
+// import { WaiverIdField } from "./WaiverIdField";
+// import { StateField } from "./StateField";
 import { Link } from "react-router-dom";
 import { FAQ_TAB } from "@/router";
 
@@ -26,7 +26,6 @@ export const AppKAmendmentForm = () => (
     fields={(form) => (
       <>
         <div>
-          {/* <FormIntroText /> */}
           <p className="max-w-4xl mt-4 text-gray-700 font-light">
             <span className="font-bold">
               If your Appendix K submission is for more than one waiver number,

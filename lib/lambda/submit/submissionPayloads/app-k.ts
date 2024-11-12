@@ -1,5 +1,3 @@
-// can/should add the additional frontend checks here
-
 import { events } from "shared-types/events";
 import {
   isAuthorized,

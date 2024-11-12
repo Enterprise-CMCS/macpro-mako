@@ -76,7 +76,7 @@ export const submit = async (event: APIGatewayEvent) => {
       proposedEffectiveDate: body.proposedEffectiveDate,
     };
 
-    const validateZod = events["new-submission"].feSchema.safeParse({
+    const validateZod = events["app-k"].schema.safeParse({
       ...body,
       ...(!!Number(WINDEX) && {
         appkParentId: `${body.state}-${body.waiverIds[0]}`,
