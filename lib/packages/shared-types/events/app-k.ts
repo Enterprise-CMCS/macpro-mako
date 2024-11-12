@@ -9,13 +9,13 @@ export const baseSchema = z.object({
       message:
         "The 1915(c) Waiver Amendment Number must be in the format of SS-####.R##.## or SS-#####.R##.##. For amendments, the last two digits start with '01' and ascends.",
     }),
-  state: z
-    .string()
-    // .transform((_, ctx: z.RefinementCtx & { input: { id: string } }) => {
-    //   const id = ctx.input.id as string;
-    //   return id.slice(0, 2).toUpperCase();
-    // })
-    .optional(),
+  // breaking id refinement
+  state: z.string(),
+  // .transform((_, ctx: z.RefinementCtx & { input: { id: string } }) => {
+  //   const id = ctx.input.id as string;
+  //   return id.slice(0, 2).toUpperCase();
+  // }),
+  // .optional(),
   event: z.literal("app-k").default("app-k"),
   authority: z.string().default("1915(c)"),
   // still needed?

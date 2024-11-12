@@ -13,14 +13,12 @@ import {
 } from "@/components";
 import { Authority } from "shared-types";
 import { formSchemas } from "@/formSchemas";
-// import { WaiverIdField } from "./WaiverIdField";
-// import { StateField } from "./StateField";
 import { Link } from "react-router-dom";
 import { FAQ_TAB } from "@/router";
 
 export const AppKAmendmentForm = () => (
   <ActionForm
-    title="1915(c) Appendix K Amendment Request Details"
+    title="1915(c) Appendix K Details"
     breadcrumbText="Request a 1915(c) Appendix K Amendment"
     schema={formSchemas["app-k"]}
     fields={(form) => (
@@ -91,20 +89,6 @@ export const AppKAmendmentForm = () => (
             </FormItem>
           )}
         />
-        {/* <FormField
-          control={form.control}
-          name="state"
-          render={({ field }) => (
-            <StateField value={field.value} onChange={field.onChange} />
-          )}
-        /> */}
-
-        {/* <WaiverIdField
-          control={form.control}
-          name="waiverIds"
-          state={form.watch("state")}
-        /> */}
-
         <FormField
           control={form.control}
           name="proposedEffectiveDate"
@@ -119,9 +103,9 @@ export const AppKAmendmentForm = () => (
               </FormLabel>
               <FormControl>
                 <DatePicker
-                  dataTestId="proposedEffectiveDate"
-                  onChange={field.onChange}
+                  onChange={(date) => field.onChange(date.getTime())}
                   date={field.value ? new Date(field.value) : undefined}
+                  dataTestId="proposedEffectiveDate"
                 />
               </FormControl>
               <FormMessage />
