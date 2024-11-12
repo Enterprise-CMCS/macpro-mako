@@ -1,8 +1,12 @@
 import { test } from "@playwright/test";
+import { HomePage, LoginPage } from "pages";
 
 test.describe.skip("Form Submission", async () => {
   // comment this out until we need it
-  // test.beforeAll();
+  test.beforeAll(async ({}) => {
+    // Call home.page.ts to go to the MACPRO Home Page 
+
+  });
   test("Create and submit a Medicaid SPA", () => {
     /* Login */
     // Navigate to the OneMAC Home Page using the home.page.ts file. 
@@ -17,5 +21,16 @@ test.describe.skip("Form Submission", async () => {
     // This should take the user to the Medicaid SPA Details page. 
 
     /* Medicaid SPA Details */
+    // Enter the SPA ID in the following formats: SS-YY-NNNN, SS-YY-NNNN-XXXX where SS is the state and YY is the current year.
+    // Enter the Proposed Effective Date of Medicaid SPA. Default date is the date of SPA creation. 
+
+    /* Attachments */
+    // Generate a sample CMS Form 179 file and attach it to the CMS Form 179 field. 
+    // Generate a sample SPA Pages file and attach it to the SPA Pages field.
+
+    /* Submission */
+    // Click Submit. The user should then be returned to the Dashboard page. 
+    // Verify the submission of the SPA by searching for the newly created SPA using the Dashboard.
+    // Confirm that a search of the newly-created SPA opens a Package Details page of the Medicaid SPA. 
   });
 });
