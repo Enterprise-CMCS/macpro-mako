@@ -9,7 +9,6 @@ import {
   Waiver1915bStateEmail,
 } from "./emailTemplates";
 import { render } from "@react-email/render";
-import { getToAddress } from "../email-components";
 
 export const respondToRai: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
@@ -30,7 +29,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: getToAddress({ name: variables.submitterName, email: variables.submitterEmail }),
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Your Medicaid SPA RAI Response for ${variables.id} has been submitted to CMS`,
         body: await render(<MedSpaStateEmail variables={variables} />),
       };
@@ -55,7 +54,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: getToAddress({ name: variables.submitterName, email: variables.submitterEmail }),
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Your CHIP SPA RAI Response for ${variables.id} has been submitted to CMS`,
         body: await render(<ChipSpaStateEmail variables={variables} />),
       };
@@ -80,9 +79,9 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: getToAddress({ name: variables.submitterName, email: variables.submitterEmail }),
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         cc: variables.allStateUsersEmails,
-        subject: `Your ${variables.authority} ${variables.authority} Response for ${variables.id} has been submitted to CMS`,
+        subject: `Your ${variables.authority} Response for ${variables.id} has been submitted to CMS`,
         body: await render(<Waiver1915bStateEmail variables={variables} />),
       };
     },

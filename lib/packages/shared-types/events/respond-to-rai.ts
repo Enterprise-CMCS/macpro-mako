@@ -2,33 +2,14 @@ import { z } from "zod";
 import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
 
 export const respondToRaiBaseSchema = z.object({
-  id: z.string(),
   authority: z.string(),
-  origin: z.string(),
   requestedDate: z.number(),
   responseDate: z.number(),
-  attachments: z.object({
-    cmsForm179: z.object({
-      label: z.string().default("CMS Form 179"),
-      files: attachmentArraySchemaOptional(),
-    }),
-    spaPages: z.object({
-      label: z.string().default("SPA Pages"),
-      files: attachmentArraySchemaOptional(),
-    }),
-    other: z.object({
-      label: z.string().default("Other"),
-      files: attachmentArraySchemaOptional(),
-    }),
-  }),
-  additionalInformation: z.string().nullable().default(null),
   submitterName: z.string(),
   submitterEmail: z.string(),
   proposedEffectiveDate: z.number().optional(),
   submittedDate: z.number().optional(),
-  timestamp: z.number().optional(),
 });
-export type RaiResponse = z.infer<typeof respondToRaiBaseSchema>;
 
 export const medicaidSpaAttachments = z.object({
   raiResponseLetter: z.object({
@@ -79,7 +60,7 @@ export const chipSpaAttachments = z.object({
   }),
 });
 
-export const baseSchema = z.object({
+export const baseSchema = respondToRaiBaseSchema.extend({
   event: z.literal("respond-to-rai").default("respond-to-rai"),
   additionalInformation: z.string().max(4000).nullable().default(null),
   attachments: chipSpaAttachments.or(waiverAttachments).or(medicaidSpaAttachments),
