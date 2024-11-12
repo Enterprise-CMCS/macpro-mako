@@ -17,6 +17,5 @@ export * as checkConsumerLag from "./checkConsumerLag";
 export * as cfnNotify from "./cfnNotify";
 export * as deleteTriggers from "./deleteTriggers";
 export * as sinkChangelog from "./sinkChangelog";
-export * as appkNewSubmission from "./appkNewSubmission";
 export * as item from "./item";
 export * as postAuth from "./postAuth";
