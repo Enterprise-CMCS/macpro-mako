@@ -9,7 +9,7 @@ import {
 import { type APIGatewayEvent } from "aws-lambda";
 import { itemExists } from "libs/api/package";
 
-export const appendixK = async (event: APIGatewayEvent) => {
+export const appK = async (event: APIGatewayEvent) => {
   if (!event.body) return;
 
   const parsedResult = events["app-k"].baseSchema.safeParse(

@@ -170,6 +170,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const onSubmit = form.handleSubmit(async (formData) => {
     try {
+      console.log(formData, "FORM DATA");
+      console.log(form.formState.errors, "FORM ERRORS");
       await API.post("os", "/submit", {
         body: formData,
       });

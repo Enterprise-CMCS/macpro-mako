@@ -131,7 +131,7 @@ export const AppKAmendmentForm = () => (
         />
       </>
     )}
-    defaultValues={{ id: "", title: "" }}
+    defaultValues={{ id: "", title: "", state: "OH" }}
     documentPollerArgs={{
       property: "id",
       // fix?
