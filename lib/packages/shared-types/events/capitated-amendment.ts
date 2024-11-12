@@ -1,11 +1,7 @@
 import { z } from "zod";
-import {
-  attachmentArraySchema,
-  attachmentArraySchemaOptional,
-} from "../attachments";
+import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
 
 export const baseSchema = z.object({
-  // zAmendmentWaiverNumberSchema
   event: z.literal("capitated-amendment").default("capitated-amendment"),
   authority: z.string().default("1915(b)"),
   id: z
@@ -18,19 +14,13 @@ export const baseSchema = z.object({
   proposedEffectiveDate: z.number(),
   attachments: z.object({
     bCapWaiverApplication: z.object({
-      label: z
-        .string()
-        .default(
-          "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
-        ),
+      label: z.string().default("1915(b) Comprehensive (Capitated) Waiver Application Pre-print"),
       files: attachmentArraySchema(),
     }),
     bCapCostSpreadsheets: z.object({
       label: z
         .string()
-        .default(
-          "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
-        ),
+        .default("1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets"),
       files: attachmentArraySchema(),
     }),
     tribalConsultation: z.object({

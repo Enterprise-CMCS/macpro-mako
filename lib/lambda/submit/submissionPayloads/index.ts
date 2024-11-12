@@ -7,6 +7,9 @@ import { contractingAmendment } from "./contracting-amendment";
 import { contractingInitial } from "./contracting-initial";
 import { contractingRenewal } from "./contracting-renewal";
 import { temporaryExtension } from "./temporary-extension";
+import { withdrawPackage } from "./withdraw-package";
+import { withdrawRai } from "./withdraw-rai";
+import { toggleWithdrawRai } from "./toggle-withdraw-rai";
 import { respondToRai } from "./respond-to-rai";
 
 export const submissionPayloads = {
@@ -19,5 +22,8 @@ export const submissionPayloads = {
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
   "temporary-extension": temporaryExtension,
+  "withdraw-package": withdrawPackage,
+  "withdraw-rai": withdrawRai,
+  "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
 };

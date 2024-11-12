@@ -108,6 +108,7 @@ type RHFTextItemType =
   | "italic"
   | "list"
   | "numberedSet"
+  | "paragraph"
   | "default";
 
 export type RHFOption = {

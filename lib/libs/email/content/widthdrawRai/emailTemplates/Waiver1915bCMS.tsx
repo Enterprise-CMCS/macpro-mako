@@ -1,17 +1,10 @@
-import * as React from "react";
-import { emailTemplateValue } from "../data";
-import { CommonVariables } from "../../..";
+import { CommonEmailVariables } from "shared-types";
 import { RaiWithdraw } from "shared-types";
 import { Container, Html } from "@react-email/components";
-import {
-  WithdrawRAI,
-  PackageDetails,
-  SpamWarning,
-} from "../../email-components";
-import { relatedEvent } from "./AppKCMS";
+import { WithdrawRAI, PackageDetails, BasicFooter } from "../../email-components";
 
 export const Waiver1915bCMSEmail = (props: {
-  variables: RaiWithdraw & CommonVariables;
+  variables: RaiWithdraw & CommonEmailVariables;
   relatedEvent: any;
 }) => {
   const { variables, relatedEvent } = { ...props };
@@ -27,21 +20,9 @@ export const Waiver1915bCMSEmail = (props: {
             "Waiver Number": variables.id,
             Summary: variables.additionalInformation,
           }}
-          attachments={variables.attachments}
         />
-        <SpamWarning />
+        <BasicFooter />
       </Container>
     </Html>
   );
 };
-
-const Waiver1915bCMSEmailPreview = () => {
-  return (
-    <Waiver1915bCMSEmail
-      relatedEvent={relatedEvent}
-      variables={emailTemplateValue as RaiWithdraw & CommonVariables}
-    />
-  );
-};
-
-export default Waiver1915bCMSEmailPreview;

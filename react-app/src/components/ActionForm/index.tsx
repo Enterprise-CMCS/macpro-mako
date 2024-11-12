@@ -18,33 +18,17 @@ import {
   RequiredFieldDescription,
   RequiredIndicator,
 } from "@/components";
-import {
-  DefaultValues,
-  FieldPath,
-  useForm,
-  UseFormReturn,
-} from "react-hook-form";
+import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import {
-  Navigate,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
-import { SlotAdditionalInfo } from "@/features";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+import { SlotAdditionalInfo } from "@/features/forms/renderSlots";
 import { getFormOrigin } from "@/utils";
-import {
-  CheckDocumentFunction,
-  documentPoller,
-} from "@/utils/Poller/documentPoller";
+import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
 import { API } from "aws-amplify";
 import { Authority, CognitoUserAttributes } from "shared-types";
 import { ActionFormAttachments } from "./ActionFormAttachments";
-import {
-  getAttachments,
-  getAdditionalInformation,
-} from "./actionForm.utilities";
+import { getAttachments } from "./actionForm.utilities";
 import { isStateUser } from "shared-utils";
 import { useGetUser } from "@/api";
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
@@ -55,20 +39,14 @@ type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
         files: z.ZodTypeAny;
       }>;
     }>;
-    additionalInformation?:
-      | z.ZodOptional<z.ZodString>
-      | z.ZodOptional<z.ZodDefault<z.ZodNullable<z.ZodString>>>
-      | z.ZodDefault<z.ZodNullable<z.ZodString>>
-      | z.ZodEffects<z.ZodTypeAny>
-      | z.ZodNullable<z.ZodAny>;
   },
   "strip",
   z.ZodTypeAny
 >;
 
-export type SchemaWithEnforcableProps<
-  Shape extends z.ZodRawShape = z.ZodRawShape,
-> = z.ZodEffects<EnforceSchemaProps<Shape>> | EnforceSchemaProps<Shape>;
+export type SchemaWithEnforcableProps<Shape extends z.ZodRawShape = z.ZodRawShape> =
+  | z.ZodEffects<EnforceSchemaProps<Shape>>
+  | EnforceSchemaProps<Shape>;
 
 // Utility type to handle Zod schema with or without a transform
 type InferUntransformedSchema<T> = T extends z.ZodEffects<infer U> ? U : T;
@@ -78,30 +56,31 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   defaultValues?: DefaultValues<z.infer<InferUntransformedSchema<Schema>>>;
   title: string;
   fieldsLayout?: (props: { children: ReactNode; title: string }) => ReactNode;
-  fields: (
-    form: UseFormReturn<z.infer<InferUntransformedSchema<Schema>>>,
-  ) => ReactNode;
+  fields: (form: UseFormReturn<z.infer<InferUntransformedSchema<Schema>>>) => ReactNode;
   bannerPostSubmission?: Omit<Banner, "pathnameToDisplayOn">;
   promptPreSubmission?: Omit<UserPrompt, "onAccept">;
   promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
   attachments?: {
+    title?: string;
+    callout?: string;
+    instructions?: React.ReactNode;
     faqLink: string;
-    specialInstructions?: string;
-    outerInstructions?: string;
   };
+  additionalInformation?:
+    | {
+        required: boolean;
+        title: string;
+        label: string;
+      }
+    | false;
   documentPollerArgs: {
-    property:
-      | (keyof z.TypeOf<Schema> & string)
-      | ((values: z.TypeOf<Schema>) => string);
+    property: (keyof z.TypeOf<Schema> & string) | ((values: z.TypeOf<Schema>) => string);
     documentChecker: CheckDocumentFunction;
   };
-  conditionsDeterminingUserAccess?: ((
-    user: CognitoUserAttributes | null,
-  ) => boolean)[];
+  conditionsDeterminingUserAccess?: ((user: CognitoUserAttributes | null) => boolean)[];
   breadcrumbText: string;
   formDescription?: string;
   preSubmissionMessage?: string;
-  additionalInfoLabel?: string;
   showPreSubmissionMessage?: boolean;
   requiredFields?: boolean;
 };
@@ -134,7 +113,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       to edit this form. If CMS needs any additional information, they will
       follow up by email.`,
   preSubmissionMessage,
-  additionalInfoLabel = `Add anything else you would like to share with CMS.`,
+  additionalInformation = {
+    required: false,
+    label: "Add anything else you would like to share with CMS.",
+    title: "Additional Information",
+  },
   showPreSubmissionMessage = true,
   requiredFields = true,
 }: ActionFormProps<Schema>) => {
@@ -149,14 +132,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const { data: userObj } = useGetUser();
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority);
-
-  const getBaseSchemaWithoutEffects = (schema: z.ZodTypeAny): z.ZodTypeAny => {
-    // Traverse through ZodEffects (e.g., caused by `.refine()`)
-    while (schema instanceof z.ZodEffects) {
-      schema = schema._def.schema;
-    }
-    return schema;
-  };
 
   if (id) {
     breadcrumbs.push({
@@ -183,9 +158,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       const { documentChecker, property } = documentPollerArgs;
 
       const documentPollerId =
-        typeof property === "function"
-          ? property(formData)
-          : formData[property];
+        typeof property === "function" ? property(formData) : formData[property];
 
       const poller = documentPoller(documentPollerId, documentChecker);
       await poller.startPollingData();
@@ -210,10 +183,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   });
 
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
-  const additionalInformationFromSchema = useMemo(
-    () => getAdditionalInformation(schema),
-    [schema],
-  );
 
   const hasProgressLossReminder = useMemo(
     () => Fields({ ...form }) !== null || attachmentsFromSchema.length > 0,
@@ -222,8 +191,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const areRequiredFields = requiredFields && hasProgressLossReminder;
 
-  const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some(
-    (condition) => condition(userObj.user),
+  const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some((condition) =>
+    condition(userObj.user),
   );
 
   if (doesUserHaveAccessToForm === false) {
@@ -244,10 +213,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       />
       {form.formState.isSubmitting && <LoadingSpinner />}
       <Form {...form}>
-        <form
-          onSubmit={onSubmit}
-          className="my-6 space-y-8 mx-auto justify-center flex flex-col"
-        >
+        <form onSubmit={onSubmit} className="my-6 space-y-8 mx-auto justify-center flex flex-col">
           {FieldsLayout ? (
             <FieldsLayout title={title}>
               <Fields {...form} />
@@ -264,21 +230,14 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             </SectionCard>
           )}
           {attachmentsFromSchema.length > 0 && (
-            <ActionFormAttachments
-              attachmentsFromSchema={attachmentsFromSchema}
-              {...attachments}
-            />
+            <ActionFormAttachments attachmentsFromSchema={attachmentsFromSchema} {...attachments} />
           )}
-          {additionalInformationFromSchema && (
+          {additionalInformation && (
             <SectionCard
               title={
                 <>
-                  {"Additional Information"}{" "}
-                  {!(
-                    getBaseSchemaWithoutEffects(
-                      additionalInformationFromSchema,
-                    ) instanceof z.ZodOptional
-                  ) && <RequiredIndicator />}
+                  {additionalInformation.title}{" "}
+                  {additionalInformation.required && <RequiredIndicator />}
                 </>
               }
             >
@@ -287,7 +246,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                 name={"additionalInformation" as FieldPath<z.TypeOf<Schema>>}
                 render={SlotAdditionalInfo({
                   withoutHeading: true,
-                  label: <p>{additionalInfoLabel}</p>,
+                  label: <p>{additionalInformation.label}</p>,
                 })}
               />
             </SectionCard>
@@ -304,8 +263,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               type={promptPreSubmission ? "button" : "submit"}
               onClick={
                 promptPreSubmission
-                  ? () =>
-                      userPrompt({ ...promptPreSubmission, onAccept: onSubmit })
+                  ? () => userPrompt({ ...promptPreSubmission, onAccept: onSubmit })
                   : undefined
               }
               disabled={form.formState.isValid === false}

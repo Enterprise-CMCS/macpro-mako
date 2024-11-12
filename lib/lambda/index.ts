@@ -13,7 +13,6 @@ export * as runReindex from "./runReindex";
 export * as search from "./search";
 export * as setupIndex from "./setupIndex";
 export * as sinkMain from "./sinkMain";
-export * as submit from "./submit";
 export * as checkConsumerLag from "./checkConsumerLag";
 export * as cfnNotify from "./cfnNotify";
 export * as deleteTriggers from "./deleteTriggers";

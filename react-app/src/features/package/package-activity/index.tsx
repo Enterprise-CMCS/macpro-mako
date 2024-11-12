@@ -179,57 +179,57 @@ export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
   );
 };
 
-// export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
-//   props,
-// ) => {
-//   const hook = useAttachmentService(props);
+export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
+  props,
+) => {
+  const hook = useAttachmentService(props);
 
-//   return (
-//     <div className="flex flex-col gap-6">
-//       <div>
-//         <h2 className="font-bold text-lg mb-2">Attachments</h2>
-//         {!props.attachments?.length && <p>No information submitted</p>}
-//         {!!props.attachments?.length && (
-//           <Table.Table>
-//             <Table.TableHeader>
-//               <Table.TableRow>
-//                 <Table.TableHead className="w-[300px]">
-//                   Document Type
-//                 </Table.TableHead>
-//                 <Table.TableHead>Attached File</Table.TableHead>
-//               </Table.TableRow>
-//             </Table.TableHeader>
-//             <AttachmentDetails
-//               attachments={props.attachments}
-//               id={props.id}
-//               hook={hook}
-//             />
-//           </Table.Table>
-//         )}
-//       </div>
+  return (
+    <div className="flex flex-col gap-6">
+      <div>
+        <h2 className="font-bold text-lg mb-2">Attachments</h2>
+        {!props.attachments?.length && <p>No information submitted</p>}
+        {!!props.attachments?.length && (
+          <Table.Table>
+            <Table.TableHeader>
+              <Table.TableRow>
+                <Table.TableHead className="w-[300px]">
+                  Document Type
+                </Table.TableHead>
+                <Table.TableHead>Attached File</Table.TableHead>
+              </Table.TableRow>
+            </Table.TableHeader>
+            <AttachmentDetails
+              attachments={props.attachments}
+              id={props.id}
+              hook={hook}
+            />
+          </Table.Table>
+        )}
+      </div>
 
-//       {props.attachments && props.attachments?.length > 1 && (
-//         <Table.Button
-//           variant="outline"
-//           className="w-max"
-//           disabled={!props.attachments?.length}
-//           loading={hook.loading}
-//           onClick={() => {
-//             if (!props.attachments?.length) return;
-//             hook.onZip(props.attachments);
-//           }}
-//         >
-//           Download documents
-//         </Table.Button>
-//       )}
+      {props.attachments && props.attachments?.length > 1 && (
+        <Table.Button
+          variant="outline"
+          className="w-max"
+          disabled={!props.attachments?.length}
+          loading={hook.loading}
+          onClick={() => {
+            if (!props.attachments?.length) return;
+            hook.onZip(props.attachments);
+          }}
+        >
+          Download documents
+        </Table.Button>
+      )}
 
-//       <div>
-//         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
-//         <p>{props.additionalInformation || "No information submitted"}</p>
-//       </div>
-//     </div>
-//   );
-// };
+      <div>
+        <h2 className="font-bold text-lg mb-2">Additional Information</h2>
+        <p>{props.additionalInformation || "No information submitted"}</p>
+      </div>
+    </div>
+  );
+};
 
 // export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
 //   const hook = useAttachmentService(props);
@@ -298,6 +298,10 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
 
       // case "withdraw-rai":
       //   return ["RAI response withdrawn", PA_ResponseWithdrawn];
+      case "withdraw-package":
+        return ["Package withdrawn", PA_ResponseWithdrawn];
+      case "withdraw-rai":
+        return ["RAI response withdrawn", PA_ResponseWithdrawn];
       // case "withdraw-package":
       //   return ["Package withdrawn", PA_ResponseWithdrawn];
       // case "issue-rai":
@@ -320,11 +324,13 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
       // case "legacy-withdraw-rai-request":
       //   return ["RAI response withdrawn requested", PA_ResponseWithdrawn];
 
+      // return needs another parameter
       default:
         return [BLANK_VALUE];
     }
   }, [props.event]);
 
+  if (LABEL === BLANK_VALUE) return null;
   return (
     <AccordionItem key={props.id} value={props.id}>
       <AccordionTrigger className="bg-gray-100 px-3">
@@ -345,6 +351,9 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
 
 export const PackageActivities = () => {
   const hook = usePackageActivities();
+  const packageActivities = hook.data?.filter(
+    (activity) => !activity._source.isAdminChange,
+  );
 
   return (
     <DetailsSection
@@ -352,8 +361,8 @@ export const PackageActivities = () => {
       title={
         // needed to do this for the download all button
         <div className="flex justify-between">
-          {`Package Activity (${hook.data?.length})`}
-          {!!hook.data?.length && (
+          {`Package Activity (${packageActivities.length})`}
+          {!!packageActivities?.length && (
             <Table.Button
               loading={hook.loading}
               onClick={hook.onDownloadAll}
@@ -365,14 +374,14 @@ export const PackageActivities = () => {
         </div>
       }
     >
-      {!hook.data?.length && (
+      {!packageActivities?.length && (
         <p className="text-gray-500">No package activity recorded</p>
       )}
       <Accordion
-        key={hook.accordianDefault[0]}
+        key={packageActivities[0]._id}
         type="multiple"
         className="flex flex-col gap-2"
-        defaultValue={hook.accordianDefault}
+        defaultValue={[packageActivities[0]._id]}
       >
         {hook.data?.map((CL) => (
           <PackageActivity {...CL._source} key={CL._source.id} />

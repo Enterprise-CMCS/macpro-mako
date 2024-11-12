@@ -1,10 +1,4 @@
-import {
-  Response as Res,
-  Hit,
-  Filterable as FIL,
-  QueryState,
-  AggQuery,
-} from "./../_";
+import { Response as Res, Hit, Filterable as FIL, QueryState, AggQuery } from "./../_";
 import { z } from "zod";
 import { ItemResult as Changelog } from "./../changelog";
 import {
@@ -18,10 +12,9 @@ import {
   newMedicaidSubmission,
   legacyPackageView,
   withdrawPackage,
-  issueRai,
   respondToRai,
   withdrawRai,
-  toggleWithdrawEnabled,
+  toggleWithdrawRai,
   seatool,
   changedDate,
   temporaryExtension,
@@ -37,11 +30,10 @@ export type Document = z.infer<capitatedAmendment.Schema> &
   z.infer<newMedicaidSubmission.Schema> &
   z.infer<temporaryExtension.Schema> &
   z.infer<legacyPackageView.Schema> &
-  z.infer<issueRai.Schema> &
   z.infer<respondToRai.Schema> &
   z.infer<withdrawRai.Schema> &
   z.infer<withdrawPackage.Schema> &
-  z.infer<toggleWithdrawEnabled.Schema> &
+  z.infer<toggleWithdrawRai.Schema> &
   z.infer<seatool.Schema> &
   z.infer<changedDate.Schema> & {
     makoChangedDate: string;
@@ -72,5 +64,8 @@ export const transforms = {
   "contracting-initial": contractingInitial,
   "contracting-renewal": contractingRenewal,
   "temporary-extension": temporaryExtension,
+  "withdraw-package": withdrawPackage,
+  "withdraw-rai": withdrawRai,
+  "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
 };

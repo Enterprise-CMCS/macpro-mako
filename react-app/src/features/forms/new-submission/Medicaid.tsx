@@ -81,7 +81,7 @@ export const MedicaidForm = () => (
     defaultValues={{ id: "" }}
     attachments={{
       faqLink: "/faq/medicaid-spa-attachments",
-      specialInstructions:
+      instructions:
         "Maximum file size of 80 MB per attachment. You can add multiple files per attachment type except for the CMS Form 179.",
     }}
     documentPollerArgs={{
