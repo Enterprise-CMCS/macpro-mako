@@ -19,7 +19,7 @@ export const baseSchema = z.object({
   event: z.literal("app-k").default("app-k"),
   authority: z.string().default("1915(c)"),
   // still needed?
-  proposedEffectiveDate: z.date(),
+  proposedEffectiveDate: z.number(),
   // still needed?
   seaActionType: z.string().default("Amend"),
   title: z.string().trim().min(1, { message: "Required" }),

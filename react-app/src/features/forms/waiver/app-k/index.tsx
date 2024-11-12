@@ -121,7 +121,7 @@ export const AppKAmendmentForm = () => (
                 <DatePicker
                   dataTestId="proposedEffectiveDate"
                   onChange={field.onChange}
-                  date={field.value}
+                  date={field.value ? new Date(field.value) : undefined}
                 />
               </FormControl>
               <FormMessage />
