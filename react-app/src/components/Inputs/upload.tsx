@@ -8,11 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import { LoadingSpinner } from "@/components/LoadingSpinner"; // Import your LoadingSpinner component
 import { attachmentSchema } from "shared-types";
-import {
-  extractBucketAndKeyFromUrl,
-  getPresignedUrl,
-  uploadToS3,
-} from "./upload.utilities";
+import { extractBucketAndKeyFromUrl, getPresignedUrl, uploadToS3 } from "./upload.utilities";
 
 type Attachment = z.infer<typeof attachmentSchema>;
 
@@ -23,12 +19,30 @@ type UploadProps = {
   dataTestId?: string;
 };
 
-export const Upload = ({
-  maxFiles,
-  files,
-  setFiles,
-  dataTestId,
-}: UploadProps) => {
+/**
+ * Upload component for handling file uploads with drag-and-drop functionality.
+ *
+ * @param {Object} props - The properties object.
+ * @param {number} props.maxFiles - The maximum number of files that can be uploaded.
+ * @param {Attachment[]} props.files - The current list of uploaded files.
+ * @param {Function} props.setFiles - Function to update the list of uploaded files.
+ * @param {string} props.dataTestId - The data-testid attribute for testing purposes.
+ *
+ * @returns {JSX.Element} The rendered Upload component.
+ *
+ * @component
+ * @example
+ * const [files, setFiles] = useState<Attachment[]>([]);
+ * return (
+ *   <Upload
+ *     maxFiles={5}
+ *     files={files}
+ *     setFiles={setFiles}
+ *     dataTestId="file-upload"
+ *   />
+ * );
+ */
+export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) => {
   const [isUploading, setIsUploading] = useState(false); // New state for tracking upload status
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const uniqueId = uuidv4();
@@ -36,9 +50,7 @@ export const Upload = ({
   const onDrop = useCallback(
     async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
       if (fileRejections.length > 0) {
-        setErrorMessage(
-          "Selected file(s) is too large or of a disallowed file type.",
-        );
+        setErrorMessage("Selected file(s) is too large or of a disallowed file type.");
       } else {
         setErrorMessage(null);
         setIsUploading(true); // Set uploading to true
@@ -130,9 +142,7 @@ export const Upload = ({
         >
           <p>
             Drag file here or{" "}
-            <span className="text-sky-700 underline hover:cursor-pointer">
-              choose from folder
-            </span>
+            <span className="text-sky-700 underline hover:cursor-pointer">choose from folder</span>
           </p>
           <label htmlFor={`upload-${uniqueId}`} className="sr-only">
             Drag file here or choose from folder
