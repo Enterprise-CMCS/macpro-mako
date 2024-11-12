@@ -27,7 +27,9 @@ export const TemporaryExtensionForm = () => {
     <ActionForm
       schema={formSchemas["temporary-extension"]}
       title="Temporary Extension Request Details"
-      breadcrumbText="Request 1915(b) or 1915(c) Temporary Extension"
+      breadcrumbText={`Request ${
+        submission ? submission._source.authority : "1915(b) or 1915(c)"
+      } Temporary Extension`}
       fields={(form) => (
         <>
           {submission ? (
