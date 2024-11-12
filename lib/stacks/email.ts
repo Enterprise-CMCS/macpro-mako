@@ -35,8 +35,8 @@ interface EnvironmentConfig {
 
 const envConfig: Record<string, EnvironmentConfig> = {
   dev: {
-    memorySize: 1024,
-    timeout: 5,
+    memorySize: 2048,
+    timeout: 10,
     logRetention: 7,
     maxRetryAttempts: 3,
     dailySendQuota: 1000,
@@ -95,6 +95,13 @@ export class Email extends cdk.NestedStack {
       },
     });
 
+    const dlq = new cdk.aws_sqs.Queue(this, "DeadLetterQueue", {
+      queueName: `${project}-${stage}-${stack}-email-dlq`,
+      encryption: cdk.aws_sqs.QueueEncryption.KMS_MANAGED,
+      retentionPeriod: cdk.Duration.days(14),
+      visibilityTimeout: cdk.Duration.seconds(300),
+    });
+
     // IAM Role for Lambda
     const lambdaRole = new cdk.aws_iam.Role(this, "LambdaExecutionRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
@@ -135,11 +142,6 @@ export class Email extends cdk.NestedStack {
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["es:ESHttpHead", "es:ESHttpPost", "es:ESHttpGet"],
-              resources: [`${openSearchDomainArn}/*`],
-            }),
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["ec2:DescribeSecurityGroups", "ec2:DescribeVpcs"],
               resources: ["*"],
             }),
@@ -161,18 +163,11 @@ export class Email extends cdk.NestedStack {
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["sqs:SendMessage"],
-              resources: ["*"],
+              resources: [dlq.queueArn],
             }),
           ],
         }),
       },
-    });
-
-    const dlq = new cdk.aws_sqs.Queue(this, "DeadLetterQueue", {
-      queueName: `${project}-${stage}-${stack}-email-dlq`,
-      encryption: cdk.aws_sqs.QueueEncryption.KMS_MANAGED,
-      retentionPeriod: cdk.Duration.days(14),
-      visibilityTimeout: cdk.Duration.seconds(300),
     });
 
     const emailAttemptsTable = new dynamodb.Table(this, "EmailAttemptsTable", {
@@ -184,12 +179,13 @@ export class Email extends cdk.NestedStack {
 
     const processEmailsLambda = new NodejsFunction(this, "ProcessEmailsLambda", {
       functionName: `${project}-${stage}-${stack}-processEmails`,
+      deadLetterQueue: dlq,
       depsLockFilePath: join(__dirname, "../../bun.lockb"),
       entry: join(__dirname, "../lambda/processEmails.ts"),
       handler: "handler",
       runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
       memorySize: envConfig[props.isDev ? "dev" : "prod"].memorySize,
-      timeout: cdk.Duration.seconds(envConfig[props.isDev ? "dev" : "prod"].timeout),
+      timeout: cdk.Duration.minutes(envConfig[props.isDev ? "dev" : "prod"].timeout),
       role: lambdaRole,
       vpc: vpc,
       vpcSubnets: {
@@ -199,7 +195,9 @@ export class Email extends cdk.NestedStack {
       securityGroups: [lambdaSecurityGroup],
       environment: {
         region: cdk.Stack.of(this).region,
+        configurationSetName: `${project}-${stage}-${stack}-email-configuration-set`,
         stage,
+        isDev: isDev.toString(),
         indexNamespace,
         osDomain: openSearchDomainEndpoint,
         applicationEndpointUrl,
@@ -260,6 +258,15 @@ export class Email extends cdk.NestedStack {
       threshold: 1,
       evaluationPeriods: 1,
       alarmDescription: "Email processing lambda errors",
+      actionsEnabled: true,
+      treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
+
+    new cdk.aws_cloudwatch.Alarm(this, "EmailLambdaThrottling", {
+      metric: processEmailsLambda.metricThrottles(),
+      threshold: 1,
+      evaluationPeriods: 1,
+      alarmDescription: "Email processing lambda is being throttled",
       actionsEnabled: true,
       treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
     });
