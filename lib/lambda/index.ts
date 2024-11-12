@@ -1,4 +1,3 @@
-export * as action from "./action";
 export * as createTriggers from "./createTriggers";
 export * as deleteIndex from "./deleteIndex";
 export * as getAttachmentUrl from "./getAttachmentUrl";
