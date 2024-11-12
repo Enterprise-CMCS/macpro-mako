@@ -182,7 +182,7 @@ export const submit = async (event: APIGatewayEvent) => {
     await transaction.rollback();
     return response({
       statusCode: 500,
-      body: { message: "Internal server error" },
+      body: { message: "Failed from new appK submission" },
     });
   } finally {
     await pool.close();
