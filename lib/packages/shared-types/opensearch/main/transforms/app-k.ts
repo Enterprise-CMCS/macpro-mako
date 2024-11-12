@@ -24,9 +24,8 @@ export const transform = () => {
       origin: "OneMAC",
       raiWithdrawEnabled: false, // Set to false for new submissions
       seatoolStatus: SEATOOL_STATUS.PENDING,
-      // state: data.id.split("-")[0],
+      state: data.id.split("-")[0],
       stateStatus,
-      state: data.id.slice(0, 2).toUpperCase(),
       statusDate: new Date(todayEpoch).toISOString(),
       proposedDate: data.proposedEffectiveDate, // wish this was proposedEffectiveDate
       subject: null,
