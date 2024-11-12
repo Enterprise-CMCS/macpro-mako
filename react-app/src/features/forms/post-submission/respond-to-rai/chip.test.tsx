@@ -24,7 +24,7 @@ describe("Respond To RAI CHIP", () => {
     expect(officialRAIResponseLabel).not.toHaveClass("text-destructive");
   });
 
-  test.skip("submit button is enabled", () => {
+  test("submit button is enabled", () => {
     expect(screen.getByTestId("submit-action-form")).toBeEnabled();
   });
 });
