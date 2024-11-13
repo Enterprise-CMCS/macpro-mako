@@ -85,7 +85,7 @@ const UserDropdownMenu = () => {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
         asChild
-        className="hover:text-white/70 p-4 data-[state=open]:bg-white data-[state=open]:text-primary"
+        className="hover:text-white/70 py-2 pl-3 pr-4 data-[state=open]:bg-white data-[state=open]:text-primary"
       >
         <button className="flex flex-row gap-4 items-center cursor-pointer">
           <p className="flex">My Account</p>
