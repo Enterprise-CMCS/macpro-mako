@@ -170,8 +170,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const onSubmit = form.handleSubmit(async (formData) => {
     try {
-      console.log(formData, "FORM DATA");
-      console.log(form.formState.errors, "FORM ERRORS");
       await API.post("os", "/submit", {
         body: formData,
       });
@@ -179,9 +177,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       const { documentChecker, property } = documentPollerArgs;
 
       const documentPollerId =
-        typeof property === "function"
-          ? property(formData)
-          : formData[property];
+        typeof property === "function" ? property(formData) : formData[property];
 
       const poller = documentPoller(documentPollerId, documentChecker);
       await poller.startPollingData();
