@@ -26,9 +26,8 @@ export const AppKAmendmentForm = () => (
         <div>
           <p className="max-w-4xl mt-4 text-gray-700 font-light">
             <span className="font-bold">
-              If your Appendix K submission is for more than one waiver number,
-              please enter one of the applicable waiver numbers. You do not need
-              to create multiple submissions.
+              If your Appendix K submission is for more than one waiver number, please enter one of
+              the applicable waiver numbers. You do not need to create multiple submissions.
             </span>
           </p>
         </div>
@@ -59,7 +58,7 @@ export const AppKAmendmentForm = () => (
           render={({ field }) => (
             <FormItem>
               <div className="flex gap-4">
-                <FormLabel className="font-bold">
+                <FormLabel className="font-bold" data-testid="amendmentnumber-label">
                   Waiver Amendment Number <RequiredIndicator />
                 </FormLabel>
                 <Link
@@ -72,17 +71,14 @@ export const AppKAmendmentForm = () => (
                 </Link>
               </div>
               <p className="text-gray-500 font-light" id="waiver-number-format">
-                The Waiver Number must be in the the format SS-####.R##.## or
-                SS-#####.R##.##. For amendments, the last two digits start with
-                '01' and ascends.
+                The Waiver Number must be in the the format SS-####.R##.## or SS-#####.R##.##. For
+                amendments, the last two digits start with '01' and ascends.
               </p>
               <FormControl className="max-w-sm">
                 <Input
                   ref={field.ref}
                   value={field.value}
-                  onChange={(e) =>
-                    field.onChange(e.currentTarget.value.toUpperCase())
-                  }
+                  onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                 />
               </FormControl>
               <FormMessage />
@@ -94,12 +90,8 @@ export const AppKAmendmentForm = () => (
           name="proposedEffectiveDate"
           render={({ field }) => (
             <FormItem className="max-w-sm">
-              <FormLabel
-                className="font-bold block"
-                data-testid="proposedEffectiveDate-label"
-              >
-                Proposed Effective Date of 1915(c) Appendix K Amendment{" "}
-                <RequiredIndicator />
+              <FormLabel className="font-bold block" data-testid="proposedEffectiveDate-label">
+                Proposed Effective Date of 1915(c) Appendix K Amendment <RequiredIndicator />
               </FormLabel>
               <FormControl>
                 <DatePicker
@@ -117,7 +109,6 @@ export const AppKAmendmentForm = () => (
     defaultValues={{ id: "", title: "" }}
     documentPollerArgs={{
       property: "id",
-      // fix?
       documentChecker: (checks) =>
         checks.authorityIs([Authority["1915c"]]) && checks.actionIs("Amend"),
     }}
