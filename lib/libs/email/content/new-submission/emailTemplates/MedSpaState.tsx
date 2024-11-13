@@ -15,7 +15,7 @@ export const MedSpaStateEmail = (props: {
   variables: Events["NewMedicaidSubmission"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
-  const previewText = `Medicaid SPA &${variables.id} Submitted`;
+  const previewText = `Medicaid SPA ${variables.id} Submitted`;
   const heading = "This response confirms that you submitted a Medicaid SPA to CMS for review:";
   return (
     <BaseEmailTemplate
