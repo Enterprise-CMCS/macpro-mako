@@ -63,7 +63,7 @@ export const TemporaryExtensionForm = () => {
               )}
             />
           )}
-          {waiverId ? (
+          {waiverId && submission ? (
             <div>
               <p>Temporary Extension Type</p>
               <p className="text-xl">{waiverId}</p>
