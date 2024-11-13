@@ -15,12 +15,8 @@ describe("Respond To RAI CHIP", () => {
   });
 
   test("REVISED AMENDED STATE PLAN LANGUAGE", async () => {
-    const revisedAmendedStatePlanLanguageLabel = await upload(
-      "revisedAmendedStatePlanLanguage",
-    );
-    expect(revisedAmendedStatePlanLanguageLabel).not.toHaveClass(
-      "text-destructive",
-    );
+    const revisedAmendedStatePlanLanguageLabel = await upload("revisedAmendedStatePlanLanguage");
+    expect(revisedAmendedStatePlanLanguageLabel).not.toHaveClass("text-destructive");
   });
 
   test("OFFICIAL RAI RESPONSE", async () => {
