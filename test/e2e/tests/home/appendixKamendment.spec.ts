@@ -12,7 +12,7 @@ test.describe.skip("Form Submission", async () => {
 
     const homePage = new HomePage(page);
     const loginPage = new LoginPage(page);
-    const email = "sample@example.com";
+    const email = "Testing";
     const password = "Testing";
 
     await homePage;
