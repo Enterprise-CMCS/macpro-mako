@@ -6,11 +6,7 @@ import { DeploymentConfigProperties } from "../config/deployment-config";
 import * as Stacks from "../stacks";
 
 export class ParentStack extends cdk.Stack {
-  constructor(
-    scope: Construct,
-    id: string,
-    props: cdk.StackProps & DeploymentConfigProperties,
-  ) {
+  constructor(scope: Construct, id: string, props: cdk.StackProps & DeploymentConfigProperties) {
     super(scope, id, props);
 
     const commonProps = {
@@ -18,9 +14,7 @@ export class ParentStack extends cdk.Stack {
       stage: props.stage,
       isDev: props.isDev,
     };
-    const topicNamespace = props.isDev
-      ? `--${props.project}--${props.stage}--`
-      : "";
+    const topicNamespace = props.isDev ? `--${props.project}--${props.stage}--` : "";
     const indexNamespace = props.stage;
 
     const vpc = cdk.aws_ec2.Vpc.fromLookup(this, "Vpc", {
@@ -113,15 +107,12 @@ export class ParentStack extends cdk.Stack {
       privateSubnets,
       brokerString: props.brokerString,
       topicNamespace,
-      userPoolId: authStack.userPool.userPoolId,
       indexNamespace,
-      lambdaSecurityGroupId:
-        networkingStack.lambdaSecurityGroup.securityGroupId,
+      lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
       applicationEndpointUrl: uiInfraStack.applicationEndpointUrl,
       emailAddressLookupSecretName: props.emailAddressLookupSecretName,
-      lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
-      openSearchDomainEndpoint: dataStack.openSearchDomainEndpoint,
       openSearchDomainArn: dataStack.openSearchDomainArn,
+      openSearchDomainEndpoint: `https://${dataStack.openSearchDomainEndpoint}`,
       userPool: authStack.userPool,
     });
 
@@ -148,7 +139,7 @@ export class ParentStack extends cdk.Stack {
       description: `Deployment config for the ${props.stage} environment.`,
     });
 
-    if (props.stage === "main") {
+    if (!commonProps.isDev) {
       this.exportValue(dataStack.openSearchDomainEndpoint, {
         name: `${props.project}-sharedOpenSearchDomainEndpoint`,
       });

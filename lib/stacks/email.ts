@@ -2,30 +2,53 @@ import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { join } from "path";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
-import { ISubnet } from "aws-cdk-lib/aws-ec2";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { commonBundlingOptions } from "../config/bundling-config";
+import { DeploymentConfigProperties } from "lib/config/deployment-config";
 
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;
   stage: string;
   isDev: boolean;
   stack: string;
-  userPoolId: string;
   vpc: cdk.aws_ec2.IVpc;
   applicationEndpointUrl: string;
   indexNamespace: string;
   emailAddressLookupSecretName: string;
   topicNamespace: string;
-  privateSubnets: ISubnet[];
-  lambdaSecurityGroupId: string;
-  brokerString: string;
-  lambdaSecurityGroup: cdk.aws_ec2.SecurityGroup;
+  privateSubnets: cdk.aws_ec2.ISubnet[];
+  lambdaSecurityGroup: cdk.aws_ec2.ISecurityGroup;
+  brokerString: DeploymentConfigProperties["brokerString"];
   openSearchDomainEndpoint: string;
   openSearchDomainArn: string;
   userPool: cdk.aws_cognito.UserPool;
 }
+
+interface EnvironmentConfig {
+  memorySize: number;
+  timeout: number;
+  logRetention: number;
+  maxRetryAttempts: number;
+  dailySendQuota: number;
+}
+
+const envConfig: Record<string, EnvironmentConfig> = {
+  dev: {
+    memorySize: 2048,
+    timeout: 10,
+    logRetention: 7,
+    maxRetryAttempts: 3,
+    dailySendQuota: 1000,
+  },
+  prod: {
+    memorySize: 2048,
+    timeout: 10,
+    logRetention: 30,
+    maxRetryAttempts: 5,
+    dailySendQuota: 2000,
+  },
+};
 
 export class Email extends cdk.NestedStack {
   constructor(scope: Construct, id: string, props: EmailServiceStackProps) {
@@ -35,20 +58,28 @@ export class Email extends cdk.NestedStack {
       project,
       stage,
       stack,
-      userPoolId,
       vpc,
       applicationEndpointUrl,
       topicNamespace,
       indexNamespace,
       emailAddressLookupSecretName,
       brokerString,
-      lambdaSecurityGroupId,
       privateSubnets,
-      lambdaSecurityGroup,
       openSearchDomainEndpoint,
       openSearchDomainArn,
       userPool,
+      isDev,
     } = props;
+
+    if (!brokerString || !brokerString.includes(",")) {
+      throw new Error("Invalid broker string format");
+    }
+
+    const lambdaSecurityGroup = new cdk.aws_ec2.SecurityGroup(this, "LambdaSG", {
+      vpc,
+      description: "Security group for email processing lambda",
+      allowAllOutbound: true,
+    });
 
     // SES Configuration Set
     new cdk.aws_ses.CfnConfigurationSet(this, "ConfigurationSet", {
@@ -62,6 +93,13 @@ export class Email extends cdk.NestedStack {
       suppressionOptions: {
         suppressedReasons: ["BOUNCE", "COMPLAINT"],
       },
+    });
+
+    const dlq = new cdk.aws_sqs.Queue(this, "DeadLetterQueue", {
+      queueName: `${project}-${stage}-${stack}-email-dlq`,
+      encryption: cdk.aws_sqs.QueueEncryption.KMS_MANAGED,
+      retentionPeriod: cdk.Duration.days(14),
+      visibilityTimeout: cdk.Duration.seconds(300),
     });
 
     // IAM Role for Lambda
@@ -104,11 +142,6 @@ export class Email extends cdk.NestedStack {
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["es:ESHttpHead", "es:ESHttpPost", "es:ESHttpGet"],
-              resources: [`${openSearchDomainArn}/*`],
-            }),
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["ec2:DescribeSecurityGroups", "ec2:DescribeVpcs"],
               resources: ["*"],
             }),
@@ -127,49 +160,69 @@ export class Email extends cdk.NestedStack {
               actions: ["logs:CreateLogGroup"],
               resources: ["*"],
             }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["sqs:SendMessage"],
+              resources: [dlq.queueArn],
+            }),
           ],
         }),
       },
     });
 
-    // Create a DynamoDB table to track email send attempts
     const emailAttemptsTable = new dynamodb.Table(this, "EmailAttemptsTable", {
+      tableName: `${project}-${stage}-${stack}-attempt-records`,
       partitionKey: { name: "emailId", type: dynamodb.AttributeType.STRING },
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      timeToLiveAttribute: "ttl",
     });
 
     const processEmailsLambda = new NodejsFunction(this, "ProcessEmailsLambda", {
       functionName: `${project}-${stage}-${stack}-processEmails`,
+      deadLetterQueue: dlq,
       depsLockFilePath: join(__dirname, "../../bun.lockb"),
       entry: join(__dirname, "../lambda/processEmails.ts"),
       handler: "handler",
       runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
-      memorySize: 1024,
-      timeout: cdk.Duration.minutes(15),
+      memorySize: envConfig[props.isDev ? "dev" : "prod"].memorySize,
+      timeout: cdk.Duration.minutes(envConfig[props.isDev ? "dev" : "prod"].timeout),
       role: lambdaRole,
       vpc: vpc,
       vpcSubnets: {
         subnets: privateSubnets,
       },
-      logRetention: 30,
+      logRetention: envConfig[isDev ? "dev" : "prod"].logRetention,
       securityGroups: [lambdaSecurityGroup],
       environment: {
-        isDev: props.isDev.toString(),
-        region: this.region,
+        region: cdk.Stack.of(this).region,
+        configurationSetName: `${project}-${stage}-${stack}-email-configuration-set`,
         stage,
+        isDev: isDev.toString(),
         indexNamespace,
-        osDomain: `https://${openSearchDomainEndpoint}`,
+        osDomain: openSearchDomainEndpoint,
         applicationEndpointUrl,
         emailAddressLookupSecretName,
-        EMAIL_ATTEMPTS_TABLE: emailAttemptsTable.tableName,
-        MAX_RETRY_ATTEMPTS: "3", // Set the maximum number of retry attempts
-        userPoolId,
+        userPoolId: userPool.userPoolId,
+        DLQ_URL: dlq.queueUrl,
       },
       bundling: commonBundlingOptions,
+      tracing: cdk.aws_lambda.Tracing.ACTIVE,
     });
 
-    // Grant the Lambda function read/write permissions
     emailAttemptsTable.grantReadWriteData(processEmailsLambda);
+
+    const alarmTopic = new cdk.aws_sns.Topic(this, "EmailErrorAlarmTopic");
+
+    const alarm = new cdk.aws_cloudwatch.Alarm(this, "EmailErrorAlarm", {
+      actionsEnabled: true,
+      metric: processEmailsLambda.metricErrors(),
+      threshold: 1,
+      evaluationPeriods: 1,
+      alarmDescription: "Email processing lambda errors",
+      treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
+
+    alarm.addAlarmAction(new cdk.aws_cloudwatch_actions.SnsAction(alarmTopic));
 
     new CfnEventSourceMapping(this, "SinkEmailTrigger", {
       batchSize: 1,
@@ -187,11 +240,54 @@ export class Email extends cdk.NestedStack {
         })),
         {
           type: "VPC_SECURITY_GROUP",
-          uri: `security_group:${lambdaSecurityGroupId}`,
+          uri: `security_group:${lambdaSecurityGroup.securityGroupId}`,
         },
       ],
       startingPosition: "LATEST",
       topics: [`${topicNamespace}aws.onemac.migration.cdc`],
+      destinationConfig: {
+        onFailure: {
+          destination: dlq.queueArn,
+        },
+      },
+    });
+
+    // Add CloudWatch alarms
+    new cdk.aws_cloudwatch.Alarm(this, "EmailProcessingErrors", {
+      metric: processEmailsLambda.metricErrors(),
+      threshold: 1,
+      evaluationPeriods: 1,
+      alarmDescription: "Email processing lambda errors",
+      actionsEnabled: true,
+      treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
+
+    new cdk.aws_cloudwatch.Alarm(this, "EmailLambdaThrottling", {
+      metric: processEmailsLambda.metricThrottles(),
+      threshold: 1,
+      evaluationPeriods: 1,
+      alarmDescription: "Email processing lambda is being throttled",
+      actionsEnabled: true,
+      treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
+
+    // Add specific ingress rules if needed
+    lambdaSecurityGroup.addIngressRule(
+      cdk.aws_ec2.Peer.ipv4(vpc.vpcCidrBlock),
+      cdk.aws_ec2.Port.tcp(443),
+      "Allow HTTPS from VPC",
+    );
+
+    new cdk.aws_cloudwatch.Alarm(this, "SESSendQuotaAlarm", {
+      metric: new cdk.aws_cloudwatch.Metric({
+        namespace: "AWS/SES",
+        metricName: "Daily24HourSend",
+        statistic: "Sum",
+        period: cdk.Duration.hours(24),
+      }),
+      threshold: envConfig[props.isDev ? "dev" : "prod"].dailySendQuota * 0.8, // 80% of quota
+      evaluationPeriods: 1,
+      comparisonOperator: cdk.aws_cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
     });
   }
 }
