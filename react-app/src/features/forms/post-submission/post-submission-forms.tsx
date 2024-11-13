@@ -9,6 +9,7 @@ import { queryClient } from "../../../router";
 import { getItem } from "@/api";
 import { WithdrawRaiForm } from "./withdraw-rai";
 import { DisableWithdrawRaiForm, EnableWithdrawRaiForm } from "./toggle-withdraw-rai";
+import { AmendmentForm } from "../waiver/capitated";
 
 // the keys will relate to this part of the route /actions/{key of postSubmissionForms}/authority/id
 export const postSubmissionForms: Record<string, Record<string, () => React.ReactNode>> = {
@@ -41,6 +42,9 @@ export const postSubmissionForms: Record<string, Record<string, () => React.Reac
     ["1915(c)"]: DisableWithdrawRaiForm,
     ["Medicaid SPA"]: DisableWithdrawRaiForm,
     ["CHIP SPA"]: DisableWithdrawRaiForm,
+  },
+  "amend-waiver": {
+    ["1915(b)"]: AmendmentForm,
   },
 };
 
