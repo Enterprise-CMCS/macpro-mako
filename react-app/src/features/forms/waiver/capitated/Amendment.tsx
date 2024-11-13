@@ -120,7 +120,7 @@ export const AmendmentForm = () => {
       attachments={{
         faqLink: "/faq/waiverb-attachments",
       }}
-      defaultValues={{ id: "" }}
+      defaultValues={{ id: "", waiverNumber: waiverId }}
       documentPollerArgs={{
         property: "id",
         documentChecker: (check) => check.recordExists,
