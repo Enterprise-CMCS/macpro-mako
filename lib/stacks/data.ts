@@ -59,8 +59,7 @@ export class Data extends cdk.NestedStack {
     let openSearchDomainEndpoint;
     let openSearchDomainArn;
 
-    const usingSharedOpenSearch =
-      sharedOpenSearchDomainEndpoint && sharedOpenSearchDomainArn;
+    const usingSharedOpenSearch = sharedOpenSearchDomainEndpoint && sharedOpenSearchDomainArn;
 
     if (usingSharedOpenSearch) {
       openSearchDomainEndpoint = sharedOpenSearchDomainEndpoint;
@@ -82,28 +81,20 @@ export class Data extends cdk.NestedStack {
         },
       });
 
-      const userPoolClient = new cdk.aws_cognito.UserPoolClient(
-        this,
-        "UserPoolClient",
-        {
-          userPool,
-          authFlows: { adminUserPassword: true },
-        },
-      );
+      const userPoolClient = new cdk.aws_cognito.UserPoolClient(this, "UserPoolClient", {
+        userPool,
+        authFlows: { adminUserPassword: true },
+      });
 
-      const identityPool = new cdk.aws_cognito.CfnIdentityPool(
-        this,
-        "IdentityPool",
-        {
-          allowUnauthenticatedIdentities: false,
-          cognitoIdentityProviders: [
-            {
-              clientId: userPoolClient.userPoolClientId,
-              providerName: userPool.userPoolProviderName,
-            },
-          ],
-        },
-      );
+      const identityPool = new cdk.aws_cognito.CfnIdentityPool(this, "IdentityPool", {
+        allowUnauthenticatedIdentities: false,
+        cognitoIdentityProviders: [
+          {
+            clientId: userPoolClient.userPoolClientId,
+            providerName: userPool.userPoolProviderName,
+          },
+        ],
+      });
 
       const cognitoAuthRole = new cdk.aws_iam.Role(this, "CognitoAuthRole", {
         assumedBy: new cdk.aws_iam.FederatedPrincipal(
@@ -119,9 +110,7 @@ export class Data extends cdk.NestedStack {
           "sts:AssumeRoleWithWebIdentity",
         ),
         managedPolicies: [
-          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "AmazonCognitoReadOnly",
-          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonCognitoReadOnly"),
         ],
       });
 
@@ -133,14 +122,10 @@ export class Data extends cdk.NestedStack {
         }),
       );
 
-      new cdk.aws_cognito.CfnIdentityPoolRoleAttachment(
-        this,
-        "IdentityPoolRoleAttachment",
-        {
-          identityPoolId: identityPool.ref,
-          roles: { authenticated: cognitoAuthRole.roleArn },
-        },
-      );
+      new cdk.aws_cognito.CfnIdentityPoolRoleAttachment(this, "IdentityPoolRoleAttachment", {
+        identityPoolId: identityPool.ref,
+        roles: { authenticated: cognitoAuthRole.roleArn },
+      });
 
       const openSearchSecurityGroup = new cdk.aws_ec2.SecurityGroup(
         this,
@@ -165,132 +150,109 @@ export class Data extends cdk.NestedStack {
         ],
       });
 
-      const openSearchMasterRole = new cdk.aws_iam.Role(
-        this,
-        "OpenSearchMasterRole",
-        {
-          assumedBy: new cdk.aws_iam.ServicePrincipal("es.amazonaws.com"),
-          managedPolicies: [
-            cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "AmazonOpenSearchServiceFullAccess",
-            ),
-          ],
-        },
-      );
+      const openSearchMasterRole = new cdk.aws_iam.Role(this, "OpenSearchMasterRole", {
+        assumedBy: new cdk.aws_iam.ServicePrincipal("es.amazonaws.com"),
+        managedPolicies: [
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonOpenSearchServiceFullAccess"),
+        ],
+      });
 
       openSearchMasterRole.assumeRolePolicy?.addStatements(
         new cdk.aws_iam.PolicyStatement({
           effect: cdk.aws_iam.Effect.ALLOW,
-          principals: [
-            new cdk.aws_iam.AccountPrincipal(cdk.Stack.of(this).account),
-          ],
+          principals: [new cdk.aws_iam.AccountPrincipal(cdk.Stack.of(this).account)],
           actions: ["sts:AssumeRole"],
         }),
       );
 
-      const openSearchDomain = new cdk.aws_opensearchservice.CfnDomain(
-        this,
-        "OpenSearchDomain",
-        {
-          ebsOptions: { ebsEnabled: true, volumeType: "gp3", volumeSize: 20 },
-          clusterConfig: {
-            instanceType: "or1.medium.search",
-            instanceCount: 3,
-            dedicatedMasterEnabled: false,
-            zoneAwarenessEnabled: true,
-            zoneAwarenessConfig: { availabilityZoneCount: 3 },
-          },
-          encryptionAtRestOptions: { enabled: true },
-          nodeToNodeEncryptionOptions: { enabled: true },
-          domainEndpointOptions: {
-            enforceHttps: true,
-            tlsSecurityPolicy: "Policy-Min-TLS-1-2-PFS-2023-10",
-          },
-          cognitoOptions: {
+      const openSearchDomain = new cdk.aws_opensearchservice.CfnDomain(this, "OpenSearchDomain", {
+        ebsOptions: { ebsEnabled: true, volumeType: "gp3", volumeSize: 20 },
+        clusterConfig: {
+          instanceType: "or1.medium.search",
+          instanceCount: 3,
+          dedicatedMasterEnabled: false,
+          zoneAwarenessEnabled: true,
+          zoneAwarenessConfig: { availabilityZoneCount: 3 },
+        },
+        encryptionAtRestOptions: { enabled: true },
+        nodeToNodeEncryptionOptions: { enabled: true },
+        domainEndpointOptions: {
+          enforceHttps: true,
+          tlsSecurityPolicy: "Policy-Min-TLS-1-2-PFS-2023-10",
+        },
+        cognitoOptions: {
+          enabled: true,
+          identityPoolId: identityPool.ref,
+          roleArn: openSearchRole.roleArn,
+          userPoolId: userPool.userPoolId,
+        },
+        accessPolicies: new cdk.aws_iam.PolicyDocument({
+          statements: [
+            new cdk.aws_iam.PolicyStatement({
+              actions: ["es:*"],
+              principals: [new cdk.aws_iam.ArnPrincipal(cognitoAuthRole.roleArn)],
+              resources: ["*"],
+            }),
+          ],
+        }),
+        advancedSecurityOptions: {
+          enabled: true,
+          internalUserDatabaseEnabled: false,
+          masterUserOptions: { masterUserArn: openSearchMasterRole.roleArn },
+        },
+        vpcOptions: {
+          securityGroupIds: [openSearchSecurityGroup.securityGroupId],
+          subnetIds: privateSubnets.map((subnet) => subnet.subnetId),
+        },
+        logPublishingOptions: {
+          AUDIT_LOGS: {
             enabled: true,
-            identityPoolId: identityPool.ref,
-            roleArn: openSearchRole.roleArn,
-            userPoolId: userPool.userPoolId,
+            cloudWatchLogsLogGroupArn: new cdk.aws_logs.LogGroup(this, "OpenSearchAuditLogGroup", {
+              logGroupName: `/aws/opensearch/${project}-${stage}-audit-logs`,
+              removalPolicy: cdk.RemovalPolicy.DESTROY,
+            }).logGroupArn,
           },
-          accessPolicies: new cdk.aws_iam.PolicyDocument({
-            statements: [
-              new cdk.aws_iam.PolicyStatement({
-                actions: ["es:*"],
-                principals: [
-                  new cdk.aws_iam.ArnPrincipal(cognitoAuthRole.roleArn),
-                ],
-                resources: ["*"],
-              }),
-            ],
-          }),
-          advancedSecurityOptions: {
+          INDEX_SLOW_LOGS: {
             enabled: true,
-            internalUserDatabaseEnabled: false,
-            masterUserOptions: { masterUserArn: openSearchMasterRole.roleArn },
+            cloudWatchLogsLogGroupArn: new cdk.aws_logs.LogGroup(
+              this,
+              "OpenSearchIndexSlowLogGroup",
+              {
+                logGroupName: `/aws/opensearch/${project}-${stage}-index-slow-logs`,
+                removalPolicy: cdk.RemovalPolicy.DESTROY,
+              },
+            ).logGroupArn,
           },
-          vpcOptions: {
-            securityGroupIds: [openSearchSecurityGroup.securityGroupId],
-            subnetIds: privateSubnets.map((subnet) => subnet.subnetId),
+          SEARCH_SLOW_LOGS: {
+            enabled: true,
+            cloudWatchLogsLogGroupArn: new cdk.aws_logs.LogGroup(
+              this,
+              "OpenSearchSearchSlowLogGroup",
+              {
+                logGroupName: `/aws/opensearch/${project}-${stage}-search-slow-logs`,
+                removalPolicy: cdk.RemovalPolicy.DESTROY,
+              },
+            ).logGroupArn,
           },
-          logPublishingOptions: {
-            AUDIT_LOGS: {
-              enabled: true,
-              cloudWatchLogsLogGroupArn: new cdk.aws_logs.LogGroup(
-                this,
-                "OpenSearchAuditLogGroup",
-                {
-                  logGroupName: `/aws/opensearch/${project}-${stage}-audit-logs`,
-                  removalPolicy: cdk.RemovalPolicy.DESTROY,
-                },
-              ).logGroupArn,
-            },
-            INDEX_SLOW_LOGS: {
-              enabled: true,
-              cloudWatchLogsLogGroupArn: new cdk.aws_logs.LogGroup(
-                this,
-                "OpenSearchIndexSlowLogGroup",
-                {
-                  logGroupName: `/aws/opensearch/${project}-${stage}-index-slow-logs`,
-                  removalPolicy: cdk.RemovalPolicy.DESTROY,
-                },
-              ).logGroupArn,
-            },
-            SEARCH_SLOW_LOGS: {
-              enabled: true,
-              cloudWatchLogsLogGroupArn: new cdk.aws_logs.LogGroup(
-                this,
-                "OpenSearchSearchSlowLogGroup",
-                {
-                  logGroupName: `/aws/opensearch/${project}-${stage}-search-slow-logs`,
-                  removalPolicy: cdk.RemovalPolicy.DESTROY,
-                },
-              ).logGroupArn,
-            },
-            ES_APPLICATION_LOGS: {
-              enabled: true,
-              cloudWatchLogsLogGroupArn: new cdk.aws_logs.LogGroup(
-                this,
-                "OpenSearchApplicationLogGroup",
-                {
-                  logGroupName: `/aws/opensearch/${project}-${stage}-application-logs`,
-                  removalPolicy: cdk.RemovalPolicy.DESTROY,
-                },
-              ).logGroupArn,
-            },
+          ES_APPLICATION_LOGS: {
+            enabled: true,
+            cloudWatchLogsLogGroupArn: new cdk.aws_logs.LogGroup(
+              this,
+              "OpenSearchApplicationLogGroup",
+              {
+                logGroupName: `/aws/opensearch/${project}-${stage}-application-logs`,
+                removalPolicy: cdk.RemovalPolicy.DESTROY,
+              },
+            ).logGroupArn,
           },
         },
-      );
+      });
 
       new LC.ManageUsers(
         this,
         "ManageUsers",
         userPool,
-        JSON.parse(
-          readFileSync(
-            join(__dirname, "../../test/users/kibana-users.json"),
-            "utf8",
-          ),
-        ),
+        JSON.parse(readFileSync(join(__dirname, "../../test/users/kibana-users.json"), "utf8")),
         devPasswordArn,
       );
 
@@ -445,61 +407,57 @@ export class Data extends cdk.NestedStack {
       return fn;
     };
 
-    const sharedLambdaRole = new cdk.aws_iam.Role(
-      this,
-      "SharedLambdaExecutionRole",
-      {
-        assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
-        managedPolicies: [
-          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole",
-          ),
-          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaVPCAccessExecutionRole",
-          ),
-        ],
-        inlinePolicies: {
-          DataStackLambdarole: new cdk.aws_iam.PolicyDocument({
-            statements: [
-              new cdk.aws_iam.PolicyStatement({
-                effect: cdk.aws_iam.Effect.ALLOW,
-                actions: [
-                  "es:ESHttpHead",
-                  "es:ESHttpPost",
-                  "es:ESHttpGet",
-                  "es:ESHttpPatch",
-                  "es:ESHttpDelete",
-                  "es:ESHttpPut",
-                ],
-                resources: [`${openSearchDomainArn}/*`],
-              }),
-              new cdk.aws_iam.PolicyStatement({
-                effect: cdk.aws_iam.Effect.ALLOW,
-                actions: [
-                  "lambda:CreateEventSourceMapping",
-                  "lambda:ListEventSourceMappings",
-                  "lambda:PutFunctionConcurrency",
-                  "lambda:DeleteEventSourceMapping",
-                  "lambda:UpdateEventSourceMapping",
-                  "lambda:GetEventSourceMapping",
-                ],
-                resources: ["*"],
-              }),
-              new cdk.aws_iam.PolicyStatement({
-                effect: cdk.aws_iam.Effect.ALLOW,
-                actions: ["ec2:DescribeSecurityGroups", "ec2:DescribeVpcs"],
-                resources: ["*"],
-              }),
-              new cdk.aws_iam.PolicyStatement({
-                effect: cdk.aws_iam.Effect.DENY,
-                actions: ["logs:CreateLogGroup"],
-                resources: ["*"],
-              }),
-            ],
-          }),
-        },
+    const sharedLambdaRole = new cdk.aws_iam.Role(this, "SharedLambdaExecutionRole", {
+      assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+      managedPolicies: [
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "service-role/AWSLambdaBasicExecutionRole",
+        ),
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "service-role/AWSLambdaVPCAccessExecutionRole",
+        ),
+      ],
+      inlinePolicies: {
+        DataStackLambdarole: new cdk.aws_iam.PolicyDocument({
+          statements: [
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: [
+                "es:ESHttpHead",
+                "es:ESHttpPost",
+                "es:ESHttpGet",
+                "es:ESHttpPatch",
+                "es:ESHttpDelete",
+                "es:ESHttpPut",
+              ],
+              resources: [`${openSearchDomainArn}/*`],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: [
+                "lambda:CreateEventSourceMapping",
+                "lambda:ListEventSourceMappings",
+                "lambda:PutFunctionConcurrency",
+                "lambda:DeleteEventSourceMapping",
+                "lambda:UpdateEventSourceMapping",
+                "lambda:GetEventSourceMapping",
+              ],
+              resources: ["*"],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["ec2:DescribeSecurityGroups", "ec2:DescribeVpcs"],
+              resources: ["*"],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.DENY,
+              actions: ["logs:CreateLogGroup"],
+              resources: ["*"],
+            }),
+          ],
+        }),
       },
-    );
+    });
 
     const functionConfigs = {
       sinkChangelog: { provisionedConcurrency: 2 },
@@ -511,24 +469,19 @@ export class Data extends cdk.NestedStack {
       sinkCpocs: { provisionedConcurrency: 0 },
     };
 
-    const lambdaFunctions = Object.entries(functionConfigs).reduce(
-      (acc, [name, config]) => {
-        acc[name] = createLambda({
-          id: name,
-          role: sharedLambdaRole,
-          useVpc: true,
-          environment: {
-            osDomain: `https://${openSearchDomainEndpoint}`,
-            indexNamespace,
-          },
-          provisionedConcurrency: !props.isDev
-            ? config.provisionedConcurrency
-            : 0,
-        });
-        return acc;
-      },
-      {} as { [key: string]: NodejsFunction },
-    );
+    const lambdaFunctions = Object.entries(functionConfigs).reduce((acc, [name, config]) => {
+      acc[name] = createLambda({
+        id: name,
+        role: sharedLambdaRole,
+        useVpc: true,
+        environment: {
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: !props.isDev ? config.provisionedConcurrency : 0,
+      });
+      return acc;
+    }, {} as { [key: string]: NodejsFunction });
 
     const stateMachineRole = new cdk.aws_iam.Role(this, "StateMachineRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("states.amazonaws.com"),
@@ -536,9 +489,7 @@ export class Data extends cdk.NestedStack {
         cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
           "service-role/AWSLambdaBasicExecutionRole",
         ),
-        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "CloudWatchLogsFullAccess",
-        ),
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsFullAccess"),
       ],
       inlinePolicies: {
         StateMachinePolicy: new cdk.aws_iam.PolicyDocument({
@@ -609,27 +560,26 @@ export class Data extends cdk.NestedStack {
       },
     ).next(failureState);
 
-    const checkSeaDataProgressTask =
-      new cdk.aws_stepfunctions_tasks.LambdaInvoke(
-        this,
-        "CheckSeaDataProgress",
-        {
-          lambdaFunction: checkConsumerLag,
-          outputPath: "$.Payload",
-          payload: cdk.aws_stepfunctions.TaskInput.fromObject({
-            brokerString,
-            triggers: [
-              {
-                function: lambdaFunctions.sinkMain.functionName,
-                topics: ["aws.seatool.ksql.onemac.three.agg.State_Plan"],
-              },
-            ],
-          }),
-        },
-      ).addCatch(notifyOfFailureStep, {
-        errors: ["States.ALL"],
-        resultPath: "$.error",
-      });
+    const checkSeaDataProgressTask = new cdk.aws_stepfunctions_tasks.LambdaInvoke(
+      this,
+      "CheckSeaDataProgress",
+      {
+        lambdaFunction: checkConsumerLag,
+        outputPath: "$.Payload",
+        payload: cdk.aws_stepfunctions.TaskInput.fromObject({
+          brokerString,
+          triggers: [
+            {
+              function: lambdaFunctions.sinkMain.functionName,
+              topics: ["aws.seatool.ksql.onemac.three.agg.State_Plan"],
+            },
+          ],
+        }),
+      },
+    ).addCatch(notifyOfFailureStep, {
+      errors: ["States.ALL"],
+      resultPath: "$.error",
+    });
 
     const checkDataProgressTask = new cdk.aws_stepfunctions_tasks.LambdaInvoke(
       this,
@@ -650,10 +600,7 @@ export class Data extends cdk.NestedStack {
             },
             {
               function: lambdaFunctions.sinkChangelog.functionName,
-              topics: [
-                "aws.onemac.migration.cdc",
-                `${topicNamespace}aws.onemac.migration.cdc`,
-              ],
+              topics: ["aws.onemac.migration.cdc", `${topicNamespace}aws.onemac.migration.cdc`],
             },
             {
               function: lambdaFunctions.sinkTypes.functionName,
@@ -677,20 +624,14 @@ export class Data extends cdk.NestedStack {
       resultPath: "$.error",
     });
 
-    const definition = new cdk.aws_stepfunctions_tasks.LambdaInvoke(
-      this,
-      "DeleteAllTriggers",
-      {
-        lambdaFunction: deleteTriggers,
-        outputPath: "$.Payload",
-        payload: cdk.aws_stepfunctions.TaskInput.fromObject({
-          "Context.$": "$$",
-          functions: Object.values(lambdaFunctions).map(
-            (fn) => fn.functionName,
-          ),
-        }),
-      },
-    )
+    const definition = new cdk.aws_stepfunctions_tasks.LambdaInvoke(this, "DeleteAllTriggers", {
+      lambdaFunction: deleteTriggers,
+      outputPath: "$.Payload",
+      payload: cdk.aws_stepfunctions.TaskInput.fromObject({
+        "Context.$": "$$",
+        functions: Object.values(lambdaFunctions).map((fn) => fn.functionName),
+      }),
+    })
       .addCatch(notifyOfFailureStep, {
         errors: ["States.ALL"],
         resultPath: "$.error",
@@ -724,28 +665,24 @@ export class Data extends cdk.NestedStack {
         }),
       )
       .next(
-        new cdk.aws_stepfunctions_tasks.LambdaInvoke(
-          this,
-          "StartIndexingSeaData",
-          {
-            lambdaFunction: createTriggers,
-            outputPath: "$.Payload",
-            payload: cdk.aws_stepfunctions.TaskInput.fromObject({
-              "Context.$": "$$",
-              osDomain: `https://${openSearchDomainEndpoint}`,
-              brokerString,
-              securityGroup: lambdaSecurityGroup.securityGroupId,
-              consumerGroupPrefix,
-              subnets: privateSubnets.map((subnet) => subnet.subnetId),
-              triggers: [
-                {
-                  function: lambdaFunctions.sinkMain.functionName,
-                  topics: ["aws.seatool.ksql.onemac.three.agg.State_Plan"],
-                },
-              ],
-            }),
-          },
-        ).addCatch(notifyOfFailureStep, {
+        new cdk.aws_stepfunctions_tasks.LambdaInvoke(this, "StartIndexingSeaData", {
+          lambdaFunction: createTriggers,
+          outputPath: "$.Payload",
+          payload: cdk.aws_stepfunctions.TaskInput.fromObject({
+            "Context.$": "$$",
+            osDomain: `https://${openSearchDomainEndpoint}`,
+            brokerString,
+            securityGroup: lambdaSecurityGroup.securityGroupId,
+            consumerGroupPrefix,
+            subnets: privateSubnets.map((subnet) => subnet.subnetId),
+            triggers: [
+              {
+                function: lambdaFunctions.sinkMain.functionName,
+                topics: ["aws.seatool.ksql.onemac.three.agg.State_Plan"],
+              },
+            ],
+          }),
+        }).addCatch(notifyOfFailureStep, {
           errors: ["States.ALL"],
           resultPath: "$.error",
         }),
@@ -755,70 +692,62 @@ export class Data extends cdk.NestedStack {
         new cdk.aws_stepfunctions.Choice(this, "IsSeaDataReady")
           .when(
             cdk.aws_stepfunctions.Condition.booleanEquals("$.ready", true),
-            new cdk.aws_stepfunctions_tasks.LambdaInvoke(
-              this,
-              "DeleteSeaDataTriggers",
-              {
-                lambdaFunction: deleteTriggers,
-                outputPath: "$.Payload",
-                payload: cdk.aws_stepfunctions.TaskInput.fromObject({
-                  "Context.$": "$$",
-                  functions: [lambdaFunctions["sinkMain"].functionName],
-                }),
-              },
-            )
+            new cdk.aws_stepfunctions_tasks.LambdaInvoke(this, "DeleteSeaDataTriggers", {
+              lambdaFunction: deleteTriggers,
+              outputPath: "$.Payload",
+              payload: cdk.aws_stepfunctions.TaskInput.fromObject({
+                "Context.$": "$$",
+                functions: [lambdaFunctions["sinkMain"].functionName],
+              }),
+            })
               .addCatch(notifyOfFailureStep, {
                 errors: ["States.ALL"],
                 resultPath: "$.error",
               })
               .next(
-                new cdk.aws_stepfunctions_tasks.LambdaInvoke(
-                  this,
-                  "StartIndexingData",
-                  {
-                    lambdaFunction: createTriggers,
-                    outputPath: "$.Payload",
-                    payload: cdk.aws_stepfunctions.TaskInput.fromObject({
-                      "Context.$": "$$",
-                      osDomain: `https://${openSearchDomainEndpoint}`,
-                      brokerString,
-                      securityGroup: lambdaSecurityGroup.securityGroupId,
-                      consumerGroupPrefix,
-                      subnets: privateSubnets.map((subnet) => subnet.subnetId),
-                      triggers: [
-                        {
-                          function: lambdaFunctions.sinkMain.functionName,
-                          topics: [
-                            "aws.onemac.migration.cdc",
-                            `${topicNamespace}aws.onemac.migration.cdc`,
-                            "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan",
-                          ],
-                        },
-                        {
-                          function: lambdaFunctions.sinkChangelog.functionName,
-                          topics: [
-                            "aws.onemac.migration.cdc",
-                            `${topicNamespace}aws.onemac.migration.cdc`,
-                          ],
-                        },
-                        {
-                          function: lambdaFunctions.sinkTypes.functionName,
-                          topics: ["aws.seatool.debezium.cdc.SEA.dbo.SPA_Type"],
-                          batchSize: 10000,
-                        },
-                        {
-                          function: lambdaFunctions.sinkSubtypes.functionName,
-                          topics: ["aws.seatool.debezium.cdc.SEA.dbo.Type"],
-                          batchSize: 10000,
-                        },
-                        {
-                          function: lambdaFunctions.sinkCpocs.functionName,
-                          topics: ["aws.seatool.debezium.cdc.SEA.dbo.Officers"],
-                        },
-                      ],
-                    }),
-                  },
-                ).addCatch(notifyOfFailureStep, {
+                new cdk.aws_stepfunctions_tasks.LambdaInvoke(this, "StartIndexingData", {
+                  lambdaFunction: createTriggers,
+                  outputPath: "$.Payload",
+                  payload: cdk.aws_stepfunctions.TaskInput.fromObject({
+                    "Context.$": "$$",
+                    osDomain: `https://${openSearchDomainEndpoint}`,
+                    brokerString,
+                    securityGroup: lambdaSecurityGroup.securityGroupId,
+                    consumerGroupPrefix,
+                    subnets: privateSubnets.map((subnet) => subnet.subnetId),
+                    triggers: [
+                      {
+                        function: lambdaFunctions.sinkMain.functionName,
+                        topics: [
+                          "aws.onemac.migration.cdc",
+                          `${topicNamespace}aws.onemac.migration.cdc`,
+                          "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan",
+                        ],
+                      },
+                      {
+                        function: lambdaFunctions.sinkChangelog.functionName,
+                        topics: [
+                          "aws.onemac.migration.cdc",
+                          `${topicNamespace}aws.onemac.migration.cdc`,
+                        ],
+                      },
+                      {
+                        function: lambdaFunctions.sinkTypes.functionName,
+                        topics: ["aws.seatool.debezium.cdc.SEA.dbo.SPA_Type"],
+                        batchSize: 10000,
+                      },
+                      {
+                        function: lambdaFunctions.sinkSubtypes.functionName,
+                        topics: ["aws.seatool.debezium.cdc.SEA.dbo.Type"],
+                        batchSize: 10000,
+                      },
+                      {
+                        function: lambdaFunctions.sinkCpocs.functionName,
+                        topics: ["aws.seatool.debezium.cdc.SEA.dbo.Officers"],
+                      },
+                    ],
+                  }),
+                }).addCatch(notifyOfFailureStep, {
                   errors: ["States.ALL"],
                   resultPath: "$.error",
                 }),
@@ -827,10 +756,7 @@ export class Data extends cdk.NestedStack {
               .next(
                 new cdk.aws_stepfunctions.Choice(this, "IsDataReady")
                   .when(
-                    cdk.aws_stepfunctions.Condition.booleanEquals(
-                      "$.ready",
-                      true,
-                    ),
+                    cdk.aws_stepfunctions.Condition.booleanEquals("$.ready", true),
                     // here we conditionally slap seatoolbackon
                     new cdk.aws_stepfunctions_tasks.LambdaInvoke(
                       this,
@@ -844,15 +770,11 @@ export class Data extends cdk.NestedStack {
                           brokerString,
                           securityGroup: lambdaSecurityGroup.securityGroupId,
                           consumerGroupPrefix,
-                          subnets: privateSubnets.map(
-                            (subnet) => subnet.subnetId,
-                          ),
+                          subnets: privateSubnets.map((subnet) => subnet.subnetId),
                           triggers: [
                             {
                               function: lambdaFunctions.sinkMain.functionName,
-                              topics: [
-                                "aws.seatool.ksql.onemac.three.agg.State_Plan",
-                              ],
+                              topics: ["aws.seatool.ksql.onemac.three.agg.State_Plan"],
                             },
                           ],
                         }),
@@ -863,19 +785,12 @@ export class Data extends cdk.NestedStack {
                         resultPath: "$.error",
                       })
                       .next(notifyState("NotifyOfSuccess", true))
-                      .next(
-                        new cdk.aws_stepfunctions.Succeed(this, "SuccessState"),
-                      ),
+                      .next(new cdk.aws_stepfunctions.Succeed(this, "SuccessState")),
                   )
                   .when(
-                    cdk.aws_stepfunctions.Condition.booleanEquals(
-                      "$.ready",
-                      false,
-                    ),
+                    cdk.aws_stepfunctions.Condition.booleanEquals("$.ready", false),
                     new cdk.aws_stepfunctions.Wait(this, "WaitForData", {
-                      time: cdk.aws_stepfunctions.WaitTime.duration(
-                        cdk.Duration.seconds(3),
-                      ),
+                      time: cdk.aws_stepfunctions.WaitTime.duration(cdk.Duration.seconds(3)),
                     }).next(checkDataProgressTask),
                   ),
               ),
@@ -883,21 +798,15 @@ export class Data extends cdk.NestedStack {
           .when(
             cdk.aws_stepfunctions.Condition.booleanEquals("$.ready", false),
             new cdk.aws_stepfunctions.Wait(this, "WaitForSeaData", {
-              time: cdk.aws_stepfunctions.WaitTime.duration(
-                cdk.Duration.seconds(3),
-              ),
+              time: cdk.aws_stepfunctions.WaitTime.duration(cdk.Duration.seconds(3)),
             }).next(checkSeaDataProgressTask),
           ),
       );
 
-    const stateMachineLogGroup = new cdk.aws_logs.LogGroup(
-      this,
-      "StateMachineLogGroup",
-      {
-        logGroupName: `/aws/vendedlogs/states/${project}-${stage}-${stack}-reindex`,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    );
+    const stateMachineLogGroup = new cdk.aws_logs.LogGroup(this, "StateMachineLogGroup", {
+      logGroupName: `/aws/vendedlogs/states/${project}-${stage}-${stack}-reindex`,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
 
     const reindexStateMachine = new cdk.aws_stepfunctions.StateMachine(
       this,
@@ -914,55 +823,47 @@ export class Data extends cdk.NestedStack {
       },
     );
 
-    const runReindexLogGroup = new cdk.aws_logs.LogGroup(
-      this,
-      `runReindexLogGroup`,
-      {
-        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-runReindex`,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    );
+    const runReindexLogGroup = new cdk.aws_logs.LogGroup(this, `runReindexLogGroup`, {
+      logGroupName: `/aws/lambda/${project}-${stage}-${stack}-runReindex`,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
 
-    const runReindexLambda = new NodejsFunction(
-      this,
-      "runReindexLambdaFunction",
-      {
-        functionName: `${project}-${stage}-${stack}-runReindex`,
-        entry: join(__dirname, "../lambda/runReindex.ts"),
-        handler: "handler",
-        depsLockFilePath: join(__dirname, "../../bun.lockb"),
-        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
-        timeout: cdk.Duration.minutes(5),
-        role: new cdk.aws_iam.Role(this, "RunReindexLambdaExecutionRole", {
-          assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
-          managedPolicies: [
-            cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaBasicExecutionRole",
-            ),
-          ],
-          inlinePolicies: {
-            LambdaAssumeRolePolicy: new cdk.aws_iam.PolicyDocument({
-              statements: [
-                new cdk.aws_iam.PolicyStatement({
-                  effect: cdk.aws_iam.Effect.ALLOW,
-                  actions: ["states:StartExecution"],
-                  resources: [
-                    `arn:aws:states:${this.region}:${this.account}:stateMachine:${project}-${stage}-${stack}-reindex`,
-                  ],
-                }),
-                new cdk.aws_iam.PolicyStatement({
-                  effect: cdk.aws_iam.Effect.DENY,
-                  actions: ["logs:CreateLogGroup"],
-                  resources: ["*"],
-                }),
-              ],
-            }),
-          },
-        }),
-        logGroup: runReindexLogGroup,
-        bundling: commonBundlingOptions,
-      },
-    );
+    const runReindexLambda = new NodejsFunction(this, "runReindexLambdaFunction", {
+      functionName: `${project}-${stage}-${stack}-runReindex`,
+      entry: join(__dirname, "../lambda/runReindex.ts"),
+      handler: "handler",
+      depsLockFilePath: join(__dirname, "../../bun.lockb"),
+      runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+      timeout: cdk.Duration.minutes(5),
+      role: new cdk.aws_iam.Role(this, "RunReindexLambdaExecutionRole", {
+        assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+        managedPolicies: [
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole",
+          ),
+        ],
+        inlinePolicies: {
+          LambdaAssumeRolePolicy: new cdk.aws_iam.PolicyDocument({
+            statements: [
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["states:StartExecution"],
+                resources: [
+                  `arn:aws:states:${this.region}:${this.account}:stateMachine:${project}-${stage}-${stack}-reindex`,
+                ],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.DENY,
+                actions: ["logs:CreateLogGroup"],
+                resources: ["*"],
+              }),
+            ],
+          }),
+        },
+      }),
+      logGroup: runReindexLogGroup,
+      bundling: commonBundlingOptions,
+    });
 
     const runReindexProviderProvider = new cdk.custom_resources.Provider(
       this,
@@ -983,15 +884,14 @@ export class Data extends cdk.NestedStack {
       reindexStateMachine.node.addDependency(this.mapRoleCustomResource);
     }
 
-    const deleteIndexOnStackDeleteCustomResourceLogGroup =
-      new cdk.aws_logs.LogGroup(
-        this,
-        "deleteIndexOnStackDeleteCustomResourceLogGroup",
-        {
-          logGroupName: `/aws/lambda/${project}-${stage}-${stack}-deleteIndexOnDeleteCustomResource`,
-          removalPolicy: cdk.RemovalPolicy.DESTROY,
-        },
-      );
+    const deleteIndexOnStackDeleteCustomResourceLogGroup = new cdk.aws_logs.LogGroup(
+      this,
+      "deleteIndexOnStackDeleteCustomResourceLogGroup",
+      {
+        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-deleteIndexOnDeleteCustomResource`,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+      },
+    );
     const deleteIndexOnStackDeleteCustomResource = new cr.AwsCustomResource(
       this,
       "DeleteIndexOnStackDeleteCustomResource",
@@ -1008,9 +908,7 @@ export class Data extends cdk.NestedStack {
               indexNamespace,
             }),
           },
-          physicalResourceId: cr.PhysicalResourceId.of(
-            "delete-index-on-stack-deletes",
-          ),
+          physicalResourceId: cr.PhysicalResourceId.of("delete-index-on-stack-deletes"),
         },
         logGroup: deleteIndexOnStackDeleteCustomResourceLogGroup,
         policy: cr.AwsCustomResourcePolicy.fromStatements([
@@ -1027,9 +925,7 @@ export class Data extends cdk.NestedStack {
       },
     );
     const deleteIndexOnDeleteCustomResourcePolicy =
-      deleteIndexOnStackDeleteCustomResource.node.findChild(
-        "CustomResourcePolicy",
-      );
+      deleteIndexOnStackDeleteCustomResource.node.findChild("CustomResourcePolicy");
     deleteIndexOnStackDeleteCustomResource.node.addDependency(
       deleteIndexOnDeleteCustomResourcePolicy,
     );
@@ -1037,15 +933,14 @@ export class Data extends cdk.NestedStack {
       deleteIndexOnDeleteCustomResourcePolicy,
     );
 
-    const deleteTriggersOnStackDeleteCustomResourceLogGroup =
-      new cdk.aws_logs.LogGroup(
-        this,
-        "deleteTriggersOnStackDeleteCustomResourceLogGroup",
-        {
-          logGroupName: `/aws/lambda/${project}-${stage}-${stack}-deleteTriggersOnDeleteCustomResource`,
-          removalPolicy: cdk.RemovalPolicy.DESTROY,
-        },
-      );
+    const deleteTriggersOnStackDeleteCustomResourceLogGroup = new cdk.aws_logs.LogGroup(
+      this,
+      "deleteTriggersOnStackDeleteCustomResourceLogGroup",
+      {
+        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-deleteTriggersOnDeleteCustomResource`,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+      },
+    );
     const deleteTriggersOnStackDeleteCustomResource = new cr.AwsCustomResource(
       this,
       "DeleteTriggersOnStackDeleteCustomResource",
@@ -1058,14 +953,10 @@ export class Data extends cdk.NestedStack {
             InvocationType: "RequestResponse",
             Payload: JSON.stringify({
               RequestType: "Delete",
-              functions: Object.values(lambdaFunctions).map(
-                (fn) => fn.functionName,
-              ),
+              functions: Object.values(lambdaFunctions).map((fn) => fn.functionName),
             }),
           },
-          physicalResourceId: cr.PhysicalResourceId.of(
-            "delete-triggers-on-stack-deletes",
-          ),
+          physicalResourceId: cr.PhysicalResourceId.of("delete-triggers-on-stack-deletes"),
         },
         logGroup: deleteTriggersOnStackDeleteCustomResourceLogGroup,
         policy: cr.AwsCustomResourcePolicy.fromStatements([
@@ -1082,9 +973,7 @@ export class Data extends cdk.NestedStack {
       },
     );
     const deleteTriggersOnDeleteCustomResourcePolicy =
-      deleteTriggersOnStackDeleteCustomResource.node.findChild(
-        "CustomResourcePolicy",
-      );
+      deleteTriggersOnStackDeleteCustomResource.node.findChild("CustomResourcePolicy");
     deleteTriggersOnStackDeleteCustomResource.node.addDependency(
       deleteTriggersOnDeleteCustomResourcePolicy,
     );

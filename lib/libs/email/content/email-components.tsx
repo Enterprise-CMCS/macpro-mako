@@ -3,14 +3,13 @@ import { Attachment, AttachmentTitle, AttachmentKey } from "shared-types";
 import { createRef, forwardRef } from "react";
 import { styles } from "./email-styles";
 
-const EMAIL_CONFIG = {
+export const EMAIL_CONFIG = {
   DEV_EMAIL: "mako.stateuser+dev-to@gmail.com",
   CHIP_EMAIL: "CHIPSPASubmissionMailBox@cms.hhs.gov",
   SPA_EMAIL: "spa@cms.hhs.gov",
   SPAM_EMAIL: "SPAM@cms.hhs.gov",
 } as const;
-
-interface EmailAddress {
+export interface EmailAddress {
   name: string;
   email: string;
 }
@@ -19,13 +18,6 @@ interface AttachmentGroup {
   files?: Attachment[];
   label: string;
 }
-
-const getToAddress = ({ name, email }: EmailAddress): string[] => {
-  const formattedEmail = `"${name}" <${
-    process.env.isDev === "true" ? EMAIL_CONFIG.DEV_EMAIL : email
-  }>`;
-  return [formattedEmail];
-};
 
 const areAllAttachmentsEmpty = (
   attachments: Partial<Record<AttachmentTitle, AttachmentGroup | null>>,
@@ -137,10 +129,10 @@ const Attachments = ({
             <Column style={{ verticalAlign: "top" }}>
               <Text style={styles.text.description}>
                 {group.files.map((file, index) => (
-                  <>
+                  <span key={file.filename + index}>
                     {file.filename}
                     {index < (group.files?.length ?? 0) - 1 && <br />}
-                  </>
+                  </span>
                 ))}
               </Text>
             </Column>
@@ -153,10 +145,10 @@ const Attachments = ({
 
 const PackageDetails = ({ details }: { details: Record<any, any> }) => (
   <Section>
-    {Object.entries(details).map(([label, value]) => {
+    {Object.entries(details).map(([label, value], index) => {
       if (label === "Summary") {
         return (
-          <Row key={label}>
+          <Row key={label + index}>
             <Hr style={styles.divider} />
             <Text style={{ margin: ".5em" }}>
               <Heading as="h2" style={styles.heading.h2}>
@@ -169,7 +161,7 @@ const PackageDetails = ({ details }: { details: Record<any, any> }) => (
       }
 
       return (
-        <Row key={label}>
+        <Row key={label + index}>
           <Column align="left" style={{ width: "50%" }}>
             <Text style={styles.text.title}>{label}</Text>
           </Column>
@@ -247,20 +239,29 @@ const WithdrawRAI = ({
 );
 
 const getCpocEmail = (item: any): string[] => {
-  const { leadAnalystName, leadAnalystEmail } = item._source;
-  return [`${leadAnalystName} <${leadAnalystEmail}>`];
+  try {
+    const { leadAnalystName, leadAnalystEmail } = item._source;
+    return [`${leadAnalystName} <${leadAnalystEmail}>`];
+  } catch (e) {
+    console.error("Error getting CPCO email", e);
+    return [];
+  }
 };
 
 const getSrtEmails = (item: any): string[] => {
-  const reviewTeam = item._source.reviewTeam;
-  if (!reviewTeam) return [];
+  try {
+    const reviewTeam = item._source.reviewTeam;
+    if (!reviewTeam) return [];
 
-  return reviewTeam.map((reviewer: any) => `${reviewer.name} <${reviewer.email}>`);
+    return reviewTeam.map((reviewer: any) => `${reviewer.name} <${reviewer.email}>`);
+  } catch (e) {
+    console.error("Error getting SRT emails", e);
+    return [];
+  }
 };
 
 export {
   Textarea,
-  getToAddress,
   EmailNav,
   LoginInstructions,
   DetailsHeading,

@@ -111,12 +111,8 @@ export class ParentStack extends cdk.Stack {
       lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
       applicationEndpointUrl: uiInfraStack.applicationEndpointUrl,
       emailAddressLookupSecretName: props.emailAddressLookupSecretName,
-      openSearchDomainEndpoint: props.isDev
-        ? `https://${props.sharedOpenSearchDomainEndpoint}`
-        : `https://${dataStack.openSearchDomainEndpoint}`,
-      openSearchDomainArn: props.isDev
-        ? props.sharedOpenSearchDomainArn
-        : dataStack.openSearchDomainArn,
+      openSearchDomainArn: dataStack.openSearchDomainArn,
+      openSearchDomainEndpoint: `https://${dataStack.openSearchDomainEndpoint}`,
       userPool: authStack.userPool,
     });
 
