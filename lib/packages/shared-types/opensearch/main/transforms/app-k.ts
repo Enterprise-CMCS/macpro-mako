@@ -4,9 +4,7 @@ import {
   seaToolFriendlyTimestamp,
 } from "../../../../shared-utils/seatool-date-helper";
 
-// TODO: double check return values
 export const transform = () => {
-  // any adhoc logic
   return events["app-k"].schema.transform((data) => {
     const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.PENDING);
     const timestampDate = new Date(data.timestamp);
@@ -27,7 +25,7 @@ export const transform = () => {
       state: data.id.split("-")[0],
       stateStatus,
       statusDate: new Date(todayEpoch).toISOString(),
-      proposedDate: data.proposedEffectiveDate, // wish this was proposedEffectiveDate
+      proposedDate: data.proposedEffectiveDate,
       subject: null,
       submissionDate: new Date(nextBusinessDayEpoch).toISOString(),
       submitterEmail: data.submitterEmail,

@@ -8,18 +8,12 @@ import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { AppKAmendmentForm } from ".";
 const upload = uploadFiles<(typeof formSchemas)["app-k"]>();
 
-// use container globally for tests to use same render and let each test fill out inputs
-// and at the end validate button is enabled for submit
-let container: HTMLElement;
-
 describe("Appendix K", () => {
   beforeAll(() => {
     skipCleanup();
     mockApiRefinements();
 
-    const { container: renderedContainer } = renderForm(<AppKAmendmentForm />);
-
-    container = renderedContainer;
+    renderForm(<AppKAmendmentForm />);
   });
 
   test("Amendment title", async () => {

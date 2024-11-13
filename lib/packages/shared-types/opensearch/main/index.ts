@@ -41,12 +41,13 @@ export type Document = z.infer<capitatedAmendment.Schema> &
   z.infer<withdrawRai.Schema> &
   z.infer<withdrawPackage.Schema> &
   z.infer<toggleWithdrawRai.Schema> &
+  z.infer<appK.Schema> &
   z.infer<seatool.Schema> &
   z.infer<changedDate.Schema> & {
     makoChangedDate: string;
     changelog?: Changelog[];
     appkChildren?: OmitFoundItemResult[];
-  } & z.infer<appK.Schema>;
+  };
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
