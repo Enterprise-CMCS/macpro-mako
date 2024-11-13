@@ -1,33 +1,44 @@
 import { Events, Authority, EmailAddresses, CommonEmailVariables } from "shared-types";
 import { AuthoritiesWithUserTypesTemplate } from "../..";
 
-import { MedSpaCMSEmail, MedSpaStateEmail, ChipSpaCMSEmail, ChipSpaStateEmail, AppKCMSEmail, AppKStateEmail } from "./emailTemplates";
+import {
+  MedSpaCMSEmail,
+  MedSpaStateEmail,
+  ChipSpaCMSEmail,
+  ChipSpaStateEmail,
+  AppKCMSEmail,
+  AppKStateEmail,
+} from "./emailTemplates";
 import { render } from "@react-email/render";
-import { getToAddress } from "../email-components";
 import { Waiver1915bCMSEmail, Waiver1915bStateEmail } from "../widthdrawPackage/emailTemplates";
 
 export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
-    cms: async (variables: Events["NewMedicaidSubmission"] & CommonEmailVariables & { emails: EmailAddresses }) => {
+    cms: async (
+      variables: Events["NewMedicaidSubmission"] &
+        CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
       return {
         to: variables.emails.osgEmail,
         subject: `Medicaid SPA ${variables.id} Submitted`,
         body: await render(<MedSpaCMSEmail variables={variables} />),
       };
     },
-    state: async (variables: Events["NewMedicaidSubmission"] & CommonEmailVariables & { emails: EmailAddresses }) => {
+    state: async (
+      variables: Events["NewMedicaidSubmission"] &
+        CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
       return {
-        to: getToAddress({
-          name: variables.submitterName,
-          email: variables.submitterEmail,
-        }),
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Your SPA ${variables.id} has been submitted to CMS`,
         body: await render(<MedSpaStateEmail variables={variables} />),
       };
     },
   },
   [Authority.CHIP_SPA]: {
-    cms: async (variables: Events["NewChipSubmission"] & CommonEmailVariables & { emails: EmailAddresses }) => {
+    cms: async (
+      variables: Events["NewChipSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
       return {
         to: variables.emails.chipInbox,
         cc: variables.emails.chipCcList,
@@ -35,12 +46,11 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
         body: await render(<ChipSpaCMSEmail variables={variables} />),
       };
     },
-    state: async (variables: Events["NewChipSubmission"] & CommonEmailVariables & { emails: EmailAddresses }) => {
+    state: async (
+      variables: Events["NewChipSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
       return {
-        to: getToAddress({
-          name: variables.submitterName,
-          email: variables.submitterEmail,
-        }),
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Your CHIP SPA ${variables.id} has been submitted to CMS`,
         body: await render(<ChipSpaStateEmail variables={variables} />),
       };
@@ -64,10 +74,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
         | (Events["ContractingInitial"] & CommonEmailVariables & { emails: EmailAddresses }),
     ) => {
       return {
-        to: getToAddress({
-          name: variables.submitterName,
-          email: variables.submitterEmail,
-        }),
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Your ${variables.actionType} ${variables.id} has been submitted to CMS`,
         body: await render(<Waiver1915bStateEmail variables={variables} />),
       };
@@ -75,19 +82,20 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   },
 
   [Authority["1915c"]]: {
-    cms: async (variables: Events["NewAppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses }) => {
+    cms: async (
+      variables: Events["NewAppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
       return {
         to: variables.emails.osgEmail,
         subject: `1915(c) ${variables.id} Submitted`,
         body: await render(<AppKCMSEmail variables={variables} />),
       };
     },
-    state: async (variables: Events["NewAppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses }) => {
+    state: async (
+      variables: Events["NewAppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
       return {
-        to: getToAddress({
-          name: variables.submitterName,
-          email: variables.submitterEmail,
-        }),
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Your 1915(c) ${variables.id} has been submitted to CMS`,
         body: await render(<AppKStateEmail variables={variables} />),
       };
