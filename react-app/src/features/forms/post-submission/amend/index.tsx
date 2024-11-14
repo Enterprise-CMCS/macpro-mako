@@ -20,8 +20,6 @@ export const Amendment = () => {
     return <CapitatedForm />;
   } else if (isContracting) {
     return <ContractingForm />;
-  } else {
-    // there is probably an error or someone is doing something they shouldn't
-    return <Navigate to="/dashboard" />;
   }
+  return <Navigate to="/dashboard" />;
 };
