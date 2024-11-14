@@ -54,10 +54,10 @@ export const PackageDetails = ({ itemResult }: PackageDetailsProps) => {
       case Authority["1915b"]:
       case Authority["1915c"]:
       case undefined: // Some TEs have no authority
-        if (source.id === "NOASDFASDFASDF")
-          return "1915(c) Appendix K Package Details";
-        if (source.actionType == "Extend")
-          return "Temporary Extension Request Details";
+        if (source.id === "NOASDFASDFASDF") return "1915(c) Appendix K Package Details";
+        // confirm this line
+        if (source.actionType == "Amend") return "1915(c) Appendix K Package Details";
+        if (source.actionType == "Extend") return "Temporary Extension Request Details";
     }
 
     return `${source.authority} Package Details`;
