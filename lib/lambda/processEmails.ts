@@ -41,6 +41,9 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     "isDev",
   ] as const;
 
+  console.log(`Lambda is running in VPC: ${process.env.VPC_ID}`); // temp to check in main
+  console.log(`Lambda is using Security Group: ${process.env.SECURITY_GROUP_ID}`); // temp to check in main
+
   const missingVars = requiredEnvVars.filter((varName) => !process.env[varName]);
   if (missingVars.length > 0) {
     throw new Error(`Missing required environment variables: ${missingVars.join(", ")}`);
@@ -76,11 +79,10 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
     const failures = results.filter((r) => r.status === "rejected");
     if (failures.length > 0) {
-      console.error("Some records failed:", failures);
       throw new TemporaryError("Some records failed processing");
     }
   } catch (error) {
-    console.error("Permanent failure:", error);
+    console.error("Permanent failure:", JSON.stringify(error, null, 2));
 
     if (config.DLQ_URL) {
       const sqsClient = new SQSClient({ region: config.region });
@@ -123,8 +125,12 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     console.log("Kafka event is not of mako origin.  Doing nothing.");
     return;
   }
-
-  await processAndSendEmails(record, id, config);
+  try {
+    await processAndSendEmails(record, id, config);
+  } catch (error) {
+    console.error("Error processing record:", JSON.stringify(error, null, 2));
+    throw new Error(`Error occured while attempting to process and send emails`);
+  }
 }
 
 function validateEmailTemplate(template: any) {
@@ -137,6 +143,7 @@ function validateEmailTemplate(template: any) {
 }
 
 export async function processAndSendEmails(record: any, id: string, config: ProcessEmailConfig) {
+  console.log("processAndSendEmails called with record", JSON.stringify(record, null, 2));
   const templates = await getEmailTemplates<typeof record>(
     record.event,
     record.authority.toLowerCase(),
@@ -157,8 +164,7 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
 
-  const item = await os.getItem(config.osDomain, `${config.indexNamespace}main`, id);
-
+  const item = await os.getItem(`https://${config.osDomain}`, `${config.indexNamespace}main`, id);
   const cpocEmail = getCpocEmail(item);
   const srtEmails = getSrtEmails(item);
   const emails: EmailAddresses = JSON.parse(sec);
