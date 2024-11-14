@@ -116,7 +116,7 @@ export const AppKAmendmentForm = () => (
     }}
     bannerPostSubmission={{
       header: "Package submitted",
-      body: "The 1915(c) Appendix K Amendment Request has been submitted.",
+      body: "The 1915(c) Appendix K Amendment request has been submitted.",
       variant: "success",
     }}
   />
