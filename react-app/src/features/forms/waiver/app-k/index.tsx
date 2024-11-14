@@ -10,7 +10,8 @@ import {
   RequiredIndicator,
   Textarea,
 } from "@/components";
-import { Authority, appkSchema } from "shared-types";
+import { schema as appkSchema } from "shared-types/events/app-k";
+import { Authority } from "shared-types";
 import { WaiverIdField } from "./WaiverIdField";
 import { StateField } from "./StateField";
 
@@ -81,8 +82,8 @@ export const AppKAmendmentForm = () => (
               <FormControl>
                 <DatePicker
                   dataTestId="proposedEffectiveDate"
-                  onChange={field.onChange}
-                  date={field.value}
+                  onChange={(date) => field.onChange(date.getTime())}
+                  date={field.value ? new Date(field.value) : undefined}
                 />
               </FormControl>
               <FormMessage />

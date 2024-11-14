@@ -1,5 +1,5 @@
 import * as C from "@/components";
-import OneMacLogo from "@/assets/onemac_logo.svg";
+import OneMacLogo from "@/assets/onemac-logo.png";
 import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api";

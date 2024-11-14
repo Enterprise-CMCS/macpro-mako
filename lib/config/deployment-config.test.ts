@@ -33,8 +33,6 @@ describe("DeploymentConfig", () => {
     legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
     useSharedOpenSearch: "true",
     vpcName: "vpcName",
-    emailFromIdentity: "test@cms.hhs.gov",
-    emailIdentityDomain: "cms.hhs.gov",
     iamPath: "/my/path/",
     iamPermissionsBoundary: "arn:aws:iam::1234578910:policy/foo/bar-policy",
   });
@@ -101,8 +99,6 @@ describe("DeploymentConfig", () => {
       sharedOpenSearchDomainEndpoint: "sharedOpenSearchDomainEndpoint",
       stage: "dev",
       terminationProtection: false,
-      emailFromIdentity: "test@cms.hhs.gov",
-      emailIdentityDomain: "cms.hhs.gov",
       iamPath: "/my/path/",
       iamPermissionsBoundary: "arn:aws:iam::1234578910:policy/foo/bar-policy",
     };
@@ -118,9 +114,9 @@ describe("DeploymentConfig", () => {
       return Promise.resolve(stageSecret);
     });
 
-    await expect(
-      DeploymentConfig.fetch({ project, stage: "dev" }),
-    ).rejects.toThrow(`Failed to fetch mandatory secret ${project}-default`);
+    await expect(DeploymentConfig.fetch({ project, stage: "dev" })).rejects.toThrow(
+      `Failed to fetch mandatory secret ${project}-default`,
+    );
   });
 
   it("should warn if stage secret is not found", async () => {
@@ -131,9 +127,7 @@ describe("DeploymentConfig", () => {
       return Promise.reject(new Error(`Secret not found: ${secretName}`));
     });
 
-    const consoleWarnSpy = vi
-      .spyOn(console, "warn")
-      .mockImplementation(() => {});
+    const consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
     const deploymentConfig = await DeploymentConfig.fetch({
       project,
@@ -169,8 +163,6 @@ describe("DeploymentConfig", () => {
       sharedOpenSearchDomainEndpoint: "sharedOpenSearchDomainEndpoint",
       stage: "dev",
       terminationProtection: false,
-      emailFromIdentity: "test@cms.hhs.gov",
-      emailIdentityDomain: "cms.hhs.gov",
       iamPath: "/my/path/",
       iamPermissionsBoundary: "arn:aws:iam::1234578910:policy/foo/bar-policy",
     };

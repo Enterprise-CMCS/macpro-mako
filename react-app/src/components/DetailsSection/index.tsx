@@ -7,12 +7,7 @@ interface DetailsSectionProps {
   description?: string;
 }
 
-export const DetailsSection: React.FC<DetailsSectionProps> = ({
-  children,
-  title,
-  description,
-  id,
-}: DetailsSectionProps) => {
+export const DetailsSection = ({ children, title, description, id }: DetailsSectionProps) => {
   return (
     <SectionCard id={id} title={title}>
       {description && <p className="text-sm">{description}</p>}

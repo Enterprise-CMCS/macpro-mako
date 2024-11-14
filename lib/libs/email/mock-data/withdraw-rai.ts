@@ -1,19 +1,16 @@
 export const emailTemplateValue = {
-  to: "TO",
-  id: "PACKAGE ID",
   territory: "CO",
-  applicationEndpointUrl: "https://onemac.cms.gov/",
-
-  authority: "AUTHORITY",
-  origin: "micro",
-  requestedDate: 1723390633663,
-  withdrawnDate: 1723390633663,
+  applicationEndpointUrl: "https://mako-dev.cms.gov/",
+  actionType: "Withdrawal",
+  origin: "mako",
+  requestedDate: Date.now() - 5 * 24 * 60 * 60,
+  withdrawnDate: Date.now(),
   attachments: {
     cmsForm179: {
       files: [
         {
-          filename: "test.pdf",
-          title: "test",
+          filename: "withdraw-documentation.pdf",
+          title: "withdraw-documentation",
           bucket: "mako-outbox-attachments-635052997545",
           key: "b545ea14-6b1b-47c0-a374-743fcba4391f.pdf",
           uploadDate: 1728493782785,
@@ -24,8 +21,8 @@ export const emailTemplateValue = {
     spaPages: {
       files: [
         {
-          filename: "test.pdf",
-          title: "test",
+          filename: "Addditional Information.pdf",
+          title: "Addditional Information",
           bucket: "mako-outbox-attachments-635052997545",
           key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
           uploadDate: 1728493784252,
@@ -34,7 +31,8 @@ export const emailTemplateValue = {
       label: "SPA Pages",
     },
   },
-  additionalInformation: "This bens additional infornormaiton",
+  additionalInformation:
+    "This some additional infornormaiton about the request to withdraw and what makes it important.",
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",
   timestamp: 1723390633663,
