@@ -114,8 +114,10 @@ export const AppKAmendmentForm = () => (
     attachments={{
       faqLink: "/faq/appk-attachments",
     }}
-    // bannerPostSubmission={
-    //   header: ""
-    // }
+    bannerPostSubmission={{
+      header: "Package submitted",
+      body: "The 1915(c) Appendix K Amendment Request has been submitted.",
+      variant: "success",
+    }}
   />
 );
