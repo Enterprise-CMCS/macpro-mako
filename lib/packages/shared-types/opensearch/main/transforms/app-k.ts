@@ -12,6 +12,7 @@ export const transform = () => {
     const nextBusinessDayEpoch = getNextBusinessDayTimestamp(timestampDate);
 
     return {
+      title: data.title,
       additionalInformation: data.additionalInformation,
       authority: data.authority,
       changedDate: new Date(data.timestamp).toISOString(),
