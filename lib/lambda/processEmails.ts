@@ -41,9 +41,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     "isDev",
   ] as const;
 
-  console.log(`Lambda is running in VPC: ${process.env.VPC_ID}`); // temp to check in main
-  console.log(`Lambda is using Security Group: ${process.env.SECURITY_GROUP_ID}`); // temp to check in main
-
   const missingVars = requiredEnvVars.filter((varName) => !process.env[varName]);
   if (missingVars.length > 0) {
     throw new Error(`Missing required environment variables: ${missingVars.join(", ")}`);
@@ -61,7 +58,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   const config: ProcessEmailConfig = {
     emailAddressLookupSecretName,
     applicationEndpointUrl,
-    osDomain,
+    osDomain: `https://${osDomain}`,
     indexNamespace,
     region,
     DLQ_URL,
@@ -129,7 +126,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     await processAndSendEmails(record, id, config);
   } catch (error) {
     console.error("Error processing record:", JSON.stringify(error, null, 2));
-    throw new Error(`Error occured while attempting to process and send emails`);
+    throw error;
   }
 }
 
@@ -164,7 +161,7 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
 
-  const item = await os.getItem(`https://${config.osDomain}`, `${config.indexNamespace}main`, id);
+  const item = await os.getItem(config.osDomain, `${config.indexNamespace}main`, id);
   const cpocEmail = getCpocEmail(item);
   const srtEmails = getSrtEmails(item);
   const emails: EmailAddresses = JSON.parse(sec);
