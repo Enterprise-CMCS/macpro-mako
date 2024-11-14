@@ -17,7 +17,7 @@ import { FAQ_TAB } from "@/router";
 
 export const AppKAmendmentForm = () => (
   <ActionForm
-    title="1915(c) Appendix K Details"
+    title="1915(c) Appendix K Amendment Details"
     breadcrumbText="Request a 1915(c) Appendix K Amendment"
     schema={formSchemas["app-k"]}
     fields={(form) => (

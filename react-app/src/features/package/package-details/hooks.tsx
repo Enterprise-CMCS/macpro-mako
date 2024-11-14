@@ -62,11 +62,10 @@ export const recordDetails = (data: opensearch.main.Document): DetailSectionItem
     value: convertStateAbbrToFullName(data.state),
     canView: () => true,
   },
-  // TODO:  uncomment when appks are supported again
   {
     label: "Amendment Title",
     value: <p>{data?.title || BLANK_VALUE}</p>,
-    canView: () => false,
+    canView: () => !!data.title,
   },
   {
     label: "Subject",
