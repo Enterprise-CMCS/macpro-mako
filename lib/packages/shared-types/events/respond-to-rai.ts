@@ -40,7 +40,6 @@ export const medicaidSpaAttachments = z.object({
     label: z.string().default("Other"),
   }),
 });
-
 export const waiverAttachments = z.object({
   raiResponseLetterWaiver: z.object({
     files: attachmentArraySchema(),
@@ -78,14 +77,12 @@ export const chipSpaAttachments = z.object({
     label: z.string().default("Other"),
   }),
 });
-
 export const baseSchema = z.object({
   event: z.literal("respond-to-rai").default("respond-to-rai"),
   additionalInformation: z.string().max(4000).nullable().default(null),
   attachments: chipSpaAttachments.or(waiverAttachments).or(medicaidSpaAttachments),
   id: z.string(),
 });
-
 export const schema = baseSchema.extend({
   origin: z.literal("mako").default("mako"),
   submitterName: z.string(),
