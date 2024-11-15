@@ -25,8 +25,16 @@ const arTempExtension: ActionRule = {
     checker.hasStatus(SEATOOL_STATUS.APPROVED) &&
     checker.isWaiver &&
     checker.isInitialOrRenewal &&
-    isStateUser(user) &&
-    false,
+    isStateUser(user),
+};
+
+const arAmend: ActionRule = {
+  action: Action.AMEND_WAIVER,
+  check: (checker, user) =>
+    checker.hasStatus(SEATOOL_STATUS.APPROVED) &&
+    checker.isWaiver &&
+    checker.isInitialOrRenewal &&
+    isStateUser(user),
 };
 
 const arEnableWithdrawRaiResponse: ActionRule = {
@@ -131,6 +139,7 @@ export default [
   arWithdrawRaiResponse,
   arWithdrawPackage,
   arTempExtension,
+  arAmend,
   arUpdateId,
   arRemoveAppkChild,
   arUploadSubsequentDocuments,
