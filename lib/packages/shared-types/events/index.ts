@@ -1,5 +1,6 @@
 import { z } from "zod";
 import * as newMedicaidSubmission from "./new-medicaid-submission";
+import * as uploadSubsequentDocuments from "./upload-subsequent-documents";
 import * as newChipSubmission from "./new-chip-submission";
 import * as capitatedAmendment from "./capitated-amendment";
 import * as capitatedIntial from "./capitated-initial";
@@ -8,9 +9,8 @@ import * as contractingAmendment from "./contracting-amendment";
 import * as contractingInitial from "./contracting-initial";
 import * as contractingRenewal from "./contracting-renewal";
 import * as temporaryExtension from "./temporary-extension";
-import * as appk from "./app-k";
-
 import * as withdrawPackage from "./withdraw-package";
+import * as appk from "./app-k";
 
 import * as withdrawRai from "./withdraw-rai";
 import * as toggleWithdrawRai from "./toggle-withdraw-rai";
@@ -34,11 +34,12 @@ export const events = {
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
   "temporary-extension": temporaryExtension,
-  "respond-to-rai": respondToRai,
-  "app-k": appk,
   "withdraw-package": withdrawPackage,
   "withdraw-rai": withdrawRai,
   "toggle-withdraw-rai": toggleWithdrawRai,
+  "respond-to-rai": respondToRai,
+  "upload-subsequent-documents": uploadSubsequentDocuments,
+  "app-k": appk,
 };
 
 export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;
