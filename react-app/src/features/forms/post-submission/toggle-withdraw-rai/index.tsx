@@ -22,7 +22,7 @@ export const EnableWithdrawRaiForm = () => {
       formDescription="Once you submit this form, the most recent Formal RAI Response for this
     package will be able to be withdrawn by the state"
       showPreSubmissionMessage={false}
-      requiredFields={false}
+      areFieldsRequired={false}
       bannerPostSubmission={{
         header: "RAI response withdrawal enabled",
         body: `The state will be able to withdraw its RAI response. It may take up to a minute for this change to be applied.`,
@@ -49,7 +49,7 @@ export const DisableWithdrawRaiForm = () => {
       breadcrumbText="Disable Formal RAI Response Withdraw"
       formDescription="The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied."
       showPreSubmissionMessage={false}
-      requiredFields={false}
+      areFieldsRequired={false}
       bannerPostSubmission={{
         header: "RAI response withdrawal disabled",
         body: `The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied.`,

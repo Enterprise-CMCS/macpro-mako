@@ -18,6 +18,7 @@ import { Link, useParams } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
 import { useGetItem } from "@/api";
+import { getFAQLinkForAttachments } from "../../faqLinks";
 
 export const TemporaryExtensionForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
@@ -143,18 +144,49 @@ export const TemporaryExtensionForm = () => {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="ids.id"
+            render={({ field }) => (
+              <FormItem
+                onChange={async () => {
+                  await form.trigger("ids.validAuthority.authority");
+                }}
+              >
+                <FormLabel data-testid="requestNumber-label">
+                  <strong className="font-bold">
+                    Temporary Extension Request Number
+                    <RequiredIndicator />
+                  </strong>
+                  <Link
+                    className="text-blue-600 cursor-pointer hover:underline px-4"
+                    to={"/faq/waiver-extension-id-format"}
+                    target={FAQ_TAB}
+                    rel="noopener noreferrer"
+                  >
+                    What is my Temporary Extension Request Number?
+                  </Link>
+                </FormLabel>
+                <FormDescription className="max-w-md">
+                  Must use a waiver extension request number with the format SS-####.R##.TE## or
+                  SS-#####.R##.TE##
+                </FormDescription>
+                <FormControl>
+                  <Input
+                    className="max-w-sm"
+                    ref={field.ref}
+                    value={field.value}
+                    onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </>
       )}
-      defaultValues={{
-        ids: {
-          validAuthority: {
-            authority: submission?._source?.authority ?? "",
-            waiverNumber: waiverId ?? "",
-          },
-        },
-      }}
       attachments={{
-        faqLink: "/faq/temporary-extensions-b-attachments",
+        faqLink: getFAQLinkForAttachments("temporary-extension"),
       }}
       documentPollerArgs={{
         property: (data) => data.id,

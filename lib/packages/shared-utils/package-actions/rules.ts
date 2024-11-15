@@ -78,11 +78,13 @@ const arWithdrawRaiResponse: ActionRule = {
     isStateUser(user) &&
     !checker.isLocked,
 };
+
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
     !checker.isTempExtension && !checker.hasStatus(finalDispositionStatuses) && isStateUser(user),
 };
+
 const arUpdateId: ActionRule = {
   action: Action.UPDATE_ID,
   check: (checker, user) =>
@@ -94,6 +96,33 @@ const arRemoveAppkChild: ActionRule = {
   check: (checker, user) => isStateUser(user) && !!checker.isAppkChild && false,
 };
 
+const arUploadSubsequentDocuments: ActionRule = {
+  action: Action.UPLOAD_SUBSEQUENT_DOCUMENTS,
+  check: (checker, user) => {
+    if (isStateUser(user) === false) {
+      return false;
+    }
+
+    if (checker.needsIntake) {
+      return false;
+    }
+
+    if (checker.isTempExtension) {
+      return false;
+    }
+
+    if (checker.hasStatus([SEATOOL_STATUS.PENDING, SEATOOL_STATUS.PENDING_RAI])) {
+      if (checker.hasRequestedRai) {
+        return false;
+      }
+
+      return true;
+    }
+
+    return false;
+  },
+};
+
 export default [
   arRespondToRai,
   arEnableWithdrawRaiResponse,
@@ -103,4 +132,5 @@ export default [
   arTempExtension,
   arUpdateId,
   arRemoveAppkChild,
+  arUploadSubsequentDocuments,
 ];

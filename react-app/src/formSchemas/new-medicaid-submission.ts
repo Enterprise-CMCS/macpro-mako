@@ -12,5 +12,3 @@ export const formSchema = events["new-medicaid-submission"].baseSchema.extend({
         "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
     }),
 });
-
-// export type Schema = Awaited<ReturnType<typeof transform>>;

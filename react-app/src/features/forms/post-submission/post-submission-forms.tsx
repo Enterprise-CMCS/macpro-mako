@@ -11,6 +11,7 @@ import { getItem } from "@/api";
 import { WithdrawRaiForm } from "./withdraw-rai";
 import { DisableWithdrawRaiForm, EnableWithdrawRaiForm } from "./toggle-withdraw-rai";
 import { TemporaryExtensionForm } from "../waiver/temporary-extension";
+import { UploadSubsequentDocuments } from "./upload-subsequent-documents";
 
 export const postSubmissionForms: Partial<
   Record<Action, Partial<Record<AuthorityUnion, () => React.ReactNode>>>
@@ -47,6 +48,12 @@ export const postSubmissionForms: Partial<
   },
   "temporary-extension": {
     "1915(b)": TemporaryExtensionForm,
+  },
+  "upload-subsequent-documents": {
+    ["1915(b)"]: UploadSubsequentDocuments,
+    ["1915(c)"]: UploadSubsequentDocuments,
+    ["Medicaid SPA"]: UploadSubsequentDocuments,
+    ["CHIP SPA"]: UploadSubsequentDocuments,
   },
 };
 
