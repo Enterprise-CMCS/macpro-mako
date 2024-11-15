@@ -1,18 +1,16 @@
-import { getAttachmentUrl } from "@/api";
+import { getAttachmentUrl, useGetItem } from "@/api";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { opensearch } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
-import { usePackageDetailsCache } from "..";
+import { useParams } from "react-router-dom";
 
 type Attachments = NonNullable<opensearch.changelog.Document["attachments"]>;
 
-export const useAttachmentService = (
-  props: Pick<opensearch.changelog.Document, "packageId">,
-) => {
+export const useAttachmentService = ({ packageId }: { packageId: string }) => {
   const { mutateAsync, error, isLoading } = useMutation(
     (att: Attachments[number]) =>
-      getAttachmentUrl(props.packageId, att.bucket, att.key, att.filename),
+      getAttachmentUrl(packageId, att.bucket, att.key, att.filename),
   );
 
   const onZip = (attachments: Attachments) => {
@@ -37,10 +35,7 @@ export const useAttachmentService = (
     Promise.allSettled(remoteZips)
       .then(() => {
         zip.generateAsync({ type: "blob" }).then((content) => {
-          saveAs(
-            content,
-            `${props.packageId} - ${new Date().toDateString()}.zip`,
-          );
+          saveAs(content, `${packageId} - ${new Date().toDateString()}.zip`);
         });
       })
       .catch((e) => {
@@ -52,24 +47,28 @@ export const useAttachmentService = (
 };
 
 export const usePackageActivities = () => {
-  const cache = usePackageDetailsCache();
-  const service = useAttachmentService({ packageId: cache.data.id });
-  const data = cache.data.changelog;
+  const { id } = useParams();
+  const { data: submission } = useGetItem(id);
+
+  const service = useAttachmentService({ packageId: submission._id });
 
   const onDownloadAll = () => {
-    const attachmentsAggregate = cache.data.changelog?.reduce((ACC, ATT) => {
-      if (!ATT._source.attachments) return ACC;
-      return ACC.concat(ATT._source.attachments);
-    }, [] as any);
+    const attachmentsAggregate = submission._source.changelog?.reduce(
+      (ACC, ATT) => {
+        if (!ATT._source.attachments) return ACC;
+        return ACC.concat(ATT._source.attachments);
+      },
+      [] as any,
+    );
 
-    if (!attachmentsAggregate.length) return;
+    if (attachmentsAggregate.length === 0) return;
 
     service.onZip(attachmentsAggregate);
   };
 
   return {
-    data,
-    accordianDefault: [data?.[0]?._source?.id as string],
+    data: submission._source.changelog,
+    accordianDefault: [submission._source.changelog?.[0]?._source?.id],
     onDownloadAll,
     ...service,
   };
