@@ -14,6 +14,8 @@ export const mapActionLabel = (a: Action) => {
       return "Respond to Formal RAI";
     case Action.TEMP_EXTENSION:
       return "Request Temporary Extension";
+    case Action.AMEND_WAIVER:
+      return "Add Amendment";
     case Action.UPDATE_ID:
       return "Update ID";
     case Action.UPLOAD_SUBSEQUENT_DOCUMENTS:

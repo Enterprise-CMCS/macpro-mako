@@ -7,13 +7,8 @@ import {
   CognitoUserAttributes,
 } from "shared-types";
 
-const checkAuthority = (
-  authority: Authority | null,
-  validAuthorities: Authority[],
-) =>
-  !authority
-    ? false
-    : validAuthorities.includes(authority.toLowerCase() as Authority);
+const checkAuthority = (authority: Authority | null, validAuthorities: Authority[]) =>
+  !authority ? false : validAuthorities.includes(authority.toLowerCase() as Authority);
 
 const checkStatus = (seatoolStatus: string, authorized: string | string[]) =>
   typeof authorized === "string"
@@ -45,15 +40,11 @@ export const PackageCheck = ({
 
   const planChecks = {
     isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
-    isWaiver: checkAuthority(authority, [
-      Authority["1915b"],
-      Authority["1915c"],
-    ]),
+    isWaiver: checkAuthority(authority, [Authority["1915b"], Authority["1915c"]]),
     isAppk: false,
     isAppkChild: false,
     /** Keep excess methods to a minimum with `is` **/
-    authorityIs: (validAuthorities: Authority[]) =>
-      checkAuthority(authority, validAuthorities),
+    authorityIs: (validAuthorities: Authority[]) => checkAuthority(authority, validAuthorities),
     hasCpoc: !!leadAnalystName,
   };
   const statusChecks = {
@@ -89,8 +80,7 @@ export const PackageCheck = ({
     /** There is an RAI **/
     hasLatestRai: !!raiRequestedDate,
     /** There is an RAI, it has a response, and it has not been withdrawn **/
-    hasRaiResponse:
-      !!raiRequestedDate && !!raiReceivedDate && !raiWithdrawnDate,
+    hasRaiResponse: !!raiRequestedDate && !!raiReceivedDate && !raiWithdrawnDate,
     /** Latest RAI has a response and/or has been withdrawn **/
     hasCompletedRai: !!raiRequestedDate && !!raiReceivedDate,
     /** Latest RAI has a response and/or has been withdrawn **/
