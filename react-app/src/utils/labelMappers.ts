@@ -18,6 +18,8 @@ export const mapActionLabel = (a: Action) => {
       return "Add Amendment";
     case Action.UPDATE_ID:
       return "Update ID";
+    case Action.UPLOAD_SUBSEQUENT_DOCUMENTS:
+      return "Upload Subsequent Documents";
     default:
       return "";
   }

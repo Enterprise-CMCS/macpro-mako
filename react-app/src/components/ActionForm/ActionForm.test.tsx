@@ -29,8 +29,7 @@ vi.mock("../../utils/Poller/DataPoller", () => {
   };
 });
 
-const PROGRESS_REMINDER =
-  /If you leave this page, you will lose your progress on this form./;
+const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
 
 describe("ActionForm", () => {
   test("renders `breadcrumbText`", () => {
@@ -43,7 +42,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -61,7 +59,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -91,10 +88,32 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByText("FAQ Page")).toHaveAttribute(
-      "href",
-      "/hello-world-link",
+    expect(queryByText("FAQ Page")).toHaveAttribute("href", "/hello-world-link");
+  });
+
+  test("renders `attachments.title`", () => {
+    const { queryByText } = renderForm(
+      <ActionForm
+        title="Action Form Title"
+        schema={z.object({
+          attachments: z.object({
+            other: z.object({
+              label: z.string().default("Other"),
+              files: attachmentArraySchemaOptional(),
+            }),
+          }),
+        })}
+        fields={() => null}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        attachments={{ title: "this is an attachments title" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
     );
+
+    expect(queryByText("this is an attachments title")).toBeInTheDocument();
   });
 
   test("doesn't render form if user access is denied", () => {
@@ -135,7 +154,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         defaultValues={{ id: "default value for id" }}
         breadcrumbText="Example Breadcrumb"
       />,
@@ -162,16 +180,40 @@ describe("ActionForm", () => {
           documentChecker: () => true,
         }}
         attachments={{
-          faqLink: "",
-          instructions: "hello world special instructions.",
+          instructions: [<>hello world special instructions.</>],
         }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
 
-    expect(
-      queryByText(/hello world special instructions./),
-    ).toBeInTheDocument();
+    expect(queryByText(/hello world special instructions./)).toBeInTheDocument();
+  });
+
+  test("renders `attachments.callout`", () => {
+    const { queryByText } = renderForm(
+      <ActionForm
+        title="Action Form Title"
+        schema={z.object({
+          attachments: z.object({
+            other: z.object({
+              files: attachmentArraySchemaOptional(),
+              label: z.string().default("Other"),
+            }),
+          }),
+        })}
+        fields={() => null}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        attachments={{
+          callout: "this is a callout",
+        }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    expect(queryByText(/this is a callout/)).toBeInTheDocument();
   });
 
   test("renders custom `promptOnLeavingForm` when clicking Cancel", async () => {
@@ -183,9 +225,6 @@ describe("ActionForm", () => {
         documentPollerArgs={{
           property: () => "id",
           documentChecker: () => true,
-        }}
-        attachments={{
-          faqLink: "",
         }}
         promptOnLeavingForm={{
           header: "Hello World Header",
@@ -221,9 +260,6 @@ describe("ActionForm", () => {
         documentPollerArgs={{
           property: () => "id",
           documentChecker: () => true,
-        }}
-        attachments={{
-          faqLink: "",
         }}
         defaultValues={{ id: "hello world" }}
         promptPreSubmission={{
@@ -281,8 +317,7 @@ describe("ActionForm", () => {
         fields={() => null}
         documentPollerArgs={{
           property: () => "id",
-          documentChecker: (checker) =>
-            checker.hasStatus(SEATOOL_STATUS.PENDING),
+          documentChecker: (checker) => checker.hasStatus(SEATOOL_STATUS.PENDING),
         }}
         breadcrumbText="Example Breadcrumb"
       />,
@@ -292,10 +327,7 @@ describe("ActionForm", () => {
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(documentPollerSpy).toHaveBeenCalledWith(
-        "id",
-        expect.any(Function),
-      );
+      expect(documentPollerSpy).toHaveBeenCalledWith("id", expect.any(Function));
     });
 
     const [, checkerFn] = documentPollerSpy.mock.lastCall;
@@ -303,9 +335,7 @@ describe("ActionForm", () => {
     // @ts-expect-error - mocking status checks expects all declared status checks
     const resultValue = checkerFn(mockStatusChecks);
 
-    expect(mockStatusChecks.hasStatus).toHaveBeenCalledWith(
-      SEATOOL_STATUS.PENDING,
-    );
+    expect(mockStatusChecks.hasStatus).toHaveBeenCalledWith(SEATOOL_STATUS.PENDING);
 
     expect(resultValue).toBe(true);
   });
@@ -406,9 +436,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{
-          faqLink: "",
-        }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -430,7 +457,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -448,9 +474,8 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
-        breadcrumbText="Example Breadcrumb"
         additionalInformation={false}
+        breadcrumbText="Example Breadcrumb"
       />,
     );
 
@@ -474,7 +499,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -493,7 +517,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -518,7 +541,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -526,7 +548,7 @@ describe("ActionForm", () => {
     expect(queryAllByText(PROGRESS_REMINDER).length).toBe(2);
   });
 
-  test("renders ProgressReminder if `fields` property is defined", () => {
+  test("renders ProgressReminder if `areFieldsRequired` property is undefined", () => {
     const { queryAllByText } = renderForm(
       <ActionForm
         title="Action Form Title"
@@ -541,7 +563,6 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -549,7 +570,7 @@ describe("ActionForm", () => {
     expect(queryAllByText(PROGRESS_REMINDER).length).toBe(2);
   });
 
-  test("doesn't render ProgressReminder `fields` is undefined and `attachments` isn't defined in schema", () => {
+  test("doesn't render ProgressReminder if `areFieldsRequired` is false", () => {
     const { queryByText } = renderForm(
       <ActionForm
         title="Action Form Title"
@@ -559,8 +580,8 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
+        areFieldsRequired={false}
       />,
     );
 
@@ -582,65 +603,13 @@ describe("ActionForm", () => {
           property: () => "id",
           documentChecker: () => true,
         }}
-        attachments={{ faqLink: "" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
 
     expect(
-      queryAllByText(
-        /Once you submit this form, a confirmation email is sent to you and to CMS./,
-      ).length,
+      queryAllByText(/Once you submit this form, a confirmation email is sent to you and to CMS./)
+        .length,
     ).toBe(2);
-  });
-
-  test("renders `fieldsLayout`", () => {
-    const { queryByText } = renderForm(
-      <ActionForm
-        title="Action Form Title"
-        schema={z.object({})}
-        fieldsLayout={({ children }) => (
-          <>
-            hello world!
-            {children}
-          </>
-        )}
-        fields={() => <p>hello world within fields Layout</p>}
-        documentPollerArgs={{
-          property: () => "id",
-          documentChecker: () => true,
-        }}
-        attachments={{ faqLink: "" }}
-        breadcrumbText="Example Breadcrumb"
-      />,
-    );
-
-    expect(queryByText("Example Breadcrumb")).toBeInTheDocument();
-    expect(queryByText("hello world within fields Layout")).toBeInTheDocument();
-  });
-
-  test("renders `fieldsLayout` with correct `title`", () => {
-    const { queryByText } = renderForm(
-      <ActionForm
-        title="Action Form Title"
-        schema={z.object({})}
-        fieldsLayout={({ children, title }) => (
-          <>
-            {title}
-            {children}
-          </>
-        )}
-        fields={() => <p>hello world within fields Layout</p>}
-        documentPollerArgs={{
-          property: () => "id",
-          documentChecker: () => true,
-        }}
-        attachments={{ faqLink: "" }}
-        breadcrumbText="Example Breadcrumb"
-      />,
-    );
-
-    expect(queryByText("Action Form Title")).toBeInTheDocument();
-    expect(queryByText("hello world within fields Layout")).toBeInTheDocument();
   });
 });

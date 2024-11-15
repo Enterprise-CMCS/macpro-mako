@@ -66,6 +66,14 @@ beforeAll(() => {
 
         return idsThatExist.includes(id);
       }),
+      useGetItem: () => ({
+        data: {
+          _source: {
+            _id: "12345",
+            changelog: [{ _source: { event: "new-medicaid-submission" } }],
+          },
+        },
+      }),
       useGetUser: () => ({
         data: {
           user: {

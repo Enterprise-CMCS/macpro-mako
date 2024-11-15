@@ -12,6 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
+import { getFAQLinkForAttachments } from "../../faqLinks";
 
 export const InitialForm = () => {
   return (
@@ -96,7 +97,7 @@ export const InitialForm = () => {
         </>
       )}
       attachments={{
-        faqLink: "/faq/waiverb-attachments",
+        faqLink: getFAQLinkForAttachments("contracting-initial"),
       }}
       defaultValues={{ id: "" }}
       documentPollerArgs={{
