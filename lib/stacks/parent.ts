@@ -112,7 +112,7 @@ export class ParentStack extends cdk.Stack {
       applicationEndpointUrl: uiInfraStack.applicationEndpointUrl,
       emailAddressLookupSecretName: props.emailAddressLookupSecretName,
       openSearchDomainArn: dataStack.openSearchDomainArn,
-      openSearchDomainEndpoint: `https://${dataStack.openSearchDomainEndpoint}`,
+      openSearchDomainEndpoint: dataStack.openSearchDomainEndpoint,
       userPool: authStack.userPool,
     });
 
