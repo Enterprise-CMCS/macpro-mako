@@ -122,6 +122,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
                 }}
                 variant="ghost"
                 className="p-0 h-0"
+                data-testid={`${dataTestId}-remove-file-${file.filename}`}
               >
                 <X className="ml-2 text-sky-700 w-5" />
               </I.Button>
