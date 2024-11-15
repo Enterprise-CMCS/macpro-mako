@@ -14,6 +14,7 @@ import { schema as appkSchema } from "shared-types/events/app-k";
 import { Authority } from "shared-types";
 import { WaiverIdField } from "./WaiverIdField";
 import { StateField } from "./StateField";
+import { getFAQLinkForAttachments } from "../../faqLinks";
 
 export const AppKAmendmentForm = () => (
   <ActionForm
@@ -99,7 +100,7 @@ export const AppKAmendmentForm = () => (
         checks.authorityIs([Authority["1915c"]]) && checks.actionIs("Amend"),
     }}
     attachments={{
-      faqLink: "/faq/appk-attachments",
+      faqLink: getFAQLinkForAttachments("app-k"),
     }}
   />
 );

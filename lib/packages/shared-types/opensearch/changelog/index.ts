@@ -22,6 +22,7 @@ import {
   withdrawRai,
   toggleWithdrawRai,
   respondToRai,
+  uploadSubsequentDocuments,
 } from "./transforms";
 
 // legacy
@@ -67,4 +68,5 @@ export const transforms = {
   "withdraw-rai": withdrawRai,
   "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
+  "upload-subsequent-documents": uploadSubsequentDocuments,
 };
