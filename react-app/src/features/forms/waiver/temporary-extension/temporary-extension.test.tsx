@@ -13,11 +13,11 @@ const upload = uploadFiles<(typeof formSchemas)["temporary-extension"]>();
 describe("Temporary Extension", () => {
   beforeAll(() => {
     mockApiRefinements();
-
-    renderFormWithPackageSection(<TemporaryExtensionForm />);
   });
 
   test("EXISTING WAIVER ID", () => {
+    renderFormWithPackageSection(<TemporaryExtensionForm />);
+
     // "Medicaid SPA" comes from `useGetItem` in testing/setup.ts
     const waiverNumberLabel = screen.getByText("Medicaid SPA");
     const existentIdLabel = screen.getByText(/Temporary Extension Type/);
