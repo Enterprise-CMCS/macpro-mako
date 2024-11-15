@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { Amendment } from "../amend";
-import { beforeEach, describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, Mock } from "vitest";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useGetItem, useGetUser } from "@/api";
+import { useGetItem } from "@/api";
 
 const TestWrapper = () => {
   const queryClient = new QueryClient();
@@ -24,26 +24,16 @@ vi.mock("@/api", async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...(actual as object),
-    useGetUser: vi.fn(),
+    useGetUser: vi.fn().mockImplementation(() => {
+      return { data: { user: { ["custom:cms-roles"]: "onemac-micro-statesubmitter" } } };
+    }),
     useGetItem: vi.fn(),
   };
 });
 
 describe("Amendment component", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-  it("renders CapitatedAmendmentForm when changelog contains capitated-initial", async () => {
-    (useGetUser as vi.Mock).mockImplementation(() => {
-      return {
-        data: {
-          user: {
-            ["custom:cms-roles"]: "onemac-micro-statesubmitter",
-          },
-        },
-      };
-    });
-    (useGetItem as vi.Mock).mockImplementation(() => {
+  it("renders CapitatedForm when changelog contains capitated-initial event", async () => {
+    (useGetItem as Mock).mockImplementation(() => {
       return {
         data: {
           _source: {
@@ -62,17 +52,8 @@ describe("Amendment component", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders CapitatedAmendmentForm when changelog contains capitated-initial", async () => {
-    (useGetUser as vi.Mock).mockImplementation(() => {
-      return {
-        data: {
-          user: {
-            ["custom:cms-roles"]: "onemac-micro-statesubmitter",
-          },
-        },
-      };
-    });
-    (useGetItem as vi.Mock).mockImplementation(() => {
+  it("renders ContractingForm when changelog contains contracting-initial event", async () => {
+    (useGetItem as Mock).mockImplementation(() => {
       return {
         data: {
           _source: {
@@ -91,17 +72,8 @@ describe("Amendment component", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders CapitatedAmendmentForm when changelog contains capitated-initial", async () => {
-    (useGetUser as vi.Mock).mockImplementation(() => {
-      return {
-        data: {
-          user: {
-            ["custom:cms-roles"]: "onemac-micro-statesubmitter",
-          },
-        },
-      };
-    });
-    (useGetItem as vi.Mock).mockImplementation(() => {
+  it("renders Dashboard when changelog doesn't contain a relevant event", async () => {
+    (useGetItem as Mock).mockImplementation(() => {
       return {
         data: {
           _source: {

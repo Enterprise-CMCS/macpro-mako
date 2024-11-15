@@ -18,8 +18,11 @@ export const Amendment = () => {
 
   if (isCapitated) {
     return <CapitatedForm />;
-  } else if (isContracting) {
+  }
+
+  if (isContracting) {
     return <ContractingForm />;
   }
+
   return <Navigate to="/dashboard" />;
 };
