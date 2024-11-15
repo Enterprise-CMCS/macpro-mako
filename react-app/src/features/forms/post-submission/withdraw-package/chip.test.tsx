@@ -15,9 +15,7 @@ describe("Withdraw Package CHIP", () => {
   });
 
   test("OFFICIAL WITHDRAWAL LETTER", async () => {
-    const officialWithdrawalLetterLabel = await upload(
-      "officialWithdrawalLetter",
-    );
+    const officialWithdrawalLetterLabel = await upload("officialWithdrawalLetter");
     expect(officialWithdrawalLetterLabel).not.toHaveClass("text-destructive");
   });
 
