@@ -1,36 +1,29 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { extractBucketAndKeyFromUrl } from "./upload.utilities";
+import * as utilities from "@/components/Inputs/upload.utilities";
 
-// Constants for test data
-const VALID_URL = "https://my-bucket.s3.us-east-1.amazonaws.com/my-key";
-const INVALID_URL = "invalid-url";
-
-const MOCK_VALID_RESULT = { bucket: "my-bucket", key: "my-key" };
-const MOCK_INVALID_RESULT = { bucket: null, key: null };
-
-// Mock implementation
-vi.mock("./upload.utilities", () => ({
-  extractBucketAndKeyFromUrl: vi.fn((url) => {
-    if (url === VALID_URL) {
-      return MOCK_VALID_RESULT;
-    } else {
-      return MOCK_INVALID_RESULT;
-    }
-  }),
-}));
-
-describe("extractBucketAndKeyFromUrl", () => {
+describe("uploadToS3", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.unmock("@/components/Inputs/upload.utilities");
   });
 
-  it("extracts bucket and key from a valid URL", () => {
-    const result = extractBucketAndKeyFromUrl(VALID_URL);
-    expect(result).toEqual(MOCK_VALID_RESULT);
-  });
+  it("uploads a file to S3", async () => {
+    const file = new File(["file contents"], "file.pdf", { type: "application/pdf" });
+    const url = "https://s3.us-east-1.amazonaws.com/hello/world";
 
-  it("returns null for bucket and key for an invalid URL", () => {
-    const result = extractBucketAndKeyFromUrl(INVALID_URL);
-    expect(result).toEqual(MOCK_INVALID_RESULT);
+    // Mock fetch
+    const mockFetch = vi.fn().mockResolvedValue({});
+    global.fetch = mockFetch;
+
+    // Call the function
+    await utilities.uploadToS3(file, url);
+
+    // Debug: log if fetch was called
+    console.log("Mock fetch calls:", mockFetch.mock.calls);
+
+    // Assertion
+    expect(mockFetch).toHaveBeenCalledWith(url, {
+      body: file,
+      method: "PUT",
+    });
   });
 });
