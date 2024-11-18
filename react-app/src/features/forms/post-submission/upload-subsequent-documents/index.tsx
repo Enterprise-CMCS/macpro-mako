@@ -110,7 +110,7 @@ export const UploadSubsequentDocuments = () => {
         Provide revised or additional documentation for your submission. 
         Once you submit this form, a confirmation email is sent to you and to CMS. 
         CMS will use this content to review your package, and you will not be able to edit this form. 
-        If CMS needs any additional information, they will follow up buy email.
+        If CMS needs any additional information, they will follow up by email.
       `}
       fields={PackageSection}
       promptPreSubmission={{
