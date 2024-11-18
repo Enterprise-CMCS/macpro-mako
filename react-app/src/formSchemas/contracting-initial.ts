@@ -13,5 +13,3 @@ export const formSchema = events["contracting-initial"].baseSchema.extend({
         "According to our records, this 1915(b) Waiver Number already exists. Please check the 1915(b) Waiver Number and try entering it again.",
     }),
 });
-
-// export type Schema = Awaited<ReturnType<typeof transform>>;

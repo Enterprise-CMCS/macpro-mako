@@ -1,12 +1,7 @@
 import { Handler } from "aws-lambda";
 import { KafkaRecord, opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
-import {
-  ErrorType,
-  bulkUpdateDataWrapper,
-  getTopic,
-  logError,
-} from "../libs/sink-lib";
+import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "../libs/sink-lib";
 import { Index } from "shared-types/opensearch";
 import { decodeBase64WithUtf8 } from "shared-utils";
 import * as os from "./../libs/opensearch-lib";
@@ -69,8 +64,7 @@ const processAndIndex = async ({
   transforms: any;
   topicPartition: string;
 }) => {
-  const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> =
-    [];
+  const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
     const { value } = kafkaRecord;
@@ -93,8 +87,7 @@ const processAndIndex = async ({
 
       // If the event is a supported event, transform and push to docs array for indexing
       if (record.event in transforms) {
-        const transformForEvent =
-          transforms[record.event as keyof typeof transforms];
+        const transformForEvent = transforms[record.event as keyof typeof transforms];
 
         const result = transformForEvent.transform().safeParse(record);
 
@@ -137,13 +130,13 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
 
   const openSearchRecords = await os.getItems(osDomain, indexNamespace, ids);
 
-  const existingRecordsLookup = openSearchRecords.reduce<
-    Record<string, number>
-  >((acc, item) => {
+  const existingRecordsLookup = openSearchRecords.reduce<Record<string, number>>((acc, item) => {
     const epochDate = new Date(item.changedDate).getTime(); // Convert `changedDate` to epoch number
     acc[item.id] = epochDate; // Use `id` as the key and epoch date as the value
     return acc;
   }, {});
+
+  console.log("are we here 4");
 
   for (const kafkaRecord of kafkaRecords) {
     const { key, value } = kafkaRecord;
@@ -190,6 +183,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         typeof result.data.seatoolStatus === "string" &&
         result.data.seatoolStatus != "Unknown"
       ) {
+        console.log("what status are we writing", JSON.stringify(result.data));
         docs.push({ ...result.data });
       }
     } catch (error) {
@@ -203,10 +197,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   await bulkUpdateDataWrapper(osDomain, index, docs);
 };
 
-const changed_date = async (
-  kafkaRecords: KafkaRecord[],
-  topicPartition: string,
-) => {
+const changed_date = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
     const { value } = kafkaRecord;

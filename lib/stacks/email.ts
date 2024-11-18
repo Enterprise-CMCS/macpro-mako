@@ -3,7 +3,6 @@ import { Construct } from "constructs";
 import { join } from "path";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
-import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "lib/config/deployment-config";
 
@@ -62,6 +61,7 @@ export class Email extends cdk.NestedStack {
       applicationEndpointUrl,
       topicNamespace,
       indexNamespace,
+      lambdaSecurityGroup,
       emailAddressLookupSecretName,
       brokerString,
       privateSubnets,
@@ -74,12 +74,6 @@ export class Email extends cdk.NestedStack {
     if (!brokerString || !brokerString.includes(",")) {
       throw new Error("Invalid broker string format");
     }
-
-    const lambdaSecurityGroup = new cdk.aws_ec2.SecurityGroup(this, "LambdaSG", {
-      vpc,
-      description: "Security group for email processing lambda",
-      allowAllOutbound: true,
-    });
 
     // SES Configuration Set
     new cdk.aws_ses.CfnConfigurationSet(this, "ConfigurationSet", {
@@ -165,16 +159,20 @@ export class Email extends cdk.NestedStack {
               actions: ["sqs:SendMessage"],
               resources: [dlq.queueArn],
             }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: [
+                "ec2:CreateNetworkInterface",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DeleteNetworkInterface",
+                "ec2:AssignPrivateIpAddresses",
+                "ec2:UnassignPrivateIpAddresses",
+              ],
+              resources: ["*"],
+            }),
           ],
         }),
       },
-    });
-
-    const emailAttemptsTable = new dynamodb.Table(this, "EmailAttemptsTable", {
-      tableName: `${project}-${stage}-${stack}-attempt-records`,
-      partitionKey: { name: "emailId", type: dynamodb.AttributeType.STRING },
-      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-      timeToLiveAttribute: "ttl",
     });
 
     const processEmailsLambda = new NodejsFunction(this, "ProcessEmailsLambda", {
@@ -204,12 +202,12 @@ export class Email extends cdk.NestedStack {
         emailAddressLookupSecretName,
         userPoolId: userPool.userPoolId,
         DLQ_URL: dlq.queueUrl,
+        VPC_ID: vpc.vpcId,
+        SECURITY_GROUP_ID: lambdaSecurityGroup.securityGroupId,
       },
       bundling: commonBundlingOptions,
       tracing: cdk.aws_lambda.Tracing.ACTIVE,
     });
-
-    emailAttemptsTable.grantReadWriteData(processEmailsLambda);
 
     const alarmTopic = new cdk.aws_sns.Topic(this, "EmailErrorAlarmTopic");
 
@@ -271,12 +269,16 @@ export class Email extends cdk.NestedStack {
       treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
     });
 
-    // Add specific ingress rules if needed
-    lambdaSecurityGroup.addIngressRule(
-      cdk.aws_ec2.Peer.ipv4(vpc.vpcCidrBlock),
-      cdk.aws_ec2.Port.tcp(443),
-      "Allow HTTPS from VPC",
-    );
+    new cdk.aws_cloudwatch.Alarm(this, "EmailDLQMessages", {
+      metric: dlq.metricNumberOfMessagesReceived(),
+      threshold: 1,
+      evaluationPeriods: 1,
+      alarmDescription: "Messages are being sent to the DLQ",
+      actionsEnabled: true,
+      treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
+
+    processEmailsLambda.node.addDependency(lambdaSecurityGroup);
 
     new cdk.aws_cloudwatch.Alarm(this, "SESSendQuotaAlarm", {
       metric: new cdk.aws_cloudwatch.Metric({
