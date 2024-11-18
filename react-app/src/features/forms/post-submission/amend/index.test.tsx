@@ -1,24 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { Amendment } from "../amend";
 import { describe, expect, test, vi, Mock } from "vitest";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useGetItem } from "@/api";
-
-const TestWrapper = () => {
-  const queryClient = new QueryClient();
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <MemoryRouter initialEntries={["/amend"]}>
-        <Routes>
-          <Route path="/dashboard" element={<h1>dashboard test</h1>} />
-          <Route path="/amend" element={<Amendment />} />
-        </Routes>
-      </MemoryRouter>
-    </QueryClientProvider>
-  );
-};
+import { renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
 
 vi.mock("@/api", async (importOriginal) => {
   const actual = await importOriginal();
@@ -43,7 +27,7 @@ describe("POST SUBMISSION AMENDMENT COMPONENT", () => {
       };
     });
 
-    render(<TestWrapper />);
+    renderFormWithPackageSection(<Amendment />);
 
     expect(
       screen.getByRole("heading", {
@@ -63,7 +47,7 @@ describe("POST SUBMISSION AMENDMENT COMPONENT", () => {
       };
     });
 
-    render(<TestWrapper />);
+    renderFormWithPackageSection(<Amendment />);
 
     expect(
       screen.getByRole("heading", {
@@ -83,7 +67,7 @@ describe("POST SUBMISSION AMENDMENT COMPONENT", () => {
       };
     });
 
-    render(<TestWrapper />);
+    renderFormWithPackageSection(<Amendment />);
 
     expect(
       screen.getByRole("heading", {
