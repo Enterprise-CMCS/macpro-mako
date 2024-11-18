@@ -5,23 +5,24 @@ import { useGetItem } from "@/api";
 
 export const Amendment = () => {
   const { id } = useParams();
-  const item = useGetItem(id);
-  const isCapitated = item.data._source.changelog.find(
+  const { data } = useGetItem(id);
+
+  const isCapitated = data._source.changelog.find(
     (event) =>
       event._source.event === "capitated-initial" || event._source.event === "capitated-renewal",
   );
-  const isContracting = item.data._source.changelog.find(
+  const isContracting = data._source.changelog.find(
     (event) =>
       event._source.event === "contracting-initial" ||
       event._source.event === "contracting-renewal",
   );
 
   if (isCapitated) {
-    return <CapitatedForm />;
+    return <CapitatedForm waiverId={id} />;
   }
 
   if (isContracting) {
-    return <ContractingForm />;
+    return <ContractingForm waiverId={id} />;
   }
 
   return <Navigate to="/dashboard" />;

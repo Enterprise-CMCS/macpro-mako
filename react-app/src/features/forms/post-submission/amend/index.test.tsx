@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { Amendment } from "../amend";
-import { describe, it, expect, vi, Mock } from "vitest";
+import { describe, expect, test, vi, Mock } from "vitest";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useGetItem } from "@/api";
@@ -31,8 +31,8 @@ vi.mock("@/api", async (importOriginal) => {
   };
 });
 
-describe("Amendment component", () => {
-  it("renders CapitatedForm when changelog contains capitated-initial event", async () => {
+describe("POST SUBMISSION AMENDMENT COMPONENT", () => {
+  test("RENDERS CAPITATED FORM WHEN CHANGELOG CONTAINS CAPITATED-INITIAL EVENT", async () => {
     (useGetItem as Mock).mockImplementation(() => {
       return {
         data: {
@@ -52,7 +52,7 @@ describe("Amendment component", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders ContractingForm when changelog contains contracting-initial event", async () => {
+  test("RENDERS CONTRACTING FORM WHEN CHANGELOG CONTAINS CONTRACTING-INITIAL EVENT", async () => {
     (useGetItem as Mock).mockImplementation(() => {
       return {
         data: {
@@ -72,7 +72,7 @@ describe("Amendment component", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders Dashboard when changelog doesn't contain a relevant event", async () => {
+  test("RENDERS DASHBOARD WHEN CHANGELOG DOESN'T CONTAIN A RELEVANT EVENT", async () => {
     (useGetItem as Mock).mockImplementation(() => {
       return {
         data: {

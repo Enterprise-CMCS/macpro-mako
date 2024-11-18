@@ -1,4 +1,3 @@
-import { useGetItem } from "@/api";
 import {
   ActionForm,
   DatePicker,
@@ -12,13 +11,14 @@ import {
 } from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getFAQLinkForAttachments } from "../../faqLinks";
 
-export const AmendmentForm = () => {
-  const { id: waiverId } = useParams<{ id: string }>();
-  const { data: submission } = useGetItem(waiverId, { enabled: waiverId !== undefined });
+interface AmendmentFormProps {
+  waiverId?: string;
+}
 
+export const AmendmentForm = ({ waiverId = "" }: AmendmentFormProps) => {
   return (
     <ActionForm
       schema={formSchemas["capitated-amendment"]}
@@ -34,7 +34,7 @@ export const AmendmentForm = () => {
               1915(b)
             </span>
           </div>
-          {submission ? (
+          {waiverId !== "" ? (
             <div>
               <p className="font-semibold">Existing Waiver Number to Amend</p>
               <p className="text-lg font-thin">{waiverId}</p>
@@ -122,7 +122,7 @@ export const AmendmentForm = () => {
       attachments={{
         faqLink: getFAQLinkForAttachments("capitated-amendment"),
       }}
-      defaultValues={{ id: "", waiverNumber: waiverId ?? "" }}
+      defaultValues={{ id: "", waiverNumber: waiverId }}
       documentPollerArgs={{
         property: "id",
         documentChecker: (check) => check.recordExists,
