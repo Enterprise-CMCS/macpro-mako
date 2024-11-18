@@ -1,3 +1,4 @@
+import { useGetItem } from "@/api";
 import {
   ActionForm,
   DatePicker,
@@ -9,10 +10,10 @@ import {
   Input,
   RequiredIndicator,
 } from "@/components";
-import { Link, useParams } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
-import { useGetItem } from "@/api";
+import { Link, useParams } from "react-router-dom";
+import { getFAQLinkForAttachments } from "../../faqLinks";
 
 export const AmendmentForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
@@ -104,6 +105,7 @@ export const AmendmentForm = () => {
                 <FormLabel className="text-lg font-semibold block">
                   Proposed Effective Date of 1915(b) Waiver Amendment <RequiredIndicator />
                 </FormLabel>
+
                 <FormControl className="max-w-sm">
                   <DatePicker
                     onChange={(date) => field.onChange(date.getTime())}
@@ -118,7 +120,7 @@ export const AmendmentForm = () => {
         </>
       )}
       attachments={{
-        faqLink: "/faq/waiverb-attachments",
+        faqLink: getFAQLinkForAttachments("capitated-amendment"),
       }}
       defaultValues={{ id: "", waiverNumber: waiverId ?? "" }}
       documentPollerArgs={{

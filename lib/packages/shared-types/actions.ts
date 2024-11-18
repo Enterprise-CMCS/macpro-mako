@@ -1,5 +1,5 @@
-import { CognitoUserAttributes } from "./user";
 import { IPackageCheck } from "shared-utils";
+import { CognitoUserAttributes } from "./user";
 
 export enum Action {
   RESPOND_TO_RAI = "respond-to-rai",
@@ -13,6 +13,7 @@ export enum Action {
   UPDATE_ID = "update-id",
   LEGACY_ADMIN_CHANGE = "legacy-admin-change",
   LEGACY_WITHDRAW_RAI_REQUEST = "legacy-withdraw-rai-request",
+  UPLOAD_SUBSEQUENT_DOCUMENTS = "upload-subsequent-documents",
 }
 
 export type ActionRule = {

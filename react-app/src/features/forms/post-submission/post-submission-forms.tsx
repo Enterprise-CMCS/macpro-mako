@@ -1,15 +1,18 @@
+import { getItem } from "@/api";
 import { LoaderFunction, useParams } from "react-router-dom";
+import { queryClient } from "../../../router";
+import { RespondToRaiChip, RespondToRaiMedicaid, RespondToRaiWaiver } from "./respond-to-rai";
+import { DisableWithdrawRaiForm, EnableWithdrawRaiForm } from "./toggle-withdraw-rai";
 import {
   WithdrawPackageAction,
   WithdrawPackageActionChip,
   WithdrawPackageActionWaiver,
 } from "./withdraw-package";
-import { RespondToRaiChip, RespondToRaiMedicaid, RespondToRaiWaiver } from "./respond-to-rai";
-import { queryClient } from "../../../router";
-import { getItem } from "@/api";
 import { WithdrawRaiForm } from "./withdraw-rai";
-import { DisableWithdrawRaiForm, EnableWithdrawRaiForm } from "./toggle-withdraw-rai";
+
 import { Amendment } from "./amend";
+
+import { UploadSubsequentDocuments } from "./upload-subsequent-documents";
 
 // the keys will relate to this part of the route /actions/{key of postSubmissionForms}/authority/id
 export const postSubmissionForms: Record<string, Record<string, () => React.ReactNode>> = {
@@ -43,8 +46,15 @@ export const postSubmissionForms: Record<string, Record<string, () => React.Reac
     ["Medicaid SPA"]: DisableWithdrawRaiForm,
     ["CHIP SPA"]: DisableWithdrawRaiForm,
   },
+
   "amend-waiver": {
     ["1915(b)"]: Amendment,
+  },
+  "upload-subsequent-documents": {
+    ["1915(b)"]: UploadSubsequentDocuments,
+    ["1915(c)"]: UploadSubsequentDocuments,
+    ["Medicaid SPA"]: UploadSubsequentDocuments,
+    ["CHIP SPA"]: UploadSubsequentDocuments,
   },
 };
 

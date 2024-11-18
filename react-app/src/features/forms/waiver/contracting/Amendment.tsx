@@ -1,3 +1,4 @@
+import { useGetItem } from "@/api";
 import {
   ActionForm,
   DatePicker,
@@ -9,10 +10,10 @@ import {
   Input,
   RequiredIndicator,
 } from "@/components";
-import { Link, useParams } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
-import { useGetItem } from "@/api";
+import { Link, useParams } from "react-router-dom";
+import { getFAQLinkForAttachments } from "../../faqLinks";
 
 export const AmendmentForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
@@ -118,7 +119,7 @@ export const AmendmentForm = () => {
         </>
       )}
       attachments={{
-        faqLink: "/faq/waiverb-attachments",
+        faqLink: getFAQLinkForAttachments("contracting-amendment"),
       }}
       defaultValues={{ id: "", waiverNumber: waiverId ?? "" }}
       documentPollerArgs={{

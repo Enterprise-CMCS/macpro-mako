@@ -13,6 +13,7 @@ import {
 import { ActionForm } from "@/components/ActionForm";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
+import { AttachmentFileFormatInstructions } from "@/components/ActionForm/actionForm.components";
 
 export const MedicaidForm = () => (
   <ActionForm
@@ -45,9 +46,7 @@ export const MedicaidForm = () => (
                   className="max-w-sm"
                   ref={field.ref}
                   value={field.value}
-                  onChange={(e) =>
-                    field.onChange(e.currentTarget.value.toUpperCase())
-                  }
+                  onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                 />
               </FormControl>
               <FormMessage />
@@ -80,9 +79,22 @@ export const MedicaidForm = () => (
     )}
     defaultValues={{ id: "" }}
     attachments={{
-      faqLink: "/faq/medicaid-spa-attachments",
-      instructions:
-        "Maximum file size of 80 MB per attachment. You can add multiple files per attachment type except for the CMS Form 179.",
+      instructions: [
+        <p data-testid="attachments-instructions">
+          Maximum file size of 80 MB per attachment. You can add multiple files per attachment type
+          except for the CMS Form 179. Read the description for each of the attachment types on the{" "}
+          <Link
+            to="/faq/medicaid-spa-attachments"
+            target={FAQ_TAB}
+            rel="noopener noreferrer"
+            className="text-blue-900 underline"
+          >
+            FAQ Page
+          </Link>
+          .
+        </p>,
+        <AttachmentFileFormatInstructions />,
+      ],
     }}
     documentPollerArgs={{
       property: "id",
