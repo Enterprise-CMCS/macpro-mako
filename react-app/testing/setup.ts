@@ -1,6 +1,7 @@
-import { afterEach, beforeAll, afterAll, vi, expect } from "vitest";
-import { cleanup } from "@testing-library/react";
+import { mockedServer } from "mocks";
 import * as matchers from "@testing-library/jest-dom/matchers";
+import { cleanup } from "@testing-library/react";
+import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
 
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
@@ -30,6 +31,11 @@ window.HTMLElement.prototype.hasPointerCapture = vi.fn();
 
 // Add this to remove all the expected errors in console when running unit tests.
 beforeAll(() => {
+  console.log("starting MSW listener");
+  mockedServer.listen({
+    onUnhandledRequest: "error",
+  });
+
   vi.spyOn(console, "error").mockImplementation(() => {});
   if (process.env.MOCK_API_REFINES) {
     vi.mock("@/components/Inputs/upload.utilities", () => ({
@@ -47,10 +53,7 @@ beforeAll(() => {
         return idsThatAreApproved.includes(id);
       }),
       canBeRenewedOrAmended: vi.fn(async (id: string) => {
-        const idsThatCanBeRenewedOrAmended = [
-          "MD-0000.R00.00",
-          "MD-0002.R00.00",
-        ];
+        const idsThatCanBeRenewedOrAmended = ["MD-0000.R00.00", "MD-0002.R00.00"];
 
         return idsThatCanBeRenewedOrAmended.includes(id);
       }),
@@ -69,8 +72,7 @@ beforeAll(() => {
       useGetUser: () => ({
         data: {
           user: {
-            "custom:cms-roles":
-              "onemac-micro-statesubmitter,onemac-micro-super",
+            "custom:cms-roles": "onemac-micro-statesubmitter,onemac-micro-super",
           },
         },
       }),
@@ -87,10 +89,19 @@ beforeAll(() => {
 
 afterEach(() => {
   if (process.env.SKIP_CLEANUP) return;
+
+  // Reset any request handlers that we may add during the tests,
+  // so they don't affect other tests.
+  mockedServer.resetHandlers();
+
   cleanup();
 });
 
 afterAll(() => {
   delete process.env.SKIP_CLEANUP;
+
+  // Clean up after the tests are finished.
+  mockedServer.close();
+
   vi.restoreAllMocks();
 });

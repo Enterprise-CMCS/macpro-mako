@@ -88,10 +88,16 @@
     "autoprefixer": "^10.4.14",
     "jsdom": "^21.1.1",
     "msw": "^2.3.1",
+    "mocks": "*",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.1",
     "typescript": "5.4.5",
     "vite": "^5.3.5",
     "vite-plugin-radar": "^0.9.2"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
