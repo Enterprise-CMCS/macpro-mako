@@ -102,7 +102,7 @@ describe("useAttachmentService", () => {
     expect(mockedGetAttachmentUrl).toHaveBeenCalledTimes(2);
     expect(fetchSpy).toBeCalledTimes(2);
     expect(zipFileSpy).toBeCalledWith("file1(1).md", expect.any(Blob));
-    expect(zipFileSpy).toBeCalledWith("file2().md", expect.any(Blob));
+    expect(zipFileSpy).toBeCalledWith("file2(2).md", expect.any(Blob));
     expect(saveAs).toBeCalledWith(expect.any(Blob), expect.any(String));
   });
 
