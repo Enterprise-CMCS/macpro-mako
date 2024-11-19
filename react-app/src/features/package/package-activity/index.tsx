@@ -189,7 +189,7 @@ export const PackageActivities = () => {
       !activity._source.isAdminChange,
   );
 
-  const keyAndDefault = submissionChangelogWithoutAdminChanges[0]?._source?.id;
+  const keyAndDefaultValue = submissionChangelogWithoutAdminChanges[0]?._source?.id;
 
   return (
     <DetailsSection
@@ -206,11 +206,11 @@ export const PackageActivities = () => {
     >
       {submissionChangelogWithoutAdminChanges.length > 0 ? (
         <Accordion
-          // `key` to re-render the `defaultValue` whenever `accordionDefault` changes
-          key={keyAndDefault}
+          // `key` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
+          key={keyAndDefaultValue}
           type="multiple"
           className="flex flex-col gap-2"
-          defaultValue={[keyAndDefault]}
+          defaultValue={[keyAndDefaultValue]}
         >
           {submissionChangelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
             <PackageActivity key={packageActivity.id} packageActivity={packageActivity} />
