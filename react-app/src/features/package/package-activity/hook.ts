@@ -35,14 +35,11 @@ export const useAttachmentService = ({ packageId }: { packageId: string }) => {
     });
 
     Promise.allSettled(remoteZips)
-      .then(() => {
-        zip.generateAsync({ type: "blob" }).then((content) => {
-          saveAs(content, `${packageId} - ${new Date().toDateString()}.zip`);
-        });
+      .then(async () => {
+        const asyncZipContent = await zip.generateAsync({ type: "blob" });
+        saveAs(asyncZipContent, `${packageId} - ${new Date().toDateString()}.zip`);
       })
-      .catch((e) => {
-        console.error(e);
-      });
+      .catch(console.error);
   };
 
   return { loading: isLoading, error, onUrl: mutateAsync, onZip };
