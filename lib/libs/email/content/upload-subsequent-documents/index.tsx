@@ -1,6 +1,5 @@
 import { Events, Authority, EmailAddresses, CommonEmailVariables } from "shared-types";
 import { AuthoritiesWithUserTypesTemplate } from "../..";
-
 import { ChipSpaCMSEmail, ChipSpaStateEmail } from "./emailTemplates";
 import { render } from "@react-email/render";
 
@@ -13,7 +12,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
       return {
         to: variables.emails.chipInbox,
         cc: variables.emails.chipCcList,
-        subject: `New CHIP SPA ${variables.id} Submitted`,
+        subject: `Action required: review new documents for ${variables.actionType + variables.id}`,
         body: await render(<ChipSpaCMSEmail variables={variables} />),
       };
     },
@@ -23,7 +22,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Your CHIP SPA ${variables.id} has been submitted to CMS`,
+        subject: `Additional documents submitted for ${variables.actionType + variables.id}`,
         body: await render(<ChipSpaStateEmail variables={variables} />),
       };
     },

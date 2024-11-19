@@ -5,3 +5,4 @@ export * from "./widthdrawRai";
 export * from "./widthdrawPackage";
 export * from "./email-components";
 export * from "./respondToRai";
+export * from "./upload-subsequent-documents";

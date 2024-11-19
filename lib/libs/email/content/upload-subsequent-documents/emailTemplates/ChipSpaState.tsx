@@ -35,10 +35,10 @@ export const ChipSpaStateEmail = (props: {
         }}
       />
       <Text style={{ ...styles.text.base, marginTop: "16px" }}>
-        This response confirms the receipt of your CHIP State Plan Amendment (CHIP SPA). You can
-        expect a formal response to your submittal from CMS at a later date.
+        If you have questions or did not expect this email, please contact your CPOC.
       </Text>
-      <MailboxNotice type="SPA" />
+      Thank you.
+      {/* <MailboxNotice type="SPA" /> */}
     </BaseEmailTemplate>
   );
 };
