@@ -12,7 +12,7 @@ export const baseSchema = z.object({
   event: z.literal("app-k").default("app-k"),
   authority: z.string().default("1915(c)"),
   proposedEffectiveDate: z.number(),
-  title: z.string().trim().min(1, { message: "Required" }),
+  title: z.string().trim().min(1, { message: "Required" }).max(125),
   attachments: z.object({
     appk: z.object({
       label: z.string().default("Appendix K Template"),
@@ -23,12 +23,7 @@ export const baseSchema = z.object({
       files: attachmentArraySchema({ max: 1 }),
     }),
   }),
-  additionalInformation: z
-    .string()
-    .max(4000)
-    .nullable()
-    .default(null)
-    .optional(),
+  additionalInformation: z.string().max(4000).nullable().default(null).optional(),
 });
 
 export const schema = baseSchema.extend({
