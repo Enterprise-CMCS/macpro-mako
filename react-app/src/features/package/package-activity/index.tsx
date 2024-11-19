@@ -23,23 +23,22 @@ type AttachmentDetailsProps = {
 
 const AttachmentDetails = ({ id, attachments, onClick }: AttachmentDetailsProps) => (
   <Table.TableBody>
-    {attachments &&
-      attachments.map((attachment) => {
-        return (
-          <Table.TableRow key={`${id}-${attachment.key}`}>
-            <Table.TableCell>{attachment.title}</Table.TableCell>
-            <Table.TableCell>
-              <Table.Button
-                className="ml-[-15px]"
-                variant="link"
-                onClick={() => onClick(attachment).then(window.open)}
-              >
-                {attachment.filename}
-              </Table.Button>
-            </Table.TableCell>
-          </Table.TableRow>
-        );
-      })}
+    {attachments.map((attachment) => {
+      return (
+        <Table.TableRow key={`${id}-${attachment.key}`}>
+          <Table.TableCell>{attachment.title}</Table.TableCell>
+          <Table.TableCell>
+            <Table.Button
+              className="ml-[-15px]"
+              variant="link"
+              onClick={() => onClick(attachment).then(window.open)}
+            >
+              {attachment.filename}
+            </Table.Button>
+          </Table.TableCell>
+        </Table.TableRow>
+      );
+    })}
   </Table.TableBody>
 );
 
@@ -55,7 +54,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="font-bold text-lg mb-2">Attachments</h2>
-        {attachments.length ? (
+        {attachments.length > 0 ? (
           <Table.Table>
             <Table.TableHeader>
               <Table.TableRow>
@@ -70,11 +69,10 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
         )}
       </div>
 
-      {attachments.length > 1 && (
+      {attachments.length > 0 && (
         <Table.Button
           variant="outline"
           className="w-max"
-          disabled={attachments.length === 0}
           loading={loading}
           onClick={() => onZip(attachments)}
         >
@@ -179,7 +177,7 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
 
 export const PackageActivities = () => {
   const { id: packageId } = useParams<{ id: string }>();
-  const { data: submission } = useGetItem(packageId, { enabled: packageId !== undefined });
+  const { data: submission } = useGetItem(packageId);
 
   if (submission === undefined) {
     return null;
@@ -206,21 +204,21 @@ export const PackageActivities = () => {
         </div>
       }
     >
-      {submissionChangelogWithoutAdminChanges.length === 0 && (
+      {submissionChangelogWithoutAdminChanges.length > 0 ? (
+        <Accordion
+          // `key` to re-render the `defaultValue` whenever `accordionDefault` changes
+          key={keyAndDefault}
+          type="multiple"
+          className="flex flex-col gap-2"
+          defaultValue={[keyAndDefault]}
+        >
+          {submissionChangelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
+            <PackageActivity key={packageActivity.id} packageActivity={packageActivity} />
+          ))}
+        </Accordion>
+      ) : (
         <p className="text-gray-500">No package activity recorded</p>
       )}
-
-      <Accordion
-        // `key` to re-render the `defaultValue` whenever `accordionDefault` changes
-        key={keyAndDefault}
-        type="multiple"
-        className="flex flex-col gap-2"
-        defaultValue={[keyAndDefault]}
-      >
-        {submissionChangelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
-          <PackageActivity key={packageActivity.id} packageActivity={packageActivity} />
-        ))}
-      </Accordion>
     </DetailsSection>
   );
 };
