@@ -37,7 +37,7 @@ describe("useAttachmentService", () => {
       uploadDate: 123232,
     };
 
-    const mockedGetAttachmentUrl = getAttachmentUrl as Mock;
+    const mockedGetAttachmentUrl = getAttachmentUrl as Mock<typeof getAttachmentUrl>;
     mockedGetAttachmentUrl.mockResolvedValue("http://example.com/testFile");
 
     const { result } = renderHook(() => useAttachmentService({ packageId }), {
