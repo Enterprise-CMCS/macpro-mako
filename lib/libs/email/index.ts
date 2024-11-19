@@ -24,19 +24,29 @@ export type EmailTemplates = {
   "new-chip-submission": AuthoritiesWithUserTypesTemplate | UserTypeOnlyTemplate;
 };
 
+// TODO: Add new templates here as they are created
 export const emailTemplates = {
   "new-medicaid-submission": EmailContent.newSubmission,
   "new-chip-submission": EmailContent.newSubmission,
   "temp-extension": EmailContent.tempExtention,
   "withdraw-package": EmailContent.withdrawPackage,
   "withdraw-rai": EmailContent.withdrawRai,
+  "withdraw-rai-state": EmailContent.withdrawRai,
+  "new-medicaid-submission-state": EmailContent.newSubmission,
+  "new-chip-submission-state": EmailContent.newSubmission,
 };
 
-function isAuthorityTemplate(obj: any, authority: Authority): obj is AuthoritiesWithUserTypesTemplate {
+function isAuthorityTemplate(
+  obj: any,
+  authority: Authority,
+): obj is AuthoritiesWithUserTypesTemplate {
   return authority in obj;
 }
 
-export async function getEmailTemplates<T>(action: keyof EmailTemplates, authority: Authority): Promise<EmailTemplateFunction<T>[] | null> {
+export async function getEmailTemplates<T>(
+  action: keyof EmailTemplates,
+  authority: Authority,
+): Promise<EmailTemplateFunction<T>[] | null> {
   const template = emailTemplates[action];
   if (!template) {
     console.log("No template found");
@@ -50,7 +60,7 @@ export async function getEmailTemplates<T>(action: keyof EmailTemplates, authori
   } else {
     emailTemplatesToSend.push(...Object.values(template as EmailTemplateFunction<T>));
   }
-
+  console.log("Email templates to send:", JSON.stringify(emailTemplatesToSend, null, 2));
   return emailTemplatesToSend;
 }
 
