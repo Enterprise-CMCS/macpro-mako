@@ -11,7 +11,8 @@
   "dependencies": {
     "msw": "^2.3.1",
     "shared-types": "*",
-    "shared-utils": "*"
+    "shared-utils": "*",
+    "react-app": "*"
   },
   "author": "",
   "license": "ISC"

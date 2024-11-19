@@ -1,11 +1,11 @@
 import type { opensearch } from "shared-types";
 import { SEATOOL_STATUS } from "shared-types";
 
-export const EXISTING_PENDING_ID = "MD-0002.R00.00";
-export const EXISTING_APPROVED_NEW_ID = "MD-0000.R00.00";
-export const EXISTING_APPROVED_RENEW_ID = "MD-0001.R00.00";
-export const EXISTING_APPROVED_AMEND_ID = "MD-0000.R00.01";
-export const NOT_FOUND_ID = "MD-0006.R01.00";
+export const EXISTING_ITEM_PENDING_ID = "MD-0002.R00.00";
+export const EXISTING_ITEM_APPROVED_NEW_ID = "MD-0000.R00.00";
+export const EXISTING_ITEM_APPROVED_RENEW_ID = "MD-0001.R00.00";
+export const EXISTING_ITEM_APPROVED_AMEND_ID = "MD-0000.R00.01";
+export const NOT_FOUND_ITEM_ID = "MD-0006.R01.00";
 export const TEST_ITEM_ID = "MD-0005.R01.00";
 
 export type ItemTestFields = {

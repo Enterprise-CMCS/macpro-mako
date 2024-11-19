@@ -1,17 +1,16 @@
-async function initMocks() {
-  if (process.env.NODE_ENV !== "production") {
-    if (typeof window === "undefined") {
-      const { mockedServer } = await import("./server");
-      console.log("Starting mock for server...");
-      mockedServer.listen();
-    } else {
-      const { mockedWorker } = await import("./browser");
-      console.log("Starting mock for browser...");
-      mockedWorker.start();
-    }
-  }
-}
+export * from "./data";
+export * from "./handlers";
 
-initMocks();
+export { HttpResponse, http } from "msw";
 
-export {};
+// if (process.env.NODE_ENV !== "production") {
+//   if (typeof window === "undefined") {
+//     const { mockedServer } = await import("./server");
+//     export { mockedServer };
+//     console.log("Starting mock for server...");
+//   } else {
+//     const { worker } = await import("./browser");
+//     console.log("Starting mock for browser...");
+//     worker.start();
+//   }
+// }

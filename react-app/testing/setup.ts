@@ -1,6 +1,6 @@
-import { mockedServer } from "mocks";
 import * as matchers from "@testing-library/jest-dom/matchers";
 import { cleanup } from "@testing-library/react";
+import { mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
 
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
@@ -47,28 +47,6 @@ beforeAll(() => {
       })),
     }));
     vi.mock("@/api", () => ({
-      idIsApproved: vi.fn(async (id: string) => {
-        const idsThatAreApproved = ["MD-0000.R00.00", "MD-0001.R00.00"];
-
-        return idsThatAreApproved.includes(id);
-      }),
-      canBeRenewedOrAmended: vi.fn(async (id: string) => {
-        const idsThatCanBeRenewedOrAmended = ["MD-0000.R00.00", "MD-0002.R00.00"];
-
-        return idsThatCanBeRenewedOrAmended.includes(id);
-      }),
-      itemExists: vi.fn(async (id: string) => {
-        const idsThatExist = [
-          "MD-00-0000",
-          "MD-0000.R00.00",
-          "MD-0000.R00.01",
-          "MD-0001.R00.00",
-          "MD-0002.R00.00",
-          "MD-0005.R01.00",
-        ];
-
-        return idsThatExist.includes(id);
-      }),
       useGetUser: () => ({
         data: {
           user: {

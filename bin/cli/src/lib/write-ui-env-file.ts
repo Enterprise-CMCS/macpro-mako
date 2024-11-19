@@ -1,6 +1,6 @@
-import path from "path";
-import { promises as fs } from "fs";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
+import { promises as fs } from "fs";
+import path from "path";
 import { project, region } from "./consts";
 
 export async function writeUiEnvFile(stage, local = false) {

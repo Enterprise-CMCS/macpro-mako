@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-import itemHandlers from "./items.js";
+import { defaultHandlers as itemHandlers } from "./items.js";
 
 export type Body =
   | Blob
@@ -21,3 +21,5 @@ export const putOnceHandler = (endpoint: string, status: number = 200, body?: Bo
   );
 
 export default [...itemHandlers];
+
+export type { GetItemBody } from "./items.js";
