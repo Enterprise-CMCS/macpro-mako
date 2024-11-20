@@ -85,7 +85,7 @@ const UserDropdownMenu = () => {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
         asChild
-        className="hover:text-white/70 p-4 data-[state=open]:bg-white data-[state=open]:text-primary"
+        className="hover:text-white/70 py-2 pl-3 pr-4 data-[state=open]:bg-white data-[state=open]:text-primary"
       >
         <button className="flex flex-row gap-4 items-center cursor-pointer">
           <p className="flex">My Account</p>
@@ -302,7 +302,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
       <div className="flex-1"></div>
       {isOpen && (
         <div className="w-full absolute top-[100px] sm:top-[85px] left-0 z-50">
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-2 gap-4 rounded-b-lg bg-primary">
+          <ul className="font-medium flex flex-col items-start p-4 md:p-0 mt-2 gap-4 rounded-b-lg bg-primary">
             {links.map((link) => (
               <li key={link.link}>
                 <Link
@@ -328,7 +328,10 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                   >
                     Sign In
                   </button>
-                  <button className="text-white hover:text-white/70" onClick={handleRegister}>
+                  <button
+                    className="text-left block py-2 pl-3 pr-4 text-white rounded"
+                    onClick={handleRegister}
+                  >
                     Register
                   </button>
                 </>
