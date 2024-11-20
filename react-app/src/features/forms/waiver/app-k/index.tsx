@@ -3,6 +3,7 @@ import {
   DatePicker,
   Input,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -38,8 +39,17 @@ export const AppKAmendmentForm = () => (
               <FormLabel className="font-bold" htmlFor="amendment-title">
                 Amendment Title <RequiredIndicator />
               </FormLabel>
-              <Textarea {...field} className="h-[80px]" id="amendment-title" />
-              <FormMessage />
+              <Textarea {...field} className="h-[80px]" id="amendment-title" maxLength={125} />
+              <FormDescription>
+                <span
+                  tabIndex={0}
+                  id="character-count"
+                  aria-label="character-count"
+                  aria-live="polite"
+                >
+                  {`${125 - (field?.value?.length || 0)} characters remaining`}
+                </span>
+              </FormDescription>
             </FormItem>
           )}
         />
