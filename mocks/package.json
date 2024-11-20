@@ -1,0 +1,19 @@
+{
+  "name": "mocks",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "msw": "^2.3.1",
+    "shared-types": "*",
+    "shared-utils": "*",
+    "react-app": "*"
+  },
+  "author": "",
+  "license": "ISC"
+}

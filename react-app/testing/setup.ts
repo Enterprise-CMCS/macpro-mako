@@ -1,6 +1,8 @@
-import { afterEach, beforeAll, afterAll, vi, expect } from "vitest";
-import { cleanup } from "@testing-library/react";
+import "@/api/amplifyConfig";
 import * as matchers from "@testing-library/jest-dom/matchers";
+import { cleanup } from "@testing-library/react";
+import { mockedServer } from "mocks/server";
+import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
 
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
@@ -31,6 +33,9 @@ window.HTMLElement.prototype.hasPointerCapture = vi.fn();
 // Add this to remove all the expected errors in console when running unit tests.
 beforeAll(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
+  console.log("starting MSW listener");
+  mockedServer.listen();
+
   if (process.env.MOCK_API_REFINES) {
     vi.mock("@/components/Inputs/upload.utilities", () => ({
       getPresignedUrl: vi.fn(async () => "hello world"),
@@ -40,46 +45,19 @@ beforeAll(() => {
         key: "world",
       })),
     }));
-    vi.mock("@/api", () => ({
-      idIsApproved: vi.fn(async (id: string) => {
-        const idsThatAreApproved = ["MD-0000.R00.00", "MD-0001.R00.00"];
-
-        return idsThatAreApproved.includes(id);
-      }),
-      canBeRenewedOrAmended: vi.fn(async (id: string) => {
-        const idsThatCanBeRenewedOrAmended = ["MD-0000.R00.00", "MD-0002.R00.00"];
-
-        return idsThatCanBeRenewedOrAmended.includes(id);
-      }),
-      itemExists: vi.fn(async (id: string) => {
-        const idsThatExist = [
-          "MD-00-0000",
-          "MD-0000.R00.00",
-          "MD-0000.R00.01",
-          "MD-0001.R00.00",
-          "MD-0002.R00.00",
-          "MD-0005.R01.00",
-        ];
-
-        return idsThatExist.includes(id);
-      }),
-      useGetItem: () => ({
-        data: {
-          _source: {
-            _id: "12345",
-            changelog: [{ _source: { event: "new-medicaid-submission" } }],
-            authority: "Medicaid SPA",
+    vi.mock("@/api", async (importOriginal) => {
+      const actual = await importOriginal();
+      return {
+        ...(actual as object),
+        useGetUser: () => ({
+          data: {
+            user: {
+              "custom:cms-roles": "onemac-micro-statesubmitter,onemac-micro-super",
+            },
           },
-        },
-      }),
-      useGetUser: () => ({
-        data: {
-          user: {
-            "custom:cms-roles": "onemac-micro-statesubmitter,onemac-micro-super",
-          },
-        },
-      }),
-    }));
+        }),
+      };
+    });
     vi.mock("@/utils/user", () => ({
       isAuthorizedState: vi.fn(async (id: string) => {
         const validStates = ["MD"];
@@ -92,10 +70,15 @@ beforeAll(() => {
 
 afterEach(() => {
   if (process.env.SKIP_CLEANUP) return;
+  // Reset any request handlers that we may add during the tests,
+  // so they don't affect other tests.
+  mockedServer.resetHandlers();
   cleanup();
 });
 
 afterAll(() => {
   delete process.env.SKIP_CLEANUP;
+  // Clean up after the tests are finished.
+  mockedServer.close();
   vi.restoreAllMocks();
 });
