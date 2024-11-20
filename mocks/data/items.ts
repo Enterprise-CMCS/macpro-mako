@@ -11,7 +11,12 @@ export const TEST_ITEM_ID = "MD-0005.R01.00";
 export type ItemTestFields = {
   _id: string;
   found: boolean;
-  _source: Pick<opensearch.main.Document, "id" | "seatoolStatus" | "actionType"> | boolean;
+  _source:
+    | (Pick<opensearch.main.Document, "id" | "seatoolStatus" | "actionType"> & {
+        authority?: string;
+        changelog?: [{ _source: { event: string } }];
+      })
+    | boolean;
 };
 
 const cases: Record<string, ItemTestFields> = {
@@ -67,6 +72,8 @@ const cases: Record<string, ItemTestFields> = {
       id: "MD-0005.R01.00",
       seatoolStatus: SEATOOL_STATUS.PENDING,
       actionType: "New",
+      changelog: [{ _source: { event: "new-medicaid-submission" } }],
+      authority: "Medicaid SPA",
     },
   },
   "MD-0006.R01.00": {

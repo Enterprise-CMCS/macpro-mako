@@ -58,7 +58,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   const config: ProcessEmailConfig = {
     emailAddressLookupSecretName,
     applicationEndpointUrl,
-    osDomain,
+    osDomain: `https://${osDomain}`,
     indexNamespace,
     region,
     DLQ_URL,
@@ -124,7 +124,12 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     return;
   }
 
-  await processAndSendEmails(record, id, config);
+  try {
+    await processAndSendEmails(record, id, config);
+  } catch (error) {
+    console.error("Error processing record:", JSON.stringify(error, null, 2));
+    throw error;
+  }
 }
 
 function validateEmailTemplate(template: any) {
