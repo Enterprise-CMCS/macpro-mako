@@ -146,6 +146,14 @@ export const TemporaryExtensionForm = () => {
           />
         </>
       )}
+      defaultValues={{
+        ids: {
+          validAuthority: {
+            authority: submission?._source?.authority ?? "",
+            waiverNumber: waiverId ?? "",
+          },
+        },
+      }}
       attachments={{
         faqLink: getFAQLinkForAttachments("temporary-extension"),
       }}
