@@ -12,21 +12,10 @@ import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 
 const ldClientId = config.launchDarkly?.CLIENT_ID;
 if (ldClientId === undefined) {
-  throw new Error("To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID");
+  throw new Error(
+    "To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID",
+  );
 }
-
-// const enableMocking = async () => {
-//   console.log("config.apiMocks: ", config.apiMocks);
-//   if (config.apiMocks !== "true") {
-//     return;
-//   }
-
-//   const { mockedWorker } = await import("mocks/browser");
-
-//   return mockedWorker.start({
-//     onUnhandledRequest: "bypass",
-//   });
-// };
 
 const initializeLaunchDarkly = async () => {
   const LDProvider = await asyncWithLDProvider({
@@ -38,8 +27,6 @@ const initializeLaunchDarkly = async () => {
       eventsUrl: "https://events.launchdarkly.us",
     },
   });
-
-  // await enableMocking();
 
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
