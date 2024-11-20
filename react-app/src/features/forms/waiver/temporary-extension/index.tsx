@@ -36,7 +36,7 @@ export const TemporaryExtensionForm = () => {
           {submission ? (
             <div>
               <p>Approved Initial or Renewal Waiver Number</p>
-              <p className="text-xl">{submission._source.authority}</p>
+              <p className="text-xl">{waiverId}</p>
             </div>
           ) : (
             <FormField
@@ -67,7 +67,7 @@ export const TemporaryExtensionForm = () => {
           {waiverId && submission ? (
             <div>
               <p>Temporary Extension Type</p>
-              <p className="text-xl">{waiverId}</p>
+              <p className="text-xl">{submission._source.authority}</p>
             </div>
           ) : (
             <FormField
