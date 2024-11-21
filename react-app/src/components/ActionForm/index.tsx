@@ -1,38 +1,38 @@
-import { useGetUser } from "@/api";
+import { ReactNode, useMemo } from "react";
 import {
-  ActionFormDescription,
   Banner,
-  BreadCrumbs,
   Button,
-  FAQFooter,
+  UserPrompt,
+  SimplePageContainer,
+  BreadCrumbs,
   Form,
-  FormField,
   LoadingSpinner,
+  SectionCard,
+  FormField,
+  banner,
+  userPrompt,
+  FAQFooter,
   PreSubmissionMessage,
+  optionCrumbsFromPath,
+  ActionFormDescription,
   RequiredFieldDescription,
   RequiredIndicator,
-  SectionCard,
-  SimplePageContainer,
-  UserPrompt,
-  banner,
-  optionCrumbsFromPath,
-  userPrompt,
 } from "@/components";
-import { queryClient } from "@/router";
+import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import { getFormOrigin } from "@/utils";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { ReactNode, useMemo } from "react";
-import { DefaultValues, FieldPath, UseFormReturn, useForm } from "react-hook-form";
-import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Authority, CognitoUserAttributes } from "shared-types";
-import { isStateUser } from "shared-utils";
-import { z } from "zod";
 import { ActionFormAttachments, AttachmentsOptions } from "./ActionFormAttachments";
-import { AdditionalInformation } from "./AdditionalInformation";
 import { getAttachments } from "./actionForm.utilities";
+import { isStateUser } from "shared-utils";
+import { useGetUser } from "@/api";
+import { AdditionalInformation } from "./AdditionalInformation";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "@/router";
 
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {
@@ -212,7 +212,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             </div>
             <Fields {...form} />
           </SectionCard>
-
           {attachmentsFromSchema.length > 0 && (
             <ActionFormAttachments attachmentsFromSchema={attachmentsFromSchema} {...attachments} />
           )}
