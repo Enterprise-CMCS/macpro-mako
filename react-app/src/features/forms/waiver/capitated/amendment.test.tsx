@@ -102,6 +102,14 @@ describe("Capitated Amendment", () => {
 });
 
 describe("AMENDMENT CAPITATED WAIVER WITH EXISTING WAIVERID", () => {
+  beforeAll(() => {
+    skipCleanup();
+    mockApiRefinements();
+
+    const { container: renderedContainer } = renderForm(<AmendmentForm />);
+
+    container = renderedContainer;
+  });
   test("waiver id is rendered on page", async () => {
     const { container: renderedContainer } = renderForm(
       <AmendmentForm waiverId="AK-0000.R00.11" />,
