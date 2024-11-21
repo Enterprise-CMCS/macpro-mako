@@ -10,9 +10,7 @@ import {
   WithdrawPackageActionWaiver,
 } from "./withdraw-package";
 import { WithdrawRaiForm } from "./withdraw-rai";
-
 import { Amendment } from "./amend";
-
 import { TemporaryExtensionForm } from "../waiver/temporary-extension";
 import { UploadSubsequentDocuments } from "./upload-subsequent-documents";
 
@@ -52,7 +50,6 @@ export const postSubmissionForms: Partial<
   "temporary-extension": {
     "1915(b)": TemporaryExtensionForm,
   },
-
   "amend-waiver": {
     ["1915(b)"]: Amendment,
   },
