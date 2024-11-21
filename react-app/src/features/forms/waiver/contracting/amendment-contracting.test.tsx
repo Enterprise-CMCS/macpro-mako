@@ -113,11 +113,7 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
 
 describe("Contracting Amendment with existing waiver Id", () => {
   test("existing waiver id is filled out", async () => {
-    const { container: renderedContainer } = renderForm(
-      <AmendmentForm waiverId="AK-0000.R00.11" />,
-    );
-
-    container = renderedContainer;
+    renderForm(<AmendmentForm waiverId="AK-0000.R00.11" />);
 
     const existingWaiverId = screen.getByTestId("existing-waiver-id");
     expect(existingWaiverId).toHaveTextContent("AK-0000.R00.11");
