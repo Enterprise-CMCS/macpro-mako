@@ -1,11 +1,11 @@
+import { formSchemas } from "@/formSchemas";
+import { renderForm } from "@/utils/test-helpers/renderForm";
+import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
+import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, test, expect, beforeAll } from "vitest";
+import { beforeAll, describe, expect, test } from "vitest";
 import { AmendmentForm } from "./Amendment";
-import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
-import { renderForm } from "@/utils/test-helpers/renderForm";
-import { formSchemas } from "@/formSchemas";
 
 const upload = uploadFiles<(typeof formSchemas)["contracting-amendment"]>();
 
@@ -23,10 +23,8 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
   });
 
   test("WAIVER ID EXISTING", async () => {
-    const waiverIdInput = screen.getByLabelText(
-      /existing waiver number to amend/i,
-    );
-    const waiverIdLabel = screen.getByTestId("waiverid-existing-label");
+    const waiverIdInput = screen.getByLabelText(/existing waiver number to amend/i);
+    const waiverIdLabel = screen.getByTestId("existing-waiver-label");
 
     // test record does not exist error occurs
     await userEvent.type(waiverIdInput, "MD-0004.R00.00");
@@ -56,9 +54,7 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
   });
 
   test("WAIVER ID AMENDMENT", async () => {
-    const waiverIdInput = screen.getByLabelText(
-      /1915\(b\) Waiver Amendment Number/i,
-    );
+    const waiverIdInput = screen.getByLabelText(/1915\(b\) Waiver Amendment Number/i);
     const waiverIdLabel = screen.getByTestId("waiverid-amendment-label");
 
     // validate id errors
@@ -84,13 +80,9 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
   });
 
   test("PROPOSED EFFECTIVE DATE OF AMENDMENT CONTRACTING WAIVER", async () => {
-    await userEvent.click(
-      screen.getByTestId("proposedEffectiveDate-datepicker"),
-    );
+    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector(
-      '[for="proposedEffectiveDate"]',
-    );
+    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });
@@ -110,5 +102,18 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
 
   test("submit button is enabled", async () => {
     expect(screen.getByTestId("submit-action-form")).toBeEnabled();
+  });
+});
+
+describe("Contracting Amendment with existing waiver Id", () => {
+  test("existing waiver id is filled out", async () => {
+    const { container: renderedContainer } = renderForm(
+      <AmendmentForm waiverId="AK-0000.R00.11" />,
+    );
+
+    container = renderedContainer;
+
+    const existingWaiverId = screen.getByTestId("existing-waiver-id");
+    expect(existingWaiverId).toHaveTextContent("AK-0000.R00.11");
   });
 });
