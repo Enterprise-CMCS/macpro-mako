@@ -1,8 +1,9 @@
 import { screen } from "@testing-library/react";
 import { Amendment } from "../amend";
-import { describe, expect, test, vi, Mock } from "vitest";
+import { describe, expect, test, vi, Mock, beforeAll } from "vitest";
 import { useGetItem } from "@/api";
 import { renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
+import { mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
 
 vi.mock("@/api", async (importOriginal) => {
   const actual = await importOriginal();
@@ -16,6 +17,9 @@ vi.mock("@/api", async (importOriginal) => {
 });
 
 describe("Post-submission Amendment", () => {
+  beforeAll(() => {
+    mockApiRefinements();
+  });
   test("renders Capitated Amendment when changelog contains capitated-initial event", async () => {
     (useGetItem as Mock).mockImplementation(() => {
       return {
