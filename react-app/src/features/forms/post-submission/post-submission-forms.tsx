@@ -52,7 +52,6 @@ export const postSubmissionForms: Partial<
   "temporary-extension": {
     "1915(b)": TemporaryExtensionForm,
   },
-
   "amend-waiver": {
     ["1915(b)"]: Amendment,
   },
