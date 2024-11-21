@@ -100,3 +100,16 @@ describe("Capitated Amendment", () => {
     expect(screen.getByTestId("submit-action-form")).toBeEnabled();
   });
 });
+
+describe("AMENDMENT CAPITATED WAIVER WITH EXISTING WAIVERID", () => {
+  test("waiver id is rendered on page", async () => {
+    const { container: renderedContainer } = renderForm(
+      <AmendmentForm waiverId="AK-0000.R00.11" />,
+    );
+
+    container = renderedContainer;
+
+    const existingWaiverId = screen.getByTestId("existing-waiver-id");
+    expect(existingWaiverId).toHaveTextContent("AK-0000.R00.11");
+  });
+});

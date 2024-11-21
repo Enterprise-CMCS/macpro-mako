@@ -18,7 +18,7 @@ interface AmendmentFormProps {
   waiverId?: string;
 }
 
-export const AmendmentForm = ({ waiverId = "" }: AmendmentFormProps) => {
+export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
   return (
     <ActionForm
       schema={formSchemas["capitated-amendment"]}
@@ -34,10 +34,12 @@ export const AmendmentForm = ({ waiverId = "" }: AmendmentFormProps) => {
               1915(b)
             </span>
           </div>
-          {waiverId !== "" ? (
+          {waiverId !== undefined ? (
             <div>
               <p className="font-semibold">Existing Waiver Number to Amend</p>
-              <p className="text-lg font-thin">{waiverId}</p>
+              <p className="text-lg font-thin" data-testid="existing-waiver-id">
+                {waiverId}
+              </p>
             </div>
           ) : (
             <FormField

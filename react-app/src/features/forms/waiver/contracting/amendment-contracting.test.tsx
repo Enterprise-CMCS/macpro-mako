@@ -104,3 +104,16 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
     expect(screen.getByTestId("submit-action-form")).toBeEnabled();
   });
 });
+
+describe("AMENDMENT CONTRACTING WAIVER WITH EXISTING WAIVERID", () => {
+  test("existing waiver id is filled out", async () => {
+    const { container: renderedContainer } = renderForm(
+      <AmendmentForm waiverId="AK-0000.R00.11" />,
+    );
+
+    container = renderedContainer;
+
+    const existingWaiverId = screen.getByTestId("existing-waiver-id");
+    expect(existingWaiverId).toHaveTextContent("AK-0000.R00.11");
+  });
+});
