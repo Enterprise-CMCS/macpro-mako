@@ -1,5 +1,5 @@
-import { Waiver1915bStateEmail } from "../../content/new-submission/emailTemplates/Waiver1915bState";
-import { emailTemplateValue } from "../../mock-data/new-submission";
+import { Waiver1915bStateEmail } from "../../../content/new-submission/emailTemplates/Waiver1915bState";
+import { emailTemplateValue } from "../../../mock-data/new-submission";
 
 const Waiver1915bStateEmailPreview = () => {
   return (
