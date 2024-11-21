@@ -10,50 +10,51 @@ import {
 } from "@/components";
 import * as Table from "@/components";
 import { BLANK_VALUE } from "@/consts";
-import { usePackageActivities, useAttachmentService } from "./hook";
+import { useAttachmentService, Attachments } from "./hook";
+import { useParams } from "react-router-dom";
+import { useGetItem } from "@/api";
+import { ItemResult } from "shared-types/opensearch/changelog";
 
-const AttachmentDetails = ({
-  id,
-  attachments,
-  hook,
-}: {
+type AttachmentDetailsProps = {
   id: string;
   attachments: opensearch.changelog.Document["attachments"];
-  hook: ReturnType<typeof useAttachmentService>;
-}) => {
-  return (
-    <Table.TableBody>
-      {attachments &&
-        attachments.map((ATC) => {
-          return (
-            <Table.TableRow key={`${id}-${ATC.key}`}>
-              <Table.TableCell>{ATC.title}</Table.TableCell>
-              <Table.TableCell>
-                <Table.Button
-                  className="ml-[-15px]"
-                  variant="link"
-                  onClick={() => {
-                    hook.onUrl(ATC).then(window.open);
-                  }}
-                >
-                  {ATC.filename}
-                </Table.Button>
-              </Table.TableCell>
-            </Table.TableRow>
-          );
-        })}
-    </Table.TableBody>
-  );
+  onClick: (attachment: Attachments[number]) => Promise<string>;
 };
 
-const Submission = (props: opensearch.changelog.Document) => {
-  const attachmentService = useAttachmentService(props);
+const AttachmentDetails = ({ id, attachments, onClick }: AttachmentDetailsProps) => (
+  <Table.TableBody>
+    {attachments.map((attachment) => {
+      return (
+        <Table.TableRow key={`${id}-${attachment.key}`}>
+          <Table.TableCell>{attachment.title}</Table.TableCell>
+          <Table.TableCell>
+            <Table.Button
+              className="ml-[-15px]"
+              variant="link"
+              onClick={() => onClick(attachment).then(window.open)}
+            >
+              {attachment.filename}
+            </Table.Button>
+          </Table.TableCell>
+        </Table.TableRow>
+      );
+    })}
+  </Table.TableBody>
+);
+
+type SubmissionProps = {
+  packageActivity: opensearch.changelog.Document;
+};
+
+const Submission = ({ packageActivity }: SubmissionProps) => {
+  const { attachments, id, packageId, additionalInformation } = packageActivity;
+  const { onUrl, loading, onZip } = useAttachmentService({ packageId });
 
   return (
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="font-bold text-lg mb-2">Attachments</h2>
-        {props.attachments.length ? (
+        {attachments.length > 0 ? (
           <Table.Table>
             <Table.TableHeader>
               <Table.TableRow>
@@ -61,28 +62,19 @@ const Submission = (props: opensearch.changelog.Document) => {
                 <Table.TableHead>Attached File</Table.TableHead>
               </Table.TableRow>
             </Table.TableHeader>
-            <AttachmentDetails
-              attachments={props.attachments}
-              id={props.id}
-              hook={attachmentService}
-            />
+            <AttachmentDetails attachments={attachments} id={id} onClick={onUrl} />
           </Table.Table>
         ) : (
           <p>No information submitted</p>
         )}
       </div>
 
-      {props.attachments.length > 1 && (
+      {attachments.length > 0 && (
         <Table.Button
           variant="outline"
           className="w-max"
-          disabled={props.attachments.length === 0}
-          loading={attachmentService.loading}
-          onClick={() => {
-            if (props.attachments.length !== 0) {
-              attachmentService.onZip(props.attachments);
-            }
-          }}
+          loading={loading}
+          onClick={() => onZip(attachments)}
         >
           Download documents
         </Table.Button>
@@ -90,17 +82,19 @@ const Submission = (props: opensearch.changelog.Document) => {
 
       <div>
         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
-        <p className="whitespace-pre-line">
-          {props.additionalInformation || "No information submitted"}
-        </p>
+        <p className="whitespace-pre-line">{additionalInformation || "No information submitted"}</p>
       </div>
     </div>
   );
 };
 
-const PackageActivity = (props: opensearch.changelog.Document) => {
+type PackageActivityProps = {
+  packageActivity: opensearch.changelog.Document;
+};
+
+const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
   const label = useMemo(() => {
-    switch (props.event) {
+    switch (packageActivity.event) {
       case "capitated-amendment":
       case "capitated-initial":
       case "capitated-renewal":
@@ -126,72 +120,105 @@ const PackageActivity = (props: opensearch.changelog.Document) => {
       default:
         return BLANK_VALUE;
     }
-  }, [props.event]);
-
-  if (label === BLANK_VALUE) {
-    return null;
-  }
+  }, [packageActivity.event]);
 
   return (
-    <AccordionItem value={props.id}>
+    <AccordionItem value={packageActivity.id}>
       <AccordionTrigger className="bg-gray-100 px-3">
         <p className="flex flex-row gap-2 text-gray-600">
           <strong>{label}</strong>
           {" - "}
-          {props.timestamp
-            ? format(new Date(props.timestamp), "eee, MMM d, yyyy hh:mm:ss a")
+          {packageActivity.timestamp
+            ? format(new Date(packageActivity.timestamp), "eee, MMM d, yyyy hh:mm:ss a")
             : "Unknown"}
         </p>
       </AccordionTrigger>
       <AccordionContent className="p-4">
-        <Submission {...props} />
+        <Submission packageActivity={packageActivity} />
       </AccordionContent>
     </AccordionItem>
   );
 };
 
-export const PackageActivities = () => {
-  const {
-    data: packageActivity,
-    loading,
-    onDownloadAll,
-    accordianDefault,
-  } = usePackageActivities();
+type DownloadAllButtonProps = {
+  packageId: string;
+  submissionChangelog: ItemResult[];
+};
 
-  const activitiesWithoutAdminChange = packageActivity.filter(
-    (activity) =>
-      activity._source.isAdminChange === undefined || activity._source.isAdminChange === false,
+const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButtonProps) => {
+  const { onZip, loading } = useAttachmentService({ packageId });
+
+  if (submissionChangelog.length === 0) {
+    return null;
+  }
+
+  const onDownloadAll = () => {
+    const attachmentsAggregate = submissionChangelog.reduce<Attachments>((acc, changelogItem) => {
+      if (!changelogItem._source.attachments) {
+        return acc;
+      }
+
+      return acc.concat(changelogItem._source.attachments);
+    }, []);
+
+    if (attachmentsAggregate.length === 0) {
+      return;
+    }
+
+    onZip(attachmentsAggregate);
+  };
+
+  return (
+    <Table.Button loading={loading} onClick={onDownloadAll} variant="outline">
+      Download all documents
+    </Table.Button>
   );
+};
+
+export const PackageActivities = () => {
+  const { id: packageId } = useParams<{ id: string }>();
+  const { data: submission } = useGetItem(packageId);
+
+  if (submission === undefined) {
+    return null;
+  }
+
+  const submissionChangelogWithoutAdminChanges = submission._source.changelog.filter(
+    (activity) =>
+      // isAdminChange can be `undefined` or `boolean`
+      !activity._source.isAdminChange,
+  );
+
+  const keyAndDefaultValue = submissionChangelogWithoutAdminChanges[0]?._source?.id;
 
   return (
     <DetailsSection
       id="package_activity"
       title={
         <div className="flex justify-between">
-          Package Activity ({activitiesWithoutAdminChange.length})
-          {activitiesWithoutAdminChange.length && (
-            <Table.Button loading={loading} onClick={onDownloadAll} variant="outline">
-              Download all documents
-            </Table.Button>
-          )}
+          Package Activity ({submissionChangelogWithoutAdminChanges.length})
+          <DownloadAllButton
+            submissionChangelog={submissionChangelogWithoutAdminChanges}
+            packageId={packageId}
+          />
         </div>
       }
     >
-      {activitiesWithoutAdminChange.length === 0 && (
+      {submissionChangelogWithoutAdminChanges.length > 0 ? (
+        <Accordion
+          // `key` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
+          key={keyAndDefaultValue}
+          type="multiple"
+          className="flex flex-col gap-2"
+          defaultValue={[keyAndDefaultValue]}
+        >
+          {submissionChangelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
+            <PackageActivity key={packageActivity.id} packageActivity={packageActivity} />
+          ))}
+        </Accordion>
+      ) : (
         <p className="text-gray-500">No package activity recorded</p>
       )}
-
-      <Accordion
-        // `key` to re-render the `defaultValue` whenever `accordionDefault` changes
-        key={accordianDefault[0]}
-        type="multiple"
-        className="flex flex-col gap-2"
-        defaultValue={accordianDefault}
-      >
-        {activitiesWithoutAdminChange.map((submission) => (
-          <PackageActivity key={submission._source.id} {...submission._source} />
-        ))}
-      </Accordion>
     </DetailsSection>
   );
 };

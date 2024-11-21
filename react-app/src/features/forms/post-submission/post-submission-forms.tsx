@@ -1,8 +1,9 @@
 import { getItem } from "@/api";
-import { LoaderFunction, useParams } from "react-router-dom";
 import { queryClient } from "../../../router";
 import { RespondToRaiChip, RespondToRaiMedicaid, RespondToRaiWaiver } from "./respond-to-rai";
 import { DisableWithdrawRaiForm, EnableWithdrawRaiForm } from "./toggle-withdraw-rai";
+import { LoaderFunction, Navigate, useParams } from "react-router-dom";
+import { Action, AuthorityUnion } from "shared-types";
 import {
   WithdrawPackageAction,
   WithdrawPackageActionChip,
@@ -12,39 +13,44 @@ import { WithdrawRaiForm } from "./withdraw-rai";
 
 import { Amendment } from "./amend";
 
+import { TemporaryExtensionForm } from "../waiver/temporary-extension";
 import { UploadSubsequentDocuments } from "./upload-subsequent-documents";
 
-// the keys will relate to this part of the route /actions/{key of postSubmissionForms}/authority/id
-export const postSubmissionForms: Record<string, Record<string, () => React.ReactNode>> = {
+export const postSubmissionForms: Partial<
+  Record<Action, Partial<Record<AuthorityUnion, () => React.ReactNode>>>
+> = {
   "withdraw-package": {
-    ["1915(b)"]: WithdrawPackageActionWaiver,
-    ["1915(c)"]: WithdrawPackageActionWaiver,
-    ["Medicaid SPA"]: WithdrawPackageAction,
-    ["CHIP SPA"]: WithdrawPackageActionChip,
+    "1915(b)": WithdrawPackageActionWaiver,
+    "1915(c)": WithdrawPackageActionWaiver,
+    "Medicaid SPA": WithdrawPackageAction,
+    "CHIP SPA": WithdrawPackageActionChip,
   },
   "respond-to-rai": {
-    ["1915(b)"]: RespondToRaiWaiver,
-    ["1915(c)"]: RespondToRaiWaiver,
-    ["Medicaid SPA"]: RespondToRaiMedicaid,
-    ["CHIP SPA"]: RespondToRaiChip,
+    "1915(b)": RespondToRaiWaiver,
+    "1915(c)": RespondToRaiWaiver,
+    "Medicaid SPA": RespondToRaiMedicaid,
+    "CHIP SPA": RespondToRaiChip,
   },
   "withdraw-rai": {
-    ["1915(b)"]: WithdrawRaiForm,
-    ["1915(c)"]: WithdrawRaiForm,
-    ["Medicaid SPA"]: WithdrawRaiForm,
-    ["CHIP SPA"]: WithdrawRaiForm,
+    "1915(b)": WithdrawRaiForm,
+    "1915(c)": WithdrawRaiForm,
+    "Medicaid SPA": WithdrawRaiForm,
+    "CHIP SPA": WithdrawRaiForm,
   },
   "enable-rai-withdraw": {
-    ["1915(b)"]: EnableWithdrawRaiForm,
-    ["1915(c)"]: EnableWithdrawRaiForm,
-    ["Medicaid SPA"]: EnableWithdrawRaiForm,
-    ["CHIP SPA"]: EnableWithdrawRaiForm,
+    "1915(b)": EnableWithdrawRaiForm,
+    "1915(c)": EnableWithdrawRaiForm,
+    "Medicaid SPA": EnableWithdrawRaiForm,
+    "CHIP SPA": EnableWithdrawRaiForm,
   },
   "disable-rai-withdraw": {
-    ["1915(b)"]: DisableWithdrawRaiForm,
-    ["1915(c)"]: DisableWithdrawRaiForm,
-    ["Medicaid SPA"]: DisableWithdrawRaiForm,
-    ["CHIP SPA"]: DisableWithdrawRaiForm,
+    "1915(b)": DisableWithdrawRaiForm,
+    "1915(c)": DisableWithdrawRaiForm,
+    "Medicaid SPA": DisableWithdrawRaiForm,
+    "CHIP SPA": DisableWithdrawRaiForm,
+  },
+  "temporary-extension": {
+    "1915(b)": TemporaryExtensionForm,
   },
 
   "amend-waiver": {
@@ -59,8 +65,12 @@ export const postSubmissionForms: Record<string, Record<string, () => React.Reac
 };
 
 export const PostSubmissionWrapper = () => {
-  const { type, authority } = useParams();
-  const PostSubmissionForm = postSubmissionForms[type][authority];
+  const { type, authority } = useParams<{ authority: AuthorityUnion; type: string }>();
+  const PostSubmissionForm = postSubmissionForms?.[type]?.[authority];
+
+  if (PostSubmissionForm === undefined) {
+    return <Navigate to="/" />;
+  }
 
   return <PostSubmissionForm />;
 };
