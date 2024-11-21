@@ -50,7 +50,7 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
                   <FormLabel className="font-semibold" data-testid="existing-waiver-label">
                     Existing Waiver Number to Amend <RequiredIndicator />
                   </FormLabel>
-                  <p className="text-neutral-500">
+                  <p className="text-gray-500 font-light">
                     Enter the existing waiver number you are seeking to amend in the format it was
                     approved, using a dash after the two character state abbreviation.
                   </p>
@@ -72,7 +72,10 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
             render={({ field }) => (
               <FormItem>
                 <div className="flex gap-4">
-                  <FormLabel className="font-semibold" data-testid="waiverid-amendment-label">
+                  <FormLabel
+                    className="font-semibold"
+                    data-testid="waiverid-amendment-label"
+                  >
                     1915(b) Waiver Amendment Number <RequiredIndicator />
                   </FormLabel>
                   <Link
@@ -84,7 +87,7 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
                     What is my 1915(b) Waiver Amendment Number?
                   </Link>
                 </div>
-                <p className="text-neutral-500">
+                <p className="text-gray-500 font-light">
                   The Waiver Number must be in the format of SS-####.R##.## or SS-#####.R##.##. For
                   amendments, the last two digits start with {"'01'"} and ascends.
                 </p>
@@ -106,7 +109,6 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
               <FormItem className="max-w-lg">
                 <FormLabel className="text-lg font-semibold block">
                   Proposed Effective Date of 1915(b) Waiver Amendment <RequiredIndicator />
-                  Proposed Effective Date of 1915(b) Waiver Amendment <RequiredIndicator />
                 </FormLabel>
                 <FormControl className="max-w-sm">
                   <DatePicker
@@ -124,7 +126,7 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
       attachments={{
         faqLink: getFAQLinkForAttachments("contracting-amendment"),
       }}
-      defaultValues={{ id: "", waiverNumber: waiverId ?? "" }}
+      defaultValues={{ id: "", waiverNumber: waiverId }}
       documentPollerArgs={{
         property: "id",
         documentChecker: (check) => check.recordExists,

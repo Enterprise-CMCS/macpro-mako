@@ -2,10 +2,6 @@ import { formSchemas } from "@/formSchemas";
 import { renderForm } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { formSchemas } from "@/formSchemas";
-import { renderForm } from "@/utils/test-helpers/renderForm";
-import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
-import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeAll, describe, expect, test } from "vitest";
@@ -111,7 +107,11 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
 
 describe("Contracting Amendment with existing waiver Id", () => {
   test("existing waiver id is filled out", async () => {
-    renderForm(<AmendmentForm waiverId="AK-0000.R00.11" />);
+    const { container: renderedContainer } = renderForm(
+      <AmendmentForm waiverId="AK-0000.R00.11" />,
+    );
+
+    container = renderedContainer;
 
     const existingWaiverId = screen.getByTestId("existing-waiver-id");
     expect(existingWaiverId).toHaveTextContent("AK-0000.R00.11");

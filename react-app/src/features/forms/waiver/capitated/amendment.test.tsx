@@ -80,6 +80,7 @@ describe("Capitated Amendment", () => {
 
   test("PROPOSED EFFECTIVE DATE OF 1915(B) WAIVER AMENDMENT", async () => {
     await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
+    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
     const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
 
@@ -105,9 +106,17 @@ describe("AMENDMENT CAPITATED WAIVER WITH EXISTING WAIVERID", () => {
   beforeAll(() => {
     skipCleanup();
     mockApiRefinements();
+
+    const { container: renderedContainer } = renderForm(<AmendmentForm />);
+
+    container = renderedContainer;
   });
   test("waiver id is rendered on page", async () => {
-    renderForm(<AmendmentForm waiverId="AK-0000.R00.11" />);
+    const { container: renderedContainer } = renderForm(
+      <AmendmentForm waiverId="AK-0000.R00.11" />,
+    );
+
+    container = renderedContainer;
 
     const existingWaiverId = screen.getByTestId("existing-waiver-id");
     expect(existingWaiverId).toHaveTextContent("AK-0000.R00.11");
