@@ -12,6 +12,7 @@ import {
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
 import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getFAQLinkForAttachments } from "../../faqLinks";
 
 interface AmendmentFormProps {
@@ -124,7 +125,7 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
       attachments={{
         faqLink: getFAQLinkForAttachments("capitated-amendment"),
       }}
-      defaultValues={{ id: "", waiverNumber: waiverId ?? "" }}
+      defaultValues={{ id: "", waiverNumber: waiverId }}
       documentPollerArgs={{
         property: "id",
         documentChecker: (check) => check.recordExists,

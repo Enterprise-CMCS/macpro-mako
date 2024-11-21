@@ -3,6 +3,7 @@ import { beforeAll, describe, expect, test } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { renderForm } from "@/utils/test-helpers/renderForm";
 import { skipCleanup, mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
+import { skipCleanup, mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
 import { AmendmentForm } from "./Amendment";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { formSchemas } from "@/formSchemas";
@@ -22,6 +23,7 @@ describe("Capitated Amendment", () => {
   });
 
   test("EXISTING WAIVER NUMBER TO AMEND", async () => {
+    const existingWaiverInput = screen.getByLabelText(/Existing Waiver Number to Amend/);
     const existingWaiverInput = screen.getByLabelText(/Existing Waiver Number to Amend/);
     const existingWaiverLabel = screen.getByTestId("existing-waiver-label");
 
@@ -55,6 +57,8 @@ describe("Capitated Amendment", () => {
   test("1915(B) WAIVER AMENDMENT NUMBER", async () => {
     const waiverAmendmentInput = screen.getByLabelText(/Waiver Amendment Number/);
     const waiverAmendmentLabel = screen.getByTestId("1915b-waiver-amendment-label");
+    const waiverAmendmentInput = screen.getByLabelText(/Waiver Amendment Number/);
+    const waiverAmendmentLabel = screen.getByTestId("1915b-waiver-amendment-label");
 
     // validate id errors
     // item exists validation error occurs
@@ -80,7 +84,9 @@ describe("Capitated Amendment", () => {
 
   test("PROPOSED EFFECTIVE DATE OF 1915(B) WAIVER AMENDMENT", async () => {
     await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
+    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
+    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
     const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
@@ -105,9 +111,17 @@ describe("AMENDMENT CAPITATED WAIVER WITH EXISTING WAIVERID", () => {
   beforeAll(() => {
     skipCleanup();
     mockApiRefinements();
+
+    const { container: renderedContainer } = renderForm(<AmendmentForm />);
+
+    container = renderedContainer;
   });
   test("waiver id is rendered on page", async () => {
-    renderForm(<AmendmentForm waiverId="AK-0000.R00.11" />);
+    const { container: renderedContainer } = renderForm(
+      <AmendmentForm waiverId="AK-0000.R00.11" />,
+    );
+
+    container = renderedContainer;
 
     const existingWaiverId = screen.getByTestId("existing-waiver-id");
     expect(existingWaiverId).toHaveTextContent("AK-0000.R00.11");

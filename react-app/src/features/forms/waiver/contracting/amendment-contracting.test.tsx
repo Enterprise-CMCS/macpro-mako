@@ -5,6 +5,7 @@ import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeAll, describe, expect, test } from "vitest";
+import { beforeAll, describe, expect, test } from "vitest";
 import { AmendmentForm } from "./Amendment";
 
 const upload = uploadFiles<(typeof formSchemas)["contracting-amendment"]>();
@@ -23,6 +24,8 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
   });
 
   test("WAIVER ID EXISTING", async () => {
+    const waiverIdInput = screen.getByLabelText(/existing waiver number to amend/i);
+    const waiverIdLabel = screen.getByTestId("existing-waiver-label");
     const waiverIdInput = screen.getByLabelText(/existing waiver number to amend/i);
     const waiverIdLabel = screen.getByTestId("existing-waiver-label");
 
@@ -55,6 +58,7 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
 
   test("WAIVER ID AMENDMENT", async () => {
     const waiverIdInput = screen.getByLabelText(/1915\(b\) Waiver Amendment Number/i);
+    const waiverIdInput = screen.getByLabelText(/1915\(b\) Waiver Amendment Number/i);
     const waiverIdLabel = screen.getByTestId("waiverid-amendment-label");
 
     // validate id errors
@@ -81,7 +85,9 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
 
   test("PROPOSED EFFECTIVE DATE OF AMENDMENT CONTRACTING WAIVER", async () => {
     await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
+    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
+    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
     const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
@@ -107,7 +113,11 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
 
 describe("Contracting Amendment with existing waiver Id", () => {
   test("existing waiver id is filled out", async () => {
-    renderForm(<AmendmentForm waiverId="AK-0000.R00.11" />);
+    const { container: renderedContainer } = renderForm(
+      <AmendmentForm waiverId="AK-0000.R00.11" />,
+    );
+
+    container = renderedContainer;
 
     const existingWaiverId = screen.getByTestId("existing-waiver-id");
     expect(existingWaiverId).toHaveTextContent("AK-0000.R00.11");
