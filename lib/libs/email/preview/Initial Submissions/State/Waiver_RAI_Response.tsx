@@ -1,38 +1,37 @@
-import { ChipSpaCMSEmail } from "../../content/respondToRai/emailTemplates";
-import { emailTemplateValue } from "../../mock-data/respond-to-rai";
+import { Waiver1915bStateEmail } from "../../../content/respondToRai/emailTemplates";
+import { emailTemplateValue } from "../../../mock-data/respond-to-rai";
 
-export const ChipSpaCMSEmailPreview = () => {
+const Waiver1915bStateEmailPreview = () => {
   return (
-    <ChipSpaCMSEmail
+    <Waiver1915bStateEmail
       variables={{
         ...emailTemplateValue,
-        id: "CO-24-1055-0001",
+        id: "CO-1234.R21.00",
         territory: "CO",
         event: "respond-to-rai",
         attachments: {
           revisedAmendedStatePlanLanguage: {
             files: [
               {
-                filename: "CMS_Form_179_RAI_Response.pdf",
-                title: "CMS Form 179",
+                filename: "waiver-rai-response.pdf",
+                title: "Waiver RAI Response",
                 bucket: "test-bucket",
-                key: "cms-form-179.pdf",
+                key: "waiver-rai-response.pdf",
                 uploadDate: Date.now(),
               },
-            ],
-            label: "CMS Form 179",
-          },
-          officialRAIResponse: {
-            files: [
               {
-                filename: "test.pdf",
+                filename: "spa-pages.pdf",
                 title: "SPA Pages",
                 bucket: "test-bucket",
                 key: "spa-pages.pdf",
                 uploadDate: Date.now(),
               },
             ],
-            label: "SPA Pages",
+            label: "Revised Amended State Plan Language",
+          },
+          officialRAIResponse: {
+            files: [],
+            label: "Official RAI Response",
           },
           budgetDocuments: {
             files: [],
@@ -56,4 +55,4 @@ export const ChipSpaCMSEmailPreview = () => {
   );
 };
 
-export default ChipSpaCMSEmailPreview;
+export default Waiver1915bStateEmailPreview;

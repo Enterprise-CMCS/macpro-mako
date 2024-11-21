@@ -22,7 +22,7 @@ export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
       footerContent={<BasicFooter />}
     >
       <DetailsHeading />
-      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} useThisLink />
       <PackageDetails
         details={{
           "State or territory": variables.territory,

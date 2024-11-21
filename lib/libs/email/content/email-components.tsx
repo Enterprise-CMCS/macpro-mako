@@ -63,24 +63,30 @@ const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
   </Section>
 );
 
-const LoginInstructions = ({ appEndpointURL }: { appEndpointURL: string }) => (
+const LoginInstructions = ({
+  appEndpointURL,
+  useThisLink,
+}: {
+  appEndpointURL: string;
+  useThisLink?: boolean;
+}) => (
   <ul style={{ marginLeft: "-20px" }}>
     <li>
       <Text style={styles.text.description}>
         The submission can be accessed in the OneMAC application at{" "}
-        <Link href={appEndpointURL}>{appEndpointURL}</Link>
+        <Link href={appEndpointURL}>{useThisLink ? "this link" : appEndpointURL}</Link>.
       </Text>
     </li>
     <li>
       <Text style={styles.text.description}>
-        If not logged in, click "Login" at the top and use your Enterprise User Administration (EUA)
-        credentials.
+        If you are not already logged in, please click the "Login" link at the top of the page and
+        log in using your Enterprise User Administration (EUA) credentials.
       </Text>
     </li>
     <li>
       <Text style={styles.text.description}>
-        After logging in, you'll see the submission listed on the dashboard. Click its ID number to
-        view details.
+        After you have logged in, you will be taken to the OneMAC application. The submission will
+        be listed on the dashboard page, and you can view its details by clicking on its ID number.
       </Text>
     </li>
   </ul>

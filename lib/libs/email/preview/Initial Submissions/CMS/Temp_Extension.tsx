@@ -1,5 +1,5 @@
-import { TempExtCMSEmail } from "../../content/tempExtension/emailTemplates/TempExtCMS";
-import { emailTemplateValue } from "../../mock-data/temp-extension";
+import { TempExtCMSEmail } from "../../../content/tempExtension/emailTemplates/TempExtCMS";
+import { emailTemplateValue } from "../../../mock-data/temp-extension";
 
 const TempExtCMSPreview = () => {
   return (
