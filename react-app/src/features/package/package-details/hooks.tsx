@@ -112,7 +112,10 @@ export const recordDetails = (data: opensearch.main.Document): DetailSectionItem
   {
     label: "Latest package activity",
     value: data.makoChangedDate
-      ? format(new Date(data.makoChangedDate), "eee, MMM d yyyy, hh:mm:ss a")
+      ? format(
+          new Date(data.makoChangedDate).getTime(),
+          "eee, MMM d yyyy, hh:mm:ss a",
+        )
       : BLANK_VALUE,
     canView: () => true,
   },

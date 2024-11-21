@@ -1,5 +1,6 @@
 import { newChipSubmission } from "./new-chip-submission";
 import { newMedicaidSubmission } from "./new-medicaid-submission";
+import { uploadSubsequentDocuments } from "./upload-subsequent-documents";
 import { capitatedAmendment } from "./capitated-amendment";
 import { capitatedInitial } from "./capitated-initial";
 import { capitatedRenewal } from "./capitated-renewal";
@@ -28,4 +29,5 @@ export const submissionPayloads = {
   "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
   "app-k": appK,
+  "upload-subsequent-documents": uploadSubsequentDocuments,
 };

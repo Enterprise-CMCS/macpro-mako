@@ -16,3 +16,4 @@ export * as removeAppkChild from "./remove-appk-child";
 export * as changedDate from "./changedDate";
 export * as temporaryExtension from "./temporary-extension";
 export * as appK from "./app-k";
+export * as uploadSubsequentDocuments from "./upload-subsequent-documents";

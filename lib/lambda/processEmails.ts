@@ -4,7 +4,7 @@ import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
 import { getEmailTemplates, getAllStateUsers } from "libs/email";
 import * as os from "./../libs/opensearch-lib";
-import { getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
+import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
 import pLimit from "p-limit";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
@@ -24,6 +24,8 @@ interface ProcessEmailConfig {
   region: string;
   DLQ_URL: string;
   userPoolId: string;
+  configurationSetName: string;
+  isDev: boolean;
 }
 
 export const handler: Handler<KafkaEvent> = async (event) => {
@@ -35,6 +37,8 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     "region",
     "DLQ_URL",
     "userPoolId",
+    "configurationSetName",
+    "isDev",
   ] as const;
 
   const missingVars = requiredEnvVars.filter((varName) => !process.env[varName]);
@@ -49,14 +53,18 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   const region = process.env.region!;
   const DLQ_URL = process.env.DLQ_URL!;
   const userPoolId = process.env.userPoolId!;
+  const configurationSetName = process.env.configurationSetName!;
+  const isDev = process.env.isDev!;
   const config: ProcessEmailConfig = {
     emailAddressLookupSecretName,
     applicationEndpointUrl,
-    osDomain,
+    osDomain: `https://${osDomain}`,
     indexNamespace,
     region,
     DLQ_URL,
     userPoolId,
+    configurationSetName,
+    isDev: isDev === "true",
   };
 
   try {
@@ -111,12 +119,26 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     ...JSON.parse(decodeBase64WithUtf8(value)),
   };
 
-  if (record?.origin !== "mako") {
+  if (record.origin !== "mako") {
     console.log("Kafka event is not of mako origin.  Doing nothing.");
     return;
   }
 
-  await processAndSendEmails(record, id, config);
+  try {
+    await processAndSendEmails(record, id, config);
+  } catch (error) {
+    console.error("Error processing record:", JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+function validateEmailTemplate(template: any) {
+  const requiredFields = ["to", "subject", "body"];
+  const missingFields = requiredFields.filter((field) => !template[field]);
+
+  if (missingFields.length > 0) {
+    throw new Error(`Email template missing required fields: ${missingFields.join(", ")}`);
+  }
 }
 
 export async function processAndSendEmails(record: any, id: string, config: ProcessEmailConfig) {
@@ -124,6 +146,7 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
     record.event,
     record.authority.toLowerCase(),
   );
+
   if (!templates) {
     console.log(
       `The kafka record has an event type that does not have email support.  event: ${record.event}.  Doing nothing.`,
@@ -160,10 +183,12 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
   const sendEmailPromises = templates.map((template) =>
     limit(async () => {
       const filledTemplate = await template(templateVariables);
+      validateEmailTemplate(filledTemplate);
       const params = createEmailParams(
         filledTemplate,
         emails.sourceEmail,
         config.applicationEndpointUrl,
+        config.isDev,
       );
       await sendEmail(params, config.region);
     }),
@@ -176,10 +201,12 @@ export function createEmailParams(
   filledTemplate: any,
   sourceEmail: string,
   baseUrl: string,
+  isDev: boolean,
 ): SendEmailCommandInput {
+  const toAddresses = isDev ? [`State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`] : filledTemplate.to;
   return {
     Destination: {
-      ToAddresses: filledTemplate.to,
+      ToAddresses: toAddresses,
       CcAddresses: filledTemplate.cc,
     },
     Message: {
@@ -193,6 +220,7 @@ export function createEmailParams(
       Subject: { Data: filledTemplate.subject, Charset: "UTF-8" },
     },
     Source: sourceEmail,
+    ConfigurationSetName: process.env.configurationSetName,
   };
 }
 

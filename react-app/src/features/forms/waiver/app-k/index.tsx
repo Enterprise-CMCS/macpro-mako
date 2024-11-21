@@ -15,6 +15,7 @@ import { Authority } from "shared-types";
 import { formSchemas } from "@/formSchemas";
 import { Link } from "react-router-dom";
 import { FAQ_TAB } from "@/router";
+import { getFAQLinkForAttachments } from "../../faqLinks";
 
 export const AppKAmendmentForm = () => (
   <ActionForm
@@ -122,7 +123,7 @@ export const AppKAmendmentForm = () => (
         checks.authorityIs([Authority["1915c"]]) && checks.actionIs("Amend"),
     }}
     attachments={{
-      faqLink: "/faq/appk-attachments",
+      faqLink: getFAQLinkForAttachments("app-k"),
     }}
     bannerPostSubmission={{
       header: "Package submitted",

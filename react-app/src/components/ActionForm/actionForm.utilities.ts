@@ -4,14 +4,7 @@ export const getAttachments = <Schema extends z.ZodTypeAny>(
   schema: Schema,
 ): [string, z.ZodObject<z.ZodRawShape, "strip">][] => {
   if (schema instanceof z.ZodEffects) {
-    const innerSchema = schema._def.schema;
-
-    if (
-      innerSchema instanceof z.ZodObject &&
-      innerSchema.shape.attachments instanceof z.ZodObject
-    ) {
-      return Object.entries(innerSchema.shape?.attachments?.shape ?? {});
-    }
+    return getAttachments(schema.innerType());
   }
 
   if (schema instanceof z.ZodObject) {

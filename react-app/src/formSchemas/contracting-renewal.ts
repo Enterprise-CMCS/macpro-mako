@@ -26,5 +26,3 @@ export const formSchema = events["contracting-renewal"].baseSchema.extend({
         "According to our records, this 1915(b) Waiver Number is not approved. You must supply an approved 1915(b) Initial or Renewal Waiver Number.",
     }),
 });
-
-// export type Schema = Awaited<ReturnType<typeof transform>>;

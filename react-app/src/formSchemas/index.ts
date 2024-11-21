@@ -5,6 +5,7 @@ import * as contractingInitial from "./contracting-initial";
 import * as contractingAmendment from "./contracting-amendment";
 import * as contractingRenewal from "./contracting-renewal";
 import * as newMedicaidSubmission from "./new-medicaid-submission";
+import * as uploadSubsequentDocuments from "./upload-subsequent-documents";
 import * as newChipSubmission from "./new-chip-submission";
 import * as temporaryExtension from "./temporary-extension";
 import * as withdrawPackage from "./withdraw-package";
@@ -31,4 +32,5 @@ export const formSchemas = {
   "respond-to-rai-waiver": respondtoRAI.formSchemaWaivers,
   "respond-to-rai-medicaid": respondtoRAI.formSchemaMedicaid,
   "app-k": appK.formSchema,
+  "upload-subsequent-documents": uploadSubsequentDocuments.formSchema,
 };

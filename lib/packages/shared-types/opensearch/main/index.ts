@@ -1,10 +1,4 @@
-import {
-  Response as Res,
-  Hit,
-  Filterable as FIL,
-  QueryState,
-  AggQuery,
-} from "./../_";
+import { Response as Res, Hit, Filterable as FIL, QueryState, AggQuery } from "./../_";
 import { z } from "zod";
 import { ItemResult as Changelog } from "./../changelog";
 import {
@@ -25,6 +19,7 @@ import {
   changedDate,
   temporaryExtension,
   appK,
+  uploadSubsequentDocuments,
 } from "./transforms";
 
 export type Document = z.infer<capitatedAmendment.Schema> &
@@ -43,17 +38,17 @@ export type Document = z.infer<capitatedAmendment.Schema> &
   z.infer<toggleWithdrawRai.Schema> &
   z.infer<appK.Schema> &
   z.infer<seatool.Schema> &
-  z.infer<changedDate.Schema> & {
+  z.infer<changedDate.Schema> &
+  z.infer<uploadSubsequentDocuments.Schema> & {
     makoChangedDate: string;
     changelog?: Changelog[];
-    appkChildren?: OmitFoundItemResult[];
+    appkChildren?: Omit<ItemResult, "found">[];
   };
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
   found: boolean;
 };
-export type OmitFoundItemResult = Omit<ItemResult, "found">;
 
 export type Field = keyof Document | `${keyof Document}.keyword`;
 export type Filterable = FIL<Field>;
@@ -77,4 +72,5 @@ export const transforms = {
   "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
   "app-k": appK,
+  "upload-subsequent-documents": uploadSubsequentDocuments,
 };

@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { useMemo } from "react";
 import { opensearch } from "shared-types";
 import { format } from "date-fns";
 import {
@@ -10,108 +10,71 @@ import {
 } from "@/components";
 import * as Table from "@/components";
 import { BLANK_VALUE } from "@/consts";
-import { usePackageActivities, useAttachmentService } from "./hook";
+import { useAttachmentService, Attachments } from "./hook";
+import { useParams } from "react-router-dom";
+import { useGetItem } from "@/api";
+import { ItemResult } from "shared-types/opensearch/changelog";
 
-const AttachmentDetails: FC<{
+type AttachmentDetailsProps = {
   id: string;
   attachments: opensearch.changelog.Document["attachments"];
-  hook: ReturnType<typeof useAttachmentService>;
-}> = ({ id, attachments, hook }) => {
-  return (
-    <Table.TableBody>
-      {attachments &&
-        attachments.map((ATC) => {
-          return (
-            <Table.TableRow key={`${id}-${ATC.key}`}>
-              <Table.TableCell>{ATC.title}</Table.TableCell>
-              <Table.TableCell>
-                <Table.Button
-                  className="ml-[-15px]"
-                  variant="link"
-                  onClick={() => {
-                    hook.onUrl(ATC).then(window.open);
-                  }}
-                >
-                  {ATC.filename}
-                </Table.Button>
-              </Table.TableCell>
-            </Table.TableRow>
-          );
-        })}
-    </Table.TableBody>
-  );
+  onClick: (attachment: Attachments[number]) => Promise<string>;
 };
 
-// export const PA_AppkParentRemovedChild: FC<opensearch.changelog.Document> = (
-//   props,
-// ) => {
-//   return (
-//     <div className="flex gap-1">
-//       <Link
-//         to={`/details/${props.authority}/${props.appkChildId}`}
-//         className="hover:underline font-semibold text-blue-600"
-//       >
-//         {props.appkChildId}
-//       </Link>
-//       <p>was removed</p>
-//     </div>
-//   );
-// };
+const AttachmentDetails = ({ id, attachments, onClick }: AttachmentDetailsProps) => (
+  <Table.TableBody>
+    {attachments.map((attachment) => {
+      return (
+        <Table.TableRow key={`${id}-${attachment.key}`}>
+          <Table.TableCell>{attachment.title}</Table.TableCell>
+          <Table.TableCell>
+            <Table.Button
+              className="ml-[-15px]"
+              variant="link"
+              onClick={() => onClick(attachment).then(window.open)}
+            >
+              {attachment.filename}
+            </Table.Button>
+          </Table.TableCell>
+        </Table.TableRow>
+      );
+    })}
+  </Table.TableBody>
+);
 
-// export const PA_AppkChildRemovedFromParent: FC<
-//   opensearch.changelog.Document
-// > = (props) => {
-//   return (
-//     <div className="flex gap-1">
-//       <p>Removed from:</p>
-//       <Link
-//         to={`/details/${props.authority}/${props.appkParentId}`}
-//         className="hover:underline font-semibold text-blue-600"
-//       >
-//         {props.appkParentId}
-//       </Link>
-//     </div>
-//   );
-// };
+type SubmissionProps = {
+  packageActivity: opensearch.changelog.Document;
+};
 
-export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
-  props,
-) => {
-  const hook = useAttachmentService(props);
+const Submission = ({ packageActivity }: SubmissionProps) => {
+  const { attachments, id, packageId, additionalInformation } = packageActivity;
+  const { onUrl, loading, onZip } = useAttachmentService({ packageId });
+
   return (
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="font-bold text-lg mb-2">Attachments</h2>
-        {!props.attachments?.length && <p>No information submitted</p>}
-        {!!props.attachments?.length && (
+        {attachments.length > 0 ? (
           <Table.Table>
             <Table.TableHeader>
               <Table.TableRow>
-                <Table.TableHead className="w-[300px]">
-                  Document Type
-                </Table.TableHead>
+                <Table.TableHead className="w-[300px]">Document Type</Table.TableHead>
                 <Table.TableHead>Attached File</Table.TableHead>
               </Table.TableRow>
             </Table.TableHeader>
-            <AttachmentDetails
-              attachments={props.attachments}
-              id={props.id}
-              hook={hook}
-            />
+            <AttachmentDetails attachments={attachments} id={id} onClick={onUrl} />
           </Table.Table>
+        ) : (
+          <p>No information submitted</p>
         )}
       </div>
 
-      {props.attachments && props.attachments?.length > 1 && (
+      {attachments.length > 0 && (
         <Table.Button
           variant="outline"
           className="w-max"
-          disabled={!props.attachments?.length}
-          loading={hook.loading}
-          onClick={() => {
-            if (!props.attachments?.length) return;
-            hook.onZip(props.attachments);
-          }}
+          loading={loading}
+          onClick={() => onZip(attachments)}
         >
           Download documents
         </Table.Button>
@@ -119,172 +82,19 @@ export const PA_InitialSubmission: FC<opensearch.changelog.Document> = (
 
       <div>
         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
-        <p className="whitespace-pre-line">
-          {props.additionalInformation || "No information submitted"}
-        </p>
+        <p className="whitespace-pre-line">{additionalInformation || "No information submitted"}</p>
       </div>
     </div>
   );
 };
 
-export const PA_ResponseSubmitted: FC<opensearch.changelog.Document> = (
-  props,
-) => {
-  const hook = useAttachmentService(props);
-
-  return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h2 className="font-bold text-lg mb-2">Attachments</h2>
-        {!props.attachments?.length && <p>No information submitted</p>}
-        {!!props.attachments?.length && (
-          <Table.Table>
-            <Table.TableHeader>
-              <Table.TableRow>
-                <Table.TableHead className="w-[300px]">
-                  Document Type
-                </Table.TableHead>
-                <Table.TableHead>Attached File</Table.TableHead>
-              </Table.TableRow>
-            </Table.TableHeader>
-            <AttachmentDetails
-              attachments={props.attachments}
-              id={props.id}
-              hook={hook}
-            />
-          </Table.Table>
-        )}
-      </div>
-
-      {props.attachments && props.attachments?.length > 1 && (
-        <Table.Button
-          variant="outline"
-          className="w-max"
-          disabled={!props.attachments?.length}
-          loading={hook.loading}
-          onClick={() => {
-            if (!props.attachments?.length) return;
-            hook.onZip(props.attachments);
-          }}
-        >
-          Download documents
-        </Table.Button>
-      )}
-
-      <div>
-        <h2 className="font-bold text-lg mb-2">Additional Information</h2>
-        <p>{props.additionalInformation || "No information submitted"}</p>
-      </div>
-    </div>
-  );
+type PackageActivityProps = {
+  packageActivity: opensearch.changelog.Document;
 };
 
-export const PA_ResponseWithdrawn: FC<opensearch.changelog.Document> = (
-  props,
-) => {
-  const hook = useAttachmentService(props);
-
-  return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h2 className="font-bold text-lg mb-2">Attachments</h2>
-        {!props.attachments?.length && <p>No information submitted</p>}
-        {!!props.attachments?.length && (
-          <Table.Table>
-            <Table.TableHeader>
-              <Table.TableRow>
-                <Table.TableHead className="w-[300px]">
-                  Document Type
-                </Table.TableHead>
-                <Table.TableHead>Attached File</Table.TableHead>
-              </Table.TableRow>
-            </Table.TableHeader>
-            <AttachmentDetails
-              attachments={props.attachments}
-              id={props.id}
-              hook={hook}
-            />
-          </Table.Table>
-        )}
-      </div>
-
-      {props.attachments && props.attachments?.length > 1 && (
-        <Table.Button
-          variant="outline"
-          className="w-max"
-          disabled={!props.attachments?.length}
-          loading={hook.loading}
-          onClick={() => {
-            if (!props.attachments?.length) return;
-            hook.onZip(props.attachments);
-          }}
-        >
-          Download documents
-        </Table.Button>
-      )}
-
-      <div>
-        <h2 className="font-bold text-lg mb-2">Additional Information</h2>
-        <p>{props.additionalInformation || "No information submitted"}</p>
-      </div>
-    </div>
-  );
-};
-
-// export const PA_RaiIssued: FC<opensearch.changelog.Document> = (props) => {
-//   const hook = useAttachmentService(props);
-
-//   return (
-//     <div className="flex flex-col gap-6">
-//       <div>
-//         <h2 className="font-bold text-lg mb-2">Attachments</h2>
-//         {!props.attachments?.length && <p>No information submitted</p>}
-//         {!!props.attachments?.length && (
-//           <Table.Table>
-//             <Table.TableHeader>
-//               <Table.TableRow>
-//                 <Table.TableHead className="w-[300px]">
-//                   Document Type
-//                 </Table.TableHead>
-//                 <Table.TableHead>Attached File</Table.TableHead>
-//               </Table.TableRow>
-//             </Table.TableHeader>
-//             <AttachmentDetails
-//               attachments={props.attachments}
-//               id={props.id}
-//               hook={hook}
-//             />
-//           </Table.Table>
-//         )}
-//       </div>
-
-//       {props.attachments && props.attachments?.length > 1 && (
-//         <Table.Button
-//           variant="outline"
-//           className="w-max"
-//           disabled={!props.attachments?.length}
-//           loading={hook.loading}
-//           onClick={() => {
-//             if (!props.attachments?.length) return;
-//             hook.onZip(props.attachments);
-//           }}
-//         >
-//           Download documents
-//         </Table.Button>
-//       )}
-
-//       <div>
-//         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
-//         <p>{props.additionalInformation || "No information submitted"}</p>
-//       </div>
-//     </div>
-//   );
-// };
-
-// Control Map
-export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
-  const [LABEL, CONTENT] = useMemo(() => {
-    switch (props.event as string) {
+const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
+  const label = useMemo(() => {
+    switch (packageActivity.event) {
       case "capitated-amendment":
       case "capitated-initial":
       case "capitated-renewal":
@@ -295,101 +105,121 @@ export const PackageActivity: FC<opensearch.changelog.Document> = (props) => {
       case "new-medicaid-submission":
       case "temporary-extension":
       case "app-k":
-        return ["Initial package submitted", PA_InitialSubmission];
+        return "Initial package submitted";
 
-      // case "withdraw-rai":
-      //   return ["RAI response withdrawn", PA_ResponseWithdrawn];
       case "withdraw-package":
-        return ["Package withdrawn", PA_ResponseWithdrawn];
+        return "Package withdrawn";
       case "withdraw-rai":
-        return ["RAI response withdrawn", PA_ResponseWithdrawn];
-      // case "withdraw-package":
-      //   return ["Package withdrawn", PA_ResponseWithdrawn];
-      // case "issue-rai":
-      //   return ["RAI issued", PA_RaiIssued];
+        return "RAI response withdrawn";
+
       case "respond-to-rai":
-        return ["RAI response submitted", PA_ResponseSubmitted];
-      // case "remove-appk-child": {
-      //   if (props.appkChildId) {
-      //     return [
-      //       `Package removed: ${props.appkChildId}`,
-      //       PA_AppkParentRemovedChild,
-      //     ];
-      //   }
+        return "RAI response submitted";
 
-      //   return [
-      //     `Removed from: ${props.appkParentId}`,
-      //     PA_AppkChildRemovedFromParent,
-      //   ];
-      // }
-      // case "legacy-withdraw-rai-request":
-      //   return ["RAI response withdrawn requested", PA_ResponseWithdrawn];
+      case "upload-subsequent-documents":
+        return "Subsequent documentation uploaded";
 
-      // return needs another parameter
       default:
-        return [BLANK_VALUE];
+        return BLANK_VALUE;
     }
-  }, [props.event]);
+  }, [packageActivity.event]);
 
-  if (LABEL === BLANK_VALUE) return null;
   return (
-    <AccordionItem key={props.id} value={props.id}>
+    <AccordionItem value={packageActivity.id}>
       <AccordionTrigger className="bg-gray-100 px-3">
         <p className="flex flex-row gap-2 text-gray-600">
-          <strong>{LABEL as string}</strong>
+          <strong>{label}</strong>
           {" - "}
-          {props.timestamp
-            ? format(new Date(props.timestamp), "eee, MMM d, yyyy hh:mm:ss a")
+          {packageActivity.timestamp
+            ? format(new Date(packageActivity.timestamp), "eee, MMM d, yyyy hh:mm:ss a")
             : "Unknown"}
         </p>
       </AccordionTrigger>
       <AccordionContent className="p-4">
-        <CONTENT {...props} />
+        <Submission packageActivity={packageActivity} />
       </AccordionContent>
     </AccordionItem>
   );
 };
 
-export const PackageActivities = () => {
-  const hook = usePackageActivities();
-  const packageActivities = hook.data?.filter(
-    (activity) => !activity._source.isAdminChange,
+type DownloadAllButtonProps = {
+  packageId: string;
+  submissionChangelog: ItemResult[];
+};
+
+const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButtonProps) => {
+  const { onZip, loading } = useAttachmentService({ packageId });
+
+  if (submissionChangelog.length === 0) {
+    return null;
+  }
+
+  const onDownloadAll = () => {
+    const attachmentsAggregate = submissionChangelog.reduce<Attachments>((acc, changelogItem) => {
+      if (!changelogItem._source.attachments) {
+        return acc;
+      }
+
+      return acc.concat(changelogItem._source.attachments);
+    }, []);
+
+    if (attachmentsAggregate.length === 0) {
+      return;
+    }
+
+    onZip(attachmentsAggregate);
+  };
+
+  return (
+    <Table.Button loading={loading} onClick={onDownloadAll} variant="outline">
+      Download all documents
+    </Table.Button>
   );
+};
+
+export const PackageActivities = () => {
+  const { id: packageId } = useParams<{ id: string }>();
+  const { data: submission } = useGetItem(packageId);
+
+  if (submission === undefined) {
+    return null;
+  }
+
+  const submissionChangelogWithoutAdminChanges = submission._source.changelog.filter(
+    (activity) =>
+      // isAdminChange can be `undefined` or `boolean`
+      !activity._source.isAdminChange,
+  );
+
+  const keyAndDefaultValue = submissionChangelogWithoutAdminChanges[0]?._source?.id;
 
   return (
     <DetailsSection
       id="package_activity"
       title={
-        // needed to do this for the download all button
         <div className="flex justify-between">
-          {`Package Activity (${packageActivities.length})`}
-          {!!packageActivities?.length && (
-            <Table.Button
-              loading={hook.loading}
-              onClick={hook.onDownloadAll}
-              variant="outline"
-            >
-              Download all documents
-            </Table.Button>
-          )}
+          Package Activity ({submissionChangelogWithoutAdminChanges.length})
+          <DownloadAllButton
+            submissionChangelog={submissionChangelogWithoutAdminChanges}
+            packageId={packageId}
+          />
         </div>
       }
     >
-      {!packageActivities?.length && (
+      {submissionChangelogWithoutAdminChanges.length > 0 ? (
+        <Accordion
+          // `key` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
+          key={keyAndDefaultValue}
+          type="multiple"
+          className="flex flex-col gap-2"
+          defaultValue={[keyAndDefaultValue]}
+        >
+          {submissionChangelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
+            <PackageActivity key={packageActivity.id} packageActivity={packageActivity} />
+          ))}
+        </Accordion>
+      ) : (
         <p className="text-gray-500">No package activity recorded</p>
       )}
-      <Accordion
-        key={packageActivities[0]._id}
-        type="multiple"
-        className="flex flex-col gap-2"
-        defaultValue={[packageActivities[0]._id]}
-      >
-        {hook.data?.map((CL) => (
-          <PackageActivity {...CL._source} key={CL._source.id} />
-        ))}
-      </Accordion>
     </DetailsSection>
   );
 };
-
-export * from "./hook";
