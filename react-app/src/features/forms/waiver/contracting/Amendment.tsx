@@ -72,10 +72,7 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
             render={({ field }) => (
               <FormItem>
                 <div className="flex gap-4">
-                  <FormLabel
-                    className="font-semibold"
-                    data-testid="waiverid-amendment-label"
-                  >
+                  <FormLabel className="font-semibold" data-testid="waiverid-amendment-label">
                     1915(b) Waiver Amendment Number <RequiredIndicator />
                   </FormLabel>
                   <Link
