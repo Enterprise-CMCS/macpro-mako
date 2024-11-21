@@ -15,8 +15,8 @@ vi.mock("@/api", async (importOriginal) => {
   };
 });
 
-describe("POST SUBMISSION AMENDMENT COMPONENT", () => {
-  test("RENDERS CAPITATED FORM WHEN CHANGELOG CONTAINS CAPITATED-INITIAL EVENT", async () => {
+describe("Post-submission Amendment", () => {
+  test("renders Capitated Amendment when changelog contains capitated-initial event", async () => {
     (useGetItem as Mock).mockImplementation(() => {
       return {
         data: {
@@ -36,7 +36,7 @@ describe("POST SUBMISSION AMENDMENT COMPONENT", () => {
     ).toBeInTheDocument();
   });
 
-  test("RENDERS CONTRACTING FORM WHEN CHANGELOG CONTAINS CONTRACTING-INITIAL EVENT", async () => {
+  test("renders Contracting Amendment when changelog contains contracting-initial event", async () => {
     (useGetItem as Mock).mockImplementation(() => {
       return {
         data: {
@@ -56,7 +56,7 @@ describe("POST SUBMISSION AMENDMENT COMPONENT", () => {
     ).toBeInTheDocument();
   });
 
-  test("RENDERS DASHBOARD WHEN CHANGELOG DOESN'T CONTAIN A RELEVANT EVENT", async () => {
+  test("redirects to /dashboard when changelog doesn't contain a relevant event", async () => {
     (useGetItem as Mock).mockImplementation(() => {
       return {
         data: {
