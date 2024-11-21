@@ -105,7 +105,7 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
   });
 });
 
-describe("AMENDMENT CONTRACTING WAIVER WITH EXISTING WAIVERID", () => {
+describe("Contracting Amendment with existing waiver Id", () => {
   test("existing waiver id is filled out", async () => {
     const { container: renderedContainer } = renderForm(
       <AmendmentForm waiverId="AK-0000.R00.11" />,
