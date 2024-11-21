@@ -24,7 +24,7 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
 
   test("WAIVER ID EXISTING", async () => {
     const waiverIdInput = screen.getByLabelText(/existing waiver number to amend/i);
-    const waiverIdLabel = screen.getByTestId("waiverid-existing-label");
+    const waiverIdLabel = screen.getByTestId("existing-waiver-label");
 
     // test record does not exist error occurs
     await userEvent.type(waiverIdInput, "MD-0004.R00.00");
