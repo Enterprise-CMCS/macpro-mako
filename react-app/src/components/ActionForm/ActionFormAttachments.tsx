@@ -52,7 +52,7 @@ export const ActionFormAttachments = ({
         </>
       }
     >
-      <div className="text-gray-700 font-light">
+      <div>
         {callout && (
           <>
             <p className="font-medium">{callout}</p>
