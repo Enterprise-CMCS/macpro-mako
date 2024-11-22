@@ -93,7 +93,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
   const accept: Accept = {};
   FILE_TYPES.map((type) =>
     accept[type.mime]
-      ? accept[type.mime].push(type.extension)
+      ? (accept[type.mime] = [...accept[type.mime], type.extension])
       : (accept[type.mime] = [type.extension]),
   );
 

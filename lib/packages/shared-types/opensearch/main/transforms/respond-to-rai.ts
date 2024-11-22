@@ -8,7 +8,7 @@ export const transform = () => {
       makoChangedDate: data.timestamp ? new Date(data.timestamp).toISOString() : null,
       cmsStatus,
       stateStatus,
-      raiReceivedDate: new Date(data.timestamp).toISOString(),
+      raiReceivedDate: data.timestamp ? new Date(data.timestamp).toISOString() : null,
       seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
       locked: true,
     };
