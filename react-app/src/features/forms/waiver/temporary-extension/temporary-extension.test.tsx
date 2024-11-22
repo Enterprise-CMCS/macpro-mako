@@ -19,11 +19,24 @@ describe("Temporary Extension", () => {
     renderFormWithPackageSection(<TemporaryExtensionForm />);
 
     // "Medicaid SPA" comes from `useGetItem` in testing/setup.ts
-    const waiverNumberLabel = screen.getByText("Medicaid SPA");
-    const existentIdLabel = screen.getByText(/Temporary Extension Type/);
+    const temporaryExtensionLabel = screen.getByText(/Temporary Extension Type/);
+    const temporaryExtensionValue = screen.getByText("Medicaid SPA");
 
-    expect(waiverNumberLabel).toBeInTheDocument();
-    expect(existentIdLabel).toBeInTheDocument();
+    // ensure Temporary Extension label and value exist and are in correct order
+    expect(temporaryExtensionLabel.compareDocumentPosition(temporaryExtensionValue)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+
+    const approvedInitialAndRenewalLabel = screen.getByText(
+      "Approved Initial or Renewal Waiver Number",
+    );
+    // grab second 12345 (first one is in the breadcrumbs)
+    const approvedInitialAndRenewalValue = screen.getAllByText(/12345/)[1];
+
+    // ensure Approved Initial and Renewal label and value exist and are in correct order
+    expect(
+      approvedInitialAndRenewalLabel.compareDocumentPosition(approvedInitialAndRenewalValue),
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
 
   test("TEMPORARY EXTENSION TYPE", async () => {
