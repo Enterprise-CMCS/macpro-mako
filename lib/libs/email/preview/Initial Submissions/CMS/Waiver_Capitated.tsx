@@ -1,9 +1,9 @@
-import { Waiver1915bStateEmail } from "../../content/new-submission/emailTemplates/Waiver1915bState";
-import { emailTemplateValue } from "../../mock-data/new-submission";
+import { Waiver1915bCMSEmail } from "lib/libs/email/content/new-submission/emailTemplates/Waiver1915bCMS";
+import { emailTemplateValue } from "../../../mock-data/new-submission";
 
-const Waiver1915bStateEmailPreview = () => {
+const Waiver1915bCMSEmailPreview = () => {
   return (
-    <Waiver1915bStateEmail
+    <Waiver1915bCMSEmail
       variables={{
         ...emailTemplateValue,
         attachments: {
@@ -15,13 +15,6 @@ const Waiver1915bStateEmailPreview = () => {
                 title: "test.pdf",
                 bucket: "test",
                 key: "test",
-                uploadDate: Date.now(),
-              },
-              {
-                filename: "capitated-waiver-application-2.pdf",
-                title: "capitated-waiver-supporting-evidence.pdf",
-                bucket: "test",
-                key: "test2",
                 uploadDate: Date.now(),
               },
             ],
@@ -50,4 +43,4 @@ const Waiver1915bStateEmailPreview = () => {
   );
 };
 
-export default Waiver1915bStateEmailPreview;
+export default Waiver1915bCMSEmailPreview;

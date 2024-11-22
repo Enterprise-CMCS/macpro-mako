@@ -47,10 +47,7 @@ beforeAll(() => {
         return idsThatAreApproved.includes(id);
       }),
       canBeRenewedOrAmended: vi.fn(async (id: string) => {
-        const idsThatCanBeRenewedOrAmended = [
-          "MD-0000.R00.00",
-          "MD-0002.R00.00",
-        ];
+        const idsThatCanBeRenewedOrAmended = ["MD-0000.R00.00", "MD-0002.R00.00"];
 
         return idsThatCanBeRenewedOrAmended.includes(id);
       }),
@@ -71,14 +68,14 @@ beforeAll(() => {
           _source: {
             _id: "12345",
             changelog: [{ _source: { event: "new-medicaid-submission" } }],
+            authority: "Medicaid SPA",
           },
         },
       }),
       useGetUser: () => ({
         data: {
           user: {
-            "custom:cms-roles":
-              "onemac-micro-statesubmitter,onemac-micro-super",
+            "custom:cms-roles": "onemac-micro-statesubmitter,onemac-micro-super",
           },
         },
       }),

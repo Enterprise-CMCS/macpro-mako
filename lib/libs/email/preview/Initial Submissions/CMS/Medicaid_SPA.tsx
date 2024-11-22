@@ -1,7 +1,7 @@
-import { MedSpaCMSEmail } from "../../content/new-submission/emailTemplates/MedSpaCMS";
-import { emailTemplateValue } from "../../mock-data/new-submission";
+import { MedSpaCMSEmail } from "../../../content/new-submission/emailTemplates/MedSpaCMS";
+import { emailTemplateValue } from "../../../mock-data/new-submission";
 
-import * as attachments from "../../mock-data/attachments";
+import * as attachments from "../../../mock-data/attachments";
 
 export default () => {
   return (

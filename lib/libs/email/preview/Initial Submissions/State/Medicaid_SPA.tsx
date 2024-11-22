@@ -1,6 +1,6 @@
-import { MedSpaStateEmail } from "../../content/new-submission/emailTemplates";
-import { emailTemplateValue } from "../../mock-data/new-submission";
-import * as attachments from "../../mock-data/attachments";
+import { MedSpaStateEmail } from "../../../content/new-submission/emailTemplates";
+import { emailTemplateValue } from "../../../mock-data/new-submission";
+import * as attachments from "../../../mock-data/attachments";
 
 const MedSpaStateEmailPreview = () => {
   return (
