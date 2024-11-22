@@ -8,9 +8,10 @@ import {
   ChipSpaStateEmail,
   AppKCMSEmail,
   AppKStateEmail,
+  Waiver1915bCMSEmail,
+  Waiver1915bStateEmail,
 } from "./emailTemplates";
 import { render } from "@react-email/render";
-import { Waiver1915bCMSEmail, Waiver1915bStateEmail } from "../widthdrawPackage/emailTemplates";
 
 export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
