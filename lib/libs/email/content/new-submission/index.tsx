@@ -10,7 +10,7 @@ import {
   AppKStateEmail,
 } from "./emailTemplates";
 import { render } from "@react-email/render";
-import { Waiver1915bCMSEmail, Waiver1915bStateEmail } from "../widthdrawPackage/emailTemplates";
+import { Waiver1915bCMSEmail, Waiver1915bStateEmail } from "../withdrawPackage/emailTemplates";
 
 export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
