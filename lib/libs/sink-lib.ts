@@ -2,6 +2,7 @@ import pino from "pino";
 const logger = pino();
 
 import * as os from "./opensearch-lib";
+import { BaseIndex, Index } from "lib/packages/shared-types/opensearch";
 
 export function getTopic(topicPartition: string) {
   return topicPartition.split("--").pop()?.split("-").slice(0, -1)[0];
@@ -19,8 +20,7 @@ const ErrorMessages = {
   [ErrorType.VALIDATION]: "A validation error occurred.",
   [ErrorType.UNKNOWN]: "An unknown error occurred.",
   [ErrorType.BULKUPDATE]: "An error occurred while bulk updating records.",
-  [ErrorType.BADTOPIC]:
-    "Topic is unknown, unsupported, or unable to be parsed.",
+  [ErrorType.BADTOPIC]: "Topic is unknown, unsupported, or unable to be parsed.",
   [ErrorType.BADPARSE]: "An error occurred while parsing the record.",
 };
 
@@ -83,16 +83,31 @@ const prettyPrintJsonInObject = (obj: any): any => {
 };
 
 export async function bulkUpdateDataWrapper(
-  domain: string,
-  index: string,
-  docs: any[],
+  docs: { id: string; [key: string]: unknown }[],
+  baseIndex: BaseIndex,
 ) {
   try {
-    await os.bulkUpdateData(process.env.osDomain!, index, docs);
-  } catch (error: any) {
+    const host = process.env.osDomain;
+
+    if (host === undefined) {
+      throw new Error("osDomain is undefined in environment variables");
+    }
+
+    const indexNamespace = process.env.indexNamespace;
+
+    if (indexNamespace === undefined) {
+      throw new Error("indexName is undefined in environment variables");
+    }
+
+    const index: Index = `${process.env.indexNamespace}${baseIndex}`;
+
+    await os.bulkUpdateData(host, index, docs);
+  } catch (error) {
     logError({
       type: ErrorType.BULKUPDATE,
+      error,
     });
+
     throw error;
   }
 }
