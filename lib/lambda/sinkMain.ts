@@ -2,7 +2,6 @@ import { Handler } from "aws-lambda";
 import { KafkaRecord, opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
 import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "../libs/sink-lib";
-import { Index } from "shared-types/opensearch";
 import { decodeBase64WithUtf8 } from "shared-utils";
 import * as os from "./../libs/opensearch-lib";
 
@@ -11,7 +10,6 @@ const indexNamespace = process.env.indexNamespace;
 if (!indexNamespace || !osDomain) {
   throw new Error("Missing required environment variable(s)");
 }
-const index: Index = `${process.env.indexNamespace}main`;
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   console.log("event");
@@ -31,8 +29,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
         case "aws.onemac.migration.cdc":
           await processAndIndex({
             kafkaRecords: event.records[topicPartition],
-            index,
-            osDomain,
             transforms: opensearch.main.transforms,
             topicPartition: topicPartition,
           });
@@ -53,14 +49,10 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
 const processAndIndex = async ({
   kafkaRecords,
-  index,
-  osDomain,
   transforms,
   topicPartition,
 }: {
   kafkaRecords: KafkaRecord[];
-  index: Index;
-  osDomain: string;
   transforms: any;
   topicPartition: string;
 }) => {
@@ -115,7 +107,7 @@ const processAndIndex = async ({
   }
 
   // Send all transformed records for indexing
-  await bulkUpdateDataWrapper(osDomain, index, docs);
+  await bulkUpdateDataWrapper(docs, "main");
 };
 
 const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
@@ -194,7 +186,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       });
     }
   }
-  await bulkUpdateDataWrapper(osDomain, index, docs);
+  await bulkUpdateDataWrapper(docs, "main");
 };
 
 const changed_date = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
@@ -232,5 +224,5 @@ const changed_date = async (kafkaRecords: KafkaRecord[], topicPartition: string)
       });
     }
   }
-  await bulkUpdateDataWrapper(osDomain, index, docs);
+  await bulkUpdateDataWrapper(docs, "main");
 };
