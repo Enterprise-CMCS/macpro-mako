@@ -28,12 +28,6 @@ export default defineConfig(({ mode }) => {
     ],
     server: {
       port: 5000,
-      hmr: {
-        overlay: false,
-      },
-      watch: {
-        usePolling: true,
-      },
     },
     test: {
       environment: "jsdom",
