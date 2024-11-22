@@ -13,8 +13,8 @@ import { useGetUser } from "@/api";
 import { intervalToDuration } from "date-fns";
 import pluralize from "pluralize";
 
-const TWENTY_MINS_IN_MILS = 1000 * 60 * 20;
-const TEN_MINS_IN_MILS = 60 * 10;
+const TWENTY_MINS_IN_MILS = 1000 * 30;
+const TEN_MINS_IN_MILS = 30;
 
 export const TimeoutModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -67,8 +67,7 @@ export const TimeoutModal = () => {
         <div className="py-4">
           <span>
             Your session will expire in <strong>{duration.minutes}</strong>{" "}
-            {pluralize("minute", duration.minutes)} and{" "}
-            <strong>{duration.seconds}</strong>{" "}
+            {pluralize("minute", duration.minutes)} and <strong>{duration.seconds}</strong>{" "}
             {pluralize("second", duration.seconds)}.
           </span>
         </div>
