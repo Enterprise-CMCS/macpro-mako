@@ -7,7 +7,7 @@ import {
 export const transform = () => {
   // any adhoc logic
   return events["new-medicaid-submission"].schema.transform((data) => {
-    const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.PENDING);
+    const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.SUBMITTED);
     const timestampDate = new Date(data.timestamp);
     const todayEpoch = seaToolFriendlyTimestamp(timestampDate);
     const nextBusinessDayEpoch = getNextBusinessDayTimestamp(timestampDate);

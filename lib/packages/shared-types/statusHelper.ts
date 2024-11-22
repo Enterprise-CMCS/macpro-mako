@@ -1,5 +1,6 @@
 export const SEATOOL_STATUS = {
   PENDING: "Pending",
+  SUBMITTED: "Submitted",
   PENDING_RAI: "Pending-RAI",
   APPROVED: "Approved",
   DISAPPROVED: "Disapproved",
@@ -13,6 +14,7 @@ export const SEATOOL_STATUS = {
 };
 
 const statusToDisplayToStateUser = {
+  [SEATOOL_STATUS.SUBMITTED]: "Submitted",
   [SEATOOL_STATUS.PENDING]: "Under Review",
   [SEATOOL_STATUS.PENDING_RAI]: "RAI Issued",
   [SEATOOL_STATUS.APPROVED]: "Approved",
@@ -26,6 +28,7 @@ const statusToDisplayToStateUser = {
 };
 
 const statusToDisplayToCmsUser = {
+  [SEATOOL_STATUS.SUBMITTED]: "Submitted",
   [SEATOOL_STATUS.PENDING]: "Pending",
   [SEATOOL_STATUS.PENDING_RAI]: "Pending - RAI",
   [SEATOOL_STATUS.APPROVED]: "Approved",
