@@ -211,9 +211,9 @@ const EmailFooter = ({ children }: { children: React.ReactNode }) => (
 
 const BasicFooter = () => (
   <EmailFooter>
-    <Text
-      style={{ ...styles.text.footer, margin: "8px" }}
-    >{`U.S. Centers for Medicare & Medicaid Services`}</Text>
+    <Text style={{ ...styles.text.footer, margin: "8px" }}>
+      U.S. Centers for Medicare & Medicaid Services
+    </Text>
     <Text style={{ ...styles.text.footer, margin: "8px" }}>
       © {new Date().getFullYear()} | 7500 Security Boulevard, Baltimore, MD 21244
     </Text>
