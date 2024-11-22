@@ -1,6 +1,6 @@
 import { Text, Link, Section, Row, Column, Hr, Heading } from "@react-email/components";
 import { Attachment, AttachmentTitle, AttachmentKey } from "shared-types";
-import { createRef, forwardRef } from "react";
+import { createRef, forwardRef, ReactNode } from "react";
 import { styles } from "./email-styles";
 
 export const EMAIL_CONFIG = {
@@ -143,7 +143,7 @@ const Attachments = ({
   );
 };
 
-const PackageDetails = ({ details }: { details: Record<any, any> }) => (
+const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => (
   <Section>
     {Object.entries(details).map(([label, value], index) => {
       if (label === "Summary") {
