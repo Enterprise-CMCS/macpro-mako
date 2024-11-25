@@ -1,5 +1,5 @@
 import { CommonEmailVariables, Events } from "lib/packages/shared-types";
-import { BasicFooter, PackageDetails } from "../../email-components";
+import { BasicFooter, PackageDetails, SpamNotice } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const ChipSpaCMSEmail = ({
@@ -22,5 +22,6 @@ export const ChipSpaCMSEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
+    <SpamNotice />
   </BaseEmailTemplate>
 );

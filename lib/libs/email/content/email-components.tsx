@@ -33,7 +33,6 @@ const Textarea = ({ children }: { children: React.ReactNode }) => (
       backgroundColor: "transparent",
       fontSize: "14px",
       lineHeight: "1.4",
-      boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
       outline: "none",
       whiteSpace: "pre-line",
       wordWrap: "break-word",
@@ -183,6 +182,20 @@ const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
   </Text>
 );
 
+const SpamNotice = () => (
+  <Section>
+    <Text style={{ ...styles.text.description, marginTop: "8px" }}>
+      If the contents of this email seem suspicious, do not open them, and instead forward this
+      email to{" "}
+      <Link href="mailto:SPAM.hhs.gov" style={{ textDecoration: "underline" }}>
+        SPAM@cms.hhs.gov
+      </Link>
+      .
+    </Text>
+    <Text>Thank you!</Text>
+  </Section>
+);
+
 const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
   <Section
     style={{
@@ -274,4 +287,5 @@ export {
   getCpocEmail,
   getSrtEmails,
   EmailFooter,
+  SpamNotice,
 };
