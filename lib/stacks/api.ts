@@ -284,7 +284,12 @@ export class Api extends cdk.NestedStack {
       {
         id: "updatePackage",
         entry: join(__dirname, "../lambda/update/updatePackage.ts"),
-        environment: {},
+        environment: {
+          topicName,
+          brokerString,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
       },
     ];
 
