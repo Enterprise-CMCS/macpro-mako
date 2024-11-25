@@ -26,7 +26,11 @@ export type EmailTemplates = {
   "withdraw-package": AuthoritiesWithUserTypesTemplate;
   "withdraw-rai": AuthoritiesWithUserTypesTemplate;
   "contracting-initial": AuthoritiesWithUserTypesTemplate;
+  "contracting-renewal": AuthoritiesWithUserTypesTemplate;
+  "contracting-waiver": AuthoritiesWithUserTypesTemplate;
   "capitated-initial": AuthoritiesWithUserTypesTemplate;
+  "capitated-renewal": AuthoritiesWithUserTypesTemplate;
+  "capitated-waiver": AuthoritiesWithUserTypesTemplate;
 };
 
 // Create a type-safe mapping of email templates
@@ -38,6 +42,10 @@ const emailTemplates: EmailTemplates = {
   "withdraw-rai": EmailContent.withdrawRai,
   "contracting-initial": EmailContent.newSubmission,
   "capitated-initial": EmailContent.newSubmission,
+  "capitated-renewal": EmailContent.newSubmission,
+  "capitated-waiver": EmailContent.newSubmission,
+  "contracting-renewal": EmailContent.newSubmission,
+  "contracting-waiver": EmailContent.newSubmission,
 };
 
 // Create a type-safe lookup function
