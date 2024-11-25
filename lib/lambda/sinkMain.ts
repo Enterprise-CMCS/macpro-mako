@@ -29,6 +29,9 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           logError({ type: ErrorType.BADTOPIC });
           throw new Error();
         case "aws.onemac.migration.cdc":
+          console.log("IN THIS TOPIC?");
+          console.log(opensearch.main.transforms, "TRANSFORMSSS");
+          console.log(topicPartition, "TOPIC PARTITION");
           await processAndIndex({
             kafkaRecords: event.records[topicPartition],
             index,
@@ -65,6 +68,7 @@ const processAndIndex = async ({
   topicPartition: string;
 }) => {
   const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
+  console.log("ARE WE IN HERE");
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
     const { value } = kafkaRecord;
@@ -77,13 +81,15 @@ const processAndIndex = async ({
       }
 
       // Parse the kafka record's value
+      console.log("WHAT IS VALUE");
       const record = JSON.parse(decodeBase64WithUtf8(value));
-
+      console.log("AFTER RECORD");
       // If we're not a mako event, continue
       // TODO:  handle legacy.  for now, just continue
       if (!record.event || record?.origin !== "mako") {
         continue;
       }
+      console.log("AFTER THIS IF");
 
       // TODO: revisit
       if (record.isAdminChange) {
