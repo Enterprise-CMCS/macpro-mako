@@ -6,7 +6,7 @@ import { z } from "zod";
 
 type ActionType = "update-id" | "update-values" | "delete";
 
-export const updatePackage = async (event: APIGatewayEvent) => {
+export const handler = async (event: APIGatewayEvent) => {
   const topicName = process.env.topicName as string;
 
   if (!topicName) {

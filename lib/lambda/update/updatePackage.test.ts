@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach, Mock } from "vitest";
 import { Producer } from "kafkajs";
 // import { getProducer, produceMessage } from "../../libs/api/kafka.ts";
 import { APIGatewayEvent } from "aws-lambda";
-import { updatePackage } from "./updatePackage";
+import { handler as updatePackage } from "./updatePackage";
 import { response } from "libs/handler-lib";
 import { getPackage } from "../../libs/api/package";
 
