@@ -86,6 +86,7 @@ const processAndIndex = async ({
       console.log("AFTER RECORD");
       // If we're not a mako event, continue
       // TODO:  handle legacy.  for now, just continue
+      console.log(record, "RECORD?????");
       if (!record.event || record?.origin !== "mako") {
         continue;
       }
