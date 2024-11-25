@@ -281,6 +281,26 @@ export class Api extends cdk.NestedStack {
         entry: join(__dirname, "../lambda/getAllForms.ts"),
         environment: {},
       },
+<<<<<<< Updated upstream
+=======
+      {
+        id: "appkNewSubmission",
+        entry: join(__dirname, "../lambda/appkNewSubmission.ts"),
+        environment: {
+          dbInfoSecretName,
+          topicName,
+          brokerString,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
+      {
+        id: "updatePackage",
+        entry: join(__dirname, "../lambda/update/updatePackage.ts"),
+        environment: {},
+      },
+>>>>>>> Stashed changes
     ];
 
     const lambdas = lambdaDefinitions.reduce((acc, lambdaDef) => {

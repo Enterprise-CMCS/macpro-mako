@@ -85,8 +85,12 @@ const processAndIndex = async ({
         continue;
       }
 
-      // If the event is a supported event, transform and push to docs array for indexing
+      if (record.isAdminChange) {
+        docs.push(record);
+      }
       if (record.event in transforms) {
+        // respond-to-rai
+        // If the event is a supported event, transform and push to docs array for indexing
         const transformForEvent = transforms[record.event as keyof typeof transforms];
 
         const result = transformForEvent.transform().safeParse(record);
