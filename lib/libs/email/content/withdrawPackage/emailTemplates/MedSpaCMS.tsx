@@ -1,31 +1,27 @@
-import { CommonEmailVariables } from "shared-types";
-import { WithdrawPackage } from "shared-types";
-import { Html, Container } from "@react-email/components";
-import { PackageDetails, BasicFooter } from "../../email-components";
+import { CommonEmailVariables, Events } from "shared-types";
+import { PackageDetails, BasicFooter, SpamNotice } from "../../email-components";
+import { BaseEmailTemplate } from "../../email-templates";
 
-export const MedSpaCMSEmail = (props: { variables: WithdrawPackage & CommonEmailVariables }) => {
-  const variables = props.variables;
-  return (
-    <Html
-      lang="en"
-      dir="ltr"
-    >
-      <Container>
-        <h3>
-          The OneMAC Submission Portal received a request to withdraw the package below. The package
-          will no longer be considered for CMS review:
-        </h3>
-        <PackageDetails
-          details={{
-            "State or territory": variables.territory,
-            Name: variables.submitterName,
-            Email: variables.submitterEmail,
-            "Medicaid SPA Package ID": variables.id,
-            Summary: variables.additionalInformation,
-          }}
-        />
-        <BasicFooter />
-      </Container>
-    </Html>
-  );
-};
+export const MedSpaCMSEmail = ({
+  variables,
+}: {
+  variables: Events["WithdrawPackage"] & CommonEmailVariables;
+}) => (
+  <BaseEmailTemplate
+    previewText={`SPA SPA Package ${variables.id} Withdraw Request`}
+    heading="The OneMAC Submission Portal received a request to withdraw the package below. The package will no longer be considered for CMS review:"
+    applicationEndpointUrl={variables.applicationEndpointUrl}
+    footerContent={<BasicFooter />}
+  >
+    <PackageDetails
+      details={{
+        "State or territory": variables.territory,
+        Name: variables.submitterName,
+        Email: variables.submitterEmail,
+        "Medicaid SPA Package ID": variables.id,
+        Summary: variables.additionalInformation,
+      }}
+    />
+    <SpamNotice />
+  </BaseEmailTemplate>
+);
