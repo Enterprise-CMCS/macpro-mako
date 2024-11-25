@@ -4,11 +4,9 @@ import { describe, test, expect, beforeAll } from "vitest";
 import { MedicaidForm } from "./Medicaid";
 import { formSchemas } from "@/formSchemas";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import {
-  skipCleanup,
-  mockApiRefinements,
-} from "@/utils/test-helpers/skipCleanup";
+import { skipCleanup, mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
 import { renderForm } from "@/utils/test-helpers/renderForm";
+import { EXISTING_ITEM_ID } from "mocks";
 
 const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
 
@@ -32,7 +30,7 @@ describe("Medicaid SPA", () => {
 
     // test id validations
     // fails if item exists
-    await userEvent.type(spaIdInput, "MD-00-0000");
+    await userEvent.type(spaIdInput, EXISTING_ITEM_ID);
     const recordExistsErrorText = screen.getByText(
       /According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again./,
     );
@@ -56,13 +54,9 @@ describe("Medicaid SPA", () => {
   });
 
   test("PROPOSED EFFECTIVE DATE OF MEDICAID SPA", async () => {
-    await userEvent.click(
-      screen.getByTestId("proposedEffectiveDate-datepicker"),
-    );
+    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector(
-      '[for="proposedEffectiveDate"]',
-    );
+    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });

@@ -9,7 +9,7 @@ import { formSchemas } from "@/formSchemas";
 import {
   EXISTING_ITEM_PENDING_ID,
   EXISTING_ITEM_APPROVED_NEW_ID,
-  EXISTING_ITEM_APPROVED_RENEW_ID,
+  EXISTING_ITEM_APPROVED_AMEND_ID,
   NOT_FOUND_ITEM_ID,
   TEST_ITEM_ID,
 } from "mocks";
@@ -48,7 +48,7 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
     expect(recordIsNotApproved).toBeInTheDocument();
     await userEvent.clear(waiverIdInput);
     // test record is not able to be renewed or amended error occurs
-    await userEvent.type(waiverIdInput, EXISTING_ITEM_APPROVED_RENEW_ID);
+    await userEvent.type(waiverIdInput, EXISTING_ITEM_APPROVED_AMEND_ID);
     const recordCanNotBeRenewed = screen.getByText(
       "The 1915(b) Waiver Number entered does not seem to match our records. Please enter an approved 1915(b) Initial or Renewal Waiver Number, using a dash after the two character state abbreviation.",
     );

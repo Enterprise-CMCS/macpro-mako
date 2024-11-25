@@ -12,7 +12,10 @@
     "msw": "^2.3.1",
     "shared-types": "*",
     "shared-utils": "*",
-    "react-app": "*"
+    "react-app": "*",
+    "jsonwebtoken": "9.0.2",
+    "amazon-cognito-identity-js": "6.3.12",
+    "@types/jsonwebtoken": "9.0.7"
   },
   "author": "",
   "license": "ISC"

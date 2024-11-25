@@ -126,6 +126,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const navigate = useNavigate();
   const { data: userObj } = useGetUser();
+  console.log({ userObj });
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
 
@@ -181,7 +182,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
 
   const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some((condition) =>
-    condition(userObj.user),
+    condition(userObj?.user),
   );
 
   if (doesUserHaveAccessToForm === false) {

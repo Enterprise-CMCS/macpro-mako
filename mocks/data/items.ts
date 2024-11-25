@@ -3,11 +3,13 @@ import { SEATOOL_STATUS } from "shared-types";
 
 export const EXISTING_ITEM_PENDING_ID = "MD-0002.R00.00";
 export const EXISTING_ITEM_APPROVED_NEW_ID = "MD-0000.R00.00";
-export const APPROVED_ITEM_TEMPORARY_EXTENSION_ID = "MD-0000.R00.TE00";
-export const EXISTING_ITEM_APPROVED_RENEW_ID = "MD-0001.R00.00";
+export const VALID_ITEM_TEMPORARY_EXTENSION_ID = "MD-0000.R00.TE00";
 export const EXISTING_ITEM_APPROVED_AMEND_ID = "MD-0000.R00.01";
+export const EXISTING_ITEM_APPROVED_RENEW_ID = "MD-0000.R01.00";
+export const EXISTING_ITEM_ID = "MD-00-0000";
 export const NOT_FOUND_ITEM_ID = "MD-0004.R00.00";
 export const TEST_ITEM_ID = "MD-0005.R01.00";
+export const EXISTING_ITEM_TEMPORARY_EXTENSION_ID = "MD-0005.R01.TE00";
 
 export type ItemTestFields = {
   _id: string;
@@ -20,12 +22,12 @@ export type ItemTestFields = {
     | boolean;
 };
 
-const cases: Record<string, ItemTestFields> = {
-  "MD-00-0000": {
-    _id: "MD-00-0000",
+const items: Record<string, ItemTestFields> = {
+  [EXISTING_ITEM_ID]: {
+    _id: EXISTING_ITEM_ID,
     found: true,
     _source: {
-      id: "MD-00-0000",
+      id: EXISTING_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
       actionType: "New",
     },
@@ -47,6 +49,7 @@ const cases: Record<string, ItemTestFields> = {
       id: EXISTING_ITEM_APPROVED_AMEND_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
       actionType: "Amend",
+      authority: "1915(b)",
     },
   },
   [EXISTING_ITEM_APPROVED_RENEW_ID]: {
@@ -56,6 +59,7 @@ const cases: Record<string, ItemTestFields> = {
       id: EXISTING_ITEM_APPROVED_RENEW_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
       actionType: "Renew",
+      authority: "1915(b)",
     },
   },
   [EXISTING_ITEM_PENDING_ID]: {
@@ -83,6 +87,16 @@ const cases: Record<string, ItemTestFields> = {
       authority: "Medicaid SPA",
     },
   },
+  [EXISTING_ITEM_TEMPORARY_EXTENSION_ID]: {
+    _id: EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
+    found: true,
+    _source: {
+      id: EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
+      seatoolStatus: SEATOOL_STATUS.APPROVED,
+      actionType: "Amend",
+      authority: "Medicaid SPA",
+    },
+  },
 };
 
-export default cases;
+export default items;
