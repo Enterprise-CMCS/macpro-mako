@@ -1,20 +1,20 @@
 import {
   ActionForm,
   DatePicker,
-  Input,
   FormControl,
   FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
+  Input,
   RequiredIndicator,
   Textarea,
 } from "@/components";
-import { Authority } from "shared-types";
 import { formSchemas } from "@/formSchemas";
-import { Link } from "react-router-dom";
 import { FAQ_TAB } from "@/router";
+import { Link } from "react-router-dom";
+import { Authority } from "shared-types";
 import { getFAQLinkForAttachments } from "../../faqLinks";
 
 export const AppKAmendmentForm = () => (
@@ -25,11 +25,9 @@ export const AppKAmendmentForm = () => (
     fields={(form) => (
       <>
         <div>
-          <p className="mt-4 text-gray-700 font-light">
-            <span className="font-bold">
-              If your Appendix K submission is for more than one waiver number, please enter one of
-              the applicable waiver numbers. You do not need to create multiple submissions.
-            </span>
+          <p className="mt-4 text-gray-700 font-bold">
+            If your Appendix K submission is for more than one waiver number, please enter one of
+            the applicable waiver numbers. You do not need to create multiple submissions.
           </p>
         </div>
         <FormField
@@ -80,7 +78,7 @@ export const AppKAmendmentForm = () => (
                   What is my waiver amendment number?
                 </Link>
               </div>
-              <p className="text-gray-500 font-light" id="waiver-number-format">
+              <p className="text-neutral-500" id="waiver-number-format">
                 The Waiver Number must be in the the format SS-####.R##.## or SS-#####.R##.##. For
                 amendments, the last two digits start with '01' and ascends.
               </p>

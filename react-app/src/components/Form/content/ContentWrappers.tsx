@@ -31,7 +31,7 @@ export const FormSectionCard = ({
 
 export const RequiredFieldDescription = () => (
   <>
-    <RequiredIndicator /> <em className="font-light">Indicates a required field.</em>
+    <RequiredIndicator /> <em className="text-neutral-500">Indicates a required field.</em>
   </>
 );
 
