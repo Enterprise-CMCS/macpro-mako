@@ -21,11 +21,14 @@ export const handler = async (event: APIGatewayEvent) => {
   }
   try {
     console.log(event.body, "EVENT BODY");
-    const { packageId, action, updatedFields } = JSON.parse(event.body) as {
-      packageId: string;
-      action: ActionType;
-      updatedFields: object;
-    };
+    const { packageId, action, updatedFields } =
+      typeof event.body === "string"
+        ? JSON.parse(event.body)
+        : (event.body as {
+            packageId: string;
+            action: ActionType;
+            updatedFields: object;
+          });
 
     if (!packageId || !action) {
       return response({
