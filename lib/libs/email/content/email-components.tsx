@@ -192,7 +192,7 @@ const SpamNotice = () => (
       </Link>
       .
     </Text>
-    <Text>Thank you!</Text>
+    <Text>Thank you.</Text>
   </Section>
 );
 

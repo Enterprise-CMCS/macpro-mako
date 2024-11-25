@@ -31,7 +31,7 @@ export const ChipSpaStateEmail = ({
         </Link>{" "}
         or your state lead.
       </Text>
-      <Text>Thank you!</Text>
+      <Text>Thank you.</Text>
     </Section>
   </BaseEmailTemplate>
 );
