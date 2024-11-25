@@ -7,7 +7,6 @@ const ChipSpaStateEmailPreview = () => {
       variables={{
         ...emailTemplateValue,
         id: "CO-24-1234",
-        authority: "CHIP SPA",
         event: "upload-subsequent-documents",
         actionType: "Amend",
         attachments: {

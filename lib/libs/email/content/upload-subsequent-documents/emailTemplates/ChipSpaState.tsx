@@ -15,7 +15,7 @@ export const ChipSpaStateEmail = (props: {
 }) => {
   const variables = props.variables;
   const previewText = `CHIP SPA ${variables.id} Submitted`;
-  const heading = `Additional documents submitted for  ${variables.actionType} ${variables.id}`;
+  const heading = `Additional documents submitted for CHIP SPA ${variables.id}`;
 
   return (
     <BaseEmailTemplate
@@ -25,7 +25,7 @@ export const ChipSpaStateEmail = (props: {
       footerContent={<ContactStateLead isChip />}
     >
       <Text style={{ ...styles.text.base, marginTop: "16px" }}>
-        {`You’ve successfully submitted the following to CMS reviewers for ${variables.actionType} ${variables.id}`}
+        {`You’ve successfully submitted the following to CMS reviewers for CHIP SPA ${variables.id}`}
       </Text>
       <DetailsHeading />
       <PackageDetails

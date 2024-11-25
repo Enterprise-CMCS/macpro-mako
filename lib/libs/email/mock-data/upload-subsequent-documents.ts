@@ -2,7 +2,7 @@ export const emailTemplateValue = {
   territory: "CO",
   applicationEndpointUrl: "https://mako-dev.cms.gov/",
   actionType: "Upload-Subsequent-Documents",
-  origin: "mako",
+  origin: "mako" as const,
   requestedDate: Date.now() - 5 * 24 * 60 * 60,
   withdrawnDate: Date.now(),
   attachments: {
@@ -36,4 +36,6 @@ export const emailTemplateValue = {
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",
   timestamp: 1723390633663,
+  event: "upload-subsequent-documents" as const,
+  id: "CA-10001-0003",
 };

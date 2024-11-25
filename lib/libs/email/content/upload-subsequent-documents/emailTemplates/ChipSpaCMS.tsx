@@ -9,7 +9,7 @@ export const ChipSpaCMSEmail = (props: {
 }) => {
   const variables = props.variables;
   const previewText = `${variables.id}`;
-  const heading = `Action required: review new documents for  ${variables.actionType} ${variables.id} in OneMAC.`;
+  const heading = `Action required: review new documents for CHIP SPA ${variables.id} in OneMAC.`;
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -18,7 +18,7 @@ export const ChipSpaCMSEmail = (props: {
       footerContent={<BasicFooter />}
     >
       <Text style={{ ...styles.text.base, marginTop: "16px" }}>
-        {`New documents have been submitted for ${variables.actionType} ${variables.id} in OneMAC.`}
+        {`New documents have been submitted for CHIP SPA ${variables.id} in OneMAC.`}
       </Text>
       <PackageDetails
         details={{
