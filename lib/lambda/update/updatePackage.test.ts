@@ -87,11 +87,7 @@ describe("Update package", () => {
         {
           key: "test-id",
           value: JSON.stringify({
-            _source: {
-              id: "test-id",
-              state: "OH",
-              initialIntakeNeeded: false,
-            },
+            deleted: true,
           }),
           partition: 0,
           headers: { source: "mako" },
@@ -104,7 +100,7 @@ describe("Update package", () => {
     const event = {
       body: JSON.stringify({
         packageId: "test-id",
-        action: "update values",
+        action: "update-values",
         updatedFields: {
           state: "MD",
           initialIntakeNeeded: true,
@@ -123,6 +119,7 @@ describe("Update package", () => {
           value: JSON.stringify({
             state: "MD",
             initialIntakeNeeded: true,
+            isAdminChange: true,
           }),
           partition: 0,
           headers: { source: "mako" },

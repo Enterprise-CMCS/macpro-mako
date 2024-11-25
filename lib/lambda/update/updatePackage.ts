@@ -3,13 +3,11 @@ import { APIGatewayEvent } from "aws-lambda";
 import { getPackage } from "libs/api/package";
 import { produceMessage } from "libs/api/kafka";
 import { z } from "zod";
-import { opensearch } from "shared-types";
 
 type ActionType = "update-id" | "update-values" | "delete";
 
 export const updatePackage = async (event: APIGatewayEvent) => {
   const topicName = process.env.topicName as string;
-  const something: opensearch.main.Document = {};
 
   if (!topicName) {
     throw new Error("Topic name is not defined");
@@ -66,14 +64,9 @@ export const updatePackage = async (event: APIGatewayEvent) => {
       await produceMessage(
         topicName,
         packageId,
-        // fix
-        // only update fields in the schema
         JSON.stringify({
           isAdminChange: true,
         }),
-        //   JSON.stringify({
-        //     state: "CA",
-        //   }),
       );
       // delete/hide old record and create new one with new id but same values
     }
@@ -82,7 +75,7 @@ export const updatePackage = async (event: APIGatewayEvent) => {
     if (action === "update-values") {
       // check authority
       const areValidFields = Object.keys(updatedFields).every((fieldKey) => {
-        return fieldKey in packageResult;
+        return fieldKey in packageResult._source;
       });
 
       if (!areValidFields) {
@@ -101,8 +94,11 @@ export const updatePackage = async (event: APIGatewayEvent) => {
         });
       }
 
-      console.log("in updated values", updatedFields);
-      await produceMessage(topicName, packageId, JSON.stringify(updatedFields));
+      await produceMessage(
+        topicName,
+        packageId,
+        JSON.stringify({ ...updatedFields, isAdminChange: true }), // { updatedFields: {}, isAdminChange}
+      );
     }
     return response({
       statusCode: 200,

@@ -85,8 +85,10 @@ const processAndIndex = async ({
         continue;
       }
 
+      // TODO: revisit
       if (record.isAdminChange) {
-        docs.push(record);
+        console.log("are we in here");
+        // docs.push(record);
       }
       if (record.event in transforms) {
         // respond-to-rai
