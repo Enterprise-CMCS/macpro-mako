@@ -286,8 +286,9 @@ const WithdrawRAI = ({
 }) => (
   <Section>
     <Heading as="h2">
-      {`The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are
-      receiving this email notification as the Formal RAI for ${id} was withdrawn by ${submitterName} ${submitterEmail}.`}
+      The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are
+      receiving this email notification as the Formal RAI for {id} was withdrawn by {submitterName}{" "}
+      {submitterEmail}.
     </Heading>
   </Section>
 );
