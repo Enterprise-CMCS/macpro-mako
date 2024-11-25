@@ -54,13 +54,15 @@ export const handler = async (event: APIGatewayEvent) => {
       // check authority
       console.log(topicName, "TOPIC NAME");
       console.log(packageId, "PACKAGE ID");
-      
+
       await produceMessage(
         topicName,
         packageId,
         // package being deleted?
         JSON.stringify({
           deleted: true,
+          isAdminChange: true,
+          origin: "mako",
         }),
       );
       // add a field to the transformed schema to specify that the package is hidden
@@ -73,6 +75,7 @@ export const handler = async (event: APIGatewayEvent) => {
         packageId,
         JSON.stringify({
           isAdminChange: true,
+          origin: "mako",
         }),
       );
       // delete/hide old record and create new one with new id but same values
@@ -104,7 +107,7 @@ export const handler = async (event: APIGatewayEvent) => {
       await produceMessage(
         topicName,
         packageId,
-        JSON.stringify({ ...updatedFields, isAdminChange: true }), // { updatedFields: {}, isAdminChange}
+        JSON.stringify({ ...updatedFields, isAdminChange: true, origin: "mako" }), // { updatedFields: {}, isAdminChange}
       );
     }
     return response({
