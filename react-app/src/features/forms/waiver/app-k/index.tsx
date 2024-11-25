@@ -25,7 +25,7 @@ export const AppKAmendmentForm = () => (
     fields={(form) => (
       <>
         <div>
-          <p className="mt-4 text-gray-700 font-bold">
+          <p className="mt-4 font-bold">
             If your Appendix K submission is for more than one waiver number, please enter one of
             the applicable waiver numbers. You do not need to create multiple submissions.
           </p>
