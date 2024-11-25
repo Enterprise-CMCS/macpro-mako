@@ -1,10 +1,7 @@
 import { CommonEmailVariables, Events } from "lib/packages/shared-types";
-import {
-  AdditionalQuestionsNoticeForCHIPAndSPA,
-  BasicFooter,
-  PackageDetails,
-} from "../../email-components";
+import { BasicFooter, EMAIL_CONFIG, PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
+import { Link, Section, Text } from "@react-email/components";
 
 export const ChipSpaStateEmail = ({
   variables,
@@ -26,6 +23,15 @@ export const ChipSpaStateEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
-    <AdditionalQuestionsNoticeForCHIPAndSPA isChip />
+    <Section>
+      <Text style={{ marginTop: "8px", fontSize: "14px" }}>
+        If you have any questions, please contact{" "}
+        <Link href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`} style={{ textDecoration: "underline" }}>
+          {EMAIL_CONFIG.CHIP_EMAIL}
+        </Link>{" "}
+        or your state lead.
+      </Text>
+      <Text>Thank you!</Text>
+    </Section>
   </BaseEmailTemplate>
 );

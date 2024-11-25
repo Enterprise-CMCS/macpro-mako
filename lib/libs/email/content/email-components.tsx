@@ -196,22 +196,6 @@ const SpamNotice = () => (
   </Section>
 );
 
-const AdditionalQuestionsNoticeForCHIPAndSPA = ({ isChip }: { isChip?: boolean }) => (
-  <Section>
-    <Text style={{ fontSize: "14px" }}>
-      If you have any questions, please contact{" "}
-      <Link
-        href={`mailto:${isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}`}
-        style={{ textDecoration: "underline" }}
-      >
-        {isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}
-      </Link>{" "}
-      or your state lead.
-    </Text>
-    <Text>Thank you!</Text>
-  </Section>
-);
-
 const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
   <Section
     style={{
@@ -304,5 +288,4 @@ export {
   getSrtEmails,
   EmailFooter,
   SpamNotice,
-  AdditionalQuestionsNoticeForCHIPAndSPA,
 };
