@@ -92,6 +92,8 @@ const LoginInstructions = ({
   </ul>
 );
 
+const Divider = () => <Hr style={styles.divider} />;
+
 const DetailsHeading = () => (
   <div>
     <Hr style={styles.divider} />
@@ -160,7 +162,7 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
                 Summary:
               </Heading>
             </Text>
-            <Textarea>{value ?? "No additional information submitted"}</Textarea>
+            <Text>{value ?? "No additional information submitted"}</Text>
           </Row>
         );
       }
@@ -224,6 +226,29 @@ const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
   </Section>
 );
 
+export const SpamWarning = () => {
+  return (
+    <Section
+      style={{
+        ...styles.section.footer,
+        paddingLeft: "16px",
+        paddingRight: "16px",
+      }}
+    >
+      <br />
+      <p style={{ textAlign: "center" }}>
+        If the contents of this email seem suspicious, do not open them, and instead forward this
+        email to{" "}
+        <Link style={{ color: "#fff", textDecoration: "underline" }} href="mailto:SPAM@cms.hhs.gov">
+          SPAM@cms.hhs.gov
+        </Link>
+        .
+      </p>
+      <p style={{ textAlign: "center" }}>Thank you!</p>
+    </Section>
+  );
+};
+
 const EmailFooter = ({ children }: { children: React.ReactNode }) => (
   <Section style={styles.section.footer}>{children}</Section>
 );
@@ -284,6 +309,7 @@ export {
   EmailNav,
   LoginInstructions,
   DetailsHeading,
+  Divider,
   Attachments,
   PackageDetails,
   MailboxNotice,

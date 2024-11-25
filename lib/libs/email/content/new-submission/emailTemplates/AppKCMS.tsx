@@ -1,11 +1,10 @@
 import { Events, CommonEmailVariables } from "shared-types";
-
 import {
   LoginInstructions,
   PackageDetails,
-  BasicFooter,
-  DetailsHeading,
   Attachments,
+  SpamWarning,
+  Divider,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { formatDate } from "shared-utils";
@@ -19,9 +18,9 @@ export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
       previewText="Appendix K Amendment Submitted"
       heading="The OneMAC Submission Portal received a 1915(c) Appendix K Amendment Submission:"
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<BasicFooter />}
+      footerContent={<SpamWarning />}
     >
-      <DetailsHeading />
+      <Divider />
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} useThisLink />
       <PackageDetails
         details={{
@@ -30,7 +29,7 @@ export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
           "Email Address": variables.submitterEmail,
           "Amendment Title": variables.title ?? null,
           "Waiver Amendment Number": variables.id,
-          "Waiver Authority": variables.seaActionType,
+          "Waiver Authority": variables.actionType,
           "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           Summary: variables.additionalInformation,
         }}

@@ -5,8 +5,8 @@ import {
   MedSpaStateEmail,
   ChipSpaCMSEmail,
   ChipSpaStateEmail,
-  Waiver1915bCMSEmail,
-  Waiver1915bStateEmail,
+  WaiverCMSEmail,
+  WaiverStateEmail,
 } from "./emailTemplates";
 import { render } from "@react-email/render";
 
@@ -72,7 +72,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.srtEmails,
         ],
         subject: `Waiver RAI Response for ${variables.id} Submitted`,
-        body: await render(<Waiver1915bCMSEmail variables={variables} />),
+        body: await render(<WaiverCMSEmail variables={variables} />),
       };
     },
     state: async (
@@ -82,7 +82,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         cc: variables.allStateUsersEmails,
         subject: `Your Waiver Response for ${variables.id} has been submitted to CMS`,
-        body: await render(<Waiver1915bStateEmail variables={variables} />),
+        body: await render(<WaiverStateEmail variables={variables} />),
       };
     },
   },
