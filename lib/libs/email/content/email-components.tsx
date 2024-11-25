@@ -187,8 +187,8 @@ const SpamNotice = () => (
     <Text style={{ ...styles.text.description, marginTop: "8px" }}>
       If the contents of this email seem suspicious, do not open them, and instead forward this
       email to{" "}
-      <Link href="mailto:SPAM.hhs.gov" style={{ textDecoration: "underline" }}>
-        SPAM@cms.hhs.gov
+      <Link href={EMAIL_CONFIG.SPAM_EMAIL} style={{ textDecoration: "underline" }}>
+        {EMAIL_CONFIG.SPAM_EMAIL}
       </Link>
       .
     </Text>
