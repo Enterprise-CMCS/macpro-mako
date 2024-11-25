@@ -20,6 +20,7 @@ export const handler = async (event: APIGatewayEvent) => {
     });
   }
   try {
+    console.log(event.body, "EVENT BODY");
     const { packageId, action, updatedFields } = JSON.parse(event.body) as {
       packageId: string;
       action: ActionType;
@@ -48,6 +49,9 @@ export const handler = async (event: APIGatewayEvent) => {
       //   event: z.literal("delete"),
       // });
       // check authority
+      console.log(topicName, "TOPIC NAME");
+      console.log(packageId, "PACKAGE ID");
+      
       await produceMessage(
         topicName,
         packageId,
