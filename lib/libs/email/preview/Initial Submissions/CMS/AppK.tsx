@@ -6,11 +6,11 @@ const AppKCMSEmailPreview = () => {
     <AppKCMSEmail
       variables={{
         ...emailTemplateValue,
+        event: "app-k",
         id: "CO-1234.R21.00",
-        waiverIds: ["CO-1234.R21.01", "CO-12345.R03.09", "CO-4567.R15.42"],
+        authority: "1915(c)",
         actionType: "Amend",
-        seaActionType: "amend",
-        state: "CO",
+        territory: "CO",
         title: "A Perfect Appendix K Amendment Title",
         attachments: {
           appk: attachments.appk,

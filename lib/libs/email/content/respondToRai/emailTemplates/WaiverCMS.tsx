@@ -2,15 +2,12 @@ import { CommonEmailVariables, Events } from "shared-types";
 import { Html, Container } from "@react-email/components";
 import { PackageDetails, LoginInstructions, BasicFooter } from "../../email-components";
 
-export const Waiver1915bCMSEmail = (props: {
+export const WaiverCMSEmail = (props: {
   variables: Events["RespondToRai"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   return (
-    <Html
-      lang="en"
-      dir="ltr"
-    >
+    <Html lang="en" dir="ltr">
       <Container>
         <h3>
           The OneMAC Submission Portal received a {variables.authority} Waiver RAI Response
