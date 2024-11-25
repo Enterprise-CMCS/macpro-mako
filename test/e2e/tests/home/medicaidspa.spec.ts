@@ -10,15 +10,12 @@ test.describe.skip("Form Submission", async () => {
 
     const homePage = new HomePage(page);
     const loginPage = new LoginPage(page);
-    const email = "Testing";
-    const password = "Testing";
 
     await homePage;
-    await loginPage.login(email, password);
+    await loginPage.login("", "");
 
   });
-  test("Create and submit a Medicaid SPA", () => {
-
+  test("Create and submit a Medicaid SPA", async ({ page }) => {
 
     /* Dashboard */
     // Select New Submission on the Dashboard page. 
@@ -26,10 +23,18 @@ test.describe.skip("Form Submission", async () => {
     // Select Medicaid SPA on the SPA Type page. 
     // Select All Other Medicaid SPA Submissions for Medicaid SPA Type. 
     // This should take the user to the Medicaid SPA Details page. 
+    // Navigate to the Dashboard and click on "New Submission" Button. Convert to Page object in the future. 
+    await page.goto("https://mako-val.cms.gov/dashboard");
+    await page.getByRole("button", { name: "New Submission" }).click();
+    await page.getByText("State Plan Amendment (SPA)").click();
+    await page.getByText("Medicaid SPA").click();
+    await page.getByText("All Other Medicaid SPA Submissions").click();
 
     /* Medicaid SPA Details */
     // Enter the SPA ID in the following formats: SS-YY-NNNN, SS-YY-NNNN-XXXX where SS is the state and YY is the current year.
     // Enter the Proposed Effective Date of Medicaid SPA. Default date is the date of SPA creation. 
+    await page.getByRole("textbox", { name: "SPA ID" }).type("SS-YY-NNNN");
+    await page.getByRole("button", { name: "Proposed Effective Date of Medicaid SPA" })
 
     /* Attachments */
     // Generate a sample CMS Form 179 file and attach it to the CMS Form 179 field. 
