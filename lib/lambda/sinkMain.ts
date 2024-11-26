@@ -88,6 +88,8 @@ const processAndIndex = async ({
       // TODO:  handle legacy.  for now, just continue
       console.log(record, "RECORD?????");
       if (!record.event || record?.origin !== "mako") {
+        console.log("IN HERE???", record.event, "RECORD EVENT");
+        console.log(record.origin, "RECORD ORIGIN");
         continue;
       }
       console.log("AFTER THIS IF");

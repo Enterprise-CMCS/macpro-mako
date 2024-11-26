@@ -1,6 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach, Mock } from "vitest";
+import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
 import { Producer } from "kafkajs";
-// import { getProducer, produceMessage } from "../../libs/api/kafka.ts";
 import { APIGatewayEvent } from "aws-lambda";
 import { handler as updatePackage } from "./updatePackage";
 import { response } from "libs/handler-lib";
@@ -88,6 +87,8 @@ describe("Update package", () => {
           key: "test-id",
           value: JSON.stringify({
             deleted: true,
+            isAdminChange: true,
+            origin: "mako",
           }),
           partition: 0,
           headers: { source: "mako" },
@@ -115,11 +116,11 @@ describe("Update package", () => {
       messages: [
         {
           key: "test-id",
-          // not sure if completely working
           value: JSON.stringify({
             state: "MD",
             initialIntakeNeeded: true,
             isAdminChange: true,
+            origin: "mako",
           }),
           partition: 0,
           headers: { source: "mako" },
