@@ -3,9 +3,7 @@ import { SpamWarning, PackageDetails, BasicFooter } from "../../email-components
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const WaiverCMSEmail = (props: {
-  variables:
-    | (Events["CapitatedInitial"] & CommonEmailVariables)
-    | (Events["ContractingInitial"] & CommonEmailVariables);
+  variables: Events["WithdrawPackage"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   const previewText = `Withdrawal of ${variables.authority} ${variables.id}`;
