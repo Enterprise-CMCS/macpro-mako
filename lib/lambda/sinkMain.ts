@@ -1,6 +1,6 @@
 import { Handler } from "aws-lambda";
 import { opensearch, KafkaEvent } from "shared-types";
-import { ErrorType, getTopic, logError } from "lib/libs";
+import { ErrorType, getTopic, logError } from "libs";
 import { processAndIndex, ksql, changed_date } from "./sinkMainProcessors";
 import pino from "pino";
 

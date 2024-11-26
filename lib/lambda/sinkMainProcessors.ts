@@ -1,4 +1,4 @@
-import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "lib/libs";
+import { bulkUpdateDataWrapper, ErrorType, logError, getItems } from "libs";
 import { KafkaRecord, opensearch } from "lib/packages/shared-types";
 import { decodeBase64WithUtf8 } from "lib/packages/shared-utils";
 
