@@ -68,6 +68,7 @@ export async function bulkUpdateData(
    *   isDeleted: true
    * }
    */
+  console.log(JSON.stringify(arrayOfDocuments), "ARRAY OF DOCS");
   for (const doc of arrayOfDocuments) {
     if (doc.delete) {
       body.push({ delete: { _index: index, _id: doc.id } });

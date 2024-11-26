@@ -75,6 +75,7 @@ export const handler = async (event: APIGatewayEvent) => {
         topicName,
         packageId,
         JSON.stringify({
+          id: packageId,
           isAdminChange: true,
           origin: "mako",
         }),
@@ -108,7 +109,7 @@ export const handler = async (event: APIGatewayEvent) => {
       await produceMessage(
         topicName,
         packageId,
-        JSON.stringify({ ...updatedFields, isAdminChange: true, origin: "mako" }), // { updatedFields: {}, isAdminChange}
+        JSON.stringify({ ...updatedFields, id: packageId, isAdminChange: true, origin: "mako" }),
       );
     }
     return response({
