@@ -60,6 +60,7 @@ export const handler = async (event: APIGatewayEvent) => {
         packageId,
         // package being deleted?
         JSON.stringify({
+          id: packageId,
           deleted: true,
           isAdminChange: true,
           origin: "mako",
