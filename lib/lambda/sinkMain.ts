@@ -90,7 +90,7 @@ const processAndIndex = async ({
       // TODO: revisit
       if (record.isAdminChange) {
         console.log("are we in here");
-        // docs.push(record);
+        docs.push(record);
       }
       if (!record.event || record?.origin !== "mako") {
         continue;
