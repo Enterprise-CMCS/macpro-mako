@@ -2,9 +2,6 @@ import { bulkUpdateDataWrapper, ErrorType, logError, getItems } from "libs";
 import { KafkaRecord, opensearch } from "shared-types";
 import { transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
-import pino from "pino";
-
-const logger = pino();
 
 type TransformedEvent = {
   id: string;
@@ -44,13 +41,15 @@ const getTransformedEventFromRecord = (
         error,
         metadata: { topicPartition, kafkaRecord, record },
       });
+
+      return;
     }
 
-    logger.info(`event after transformation: ${JSON.stringify(transformedEvent, null, 2)}`);
+    console.log(`event after transformation: ${JSON.stringify(transformedEvent, null, 2)}`);
 
     return transformedEvent;
   } else {
-    logger.info(`No transform found for event: ${record.event}`);
+    console.log(`No transform found for event: ${record.event}`);
   }
 
   return;
@@ -58,7 +57,7 @@ const getTransformedEventFromRecord = (
 
 export const processAndIndex = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   const recordsToUpdate = kafkaRecords.reduce<TransformedEvent[]>((acc, kafkaRecord) => {
-    logger.info(`record: ${JSON.stringify(kafkaRecord, null, 2)}`);
+    console.log(`record: ${JSON.stringify(kafkaRecord, null, 2)}`);
 
     try {
       const { value } = kafkaRecord;

@@ -2,21 +2,18 @@ import { Handler } from "aws-lambda";
 import { KafkaEvent } from "shared-types";
 import { ErrorType, getTopic, logError } from "libs";
 import { processAndIndex, ksql, changed_date } from "./sinkMainProcessors";
-import pino from "pino";
-
-const logger = pino();
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   const prettifiedEventJSON = JSON.stringify(event, null, 2);
 
-  logger.info(`event: ${prettifiedEventJSON}`);
+  console.log(`event: ${prettifiedEventJSON}`);
 
   try {
     await Promise.all(
       Object.entries(event.records).map(async ([topicPartition, records]) => {
         const topic = getTopic(topicPartition);
 
-        logger.info(`topic: ${topic}`);
+        console.log(`topic: ${topic}`);
 
         switch (topic) {
           case "aws.onemac.migration.cdc":
