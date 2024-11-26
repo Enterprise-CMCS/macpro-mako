@@ -32,7 +32,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
 
     // Return OneMAC records and NOSOs (denoted with SEATool origin)
     query.query.bool.must.push({
-      terms: {
+      term: {
         "origin.keyword": ["OneMAC", "SEATool"],
       },
     });
