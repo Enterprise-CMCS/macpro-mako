@@ -1,4 +1,4 @@
-import { AppKCMSEmail } from "lib/libs/email/content/widthdrawRai/emailTemplates";
+import { AppKStateEmail } from "lib/libs/email/content/widthdrawRai/emailTemplates";
 import { emailTemplateValue } from "lib/libs/email/mock-data/withdraw-rai";
 
 export const relatedEvent = {
@@ -6,4 +6,4 @@ export const relatedEvent = {
   submitterEmail: "test@email.com",
 };
 
-export default () => <AppKCMSEmail relatedEvent={relatedEvent} variables={emailTemplateValue} />;
+export default () => <AppKStateEmail relatedEvent={relatedEvent} variables={emailTemplateValue} />;

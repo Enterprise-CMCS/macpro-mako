@@ -1,7 +1,13 @@
 import { formatNinetyDaysDate } from "shared-utils";
 import { CommonEmailVariables, Events } from "shared-types";
 import { Text } from "@react-email/components";
-import { PackageDetails, MailboxNotice, ContactStateLead, Divider } from "../../email-components";
+import {
+  PackageDetails,
+  MailboxNotice,
+  BasicFooter,
+  ContactStateLead,
+  Divider,
+} from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
@@ -16,7 +22,7 @@ export const WaiverStateEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<ContactStateLead />}
+      footerContent={<BasicFooter />}
     >
       <PackageDetails
         details={{
@@ -37,6 +43,7 @@ export const WaiverStateEmail = (props: {
         .
       </Text>
       <MailboxNotice type="Waiver" />
+      <ContactStateLead />
     </BaseEmailTemplate>
   );
 };

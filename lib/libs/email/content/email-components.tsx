@@ -170,7 +170,7 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
       return (
         <Row key={label + index}>
           <Column align="left" style={{ width: "50%" }}>
-            <Text style={styles.text.title}>{label}</Text>
+            <Text style={styles.text.title}>{label}:</Text>
           </Column>
           <Column>
             <Text style={styles.text.description}>{value ?? "Not provided"}</Text>
@@ -205,46 +205,35 @@ const SpamNotice = () => (
 );
 
 const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
-  <Section
-    style={{
-      ...styles.section.footer,
-      paddingLeft: "16px",
-      paddingRight: "16px",
-    }}
-  >
+  <Section>
+    <Divider />
     <Text style={{ fontSize: "14px" }}>
       If you have questions or did not expect this email, please contact{" "}
       <Link
         href={`mailto:${isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}`}
-        style={{ color: "#fff", textDecoration: "underline" }}
+        style={{ textDecoration: "underline" }}
       >
         {isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}
       </Link>{" "}
       or your state lead.
     </Text>
-    <Text>Thank you!</Text>
+    <Text>Thank you.</Text>
   </Section>
 );
 
 export const SpamWarning = () => {
   return (
-    <Section
-      style={{
-        ...styles.section.footer,
-        paddingLeft: "16px",
-        paddingRight: "16px",
-      }}
-    >
-      <br />
-      <p style={{ textAlign: "center" }}>
+    <Section>
+      <Divider />
+      <Text style={{ fontSize: "14px" }}>
         If the contents of this email seem suspicious, do not open them, and instead forward this
         email to{" "}
-        <Link style={{ color: "#fff", textDecoration: "underline" }} href="mailto:SPAM@cms.hhs.gov">
+        <Link style={{ textDecoration: "underline" }} href="mailto:SPAM@cms.hhs.gov">
           SPAM@cms.hhs.gov
         </Link>
         .
-      </p>
-      <p style={{ textAlign: "center" }}>Thank you!</p>
+      </Text>
+      <Text>Thank you.</Text>
     </Section>
   );
 };

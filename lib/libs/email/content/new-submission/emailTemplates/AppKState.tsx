@@ -1,7 +1,13 @@
 import { Text } from "@react-email/components";
 import { CommonEmailVariables, Events } from "shared-types";
 import { formatNinetyDaysDate, formatDate } from "shared-utils";
-import { PackageDetails, ContactStateLead, Divider, MailboxNotice } from "../../email-components";
+import {
+  PackageDetails,
+  BasicFooter,
+  ContactStateLead,
+  Divider,
+  MailboxNotice,
+} from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
@@ -16,7 +22,7 @@ export const AppKStateEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<ContactStateLead />}
+      footerContent={<BasicFooter />}
     >
       <Divider />
       <PackageDetails
@@ -38,6 +44,7 @@ export const AppKStateEmail = (props: {
         expect a formal response to your submittal to be issued within 90 days,
         before ${formatNinetyDaysDate(variables.timestamp)}.`}
       </Text>
+      <ContactStateLead />
       <MailboxNotice type="Waiver" />
     </BaseEmailTemplate>
   );
