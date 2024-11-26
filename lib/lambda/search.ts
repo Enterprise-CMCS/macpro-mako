@@ -23,7 +23,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     query.query = query?.query || {};
     query.query.bool = query.query?.bool || {};
     query.query.bool.must = query.query.bool?.must || [];
-    query.query.bool.must.push({ terms: { deleted: false } });
+    query.query.bool.must.push({ term: { deleted: false } });
 
     const stateFilter = await getStateFilter(event);
     if (stateFilter) {
@@ -32,7 +32,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
 
     // Return OneMAC records and NOSOs (denoted with SEATool origin)
     query.query.bool.must.push({
-      term: {
+      terms: {
         "origin.keyword": ["OneMAC", "SEATool"],
       },
     });
