@@ -38,8 +38,8 @@ export const Welcome = () => {
             <img src={OneMacLogo} alt="onemac" className="p-4 min-w-[400px]" />
           </h1>
           <p className="text-center text-white/100 font-light text-xl font-sans">
-            Welcome to the official submission system for paper-based state plan
-            amendments (SPAs) and section 1915 waivers.
+            Welcome to the official submission system for paper-based state plan amendments (SPAs)
+            and section 1915 waivers.
           </p>
         </div>
       </div>
@@ -52,69 +52,55 @@ export const Welcome = () => {
             <div className="flex flex-col md:flex-row gap-12">
               <C.HowItWorks>
                 <C.Step
-                  icon={
-                    <Heroicons.ArrowRightOnRectangleIcon className="min-w-[32px] w-8 h-8" />
-                  }
+                  icon={<Heroicons.ArrowRightOnRectangleIcon className="min-w-[32px] w-8 h-8" />}
                   title="Login with IDM"
                   content="Login with your IDM username and password to access your SPA and Waiver dashboard."
                 />
                 <C.Step
-                  icon={
-                    <Heroicons.DocumentArrowUpIcon className="min-w-[32px] w-8 h-8" />
-                  }
+                  icon={<Heroicons.DocumentArrowUpIcon className="min-w-[32px] w-8 h-8" />}
                   title="Attach your documents"
                   content="Select a submission type and attach required documents relevant to your SPA and/or Waiver submission."
                 />
                 <C.Step
-                  icon={
-                    <Heroicons.EnvelopeIcon className="min-w-[32px] w-8 h-8" />
-                  }
+                  icon={<Heroicons.EnvelopeIcon className="min-w-[32px] w-8 h-8" />}
                   title="Receive an email confirmation"
                   content="After you submit, you will receive an email confirmation that your submission was successful, marking the start of the 90-day review process."
                 />
               </C.HowItWorks>
               <div className="flex-grow">
-                <h3 className="font-bold text-xl mb-4">
-                  Submission Types include:
-                </h3>
+                <h3 className="font-bold text-xl mb-4">Submission Types include:</h3>
                 <ul className="flex flex-col gap-4">
                   <li>
                     <p>
-                      Amendments to your Medicaid and CHIP State Plans (not
-                      submitted through MACPro, MMDL or WMS).
+                      Amendments to your Medicaid and CHIP State Plans (not submitted through
+                      MACPro, MMDL or WMS).
                     </p>
                   </li>
                   <li>
                     <p>
-                      Official state responses to formal requests for additional
-                      information (RAIs) for SPAs (not submitted through
-                      MACPro).
+                      Official state responses to formal requests for additional information (RAIs)
+                      for SPAs (not submitted through MACPro).
+                    </p>
+                  </li>
+                  <li>
+                    <p>Section 1915(b) waiver submissions (those not submitted through WMS).</p>
+                  </li>
+                  <li>
+                    <p>
+                      Section 1915(c) Appendix K amendments (which cannot be submitted through WMS).
                     </p>
                   </li>
                   <li>
                     <p>
-                      Section 1915(b) waiver submissions (those not submitted
-                      through WMS).
+                      Official state responses to formal requests for additional information (RAIs)
+                      for Section 1915(b) waiver actions (in addition to submitting waiver changes
+                      in WMS, if applicable).
                     </p>
                   </li>
                   <li>
                     <p>
-                      Section 1915(c) Appendix K amendments (which cannot be
-                      submitted through WMS).
-                    </p>
-                  </li>
-                  <li>
-                    <p>
-                      Official state responses to formal requests for additional
-                      information (RAIs) for Section 1915(b) waiver actions (in
-                      addition to submitting waiver changes in WMS, if
-                      applicable).
-                    </p>
-                  </li>
-                  <li>
-                    <p>
-                      State requests for Temporary Extensions for section
-                      1915(b) and 1915(c) waivers.
+                      State requests for Temporary Extensions for section 1915(b) and 1915(c)
+                      waivers.
                     </p>
                   </li>
                 </ul>
@@ -126,39 +112,31 @@ export const Welcome = () => {
             <div className="flex flex-col md:flex-row gap-8">
               <C.HowItWorks>
                 <C.Step
-                  icon={
-                    <Heroicons.DocumentArrowUpIcon className="min-w-[32px] w-8 h-8" />
-                  }
+                  icon={<Heroicons.DocumentArrowUpIcon className="min-w-[32px] w-8 h-8" />}
                   title="Receive an email for submission notification"
                   content="After a state adds a submission to OneMAC, you will receive an email notification that a submission was made requiring your review and the submission is on the clock."
                 />
                 <C.Step
-                  icon={
-                    <Heroicons.ArrowRightOnRectangleIcon className="min-w-[32px] w-8 h-8" />
-                  }
+                  icon={<Heroicons.ArrowRightOnRectangleIcon className="min-w-[32px] w-8 h-8" />}
                   title="Login with EUA"
                   content="Login with your EUA username and password to access the SPA and Waiver dashboard."
                 />
                 <C.Step
-                  icon={
-                    <Heroicons.EnvelopeIcon className="min-w-[32px] w-8 h-8" />
-                  }
+                  icon={<Heroicons.EnvelopeIcon className="min-w-[32px] w-8 h-8" />}
                   title="Review your assigned submission"
                   content="Search the submission ID from the email and click on the submission to view and review details and attachments."
                 />
               </C.HowItWorks>
               <div>
-                <h3 className="font-bold text-xl mb-4">
-                  Submission Types include:
-                </h3>
+                <h3 className="font-bold text-xl mb-4">Submission Types include:</h3>
                 <ul className="flex flex-col gap-4">
                   <li>
                     <p>Amendments to your Medicaid and CHIP State Plans.</p>
                   </li>
                   <li>
                     <p>
-                      Official state responses to formal requests for additional
-                      information (RAIs) for SPAs.
+                      Official state responses to formal requests for additional information (RAIs)
+                      for SPAs.
                     </p>
                   </li>
                   <li>
@@ -169,14 +147,14 @@ export const Welcome = () => {
                   </li>
                   <li>
                     <p>
-                      Official state responses to formal requests for additional
-                      information (RAIs) for Section 1915(b) waiver actions.
+                      Official state responses to formal requests for additional information (RAIs)
+                      for Section 1915(b) waiver actions.
                     </p>
                   </li>
                   <li>
                     <p>
-                      State requests for Temporary Extensions for section
-                      1915(b) and 1915(c) waivers.
+                      State requests for Temporary Extensions for section 1915(b) and 1915(c)
+                      waivers.
                     </p>
                   </li>
                 </ul>
