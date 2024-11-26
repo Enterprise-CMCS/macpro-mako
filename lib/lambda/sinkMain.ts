@@ -87,16 +87,16 @@ const processAndIndex = async ({
       // If we're not a mako event, continue
       // TODO:  handle legacy.  for now, just continue
       console.log(record, "RECORD?????");
-      // if (!record.event || record?.origin !== "mako") {
-      //   continue;
-      // }
-      console.log("AFTER THIS IF");
-
       // TODO: revisit
       if (record.isAdminChange) {
         console.log("are we in here");
         // docs.push(record);
       }
+      if (!record.event || record?.origin !== "mako") {
+        continue;
+      }
+      console.log("AFTER THIS IF");
+
       if (record.event in transforms) {
         // respond-to-rai
         // If the event is a supported event, transform and push to docs array for indexing
