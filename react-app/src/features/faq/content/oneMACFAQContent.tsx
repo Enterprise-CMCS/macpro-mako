@@ -566,7 +566,19 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "chip-spa-implentation-guides",
         question: "Where can I download CHIP eligibility SPA implementation guides?",
         answerJSX: (
-          <p>CHIP eligibility SPA implementation guides can be downloaded at the links below.</p>
+          <>
+            <p>CHIP eligibility SPA implementation guides can be downloaded at the links below.</p>
+
+            <p className="p-2">MAGI Eligibility & Methods</p>
+
+            <p className="p-2">XXI Medicaid Expansion</p>
+
+            <p className="p-2">Establish 2101(f) Group</p>
+
+            <p className="p-2">Eligibility Processing</p>
+
+            <p className="p-2">Non-Financial Eligibility</p>
+          </>
         ),
       },
     ],
