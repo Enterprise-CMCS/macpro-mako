@@ -30,9 +30,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           logError({ type: ErrorType.BADTOPIC });
           throw new Error();
         case "aws.onemac.migration.cdc":
-          console.log("IN THIS TOPIC?");
-          console.log(opensearch.main.transforms, "TRANSFORMSSS");
-          console.log(topicPartition, "TOPIC PARTITION");
           await processAndIndex({
             kafkaRecords: event.records[topicPartition],
             index,
@@ -101,6 +98,8 @@ const processAndIndex = async ({
           }
 
           if (record.adminChangeType === "update-values") {
+            console.log("IN UPDATE VALUES");
+            console.log(record, "RECORD TO CHANGE");
             docs.push(record);
           }
         }
