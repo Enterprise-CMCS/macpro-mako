@@ -12,30 +12,32 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   logger.info(`event: ${prettifiedEventJSON}`);
 
   try {
-    Object.keys(event.records).forEach(async (topicPartition) => {
-      const topic = getTopic(topicPartition);
+    await Promise.all(
+      Object.entries(event.records).map(async ([topicPartition, records]) => {
+        const topic = getTopic(topicPartition);
 
-      logger.info(`topic: ${topic}`);
+        logger.info(`topic: ${topic}`);
 
-      switch (topic) {
-        case "aws.onemac.migration.cdc":
-          return processAndIndex({
-            kafkaRecords: event.records[topicPartition],
-            transforms: opensearch.main.transforms,
-            topicPartition: topicPartition,
-          });
+        switch (topic) {
+          case "aws.onemac.migration.cdc":
+            return processAndIndex({
+              topicPartition: topicPartition,
+              kafkaRecords: records,
+              transforms: opensearch.main.transforms,
+            });
 
-        case "aws.seatool.ksql.onemac.three.agg.State_Plan":
-          return ksql(event.records[topicPartition], topicPartition);
+          case "aws.seatool.ksql.onemac.three.agg.State_Plan":
+            return ksql(records, topicPartition);
 
-        case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
-          return changed_date(event.records[topicPartition], topicPartition);
+          case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
+            return changed_date(records, topicPartition);
 
-        default:
-          logError({ type: ErrorType.BADTOPIC });
-          throw new Error(`topic (${topic}) is invalid`);
-      }
-    });
+          default:
+            logError({ type: ErrorType.BADTOPIC });
+            throw new Error(`topic (${topicPartition}) is invalid`);
+        }
+      }),
+    );
   } catch (error) {
     logError({ type: ErrorType.UNKNOWN, metadata: { event: prettifiedEventJSON } });
 
