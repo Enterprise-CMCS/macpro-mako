@@ -23,7 +23,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     query.query = query?.query || {};
     query.query.bool = query.query?.bool || {};
     query.query.bool.must = query.query.bool?.must || [];
-    query.query.bool.must.push({ term: { deleted: false } });
+    query.query.bool.must_not.push({ term: { deleted: true } });
 
     const stateFilter = await getStateFilter(event);
     if (stateFilter) {
