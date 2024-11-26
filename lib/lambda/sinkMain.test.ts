@@ -26,11 +26,7 @@ describe("sinkMain handler", () => {
       vi.fn(),
     );
 
-    expect(spiedOnProcessAndIndex).toBeCalledWith({
-      kafkaRecords: [],
-      topicPartition: "aws.onemac.migration.cdc-0",
-      transforms: expect.any(Object),
-    });
+    expect(spiedOnProcessAndIndex).toBeCalledWith([], "aws.onemac.migration.cdc-0");
   });
 
   it("handles aws.seatool.ksql.onemac.three.agg.State_Plan topic successfully", async () => {

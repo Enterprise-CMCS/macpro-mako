@@ -1,5 +1,5 @@
 import { Handler } from "aws-lambda";
-import { opensearch, KafkaEvent } from "shared-types";
+import { KafkaEvent } from "shared-types";
 import { ErrorType, getTopic, logError } from "libs";
 import { processAndIndex, ksql, changed_date } from "./sinkMainProcessors";
 import pino from "pino";
@@ -20,11 +20,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
         switch (topic) {
           case "aws.onemac.migration.cdc":
-            return processAndIndex({
-              topicPartition: topicPartition,
-              kafkaRecords: records,
-              transforms: opensearch.main.transforms,
-            });
+            return processAndIndex(records, topicPartition);
 
           case "aws.seatool.ksql.onemac.three.agg.State_Plan":
             return ksql(records, topicPartition);

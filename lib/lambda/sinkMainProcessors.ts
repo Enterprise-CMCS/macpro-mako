@@ -1,56 +1,76 @@
 import { bulkUpdateDataWrapper, ErrorType, logError, getItems } from "libs";
 import { KafkaRecord, opensearch } from "shared-types";
+import { transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
+import pino from "pino";
 
-export const processAndIndex = async ({
-  kafkaRecords,
-  transforms,
-  topicPartition,
-}: {
-  kafkaRecords: KafkaRecord[];
-  transforms: any;
-  topicPartition: string;
-}) => {
-  const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
-  for (const kafkaRecord of kafkaRecords) {
-    console.log(JSON.stringify(kafkaRecord, null, 2));
-    const { value } = kafkaRecord;
+const logger = pino();
+
+type TransformedEvent = {
+  id: string;
+  makoChangedDate: string | null;
+};
+
+const isRecordTransformable = (
+  record: Partial<{
+    event: string;
+    origin: string;
+  }>,
+): record is { event: keyof typeof transforms } =>
+  typeof record === "object" &&
+  record?.event !== undefined &&
+  record.event in transforms &&
+  record?.origin === "mako";
+
+const getTransformedEventFromRecord = (
+  value: string,
+  topicPartition: string,
+  kafkaRecord: KafkaRecord,
+): TransformedEvent | undefined => {
+  const record = JSON.parse(decodeBase64WithUtf8(value));
+
+  if (isRecordTransformable(record)) {
+    const transformForEvent = transforms[record.event];
+
+    const {
+      data: transformedEvent,
+      success,
+      error,
+    } = transformForEvent.transform().safeParse(record);
+
+    if (success === false) {
+      logError({
+        type: ErrorType.VALIDATION,
+        error,
+        metadata: { topicPartition, kafkaRecord, record },
+      });
+    }
+
+    logger.info(`event after transformation: ${JSON.stringify(transformedEvent, null, 2)}`);
+
+    return transformedEvent;
+  } else {
+    logger.info(`No transform found for event: ${record.event}`);
+  }
+
+  return;
+};
+
+export const processAndIndex = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
+  const recordsToUpdate = kafkaRecords.reduce<TransformedEvent[]>((acc, kafkaRecord) => {
+    logger.info(`record: ${JSON.stringify(kafkaRecord, null, 2)}`);
+
     try {
-      // If a legacy tombstone, handle and continue
-      // TODO:  handle.  for now, just continue
+      const { value } = kafkaRecord;
+
       if (!value) {
-        // docs.push(opensearch.main.legacyPackageView.tombstone(id));
-        continue;
+        return acc;
       }
 
-      // Parse the kafka record's value
-      const record = JSON.parse(decodeBase64WithUtf8(value));
+      const transformedEvent = getTransformedEventFromRecord(value, topicPartition, kafkaRecord);
 
-      // If we're not a mako event, continue
-      // TODO:  handle legacy.  for now, just continue
-      if (!record.event || record?.origin !== "mako") {
-        continue;
-      }
-
-      // If the event is a supported event, transform and push to docs array for indexing
-      if (record.event in transforms) {
-        const transformForEvent = transforms[record.event as keyof typeof transforms];
-
-        const result = transformForEvent.transform().safeParse(record);
-
-        if (result.success && result.data === undefined) continue;
-        if (!result.success) {
-          logError({
-            type: ErrorType.VALIDATION,
-            error: result?.error,
-            metadata: { topicPartition, kafkaRecord, record },
-          });
-          continue;
-        }
-        console.log(JSON.stringify(result.data, null, 2));
-        docs.push(result.data);
-      } else {
-        console.log(`No transform found for event: ${record.event}`);
+      if (transformedEvent) {
+        return acc.concat(transformedEvent);
       }
     } catch (error) {
       logError({
@@ -59,10 +79,11 @@ export const processAndIndex = async ({
         metadata: { topicPartition, kafkaRecord },
       });
     }
-  }
 
-  // Send all transformed records for indexing
-  await bulkUpdateDataWrapper(docs, "main");
+    return acc;
+  }, []);
+
+  await bulkUpdateDataWrapper(recordsToUpdate, "main");
 };
 
 export const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
