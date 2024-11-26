@@ -4,9 +4,11 @@ import { describe, test, expect, vi } from "vitest";
 import { ActionForm } from "./index";
 import { z } from "zod";
 import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
+import { setMockUsername, useDefaultStateSubmitter } from "mocks";
 import * as userPrompt from "@/components/ConfirmationDialog/userPrompt";
 import * as banner from "@/components/Banner/banner";
 import * as documentPoller from "@/utils/Poller/documentPoller";
+import * as api from "@/api";
 import { renderForm } from "@/utils/test-helpers/renderForm";
 import { isCmsReadonlyUser } from "shared-utils";
 import { API as awsAmplifyAPI } from "aws-amplify";
@@ -116,7 +118,10 @@ describe("ActionForm", () => {
     expect(queryByText("this is an attachments title")).toBeInTheDocument();
   });
 
-  test("doesn't render form if user access is denied", () => {
+  test("doesn't render form if user access is denied", async () => {
+    setMockUsername(null);
+    const spy = vi.spyOn(api, "useGetUser");
+
     const { queryByText } = renderForm(
       <ActionForm
         title="Action Form Title"
@@ -139,7 +144,16 @@ describe("ActionForm", () => {
       />,
     );
 
+    await waitFor(() =>
+      expect(spy).toHaveLastReturnedWith(
+        expect.objectContaining({
+          status: "success",
+        }),
+      ),
+    );
+
     expect(queryByText("Action Form Title")).not.toBeInTheDocument();
+    useDefaultStateSubmitter();
   });
 
   test("renders `defaultValues` in appropriate input", () => {
@@ -215,7 +229,7 @@ describe("ActionForm", () => {
 
     expect(queryByText(/this is a callout/)).toBeInTheDocument();
   });
-
+  //
   test("renders custom `promptOnLeavingForm` when clicking Cancel", async () => {
     const { container } = renderForm(
       <ActionForm
@@ -248,7 +262,7 @@ describe("ActionForm", () => {
       onAccept: onAcceptMock,
     });
   });
-
+  //
   test("renders custom `promptPreSubmission` when clicking Submit", async () => {
     const { container } = renderForm(
       <ActionForm

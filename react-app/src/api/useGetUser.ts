@@ -12,8 +12,12 @@ export type OneMacUser = {
 export const getUser = async (): Promise<OneMacUser> => {
   try {
     const currentAuthenticatedUser = await Auth.currentAuthenticatedUser();
+    if (!currentAuthenticatedUser) {
+      console.log("No current user");
+      return { user: null } satisfies OneMacUser;
+    }
     console.log({ currentAuthenticatedUser });
-    const userAttributesArray = await Auth.userAttributes(currentAuthenticatedUser);
+    const userAttributesArray = (await Auth.userAttributes(currentAuthenticatedUser)) || [];
     console.log({ userAttributesArray });
 
     // Set object up with key/values from attributes array

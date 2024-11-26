@@ -26,6 +26,15 @@ export const renderForm = (form: ReactElement) =>
     ),
   });
 
+export const renderWithQueryClient = (element: ReactElement) =>
+  render(element, {
+    wrapper: ({ children }) => (
+      <QueryClientProvider client={createTestQueryClient()}>
+        <MemoryRouter>{children}</MemoryRouter>,
+      </QueryClientProvider>
+    ),
+  });
+
 export const renderFormWithPackageSection = async (
   form: ReactElement,
   id: string,

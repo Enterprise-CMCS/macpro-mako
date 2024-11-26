@@ -125,8 +125,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
-  const { data: userObj, isLoading } = useGetUser();
-  console.log({ userObj });
+  const { data: userObj, isLoading: isUserLoading } = useGetUser();
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
 
@@ -181,13 +180,33 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
 
-  const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some((condition) =>
-    condition(userObj?.user),
-  );
+  if (isUserLoading != true) {
+    const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some((condition) =>
+      condition(userObj?.user),
+    );
 
-  if (isLoading === false && doesUserHaveAccessToForm === false) {
-    return <Navigate to="/" replace />;
+    if (!userObj || doesUserHaveAccessToForm === false) {
+      return <Navigate to="/" replace />;
+    }
   }
+
+  // if (isUserLoading == true) {
+  //   return (
+  //     <SimplePageContainer>
+  //       <BreadCrumbs
+  //         options={[
+  //           ...breadcrumbs,
+  //           {
+  //             to: pathname,
+  //             displayText: breadcrumbText,
+  //             order: breadcrumbs.length,
+  //           },
+  //         ]}
+  //       />
+  //       <LoadingSpinner />
+  //     </SimplePageContainer>
+  //   );
+  // }
 
   return (
     <SimplePageContainer>

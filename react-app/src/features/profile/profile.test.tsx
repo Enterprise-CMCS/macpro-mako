@@ -3,20 +3,20 @@ import { describe, vi, test, expect } from "vitest";
 import { Profile } from ".";
 import * as api from "@/api";
 
-vi.mock("@/api", async (importOriginals) => ({
-  ...((await importOriginals()) as object),
-  useGetUser: vi.fn(() => ({
-    data: {
-      user: {
-        "custom:state": "MD,OH,NY",
-        "custom:cms-roles": "onemac-micro-statesubmitter",
-        given_name: "George",
-        family_name: "Harrison",
-        email: "george@example.com",
-      },
-    },
-  })),
-}));
+// vi.mock("@/api", async (importOriginals) => ({
+//   ...((await importOriginals()) as object),
+//   useGetUser: vi.fn(() => ({
+//     data: {
+//       user: {
+//         "custom:state": "MD,OH,NY",
+//         "custom:cms-roles": "onemac-micro-statesubmitter",
+//         given_name: "George",
+//         family_name: "Harrison",
+//         email: "george@example.com",
+//       },
+//     },
+//   })),
+// }));
 
 describe("Profile", () => {
   test("renders state names", () => {

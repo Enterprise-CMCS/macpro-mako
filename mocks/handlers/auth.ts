@@ -26,9 +26,9 @@ export const mockCurrentAuthenticatedUser = async () => {
         preferredMFA: "NOMFA",
       };
     }
-    throw new Error("User not found");
+    return undefined;
   }
-  throw new Error("Username not set");
+  return undefined;
 };
 
 export const mockUseGetUser = async () => {
@@ -60,9 +60,9 @@ export const mockUseGetUser = async () => {
         isCms: isCmsUser(userAttributesObj),
       };
     }
-    throw new Error("User not found");
+    return undefined;
   }
-  throw new Error("Username not set");
+  return undefined;
 };
 
 export const mockUserAttributes = async (currentAuthenticatedUser: any) => {
@@ -75,7 +75,7 @@ export const mockUserAttributes = async (currentAuthenticatedUser: any) => {
       return user.UserAttributes;
     }
   }
-  return null;
+  return undefined;
 };
 
 export const useDefaultStateSubmitter = () => setMockUsername(makoStateSubmitter.Username);

@@ -25,5 +25,12 @@ export const putOnceHandler = (endpoint: string, status: number = 200, body?: Bo
 
 export default [...itemHandlers, ...typeHandlers, ...submissionHandlers, ...authHandlers];
 
-export { setMockUsername, useDefaultReviewer, useDefaultStateSubmitter } from "./auth.js";
+export {
+  mockCurrentAuthenticatedUser,
+  mockUseGetUser,
+  mockUserAttributes,
+  setMockUsername,
+  useDefaultReviewer,
+  useDefaultStateSubmitter,
+} from "./auth.js";
 export type { GetItemBody } from "./items.js";
