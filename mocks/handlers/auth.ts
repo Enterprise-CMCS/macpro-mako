@@ -1,4 +1,3 @@
-import { http } from "msw";
 import { CognitoUserAttributes } from "shared-types";
 import { isCmsUser } from "shared-utils";
 import {
@@ -16,6 +15,10 @@ export const setMockUsername = (username: string): void => {
   }
 };
 
+export const useDefaultStateSubmitter = () => setMockUsername(makoStateSubmitter.Username);
+
+export const useDefaultReviewer = () => setMockUsername(makoReviewer.Username);
+
 export const mockCurrentAuthenticatedUser = async () => {
   if (process.env.MOCK_USER_USERNAME) {
     const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
@@ -27,6 +30,19 @@ export const mockCurrentAuthenticatedUser = async () => {
       };
     }
     return undefined;
+  }
+  return undefined;
+};
+
+export const mockUserAttributes = async (currentAuthenticatedUser: any) => {
+  if (currentAuthenticatedUser?.currentAuthenticatedUser?.attributes) {
+    return currentAuthenticatedUser.currentAuthenticatedUser.attributes;
+  }
+  if (process.env.MOCK_USER_USERNAME) {
+    const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
+    if (user) {
+      return user.UserAttributes;
+    }
   }
   return undefined;
 };
@@ -50,10 +66,6 @@ export const mockUseGetUser = async () => {
       userAttributesObj["custom:cms-roles"] = userAttributesObj?.["custom:cms-roles"] || "";
 
       userAttributesObj.username = user?.Username || "";
-      console.log({
-        user: userAttributesObj,
-        isCms: isCmsUser(userAttributesObj),
-      });
 
       return {
         user: userAttributesObj,
@@ -65,43 +77,5 @@ export const mockUseGetUser = async () => {
   return undefined;
 };
 
-export const mockUserAttributes = async (currentAuthenticatedUser: any) => {
-  if (currentAuthenticatedUser?.currentAuthenticatedUser?.attributes) {
-    return currentAuthenticatedUser.currentAuthenticatedUser.attributes;
-  }
-  if (process.env.MOCK_USER_USERNAME) {
-    const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
-    if (user) {
-      return user.UserAttributes;
-    }
-  }
-  return undefined;
-};
-
-export const useDefaultStateSubmitter = () => setMockUsername(makoStateSubmitter.Username);
-
-export const useDefaultReviewer = () => setMockUsername(makoReviewer.Username);
-
-// const getUsernameFromAccessToken = (accessToken?: string): string | undefined => {
-//   console.log({ accessToken });
-//   if (accessToken) {
-//     const decoded = jwt.decode(accessToken, { json: true });
-//     console.log({ decoded });
-//     return decoded?.sub;
-//   }
-//   return undefined;
-// };
-
 const findUserByUsername = (username: string): CognitoUserResponse | undefined =>
   userResponses.find((user) => user.Username == username);
-
-export type IdpRequestBody = {
-  AccessToken: string;
-};
-
-const loginHandler = http.get("/", ({ request }) => {
-  console.log("handling / page ", { request });
-});
-
-export const defaultHandler = [loginHandler];
-// export const defaultHandler = [identityProviderServiceHandler, identityServiceHandler];

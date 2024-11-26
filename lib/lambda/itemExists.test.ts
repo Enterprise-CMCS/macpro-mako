@@ -1,65 +1,75 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { ERROR_ITEM_ID, NOT_FOUND_ITEM_ID, TEST_ITEM_ID } from "mocks";
+import { response } from "libs/handler-lib";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import * as lib from "../libs/handler-lib";
+import * as os from "../libs/opensearch-lib";
 import { handler } from "./itemExists";
 
-const response = vi.spyOn(lib, "response");
+vi.mock("libs/handler-lib", () => ({
+  response: vi.fn(),
+}));
+
+vi.mock("../libs/opensearch-lib", () => ({
+  getItem: vi.fn(),
+}));
 
 describe("Handler for checking if record exists", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    process.env.osDomain = "test-domain"; // Set the environment variable before each test
+    process.env.osDomain = "test-domain";
+    process.env.indexNamespace = "test-namespace-";
   });
 
   it("should return 400 if event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
-    const response = await handler(event);
+    await handler(event);
 
-    expect(response).not.toBeNull();
-    expect(response?.body).toContain("Event body required");
-    expect(response?.statusCode).toEqual(400);
+    expect(response).toHaveBeenCalledWith({
+      statusCode: 400,
+      body: { message: "Event body required" },
+    });
   });
 
   it("should return 200 and exists: true if record is found", async () => {
+    (os.getItem as vi.Mock).mockResolvedValueOnce({ _source: {} });
+
     const event = {
-      body: JSON.stringify({ id: TEST_ITEM_ID }),
+      body: JSON.stringify({ id: "test-id" }),
     } as APIGatewayEvent;
 
-    const response = await handler(event);
+    await handler(event);
 
-    expect(response).not.toBeNull();
-    expect(JSON.parse(response?.body)).toContainEqual({
-      message: "Record found for the given id",
-      exists: true,
+    expect(response).toHaveBeenCalledWith({
+      statusCode: 200,
+      body: { message: "Record found for the given id", exists: true },
     });
-    expect(response?.statusCode).toEqual(200);
   });
 
   it("should return 200 and exists: false if no record is found", async () => {
+    (os.getItem as vi.Mock).mockResolvedValueOnce({});
+
     const event = {
-      body: JSON.stringify({ id: NOT_FOUND_ITEM_ID }),
+      body: JSON.stringify({ id: "test-id" }),
     } as APIGatewayEvent;
 
-    const response = await handler(event);
+    await handler(event);
 
-    expect(response).not.toBeNull();
-    expect(JSON.parse(response?.body)).toContainEqual({
-      message: "No record found for the given id",
-      exists: false,
+    expect(response).toHaveBeenCalledWith({
+      statusCode: 200,
+      body: { message: "No record found for the given id", exists: false },
     });
-    expect(response?.statusCode).toEqual(200);
   });
 
   it.skip("should return 500 if an error occurs during processing", async () => {
+    (os.getItem as vi.Mock).mockRejectedValueOnce(new Error("Test error"));
+
     const event = {
-      body: JSON.stringify({ id: ERROR_ITEM_ID }),
+      body: JSON.stringify({ id: "test-id" }),
     } as APIGatewayEvent;
 
-    const response = await handler(event);
+    await handler(event);
 
-    expect(response).toContainEqual({
+    expect(response).toHaveBeenCalledWith({
       statusCode: 500,
       body: { message: "Internal server error" },
     });

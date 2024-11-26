@@ -16,9 +16,7 @@ export const getUser = async (): Promise<OneMacUser> => {
       console.log("No current user");
       return { user: null } satisfies OneMacUser;
     }
-    console.log({ currentAuthenticatedUser });
     const userAttributesArray = (await Auth.userAttributes(currentAuthenticatedUser)) || [];
-    console.log({ userAttributesArray });
 
     // Set object up with key/values from attributes array
     const userAttributesObj = userAttributesArray.reduce(
@@ -35,10 +33,6 @@ export const getUser = async (): Promise<OneMacUser> => {
     userAttributesObj["custom:cms-roles"] = userAttributesObj?.["custom:cms-roles"] || "";
 
     userAttributesObj.username = currentAuthenticatedUser?.username || "";
-    console.log({
-      user: userAttributesObj,
-      isCms: isCmsUser(userAttributesObj),
-    });
 
     return {
       user: userAttributesObj,

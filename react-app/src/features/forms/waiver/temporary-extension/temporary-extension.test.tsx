@@ -52,8 +52,8 @@ describe("Temporary Extension", () => {
     const approvedInitialAndRenewalLabel = screen.getByText(
       "Approved Initial or Renewal Waiver Number",
     );
-    // grab second 12345 (first one is in the breadcrumbs)
-    const approvedInitialAndRenewalValue = screen.getAllByText(/12345/)[1];
+    // grab second TEST_ITEM_ID (first one is in the breadcrumbs)
+    const approvedInitialAndRenewalValue = screen.getAllByText(TEST_ITEM_ID)[1];
 
     // ensure Approved Initial and Renewal label and value exist and are in correct order
     expect(
