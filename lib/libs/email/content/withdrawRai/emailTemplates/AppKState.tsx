@@ -1,9 +1,15 @@
 import { CommonEmailVariables } from "shared-types";
 import { RaiWithdraw } from "shared-types";
-import { Attachments, PackageDetails, BasicFooter, SpamWarning } from "../../email-components";
+import {
+  PackageDetails,
+  BasicFooter,
+  MailboxNotice,
+  Divider,
+  ContactStateLead,
+} from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const AppKCMSEmail = (props: {
+export const AppKStateEmail = (props: {
   variables: RaiWithdraw & CommonEmailVariables;
   relatedEvent: any;
 }) => {
@@ -24,8 +30,9 @@ export const AppKCMSEmail = (props: {
           Summary: variables.additionalInformation,
         }}
       />
-      <Attachments attachments={variables.attachments} />
-      <SpamWarning />
+      <Divider />
+      <MailboxNotice type="Waiver" />
+      <ContactStateLead />
     </BaseEmailTemplate>
   );
 };

@@ -1,5 +1,6 @@
 import { WaiverCMSEmail } from "lib/libs/email/content/respondToRai/emailTemplates";
 import { emailTemplateValue } from "lib/libs/email/mock-data/respond-to-rai";
+import * as attachments from "../../../mock-data/attachments";
 
 export default () => {
   return (
@@ -11,6 +12,9 @@ export default () => {
         actionType: "Amend",
         territory: "CO",
         title: "A Perfect Appendix K Amendment Title",
+        attachments: {
+          other: attachments.other,
+        },
       }}
     />
   );

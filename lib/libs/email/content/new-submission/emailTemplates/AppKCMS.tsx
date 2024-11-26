@@ -3,6 +3,7 @@ import {
   LoginInstructions,
   PackageDetails,
   Attachments,
+  BasicFooter,
   SpamWarning,
   Divider,
 } from "../../email-components";
@@ -18,7 +19,7 @@ export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
       previewText="Appendix K Amendment Submitted"
       heading="The OneMAC Submission Portal received a 1915(c) Appendix K Amendment Submission:"
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<SpamWarning />}
+      footerContent={<BasicFooter />}
     >
       <Divider />
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} useThisLink />
@@ -35,6 +36,7 @@ export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
         }}
       />
       <Attachments attachments={variables.attachments} />
+      <SpamWarning />
     </BaseEmailTemplate>
   );
 };

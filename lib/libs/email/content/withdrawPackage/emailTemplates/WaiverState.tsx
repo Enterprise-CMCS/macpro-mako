@@ -1,16 +1,15 @@
 import { CommonEmailVariables, Events } from "shared-types";
-import { Attachments, PackageDetails, BasicFooter } from "../../email-components";
+import { ContactStateLead, BasicFooter, PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const Waiver1915bCMSEmail = (props: {
+export const WaiverStateEmail = (props: {
   variables:
     | (Events["CapitatedInitial"] & CommonEmailVariables)
     | (Events["ContractingInitial"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
   const previewText = `Withdrawal of ${variables.authority} ${variables.id}`;
-  const heading =
-    "The OneMAC Submission Portal received a request to withdraw the package below. The package will no longer be considered for CMS review:";
+  const heading = `This is confirmation that you have requested to withdraw the package below. The package will no longer be considered for CMS review:`;
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -22,12 +21,12 @@ export const Waiver1915bCMSEmail = (props: {
         details={{
           "State or territory": variables.territory,
           Name: variables.submitterName,
-          Email: variables.submitterEmail,
-          [`${variables.authority} Package ID`]: variables.id,
+          "Email Address": variables.submitterEmail,
+          "Waiver Number": variables.id,
           Summary: variables.additionalInformation,
         }}
       />
-      <Attachments attachments={variables.attachments as any} />
+      <ContactStateLead />
     </BaseEmailTemplate>
   );
 };
