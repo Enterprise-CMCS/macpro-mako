@@ -81,14 +81,14 @@ const processAndIndex = async ({
           deleted: z.boolean(),
         });
 
-        deletedPackageSchema.transform((schema) => ({
+        const transformedData = deletedPackageSchema.transform((schema) => ({
           ...schema,
           event: "soft-delete",
           packageId: schema.id,
           id: `${schema.id}-${offset}`,
         }));
 
-        const result = deletedPackageSchema.safeParse(record);
+        const result = transformedData.safeParse(record);
 
         if (result.success) {
           docs.push(result.data);
