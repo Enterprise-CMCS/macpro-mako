@@ -1,5 +1,5 @@
-import { CognitoUserAttributes } from "./user";
 import { IPackageCheck } from "shared-utils";
+import { CognitoUserAttributes } from "./user";
 
 export enum Action {
   RESPOND_TO_RAI = "respond-to-rai",
@@ -9,7 +9,7 @@ export enum Action {
   WITHDRAW_PACKAGE = "withdraw-package",
   REMOVE_APPK_CHILD = "remove-appk-child",
   TEMP_EXTENSION = "temporary-extension",
-  AMEND_WAIVER = "amend_waiver",
+  AMEND_WAIVER = "amend-waiver",
   UPDATE_ID = "update-id",
   LEGACY_ADMIN_CHANGE = "legacy-admin-change",
   LEGACY_WITHDRAW_RAI_REQUEST = "legacy-withdraw-rai-request",
