@@ -106,3 +106,16 @@ describe("Capitated Amendment", () => {
   //   expect(screen.getByTestId("submit-action-form")).toBeEnabled();
   // });
 });
+
+describe("AMENDMENT CAPITATED WAIVER WITH EXISTING WAIVERID", () => {
+  beforeAll(() => {
+    skipCleanup();
+    mockApiRefinements();
+  });
+  test("waiver id is rendered on page", async () => {
+    renderForm(<AmendmentForm waiverId="AK-0000.R00.11" />);
+
+    const existingWaiverId = screen.getByTestId("existing-waiver-id");
+    expect(existingWaiverId).toHaveTextContent("AK-0000.R00.11");
+  });
+});

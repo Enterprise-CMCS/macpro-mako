@@ -46,6 +46,7 @@ export const renderFormWithPackageSection = async (
         <MemoryRouter initialEntries={[`/test/${id}/${authority}`]}>
           <Routes>
             <Route path="/test/:id/:authority" element={children} />
+            <Route path="/dashboard" element={<h1>dashboard test</h1>} />
           </Routes>
         </MemoryRouter>
       </QueryClientProvider>

@@ -40,14 +40,25 @@ describe("Temporary Extension", () => {
       ),
     );
 
-    const waiverNumberLabel = await vi.waitUntil(() => screen.getByText("Medicaid SPA"), {
-      timeout: 500, // default is 1000
-      interval: 20, // default is 50
-    });
-    const existentIdLabel = screen.getByText(/Temporary Extension Type/);
+    const temporaryExtensionValue = await vi.waitUntil(() => screen.getByText("Medicaid SPA"));
+    // "Medicaid SPA" comes from `useGetItem` in testing/setup.ts
+    const temporaryExtensionLabel = screen.getByText(/Temporary Extension Type/);
 
-    expect(waiverNumberLabel).toBeInTheDocument();
-    expect(existentIdLabel).toBeInTheDocument();
+    // ensure Temporary Extension label and value exist and are in correct order
+    expect(temporaryExtensionLabel.compareDocumentPosition(temporaryExtensionValue)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+
+    const approvedInitialAndRenewalLabel = screen.getByText(
+      "Approved Initial or Renewal Waiver Number",
+    );
+    // grab second 12345 (first one is in the breadcrumbs)
+    const approvedInitialAndRenewalValue = screen.getAllByText(/12345/)[1];
+
+    // ensure Approved Initial and Renewal label and value exist and are in correct order
+    expect(
+      approvedInitialAndRenewalLabel.compareDocumentPosition(approvedInitialAndRenewalValue),
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
 
   test("TEMPORARY EXTENSION TYPE", async () => {

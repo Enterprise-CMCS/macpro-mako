@@ -18,6 +18,7 @@ import {
   seatool,
   changedDate,
   temporaryExtension,
+  appK,
   uploadSubsequentDocuments,
 } from "./transforms";
 
@@ -35,6 +36,7 @@ export type Document = z.infer<capitatedAmendment.Schema> &
   z.infer<withdrawRai.Schema> &
   z.infer<withdrawPackage.Schema> &
   z.infer<toggleWithdrawRai.Schema> &
+  z.infer<appK.Schema> &
   z.infer<seatool.Schema> &
   z.infer<changedDate.Schema> &
   z.infer<uploadSubsequentDocuments.Schema> & {
@@ -69,5 +71,6 @@ export const transforms = {
   "withdraw-rai": withdrawRai,
   "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
+  "app-k": appK,
   "upload-subsequent-documents": uploadSubsequentDocuments,
 };
