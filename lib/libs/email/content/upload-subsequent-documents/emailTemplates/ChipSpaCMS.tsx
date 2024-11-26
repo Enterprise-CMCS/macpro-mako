@@ -32,7 +32,10 @@ export const ChipSpaCMSEmail = (props: {
         How to Access:
       </Text>
       <Text style={{ ...styles.text.base, marginTop: "16px", marginLeft: "16px" }}>
-        {`• These documents can be found in OneMAC through this link ${process.env.STAGE_NAME}.`}
+        • These documents can be found in OneMAC through this link{" "}
+        <a href={variables.applicationEndpointUrl} target="_blank">
+          {variables.applicationEndpointUrl}
+        </a>
       </Text>
       <Text style={{ ...styles.text.base, marginTop: "16px", marginLeft: "16px" }}>
         • If you are not already logged in, click “Login” at the top of the page and log in using
