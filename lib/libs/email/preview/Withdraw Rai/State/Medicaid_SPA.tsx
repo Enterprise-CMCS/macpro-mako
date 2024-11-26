@@ -1,4 +1,4 @@
-import { MedSpaStateEmail } from "lib/libs/email/content/widthdrawRai/emailTemplates";
+import { MedSpaStateEmail } from "lib/libs/email/content/withdrawRai/emailTemplates";
 import { emailTemplateValue } from "lib/libs/email/mock-data/withdraw-rai";
 import { relatedEvent } from "../CMS/AppK";
 
