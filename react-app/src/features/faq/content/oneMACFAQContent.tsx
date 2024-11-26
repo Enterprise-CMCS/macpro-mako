@@ -509,7 +509,7 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       // Daniel to add sections before here:
       {
-        anchorText: "abp-spa",
+        anchorText: "abp-spa-templates",
         question: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
         answerJSX: (
           <p>
@@ -531,7 +531,7 @@ export const oneMACFAQContent: FAQContent[] = [
         ),
       },
       {
-        anchorText: "public-health-emergency",
+        anchorText: "mpc-spa-templates",
         question: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?",
         answerJSX: (
           <p>
