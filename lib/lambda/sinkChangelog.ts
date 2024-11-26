@@ -74,12 +74,15 @@ const processAndIndex = async ({
 
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
+      console.log(record, "RECORDDDD");
 
       if (record.isAdminChange) {
+        console.log("IN HERE");
         const deletedPackageSchema = z.object({
           id: z.string(),
           deleted: z.boolean(),
         });
+        console.log(deletedPackageSchema, "DELETED PACKAGE SCHEMa");
 
         const transformedData = deletedPackageSchema.transform((schema) => ({
           ...schema,
@@ -87,10 +90,12 @@ const processAndIndex = async ({
           packageId: schema.id,
           id: `${schema.id}-${offset}`,
         }));
+        console.log(transformedData, "TRANSFORMED DATA");
 
         const result = transformedData.safeParse(record);
-
+        console.log(result, "RESULTTT");
         if (result.success) {
+          console.log(result.data, "RESULT DATA");
           docs.push(result.data);
         } else {
           console.log("Skipping package with invalid format", result.error.message);
