@@ -1,10 +1,9 @@
-import { CommonEmailVariables } from "shared-types";
-import { RaiWithdraw } from "shared-types";
+import { CommonEmailVariables, Events } from "shared-types";
 import { Attachments, PackageDetails, BasicFooter, SpamWarning } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const AppKCMSEmail = (props: {
-  variables: RaiWithdraw & CommonEmailVariables;
+  variables: Events["RespondToRai"] & CommonEmailVariables;
   relatedEvent: any;
 }) => {
   const { variables, relatedEvent } = { ...props };

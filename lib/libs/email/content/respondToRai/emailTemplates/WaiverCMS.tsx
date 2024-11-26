@@ -5,10 +5,8 @@ import {
   Attachments,
   BasicFooter,
   SpamWarning,
-  Divider,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
-import { formatDate } from "shared-utils";
 
 export const WaiverCMSEmail = (props: {
   variables: Events["RespondToRai"] & CommonEmailVariables;
