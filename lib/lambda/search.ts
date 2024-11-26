@@ -39,6 +39,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
 
     query.from = query.from || 0;
     query.size = query.size || 100;
+    console.log(query, "QUERRYYYYYY");
 
     const results = await os.search(
       process.env.osDomain as string,
