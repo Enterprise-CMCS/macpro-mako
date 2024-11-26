@@ -3,6 +3,6 @@ import { handler } from "./sinkMain";
 
 describe("handler", () => {
   it("handles a kafka event successfully", () => {
-    handler({}, expect.any, vi.fn());
+    handler({ placeholder: true }, expect.any, vi.fn());
   });
 });
