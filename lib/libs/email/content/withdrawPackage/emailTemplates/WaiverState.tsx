@@ -1,5 +1,11 @@
 import { CommonEmailVariables, Events } from "shared-types";
-import { ContactStateLead, BasicFooter, PackageDetails } from "../../email-components";
+import {
+  ContactStateLead,
+  BasicFooter,
+  PackageDetails,
+  MailboxNotice,
+  Divider,
+} from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const WaiverStateEmail = (props: {
@@ -26,6 +32,8 @@ export const WaiverStateEmail = (props: {
           Summary: variables.additionalInformation,
         }}
       />
+      <Divider />
+      <MailboxNotice type="Waiver" />
       <ContactStateLead />
     </BaseEmailTemplate>
   );

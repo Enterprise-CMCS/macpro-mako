@@ -1,4 +1,4 @@
-import { AppKCMSEmail } from "lib/libs/email/content/widthdrawRai/emailTemplates";
+import { AppKCMSEmail } from "lib/libs/email/content/withdrawRai/emailTemplates";
 import { emailTemplateValue } from "lib/libs/email/mock-data/withdraw-rai";
 
 export const relatedEvent = {
