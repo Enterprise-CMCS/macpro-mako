@@ -86,6 +86,7 @@ describe("Update package", () => {
         {
           key: "test-id",
           value: JSON.stringify({
+            id: "test-id",
             deleted: true,
             isAdminChange: true,
             origin: "mako",
@@ -119,6 +120,7 @@ describe("Update package", () => {
           value: JSON.stringify({
             state: "MD",
             initialIntakeNeeded: true,
+            id: "test-id",
             isAdminChange: true,
             origin: "mako",
           }),

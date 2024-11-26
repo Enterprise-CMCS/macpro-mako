@@ -8,6 +8,7 @@ import {
   logError,
 } from "../libs/sink-lib";
 import { Index } from "shared-types/opensearch";
+import { z } from "zod";
 const osDomain = process.env.osDomain;
 if (!osDomain) {
   throw new Error("Missing required environment variable(s)");
@@ -61,8 +62,7 @@ const processAndIndex = async ({
   transforms: any;
   topicPartition: string;
 }) => {
-  const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> =
-    [];
+  const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
     const { value, offset } = kafkaRecord;
@@ -85,9 +85,30 @@ const processAndIndex = async ({
       console.log("event below");
       console.log(record.event);
 
+      if (record.isAdminChange) {
+        const deletedPackageSchema = z.object({
+          id: z.string(),
+          deleted: z.boolean(),
+        });
+
+        deletedPackageSchema.transform((schema) => ({
+          ...schema,
+          event: "soft-delete",
+          packageId: schema.id,
+          id: `${schema.id}-${offset}`,
+        }));
+
+        const result = deletedPackageSchema.safeParse(record);
+
+        if (result.success) {
+          docs.push(result.data);
+        } else {
+          console.log("Skipping package with invalid format", result.error.message);
+        }
+      }
+
       if (record.event in transforms) {
-        const transformForEvent =
-          transforms[record.event as keyof typeof transforms];
+        const transformForEvent = transforms[record.event as keyof typeof transforms];
 
         const result = transformForEvent.transform(offset).safeParse(record);
 
