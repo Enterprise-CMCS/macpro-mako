@@ -47,30 +47,20 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     if (action === "delete") {
-      // const expectedResult = z.object({
-      //   id: z.string(),
-      //   event: z.literal("delete"),
-      // });
-      // check authority
-      console.log(topicName, "TOPIC NAME");
-      console.log(packageId, "PACKAGE ID");
-
       await produceMessage(
         topicName,
         packageId,
-        // package being deleted?
         JSON.stringify({
           id: packageId,
           deleted: true,
           isAdminChange: true,
+          adminChangeType: "delete",
           origin: "mako",
         }),
       );
-      // add a field to the transformed schema to specify that the package is hidden
     }
 
     if (action === "update-id") {
-      // check authority
       await produceMessage(
         topicName,
         packageId,
@@ -83,9 +73,7 @@ export const handler = async (event: APIGatewayEvent) => {
       // delete/hide old record and create new one with new id but same values
     }
 
-    // TODO: update casing for action?
     if (action === "update-values") {
-      // check authority
       const areValidFields = Object.keys(updatedFields).every((fieldKey) => {
         return fieldKey in packageResult._source;
       });
@@ -94,7 +82,7 @@ export const handler = async (event: APIGatewayEvent) => {
         return response({
           statusCode: 500,
           body: {
-            message: `A field not in the current opensearch document was trying to be modified`,
+            message: `Cannot update invalid field(s)`,
           },
         });
       }
@@ -109,7 +97,13 @@ export const handler = async (event: APIGatewayEvent) => {
       await produceMessage(
         topicName,
         packageId,
-        JSON.stringify({ ...updatedFields, id: packageId, isAdminChange: true, origin: "mako" }),
+        JSON.stringify({
+          id: packageId,
+          ...updatedFields,
+          isAdminChange: true,
+          adminChangeType: "update-values",
+          origin: "mako",
+        }),
       );
     }
     return response({

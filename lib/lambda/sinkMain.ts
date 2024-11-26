@@ -86,17 +86,23 @@ const processAndIndex = async ({
       // If we're not a mako event, continue
       // TODO:  handle legacy.  for now, just continue
       if (record.isAdminChange) {
-        const deletedPackageSchema = z.object({
-          id: z.string(),
-          deleted: z.boolean(),
-        });
+        if (record.adminChangeType === "delete") {
+          const deletedPackageSchema = z.object({
+            id: z.string(),
+            deleted: z.boolean(),
+          });
 
-        const result = deletedPackageSchema.safeParse(record);
+          const result = deletedPackageSchema.safeParse(record);
 
-        if (result.success) {
-          docs.push(record);
-        } else {
-          console.log("Skipping package with invalid format", result.error.message);
+          if (result.success) {
+            docs.push(record);
+          } else {
+            console.log("Skipping package with invalid format", result.error.message);
+          }
+
+          if (record.adminChangeType === "update-values") {
+            docs.push(record);
+          }
         }
       }
       if (!record.event || record?.origin !== "mako") {

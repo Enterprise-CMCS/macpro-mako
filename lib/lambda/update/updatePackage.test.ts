@@ -89,6 +89,7 @@ describe("Update package", () => {
             id: "test-id",
             deleted: true,
             isAdminChange: true,
+            adminChangeType: "delete",
             origin: "mako",
           }),
           partition: 0,
@@ -118,10 +119,11 @@ describe("Update package", () => {
         {
           key: "test-id",
           value: JSON.stringify({
+            id: "test-id",
             state: "MD",
             initialIntakeNeeded: true,
-            id: "test-id",
             isAdminChange: true,
+            adminChangeType: "update-values",
             origin: "mako",
           }),
           partition: 0,
