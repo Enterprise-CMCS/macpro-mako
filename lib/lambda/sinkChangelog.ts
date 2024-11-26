@@ -75,16 +75,6 @@ const processAndIndex = async ({
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
 
-      // If we're not a mako event, continue
-      // TODO:  handle legacy.  for now, just continue
-      if (!record.event || record?.origin !== "mako") {
-        continue;
-      }
-
-      // If the event is a supported event, transform and push to docs array for indexing
-      console.log("event below");
-      console.log(record.event);
-
       if (record.isAdminChange) {
         const deletedPackageSchema = z.object({
           id: z.string(),
@@ -106,6 +96,16 @@ const processAndIndex = async ({
           console.log("Skipping package with invalid format", result.error.message);
         }
       }
+
+      // If we're not a mako event, continue
+      // TODO:  handle legacy.  for now, just continue
+      if (!record.event || record?.origin !== "mako") {
+        continue;
+      }
+
+      // If the event is a supported event, transform and push to docs array for indexing
+      console.log("event below");
+      console.log(record.event);
 
       if (record.event in transforms) {
         const transformForEvent = transforms[record.event as keyof typeof transforms];
