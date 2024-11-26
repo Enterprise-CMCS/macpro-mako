@@ -31,7 +31,7 @@ export const useGetItem = (
 ) => {
   return useQuery<opensearch.main.ItemResult, ReactQueryApiError>(
     ["record", id],
-    async () => await getItem(id),
+    () => getItem(id),
     options,
   );
 };

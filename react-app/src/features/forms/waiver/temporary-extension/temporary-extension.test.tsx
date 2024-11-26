@@ -1,5 +1,5 @@
 import { beforeAll, afterEach, describe, expect, test, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { formSchemas } from "@/formSchemas";
@@ -27,17 +27,12 @@ describe("Temporary Extension", () => {
   });
 
   test("EXISTING WAIVER ID", async () => {
-    const spyAuth = vi.spyOn(api, "useGetUser");
     const spy = vi.spyOn(api, "useGetItem");
 
     // set the Item Id to TEST_ITEM_ID
-    renderFormWithPackageSection(<TemporaryExtensionForm />, TEST_ITEM_ID, "Medicaid SPA");
-    await vi.waitUntil(async () =>
-      // expect(spyAuth).toHaveLastReturnedWith(expect.objectContaining({ status: "success" })),
-      expect(spyAuth).toHaveReturnedTimes(2),
-    );
+    await renderFormWithPackageSection(<TemporaryExtensionForm />, TEST_ITEM_ID, "Medicaid SPA");
 
-    await vi.waitFor(async () =>
+    await waitFor(() =>
       expect(spy).toHaveLastReturnedWith(
         expect.objectContaining({
           status: "success",
@@ -45,14 +40,17 @@ describe("Temporary Extension", () => {
       ),
     );
 
-    const waiverNumberLabel = screen.getByText("Medicaid SPA");
+    const waiverNumberLabel = await vi.waitUntil(() => screen.getByText("Medicaid SPA"), {
+      timeout: 500, // default is 1000
+      interval: 20, // default is 50
+    });
     const existentIdLabel = screen.getByText(/Temporary Extension Type/);
 
     expect(waiverNumberLabel).toBeInTheDocument();
     expect(existentIdLabel).toBeInTheDocument();
   });
 
-  test.skip("TEMPORARY EXTENSION TYPE", async () => {
+  test("TEMPORARY EXTENSION TYPE", async () => {
     // mock `useGetItem` to signal there's temp-ext submission to render
     // @ts-ignore - expects the _whole_ React-Query object (annoying to type out)
     // vi.spyOn(api, "useGetItem").mockImplementation(() => ({ data: undefined }));
@@ -74,7 +72,7 @@ describe("Temporary Extension", () => {
     expect(teTypeDropdown).toHaveTextContent("1915(b)");
   });
 
-  test.skip("APPROVED INITIAL OR RENEWAL WAIVER NUMBER", async () => {
+  test("APPROVED INITIAL OR RENEWAL WAIVER NUMBER", async () => {
     const waiverNumberInput = screen.getByLabelText(/Approved Initial or Renewal Waiver Number/);
     const waiverNumberLabel = screen.getByTestId("waiverNumber-label");
 
@@ -99,7 +97,7 @@ describe("Temporary Extension", () => {
     expect(waiverNumberLabel).not.toHaveClass("text-destructive");
   });
 
-  test.skip("TEMPORARY EXTENSION REQUEST NUMBER", async () => {
+  test("TEMPORARY EXTENSION REQUEST NUMBER", async () => {
     const requestNumberInput = screen.getByLabelText(/Temporary Extension Request Number/);
     const requestNumberLabel = screen.getByTestId("requestNumber-label");
 
@@ -116,12 +114,12 @@ describe("Temporary Extension", () => {
     expect(requestNumberLabel).not.toHaveClass("text-destructive");
   });
 
-  test.skip("WAIVER EXTENSION REQUEST", async () => {
+  test("WAIVER EXTENSION REQUEST", async () => {
     const cmsForm179PlanLabel = await upload("waiverExtensionRequest");
     expect(cmsForm179PlanLabel).not.toHaveClass("text-destructive");
   });
 
-  test.skip("submit button is enabled", async () => {
+  test("submit button is enabled", async () => {
     expect(screen.getByTestId("submit-action-form")).toBeEnabled();
   });
 });

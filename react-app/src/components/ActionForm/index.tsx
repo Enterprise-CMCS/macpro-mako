@@ -125,7 +125,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
-  const { data: userObj } = useGetUser();
+  const { data: userObj, isLoading } = useGetUser();
   console.log({ userObj });
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
@@ -185,7 +185,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     condition(userObj?.user),
   );
 
-  if (doesUserHaveAccessToForm === false) {
+  if (isLoading === false && doesUserHaveAccessToForm === false) {
     return <Navigate to="/" replace />;
   }
 
