@@ -5,6 +5,7 @@ import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "../libs/si
 import { Index } from "shared-types/opensearch";
 import { decodeBase64WithUtf8 } from "shared-utils";
 import * as os from "./../libs/opensearch-lib";
+import { z } from "zod";
 
 const osDomain = process.env.osDomain;
 const indexNamespace = process.env.indexNamespace;
@@ -89,8 +90,18 @@ const processAndIndex = async ({
       console.log(record, "RECORD?????");
       // TODO: revisit
       if (record.isAdminChange) {
-        console.log("are we in here");
-        docs.push(record);
+        const deletedPackageSchema = z.object({
+          id: z.string(),
+          deleted: z.boolean(),
+        });
+
+        const result = deletedPackageSchema.safeParse(record);
+
+        if (result.success) {
+          docs.push(record);
+        } else {
+          console.log("Skipping package with invalid format", result.error.message);
+        }
       }
       if (!record.event || record?.origin !== "mako") {
         continue;
