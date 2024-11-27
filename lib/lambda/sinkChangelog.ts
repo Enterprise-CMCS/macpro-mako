@@ -66,6 +66,10 @@ const processAndIndex = async ({
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
     const { value, offset } = kafkaRecord;
+
+    // enforce type?
+    let transformedData;
+
     try {
       // If a legacy tombstone, continue
       if (!value) {
@@ -74,45 +78,87 @@ const processAndIndex = async ({
 
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
-      // enforce type?
-      let transformedData;
 
-      if (record.isAdminChange) {
-        if (record.adminChangeType === "delete") {
-          const deletedPackageSchema = z.object({
+      const adminChangeSchemas = {
+        delete: z
+          .object({
             id: z.string(),
             deleted: z.boolean(),
-          });
-
-          transformedData = deletedPackageSchema.transform((schema) => ({
+          })
+          .transform((schema) => ({
             ...schema,
             event: "soft-delete",
             packageId: schema.id,
             id: `${schema.id}-${offset}`,
             timestamp: Date.now(),
-          }));
-
-          const result = transformedData.safeParse(record);
-
-          if (result.success) {
-            docs.push(result.data);
-          } else {
-            console.log("Skipping package with invalid format", result.error.message);
-          }
-        }
-
-        if (record.adminChangeType === "update-values") {
-          transformedData = {
-            ...record,
+          })),
+        "update-values": z
+          .object({
+            id: z.string(),
+          })
+          .transform((schema) => ({
+            ...schema,
             event: "update-values",
-            packageId: record.id,
-            id: `${record.id}-${offset}`,
+            packageId: schema.id,
+            id: `${schema.id}-${offset}`,
             timestamp: Date.now(),
-          };
+          })),
+      };
 
-          docs.push(transformedData);
+      if (record.isAdminChange && record.adminChangeType in adminChangeSchemas) {
+        const schema =
+          adminChangeSchemas[record.adminChangeType as keyof typeof adminChangeSchemas];
+
+        const result = schema.safeParse(record);
+
+        if (result.success) {
+          docs.push(result.data); // Use transformed data
+        } else {
+          console.log(
+            `Skipping package with invalid format for type "${record.adminChangeType}"`,
+            result.error.message,
+          );
         }
+      } else if (record.isAdminChange) {
+        console.log(`Unknown adminChangeType: ${record.adminChangeType}`);
       }
+
+      // if (record.isAdminChange) {
+      //   if (record.adminChangeType === "delete") {
+      //     const deletedPackageSchema = z.object({
+      //       id: z.string(),
+      //       deleted: z.boolean(),
+      //     });
+
+      //     transformedData = deletedPackageSchema.transform((schema) => ({
+      //       ...schema,
+      //       event: "soft-delete",
+      //       packageId: schema.id,
+      //       id: `${schema.id}-${offset}`,
+      //       timestamp: Date.now(),
+      //     }));
+
+      //     const result = transformedData.safeParse(record);
+
+      //     if (result.success) {
+      //       docs.push(result.data);
+      //     } else {
+      //       console.log("Skipping package with invalid format", result.error.message);
+      //     }
+      //   }
+
+      //   if (record.adminChangeType === "update-values") {
+      //     transformedData = {
+      //       ...record,
+      //       event: "update-values",
+      //       packageId: record.id,
+      //       id: `${record.id}-${offset}`,
+      //       timestamp: Date.now(),
+      //     };
+
+      //     docs.push(transformedData);
+      //   }
+      // }
 
       // If we're not a mako event, continue
       // TODO:  handle legacy.  for now, just continue
