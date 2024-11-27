@@ -21,7 +21,7 @@ export const handler = async (event: APIGatewayEvent) => {
   try {
     // allow user to input reason for change in event body and pass to sinkChangelog
     // allows for more flexibility
-    const { packageId, action, updatedFields, changeMade, changeReason } =
+    const { packageId, action, updatedFields, changeReason } =
       typeof event.body === "string"
         ? JSON.parse(event.body)
         : (event.body as {
@@ -77,6 +77,8 @@ export const handler = async (event: APIGatewayEvent) => {
         return fieldKey in packageResult._source;
       });
 
+      let changeMadeText: string;
+
       if (!areValidFields) {
         return response({
           statusCode: 500,
@@ -93,6 +95,12 @@ export const handler = async (event: APIGatewayEvent) => {
         });
       }
 
+      if (Object.keys(updatedFields).length > 1) {
+        changeMadeText = `${Object.keys(updatedFields)} have been updated.`;
+      } else {
+        changeMadeText = `${Object.keys(updatedFields)} has been updated.`;
+      }
+
       await produceMessage(
         topicName,
         packageId,
@@ -101,7 +109,7 @@ export const handler = async (event: APIGatewayEvent) => {
           ...updatedFields,
           isAdminChange: true,
           adminChangeType: "update-values",
-          changeMade: "Update value(s)",
+          changeMade: changeMadeText,
           changeReason,
         }),
       );
