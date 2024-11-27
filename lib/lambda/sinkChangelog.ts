@@ -139,7 +139,9 @@ const processAndIndex = async ({
 
         const result = transformForEvent
           .transform(offset)
-          .safeParse(record.isAdminChange?.type === "update-values" ? transformedData : record);
+          .safeParse(
+            record.isAdminChange?.adminChangeType === "update-values" ? transformedData : record,
+          );
 
         if (result.success && result.data === undefined) continue;
         if (!result.success) {
