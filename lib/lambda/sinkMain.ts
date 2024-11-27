@@ -82,26 +82,50 @@ const processAndIndex = async ({
 
       // If we're not a mako event, continue
       // TODO:  handle legacy.  for now, just continue
-      if (record.isAdminChange) {
-        if (record.adminChangeType === "delete") {
-          const deletedPackageSchema = z.object({
-            id: z.string(),
-            deleted: z.boolean(),
-          });
 
-          const result = deletedPackageSchema.safeParse(record);
+      // move to another file or place?
+      const adminChangeSchemas = {
+        delete: z.object({
+          id: z.string(),
+          deleted: z.boolean(),
+        }),
+        "update-values": z.object({}),
+        // TODO: handle update-id
+      };
+      if (record.isAdminChange && record.adminChangeType in adminChangeSchemas) {
+        const schema =
+          adminChangeSchemas[record.adminChangeType as keyof typeof adminChangeSchemas];
 
+        if (schema) {
+          const result = schema.safeParse(record);
           if (result.success) {
             docs.push(record);
           } else {
-            console.log("Skipping package with invalid format", result.error.message);
+            console.log(
+              `Skipping package with invalid format for type "${record.adminChangeType}"`,
+              result.error.message,
+            );
           }
+        } else {
+          console.log(`Unknown adminChangeType: ${record.adminChangeType}`);
         }
-        if (record.adminChangeType === "update-values") {
-          console.log("IN UPDATE VALUES");
-          console.log(record, "RECORD TO CHANGE");
-          docs.push(record);
-        }
+        // if (record.adminChangeType === "delete") {
+        //   const deletedPackageSchema = z.object({
+        //     id: z.string(),
+        //     deleted: z.boolean(),
+        //   });
+
+        //   const result = deletedPackageSchema.safeParse(record);
+
+        //   if (result.success) {
+        //     docs.push(record);
+        //   } else {
+        //     console.log("Skipping package with invalid format", result.error.message);
+        //   }
+        // }
+        // if (record.adminChangeType === "update-values") {
+        //   docs.push(record);
+        // }
       }
       if (!record.event || record?.origin !== "mako") {
         continue;

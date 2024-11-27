@@ -19,8 +19,7 @@ export const handler = async (event: APIGatewayEvent) => {
     });
   }
   try {
-    // allow user to input reason for change in event body and pass to sinkChangelog
-    // allows for more flexibility
+    // TODO: allow user to input title of the accordion
     const { packageId, action, updatedFields, changeReason } =
       typeof event.body === "string"
         ? JSON.parse(event.body)
