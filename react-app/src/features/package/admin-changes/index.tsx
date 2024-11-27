@@ -66,7 +66,7 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
         return [props.changeType || "Manual Update", AC_LegacyAdminChange];
 
       case "update-values":
-        return "Package description has been changed";
+        return ["Package detail(s) have been changed", AC_LegacyAdminChange];
       default:
         return [BLANK_VALUE, AC_Update];
     }

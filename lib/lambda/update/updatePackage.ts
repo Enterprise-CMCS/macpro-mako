@@ -21,7 +21,7 @@ export const handler = async (event: APIGatewayEvent) => {
   try {
     // allow user to input reason for change in event body and pass to sinkChangelog
     // allows for more flexibility
-    const { packageId, action, updatedFields } =
+    const { packageId, action, updatedFields, changeMade, changeReason } =
       typeof event.body === "string"
         ? JSON.parse(event.body)
         : (event.body as {
@@ -101,6 +101,8 @@ export const handler = async (event: APIGatewayEvent) => {
           ...updatedFields,
           isAdminChange: true,
           adminChangeType: "update-values",
+          changeMade: "Update value(s)",
+          changeReason,
         }),
       );
     }
