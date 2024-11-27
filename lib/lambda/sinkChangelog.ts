@@ -75,6 +75,8 @@ const processAndIndex = async ({
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
       console.log(record, "RECORDDDD");
+      // enforce type?
+      let transformedData;
 
       if (record.isAdminChange) {
         if (record.adminChangeType === "delete") {
@@ -85,7 +87,7 @@ const processAndIndex = async ({
           });
           console.log(deletedPackageSchema, "DELETED PACKAGE SCHEMa");
 
-          const transformedData = deletedPackageSchema.transform((schema) => ({
+          transformedData = deletedPackageSchema.transform((schema) => ({
             ...schema,
             event: "soft-delete",
             packageId: schema.id,
@@ -103,18 +105,17 @@ const processAndIndex = async ({
           }
         }
 
-        // if (record.adminChangeType === "update-values") {
-        //   const transformedData = {
-        //     ...record,
-        //     event: "update-values",
-        //     packageId: record.id,
-        //     id: `${record.id}-${offset}`,
-        //   };
+        if (record.adminChangeType === "update-values") {
+          transformedData = {
+            ...record,
+            packageId: record.id,
+            id: `${record.id}-${offset}`,
+          };
 
-        //   console.log("TRANSFORMEDDDDD UPDATE", transformedData);
-        //   // need to transform again first?
-        //   docs.push(transformedData);
-        // }
+          console.log("TRANSFORMEDDDDD UPDATE", transformedData);
+          // need to transform again first?
+          docs.push(transformedData);
+        }
       }
 
       // If we're not a mako event, continue
@@ -127,21 +128,12 @@ const processAndIndex = async ({
       console.log("event below");
       console.log(record.event);
 
-      if (record.event in transforms || record.isAdminChange?.adminChangeType === "update-values") {
+      if (record.event in transforms) {
         const transformForEvent = transforms[record.event as keyof typeof transforms];
-
-        const transformedData = {
-          ...record,
-          event: "update-values",
-          packageId: record.id,
-          id: `${record.id}-${offset}`,
-        };
 
         const result = transformForEvent
           .transform(offset)
-          .safeParse(
-            record.isAdminChange?.adminChangeType === "update-values" ? transformedData : record,
-          );
+          .safeParse(record.adminChangeType === "update-values" ? transformedData : record);
 
         if (result.success && result.data === undefined) continue;
         if (!result.success) {
