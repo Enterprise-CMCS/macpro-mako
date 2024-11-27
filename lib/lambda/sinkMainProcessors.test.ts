@@ -152,7 +152,7 @@ describe("processIndex", () => {
           timestamp: 1732645041557,
           timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
-          // encoded object missing the closing curly brace --> }
+          // encoded properties without curly braces --> key1: property, key2: property2
           value:
             "eyJldmVudCI6ICJuZXctbWVkaWNhaWQtc3VibWlzc2lvbiIsICJhdHRhY2htZW50cyI6IHt9LCAiYXV0aG9yaXR5IjogIk1lZGljYWlkIFNQQSIsICJwcm9wb3NlZEVmZmVjdGl2ZURhdGUiOiAxNzMyNTk3MjAwMDAwLCAiaWQiOiAiTUQtMjQtMjMwMCIsICJvcmlnaW4iOiAibWFrbyIsICJzdWJtaXR0ZXJOYW1lIjogIkdlb3JnZSBIYXJyaXNvbiIsICJzdWJtaXR0ZXJFbWFpbCI6ICJnZW9yZ2VAZXhhbXBsZS5jb20iLCAidGltZXN0YW1wIjogMTczMjY0NTA0MTUyNQ==",
           headers: {},
