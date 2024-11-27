@@ -119,9 +119,6 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
       case "upload-subsequent-documents":
         return "Subsequent documentation uploaded";
 
-      case "update-values":
-        return "Package description has been changed";
-
       default:
         return BLANK_VALUE;
     }

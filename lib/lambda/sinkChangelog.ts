@@ -92,6 +92,7 @@ const processAndIndex = async ({
             event: "soft-delete",
             packageId: schema.id,
             id: `${schema.id}-${offset}`,
+            timestamp: Date.now(),
           }));
           console.log(transformedData, "TRANSFORMED DATA");
 
@@ -110,6 +111,7 @@ const processAndIndex = async ({
             ...record,
             packageId: record.id,
             id: `${record.id}-${offset}`,
+            timestamp: Date.now(),
           };
 
           console.log("TRANSFORMEDDDDD UPDATE", transformedData);
