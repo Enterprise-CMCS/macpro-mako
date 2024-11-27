@@ -19,7 +19,8 @@ export const handler = async (event: APIGatewayEvent) => {
     });
   }
   try {
-    console.log(event.body, "EVENT BODY");
+    // allow user to input reason for change in event body and pass to sinkChangelog
+    // allows for more flexibility
     const { packageId, action, updatedFields } =
       typeof event.body === "string"
         ? JSON.parse(event.body)

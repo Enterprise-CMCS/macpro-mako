@@ -74,18 +74,15 @@ const processAndIndex = async ({
 
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
-      console.log(record, "RECORDDDD");
       // enforce type?
       let transformedData;
 
       if (record.isAdminChange) {
         if (record.adminChangeType === "delete") {
-          console.log("IN HERE");
           const deletedPackageSchema = z.object({
             id: z.string(),
             deleted: z.boolean(),
           });
-          console.log(deletedPackageSchema, "DELETED PACKAGE SCHEMa");
 
           transformedData = deletedPackageSchema.transform((schema) => ({
             ...schema,
@@ -94,12 +91,10 @@ const processAndIndex = async ({
             id: `${schema.id}-${offset}`,
             timestamp: Date.now(),
           }));
-          console.log(transformedData, "TRANSFORMED DATA");
 
           const result = transformedData.safeParse(record);
-          console.log(result, "RESULTTT");
+
           if (result.success) {
-            console.log(result.data, "RESULT DATA");
             docs.push(result.data);
           } else {
             console.log("Skipping package with invalid format", result.error.message);
@@ -109,13 +104,12 @@ const processAndIndex = async ({
         if (record.adminChangeType === "update-values") {
           transformedData = {
             ...record,
+            event: "update-values",
             packageId: record.id,
             id: `${record.id}-${offset}`,
             timestamp: Date.now(),
           };
 
-          console.log("TRANSFORMEDDDDD UPDATE", transformedData);
-          // need to transform again first?
           docs.push(transformedData);
         }
       }
@@ -127,9 +121,6 @@ const processAndIndex = async ({
       }
 
       // If the event is a supported event, transform and push to docs array for indexing
-      console.log("event below");
-      console.log(record.event);
-
       if (record.event in transforms) {
         const transformForEvent = transforms[record.event as keyof typeof transforms];
 
