@@ -123,6 +123,8 @@ describe("Update package", () => {
             initialIntakeNeeded: true,
             isAdminChange: true,
             adminChangeType: "update-values",
+            // TODO: access event.body.updatedFields keys?
+            changeMade: "state,initialIntakeNeeded have been updated.",
           }),
           partition: 0,
           headers: { source: "mako" },
