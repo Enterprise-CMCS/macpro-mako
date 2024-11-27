@@ -9,6 +9,7 @@ import { FAQ_TAB } from "@/router";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
+    console.log("loading user ", { queryClient });
     const queryString = window.location.search;
     // Parse the query string to get URL parameters
     const queryParams = new URLSearchParams(queryString);

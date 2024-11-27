@@ -1,12 +1,11 @@
 import { beforeAll, afterEach, describe, expect, test, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { formSchemas } from "@/formSchemas";
 import { TemporaryExtensionForm } from ".";
 import { renderForm, renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
-import * as api from "@/api";
 import {
   EXISTING_ITEM_PENDING_ID,
   EXISTING_ITEM_APPROVED_NEW_ID,
@@ -27,18 +26,9 @@ describe("Temporary Extension", () => {
   });
 
   test("EXISTING WAIVER ID", async () => {
-    const spy = vi.spyOn(api, "useGetItem");
-
     // set the Item Id to TEST_ITEM_ID
     await renderFormWithPackageSection(<TemporaryExtensionForm />, TEST_ITEM_ID, "Medicaid SPA");
-
-    await waitFor(() =>
-      expect(spy).toHaveLastReturnedWith(
-        expect.objectContaining({
-          status: "success",
-        }),
-      ),
-    );
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     const temporaryExtensionValue = await vi.waitUntil(() => screen.getByText("Medicaid SPA"));
     // "Medicaid SPA" comes from `useGetItem` in testing/setup.ts
@@ -67,6 +57,8 @@ describe("Temporary Extension", () => {
     // vi.spyOn(api, "useGetItem").mockImplementation(() => ({ data: undefined }));
     // render temp-ext form with no route params
     renderForm(<TemporaryExtensionForm />);
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
+
     // enable render cleanup here
     skipCleanup();
 

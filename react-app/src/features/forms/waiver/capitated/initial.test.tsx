@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import { beforeAll, describe, expect, test } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { renderForm } from "@/utils/test-helpers/renderForm";
@@ -13,13 +13,14 @@ const upload = uploadFiles<(typeof formSchemas)["capitated-initial"]>();
 let container: HTMLElement;
 
 describe("Capitated Initial", () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     skipCleanup();
     mockApiRefinements();
 
     const { container: renderedContainer } = renderForm(<InitialForm />);
-
     container = renderedContainer;
+
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
   });
 
   test("1915(B) WAIVER NUMBER", async () => {

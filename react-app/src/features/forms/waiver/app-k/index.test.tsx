@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, test, expect, beforeAll } from "vitest";
 import { skipCleanup, mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
@@ -9,11 +9,12 @@ import { AppKAmendmentForm } from ".";
 const upload = uploadFiles<(typeof formSchemas)["app-k"]>();
 
 describe("Appendix K", () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     skipCleanup();
     mockApiRefinements();
 
     renderForm(<AppKAmendmentForm />);
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
   });
 
   test("Amendment title", async () => {

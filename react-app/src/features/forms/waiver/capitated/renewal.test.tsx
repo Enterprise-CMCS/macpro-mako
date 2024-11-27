@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import { beforeAll, describe, expect, test } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { renderForm } from "@/utils/test-helpers/renderForm";
@@ -19,13 +19,14 @@ const upload = uploadFiles<(typeof formSchemas)["capitated-renewal"]>();
 let container: HTMLElement;
 
 describe("Capitated Renewal", () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     skipCleanup();
     mockApiRefinements();
 
     const { container: renderedContainer } = renderForm(<Renewal />);
-
     container = renderedContainer;
+
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
   });
 
   test("EXISTING RENEWAL NUMBER TO RENEW", async () => {

@@ -2,7 +2,7 @@ import { formSchemas } from "@/formSchemas";
 import { renderForm } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { screen } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeAll, describe, expect, test } from "vitest";
 import { AmendmentForm } from "./Amendment";
@@ -11,6 +11,7 @@ import {
   EXISTING_ITEM_APPROVED_NEW_ID,
   EXISTING_ITEM_APPROVED_AMEND_ID,
   NOT_FOUND_ITEM_ID,
+  CONTRACTING_AMEND_ITEM_ID,
 } from "mocks";
 
 const upload = uploadFiles<(typeof formSchemas)["contracting-amendment"]>();
@@ -20,12 +21,13 @@ const upload = uploadFiles<(typeof formSchemas)["contracting-amendment"]>();
 let container: HTMLElement;
 
 describe("AMENDMENT CONTRACTING WAIVER", () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     skipCleanup();
 
     const { container: renderedContainer } = renderForm(<AmendmentForm />);
-
     container = renderedContainer;
+
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
   });
 
   test("WAIVER ID EXISTING", async () => {
@@ -113,9 +115,10 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
 
 describe("Contracting Amendment with existing waiver Id", () => {
   test("existing waiver id is filled out", async () => {
-    renderForm(<AmendmentForm waiverId="AK-0000.R00.11" />);
+    renderForm(<AmendmentForm waiverId={CONTRACTING_AMEND_ITEM_ID} />);
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     const existingWaiverId = screen.getByTestId("existing-waiver-id");
-    expect(existingWaiverId).toHaveTextContent("AK-0000.R00.11");
+    expect(existingWaiverId).toHaveTextContent(CONTRACTING_AMEND_ITEM_ID);
   });
 });

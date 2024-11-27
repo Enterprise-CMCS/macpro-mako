@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import { beforeAll, describe, expect, test } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { renderForm } from "@/utils/test-helpers/renderForm";
@@ -11,6 +11,7 @@ import {
   EXISTING_ITEM_PENDING_ID,
   EXISTING_ITEM_APPROVED_AMEND_ID,
   EXISTING_ITEM_APPROVED_NEW_ID,
+  CAPITATED_AMEND_ITEM_ID,
 } from "mocks";
 
 const upload = uploadFiles<(typeof formSchemas)["capitated-amendment"]>();
@@ -18,13 +19,14 @@ const upload = uploadFiles<(typeof formSchemas)["capitated-amendment"]>();
 let container: HTMLElement;
 
 describe("Capitated Amendment", () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     skipCleanup();
     mockApiRefinements();
 
     const { container: renderedContainer } = renderForm(<AmendmentForm />);
-
     container = renderedContainer;
+
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
   });
 
   test("EXISTING WAIVER NUMBER TO AMEND", async () => {
@@ -113,9 +115,10 @@ describe("AMENDMENT CAPITATED WAIVER WITH EXISTING WAIVERID", () => {
     mockApiRefinements();
   });
   test("waiver id is rendered on page", async () => {
-    renderForm(<AmendmentForm waiverId="AK-0000.R00.11" />);
+    renderForm(<AmendmentForm waiverId={CAPITATED_AMEND_ITEM_ID} />);
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     const existingWaiverId = screen.getByTestId("existing-waiver-id");
-    expect(existingWaiverId).toHaveTextContent("AK-0000.R00.11");
+    expect(existingWaiverId).toHaveTextContent(CAPITATED_AMEND_ITEM_ID);
   });
 });

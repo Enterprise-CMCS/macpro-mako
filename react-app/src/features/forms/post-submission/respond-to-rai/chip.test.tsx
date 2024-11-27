@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import { describe, expect, beforeAll, test } from "vitest";
 import { RespondToRaiChip } from "@/features/forms/post-submission/respond-to-rai";
 import { renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
@@ -11,9 +11,10 @@ const upload = uploadFiles<(typeof formSchemas)["respond-to-rai-chip"]>();
 
 describe("Respond To RAI CHIP", () => {
   beforeAll(async () => {
+    skipCleanup();
     // set the Item Id to TEST_ITEM_ID
     renderFormWithPackageSection(<RespondToRaiChip />, EXISTING_ITEM_PENDING_ID, "Medicaid SPA");
-    skipCleanup();
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
   });
 
   test("REVISED AMENDED STATE PLAN LANGUAGE", async () => {

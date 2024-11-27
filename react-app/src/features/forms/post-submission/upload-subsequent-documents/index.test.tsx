@@ -1,37 +1,25 @@
-import { screen, waitFor } from "@testing-library/react";
-import { describe, test, expect, beforeAll, vi } from "vitest";
+import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
+import { describe, test, expect, beforeAll } from "vitest";
 import { formSchemas } from "@/formSchemas";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { UploadSubsequentDocuments } from ".";
 import userEvent from "@testing-library/user-event";
 import { renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
-import { EXISTING_ITEM_APPROVED_NEW_ID } from "mocks";
-import * as api from "@/api";
+import { TEST_ITEM_ID } from "mocks";
 
 const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
-const spy = vi.spyOn(api, "useGetItem");
 
 describe("Upload Subsequent Documents (for Medicaid SPA)", () => {
   beforeAll(async () => {
     skipCleanup();
     mockApiRefinements();
 
-    renderFormWithPackageSection(
-      <UploadSubsequentDocuments />,
-      EXISTING_ITEM_APPROVED_NEW_ID,
-      "Medicaid SPA",
-    );
+    renderFormWithPackageSection(<UploadSubsequentDocuments />, TEST_ITEM_ID, "Medicaid SPA");
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
   });
 
   test("CMS FORM 179", async () => {
-    await waitFor(() =>
-      expect(spy).toHaveLastReturnedWith(
-        expect.objectContaining({
-          status: "success",
-        }),
-      ),
-    );
     const currentStatePlanLabel = await upload("cmsForm179");
     expect(currentStatePlanLabel).not.toHaveClass("text-destructive");
   });

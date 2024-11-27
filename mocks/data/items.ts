@@ -11,6 +11,11 @@ export const NOT_FOUND_ITEM_ID = "MD-0004.R00.00";
 export const TEST_ITEM_ID = "MD-0005.R01.00";
 export const EXISTING_ITEM_TEMPORARY_EXTENSION_ID = "MD-0005.R01.TE00";
 export const HI_TEST_ITEM_ID = "HI-0000.R00.00";
+export const CAPITATED_INITIAL_ITEM_ID = "MD-006.R00.00";
+export const CAPITATED_AMEND_ITEM_ID = "MD-006.R00.01";
+export const CONTRACTING_INITIAL_ITEM_ID = "MD-007.R00.00";
+export const CONTRACTING_AMEND_ITEM_ID = "MD-007.R00.01";
+export const MISSING_CHANGELOG_ITEM_ID = "MD-008.R00.00";
 export const ERROR_ITEM_ID = "Throw Error";
 
 export type ItemTestFields = {
@@ -20,7 +25,7 @@ export type ItemTestFields = {
     | (Pick<opensearch.main.Document, "id" | "seatoolStatus" | "actionType"> & {
         authority?: string;
         state?: string;
-        changelog?: [{ _source: { event: string } }];
+        changelog?: [{ _source: { event: string } }] | [];
         appkChildren?: Omit<opensearch.main.ItemResult, "found">[];
       })
     | boolean;
@@ -110,6 +115,39 @@ const items: Record<string, ItemTestFields> = {
       actionType: "New",
       authority: "Medicaid SPA",
       state: "HI",
+    },
+  },
+  [CAPITATED_INITIAL_ITEM_ID]: {
+    _id: CAPITATED_INITIAL_ITEM_ID,
+    found: true,
+    _source: {
+      id: CAPITATED_INITIAL_ITEM_ID,
+      seatoolStatus: SEATOOL_STATUS.APPROVED,
+      actionType: "Amend",
+      authority: "1915(b)",
+      changelog: [{ _source: { event: "capitated-initial" } }],
+    },
+  },
+  [CONTRACTING_INITIAL_ITEM_ID]: {
+    _id: CONTRACTING_INITIAL_ITEM_ID,
+    found: true,
+    _source: {
+      id: CONTRACTING_INITIAL_ITEM_ID,
+      seatoolStatus: SEATOOL_STATUS.APPROVED,
+      actionType: "Amend",
+      authority: "1915(b)",
+      changelog: [{ _source: { event: "contracting-initial" } }],
+    },
+  },
+  [MISSING_CHANGELOG_ITEM_ID]: {
+    _id: MISSING_CHANGELOG_ITEM_ID,
+    found: true,
+    _source: {
+      id: MISSING_CHANGELOG_ITEM_ID,
+      seatoolStatus: SEATOOL_STATUS.APPROVED,
+      actionType: "Amend",
+      authority: "1915(b)",
+      changelog: [],
     },
   },
 };

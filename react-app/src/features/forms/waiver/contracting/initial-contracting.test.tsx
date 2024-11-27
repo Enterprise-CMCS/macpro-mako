@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, test, expect, beforeAll } from "vitest";
 import { InitialForm } from "./Initial";
@@ -15,13 +15,14 @@ const upload = uploadFiles<(typeof formSchemas)["contracting-initial"]>();
 let container: HTMLElement;
 
 describe("INITIAL CONTRACTING WAIVER", () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     skipCleanup();
     mockApiRefinements();
 
     const { container: renderedContainer } = renderForm(<InitialForm />);
-
     container = renderedContainer;
+
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
   });
 
   test("WAIVER ID", async () => {

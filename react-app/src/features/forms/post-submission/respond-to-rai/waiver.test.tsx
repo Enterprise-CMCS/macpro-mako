@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import { describe, expect, beforeAll, test } from "vitest";
 import { RespondToRaiWaiver } from "@/features/forms/post-submission/respond-to-rai";
 import { renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
@@ -10,9 +10,10 @@ import { EXISTING_ITEM_PENDING_ID } from "mocks";
 const upload = uploadFiles<(typeof formSchemas)["respond-to-rai-waiver"]>();
 
 describe("Respond To RAI Waiver", () => {
-  beforeAll(() => {
-    renderFormWithPackageSection(<RespondToRaiWaiver />, EXISTING_ITEM_PENDING_ID, "Medicaid SPA");
+  beforeAll(async () => {
     skipCleanup();
+    renderFormWithPackageSection(<RespondToRaiWaiver />, EXISTING_ITEM_PENDING_ID, "Medicaid SPA");
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
   });
 
   test("RAI RESPONSE LETTER WAIVER", async () => {

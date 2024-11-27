@@ -1,37 +1,21 @@
-import { screen } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import { Amendment } from "../amend";
-import { describe, expect, test, vi, Mock, beforeAll } from "vitest";
-import { useGetItem } from "@/api";
+import { describe, expect, test, beforeAll } from "vitest";
 import { renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
+import {
+  CAPITATED_INITIAL_ITEM_ID,
+  CONTRACTING_INITIAL_ITEM_ID,
+  MISSING_CHANGELOG_ITEM_ID,
+} from "mocks";
 
-vi.mock("@/api", async (importOriginal) => {
-  const actual = await importOriginal();
-  return {
-    ...(actual as object),
-    useGetUser: vi.fn().mockImplementation(() => {
-      return { data: { user: { ["custom:cms-roles"]: "onemac-micro-statesubmitter" } } };
-    }),
-    useGetItem: vi.fn(),
-  };
-});
-
-describe.skip("Post-submission Amendment", () => {
+describe("Post-submission Amendment", () => {
   beforeAll(() => {
     mockApiRefinements();
   });
   test("renders Capitated Amendment when changelog contains capitated-initial event", async () => {
-    (useGetItem as Mock).mockImplementation(() => {
-      return {
-        data: {
-          _source: {
-            changelog: [{ _source: { event: "capitated-initial" } }],
-          },
-        },
-      };
-    });
-
-    renderFormWithPackageSection(<Amendment />);
+    renderFormWithPackageSection(<Amendment />, CAPITATED_INITIAL_ITEM_ID, "Medicaid SPA");
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(
       screen.getByRole("heading", {
@@ -41,17 +25,8 @@ describe.skip("Post-submission Amendment", () => {
   });
 
   test("renders Contracting Amendment when changelog contains contracting-initial event", async () => {
-    (useGetItem as Mock).mockImplementation(() => {
-      return {
-        data: {
-          _source: {
-            changelog: [{ _source: { event: "contracting-initial" } }],
-          },
-        },
-      };
-    });
-
-    renderFormWithPackageSection(<Amendment />);
+    renderFormWithPackageSection(<Amendment />, CONTRACTING_INITIAL_ITEM_ID, "Medicaid SPA");
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(
       screen.getByRole("heading", {
@@ -61,17 +36,8 @@ describe.skip("Post-submission Amendment", () => {
   });
 
   test("redirects to /dashboard when changelog doesn't contain a relevant event", async () => {
-    (useGetItem as Mock).mockImplementation(() => {
-      return {
-        data: {
-          _source: {
-            changelog: [],
-          },
-        },
-      };
-    });
-
-    renderFormWithPackageSection(<Amendment />);
+    renderFormWithPackageSection(<Amendment />, MISSING_CHANGELOG_ITEM_ID, "Medicaid SPA");
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(
       screen.getByRole("heading", {

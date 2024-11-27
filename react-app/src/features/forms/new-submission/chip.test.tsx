@@ -1,5 +1,5 @@
 import userEvent from "@testing-library/user-event";
-import { screen } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import { describe, test, expect, beforeAll } from "vitest";
 import { ChipForm } from "./Chip";
 import { formSchemas } from "@/formSchemas";
@@ -13,12 +13,14 @@ const upload = uploadFiles<(typeof formSchemas)["new-chip-submission"]>();
 let container: HTMLElement;
 
 describe("CHIP SPA", () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     skipCleanup();
 
     const { container: renderedContainer } = renderForm(<ChipForm />);
 
     container = renderedContainer;
+
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
   });
 
   test("SPA ID", async () => {

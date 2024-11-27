@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, test, expect, beforeAll } from "vitest";
 import { RenewalForm } from "./Renewal";
@@ -21,12 +21,13 @@ const upload = uploadFiles<(typeof formSchemas)["contracting-renewal"]>();
 let container: HTMLElement;
 
 describe("RENEWAL CONTRACTING WAIVER", () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     skipCleanup();
 
     const { container: renderedContainer } = renderForm(<RenewalForm />);
-
     container = renderedContainer;
+
+    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
   });
 
   test("WAIVER ID EXISTING", async () => {

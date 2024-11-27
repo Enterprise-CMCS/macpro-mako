@@ -2,16 +2,21 @@ import { Navigate, useParams } from "react-router-dom";
 import { AmendmentForm as CapitatedForm } from "../../waiver/capitated";
 import { AmendmentForm as ContractingForm } from "../../waiver/contracting";
 import { useGetItem } from "@/api";
+import { LoadingSpinner } from "@/components";
 
 export const Amendment = () => {
   const { id } = useParams();
-  const { data: submission } = useGetItem(id);
+  const { data: submission, isLoading: isSubmissionLoading } = useGetItem(id);
 
-  const isCapitated = submission._source.changelog.find(
+  if (isSubmissionLoading === true) {
+    return <LoadingSpinner />;
+  }
+
+  const isCapitated = submission?._source?.changelog.find(
     (event) =>
-      event._source.event === "capitated-initial" || event._source.event === "capitated-renewal",
+      event?._source?.event === "capitated-initial" || event._source.event === "capitated-renewal",
   );
-  const isContracting = submission._source.changelog.find(
+  const isContracting = submission?._source?.changelog.find(
     (event) =>
       event._source.event === "contracting-initial" ||
       event._source.event === "contracting-renewal",

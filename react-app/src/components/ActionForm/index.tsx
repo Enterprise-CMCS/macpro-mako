@@ -180,33 +180,17 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
 
-  if (isUserLoading != true) {
-    const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some((condition) =>
-      condition(userObj?.user),
-    );
-
-    if (!userObj || doesUserHaveAccessToForm === false) {
-      return <Navigate to="/" replace />;
-    }
+  if (isUserLoading === true) {
+    return <LoadingSpinner />;
   }
 
-  // if (isUserLoading == true) {
-  //   return (
-  //     <SimplePageContainer>
-  //       <BreadCrumbs
-  //         options={[
-  //           ...breadcrumbs,
-  //           {
-  //             to: pathname,
-  //             displayText: breadcrumbText,
-  //             order: breadcrumbs.length,
-  //           },
-  //         ]}
-  //       />
-  //       <LoadingSpinner />
-  //     </SimplePageContainer>
-  //   );
-  // }
+  const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some((condition) =>
+    condition(userObj?.user),
+  );
+
+  if (!userObj || doesUserHaveAccessToForm === false) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <SimplePageContainer>

@@ -1,7 +1,7 @@
-import userEvent from "@testing-library/user-event";
-import { screen } from "@testing-library/react";
-import { z } from "zod";
 import { SchemaWithEnforcableProps } from "@/components";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { z } from "zod";
 
 type ExtractAttachmentKeys<TSchema extends SchemaWithEnforcableProps> =
   TSchema extends z.ZodEffects<infer InnerSchema> // Handle ZodEffects
@@ -24,10 +24,7 @@ export const uploadFiles = <TSchema extends SchemaWithEnforcableProps>() => {
       type: "image/png",
     });
 
-    await userEvent.upload(
-      screen.getByTestId(`${attachmentKey}-upload`),
-      EXAMPLE_FILE,
-    );
+    await userEvent.upload(screen.getByTestId(`${attachmentKey}-upload`), EXAMPLE_FILE);
 
     return screen.getByTestId(`${attachmentKey}-label`);
   };
