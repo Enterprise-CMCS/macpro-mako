@@ -127,7 +127,7 @@ const processAndIndex = async ({
       console.log("event below");
       console.log(record.event);
 
-      if (record.event in transforms || record.isAdminChange?.type === "update-values") {
+      if (record.event in transforms || record.isAdminChange?.adminChangeType === "update-values") {
         const transformForEvent = transforms[record.event as keyof typeof transforms];
 
         const transformedData = {
