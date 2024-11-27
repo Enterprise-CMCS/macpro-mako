@@ -1,6 +1,6 @@
 import { Text, Link, Section, Row, Column, Hr, Heading } from "@react-email/components";
 import { Attachment, AttachmentTitle, AttachmentKey } from "shared-types";
-import { createRef, forwardRef } from "react";
+import { createRef, forwardRef, ReactNode } from "react";
 import { styles } from "./email-styles";
 
 export const EMAIL_CONFIG = {
@@ -33,7 +33,6 @@ const Textarea = ({ children }: { children: React.ReactNode }) => (
       backgroundColor: "transparent",
       fontSize: "14px",
       lineHeight: "1.4",
-      boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
       outline: "none",
       whiteSpace: "pre-line",
       wordWrap: "break-word",
@@ -143,7 +142,7 @@ const Attachments = ({
   );
 };
 
-const PackageDetails = ({ details }: { details: Record<any, any> }) => (
+const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => (
   <Section>
     {Object.entries(details).map(([label, value], index) => {
       if (label === "Summary") {
@@ -183,6 +182,20 @@ const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
   </Text>
 );
 
+const SpamNotice = () => (
+  <Section>
+    <Text style={{ ...styles.text.description, marginTop: "8px" }}>
+      If the contents of this email seem suspicious, do not open them, and instead forward this
+      email to{" "}
+      <Link href="mailto:SPAM.hhs.gov" style={{ textDecoration: "underline" }}>
+        SPAM@cms.hhs.gov
+      </Link>
+      .
+    </Text>
+    <Text>Thank you.</Text>
+  </Section>
+);
+
 const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
   <Section
     style={{
@@ -211,9 +224,9 @@ const EmailFooter = ({ children }: { children: React.ReactNode }) => (
 
 const BasicFooter = () => (
   <EmailFooter>
-    <Text
-      style={{ ...styles.text.footer, margin: "8px" }}
-    >{`U.S. Centers for Medicare & Medicaid Services`}</Text>
+    <Text style={{ ...styles.text.footer, margin: "8px" }}>
+      U.S. Centers for Medicare & Medicaid Services
+    </Text>
     <Text style={{ ...styles.text.footer, margin: "8px" }}>
       © {new Date().getFullYear()} | 7500 Security Boulevard, Baltimore, MD 21244
     </Text>
@@ -231,8 +244,9 @@ const WithdrawRAI = ({
 }) => (
   <Section>
     <Heading as="h2">
-      {`The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are
-      receiving this email notification as the Formal RAI for ${id} was withdrawn by ${submitterName} ${submitterEmail}.`}
+      The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are
+      receiving this email notification as the Formal RAI for {id} was withdrawn by {submitterName}{" "}
+      {submitterEmail}.
     </Heading>
   </Section>
 );
@@ -273,4 +287,5 @@ export {
   getCpocEmail,
   getSrtEmails,
   EmailFooter,
+  SpamNotice,
 };
