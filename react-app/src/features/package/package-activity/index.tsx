@@ -93,6 +93,7 @@ type PackageActivityProps = {
 };
 
 const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
+  console.log(packageActivity, "PACKAGE ACTIVITY");
   const label = useMemo(() => {
     switch (packageActivity.event) {
       case "capitated-amendment":
@@ -117,6 +118,9 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
 
       case "upload-subsequent-documents":
         return "Subsequent documentation uploaded";
+
+      case "update-values":
+        return "Package description has been changed";
 
       default:
         return BLANK_VALUE;
@@ -179,6 +183,8 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
 export const PackageActivities = () => {
   const { id: packageId } = useParams<{ id: string }>();
   const { data: submission } = useGetItem(packageId);
+
+  console.log(submission, "SUBMISSION");
 
   if (submission === undefined) {
     return null;

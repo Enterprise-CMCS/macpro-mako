@@ -103,17 +103,18 @@ const processAndIndex = async ({
           }
         }
 
-        if (record.adminChangeType === "update-values") {
-          const transformedData = {
-            ...record,
-            event: "update-values",
-            packageId: record.id,
-            id: `${record.id}-${offset}`,
-          };
+        // if (record.adminChangeType === "update-values") {
+        //   const transformedData = {
+        //     ...record,
+        //     event: "update-values",
+        //     packageId: record.id,
+        //     id: `${record.id}-${offset}`,
+        //   };
 
-          console.log("TRANSFORMEDDDDD UPDATE", transformedData);
-          docs.push(transformedData);
-        }
+        //   console.log("TRANSFORMEDDDDD UPDATE", transformedData);
+        //   // need to transform again first?
+        //   docs.push(transformedData);
+        // }
       }
 
       // If we're not a mako event, continue
@@ -126,10 +127,19 @@ const processAndIndex = async ({
       console.log("event below");
       console.log(record.event);
 
-      if (record.event in transforms) {
+      if (record.event in transforms || record.isAdminChange?.type === "update-values") {
         const transformForEvent = transforms[record.event as keyof typeof transforms];
 
-        const result = transformForEvent.transform(offset).safeParse(record);
+        const transformedData = {
+          ...record,
+          event: "update-values",
+          packageId: record.id,
+          id: `${record.id}-${offset}`,
+        };
+
+        const result = transformForEvent
+          .transform(offset)
+          .safeParse(record.isAdminChange?.type === "update-values" ? transformedData : record);
 
         if (result.success && result.data === undefined) continue;
         if (!result.success) {
