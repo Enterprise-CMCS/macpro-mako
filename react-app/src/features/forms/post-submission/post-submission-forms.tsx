@@ -1,3 +1,7 @@
+import { getItem } from "@/api";
+import { queryClient } from "../../../router";
+import { RespondToRaiChip, RespondToRaiMedicaid, RespondToRaiWaiver } from "./respond-to-rai";
+import { DisableWithdrawRaiForm, EnableWithdrawRaiForm } from "./toggle-withdraw-rai";
 import { LoaderFunction, Navigate, useParams } from "react-router-dom";
 import { Action, AuthorityUnion } from "shared-types";
 import {
@@ -5,11 +9,8 @@ import {
   WithdrawPackageActionChip,
   WithdrawPackageActionWaiver,
 } from "./withdraw-package";
-import { RespondToRaiChip, RespondToRaiMedicaid, RespondToRaiWaiver } from "./respond-to-rai";
-import { queryClient } from "../../../router";
-import { getItem } from "@/api";
 import { WithdrawRaiForm } from "./withdraw-rai";
-import { DisableWithdrawRaiForm, EnableWithdrawRaiForm } from "./toggle-withdraw-rai";
+import { Amendment } from "./amend";
 import { TemporaryExtensionForm } from "../waiver/temporary-extension";
 import { UploadSubsequentDocuments } from "./upload-subsequent-documents";
 
@@ -48,6 +49,9 @@ export const postSubmissionForms: Partial<
   },
   "temporary-extension": {
     "1915(b)": TemporaryExtensionForm,
+  },
+  "amend-waiver": {
+    ["1915(b)"]: Amendment,
   },
   "upload-subsequent-documents": {
     ["1915(b)"]: UploadSubsequentDocuments,

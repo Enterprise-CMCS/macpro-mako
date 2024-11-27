@@ -125,6 +125,8 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   }
 
   try {
+    console.log("Processing record:", JSON.stringify(record, null, 2));
+    console.log("Config:", JSON.stringify(config, null, 2));
     await processAndSendEmails(record, id, config);
   } catch (error) {
     console.error("Error processing record:", JSON.stringify(error, null, 2));
@@ -179,6 +181,7 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
     allStateUsersEmails,
   };
 
+  console.log("Template variables:", JSON.stringify(templateVariables, null, 2));
   const limit = pLimit(5); // Limit concurrent emails
   const sendEmailPromises = templates.map((template) =>
     limit(async () => {
@@ -190,11 +193,21 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
         config.applicationEndpointUrl,
         config.isDev,
       );
-      await sendEmail(params, config.region);
+      try {
+        await sendEmail(params, config.region);
+      } catch (error) {
+        console.error("Error sending email:", error);
+        throw error;
+      }
     }),
   );
 
-  await Promise.all(sendEmailPromises);
+  try {
+    await Promise.all(sendEmailPromises);
+  } catch (error) {
+    console.error("Error sending emails:", error);
+    throw error;
+  }
 }
 
 export function createEmailParams(
@@ -204,7 +217,7 @@ export function createEmailParams(
   isDev: boolean,
 ): SendEmailCommandInput {
   const toAddresses = isDev ? [`State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`] : filledTemplate.to;
-  return {
+  const params = {
     Destination: {
       ToAddresses: toAddresses,
       CcAddresses: filledTemplate.cc,
@@ -222,6 +235,8 @@ export function createEmailParams(
     Source: sourceEmail,
     ConfigurationSetName: process.env.configurationSetName,
   };
+  console.log("Email params:", JSON.stringify(params, null, 2));
+  return params;
 }
 
 export async function sendEmail(params: SendEmailCommandInput, region: string): Promise<any> {
