@@ -2,7 +2,6 @@ import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 import { getPackage } from "libs/api/package";
 import { produceMessage } from "libs/api/kafka";
-import { z } from "zod";
 
 type ActionType = "update-id" | "update-values" | "delete";
 

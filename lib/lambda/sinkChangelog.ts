@@ -77,28 +77,42 @@ const processAndIndex = async ({
       console.log(record, "RECORDDDD");
 
       if (record.isAdminChange) {
-        console.log("IN HERE");
-        const deletedPackageSchema = z.object({
-          id: z.string(),
-          deleted: z.boolean(),
-        });
-        console.log(deletedPackageSchema, "DELETED PACKAGE SCHEMa");
+        if (record.adminChangeType === "delete") {
+          console.log("IN HERE");
+          const deletedPackageSchema = z.object({
+            id: z.string(),
+            deleted: z.boolean(),
+          });
+          console.log(deletedPackageSchema, "DELETED PACKAGE SCHEMa");
 
-        const transformedData = deletedPackageSchema.transform((schema) => ({
-          ...schema,
-          event: "soft-delete",
-          packageId: schema.id,
-          id: `${schema.id}-${offset}`,
-        }));
-        console.log(transformedData, "TRANSFORMED DATA");
+          const transformedData = deletedPackageSchema.transform((schema) => ({
+            ...schema,
+            event: "soft-delete",
+            packageId: schema.id,
+            id: `${schema.id}-${offset}`,
+          }));
+          console.log(transformedData, "TRANSFORMED DATA");
 
-        const result = transformedData.safeParse(record);
-        console.log(result, "RESULTTT");
-        if (result.success) {
-          console.log(result.data, "RESULT DATA");
-          docs.push(result.data);
-        } else {
-          console.log("Skipping package with invalid format", result.error.message);
+          const result = transformedData.safeParse(record);
+          console.log(result, "RESULTTT");
+          if (result.success) {
+            console.log(result.data, "RESULT DATA");
+            docs.push(result.data);
+          } else {
+            console.log("Skipping package with invalid format", result.error.message);
+          }
+        }
+
+        if (record.adminChangeType === "update-values") {
+          const transformedData = {
+            ...record,
+            event: "update-values",
+            packageId: record.id,
+            id: `${record.id}-${offset}`,
+          };
+
+          console.log("TRANSFORMEDDDDD UPDATE", transformedData);
+          docs.push(transformedData);
         }
       }
 

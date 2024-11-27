@@ -40,12 +40,14 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     query.from = query.from || 0;
     query.size = query.size || 100;
 
+    console.log("BEFORE RESULTS");
+
     const results = await os.search(
       process.env.osDomain as string,
       `${process.env.indexNamespace}${event.pathParameters.index}` as Index,
       query,
     );
-
+    console.log("AFTER RESULTS", results);
     for (let i = 0; i < results.hits.hits.length; i++) {
       if (results.hits.hits[i]._source.appkParent) {
         const children = await getAppkChildren(results.hits.hits[i]._id);
