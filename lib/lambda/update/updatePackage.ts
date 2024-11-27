@@ -54,7 +54,6 @@ export const handler = async (event: APIGatewayEvent) => {
           deleted: true,
           isAdminChange: true,
           adminChangeType: "delete",
-          origin: "mako",
         }),
       );
     }
@@ -101,7 +100,6 @@ export const handler = async (event: APIGatewayEvent) => {
           ...updatedFields,
           isAdminChange: true,
           adminChangeType: "update-values",
-          origin: "mako",
         }),
       );
     }
