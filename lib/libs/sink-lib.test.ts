@@ -1,14 +1,9 @@
-import { beforeAll, afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import * as os from "./opensearch-lib";
 import { bulkUpdateDataWrapper } from "./sink-lib";
 
 describe("bulkUpdateDataWrapper", () => {
   const DOCS = [{ id: "1" }];
-  const mockBulkUpdateData = vi.fn();
-
-  beforeAll(() => {
-    vi.spyOn(os, "bulkUpdateData").mockImplementation(mockBulkUpdateData);
-  });
 
   afterEach(() => {
     vi.restoreAllMocks();
@@ -18,6 +13,8 @@ describe("bulkUpdateDataWrapper", () => {
   it("calls bulkUpdateData with correct arguments when env vars are defined", async () => {
     vi.stubEnv("osDomain", "os-domain");
     vi.stubEnv("indexNamespace", "index-namespace");
+
+    const mockBulkUpdateData = vi.spyOn(os, "bulkUpdateData").mockImplementation(vi.fn());
 
     await bulkUpdateDataWrapper(DOCS, "main");
 
