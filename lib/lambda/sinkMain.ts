@@ -96,12 +96,11 @@ const processAndIndex = async ({
           } else {
             console.log("Skipping package with invalid format", result.error.message);
           }
-
-          if (record.adminChangeType === "update-values") {
-            console.log("IN UPDATE VALUES");
-            console.log(record, "RECORD TO CHANGE");
-            docs.push(record);
-          }
+        }
+        if (record.adminChangeType === "update-values") {
+          console.log("IN UPDATE VALUES");
+          console.log(record, "RECORD TO CHANGE");
+          docs.push(record);
         }
       }
       if (!record.event || record?.origin !== "mako") {
