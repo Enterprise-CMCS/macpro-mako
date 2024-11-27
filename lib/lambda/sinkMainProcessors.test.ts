@@ -135,4 +135,33 @@ describe("processIndex", () => {
 
     expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
   });
+
+  it("handles kafka records with invalid JSON successfully", () => {
+    const spiedOnBulkUpdateDataWrapper = vi
+      .spyOn(sinkLib, "bulkUpdateDataWrapper")
+      .mockImplementation(vi.fn());
+
+    const spiedOnLogError = vi.spyOn(sinkLib, "logError").mockImplementation(vi.fn());
+
+    processAndIndex(
+      [
+        {
+          topic: "--mako--branch-name--aws.onemac.migration.cdc",
+          partition: 0,
+          offset: 0,
+          timestamp: 1732645041557,
+          timestampType: "CREATE_TIME",
+          key: "TUQtMjQtMjMwMA==",
+          // encoded object missing the closing curly brace --> }
+          value:
+            "eyJldmVudCI6ICJuZXctbWVkaWNhaWQtc3VibWlzc2lvbiIsICJhdHRhY2htZW50cyI6IHt9LCAiYXV0aG9yaXR5IjogIk1lZGljYWlkIFNQQSIsICJwcm9wb3NlZEVmZmVjdGl2ZURhdGUiOiAxNzMyNTk3MjAwMDAwLCAiaWQiOiAiTUQtMjQtMjMwMCIsICJvcmlnaW4iOiAibWFrbyIsICJzdWJtaXR0ZXJOYW1lIjogIkdlb3JnZSBIYXJyaXNvbiIsICJzdWJtaXR0ZXJFbWFpbCI6ICJnZW9yZ2VAZXhhbXBsZS5jb20iLCAidGltZXN0YW1wIjogMTczMjY0NTA0MTUyNQ==",
+          headers: {},
+        },
+      ],
+      "aws.onemac.migration.cdc-0",
+    );
+
+    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
+    expect(spiedOnLogError).toBeCalled();
+  });
 });
