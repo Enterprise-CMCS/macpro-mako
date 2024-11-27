@@ -20,24 +20,48 @@ export type AuthoritiesWithUserTypesTemplate = {
 };
 
 export type EmailTemplates = {
-  "new-medicaid-submission": AuthoritiesWithUserTypesTemplate | UserTypeOnlyTemplate;
-  "new-chip-submission": AuthoritiesWithUserTypesTemplate | UserTypeOnlyTemplate;
+  "new-medicaid-submission": AuthoritiesWithUserTypesTemplate;
+  "new-chip-submission": AuthoritiesWithUserTypesTemplate;
+  "temp-extension": UserTypeOnlyTemplate;
+  "withdraw-package": AuthoritiesWithUserTypesTemplate;
+  "withdraw-rai": AuthoritiesWithUserTypesTemplate;
+  "contracting-initial": AuthoritiesWithUserTypesTemplate;
+  "capitated-initial": AuthoritiesWithUserTypesTemplate;
 };
 
-export const emailTemplates = {
+// Create a type-safe mapping of email templates
+const emailTemplates: EmailTemplates = {
   "new-medicaid-submission": EmailContent.newSubmission,
   "new-chip-submission": EmailContent.newSubmission,
   "temp-extension": EmailContent.tempExtention,
   "withdraw-package": EmailContent.withdrawPackage,
   "withdraw-rai": EmailContent.withdrawRai,
+  "contracting-initial": EmailContent.newSubmission,
+  "capitated-initial": EmailContent.newSubmission,
 };
 
-function isAuthorityTemplate(obj: any, authority: Authority): obj is AuthoritiesWithUserTypesTemplate {
+// Create a type-safe lookup function
+export function getEmailTemplate(
+  action: keyof EmailTemplates,
+): AuthoritiesWithUserTypesTemplate | UserTypeOnlyTemplate {
+  // Handle -state suffix variants
+  const baseAction = action.replace(/-state$/, "") as keyof EmailTemplates;
+  return emailTemplates[baseAction];
+}
+
+function isAuthorityTemplate(
+  obj: any,
+  authority: Authority,
+): obj is AuthoritiesWithUserTypesTemplate {
   return authority in obj;
 }
 
-export async function getEmailTemplates<T>(action: keyof EmailTemplates, authority: Authority): Promise<EmailTemplateFunction<T>[] | null> {
-  const template = emailTemplates[action];
+// Update the getEmailTemplates function to use the new lookup
+export async function getEmailTemplates<T>(
+  action: keyof EmailTemplates,
+  authority: Authority,
+): Promise<EmailTemplateFunction<T>[] | null> {
+  const template = getEmailTemplate(action);
   if (!template) {
     console.log("No template found");
     return null;
@@ -48,9 +72,12 @@ export async function getEmailTemplates<T>(action: keyof EmailTemplates, authori
   if (isAuthorityTemplate(template, authority)) {
     emailTemplatesToSend.push(...Object.values(template[authority] as EmailTemplateFunction<T>));
   } else {
-    emailTemplatesToSend.push(...Object.values(template as EmailTemplateFunction<T>));
+    emailTemplatesToSend.push(
+      ...Object.values(template as Record<UserType, EmailTemplateFunction<T>>),
+    );
   }
 
+  console.log("Email templates to send:", JSON.stringify(emailTemplatesToSend, null, 2));
   return emailTemplatesToSend;
 }
 

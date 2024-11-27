@@ -104,6 +104,7 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
       case "new-chip-submission":
       case "new-medicaid-submission":
       case "temporary-extension":
+      case "app-k":
         return "Initial package submitted";
 
       case "withdraw-package":

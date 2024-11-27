@@ -1,6 +1,6 @@
 import { Text, Link, Section, Row, Column, Hr, Heading } from "@react-email/components";
 import { Attachment, AttachmentTitle, AttachmentKey } from "shared-types";
-import { createRef, forwardRef } from "react";
+import { createRef, forwardRef, ReactNode } from "react";
 import { styles } from "./email-styles";
 
 export const EMAIL_CONFIG = {
@@ -33,7 +33,6 @@ const Textarea = ({ children }: { children: React.ReactNode }) => (
       backgroundColor: "transparent",
       fontSize: "14px",
       lineHeight: "1.4",
-      boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
       outline: "none",
       whiteSpace: "pre-line",
       wordWrap: "break-word",
@@ -64,28 +63,36 @@ const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
   </Section>
 );
 
-const LoginInstructions = ({ appEndpointURL }: { appEndpointURL: string }) => (
+const LoginInstructions = ({
+  appEndpointURL,
+  useThisLink,
+}: {
+  appEndpointURL: string;
+  useThisLink?: boolean;
+}) => (
   <ul style={{ marginLeft: "-20px" }}>
     <li>
       <Text style={styles.text.description}>
         The submission can be accessed in the OneMAC application at{" "}
-        <Link href={appEndpointURL}>{appEndpointURL}</Link>
+        <Link href={appEndpointURL}>{useThisLink ? "this link" : appEndpointURL}</Link>.
       </Text>
     </li>
     <li>
       <Text style={styles.text.description}>
-        If not logged in, click "Login" at the top and use your Enterprise User Administration (EUA)
-        credentials.
+        If you are not already logged in, please click the "Login" link at the top of the page and
+        log in using your Enterprise User Administration (EUA) credentials.
       </Text>
     </li>
     <li>
       <Text style={styles.text.description}>
-        After logging in, you'll see the submission listed on the dashboard. Click its ID number to
-        view details.
+        After you have logged in, you will be taken to the OneMAC application. The submission will
+        be listed on the dashboard page, and you can view its details by clicking on its ID number.
       </Text>
     </li>
   </ul>
 );
+
+const Divider = () => <Hr style={styles.divider} />;
 
 const DetailsHeading = () => (
   <div>
@@ -143,7 +150,7 @@ const Attachments = ({
   );
 };
 
-const PackageDetails = ({ details }: { details: Record<any, any> }) => (
+const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => (
   <Section>
     {Object.entries(details).map(([label, value], index) => {
       if (label === "Summary") {
@@ -155,7 +162,7 @@ const PackageDetails = ({ details }: { details: Record<any, any> }) => (
                 Summary:
               </Heading>
             </Text>
-            <Textarea>{value ?? "No additional information submitted"}</Textarea>
+            <Text>{value ?? "No additional information submitted"}</Text>
           </Row>
         );
       }
@@ -163,7 +170,7 @@ const PackageDetails = ({ details }: { details: Record<any, any> }) => (
       return (
         <Row key={label + index}>
           <Column align="left" style={{ width: "50%" }}>
-            <Text style={styles.text.title}>{label}</Text>
+            <Text style={styles.text.title}>{label}:</Text>
           </Column>
           <Column>
             <Text style={styles.text.description}>{value ?? "Not provided"}</Text>
@@ -183,27 +190,53 @@ const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
   </Text>
 );
 
+const SpamNotice = () => (
+  <Section>
+    <Text style={{ ...styles.text.description, marginTop: "8px" }}>
+      If the contents of this email seem suspicious, do not open them, and instead forward this
+      email to{" "}
+      <Link href="mailto:SPAM.hhs.gov" style={{ textDecoration: "underline" }}>
+        SPAM@cms.hhs.gov
+      </Link>
+      .
+    </Text>
+    <Text>Thank you.</Text>
+  </Section>
+);
+
 const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
-  <Section
-    style={{
-      ...styles.section.footer,
-      paddingLeft: "16px",
-      paddingRight: "16px",
-    }}
-  >
+  <Section>
+    <Divider />
     <Text style={{ fontSize: "14px" }}>
       If you have questions or did not expect this email, please contact{" "}
       <Link
         href={`mailto:${isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}`}
-        style={{ color: "#fff", textDecoration: "underline" }}
+        style={{ textDecoration: "underline" }}
       >
         {isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}
       </Link>{" "}
       or your state lead.
     </Text>
-    <Text>Thank you!</Text>
+    <Text>Thank you.</Text>
   </Section>
 );
+
+export const SpamWarning = () => {
+  return (
+    <Section>
+      <Divider />
+      <Text style={{ fontSize: "14px" }}>
+        If the contents of this email seem suspicious, do not open them, and instead forward this
+        email to{" "}
+        <Link style={{ textDecoration: "underline" }} href="mailto:SPAM@cms.hhs.gov">
+          SPAM@cms.hhs.gov
+        </Link>
+        .
+      </Text>
+      <Text>Thank you.</Text>
+    </Section>
+  );
+};
 
 const EmailFooter = ({ children }: { children: React.ReactNode }) => (
   <Section style={styles.section.footer}>{children}</Section>
@@ -211,9 +244,9 @@ const EmailFooter = ({ children }: { children: React.ReactNode }) => (
 
 const BasicFooter = () => (
   <EmailFooter>
-    <Text
-      style={{ ...styles.text.footer, margin: "8px" }}
-    >{`U.S. Centers for Medicare & Medicaid Services`}</Text>
+    <Text style={{ ...styles.text.footer, margin: "8px" }}>
+      U.S. Centers for Medicare & Medicaid Services
+    </Text>
     <Text style={{ ...styles.text.footer, margin: "8px" }}>
       © {new Date().getFullYear()} | 7500 Security Boulevard, Baltimore, MD 21244
     </Text>
@@ -265,6 +298,7 @@ export {
   EmailNav,
   LoginInstructions,
   DetailsHeading,
+  Divider,
   Attachments,
   PackageDetails,
   MailboxNotice,
@@ -274,4 +308,5 @@ export {
   getCpocEmail,
   getSrtEmails,
   EmailFooter,
+  SpamNotice,
 };

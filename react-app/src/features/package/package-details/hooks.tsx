@@ -39,9 +39,7 @@ export type DetailSectionItem = {
   value: ReactNode;
   canView: (u: OneMacUser | undefined) => boolean;
 };
-export const recordDetails = (
-  data: opensearch.main.Document,
-): DetailSectionItem[] => [
+export const recordDetails = (data: opensearch.main.Document): DetailSectionItem[] => [
   {
     label: "Submission ID",
     value: data.id,
@@ -64,19 +62,15 @@ export const recordDetails = (
     value: convertStateAbbrToFullName(data.state),
     canView: () => true,
   },
-  // TODO:  uncomment when appks are supported again
-  // {
-  //   label: "Amendment Title",
-  //   value: <p>{data?.appkTitle || BLANK_VALUE}</p>,
-  //   canView: () => false,
-  // },
+  {
+    label: "Amendment Title",
+    value: <p>{data?.title || BLANK_VALUE}</p>,
+    canView: () => !!data.title,
+  },
   {
     label: "Subject",
     value: <p>{data?.subject || BLANK_VALUE}</p>,
-    canView: (u) =>
-      !u || !u.user
-        ? false
-        : isCmsUser(u.user) && !(data.actionType === "Extend"),
+    canView: (u) => (!u || !u.user ? false : isCmsUser(u.user) && !(data.actionType === "Extend")),
   },
   {
     label: "Type",
@@ -105,18 +99,14 @@ export const recordDetails = (
   },
   {
     label: "Proposed effective date",
-    value: data.proposedDate
-      ? formatSeatoolDate(data.proposedDate)
-      : BLANK_VALUE,
+    value: data.proposedDate ? formatSeatoolDate(data.proposedDate) : BLANK_VALUE,
     canView: () => {
       return !(data.actionType === "Extend");
     },
   },
   {
     label: "Initial submission date",
-    value: data.submissionDate
-      ? formatSeatoolDate(data.submissionDate)
-      : BLANK_VALUE,
+    value: data.submissionDate ? formatSeatoolDate(data.submissionDate) : BLANK_VALUE,
     canView: () => true,
   },
   {
@@ -131,9 +121,7 @@ export const recordDetails = (
   },
   {
     label: "Formal RAI response",
-    value: data.raiReceivedDate
-      ? formatSeatoolDate(data.raiReceivedDate)
-      : BLANK_VALUE,
+    value: data.raiReceivedDate ? formatSeatoolDate(data.raiReceivedDate) : BLANK_VALUE,
     canView: () => {
       return !(data.actionType === "Extend");
     },
