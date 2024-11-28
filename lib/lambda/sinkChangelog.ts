@@ -112,7 +112,7 @@ const processAndIndex = async ({
         const result = schema.safeParse(record);
 
         if (result.success) {
-          docs.push(result.data); // Use transformed data
+          docs.push(result.data);
         } else {
           console.log(
             `Skipping package with invalid format for type "${record.adminChangeType}"`,
@@ -122,43 +122,6 @@ const processAndIndex = async ({
       } else if (record.isAdminChange) {
         console.log(`Unknown adminChangeType: ${record.adminChangeType}`);
       }
-
-      // if (record.isAdminChange) {
-      //   if (record.adminChangeType === "delete") {
-      //     const deletedPackageSchema = z.object({
-      //       id: z.string(),
-      //       deleted: z.boolean(),
-      //     });
-
-      //     transformedData = deletedPackageSchema.transform((schema) => ({
-      //       ...schema,
-      //       event: "soft-delete",
-      //       packageId: schema.id,
-      //       id: `${schema.id}-${offset}`,
-      //       timestamp: Date.now(),
-      //     }));
-
-      //     const result = transformedData.safeParse(record);
-
-      //     if (result.success) {
-      //       docs.push(result.data);
-      //     } else {
-      //       console.log("Skipping package with invalid format", result.error.message);
-      //     }
-      //   }
-
-      //   if (record.adminChangeType === "update-values") {
-      //     transformedData = {
-      //       ...record,
-      //       event: "update-values",
-      //       packageId: record.id,
-      //       id: `${record.id}-${offset}`,
-      //       timestamp: Date.now(),
-      //     };
-
-      //     docs.push(transformedData);
-      //   }
-      // }
 
       // If we're not a mako event, continue
       // TODO:  handle legacy.  for now, just continue
