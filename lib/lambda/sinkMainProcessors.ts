@@ -56,20 +56,20 @@ const getTransformedEventFromRecord = (
 };
 
 export const processAndIndex = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
-  const recordsToUpdate = kafkaRecords.reduce<TransformedEvent[]>((acc, kafkaRecord) => {
+  const recordsToUpdate = kafkaRecords.reduce<TransformedEvent[]>((collection, kafkaRecord) => {
     console.log(`record: ${JSON.stringify(kafkaRecord, null, 2)}`);
 
     try {
       const { value } = kafkaRecord;
 
       if (!value) {
-        return acc;
+        return collection;
       }
 
       const transformedEvent = getTransformedEventFromRecord(value, topicPartition, kafkaRecord);
 
       if (transformedEvent) {
-        return acc.concat(transformedEvent);
+        return collection.concat(transformedEvent);
       }
     } catch (error) {
       logError({
@@ -79,7 +79,7 @@ export const processAndIndex = async (kafkaRecords: KafkaRecord[], topicPartitio
       });
     }
 
-    return acc;
+    return collection;
   }, []);
 
   await bulkUpdateDataWrapper(recordsToUpdate, "main");
