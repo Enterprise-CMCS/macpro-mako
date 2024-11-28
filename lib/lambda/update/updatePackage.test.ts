@@ -30,10 +30,10 @@ vi.mock("../../libs/api/package", () => ({
 
 describe("Update package", () => {
   let mockProducer: Producer;
-  let brokerString: string | undefined;
+  // let brokerString: string | undefined;
 
   beforeEach(() => {
-    brokerString = process.env.brokerString;
+    // brokerString = process.env.brokerString;
     process.env.brokerString = "broker1,broker2";
     process.env.osDomain = "test-domain";
     process.env.topicName = "test-topic";
