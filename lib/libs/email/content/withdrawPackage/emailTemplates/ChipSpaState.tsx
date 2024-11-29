@@ -23,7 +23,6 @@ export const ChipSpaStateEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
-    <Divider />
     <ContactStateLead />
   </BaseEmailTemplate>
 );

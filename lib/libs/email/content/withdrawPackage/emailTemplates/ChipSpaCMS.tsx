@@ -23,7 +23,6 @@ export const ChipSpaCMSEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
-    <Divider />
     <SpamWarning />
   </BaseEmailTemplate>
 );

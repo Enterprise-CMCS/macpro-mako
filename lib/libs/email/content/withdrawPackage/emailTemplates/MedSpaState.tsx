@@ -23,7 +23,6 @@ export const MedSpaStateEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
-    <Divider />
     <ContactStateLead />
   </BaseEmailTemplate>
 );

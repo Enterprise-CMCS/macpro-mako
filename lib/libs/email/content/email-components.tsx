@@ -190,30 +190,34 @@ const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
   </Text>
 );
 
-const ContactStateLead = ({ isChip }: { isChip?: boolean }) =>
-  isChip ? (
-    <Section>
-      <Text style={{ marginTop: "8px", fontSize: "14px" }}>
-        If you have any questions, please contact{" "}
-        <Link href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`} style={{ textDecoration: "underline" }}>
-          {EMAIL_CONFIG.CHIP_EMAIL}
-        </Link>{" "}
-        or your state lead.
-      </Text>
-      <Text>Thank you.</Text>
-    </Section>
-  ) : (
-    <Section>
-      <Text style={{ marginTop: "8px", fontSize: "14px" }}>
-        If you have any questions or did not expect this email, please contact{" "}
-        <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`} style={{ textDecoration: "underline" }}>
-          {EMAIL_CONFIG.SPA_EMAIL}
-        </Link>{" "}
-        or your state lead.
-      </Text>
-      <Text>Thank you.</Text>
-    </Section>
-  );
+const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
+  <>
+    <Divider />
+    {isChip ? (
+      <Section>
+        <Text style={{ marginTop: "8px", fontSize: "14px" }}>
+          If you have any questions, please contact{" "}
+          <Link href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`} style={{ textDecoration: "underline" }}>
+            {EMAIL_CONFIG.CHIP_EMAIL}
+          </Link>{" "}
+          or your state lead.
+        </Text>
+        <Text>Thank you.</Text>
+      </Section>
+    ) : (
+      <Section>
+        <Text style={{ marginTop: "8px", fontSize: "14px" }}>
+          If you have any questions or did not expect this email, please contact{" "}
+          <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`} style={{ textDecoration: "underline" }}>
+            {EMAIL_CONFIG.SPA_EMAIL}
+          </Link>{" "}
+          or your state lead.
+        </Text>
+        <Text>Thank you.</Text>
+      </Section>
+    )}
+  </>
+);
 
 export const SpamWarning = () => (
   <Section>

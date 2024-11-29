@@ -23,7 +23,6 @@ export const MedSpaCMSEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
-    <Divider />
     <SpamWarning />
   </BaseEmailTemplate>
 );
