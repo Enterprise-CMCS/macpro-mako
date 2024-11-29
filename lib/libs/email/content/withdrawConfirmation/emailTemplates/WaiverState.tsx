@@ -3,10 +3,7 @@ import { ContactStateLead, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const WaiverStateEmail = (props: {
-  variables:
-    | (Events["CapitatedInitial"] & CommonEmailVariables)
-    | (Events["ContractingInitial"] & CommonEmailVariables)
-    | (Events["NewAppKSubmission"] & CommonEmailVariables);
+  variables: Events["WithdrawPackage"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   const previewText = `Withdrawal of ${variables.authority} ${variables.id}`;

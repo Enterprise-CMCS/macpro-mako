@@ -70,15 +70,24 @@ const LoginInstructions = ({
   appEndpointURL: string;
   useThisLink?: boolean;
 }) => (
+const LoginInstructions = ({
+  appEndpointURL,
+  useThisLink,
+}: {
+  appEndpointURL: string;
+  useThisLink?: boolean;
+}) => (
   <ul style={{ marginLeft: "-20px" }}>
     <li>
       <Text style={styles.text.description}>
-        The submission can be accessed in the OneMAC application at{" "}
+        The submission can be accessed in the OneMAC application, which you can find at{" "}
         <Link href={appEndpointURL}>{useThisLink ? "this link" : appEndpointURL}</Link>.
       </Text>
     </li>
     <li>
       <Text style={styles.text.description}>
+        If you are not already logged in, please click the "Login" link at the top of the page and
+        log in using your Enterprise User Administration (EUA) credentials.
         If you are not already logged in, please click the "Login" link at the top of the page and
         log in using your Enterprise User Administration (EUA) credentials.
       </Text>
@@ -87,10 +96,14 @@ const LoginInstructions = ({
       <Text style={styles.text.description}>
         After you have logged in, you will be taken to the OneMAC application. The submission will
         be listed on the dashboard page, and you can view its details by clicking on its ID number.
+        After you have logged in, you will be taken to the OneMAC application. The submission will
+        be listed on the dashboard page, and you can view its details by clicking on its ID number.
       </Text>
     </li>
   </ul>
 );
+
+const Divider = () => <Hr style={styles.divider} />;
 
 const Divider = () => <Hr style={styles.divider} />;
 
@@ -171,6 +184,7 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
         <Row key={label + index}>
           <Column align="left" style={{ width: "50%" }}>
             <Text style={styles.text.title}>{label}:</Text>
+            <Text style={styles.text.title}>{label}:</Text>
           </Column>
           <Column>
             <Text style={styles.text.description}>{value ?? "Not provided"}</Text>
@@ -212,11 +226,13 @@ const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
       <Link
         href={`mailto:${isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}`}
         style={{ textDecoration: "underline" }}
+        style={{ textDecoration: "underline" }}
       >
         {isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}
       </Link>{" "}
       or your state lead.
     </Text>
+    <Text>Thank you.</Text>
     <Text>Thank you.</Text>
   </Section>
 );
@@ -228,8 +244,8 @@ export const SpamWarning = () => {
       <Text style={{ fontSize: "14px" }}>
         If the contents of this email seem suspicious, do not open them, and instead forward this
         email to{" "}
-        <Link style={{ textDecoration: "underline" }} href="mailto:SPAM@cms.hhs.gov">
-          SPAM@cms.hhs.gov
+        <Link style={{ textDecoration: "underline" }} href={`mailto:${EMAIL_CONFIG.SPAM_EMAIL}`}>
+          {EMAIL_CONFIG.SPAM_EMAIL}
         </Link>
         .
       </Text>
@@ -298,6 +314,7 @@ export {
   EmailNav,
   LoginInstructions,
   DetailsHeading,
+  Divider,
   Divider,
   Attachments,
   PackageDetails,

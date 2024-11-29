@@ -13,10 +13,16 @@ export type EmailAddresses = {
 export interface CommonEmailVariables {
   id: string;
   authority: string;
+  authority: string;
   territory: string;
   applicationEndpointUrl: string;
   actionType: string;
   allStateUsersEmails?: string[];
   responseDate?: number;
-  title?: string; //Is this okay?
+  title?: string;
+}
+
+export interface RelatedEventType {
+  submitterName: string;
+  submitterEmail: string;
 }

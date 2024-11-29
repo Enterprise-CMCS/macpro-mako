@@ -1,4 +1,5 @@
 import { Events, Authority, CommonEmailVariables, EmailAddresses } from "shared-types";
+import { Events, Authority, CommonEmailVariables, EmailAddresses } from "shared-types";
 import { AuthoritiesWithUserTypesTemplate } from "../..";
 import {
   MedSpaCMSEmail,
@@ -7,12 +8,16 @@ import {
   ChipSpaStateEmail,
   WaiverCMSEmail,
   WaiverStateEmail,
+  WaiverCMSEmail,
+  WaiverStateEmail,
 } from "./emailTemplates";
 import { render } from "@react-email/render";
 
 export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
-    cms: async (variables: any & CommonEmailVariables & { emails: EmailAddresses }) => {
+    cms: async (
+      variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
       return {
         to: variables.emails.osgEmail,
         cc: variables.emails.dpoEmail,
@@ -20,7 +25,9 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
         body: await render(<MedSpaCMSEmail variables={variables} />),
       };
     },
-    state: async (variables: any & CommonEmailVariables & { emails: EmailAddresses }) => {
+    state: async (
+      variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Medicaid SPA Package ${variables.id} Withdrawal Confirmation`,
@@ -29,7 +36,9 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
     },
   },
   [Authority.CHIP_SPA]: {
-    cms: async (variables: any & CommonEmailVariables & { emails: EmailAddresses }) => {
+    cms: async (
+      variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
       return {
         to: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
         cc: variables.emails.chipCcList,
@@ -37,7 +46,9 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
         body: await render(<ChipSpaCMSEmail variables={variables} />),
       };
     },
-    state: async (variables: any & CommonEmailVariables & { emails: EmailAddresses }) => {
+    state: async (
+      variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
       return {
         to: [
           ...variables.emails.cpocEmail,
@@ -52,9 +63,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
   },
   [Authority["1915b"]]: {
     cms: async (
-      variables:
-        | (Events["CapitatedInitial"] & CommonEmailVariables & { emails: EmailAddresses })
-        | (Events["ContractingInitial"] & CommonEmailVariables & { emails: EmailAddresses }),
+      variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: variables.emails.osgEmail,
@@ -63,9 +72,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       };
     },
     state: async (
-      variables:
-        | (Events["CapitatedInitial"] & CommonEmailVariables & { emails: EmailAddresses })
-        | (Events["ContractingInitial"] & CommonEmailVariables & { emails: EmailAddresses }),
+      variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`], // TODO: change to ALL state users
@@ -77,7 +84,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
 
   [Authority["1915c"]]: {
     cms: async (
-      variables: Events["NewAppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
+      variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [
@@ -90,7 +97,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       };
     },
     state: async (
-      variables: Events["NewAppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
+      variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`], // TODO: change to ALL state users

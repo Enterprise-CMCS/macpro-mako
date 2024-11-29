@@ -1,10 +1,10 @@
-import { AppKCMSEmail } from "../../../content/new-submission/emailTemplates";
+import { AppKStateEmail } from "../../../content/new-submission/emailTemplates";
 import { emailTemplateValue } from "../../../mock-data/new-submission";
 import * as attachments from "../../../mock-data/attachments";
 
 const AppKCMSEmailPreview = () => {
   return (
-    <AppKCMSEmail
+    <AppKStateEmail
       variables={{
         ...emailTemplateValue,
         event: "app-k",
