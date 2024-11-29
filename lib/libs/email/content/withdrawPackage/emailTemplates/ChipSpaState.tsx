@@ -1,5 +1,5 @@
 import { CommonEmailVariables, Events } from "lib/packages/shared-types";
-import { BasicFooter, EMAIL_CONFIG, PackageDetails } from "../../email-components";
+import { BasicFooter, Divider, EMAIL_CONFIG, PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { Link, Section, Text } from "@react-email/components";
 
@@ -14,6 +14,7 @@ export const ChipSpaStateEmail = ({
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >
+    <Divider />
     <PackageDetails
       details={{
         "State or territory": variables.territory,
@@ -23,6 +24,7 @@ export const ChipSpaStateEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
+    <Divider />
     <Section>
       <Text style={{ marginTop: "8px", fontSize: "14px" }}>
         If you have any questions, please contact{" "}

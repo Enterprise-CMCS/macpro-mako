@@ -1,5 +1,5 @@
 import { CommonEmailVariables, Events } from "shared-types";
-import { PackageDetails, BasicFooter, SpamNotice } from "../../email-components";
+import { PackageDetails, BasicFooter, SpamNotice, Divider } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const MedSpaCMSEmail = ({
@@ -13,6 +13,7 @@ export const MedSpaCMSEmail = ({
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >
+    <Divider />
     <PackageDetails
       details={{
         "State or territory": variables.territory,
@@ -22,6 +23,7 @@ export const MedSpaCMSEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
+    <Divider />
     <SpamNotice />
   </BaseEmailTemplate>
 );

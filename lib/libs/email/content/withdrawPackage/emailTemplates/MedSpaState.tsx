@@ -1,6 +1,6 @@
 import { CommonEmailVariables, Events } from "shared-types";
 import { Link, Section, Text } from "@react-email/components";
-import { BasicFooter, EMAIL_CONFIG, PackageDetails } from "../../email-components";
+import { BasicFooter, Divider, EMAIL_CONFIG, PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const MedSpaStateEmail = ({
@@ -14,6 +14,7 @@ export const MedSpaStateEmail = ({
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >
+    <Divider />
     <PackageDetails
       details={{
         "State or territory": variables.territory,
@@ -23,6 +24,7 @@ export const MedSpaStateEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
+    <Divider />
     <Section>
       <Text style={{ marginTop: "8px", fontSize: "14px" }}>
         If you have any questions or did not expect this email, please contact{" "}
