@@ -86,7 +86,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
     state: async (variables: any & CommonEmailVariables & { emails: EmailAddresses }) => {
       const relatedEvent = await getLatestMatchingEvent(variables.id, Action.RESPOND_TO_RAI);
       return {
-        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`], // TODO: change to ALL state users
         cc: variables.allStateUsersEmails,
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
         body: await render(
