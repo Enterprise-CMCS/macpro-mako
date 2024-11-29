@@ -21,7 +21,7 @@ export const WaiverCMSEmail = ({
         details={{
           "State or territory": variables.territory,
           Name: variables.submitterName,
-          Email: variables.submitterEmail,
+          "Email Address": variables.submitterEmail,
           "Waiver Number": variables.id,
           Summary: variables.additionalInformation,
         }}

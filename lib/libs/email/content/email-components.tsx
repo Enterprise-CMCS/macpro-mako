@@ -73,7 +73,7 @@ const LoginInstructions = ({
   <ul style={{ marginLeft: "-20px" }}>
     <li>
       <Text style={styles.text.description}>
-        The submission can be accessed in the OneMAC application at{" "}
+        The submission can be accessed in the OneMAC application, which you can find at{" "}
         <Link href={appEndpointURL}>{useThisLink ? "this link" : appEndpointURL}</Link>.
       </Text>
     </li>
