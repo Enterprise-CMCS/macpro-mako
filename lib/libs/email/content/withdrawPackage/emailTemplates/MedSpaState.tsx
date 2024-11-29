@@ -1,6 +1,5 @@
 import { CommonEmailVariables, Events } from "shared-types";
-import { Link, Section, Text } from "@react-email/components";
-import { BasicFooter, Divider, EMAIL_CONFIG, PackageDetails } from "../../email-components";
+import { BasicFooter, ContactStateLead, Divider, PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const MedSpaStateEmail = ({
@@ -25,15 +24,6 @@ export const MedSpaStateEmail = ({
       }}
     />
     <Divider />
-    <Section>
-      <Text style={{ marginTop: "8px", fontSize: "14px" }}>
-        If you have any questions or did not expect this email, please contact{" "}
-        <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`} style={{ textDecoration: "underline" }}>
-          {EMAIL_CONFIG.SPA_EMAIL}
-        </Link>{" "}
-        or your state lead.
-      </Text>
-      <Text>Thank you.</Text>
-    </Section>
+    <ContactStateLead />
   </BaseEmailTemplate>
 );
