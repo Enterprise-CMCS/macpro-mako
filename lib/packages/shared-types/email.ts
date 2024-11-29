@@ -24,11 +24,4 @@ export interface CommonEmailVariables {
 export interface RelatedEventType {
   submitterName: string;
   submitterEmail: string;
-  responseDate?: number;
-  title?: string;
-}
-
-export interface RelatedEventType {
-  submitterName: string;
-  submitterEmail: string;
 }

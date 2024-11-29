@@ -75,8 +75,6 @@ const LoginInstructions = ({
       <Text style={styles.text.description}>
         The submission can be accessed in the OneMAC application, which you can find at{" "}
         <Link href={appEndpointURL}>{useThisLink ? "this link" : appEndpointURL}</Link>.
-        The submission can be accessed in the OneMAC application, which you can find at{" "}
-        <Link href={appEndpointURL}>{useThisLink ? "this link" : appEndpointURL}</Link>.
       </Text>
     </li>
     <li>
@@ -165,7 +163,6 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
               </Heading>
             </Text>
             <Text>{value ?? "No additional information submitted"}</Text>
-            <Text>{value ?? "No additional information submitted"}</Text>
           </Row>
         );
       }
@@ -210,8 +207,6 @@ const SpamNotice = () => (
 const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
   <Section>
     <Divider />
-  <Section>
-    <Divider />
     <Text style={{ fontSize: "14px" }}>
       If you have questions or did not expect this email, please contact{" "}
       <Link
@@ -225,23 +220,6 @@ const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
     <Text>Thank you.</Text>
   </Section>
 );
-
-export const SpamWarning = () => {
-  return (
-    <Section>
-      <Divider />
-      <Text style={{ fontSize: "14px" }}>
-        If the contents of this email seem suspicious, do not open them, and instead forward this
-        email to{" "}
-        <Link style={{ textDecoration: "underline" }} href={`mailto:${EMAIL_CONFIG.SPAM_EMAIL}`}>
-          {EMAIL_CONFIG.SPAM_EMAIL}
-        </Link>
-        .
-      </Text>
-      <Text>Thank you.</Text>
-    </Section>
-  );
-};
 
 export const SpamWarning = () => {
   return (
