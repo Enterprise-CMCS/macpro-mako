@@ -2,10 +2,11 @@ import { CommonEmailVariables, Events } from "shared-types";
 import { SpamWarning, PackageDetails, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const WaiverCMSEmail = (props: {
+export const WaiverCMSEmail = ({
+  variables,
+}: {
   variables: Events["WithdrawPackage"] & CommonEmailVariables;
 }) => {
-  const variables = props.variables;
   const previewText = `Withdrawal of ${variables.authority} ${variables.id}`;
   const heading =
     "The OneMAC Submission Portal received a request to withdraw the package below. The package will no longer be considered for CMS review:";
