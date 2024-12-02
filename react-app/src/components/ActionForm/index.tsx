@@ -149,15 +149,23 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const onSubmit = form.handleSubmit(async (formData) => {
     try {
-      await mutateAsync(formData);
+      try {
+        await mutateAsync(formData);
+      } catch (error) {
+        throw Error(`Error submitting form: ${error.message}`);
+      }
 
       const { documentChecker, property } = documentPollerArgs;
 
       const documentPollerId =
         typeof property === "function" ? property(formData) : formData[property];
 
-      const poller = documentPoller(documentPollerId, documentChecker);
-      await poller.startPollingData();
+      try {
+        const poller = documentPoller(documentPollerId, documentChecker);
+        await poller.startPollingData();
+      } catch (error) {
+        throw Error(error.error);
+      }
 
       const formOrigins = getFormOrigin({ authority, id });
       banner({

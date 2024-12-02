@@ -1,12 +1,12 @@
 import { http, HttpResponse } from "msw";
-import items, { ERROR_ITEM_ID } from "../data/items";
+import items, { GET_ERROR_ITEM_ID } from "../data/items";
 
 export type GetItemBody = { id: string };
 
 const defaultItemHandler = http.post<GetItemBody, GetItemBody>(/\/item$/, async ({ request }) => {
   const { id } = await request.json();
 
-  if (id == ERROR_ITEM_ID) {
+  if (id == GET_ERROR_ITEM_ID) {
     return new HttpResponse("Internal server error", { status: 500 });
   }
   const item = items[id] || null;
@@ -18,7 +18,7 @@ const defaultItemExistsHandler = http.post<GetItemBody, GetItemBody>(
   async ({ request }) => {
     console.log("checking for item");
     const { id } = await request.json();
-    if (id == ERROR_ITEM_ID) {
+    if (id == GET_ERROR_ITEM_ID) {
       return new HttpResponse("Internal server error", { status: 500 });
     }
     return HttpResponse.json({ exists: !!items[id]?._source });

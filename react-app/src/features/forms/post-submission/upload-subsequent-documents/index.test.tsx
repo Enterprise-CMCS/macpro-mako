@@ -24,7 +24,7 @@ describe("Upload Subsequent Documents (for Medicaid SPA)", () => {
     expect(currentStatePlanLabel).not.toHaveClass("text-destructive");
   });
 
-  test.skip("ADDITIONAL INFORMATION", async () => {
+  test("ADDITIONAL INFORMATION", async () => {
     const additionalInfoInput = screen.getByLabelText(
       /Explain why additional documents are being submitted/,
     );
@@ -35,7 +35,7 @@ describe("Upload Subsequent Documents (for Medicaid SPA)", () => {
     expect(additionalInfoLabel).not.toHaveClass("text-destructive");
   });
 
-  test.skip("submit button is enabled", async () => {
+  test("submit button is enabled", async () => {
     waitFor(() => expect(screen.getByTestId("submit-action-form")).toBeEnabled());
   });
 });

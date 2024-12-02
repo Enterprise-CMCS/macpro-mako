@@ -16,7 +16,8 @@ export const CAPITATED_AMEND_ITEM_ID = "MD-006.R00.01";
 export const CONTRACTING_INITIAL_ITEM_ID = "MD-007.R00.00";
 export const CONTRACTING_AMEND_ITEM_ID = "MD-007.R00.01";
 export const MISSING_CHANGELOG_ITEM_ID = "MD-008.R00.00";
-export const ERROR_ITEM_ID = "Throw Error";
+export const SUBMISSION_ERROR_ITEM_ID = "Throw Submission Error";
+export const GET_ERROR_ITEM_ID = "Throw Get Item Error";
 
 export type ItemTestFields = {
   _id: string;

@@ -9,7 +9,6 @@ import { FAQ_TAB } from "@/router";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
-    console.log("loading user ", { queryClient });
     const queryString = window.location.search;
     // Parse the query string to get URL parameters
     const queryParams = new URLSearchParams(queryString);
@@ -20,7 +19,7 @@ export const loader = (queryClient: QueryClient) => {
       console.error("Authentication Error:", { errorDescription, error });
       return { error };
     }
-    console.log({ getUser });
+
     if (!queryClient.getQueryData(["user"])) {
       return await queryClient.fetchQuery({
         queryKey: ["user"],

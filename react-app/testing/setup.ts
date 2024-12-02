@@ -74,16 +74,22 @@ beforeAll(async () => {
 });
 
 afterEach(() => {
-  if (process.env.SKIP_CLEANUP) return;
+  vi.useRealTimers();
+  vi.clearAllMocks();
+  useDefaultStateSubmitter();
+
   // Reset any request handlers that we may add during the tests,
   // so they don't affect other tests.
   mockedServer.resetHandlers();
+
+  if (process.env.SKIP_CLEANUP) return;
   cleanup();
 });
 
 afterAll(() => {
   delete process.env.SKIP_CLEANUP;
+
   // Clean up after the tests are finished.
   mockedServer.close();
-  vi.restoreAllMocks();
+  vi.clearAllMocks();
 });
