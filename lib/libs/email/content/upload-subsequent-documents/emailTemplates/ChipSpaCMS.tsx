@@ -8,8 +8,8 @@ export const ChipSpaCMSEmail = (props: {
   variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
-  const previewText = `${variables.id}`;
-  const heading = `Action required: review new documents for CHIP SPA ${variables.id} in OneMAC.`;
+  const previewText = `Action required: review new documents for CHIP SPA ${variables.id} in OneMAC.`;
+  const heading = `New documents have been submitted for CHIP SPA ${variables.id} in OneMAC.`;
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -17,9 +17,6 @@ export const ChipSpaCMSEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <Text style={{ ...styles.text.base, marginTop: "16px" }}>
-        New documents have been submitted for CHIP SPA {variables.id} in OneMAC.
-      </Text>
       <PackageDetails
         details={{
           "State or territory": variables.territory,
