@@ -1,14 +1,11 @@
-import { screen } from "@testing-library/react";
-import { beforeAll, describe, expect, test } from "vitest";
-import userEvent from "@testing-library/user-event";
-import { renderForm } from "@/utils/test-helpers/renderForm";
-import {
-  mockApiRefinements,
-  skipCleanup,
-} from "@/utils/test-helpers/skipCleanup";
-import { Renewal } from "./Renewal";
-import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { formSchemas } from "@/formSchemas";
+import { renderForm } from "@/utils/test-helpers/renderForm";
+import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
+import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { beforeAll, describe, expect, test } from "vitest";
+import { Renewal } from "./Renewal";
 
 const upload = uploadFiles<(typeof formSchemas)["capitated-renewal"]>();
 
@@ -25,9 +22,7 @@ describe("Capitated Renewal", () => {
   });
 
   test("EXISTING RENEWAL NUMBER TO RENEW", async () => {
-    const existingWaiverInput = screen.getByLabelText(
-      /Existing Waiver Number to Renew/,
-    );
+    const existingWaiverInput = screen.getByLabelText(/Existing Waiver Number to Renew/);
     const existingWaiverLabel = screen.getByTestId("existing-waiver-label");
 
     // test record does not exist error occurs
@@ -84,13 +79,9 @@ describe("Capitated Renewal", () => {
   });
 
   test("PROPOSED EFFECTIVE DATE OF 1915(B) WAIVER RENEWAL", async () => {
-    await userEvent.click(
-      screen.getByTestId("proposedEffectiveDate-datepicker"),
-    );
+    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector(
-      '[for="proposedEffectiveDate"]',
-    );
+    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });
