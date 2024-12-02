@@ -1,14 +1,14 @@
-import { useFormContext } from "react-hook-form";
-import { z } from "zod";
 import {
-  SectionCard,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
   RequiredIndicator,
+  SectionCard,
   Upload,
 } from "@/components";
+import { useFormContext } from "react-hook-form";
+import { z } from "zod";
 
 import { Fragment } from "react/jsx-runtime";
 import {
@@ -52,7 +52,7 @@ export const ActionFormAttachments = ({
         </>
       }
     >
-      <div className="text-gray-700 font-light">
+      <div>
         {callout && (
           <>
             <p className="font-medium">{callout}</p>
@@ -74,7 +74,7 @@ export const ActionFormAttachments = ({
             name={`attachments.${key}.files`}
             render={({ field }) => (
               <FormItem>
-                <FormLabel data-testid={`${key}-label`}>
+                <FormLabel className="font-bold" data-testid={`${key}-label`}>
                   {value.shape.label._def.defaultValue()}{" "}
                   {value.shape.files instanceof z.ZodOptional ? null : <RequiredIndicator />}
                 </FormLabel>
