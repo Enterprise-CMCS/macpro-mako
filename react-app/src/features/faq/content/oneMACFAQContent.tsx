@@ -569,15 +569,17 @@ export const oneMACFAQContent: FAQContent[] = [
           <>
             <p>CHIP eligibility SPA implementation guides can be downloaded at the links below.</p>
 
-            <p className="p-2">MAGI Eligibility & Methods</p>
+            <div className="space-y-2 p-2">
+              <p>MAGI Eligibility & Methods</p>
 
-            <p className="p-2">XXI Medicaid Expansion</p>
+              <p>XXI Medicaid Expansion</p>
 
-            <p className="p-2">Establish 2101(f) Group</p>
+              <p>Establish 2101(f) Group</p>
 
-            <p className="p-2">Eligibility Processing</p>
+              <p>Eligibility Processing</p>
 
-            <p className="p-2">Non-Financial Eligibility</p>
+              <p>Non-Financial Eligibility</p>
+            </div>
           </>
         ),
       },
