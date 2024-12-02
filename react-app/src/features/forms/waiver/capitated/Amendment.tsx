@@ -130,5 +130,3 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
         documentChecker: (check) => check.recordExists,
       }}
     />
-  );
-};

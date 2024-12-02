@@ -80,7 +80,6 @@ describe("Capitated Amendment", () => {
 
   test("PROPOSED EFFECTIVE DATE OF 1915(B) WAIVER AMENDMENT", async () => {
     await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
-    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
     const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
 
