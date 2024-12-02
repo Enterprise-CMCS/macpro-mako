@@ -25,7 +25,7 @@ export const ChipSpaStateEmail = (props: {
       footerContent={<ContactStateLead isChip />}
     >
       <Text style={{ ...styles.text.base, marginTop: "16px" }}>
-        {`You’ve successfully submitted the following to CMS reviewers for CHIP SPA ${variables.id}`}
+        You’ve successfully submitted the following to CMS reviewers for CHIP SPA {variables.id}
       </Text>
       <DetailsHeading />
       <PackageDetails

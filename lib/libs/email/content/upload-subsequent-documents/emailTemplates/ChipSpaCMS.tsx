@@ -18,7 +18,7 @@ export const ChipSpaCMSEmail = (props: {
       footerContent={<BasicFooter />}
     >
       <Text style={{ ...styles.text.base, marginTop: "16px" }}>
-        {`New documents have been submitted for CHIP SPA ${variables.id} in OneMAC.`}
+        New documents have been submitted for CHIP SPA {variables.id} in OneMAC.
       </Text>
       <PackageDetails
         details={{
