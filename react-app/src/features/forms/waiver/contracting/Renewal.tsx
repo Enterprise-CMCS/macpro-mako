@@ -9,9 +9,9 @@ import {
   Input,
   RequiredIndicator,
 } from "@/components";
-import { Link } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
+import { Link } from "react-router-dom";
 import { getFAQLinkForAttachments } from "../../faqLinks";
 
 export const RenewalForm = () => {
@@ -36,25 +36,19 @@ export const RenewalForm = () => {
             render={({ field }) => (
               <FormItem>
                 <div className="flex gap-4">
-                  <FormLabel
-                    className="font-semibold"
-                    data-testid="waiverid-existing-label"
-                  >
+                  <FormLabel className="font-semibold" data-testid="waiverid-existing-label">
                     Existing Waiver Number to Renew <RequiredIndicator />
                   </FormLabel>
                 </div>
-                <p className="text-gray-500 font-light">
-                  Enter the existing waiver number in the format it was
-                  approved, using a dash after the two character state
-                  abbreviation.
+                <p className="text-neutral-500">
+                  Enter the existing waiver number in the format it was approved, using a dash after
+                  the two character state abbreviation.
                 </p>
                 <FormControl className="max-w-sm">
                   <Input
                     ref={field.ref}
                     value={field.value}
-                    onChange={(e) =>
-                      field.onChange(e.currentTarget.value.toUpperCase())
-                    }
+                    onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                   />
                 </FormControl>
                 <FormMessage />
@@ -67,10 +61,7 @@ export const RenewalForm = () => {
             render={({ field }) => (
               <FormItem>
                 <div className="flex gap-4">
-                  <FormLabel
-                    className="font-semibold"
-                    data-testid="waiverid-renewal-label"
-                  >
+                  <FormLabel className="font-semibold" data-testid="waiverid-renewal-label">
                     1915(b) Waiver Renewal Number <RequiredIndicator />
                   </FormLabel>
                   <Link
@@ -82,18 +73,15 @@ export const RenewalForm = () => {
                     What is my 1915(b) Waiver Renewal Number?
                   </Link>
                 </div>
-                <p className="text-gray-500 font-light">
-                  The Waiver Number must be in the format of SS-####.R##.00 or
-                  SS-#####.R##.00. For renewals, the {"'R##'"} starts with{" "}
-                  {" 'R01'"} and ascends.
+                <p className="text-neutral-500">
+                  The Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00. For
+                  renewals, the {"'R##'"} starts with {" 'R01'"} and ascends.
                 </p>
                 <FormControl className="max-w-sm">
                   <Input
                     ref={field.ref}
                     value={field.value}
-                    onChange={(e) =>
-                      field.onChange(e.currentTarget.value.toUpperCase())
-                    }
+                    onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                   />
                 </FormControl>
                 <FormMessage />
@@ -109,8 +97,7 @@ export const RenewalForm = () => {
                   className="font-semibold block"
                   data-testid="proposedEffectiveDate-label"
                 >
-                  Proposed Effective Date of 1915(b) Waiver Renewal{" "}
-                  <RequiredIndicator />
+                  Proposed Effective Date of 1915(b) Waiver Renewal <RequiredIndicator />
                 </FormLabel>
                 <FormControl className="max-w-sm">
                   <DatePicker

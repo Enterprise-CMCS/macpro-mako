@@ -1,19 +1,19 @@
-import { Link } from "react-router-dom";
 import {
+  DatePicker,
   FormControl,
   FormField,
-  FormLabel,
   FormItem,
-  RequiredIndicator,
-  DatePicker,
+  FormLabel,
   FormMessage,
   Input,
+  RequiredIndicator,
   SpaIdFormattingDesc,
 } from "@/components";
 import { ActionForm } from "@/components/ActionForm";
+import { AttachmentFileFormatInstructions } from "@/components/ActionForm/actionForm.components";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
-import { AttachmentFileFormatInstructions } from "@/components/ActionForm/actionForm.components";
+import { Link } from "react-router-dom";
 
 export const MedicaidForm = () => (
   <ActionForm
@@ -81,8 +81,11 @@ export const MedicaidForm = () => (
     attachments={{
       instructions: [
         <p data-testid="attachments-instructions">
-          Maximum file size of 80 MB per attachment. You can add multiple files per attachment type
-          except for the CMS Form 179. Read the description for each of the attachment types on the{" "}
+          Maximum file size of 80 MB per attachment.{" "}
+          <span className="font-bold">
+            You can add multiple files per attachment type except for the CMS Form 179.
+          </span>{" "}
+          Read the description for each of the attachment types on the{" "}
           <Link
             to="/faq/medicaid-spa-attachments"
             target={FAQ_TAB}

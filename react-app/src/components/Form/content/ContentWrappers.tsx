@@ -1,7 +1,7 @@
-import { ReactElement, ReactNode } from "react";
-import { Info } from "lucide-react";
 import { Alert, RequiredIndicator, SectionCard } from "@/components";
 import clsx from "clsx";
+import { Info } from "lucide-react";
+import { ReactElement, ReactNode } from "react";
 
 export const FormSectionCard = ({
   children,
@@ -31,16 +31,11 @@ export const FormSectionCard = ({
 
 export const RequiredFieldDescription = () => (
   <>
-    <RequiredIndicator />{" "}
-    <em className="font-light">Indicates a required field.</em>
+    <RequiredIndicator /> <em className="text-neutral-500">Indicates a required field.</em>
   </>
 );
 
-export const ProgressLossReminder = ({
-  className = "",
-}: {
-  className?: string;
-}) => (
+export const ProgressLossReminder = ({ className = "" }: { className?: string }) => (
   <p className={clsx("font-bold", className)}>
     If you leave this page, you will lose your progress on this form.
   </p>
@@ -54,7 +49,7 @@ export const ActionFormDescription = ({
   boldReminder?: boolean;
 }) => {
   return (
-    <div className="mt-4 text-gray-700 font-light">
+    <div className="mt-4">
       {children}
       {boldReminder && <ProgressLossReminder />}
     </div>
