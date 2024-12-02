@@ -33,11 +33,11 @@ export const PackageSection = () => {
   return (
     <section className="flex flex-col mb-8 space-y-8">
       <div>
-        <p>{getIdLabel(authority)}</p>
+        <p className="font-bold">{getIdLabel(authority)}</p>
         <p className="text-xl">{id}</p>
       </div>
       <div>
-        <p>Authority</p>
+        <p className="font-bold">Authority</p>
         <p className="text-xl">{getAuthorityLabel(authority)}</p>
       </div>
     </section>
