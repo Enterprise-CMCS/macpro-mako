@@ -18,7 +18,7 @@ export const MedSpaCMSEmail = ({
       details={{
         "State or territory": variables.territory,
         Name: variables.submitterName,
-        Email: variables.submitterEmail,
+        "Email Address": variables.submitterEmail,
         "Medicaid SPA Package ID": variables.id,
         Summary: variables.additionalInformation,
       }}
