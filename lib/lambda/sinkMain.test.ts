@@ -13,7 +13,7 @@ describe("sinkMain handler", () => {
 
   it("handles aws.onemac.migration.cdc topic successfully", async () => {
     const spiedOnProcessAndIndex = vi
-      .spyOn(sinkMainProcessors, "processAndIndex")
+      .spyOn(sinkMainProcessors, "insertOneMacRecordsFromKafkaIntoMako")
       .mockImplementation(vi.fn());
 
     await handler(
@@ -30,7 +30,9 @@ describe("sinkMain handler", () => {
   });
 
   it("handles aws.seatool.ksql.onemac.three.agg.State_Plan topic successfully", async () => {
-    const spiedOnProcessAndIndex = vi.spyOn(sinkMainProcessors, "ksql").mockImplementation(vi.fn());
+    const spiedOnProcessAndIndex = vi
+      .spyOn(sinkMainProcessors, "insertNewSeatoolRecordsFromKafkaIntoMako")
+      .mockImplementation(vi.fn());
 
     await handler(
       {

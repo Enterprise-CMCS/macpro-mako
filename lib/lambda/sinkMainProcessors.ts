@@ -1,14 +1,15 @@
 import { bulkUpdateDataWrapper, ErrorType, logError, getItems } from "libs";
 import { KafkaRecord, opensearch } from "shared-types";
-import { transforms } from "shared-types/opensearch/main";
+import { transforms, Document } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
+import { isBefore } from "date-fns";
 
-type TransformedEvent = {
+type OneMacRecord = {
   id: string;
   makoChangedDate: string | null;
 };
 
-const isRecordTransformable = (
+const isRecordAOneMacRecord = (
   record: Partial<{
     event: string;
     origin: string;
@@ -19,35 +20,33 @@ const isRecordTransformable = (
   record.event in transforms &&
   record?.origin === "mako";
 
-const getTransformedEventFromRecord = (
+const getOneMacRecordWithAllProperties = (
   value: string,
   topicPartition: string,
   kafkaRecord: KafkaRecord,
-): TransformedEvent | undefined => {
+): OneMacRecord | undefined => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
 
-  if (isRecordTransformable(record)) {
+  if (isRecordAOneMacRecord(record)) {
     const transformForEvent = transforms[record.event];
 
-    const {
-      data: transformedEvent,
-      success,
-      error,
-    } = transformForEvent.transform().safeParse(record);
+    const safeEvent = transformForEvent.transform().safeParse(record);
 
-    if (success === false) {
+    if (safeEvent.success === false) {
       logError({
         type: ErrorType.VALIDATION,
-        error,
+        error: safeEvent.error,
         metadata: { topicPartition, kafkaRecord, record },
       });
 
       return;
     }
 
-    console.log(`event after transformation: ${JSON.stringify(transformedEvent, null, 2)}`);
+    const { data: oneMacRecord } = safeEvent;
 
-    return transformedEvent;
+    console.log(`event after transformation: ${JSON.stringify(oneMacRecord, null, 2)}`);
+
+    return oneMacRecord;
   } else {
     console.log(`No transform found for event: ${record.event}`);
   }
@@ -55,8 +54,11 @@ const getTransformedEventFromRecord = (
   return;
 };
 
-export const processAndIndex = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
-  const recordsToUpdate = kafkaRecords.reduce<TransformedEvent[]>((collection, kafkaRecord) => {
+export const insertOneMacRecordsFromKafkaIntoMako = async (
+  kafkaRecords: KafkaRecord[],
+  topicPartition: string,
+) => {
+  const oneMacRecordsForMako = kafkaRecords.reduce<OneMacRecord[]>((collection, kafkaRecord) => {
     console.log(`record: ${JSON.stringify(kafkaRecord, null, 2)}`);
 
     try {
@@ -66,10 +68,14 @@ export const processAndIndex = async (kafkaRecords: KafkaRecord[], topicPartitio
         return collection;
       }
 
-      const transformedEvent = getTransformedEventFromRecord(value, topicPartition, kafkaRecord);
+      const oneMacRecordWithAllProperties = getOneMacRecordWithAllProperties(
+        value,
+        topicPartition,
+        kafkaRecord,
+      );
 
-      if (transformedEvent) {
-        return collection.concat(transformedEvent);
+      if (oneMacRecordWithAllProperties) {
+        return collection.concat(oneMacRecordWithAllProperties);
       }
     } catch (error) {
       logError({
@@ -82,92 +88,97 @@ export const processAndIndex = async (kafkaRecords: KafkaRecord[], topicPartitio
     return collection;
   }, []);
 
-  await bulkUpdateDataWrapper(recordsToUpdate, "main");
+  await bulkUpdateDataWrapper(oneMacRecordsForMako, "main");
 };
 
-export const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
-  const docs: any[] = [];
+const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
+  const kafkaIds = kafkaRecords.map((record) => JSON.parse(decodeBase64WithUtf8(record.key)));
+  const openSearchRecords = await getItems(kafkaIds);
 
-  // fetch the date for all kafkaRecords in the list from opensearch
-  const ids = kafkaRecords.map((record) => {
-    const decodedId = JSON.parse(decodeBase64WithUtf8(record.key));
+  return openSearchRecords.reduce<Map<string, number>>((map, item) => {
+    map.set(item.id, new Date(item.changedDate).getTime());
 
-    return decodedId;
-  });
+    return map;
+  }, new Map());
+};
 
-  const osDomain = process.env.osDomain;
-  const indexNamespace = process.env.indexNamespace;
-  if (!indexNamespace || !osDomain) {
-    throw new Error("Missing required environment variable(s)");
-  }
+export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
+  kafkaRecords: KafkaRecord[],
+  topicPartition: string,
+) => {
+  const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
 
-  const openSearchRecords = await getItems(osDomain, indexNamespace, ids);
+  const seatoolRecordsForMako = kafkaRecords.reduce<{ id: string; [key: string]: unknown }[]>(
+    (collection, kafkaRecord) => {
+      try {
+        const { key, value } = kafkaRecord;
 
-  const existingRecordsLookup = openSearchRecords.reduce<Record<string, number>>((acc, item) => {
-    const epochDate = new Date(item.changedDate).getTime(); // Convert `changedDate` to epoch number
-    acc[item.id] = epochDate; // Use `id` as the key and epoch date as the value
-    return acc;
-  }, {});
+        const id: string = decodeBase64WithUtf8(key);
 
-  console.log("are we here 4");
+        if (!value) {
+          // record in seatool has been deleted
+          // nulls the seatool properties from the record
+          // seatool record would now only have mako properties
+          return collection.concat(opensearch.main.seatool.tombstone(id));
+        }
 
-  for (const kafkaRecord of kafkaRecords) {
-    const { key, value } = kafkaRecord;
-    try {
-      const id: string = JSON.parse(decodeBase64WithUtf8(key));
+        const seatoolRecord: Document = {
+          id,
+          ...JSON.parse(decodeBase64WithUtf8(value)),
+        };
 
-      // Handle deletes and continue
-      if (!value) {
-        docs.push(opensearch.main.seatool.tombstone(id));
-        continue;
-      }
+        const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
 
-      // Handle everything else and continue
-      const record = {
-        id,
-        ...JSON.parse(decodeBase64WithUtf8(value)),
-      };
-      const result = opensearch.main.seatool.transform(id).safeParse(record);
-      if (!result.success) {
+        if (safeSeatoolRecord.success === false) {
+          logError({
+            type: ErrorType.VALIDATION,
+            error: safeSeatoolRecord.error,
+            metadata: { topicPartition, kafkaRecord, record: seatoolRecord },
+          });
+
+          return collection;
+        }
+
+        const { data: seatoolDocument } = safeSeatoolRecord;
+        const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
+
+        console.log("--------------------");
+        console.log(`id: ${seatoolDocument.id}`);
+        console.log(`mako: ${makoDocumentTimestamp}`);
+        console.log(`seatool: ${seatoolDocument.changed_date}`);
+
+        const isNewerOrUndefined =
+          seatoolDocument.changed_date &&
+          makoDocumentTimestamp &&
+          isBefore(seatoolDocument.changed_date, makoDocumentTimestamp);
+
+        if (isNewerOrUndefined) {
+          console.log("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
+          return collection;
+        }
+
+        console.log("INDEX");
+        console.log("--------------------");
+
+        if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
+          console.log(`Status: ${seatoolDocument}`);
+
+          return collection.concat({ ...seatoolDocument });
+        }
+      } catch (error) {
         logError({
-          type: ErrorType.VALIDATION,
-          error: result?.error,
-          metadata: { topicPartition, kafkaRecord, record },
+          type: ErrorType.BADPARSE,
+          error,
+          metadata: { topicPartition, kafkaRecord },
         });
-        continue;
       }
-      console.log("--------------------");
-      console.log(`id: ${result.data.id}`);
-      console.log(`mako: ` + existingRecordsLookup[result.data.id]);
-      console.log(`seatool: ` + result.data.changed_date);
-      if (
-        existingRecordsLookup[result.data.id] && // Check if defined
-        (!result.data.changed_date || // Check if not defined or...
-          result.data.changed_date < existingRecordsLookup[result.data.id]) // ...less than existingRecordsLookup[result.data.id]
-      ) {
-        console.log(`SKIP`);
-        continue;
-      }
-      console.log(`INDEX`);
-      console.log("--------------------");
 
-      if (
-        result.data.authority &&
-        typeof result.data.seatoolStatus === "string" &&
-        result.data.seatoolStatus != "Unknown"
-      ) {
-        console.log("what status are we writing", JSON.stringify(result.data));
-        docs.push({ ...result.data });
-      }
-    } catch (error) {
-      logError({
-        type: ErrorType.BADPARSE,
-        error,
-        metadata: { topicPartition, kafkaRecord },
-      });
-    }
-  }
-  await bulkUpdateDataWrapper(docs, "main");
+      return collection;
+    },
+    [],
+  );
+
+  await bulkUpdateDataWrapper(seatoolRecordsForMako, "main");
 };
 
 export const changed_date = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {

@@ -1,7 +1,11 @@
 import { Handler } from "aws-lambda";
 import { KafkaEvent } from "shared-types";
 import { ErrorType, getTopic, logError } from "libs";
-import { processAndIndex, ksql, changed_date } from "./sinkMainProcessors";
+import {
+  insertOneMacRecordsFromKafkaIntoMako,
+  insertNewSeatoolRecordsFromKafkaIntoMako,
+  changed_date,
+} from "./sinkMainProcessors";
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   const prettifiedEventJSON = JSON.stringify(event, null, 2);
@@ -17,10 +21,10 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
         switch (topic) {
           case "aws.onemac.migration.cdc":
-            return processAndIndex(records, topicPartition);
+            return insertOneMacRecordsFromKafkaIntoMako(records, topicPartition);
 
           case "aws.seatool.ksql.onemac.three.agg.State_Plan":
-            return ksql(records, topicPartition);
+            return insertNewSeatoolRecordsFromKafkaIntoMako(records, topicPartition);
 
           case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
             return changed_date(records, topicPartition);
