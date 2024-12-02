@@ -47,18 +47,23 @@ export const Welcome = () => {
       {/* End Hero Section */}
       {/* Two Column Main Layout */}
       <div className="max-w-screen-xl mx-auto p-4 lg:px-8">
-        <div className="flex flex-row justify-center">
-          <CardWithTopBorder className="w-[767px]">
-            <p className="py-5 pl-6 pr-20">
-              <span className="font-bold text-[#0071bc]">MMDL SPA forms available in OneMAC:</span>{" "}
-              Medicaid Alternative Benefit Plan, Premium and Cost Sharing, and CHIP Eligibility SPA
-              templates and implementation guides are now available in OneMAC. New submissions for
-              these SPA types are submitted through the OneMAC system effective [add date].{" "}
-              <Link to="/faq" className="underline text-[#0071bc]">
-                Learn more
-              </Link>
-            </p>
-          </CardWithTopBorder>
+        <div className="flex flex-col justify-center items-center">
+          <div>
+            <h2 className="text-2xl font-bold">New and Notable</h2>
+            <CardWithTopBorder className="w-[767px]">
+              <p className="py-5 pl-6 pr-20">
+                <span className="font-bold text-[#0071bc]">
+                  MMDL SPA forms available in OneMAC:
+                </span>{" "}
+                Medicaid Alternative Benefit Plan, Premium and Cost Sharing, and CHIP Eligibility
+                SPA templates and implementation guides are now available in OneMAC. New submissions
+                for these SPA types are submitted through the OneMAC system effective [add date].{" "}
+                <Link to="/faq" className="underline text-[#0071bc]">
+                  Learn more
+                </Link>
+              </p>
+            </CardWithTopBorder>
+          </div>
         </div>
         <div className="flex flex-col justify-center gap-8">
           <div>
