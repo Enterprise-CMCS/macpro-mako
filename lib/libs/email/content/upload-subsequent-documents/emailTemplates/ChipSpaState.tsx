@@ -29,7 +29,7 @@ export const ChipSpaStateEmail = (props: {
         details={{
           "State or territory": variables.territory,
           Name: variables.submitterName,
-          Email: variables.submitterEmail,
+          "Email Address": variables.submitterEmail,
           "CHIP SPA Package ID": variables.id,
           Summary: variables.additionalInformation,
         }}
