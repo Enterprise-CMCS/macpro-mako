@@ -84,13 +84,13 @@ const processAndIndex = async ({
       // TODO:  handle legacy.  for now, just continue
 
       // move to another file or place?
+      // TODO: handle update-id
       const adminChangeSchemas = {
         delete: z.object({
           id: z.string(),
           deleted: z.boolean(),
         }),
         "update-values": z.object({}),
-        // TODO: handle update-id
       };
       if (record.isAdminChange && record.adminChangeType in adminChangeSchemas) {
         const schema =
@@ -109,31 +109,12 @@ const processAndIndex = async ({
         } else {
           console.log(`Unknown adminChangeType: ${record.adminChangeType}`);
         }
-        // if (record.adminChangeType === "delete") {
-        //   const deletedPackageSchema = z.object({
-        //     id: z.string(),
-        //     deleted: z.boolean(),
-        //   });
-
-        //   const result = deletedPackageSchema.safeParse(record);
-
-        //   if (result.success) {
-        //     docs.push(record);
-        //   } else {
-        //     console.log("Skipping package with invalid format", result.error.message);
-        //   }
-        // }
-        // if (record.adminChangeType === "update-values") {
-        //   docs.push(record);
-        // }
       }
       if (!record.event || record?.origin !== "mako") {
         continue;
       }
 
       if (record.event in transforms) {
-        // respond-to-rai
-        // If the event is a supported event, transform and push to docs array for indexing
         const transformForEvent = transforms[record.event as keyof typeof transforms];
 
         const result = transformForEvent.transform().safeParse(record);

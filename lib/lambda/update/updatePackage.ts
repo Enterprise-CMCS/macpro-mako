@@ -95,7 +95,7 @@ export const handler = async (event: APIGatewayEvent) => {
       }
 
       if (Object.keys(updatedFields).length > 1) {
-        changeMadeText = `${Object.keys(updatedFields)} have been updated.`;
+        changeMadeText = `${Object.keys(updatedFields).join(", ")} have been updated.`;
       } else {
         changeMadeText = `${Object.keys(updatedFields)} has been updated.`;
       }

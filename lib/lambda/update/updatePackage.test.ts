@@ -30,10 +30,8 @@ vi.mock("../../libs/api/package", () => ({
 
 describe("Update package", () => {
   let mockProducer: Producer;
-  // let brokerString: string | undefined;
 
   beforeEach(() => {
-    // brokerString = process.env.brokerString;
     process.env.brokerString = "broker1,broker2";
     process.env.osDomain = "test-domain";
     process.env.topicName = "test-topic";
@@ -110,6 +108,13 @@ describe("Update package", () => {
       }),
     } as APIGatewayEvent;
 
+    if (!event.body) {
+      throw new Error("Event body cannot be null");
+    }
+
+    const parsedBody = JSON.parse(event.body);
+    const updatedFieldsKeys = Object.keys(parsedBody.updatedFields).join(", ");
+
     await updatePackage(event);
 
     expect(mockProducer.send).toHaveBeenCalledWith({
@@ -124,7 +129,7 @@ describe("Update package", () => {
             isAdminChange: true,
             adminChangeType: "update-values",
             // TODO: access event.body.updatedFields keys?
-            changeMade: "state,initialIntakeNeeded have been updated.",
+            changeMade: `${updatedFieldsKeys} have been updated.`,
           }),
           partition: 0,
           headers: { source: "mako" },
