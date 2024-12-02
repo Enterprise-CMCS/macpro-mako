@@ -1,8 +1,14 @@
 import { CommonEmailVariables, Events, RelatedEventType } from "shared-types";
-import { Attachments, PackageDetails, BasicFooter, SpamWarning } from "../../email-components";
+import {
+  PackageDetails,
+  BasicFooter,
+  MailboxNotice,
+  Divider,
+  ContactStateLead,
+} from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const AppKCMSEmail = (props: {
+export const AppKStateEmail = (props: {
   variables: Events["RespondToRai"] & CommonEmailVariables;
   relatedEvent: RelatedEventType;
 }) => {
@@ -23,8 +29,9 @@ export const AppKCMSEmail = (props: {
           Summary: variables.additionalInformation,
         }}
       />
-      <Attachments attachments={variables.attachments} />
-      <SpamWarning />
+      <Divider />
+      <MailboxNotice type="Waiver" />
+      <ContactStateLead />
     </BaseEmailTemplate>
   );
 };

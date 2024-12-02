@@ -1,10 +1,9 @@
-import { CommonEmailVariables } from "shared-types";
-import { RaiWithdraw } from "shared-types";
+import { CommonEmailVariables, Events } from "shared-types";
 import { Container, Html } from "@react-email/components";
 import { WithdrawRAI, PackageDetails, BasicFooter } from "../../email-components";
 
 export const ChipSpaCMSEmail = (props: {
-  variables: RaiWithdraw & CommonEmailVariables;
+  variables: Events["RespondToRai"] & CommonEmailVariables;
   relatedEvent: any;
 }) => {
   const { variables, relatedEvent } = { ...props };

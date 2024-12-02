@@ -73,7 +73,7 @@ const LoginInstructions = ({
   <ul style={{ marginLeft: "-20px" }}>
     <li>
       <Text style={styles.text.description}>
-        The submission can be accessed in the OneMAC application at{" "}
+        The submission can be accessed in the OneMAC application, which you can find at{" "}
         <Link href={appEndpointURL}>{useThisLink ? "this link" : appEndpointURL}</Link>.
       </Text>
     </li>
@@ -91,6 +91,8 @@ const LoginInstructions = ({
     </li>
   </ul>
 );
+
+const Divider = () => <Hr style={styles.divider} />;
 
 const DetailsHeading = () => (
   <div>
@@ -160,7 +162,7 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
                 Summary:
               </Heading>
             </Text>
-            <Textarea>{value ?? "No additional information submitted"}</Textarea>
+            <Text>{value ?? "No additional information submitted"}</Text>
           </Row>
         );
       }
@@ -168,7 +170,7 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
       return (
         <Row key={label + index}>
           <Column align="left" style={{ width: "50%" }}>
-            <Text style={styles.text.title}>{label}</Text>
+            <Text style={styles.text.title}>{label}:</Text>
           </Column>
           <Column>
             <Text style={styles.text.description}>{value ?? "Not provided"}</Text>
@@ -203,26 +205,38 @@ const SpamNotice = () => (
 );
 
 const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
-  <Section
-    style={{
-      ...styles.section.footer,
-      paddingLeft: "16px",
-      paddingRight: "16px",
-    }}
-  >
+  <Section>
+    <Divider />
     <Text style={{ fontSize: "14px" }}>
       If you have questions or did not expect this email, please contact{" "}
       <Link
         href={`mailto:${isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}`}
-        style={{ color: "#fff", textDecoration: "underline" }}
+        style={{ textDecoration: "underline" }}
       >
         {isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}
       </Link>{" "}
       or your state lead.
     </Text>
-    <Text>Thank you!</Text>
+    <Text>Thank you.</Text>
   </Section>
 );
+
+export const SpamWarning = () => {
+  return (
+    <Section>
+      <Divider />
+      <Text style={{ fontSize: "14px" }}>
+        If the contents of this email seem suspicious, do not open them, and instead forward this
+        email to{" "}
+        <Link style={{ textDecoration: "underline" }} href={`mailto:${EMAIL_CONFIG.SPAM_EMAIL}`}>
+          {EMAIL_CONFIG.SPAM_EMAIL}
+        </Link>
+        .
+      </Text>
+      <Text>Thank you.</Text>
+    </Section>
+  );
+};
 
 const EmailFooter = ({ children }: { children: React.ReactNode }) => (
   <Section style={styles.section.footer}>{children}</Section>
@@ -284,6 +298,7 @@ export {
   EmailNav,
   LoginInstructions,
   DetailsHeading,
+  Divider,
   Attachments,
   PackageDetails,
   MailboxNotice,

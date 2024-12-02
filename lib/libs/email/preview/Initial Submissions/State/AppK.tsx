@@ -1,18 +1,18 @@
 import { AppKStateEmail } from "../../../content/new-submission/emailTemplates";
-import * as attachments from "../../../mock-data/attachments";
 import { emailTemplateValue } from "../../../mock-data/new-submission";
+import * as attachments from "../../../mock-data/attachments";
 
-const AppKStateEmailPreview = () => {
+const AppKCMSEmailPreview = () => {
   return (
     <AppKStateEmail
       variables={{
         ...emailTemplateValue,
+        event: "app-k",
         id: "CO-1234.R21.00",
-        state: "CO",
-        waiverIds: ["1234-56768", "1234-56769"],
+        authority: "1915(c)",
         actionType: "Amend",
-        seaActionType: "amend",
-        title: "App K For The State - 2024",
+        territory: "CO",
+        title: "A Perfect Appendix K Amendment Title",
         attachments: {
           appk: attachments.appk,
           other: attachments.other,
@@ -22,4 +22,4 @@ const AppKStateEmailPreview = () => {
   );
 };
 
-export default AppKStateEmailPreview;
+export default AppKCMSEmailPreview;

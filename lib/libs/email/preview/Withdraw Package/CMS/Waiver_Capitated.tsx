@@ -1,6 +1,21 @@
-import { Waiver1915bCMSEmail } from "lib/libs/email/content/widthdrawPackage/emailTemplates";
+import { WaiverCMSEmail } from "lib/libs/email/content/withdrawPackage/emailTemplates";
 import { emailTemplateValue } from "lib/libs/email/mock-data/new-submission";
+import * as attachments from "../../../mock-data/attachments";
 
 export default () => {
-  return <Waiver1915bCMSEmail variables={emailTemplateValue} />;
+  return (
+    <WaiverCMSEmail
+      variables={{
+        ...emailTemplateValue,
+        authority: "1915(b)",
+        event: "withdraw-package",
+        id: "CO-1234.R21.00",
+        actionType: "",
+        attachments: {
+          officialWithdrawalLetter: attachments.withdrawRequest,
+          supportingDocumentation: attachments.supportingDocumentation,
+        },
+      }}
+    />
+  );
 };

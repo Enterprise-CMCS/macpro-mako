@@ -1,9 +1,10 @@
-import { AppKCMSEmail } from "../../../content/new-submission/emailTemplates";
-import { emailTemplateValue } from "../../../mock-data/new-submission";
+import { WaiverStateEmail } from "lib/libs/email/content/withdrawConfirmation/emailTemplates";
+import { emailTemplateValue } from "lib/libs/email/mock-data/new-submission";
 import * as attachments from "../../../mock-data/attachments";
-const AppKCMSEmailPreview = () => {
+
+export default () => {
   return (
-    <AppKCMSEmail
+    <WaiverStateEmail
       variables={{
         ...emailTemplateValue,
         event: "app-k",
@@ -20,5 +21,3 @@ const AppKCMSEmailPreview = () => {
     />
   );
 };
-
-export default AppKCMSEmailPreview;
