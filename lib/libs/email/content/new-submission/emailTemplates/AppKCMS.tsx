@@ -1,11 +1,11 @@
 import { Events, CommonEmailVariables } from "shared-types";
-
 import {
   LoginInstructions,
   PackageDetails,
-  BasicFooter,
-  DetailsHeading,
   Attachments,
+  BasicFooter,
+  SpamWarning,
+  Divider,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { formatDate } from "shared-utils";
@@ -21,8 +21,8 @@ export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <DetailsHeading />
-      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+      <Divider />
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} useThisLink />
       <PackageDetails
         details={{
           "State or territory": variables.territory,
@@ -30,12 +30,13 @@ export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
           "Email Address": variables.submitterEmail,
           "Amendment Title": variables.title ?? null,
           "Waiver Amendment Number": variables.id,
-          "Waiver Authority": variables.seaActionType,
+          "Waiver Authority": variables.actionType,
           "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           Summary: variables.additionalInformation,
         }}
       />
       <Attachments attachments={variables.attachments} />
+      <SpamWarning />
     </BaseEmailTemplate>
   );
 };
