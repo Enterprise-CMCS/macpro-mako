@@ -276,3 +276,29 @@ export const waiverExtensionRequest = {
   ],
   label: "Waiver Extension Request",
 };
+
+export const withdrawRequest = {
+  files: [
+    {
+      filename: "official_withdrawal_letter.pdf",
+      title: "Withdrawal Letter",
+      bucket: "mako-outbox-attachments-635052997545",
+      key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
+      uploadDate: Date.now(),
+    },
+  ],
+  label: "Official Withdrawal Letter",
+};
+
+export const supportingDocumentation = {
+  files: [
+    {
+      filename: "supporting_documentation.pdf",
+      title: "Supporting Documentation",
+      bucket: "mako-outbox-attachments-635052997545",
+      key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
+      uploadDate: Date.now(),
+    },
+  ],
+  label: "Supporting Documentation",
+};

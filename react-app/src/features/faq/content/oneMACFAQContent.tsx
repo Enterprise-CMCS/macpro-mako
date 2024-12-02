@@ -5,6 +5,10 @@ import OneMACIDMGuide from "@/assets/onboarding/OneMACIDMGuide.pdf";
 import OneMACStateUserGuide from "@/assets/onboarding/OneMACStateUserGuide.pdf";
 import OneMACCMSUserGuide from "@/assets/onboarding/OneMACCMSUserGuide.pdf";
 import { FILE_TYPES } from "shared-types/uploads";
+import { abpTemplates,renderSection,abpGuides, mpcTemplates,mpcGuides,chpTemplates } from "@/features/faq/content/abpFAQPDFs"; 
+import "./faqStyles.css";
+
+
 
 type QuestionAnswer = {
   anchorText: string;
@@ -512,33 +516,90 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "abp-spa-templates",
         question: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
         answerJSX: (
-          <p>
-            Medicaid Alternative Benefit Plan (ABP) SPA templates can be downloaded at the links
-            below. After downloading and completing the templates you need, upload them as part of
-            the SPA submission.
-          </p>
+          <section>
+            <p>
+              Medicaid Alternative Benefit Plan (ABP) SPA templates can be downloaded at the links
+              below. After downloading and completing the templates you need, upload them as part of
+              the SPA submission.
+            </p>
+            <ul className="faq-section">
+              {abpTemplates.map((pdf) => (
+                <li key={pdf.title} className="faq-list-item">
+                  <a
+                    href={pdf.href} // Links directly to imported PDFs
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="faq-list-link"
+                  >
+                    {pdf.title}: {pdf.text}
+                  </a>
+                  {pdf.subtext && (
+                    <ul className="faq-sublist">
+                      {pdf.subtext.map((sub, index) => (
+                        <li key={index} className="faq-sublist-item">
+                          {sub}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
         ),
-      },
+      },      
       {
         anchorText: "abp-implementation-guides-spa",
         question:
           "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
         answerJSX: (
+          <section>
           <p>
             Medicaid Alternative Benefit Plan (ABP) SPA implementation guides can be downloaded at
             the links below.
           </p>
+          <ul className="faq-section">
+              {abpGuides.map((pdf) => (
+                <li key={pdf.title} className="faq-list-item">
+                  <a
+                    href={pdf.href} // Links directly to imported PDFs
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="faq-list-link"
+                  >
+                    {pdf.title}: {pdf.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+        </section>
         ),
       },
       {
         anchorText: "mpc-spa-templates",
         question: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?",
         answerJSX: (
-          <p>
-            Medicaid Premiums and Cost Sharing (MPC) SPA templates can be downloaded at the links
-            below. After downloading and completing the templates you need, upload them as part of
-            the SPA submission.
-          </p>
+          <section>
+            <p>
+              Medicaid Premiums and Cost Sharing (MPC) SPA templates can be downloaded at the links
+              below. After downloading and completing the templates you need, upload them as part of
+              the SPA submission.
+            </p>
+            <ul className="faq-section">
+              {mpcTemplates.map((pdf) => (
+                <li key={pdf.title} className="faq-list-item">
+                  <a
+                    href={pdf.href} // Links directly to imported PDFs
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="faq-list-link"
+                  >
+                    {pdf.title}: {pdf.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
         ),
       },
       {
@@ -546,39 +607,144 @@ export const oneMACFAQContent: FAQContent[] = [
         question:
           "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?",
         answerJSX: (
-          <p>
-            Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides can be downloaded at
-            the links below.
-          </p>
+          <section>
+            <p>
+              Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides can be downloaded at
+              the links below.
+            </p>
+            <ul className="faq-section">
+            {mpcGuides.map((pdf) => (
+              <li key={pdf.title} className="faq-list-item">
+                <a
+                  href={pdf.href} // Links directly to imported PDFs
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="faq-list-link"
+                >
+                  {pdf.title}: {pdf.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+          </section>
         ),
       },
       {
         anchorText: "chip-spa-templates",
         question: "Where can I download CHIP eligibility SPA templates?",
         answerJSX: (
-          <p>
-            CHIP eligibility SPA templates can be downloaded at the links below. After downloading
-            and completing the templates you need, upload them as part of the SPA submission.
-          </p>
+          <section>
+            <p>
+              CHIP eligibility SPA templates can be downloaded at the links below. After downloading
+              and completing the templates you need, upload them as part of the SPA submission.
+            </p>
+            {renderSection(
+              "MAGI Eligibility & Methods",
+              chpTemplates,
+              (template) =>
+                [
+                  "CS 7",
+                  "CS 8",
+                  "CS 9",
+                  "CS 10",
+                  "CS 11",
+                  "CS 12",
+                  "CS 13",
+                  "CS 15",
+                  "CS 16",
+                ].includes(template.title)
+            )}
+            {renderSection(
+              "XXI Medicaid Expansion",
+              chpTemplates,
+              (template) => template.title === "CS 3"
+            )}
+            {renderSection(
+              "Establish 2101(f) Group",
+              chpTemplates,
+              (template) => template.title === "CS 14"
+            )}
+            {renderSection(
+              "Eligibility Processing",
+              chpTemplates,
+              (template) => template.title === "CS 24"
+            )}
+            {renderSection(
+              "Non-Financial Eligibility",
+              chpTemplates,
+              (template) =>
+                [
+                  "CS 17",
+                  "CS 18",
+                  "CS 19",
+                  "CS 20",
+                  "CS 21",
+                  "CS 23",
+                  "CS 27",
+                  "CS 28",
+                  "CS 29",
+                ].includes(template.title)
+            )}
+          </section>
         ),
       },
       {
         anchorText: "chip-spa-implentation-guides",
         question: "Where can I download CHIP eligibility SPA implementation guides?",
         answerJSX: (
-          <>
-            <p>CHIP eligibility SPA implementation guides can be downloaded at the links below.</p>
-
-            <p className="p-2">MAGI Eligibility & Methods</p>
-
-            <p className="p-2">XXI Medicaid Expansion</p>
-
-            <p className="p-2">Establish 2101(f) Group</p>
-
-            <p className="p-2">Eligibility Processing</p>
-
-            <p className="p-2">Non-Financial Eligibility</p>
-          </>
+          <section>
+            <p>
+              CHIP eligibility SPA implementation guides can be downloaded at the links below. The
+              guides include detailed instructions for completing your submissions.
+            </p>
+            {renderSection(
+              "MAGI Eligibility & Methods",
+              chpTemplates,
+              (guide) =>
+                [
+                  "CS 7",
+                  "CS 8",
+                  "CS 9",
+                  "CS 10",
+                  "CS 11",
+                  "CS 12",
+                  "CS 13",
+                  "CS 15",
+                  "CS 16",
+                ].includes(guide.title)
+            )}
+            {renderSection(
+              "XXI Medicaid Expansion",
+              chpTemplates,
+              (guide) => guide.title === "CS 3"
+            )}
+            {renderSection(
+              "Establish 2101(f) Group",
+              chpTemplates,
+              (guide) => guide.title === "CS 14"
+            )}
+            {renderSection(
+              "Eligibility Processing",
+              chpTemplates,
+              (guide) => guide.title === "CS 24"
+            )}
+            {renderSection(
+              "Non-Financial Eligibility",
+              chpTemplates,
+              (guide) =>
+                [
+                  "CS 17",
+                  "CS 18",
+                  "CS 19",
+                  "CS 20",
+                  "CS 21",
+                  "CS 23",
+                  "CS 27",
+                  "CS 28",
+                  "CS 29",
+                ].includes(guide.title)
+            )}
+          </section>
         ),
       },
     ],
