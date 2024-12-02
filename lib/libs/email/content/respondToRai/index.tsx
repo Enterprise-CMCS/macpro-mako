@@ -5,8 +5,8 @@ import {
   MedSpaStateEmail,
   ChipSpaCMSEmail,
   ChipSpaStateEmail,
-  Waiver1915bCMSEmail,
-  Waiver1915bStateEmail,
+  WaiverCMSEmail,
+  WaiverStateEmail,
 } from "./emailTemplates";
 import { render } from "@react-email/render";
 
@@ -72,7 +72,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.srtEmails,
         ],
         subject: `Waiver RAI Response for ${variables.id} Submitted`,
-        body: await render(<Waiver1915bCMSEmail variables={variables} />),
+        body: await render(<WaiverCMSEmail variables={variables} />),
       };
     },
     state: async (
@@ -81,8 +81,34 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         cc: variables.allStateUsersEmails,
-        subject: `Your Waiver Response for ${variables.id} has been submitted to CMS`,
-        body: await render(<Waiver1915bStateEmail variables={variables} />),
+        subject: `Your 1915(b) RAI Response for ${variables.id} has been submitted to CMS`,
+        body: await render(<WaiverStateEmail variables={variables} />),
+      };
+    },
+  },
+  [Authority["1915c"]]: {
+    cms: async (
+      variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: [
+          ...variables.emails.osgEmail,
+          ...variables.emails.dmcoEmail,
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+        ],
+        subject: `Waiver RAI Response for ${variables.id} Submitted`,
+        body: await render(<WaiverCMSEmail variables={variables} />),
+      };
+    },
+    state: async (
+      variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
+        cc: variables.allStateUsersEmails,
+        subject: `Your 1915(c) RAI Response for ${variables.id} has been submitted to CMS`,
+        body: await render(<WaiverStateEmail variables={variables} />),
       };
     },
   },
