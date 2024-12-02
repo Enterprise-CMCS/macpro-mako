@@ -11,10 +11,6 @@ export const formSchema = events["contracting-renewal"].baseSchema.extend({
     .refine(async (value) => !(await itemExists(value)), {
       message:
         "According to our records, this 1915(b) Waiver Number already exists. Please check the 1915(b) Waiver Number and try entering it again.",
-    })
-    .refine((id) => /^[A-Z]{2}-\d{4,5}\.R(?!00)\d{2}\.[0]{2}$/.test(id), {
-      message:
-        "Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00 For renewals, the “R##” starts with '01' and ascends.",
     }),
   waiverNumber: events["contracting-renewal"].baseSchema.shape.waiverNumber
     .refine(async (value) => await itemExists(value), {
