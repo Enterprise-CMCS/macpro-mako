@@ -1,4 +1,4 @@
-import { CommonEmailVariables, Events } from "shared-types";
+import { CommonEmailVariables, Events, RelatedEventType } from "shared-types";
 import {
   PackageDetails,
   BasicFooter,
@@ -10,7 +10,7 @@ import { BaseEmailTemplate } from "../../email-templates";
 
 export const AppKStateEmail = (props: {
   variables: Events["RespondToRai"] & CommonEmailVariables;
-  relatedEvent: any;
+  relatedEvent: RelatedEventType;
 }) => {
   const { variables, relatedEvent } = { ...props };
   return (

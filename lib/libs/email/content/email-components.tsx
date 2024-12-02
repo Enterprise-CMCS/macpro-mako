@@ -73,7 +73,7 @@ const LoginInstructions = ({
   <ul style={{ marginLeft: "-20px" }}>
     <li>
       <Text style={styles.text.description}>
-        The submission can be accessed in the OneMAC application at{" "}
+        The submission can be accessed in the OneMAC application, which you can find at{" "}
         <Link href={appEndpointURL}>{useThisLink ? "this link" : appEndpointURL}</Link>.
       </Text>
     </li>
@@ -228,8 +228,8 @@ export const SpamWarning = () => {
       <Text style={{ fontSize: "14px" }}>
         If the contents of this email seem suspicious, do not open them, and instead forward this
         email to{" "}
-        <Link style={{ textDecoration: "underline" }} href="mailto:SPAM@cms.hhs.gov">
-          SPAM@cms.hhs.gov
+        <Link style={{ textDecoration: "underline" }} href={`mailto:${EMAIL_CONFIG.SPAM_EMAIL}`}>
+          {EMAIL_CONFIG.SPAM_EMAIL}
         </Link>
         .
       </Text>

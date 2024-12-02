@@ -18,5 +18,10 @@ export interface CommonEmailVariables {
   actionType: string;
   allStateUsersEmails?: string[];
   responseDate?: number;
-  title?: string; //Is this okay?
+  title?: string;
+}
+
+export interface RelatedEventType {
+  submitterName: string;
+  submitterEmail: string;
 }
