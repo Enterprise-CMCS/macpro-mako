@@ -1,7 +1,17 @@
-import { ActionForm, FormControl, FormField, FormItem, FormLabel, FormMessage, RequiredIndicator, Input, DatePicker } from "@/components";
-import { Link } from "react-router-dom";
+import {
+  ActionForm,
+  DatePicker,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+  RequiredIndicator,
+} from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
+import { Link } from "react-router-dom";
 import { getFAQLinkForAttachments } from "../../faqLinks";
 
 export const Renewal = () => (
@@ -29,11 +39,16 @@ export const Renewal = () => (
                   Existing Waiver Number to Renew <RequiredIndicator />
                 </FormLabel>
               </div>
-              <p className="text-gray-500 font-light">
-                Enter the existing waiver number in the format it was approved, using a dash after the two character state abbreviation.
+              <p className="text-neutral-500">
+                Enter the existing waiver number in the format it was approved, using a dash after
+                the two character state abbreviation.
               </p>
               <FormControl className="max-w-sm">
-                <Input ref={field.ref} value={field.value} onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())} />
+                <Input
+                  ref={field.ref}
+                  value={field.value}
+                  onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -57,12 +72,16 @@ export const Renewal = () => (
                   What is my 1915(b) Waiver Renewal Number?
                 </Link>
               </div>
-              <p className="text-gray-500 font-light">
-                The Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00. For renewals, the {"'R##'"} starts with {" 'R01'"} and
-                ascends.
+              <p className="text-neutral-500">
+                The Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00. For
+                renewals, the {"'R##'"} starts with {" 'R01'"} and ascends.
               </p>
               <FormControl className="max-w-sm">
-                <Input ref={field.ref} value={field.value} onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())} />
+                <Input
+                  ref={field.ref}
+                  value={field.value}
+                  onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
