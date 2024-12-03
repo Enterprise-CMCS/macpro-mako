@@ -67,6 +67,8 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
       // TODO: get approval, update language. make dynamic?
       case "update-values":
         return ["Package detail(s) have been changed", AC_LegacyAdminChange];
+      case "delete":
+        return ["Package has been deleted", AC_LegacyAdminChange];
       default:
         return [BLANK_VALUE, AC_Update];
     }

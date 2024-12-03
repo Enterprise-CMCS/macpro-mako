@@ -84,7 +84,7 @@ const processAndIndex = async ({
 
       const transformedDeleteSchema = deleteAdminChangeSchema.transform((data) => ({
         ...data,
-        event: "soft-delete",
+        event: "delete",
         packageId: data.id,
         id: `${data.id}-${offset}`,
         timestamp: Date.now(),
@@ -99,6 +99,7 @@ const processAndIndex = async ({
       }));
 
       const schema = transformedDeleteSchema.or(transformedUpdateValuesSchema);
+      console.log("RECORDDDD", record);
 
       if (record.isAdminChange) {
         const result = schema.safeParse(record);
