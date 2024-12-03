@@ -1,6 +1,6 @@
 import { bulkUpdateDataWrapper, ErrorType, logError, getItems } from "libs";
 import { KafkaRecord, opensearch } from "shared-types";
-import { transforms, Document } from "shared-types/opensearch/main";
+import { Document, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
 import { isBefore } from "date-fns";
 
@@ -92,7 +92,7 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
 };
 
 const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
-  const kafkaIds = kafkaRecords.map((record) => JSON.parse(decodeBase64WithUtf8(record.key)));
+  const kafkaIds = kafkaRecords.map((record) => decodeBase64WithUtf8(record.key));
   const openSearchRecords = await getItems(kafkaIds);
 
   return openSearchRecords.reduce<Map<string, number>>((map, item) => {
@@ -113,12 +113,19 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       try {
         const { key, value } = kafkaRecord;
 
+        if (!key) {
+          console.log(`Record without a key property: ${value}`);
+
+          return collection;
+        }
+
         const id: string = decodeBase64WithUtf8(key);
 
         if (!value) {
           // record in seatool has been deleted
           // nulls the seatool properties from the record
           // seatool record would now only have mako properties
+          console.log(`Record without a value property: ${JSON.stringify(value, null, 2)}`);
           return collection.concat(opensearch.main.seatool.tombstone(id));
         }
 
@@ -132,7 +139,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         if (safeSeatoolRecord.success === false) {
           logError({
             type: ErrorType.VALIDATION,
-            error: safeSeatoolRecord.error,
+            error: safeSeatoolRecord.error.errors,
             metadata: { topicPartition, kafkaRecord, record: seatoolRecord },
           });
 
@@ -150,18 +157,17 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         const isNewerOrUndefined =
           seatoolDocument.changed_date &&
           makoDocumentTimestamp &&
-          isBefore(seatoolDocument.changed_date, makoDocumentTimestamp);
+          isBefore(makoDocumentTimestamp, seatoolDocument.changed_date);
 
         if (isNewerOrUndefined) {
           console.log("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
           return collection;
         }
 
-        console.log("INDEX");
-        console.log("--------------------");
-
         if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
-          console.log(`Status: ${seatoolDocument}`);
+          console.log("INDEX");
+          console.log("--------------------");
+          console.log(`Status: ${seatoolDocument.seatoolStatus}`);
 
           return collection.concat({ ...seatoolDocument });
         }
