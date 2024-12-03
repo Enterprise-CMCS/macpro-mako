@@ -3,7 +3,7 @@ import { CommonEmailVariables } from "shared-types";
 import { Text } from "@react-email/components";
 import {
   PackageDetails,
-  ContactStateLead,
+  FollowUpNotice,
   DetailsHeading,
   Attachments,
 } from "../../email-components";
@@ -22,7 +22,7 @@ export const ChipSpaStateEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<ContactStateLead isChip />}
+      footerContent={<FollowUpNotice isChip />}
     >
       <DetailsHeading />
       <PackageDetails
