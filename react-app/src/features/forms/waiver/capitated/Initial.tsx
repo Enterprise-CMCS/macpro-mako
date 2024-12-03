@@ -1,7 +1,17 @@
-import { ActionForm, FormControl, FormField, FormItem, FormLabel, FormMessage, RequiredIndicator, Input, DatePicker } from "@/components";
-import { Link } from "react-router-dom";
+import {
+  ActionForm,
+  DatePicker,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+  RequiredIndicator,
+} from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
+import { Link } from "react-router-dom";
 import { getFAQLinkForAttachments } from "../../faqLinks";
 
 export const InitialForm = () => (
@@ -25,18 +35,30 @@ export const InitialForm = () => (
           render={({ field }) => (
             <FormItem>
               <div className="flex gap-4">
-                <FormLabel className="text-lg font-semibold mr-1" data-testid="1915b-waiver-initial-label">
+                <FormLabel
+                  className="text-lg font-semibold mr-1"
+                  data-testid="1915b-waiver-initial-label"
+                >
                   Initial Waiver Number <RequiredIndicator />
                 </FormLabel>
-                <Link to={"/faq/initial-waiver-id-format"} target={FAQ_TAB} rel="noopener noreferrer" className="text-blue-900 underline">
+                <Link
+                  to={"/faq/initial-waiver-id-format"}
+                  target={FAQ_TAB}
+                  rel="noopener noreferrer"
+                  className="text-blue-900 underline"
+                >
                   What is my Initial Waiver Number?
                 </Link>
               </div>
-              <p className="text-gray-500 font-light" id="waiver-number-format">
+              <p className="text-neutral-500" id="waiver-number-format">
                 Must be a new initial number with the format SS-####.R00.00 or SS-#####.R00.00
               </p>
               <FormControl className="max-w-sm">
-                <Input ref={field.ref} value={field.value} onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())} />
+                <Input
+                  ref={field.ref}
+                  value={field.value}
+                  onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
