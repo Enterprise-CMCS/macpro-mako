@@ -1,11 +1,11 @@
+import { formSchemas } from "@/formSchemas";
+import { renderForm } from "@/utils/test-helpers/renderForm";
+import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
+import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, test, expect, beforeAll } from "vitest";
+import { beforeAll, describe, expect, test } from "vitest";
 import { RenewalForm } from "./Renewal";
-import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
-import { renderForm } from "@/utils/test-helpers/renderForm";
-import { formSchemas } from "@/formSchemas";
 
 const upload = uploadFiles<(typeof formSchemas)["contracting-renewal"]>();
 
@@ -23,9 +23,7 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
   });
 
   test("WAIVER ID EXISTING", async () => {
-    const waiverIdInput = screen.getByLabelText(
-      /existing waiver number to renew/i,
-    );
+    const waiverIdInput = screen.getByLabelText(/existing waiver number to renew/i);
     const waiverIdLabel = screen.getByTestId("waiverid-existing-label");
 
     // test record does not exist error occurs
@@ -56,9 +54,7 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
     expect(waiverIdLabel).not.toHaveClass("text-destructive");
   });
   test("WAIVER ID RENEWAL", async () => {
-    const waiverIdInput = screen.getByLabelText(
-      /1915\(b\) Waiver Renewal Number/i,
-    );
+    const waiverIdInput = screen.getByLabelText(/1915\(b\) Waiver Renewal Number/i);
     const waiverIdLabel = screen.getByTestId("waiverid-renewal-label");
 
     // validate id errors
@@ -76,7 +72,16 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
     );
     expect(invalidStateErrorMessage).toBeInTheDocument();
     await userEvent.clear(waiverIdInput);
+
+    // test record doesn't have an amendment number
+    await userEvent.type(waiverIdInput, "MD-0000.R00.01");
+    const waiverIdHasAmendment = screen.getByText(
+      "Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00 For renewals, the “R##” starts with '01' and ascends.",
+    );
+    expect(waiverIdHasAmendment).toBeInTheDocument();
     // end of error validations
+
+    await userEvent.clear(waiverIdInput);
 
     await userEvent.type(waiverIdInput, "MD-0006.R01.00");
 
@@ -84,13 +89,9 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
   });
 
   test("PROPOSED EFFECTIVE DATE OF RENEWAL CONTRACTING WAIVER", async () => {
-    await userEvent.click(
-      screen.getByTestId("proposedEffectiveDate-datepicker"),
-    );
+    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector(
-      '[for="proposedEffectiveDate"]',
-    );
+    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });

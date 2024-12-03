@@ -1,11 +1,11 @@
 import { events } from "shared-types/events";
 import { describe, expect, test } from "vitest";
 
-describe("Contracting Renewal", () => {
-  const schema = events["contracting-renewal"].baseSchema.pick({ id: true });
+describe("Capitated Renewal", () => {
+  const schema = events["capitated-renewal"].baseSchema.pick({ id: true });
   const formatErrorMessage = "Renewal Number must be in the format of";
 
-  test(" VALID ID", () => {
+  test("VALID ID", () => {
     const validId = "MD-2024.R01.00";
     const result = schema.safeParse({ id: validId });
 

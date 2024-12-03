@@ -71,9 +71,16 @@ describe("Capitated Renewal", () => {
     );
     expect(invalidStateErrorMessage).toBeInTheDocument();
     await userEvent.clear(waiverRenewalInput);
-    // end of error validations
 
     await userEvent.type(waiverRenewalInput, "MD-0005.R01.01");
+    const invalidAmendmentInput = screen.getByText(
+      "Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00 For renewals, the “R##” starts with '01' and ascends.",
+    );
+    expect(invalidAmendmentInput).toBeInTheDocument();
+    // end of error validations
+
+    await userEvent.clear(waiverRenewalInput);
+    await userEvent.type(waiverRenewalInput, "MD-0005.R99.00");
 
     expect(waiverRenewalLabel).not.toHaveClass("text-destructive");
   });
