@@ -1,8 +1,16 @@
-export const renderSection = (
+
+interface Template {
+    title: string;
+    text: string;
+    href: string;
+    subtext?: string[];
+  }
+  
+  export const renderSection = (
     title: string,
-    templates: any[],
-    filterCondition: (template: any) => boolean,
-    ulClassName: string = ""
+    templates: Template[],
+    filterCondition: (template: Template) => boolean,
+    ulClassName: string = "" 
   ): JSX.Element => (
     <>
       <p>{title}</p>
@@ -17,8 +25,18 @@ export const renderSection = (
             >
               {template.title}: {template.text}
             </a>
+            {template.subtext && (
+              <ul className="list-disc pl-6 space-y-1">
+                {template.subtext.map((sub, index) => (
+                  <li key={index} className="text-sm text-gray-600">
+                    {sub}
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         ))}
       </ul>
     </>
   );
+  
