@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom";
-import { Info } from "lucide-react";
 import {
-  Alert,
-  RequiredFieldDescription,
   ActionFormDescription,
+  Alert,
   ProgressLossReminder,
+  RequiredFieldDescription,
 } from "@/components";
 import { FAQ_TAB } from "@/router";
+import { Info } from "lucide-react";
+import { Link } from "react-router-dom";
 
 type FormIntroTextProps = {
   hasProgressLossReminder?: boolean;
@@ -37,10 +37,8 @@ export const FormIntroTextForAppK = () => (
 
 export const SpaIdFormattingDesc = () => (
   <>
-    <p className="text-gray-800 font-light">
-      Must follow the format SS-YY-NNNN or SS-YY-NNNN-XXXX.
-    </p>
-    <p className="text-gray-500 font-light">
+    <p>Must follow the format SS-YY-NNNN or SS-YY-NNNN-XXXX.</p>
+    <p className="text-neutral-500">
       Reminder - CMS recommends that all SPA numbers start with the year in which the package is
       submitted.
     </p>
@@ -56,9 +54,12 @@ export const AttachmentsSizeTypesDesc = ({
 }) => (
   <div className="text-gray-700 font-light">
     <p>
-      Maximum file size of 80 MB per attachment. You can add multiple files per attachment type
-      {includeCMS179 && ", except for the CMS Form 179."}. Read the description for each of the
-      attachment types on the{" "}
+      Maximum file size of 80 MB per attachment.{" "}
+      <span className="font-bold">
+        You can add multiple files per attachment type
+        {includeCMS179 && ", except for the CMS Form 179."}.
+      </span>{" "}
+      Read the description for each of the attachment types on the{" "}
       {
         <Link
           to={faqAttLink}
