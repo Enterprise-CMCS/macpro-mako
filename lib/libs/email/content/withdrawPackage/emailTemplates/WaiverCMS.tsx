@@ -1,5 +1,5 @@
 import { CommonEmailVariables, Events } from "shared-types";
-import { SpamWarning, PackageDetails, BasicFooter, Divider } from "../../email-components";
+import { SpamWarning, PackageDetails, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const WaiverCMSEmail = ({
@@ -13,7 +13,6 @@ export const WaiverCMSEmail = ({
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >
-    <Divider />
     <PackageDetails
       details={{
         "State or territory": variables.territory,
