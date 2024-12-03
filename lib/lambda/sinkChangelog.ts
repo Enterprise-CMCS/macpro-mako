@@ -8,7 +8,10 @@ import {
   logError,
 } from "../libs/sink-lib";
 import { Index } from "shared-types/opensearch";
-import { z } from "zod";
+import {
+  deleteAdminChangeSchema,
+  updateValuesAdminChangeSchema,
+} from "./update/adminChangeSchemas";
 const osDomain = process.env.osDomain;
 if (!osDomain) {
   throw new Error("Missing required environment variable(s)");
@@ -79,36 +82,25 @@ const processAndIndex = async ({
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
 
-      const adminChangeSchemas = {
-        delete: z
-          .object({
-            id: z.string(),
-            deleted: z.boolean(),
-          })
-          .transform((schema) => ({
-            ...schema,
-            event: "soft-delete",
-            packageId: schema.id,
-            id: `${schema.id}-${offset}`,
-            timestamp: Date.now(),
-          })),
-        "update-values": z
-          .object({
-            id: z.string(),
-          })
-          .transform((schema) => ({
-            ...schema,
-            event: "update-values",
-            packageId: schema.id,
-            id: `${schema.id}-${offset}`,
-            timestamp: Date.now(),
-          })),
-      };
+      const transformedDeleteSchema = deleteAdminChangeSchema.transform((data) => ({
+        ...data,
+        event: "soft-delete",
+        packageId: data.id,
+        id: `${data.id}-${offset}`,
+        timestamp: Date.now(),
+      }));
 
-      if (record.isAdminChange && record.adminChangeType in adminChangeSchemas) {
-        const schema =
-          adminChangeSchemas[record.adminChangeType as keyof typeof adminChangeSchemas];
+      const transformedUpdateValuesSchema = updateValuesAdminChangeSchema.transform((data) => ({
+        ...data,
+        event: "update-values",
+        packageId: data.id,
+        id: `${data.id}-${offset}`,
+        timestamp: Date.now(),
+      }));
 
+      const schema = transformedDeleteSchema.or(transformedUpdateValuesSchema);
+
+      if (record.isAdminChange) {
         const result = schema.safeParse(record);
 
         if (result.success) {
@@ -119,10 +111,7 @@ const processAndIndex = async ({
             result.error.message,
           );
         }
-      } else if (record.isAdminChange) {
-        console.log(`Unknown adminChangeType: ${record.adminChangeType}`);
       }
-
       // If we're not a mako event, continue
       // TODO:  handle legacy.  for now, just continue
       if (!record.event || record?.origin !== "mako") {

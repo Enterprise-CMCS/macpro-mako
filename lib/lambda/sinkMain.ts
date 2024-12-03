@@ -5,7 +5,10 @@ import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "../libs/si
 import { Index } from "shared-types/opensearch";
 import { decodeBase64WithUtf8 } from "shared-utils";
 import * as os from "./../libs/opensearch-lib";
-import { z } from "zod";
+import {
+  deleteAdminChangeSchema,
+  updateValuesAdminChangeSchema,
+} from "./update/adminChangeSchemas";
 
 const osDomain = process.env.osDomain;
 const indexNamespace = process.env.indexNamespace;
@@ -83,31 +86,17 @@ const processAndIndex = async ({
       // If we're not a mako event, continue
       // TODO:  handle legacy.  for now, just continue
 
-      // move to another file or place?
-      // TODO: handle update-id
-      const adminChangeSchemas = {
-        delete: z.object({
-          id: z.string(),
-          deleted: z.boolean(),
-        }),
-        "update-values": z.object({}),
-      };
-      if (record.isAdminChange && record.adminChangeType in adminChangeSchemas) {
-        const schema =
-          adminChangeSchemas[record.adminChangeType as keyof typeof adminChangeSchemas];
+      const schema = deleteAdminChangeSchema.or(updateValuesAdminChangeSchema);
 
-        if (schema) {
-          const result = schema.safeParse(record);
-          if (result.success) {
-            docs.push(record);
-          } else {
-            console.log(
-              `Skipping package with invalid format for type "${record.adminChangeType}"`,
-              result.error.message,
-            );
-          }
+      if (record.isAdminChange) {
+        const result = schema.safeParse(record);
+        if (result.success) {
+          docs.push(record);
         } else {
-          console.log(`Unknown adminChangeType: ${record.adminChangeType}`);
+          console.log(
+            `Skipping package with invalid format for type "${record.adminChangeType}"`,
+            result.error.message,
+          );
         }
       }
       if (!record.event || record?.origin !== "mako") {
