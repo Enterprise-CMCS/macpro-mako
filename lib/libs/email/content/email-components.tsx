@@ -190,7 +190,13 @@ const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
   </Text>
 );
 
-const FollowUpNotice = ({ isChip }: { isChip?: boolean }) => (
+const FollowUpNotice = ({
+  isChip,
+  includeStateLead = true,
+}: {
+  isChip?: boolean;
+  includeStateLead?: boolean;
+}) => (
   <>
     <Divider />
     {isChip ? (
@@ -199,8 +205,8 @@ const FollowUpNotice = ({ isChip }: { isChip?: boolean }) => (
           If you have any questions, please contact{" "}
           <Link href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`} style={{ textDecoration: "underline" }}>
             {EMAIL_CONFIG.CHIP_EMAIL}
-          </Link>{" "}
-          or your state lead.
+          </Link>
+          {includeStateLead ? " or your state lead." : "."}
         </Text>
         <Text>Thank you.</Text>
       </Section>
@@ -210,8 +216,8 @@ const FollowUpNotice = ({ isChip }: { isChip?: boolean }) => (
           If you have any questions or did not expect this email, please contact{" "}
           <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`} style={{ textDecoration: "underline" }}>
             {EMAIL_CONFIG.SPA_EMAIL}
-          </Link>{" "}
-          or your state lead.
+          </Link>
+          {includeStateLead ? " or your state lead." : "."}
         </Text>
         <Text>Thank you.</Text>
       </Section>

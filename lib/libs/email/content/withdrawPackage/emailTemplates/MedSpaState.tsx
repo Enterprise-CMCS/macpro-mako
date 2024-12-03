@@ -23,6 +23,6 @@ export const MedSpaStateEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
-    <FollowUpNotice />
+    <FollowUpNotice includeStateLead={false} />
   </BaseEmailTemplate>
 );
