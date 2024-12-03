@@ -128,7 +128,6 @@ export const oneMACFAQContent: FAQContent[] = [
                 </td>
               </tr>
               <tr>
-                <td className="border border-gray-300 px-4 py-2">CMS System Admin</td>
                 <td className="border border-gray-300 px-4 py-2">
                   <span className="underline">Approves All</span> roles within IDM
                 </td>
@@ -144,10 +143,12 @@ export const oneMACFAQContent: FAQContent[] = [
                 </td>
               </tr>
               <tr>
-                <td className="border border-gray-300 px-4 py-2">State Submitter</td>
                 <td className="border border-gray-300 px-4 py-2">
-                  State submitter role within OneMAC can submit, edit, and view packages for the
-                  state in which they are assigned
+                  State Submitter
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  State submitter role within OneMAC can submit, edit, and view
+                  packages for the state in which they are assigned
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   State System Admin or CMS System Admin or CMS Role Approver
@@ -764,6 +765,59 @@ export const oneMACFAQContent: FAQContent[] = [
           </section>
         ),
       },
+      {
+        anchorText: "mpc-spa-templates",
+        question: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?",
+        answerJSX: (
+          <p>
+            Medicaid Premiums and Cost Sharing (MPC) SPA templates can be downloaded at the links
+            below. After downloading and completing the templates you need, upload them as part of
+            the SPA submission.
+          </p>
+        ),
+      },
+      {
+        anchorText: "mpc-spa-implementation-guides",
+        question:
+          "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?",
+        answerJSX: (
+          <p>
+            Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides can be downloaded at
+            the links below.
+          </p>
+        ),
+      },
+      {
+        anchorText: "chip-spa-templates",
+        question: "Where can I download CHIP eligibility SPA templates?",
+        answerJSX: (
+          <p>
+            CHIP eligibility SPA templates can be downloaded at the links below. After downloading
+            and completing the templates you need, upload them as part of the SPA submission.
+          </p>
+        ),
+      },
+      {
+        anchorText: "chip-spa-implentation-guides",
+        question: "Where can I download CHIP eligibility SPA implementation guides?",
+        answerJSX: (
+          <>
+            <p>CHIP eligibility SPA implementation guides can be downloaded at the links below.</p>
+
+            <div className="space-y-2 p-2">
+              <p>MAGI Eligibility & Methods</p>
+
+              <p>XXI Medicaid Expansion</p>
+
+              <p>Establish 2101(f) Group</p>
+
+              <p>Eligibility Processing</p>
+
+              <p>Non-Financial Eligibility</p>
+            </div>
+          </>
+        ),
+      },
     ],
   },
   {
@@ -969,16 +1023,13 @@ export const oneMACFAQContent: FAQContent[] = [
             <table className="faq-table border-collapse border border-gray-300 w-full">
               <thead>
                 <tr>
-                  <th className="border border-gray-300 px-4 py-2">
-                    Attachment Name
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2">
-                    Description
-                  </th>
+                  <th className="border border-gray-300 px-4 py-2">Attachment Name</th>
+                  <th className="border border-gray-300 px-4 py-2">Description</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
+                  <td className="border border-gray-300 px-4 py-2">Waiver RAI Response*</td>
                   <td className="border border-gray-300 px-4 py-2">
                     Official response to CMS to support RAI inquiries for the Waiver submission
                   </td>
