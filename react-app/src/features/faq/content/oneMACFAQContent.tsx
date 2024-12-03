@@ -5,14 +5,13 @@ import OneMACIDMGuide from "@/assets/onboarding/OneMACIDMGuide.pdf";
 import OneMACStateUserGuide from "@/assets/onboarding/OneMACStateUserGuide.pdf";
 import OneMACCMSUserGuide from "@/assets/onboarding/OneMACCMSUserGuide.pdf";
 import { FILE_TYPES } from "shared-types/uploads";
-import { abpTemplates} from "@/features/faq/content/abpTemplate";
-import {renderSection} from "@/features/faq/content/chpRenderSection";
-import {abpGuides} from "@/features/faq/content/abpGuides";
-import {mpcTemplates} from "@/features/faq/content/mpcTemplates";
-import {mpcGuides} from "@/features/faq/content/mpcGuides";
-import {chpTemplates} from "@/features/faq/content/chpTemplates";
-import {chpGuides } from "@/features/faq/content/chpGuides"; 
-
+import { ABP_TEMPLATES } from "@/features/faq/content/abpTemplate";
+import { renderSection } from "@/features/faq/content/chpRenderSection";
+import { ABP_GUIDES } from "@/features/faq/content/abpGuides";
+import { MPC_TEMPLATES } from "@/features/faq/content/mpcTemplates";
+import { MPC_GUIDES } from "@/features/faq/content/mpcGuides";
+import { CHP_TEMPLATES } from "@/features/faq/content/chpTemplates";
+import { CHP_GUIDES } from "@/features/faq/content/chpGuides";
 
 type QuestionAnswer = {
   anchorText: string;
@@ -73,10 +72,7 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <p>
             Refresh your inbox, check your SPAM filters, then contact the OneMAC Help Desk{" "}
-            <a
-              className="text-blue-800 "
-              href={`mailto:${helpDeskContact.email}`}
-            >
+            <a className="text-blue-800 " href={`mailto:${helpDeskContact.email}`}>
               {helpDeskContact.email}
             </a>{" "}
             or call {helpDeskContact.phone} or contact your state lead.
@@ -522,12 +518,12 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <section className="space-y-2 p-2">
             <p>
-              Medicaid Alternative Benefit Plan (ABP) SPA templates can be downloaded at the links below.
-              After downloading and completing the templates you need, upload them as part of the SPA
-              submission.
+              Medicaid Alternative Benefit Plan (ABP) SPA templates can be downloaded at the links
+              below. After downloading and completing the templates you need, upload them as part of
+              the SPA submission.
             </p>
             <ul className="list-disc pl-6 space-y-2">
-              {abpTemplates.map((pdf) => (
+              {ABP_TEMPLATES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
                     href={pdf.href}
@@ -559,11 +555,11 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <section className="space-y-2 p-2">
             <p>
-              Medicaid Alternative Benefit Plan (ABP) SPA implementation guides can be downloaded at the
-              links below.
+              Medicaid Alternative Benefit Plan (ABP) SPA implementation guides can be downloaded at
+              the links below.
             </p>
             <ul className="list-disc pl-6 space-y-2">
-              {abpGuides.map((pdf) => (
+              {ABP_GUIDES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
                     href={pdf.href}
@@ -585,12 +581,12 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <section className="space-y-2 p-2">
             <p>
-              Medicaid Premiums and Cost Sharing (MPC) SPA templates can be downloaded at the links below.
-              After downloading and completing the templates you need, upload them as part of the SPA
-              submission.
+              Medicaid Premiums and Cost Sharing (MPC) SPA templates can be downloaded at the links
+              below. After downloading and completing the templates you need, upload them as part of
+              the SPA submission.
             </p>
             <ul className="list-disc pl-6 space-y-2">
-              {mpcTemplates.map((pdf) => (
+              {MPC_TEMPLATES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
                     href={pdf.href}
@@ -613,11 +609,11 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <section className="space-y-2 p-2">
             <p>
-              Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides can be downloaded at the
-              links below.
+              Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides can be downloaded
+              at the links below.
             </p>
             <ul className="list-disc pl-6 space-y-2">
-              {mpcGuides.map((pdf) => (
+              {MPC_GUIDES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
                     href={pdf.href}
@@ -639,13 +635,13 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <section>
             <p>
-              CHIP eligibility SPA templates can be downloaded at the links below. After downloading and
-              completing the templates you need, upload them as part of the SPA submission.
+              CHIP eligibility SPA templates can be downloaded at the links below. After downloading
+              and completing the templates you need, upload them as part of the SPA submission.
             </p>
             <ul className="list-disc pl-6 space-y-2 p-2">
               {renderSection(
                 "MAGI Eligibility & Methods",
-                chpTemplates,
+                CHP_TEMPLATES,
                 (template) =>
                   [
                     "CS 7",
@@ -658,29 +654,29 @@ export const oneMACFAQContent: FAQContent[] = [
                     "CS 15",
                     "CS 16",
                   ].includes(template.title),
-                "list-disc pl-6 space-y-2"
+                "list-disc pl-6 space-y-2",
               )}
               {renderSection(
                 "XXI Medicaid Expansion",
-                chpTemplates,
+                CHP_TEMPLATES,
                 (template) => template.title === "CS 3",
-                "list-disc pl-6 space-y-2"
+                "list-disc pl-6 space-y-2",
               )}
               {renderSection(
                 "Establish 2101(f) Group",
-                chpTemplates,
+                CHP_TEMPLATES,
                 (template) => template.title === "CS 14",
-                "list-disc pl-6 space-y-2"
+                "list-disc pl-6 space-y-2",
               )}
               {renderSection(
                 "Eligibility Processing",
-                chpTemplates,
+                CHP_TEMPLATES,
                 (template) => template.title === "CS 24",
-                "list-disc pl-6 space-y-2"
+                "list-disc pl-6 space-y-2",
               )}
               {renderSection(
                 "Non-Financial Eligibility",
-                chpTemplates,
+                CHP_TEMPLATES,
                 (template) =>
                   [
                     "CS 17",
@@ -693,7 +689,7 @@ export const oneMACFAQContent: FAQContent[] = [
                     "CS 28",
                     "CS 29",
                   ].includes(template.title),
-                "list-disc pl-6 space-y-2"
+                "list-disc pl-6 space-y-2",
               )}
             </ul>
           </section>
@@ -705,13 +701,13 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <section className="space-y-2 ">
             <p>
-              CHIP eligibility SPA implementation guides can be downloaded at the links below. The guides
-              include detailed instructions for completing your submissions.
+              CHIP eligibility SPA implementation guides can be downloaded at the links below. The
+              guides include detailed instructions for completing your submissions.
             </p>
             <ul className="list-disc pl-6 space-y-2">
               {renderSection(
                 "MAGI Eligibility & Methods",
-                chpGuides,
+                CHP_GUIDES,
                 (guide) =>
                   [
                     "CS 7",
@@ -724,29 +720,29 @@ export const oneMACFAQContent: FAQContent[] = [
                     "CS 15",
                     "CS 16",
                   ].includes(guide.title),
-                "list-disc pl-6 space-y-2 text-blue-600"
+                "list-disc pl-6 space-y-2 text-blue-600",
               )}
               {renderSection(
                 "XXI Medicaid Expansion",
-                chpGuides,
+                CHP_GUIDES,
                 (guide) => guide.title === "CS 3",
-                "list-disc pl-6 space-y-2 text-blue-600"
+                "list-disc pl-6 space-y-2 text-blue-600",
               )}
               {renderSection(
                 "Establish 2101(f) Group",
-                chpGuides,
+                CHP_GUIDES,
                 (guide) => guide.title === "CS 14",
-                "list-disc pl-6 space-y-2 text-blue-600"
+                "list-disc pl-6 space-y-2 text-blue-600",
               )}
               {renderSection(
                 "Eligibility Processing",
-                chpGuides,
+                CHP_GUIDES,
                 (guide) => guide.title === "CS 24",
-                "list-disc pl-6 space-y-2 text-blue-600"
+                "list-disc pl-6 space-y-2 text-blue-600",
               )}
               {renderSection(
                 "Non-Financial Eligibility",
-                chpGuides,
+                CHP_GUIDES,
                 (guide) =>
                   [
                     "CS 17",
@@ -759,7 +755,7 @@ export const oneMACFAQContent: FAQContent[] = [
                     "CS 28",
                     "CS 29",
                   ].includes(guide.title),
-                "list-disc pl-6 space-y-2 text-blue-600"
+                "list-disc pl-6 space-y-2 text-blue-600",
               )}
             </ul>
           </section>
@@ -849,10 +845,7 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <p>
             Email{" "}
-            <a
-              className="text-blue-800 "
-              href="mailto:MCOGDMCOActions@cms.hhs.gov"
-            >
+            <a className="text-blue-800 " href="mailto:MCOGDMCOActions@cms.hhs.gov">
               MCOGDMCOActions@cms.hhs.gov
             </a>{" "}
             to get support with determining the correct 1915(b) Waiver Number.

@@ -19,8 +19,9 @@ import cs24PDF from "@/assets/chp/IG_CS24_EligibilityProcessing.pdf"
 import cs27PDF from "@/assets/chp/IG_CS27_ContinuousEligibility.pdf"
 import cs28PDF from "@/assets/chp/IG_CS28_PresumptiveEligibilityForChildren.pdf"
 import cs29PDF from "@/assets/chp/IG_CS29_PresumptiveEligibilityForPregnantWomen.pdf"
+import { Template } from "./chpRenderSection";
 
-  export const chpTemplates = [
+  export const CHP_TEMPLATES: Template[] = [
     // MAGI Eligibility & Methods
     {
       title: "CS 7",

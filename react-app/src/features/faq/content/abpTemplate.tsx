@@ -11,8 +11,9 @@ import abp8PDF from "@/assets/abp/IG_ABP8_ServiceDeliverySystems.pdf";
 import abp9PDF from "@/assets/abp/IG_ABP9_EmployerSponsoredInsurance.pdf";
 import abp10PDF from "@/assets/abp/IG_ABP10_GeneralAssurances.pdf";
 import abp11PDF from "@/assets/abp/IG_ABP11_PaymentMethodology.pdf";
+import { Template } from "./chpRenderSection";
 
-export const abpTemplates = [
+export const ABP_TEMPLATES: Template[] = [
   {
     title: "ABP 1",
     text: "Alternative Benefit Plan Populations",
@@ -83,15 +84,5 @@ export const abpTemplates = [
     title: "ABP 11",
     text: "Payment Methodology",
     href: abp11PDF,
-  }
+  },
 ];
-
-
-
-
-
-
-
-
-
-
