@@ -511,15 +511,15 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "withdraw-package-spa",
         question: "How do I Withdraw a Package for a Medicaid SPA?",
         answerJSX: (
-          <div className="w-full space-y-2">
+          <div className="w-full space-y-3">
             <p>
               A state can withdraw a submission package if it is in the Under Review or RAI Issued
               status. However, please note that once withdrawn, a submission package cannot be
-              resubmitted to CMS.
+              resubmitted to CMS.{" "}
               <b>Completing this action will conclude the review of this SPA package.</b>
             </p>
             <p>There are two methods you can use to withdraw a submission package:</p>
-            <ul className="ml-4 list-disc">
+            <ul className="ml-4 list-disc space-y-2">
               <li>
                 In OneMAC, Locate and select the link to the SPA ID. Then, under Package Actions,
                 select the Withdraw Package link.
@@ -542,15 +542,15 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "withdraw-package-chip-spa",
         question: "How do I Withdraw a Package for a CHIP SPA?",
         answerJSX: (
-          <div className="w-full space-y-2">
+          <div className="w-full space-y-3">
             <p>
               A state can withdraw a submission package if it is in the Under Review or RAI Issued
               status. However, please note that once withdrawn, a submission package cannot be
-              resubmitted to CMS.
+              resubmitted to CMS.{" "}
               <b> Completing this action will conclude the review of this SPA package.</b>
             </p>
             <p>There are two methods you can use to withdraw a submission package: </p>
-            <ul className="ml-4 list-disc">
+            <ul className="ml-4 list-disc space-y-2">
               <li>
                 In OneMAC, Locate and select the link to the CHIP SPA ID. Then, under Package
                 Actions, select the Withdraw Package link.
@@ -1027,7 +1027,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "withdraw-waiver-rai-response",
         question: "How do I Withdraw a Formal RAI Response for a Medicaid Waiver?",
         answerJSX: (
-          <div className="w-full space-y-2">
+          <div className="w-full space-y-3">
             <p>
               If a state wishes to withdraw a Formal RAI Response, the state must first contact
               their CMS Point of Contact so the action can be enabled.
@@ -1052,18 +1052,20 @@ export const oneMACFAQContent: FAQContent[] = [
               Response Enabled will be reflected below the status for the SPA or waiver submission
               package.
             </p>
-            <b>
-              Note: These submissions will remain on the clock until the package action has been
-              taken.
-            </b>
-            <ul className="list-disc ml-4">
+            <p>
+              <b>
+                Note: These submissions will remain on the clock until the package action has been
+                taken.
+              </b>
+            </p>
+            <ul className="list-disc ml-4 space-y-2">
               <li>
                 On the Formal RAI Response Withdraw form, upload any supporting documentation and
                 fill out the Additional Information section explaining your need to withdraw the
                 Formal RAI Response (all required information is marked with an asterisk).
               </li>
               <li> Select Submit. </li>
-              <ul className="list-disc ml-4">
+              <ul className="list-disc ml-6">
                 <li>
                   You will receive a confirmation message asking if you are sure that you want to
                   withdraw the Formal RAI Response. Select Yes, withdraw response.
@@ -1077,7 +1079,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "withdraw-package-waiver",
         question: "How do I Withdraw a Package for a Waiver?",
         answerJSX: (
-          <div className="w-full space-y-2">
+          <div className="w-full space-y-3">
             <p>
               A state can withdraw a submission package if it is in the Under Review or RAI Issued
               status. However, please note that once withdrawn, a submission package cannot be
@@ -1085,7 +1087,7 @@ export const oneMACFAQContent: FAQContent[] = [
               <b>Completing this action will conclude the review of this SPA package.</b>
             </p>
             <p>There are two methods you can use to withdraw a submission package:</p>
-            <ul className="list-disc ml-4">
+            <ul className="list-disc ml-4 space-y-2">
               <li>
                 In OneMAC, Locate and select the link to the Waiver ID. Then, under Package Actions,
                 select the Withdraw Package link.
