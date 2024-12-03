@@ -1,5 +1,5 @@
 import { CommonEmailVariables, Events } from "shared-types";
-import { BasicFooter, ContactStateLead, Divider, PackageDetails } from "../../email-components";
+import { BasicFooter, FollowUpNotice, Divider, PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const MedSpaStateEmail = ({
@@ -23,6 +23,6 @@ export const MedSpaStateEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
-    <ContactStateLead />
+    <FollowUpNotice />
   </BaseEmailTemplate>
 );

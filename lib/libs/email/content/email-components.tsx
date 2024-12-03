@@ -190,7 +190,7 @@ const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
   </Text>
 );
 
-const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
+const FollowUpNotice = ({ isChip }: { isChip?: boolean }) => (
   <>
     <Divider />
     {isChip ? (
@@ -298,7 +298,7 @@ export {
   Attachments,
   PackageDetails,
   MailboxNotice,
-  ContactStateLead,
+  FollowUpNotice,
   BasicFooter,
   WithdrawRAI,
   getCpocEmail,

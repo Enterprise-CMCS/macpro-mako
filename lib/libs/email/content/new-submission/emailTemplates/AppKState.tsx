@@ -4,7 +4,7 @@ import { formatNinetyDaysDate, formatDate } from "shared-utils";
 import {
   PackageDetails,
   BasicFooter,
-  ContactStateLead,
+  FollowUpNotice,
   Divider,
   MailboxNotice,
 } from "../../email-components";
@@ -44,7 +44,7 @@ export const AppKStateEmail = (props: {
         expect a formal response to your submittal to be issued within 90 days,
         before ${formatNinetyDaysDate(variables.timestamp)}.`}
       </Text>
-      <ContactStateLead />
+      <FollowUpNotice />
       <MailboxNotice type="Waiver" />
     </BaseEmailTemplate>
   );

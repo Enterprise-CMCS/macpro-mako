@@ -1,5 +1,5 @@
 import { CommonEmailVariables, Events } from "lib/packages/shared-types";
-import { BasicFooter, ContactStateLead, Divider, PackageDetails } from "../../email-components";
+import { BasicFooter, FollowUpNotice, Divider, PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const ChipSpaStateEmail = ({
@@ -23,6 +23,6 @@ export const ChipSpaStateEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
-    <ContactStateLead isChip />
+    <FollowUpNotice isChip />
   </BaseEmailTemplate>
 );

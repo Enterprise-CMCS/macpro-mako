@@ -3,7 +3,7 @@ import { formatNinetyDaysDate, formatDate } from "shared-utils";
 import { CommonEmailVariables } from "shared-types";
 import {
   PackageDetails,
-  ContactStateLead,
+  FollowUpNotice,
   DetailsHeading,
   MailboxNotice,
 } from "../../email-components";
@@ -22,7 +22,7 @@ export const MedSpaStateEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<ContactStateLead />}
+      footerContent={<FollowUpNotice />}
     >
       <DetailsHeading />
       <PackageDetails
