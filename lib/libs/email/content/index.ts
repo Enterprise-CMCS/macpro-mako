@@ -5,3 +5,4 @@ export * from "./withdrawRai";
 export * from "./withdrawPackage";
 export * from "./email-components";
 export * from "./respondToRai";
+export * from "./upload-subsequent-documents";
