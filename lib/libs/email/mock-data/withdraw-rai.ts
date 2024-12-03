@@ -32,7 +32,7 @@ export const emailTemplateValue = {
     },
   },
   additionalInformation:
-    "This some additional infornormaiton about the request to withdraw and what makes it important.",
+    "This some additional information about the request to withdraw and what makes it important.",
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",
   timestamp: 1723390633663,
