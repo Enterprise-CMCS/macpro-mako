@@ -57,7 +57,6 @@ export type Aggs = AggQuery<Field>;
 
 export * from "./transforms";
 
-
 export const transforms = {
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,

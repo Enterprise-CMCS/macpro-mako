@@ -61,7 +61,6 @@ export async function bulkUpdateData(
   client = client || (await getClient(host));
 
   const body: any[] = [];
-
   for (const doc of arrayOfDocuments) {
     if (doc.delete) {
       body.push({ delete: { _index: index, _id: doc.id } });

@@ -64,7 +64,6 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
       //   return ["Package ID Update", AC_UpdateId];
       case "legacy-admin-change":
         return [props.changeType || "Manual Update", AC_LegacyAdminChange];
-
       case "update-values":
         return ["Package detail(s) have been changed", AC_LegacyAdminChange];
       default:
@@ -91,7 +90,7 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
 export const AdminChanges = () => {
   const cache = usePackageDetailsCache();
   const data = cache.data.changelog?.filter((CL) => CL._source.isAdminChange);
-console.log(data, "DATA ADMIN CHANGE");
+
   if (!data?.length) return null;
 
   return (

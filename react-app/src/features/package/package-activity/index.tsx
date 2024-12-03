@@ -93,7 +93,6 @@ type PackageActivityProps = {
 };
 
 const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
-  console.log(packageActivity, "PACKAGE ACTIVITY");
   const label = useMemo(() => {
     switch (packageActivity.event) {
       case "capitated-amendment":
@@ -180,8 +179,6 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
 export const PackageActivities = () => {
   const { id: packageId } = useParams<{ id: string }>();
   const { data: submission } = useGetItem(packageId);
-
-  console.log(submission, "SUBMISSION");
 
   if (submission === undefined) {
     return null;
