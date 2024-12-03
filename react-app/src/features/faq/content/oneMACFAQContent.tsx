@@ -128,6 +128,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 </td>
               </tr>
               <tr>
+                <td className="border border-gray-300 px-4 py-2">CMS System Admin</td>
                 <td className="border border-gray-300 px-4 py-2">
                   <span className="underline">Approves All</span> roles within IDM
                 </td>
@@ -143,12 +144,10 @@ export const oneMACFAQContent: FAQContent[] = [
                 </td>
               </tr>
               <tr>
+                <td className="border border-gray-300 px-4 py-2">State Submitter</td>
                 <td className="border border-gray-300 px-4 py-2">
-                  State Submitter
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  State submitter role within OneMAC can submit, edit, and view
-                  packages for the state in which they are assigned
+                  State submitter role within OneMAC can submit, edit, and view packages for the
+                  state in which they are assigned
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   State System Admin or CMS System Admin or CMS Role Approver
