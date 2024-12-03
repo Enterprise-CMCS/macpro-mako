@@ -16,7 +16,7 @@ export const WithdrawRaiForm = () => {
         authority,
       }}
       attachments={{
-        faqLink: "/faq",
+        faqLink: "/faq/withdraw-waiver-rai-response",
       }}
       documentPollerArgs={{
         property: "id",
