@@ -72,7 +72,10 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <p>
             Refresh your inbox, check your SPAM filters, then contact the OneMAC Help Desk{" "}
-            <a className="text-blue-800 " href={`mailto:${helpDeskContact.email}`}>
+            <a
+              className="text-blue-800 underline hover:no-underline "
+              href={`mailto:${helpDeskContact.email}`}
+            >
               {helpDeskContact.email}
             </a>{" "}
             or call {helpDeskContact.phone} or contact your state lead.
@@ -966,13 +969,16 @@ export const oneMACFAQContent: FAQContent[] = [
             <table className="faq-table border-collapse border border-gray-300 w-full">
               <thead>
                 <tr>
-                  <th className="border border-gray-300 px-4 py-2">Attachment Name</th>
-                  <th className="border border-gray-300 px-4 py-2">Description</th>
+                  <th className="border border-gray-300 px-4 py-2">
+                    Attachment Name
+                  </th>
+                  <th className="border border-gray-300 px-4 py-2">
+                    Description
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td className="border border-gray-300 px-4 py-2">Waiver RAI Response*</td>
                   <td className="border border-gray-300 px-4 py-2">
                     Official response to CMS to support RAI inquiries for the Waiver submission
                   </td>
