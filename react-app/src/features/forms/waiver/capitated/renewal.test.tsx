@@ -1,7 +1,7 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { beforeAll, describe, expect, test } from "vitest";
 import userEvent from "@testing-library/user-event";
-import { renderForm } from "@/utils/test-helpers/renderForm";
+import { renderFormAsync } from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { Renewal } from "./Renewal";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
@@ -16,17 +16,12 @@ import {
 
 const upload = uploadFiles<(typeof formSchemas)["capitated-renewal"]>();
 
-let container: HTMLElement;
-
 describe("Capitated Renewal", () => {
   beforeAll(async () => {
     skipCleanup();
     mockApiRefinements();
 
-    const { container: renderedContainer } = renderForm(<Renewal />);
-    container = renderedContainer;
-
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
+    await renderFormAsync(<Renewal />);
   });
 
   test("EXISTING RENEWAL NUMBER TO RENEW", async () => {
@@ -89,7 +84,9 @@ describe("Capitated Renewal", () => {
   test("PROPOSED EFFECTIVE DATE OF 1915(B) WAIVER RENEWAL", async () => {
     await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
+    const proposedEffectiveDateLabel = screen.getByText(
+      "Proposed Effective Date of 1915(b) Waiver Renewal",
+    );
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });

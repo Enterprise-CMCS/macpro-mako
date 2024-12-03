@@ -16,7 +16,6 @@ const defaultItemHandler = http.post<GetItemBody, GetItemBody>(/\/item$/, async 
 const defaultItemExistsHandler = http.post<GetItemBody, GetItemBody>(
   /\/itemExists$/,
   async ({ request }) => {
-    console.log("checking for item");
     const { id } = await request.json();
     if (id == GET_ERROR_ITEM_ID) {
       return new HttpResponse("Internal server error", { status: 500 });

@@ -1,8 +1,8 @@
 import { formSchemas } from "@/formSchemas";
-import { renderForm } from "@/utils/test-helpers/renderForm";
+import { renderFormAsync } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeAll, describe, expect, test } from "vitest";
 import { AmendmentForm } from "./Amendment";
@@ -16,18 +16,11 @@ import {
 
 const upload = uploadFiles<(typeof formSchemas)["contracting-amendment"]>();
 
-// use container globally for tests to use same render and let each test fill out inputs
-// and at the end validate button is enabled for submit
-let container: HTMLElement;
-
 describe("AMENDMENT CONTRACTING WAIVER", () => {
   beforeAll(async () => {
     skipCleanup();
 
-    const { container: renderedContainer } = renderForm(<AmendmentForm />);
-    container = renderedContainer;
-
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
+    await renderFormAsync(<AmendmentForm />);
   });
 
   test("WAIVER ID EXISTING", async () => {
@@ -90,7 +83,9 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
   test("PROPOSED EFFECTIVE DATE OF AMENDMENT CONTRACTING WAIVER", async () => {
     await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
+    const proposedEffectiveDateLabel = screen.getByText(
+      "Proposed Effective Date of 1915(b) Waiver Amendment",
+    );
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });
@@ -115,8 +110,7 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
 
 describe("Contracting Amendment with existing waiver Id", () => {
   test("existing waiver id is filled out", async () => {
-    renderForm(<AmendmentForm waiverId={CONTRACTING_AMEND_ITEM_ID} />);
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
+    await renderFormAsync(<AmendmentForm waiverId={CONTRACTING_AMEND_ITEM_ID} />);
 
     const existingWaiverId = screen.getByTestId("existing-waiver-id");
     expect(existingWaiverId).toHaveTextContent(CONTRACTING_AMEND_ITEM_ID);

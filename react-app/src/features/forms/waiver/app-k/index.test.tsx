@@ -1,8 +1,8 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, test, expect, beforeAll } from "vitest";
 import { skipCleanup, mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
-import { renderForm } from "@/utils/test-helpers/renderForm";
+import { renderFormAsync } from "@/utils/test-helpers/renderForm";
 import { formSchemas } from "@/formSchemas";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { AppKAmendmentForm } from ".";
@@ -13,8 +13,7 @@ describe("Appendix K", () => {
     skipCleanup();
     mockApiRefinements();
 
-    renderForm(<AppKAmendmentForm />);
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
+    await renderFormAsync(<AppKAmendmentForm />);
   });
 
   test("Amendment title", async () => {

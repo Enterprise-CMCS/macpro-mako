@@ -1,7 +1,7 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { beforeAll, describe, expect, test } from "vitest";
 import userEvent from "@testing-library/user-event";
-import { renderForm } from "@/utils/test-helpers/renderForm";
+import { renderFormAsync } from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { InitialForm } from "./Initial";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
@@ -10,17 +10,12 @@ import { EXISTING_ITEM_APPROVED_AMEND_ID } from "mocks";
 
 const upload = uploadFiles<(typeof formSchemas)["capitated-initial"]>();
 
-let container: HTMLElement;
-
 describe("Capitated Initial", () => {
   beforeAll(async () => {
     skipCleanup();
     mockApiRefinements();
 
-    const { container: renderedContainer } = renderForm(<InitialForm />);
-    container = renderedContainer;
-
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
+    await renderFormAsync(<InitialForm />);
   });
 
   test("1915(B) WAIVER NUMBER", async () => {
@@ -51,7 +46,9 @@ describe("Capitated Initial", () => {
   test("PROPOSED EFFECTIVE DATE OF 1915(B) WAIVER INITIAL", async () => {
     await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
+    const proposedEffectiveDateLabel = screen.getByText(
+      "Proposed Effective Date of 1915(b) Initial Waiver",
+    );
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });

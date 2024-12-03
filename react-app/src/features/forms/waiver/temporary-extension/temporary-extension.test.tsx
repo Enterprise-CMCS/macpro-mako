@@ -1,10 +1,13 @@
 import { beforeAll, afterEach, describe, expect, test, vi } from "vitest";
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { formSchemas } from "@/formSchemas";
 import { TemporaryExtensionForm } from ".";
-import { renderForm, renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
+import {
+  renderFormAsync,
+  renderFormWithPackageSectionAsync,
+} from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import {
   EXISTING_ITEM_PENDING_ID,
@@ -27,8 +30,11 @@ describe("Temporary Extension", () => {
 
   test("EXISTING WAIVER ID", async () => {
     // set the Item Id to TEST_ITEM_ID
-    await renderFormWithPackageSection(<TemporaryExtensionForm />, TEST_ITEM_ID, "Medicaid SPA");
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
+    await renderFormWithPackageSectionAsync(
+      <TemporaryExtensionForm />,
+      TEST_ITEM_ID,
+      "Medicaid SPA",
+    );
 
     const temporaryExtensionValue = await vi.waitUntil(() => screen.getByText("Medicaid SPA"));
     // "Medicaid SPA" comes from `useGetItem` in testing/setup.ts
@@ -56,8 +62,7 @@ describe("Temporary Extension", () => {
     // @ts-ignore - expects the _whole_ React-Query object (annoying to type out)
     // vi.spyOn(api, "useGetItem").mockImplementation(() => ({ data: undefined }));
     // render temp-ext form with no route params
-    renderForm(<TemporaryExtensionForm />);
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
+    await renderFormAsync(<TemporaryExtensionForm />);
 
     // enable render cleanup here
     skipCleanup();

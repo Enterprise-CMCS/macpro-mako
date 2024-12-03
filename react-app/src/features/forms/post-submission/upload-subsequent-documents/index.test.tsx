@@ -1,11 +1,11 @@
-import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { describe, test, expect, beforeAll } from "vitest";
 import { formSchemas } from "@/formSchemas";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { UploadSubsequentDocuments } from ".";
 import userEvent from "@testing-library/user-event";
-import { renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { TEST_ITEM_ID } from "mocks";
 
 const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
@@ -15,8 +15,7 @@ describe("Upload Subsequent Documents (for Medicaid SPA)", () => {
     skipCleanup();
     mockApiRefinements();
 
-    renderFormWithPackageSection(<UploadSubsequentDocuments />, TEST_ITEM_ID, "Medicaid SPA");
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
+    await renderFormWithPackageSectionAsync(<UploadSubsequentDocuments />, TEST_ITEM_ID);
   });
 
   test("CMS FORM 179", async () => {

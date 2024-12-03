@@ -7,17 +7,21 @@ import {
   userResponses,
 } from "../data/users";
 
-export const setMockUsername = (username: string): void => {
-  if (username) {
-    process.env.MOCK_USER_USERNAME = username;
+export const setMockUsername = (user?: string | CognitoUserResponse | null): void => {
+  if (user) {
+    if (typeof user === "string") {
+      process.env.MOCK_USER_USERNAME = user;
+    } else {
+      process.env.MOCK_USER_USERNAME = user.Username;
+    }
   } else {
     delete process.env.MOCK_USER_USERNAME;
   }
 };
 
-export const useDefaultStateSubmitter = () => setMockUsername(makoStateSubmitter.Username);
+export const useDefaultStateSubmitter = () => setMockUsername(makoStateSubmitter);
 
-export const useDefaultReviewer = () => setMockUsername(makoReviewer.Username);
+export const useDefaultReviewer = () => setMockUsername(makoReviewer);
 
 export const mockCurrentAuthenticatedUser = async () => {
   if (process.env.MOCK_USER_USERNAME) {
@@ -47,7 +51,7 @@ export const mockUserAttributes = async (currentAuthenticatedUser: any) => {
   return undefined;
 };
 
-export const mockUseGetUser = async () => {
+export const mockUseGetUser = () => {
   if (process.env.MOCK_USER_USERNAME) {
     const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
     if (user) {
@@ -68,13 +72,20 @@ export const mockUseGetUser = async () => {
       userAttributesObj.username = user?.Username || "";
 
       return {
-        user: userAttributesObj,
-        isCms: isCmsUser(userAttributesObj),
+        data: {
+          user: userAttributesObj,
+          isCms: isCmsUser(userAttributesObj),
+        },
+        isLoading: false,
+        isSuccess: true,
       };
     }
-    return undefined;
   }
-  return undefined;
+  return {
+    data: null,
+    isLoading: false,
+    isSuccess: true,
+  };
 };
 
 const findUserByUsername = (username: string): CognitoUserResponse | undefined =>

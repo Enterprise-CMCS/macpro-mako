@@ -149,6 +149,7 @@ export const Layout = () => {
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"];
 
+  console.log({ user });
   return (
     <div className="min-h-full flex flex-col">
       <ScrollToTop />

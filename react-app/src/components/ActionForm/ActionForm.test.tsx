@@ -1,4 +1,4 @@
-import { fireEvent, waitFor, waitForElementToBeRemoved, screen } from "@testing-library/react";
+import { fireEvent, waitFor, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, test, expect, vi } from "vitest";
 import { ActionForm } from "./index";
@@ -15,14 +15,17 @@ import * as banner from "@/components/Banner/banner";
 import * as documentPoller from "@/utils/Poller/documentPoller";
 import { DataPoller } from "@/utils/Poller/DataPoller";
 import { EXISTING_ITEM_PENDING_ID } from "mocks";
-import { renderForm, renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
+import {
+  renderFormAsync,
+  renderFormWithPackageSectionAsync,
+} from "@/utils/test-helpers/renderForm";
 import { isCmsReadonlyUser } from "shared-utils";
 
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
 
 describe("ActionForm", () => {
   test("renders `breadcrumbText`", async () => {
-    const { queryByText } = renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -34,13 +37,12 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
-    expect(queryByText("Example Breadcrumb")).toBeInTheDocument();
+    expect(screen.queryByText("Example Breadcrumb")).toBeInTheDocument();
   });
 
   test("renders `title`", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -52,13 +54,12 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(screen.queryByText("Action Form Title")).toBeInTheDocument();
   });
 
   test("renders `attachments.faqLink`", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -78,13 +79,12 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(screen.queryByText("FAQ Page")).toHaveAttribute("href", "/hello-world-link");
   });
 
   test("renders `attachments.title`", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -104,7 +104,6 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(screen.queryByText("this is an attachments title")).toBeInTheDocument();
   });
@@ -112,7 +111,7 @@ describe("ActionForm", () => {
   test("doesn't render form if user access is denied", async () => {
     setMockUsername(null);
 
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -133,14 +132,13 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(screen.queryByText("Action Form Title")).not.toBeInTheDocument();
     useDefaultStateSubmitter();
   });
 
   test("renders `defaultValues` in appropriate input", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -155,13 +153,12 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(screen.queryByDisplayValue("default value for id")).toBeInTheDocument();
   });
 
   test("renders `attachments.instructions`", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -183,13 +180,12 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(screen.queryByText(/hello world special instructions./)).toBeInTheDocument();
   });
 
   test("renders `attachments.callout`", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -211,13 +207,12 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(screen.queryByText(/this is a callout/)).toBeInTheDocument();
   });
 
   test("renders custom `promptOnLeavingForm` when clicking Cancel", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -233,7 +228,6 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     const onAcceptMock = vi.fn();
     const userPromptSpy = vi
@@ -251,7 +245,7 @@ describe("ActionForm", () => {
   });
   //
   test("renders custom `promptPreSubmission` when clicking Submit", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -270,7 +264,6 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     const onAcceptMock = vi.fn();
     const userPromptSpy = vi
@@ -292,7 +285,7 @@ describe("ActionForm", () => {
     const documentChecker: documentPoller.CheckDocumentFunction = (checker) =>
       checker.hasStatus(SEATOOL_STATUS.PENDING);
 
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -308,7 +301,6 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     fireEvent.submit(await screen.findByTestId("submit-action-form"));
 
@@ -321,7 +313,7 @@ describe("ActionForm", () => {
     const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData");
     const bannerSpy = vi.spyOn(banner, "banner");
 
-    renderFormWithPackageSection(
+    await await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -340,9 +332,7 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
       EXISTING_ITEM_PENDING_ID,
-      "Medicaid SPA",
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     const submitButton = await screen.findByTestId("submit-action-form");
 
@@ -372,7 +362,7 @@ describe("ActionForm", () => {
   test("calls error banner if submission fails", async () => {
     const bannerSpy = vi.spyOn(banner, "banner");
 
-    renderFormWithPackageSection(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -391,9 +381,7 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
       SUBMISSION_ERROR_ITEM_ID,
-      "Medicaid SPA",
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     const submitButton = await screen.findByTestId("submit-action-form");
 
@@ -413,7 +401,7 @@ describe("ActionForm", () => {
     const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData");
     const bannerSpy = vi.spyOn(banner, "banner");
 
-    renderFormWithPackageSection(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -432,9 +420,7 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
       GET_ERROR_ITEM_ID,
-      "Medicaid SPA",
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     const submitBtn = await screen.findByTestId("submit-action-form");
 
@@ -472,7 +458,7 @@ describe("ActionForm", () => {
     const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData");
     const bannerSpy = vi.spyOn(banner, "banner");
 
-    renderFormWithPackageSection(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -491,9 +477,7 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
       EXISTING_ITEM_PENDING_ID,
-      "Medicaid SPA",
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     const submitBtn = await screen.findByTestId("submit-action-form");
 
@@ -528,7 +512,7 @@ describe("ActionForm", () => {
   }, 30000);
 
   test("renders all attachment properties within `attachments`", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -555,7 +539,6 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     const otherAttachmentLabels = screen.queryAllByText("Other");
 
@@ -563,7 +546,7 @@ describe("ActionForm", () => {
   });
 
   test("renders Additional Information if `additionalInformation` is defined in schema", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -577,13 +560,12 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(screen.queryByText("Additional Information")).toBeInTheDocument();
   });
 
   test("doesn't render Additional Information if `additionalInformation` is undefined in schema", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -596,13 +578,12 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(screen.queryByText("Additional Information")).not.toBeInTheDocument();
   });
 
   test("renders Attachments if `attachments` is defined in schema", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -621,14 +602,13 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(screen.queryByText("Attachments")).toBeInTheDocument();
     expect(screen.queryByText("Other")).toBeInTheDocument();
   });
 
   test("doesn't render Attachments if `attachments` is undefined in schema", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -640,13 +620,12 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(screen.queryByText("Attachments")).not.toBeInTheDocument();
   });
 
   test("renders ProgressReminder if schema has `attachments` property", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -665,13 +644,12 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(screen.queryAllByText(PROGRESS_REMINDER).length).toBe(2);
   });
 
   test("renders ProgressReminder if `areFieldsRequired` property is undefined", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -688,13 +666,12 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(screen.queryAllByText(PROGRESS_REMINDER).length).toBe(2);
   });
 
-  test("doesn't render ProgressReminder if `areFieldsRequired` is false", () => {
-    renderForm(
+  test("doesn't render ProgressReminder if `areFieldsRequired` is false", async () => {
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -712,7 +689,7 @@ describe("ActionForm", () => {
   });
 
   test("renders default wrapper if `fieldsLayout` is undefined", async () => {
-    renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -729,7 +706,6 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
       />,
     );
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
 
     expect(
       screen.queryAllByText(

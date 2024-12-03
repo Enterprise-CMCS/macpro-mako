@@ -1,7 +1,7 @@
-import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { beforeAll, describe, expect, test } from "vitest";
 import { WithdrawPackageAction } from "@/features/forms/post-submission/withdraw-package";
-import { renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { formSchemas } from "@/formSchemas";
@@ -13,8 +13,7 @@ describe("Withdraw Package Medicaid & Waiver", () => {
   beforeAll(async () => {
     skipCleanup();
 
-    renderFormWithPackageSection(<WithdrawPackageAction />, TEST_ITEM_ID, "Medicaid SPA");
-    await waitForElementToBeRemoved(() => screen.getAllByLabelText("three-dots-loading"));
+    await renderFormWithPackageSectionAsync(<WithdrawPackageAction />, TEST_ITEM_ID);
   });
 
   test("SUPPORTING DOCUMENTATION", async () => {

@@ -24,7 +24,7 @@ export const TimeoutModal = () => {
 
   const [timeoutModalCountdown, { startCountdown, resetCountdown }] =
     useCountdown(TEN_MINS_IN_MILS);
-  const { data: user } = useGetUser();
+  const { data: user, isLoading: isUserLoading } = useGetUser();
 
   const onLogOut = () => {
     setIsModalOpen(false);
@@ -51,7 +51,7 @@ export const TimeoutModal = () => {
       startCountdown();
       setIsModalOpen(true);
     }
-  }, [isIdleForTwentyMins]);
+  }, [isIdleForTwentyMins, user, isUserLoading]);
 
   const duration = intervalToDuration({
     start: 0,
@@ -67,8 +67,7 @@ export const TimeoutModal = () => {
         <div className="py-4">
           <span>
             Your session will expire in <strong>{duration.minutes}</strong>{" "}
-            {pluralize("minute", duration.minutes)} and{" "}
-            <strong>{duration.seconds}</strong>{" "}
+            {pluralize("minute", duration.minutes)} and <strong>{duration.seconds}</strong>{" "}
             {pluralize("second", duration.seconds)}.
           </span>
         </div>

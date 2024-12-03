@@ -1,7 +1,7 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { beforeAll, describe, expect, test } from "vitest";
 import { WithdrawPackageActionChip } from "@/features/forms/post-submission/withdraw-package";
-import { renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { formSchemas } from "@/formSchemas";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
@@ -12,8 +12,11 @@ const upload = uploadFiles<(typeof formSchemas)["withdraw-package-chip"]>();
 describe("Withdraw Package CHIP", () => {
   beforeAll(async () => {
     skipCleanup();
-    renderFormWithPackageSection(<WithdrawPackageActionChip />, TEST_ITEM_ID, "CHIP SPA");
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
+    await renderFormWithPackageSectionAsync(
+      <WithdrawPackageActionChip />,
+      TEST_ITEM_ID,
+      "CHIP SPA",
+    );
   });
 
   test("OFFICIAL WITHDRAWAL LETTER", async () => {

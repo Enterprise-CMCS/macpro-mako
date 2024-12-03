@@ -10,7 +10,7 @@ describe("Profile", () => {
   });
 
   test("renders state names", async () => {
-    setMockUsername(multiStateSubmitter.Username);
+    setMockUsername(multiStateSubmitter);
 
     renderWithQueryClient(<Profile />);
 

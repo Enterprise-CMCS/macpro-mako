@@ -2,23 +2,19 @@ import * as matchers from "@testing-library/jest-dom/matchers";
 import { cleanup } from "@testing-library/react";
 import { Amplify, Auth } from "aws-amplify";
 import {
+  API_CONFIG,
+  AUTH_CONFIG,
   mockCurrentAuthenticatedUser,
   mockUserAttributes,
+  setMockUsername,
   useDefaultStateSubmitter,
-} from "mocks/handlers/auth";
+} from "mocks";
 import { mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
 
 Amplify.configure({
-  API: {
-    endpoints: [
-      {
-        name: "os",
-        endpoint: "https://71v5znlyyg.execute-api.us-east-1.amazonaws.com/mocking-tests",
-        region: "us-east-1",
-      },
-    ],
-  },
+  API: API_CONFIG,
+  Auth: AUTH_CONFIG,
 });
 
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
@@ -49,6 +45,9 @@ window.HTMLElement.prototype.hasPointerCapture = vi.fn();
 
 vi.spyOn(Auth, "currentAuthenticatedUser").mockImplementation(mockCurrentAuthenticatedUser);
 vi.spyOn(Auth, "userAttributes").mockImplementation(mockUserAttributes);
+vi.spyOn(Auth, "signOut").mockImplementation(async () => {
+  setMockUsername(null);
+});
 
 // Add this to remove all the expected errors in console when running unit tests.
 beforeAll(async () => {

@@ -1,7 +1,7 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { beforeAll, describe, expect, test } from "vitest";
 import userEvent from "@testing-library/user-event";
-import { renderForm } from "@/utils/test-helpers/renderForm";
+import { renderFormAsync } from "@/utils/test-helpers/renderForm";
 import { skipCleanup, mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
 import { AmendmentForm } from "./Amendment";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
@@ -16,17 +16,12 @@ import {
 
 const upload = uploadFiles<(typeof formSchemas)["capitated-amendment"]>();
 
-let container: HTMLElement;
-
 describe("Capitated Amendment", () => {
   beforeAll(async () => {
     skipCleanup();
     mockApiRefinements();
 
-    const { container: renderedContainer } = renderForm(<AmendmentForm />);
-    container = renderedContainer;
-
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
+    await renderFormAsync(<AmendmentForm />);
   });
 
   test("EXISTING WAIVER NUMBER TO AMEND", async () => {
@@ -89,7 +84,9 @@ describe("Capitated Amendment", () => {
   test("PROPOSED EFFECTIVE DATE OF 1915(B) WAIVER AMENDMENT", async () => {
     await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
+    const proposedEffectiveDateLabel = screen.getByText(
+      "Proposed Effective Date of 1915(b) Waiver Amendment",
+    );
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });
@@ -115,8 +112,7 @@ describe("AMENDMENT CAPITATED WAIVER WITH EXISTING WAIVERID", () => {
     mockApiRefinements();
   });
   test("waiver id is rendered on page", async () => {
-    renderForm(<AmendmentForm waiverId={CAPITATED_AMEND_ITEM_ID} />);
-    await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
+    await renderFormAsync(<AmendmentForm waiverId={CAPITATED_AMEND_ITEM_ID} />);
 
     const existingWaiverId = screen.getByTestId("existing-waiver-id");
     expect(existingWaiverId).toHaveTextContent(CAPITATED_AMEND_ITEM_ID);

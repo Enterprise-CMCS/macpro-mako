@@ -10,7 +10,7 @@ export const queryClient = new QueryClient();
 
 export const FAQ_TAB = "faq-tab";
 
-export const router = createBrowserRouter([
+export const routes = [
   {
     path: "/",
     element: <C.Layout />,
@@ -116,4 +116,6 @@ export const router = createBrowserRouter([
     ],
     loader: F.loader(queryClient),
   },
-]);
+];
+
+export const router = createBrowserRouter(routes);

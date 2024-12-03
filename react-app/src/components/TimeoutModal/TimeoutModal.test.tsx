@@ -1,7 +1,10 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import { TimeoutModal } from ".";
+import * as api from "@/api";
+import { mockUseGetUser, useDefaultStateSubmitter } from "mocks";
+import { UseQueryResult } from "@tanstack/react-query";
+import { OneMacUser } from "@/api";
 
 const ParentComponent = () => (
   <div>
@@ -12,74 +15,53 @@ const ParentComponent = () => (
   </div>
 );
 
-vi.mock("@/api", () => ({
-  useGetUser: vi.fn().mockReturnValue({
-    data: { user: { "custom:cms-roles": "onemac-micro-super" }, isCms: true },
-  }),
-}));
-
-vi.mock("aws-amplify", () => ({
-  Auth: {
-    signOut: vi.fn(),
-  },
-}));
-
 describe("Timeout Modal", () => {
   beforeEach(() => {
-    vi.useFakeTimers({ shouldAdvanceTime: true });
-    vi.mock("@/hooks", () => ({
-      useIdle: vi.fn().mockReturnValue(true),
-      useCountdown: vi.fn().mockReturnValue([
-        200,
-        {
-          startCountdown: vi.fn(),
-          stopCountdown: vi.fn(),
-          resetCountdown: vi.fn(),
-        },
-      ]),
-    }));
+    vi.useFakeTimers();
+    vi.spyOn(api, "useGetUser").mockImplementation(() => {
+      const response = mockUseGetUser();
+      return response as UseQueryResult<OneMacUser, unknown>;
+    });
   });
 
   afterEach(() => {
     vi.useRealTimers();
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it("closes after user extends session", async () => {
     render(<ParentComponent />);
 
-    const sessionExpirationWarning = screen.getByText(
-      /Your session will expire in/i,
-    );
+    await vi.advanceTimersToNextTimerAsync();
+    await vi.advanceTimersToNextTimerAsync();
+
+    const sessionExpirationWarning = screen.getByText(/Your session will expire in/i);
     expect(sessionExpirationWarning).toBeInTheDocument();
 
     const extendBtn = screen.getByText(/Yes, extend session/i);
     expect(extendBtn).toBeInTheDocument();
 
-    await userEvent.click(extendBtn);
-    await waitFor(() => {
-      expect(
-        screen.queryByText(/Your session will expire in/i),
-      ).not.toBeInTheDocument();
-    });
+    fireEvent.click(extendBtn);
+
+    expect(screen.queryByText(/Your session will expire in/i)).not.toBeInTheDocument();
   });
 
   it("closes the modal if user clicks sign out", async () => {
     render(<ParentComponent />);
 
-    const sessionExpirationWarning = screen.getByText(
-      /Your session will expire in/i,
-    );
+    await vi.advanceTimersToNextTimerAsync();
+    await vi.advanceTimersToNextTimerAsync();
+
+    const sessionExpirationWarning = screen.getByText(/Your session will expire in/i);
     expect(sessionExpirationWarning).toBeInTheDocument();
 
     const signOutBtn = screen.getByText(/No, sign out/i);
     expect(signOutBtn).toBeInTheDocument();
 
-    await userEvent.click(signOutBtn);
-    await waitFor(() => {
-      expect(
-        screen.queryByText(/Your session will expire in/i),
-      ).not.toBeInTheDocument();
-    });
+    fireEvent.click(signOutBtn);
+
+    expect(screen.queryByText(/Your session will expire in/i)).not.toBeInTheDocument();
+
+    useDefaultStateSubmitter();
   });
 });
