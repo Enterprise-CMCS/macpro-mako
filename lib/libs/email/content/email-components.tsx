@@ -190,53 +190,55 @@ const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
   </Text>
 );
 
-const SpamNotice = () => (
+const FollowUpNotice = ({
+  isChip,
+  includeStateLead = true,
+}: {
+  isChip?: boolean;
+  includeStateLead?: boolean;
+}) => (
+  <>
+    <Divider />
+    {isChip ? (
+      <Section>
+        <Text style={{ marginTop: "8px", fontSize: "14px" }}>
+          If you have any questions, please contact{" "}
+          <Link href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`} style={{ textDecoration: "underline" }}>
+            {EMAIL_CONFIG.CHIP_EMAIL}
+          </Link>
+          {includeStateLead ? " or your state lead." : "."}
+        </Text>
+        <Text>Thank you.</Text>
+      </Section>
+    ) : (
+      <Section>
+        <Text style={{ marginTop: "8px", fontSize: "14px" }}>
+          If you have any questions or did not expect this email, please contact{" "}
+          <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`} style={{ textDecoration: "underline" }}>
+            {EMAIL_CONFIG.SPA_EMAIL}
+          </Link>
+          {includeStateLead ? " or your state lead." : "."}
+        </Text>
+        <Text>Thank you.</Text>
+      </Section>
+    )}
+  </>
+);
+
+export const SpamWarning = () => (
   <Section>
-    <Text style={{ ...styles.text.description, marginTop: "8px" }}>
+    <Divider />
+    <Text style={{ fontSize: "14px" }}>
       If the contents of this email seem suspicious, do not open them, and instead forward this
       email to{" "}
-      <Link href="mailto:SPAM.hhs.gov" style={{ textDecoration: "underline" }}>
-        SPAM@cms.hhs.gov
+      <Link style={{ textDecoration: "underline" }} href={`mailto:${EMAIL_CONFIG.SPAM_EMAIL}`}>
+        {EMAIL_CONFIG.SPAM_EMAIL}
       </Link>
       .
     </Text>
     <Text>Thank you.</Text>
   </Section>
 );
-
-const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
-  <Section>
-    <Divider />
-    <Text style={{ fontSize: "14px" }}>
-      If you have questions or did not expect this email, please contact{" "}
-      <Link
-        href={`mailto:${isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}`}
-        style={{ textDecoration: "underline" }}
-      >
-        {isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}
-      </Link>{" "}
-      or your state lead.
-    </Text>
-    <Text>Thank you.</Text>
-  </Section>
-);
-
-export const SpamWarning = () => {
-  return (
-    <Section>
-      <Divider />
-      <Text style={{ fontSize: "14px" }}>
-        If the contents of this email seem suspicious, do not open them, and instead forward this
-        email to{" "}
-        <Link style={{ textDecoration: "underline" }} href={`mailto:${EMAIL_CONFIG.SPAM_EMAIL}`}>
-          {EMAIL_CONFIG.SPAM_EMAIL}
-        </Link>
-        .
-      </Text>
-      <Text>Thank you.</Text>
-    </Section>
-  );
-};
 
 const EmailFooter = ({ children }: { children: React.ReactNode }) => (
   <Section style={styles.section.footer}>{children}</Section>
@@ -302,11 +304,10 @@ export {
   Attachments,
   PackageDetails,
   MailboxNotice,
-  ContactStateLead,
+  FollowUpNotice,
   BasicFooter,
   WithdrawRAI,
   getCpocEmail,
   getSrtEmails,
   EmailFooter,
-  SpamNotice,
 };
