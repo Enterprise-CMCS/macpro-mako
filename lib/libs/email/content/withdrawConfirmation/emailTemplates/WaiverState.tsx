@@ -1,5 +1,5 @@
 import { CommonEmailVariables, Events } from "shared-types";
-import { ContactStateLead, BasicFooter } from "../../email-components";
+import { FollowUpNotice, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const WaiverStateEmail = (props: {
@@ -15,7 +15,7 @@ export const WaiverStateEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <ContactStateLead />
+      <FollowUpNotice />
     </BaseEmailTemplate>
   );
 };

@@ -1,6 +1,6 @@
 import { CommonEmailVariables, Events } from "shared-types";
 import { Container, Html } from "@react-email/components";
-import { WithdrawRAI, PackageDetails, ContactStateLead } from "../../email-components";
+import { WithdrawRAI, PackageDetails, FollowUpNotice } from "../../email-components";
 
 export const ChipSpaStateEmail = (props: {
   variables: Events["RespondToRai"] & CommonEmailVariables;
@@ -20,7 +20,7 @@ export const ChipSpaStateEmail = (props: {
             Summary: variables.additionalInformation,
           }}
         />
-        <ContactStateLead isChip />
+        <FollowUpNotice isChip />
       </Container>
     </Html>
   );

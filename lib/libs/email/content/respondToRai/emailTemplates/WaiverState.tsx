@@ -5,7 +5,7 @@ import {
   PackageDetails,
   MailboxNotice,
   BasicFooter,
-  ContactStateLead,
+  FollowUpNotice,
   Divider,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
@@ -43,7 +43,7 @@ export const WaiverStateEmail = (props: {
         .
       </Text>
       <MailboxNotice type="Waiver" />
-      <ContactStateLead />
+      <FollowUpNotice />
     </BaseEmailTemplate>
   );
 };

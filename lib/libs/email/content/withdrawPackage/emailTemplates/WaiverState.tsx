@@ -1,6 +1,6 @@
 import { CommonEmailVariables, Events } from "shared-types";
 import {
-  ContactStateLead,
+  FollowUpNotice,
   BasicFooter,
   PackageDetails,
   MailboxNotice,
@@ -31,7 +31,7 @@ export const WaiverStateEmail = ({
       />
       <Divider />
       <MailboxNotice type="Waiver" />
-      <ContactStateLead />
+      <FollowUpNotice />
     </BaseEmailTemplate>
   );
 };
