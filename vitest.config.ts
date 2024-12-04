@@ -13,5 +13,9 @@ export default defineConfig({
       reportOnFailure: true,
       exclude: [...configDefaults.exclude],
     },
+    environment: 'jsdom',
+    deps: {
+      inline: ['@react-email/components']
+    }
   },
 });

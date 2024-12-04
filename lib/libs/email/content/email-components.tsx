@@ -295,25 +295,36 @@ const getCpocEmail = (item: CpocUser | undefined): string[] => {
 
 const getSrtEmails = (item: Document | undefined): string[] => {
   try {
-    if (!item) return [];
+    if (!item) {
+      console.warn("No item provided to getSrtEmails");
+      return [];
+    }
     
     const source = (item as any)?._source || item;
     const reviewTeam = source?.reviewTeam;
     
-    if (!reviewTeam) {
-      console.warn("No review team found in item:", JSON.stringify(item, null, 2));
+    if (!reviewTeam || !Array.isArray(reviewTeam)) {
+      console.warn("No valid review team found:", { 
+        hasSource: Boolean(source),
+        reviewTeamType: typeof reviewTeam,
+        isArray: Array.isArray(reviewTeam)
+      });
       return [];
     }
 
-    return reviewTeam.map((reviewer: { name: string; email: string }) => {
-      if (!reviewer.name || !reviewer.email) {
-        console.warn("Missing required reviewer fields:", reviewer);
-        return null;
-      }
-      return `${reviewer.name} <${reviewer.email}>`;
-    }).filter(Boolean);
+    return reviewTeam
+      .filter((reviewer: any) => {
+        if (!reviewer?.name || !reviewer?.email) {
+          console.warn("Invalid reviewer entry:", reviewer);
+          return false;
+        }
+        return true;
+      })
+      .map((reviewer: { name: string; email: string }) => 
+        `${reviewer.name} <${reviewer.email}>`
+      );
   } catch (e) {
-    console.error("Error getting SRT emails", JSON.stringify(e, null, 2));
+    console.error("Error getting SRT emails:", e);
     return [];
   }
 };
