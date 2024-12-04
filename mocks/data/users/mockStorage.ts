@@ -1,3 +1,5 @@
+// adapted from https://github.com/mswjs/local-storage-polyfill/blob/main/src/index.ts
+
 export const STORAGE_MAP_SYMBOL = Symbol("map");
 
 export class Storage<Key extends string = string> {
