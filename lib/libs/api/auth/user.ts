@@ -10,6 +10,7 @@ import { isCmsUser, isCmsWriteUser } from "shared-utils";
 // Retrieve user authentication details from the APIGatewayEvent
 export function getAuthDetails(event: APIGatewayEvent) {
   console.log("getting auth details ", { event });
+  console.log("identity ", { identity: event.requestContext.identity });
   const authProvider = event.requestContext.identity.cognitoAuthenticationProvider;
   console.log({ authProvider });
   if (!authProvider) {
