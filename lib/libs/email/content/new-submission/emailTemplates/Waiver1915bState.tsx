@@ -3,7 +3,7 @@ import { formatNinetyDaysDate, formatDate } from "shared-utils";
 import { Text } from "@react-email/components";
 import {
   PackageDetails,
-  ContactStateLead,
+  FollowUpNotice,
   DetailsHeading,
   Attachments,
   MailboxNotice,
@@ -24,7 +24,7 @@ export const Waiver1915bStateEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<ContactStateLead />}
+      footerContent={<FollowUpNotice />}
     >
       <DetailsHeading />
       <PackageDetails
