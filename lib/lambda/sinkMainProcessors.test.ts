@@ -199,7 +199,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.seatool.debezium.changed_date.SEA.dbo.State_Plan",
+          topic: "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan",
           partition: 0,
           offset: 5,
           timestamp: 1732645041557,
@@ -273,7 +273,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.seatool.debezium.changed_date.SEA.dbo.State_Plan",
+          topic: "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan",
           partition: 0,
           offset: 5,
           timestamp: 1732645041557,
@@ -296,7 +296,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.seatool.debezium.changed_date.SEA.dbo.State_Plan",
+          topic: "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan",
           partition: 0,
           offset: 5,
           timestamp: 1732645041557,
@@ -346,7 +346,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.seatool.debezium.changed_date.SEA.dbo.State_Plan",
+          topic: "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan",
           partition: 0,
           offset: 5,
           timestamp: 1732645041557,
@@ -367,7 +367,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.seatool.debezium.changed_date.SEA.dbo.State_Plan",
+          topic: "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan",
           partition: 0,
           offset: 5,
           timestamp: 1732645041557,
@@ -394,7 +394,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.seatool.debezium.changed_date.SEA.dbo.State_Plan",
+          topic: "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan",
           partition: 0,
           offset: 5,
           timestamp: 1732645041557,
@@ -415,7 +415,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.seatool.debezium.changed_date.SEA.dbo.State_Plan",
+          topic: "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan",
           partition: 0,
           offset: 5,
           timestamp: 1732645041557,
