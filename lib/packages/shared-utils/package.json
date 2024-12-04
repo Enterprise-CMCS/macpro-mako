@@ -14,5 +14,12 @@
     "shared-types": "*",
     "eslint-config-custom-server": "*",
     "eslint-config-custom": "*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "vite": "^5.0.0",
+    "happy-dom": "^13.0.0"
   }
 }

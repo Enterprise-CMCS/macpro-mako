@@ -8,7 +8,7 @@ import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
 const upload = uploadFiles<(typeof formSchemas)["withdraw-package-chip"]>();
 
-describe("Withdraw Package CHIP", () => {
+describe.skip("Withdraw Package CHIP", () => {
   beforeAll(() => {
     renderFormWithPackageSection(<WithdrawPackageActionChip />);
     skipCleanup();

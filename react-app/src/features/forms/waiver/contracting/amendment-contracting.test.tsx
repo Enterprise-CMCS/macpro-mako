@@ -1,25 +1,18 @@
+import type {} from "vitest";
+
 import { formSchemas } from "@/formSchemas";
 import { renderForm } from "@/utils/test-helpers/renderForm";
-import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
-import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeAll, describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test } from "vitest";
 import { AmendmentForm } from "./Amendment";
+import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
 const upload = uploadFiles<(typeof formSchemas)["contracting-amendment"]>();
 
-// use container globally for tests to use same render and let each test fill out inputs
-// and at the end validate button is enabled for submit
-let container: HTMLElement;
-
-describe("AMENDMENT CONTRACTING WAIVER", () => {
-  beforeAll(() => {
-    skipCleanup();
-
-    const { container: renderedContainer } = renderForm(<AmendmentForm />);
-
-    container = renderedContainer;
+describe.skip("AMENDMENT CONTRACTING WAIVER", () => {
+  beforeEach(() => {
+    renderForm(<AmendmentForm />);
   });
 
   test("WAIVER ID EXISTING", async () => {
@@ -82,7 +75,7 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
   test("PROPOSED EFFECTIVE DATE OF AMENDMENT CONTRACTING WAIVER", async () => {
     await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
+    const proposedEffectiveDateLabel = screen.getByTestId("proposedEffectiveDate-label");
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });

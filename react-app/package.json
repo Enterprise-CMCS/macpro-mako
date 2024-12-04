@@ -7,9 +7,9 @@
     "dev": "vite --mode development",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "bun test",
-    "test:coverage": "bun test --coverage",
-    "test:ui": "bun test --ui"
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@aws-amplify/auth": "^5.4.0",

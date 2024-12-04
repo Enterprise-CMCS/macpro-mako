@@ -65,7 +65,7 @@ jobs:
           echo "Bun version: $(bun -v)"
           echo "Working directory: $(pwd)"
           # Run tests with more verbose output
-          direnv exec bun test --coverage --verbose
+          direnv exec vitest --coverage --verbose
 
       - name: Test destroy
         run: |

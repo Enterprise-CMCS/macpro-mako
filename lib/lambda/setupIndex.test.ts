@@ -7,6 +7,9 @@ vi.mock("../libs/opensearch-lib", () => ({
   updateFieldMapping: vi.fn(),
 }));
 
+const mockedCreateIndex = vi.mocked(os.createIndex);
+const mockedUpdateFieldMapping = vi.mocked(os.updateFieldMapping);
+
 describe("handler", () => {
   const mockCallback = vi.fn();
   const mockEvent = {
@@ -22,38 +25,38 @@ describe("handler", () => {
   it("should create and update indices without errors", async () => {
     await handler(mockEvent, null, mockCallback);
 
-    expect(os.createIndex).toHaveBeenCalledTimes(7);
-    expect(os.createIndex).toHaveBeenCalledWith(
+    expect(mockedCreateIndex).toHaveBeenCalledTimes(7);
+    expect(mockedCreateIndex).toHaveBeenCalledWith(
       "test-domain",
       "test-namespace-main",
     );
-    expect(os.createIndex).toHaveBeenCalledWith(
+    expect(mockedCreateIndex).toHaveBeenCalledWith(
       "test-domain",
       "test-namespace-changelog",
     );
-    expect(os.createIndex).toHaveBeenCalledWith(
+    expect(mockedCreateIndex).toHaveBeenCalledWith(
       "test-domain",
       "test-namespace-types",
     );
-    expect(os.createIndex).toHaveBeenCalledWith(
+    expect(mockedCreateIndex).toHaveBeenCalledWith(
       "test-domain",
       "test-namespace-subtypes",
     );
-    expect(os.createIndex).toHaveBeenCalledWith(
+    expect(mockedCreateIndex).toHaveBeenCalledWith(
       "test-domain",
       "test-namespace-cpocs",
     );
-    expect(os.createIndex).toHaveBeenCalledWith(
+    expect(mockedCreateIndex).toHaveBeenCalledWith(
       "test-domain",
       "test-namespace-insights",
     );
-    expect(os.createIndex).toHaveBeenCalledWith(
+    expect(mockedCreateIndex).toHaveBeenCalledWith(
       "test-domain",
       "test-namespace-legacyinsights",
     );
 
-    expect(os.updateFieldMapping).toHaveBeenCalledTimes(1);
-    expect(os.updateFieldMapping).toHaveBeenCalledWith(
+    expect(mockedUpdateFieldMapping).toHaveBeenCalledTimes(1);
+    expect(mockedUpdateFieldMapping).toHaveBeenCalledWith(
       "test-domain",
       "test-namespace-main",
       {
@@ -70,12 +73,12 @@ describe("handler", () => {
   });
 
   it("should handle errors and return status 500", async () => {
-    (os.createIndex as vi.Mock).mockRejectedValueOnce(new Error("Test error"));
+    (mockedCreateIndex as vi.Mock).mockRejectedValueOnce(new Error("Test error"));
 
     await handler(mockEvent, null, mockCallback);
 
-    expect(os.createIndex).toHaveBeenCalledTimes(1);
-    expect(os.updateFieldMapping).not.toHaveBeenCalled();
+    expect(mockedCreateIndex).toHaveBeenCalledTimes(1);
+    expect(mockedUpdateFieldMapping).not.toHaveBeenCalled();
 
     expect(mockCallback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,

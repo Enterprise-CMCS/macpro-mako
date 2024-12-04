@@ -147,9 +147,9 @@ export class Auth extends cdk.NestedStack {
           "openid",
           "aws.cognito.signin.user.admin",
         ],
-        callbackUrLs: [applicationEndpointUrl, "http://localhost:5000/"],
+        callbackUrLs: [applicationEndpointUrl, "http://localhost:5173/"],
         defaultRedirectUri: applicationEndpointUrl,
-        logoutUrLs: [applicationEndpointUrl, "http://localhost:5000/"],
+        logoutUrLs: [applicationEndpointUrl, "http://localhost:5173/"],
         supportedIdentityProviders: userPoolIdentityProviderOidc
           ? ["COGNITO", userPoolIdentityProviderOidc.providerName]
           : ["COGNITO"],

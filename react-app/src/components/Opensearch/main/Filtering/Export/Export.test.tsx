@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, test, vi, beforeEach } from "vitest";
-import { OsExportData } from "@/components";
 import userEvent from "@testing-library/user-event";
-
+import { OsExportData } from ".";
+vi.mocked(() => {});
 vi.mock("@/components/Opensearch/main/useOpensearch.ts", () => ({
   useOsUrl: vi.fn(),
 }));
