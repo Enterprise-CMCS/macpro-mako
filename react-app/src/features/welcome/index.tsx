@@ -58,11 +58,7 @@ export const Welcome = () => {
                 Medicaid Alternative Benefit Plan, Premium and Cost Sharing, and CHIP Eligibility
                 SPA templates and implementation guides are now available in OneMAC. New submissions
                 for these SPA types are submitted through the OneMAC system effective [add date].{" "}
-                <Link
-                  to="/faq/abp-spa-templates"
-                  target={FAQ_TAB}
-                  className="underline text-[#0071bc]"
-                >
+                <Link to="/faq" target={FAQ_TAB} className="underline text-[#0071bc]">
                   Learn more
                 </Link>
               </p>
