@@ -1210,7 +1210,7 @@ export const oneMACFAQContent: FAQContent[] = [
               If a state wishes to withdraw a Formal RAI Response, the state must first contact
               their CMS Point of Contact so the action can be enabled.
             </p>
-            <ul className="list-disc ml-4">
+            <ul className="list-disc ml-8">
               <li>
                 As a CMS user, log in to OneMAC and select the link to the Waiver number from the
                 dashboard
@@ -1243,7 +1243,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 Formal RAI Response (all required information is marked with an asterisk).
               </li>
               <li> Select Submit. </li>
-              <ul className="list-disc ml-6">
+              <ul className="list-disc ml-10">
                 <li>
                   You will receive a confirmation message asking if you are sure that you want to
                   withdraw the Formal RAI Response. Select Yes, withdraw response.
@@ -1265,7 +1265,7 @@ export const oneMACFAQContent: FAQContent[] = [
               <b>Completing this action will conclude the review of this SPA package.</b>
             </p>
             <p>There are two methods you can use to withdraw a submission package:</p>
-            <ul className="list-disc ml-4 space-y-2">
+            <ul className="list-disc ml-8 space-y-2">
               <li>
                 In OneMAC, Locate and select the link to the Waiver ID. Then, under Package Actions,
                 select the Withdraw Package link.
