@@ -1,6 +1,6 @@
 import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
 
-import { useGetItem, useGetItemCache } from "@/api";
+import { useGetItem, useGetItemCache, getItem, itemExists } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { FC, PropsWithChildren } from "react";
 
@@ -12,7 +12,7 @@ import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
 import { Authority } from "shared-types";
-import { Navigate, useParams } from "react-router-dom";
+import { LoaderFunctionArgs, Navigate, useLoaderData, useParams, redirect } from "react-router-dom";
 import { detailsAndActionsCrumbs } from "@/utils";
 
 export const DetailCardWrapper = ({
@@ -38,10 +38,7 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
 
   return (
     <div className="w-full py-1 px-4 lg:px-8">
-      <section
-        id="package_overview"
-        className="block md:flex space-x-0 md:space-x-8"
-      >
+      <section id="package_overview" className="block md:flex space-x-0 md:space-x-8">
         <PackageStatusCard id={id} />
         <PackageActionsCard id={id} />
       </section>
@@ -54,16 +51,42 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
   );
 };
 
-export const Details = () => {
-  const { id, authority } = useParams<{
-    id: string;
-    authority: Authority;
-  }>();
-
+export const packageDetailsLoader = async ({ params }: LoaderFunctionArgs) => {
+  const { id, authority } = params;
   if (id === undefined || authority === undefined) {
-    return <Navigate to="/dashboard" />;
+    return redirect("/dashboard");
   }
 
+  try {
+    const packageResult = await getItem(id);
+    console.log(packageResult, "RESULTTT");
+    // const packageResult = await itemExists(id);
+    if (!packageResult || packageResult?._source?.deleted === true) {
+      return redirect("/dashboard");
+    }
+  } catch (error) {
+    console.log("Error: ", error);
+    return redirect("/dashboard");
+  }
+
+  return { id, authority };
+};
+
+type LoaderData = {
+  id: string;
+  authority: Authority;
+};
+
+export const Details = () => {
+  // const { id, authority } = useParams<{
+  //   id: string;
+  //   authority: Authority;
+  // }>();
+
+  // if (id === undefined || authority === undefined) {
+  //   return <Navigate to="/dashboard" />;
+  // }
+  const { id, authority } = useLoaderData() as LoaderData;
   return (
     <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row">
       <div className="px-4 lg:px-8">
