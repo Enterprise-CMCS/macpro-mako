@@ -4,8 +4,6 @@ import { configDefaults, defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     globals: true,
-    environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
-    setupFiles: ["./react-app/testing/setup.ts"],
     coverage: {
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),
@@ -39,6 +37,5 @@ export default defineConfig({
         "node_modules/**",
       ],
     },
-    environment: "happy-dom",
   },
 });

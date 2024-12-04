@@ -4,12 +4,18 @@ import items, { GET_ERROR_ITEM_ID } from "../data/items";
 export type GetItemBody = { id: string };
 
 const defaultItemHandler = http.post<GetItemBody, GetItemBody>(/\/item$/, async ({ request }) => {
+  // if (!request.body) {
+  //   return new HttpResponse("Event body required", { status: 400 });
+  // }
+
   const { id } = await request.json();
 
   if (id == GET_ERROR_ITEM_ID) {
     return new HttpResponse("Internal server error", { status: 500 });
   }
+
   const item = items[id] || null;
+
   return item ? HttpResponse.json(item) : new HttpResponse(null, { status: 404 });
 });
 

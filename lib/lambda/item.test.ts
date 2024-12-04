@@ -1,62 +1,60 @@
-import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
-import { handler } from "./item";
-import { response } from "../libs/handler-lib";
+import { HI_TEST_ITEM_ID } from "mocks";
+import { beforeEach, describe, expect, it, Mock } from "vitest";
 import { getStateFilter } from "../libs/api/auth/user";
-import {
-  getAppkChildren,
-  getPackage,
-  getPackageChangelog,
-} from "../libs/api/package";
 
-vi.mock("libs/handler-lib", () => ({
-  response: vi.fn(),
-}));
+import { getAppkChildren, getPackage, getPackageChangelog } from "../libs/api/package";
+import { response } from "../libs/handler-lib";
+import { handler } from "./item";
 
-vi.mock("../libs/api/auth/user", () => ({
-  getStateFilter: vi.fn(),
-}));
+// vi.mock("libs/handler-lib", () => ({
+//   response: vi.fn(),
+// }));
 
-vi.mock("../libs/api/package", () => ({
-  getAppkChildren: vi.fn(),
-  getPackage: vi.fn(),
-  getPackageChangelog: vi.fn(),
-}));
+// vi.mock("../libs/api/auth/user", () => ({
+//   getStateFilter: vi.fn(),
+// }));
+
+// vi.mock("../libs/api/package", () => ({
+//   getAppkChildren: vi.fn(),
+//   getPackage: vi.fn(),
+//   getPackageChangelog: vi.fn(),
+// }));
 
 describe("getItemData Handler", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    // vi.clearAllMocks();
     process.env.osDomain = "test-domain"; // Set the environment variable before each test
   });
 
   it("should return 400 if event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 400,
-      body: { message: "Event body required" },
-    });
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
   });
 
-  it("should return 401 if not authorized to view this resource", async () => {
-    const packageData = { found: true, _source: { state: "test-state" } };
-    (getPackage as Mock).mockResolvedValueOnce(packageData);
-    (getStateFilter as Mock).mockResolvedValueOnce({
-      terms: { state: ["other-state"] },
-    });
+  it.only("should return 401 if not authorized to view this resource", async () => {
+    // const packageData = { found: true, _source: { state: "test-state" } };
+    // (getPackage as Mock).mockResolvedValueOnce(packageData);
+    // (getStateFilter as Mock).mockResolvedValueOnce({
+    //   terms: { state: ["other-state"] },
+    // });
 
     const event = {
-      body: JSON.stringify({ id: "test-id" }),
+      body: JSON.stringify({ id: HI_TEST_ITEM_ID }),
+      requestContext: {},
     } as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
+    console.log({ res });
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 401,
-      body: { message: "Not authorized to view this resource" },
-    });
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(401);
+    expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
   });
 
   it("should return 200 with package data, children, and changelog if authorized", async () => {

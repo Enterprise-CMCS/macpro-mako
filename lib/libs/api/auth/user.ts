@@ -1,16 +1,17 @@
 import {
   CognitoIdentityProviderClient,
-  ListUsersCommand,
   UserType as CognitoUserType,
+  ListUsersCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
-import { CognitoUserAttributes } from "shared-types";
 import { APIGatewayEvent } from "aws-lambda";
-import { isCmsWriteUser, isCmsUser } from "shared-utils";
+import { CognitoUserAttributes } from "shared-types";
+import { isCmsUser, isCmsWriteUser } from "shared-utils";
 
 // Retrieve user authentication details from the APIGatewayEvent
 export function getAuthDetails(event: APIGatewayEvent) {
-  const authProvider =
-    event.requestContext.identity.cognitoAuthenticationProvider;
+  console.log("getting auth details ", { event });
+  const authProvider = event.requestContext.identity.cognitoAuthenticationProvider;
+  console.log({ authProvider });
   if (!authProvider) {
     throw new Error("No auth provider!");
   }
@@ -70,42 +71,32 @@ export async function fetchUserFromCognito(
     UserPoolId: poolID,
     Filter: subFilter,
   });
+  console.log({ commandListUsers });
 
   try {
     const listUsersResponse = await cognitoClient.send(commandListUsers);
+    console.log({ listUsersResponse });
 
-    if (
-      listUsersResponse.Users === undefined ||
-      listUsersResponse.Users.length !== 1
-    ) {
+    if (listUsersResponse.Users === undefined || listUsersResponse.Users.length !== 1) {
       throw new Error("No user found with this sub");
     }
 
     const currentUser = listUsersResponse.Users[0];
     return currentUser;
   } catch (error) {
-    if (
-      error instanceof Error &&
-      error.message === "No user found with this sub"
-    ) {
+    if (error instanceof Error && error.message === "No user found with this sub") {
       throw error;
     }
     throw new Error("Error fetching user from Cognito");
   }
 }
 
-export const isAuthorized = async (
-  event: APIGatewayEvent,
-  stateCode?: string | null,
-) => {
+export const isAuthorized = async (event: APIGatewayEvent, stateCode?: string | null) => {
   // Retrieve authentication details of the user
   const authDetails = getAuthDetails(event);
 
   // Look up user attributes from Cognito
-  const userAttributes = await lookupUserAttributes(
-    authDetails.userId,
-    authDetails.poolId,
-  );
+  const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
   return (
     isCmsUser(userAttributes) ||
     (stateCode && userAttributes?.["custom:state"]?.includes(stateCode))
@@ -120,10 +111,7 @@ export const isAuthorizedToGetPackageActions = async (
   const authDetails = getAuthDetails(event);
 
   // Look up user attributes from Cognito
-  const userAttributes = await lookupUserAttributes(
-    authDetails.userId,
-    authDetails.poolId,
-  );
+  const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
   return (
     isCmsWriteUser(userAttributes) ||
     (stateCode && userAttributes?.["custom:state"]?.includes(stateCode))
@@ -136,10 +124,7 @@ export const getStateFilter = async (event: APIGatewayEvent) => {
   const authDetails = getAuthDetails(event);
 
   // Look up user attributes from Cognito
-  const userAttributes = await lookupUserAttributes(
-    authDetails.userId,
-    authDetails.poolId,
-  );
+  const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
 
   if (!isCmsUser(userAttributes)) {
     if (userAttributes["custom:state"]) {
