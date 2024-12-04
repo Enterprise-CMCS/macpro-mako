@@ -123,11 +123,6 @@ const testWrapperDependency: RHFSlotProps = {
   ],
 };
 
-// vi.spyOn(api, "useGetUser").mockImplementation(() => {
-//   const response = mockUseGetUser();
-//   return response as UseQueryResult<OneMacUser, unknown>;
-// });
-
 describe("Field Tests", () => {
   test("renders FieldArray", () => {
     renderWithQueryClient(<TestWrapper {...testValues} />);

@@ -101,9 +101,9 @@ describe("Capitated Amendment", () => {
     expect(costEffectivenessSpreadsheets).not.toHaveClass("text-destructive");
   });
 
-  // test("submit button is enabled", () => {
-  //   expect(screen.getByTestId("submit-action-form")).toBeEnabled();
-  // });
+  test("submit button is enabled", () => {
+    expect(screen.getByTestId("submit-action-form")).toBeEnabled();
+  });
 });
 
 describe("AMENDMENT CAPITATED WAIVER WITH EXISTING WAIVERID", () => {

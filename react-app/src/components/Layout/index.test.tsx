@@ -100,14 +100,15 @@ const setupTest = async (viewMode: ViewMode = VIEW_MODES.DESKTOP) => {
 };
 
 const setupUserDropdownTest = async (viewMode: ViewMode = VIEW_MODES.DESKTOP) => {
+  const user = userEvent.setup();
   await setupTest(viewMode);
 
   if (!viewMode.desktop) {
-    await userEvent.click(screen.getByRole("button"));
+    await user.click(screen.getByRole("button"));
   }
 
   const myAccountButton = screen.getByText("My Account");
-  await userEvent.click(myAccountButton);
+  await user.click(myAccountButton);
 
   return { myAccountButton };
 };
@@ -164,18 +165,20 @@ describe("Layout", () => {
     });
 
     it("navigates to profile page when View Profile is clicked", async () => {
+      const user = userEvent.setup();
       await setupUserDropdownTest();
 
-      await userEvent.click(screen.getByText("View Profile"));
+      await user.click(screen.getByText("View Profile"));
       expect(mockNavigate).toHaveBeenCalledWith("/profile");
     });
 
     it("calls Auth.signOut when Sign Out is clicked", async () => {
       const spy = vi.spyOn(Auth, "signOut");
 
+      const user = userEvent.setup();
       await setupUserDropdownTest();
 
-      await userEvent.click(screen.getByText("Sign Out"));
+      await user.click(screen.getByText("Sign Out"));
       expect(spy).toHaveBeenCalled();
     });
   });
@@ -190,10 +193,11 @@ describe("Layout", () => {
       ["desktop", VIEW_MODES.DESKTOP],
       ["mobile", VIEW_MODES.MOBILE],
     ])("renders Sign In and Register buttons in %s view", async (_, viewMode) => {
+      const user = userEvent.setup();
       await setupTest(viewMode);
 
       if (!viewMode.desktop) {
-        await userEvent.click(screen.getByRole("button"));
+        await user.click(screen.getByRole("button"));
       }
 
       expect(screen.getByText("Sign In")).toBeInTheDocument();
@@ -231,13 +235,14 @@ describe("Layout", () => {
     });
 
     it("toggles the mobile menu for authenticaed users when the button is clicked", async () => {
+      const user = userEvent.setup();
       await setupLayoutTest(VIEW_MODES.MOBILE);
 
       expect(screen.queryByText("Home")).not.toBeInTheDocument();
 
       // Open the menu
       const menuButton = screen.getByRole("button");
-      await userEvent.click(menuButton);
+      await user.click(menuButton);
 
       expect(screen.getByText("Home")).toBeInTheDocument();
       expect(screen.getByText("Dashboard")).toBeInTheDocument();
@@ -245,7 +250,7 @@ describe("Layout", () => {
       expect(screen.getByText("Webforms")).toBeInTheDocument();
 
       // Close the menu
-      await userEvent.click(menuButton);
+      await user.click(menuButton);
       expect(screen.queryByText("Home")).not.toBeInTheDocument();
     });
   });
@@ -254,13 +259,14 @@ describe("Layout", () => {
     it("shows mobile menu when in mobile view", async () => {
       vi.spyOn(hooks, "useMediaQuery").mockReturnValue(false);
 
+      const user = userEvent.setup();
       await renderLayout();
 
       // Mobile menu button should be present
       expect(screen.getByTestId("mobile-menu-button")).toBeInTheDocument();
 
       // Open the mobile menu
-      await userEvent.click(screen.queryByTestId("mobile-menu-button"));
+      await user.click(screen.queryByTestId("mobile-menu-button"));
       expect(screen.getByText("Home")).toBeVisible();
     });
 
@@ -292,11 +298,12 @@ describe("Layout", () => {
       window.location = { assign: vi.fn() } as any;
 
       // Render the component
+      const user = userEvent.setup();
       await renderLayout();
 
       // Click the "Sign In" button
       const signInButton = screen.getByText("Sign In");
-      await userEvent.click(signInButton);
+      await user.click(signInButton);
 
       // Construct the expected URL
       const expectedUrl = `https://${AUTH_CONFIG.oauth.domain}/oauth2/authorize?redirect_uri=${AUTH_CONFIG.oauth.redirectSignIn}&response_type=${AUTH_CONFIG.oauth.responseType}&client_id=${AUTH_CONFIG.userPoolWebClientId}`;
@@ -315,11 +322,12 @@ describe("Layout", () => {
       window.location = { assign: vi.fn() } as any;
 
       // Render the component
+      const user = userEvent.setup();
       await renderLayout();
 
       // Click the "Register" button
       const registerButton = screen.getByText("Register");
-      await userEvent.click(registerButton);
+      await user.click(registerButton);
 
       // Assert that window.location.assign was called with the expected URL
       expect(window.location.assign).toHaveBeenCalledWith(

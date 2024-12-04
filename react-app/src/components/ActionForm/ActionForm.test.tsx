@@ -313,7 +313,7 @@ describe("ActionForm", () => {
     const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData");
     const bannerSpy = vi.spyOn(banner, "banner");
 
-    await await renderFormWithPackageSectionAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({

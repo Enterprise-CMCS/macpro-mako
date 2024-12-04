@@ -15,8 +15,6 @@ export const WithdrawPackageActionWaiver = () => {
 
   if (isWaiverLoading === true) {
     return <LoadingSpinner />;
-  } else {
-    console.log({ waiver, isWaiverLoading });
   }
 
   return (

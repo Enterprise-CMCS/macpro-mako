@@ -50,7 +50,7 @@ vi.spyOn(Auth, "signOut").mockImplementation(async () => {
 });
 
 // Add this to remove all the expected errors in console when running unit tests.
-beforeAll(async () => {
+beforeAll(() => {
   useDefaultStateSubmitter();
 
   vi.spyOn(console, "error").mockImplementation(() => {});
@@ -75,8 +75,8 @@ beforeAll(async () => {
 afterEach(() => {
   vi.useRealTimers();
   vi.clearAllMocks();
-  useDefaultStateSubmitter();
 
+  useDefaultStateSubmitter();
   // Reset any request handlers that we may add during the tests,
   // so they don't affect other tests.
   mockedServer.resetHandlers();
@@ -86,9 +86,10 @@ afterEach(() => {
 });
 
 afterAll(() => {
-  delete process.env.SKIP_CLEANUP;
+  vi.clearAllMocks();
 
   // Clean up after the tests are finished.
   mockedServer.close();
-  vi.clearAllMocks();
+
+  delete process.env.SKIP_CLEANUP;
 });

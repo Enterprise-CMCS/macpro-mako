@@ -33,10 +33,7 @@ describe("Package Activity", () => {
   });
 
   it("displays the correct title with changelog length, a changelog entry, and the 'Download all documents' button", async () => {
-    await await renderFormWithPackageSectionAsync(
-      <PackageActivities />,
-      WITHDRAWN_CHANGELOG_ITEM_ID,
-    );
+    await renderFormWithPackageSectionAsync(<PackageActivities />, WITHDRAWN_CHANGELOG_ITEM_ID);
 
     expect(screen.getByText("Package Activity (5)"));
     expect(screen.getByText("Initial package submitted"));

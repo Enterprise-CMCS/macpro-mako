@@ -149,7 +149,6 @@ export const Layout = () => {
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"];
 
-  console.log({ user });
   return (
     <div className="min-h-full flex flex-col">
       <ScrollToTop />
@@ -234,7 +233,6 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const handleLogin = () => {
     const authConfig = Auth.configure();
     const { domain, redirectSignIn, responseType } = authConfig.oauth as AwsCognitoOAuthOpts;
-    console.log({ domain, redirectSignIn, responseType });
     const clientId = authConfig.userPoolWebClientId;
     const url = `https://${domain}/oauth2/authorize?redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
     window.location.assign(url);

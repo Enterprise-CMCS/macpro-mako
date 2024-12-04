@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import { TimeoutModal } from ".";
 import * as api from "@/api";
@@ -38,7 +38,7 @@ describe("Timeout Modal", () => {
     const sessionExpirationWarning = screen.getByText(/Your session will expire in/i);
     expect(sessionExpirationWarning).toBeInTheDocument();
 
-    const extendBtn = screen.getByText(/Yes, extend session/i);
+    const extendBtn = screen.getByRole("button", { name: /Yes, extend session/i });
     expect(extendBtn).toBeInTheDocument();
 
     fireEvent.click(extendBtn);
@@ -55,7 +55,7 @@ describe("Timeout Modal", () => {
     const sessionExpirationWarning = screen.getByText(/Your session will expire in/i);
     expect(sessionExpirationWarning).toBeInTheDocument();
 
-    const signOutBtn = screen.getByText(/No, sign out/i);
+    const signOutBtn = screen.getByRole("button", { name: /No, sign out/i });
     expect(signOutBtn).toBeInTheDocument();
 
     fireEvent.click(signOutBtn);

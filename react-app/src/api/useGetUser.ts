@@ -13,7 +13,6 @@ export const getUser = async (): Promise<OneMacUser> => {
   try {
     const currentAuthenticatedUser = await Auth.currentAuthenticatedUser();
     if (!currentAuthenticatedUser) {
-      console.log("No current user");
       return { user: null } satisfies OneMacUser;
     }
     const userAttributesArray = (await Auth.userAttributes(currentAuthenticatedUser)) || [];
