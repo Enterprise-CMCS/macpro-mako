@@ -75,7 +75,7 @@ export const AppKAmendmentForm = () => (
                   rel="noopener noreferrer"
                   className="text-blue-900 underline"
                 >
-                  What is my waiver amendment number?
+                  What is my Waiver Amendment Number?
                 </Link>
               </div>
               <p className="text-neutral-500" id="waiver-number-format">
