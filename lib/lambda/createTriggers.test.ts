@@ -1,10 +1,10 @@
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { handler } from "./createTriggers";
 import {
+  LambdaClient,
   CreateEventSourceMappingCommand,
   GetEventSourceMappingCommand,
-  LambdaClient,
 } from "@aws-sdk/client-lambda";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { handler } from "./createTriggers";
 
 vi.mock("@aws-sdk/client-lambda", () => ({
   LambdaClient: vi.fn().mockImplementation(() => ({
@@ -14,8 +14,7 @@ vi.mock("@aws-sdk/client-lambda", () => ({
   GetEventSourceMappingCommand: vi.fn(),
 }));
 
-vi.mock("crypto", async (importOriginal) => ({
-  ...(await importOriginal()),
+vi.mock("crypto", () => ({
   randomUUID: vi.fn().mockReturnValue("test-uuid"),
 }));
 
@@ -56,8 +55,12 @@ describe("Lambda Handler", () => {
 
     await handler(event, null, callback);
 
-    expect(mockLambdaClientSend).toHaveBeenCalledWith(expect.any(CreateEventSourceMappingCommand));
-    expect(mockLambdaClientSend).toHaveBeenCalledWith(expect.any(GetEventSourceMappingCommand));
+    expect(mockLambdaClientSend).toHaveBeenCalledWith(
+      expect.any(CreateEventSourceMappingCommand),
+    );
+    expect(mockLambdaClientSend).toHaveBeenCalledWith(
+      expect.any(GetEventSourceMappingCommand),
+    );
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
@@ -80,7 +83,9 @@ describe("Lambda Handler", () => {
 
     await handler(event, null, callback);
 
-    expect(mockLambdaClientSend).toHaveBeenCalledWith(expect.any(CreateEventSourceMappingCommand));
+    expect(mockLambdaClientSend).toHaveBeenCalledWith(
+      expect.any(CreateEventSourceMappingCommand),
+    );
     expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,
     });

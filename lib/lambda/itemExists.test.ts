@@ -1,8 +1,8 @@
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
-import { response } from "libs/handler-lib";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import * as os from "../libs/opensearch-lib";
 import { handler } from "./itemExists";
+import { response } from "libs/handler-lib";
+import * as os from "../libs/opensearch-lib";
 
 vi.mock("libs/handler-lib", () => ({
   response: vi.fn(),
