@@ -278,10 +278,17 @@ const WithdrawRAI = ({
 const getCpocEmail = (item: CpocUser | undefined): string[] => {
   try {
     if (!item) return [];
-    const { firstName, lastName, email } = item;
+    const source = (item as any)?._source || item;
+    const { firstName, lastName, email } = source;
+    
+    if (!firstName || !lastName || !email) {
+      console.warn("Missing required CPOC user fields:", { firstName, lastName, email });
+      return [];
+    }
+    
     return [`${firstName} ${lastName} <${email}>`];
   } catch (e) {
-    console.error("Error getting CPCO email", e);
+    console.error("Error getting CPOC email", JSON.stringify(e, null, 2));
     return [];
   }
 };
@@ -289,12 +296,22 @@ const getCpocEmail = (item: CpocUser | undefined): string[] => {
 const getSrtEmails = (item: Document | undefined): string[] => {
   try {
     if (!item) return [];
-    const reviewTeam = (item as any).reviewTeam;
-    if (!reviewTeam) return [];
+    
+    const source = (item as any)?._source || item;
+    const reviewTeam = source?.reviewTeam;
+    
+    if (!reviewTeam) {
+      console.warn("No review team found in item:", JSON.stringify(item, null, 2));
+      return [];
+    }
 
-    return reviewTeam.map(
-      (reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`,
-    );
+    return reviewTeam.map((reviewer: { name: string; email: string }) => {
+      if (!reviewer.name || !reviewer.email) {
+        console.warn("Missing required reviewer fields:", reviewer);
+        return null;
+      }
+      return `${reviewer.name} <${reviewer.email}>`;
+    }).filter(Boolean);
   } catch (e) {
     console.error("Error getting SRT emails", JSON.stringify(e, null, 2));
     return [];

@@ -122,8 +122,26 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   };
 
   console.log("Kafka record:", JSON.stringify(record, null, 2));
-  if (record.origin !== "mako" && record.origin !== "seatool") {
-    console.log("Kafka event is not of mako or seatool origin.  Doing nothing.");
+  
+  // Validate record structure based on origin
+  if (record.origin === "seatool") {
+    // Validate seatool record structure
+    const requiredFields = ["event", "authority"];
+    const missingFields = requiredFields.filter(field => !record[field]);
+    if (missingFields.length > 0) {
+      console.error(`Invalid seatool record: missing fields ${missingFields.join(", ")}`);
+      return;
+    }
+  } else if (record.origin === "mako") {
+    // Validate mako record structure
+    const requiredFields = ["event", "authority"];
+    const missingFields = requiredFields.filter(field => !record[field]);
+    if (missingFields.length > 0) {
+      console.error(`Invalid mako record: missing fields ${missingFields.join(", ")}`);
+      return;
+    }
+  } else {
+    console.log("Kafka event is not of mako or seatool origin. Doing nothing.");
     console.log("Kafka event", JSON.stringify(record, null, 2));
     return;
   }
