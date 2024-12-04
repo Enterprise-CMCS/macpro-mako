@@ -4,7 +4,7 @@ import {
   BasicFooter,
   MailboxNotice,
   Divider,
-  ContactStateLead,
+  FollowUpNotice,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
@@ -31,7 +31,7 @@ export const AppKStateEmail = (props: {
       />
       <Divider />
       <MailboxNotice type="Waiver" />
-      <ContactStateLead />
+      <FollowUpNotice />
     </BaseEmailTemplate>
   );
 };
