@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { PackageActivities } from ".";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import * as packageActivityHooks from "./hook";
 import userEvent from "@testing-library/user-event";
 import { toBeEmptyDOMElement } from "@testing-library/jest-dom/matchers";
@@ -19,13 +19,13 @@ describe("Package Activity", () => {
   });
 
   it("renders nothing if submission is not queried", async () => {
-    await await renderFormWithPackageSectionAsync(<PackageActivities />, NOT_FOUND_ITEM_ID);
+    await renderFormWithPackageSectionAsync(<PackageActivities />, NOT_FOUND_ITEM_ID);
 
     expect(toBeEmptyDOMElement);
   });
 
   it("displays the correct title and description if changelog length is 0", async () => {
-    await await renderFormWithPackageSectionAsync(<PackageActivities />, MISSING_CHANGELOG_ITEM_ID);
+    await renderFormWithPackageSectionAsync(<PackageActivities />, MISSING_CHANGELOG_ITEM_ID);
 
     expect(screen.getByText("Package Activity (0)"));
     expect(screen.getByText("No package activity recorded"));
@@ -53,13 +53,11 @@ describe("Package Activity", () => {
       loading: false,
     }));
 
-    await await renderFormWithPackageSectionAsync(
-      <PackageActivities />,
-      WITHDRAWN_CHANGELOG_ITEM_ID,
-    );
+    const user = userEvent.setup();
+    await renderFormWithPackageSectionAsync(<PackageActivities />, WITHDRAWN_CHANGELOG_ITEM_ID);
 
     const downloadAllDocumentsBtn = screen.getByText("Download all documents");
-    await userEvent.click(downloadAllDocumentsBtn);
+    await user.click(downloadAllDocumentsBtn);
 
     expect(spiedOnZip).toBeCalledWith([
       {
@@ -99,13 +97,11 @@ describe("Package Activity", () => {
       loading: false,
     }));
 
-    await await renderFormWithPackageSectionAsync(
-      <PackageActivities />,
-      WITHDRAWN_CHANGELOG_ITEM_ID,
-    );
+    const user = userEvent.setup();
+    await renderFormWithPackageSectionAsync(<PackageActivities />, WITHDRAWN_CHANGELOG_ITEM_ID);
 
     const downloadDocumentsBtn = screen.getByText("Download documents");
-    await userEvent.click(downloadDocumentsBtn);
+    await user.click(downloadDocumentsBtn);
 
     expect(spiedOnZip).toBeCalledWith([
       {
@@ -128,13 +124,11 @@ describe("Package Activity", () => {
 
     vi.spyOn(window, "open").mockImplementation(spiedWindowOpen);
 
-    await await renderFormWithPackageSectionAsync(
-      <PackageActivities />,
-      WITHDRAWN_CHANGELOG_ITEM_ID,
-    );
+    const user = userEvent.setup();
+    await renderFormWithPackageSectionAsync(<PackageActivities />, WITHDRAWN_CHANGELOG_ITEM_ID);
 
     const firstDocumentBtn = screen.getByText("contract_amendment_2024.pdf");
-    await userEvent.click(firstDocumentBtn);
+    await user.click(firstDocumentBtn);
 
     expect(spiedOnUrl).toBeCalledWith({
       filename: "contract_amendment_2024.pdf",

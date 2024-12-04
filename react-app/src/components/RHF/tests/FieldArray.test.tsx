@@ -1,9 +1,11 @@
-import { describe, test, expect, vi } from "vitest";
-import { fireEvent, render } from "@testing-library/react";
+import { describe, test, expect } from "vitest";
+import { screen } from "@testing-library/react";
 import { RHFSlot } from "..";
 import { Form, FormField } from "../../Inputs";
 import { Control, useForm } from "react-hook-form";
 import { DefaultFieldGroupProps, RHFSlotProps } from "shared-types";
+import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
+import userEvent from "@testing-library/user-event";
 
 const TestWrapper = (props: RHFSlotProps & { defaultValues?: any }) => {
   const form = useForm<any>({
@@ -121,36 +123,29 @@ const testWrapperDependency: RHFSlotProps = {
   ],
 };
 
-vi.mock("@/api", async (importOriginal) => {
-  const actual = await importOriginal();
-  return {
-    ...(actual as object),
-    useGetCounties: vi.fn(() => {
-      return { data: [], isLoading: false, error: null };
-    }),
-  };
-});
+// vi.spyOn(api, "useGetUser").mockImplementation(() => {
+//   const response = mockUseGetUser();
+//   return response as UseQueryResult<OneMacUser, unknown>;
+// });
 
 describe("Field Tests", () => {
   test("renders FieldArray", () => {
-    const rend = render(<TestWrapper {...testValues} />);
-    const input = rend.getByLabelText("Test Input");
-    expect(input.id).toBe(
-      testValues.name + ".0." + testValues.fields?.[0].name,
-    );
+    renderWithQueryClient(<TestWrapper {...testValues} />);
+    const input = screen.getByLabelText("Test Input");
+    expect(input.id).toBe(testValues.name + ".0." + testValues.fields?.[0].name);
   });
 
   test("renders FieldArray with Wrapped Field", () => {
-    const rend = render(<TestWrapper {...testWrapperValues} />);
-    const input = rend.getByLabelText("Test Input");
+    renderWithQueryClient(<TestWrapper {...testWrapperValues} />);
+    const input = screen.getByLabelText("Test Input");
     expect(input.id).toBe(testValues.name + ".0.test");
   });
 
   test("test wrapper with Dependencies", () => {
-    const rend = render(<TestWrapper {...testWrapperDependency} />);
-    const input = rend.getByLabelText("Test Input");
-    const input2 = rend.getByLabelText("Test Input 2");
-    const input3 = rend.queryByLabelText("Test Input 3");
+    renderWithQueryClient(<TestWrapper {...testWrapperDependency} />);
+    const input = screen.getByLabelText("Test Input");
+    const input2 = screen.getByLabelText("Test Input 2");
+    const input3 = screen.queryByLabelText("Test Input 3");
     expect(input.id).toBe(testValues.name + ".0.test");
     expect(input2.id).toBe(testValues.name + ".0.test2");
     expect(input3).toBeNull();
@@ -158,37 +153,37 @@ describe("Field Tests", () => {
 });
 
 describe("FieldArray Test", () => {
-  test("appends New Row, deletes Row", () => {
-    const rend = render(<TestWrapper {...testValues} />);
-    const addButton = rend.getByTestId("appendRowButton-testName");
-    fireEvent.click(addButton);
-    const inputs = rend.getAllByLabelText("Test Input");
+  test("appends New Row, deletes Row", async () => {
+    const user = userEvent.setup();
+    renderWithQueryClient(<TestWrapper {...testValues} />);
+    const addButton = screen.getByTestId("appendRowButton-testName");
+    await user.click(addButton);
+    const inputs = screen.getAllByLabelText("Test Input");
     expect(inputs).toHaveLength(2);
 
-    const remButton = rend.getByTestId("removeRowButton-1");
-    fireEvent.click(remButton);
-    const input = rend.getAllByLabelText("Test Input");
+    const remButton = screen.getByTestId("removeRowButton-1");
+    await user.click(remButton);
+    const input = screen.getAllByLabelText("Test Input");
     expect(input).toHaveLength(1);
   });
 
-  test("appends New Group, deletes Group", () => {
-    const rend = render(<TestWrapper {...testValuesGroup} />);
-    const addButton = rend.getByTestId("appendRowButton-testName");
-    fireEvent.click(addButton);
-    const inputs = rend.getAllByLabelText("Test Input");
+  test("appends New Group, deletes Group", async () => {
+    const user = userEvent.setup();
+    renderWithQueryClient(<TestWrapper {...testValuesGroup} />);
+    const addButton = screen.getByTestId("appendRowButton-testName");
+    await user.click(addButton);
+    const inputs = screen.getAllByLabelText("Test Input");
     expect(inputs).toHaveLength(2);
 
-    const remButton = rend.getByTestId("removeGroupButton-1");
-    fireEvent.click(remButton);
-    const input = rend.getAllByLabelText("Test Input");
+    const remButton = screen.getByTestId("removeGroupButton-1");
+    await user.click(remButton);
+    const input = screen.getAllByLabelText("Test Input");
     expect(input).toHaveLength(1);
   });
 
   test("sets Default Values", () => {
-    const rend = render(
-      <TestWrapper {...testValues} defaultValues={{ testName: [] }} />,
-    );
-    const input = rend.getByLabelText("Test Input");
+    renderWithQueryClient(<TestWrapper {...testValues} defaultValues={{ testName: [] }} />);
+    const input = screen.getByLabelText("Test Input");
     expect((input as HTMLInputElement).value).toBe("");
   });
 });
