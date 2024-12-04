@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, waitForElementToBeRemoved } from "@testing-library/react";
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { MemoryRouter, createMemoryRouter, RouterProvider, RouteObject } from "react-router-dom";
 import items from "mocks/data/items";
 
@@ -25,6 +25,10 @@ const createTestQueryClient = () =>
       error: () => {},
     },
   });
+
+export const queryClientWrapper = ({ children }) => (
+  <QueryClientProvider client={createTestQueryClient()}>{children}</QueryClientProvider>
+);
 
 export const renderWithQueryClient = (element: ReactElement, routing?: RouterOptions) => {
   if (routing?.routes) {
