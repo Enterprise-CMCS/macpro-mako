@@ -43,6 +43,7 @@ export type Document = z.infer<capitatedAmendment.Schema> &
     makoChangedDate: string;
     changelog?: Changelog[];
     appkChildren?: Omit<ItemResult, "found">[];
+    deleted?: boolean;
   };
 
 export type Response = Res<Document>;

@@ -55,5 +55,4 @@ export const schema = baseSchema.extend({
   submitterName: z.string(),
   submitterEmail: z.string().email(),
   timestamp: z.number(),
-  deleted: z.boolean().default(false),
 });

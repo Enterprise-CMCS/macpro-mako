@@ -59,8 +59,6 @@ export const packageDetailsLoader = async ({ params }: LoaderFunctionArgs) => {
 
   try {
     const packageResult = await getItem(id);
-    console.log(packageResult, "RESULTTT");
-    // const packageResult = await itemExists(id);
     if (!packageResult || packageResult?._source?.deleted === true) {
       return redirect("/dashboard");
     }
