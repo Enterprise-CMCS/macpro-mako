@@ -1,19 +1,7 @@
 import { configDefaults, defineConfig } from "vitest/config";
-import react from "@vitejs/plugin-react";
-import { join, resolve } from "path";
+import { join } from "path";
 
 export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      "@": resolve(__dirname, "./src"),
-    },
-  },
-  build: {
-    rollupOptions: {
-      external: [],
-    },
-  },
   test: {
     globals: true,
     environmentMatchGlobs: [
