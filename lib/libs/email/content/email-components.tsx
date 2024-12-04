@@ -3,7 +3,7 @@ import { Attachment, AttachmentTitle, AttachmentKey } from "shared-types";
 import { createRef, forwardRef, ReactNode } from "react";
 import { styles } from "./email-styles";
 import { Document as CpocUser } from "shared-types/opensearch/cpocs";
-import { Document } from "node_modules/shared-types/opensearch/main";
+import { Document } from "shared-types/opensearch/main";
 
 export const EMAIL_CONFIG = {
   DEV_EMAIL: "mako.stateuser+dev-to@gmail.com",
@@ -280,12 +280,12 @@ const getCpocEmail = (item: CpocUser | undefined): string[] => {
     if (!item) return [];
     const source = (item as any)?._source || item;
     const { firstName, lastName, email } = source;
-    
+
     if (!firstName || !lastName || !email) {
       console.warn("Missing required CPOC user fields:", { firstName, lastName, email });
       return [];
     }
-    
+
     return [`${firstName} ${lastName} <${email}>`];
   } catch (e) {
     console.error("Error getting CPOC email", JSON.stringify(e, null, 2));
@@ -299,15 +299,15 @@ const getSrtEmails = (item: Document | undefined): string[] => {
       console.warn("No item provided to getSrtEmails");
       return [];
     }
-    
+
     const source = (item as any)?._source || item;
     const reviewTeam = source?.reviewTeam;
-    
+
     if (!reviewTeam || !Array.isArray(reviewTeam)) {
-      console.warn("No valid review team found:", { 
+      console.warn("No valid review team found:", {
         hasSource: Boolean(source),
         reviewTeamType: typeof reviewTeam,
-        isArray: Array.isArray(reviewTeam)
+        isArray: Array.isArray(reviewTeam),
       });
       return [];
     }
@@ -320,9 +320,7 @@ const getSrtEmails = (item: Document | undefined): string[] => {
         }
         return true;
       })
-      .map((reviewer: { name: string; email: string }) => 
-        `${reviewer.name} <${reviewer.email}>`
-      );
+      .map((reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`);
   } catch (e) {
     console.error("Error getting SRT emails:", e);
     return [];
