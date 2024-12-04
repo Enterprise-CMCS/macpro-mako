@@ -58,12 +58,14 @@ jobs:
           direnv allow
           direnv exec run deploy --stage $STAGE_NAME
 
-      # - name: Test test
-      #   run: |
-      #     source /tmp/.profile
-      #     nvm use
-      #     direnv allow
-      #     direnv exec run test --stage $STAGE_NAME
+      - name: Test test
+        run: |
+          source /tmp/.profile
+          direnv allow
+          echo "Bun version: $(bun -v)"
+          echo "Working directory: $(pwd)"
+          # Run tests with more verbose output
+          direnv exec bun test --coverage --verbose
 
       - name: Test destroy
         run: |
