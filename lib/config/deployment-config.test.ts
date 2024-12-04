@@ -6,12 +6,6 @@ import {
 } from "../config/deployment-config";
 import * as sharedUtils from "shared-utils";
 
-// Mock the shared-utils module
-vi.mock("shared-utils", () => ({
-  getExport: vi.fn(),
-  getSecret: vi.fn(),
-}));
-
 describe("DeploymentConfig", () => {
   const project = "test-project";
   const defaultSecret = JSON.stringify({

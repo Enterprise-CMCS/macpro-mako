@@ -4,7 +4,11 @@ import { join } from "path";
 export default defineConfig({
   test: {
     globals: true,
-    environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
+    environmentMatchGlobs: [
+      ["**/*.test.ts", "node"],
+      ["**/*.test.tsx", "jsdom"],
+      ["!**/*.spec.*", "node"]
+    ],
     setupFiles: ["./react-app/testing/setup.ts"],
     coverage: {
       provider: "istanbul",
