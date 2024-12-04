@@ -31,6 +31,9 @@ export type EmailTemplates = {
   "capitated-initial": AuthoritiesWithUserTypesTemplate;
   "capitated-renewal": AuthoritiesWithUserTypesTemplate;
   "capitated-waiver": AuthoritiesWithUserTypesTemplate;
+  "contracting-waiver-state": AuthoritiesWithUserTypesTemplate;
+  "capitated-waiver-state": AuthoritiesWithUserTypesTemplate;
+
 };
 
 // Create a type-safe mapping of email templates
@@ -46,6 +49,8 @@ const emailTemplates: EmailTemplates = {
   "capitated-waiver": EmailContent.newSubmission,
   "contracting-renewal": EmailContent.newSubmission,
   "contracting-waiver": EmailContent.newSubmission,
+  "contracting-waiver-state": EmailContent.newSubmission,
+  "capitated-waiver-state": EmailContent.newSubmission,
 };
 
 // Create a type-safe lookup function
@@ -53,6 +58,7 @@ export function getEmailTemplate(
   action: keyof EmailTemplates,
 ): AuthoritiesWithUserTypesTemplate | UserTypeOnlyTemplate {
   // Handle -state suffix variants
+  console.log("Action:", action);
   const baseAction = action.replace(/-state$/, "") as keyof EmailTemplates;
   return emailTemplates[baseAction];
 }

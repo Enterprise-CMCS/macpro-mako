@@ -2,6 +2,8 @@ import { Text, Link, Section, Row, Column, Hr, Heading } from "@react-email/comp
 import { Attachment, AttachmentTitle, AttachmentKey } from "shared-types";
 import { createRef, forwardRef, ReactNode } from "react";
 import { styles } from "./email-styles";
+import { Document as CpocUser } from "shared-types/opensearch/cpocs";
+import { Document } from "node_modules/shared-types/opensearch/main";
 
 export const EMAIL_CONFIG = {
   DEV_EMAIL: "mako.stateuser+dev-to@gmail.com",
@@ -271,24 +273,28 @@ const WithdrawRAI = ({
   </Section>
 );
 
-const getCpocEmail = (item: any): string[] => {
+const getCpocEmail = (item: CpocUser | undefined): string[] => {
   try {
-    const { leadAnalystName, leadAnalystEmail } = item._source;
-    return [`${leadAnalystName} <${leadAnalystEmail}>`];
+    if (!item) return [];
+    const { firstName, lastName, email } = item;
+    return [`${firstName} ${lastName} <${email}>`];
   } catch (e) {
     console.error("Error getting CPCO email", e);
     return [];
   }
 };
 
-const getSrtEmails = (item: any): string[] => {
+const getSrtEmails = (item: Document | undefined): string[] => {
   try {
-    const reviewTeam = item._source.reviewTeam;
+    if (!item) return [];
+    const reviewTeam = (item as any).reviewTeam;
     if (!reviewTeam) return [];
 
-    return reviewTeam.map((reviewer: any) => `${reviewer.name} <${reviewer.email}>`);
+    return reviewTeam.map(
+      (reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`,
+    );
   } catch (e) {
-    console.error("Error getting SRT emails", e);
+    console.error("Error getting SRT emails", JSON.stringify(e, null, 2));
     return [];
   }
 };

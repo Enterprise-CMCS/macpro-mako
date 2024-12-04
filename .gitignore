@@ -1,4 +1,4 @@
-*.js
+
 !*config.js
 node_modules
 
@@ -7,12 +7,9 @@ node_modules
 cdk.out
 cdk.context.json
 .turbo
-.yarn_install
 build_run
 .build_run
-DS_Store
 .DS_Store
-**/*.DS_Store
 
 # legacy ignores
 .serverless
@@ -22,3 +19,7 @@ DS_Store
 # tests
 coverage
 __snapshots__
+
+# YAML Schema Configuration
+.vscode/settings.json
+!.vscode/yaml.schema.json

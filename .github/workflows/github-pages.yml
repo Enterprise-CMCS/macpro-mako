@@ -23,11 +23,6 @@ permissions:
   actions: write
   pull-requests: write
 
-# Allow one concurrent deployment
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 env:
   STAGE_NAME: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
 
@@ -38,11 +33,11 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: main
       - name: Setup Pages
-        uses: actions/configure-pages@v2
+        uses: actions/configure-pages@v3
       - uses: ./.github/actions/setup
 
       - name: Configure AWS credentials
@@ -72,16 +67,4 @@ jobs:
           source: ./docs
           destination: _site
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-
-  # Deployment job
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/upload-pages-artifact@v3

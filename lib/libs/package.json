@@ -16,9 +16,7 @@
     "shared-utils": "*"
   },
   "devDependencies": {
-    "@types/lodash": "^4.17.5",
-    "@vitest/ui": "^2.0.5",
-    "vitest": "2.0.5"
+    "@types/lodash": "^4.17.5"
   },
   "scripts": {
     "email-dev": "email dev --dir email/preview",

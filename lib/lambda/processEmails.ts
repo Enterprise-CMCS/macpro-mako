@@ -8,6 +8,7 @@ import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/ema
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
 import pLimit from "p-limit";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
+import { Document as CpocUser } from "shared-types/opensearch/cpocs";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -107,20 +108,23 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
   const { key, value, timestamp } = kafkaRecord;
+
   const id: string = decodeBase64WithUtf8(key);
 
   if (!value) {
     console.log("Tombstone detected. Doing nothing for this event");
     return;
   }
-
+  console.log("Kafka record value:", JSON.stringify(value, null, 2));
   const record = {
     timestamp,
     ...JSON.parse(decodeBase64WithUtf8(value)),
   };
 
+  console.log("Kafka record:", JSON.stringify(record, null, 2));
   if (record.origin !== "mako" && record.origin !== "seatool") {
     console.log("Kafka event is not of mako or seatool origin.  Doing nothing.");
+    console.log("Kafka event", JSON.stringify(record, null, 2));
     return;
   }
 
@@ -166,8 +170,8 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
 
   const item = await os.getItem(config.osDomain, `${config.indexNamespace}main`, id);
 
-  const cpocEmail = getCpocEmail(item);
-  const srtEmails = getSrtEmails(item);
+  const cpocEmail = getCpocEmail(item as unknown as CpocUser);
+  const srtEmails = getSrtEmails(item as any);
   const emails: EmailAddresses = JSON.parse(sec);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
@@ -181,7 +185,7 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
     allStateUsersEmails,
   };
 
-  console.log("Template variables:", JSON.stringify(templateVariables, null, 2));
+  console.log("TEMPLATE VARIABLES:", JSON.stringify(templateVariables, null, 2));
   const limit = pLimit(5); // Limit concurrent emails
   const sendEmailPromises = templates.map((template) =>
     limit(async () => {
@@ -217,6 +221,7 @@ export function createEmailParams(
   isDev: boolean,
 ): SendEmailCommandInput {
   const toAddresses = isDev ? [`State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`] : filledTemplate.to;
+  console.log("toAddresses:", toAddresses);
   const params = {
     Destination: {
       ToAddresses: toAddresses,
@@ -240,7 +245,7 @@ export function createEmailParams(
 }
 
 export async function sendEmail(params: SendEmailCommandInput, region: string): Promise<any> {
-  const sesClient = new SESClient({ region: region });
+  const sesClient = new SESClient({ region });
   console.log("sendEmail called with params:", JSON.stringify(params, null, 2));
 
   const command = new SendEmailCommand(params);
