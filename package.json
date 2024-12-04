@@ -36,6 +36,7 @@
     "@aws-sdk/client-sqs": "^3.687.0",
     "@react-email/components": "0.0.25",
     "@types/aws-lambda": "^8.10.145",
+    "@vitejs/plugin-react": "^4.3.4",
     "aws-cdk-lib": "^2.171.1",
     "constructs": "^10.3.0",
     "esbuild": "^0.23.1",

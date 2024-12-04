@@ -1,13 +1,25 @@
 import { configDefaults, defineConfig } from "vitest/config";
-import { join } from "path";
+import react from "@vitejs/plugin-react";
+import { join, resolve } from "path";
 
 export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "./src"),
+    },
+  },
+  build: {
+    rollupOptions: {
+      external: [],
+    },
+  },
   test: {
     globals: true,
     environmentMatchGlobs: [
       ["**/*.test.ts", "node"],
       ["**/*.test.tsx", "jsdom"],
-      ["!**/*.spec.*", "node"]
+      ["!**/*.spec.*", "node"],
     ],
     setupFiles: ["./react-app/testing/setup.ts"],
     coverage: {
@@ -27,12 +39,12 @@ export default defineConfig({
         "./react-app/src/components/Banner/index.test.tsx",
         "./react-app/src/hooks/useIdle.test.ts",
         "./react-app/src/hooks/useCountdown.test.ts",
-        "./react-app/src/components/DependencyWrapper/index.test.tsx"
+        "./react-app/src/components/DependencyWrapper/index.test.tsx",
       ],
     },
-    environment: 'jsdom',
+    environment: "jsdom",
     deps: {
-      inline: ['@react-email/components']
-    }
+      inline: ["@react-email/components"],
+    },
   },
 });
