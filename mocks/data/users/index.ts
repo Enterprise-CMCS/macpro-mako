@@ -31,10 +31,10 @@ export const noRoleUser = {
     },
     {
       Name: "sub",
-      Value: "",
+      Value: "0d4e3b53-07c8-42c8-9a26-c7dbf7eee027",
     },
   ],
-  Username: "", // TODO
+  Username: "0d4e3b53-07c8-42c8-9a26-c7dbf7eee027",
 };
 
 // return all of the possible responses
