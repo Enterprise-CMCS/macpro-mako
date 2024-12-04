@@ -54,6 +54,11 @@ const getOneMacRecordWithAllProperties = (
   return;
 };
 
+/**
+ * Processes incoming new records from the OneMac user interface and adds them to Mako
+ * @param kafkaRecords records to process
+ * @param topicPartition kafka topic for verbose error handling
+ */
 export const insertOneMacRecordsFromKafkaIntoMako = async (
   kafkaRecords: KafkaRecord[],
   topicPartition: string,
@@ -102,6 +107,11 @@ const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
   }, new Map());
 };
 
+/**
+ * Processes new SEATOOL records and reconciles them with existing Mako records
+ * @param kafkaRecords records to process
+ * @param topicPartition kafka topic for verbose error handling
+ */
 export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   kafkaRecords: KafkaRecord[],
   topicPartition: string,
@@ -125,7 +135,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
           // record in seatool has been deleted
           // nulls the seatool properties from the record
           // seatool record would now only have mako properties
-          console.log(`Record without a value property: ${JSON.stringify(value, null, 2)}`);
+          console.log(`Record without a value property: ${value}`);
           return collection.concat(opensearch.main.seatool.tombstone(id));
         }
 
