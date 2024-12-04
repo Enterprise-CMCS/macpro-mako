@@ -1,6 +1,6 @@
 import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
 
-import { useGetItem, useGetItemCache, getItem, itemExists } from "@/api";
+import { useGetItem, useGetItemCache, getItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { FC, PropsWithChildren } from "react";
 
@@ -12,7 +12,7 @@ import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
 import { Authority } from "shared-types";
-import { LoaderFunctionArgs, Navigate, useLoaderData, useParams, redirect } from "react-router-dom";
+import { LoaderFunctionArgs, useLoaderData, useParams, redirect } from "react-router-dom";
 import { detailsAndActionsCrumbs } from "@/utils";
 
 export const DetailCardWrapper = ({
