@@ -63,28 +63,36 @@ const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
   </Section>
 );
 
-const LoginInstructions = ({ appEndpointURL }: { appEndpointURL: string }) => (
+const LoginInstructions = ({
+  appEndpointURL,
+  useThisLink,
+}: {
+  appEndpointURL: string;
+  useThisLink?: boolean;
+}) => (
   <ul style={{ marginLeft: "-20px" }}>
     <li>
       <Text style={styles.text.description}>
-        The submission can be accessed in the OneMAC application at{" "}
-        <Link href={appEndpointURL}>{appEndpointURL}</Link>
+        The submission can be accessed in the OneMAC application, which you can find at{" "}
+        <Link href={appEndpointURL}>{useThisLink ? "this link" : appEndpointURL}</Link>.
       </Text>
     </li>
     <li>
       <Text style={styles.text.description}>
-        If not logged in, click "Login" at the top and use your Enterprise User Administration (EUA)
-        credentials.
+        If you are not already logged in, please click the "Login" link at the top of the page and
+        log in using your Enterprise User Administration (EUA) credentials.
       </Text>
     </li>
     <li>
       <Text style={styles.text.description}>
-        After logging in, you'll see the submission listed on the dashboard. Click its ID number to
-        view details.
+        After you have logged in, you will be taken to the OneMAC application. The submission will
+        be listed on the dashboard page, and you can view its details by clicking on its ID number.
       </Text>
     </li>
   </ul>
 );
+
+const Divider = () => <Hr style={styles.divider} />;
 
 const DetailsHeading = () => (
   <div>
@@ -154,7 +162,7 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
                 Summary:
               </Heading>
             </Text>
-            <Textarea>{value ?? "No additional information submitted"}</Textarea>
+            <Text>{value ?? "No additional information submitted"}</Text>
           </Row>
         );
       }
@@ -162,7 +170,7 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
       return (
         <Row key={label + index}>
           <Column align="left" style={{ width: "50%" }}>
-            <Text style={styles.text.title}>{label}</Text>
+            <Text style={styles.text.title}>{label}:</Text>
           </Column>
           <Column>
             <Text style={styles.text.description}>{value ?? "Not provided"}</Text>
@@ -182,39 +190,53 @@ const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
   </Text>
 );
 
-const SpamNotice = () => (
+const FollowUpNotice = ({
+  isChip,
+  includeStateLead = true,
+}: {
+  isChip?: boolean;
+  includeStateLead?: boolean;
+}) => (
+  <>
+    <Divider />
+    {isChip ? (
+      <Section>
+        <Text style={{ marginTop: "8px", fontSize: "14px" }}>
+          If you have any questions, please contact{" "}
+          <Link href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`} style={{ textDecoration: "underline" }}>
+            {EMAIL_CONFIG.CHIP_EMAIL}
+          </Link>
+          {includeStateLead ? " or your state lead." : "."}
+        </Text>
+        <Text>Thank you.</Text>
+      </Section>
+    ) : (
+      <Section>
+        <Text style={{ marginTop: "8px", fontSize: "14px" }}>
+          If you have any questions or did not expect this email, please contact{" "}
+          <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`} style={{ textDecoration: "underline" }}>
+            {EMAIL_CONFIG.SPA_EMAIL}
+          </Link>
+          {includeStateLead ? " or your state lead." : "."}
+        </Text>
+        <Text>Thank you.</Text>
+      </Section>
+    )}
+  </>
+);
+
+export const SpamWarning = () => (
   <Section>
-    <Text style={{ ...styles.text.description, marginTop: "8px" }}>
+    <Divider />
+    <Text style={{ fontSize: "14px" }}>
       If the contents of this email seem suspicious, do not open them, and instead forward this
       email to{" "}
-      <Link href="mailto:SPAM.hhs.gov" style={{ textDecoration: "underline" }}>
-        SPAM@cms.hhs.gov
+      <Link style={{ textDecoration: "underline" }} href={`mailto:${EMAIL_CONFIG.SPAM_EMAIL}`}>
+        {EMAIL_CONFIG.SPAM_EMAIL}
       </Link>
       .
     </Text>
     <Text>Thank you.</Text>
-  </Section>
-);
-
-const ContactStateLead = ({ isChip }: { isChip?: boolean }) => (
-  <Section
-    style={{
-      ...styles.section.footer,
-      paddingLeft: "16px",
-      paddingRight: "16px",
-    }}
-  >
-    <Text style={{ fontSize: "14px" }}>
-      If you have questions or did not expect this email, please contact{" "}
-      <Link
-        href={`mailto:${isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}`}
-        style={{ color: "#fff", textDecoration: "underline" }}
-      >
-        {isChip ? EMAIL_CONFIG.CHIP_EMAIL : EMAIL_CONFIG.SPA_EMAIL}
-      </Link>{" "}
-      or your state lead.
-    </Text>
-    <Text>Thank you!</Text>
   </Section>
 );
 
@@ -278,14 +300,14 @@ export {
   EmailNav,
   LoginInstructions,
   DetailsHeading,
+  Divider,
   Attachments,
   PackageDetails,
   MailboxNotice,
-  ContactStateLead,
+  FollowUpNotice,
   BasicFooter,
   WithdrawRAI,
   getCpocEmail,
   getSrtEmails,
   EmailFooter,
-  SpamNotice,
 };

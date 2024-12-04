@@ -1,16 +1,15 @@
-import { CommonEmailVariables } from "shared-types";
-import { RaiWithdraw } from "shared-types";
+import { CommonEmailVariables, Events } from "shared-types";
 import {
   WithdrawRAI,
   PackageDetails,
-  ContactStateLead,
+  FollowUpNotice,
   MailboxNotice,
   Attachments,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const Waiver1915bStateEmail = (props: {
-  variables: RaiWithdraw & CommonEmailVariables;
+  variables: Events["RespondToRai"] & CommonEmailVariables;
   relatedEvent: any;
 }) => {
   const { variables, relatedEvent } = { ...props };
@@ -21,7 +20,7 @@ export const Waiver1915bStateEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<ContactStateLead />}
+      footerContent={<FollowUpNotice />}
     >
       <WithdrawRAI {...variables} />
       <PackageDetails
