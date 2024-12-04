@@ -50,7 +50,7 @@ export const Welcome = () => {
         <div className="flex flex-col justify-center items-center">
           <div>
             <h2 className="text-2xl font-bold">New and Notable</h2>
-            <CardWithTopBorder className="w-[767px]">
+            <CardWithTopBorder className="max-w-[767px]">
               <p className="py-5 pl-6 pr-20">
                 <span className="font-bold text-[#0071bc]">
                   MMDL SPA forms available in OneMAC:
