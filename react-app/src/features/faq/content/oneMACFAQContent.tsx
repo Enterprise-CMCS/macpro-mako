@@ -1236,14 +1236,14 @@ export const oneMACFAQContent: FAQContent[] = [
                 taken.
               </b>
             </p>
-            <ul className="list-disc ml-4 space-y-2">
+            <ul className="list-disc ml-8 space-y-2">
               <li>
                 On the Formal RAI Response Withdraw form, upload any supporting documentation and
                 fill out the Additional Information section explaining your need to withdraw the
                 Formal RAI Response (all required information is marked with an asterisk).
               </li>
               <li> Select Submit. </li>
-              <ul className="list-disc ml-10">
+              <ul className="list-disc ml-12">
                 <li>
                   You will receive a confirmation message asking if you are sure that you want to
                   withdraw the Formal RAI Response. Select Yes, withdraw response.
