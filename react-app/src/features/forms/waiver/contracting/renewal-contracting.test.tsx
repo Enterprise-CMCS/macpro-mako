@@ -76,7 +76,7 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
     // test record doesn't have an amendment number
     await userEvent.type(waiverIdInput, "MD-0000.R00.01");
     const waiverIdHasAmendment = screen.getByText(
-      "Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00 For renewals, the “R##” starts with '01' and ascends.",
+      "The 1915(b) Waiver Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00. For renewals, the “R##” starts with ‘01’ and ascends.",
     );
     expect(waiverIdHasAmendment).toBeInTheDocument();
     // end of error validations

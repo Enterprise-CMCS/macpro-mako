@@ -9,7 +9,7 @@ export const baseSchema = z.object({
     .min(1, { message: "Required" })
     .refine((id) => /^[A-Z]{2}-\d{4,5}\.R(?!00)\d{2}\.[0]{2}$/.test(id), {
       message:
-        "Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00 For renewals, the “R##” starts with '01' and ascends.",
+        "The 1915(b) Waiver Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00. For renewals, the “R##” starts with ‘01’ and ascends.",
     }),
   proposedEffectiveDate: z.number(),
   attachments: z.object({

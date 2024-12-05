@@ -74,7 +74,7 @@ describe("Capitated Renewal", () => {
 
     await userEvent.type(waiverRenewalInput, "MD-0005.R01.01");
     const invalidAmendmentInput = screen.getByText(
-      "Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00 For renewals, the “R##” starts with '01' and ascends.",
+      "The 1915(b) Waiver Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00. For renewals, the “R##” starts with ‘01’ and ascends.",
     );
     expect(invalidAmendmentInput).toBeInTheDocument();
     // end of error validations
