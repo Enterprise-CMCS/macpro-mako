@@ -96,7 +96,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
           seatoolStatus: "Pending",
           state: "MD",
           stateStatus: "Under Review",
-          statusDate: "2024-11-26T13:17:21.526Z",
+          statusDate: new Date("2024-11-26T13:17:21.526Z").toISOString(),
           proposedDate: 1732597200000,
           subject: null,
           submissionDate: "2024-11-26T00:00:00.000Z",
