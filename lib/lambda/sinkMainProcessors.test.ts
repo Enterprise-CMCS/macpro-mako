@@ -2,13 +2,14 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   insertNewSeatoolRecordsFromKafkaIntoMako,
   insertOneMacRecordsFromKafkaIntoMako,
+  syncSeatoolRecordDatesFromKafkaWithMako,
 } from "./sinkMainProcessors";
 import * as sinkLib from "libs";
 import { Document, seatool } from "shared-types/opensearch/main";
 
 describe("insertOneMacRecordsFromKafkaIntoMako", () => {
   const spiedOnBulkUpdateDataWrapper = vi.fn();
-  const TOPIC_PARTITION = "aws.onemac.migration.cdc-0";
+  const TOPIC = "--mako--branch-name--aws.onemac.migration.cdc";
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -22,7 +23,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     insertOneMacRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.onemac.migration.cdc",
+          topic: TOPIC,
           partition: 0,
           offset: 0,
           timestamp: 1732645041557,
@@ -33,7 +34,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
           headers: {},
         },
       ],
-      TOPIC_PARTITION,
+      TOPIC,
     );
 
     expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith(
@@ -68,7 +69,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     insertOneMacRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.onemac.migration.cdc",
+          topic: TOPIC,
           partition: 0,
           offset: 0,
           timestamp: 1732645041557,
@@ -78,7 +79,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
           headers: {},
         },
       ],
-      TOPIC_PARTITION,
+      TOPIC,
     );
 
     expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
@@ -88,7 +89,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     insertOneMacRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.onemac.migration.cdc",
+          topic: TOPIC,
           partition: 0,
           offset: 0,
           timestamp: 1732645041557,
@@ -100,7 +101,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
           headers: {},
         },
       ],
-      TOPIC_PARTITION,
+      TOPIC,
     );
 
     expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
@@ -110,7 +111,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     insertOneMacRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.onemac.migration.cdc",
+          topic: TOPIC,
           partition: 0,
           offset: 0,
           timestamp: 1732645041557,
@@ -122,7 +123,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
           headers: {},
         },
       ],
-      TOPIC_PARTITION,
+      TOPIC,
     );
 
     expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
@@ -134,7 +135,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     insertOneMacRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.onemac.migration.cdc",
+          topic: TOPIC,
           partition: 0,
           offset: 0,
           timestamp: 1732645041557,
@@ -146,11 +147,15 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
           headers: {},
         },
       ],
-      TOPIC_PARTITION,
+      TOPIC,
     );
 
     expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
-    expect(spiedOnLogError).toBeCalled();
+    expect(spiedOnLogError).toBeCalledWith({
+      type: "badparse",
+      error: expect.any(Object),
+      metadata: expect.any(Object),
+    });
   });
 });
 
@@ -182,7 +187,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
   );
   const spiedOnBulkUpdateDataWrapper = vi.fn();
   const spiedOnLogError = vi.fn();
-  const TOPIC_PARTITION = "aws.seatool.ksql.onemac.three.agg.State_Plan";
+  const TOPIC = "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan";
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -199,7 +204,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan",
+          topic: TOPIC,
           partition: 0,
           offset: 5,
           timestamp: 1732645041557,
@@ -210,7 +215,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           headers: {},
         },
       ],
-      TOPIC_PARTITION,
+      TOPIC,
     );
 
     expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith(
@@ -273,7 +278,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan",
+          topic: TOPIC,
           partition: 0,
           offset: 5,
           timestamp: 1732645041557,
@@ -284,7 +289,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           headers: {},
         },
       ],
-      TOPIC_PARTITION,
+      TOPIC,
     );
 
     expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
@@ -296,7 +301,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan",
+          topic: TOPIC,
           partition: 0,
           offset: 5,
           timestamp: 1732645041557,
@@ -306,7 +311,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           headers: {},
         },
       ],
-      TOPIC_PARTITION,
+      TOPIC,
     );
 
     expect(spiedOnTombstone).toBeCalledWith("NY-23-2200");
@@ -346,7 +351,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan",
+          topic: TOPIC,
           partition: 0,
           offset: 5,
           timestamp: 1732645041557,
@@ -357,7 +362,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           headers: {},
         },
       ],
-      TOPIC_PARTITION,
+      TOPIC,
     );
 
     expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
@@ -367,7 +372,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan",
+          topic: TOPIC,
           partition: 0,
           offset: 5,
           timestamp: 1732645041557,
@@ -379,7 +384,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           headers: {},
         },
       ],
-      TOPIC_PARTITION,
+      TOPIC,
     );
 
     expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
@@ -394,7 +399,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan",
+          topic: TOPIC,
           partition: 0,
           offset: 5,
           timestamp: 1732645041557,
@@ -405,7 +410,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           headers: {},
         },
       ],
-      TOPIC_PARTITION,
+      TOPIC,
     );
 
     expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
@@ -415,7 +420,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         {
-          topic: "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan",
+          topic: TOPIC,
           partition: 0,
           offset: 5,
           timestamp: 1732645041557,
@@ -426,7 +431,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           headers: {},
         },
       ],
-      TOPIC_PARTITION,
+      TOPIC,
     );
 
     expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
@@ -434,6 +439,193 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       type: "validation",
       metadata: expect.any(Object),
       error: expect.any(Array),
+    });
+  });
+});
+
+describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
+  const spiedOnBulkUpdateDataWrapper = vi.fn();
+  const spiedOnLogError = vi.fn();
+
+  const TOPIC = "--mako--branch-name--aws.seatool.debezium.changed_date.SEA.dbo.State_Plan";
+
+  beforeEach(() => {
+    vi.resetAllMocks();
+
+    vi.spyOn(sinkLib, "bulkUpdateDataWrapper").mockImplementation(spiedOnBulkUpdateDataWrapper);
+    vi.spyOn(sinkLib, "logError").mockImplementation(spiedOnLogError);
+
+    vi.stubEnv("osDomain", "osDomain");
+    vi.stubEnv("indexNamespace", "indexNamespace");
+  });
+
+  it("processes a valid date change to mako", async () => {
+    await syncSeatoolRecordDatesFromKafkaWithMako(
+      [
+        {
+          topic: TOPIC,
+          partition: 0,
+          offset: 5,
+          timestamp: 1732645041557,
+          timestampType: "CREATE_TIME",
+          key: "TUQtMjQtMjMwMA==",
+          value:
+            "eyJwYXlsb2FkIjp7ImFmdGVyIjp7IklEX051bWJlciI6IjEyMzQ1IiwiQ2hhbmdlZF9EYXRlIjoxNjcyNTMxMjAwMDAwfX19",
+          headers: {},
+        },
+      ],
+      TOPIC,
+    );
+
+    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith(
+      [
+        {
+          changedDate: "2023-01-01T00:00:00.000Z",
+          id: "12345",
+        },
+      ],
+      "main",
+    );
+  });
+
+  it("processes a date change that's null to mako", async () => {
+    await syncSeatoolRecordDatesFromKafkaWithMako(
+      [
+        {
+          topic: TOPIC,
+          partition: 0,
+          offset: 5,
+          timestamp: 1732645041557,
+          timestampType: "CREATE_TIME",
+          key: "TUQtMjQtMjMwMA==",
+          value:
+            "eyJwYXlsb2FkIjp7ImFmdGVyIjp7IklEX051bWJlciI6IjY3ODkwIiwiQ2hhbmdlZF9EYXRlIjpudWxsfX19",
+          headers: {},
+        },
+      ],
+      TOPIC,
+    );
+
+    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith(
+      [
+        {
+          changedDate: null,
+          id: "67890",
+        },
+      ],
+      "main",
+    );
+  });
+
+  it("skips records with no value property", async () => {
+    await syncSeatoolRecordDatesFromKafkaWithMako(
+      [
+        {
+          topic: TOPIC,
+          partition: 0,
+          offset: 5,
+          timestamp: 1732645041557,
+          timestampType: "CREATE_TIME",
+          key: "TUQtMjQtMjMwMA==",
+          value: "",
+          headers: {},
+        },
+      ],
+      TOPIC,
+    );
+
+    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
+  });
+
+  it("skips payloads that're null or undefined", async () => {
+    await syncSeatoolRecordDatesFromKafkaWithMako(
+      [
+        {
+          topic: TOPIC,
+          partition: 0,
+          offset: 5,
+          timestamp: 1732645041557,
+          timestampType: "CREATE_TIME",
+          key: "TUQtMjQtMjMwMA==",
+          // payload.after is null
+          value: "eyJwYXlsb2FkIjp7ImFmdGVyIjpudWxsfX0=",
+          headers: {},
+        },
+      ],
+      TOPIC,
+    );
+
+    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
+
+    await syncSeatoolRecordDatesFromKafkaWithMako(
+      [
+        {
+          topic: TOPIC,
+          partition: 0,
+          offset: 5,
+          timestamp: 1732645041557,
+          timestampType: "CREATE_TIME",
+          key: "TUQtMjQtMjMwMA==",
+          // payload.after is `undefined`
+          value: "eyJwYXlsb2FkIjpudWxsfQ==",
+          headers: {},
+        },
+      ],
+      TOPIC,
+    );
+
+    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
+  });
+
+  it("skips payloads with missing Id property", async () => {
+    await syncSeatoolRecordDatesFromKafkaWithMako(
+      [
+        {
+          topic: TOPIC,
+          partition: 0,
+          offset: 5,
+          timestamp: 1732645041557,
+          timestampType: "CREATE_TIME",
+          key: "TUQtMjQtMjMwMA==",
+          // missing required Id property
+          value: "eyJwYXlsb2FkIjp7ImFmdGVyIjp7IkNoYW5nZWRfRGF0ZSI6MTY3MjUzMTIwMDAwMH19fQ==",
+          headers: {},
+        },
+      ],
+      TOPIC,
+    );
+
+    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
+    expect(spiedOnLogError).toBeCalledWith({
+      type: "validation",
+      error: expect.any(Object),
+      metadata: expect.any(Object),
+    });
+  });
+
+  it("skips payloads with invalid JSON", async () => {
+    await syncSeatoolRecordDatesFromKafkaWithMako(
+      [
+        {
+          topic: TOPIC,
+          partition: 0,
+          offset: 5,
+          timestamp: 1732645041557,
+          timestampType: "CREATE_TIME",
+          key: "TUQtMjQtMjMwMA==",
+          value:
+            "eyJwYXlsb2FkOnsiYWZ0ZXIiOnsiSURfTnVtYmVyIjoiMTIzNDUiLCJDaGFuZ2VkX0RhdGUiOjE2NzI1MzEyMDAwMDAsIkludmFsaWRfUHJvcGVydHkiOiJUaGlzIHNob3VsZG4ndCBiZSBoZXJlIn19fQ==",
+          headers: {},
+        },
+      ],
+      TOPIC,
+    );
+
+    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
+    expect(spiedOnLogError).toBeCalledWith({
+      type: "badparse",
+      error: expect.any(Object),
+      metadata: expect.any(Object),
     });
   });
 });
