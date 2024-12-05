@@ -6,6 +6,7 @@ import {
 } from "./sinkMainProcessors";
 import * as sinkLib from "libs";
 import { Document, seatool } from "shared-types/opensearch/main";
+import { offsetToUtc } from "shared-utils";
 
 const convertObjToBase64 = (obj: object) => Buffer.from(JSON.stringify(obj)).toString("base64");
 
@@ -96,7 +97,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
           seatoolStatus: "Pending",
           state: "MD",
           stateStatus: "Under Review",
-          statusDate: new Date("2024-11-26T13:17:21.526Z").toISOString(),
+          statusDate: offsetToUtc(new Date(1732645041526)).toISOString(),
           proposedDate: 1732597200000,
           subject: null,
           submissionDate: "2024-11-26T00:00:00.000Z",
