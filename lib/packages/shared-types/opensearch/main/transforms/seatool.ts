@@ -138,7 +138,7 @@ export const transform = (id: string) => {
     const capitalizeId = (id) => typeof id === "string" ? id.charAt(0).toUpperCase() + id.slice(1) : "";
     console.log('Cap ID here', capitalizeId,);
     const resp = {
-      id,
+      capitalizeId(id),
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.APPROVED_EFFECTIVE_DATE ||
