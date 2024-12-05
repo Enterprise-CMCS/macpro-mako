@@ -132,7 +132,7 @@ export const transform = (id: string) => {
       leadAnalystEmail,
       initialIntakeNeeded: !leadAnalystName && !finalDispositionStatuses.includes(seatoolStatus),
       leadAnalystName,
-      authority,
+      authority: authority as Authority | null,
       types:
         data.STATE_PLAN_SERVICETYPES?.filter(
           (type): type is NonNullable<typeof type> => type != null,
