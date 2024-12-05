@@ -52,7 +52,7 @@ describe("sinkMain handler", () => {
 
   it("handles aws.seatool.debezium.changed_date.SEA.dbo.State_Plan topic successfully", async () => {
     const spiedOnProcessAndIndex = vi
-      .spyOn(sinkMainProcessors, "changed_date")
+      .spyOn(sinkMainProcessors, "syncSeatoolRecordDatesFromKafkaWithMako")
       .mockImplementation(vi.fn());
 
     await handler(
