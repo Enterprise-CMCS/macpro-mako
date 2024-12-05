@@ -1,5 +1,5 @@
 import { bulkUpdateDataWrapper, ErrorType, logError, getItems } from "libs";
-import { KafkaRecord, opensearch } from "shared-types";
+import { KafkaRecord, opensearch, SeatoolRecordWithUpdatedDate } from "shared-types";
 import { Document, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
 import { isBefore } from "date-fns";
@@ -197,33 +197,54 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   await bulkUpdateDataWrapper(seatoolRecordsForMako, "main");
 };
 
-export const changed_date = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
-  const docs: any[] = [];
-  for (const kafkaRecord of kafkaRecords) {
+/**
+ * Syncs date updates in SEATOOL records with Mako, offloading processing from `insertNewSeatoolRecordsFromKafkaIntoMako`
+ * @param kafkaRecords records with updated date payload
+ * @param topicPartition kafka topic for verbose error handling
+ */
+export const syncSeatoolRecordDatesFromKafkaWithMako = async (
+  kafkaRecords: KafkaRecord[],
+  topicPartition: string,
+) => {
+  const recordIdsWithUpdatedDates = kafkaRecords.reduce<
+    { id: string; changedDate: string | null }[]
+  >((collection, kafkaRecord) => {
     const { value } = kafkaRecord;
+
     try {
-      // Handle delete events and continue
-      if (value === undefined) {
-        continue;
+      if (!value) {
+        console.log(`Record without a value property: ${value}`);
+
+        return collection;
       }
 
-      // Parse record
-      const decodedValue = Buffer.from(value, "base64").toString("utf-8");
-      const record = JSON.parse(decodedValue).payload.after;
+      const payloadWithUpdatedDate: { payload?: { after?: SeatoolRecordWithUpdatedDate | null } } =
+        JSON.parse(decodeBase64WithUtf8(value));
 
-      // Handle tombstone events and continue
-      if (!record) continue;
+      // .after could be `null` or `undefined`
+      if (!payloadWithUpdatedDate?.payload?.after) {
+        return collection;
+      }
 
-      const result = opensearch.main.changedDate.transform().safeParse(record);
-      if (!result.success) {
+      const { after: recordWithUpdatedDate } = payloadWithUpdatedDate.payload;
+
+      const safeRecordWithIdAndUpdatedDate = opensearch.main.changedDate
+        .transform()
+        .safeParse(recordWithUpdatedDate);
+
+      if (safeRecordWithIdAndUpdatedDate.success === false) {
         logError({
           type: ErrorType.VALIDATION,
-          error: result?.error,
-          metadata: { topicPartition, kafkaRecord, record },
+          error: safeRecordWithIdAndUpdatedDate.error.errors,
+          metadata: { topicPartition, kafkaRecord, recordWithUpdatedDate },
         });
-        continue;
+
+        return collection;
       }
-      docs.push(result.data);
+
+      const { data: idAndUpdatedDate } = safeRecordWithIdAndUpdatedDate;
+
+      return collection.concat(idAndUpdatedDate);
     } catch (error) {
       logError({
         type: ErrorType.BADPARSE,
@@ -231,6 +252,9 @@ export const changed_date = async (kafkaRecords: KafkaRecord[], topicPartition: 
         metadata: { topicPartition, kafkaRecord },
       });
     }
-  }
-  await bulkUpdateDataWrapper(docs, "main");
+
+    return collection;
+  }, []);
+
+  await bulkUpdateDataWrapper(recordIdsWithUpdatedDates, "main");
 };

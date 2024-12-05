@@ -4,7 +4,7 @@ import { ErrorType, getTopic, logError } from "libs";
 import {
   insertOneMacRecordsFromKafkaIntoMako,
   insertNewSeatoolRecordsFromKafkaIntoMako,
-  changed_date,
+  syncSeatoolRecordDatesFromKafkaWithMako,
 } from "./sinkMainProcessors";
 
 export const handler: Handler<KafkaEvent> = async (event) => {
@@ -27,7 +27,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
             return insertNewSeatoolRecordsFromKafkaIntoMako(records, topicPartition);
 
           case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
-            return changed_date(records, topicPartition);
+            return syncSeatoolRecordDatesFromKafkaWithMako(records, topicPartition);
 
           default:
             logError({ type: ErrorType.BADTOPIC });
