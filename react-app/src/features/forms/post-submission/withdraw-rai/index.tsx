@@ -5,8 +5,8 @@ import { useParams } from "react-router-dom";
 
 export const WithdrawRaiForm = () => {
   const { authority, id } = useParams();
-  const faqLink = authority.includes("SPA")
-    ? authority.includes("CHIP")
+  const faqLink = authority?.includes("SPA")
+    ? authority?.includes("CHIP")
       ? "chip-spa"
       : "spa"
     : "waiver";
