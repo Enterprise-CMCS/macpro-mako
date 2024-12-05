@@ -38,7 +38,12 @@ export const AppKAmendmentForm = () => (
               <FormLabel className="font-bold" htmlFor="amendment-title">
                 Amendment Title <RequiredIndicator />
               </FormLabel>
-              <Textarea {...field} className="h-[80px]" id="amendment-title" maxLength={125} />
+              <Textarea
+                {...field}
+                className="h-[76px] w-[355px]"
+                id="amendment-title"
+                maxLength={125}
+              />
               <FormDescription>
                 <span
                   tabIndex={0}
