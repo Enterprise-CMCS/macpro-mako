@@ -1,15 +1,28 @@
-## Purpose
+<!--
+TODO for PR Author:
+- Would your work benefit from unit tests?
+- Have you formatted your files using Prettier/ESLint?
+- Remove any irrelevant sections below
+-->
 
-_Describe the problem or feature in addition to a link to the issues._
+## 🎫 Linked Ticket
 
-#### Linked Issues to Close
+<!-- Link to the JIRA ticket to track this work -->
 
-_Links to issue(s) that are closed by this PR. Be sure to use the phrase "Closes #XXX" for each issue, so they automatically close_
+[Ticket to close](link-to-ticket)
 
-## Approach
+## 🚨 Problem
 
-_How does this change address the issue?_
+<!-- Describe the background of the issue -->
 
-## Assorted Notes/Considerations/Learning
+## 💡 Solution
 
-_List any other information that you think is important... a post-merge activity, someone to notify, what you learned, etc._
+<!-- How did we approach solving the problem? Explain the key strategy -->
+
+## 🛠 Changes
+
+<!-- What specific code/configuration modifications were made to implement the solution -->
+
+## 📸 Screenshots / Demo (if applicable)
+
+<!-- If needed, show the before and after -->
