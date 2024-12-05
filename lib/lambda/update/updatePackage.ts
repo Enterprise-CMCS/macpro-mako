@@ -2,8 +2,63 @@ import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 import { getPackage } from "libs/api/package";
 import { produceMessage } from "libs/api/kafka";
+import { ItemResult } from "shared-types/opensearch/main";
 
 type ActionType = "update-id" | "update-values" | "delete";
+
+const sendDeleteMessage = async (topicName: string, packageId: string) => {
+  await produceMessage(
+    topicName,
+    packageId,
+    JSON.stringify({
+      id: packageId,
+      deleted: true,
+      isAdminChange: true,
+      adminChangeType: "delete",
+    }),
+  );
+};
+
+const sendUpdateValuesMessage = async (
+  topicName: string,
+  packageId: string,
+  updatedFields: object,
+  changeMadeText: string,
+  changeReason?: string,
+) => {
+  await produceMessage(
+    topicName,
+    packageId,
+    JSON.stringify({
+      id: packageId,
+      ...updatedFields,
+      isAdminChange: true,
+      adminChangeType: "update-values",
+      changeMade: changeMadeText,
+      changeReason,
+    }),
+  );
+};
+
+const sendUpdateIdMessage = async (
+  topicName: string,
+  currentPackage: ItemResult,
+  updatedId: string,
+) => {
+  // get fields of package with old id and copy
+  //eslint-disable-next-line
+  const { _id, ...originalProperties } = currentPackage;
+  await sendDeleteMessage(topicName, currentPackage._id);
+  // send message with new id and old fields
+  await produceMessage(
+    topicName,
+    updatedId,
+    JSON.stringify({
+      _id: updatedId,
+      originalProperties,
+    }),
+  );
+};
 
 export const handler = async (event: APIGatewayEvent) => {
   const topicName = process.env.topicName as string;
@@ -20,7 +75,7 @@ export const handler = async (event: APIGatewayEvent) => {
   }
   try {
     // TODO: allow user to input title of the accordion
-    const { packageId, action, updatedFields, changeReason } =
+    const { packageId, action, updatedId, updatedFields, changeReason } =
       typeof event.body === "string"
         ? JSON.parse(event.body)
         : (event.body as {
@@ -46,19 +101,27 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     if (action === "delete") {
-      await produceMessage(
-        topicName,
-        packageId,
-        JSON.stringify({
-          id: packageId,
-          deleted: true,
-          isAdminChange: true,
-          adminChangeType: "delete",
-        }),
-      );
+      // await produceMessage(
+      //   topicName,
+      //   packageId,
+      //   JSON.stringify({
+      //     id: packageId,
+      //     deleted: true,
+      //     isAdminChange: true,
+      //     adminChangeType: "delete",
+      //   }),
+      // );
+      await sendDeleteMessage(topicName, packageId);
     }
 
     if (action === "update-id") {
+      if (!updatedId) {
+        return response({
+          statusCode: 400,
+          body: { message: "New ID required to update package" },
+          // handle validation in frontend?
+        });
+      }
       await produceMessage(
         topicName,
         packageId,
@@ -68,6 +131,7 @@ export const handler = async (event: APIGatewayEvent) => {
           origin: "mako",
         }),
       );
+      await sendUpdateIdMessage(topicName, packageResult, updatedId);
       // delete/hide old record and create new one with new id but same values
     }
 
@@ -100,17 +164,24 @@ export const handler = async (event: APIGatewayEvent) => {
         changeMadeText = `${Object.keys(updatedFields)} has been updated.`;
       }
 
-      await produceMessage(
+      // await produceMessage(
+      //   topicName,
+      //   packageId,
+      //   JSON.stringify({
+      //     id: packageId,
+      //     ...updatedFields,
+      //     isAdminChange: true,
+      //     adminChangeType: "update-values",
+      //     changeMade: changeMadeText,
+      //     changeReason,
+      //   }),
+      // );
+      await sendUpdateValuesMessage(
         topicName,
         packageId,
-        JSON.stringify({
-          id: packageId,
-          ...updatedFields,
-          isAdminChange: true,
-          adminChangeType: "update-values",
-          changeMade: changeMadeText,
-          changeReason,
-        }),
+        updatedFields,
+        changeMadeText,
+        changeReason,
       );
     }
     return response({
