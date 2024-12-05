@@ -38,8 +38,8 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
               cmsForm179: {
                 files: [
                   {
-                    filename: "Screenshot 2024-07-08 at 11.42.35 AM.png",
-                    title: "Screenshot 2024-07-08 at 11.42.35 AM",
+                    filename: "Screenshot 2024-07-08 at 11.42.35 AM.png",
+                    title: "Screenshot 2024-07-08 at 11.42.35 AM",
                     bucket: "mako-refactor-tests-sink-attachments-635052997545",
                     key: "13513eea-ba62-4cba-af31-2ec3c160b5e1.png",
                     uploadDate: 1732645033529,
@@ -50,8 +50,8 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
               spaPages: {
                 files: [
                   {
-                    filename: "Screenshot 2024-07-08 at 11.42.35 AM.png",
-                    title: "Screenshot 2024-07-08 at 11.42.35 AM",
+                    filename: "Screenshot 2024-07-08 at 11.42.35 AM.png",
+                    title: "Screenshot 2024-07-08 at 11.42.35 AM",
                     bucket: "mako-refactor-tests-sink-attachments-635052997545",
                     key: "bbdfa95f-f67c-4983-8517-2745cc08d3b6.png",
                     uploadDate: 1732645038805,
@@ -146,8 +146,8 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
               cmsForm179: {
                 files: [
                   {
-                    filename: "Screenshot 2024-07-08 at 11.42.35 AM.png",
-                    title: "Screenshot 2024-07-08 at 11.42.35 AM",
+                    filename: "Screenshot 2024-07-08 at 11.42.35 AM.png",
+                    title: "Screenshot 2024-07-08 at 11.42.35 AM",
                     bucket: "mako-refactor-tests-sink-attachments-635052997545",
                     key: "13513eea-ba62-4cba-af31-2ec3c160b5e1.png",
                     uploadDate: 1732645033529,
@@ -158,8 +158,8 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
               spaPages: {
                 files: [
                   {
-                    filename: "Screenshot 2024-07-08 at 11.42.35 AM.png",
-                    title: "Screenshot 2024-07-08 at 11.42.35 AM",
+                    filename: "Screenshot 2024-07-08 at 11.42.35 AM.png",
+                    title: "Screenshot 2024-07-08 at 11.42.35 AM",
                     bucket: "mako-refactor-tests-sink-attachments-635052997545",
                     key: "bbdfa95f-f67c-4983-8517-2745cc08d3b6.png",
                     uploadDate: 1732645038805,
