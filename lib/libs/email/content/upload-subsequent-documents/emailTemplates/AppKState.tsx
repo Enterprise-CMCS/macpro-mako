@@ -11,13 +11,12 @@ import {
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
-export const ChipSpaStateEmail = ({
-  variables,
-}: {
+export const AppKStateEmail = (props: {
   variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;
 }) => {
-  const previewText = `Additional documents submitted for CHIP SPA ${variables.id}`;
-  const heading = `You’ve successfully submitted the following to CMS reviewers for CHIP SPA ${variables.id}`;
+  const variables = props.variables;
+  const previewText = `Additional documents submitted for 1915(c) ${variables.id}`;
+  const heading = `You’ve successfully submitted the following to CMS reviewers for 1915(c) ${variables.id}`;
 
   return (
     <BaseEmailTemplate
@@ -29,10 +28,10 @@ export const ChipSpaStateEmail = ({
       <DetailsHeading />
       <PackageDetails
         details={{
-          "State or Territory": variables.territory,
+          "State or territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
-          "CHIP SPA Package ID": variables.id,
+          "1915(c) Appendix K ID": variables.id,
           Summary: variables.additionalInformation,
         }}
       />

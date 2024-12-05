@@ -92,6 +92,38 @@ const LoginInstructions = ({
   </ul>
 );
 
+const SubDocHowToAccess = ({
+  appEndpointURL,
+}: {
+  appEndpointURL: string;
+  useThisLink?: boolean;
+}) => (
+  <>
+    <Text style={{ ...styles.text.base, fontWeight: "bold" }}>How to Access:</Text>
+    <ul>
+      <li>
+        <Text style={styles.text.description}>
+          These documents can be found in OneMAC through this link{" "}
+          <Link href={appEndpointURL}>{appEndpointURL}</Link>.
+        </Text>
+      </li>
+      <li>
+        <Text style={styles.text.description}>
+          If you are not already logged in, click “Login” at the top of the page and log in using
+          your Enterprise User Administration (EUA) credentials.
+        </Text>
+      </li>
+
+      <li>
+        <Text style={styles.text.description}>
+          After you logged in, click the submission ID number on the dashboard page to view details.
+        </Text>
+      </li>
+    </ul>
+    <Hr style={styles.divider} />
+  </>
+);
+
 const Divider = () => <Hr style={styles.divider} />;
 
 const DetailsHeading = () => (
@@ -282,6 +314,7 @@ export {
   Textarea,
   EmailNav,
   LoginInstructions,
+  SubDocHowToAccess,
   DetailsHeading,
   Divider,
   Attachments,
