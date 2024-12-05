@@ -15,7 +15,7 @@ export const baseSchema = z.object({
   title: z.string().trim().min(1, { message: "Required" }).max(125),
   attachments: z.object({
     appk: z.object({
-      label: z.string().default("Appendix K Template"),
+      label: z.string().default("1915(c) Appendix K Amendment Waiver Template"),
       files: attachmentArraySchema({ max: 1 }),
     }),
     other: z.object({
