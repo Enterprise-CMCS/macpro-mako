@@ -9,8 +9,8 @@ import { isCmsUser, isCmsWriteUser } from "shared-utils";
 
 // Retrieve user authentication details from the APIGatewayEvent
 export function getAuthDetails(event: APIGatewayEvent) {
-  console.log("getting auth details ", { event });
-  console.log("identity ", { identity: event.requestContext.identity });
+  console.log("getting auth details: ", JSON.stringify(event, null, 2));
+  // console.log("identity ", { identity: event.requestContext.identity });
   const authProvider = event.requestContext.identity.cognitoAuthenticationProvider;
   console.log({ authProvider });
   if (!authProvider) {
@@ -20,12 +20,14 @@ export function getAuthDetails(event: APIGatewayEvent) {
   const userPoolIdParts = parts[parts.length - 3].split("/");
   const userPoolId = userPoolIdParts[userPoolIdParts.length - 1];
   const userPoolUserId = parts[parts.length - 1];
+  console.log({ userPoolUserId, userPoolId });
 
   return { userId: userPoolUserId, poolId: userPoolId };
 }
 
 // Convert Cognito user attributes to a dictionary format
 function userAttrDict(cognitoUser: CognitoUserType): CognitoUserAttributes {
+  console.log("userAttrDict: ", JSON.stringify(cognitoUser, null, 2));
   const attributes: Record<string, any> = {};
 
   if (cognitoUser.Attributes) {
@@ -36,6 +38,7 @@ function userAttrDict(cognitoUser: CognitoUserType): CognitoUserAttributes {
     });
   }
   attributes["username"] = cognitoUser.Username;
+  console.log("returning attributes: ", JSON.stringify(attributes, null, 2));
 
   return attributes as CognitoUserAttributes;
 }
@@ -45,14 +48,18 @@ export async function lookupUserAttributes(
   userId: string,
   poolId: string,
 ): Promise<CognitoUserAttributes> {
+  console.log("lookupUserAttributes: ", { userId, poolId });
   const fetchResult = await fetchUserFromCognito(userId, poolId);
+  console.log("fetchResult: ", JSON.stringify(fetchResult, null, 2));
 
   if (fetchResult instanceof Error) {
     throw fetchResult;
   }
 
   const currentUser = fetchResult as CognitoUserType;
+  console.log("currentUser: ", JSON.stringify(currentUser, null, 2));
   const attributes = userAttrDict(currentUser);
+  console.log("attributes: ", JSON.stringify(attributes, null, 2));
 
   return attributes;
 }
@@ -62,9 +69,11 @@ export async function fetchUserFromCognito(
   userID: string,
   poolID: string,
 ): Promise<CognitoUserType | Error> {
+  console.log("fetchUserFromCognito: ", { userID, poolID });
   const cognitoClient = new CognitoIdentityProviderClient({
     region: process.env.region,
   });
+  console.log("cognitoClient: ", JSON.stringify(cognitoClient, null, 2));
 
   const subFilter = `sub = "${userID}"`;
 
@@ -72,17 +81,18 @@ export async function fetchUserFromCognito(
     UserPoolId: poolID,
     Filter: subFilter,
   });
-  console.log({ commandListUsers });
+  console.log("commandListUsers: ", JSON.stringify(commandListUsers, null, 2));
 
   try {
     const listUsersResponse = await cognitoClient.send(commandListUsers);
-    console.log({ listUsersResponse });
+    console.log("listUserResponse: ", JSON.stringify(listUsersResponse, null, 2));
 
     if (listUsersResponse.Users === undefined || listUsersResponse.Users.length !== 1) {
       throw new Error("No user found with this sub");
     }
 
     const currentUser = listUsersResponse.Users[0];
+    console.log("currentUser: ", JSON.stringify(currentUser, null, 2));
     return currentUser;
   } catch (error) {
     if (error instanceof Error && error.message === "No user found with this sub") {
@@ -93,11 +103,14 @@ export async function fetchUserFromCognito(
 }
 
 export const isAuthorized = async (event: APIGatewayEvent, stateCode?: string | null) => {
+  console.log("isAuthorized: ", JSON.stringify(event, null, 2));
   // Retrieve authentication details of the user
   const authDetails = getAuthDetails(event);
+  console.log("authDetails: ", JSON.stringify(authDetails, null, 2));
 
   // Look up user attributes from Cognito
   const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
+  console.log("userAttributes: ", JSON.stringify(userAttributes, null, 2));
   return (
     isCmsUser(userAttributes) ||
     (stateCode && userAttributes?.["custom:state"]?.includes(stateCode))
@@ -108,11 +121,20 @@ export const isAuthorizedToGetPackageActions = async (
   event: APIGatewayEvent,
   stateCode?: string | null,
 ) => {
+  console.log(
+    `isAuthorizedToGetPackageActions:\nstateCode: ${stateCode}\n event: ${JSON.stringify(
+      event,
+      null,
+      2,
+    )}`,
+  );
   // Retrieve authentication details of the user
   const authDetails = getAuthDetails(event);
+  console.log("authDetails: ", JSON.stringify(authDetails, null, 2));
 
   // Look up user attributes from Cognito
   const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
+  console.log("userAttributes: ", JSON.stringify(userAttributes, null, 2));
   return (
     isCmsWriteUser(userAttributes) ||
     (stateCode && userAttributes?.["custom:state"]?.includes(stateCode))
@@ -121,11 +143,14 @@ export const isAuthorizedToGetPackageActions = async (
 
 // originally intended for /_search
 export const getStateFilter = async (event: APIGatewayEvent) => {
+  console.log("getStateFilter: ", JSON.stringify(event, null, 2));
   // Retrieve authentication details of the user
   const authDetails = getAuthDetails(event);
+  console.log("authDetails: ", JSON.stringify(authDetails, null, 2));
 
   // Look up user attributes from Cognito
   const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
+  console.log("userAttributes: ", JSON.stringify(userAttributes, null, 2));
 
   if (!isCmsUser(userAttributes)) {
     if (userAttributes["custom:state"]) {
@@ -138,6 +163,7 @@ export const getStateFilter = async (event: APIGatewayEvent) => {
             .map((state) => state.toLocaleLowerCase()),
         },
       };
+      console.log("filter: ", JSON.stringify(filter, null, 2));
 
       return filter;
     } else {

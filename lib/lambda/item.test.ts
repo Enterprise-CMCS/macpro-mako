@@ -46,7 +46,12 @@ describe("getItemData Handler", () => {
 
     const event = {
       body: JSON.stringify({ id: HI_TEST_ITEM_ID }),
-      requestContext: {},
+      requestContext: {
+        identity: {
+          cognitoAuthenticationProvider:
+            "cognito-idp.us-east-1.amazonaws.com/us-east-1_n12JUn0cM,cognito-idp.us-east-1.amazonaws.com/us-east-1_n12JUn0cM:CognitoSignIn:d4284448-3091-7066-2b41-cb9d57de9194",
+        },
+      },
     } as APIGatewayEvent;
 
     const res = await handler(event);
