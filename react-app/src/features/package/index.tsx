@@ -76,14 +76,6 @@ type LoaderData = {
 };
 
 export const Details = () => {
-  // const { id, authority } = useParams<{
-  //   id: string;
-  //   authority: Authority;
-  // }>();
-
-  // if (id === undefined || authority === undefined) {
-  //   return <Navigate to="/dashboard" />;
-  // }
   const { id, authority } = useLoaderData() as LoaderData;
   return (
     <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row">
