@@ -15,6 +15,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.useFakeTimers();
 
     vi.spyOn(sinkLib, "bulkUpdateDataWrapper").mockImplementation(spiedOnBulkUpdateDataWrapper);
     vi.stubEnv("osDomain", "osDomain");
