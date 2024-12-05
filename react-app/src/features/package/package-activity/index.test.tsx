@@ -9,13 +9,13 @@ import {
   NOT_FOUND_ITEM_ID,
   MISSING_CHANGELOG_ITEM_ID,
   WITHDRAWN_CHANGELOG_ITEM_ID,
-  useDefaultStateSubmitter,
+  setDefaultStateSubmitter,
 } from "mocks";
 
 describe("Package Activity", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    useDefaultStateSubmitter();
+    setDefaultStateSubmitter();
   });
 
   it("renders nothing if submission is not queried", async () => {

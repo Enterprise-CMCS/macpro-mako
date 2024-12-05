@@ -29,8 +29,8 @@ export {
   mockCurrentAuthenticatedUser,
   mockUseGetUser,
   mockUserAttributes,
+  setDefaultReviewer,
+  setDefaultStateSubmitter,
   setMockUsername,
-  useDefaultReviewer,
-  useDefaultStateSubmitter,
 } from "./auth.js";
 export type { GetItemBody } from "./items.js";

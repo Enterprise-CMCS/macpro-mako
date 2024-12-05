@@ -8,7 +8,7 @@ import {
   SUBMISSION_ERROR_ITEM_ID,
   GET_ERROR_ITEM_ID,
   setMockUsername,
-  useDefaultStateSubmitter,
+  setDefaultStateSubmitter,
 } from "mocks";
 import * as userPrompt from "@/components/ConfirmationDialog/userPrompt";
 import * as banner from "@/components/Banner/banner";
@@ -134,7 +134,7 @@ describe("ActionForm", () => {
     );
 
     expect(screen.queryByText("Action Form Title")).not.toBeInTheDocument();
-    useDefaultStateSubmitter();
+    setDefaultStateSubmitter();
   });
 
   test("renders `defaultValues` in appropriate input", async () => {

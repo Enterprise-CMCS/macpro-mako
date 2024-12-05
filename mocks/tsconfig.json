@@ -17,5 +17,6 @@
     "jsx": "react-jsx",
     "baseUrl": "."
   },
-  "include": ["."]
+  "include": ["."],
+  "exclude": ["node_modules"]
 }

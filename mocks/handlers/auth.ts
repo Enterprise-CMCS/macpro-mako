@@ -1,13 +1,9 @@
+import type { UserData } from "index.d";
 import { CognitoUserAttributes } from "shared-types";
 import { isCmsUser } from "shared-utils";
-import {
-  CognitoUserResponse,
-  makoReviewer,
-  makoStateSubmitter,
-  userResponses,
-} from "../data/users";
+import { makoReviewer, makoStateSubmitter, userResponses } from "../data/users";
 
-export const setMockUsername = (user?: string | CognitoUserResponse | null): void => {
+export const setMockUsername = (user?: string | UserData | null): void => {
   if (user) {
     if (typeof user === "string") {
       process.env.MOCK_USER_USERNAME = user;
@@ -19,9 +15,9 @@ export const setMockUsername = (user?: string | CognitoUserResponse | null): voi
   }
 };
 
-export const useDefaultStateSubmitter = () => setMockUsername(makoStateSubmitter);
+export const setDefaultStateSubmitter = () => setMockUsername(makoStateSubmitter);
 
-export const useDefaultReviewer = () => setMockUsername(makoReviewer);
+export const setDefaultReviewer = () => setMockUsername(makoReviewer);
 
 export const mockCurrentAuthenticatedUser = async () => {
   if (process.env.MOCK_USER_USERNAME) {
@@ -38,10 +34,11 @@ export const mockCurrentAuthenticatedUser = async () => {
   return undefined;
 };
 
-export const mockUserAttributes = async (currentAuthenticatedUser: any) => {
-  if (currentAuthenticatedUser?.currentAuthenticatedUser?.attributes) {
-    return currentAuthenticatedUser.currentAuthenticatedUser.attributes;
-  }
+export const mockUserAttributes = async (currentAuthenticatedUser: unknown) => {
+  console.log("mockUserAttributes: ", JSON.stringify(currentAuthenticatedUser, null, 2));
+  // if (currentAuthenticatedUser?.currentAuthenticatedUser !== undefined ) {
+  //   return currentAuthenticatedUser.currentAuthenticatedUser.attributes;
+  // }
   if (process.env.MOCK_USER_USERNAME) {
     const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
     if (user) {
@@ -56,20 +53,22 @@ export const mockUseGetUser = () => {
     const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
     if (user) {
       // Set object up with key/values from attributes array
-      const userAttributesObj = user?.UserAttributes?.reduce(
-        (obj, item) =>
-          item?.Name && item?.Value
-            ? {
-                ...obj,
-                [item.Name]: item.Value,
-              }
-            : obj,
-        {} as CognitoUserAttributes,
-      );
+      const userAttributesObj = user.UserAttributes
+        ? user.UserAttributes.reduce(
+            (obj, item) =>
+              item?.Name && item?.Value
+                ? {
+                    ...obj,
+                    [item.Name]: item.Value,
+                  }
+                : obj,
+            {} as CognitoUserAttributes,
+          )
+        : ({} as CognitoUserAttributes);
       // Manual additions and normalizations
-      userAttributesObj["custom:cms-roles"] = userAttributesObj?.["custom:cms-roles"] || "";
+      userAttributesObj["custom:cms-roles"] = userAttributesObj["custom:cms-roles"] || "";
 
-      userAttributesObj.username = user?.Username || "";
+      userAttributesObj.username = user.Username || "";
 
       return {
         data: {
@@ -88,5 +87,5 @@ export const mockUseGetUser = () => {
   };
 };
 
-const findUserByUsername = (username: string): CognitoUserResponse | undefined =>
+const findUserByUsername = (username: string): UserData | undefined =>
   userResponses.find((user) => user.Username == username);

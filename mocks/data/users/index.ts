@@ -1,17 +1,10 @@
+import type { UserData } from "../../index.d";
 import { reviewers } from "./cmsReviewer";
 import { helpDeskUsers } from "./helpDeskUsers";
 import { readOnlyUsers } from "./readOnlyCMSUsers";
 import { stateSubmitters } from "./stateSubmitters";
 
-export type CognitoUserResponse = {
-  UserAttributes: {
-    Name: string;
-    Value: string;
-  }[];
-  Username: string;
-};
-
-export const noRoleUser = {
+export const noRoleUser: UserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -38,7 +31,7 @@ export const noRoleUser = {
 };
 
 // return all of the possible responses
-export const userResponses = [
+export const userResponses: UserData[] = [
   ...stateSubmitters,
   ...reviewers,
   ...helpDeskUsers,
