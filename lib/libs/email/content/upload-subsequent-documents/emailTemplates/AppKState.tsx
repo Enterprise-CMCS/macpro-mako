@@ -1,13 +1,7 @@
 import { Events } from "shared-types";
 import { CommonEmailVariables } from "shared-types";
 import { Text } from "@react-email/components";
-import {
-  PackageDetails,
-  DetailsHeading,
-  Attachments,
-  BasicFooter,
-  Divider,
-} from "../../email-components";
+import { PackageDetails, Attachments, BasicFooter, Divider } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
@@ -25,7 +19,6 @@ export const AppKStateEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <DetailsHeading />
       <PackageDetails
         details={{
           "State or territory": variables.territory,
