@@ -31,8 +31,8 @@ export const AppKCMSEmail = (props: {
         }}
       />
       <Attachments attachments={variables.attachments} />
-      <Divider />
       <SubDocHowToAccess appEndpointURL={variables.applicationEndpointUrl} />
+      <Divider />
       <Text style={{ ...styles.text.base, marginTop: "16px" }}>Thank you.</Text>
     </BaseEmailTemplate>
   );

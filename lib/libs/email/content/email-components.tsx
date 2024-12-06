@@ -26,6 +26,8 @@ const areAllAttachmentsEmpty = (
   return Object.values(attachments).every((att) => !att || att.files?.length === 0);
 };
 
+const Divider = () => <Hr style={styles.divider} />;
+
 const Textarea = ({ children }: { children: React.ReactNode }) => (
   <Text
     style={{
@@ -99,6 +101,7 @@ const SubDocHowToAccess = ({
   useThisLink?: boolean;
 }) => (
   <>
+    <Divider />
     <Text style={{ ...styles.text.base, fontWeight: "bold" }}>How to Access:</Text>
     <ul>
       <li>
@@ -120,15 +123,12 @@ const SubDocHowToAccess = ({
         </Text>
       </li>
     </ul>
-    <Hr style={styles.divider} />
   </>
 );
 
-const Divider = () => <Hr style={styles.divider} />;
-
 const DetailsHeading = () => (
   <div>
-    <Hr style={styles.divider} />
+    <Divider />
     <Heading as="h2" style={styles.heading.h2}>
       Details:
     </Heading>
@@ -146,7 +146,7 @@ const Attachments = ({
 
   return (
     <>
-      <Hr style={styles.divider} />
+      <Divider />
       <Heading as="h2" style={styles.heading.h2}>
         Files:
       </Heading>
@@ -188,7 +188,7 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
       if (label === "Summary") {
         return (
           <Row key={label + index}>
-            <Hr style={styles.divider} />
+            <Divider />
             <Text style={{ margin: ".5em" }}>
               <Heading as="h2" style={styles.heading.h2}>
                 Summary:
