@@ -8,10 +8,16 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+    extensions: ['.js', '.ts', '.jsx', '.tsx', '.json'],
   },
   build: {
     rollupOptions: {
       external: [],
     },
+  },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./src/setupTests.ts'],
   },
 });
