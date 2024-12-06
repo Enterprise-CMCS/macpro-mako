@@ -21,7 +21,7 @@ export const AppKStateEmail = (props: {
     >
       <PackageDetails
         details={{
-          "State or territory": variables.territory,
+          "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
           "1915(c) Appendix K ID": variables.id,
