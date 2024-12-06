@@ -1,10 +1,10 @@
+import { formSchemas } from "@/formSchemas";
+import { renderForm } from "@/utils/test-helpers/renderForm";
+import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
+import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, test, expect, beforeAll } from "vitest";
-import { skipCleanup, mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
-import { renderForm } from "@/utils/test-helpers/renderForm";
-import { formSchemas } from "@/formSchemas";
-import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
+import { beforeAll, describe, expect, test } from "vitest";
 import { AppKAmendmentForm } from ".";
 const upload = uploadFiles<(typeof formSchemas)["app-k"]>();
 
@@ -20,6 +20,13 @@ describe("Appendix K", () => {
     const amendmentTitle = screen.getByLabelText(/Amendment Title/);
     await userEvent.type(amendmentTitle, "Example Title");
     expect(amendmentTitle).toBeInTheDocument();
+  });
+
+  test("Waiver number link should have correct capitalization", async () => {
+    const waiverIdLabel = screen.getByTestId("amendmentnumber-label");
+    const waiverIdLink = waiverIdLabel.nextElementSibling;
+
+    expect(waiverIdLink.textContent).toBe("What is my Waiver Amendment Number?");
   });
 
   test("Waiver number should error if input is invalid", async () => {

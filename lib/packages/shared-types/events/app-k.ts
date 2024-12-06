@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { attachmentArraySchema } from "../attachments";
+import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
 
 export const baseSchema = z.object({
   id: z
@@ -15,12 +15,12 @@ export const baseSchema = z.object({
   title: z.string().trim().min(1, { message: "Required" }).max(125),
   attachments: z.object({
     appk: z.object({
-      label: z.string().default("Appendix K Template"),
-      files: attachmentArraySchema({ max: 1 }),
+      label: z.string().default("1915(c) Appendix K Amendment Waiver Template"),
+      files: attachmentArraySchema(),
     }),
     other: z.object({
       label: z.string().default("Other"),
-      files: attachmentArraySchema({ max: 1 }),
+      files: attachmentArraySchemaOptional(),
     }),
   }),
   additionalInformation: z.string().max(4000).nullable().default(null).optional(),
