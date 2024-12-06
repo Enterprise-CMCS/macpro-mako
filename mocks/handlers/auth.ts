@@ -43,6 +43,7 @@ export const mockUseGetUser = () => {
   if (process.env.MOCK_USER_USERNAME) {
     const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
     if (user) {
+      // Copied from useGetUser.getUser
       // Set object up with key/values from attributes array
       const userAttributesObj = user.UserAttributes
         ? user.UserAttributes.reduce(
