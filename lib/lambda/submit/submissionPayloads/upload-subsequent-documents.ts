@@ -1,7 +1,7 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user";
-import { itemExists } from "lib/libs/api/package";
-import { events } from "lib/packages/shared-types";
+import { itemExists } from "libs/api/package";
+import { events } from "shared-types";
+import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 
 export const uploadSubsequentDocuments = async (event: APIGatewayEvent) => {
   if (event.body === null) return;
