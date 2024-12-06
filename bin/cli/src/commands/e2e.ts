@@ -14,6 +14,6 @@ export const e2e = {
     await checkIfAuthenticated();
     await runCommand("bun", ["playwright", "install", "--with-deps", "chromium"], ".");
 
-    await runCommand("bun", [ui ? "e2e:ui" : "e2e"], ".");
+    await runCommand("bun", [ui ? "e2e:ui" : "e2e", "-vvv"], ".");
   },
 };
