@@ -83,9 +83,7 @@ describe("zAttachmentOptional", () => {
   });
 
   it("validates an array of files", async () => {
-    const result = await zAttachmentOptional.safeParseAsync([
-      new File(["content"], "file.txt"),
-    ]);
+    const result = await zAttachmentOptional.safeParseAsync([new File(["content"], "file.txt")]);
     expect(result.success).toBe(true);
   });
 
@@ -99,10 +97,7 @@ describe("zAttachmentRequired", () => {
   const schema = zAttachmentRequired({ min: 1, max: 3 });
 
   it("validates an array within file count bounds", () => {
-    const files = [
-      new File(["content"], "file1.txt"),
-      new File(["content"], "file2.txt"),
-    ];
+    const files = [new File(["content"], "file1.txt"), new File(["content"], "file2.txt")];
     const result = schema.safeParse(files);
     expect(result.success).toBe(true);
   });
@@ -149,18 +144,14 @@ describe("zAdditionalInfoOptional", () => {
     const longString = "A".repeat(4001);
     const result = zAdditionalInfoOptional.safeParse(longString);
     expect(result.success).toBe(false);
-    expect(result.error.errors[0].message).toBe(
-      "This field may only be up to 4000 characters.",
-    );
+    expect(result.error.errors[0].message).toBe("This field may only be up to 4000 characters.");
   });
 
   it("fails if string is too long and only whitespace", () => {
     const longString = " ".repeat(4001);
     const result = zAdditionalInfoOptional.safeParse(longString);
     expect(result.success).toBe(false);
-    expect(result.error.errors[0].message).toBe(
-      "This field may only be up to 4000 characters.",
-    );
+    expect(result.error.errors[0].message).toBe("This field may only be up to 4000 characters.");
   });
 });
 
@@ -173,9 +164,7 @@ describe("zAdditionalInfo", () => {
   it("fails on empty string", () => {
     const result = zAdditionalInfo.safeParse("");
     expect(result.success).toBe(false);
-    expect(result.error.errors[0].message).toBe(
-      "Additional Information is required.",
-    );
+    expect(result.error.errors[0].message).toBe("Additional Information is required.");
   });
 
   it("fails on whitespace string", () => {
@@ -190,9 +179,7 @@ describe("zAdditionalInfo", () => {
     const longString = "A".repeat(4001);
     const result = zAdditionalInfo.safeParse(longString);
     expect(result.success).toBe(false);
-    expect(result.error.errors[0].message).toBe(
-      "This field may only be up to 4000 characters.",
-    );
+    expect(result.error.errors[0].message).toBe("This field may only be up to 4000 characters.");
   });
 
   it("validates a string exactly 4000 characters long", () => {
@@ -205,33 +192,25 @@ describe("zAdditionalInfo", () => {
     const longString = " ".repeat(4001);
     const result = zAdditionalInfo.safeParse(longString);
     expect(result.success).toBe(false);
-    expect(result.error.errors[0].message).toBe(
-      "This field may only be up to 4000 characters.",
-    );
+    expect(result.error.errors[0].message).toBe("This field may only be up to 4000 characters.");
   });
 
   it("fails on null value", () => {
     const result = zAdditionalInfo.safeParse(null);
     expect(result.success).toBe(false);
-    expect(result.error.errors[0].message).toBe(
-      "Expected string, received null",
-    );
+    expect(result.error.errors[0].message).toBe("Expected string, received null");
   });
 });
 
 describe("zInitialWaiverNumberSchema", () => {
   it("validates a correct waiver number", async () => {
-    const result = await zInitialWaiverNumberSchema.safeParseAsync(
-      "MD-1234.R00.00",
-    );
+    const result = await zInitialWaiverNumberSchema.safeParseAsync("MD-1234.R00.00");
     expect(result.success).toBe(true);
   });
 
   it("fails with unauthorized state", async () => {
     vi.mocked(isAuthorizedState).mockResolvedValue(false);
-    const result = await zInitialWaiverNumberSchema.safeParseAsync(
-      "MD-1234.R00.00",
-    );
+    const result = await zInitialWaiverNumberSchema.safeParseAsync("MD-1234.R00.00");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -246,9 +225,7 @@ describe("zInitialWaiverNumberSchema", () => {
 
   it("fails with an existing waiver number", async () => {
     vi.mocked(itemExists).mockResolvedValue(true);
-    const result = await zInitialWaiverNumberSchema.safeParseAsync(
-      "MD-1234.R00.00",
-    );
+    const result = await zInitialWaiverNumberSchema.safeParseAsync("MD-1234.R00.00");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "According to our records, this 1915(b) Waiver Number already exists. Please check the 1915(b) Waiver Number and try entering it again.",
@@ -266,9 +243,7 @@ describe("zInitialWaiverNumberSchema", () => {
 
 describe("zRenewalWaiverNumberSchema", () => {
   it("validates a correct renewal waiver number format", async () => {
-    const result = await zRenewalWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.00",
-    );
+    const result = await zRenewalWaiverNumberSchema.safeParseAsync("MD-12345.R01.00");
     expect(result.success).toBe(true);
   });
 
@@ -282,9 +257,7 @@ describe("zRenewalWaiverNumberSchema", () => {
 
   it("fails if user does not have access to the state", async () => {
     vi.mocked(isAuthorizedState).mockResolvedValue(false);
-    const result = await zRenewalWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.00",
-    );
+    const result = await zRenewalWaiverNumberSchema.safeParseAsync("MD-12345.R01.00");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -293,9 +266,7 @@ describe("zRenewalWaiverNumberSchema", () => {
 
   it("fails if waiver number already exists", async () => {
     vi.mocked(itemExists).mockResolvedValue(true);
-    const result = await zRenewalWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.00",
-    );
+    const result = await zRenewalWaiverNumberSchema.safeParseAsync("MD-12345.R01.00");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "According to our records, this 1915(b) Waiver Renewal Number already exists. Please check the 1915(b) Waiver Renewal Number and try entering it again.",
@@ -305,17 +276,13 @@ describe("zRenewalWaiverNumberSchema", () => {
 
 describe("zAmendmentWaiverNumberSchema", () => {
   it("validates a correct amendment waiver number format", async () => {
-    const result = await zAmendmentWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.01",
-    );
+    const result = await zAmendmentWaiverNumberSchema.safeParseAsync("MD-12345.R01.01");
     expect(result.success).toBe(true);
   });
 
   it("fails if the user does not have access to the state", async () => {
     vi.mocked(isAuthorizedState).mockResolvedValue(false);
-    const result = await zAmendmentWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.01",
-    );
+    const result = await zAmendmentWaiverNumberSchema.safeParseAsync("MD-12345.R01.01");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -323,9 +290,7 @@ describe("zAmendmentWaiverNumberSchema", () => {
   });
 
   it("fails if the waiver number is not in the correct format", async () => {
-    const result = await zAmendmentWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.00",
-    );
+    const result = await zAmendmentWaiverNumberSchema.safeParseAsync("MD-12345.R01.00");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "The 1915(b) Waiver Amendment Number must be in the format of SS-####.R##.## or SS-#####.R##.##. For amendments, the last two digits start with '01' and ascends.",
@@ -334,9 +299,7 @@ describe("zAmendmentWaiverNumberSchema", () => {
 
   it("fails if the waiver number exists", async () => {
     vi.mocked(itemExists).mockResolvedValue(true);
-    const result = await zAmendmentWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.01",
-    );
+    const result = await zAmendmentWaiverNumberSchema.safeParseAsync("MD-12345.R01.01");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "According to our records, this 1915(b) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again.",
@@ -347,9 +310,7 @@ describe("zAmendmentWaiverNumberSchema", () => {
 describe("zAmendmentOriginalWaiverNumberSchema", () => {
   it("fails if the user does not have access to the state", async () => {
     vi.mocked(isAuthorizedState).mockResolvedValue(false);
-    const result = await zAmendmentOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.01",
-    );
+    const result = await zAmendmentOriginalWaiverNumberSchema.safeParseAsync("MD-12345.R01.01");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -358,16 +319,12 @@ describe("zAmendmentOriginalWaiverNumberSchema", () => {
 
   it("validates a correct amendment original waiver number format", async () => {
     vi.mocked(itemExists).mockResolvedValue(true);
-    const result = await zAmendmentOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.01",
-    );
+    const result = await zAmendmentOriginalWaiverNumberSchema.safeParseAsync("MD-12345.R01.01");
     expect(result.success).toBe(true);
   });
 
   it("fails if the waiver number is not in the correct format", async () => {
-    const result = await zAmendmentOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.AA",
-    );
+    const result = await zAmendmentOriginalWaiverNumberSchema.safeParseAsync("MD-12345.R01.AA");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "The approved 1915(b) Initial or Renewal Number must be in the format of SS-####.R##.## or SS-#####.R##.##.",
@@ -376,9 +333,7 @@ describe("zAmendmentOriginalWaiverNumberSchema", () => {
 
   it("fails if the waiver number does not yet exist", async () => {
     vi.mocked(itemExists).mockResolvedValue(false);
-    const result = await zAmendmentOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.01",
-    );
+    const result = await zAmendmentOriginalWaiverNumberSchema.safeParseAsync("MD-12345.R01.01");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "According to our records, this 1915(b) Waiver Number does not yet exist. Please check the 1915(b) Initial or Renewal Waiver Number and try entering it again.",
@@ -388,9 +343,7 @@ describe("zAmendmentOriginalWaiverNumberSchema", () => {
   it("fails if the waiver number is not approved", async () => {
     vi.mocked(itemExists).mockResolvedValue(true);
     vi.mocked(idIsApproved).mockResolvedValue(false);
-    const result = await zAmendmentOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.01",
-    );
+    const result = await zAmendmentOriginalWaiverNumberSchema.safeParseAsync("MD-12345.R01.01");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "According to our records, this 1915(b) Waiver Number is not approved. You must supply an approved 1915(b) Initial or Renewal Waiver Number.",
@@ -401,9 +354,7 @@ describe("zAmendmentOriginalWaiverNumberSchema", () => {
 describe("zRenewalOriginalWaiverNumberSchema", () => {
   it("fails if the user does not have access to the state", async () => {
     vi.mocked(isAuthorizedState).mockResolvedValue(false);
-    const result = await zRenewalOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.01",
-    );
+    const result = await zRenewalOriginalWaiverNumberSchema.safeParseAsync("MD-12345.R01.01");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -412,16 +363,12 @@ describe("zRenewalOriginalWaiverNumberSchema", () => {
 
   it("validates a correct renewal waiver number format", async () => {
     vi.mocked(itemExists).mockResolvedValue(true);
-    const result = await zRenewalOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.01",
-    );
+    const result = await zRenewalOriginalWaiverNumberSchema.safeParseAsync("MD-12345.R01.01");
     expect(result.success).toBe(true);
   });
 
   it("fails if the waiver number is not in the correct format", async () => {
-    const result = await zRenewalOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.AA",
-    );
+    const result = await zRenewalOriginalWaiverNumberSchema.safeParseAsync("MD-12345.R01.AA");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "The approved 1915(b) Initial or Renewal Waiver Number must be in the format of SS-####.R##.## or SS-#####.R##.##.",
@@ -430,9 +377,7 @@ describe("zRenewalOriginalWaiverNumberSchema", () => {
 
   it("fails if the waiver number does not yet exist", async () => {
     vi.mocked(itemExists).mockResolvedValue(false);
-    const result = await zRenewalOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.01",
-    );
+    const result = await zRenewalOriginalWaiverNumberSchema.safeParseAsync("MD-12345.R01.01");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "According to our records, this 1915(b) Waiver Number does not yet exist. Please check the 1915(b) Initial or Renewal Waiver Number and try entering it again.",
@@ -442,9 +387,7 @@ describe("zRenewalOriginalWaiverNumberSchema", () => {
   it("fails if the waiver number does not match records", async () => {
     vi.mocked(itemExists).mockResolvedValue(true);
     vi.mocked(canBeRenewedOrAmended).mockResolvedValue(false);
-    const result = await zRenewalOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.01",
-    );
+    const result = await zRenewalOriginalWaiverNumberSchema.safeParseAsync("MD-12345.R01.01");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "The 1915(b) Waiver Number entered does not seem to match our records. Please enter an approved 1915(b) Initial or Renewal Waiver Number, using a dash after the two character state abbreviation.",
@@ -454,9 +397,7 @@ describe("zRenewalOriginalWaiverNumberSchema", () => {
   it("fails if the waiver number is not approved", async () => {
     vi.mocked(itemExists).mockResolvedValue(true);
     vi.mocked(idIsApproved).mockResolvedValue(false);
-    const result = await zRenewalOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-12345.R01.01",
-    );
+    const result = await zRenewalOriginalWaiverNumberSchema.safeParseAsync("MD-12345.R01.01");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "According to our records, this 1915(b) Waiver Number is not approved. You must supply an approved 1915(b) Initial or Renewal Waiver Number.",
@@ -489,17 +430,13 @@ describe("zAppkWaiverNumberSchema", () => {
 
 describe("zExtensionWaiverNumberSchema", () => {
   it("validates a correct waiver number format", async () => {
-    const result = await zExtensionWaiverNumberSchema.safeParseAsync(
-      "MD-1234.R00.TE00",
-    );
+    const result = await zExtensionWaiverNumberSchema.safeParseAsync("MD-1234.R00.TE00");
     expect(result.success).toBe(true);
   });
 
   it("fails if the user does not have access to the state", async () => {
     vi.mocked(isAuthorizedState).mockResolvedValue(false);
-    const result = await zExtensionWaiverNumberSchema.safeParseAsync(
-      "MD-1234.R00.TE00",
-    );
+    const result = await zExtensionWaiverNumberSchema.safeParseAsync("MD-1234.R00.TE00");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -507,9 +444,7 @@ describe("zExtensionWaiverNumberSchema", () => {
   });
 
   it("fails if the waiver number is not in the correct format", async () => {
-    const result = await zExtensionWaiverNumberSchema.safeParseAsync(
-      "MD-1234.R00.TE",
-    );
+    const result = await zExtensionWaiverNumberSchema.safeParseAsync("MD-1234.R00.TE");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "The Temporary Extension Request Number must be in the format of SS-####.R##.TE## or SS-#####.R##.TE##",
@@ -518,9 +453,7 @@ describe("zExtensionWaiverNumberSchema", () => {
 
   it("fails if the waiver number already exists", async () => {
     vi.mocked(itemExists).mockResolvedValue(true);
-    const result = await zExtensionWaiverNumberSchema.safeParseAsync(
-      "MD-1234.R00.TE00",
-    );
+    const result = await zExtensionWaiverNumberSchema.safeParseAsync("MD-1234.R00.TE00");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "According to our records, this Temporary Extension Request Number already exists. Please check the Temporary Extension Request Number and try entering it again.",
@@ -531,17 +464,13 @@ describe("zExtensionWaiverNumberSchema", () => {
 describe("zExtensionOriginalWaiverNumberSchema", () => {
   it("validates a correct waiver number format", async () => {
     vi.mocked(itemExists).mockResolvedValue(true);
-    const result = await zExtensionOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-1234.R00.00",
-    );
+    const result = await zExtensionOriginalWaiverNumberSchema.safeParseAsync("MD-1234.R00.00");
     expect(result.success).toBe(true);
   });
 
   it("fails if the user does not have access to the state", async () => {
     vi.mocked(isAuthorizedState).mockResolvedValue(false);
-    const result = await zExtensionOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-1234.R00.00",
-    );
+    const result = await zExtensionOriginalWaiverNumberSchema.safeParseAsync("MD-1234.R00.00");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
@@ -549,9 +478,7 @@ describe("zExtensionOriginalWaiverNumberSchema", () => {
   });
 
   it("fails if the waiver number is not in the correct format", async () => {
-    const result = await zExtensionOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-1234.R00.TE00",
-    );
+    const result = await zExtensionOriginalWaiverNumberSchema.safeParseAsync("MD-1234.R00.TE00");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "The Approved Initial or Renewal Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00.",
@@ -560,9 +487,7 @@ describe("zExtensionOriginalWaiverNumberSchema", () => {
 
   it("fails if the waiver number does not yet exist", async () => {
     vi.mocked(itemExists).mockResolvedValue(false);
-    const result = await zExtensionOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-1234.R00.00",
-    );
+    const result = await zExtensionOriginalWaiverNumberSchema.safeParseAsync("MD-1234.R00.00");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "According to our records, this Approved Initial or Renewal Waiver Number does not yet exist. Please check the Approved Initial or Renewal Waiver Number and try entering it again.",
@@ -572,9 +497,7 @@ describe("zExtensionOriginalWaiverNumberSchema", () => {
   it("fails if the waiver number is not approved", async () => {
     vi.mocked(itemExists).mockResolvedValue(true);
     vi.mocked(idIsApproved).mockResolvedValue(false);
-    const result = await zExtensionOriginalWaiverNumberSchema.safeParseAsync(
-      "MD-1234.R00.00",
-    );
+    const result = await zExtensionOriginalWaiverNumberSchema.safeParseAsync("MD-1234.R00.00");
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "According to our records, this Approved Initial or Renewal Waiver Number is not approved. You must supply an approved Initial or Renewal Waiver Number.",
