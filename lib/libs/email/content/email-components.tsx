@@ -200,12 +200,14 @@ const FollowUpNotice = ({
   includeStateLead?: boolean;
 }) => (
   <>
-    <Divider />
     {isChip ? (
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
           If you have any questions, please contact{" "}
-          <Link href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`} style={{ textDecoration: "underline" }}>
+          <Link
+            href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`}
+            style={{ textDecoration: "underline", color: "#fff" }}
+          >
             {EMAIL_CONFIG.CHIP_EMAIL}
           </Link>
           {includeStateLead ? " or your state lead." : "."}
@@ -216,7 +218,10 @@ const FollowUpNotice = ({
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
           If you have any questions or did not expect this email, please contact{" "}
-          <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`} style={{ textDecoration: "underline" }}>
+          <Link
+            href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`}
+            style={{ textDecoration: "underline", color: "#fff" }}
+          >
             {EMAIL_CONFIG.SPA_EMAIL}
           </Link>
           {includeStateLead ? " or your state lead." : "."}
@@ -229,7 +234,6 @@ const FollowUpNotice = ({
 
 export const SpamWarning = () => (
   <Section>
-    <Divider />
     <Text style={{ fontSize: "14px" }}>
       If the contents of this email seem suspicious, do not open them, and instead forward this
       email to{" "}
