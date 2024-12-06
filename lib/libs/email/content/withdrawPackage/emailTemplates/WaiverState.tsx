@@ -24,7 +24,7 @@ export const WaiverStateEmail = ({
     >
       <PackageDetails
         details={{
-          "State or territory": variables.territory,
+          "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
           "Waiver Number": variables.id,

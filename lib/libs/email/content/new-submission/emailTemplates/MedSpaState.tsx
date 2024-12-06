@@ -27,7 +27,7 @@ export const MedSpaStateEmail = (props: {
       <DetailsHeading />
       <PackageDetails
         details={{
-          "State or territory": variables.territory,
+          "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
           "Medicaid SPA ID": variables.id,

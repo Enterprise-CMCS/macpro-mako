@@ -26,7 +26,7 @@ export const TempExtCMSEmail = (props: {
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
       <PackageDetails
         details={{
-          "State or territory": variables.territory,
+          "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
           "Temporary Extension Request Number": variables.id,

@@ -4,7 +4,6 @@ import {
   PackageDetails,
   Attachments,
   BasicFooter,
-  SpamWarning,
   Divider,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
@@ -25,7 +24,7 @@ export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} useThisLink />
       <PackageDetails
         details={{
-          "State or territory": variables.territory,
+          "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
           "Amendment Title": variables.title ?? null,
@@ -36,7 +35,6 @@ export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
         }}
       />
       <Attachments attachments={variables.attachments} />
-      <SpamWarning />
     </BaseEmailTemplate>
   );
 };
