@@ -46,6 +46,7 @@ export const ActionFormAttachments = ({
 
   return (
     <SectionCard
+      testId="attachment-section"
       title={
         <>
           {title} {requiredIndicatorForTitle && <RequiredIndicator />}

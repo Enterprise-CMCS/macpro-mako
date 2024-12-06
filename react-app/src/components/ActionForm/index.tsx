@@ -203,7 +203,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       {form.formState.isSubmitting && <LoadingSpinner />}
       <Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 mx-auto justify-center flex flex-col">
-          <SectionCard title={title}>
+          <SectionCard testId="detail-section" title={title}>
             <div>
               {areFieldsRequired && <RequiredFieldDescription />}
               <ActionFormDescription boldReminder={areFieldsRequired}>
@@ -217,6 +217,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           )}
           {additionalInformation && (
             <SectionCard
+              testId = "additional-info"
               title={
                 <>
                   {additionalInformation.title}{" "}
