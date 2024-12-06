@@ -71,6 +71,7 @@ export type Document = Omit<AppkDocument, "event"> &
       | "contracting-amendment"
       | "contracting-initial"
       | "contracting-renewal"
+      | "legacy-admin-change"
       | "new-chip-submission"
       | "new-medicaid-submission"
       | "respond-to-rai"
@@ -102,6 +103,7 @@ export const transforms = {
   "contracting-amendment": contractingAmendment,
   "contracting-initial": contractingInitial,
   "contracting-renewal": contractingRenewal,
+  "legacy-admin-change": legacyAdminChange,
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
   "respond-to-rai": respondToRai,

@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 import { Auth } from "aws-amplify";
 import * as hooks from "@/hooks";
 import * as api from "@/api";
-import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
+import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers/renderForm";
 import { setMockUsername, makoStateSubmitter, AUTH_CONFIG } from "mocks";
 
 /**
@@ -70,8 +70,9 @@ const mockMediaQuery = (viewMode: ViewMode) => {
 const renderLayout = async () => {
   const getUserSpy = vi.spyOn(api, "useGetUser");
 
-  await renderWithQueryClient(<Layout />, {
-    routes: [
+  await renderWithQueryClientAndMemoryRouter(
+    <Layout />,
+    [
       {
         path: "/",
         element: <Layout />,
@@ -81,8 +82,8 @@ const renderLayout = async () => {
         ],
       },
     ],
-    options: { initialEntries: ["/"], initialIndex: 0 },
-  });
+    { initialEntries: ["/"], initialIndex: 0 },
+  );
 
   await waitFor(() =>
     expect(getUserSpy).toHaveLastReturnedWith(
@@ -266,6 +267,7 @@ describe("Layout", () => {
       expect(screen.getByTestId("mobile-menu-button")).toBeInTheDocument();
 
       // Open the mobile menu
+      expect(screen.queryByTestId("mobile-menu-button")).toBeInTheDocument();
       await user.click(screen.queryByTestId("mobile-menu-button"));
       expect(screen.getByText("Home")).toBeVisible();
     });
