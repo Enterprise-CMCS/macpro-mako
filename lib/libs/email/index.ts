@@ -22,35 +22,48 @@ export type AuthoritiesWithUserTypesTemplate = {
 export type EmailTemplates = {
   "new-medicaid-submission": AuthoritiesWithUserTypesTemplate;
   "new-chip-submission": AuthoritiesWithUserTypesTemplate;
-  "temp-extension": UserTypeOnlyTemplate;
+  "temporary-extension": UserTypeOnlyTemplate;
   "withdraw-package": AuthoritiesWithUserTypesTemplate;
   "withdraw-rai": AuthoritiesWithUserTypesTemplate;
+
+  "upload-subsequent-documents": AuthoritiesWithUserTypesTemplate;
   "contracting-initial": AuthoritiesWithUserTypesTemplate;
   "contracting-renewal": AuthoritiesWithUserTypesTemplate;
   "contracting-waiver": AuthoritiesWithUserTypesTemplate;
+  "contracting-amendment": AuthoritiesWithUserTypesTemplate; 
+
   "capitated-initial": AuthoritiesWithUserTypesTemplate;
   "capitated-renewal": AuthoritiesWithUserTypesTemplate;
   "capitated-waiver": AuthoritiesWithUserTypesTemplate;
-  "contracting-waiver-state": AuthoritiesWithUserTypesTemplate;
-  "capitated-waiver-state": AuthoritiesWithUserTypesTemplate;
+  "capitated-amendment": AuthoritiesWithUserTypesTemplate;
 
+  "app-k": AuthoritiesWithUserTypesTemplate;
+
+  "respond-to-rai": AuthoritiesWithUserTypesTemplate;
 };
 
 // Create a type-safe mapping of email templates
 const emailTemplates: EmailTemplates = {
   "new-medicaid-submission": EmailContent.newSubmission,
   "new-chip-submission": EmailContent.newSubmission,
-  "temp-extension": EmailContent.tempExtention,
-  "withdraw-package": EmailContent.withdrawPackage,
-  "withdraw-rai": EmailContent.withdrawRai,
-  "contracting-initial": EmailContent.newSubmission,
+  "temporary-extension": EmailContent.tempExtention,
+
   "capitated-initial": EmailContent.newSubmission,
   "capitated-renewal": EmailContent.newSubmission,
   "capitated-waiver": EmailContent.newSubmission,
+  "capitated-amendment": EmailContent.newSubmission,
+  "upload-subsequent-documents": EmailContent.uploadSubsequentDocuments,
+
+  "contracting-initial": EmailContent.newSubmission,
   "contracting-renewal": EmailContent.newSubmission,
   "contracting-waiver": EmailContent.newSubmission,
-  "contracting-waiver-state": EmailContent.newSubmission,
-  "capitated-waiver-state": EmailContent.newSubmission,
+  "contracting-amendment": EmailContent.newSubmission,
+
+  "app-k": EmailContent.newSubmission, // 1915(c) Appendix K
+
+  "withdraw-package": EmailContent.withdrawPackage,
+  "withdraw-rai": EmailContent.withdrawRai,
+  "respond-to-rai": EmailContent.respondToRai,
 };
 
 // Create a type-safe lookup function
