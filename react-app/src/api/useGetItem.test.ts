@@ -74,5 +74,12 @@ describe("zod schema helpers", () => {
         await unit.canBeRenewedOrAmended("existing-approved-actionType=Amend"),
       ).toBe(false);
     });
+    it("throws an error", async () => {
+      expect(
+        await unit.canBeRenewedOrAmended(null),
+      ).toBe(false);
+    });
   });
-});
+
+  });
+

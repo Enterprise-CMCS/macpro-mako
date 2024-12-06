@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import * as unit from "./submissionService";
 import { OneMacUser } from "@/api/useGetUser";
 import { SubmissionServiceEndpoint } from "@/utils";
-import { Authority } from "shared-types";
+import { Action, Authority } from "shared-types";
+import { buildActionUrl } from "@/utils";
 
 const mockFormData = {
   test: "data",
@@ -125,5 +126,33 @@ describe("helpers", () => {
     expect(payload.test).toEqual("data");
     expect(payload.proposedEffectiveDate).toBeTypeOf("number");
     expect(payload.state).toEqual("MD");
+  });
+  it("builds apk payloads", () => {
+    const payload: ReturnType<typeof unit.buildSubmissionPayload> =
+      unit.buildSubmissionPayload(
+        mockFormData,
+        mockGeorge,
+        "/appk",
+        Authority.MED_SPA,
+        mockUploadRecipes(3),
+      );
+    expect(payload.authority).toEqual("1915(c)");
+    expect(payload.origin).toEqual("mako");
+    console.log(payload)
+    expect(payload.attachments).toHaveLength(3);
+    expect(payload.test).toEqual("data");
+    expect(payload.proposedEffectiveDate).toBeTypeOf("number");
+  });
+  it("remove-appk-child", () => {
+    const payload: ReturnType<typeof unit.buildSubmissionPayload> =
+      unit.buildSubmissionPayload(
+        mockFormData,
+        mockGeorge,
+        buildActionUrl(Action.REMOVE_APPK_CHILD),
+        Authority.MED_SPA,
+      );
+    expect(payload.authority).toEqual("1915(c)");
+    expect(payload.origin).toEqual("mako");
+    expect(payload.test).toEqual("data");
   });
 });
