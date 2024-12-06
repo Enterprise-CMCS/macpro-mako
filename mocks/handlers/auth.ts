@@ -1,7 +1,7 @@
-import type { TestUserData } from "index.d";
 import { CognitoUserAttributes } from "shared-types";
 import { isCmsUser } from "shared-utils";
 import { makoReviewer, makoStateSubmitter, userResponses } from "../data/users";
+import type { TestUserData } from "../index.d";
 
 export const setMockUsername = (user?: TestUserData | string | null): void => {
   if (user && typeof user === "string") {

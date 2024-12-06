@@ -1,6 +1,7 @@
 import { UserStatusType } from "@aws-sdk/client-cognito-identity-provider";
 
-export { CognitoUser, UserData } from "amazon-cognito-identity-js";
+export { CognitoUser } from "amazon-cognito-identity-js";
+export type { UserData } from "amazon-cognito-identity-js";
 
 export enum UserRoles {
   CMS_READ_ONLY = "onemac-micro-readonly",
