@@ -1,21 +1,11 @@
 import { Argv } from "yargs";
-import {
-  checkIfAuthenticated,
-  openUrl,
-  project,
-  setStageFromBranch,
-} from "../lib";
+import { checkIfAuthenticated, openUrl, project, setStageFromBranch } from "../lib";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 
-const createOpenCommand = (
-  name: string,
-  describe: string,
-  exportName: string,
-) => ({
+const createOpenCommand = (name: string, describe: string, exportName: string) => ({
   command: name,
   describe: describe,
-  builder: (yargs: Argv) =>
-    yargs.option("stage", { type: "string", demandOption: false }),
+  builder: (yargs: Argv) => yargs.option("stage", { type: "string", demandOption: false }),
   handler: async (options: { stage?: string }) => {
     await checkIfAuthenticated();
     const stage = options.stage || (await setStageFromBranch());

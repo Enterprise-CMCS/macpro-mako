@@ -8,9 +8,7 @@ describe("onemac has valid data", () => {
       // Note:  This if should be a utility used by sinkMain and this test
       // The if should be tested independently
       if (record.sk !== "Package" || record.submitterName === "-- --") continue;
-      const transformedData = opensearch.main.legacyPackageView
-        .transform("randomid")
-        .parse(record);
+      const transformedData = opensearch.main.legacyPackageView.transform("randomid").parse(record);
       expect(transformedData).toHaveProperty("id");
       expect(transformedData).toHaveProperty("submitterName");
       expect(transformedData).toHaveProperty("submitterEmail");

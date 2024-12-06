@@ -1,12 +1,4 @@
-import {
-  beforeAll,
-  afterEach,
-  afterAll,
-  it,
-  expect,
-  vi,
-  describe,
-} from "vitest";
+import { beforeAll, afterEach, afterAll, it, expect, vi, describe } from "vitest";
 import { API } from "aws-amplify";
 import { mockTypes } from "./mocks";
 import { fetchData } from "./useGetTypes";
@@ -17,8 +9,7 @@ const mockFetchData = vi.fn(async (apiName, path, init) => {
     body: JSON.stringify(init.body),
     method: "POST",
   });
-  if (res.status !== 200)
-    throw Error("useGetData > mockFetch: Expected error thrown by test.");
+  if (res.status !== 200) throw Error("useGetData > mockFetch: Expected error thrown by test.");
   return await res.json();
 });
 
@@ -60,9 +51,7 @@ describe("fetchData", () => {
     });
 
     it("throws an error when fetch fails", async () => {
-      await expect(fetchData({ authorityId: -1 })).rejects.toThrow(
-        "Failed to fetch types",
-      );
+      await expect(fetchData({ authorityId: -1 })).rejects.toThrow("Failed to fetch types");
     });
   });
 
@@ -80,9 +69,7 @@ describe("fetchData", () => {
 
     it("successfully fetches subtypes for a given authorityId and typeIds", async () => {
       const subtypes = await fetchData({ authorityId: 2, typeIds: [4] });
-      expect(subtypes).toEqual([
-        { id: 104, authorityId: 2, name: "subtypethree", typeId: 4 },
-      ]);
+      expect(subtypes).toEqual([{ id: 104, authorityId: 2, name: "subtypethree", typeId: 4 }]);
       expect(API.post).toHaveBeenCalledWith("os", "/getSubTypes", {
         body: { authorityId: 2, typeIds: [4] },
       });

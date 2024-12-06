@@ -15,8 +15,7 @@ export const handlers = [
     return HttpResponse.json({
       hits: {
         hits: mockData.filter(
-          (item) =>
-            item._source.authorityId === authorityId && !item._source.typeId,
+          (item) => item._source.authorityId === authorityId && !item._source.typeId,
         ),
       },
     });

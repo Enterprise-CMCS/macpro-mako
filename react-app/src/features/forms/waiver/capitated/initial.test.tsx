@@ -2,10 +2,7 @@ import { screen } from "@testing-library/react";
 import { beforeAll, describe, expect, test } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { renderForm } from "@/utils/test-helpers/renderForm";
-import {
-  mockApiRefinements,
-  skipCleanup,
-} from "@/utils/test-helpers/skipCleanup";
+import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { InitialForm } from "./Initial";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { formSchemas } from "@/formSchemas";
@@ -50,13 +47,9 @@ describe("Capitated Initial", () => {
   });
 
   test("PROPOSED EFFECTIVE DATE OF 1915(B) WAIVER INITIAL", async () => {
-    await userEvent.click(
-      screen.getByTestId("proposedEffectiveDate-datepicker"),
-    );
+    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector(
-      '[for="proposedEffectiveDate"]',
-    );
+    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });

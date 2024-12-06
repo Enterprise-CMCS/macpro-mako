@@ -95,14 +95,13 @@ describe("helpers", () => {
 
   describe("buildSubmissionPayload", () => {
     it("builds Action payloads", () => {
-      const payload: ReturnType<typeof unit.buildSubmissionPayload> =
-        unit.buildSubmissionPayload(
-          { test: "data" },
-          mockGeorge,
-          "/default" as SubmissionServiceEndpoint,
-          Authority.MED_SPA,
-          mockUploadRecipes(3),
-        );
+      const payload: ReturnType<typeof unit.buildSubmissionPayload> = unit.buildSubmissionPayload(
+        { test: "data" },
+        mockGeorge,
+        "/default" as SubmissionServiceEndpoint,
+        Authority.MED_SPA,
+        mockUploadRecipes(3),
+      );
       expect(payload.authority).toEqual("medicaid spa");
       expect(payload.origin).toEqual("mako");
       expect(payload.attachments).toHaveLength(3);
@@ -111,14 +110,13 @@ describe("helpers", () => {
   });
 
   it("builds Submission payloads", () => {
-    const payload: ReturnType<typeof unit.buildSubmissionPayload> =
-      unit.buildSubmissionPayload(
-        mockFormData,
-        mockGeorge,
-        "/submit",
-        Authority.MED_SPA,
-        mockUploadRecipes(3),
-      );
+    const payload: ReturnType<typeof unit.buildSubmissionPayload> = unit.buildSubmissionPayload(
+      mockFormData,
+      mockGeorge,
+      "/submit",
+      Authority.MED_SPA,
+      mockUploadRecipes(3),
+    );
     expect(payload.authority).toEqual("medicaid spa");
     expect(payload.origin).toEqual("mako");
     expect(payload.attachments).toHaveLength(3);

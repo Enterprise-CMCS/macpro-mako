@@ -469,19 +469,22 @@ export class Data extends cdk.NestedStack {
       sinkCpocs: { provisionedConcurrency: 0 },
     };
 
-    const lambdaFunctions = Object.entries(functionConfigs).reduce((acc, [name, config]) => {
-      acc[name] = createLambda({
-        id: name,
-        role: sharedLambdaRole,
-        useVpc: true,
-        environment: {
-          osDomain: `https://${openSearchDomainEndpoint}`,
-          indexNamespace,
-        },
-        provisionedConcurrency: !props.isDev ? config.provisionedConcurrency : 0,
-      });
-      return acc;
-    }, {} as { [key: string]: NodejsFunction });
+    const lambdaFunctions = Object.entries(functionConfigs).reduce(
+      (acc, [name, config]) => {
+        acc[name] = createLambda({
+          id: name,
+          role: sharedLambdaRole,
+          useVpc: true,
+          environment: {
+            osDomain: `https://${openSearchDomainEndpoint}`,
+            indexNamespace,
+          },
+          provisionedConcurrency: !props.isDev ? config.provisionedConcurrency : 0,
+        });
+        return acc;
+      },
+      {} as { [key: string]: NodejsFunction },
+    );
 
     const stateMachineRole = new cdk.aws_iam.Role(this, "StateMachineRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("states.amazonaws.com"),

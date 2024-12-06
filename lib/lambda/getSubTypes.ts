@@ -48,11 +48,7 @@ export const querySubTypes = async (authorityId: string, typeIds: string[]) => {
     ],
   };
 
-  return await os.search(
-    process.env.osDomain,
-    `${process.env.indexNamespace}subtypes`,
-    query,
-  );
+  return await os.search(process.env.osDomain, `${process.env.indexNamespace}subtypes`, query);
 };
 
 export const getSubTypes = async (event: APIGatewayEvent) => {

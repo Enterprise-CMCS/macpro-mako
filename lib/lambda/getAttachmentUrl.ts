@@ -71,12 +71,7 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     // Now we can generate the presigned url
-    const url = await generatePresignedUrl(
-      body.bucket,
-      body.key,
-      body.filename,
-      60,
-    );
+    const url = await generatePresignedUrl(body.bucket, body.key, body.filename, 60);
 
     return response<unknown>({
       statusCode: 200,

@@ -15,12 +15,6 @@ export async function fetchCpocData() {
   }
 }
 
-export function useGetCPOCs<T>(
-  queryOptions?: UseQueryOptions<T[], ReactQueryApiError>,
-) {
-  return useQuery<T[], ReactQueryApiError>(
-    ["package-cpocs"],
-    () => fetchCpocData(),
-    queryOptions,
-  );
+export function useGetCPOCs<T>(queryOptions?: UseQueryOptions<T[], ReactQueryApiError>) {
+  return useQuery<T[], ReactQueryApiError>(["package-cpocs"], () => fetchCpocData(), queryOptions);
 }

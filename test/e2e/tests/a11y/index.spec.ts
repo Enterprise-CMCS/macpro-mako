@@ -36,10 +36,7 @@ test.describe("test a11y on static routes", () => {
       await page.goto(route);
       await page.waitForTimeout(500);
       const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
-      console.log(
-        `${route} violations: `,
-        accessibilityScanResults.violations.length,
-      );
+      console.log(`${route} violations: `, accessibilityScanResults.violations.length);
       expect(accessibilityScanResults.violations).toEqual([]);
     });
   }
@@ -78,10 +75,7 @@ test.describe("test a11y on webform routes", () => {
       await page.goto(route);
       await page.waitForTimeout(2000);
       const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
-      console.log(
-        `${route} violations: `,
-        accessibilityScanResults.violations.length,
-      );
+      console.log(`${route} violations: `, accessibilityScanResults.violations.length);
       expect(accessibilityScanResults.violations).toEqual([]);
     });
   }

@@ -1,8 +1,5 @@
 import { z } from "zod";
-import {
-  attachmentArraySchema,
-  attachmentArraySchemaOptional,
-} from "../attachments";
+import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
 
 export const baseSchema = z.object({
   event: z.literal("capitated-renewal").default("capitated-renewal"),
@@ -17,19 +14,13 @@ export const baseSchema = z.object({
   proposedEffectiveDate: z.number(),
   attachments: z.object({
     bCapWaiverApplication: z.object({
-      label: z
-        .string()
-        .default(
-          "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
-        ),
+      label: z.string().default("1915(b) Comprehensive (Capitated) Waiver Application Pre-print"),
       files: attachmentArraySchema(),
     }),
     bCapCostSpreadsheets: z.object({
       label: z
         .string()
-        .default(
-          "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
-        ),
+        .default("1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets"),
       files: attachmentArraySchema(),
     }),
     bCapIndependentAssessment: z.object({
@@ -49,12 +40,7 @@ export const baseSchema = z.object({
       files: attachmentArraySchemaOptional(),
     }),
   }),
-  additionalInformation: z
-    .string()
-    .max(4000)
-    .nullable()
-    .default(null)
-    .optional(),
+  additionalInformation: z.string().max(4000).nullable().default(null).optional(),
   waiverNumber: z
     .string()
     .min(1, { message: "Required" })

@@ -7,17 +7,9 @@ interface SectionCardProps {
   title?: ReactNode;
   id?: string;
 }
-export const SectionCard = ({
-  title,
-  children,
-  className,
-  id,
-}: SectionCardProps) => {
+export const SectionCard = ({ title, children, className, id }: SectionCardProps) => {
   return (
-    <section
-      id={id}
-      className={cn("p-4 border rounded-sm border-cardBorder", className)}
-    >
+    <section id={id} className={cn("p-4 border rounded-sm border-cardBorder", className)}>
       {title && (
         <>
           <h1 className="text-3xl font-semibold mb-2">{title}</h1>

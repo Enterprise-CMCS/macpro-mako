@@ -13,8 +13,7 @@ export const PackageStatusCard: FC<{ id: string }> = ({ id }) => {
     <DetailCardWrapper title={"Status"}>
       <div className="my-3 max-w-2xl font-bold text-xl">
         <div>
-          {user?.isCms &&
-          !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
+          {user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
             ? data?._source.cmsStatus
             : data?._source.stateStatus}
         </div>
@@ -22,9 +21,7 @@ export const PackageStatusCard: FC<{ id: string }> = ({ id }) => {
           {data._source.raiWithdrawEnabled && (
             <div className="flex flex-row gap-1">
               <p className="text-xs font-bold opacity-80">·</p>
-              <p className="text-xs opacity-80">
-                Withdraw Formal RAI Response - Enabled
-              </p>
+              <p className="text-xs opacity-80">Withdraw Formal RAI Response - Enabled</p>
             </div>
           )}
 

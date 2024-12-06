@@ -1,10 +1,5 @@
 import { Argv } from "yargs";
-import {
-  checkIfAuthenticated,
-  runCommand,
-  setStageFromBranch,
-  writeUiEnvFile,
-} from "../lib";
+import { checkIfAuthenticated, runCommand, setStageFromBranch, writeUiEnvFile } from "../lib";
 
 export const ui = {
   command: "ui",

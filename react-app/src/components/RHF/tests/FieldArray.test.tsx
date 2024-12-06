@@ -135,9 +135,7 @@ describe("Field Tests", () => {
   test("renders FieldArray", () => {
     const rend = render(<TestWrapper {...testValues} />);
     const input = rend.getByLabelText("Test Input");
-    expect(input.id).toBe(
-      testValues.name + ".0." + testValues.fields?.[0].name,
-    );
+    expect(input.id).toBe(testValues.name + ".0." + testValues.fields?.[0].name);
   });
 
   test("renders FieldArray with Wrapped Field", () => {
@@ -185,9 +183,7 @@ describe("FieldArray Test", () => {
   });
 
   test("sets Default Values", () => {
-    const rend = render(
-      <TestWrapper {...testValues} defaultValues={{ testName: [] }} />,
-    );
+    const rend = render(<TestWrapper {...testValues} defaultValues={{ testName: [] }} />);
     const input = rend.getByLabelText("Test Input");
     expect((input as HTMLInputElement).value).toBe("");
   });

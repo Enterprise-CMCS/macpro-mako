@@ -50,13 +50,9 @@ describe("CHIP SPA", () => {
   });
 
   test("PROPOSED EFFECTIVE DATE OF CHIP SPA", async () => {
-    await userEvent.click(
-      screen.getByTestId("proposedEffectiveDate-datepicker"),
-    );
+    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector(
-      '[for="proposedEffectiveDate"]',
-    );
+    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });

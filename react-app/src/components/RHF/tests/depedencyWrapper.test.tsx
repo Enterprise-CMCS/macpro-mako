@@ -42,9 +42,7 @@ const TestComp = ({
 describe("DependencyWrapper Tests", () => {
   test("test show effect", () => {
     const dependency: DependencyRule = {
-      conditions: [
-        { type: "expectedValue", expectedValue: "test", name: "field1" },
-      ],
+      conditions: [{ type: "expectedValue", expectedValue: "test", name: "field1" }],
       effect: { type: "show" },
     };
     const { getByText } = render(
@@ -65,9 +63,7 @@ describe("DependencyWrapper Tests", () => {
 
   test("test hide effect", () => {
     const dependency: DependencyRule = {
-      conditions: [
-        { type: "expectedValue", expectedValue: "test", name: "field1" },
-      ],
+      conditions: [{ type: "expectedValue", expectedValue: "test", name: "field1" }],
       effect: { type: "hide" },
     };
     const { queryByText } = render(
@@ -88,9 +84,7 @@ describe("DependencyWrapper Tests", () => {
 
   test("test set value effect", () => {
     const dependency: DependencyRule = {
-      conditions: [
-        { type: "expectedValue", expectedValue: "test", name: "field1" },
-      ],
+      conditions: [{ type: "expectedValue", expectedValue: "test", name: "field1" }],
       effect: { type: "setValue", fieldName: "field2", newValue: "newValue" },
     };
 

@@ -5,11 +5,7 @@ import defaultTheme from "tailwindcss/defaultTheme";
 export default {
   mode: "jit",
   darkMode: ["class"],
-  content: [
-    "./src/**/*.{ts,tsx}",
-    "./index.html",
-    "../lib/libs/webforms/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./src/**/*.{ts,tsx}", "./index.html", "../lib/libs/webforms/**/*.{js,ts,jsx,tsx}"],
   theme: {
     fontFamily: {
       serif: ["Merriweather", "serif"],

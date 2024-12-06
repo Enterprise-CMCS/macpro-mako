@@ -19,11 +19,7 @@ export const queryCpocs = async () => {
       },
     ],
   };
-  return await os.search(
-    process.env.osDomain,
-    `${process.env.indexNamespace}cpocs`,
-    query,
-  );
+  return await os.search(process.env.osDomain, `${process.env.indexNamespace}cpocs`, query);
 };
 
 export const getCpocs = async (event: APIGatewayEvent) => {

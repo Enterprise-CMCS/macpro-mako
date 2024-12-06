@@ -1,20 +1,8 @@
-import {
-  describe,
-  it,
-  expect,
-  beforeAll,
-  beforeEach,
-  afterEach,
-  vi,
-} from "vitest";
+import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from "vitest";
 import { Layout, SubNavHeader } from "./index";
 import { render, screen } from "@testing-library/react";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import {
-  QueryClient,
-  QueryClientProvider,
-  UseQueryResult,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, UseQueryResult } from "@tanstack/react-query";
 import userEvent from "@testing-library/user-event";
 import { useGetUser } from "@/api";
 import { OneMacUser } from "@/api/useGetUser";
@@ -30,8 +18,7 @@ import * as hooks from "@/hooks";
 vi.mock("../UsaBanner", () => ({ UsaBanner: () => null }));
 vi.mock("../Footer", () => ({ Footer: () => null }));
 vi.mock("@/components", () => ({
-  SimplePageContainer: ({ children }: { children: React.ReactNode }) =>
-    children,
+  SimplePageContainer: ({ children }: { children: React.ReactNode }) => children,
   UserPrompt: () => null,
   Banner: () => null,
   ScrollToTop: () => null,
@@ -50,9 +37,7 @@ vi.mock("aws-amplify", () => ({
 // Navigation mock
 const mockNavigate = vi.fn();
 vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual<typeof import("react-router-dom")>(
-    "react-router-dom",
-  );
+  const actual = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
   return {
     ...actual,
     useNavigate: () => mockNavigate,
@@ -122,8 +107,7 @@ type ViewMode = (typeof VIEW_MODES)[keyof typeof VIEW_MODES];
 // Helper to configure media query mocks based on view mode
 const mockMediaQuery = (viewMode: ViewMode) => {
   window.matchMedia = vi.fn().mockImplementation((query) => ({
-    matches:
-      query === "(min-width: 768px)" ? viewMode.desktop : viewMode.mobile,
+    matches: query === "(min-width: 768px)" ? viewMode.desktop : viewMode.mobile,
     media: query,
     onchange: null,
     addListener: vi.fn(),
@@ -174,9 +158,7 @@ const setupTest = (viewMode: ViewMode = VIEW_MODES.DESKTOP) => {
   return renderWithProviders();
 };
 
-const setupUserDropdownTest = async (
-  viewMode: ViewMode = VIEW_MODES.DESKTOP,
-) => {
+const setupUserDropdownTest = async (viewMode: ViewMode = VIEW_MODES.DESKTOP) => {
   setupTest(viewMode);
 
   if (!viewMode.desktop) {
@@ -234,15 +216,12 @@ describe("Layout", () => {
     it.each([
       ["desktop", VIEW_MODES.DESKTOP],
       ["mobile", VIEW_MODES.MOBILE],
-    ])(
-      "renders UserDropdownMenu for logged-in user in %s view",
-      async (_, viewMode) => {
-        await setupUserDropdownTest(viewMode);
+    ])("renders UserDropdownMenu for logged-in user in %s view", async (_, viewMode) => {
+      await setupUserDropdownTest(viewMode);
 
-        expect(screen.getByText("View Profile")).toBeInTheDocument();
-        expect(screen.getByText("Sign Out")).toBeInTheDocument();
-      },
-    );
+      expect(screen.getByText("View Profile")).toBeInTheDocument();
+      expect(screen.getByText("Sign Out")).toBeInTheDocument();
+    });
   });
 
   describe("UserDropdownMenu actions", () => {
@@ -274,20 +253,17 @@ describe("Layout", () => {
     it.each([
       ["desktop", VIEW_MODES.DESKTOP],
       ["mobile", VIEW_MODES.MOBILE],
-    ])(
-      "renders Sign In and Register buttons in %s view",
-      async (_, viewMode) => {
-        setupTest(viewMode);
+    ])("renders Sign In and Register buttons in %s view", async (_, viewMode) => {
+      setupTest(viewMode);
 
-        if (!viewMode.desktop) {
-          await userEvent.click(screen.getByRole("button"));
-        }
+      if (!viewMode.desktop) {
+        await userEvent.click(screen.getByRole("button"));
+      }
 
-        expect(screen.getByText("Sign In")).toBeInTheDocument();
-        expect(screen.getByText("Register")).toBeInTheDocument();
-        expect(screen.queryByText("My Account")).not.toBeInTheDocument();
-      },
-    );
+      expect(screen.getByText("Sign In")).toBeInTheDocument();
+      expect(screen.getByText("Register")).toBeInTheDocument();
+      expect(screen.queryByText("My Account")).not.toBeInTheDocument();
+    });
   });
 
   describe("Navigation links and mobile view", () => {
@@ -363,9 +339,7 @@ describe("Layout", () => {
       renderWithProviders();
 
       // Mobile menu button should not be present
-      expect(
-        screen.queryByTestId("mobile-menu-button"),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByTestId("mobile-menu-button")).not.toBeInTheDocument();
 
       // Desktop menu items should be visible
       expect(screen.getByText("Home")).toBeVisible();

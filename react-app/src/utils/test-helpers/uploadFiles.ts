@@ -11,10 +11,10 @@ type ExtractAttachmentKeys<TSchema extends SchemaWithEnforcableProps> =
         : never
       : never
     : TSchema extends z.ZodObject<infer Shape> // Handle direct ZodObject case
-    ? Shape["attachments"] extends z.ZodObject<infer AttachmentsShape> // Ensure attachments is a ZodObject
-      ? keyof AttachmentsShape // Extract the keys from attachments' shape
-      : never
-    : never;
+      ? Shape["attachments"] extends z.ZodObject<infer AttachmentsShape> // Ensure attachments is a ZodObject
+        ? keyof AttachmentsShape // Extract the keys from attachments' shape
+        : never
+      : never;
 
 export const uploadFiles = <TSchema extends SchemaWithEnforcableProps>() => {
   type AttachmentKey = ExtractAttachmentKeys<TSchema>;
@@ -24,10 +24,7 @@ export const uploadFiles = <TSchema extends SchemaWithEnforcableProps>() => {
       type: "image/png",
     });
 
-    await userEvent.upload(
-      screen.getByTestId(`${attachmentKey}-upload`),
-      EXAMPLE_FILE,
-    );
+    await userEvent.upload(screen.getByTestId(`${attachmentKey}-upload`), EXAMPLE_FILE);
 
     return screen.getByTestId(`${attachmentKey}-label`);
   };

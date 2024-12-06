@@ -53,26 +53,20 @@ describe("Slot Input Field Tests", () => {
   });
 
   test("renders Textarea", () => {
-    const rend = render(
-      <TestWrapper {...testValues} rhf="Textarea" props={{}} />,
-    );
+    const rend = render(<TestWrapper {...testValues} rhf="Textarea" props={{}} />);
     const input = rend.getByRole("textbox", { name: `${testValues.name}` });
     expect((input as any)?.name).toBe(testValues.name);
   });
 
   test("renders TextDisplay", () => {
-    const rend = render(
-      <TestWrapper {...testValues} rhf="TextDisplay" text="Sample Text Comp" />,
-    );
+    const rend = render(<TestWrapper {...testValues} rhf="TextDisplay" text="Sample Text Comp" />);
     const input = rend.getByTestId(testValues.name);
     const input2 = rend.getByText("Sample Text Comp");
     expect(input.firstChild).toEqual(input2.firstChild);
   });
 
   test("renders Upload", () => {
-    const rend = render(
-      <TestWrapper {...testValues} rhf="Upload" props={{}} />,
-    );
+    const rend = render(<TestWrapper {...testValues} rhf="Upload" props={{}} />);
     const input = rend.getByRole("presentation");
     const fileText = rend.getByText("choose from folder");
     expect(fileText.classList.contains("underline")).toBeTruthy();
@@ -80,9 +74,7 @@ describe("Slot Input Field Tests", () => {
   });
 
   test("renders DatePicker", () => {
-    const rend = render(
-      <TestWrapper {...testValues} rhf="DatePicker" props={{}} />,
-    );
+    const rend = render(<TestWrapper {...testValues} rhf="DatePicker" props={{}} />);
     const dpt = rend.getByText("Pick a date");
     expect(dpt).toBeTruthy();
   });
@@ -155,9 +147,7 @@ describe("Slot Input Field Tests", () => {
       fireEvent.mouseDown(getByRole("combobox"));
       fireEvent.click(getByText("test 2"));
 
-      const selectedOptions = container.querySelectorAll(
-        ".css-1p3m7a8-multiValue",
-      );
+      const selectedOptions = container.querySelectorAll(".css-1p3m7a8-multiValue");
       expect(selectedOptions).toHaveLength(2);
       expect(selectedOptions[0]).toHaveTextContent("test 1");
       expect(selectedOptions[1]).toHaveTextContent("test 2");

@@ -19,9 +19,7 @@ describe("CreateTopics", () => {
       availabilityZone: "us-west-2a",
     }),
   ];
-  const securityGroups = [
-    new ec2.SecurityGroup(stack, "SecurityGroup", { vpc }),
-  ];
+  const securityGroups = [new ec2.SecurityGroup(stack, "SecurityGroup", { vpc })];
   const brokerString = "mockBrokerString";
   const topics = [{ topic: "mockTopic1" }, { topic: "mockTopic2" }];
 
@@ -34,16 +32,12 @@ describe("CreateTopics", () => {
   });
 
   it("should create a log group for the Lambda function", () => {
-    const lambdaLogGroup = createTopics.node.findChild(
-      "CreateTopicsLogGroup",
-    ) as logs.LogGroup;
+    const lambdaLogGroup = createTopics.node.findChild("CreateTopicsLogGroup") as logs.LogGroup;
     expect(lambdaLogGroup).toBeInstanceOf(logs.LogGroup);
   });
 
   it("should create a Lambda function with appropriate properties", () => {
-    const lambdaFunction = createTopics.node.findChild(
-      "CreateTopicsLambda",
-    ) as lambda.Function;
+    const lambdaFunction = createTopics.node.findChild("CreateTopicsLambda") as lambda.Function;
     expect(lambdaFunction).toBeInstanceOf(lambda.Function);
     expect(lambdaFunction.runtime).toBe(lambda.Runtime.NODEJS_18_X);
     expect(lambdaFunction.timeout?.toMinutes()).toBe(5);
@@ -64,9 +58,7 @@ describe("CreateTopics", () => {
   });
 
   it("should create a custom resource to invoke the Lambda function", () => {
-    const customResource = createTopics.node.findChild(
-      "CustomResource",
-    ) as cr.AwsCustomResource;
+    const customResource = createTopics.node.findChild("CustomResource") as cr.AwsCustomResource;
     expect(customResource).toBeInstanceOf(cr.AwsCustomResource);
 
     const customResourceLogGroup = createTopics.node.findChild(

@@ -10,8 +10,7 @@ describe("onemac has valid data", () => {
       if (
         !(
           record?.sk !== "Package" &&
-          (record.GSI1pk?.startsWith("OneMAC#submit") ||
-            record.GSI1pk?.startsWith("OneMAC#enable"))
+          (record.GSI1pk?.startsWith("OneMAC#submit") || record.GSI1pk?.startsWith("OneMAC#enable"))
         )
       ) {
         continue;
@@ -24,9 +23,7 @@ describe("onemac has valid data", () => {
       expect(transformedData).toHaveProperty("timestamp");
       expect(transformedData).toHaveProperty("actionType");
       expect(
-        [...Object.values(Action), "new-submission"].includes(
-          transformedData.actionType,
-        ),
+        [...Object.values(Action), "new-submission"].includes(transformedData.actionType),
       ).toBe(true);
     }
   });

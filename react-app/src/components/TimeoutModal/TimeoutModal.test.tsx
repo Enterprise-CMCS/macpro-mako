@@ -48,9 +48,7 @@ describe("Timeout Modal", () => {
   it("closes after user extends session", async () => {
     render(<ParentComponent />);
 
-    const sessionExpirationWarning = screen.getByText(
-      /Your session will expire in/i,
-    );
+    const sessionExpirationWarning = screen.getByText(/Your session will expire in/i);
     expect(sessionExpirationWarning).toBeInTheDocument();
 
     const extendBtn = screen.getByText(/Yes, extend session/i);
@@ -58,18 +56,14 @@ describe("Timeout Modal", () => {
 
     await userEvent.click(extendBtn);
     await waitFor(() => {
-      expect(
-        screen.queryByText(/Your session will expire in/i),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByText(/Your session will expire in/i)).not.toBeInTheDocument();
     });
   });
 
   it("closes the modal if user clicks sign out", async () => {
     render(<ParentComponent />);
 
-    const sessionExpirationWarning = screen.getByText(
-      /Your session will expire in/i,
-    );
+    const sessionExpirationWarning = screen.getByText(/Your session will expire in/i);
     expect(sessionExpirationWarning).toBeInTheDocument();
 
     const signOutBtn = screen.getByText(/No, sign out/i);
@@ -77,9 +71,7 @@ describe("Timeout Modal", () => {
 
     await userEvent.click(signOutBtn);
     await waitFor(() => {
-      expect(
-        screen.queryByText(/Your session will expire in/i),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByText(/Your session will expire in/i)).not.toBeInTheDocument();
     });
   });
 });

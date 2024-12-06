@@ -74,9 +74,7 @@ describe("RHFSlot tests", () => {
   });
 
   test("no desc, no form styling", () => {
-    const rend = render(
-      <TestWrapper {...testValues} description={""} formItemClassName={""} />,
-    );
+    const rend = render(<TestWrapper {...testValues} description={""} formItemClassName={""} />);
     const desc = rend.queryByText(`${testValues.description}`);
     const wrap = rend.getByTestId(`${testValues.name}Wrapper`);
     const input = rend.getByRole("textbox", { name: `${testValues.name}` });

@@ -54,13 +54,7 @@ describe("CloudFormation Custom Resource Handler", () => {
       }),
     });
     expect(sendMock).toHaveBeenCalled();
-    expect(send).not.toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(send).not.toHaveBeenCalledWith(mockEvent, mockContext, SUCCESS, {}, "static");
   });
 
   it("should send a SUCCESS response on Update request type", async () => {
@@ -71,13 +65,7 @@ describe("CloudFormation Custom Resource Handler", () => {
 
     await handler(mockEvent, mockContext);
 
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(send).toHaveBeenCalledWith(mockEvent, mockContext, SUCCESS, {}, "static");
   });
 
   it("should send a SUCCESS response on Delete request type", async () => {
@@ -88,13 +76,7 @@ describe("CloudFormation Custom Resource Handler", () => {
 
     await handler(mockEvent, mockContext);
 
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(send).toHaveBeenCalledWith(mockEvent, mockContext, SUCCESS, {}, "static");
   });
 
   it("should send a FAILED response on error", async () => {
@@ -110,12 +92,6 @@ describe("CloudFormation Custom Resource Handler", () => {
 
     await handler(mockEvent, mockContext);
 
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      FAILED,
-      {},
-      "static",
-    );
+    expect(send).toHaveBeenCalledWith(mockEvent, mockContext, FAILED, {}, "static");
   });
 });

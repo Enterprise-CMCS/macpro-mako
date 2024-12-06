@@ -45,20 +45,16 @@ describe("getPackageChangelog", () => {
 
     const result = await getPackageChangelog(mockPackageId);
 
-    expect(os.search).toHaveBeenCalledWith(
-      mockOsDomain,
-      `${mockIndexNamespace}changelog`,
-      {
-        from: 0,
-        size: 200,
-        sort: [{ timestamp: "desc" }],
-        query: {
-          bool: {
-            must: [{ term: { "packageId.keyword": mockPackageId } }],
-          },
+    expect(os.search).toHaveBeenCalledWith(mockOsDomain, `${mockIndexNamespace}changelog`, {
+      from: 0,
+      size: 200,
+      sort: [{ timestamp: "desc" }],
+      query: {
+        bool: {
+          must: [{ term: { "packageId.keyword": mockPackageId } }],
         },
       },
-    );
+    });
     expect(result).toEqual(mockResponse);
   });
 
@@ -67,22 +63,16 @@ describe("getPackageChangelog", () => {
 
     const result = await getPackageChangelog(mockPackageId, mockFilter);
 
-    expect(os.search).toHaveBeenCalledWith(
-      mockOsDomain,
-      `${mockIndexNamespace}changelog`,
-      {
-        from: 0,
-        size: 200,
-        sort: [{ timestamp: "desc" }],
-        query: {
-          bool: {
-            must: [{ term: { "packageId.keyword": mockPackageId } }].concat(
-              mockFilter,
-            ),
-          },
+    expect(os.search).toHaveBeenCalledWith(mockOsDomain, `${mockIndexNamespace}changelog`, {
+      from: 0,
+      size: 200,
+      sort: [{ timestamp: "desc" }],
+      query: {
+        bool: {
+          must: [{ term: { "packageId.keyword": mockPackageId } }].concat(mockFilter),
         },
       },
-    );
+    });
     expect(result).toEqual(mockResponse);
   });
 });

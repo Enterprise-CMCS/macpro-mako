@@ -8,10 +8,7 @@ type FetchOptions = {
   typeIds?: number[];
 };
 
-export async function fetchData<T>({
-  authorityId,
-  typeIds,
-}: FetchOptions): Promise<T[]> {
+export async function fetchData<T>({ authorityId, typeIds }: FetchOptions): Promise<T[]> {
   const endpoint = typeIds ? "/getSubTypes" : "/getTypes";
   const body = typeIds ? { authorityId, typeIds } : { authorityId };
 
@@ -39,11 +36,7 @@ export function useGetData<T>(
     ? ["package-subtypes", authorityId, typeIds]
     : ["package-types", authorityId];
 
-  return useQuery<T[], ReactQueryApiError>(
-    queryKey,
-    () => fetchData<T>(options),
-    queryOptions,
-  );
+  return useQuery<T[], ReactQueryApiError>(queryKey, () => fetchData<T>(options), queryOptions);
 }
 
 export function useGetTypes(
@@ -58,8 +51,5 @@ export function useGetSubTypes(
   typeIds: number[],
   options?: UseQueryOptions<opensearch.subtypes.Document[], ReactQueryApiError>,
 ) {
-  return useGetData<opensearch.subtypes.Document>(
-    { authorityId, typeIds },
-    options,
-  );
+  return useGetData<opensearch.subtypes.Document>({ authorityId, typeIds }, options);
 }

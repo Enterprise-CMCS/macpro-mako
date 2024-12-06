@@ -52,10 +52,7 @@ export const WebformsList = () => {
           </table>
 
           <div className="mt-2">
-            <Link
-              className="cursor-pointer text-blue-600 ml-0"
-              to="/guides/abp"
-            >
+            <Link className="cursor-pointer text-blue-600 ml-0" to="/guides/abp">
               Implementation Guide
             </Link>
           </div>

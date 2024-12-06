@@ -3,10 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, test, expect, beforeAll } from "vitest";
 import { InitialForm } from "./Initial";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import {
-  skipCleanup,
-  mockApiRefinements,
-} from "@/utils/test-helpers/skipCleanup";
+import { skipCleanup, mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
 import { renderForm } from "@/utils/test-helpers/renderForm";
 import { formSchemas } from "@/formSchemas";
 
@@ -52,13 +49,9 @@ describe("INITIAL CONTRACTING WAIVER", () => {
   });
 
   test("PROPOSED EFFECTIVE DATE OF INITIAL CONTRACTING WAIVER", async () => {
-    await userEvent.click(
-      screen.getByTestId("proposedEffectiveDate-datepicker"),
-    );
+    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector(
-      '[for="proposedEffectiveDate"]',
-    );
+    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });

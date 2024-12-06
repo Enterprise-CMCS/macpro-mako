@@ -23,9 +23,7 @@ describe("getPackage", () => {
 
   it("should throw an error if osDomain is not defined", async () => {
     delete process.env.osDomain;
-    await expect(getPackage(mockId)).rejects.toThrow(
-      "process.env.osDomain must be defined",
-    );
+    await expect(getPackage(mockId)).rejects.toThrow("process.env.osDomain must be defined");
   });
 
   it("should return the package result without appkChildren if appkParent is not present", async () => {
@@ -40,11 +38,7 @@ describe("getPackage", () => {
 
     const result = await getPackage(mockId);
 
-    expect(os.getItem).toHaveBeenCalledWith(
-      mockOsDomain,
-      `${mockIndexNamespace}main`,
-      mockId,
-    );
+    expect(os.getItem).toHaveBeenCalledWith(mockOsDomain, `${mockIndexNamespace}main`, mockId);
     expect(result).toEqual(mockPackageResult);
   });
 
@@ -68,11 +62,7 @@ describe("getPackage", () => {
 
     const result = await getPackage(mockId);
 
-    expect(os.getItem).toHaveBeenCalledWith(
-      mockOsDomain,
-      `${mockIndexNamespace}main`,
-      mockId,
-    );
+    expect(os.getItem).toHaveBeenCalledWith(mockOsDomain, `${mockIndexNamespace}main`, mockId);
     expect(getAppkChildren).toHaveBeenCalledWith(mockId);
     expect(result).toEqual({
       ...mockPackageResult,

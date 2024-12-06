@@ -47,8 +47,7 @@ export const WithdrawPackageActionWaiver = () => {
       additionalInformation={{
         required: false,
         title: "Additional Information",
-        label:
-          "Explain your need for withdrawal, or upload supporting documentation.",
+        label: "Explain your need for withdrawal, or upload supporting documentation.",
       }}
       promptPreSubmission={{
         acceptButtonText: "Yes, withdraw package",
@@ -100,8 +99,7 @@ export const WithdrawPackageAction = () => {
       additionalInformation={{
         required: false,
         title: "Additional Information",
-        label:
-          "Explain your need for withdrawal, or upload supporting documentation.",
+        label: "Explain your need for withdrawal, or upload supporting documentation.",
       }}
       promptPreSubmission={{
         acceptButtonText: "Yes, withdraw package",

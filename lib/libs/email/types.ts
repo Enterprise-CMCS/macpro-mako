@@ -1,4 +1,11 @@
-import { Authority, CommonEmailVariables, EmailAddresses, Events, RaiWithdraw, WithdrawPackage } from "shared-types";
+import {
+  Authority,
+  CommonEmailVariables,
+  EmailAddresses,
+  Events,
+  RaiWithdraw,
+  WithdrawPackage,
+} from "shared-types";
 
 // Base email template props
 export interface BaseEmailProps {

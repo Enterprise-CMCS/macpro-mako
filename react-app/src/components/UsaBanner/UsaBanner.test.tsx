@@ -9,9 +9,7 @@ vi.mock("react-router-dom", () => ({
 
 describe("UsaBanner", () => {
   test("clicking on button expands banner information (small)", async () => {
-    const { queryAllByRole, queryByText } = render(
-      <UsaBanner isUserMissingRole={false} />,
-    );
+    const { queryAllByRole, queryByText } = render(<UsaBanner isUserMissingRole={false} />);
 
     const button = queryAllByRole("button")[0];
     await userEvent.click(button);
@@ -20,9 +18,7 @@ describe("UsaBanner", () => {
   });
 
   test("clicking on button expands banner information (large)", async () => {
-    const { queryAllByRole, queryByText } = render(
-      <UsaBanner isUserMissingRole={false} />,
-    );
+    const { queryAllByRole, queryByText } = render(<UsaBanner isUserMissingRole={false} />);
 
     const button = queryAllByRole("button")[1];
     await userEvent.click(button);
@@ -47,9 +43,7 @@ describe("UsaBanner", () => {
   });
 
   test("government building icon renders", async () => {
-    const { queryByTestId, queryAllByRole } = render(
-      <UsaBanner isUserMissingRole={true} />,
-    );
+    const { queryByTestId, queryAllByRole } = render(<UsaBanner isUserMissingRole={true} />);
 
     const button = queryAllByRole("button")[0];
     await userEvent.click(button);

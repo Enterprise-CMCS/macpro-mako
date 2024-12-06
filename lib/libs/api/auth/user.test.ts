@@ -85,10 +85,7 @@ describe("Auth functions", () => {
       });
 
       await expect(
-        lookupUserAttributes(
-          "12345678-1234-1234-1234-123456789012",
-          "us-east-1_ABC123",
-        ),
+        lookupUserAttributes("12345678-1234-1234-1234-123456789012", "us-east-1_ABC123"),
       ).rejects.toThrow("No user found with this sub");
     });
   });
@@ -98,9 +95,7 @@ describe("Auth functions", () => {
       mockSend.mockResolvedValueOnce({
         Users: [
           {
-            Attributes: [
-              { Name: "custom:cms-roles", Value: "onemac-micro-reviewer" },
-            ],
+            Attributes: [{ Name: "custom:cms-roles", Value: "onemac-micro-reviewer" }],
           },
         ],
       });
@@ -159,9 +154,7 @@ describe("Auth functions", () => {
       mockSend.mockResolvedValueOnce({
         Users: [
           {
-            Attributes: [
-              { Name: "custom:cms-roles", Value: "onemac-micro-reviewer" },
-            ],
+            Attributes: [{ Name: "custom:cms-roles", Value: "onemac-micro-reviewer" }],
           },
         ],
       });
@@ -263,9 +256,7 @@ describe("Auth functions", () => {
       mockSend.mockResolvedValueOnce({
         Users: [
           {
-            Attributes: [
-              { Name: "custom:cms-roles", Value: "onemac-micro-reviewer" },
-            ],
+            Attributes: [{ Name: "custom:cms-roles", Value: "onemac-micro-reviewer" }],
           },
         ],
       });

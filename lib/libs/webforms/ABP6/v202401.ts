@@ -55,8 +55,7 @@ export const v202401: FormSchema = {
                 {
                   type: "greaterThanField",
                   fieldName: "abp6_desc-of-ben_agg-actuarial-ben-plan",
-                  message:
-                    "Must be greater than or equal to value entered above.",
+                  message: "Must be greater than or equal to value entered above.",
                 },
               ],
             },
@@ -82,8 +81,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     value: "acturaial_report",
-                    label:
-                      "The state/territory has included a copy of the actuarial report.",
+                    label: "The state/territory has included a copy of the actuarial report.",
                     slots: [
                       {
                         name: "actuarial-report",
@@ -148,8 +146,7 @@ export const v202401: FormSchema = {
                             },
                             {
                               value: "standard_utilization_price_factors",
-                              label:
-                                "Using a standardized set of utilization and price factors",
+                              label: "Using a standardized set of utilization and price factors",
                             },
                             {
                               value: "using_standard_representative_pop",
@@ -186,8 +183,7 @@ export const v202401: FormSchema = {
                       "The state/territory assures, as required by Section 1937(b)(2)(A) and 42 CFR 440.335, that benchmark-equivalent coverage shall include coverage for the following categories of services: inpatient and outpatient hospital services, physicians' surgical and medical services, laboratory and x-ray services, prescription drugs, well-baby and well-child care, including age-appropriate immunizations, emergency services, mental health benefits, family planning services and supplies, and other appropriate preventive services as designated by the Secretary.",
                   },
                   {
-                    value:
-                      "inlcuded_desc_of_ben_and_val_as_percentage_of_equivalent",
+                    value: "inlcuded_desc_of_ben_and_val_as_percentage_of_equivalent",
                     label:
                       "The state/territory has included a description of the benefits included and the actuarial value of the category as a percentage of the actuarial value of the coverage for the benefits included in the benchmark-equivalent benefit plan.",
                   },
@@ -295,8 +291,7 @@ export const v202401: FormSchema = {
       sectionId: "addtnl-info",
       form: [
         {
-          description:
-            "Other information about benchmark-equivalent assurances (optional)",
+          description: "Other information about benchmark-equivalent assurances (optional)",
           slots: [
             {
               name: "description",

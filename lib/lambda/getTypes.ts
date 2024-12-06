@@ -41,11 +41,7 @@ export const queryTypes = async (authorityId: string) => {
       },
     ],
   };
-  return await os.search(
-    process.env.osDomain,
-    `${process.env.indexNamespace}types`,
-    query,
-  );
+  return await os.search(process.env.osDomain, `${process.env.indexNamespace}types`, query);
 };
 
 export const getTypes = async (event: APIGatewayEvent) => {

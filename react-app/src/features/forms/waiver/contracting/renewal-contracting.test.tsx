@@ -23,9 +23,7 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
   });
 
   test("WAIVER ID EXISTING", async () => {
-    const waiverIdInput = screen.getByLabelText(
-      /existing waiver number to renew/i,
-    );
+    const waiverIdInput = screen.getByLabelText(/existing waiver number to renew/i);
     const waiverIdLabel = screen.getByTestId("waiverid-existing-label");
 
     // test record does not exist error occurs
@@ -56,9 +54,7 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
     expect(waiverIdLabel).not.toHaveClass("text-destructive");
   });
   test("WAIVER ID RENEWAL", async () => {
-    const waiverIdInput = screen.getByLabelText(
-      /1915\(b\) Waiver Renewal Number/i,
-    );
+    const waiverIdInput = screen.getByLabelText(/1915\(b\) Waiver Renewal Number/i);
     const waiverIdLabel = screen.getByTestId("waiverid-renewal-label");
 
     // validate id errors
@@ -84,13 +80,9 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
   });
 
   test("PROPOSED EFFECTIVE DATE OF RENEWAL CONTRACTING WAIVER", async () => {
-    await userEvent.click(
-      screen.getByTestId("proposedEffectiveDate-datepicker"),
-    );
+    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector(
-      '[for="proposedEffectiveDate"]',
-    );
+    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });
