@@ -1,6 +1,6 @@
 import { cleanup } from "@testing-library/react";
 import * as matchers from "@testing-library/jest-dom/matchers";
-import { afterEach, vi } from "vitest";
+import { afterEach, vi, expect, beforeAll, afterAll } from "vitest";
 import { JSDOM } from "jsdom";
 
 // Setup a virtual DOM environment for tests

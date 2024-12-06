@@ -13,12 +13,13 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "typeRoots": ["@types", "vitest/globals", "./global.d.ts"],
     "noEmit": true,
     "jsx": "react-jsx",
+    "rootDir": "./",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     }
-  }
+  },
+  "include": ["src", "e2e", "src/assets/_.d.ts"]
 }
