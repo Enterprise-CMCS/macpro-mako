@@ -2,7 +2,7 @@
 TODO for PR Author:
 - Would your work benefit from unit tests?
 - Have you formatted your files using Prettier/ESLint?
-- Remove any irrelevant sections below
+- Delete any irrelevant sections below before opening the pull request
 -->
 
 ## 🎫 Linked Ticket
@@ -11,18 +11,17 @@ TODO for PR Author:
 
 [Ticket to close](link-to-ticket)
 
-## 🚨 Problem
+## 💬 Description / Notes
 
-<!-- Describe the background of the issue -->
-
-## 💡 Solution
-
-<!-- How did we approach solving the problem? Explain the key strategy -->
+<!-- Briefly describe the background of the issue -->
+<!-- If you feel the original ticket lacks important details, this would be the place to share them -->
 
 ## 🛠 Changes
 
-<!-- What specific code/configuration modifications were made to implement the solution -->
+<!-- List your code changes made to implement the solution -->
 
-## 📸 Screenshots / Demo (if applicable)
+## 📸 Screenshots / Demo
 
-<!-- If needed, show the before and after -->
+<!-- ### Before -->
+
+<!-- ### After -->
