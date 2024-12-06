@@ -1,5 +1,5 @@
 import { CommonEmailVariables, Events, RelatedEventType } from "shared-types";
-import { Attachments, PackageDetails, BasicFooter, SpamWarning } from "../../email-components";
+import { Attachments, PackageDetails, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const AppKCMSEmail = (props: {
@@ -24,7 +24,6 @@ export const AppKCMSEmail = (props: {
         }}
       />
       <Attachments attachments={variables.attachments} />
-      <SpamWarning />
     </BaseEmailTemplate>
   );
 };

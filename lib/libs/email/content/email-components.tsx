@@ -225,21 +225,6 @@ const FollowUpNotice = ({
   </>
 );
 
-export const SpamWarning = () => (
-  <Section>
-    <Divider />
-    <Text style={{ fontSize: "14px" }}>
-      If the contents of this email seem suspicious, do not open them, and instead forward this
-      email to{" "}
-      <Link style={{ textDecoration: "underline" }} href={`mailto:${EMAIL_CONFIG.SPAM_EMAIL}`}>
-        {EMAIL_CONFIG.SPAM_EMAIL}
-      </Link>
-      .
-    </Text>
-    <Text>Thank you.</Text>
-  </Section>
-);
-
 const EmailFooter = ({ children }: { children: React.ReactNode }) => (
   <Section style={styles.section.footer}>{children}</Section>
 );

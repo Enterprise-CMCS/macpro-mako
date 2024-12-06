@@ -4,7 +4,6 @@ import {
   PackageDetails,
   Attachments,
   BasicFooter,
-  SpamWarning,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
@@ -32,7 +31,6 @@ export const WaiverCMSEmail = (props: {
         }}
       />
       <Attachments attachments={variables.attachments} />
-      <SpamWarning />
     </BaseEmailTemplate>
   );
 };
