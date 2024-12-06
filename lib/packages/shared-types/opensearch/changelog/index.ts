@@ -32,6 +32,7 @@ import {
 // | z.infer<legacyAdminChange.Schema>
 
 export type Document =
+  | z.infer<appK.Schema>
   | z.infer<capitatedAmendment.Schema>
   | z.infer<capitatedInitial.Schema>
   | z.infer<capitatedRenewal.Schema>

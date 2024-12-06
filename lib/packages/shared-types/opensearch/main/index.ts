@@ -23,24 +23,24 @@ import {
 } from "./transforms";
 
 export type Document = (
-  | (z.infer<capitatedAmendment.Schema> &
-      z.infer<capitatedInitial.Schema> &
-      z.infer<capitatedRenewal.Schema> &
-      z.infer<contractingAmendment.Schema> &
-      z.infer<contractingInitial.Schema> &
-      z.infer<contractingRenewal.Schema> &
-      z.infer<newChipSubmission.Schema> &
-      z.infer<newMedicaidSubmission.Schema> &
-      z.infer<temporaryExtension.Schema> &
-      z.infer<legacyPackageView.Schema> &
-      z.infer<respondToRai.Schema> &
-      z.infer<withdrawRai.Schema> &
-      z.infer<withdrawPackage.Schema> &
-      z.infer<toggleWithdrawRai.Schema> &
-      z.infer<appK.Schema> &
-      z.infer<changedDate.Schema> &
-      z.infer<uploadSubsequentDocuments.Schema>)
+  | z.infer<appK.Schema>
+  | z.infer<capitatedAmendment.Schema>
+  | z.infer<capitatedInitial.Schema>
+  | z.infer<capitatedRenewal.Schema>
+  | z.infer<changedDate.Schema>
+  | z.infer<contractingAmendment.Schema>
+  | z.infer<contractingInitial.Schema>
+  | z.infer<contractingRenewal.Schema>
+  | z.infer<legacyPackageView.Schema>
+  | z.infer<newChipSubmission.Schema>
+  | z.infer<newMedicaidSubmission.Schema>
+  | z.infer<respondToRai.Schema>
   | z.infer<seatool.Schema>
+  | z.infer<temporaryExtension.Schema>
+  | z.infer<toggleWithdrawRai.Schema>
+  | z.infer<uploadSubsequentDocuments.Schema>
+  | z.infer<withdrawPackage.Schema>
+  | z.infer<withdrawRai.Schema>
 ) & {
   makoChangedDate: string;
   changelog?: Changelog[];
@@ -60,19 +60,19 @@ export type Aggs = AggQuery<Field>;
 export * from "./transforms";
 
 export const transforms = {
-  "new-chip-submission": newChipSubmission,
-  "new-medicaid-submission": newMedicaidSubmission,
-  "capitated-initial": capitatedInitial,
+  "app-k": appK,
   "capitated-amendment": capitatedAmendment,
+  "capitated-initial": capitatedInitial,
   "capitated-renewal": capitatedRenewal,
   "contracting-amendment": contractingAmendment,
   "contracting-initial": contractingInitial,
   "contracting-renewal": contractingRenewal,
+  "new-chip-submission": newChipSubmission,
+  "new-medicaid-submission": newMedicaidSubmission,
+  "respond-to-rai": respondToRai,
   "temporary-extension": temporaryExtension,
+  "toggle-withdraw-rai": toggleWithdrawRai,
+  "upload-subsequent-documents": uploadSubsequentDocuments,
   "withdraw-package": withdrawPackage,
   "withdraw-rai": withdrawRai,
-  "toggle-withdraw-rai": toggleWithdrawRai,
-  "respond-to-rai": respondToRai,
-  "app-k": appK,
-  "upload-subsequent-documents": uploadSubsequentDocuments,
 };
