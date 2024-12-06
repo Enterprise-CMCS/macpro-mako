@@ -208,7 +208,6 @@ const FollowUpNotice = ({
           </Link>
           {includeStateLead ? " or your state lead." : "."}
         </Text>
-        <Text>Thank you.</Text>
       </Section>
     ) : (
       <Section>
@@ -219,7 +218,6 @@ const FollowUpNotice = ({
           </Link>
           {includeStateLead ? " or your state lead." : "."}
         </Text>
-        <Text>Thank you.</Text>
       </Section>
     )}
   </>
