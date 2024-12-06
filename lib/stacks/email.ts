@@ -225,7 +225,7 @@ export class Email extends cdk.NestedStack {
     // Create separate event source mappings for each topic
     const topics = [
       `${topicNamespace}aws.onemac.migration.cdc`,
-      "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan"
+      "aws.ksqldb.seatool.agg.State_Plan",
     ];
 
     topics.forEach((topic, index) => {
