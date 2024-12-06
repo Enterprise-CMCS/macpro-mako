@@ -1,15 +1,27 @@
-## Purpose
+<!--
+TODO for PR Author:
+- Would your work benefit from unit tests?
+- Have you formatted your files using Prettier/ESLint?
+- Delete any irrelevant sections below before opening the pull request
+-->
 
-_Describe the problem or feature in addition to a link to the issues._
+## 🎫 Linked Ticket
 
-#### Linked Issues to Close
+<!-- Link to the JIRA ticket to track this work -->
 
-_Links to issue(s) that are closed by this PR. Be sure to use the phrase "Closes #XXX" for each issue, so they automatically close_
+[Ticket to close](link-to-ticket)
 
-## Approach
+## 💬 Description / Notes
 
-_How does this change address the issue?_
+<!-- Briefly describe the background of the issue -->
+<!-- If you feel the original ticket lacks important details, this would be the place to share them -->
 
-## Assorted Notes/Considerations/Learning
+## 🛠 Changes
 
-_List any other information that you think is important... a post-merge activity, someone to notify, what you learned, etc._
+<!-- List your code changes made to implement the solution -->
+
+## 📸 Screenshots / Demo
+
+<!-- ### Before -->
+
+<!-- ### After -->
