@@ -28,7 +28,7 @@ export const Waiver1915bCMSEmail = (props: {
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
       <PackageDetails
         details={{
-          "State or territory": variables.territory,
+          "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
           [`${variables.actionType} Number`]: variables.id,

@@ -19,7 +19,7 @@ export const ChipSpaCMSEmail = (props: {
     >
       <PackageDetails
         details={{
-          "State or territory": variables.territory,
+          "State or Territory": variables.territory,
           "CHIP SPA Package ID": variables.id,
           Summary: variables.additionalInformation,
         }}
