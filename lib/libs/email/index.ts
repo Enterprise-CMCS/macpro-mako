@@ -30,7 +30,7 @@ export type EmailTemplates = {
   "contracting-initial": AuthoritiesWithUserTypesTemplate;
   "contracting-renewal": AuthoritiesWithUserTypesTemplate;
   "contracting-waiver": AuthoritiesWithUserTypesTemplate;
-  "contracting-amendment": AuthoritiesWithUserTypesTemplate; 
+  "contracting-amendment": AuthoritiesWithUserTypesTemplate;
 
   "capitated-initial": AuthoritiesWithUserTypesTemplate;
   "capitated-renewal": AuthoritiesWithUserTypesTemplate;
@@ -70,9 +70,12 @@ const emailTemplates: EmailTemplates = {
 export function getEmailTemplate(
   action: keyof EmailTemplates,
 ): AuthoritiesWithUserTypesTemplate | UserTypeOnlyTemplate {
-  // Handle -state suffix variants
+  // Handle -state suffix variants and old key references
   console.log("Action:", action);
   const baseAction = action.replace(/-state$/, "") as keyof EmailTemplates;
+  if (baseAction === "temporary-extension") {
+    return emailTemplates["temporary-extension"];
+  }
   return emailTemplates[baseAction];
 }
 

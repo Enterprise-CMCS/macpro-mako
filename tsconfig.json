@@ -20,12 +20,7 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": false,
-    "noEmit": true,
-    "baseUrl": ".",
-    "rootDir": "./",
-    "paths": {
-      "*": ["./*"]
-    }
+    "noEmit": true
   },
   "exclude": ["node_modules", "cdk.out", ".cdk"],
   "include": ["lib/**/*", "react-app/**/*", "test/**/*"]

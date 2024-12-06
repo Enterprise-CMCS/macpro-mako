@@ -59,10 +59,10 @@ export const ActionFormAttachments = ({
           </>
         )}
         {attachmentInstructions.map((instruction, i) => (
-          <div key={i}>
+          <>
             {instruction}
             {i < attachmentInstructions.length - 1 && <br />}
-          </div>
+          </>
         ))}
       </div>
       <section className="space-y-8" data-testid="attachments-section">

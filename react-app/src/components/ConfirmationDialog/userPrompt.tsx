@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ConfirmationDialog } from "@/components/ConfirmationDialog";
+import { ConfirmationDialog } from "./ConfirmationDialog";
 import { Observer } from "@/utils/basic-observable";
 
 export type UserPrompt = {
@@ -31,9 +31,7 @@ export const userPrompt = (newUserPrompt: UserPrompt) => {
 };
 
 export const UserPrompt = () => {
-  const [activeUserPrompt, setActiveUserPrompt] = useState<UserPrompt | null>(
-    null,
-  );
+  const [activeUserPrompt, setActiveUserPrompt] = useState<UserPrompt | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {

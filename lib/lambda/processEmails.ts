@@ -321,3 +321,55 @@ const htmlToTextOptions = (baseUrl: string): HtmlToTextOptions => ({
     wrapCharacters: ["-", "/"],
   },
 });
+
+function getCpocEmail(item: CpocUser | undefined): string[] {
+  try {
+    if (!item) return [];
+    const source = (item as any)?._source || item;
+    const { firstName, lastName, email } = source; // Ensure these fields exist
+
+    if (!firstName || !lastName || !email) {
+      console.warn("Missing required CPOC user fields:", { firstName, lastName, email });
+      return [];
+    }
+
+    return [`${firstName} ${lastName} <${email}>`];
+  } catch (e) {
+    console.error("Error getting CPOC email", JSON.stringify(e, null, 2));
+    return [];
+  }
+}
+
+function getSrtEmails(item: Document | undefined): string[] {
+  try {
+    if (!item) {
+      console.warn("No item provided to getSrtEmails");
+      return [];
+    }
+
+    const source = (item as any)?._source || item;
+    const reviewTeam = source?.reviewTeam; // Ensure this is an array
+
+    if (!reviewTeam || !Array.isArray(reviewTeam)) {
+      console.warn("No valid review team found:", {
+        hasSource: Boolean(source),
+        reviewTeamType: typeof reviewTeam,
+        isArray: Array.isArray(reviewTeam),
+      });
+      return [];
+    }
+
+    return reviewTeam
+      .filter((reviewer: any) => {
+        if (!reviewer?.name || !reviewer?.email) {
+          console.warn("Invalid reviewer entry:", reviewer);
+          return false;
+        }
+        return true;
+      })
+      .map((reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`);
+  } catch (e) {
+    console.error("Error getting SRT emails:", e);
+    return [];
+  }
+}

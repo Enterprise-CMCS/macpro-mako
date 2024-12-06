@@ -40,7 +40,7 @@ const password = (
   )
 ).SecretString!;
 
-const stateSubmitterAuthFile = "../playwright/.auth/state-user.json";
+const stateSubmitterAuthFile = "playwright/.auth/state-user.json";
 
 /**
  * Rewrite without using a test. This throws off the report count
@@ -53,7 +53,7 @@ setup("authenticate state submitter", async ({ page, context }) => {
   await context.storageState({ path: stateSubmitterAuthFile });
 });
 
-const reviewerAuthFile = "../playwright/.auth/reviewer-user.json";
+const reviewerAuthFile = "playwright/.auth/reviewer-user.json";
 
 /**
  * Rewrite without using a test. This throws off the report count
