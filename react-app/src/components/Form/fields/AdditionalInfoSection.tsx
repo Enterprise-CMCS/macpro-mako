@@ -18,22 +18,14 @@ export const AdditionalInfoSection = ({
 }) => {
   const form = useFormContext();
   return (
-    <FormSectionCard
-      id="additional-info"
-      title="Additional Information"
-      required={required}
-    >
+    <FormSectionCard id="additional-info" title="Additional Information" required={required}>
       <FormField
         control={form.control}
         name={"additionalInformation"}
         render={({ field }) => (
           <FormItem>
             {instruction && (
-              <FormLabel
-                htmlFor={field.name}
-                data-testid="addl-info-label"
-                className="font-normal"
-              >
+              <FormLabel htmlFor={field.name} data-testid="addl-info-label" className="font-normal">
                 {instruction}
               </FormLabel>
             )}

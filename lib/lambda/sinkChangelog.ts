@@ -1,12 +1,7 @@
 import { Handler } from "aws-lambda";
 import { decodeBase64WithUtf8 } from "shared-utils";
 import { KafkaEvent, KafkaRecord, opensearch } from "shared-types";
-import {
-  ErrorType,
-  bulkUpdateDataWrapper,
-  getTopic,
-  logError,
-} from "../libs/sink-lib";
+import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "../libs/sink-lib";
 import { Index } from "shared-types/opensearch";
 const osDomain = process.env.osDomain;
 if (!osDomain) {
@@ -61,8 +56,7 @@ const processAndIndex = async ({
   transforms: any;
   topicPartition: string;
 }) => {
-  const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> =
-    [];
+  const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
     const { value, offset } = kafkaRecord;
@@ -86,8 +80,7 @@ const processAndIndex = async ({
       console.log(record.event);
 
       if (record.event in transforms) {
-        const transformForEvent =
-          transforms[record.event as keyof typeof transforms];
+        const transformForEvent = transforms[record.event as keyof typeof transforms];
 
         const result = transformForEvent.transform(offset).safeParse(record);
 

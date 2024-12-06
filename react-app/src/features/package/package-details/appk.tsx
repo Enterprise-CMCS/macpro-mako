@@ -73,10 +73,7 @@ export const AppK = () => {
                 </T.TableCell>
                 <T.TableCell>
                   <Button
-                    disabled={
-                      cache.data.seatoolStatus === SEATOOL_STATUS.WITHDRAWN ||
-                      user?.isCms
-                    }
+                    disabled={cache.data.seatoolStatus === SEATOOL_STATUS.WITHDRAWN || user?.isCms}
                     size="sm"
                     className="flex gap-1"
                     onClick={() => setRemoveChild(CHILD._id)}
@@ -98,12 +95,7 @@ export const AppK = () => {
         acceptButtonText="Yes, withdraw"
         cancelButtonText="Cancel"
         title="Are you sure you want to withdraw this 1915(c) Appendix K?"
-        body={
-          <p>
-            Any 1915(c) Appendix Ks associated with {removeChild} will not be
-            affected.
-          </p>
-        }
+        body={<p>Any 1915(c) Appendix Ks associated with {removeChild} will not be affected.</p>}
       />
     </div>
   );

@@ -16,21 +16,14 @@ export const RHFSection = <TFieldValues extends FieldValues>(props: {
           <div
             className={
               "py-3 px-8 w-full " +
-              (props.section.subsection
-                ? "bg-gray-300 text-2xl"
-                : "bg-primary text-white text-3xl")
+              (props.section.subsection ? "bg-gray-300 text-2xl" : "bg-primary text-white text-3xl")
             }
           >
             <FormLabel className="font-bold">{props.section.title}</FormLabel>
           </div>
         )}
         {props.section.form?.length > 0 && (
-          <div
-            className={cn(
-              props.section.sectionWrapperClassname,
-              "px-8 py-6 space-y-6",
-            )}
-          >
+          <div className={cn(props.section.sectionWrapperClassname, "px-8 py-6 space-y-6")}>
             {props.section.form.map((FORM, index) => (
               <RHFFormGroup
                 key={`rhf-form-${index}-${FORM.description}`}

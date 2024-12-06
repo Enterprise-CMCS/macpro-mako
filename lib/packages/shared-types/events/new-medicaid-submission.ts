@@ -1,19 +1,9 @@
 import { z } from "zod";
-import {
-  attachmentArraySchema,
-  attachmentArraySchemaOptional,
-} from "../attachments";
+import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
 
 export const baseSchema = z.object({
-  event: z
-    .literal("new-medicaid-submission")
-    .default("new-medicaid-submission"),
-  additionalInformation: z
-    .string()
-    .max(4000)
-    .nullable()
-    .default(null)
-    .optional(),
+  event: z.literal("new-medicaid-submission").default("new-medicaid-submission"),
+  additionalInformation: z.string().max(4000).nullable().default(null).optional(),
   attachments: z.object({
     cmsForm179: z.object({
       files: attachmentArraySchema({
@@ -32,9 +22,7 @@ export const baseSchema = z.object({
     }),
     tribalEngagement: z.object({
       files: attachmentArraySchemaOptional(),
-      label: z
-        .string()
-        .default("Document Demonstrating Good-Faith Tribal Engagement"),
+      label: z.string().default("Document Demonstrating Good-Faith Tribal Engagement"),
     }),
     existingStatePlanPages: z.object({
       files: attachmentArraySchemaOptional(),

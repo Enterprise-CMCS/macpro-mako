@@ -1,13 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
-import {
-  beforeEach,
-  describe,
-  test,
-  vi,
-  expect,
-  beforeAll,
-  afterAll,
-} from "vitest";
+import { beforeEach, describe, test, vi, expect, beforeAll, afterAll } from "vitest";
 import { useCountdown } from ".";
 
 import { cleanup } from "@testing-library/react";

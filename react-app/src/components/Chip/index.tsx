@@ -18,7 +18,7 @@ const chipVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 export interface ChipProps extends VariantProps<typeof chipVariants> {
@@ -37,10 +37,7 @@ const Chip = ({
   const noIcon = variant === "noIcon" || variant === "destructive";
   return (
     <div
-      className={cn(
-        chipVariants({ variant, className }),
-        "h-8 py-2 cursor-pointer"
-      )}
+      className={cn(chipVariants({ variant, className }), "h-8 py-2 cursor-pointer")}
       {...props}
       onClick={onChipClick}
     >

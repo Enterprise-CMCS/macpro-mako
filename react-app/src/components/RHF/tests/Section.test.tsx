@@ -66,13 +66,9 @@ describe("Section Tests", () => {
     const subsectionHeader = rend.getByText("Subsection");
 
     expect(sectionHeader.parentElement).toBeTruthy();
-    expect(
-      sectionHeader.parentElement?.className.includes("bg-primary"),
-    ).toBeTruthy();
+    expect(sectionHeader.parentElement?.className.includes("bg-primary")).toBeTruthy();
     expect(subsectionHeader.parentElement).toBeTruthy();
-    expect(
-      subsectionHeader.parentElement?.className.includes("bg-primary"),
-    ).toBeFalsy();
+    expect(subsectionHeader.parentElement?.className.includes("bg-primary")).toBeFalsy();
   });
 });
 

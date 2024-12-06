@@ -39,10 +39,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) => {
         >
           <EllipsisVerticalIcon
             aria-label="record actions"
-            className={cn(
-              "w-8 ",
-              actions.length ? "text-blue-700" : "text-gray-400",
-            )}
+            className={cn("w-8 ", actions.length ? "text-blue-700" : "text-gray-400")}
           />
         </POP.PopoverTrigger>
         <POP.PopoverContent>

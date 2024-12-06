@@ -66,9 +66,7 @@ export class EmptyBuckets extends Construct {
     const lambdaRole = new Role(this, "LambdaRole", {
       assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
       managedPolicies: [
-        ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaBasicExecutionRole",
-        ),
+        ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole"),
       ],
       inlinePolicies: {
         LambdaPolicy: new PolicyDocument({

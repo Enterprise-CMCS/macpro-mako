@@ -4,7 +4,7 @@ export const getAttachmentUrl = async (
   id: string,
   bucket: string,
   key: string,
-  filename: string
+  filename: string,
 ) => {
   const response = await API.post("os", "/getAttachmentUrl", {
     body: {

@@ -8,14 +8,8 @@ import { banner, Banner } from ".";
 const wrapper = ({ children }: { children: ReactNode }) => (
   <MemoryRouter initialEntries={["/dashboard"]}>
     <Routes>
-      <Route
-        path="/dashboard"
-        element={<Link to="/example" id="dashboard-link" />}
-      />
-      <Route
-        path="/example"
-        element={<Link to="/dashboard" id="example-link" />}
-      />
+      <Route path="/dashboard" element={<Link to="/example" id="dashboard-link" />} />
+      <Route path="/example" element={<Link to="/dashboard" id="example-link" />} />
     </Routes>
     {children}
   </MemoryRouter>

@@ -4,8 +4,7 @@ import { noLeadingTrailingWhitespace } from "shared-utils";
 export const v202401: FormSchema = {
   header:
     "CS 11: Separate CHIP eligibility—Pregnant women who have access to public employee coverage",
-  subheader:
-    "Sections 2110(b)(2)(B) and (b)(6) of the Social Security Act (SSA)",
+  subheader: "Sections 2110(b)(2)(B) and (b)(6) of the Social Security Act (SSA)",
   formId: "cs11",
   sections: [
     {
@@ -103,8 +102,7 @@ export const v202401: FormSchema = {
                     ],
                   },
                   {
-                    label:
-                      "Hardship criteria as provided in Section 2110(b)(6)(C)",
+                    label: "Hardship criteria as provided in Section 2110(b)(6)(C)",
                     value: "hardship-criteria",
                     slots: [
                       {
@@ -167,8 +165,7 @@ export const v202401: FormSchema = {
                     value: "same",
                   },
                   {
-                    label:
-                      "Lower than the income standards for targeted low-income pregnant women",
+                    label: "Lower than the income standards for targeted low-income pregnant women",
                     value: "lower",
                   },
                 ],
@@ -307,8 +304,7 @@ export const v202401: FormSchema = {
               props: {
                 className: "w-[696px]",
               },
-              formItemClassName:
-                "ml-[0.6rem] px-4 border-l-4 border-l-primary mb-4",
+              formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary mb-4",
               dependency: {
                 conditions: [
                   {
@@ -364,8 +360,7 @@ export const v202401: FormSchema = {
                                   required: "* Required",
                                   pattern: {
                                     value: noLeadingTrailingWhitespace,
-                                    message:
-                                      "Must not have leading or trailing whitespace.",
+                                    message: "Must not have leading or trailing whitespace.",
                                   },
                                 },
                                 label: "County",
@@ -450,8 +445,7 @@ export const v202401: FormSchema = {
                                   required: "* Required",
                                   pattern: {
                                     value: noLeadingTrailingWhitespace,
-                                    message:
-                                      "Must not have leading or trailing whitespace.",
+                                    message: "Must not have leading or trailing whitespace.",
                                   },
                                 },
                                 label: "City",
@@ -544,8 +538,7 @@ export const v202401: FormSchema = {
                                       required: "* Required",
                                       pattern: {
                                         value: noLeadingTrailingWhitespace,
-                                        message:
-                                          "Must not have leading or trailing whitespace.",
+                                        message: "Must not have leading or trailing whitespace.",
                                       },
                                     },
                                     label: "Geographic Area",
@@ -561,8 +554,7 @@ export const v202401: FormSchema = {
                                       required: "* Required",
                                       pattern: {
                                         value: noLeadingTrailingWhitespace,
-                                        message:
-                                          "Must not have leading or trailing whitespace.",
+                                        message: "Must not have leading or trailing whitespace.",
                                       },
                                     },
                                     label: "Describe",
@@ -584,8 +576,7 @@ export const v202401: FormSchema = {
                                         rules: {
                                           pattern: {
                                             value: /^[0-9]\d*$/,
-                                            message:
-                                              "Must be a positive integer value",
+                                            message: "Must be a positive integer value",
                                           },
                                           required: "* Required",
                                         },
@@ -603,8 +594,7 @@ export const v202401: FormSchema = {
                                         rules: {
                                           pattern: {
                                             value: /^[0-9]\d*$/,
-                                            message:
-                                              "Must be a positive integer value",
+                                            message: "Must be a positive integer value",
                                           },
                                           required: "* Required",
                                         },
@@ -651,13 +641,11 @@ export const v202401: FormSchema = {
               props: {
                 options: [
                   {
-                    label:
-                      "All pregnant women who have access to public employee coverage",
+                    label: "All pregnant women who have access to public employee coverage",
                     value: "all-pregnant-women",
                   },
                   {
-                    label:
-                      "Certain pregnant women who have access to public employee coverage",
+                    label: "Certain pregnant women who have access to public employee coverage",
                     value: "certain-pregnant-women",
                     slots: [
                       {
@@ -689,8 +677,7 @@ export const v202401: FormSchema = {
                                         required: "* Required",
                                         pattern: {
                                           value: noLeadingTrailingWhitespace,
-                                          message:
-                                            "Must not have leading or trailing whitespace.",
+                                          message: "Must not have leading or trailing whitespace.",
                                         },
                                       },
                                     },
@@ -719,8 +706,7 @@ export const v202401: FormSchema = {
                                       rules: {
                                         pattern: {
                                           value: noLeadingTrailingWhitespace,
-                                          message:
-                                            "Must not have leading or trailing whitespace.",
+                                          message: "Must not have leading or trailing whitespace.",
                                         },
                                         required: "* Required",
                                       },
@@ -759,8 +745,7 @@ export const v202401: FormSchema = {
               props: {
                 options: [
                   {
-                    label:
-                      "Same as the age criteria used for targeted low-income pregnant women",
+                    label: "Same as the age criteria used for targeted low-income pregnant women",
                     value: "same-as-targeted",
                   },
                   {
@@ -791,8 +776,7 @@ export const v202401: FormSchema = {
                                     required: "* Required",
                                     pattern: {
                                       value: /^(2[0-9]|[3-9]\d|\d{3,})$/,
-                                      message:
-                                        "Must be a positive integer value greater than 19",
+                                      message: "Must be a positive integer value greater than 19",
                                     },
                                   },
                                   props: {
@@ -814,8 +798,7 @@ export const v202401: FormSchema = {
                                   rules: {
                                     pattern: {
                                       value: noLeadingTrailingWhitespace,
-                                      message:
-                                        "Must not have leading or trailing whitespace.",
+                                      message: "Must not have leading or trailing whitespace.",
                                     },
                                     required: "* Required",
                                   },
@@ -843,14 +826,12 @@ export const v202401: FormSchema = {
                                           rules: {
                                             pattern: {
                                               value: /^[0-9]\d*$/,
-                                              message:
-                                                "Must be a positive integer value",
+                                              message: "Must be a positive integer value",
                                             },
                                             required: "* Required",
                                           },
                                           label: "Start of age range",
-                                          labelClassName:
-                                            "font-bold text-black",
+                                          labelClassName: "font-bold text-black",
                                           props: {
                                             className: "w-[125px]",
                                           },
@@ -861,8 +842,7 @@ export const v202401: FormSchema = {
                                           rules: {
                                             pattern: {
                                               value: /^[0-9]\d*$/,
-                                              message:
-                                                "Must be a positive integer value",
+                                              message: "Must be a positive integer value",
                                             },
                                             required: "* Required",
                                           },
@@ -870,15 +850,12 @@ export const v202401: FormSchema = {
                                             {
                                               type: "greaterThanField",
                                               strictGreater: true,
-                                              fieldName:
-                                                "cs11_age-standard_start-age-range",
-                                              message:
-                                                "Must be greater than start of age range",
+                                              fieldName: "cs11_age-standard_start-age-range",
+                                              message: "Must be greater than start of age range",
                                             },
                                           ],
                                           label: "End of age range",
-                                          labelClassName:
-                                            "font-bold text-black",
+                                          labelClassName: "font-bold text-black",
                                           props: {
                                             className: "w-[125px]",
                                           },
@@ -889,8 +866,7 @@ export const v202401: FormSchema = {
                                       rhf: "Select",
                                       label:
                                         "Does the age range for targeted low-income pregnant women overlap with the age range for targeted low-income children?",
-                                      labelClassName:
-                                        "font-bold text-black mt-4",
+                                      labelClassName: "font-bold text-black mt-4",
                                       name: "age-range-overlap",
                                       rules: {
                                         required: "* Required",
@@ -920,8 +896,7 @@ export const v202401: FormSchema = {
                                       rules: {
                                         pattern: {
                                           value: noLeadingTrailingWhitespace,
-                                          message:
-                                            "Must not have leading or trailing whitespace.",
+                                          message: "Must not have leading or trailing whitespace.",
                                         },
                                         required: "* Required",
                                       },

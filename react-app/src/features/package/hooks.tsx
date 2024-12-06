@@ -7,9 +7,7 @@ export type DetailsSidebarLink = {
   displayName: string;
 };
 
-export const useDetailsSidebarLinks = (
-  dataId: string,
-): DetailsSidebarLink[] => {
+export const useDetailsSidebarLinks = (dataId: string): DetailsSidebarLink[] => {
   const { data } = useGetItem(dataId);
   const [sideBarLinks, setSideBarLinks] = useState<DetailsSidebarLink[]>([]);
 

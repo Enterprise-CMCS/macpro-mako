@@ -44,13 +44,7 @@ describe("CloudFormation Custom Resource Handler", () => {
       mockEvent.ResourceProperties.OsRoleName,
       mockEvent.ResourceProperties.IamRoleName,
     );
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(send).toHaveBeenCalledWith(mockEvent, mockContext, SUCCESS, {}, "static");
   });
 
   it("should call os.mapRole on Update request type", async () => {
@@ -69,13 +63,7 @@ describe("CloudFormation Custom Resource Handler", () => {
       mockEvent.ResourceProperties.OsRoleName,
       mockEvent.ResourceProperties.IamRoleName,
     );
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(send).toHaveBeenCalledWith(mockEvent, mockContext, SUCCESS, {}, "static");
   });
 
   it("should do nothing on Delete request type", async () => {
@@ -87,13 +75,7 @@ describe("CloudFormation Custom Resource Handler", () => {
     await handler(mockEvent, mockContext);
 
     expect(os.mapRole).not.toHaveBeenCalled();
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(send).toHaveBeenCalledWith(mockEvent, mockContext, SUCCESS, {}, "static");
   });
 
   it("should send FAILED status on error", async () => {
@@ -106,12 +88,6 @@ describe("CloudFormation Custom Resource Handler", () => {
 
     await handler(mockEvent, mockContext);
 
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      FAILED,
-      {},
-      "static",
-    );
+    expect(send).toHaveBeenCalledWith(mockEvent, mockContext, FAILED, {}, "static");
   });
 });

@@ -19,11 +19,7 @@ export function getProducer() {
   return kafka.producer();
 }
 
-export async function produceMessage(
-  topic: string,
-  key: string,
-  value: string,
-) {
+export async function produceMessage(topic: string, key: string, value: string) {
   producer = producer || getProducer();
   await producer.connect();
 
@@ -35,11 +31,7 @@ export async function produceMessage(
   };
   console.log(
     "About to send the following message to kafka\n" +
-      JSON.stringify(
-        { ...message, value: JSON.parse(message.value as string) },
-        null,
-        2,
-      ),
+      JSON.stringify({ ...message, value: JSON.parse(message.value as string) }, null, 2),
   );
   try {
     await producer.send({

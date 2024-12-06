@@ -31,22 +31,15 @@ describe("CloudWatchToS3", () => {
   });
 
   it("should create IAM roles with appropriate policies", () => {
-    const firehoseRole = cloudWatchToS3.node.findChild(
-      "FirehoseRole",
-    ) as iam.Role;
+    const firehoseRole = cloudWatchToS3.node.findChild("FirehoseRole") as iam.Role;
     expect(firehoseRole).toBeInstanceOf(iam.Role);
 
-    const policyDocument =
-      firehoseRole.assumeRolePolicy?.toJSON() as iam.PolicyDocumentProps;
-    const statement = policyDocument.Statement.find(
-      (s) => s.Principal && s.Principal.Service,
-    );
+    const policyDocument = firehoseRole.assumeRolePolicy?.toJSON() as iam.PolicyDocumentProps;
+    const statement = policyDocument.Statement.find((s) => s.Principal && s.Principal.Service);
     expect(statement).toBeDefined();
     expect(statement.Principal.Service).toContain("firehose.amazonaws.com");
 
-    const policy = firehoseRole.node.tryFindChild(
-      "DefaultPolicy",
-    ) as iam.Policy;
+    const policy = firehoseRole.node.tryFindChild("DefaultPolicy") as iam.Policy;
     const statements = policy.document.statements;
     expect(statements).toEqual(
       expect.arrayContaining([

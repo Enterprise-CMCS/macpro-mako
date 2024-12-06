@@ -67,8 +67,7 @@ export const TimeoutModal = () => {
         <div className="py-4">
           <span>
             Your session will expire in <strong>{duration.minutes}</strong>{" "}
-            {pluralize("minute", duration.minutes)} and{" "}
-            <strong>{duration.seconds}</strong>{" "}
+            {pluralize("minute", duration.minutes)} and <strong>{duration.seconds}</strong>{" "}
             {pluralize("second", duration.seconds)}.
           </span>
         </div>

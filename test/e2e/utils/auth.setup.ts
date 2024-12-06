@@ -2,10 +2,7 @@ import { test as setup } from "@playwright/test";
 import { testUsers } from "./users";
 import { LoginPage } from "../pages";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
-import {
-  SecretsManagerClient,
-  GetSecretValueCommand,
-} from "@aws-sdk/client-secrets-manager";
+import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
 
 const stage = process.env.STAGE_NAME || "main";
 const deploymentConfig = JSON.parse(

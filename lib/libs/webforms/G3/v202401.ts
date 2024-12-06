@@ -149,8 +149,7 @@ export const v202401: FormSchema = {
       subsection: true,
       form: [
         {
-          description:
-            "The state may choose to exempt certain groups from cost sharing.",
+          description: "The state may choose to exempt certain groups from cost sharing.",
           descriptionClassName: "text-base",
           slots: [
             {
@@ -203,8 +202,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -348,8 +346,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -378,8 +375,7 @@ export const v202401: FormSchema = {
               name: "identify-exempt-from-cost-share",
               labelClassName: "font-bold text-black",
               formItemClassName: "border-slate-300 border-t-2 mt-2",
-              label:
-                "To identify all other individuals exempt from cost sharing, the state uses:",
+              label: "To identify all other individuals exempt from cost sharing, the state uses:",
               rules: {
                 required: "* Required",
               },
@@ -391,13 +387,11 @@ export const v202401: FormSchema = {
                   },
                   {
                     value: "eligibility_and_enroll_sys",
-                    label:
-                      "The Eligibility and Enrollment system to flag exempt recipients",
+                    label: "The Eligibility and Enrollment system to flag exempt recipients",
                   },
                   {
                     value: "medicaid_card_to_indicate",
-                    label:
-                      "The Medicaid card to indicate if a beneficiary is exempt",
+                    label: "The Medicaid card to indicate if a beneficiary is exempt",
                   },
                   {
                     value: "use_eligi_verif_system",
@@ -419,8 +413,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -543,8 +536,7 @@ export const v202401: FormSchema = {
                 required: "* Required",
                 pattern: {
                   value: /^(?:[0-4](?:\.[0-9])?|5(?:\.0)?|\.[0-9])$/,
-                  message:
-                    "Must be between 0% and 5% with max one decimal place",
+                  message: "Must be between 0% and 5% with max one decimal place",
                 },
               },
               props: {
@@ -594,11 +586,9 @@ export const v202401: FormSchema = {
             {
               rhf: "Checkbox",
               name: "how-does-state-track-incurred-prems-and-cost",
-              label:
-                "How does the state track each family’s incurred premiums and cost sharing?",
+              label: "How does the state track each family’s incurred premiums and cost sharing?",
               labelClassName: "font-bold text-black",
-              formItemClassName:
-                "ml-[0.6rem] px-4 mt-2 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 mt-2 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
@@ -634,8 +624,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -658,8 +647,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -675,8 +663,7 @@ export const v202401: FormSchema = {
               label:
                 "How does the state inform beneficiaries and providers of the beneficiaries' aggregate family limit? How does the state notify beneficiaries and providers when a beneficiary has incurred premiums and cost sharing up to the aggregate family limit and that individual family members are no longer subject to premiums or cost sharing for the remainder of the family's current monthly or quarterly cap period?",
               labelClassName: "font-bold text-black",
-              formItemClassName:
-                "ml-[0.6rem] px-4 mb-2 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 mb-2 border-l-4 border-l-primary",
               name: "how-state-bene-agg-fam-limit",
               dependency: {
                 conditions: [
@@ -703,8 +690,7 @@ export const v202401: FormSchema = {
               label:
                 "Explain how the state's premium and cost sharing rules do not place beneficiaries at risk of reaching the aggregate family limit.",
               labelClassName: "font-bold text-black",
-              formItemClassName:
-                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               name: "explain-state-prem-cost-share-dont-place-risk",
               dependency: {
                 conditions: [
@@ -745,8 +731,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               label: "Describe",
               labelClassName: "font-bold text-black",
-              formItemClassName:
-                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
@@ -817,8 +802,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               label: "Describe",
               labelClassName: "font-bold text-black",
-              formItemClassName:
-                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {

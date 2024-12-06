@@ -1,8 +1,5 @@
 import { Argv } from "yargs";
-import {
-  CostExplorerClient,
-  GetCostAndUsageCommand,
-} from "@aws-sdk/client-cost-explorer";
+import { CostExplorerClient, GetCostAndUsageCommand } from "@aws-sdk/client-cost-explorer";
 import { checkIfAuthenticated, setStageFromBranch, project } from "../lib";
 
 export const getCost = {
@@ -34,21 +31,14 @@ export const getCost = {
 
     const dailyCosts = await getDailyStackCosts(tags, start, end);
     const yesterdayCost = dailyCosts[dailyCosts.length - 1].cost;
-    const averageDailyCost =
-      dailyCosts.reduce((acc, day) => acc + day.cost, 0) / dailyCosts.length;
+    const averageDailyCost = dailyCosts.reduce((acc, day) => acc + day.cost, 0) / dailyCosts.length;
 
     console.log(`Daily costs for the last 14 days:`);
     dailyCosts.forEach((day) => {
       console.log(`${day.date}: $${day.cost.toFixed(2)}`);
     });
-    console.log(
-      `Average daily cost over the past 14 days: $${averageDailyCost.toFixed(
-        2,
-      )}`,
-    );
-    console.log(
-      `Yesterday, the stack ${stage} cost $${yesterdayCost.toFixed(2)}.`,
-    );
+    console.log(`Average daily cost over the past 14 days: $${averageDailyCost.toFixed(2)}`);
+    console.log(`Yesterday, the stack ${stage} cost $${yesterdayCost.toFixed(2)}.`);
   },
 };
 
@@ -90,9 +80,7 @@ export async function getDailyStackCosts(
 
     return results.map((result) => ({
       date: result.TimePeriod?.Start || "",
-      cost: result.Total?.BlendedCost?.Amount
-        ? parseFloat(result.Total.BlendedCost.Amount)
-        : 0,
+      cost: result.Total?.BlendedCost?.Amount ? parseFloat(result.Total.BlendedCost.Amount) : 0,
     }));
   } catch (error) {
     throw new Error(`Failed to fetch cost: ${error}`);

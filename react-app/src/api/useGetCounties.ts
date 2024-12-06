@@ -24,26 +24,18 @@ const usePopulationData = (stateString: string) => {
 export const useGetCounties = (): { label: string; value: string }[] => {
   const { data: userData } = useGetUser();
 
-  const stateCodes = useMemo(
-    () => getUserStateCodes(userData?.user),
-    [userData],
-  );
+  const stateCodes = useMemo(() => getUserStateCodes(userData?.user), [userData]);
 
   const stateNumericCodesString = useMemo(
     () =>
       stateCodes
-        .map(
-          (code) =>
-            FULL_CENSUS_STATES.find((state) => state.value === code)?.code,
-        )
+        .map((code) => FULL_CENSUS_STATES.find((state) => state.value === code)?.code)
         .filter((code): code is string => code !== undefined && code !== "00")
         .join(","),
     [stateCodes],
   );
 
-  const { data: populationData = [] } = usePopulationData(
-    stateNumericCodesString,
-  );
+  const { data: populationData = [] } = usePopulationData(stateNumericCodesString);
 
   return (
     populationData.map((county) => {

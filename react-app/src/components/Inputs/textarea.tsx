@@ -17,14 +17,9 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         />
         {props.charCount && (
           <p
-            className={cn(
-              "text-right text-gray-500 pr-2 text-sm",
-              props.charCountClassName,
-            )}
+            className={cn("text-right text-gray-500 pr-2 text-sm", props.charCountClassName)}
           >{`${strLn}${
-            props.maxLength && props.charCount === "limited"
-              ? `/${props.maxLength}`
-              : ""
+            props.maxLength && props.charCount === "limited" ? `/${props.maxLength}` : ""
           }`}</p>
         )}
       </>

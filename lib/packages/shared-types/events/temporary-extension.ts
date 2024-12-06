@@ -1,8 +1,5 @@
 import { z } from "zod";
-import {
-  attachmentArraySchema,
-  attachmentArraySchemaOptional,
-} from "../attachments";
+import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
 
 export const baseSchema = z.object({
   event: z.literal("temporary-extension").default("temporary-extension"),
@@ -21,12 +18,7 @@ export const baseSchema = z.object({
         "The Approved Initial or Renewal Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00.",
     }),
   authority: z.string(), // z.enum?
-  additionalInformation: z
-    .string()
-    .max(4000)
-    .nullable()
-    .default(null)
-    .optional(),
+  additionalInformation: z.string().max(4000).nullable().default(null).optional(),
   attachments: z.object({
     waiverExtensionRequest: z.object({
       label: z.string().default("Waiver Extension Request"),

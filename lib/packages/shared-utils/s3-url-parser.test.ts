@@ -12,9 +12,7 @@ describe("s3ParseUrl", () => {
   });
 
   it("parses URL with format http://s3-aws-region.amazonaws.com/bucket/key1/key2", () => {
-    const result = s3ParseUrl(
-      "http://s3-us-west-2.amazonaws.com/bucket/key1/key2",
-    );
+    const result = s3ParseUrl("http://s3-us-west-2.amazonaws.com/bucket/key1/key2");
     expect(result).toEqual({
       bucket: "bucket",
       key: "key1/key2",
@@ -32,9 +30,7 @@ describe("s3ParseUrl", () => {
   });
 
   it("parses URL with format http://bucket.s3-aws-region.amazonaws.com/key1/key2", () => {
-    const result = s3ParseUrl(
-      "http://bucket.s3-us-west-2.amazonaws.com/key1/key2",
-    );
+    const result = s3ParseUrl("http://bucket.s3-us-west-2.amazonaws.com/key1/key2");
     expect(result).toEqual({
       bucket: "bucket",
       key: "key1/key2",
@@ -43,9 +39,7 @@ describe("s3ParseUrl", () => {
   });
 
   it("parses URL with format http://bucket.s3.aws-region.amazonaws.com/key1/key2", () => {
-    const result = s3ParseUrl(
-      "http://bucket.s3.us-west-2.amazonaws.com/key1/key2",
-    );
+    const result = s3ParseUrl("http://bucket.s3.us-west-2.amazonaws.com/key1/key2");
     expect(result).toEqual({
       bucket: "bucket",
       key: "key1/key2",

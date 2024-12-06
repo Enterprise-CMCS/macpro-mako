@@ -1,5 +1,5 @@
-import { describe, it, expect} from "vitest";
-import { convertStateAbbrToFullName } from "./stateNames"; 
+import { describe, it, expect } from "vitest";
+import { convertStateAbbrToFullName } from "./stateNames";
 
 describe("convertStateAbbrToFullName", () => {
   it("should return the full state name for a valid abbreviation", () => {

@@ -1,8 +1,6 @@
 import { Authority } from "shared-types/authority";
 
-export function removeUnderscoresAndCapitalize(
-  str: Authority | string,
-): string {
+export function removeUnderscoresAndCapitalize(str: Authority | string): string {
   // Replace underscores with spaces
   const withoutUnderscores = str.replace(/_/g, " ");
 

@@ -8,9 +8,7 @@ type CountdownControllers = {
   resetCountdown: () => void;
 };
 
-export const useCountdown = (
-  minutesToCountDown: number,
-): [number, CountdownControllers] => {
+export const useCountdown = (minutesToCountDown: number): [number, CountdownControllers] => {
   const [count, setCount] = useState<number>(minutesToCountDown);
   const [isCountdownRunning, setIsCountdownRunning] = useState<boolean>(false);
 

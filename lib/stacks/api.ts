@@ -4,11 +4,7 @@ import { Construct } from "constructs";
 import { join } from "path";
 import { DeploymentConfigProperties } from "../config/deployment-config";
 import * as LC from "local-constructs";
-import {
-  BlockPublicAccess,
-  Bucket,
-  BucketEncryption,
-} from "aws-cdk-lib/aws-s3";
+import { BlockPublicAccess, Bucket, BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { AnyPrincipal, Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { commonBundlingOptions } from "../config/bundling-config";
 
@@ -73,9 +69,7 @@ export class Api extends cdk.NestedStack {
         cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
           "service-role/AWSLambdaVPCAccessExecutionRole",
         ),
-        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "CloudWatchLogsFullAccess",
-        ),
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsFullAccess"),
       ],
       inlinePolicies: {
         LambdaPolicy: new cdk.aws_iam.PolicyDocument({
@@ -114,10 +108,7 @@ export class Api extends cdk.NestedStack {
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
-              actions: [
-                "secretsmanager:DescribeSecret",
-                "secretsmanager:GetSecretValue",
-              ],
+              actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
               resources: [
                 `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${dbInfoSecretName}-*`,
               ],
@@ -283,18 +274,21 @@ export class Api extends cdk.NestedStack {
       },
     ];
 
-    const lambdas = lambdaDefinitions.reduce((acc, lambdaDef) => {
-      acc[lambdaDef.id] = createNodeJsLambda(
-        lambdaDef.id,
-        lambdaDef.entry,
-        lambdaDef.environment,
-        vpc,
-        lambdaSecurityGroup,
-        privateSubnets,
-        !props.isDev ? lambdaDef.provisionedConcurrency : 0,
-      );
-      return acc;
-    }, {} as { [key: string]: NodejsFunction });
+    const lambdas = lambdaDefinitions.reduce(
+      (acc, lambdaDef) => {
+        acc[lambdaDef.id] = createNodeJsLambda(
+          lambdaDef.id,
+          lambdaDef.entry,
+          lambdaDef.environment,
+          vpc,
+          lambdaSecurityGroup,
+          privateSubnets,
+          !props.isDev ? lambdaDef.provisionedConcurrency : 0,
+        );
+        return acc;
+      },
+      {} as { [key: string]: NodejsFunction },
+    );
 
     // Create IAM role for API Gateway to invoke Lambda functions
     const apiGatewayRole = new cdk.aws_iam.Role(this, "ApiGatewayRole", {
@@ -445,13 +439,10 @@ export class Api extends cdk.NestedStack {
       const resource = api.root.resourceForPath(path);
 
       // Define the integration for the Lambda function
-      const integration = new cdk.aws_apigateway.LambdaIntegration(
-        lambdaFunction,
-        {
-          proxy: true,
-          credentialsRole: apiGatewayRole,
-        },
-      );
+      const integration = new cdk.aws_apigateway.LambdaIntegration(lambdaFunction, {
+        proxy: true,
+        credentialsRole: apiGatewayRole,
+      });
 
       // Add method for specified HTTP method
       resource.addMethod(method, integration, {
@@ -475,10 +466,7 @@ export class Api extends cdk.NestedStack {
     });
 
     // Define CloudWatch Alarms
-    const createCloudWatchAlarm = (
-      id: string,
-      lambdaFunction: cdk.aws_lambda.Function,
-    ) => {
+    const createCloudWatchAlarm = (id: string, lambdaFunction: cdk.aws_lambda.Function) => {
       const alarm = new cdk.aws_cloudwatch.Alarm(this, id, {
         alarmName: `${project}-${stage}-${id}Alarm`,
         metric: new cdk.aws_cloudwatch.Metric({
@@ -493,8 +481,7 @@ export class Api extends cdk.NestedStack {
         threshold: 1,
         evaluationPeriods: 1,
         comparisonOperator:
-          cdk.aws_cloudwatch.ComparisonOperator
-            .GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
+          cdk.aws_cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
         treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
       });
 

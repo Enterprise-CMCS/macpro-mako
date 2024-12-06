@@ -30,14 +30,10 @@ export const getAvailableActions = (
   const allRaiRequestedDates = allMembers.map((member) => {
     return member.raiRequestedDate;
   });
-  const isRaiRequestedDateIdentical = allRaiRequestedDates.every(
-    (date, _, arr) => date === arr[0],
-  );
+  const isRaiRequestedDateIdentical = allRaiRequestedDates.every((date, _, arr) => date === arr[0]);
   if (!isRaiRequestedDateIdentical) {
     const actionsToRemove = [Action.RESPOND_TO_RAI, Action.WITHDRAW_RAI];
-    commonActions = commonActions.filter(
-      (action: any) => !actionsToRemove.includes(action),
-    );
+    commonActions = commonActions.filter((action: any) => !actionsToRemove.includes(action));
   }
   return commonActions;
 };

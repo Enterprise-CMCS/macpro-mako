@@ -122,8 +122,7 @@ const abp_forms: Guide[] = [
   },
   {
     title: "Alternative Benefit Plan State Training Webinar",
-    linkTitle:
-      "Alternative Benefit Plan State Training Webinar (2013-08-13 .wmv)",
+    linkTitle: "Alternative Benefit Plan State Training Webinar (2013-08-13 .wmv)",
     href: "https://www.medicaid.gov/media/162926",
     targetBlank: true,
   },

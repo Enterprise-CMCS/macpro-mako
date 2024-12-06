@@ -1,17 +1,11 @@
-import {
-  RHFOption,
-  RHFSlotProps,
-  FormGroup,
-  FormSchema,
-} from "shared-types/forms";
+import { RHFOption, RHFSlotProps, FormGroup, FormSchema } from "shared-types/forms";
 
 type GL = Record<string, unknown>;
 
-export const formGroupInitializer =
-  (parentId?: string) => (ACC: GL, FORM: FormGroup) => {
-    FORM.slots.reduce(slotInitializer(parentId), ACC);
-    return ACC;
-  };
+export const formGroupInitializer = (parentId?: string) => (ACC: GL, FORM: FormGroup) => {
+  FORM.slots.reduce(slotInitializer(parentId), ACC);
+  return ACC;
+};
 
 export const slotInitializer =
   (parentId?: string) =>
@@ -77,10 +71,7 @@ export const slotInitializer =
 
 export const documentInitializer = (document: FormSchema) => {
   return document.sections.reduce((ACC, SEC) => {
-    SEC.form.reduce(
-      formGroupInitializer(`${document.formId}_${SEC.sectionId}_`),
-      ACC,
-    );
+    SEC.form.reduce(formGroupInitializer(`${document.formId}_${SEC.sectionId}_`), ACC);
     return ACC;
   }, {});
 };

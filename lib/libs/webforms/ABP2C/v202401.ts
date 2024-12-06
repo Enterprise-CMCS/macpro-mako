@@ -69,8 +69,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -89,8 +88,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -109,8 +107,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -162,8 +159,7 @@ export const v202401: FormSchema = {
             {
               name: "how-id-become-exempt",
               rhf: "Checkbox",
-              label:
-                "How will the state/territory identify if an individual becomes exempt?",
+              label: "How will the state/territory identify if an individual becomes exempt?",
               labelClassName: "font-bold text-black",
               rules: { required: "* Required" },
               props: {
@@ -201,8 +197,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -249,8 +244,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },

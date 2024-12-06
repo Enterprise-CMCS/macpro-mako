@@ -23,28 +23,20 @@ export const VisibilityPopover = ({
           className="w-full xs:w-fit whitespace-nowrap hover:bg-transparent self-center h-10 flex gap-2"
         >
           <span className="prose-sm">
-            {hiddenColumns.length
-              ? `Columns (${hiddenColumns.length} hidden)`
-              : "Columns"}
+            {hiddenColumns.length ? `Columns (${hiddenColumns.length} hidden)` : "Columns"}
           </span>
         </UI.Button>
       </UI.PopoverTrigger>
       <UI.PopoverContent className="bg-white">
         <div className="flex flex-col gap-2">
-          <VisibilityMenu
-            list={list}
-            onItemClick={onItemClick}
-            hiddenColumns={hiddenColumns}
-          />
+          <VisibilityMenu list={list} onItemClick={onItemClick} hiddenColumns={hiddenColumns} />
         </div>
       </UI.PopoverContent>
     </UI.Popover>
   );
 };
 
-export const VisiblityItem = <T extends UI.OsTableColumn>(
-  props: T & { onClick: () => void },
-) => {
+export const VisiblityItem = <T extends UI.OsTableColumn>(props: T & { onClick: () => void }) => {
   const eyeStyles = cn("flex flex-row gap-2 cursor-pointer", {
     "text-gray-800": !props.hidden,
     "text-gray-400": props.hidden,

@@ -26,9 +26,7 @@ export const formatSeatoolDate = (date: string): string => {
   return moment(date).tz("UTC").format("MM/DD/yyyy");
 };
 
-export const getNextBusinessDayTimestamp = (
-  date: Date = new Date(),
-): number => {
+export const getNextBusinessDayTimestamp = (date: Date = new Date()): number => {
   const localeStringDate = date.toLocaleString("en-US", {
     timeZone: "America/New_York",
     dateStyle: "short",

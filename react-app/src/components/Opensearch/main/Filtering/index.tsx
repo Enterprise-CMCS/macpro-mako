@@ -15,9 +15,7 @@ export const OsFiltering: FC<{
 
   return (
     <div className="my-2">
-      <p className="mb-1 text-sm">
-        {"Search by Package ID, CPOC Name, or Submitter Name"}
-      </p>
+      <p className="mb-1 text-sm">{"Search by Package ID, CPOC Name, or Submitter Name"}</p>
       <div className="flex w-full lg:flex-row flex-col flex-grow content-between gap-2">
         <SearchForm
           isSearching={context.isLoading}
@@ -37,7 +35,7 @@ export const OsFiltering: FC<{
             hiddenColumns={columns.filter((COL) => COL.hidden === true)}
           />
           <OsFilterDrawer />
-          <OsExportData columns={columns} disabled={context?.data?.total.value === 0}/>
+          <OsExportData columns={columns} disabled={context?.data?.total.value === 0} />
         </div>
       </div>
     </div>

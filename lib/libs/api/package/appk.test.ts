@@ -45,19 +45,15 @@ describe("getAppkChildren", () => {
 
     const result = await getAppkChildren(mockPackageId);
 
-    expect(os.search).toHaveBeenCalledWith(
-      mockOsDomain,
-      `${mockIndexNamespace}main`,
-      {
-        from: 0,
-        size: 200,
-        query: {
-          bool: {
-            must: [{ term: { "appkParentId.keyword": mockPackageId } }],
-          },
+    expect(os.search).toHaveBeenCalledWith(mockOsDomain, `${mockIndexNamespace}main`, {
+      from: 0,
+      size: 200,
+      query: {
+        bool: {
+          must: [{ term: { "appkParentId.keyword": mockPackageId } }],
         },
       },
-    );
+    });
     expect(result).toEqual(mockResponse);
   });
 
@@ -66,22 +62,15 @@ describe("getAppkChildren", () => {
 
     const result = await getAppkChildren(mockPackageId, mockFilter);
 
-    expect(os.search).toHaveBeenCalledWith(
-      mockOsDomain,
-      `${mockIndexNamespace}main`,
-      {
-        from: 0,
-        size: 200,
-        query: {
-          bool: {
-            must: [
-              { term: { "appkParentId.keyword": mockPackageId } },
-              ...mockFilter,
-            ],
-          },
+    expect(os.search).toHaveBeenCalledWith(mockOsDomain, `${mockIndexNamespace}main`, {
+      from: 0,
+      size: 200,
+      query: {
+        bool: {
+          must: [{ term: { "appkParentId.keyword": mockPackageId } }, ...mockFilter],
         },
       },
-    );
+    });
     expect(result).toEqual(mockResponse);
   });
 });

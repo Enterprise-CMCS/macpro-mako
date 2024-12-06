@@ -150,8 +150,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -165,8 +164,7 @@ export const v202401: FormSchema = {
       ],
     },
     {
-      title:
-        "Cost sharing for non-emergency services provided in a hospital emergency department",
+      title: "Cost sharing for non-emergency services provided in a hospital emergency department",
       sectionId: "cost-shar-for-non-emergency",
       form: [
         {
@@ -337,8 +335,7 @@ export const v202401: FormSchema = {
                 options: [
                   {
                     value: "true",
-                    label:
-                      "The state identifies which drugs are considered non-preferred.",
+                    label: "The state identifies which drugs are considered non-preferred.",
                   },
                 ],
               },
@@ -348,8 +345,7 @@ export const v202401: FormSchema = {
               name: "assures-timely-process-limit-cost-shar-imposed",
               rhf: "Checkbox",
               rules: { required: "* Required" },
-              formItemClassName:
-                "ml-[0.6rem] px-4  border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4  border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
@@ -375,8 +371,7 @@ export const v202401: FormSchema = {
               name: "all-drugs-consider-preferred-drugs",
               rhf: "Checkbox",
               rules: { required: "* Required" },
-              formItemClassName:
-                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {

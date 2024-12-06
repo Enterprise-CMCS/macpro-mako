@@ -6,11 +6,7 @@ export const transform = (offset: number) => {
       //eslint-disable-next-line
       ([_title, attachment]) => {
         // Check if 'attachment' exists and has a non-empty 'files' array
-        if (
-          attachment &&
-          Array.isArray(attachment.files) &&
-          attachment.files.length > 0
-        ) {
+        if (attachment && Array.isArray(attachment.files) && attachment.files.length > 0) {
           // Map each file in 'files' array to the desired shape
           return attachment.files.map((file) => ({
             filename: file.filename,

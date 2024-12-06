@@ -7,10 +7,7 @@ interface TopicConfig {
   // Add other properties as needed
 }
 
-export async function createTopics(
-  brokerString: string,
-  topicsConfig: TopicConfig[],
-) {
+export async function createTopics(brokerString: string, topicsConfig: TopicConfig[]) {
   const topics = topicsConfig;
   const brokers = brokerString.split(",");
 
@@ -25,10 +22,7 @@ export async function createTopics(
     await admin.connect();
 
     // Fetch topics from MSK and filter out __ internal management topic
-    const existingTopicList = _.filter(
-      await admin.listTopics(),
-      (n) => !n.startsWith("_"),
-    );
+    const existingTopicList = _.filter(await admin.listTopics(), (n) => !n.startsWith("_"));
 
     console.log("Existing topics:", JSON.stringify(existingTopicList, null, 2));
 
@@ -54,8 +48,7 @@ export async function createTopics(
       topicsMetadata,
       (topicConfig, topicMetadata) =>
         _.get(topicConfig, "topic") === _.get(topicMetadata, "name") &&
-        _.get(topicConfig, "numPartitions") >
-          _.get(topicMetadata, "partitions", []).length,
+        _.get(topicConfig, "numPartitions") > _.get(topicMetadata, "partitions", []).length,
     );
 
     // Create a collection to update topic partitioning
@@ -81,14 +74,8 @@ export async function createTopics(
 
     console.log("Topics to Create:", JSON.stringify(topicsToCreate, null, 2));
     console.log("Topics to Update:", JSON.stringify(topicsToUpdate, null, 2));
-    console.log(
-      "Partitions to Update:",
-      JSON.stringify(partitionConfig, null, 2),
-    );
-    console.log(
-      "Topic configuration options:",
-      JSON.stringify(configs, null, 2),
-    );
+    console.log("Partitions to Update:", JSON.stringify(partitionConfig, null, 2));
+    console.log("Topic configuration options:", JSON.stringify(configs, null, 2));
 
     // Create topics that don't exist in MSK
     await admin.createTopics({ topics: topicsToCreate });

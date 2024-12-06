@@ -1,12 +1,4 @@
-import {
-  beforeAll,
-  afterEach,
-  afterAll,
-  it,
-  expect,
-  vi,
-  describe,
-} from "vitest";
+import { beforeAll, afterEach, afterAll, it, expect, vi, describe } from "vitest";
 import { mockItem } from "./mocks";
 import * as unit from "./useGetItem";
 import { API } from "aws-amplify";
@@ -22,8 +14,7 @@ const mockFetch = vi.fn(async (apiName, path, init) => {
     body: JSON.stringify(init.body),
     method: "POST",
   });
-  if (res.status !== 200)
-    throw Error("useGetItem > mockFetch: Expected error thrown by test.");
+  if (res.status !== 200) throw Error("useGetItem > mockFetch: Expected error thrown by test.");
   return await res.json();
 });
 
@@ -70,9 +61,7 @@ describe("zod schema helpers", () => {
       expect(renewCanRenewOrAmend).toBe(true);
     });
     it("returns false if an item is Amend actionType", async () => {
-      expect(
-        await unit.canBeRenewedOrAmended("existing-approved-actionType=Amend"),
-      ).toBe(false);
+      expect(await unit.canBeRenewedOrAmended("existing-approved-actionType=Amend")).toBe(false);
     });
   });
 });

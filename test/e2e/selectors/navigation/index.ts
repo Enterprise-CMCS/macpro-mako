@@ -8,12 +8,10 @@ export class NavSelectors {
   }
 
   get issuesDropDown() {
-    return this.page.locator(
-      "_react=NavSection[section.buttonText = \"Issues\"]"
-    );
+    return this.page.locator('_react=NavSection[section.buttonText = "Issues"]');
   }
 
   get allIssuesLink() {
-    return this.page.locator("_react=Link[text = \"All Issues\"]");
+    return this.page.locator('_react=Link[text = "All Issues"]');
   }
 }

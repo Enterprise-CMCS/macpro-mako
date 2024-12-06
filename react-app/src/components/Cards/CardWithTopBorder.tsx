@@ -19,9 +19,7 @@ export const CardWithTopBorder: FC<CardWithTopBorderProps> = ({
         }}
         className="h-2 shadow-lg"
       />
-      <div className="border border-t-0 rounded-b-sm border-slate-300">
-        {children}
-      </div>
+      <div className="border border-t-0 rounded-b-sm border-slate-300">{children}</div>
     </div>
   );
 };

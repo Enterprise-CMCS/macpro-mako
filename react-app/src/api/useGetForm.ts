@@ -3,10 +3,7 @@ import { API } from "aws-amplify";
 import { ReactQueryApiError, FormSchema } from "shared-types";
 import { reInsertRegex } from "shared-utils";
 
-export const getForm = async (
-  formId: string,
-  formVersion?: string,
-): Promise<FormSchema> => {
+export const getForm = async (formId: string, formVersion?: string): Promise<FormSchema> => {
   const form = await API.post("os", "/forms", {
     body: { formId, formVersion },
   });
@@ -30,7 +27,5 @@ export const getAllForms = async () => {
 };
 
 export const useGetAllForms = () => {
-  return useQuery<ResultObject, ReactQueryApiError>(["All Webforms"], () =>
-    getAllForms(),
-  );
+  return useQuery<ResultObject, ReactQueryApiError>(["All Webforms"], () => getAllForms());
 };

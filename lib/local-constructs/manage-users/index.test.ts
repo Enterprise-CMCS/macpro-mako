@@ -16,25 +16,15 @@ describe("ManageUsers", () => {
   const users = [{ username: "user1" }, { username: "user2" }];
   const passwordSecretArn = "mockPasswordSecretArn"; // pragma: allowlist secret
 
-  const manageUsers = new ManageUsers(
-    stack,
-    "ManageUsers",
-    userPool,
-    users,
-    passwordSecretArn,
-  );
+  const manageUsers = new ManageUsers(stack, "ManageUsers", userPool, users, passwordSecretArn);
 
   it("should create a log group for the Lambda function", () => {
-    const lambdaLogGroup = manageUsers.node.findChild(
-      "LambdaLogGroup",
-    ) as logs.LogGroup;
+    const lambdaLogGroup = manageUsers.node.findChild("LambdaLogGroup") as logs.LogGroup;
     expect(lambdaLogGroup).toBeInstanceOf(logs.LogGroup);
   });
 
   it("should create a Lambda function with appropriate properties", () => {
-    const lambdaFunction = manageUsers.node.findChild(
-      "LambdaFunction",
-    ) as lambda.Function;
+    const lambdaFunction = manageUsers.node.findChild("LambdaFunction") as lambda.Function;
     expect(lambdaFunction).toBeInstanceOf(lambda.Function);
     expect(lambdaFunction.runtime).toBe(lambda.Runtime.NODEJS_18_X);
     expect(lambdaFunction.timeout?.toMinutes()).toBe(5);

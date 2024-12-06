@@ -34,10 +34,7 @@ export const reInsertRegex = (obj: any) => {
           obj[key].pattern.hasOwnProperty("value")
         ) {
           // if its a pattern.value replace the value's value with a regex from the weird array thing
-          obj[key].pattern.value = new RegExp(
-            obj[key].pattern.value[1],
-            obj[key].pattern.value[2],
-          );
+          obj[key].pattern.value = new RegExp(obj[key].pattern.value[1], obj[key].pattern.value[2]);
         }
       }
     }

@@ -8,9 +8,7 @@ const mockKafkaAdmin = {
     groups: [{ state: "Stable" }],
   }),
   fetchTopicOffsets: vi.fn().mockResolvedValue([{ offset: "100" }]),
-  fetchOffsets: vi
-    .fn()
-    .mockResolvedValue([{ partitions: [{ offset: "100" }] }]),
+  fetchOffsets: vi.fn().mockResolvedValue([{ partitions: [{ offset: "100" }] }]),
   disconnect: vi.fn(),
 };
 
@@ -195,9 +193,7 @@ describe("Lambda Handler", () => {
     await handler(event, null, callback);
 
     expect(callback).toHaveBeenCalledWith(
-      new Error(
-        "ERROR: No ConsumerGroupId found for function test-function and topic test-topic",
-      ),
+      new Error("ERROR: No ConsumerGroupId found for function test-function and topic test-topic"),
       {
         statusCode: 500,
         stable: false,

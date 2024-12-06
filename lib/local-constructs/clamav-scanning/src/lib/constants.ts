@@ -20,8 +20,7 @@ import process from "process";
 // Various paths and application names on S3
 export const ATTACHMENTS_BUCKET: string = process.env.ATTACHMENTS_BUCKET!;
 export const CLAMAV_BUCKET_NAME: string = process.env.CLAMAV_BUCKET_NAME!;
-export const PATH_TO_AV_DEFINITIONS: string =
-  process.env.PATH_TO_AV_DEFINITIONS!;
+export const PATH_TO_AV_DEFINITIONS: string = process.env.PATH_TO_AV_DEFINITIONS!;
 export const PATH_TO_FRESHCLAM: string = "/bin/freshclam";
 export const PATH_TO_CLAMAV: string = "/bin/clamscan";
 export const FRESHCLAM_CONFIG: string = "/bin/freshclam.conf";
@@ -29,21 +28,16 @@ export const FRESHCLAM_WORK_DIR: string = "/tmp/";
 export const TMP_DOWNLOAD_PATH: string = "/tmp/download/";
 
 // Constants for tagging file after a virus scan.
-export const STATUS_CLEAN_FILE: string =
-  process.env.STATUS_CLEAN_FILE || "CLEAN";
-export const STATUS_INFECTED_FILE: string =
-  process.env.STATUS_INFECTED_FILE || "INFECTED";
+export const STATUS_CLEAN_FILE: string = process.env.STATUS_CLEAN_FILE || "CLEAN";
+export const STATUS_INFECTED_FILE: string = process.env.STATUS_INFECTED_FILE || "INFECTED";
 export const STATUS_ERROR_PROCESSING_FILE: string =
   process.env.STATUS_ERROR_PROCESSING_FILE || "ERROR";
-export const STATUS_SKIPPED_FILE: string =
-  process.env.STATUS_SKIPPED_FILE || "SKIPPED";
+export const STATUS_SKIPPED_FILE: string = process.env.STATUS_SKIPPED_FILE || "SKIPPED";
 export const STATUS_EXTENSION_MISMATCH_FILE: string =
   process.env.STATUS_EXTENSION_MISMATCH_FILE || "EXTMISMATCH";
-export const STATUS_UNKNOWN_EXTENSION: string =
-  process.env.STATUS_UNKNOWN_EXTENSION || "UKNOWNEXT";
+export const STATUS_UNKNOWN_EXTENSION: string = process.env.STATUS_UNKNOWN_EXTENSION || "UKNOWNEXT";
 export const STATUS_TOO_BIG: string = process.env.STATUS_TOO_BIG || "TOOBIG";
-export const VIRUS_SCAN_STATUS_KEY: string =
-  process.env.VIRUS_SCAN_STATUS_KEY || "virusScanStatus";
+export const VIRUS_SCAN_STATUS_KEY: string = process.env.VIRUS_SCAN_STATUS_KEY || "virusScanStatus";
 export const VIRUS_SCAN_TIMESTAMP_KEY: string =
   process.env.VIRUS_SCAN_TIMESTAMP_KEY || "virusScanTimestamp";
 export const MAX_FILE_SIZE: string = process.env.MAX_FILE_SIZE || "314572800";

@@ -1,12 +1,7 @@
 import { Handler } from "aws-lambda";
 import { decodeBase64WithUtf8 } from "shared-utils";
 import { KafkaEvent, KafkaRecord } from "shared-types";
-import {
-  ErrorType,
-  bulkUpdateDataWrapper,
-  getTopic,
-  logError,
-} from "../libs/sink-lib";
+import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "../libs/sink-lib";
 import { Index } from "shared-types/opensearch";
 const osDomain = process.env.osDomain;
 if (!osDomain) {

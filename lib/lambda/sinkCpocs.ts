@@ -1,12 +1,7 @@
 import { Handler } from "aws-lambda";
 import { KafkaRecord, opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
-import {
-  ErrorType,
-  bulkUpdateDataWrapper,
-  getTopic,
-  logError,
-} from "../libs/sink-lib";
+import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "../libs/sink-lib";
 import { decodeBase64WithUtf8 } from "shared-utils";
 import { Index } from "shared-types/opensearch";
 
@@ -30,10 +25,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   }
 };
 
-const officers = async (
-  kafkaRecords: KafkaRecord[],
-  topicPartition: string,
-) => {
+const officers = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   const docs: any[] = [];
   for (const kafkaRecord of kafkaRecords) {
     const { key, value } = kafkaRecord;
@@ -52,9 +44,7 @@ const officers = async (
 
       // Handle tombstone events and continue
       if (!record) {
-        console.log(
-          `Tombstone detected for ${id}.  Pushing delete record to os...`,
-        );
+        console.log(`Tombstone detected for ${id}.  Pushing delete record to os...`);
         docs.push({
           id,
           delete: true,

@@ -1,7 +1,7 @@
 export function buildStatusMemoQuery(
   id: string,
   msg: string,
-  operation: "insert" | "update" = "update"
+  operation: "insert" | "update" = "update",
 ) {
   const printable = new Date().toLocaleString("en-US", {
     timeZone: "America/New_York",

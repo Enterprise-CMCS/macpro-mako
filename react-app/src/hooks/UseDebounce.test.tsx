@@ -16,10 +16,9 @@ describe("UseDebounce", () => {
   });
 
   it("returns updated value after the specified delay", () => {
-    const { result, rerender } = renderHook(
-      ({ value, delay }) => useDebounce(value, delay),
-      { initialProps: { value: "start value", delay: 500 } },
-    );
+    const { result, rerender } = renderHook(({ value, delay }) => useDebounce(value, delay), {
+      initialProps: { value: "start value", delay: 500 },
+    });
 
     expect(result.current).toBe("start value");
     rerender({ value: "new value", delay: 500 });

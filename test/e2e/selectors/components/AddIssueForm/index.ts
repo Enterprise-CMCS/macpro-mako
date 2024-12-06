@@ -8,11 +8,11 @@ export class AddIssueFormSelectors {
   }
 
   get addButton() {
-    return this.page.locator("_react=Button[buttonText=\"Add\"]");
+    return this.page.locator('_react=Button[buttonText="Add"]');
   }
 
   get submitButton() {
-    return this.page.locator("_react=Button[buttonText=\"Submit\"]");
+    return this.page.locator('_react=Button[buttonText="Submit"]');
   }
 
   get titleInput() {

@@ -1602,9 +1602,7 @@
     "subject": "XX_SEA_VAL_XX Addition of adult preventative",
     "description": "XX_SEA_VAL_XX This is some text",
     "waiverExtensions": [],
-    "reviewTeam": [
-      { "name": "Frances Crystal", "email": "frances@crystal.com" }
-    ],
+    "reviewTeam": [{ "name": "Frances Crystal", "email": "frances@crystal.com" }],
     "submissionTimestamp": 0,
     "proposedEffectiveDate": "2014-07-01",
     "lastEventTimestamp": 1657824888790,
@@ -2932,12 +2930,7 @@
     "subject": "XX_SEA_VAL_XX P-1  Physicians & Pratitioners",
     "description": null,
     "waiverExtensions": [],
-    "reviewTeam": [
-      "Cheryl Rupley",
-      "John Castro",
-      "Rene Spencer",
-      "Karen Prisby"
-    ],
+    "reviewTeam": ["Cheryl Rupley", "John Castro", "Rene Spencer", "Karen Prisby"],
     "submissionTimestamp": 0,
     "proposedEffectiveDate": "2011-10-01",
     "lastEventTimestamp": 1657824888790,

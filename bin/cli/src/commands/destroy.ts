@@ -4,21 +4,10 @@ import {
   DeleteStackCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
-import {
-  checkIfAuthenticated,
-  confirmDestroyCommand,
-  project,
-  region,
-} from "../lib";
+import { checkIfAuthenticated, confirmDestroyCommand, project, region } from "../lib";
 
-const waitForStackDeleteComplete = async (
-  client: CloudFormationClient,
-  stackName: string,
-) => {
-  return waitUntilStackDeleteComplete(
-    { client, maxWaitTime: 3600 },
-    { StackName: stackName },
-  );
+const waitForStackDeleteComplete = async (client: CloudFormationClient, stackName: string) => {
+  return waitUntilStackDeleteComplete({ client, maxWaitTime: 3600 }, { StackName: stackName });
 };
 
 export const destroy = {
@@ -33,15 +22,7 @@ export const destroy = {
         demandOption: false,
         default: true,
       }),
-  handler: async ({
-    stage,
-    wait,
-    verify,
-  }: {
-    stage: string;
-    wait: boolean;
-    verify: boolean;
-  }) => {
+  handler: async ({ stage, wait, verify }: { stage: string; wait: boolean; verify: boolean }) => {
     await checkIfAuthenticated();
 
     const stackName = `${project}-${stage}`;

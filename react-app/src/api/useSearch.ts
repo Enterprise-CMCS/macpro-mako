@@ -16,10 +16,7 @@ type QueryProps<T> = {
   aggs?: opensearch.AggQuery<T>[];
 };
 
-export const getOsData = async <
-  TProps,
-  TResponse extends opensearch.Response<any>,
->(
+export const getOsData = async <TProps, TResponse extends opensearch.Response<any>>(
   props: QueryProps<TProps>,
 ): Promise<TResponse> => {
   const searchData = await API.post("os", `/search/${props.index}`, {
@@ -35,14 +32,10 @@ export const getOsData = async <
   return searchData;
 };
 
-export const getMainExportData = async (
-  filters?: opensearch.main.Filterable[],
-) => {
+export const getMainExportData = async (filters?: opensearch.main.Filterable[]) => {
   if (!filters) return [];
 
-  const recursiveSearch = async (
-    startPage: number,
-  ): Promise<opensearch.main.Document[]> => {
+  const recursiveSearch = async (startPage: number): Promise<opensearch.main.Document[]> => {
     if (startPage * 1000 >= 10000) {
       return [];
     }
@@ -69,11 +62,7 @@ export const getMainExportData = async (
 };
 
 export const useOsSearch = <TProps, TResponse>(
-  options?: UseMutationOptions<
-    TResponse,
-    ReactQueryApiError,
-    QueryProps<TProps>
-  >,
+  options?: UseMutationOptions<TResponse, ReactQueryApiError, QueryProps<TProps>>,
 ) => {
   //@ts-expect-error
   return useMutation<TResponse, ReactQueryApiError, QueryProps<TProps>>(

@@ -15,9 +15,7 @@ describe("Respond To RAI Waiver", () => {
   });
 
   test("RAI RESPONSE LETTER WAIVER", async () => {
-    const raiResponseLetterWaiverLabel = await upload(
-      "raiResponseLetterWaiver",
-    );
+    const raiResponseLetterWaiverLabel = await upload("raiResponseLetterWaiver");
     expect(raiResponseLetterWaiverLabel).not.toHaveClass("text-destructive");
   });
 

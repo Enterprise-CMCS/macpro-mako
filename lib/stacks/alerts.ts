@@ -22,11 +22,7 @@ export class Alerts extends cdk.NestedStack {
     // Create Alerts Topic with AWS-managed KMS Key
     const alertsTopic = new cdk.aws_sns.Topic(this, "AlertsTopic", {
       topicName: `Alerts-${project}-${stage}`,
-      masterKey: cdk.aws_kms.Alias.fromAliasName(
-        this,
-        "KmsAlias",
-        "alias/aws/sns",
-      ),
+      masterKey: cdk.aws_kms.Alias.fromAliasName(this, "KmsAlias", "alias/aws/sns"),
     });
 
     // Output the Alerts Topic ARN

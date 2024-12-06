@@ -16,21 +16,16 @@ export type DatePickerProps = {
   dataTestId?: string;
 };
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: string;
   iconRight?: boolean;
 }
 
-export type RadioProps = React.ComponentPropsWithoutRef<
-  typeof RadioGroupPrimitive.Root
-> & {
+export type RadioProps = React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> & {
   className?: string;
 };
 
-export type SelectProps = React.ComponentPropsWithoutRef<
-  typeof SelectPrimitive.Root
-> & {
+export type SelectProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root> & {
   options: { label: string; value: any }[];
   className?: string;
   apiCall?: string;
@@ -51,14 +46,11 @@ export type MultiselectProps = {
   onChange?: (selectedValues: string[]) => void;
 };
 
-export type SwitchProps = React.ComponentPropsWithoutRef<
-  typeof SwitchPrimitives.Root
-> & {
+export type SwitchProps = React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root> & {
   className?: string;
 };
 
-export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   charCount?: "simple" | "limited";
   charCountClassName?: string;
 }

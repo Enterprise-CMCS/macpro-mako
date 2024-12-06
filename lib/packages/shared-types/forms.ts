@@ -1,9 +1,4 @@
-import {
-  Control,
-  FieldArrayPath,
-  FieldValues,
-  RegisterOptions,
-} from "react-hook-form";
+import { Control, FieldArrayPath, FieldValues, RegisterOptions } from "react-hook-form";
 import {
   CalendarProps,
   InputProps,

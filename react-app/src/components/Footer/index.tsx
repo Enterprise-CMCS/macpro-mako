@@ -29,9 +29,8 @@ export const Footer = ({ email, address }: Props) => {
             alt="Logo for Department of Health and Human Services"
           />
           <p className="col-span-12 sm:col-span-4">
-            A federal government website managed and paid for by the U.S.
-            Centers for Medicare and Medicaid Services and part of the MACPro
-            suite.
+            A federal government website managed and paid for by the U.S. Centers for Medicare and
+            Medicaid Services and part of the MACPro suite.
           </p>
         </div>
       </section>

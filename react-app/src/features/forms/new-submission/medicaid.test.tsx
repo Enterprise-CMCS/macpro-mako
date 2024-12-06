@@ -4,10 +4,7 @@ import { describe, test, expect, beforeAll } from "vitest";
 import { MedicaidForm } from "./Medicaid";
 import { formSchemas } from "@/formSchemas";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import {
-  skipCleanup,
-  mockApiRefinements,
-} from "@/utils/test-helpers/skipCleanup";
+import { skipCleanup, mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
 import { renderForm } from "@/utils/test-helpers/renderForm";
 
 const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
@@ -56,13 +53,9 @@ describe("Medicaid SPA", () => {
   });
 
   test("PROPOSED EFFECTIVE DATE OF MEDICAID SPA", async () => {
-    await userEvent.click(
-      screen.getByTestId("proposedEffectiveDate-datepicker"),
-    );
+    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector(
-      '[for="proposedEffectiveDate"]',
-    );
+    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });

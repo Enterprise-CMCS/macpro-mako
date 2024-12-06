@@ -20,10 +20,7 @@ export const OsFilterDrawer = () => {
   const hook = useFilterDrawer();
 
   return (
-    <Sheet
-      open={hook.drawer.drawerOpen}
-      onOpenChange={hook.drawer.setDrawerState}
-    >
+    <Sheet open={hook.drawer.drawerOpen} onOpenChange={hook.drawer.setDrawerState}>
       <SheetTrigger asChild>
         <Button
           variant="outline"
@@ -52,9 +49,7 @@ export const OsFilterDrawer = () => {
         >
           {Object.values(hook.filters).map((PK) => (
             <AccordionItem key={`filter-${PK.field}`} value={PK.field}>
-              <AccordionTrigger className="underline">
-                {PK.label}
-              </AccordionTrigger>
+              <AccordionTrigger className="underline">{PK.label}</AccordionTrigger>
               <AccordionContent className="px-0">
                 {PK.component === "multiSelect" && (
                   <F.FilterableSelect
@@ -72,17 +67,15 @@ export const OsFilterDrawer = () => {
                 )}
                 {PK.component === "dateRange" && (
                   <F.FilterableDateRange
-                    value={
-                      hook.filters[PK.field]?.value as opensearch.RangeValue
-                    }
+                    value={hook.filters[PK.field]?.value as opensearch.RangeValue}
                     onChange={hook.onFilterChange(PK.field)}
                   />
                 )}
                 {PK.component === "boolean" && (
                   <F.FilterableBoolean
-                      value={hook.filters[PK.field]?.value as boolean}
-                      onChange={hook.onFilterChange(PK.field)}
-                    />
+                    value={hook.filters[PK.field]?.value as boolean}
+                    onChange={hook.onFilterChange(PK.field)}
+                  />
                 )}
               </AccordionContent>
             </AccordionItem>

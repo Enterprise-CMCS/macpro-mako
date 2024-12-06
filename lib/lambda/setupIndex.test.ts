@@ -23,48 +23,23 @@ describe("handler", () => {
     await handler(mockEvent, null, mockCallback);
 
     expect(os.createIndex).toHaveBeenCalledTimes(7);
-    expect(os.createIndex).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-main",
-    );
-    expect(os.createIndex).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-changelog",
-    );
-    expect(os.createIndex).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-types",
-    );
-    expect(os.createIndex).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-subtypes",
-    );
-    expect(os.createIndex).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-cpocs",
-    );
-    expect(os.createIndex).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-insights",
-    );
-    expect(os.createIndex).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-legacyinsights",
-    );
+    expect(os.createIndex).toHaveBeenCalledWith("test-domain", "test-namespace-main");
+    expect(os.createIndex).toHaveBeenCalledWith("test-domain", "test-namespace-changelog");
+    expect(os.createIndex).toHaveBeenCalledWith("test-domain", "test-namespace-types");
+    expect(os.createIndex).toHaveBeenCalledWith("test-domain", "test-namespace-subtypes");
+    expect(os.createIndex).toHaveBeenCalledWith("test-domain", "test-namespace-cpocs");
+    expect(os.createIndex).toHaveBeenCalledWith("test-domain", "test-namespace-insights");
+    expect(os.createIndex).toHaveBeenCalledWith("test-domain", "test-namespace-legacyinsights");
 
     expect(os.updateFieldMapping).toHaveBeenCalledTimes(1);
-    expect(os.updateFieldMapping).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-main",
-      {
-        approvedEffectiveDate: { type: "date" },
-        changedDate: { type: "date" },
-        finalDispositionDate: { type: "date" },
-        proposedDate: { type: "date" },
-        statusDate: { type: "date" },
-        submissionDate: { type: "date" },
-      },
-    );
+    expect(os.updateFieldMapping).toHaveBeenCalledWith("test-domain", "test-namespace-main", {
+      approvedEffectiveDate: { type: "date" },
+      changedDate: { type: "date" },
+      finalDispositionDate: { type: "date" },
+      proposedDate: { type: "date" },
+      statusDate: { type: "date" },
+      submissionDate: { type: "date" },
+    });
 
     expect(mockCallback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });

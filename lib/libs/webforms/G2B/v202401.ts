@@ -2,8 +2,7 @@ import { FormSchema, DefaultFieldGroupProps } from "shared-types";
 import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 export const v202401: FormSchema = {
-  header:
-    "Premiums and cost sharing G2b: Cost-sharing amounts—Medically needy individuals",
+  header: "Premiums and cost sharing G2b: Cost-sharing amounts—Medically needy individuals",
   subheader: "1916 | 1916A | 42 CFR 447.52 through 447.54",
   formId: "g2b",
   sections: [
@@ -17,8 +16,7 @@ export const v202401: FormSchema = {
               name: "state-charge-cost-sharing",
               rhf: "Select",
               rules: { required: "* Required" },
-              label:
-                "Does the state charge cost sharing to all medically needy individuals?",
+              label: "Does the state charge cost sharing to all medically needy individuals?",
               labelClassName: "font-bold text-[#212121]",
               props: {
                 className: "w-[125px]",
@@ -61,8 +59,7 @@ export const v202401: FormSchema = {
     },
 
     {
-      title:
-        "Services or items with the same cost-sharing amount for all incomes",
+      title: "Services or items with the same cost-sharing amount for all incomes",
       sectionId: "services-same-all-incomes",
       subsection: true,
       form: [
@@ -220,8 +217,7 @@ export const v202401: FormSchema = {
                       rhf: "WrappedGroup",
                       name: "wrapped",
                       props: {
-                        wrapperClassName:
-                          "space-between flex-row flex w-full gap-5",
+                        wrapperClassName: "space-between flex-row flex w-full gap-5",
                       },
                       fields: [
                         {
@@ -259,8 +255,7 @@ export const v202401: FormSchema = {
                       rhf: "WrappedGroup",
                       name: "wrapped",
                       props: {
-                        wrapperClassName:
-                          "space-between flex-row flex w-full gap-5",
+                        wrapperClassName: "space-between flex-row flex w-full gap-5",
                       },
                       fields: [
                         {
@@ -334,8 +329,7 @@ export const v202401: FormSchema = {
                       rules: {
                         pattern: {
                           value: noLeadingTrailingWhitespace,
-                          message:
-                            "Must not have leading or trailing whitespace.",
+                          message: "Must not have leading or trailing whitespace.",
                         },
                       },
                     },
@@ -349,8 +343,7 @@ export const v202401: FormSchema = {
     },
 
     {
-      title:
-        "Cost sharing for non-preferred drugs charged to otherwise exempt individuals",
+      title: "Cost sharing for non-preferred drugs charged to otherwise exempt individuals",
       sectionId: "cost-share-charge-otherwise-exempt",
       subsection: true,
       form: [
@@ -422,8 +415,7 @@ export const v202401: FormSchema = {
                   rhf: "WrappedGroup",
                   name: "rateWrapper",
                   props: {
-                    wrapperClassName:
-                      "space-between flex-row flex w-full gap-5",
+                    wrapperClassName: "space-between flex-row flex w-full gap-5",
                   },
                   fields: [
                     {
@@ -583,8 +575,7 @@ export const v202401: FormSchema = {
                   rhf: "WrappedGroup",
                   name: "rateWrapper",
                   props: {
-                    wrapperClassName:
-                      "space-between flex-row flex w-full gap-5",
+                    wrapperClassName: "space-between flex-row flex w-full gap-5",
                   },
                   fields: [
                     {

@@ -28,14 +28,11 @@ type GetFormOrigin = (args?: GetFormOriginArgs) => {
  * Instead, call within functions
  */
 export const getFormOrigin: GetFormOrigin = ({ id, authority } = {}) => {
-  const origin =
-    new URLSearchParams(window.location.search).get(ORIGIN) ?? DASHBOARD_ORIGIN;
+  const origin = new URLSearchParams(window.location.search).get(ORIGIN) ?? DASHBOARD_ORIGIN;
 
   if (origin === DETAILS_ORIGIN && id && authority) {
     return {
-      pathname: `/${origin}/${encodeURIComponent(
-        authority,
-      )}/${encodeURIComponent(id)}`,
+      pathname: `/${origin}/${encodeURIComponent(authority)}/${encodeURIComponent(id)}`,
     };
   }
 

@@ -19,8 +19,7 @@ const ErrorMessages = {
   [ErrorType.VALIDATION]: "A validation error occurred.",
   [ErrorType.UNKNOWN]: "An unknown error occurred.",
   [ErrorType.BULKUPDATE]: "An error occurred while bulk updating records.",
-  [ErrorType.BADTOPIC]:
-    "Topic is unknown, unsupported, or unable to be parsed.",
+  [ErrorType.BADTOPIC]: "Topic is unknown, unsupported, or unable to be parsed.",
   [ErrorType.BADPARSE]: "An error occurred while parsing the record.",
 };
 
@@ -82,11 +81,7 @@ const prettyPrintJsonInObject = (obj: any): any => {
   return obj;
 };
 
-export async function bulkUpdateDataWrapper(
-  domain: string,
-  index: string,
-  docs: any[],
-) {
+export async function bulkUpdateDataWrapper(domain: string, index: string, docs: any[]) {
   try {
     await os.bulkUpdateData(process.env.osDomain!, index, docs);
   } catch (error: any) {

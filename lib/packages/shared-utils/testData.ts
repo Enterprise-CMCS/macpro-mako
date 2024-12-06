@@ -129,8 +129,7 @@ export const testItemResult: opensearch.main.ItemResult = {
               uploadDate: 1709319909222,
             },
             {
-              filename:
-                "10-20-17 MT 1915(b)(4) Big Sky Waiver app revised (6).docx",
+              filename: "10-20-17 MT 1915(b)(4) Big Sky Waiver app revised (6).docx",
               title: "SPA Pages",
               bucket: "test-bucket",
               key: "test-key",

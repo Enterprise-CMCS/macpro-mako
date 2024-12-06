@@ -22,9 +22,7 @@ type FormFieldContextValue<
   name: TName;
 };
 
-const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue,
-);
+const FormFieldContext = React.createContext<FormFieldContextValue>({} as FormFieldContextValue);
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
@@ -66,9 +64,7 @@ type FormItemContextValue = {
   id: string;
 };
 
-const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue,
-);
+const FormItemContext = React.createContext<FormItemContextValue>({} as FormItemContextValue);
 
 const FormItem = React.forwardRef<
   HTMLDivElement,
@@ -108,18 +104,13 @@ const FormControl = React.forwardRef<
   React.ElementRef<typeof Slot>,
   React.ComponentPropsWithoutRef<typeof Slot>
 >(({ ...props }, ref) => {
-  const { error, formItemId, formDescriptionId, formMessageId } =
-    useFormField();
+  const { error, formItemId, formDescriptionId, formMessageId } = useFormField();
 
   return (
     <Slot
       ref={ref}
       id={formItemId}
-      aria-describedby={
-        !error
-          ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
-      }
+      aria-describedby={!error ? `${formDescriptionId}` : `${formDescriptionId} ${formMessageId}`}
       aria-invalid={!!error}
       {...props}
     />
@@ -133,9 +124,7 @@ const FormDescription = React.forwardRef<
 >(({ className, ...props }, ref) => {
   const { formDescriptionId } = useFormField();
 
-  return (
-    <p ref={ref} id={formDescriptionId} className={className} {...props} />
-  );
+  return <p ref={ref} id={formDescriptionId} className={className} {...props} />;
 });
 FormDescription.displayName = "FormDescription";
 
@@ -144,8 +133,7 @@ const FormMessage = React.forwardRef<
   React.HTMLAttributes<HTMLParagraphElement> & { className?: string }
 >(({ className, children, ...props }, ref) => {
   const { error, formMessageId } = useFormField();
-  const body =
-    error && !Array.isArray(error) ? String(error?.message) : children;
+  const body = error && !Array.isArray(error) ? String(error?.message) : children;
 
   if (!body) {
     return null;

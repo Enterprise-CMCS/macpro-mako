@@ -2,12 +2,7 @@ import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { Bucket } from "aws-cdk-lib/aws-s3";
 import { CfnDeliveryStream } from "aws-cdk-lib/aws-kinesisfirehose";
-import {
-  Role,
-  ServicePrincipal,
-  PolicyStatement,
-  PolicyDocument,
-} from "aws-cdk-lib/aws-iam";
+import { Role, ServicePrincipal, PolicyStatement, PolicyDocument } from "aws-cdk-lib/aws-iam";
 import { LogGroup, CfnSubscriptionFilter } from "aws-cdk-lib/aws-logs";
 
 interface CloudWatchToS3Props {
@@ -76,9 +71,7 @@ export class CloudWatchToS3 extends Construct {
           statements: [
             new PolicyStatement({
               actions: ["firehose:PutRecord", "firehose:PutRecordBatch"],
-              resources: [
-                cdk.Fn.getAtt(this.deliveryStream.logicalId, "Arn").toString(),
-              ],
+              resources: [cdk.Fn.getAtt(this.deliveryStream.logicalId, "Arn").toString()],
             }),
           ],
         }),
@@ -89,10 +82,7 @@ export class CloudWatchToS3 extends Construct {
     new CfnSubscriptionFilter(this, "SubscriptionFilter", {
       logGroupName: logGroup.logGroupName,
       filterPattern: filterPattern,
-      destinationArn: cdk.Fn.getAtt(
-        this.deliveryStream.logicalId,
-        "Arn",
-      ).toString(),
+      destinationArn: cdk.Fn.getAtt(this.deliveryStream.logicalId, "Arn").toString(),
       roleArn: subscriptionFilterRole.roleArn,
     });
   }

@@ -9,11 +9,7 @@ const Table = React.forwardRef<
   }
 >(({ className, ...props }, ref) => (
   <div className="w-full border-[1px] overflow-auto">
-    <table
-      ref={ref}
-      className={cn("w-full caption-bottom text-sm", className)}
-      {...props}
-    />
+    <table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
   </div>
 ));
 Table.displayName = "Table";
@@ -34,11 +30,7 @@ const TableBody = React.forwardRef<
     className?: string;
   }
 >(({ className, ...props }, ref) => (
-  <tbody
-    ref={ref}
-    className={cn("[&_tr:last-child]:border-0", className)}
-    {...props}
-  />
+  <tbody ref={ref} className={cn("[&_tr:last-child]:border-0", className)} {...props} />
 ));
 TableBody.displayName = "TableBody";
 
@@ -98,16 +90,8 @@ const TableHead = React.forwardRef<
         icon
       ) : (
         <>
-          {desc && (
-            <ArrowDown
-              className={cn(".1em w-5 h-5", { "opacity-0": !isActive })}
-            />
-          )}
-          {!desc && (
-            <ArrowUp
-              className={cn(".1em w-5 h-5", { "opacity-0": !isActive })}
-            />
-          )}
+          {desc && <ArrowDown className={cn(".1em w-5 h-5", { "opacity-0": !isActive })} />}
+          {!desc && <ArrowUp className={cn(".1em w-5 h-5", { "opacity-0": !isActive })} />}
         </>
       )}
     </div>
@@ -138,21 +122,8 @@ const TableCaption = React.forwardRef<
     className?: string;
   }
 >(({ className, ...props }, ref) => (
-  <caption
-    ref={ref}
-    className={cn("mt-4 text-sm text-muted-foreground", className)}
-    {...props}
-  />
+  <caption ref={ref} className={cn("mt-4 text-sm text-muted-foreground", className)} {...props} />
 ));
 TableCaption.displayName = "TableCaption";
 
-export {
-  Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableCaption,
-};
+export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption };

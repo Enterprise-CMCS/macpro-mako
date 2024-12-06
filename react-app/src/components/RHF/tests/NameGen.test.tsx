@@ -42,9 +42,7 @@ const testForm: FormSchema = {
       title: "Test Section 2",
       form: [
         {
-          slots: [
-            { name: "testInput3", rhf: "Input", label: "Test Input 3 Label" },
-          ],
+          slots: [{ name: "testInput3", rhf: "Input", label: "Test Input 3 Label" }],
         },
       ],
     },

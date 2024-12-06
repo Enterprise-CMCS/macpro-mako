@@ -15,15 +15,11 @@ describe("Withdraw Package Medicaid & Waiver", () => {
   });
 
   test("SUPPORTING DOCUMENTATION", async () => {
-    const supportingDocumentationLabel = await upload(
-      "supportingDocumentation",
-    );
+    const supportingDocumentationLabel = await upload("supportingDocumentation");
     expect(supportingDocumentationLabel).not.toHaveClass("text-destructive");
   });
 
   test("submit button is enabled", async () => {
-    await waitFor(() =>
-      expect(screen.getByTestId("submit-action-form")).toBeEnabled(),
-    );
+    await waitFor(() => expect(screen.getByTestId("submit-action-form")).toBeEnabled());
   });
 });

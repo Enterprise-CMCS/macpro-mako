@@ -2,7 +2,7 @@ import { opensearch } from "shared-types";
 
 const filterMapQueryReducer = (
   state: Record<opensearch.Filterable<any>["prefix"], any[]>,
-  filter: opensearch.Filterable<any>
+  filter: opensearch.Filterable<any>,
 ) => {
   // this was hoisted up since false is a valid "match" value
   if (filter.type === "match") {
@@ -73,9 +73,7 @@ export const filterQueryBuilder = (filters: opensearch.Filterable<any>[]) => {
   };
 };
 
-export const paginationQueryBuilder = (
-  pagination: opensearch.QueryState<any>["pagination"]
-) => {
+export const paginationQueryBuilder = (pagination: opensearch.QueryState<any>["pagination"]) => {
   const from = (() => {
     if (!pagination.number) return 0;
     return pagination.number * pagination.size;
@@ -118,14 +116,9 @@ export const createSearchFilterable = (value?: string) => {
   ];
 };
 
-export const checkMultiFilter = (
-  filters: opensearch.Filterable<any>[],
-  val: number
-) => {
+export const checkMultiFilter = (filters: opensearch.Filterable<any>[], val: number) => {
   return (
     filters.length >= val ||
-    filters.some(
-      (filter) => Array.isArray(filter.value) && filter.value.length >= val
-    )
+    filters.some((filter) => Array.isArray(filter.value) && filter.value.length >= val)
   );
 };

@@ -13,7 +13,7 @@ export const handler: Handler = async (event, context) => {
         event.ResourceProperties.OsDomain,
         event.ResourceProperties.MasterRoleToAssume,
         event.ResourceProperties.OsRoleName,
-        event.ResourceProperties.IamRoleName
+        event.ResourceProperties.IamRoleName,
       );
       console.log(reply);
     } else if (event.RequestType == "Delete") {

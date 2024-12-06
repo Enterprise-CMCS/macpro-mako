@@ -4,12 +4,8 @@ import { useLDClient } from "launchdarkly-react-client-sdk";
 
 export const MaintenanceBanner = () => {
   const banners = {
-    UNSCHEDULED: (
-      <h1 className="text-xl font-medium">Unschedule Maintenance Flag</h1>
-    ),
-    SCHEDULED: (
-      <h1 className="text-xl font-medium">Scheduled Maintenance Flag</h1>
-    ),
+    UNSCHEDULED: <h1 className="text-xl font-medium">Unschedule Maintenance Flag</h1>,
+    SCHEDULED: <h1 className="text-xl font-medium">Scheduled Maintenance Flag</h1>,
   };
 
   function getMaintenanceBanner(flag: string) {
@@ -22,9 +18,7 @@ export const MaintenanceBanner = () => {
     featureFlags.SITE_UNDER_MAINTENANCE_BANNER.defaultValue,
   );
 
-  const possibleMaintenanceBanner = getMaintenanceBanner(
-    siteUnderMaintenanceBannerFlag,
-  );
+  const possibleMaintenanceBanner = getMaintenanceBanner(siteUnderMaintenanceBannerFlag);
 
   if (possibleMaintenanceBanner) {
     return (

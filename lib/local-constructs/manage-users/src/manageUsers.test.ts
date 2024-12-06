@@ -17,18 +17,12 @@ describe("Cognito User Lambda Handler", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (cfnResponse.send as unknown as typeof mockSend).mockImplementation(
-      mockSend,
+    (cfnResponse.send as unknown as typeof mockSend).mockImplementation(mockSend);
+    (getSecret as unknown as typeof mockGetSecret).mockImplementation(mockGetSecret);
+    (cognitolib.createUser as unknown as typeof mockCreateUser).mockImplementation(mockCreateUser);
+    (cognitolib.setPassword as unknown as typeof mockSetPassword).mockImplementation(
+      mockSetPassword,
     );
-    (getSecret as unknown as typeof mockGetSecret).mockImplementation(
-      mockGetSecret,
-    );
-    (
-      cognitolib.createUser as unknown as typeof mockCreateUser
-    ).mockImplementation(mockCreateUser);
-    (
-      cognitolib.setPassword as unknown as typeof mockSetPassword
-    ).mockImplementation(mockSetPassword);
     (
       cognitolib.updateUserAttributes as unknown as typeof mockUpdateUserAttributes
     ).mockImplementation(mockUpdateUserAttributes);
@@ -92,13 +86,7 @@ describe("Cognito User Lambda Handler", () => {
         },
       ],
     });
-    expect(mockSend).toHaveBeenCalledWith(
-      event,
-      context,
-      "SUCCESS",
-      {},
-      "static",
-    );
+    expect(mockSend).toHaveBeenCalledWith(event, context, "SUCCESS", {}, "static");
   });
 
   it("should handle errors and send FAILED response", async () => {
@@ -129,12 +117,6 @@ describe("Cognito User Lambda Handler", () => {
     await handler(event, context);
 
     expect(mockGetSecret).toHaveBeenCalledWith("passwordSecretArn"); // pragma: allowlist secret
-    expect(mockSend).toHaveBeenCalledWith(
-      event,
-      context,
-      "FAILED",
-      {},
-      "static",
-    );
+    expect(mockSend).toHaveBeenCalledWith(event, context, "FAILED", {}, "static");
   });
 });

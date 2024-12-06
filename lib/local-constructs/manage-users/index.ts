@@ -44,9 +44,7 @@ export class ManageUsers extends Construct {
       role: new Role(this, "LambdaExecutionRole", {
         assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
         managedPolicies: [
-          ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole",
-          ),
+          ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole"),
         ],
         inlinePolicies: {
           LambdaAssumeRolePolicy: new PolicyDocument({
@@ -68,10 +66,7 @@ export class ManageUsers extends Construct {
               }),
               new PolicyStatement({
                 effect: Effect.ALLOW,
-                actions: [
-                  "secretsmanager:GetSecretValue",
-                  "secretsmanager:DescribeSecret",
-                ],
+                actions: ["secretsmanager:GetSecretValue", "secretsmanager:DescribeSecret"],
                 resources: ["*"],
               }),
             ],
@@ -81,64 +76,56 @@ export class ManageUsers extends Construct {
       bundling: commonBundlingOptions,
     });
 
-    const customResourceLogGroup = new LogGroup(
-      this,
-      `CustomResourceLogGroup`,
-      {
-        removalPolicy: RemovalPolicy.DESTROY,
-      },
-    );
+    const customResourceLogGroup = new LogGroup(this, `CustomResourceLogGroup`, {
+      removalPolicy: RemovalPolicy.DESTROY,
+    });
 
-    const customResource = new AwsCustomResource(
-      this,
-      "CleanupKafkaCustomResource",
-      {
-        onCreate: {
-          service: "Lambda",
-          action: "invoke",
-          parameters: {
-            FunctionName: manageUsers.functionName,
-            Payload: JSON.stringify({
-              RequestType: "Create",
-              ResourceProperties: {
-                userPoolId: userPool.userPoolId,
-                users,
-                passwordSecretArn: passwordSecretArn,
-              },
-            }),
-          },
-          physicalResourceId: PhysicalResourceId.of("manage-users"),
-        },
-        onUpdate: {
-          service: "Lambda",
-          action: "invoke",
-          parameters: {
-            FunctionName: manageUsers.functionName,
-            Payload: JSON.stringify({
-              RequestType: "Update",
-              ResourceProperties: {
-                userPoolId: userPool.userPoolId,
-                users,
-                passwordSecretArn: passwordSecretArn,
-              },
-            }),
-          },
-          physicalResourceId: PhysicalResourceId.of("manage-users"),
-        },
-        logGroup: customResourceLogGroup,
-        policy: AwsCustomResourcePolicy.fromStatements([
-          new PolicyStatement({
-            actions: ["lambda:InvokeFunction"],
-            resources: [manageUsers.functionArn],
+    const customResource = new AwsCustomResource(this, "CleanupKafkaCustomResource", {
+      onCreate: {
+        service: "Lambda",
+        action: "invoke",
+        parameters: {
+          FunctionName: manageUsers.functionName,
+          Payload: JSON.stringify({
+            RequestType: "Create",
+            ResourceProperties: {
+              userPoolId: userPool.userPoolId,
+              users,
+              passwordSecretArn: passwordSecretArn,
+            },
           }),
-          new PolicyStatement({
-            effect: Effect.DENY,
-            actions: ["logs:CreateLogGroup"],
-            resources: ["*"],
-          }),
-        ]),
+        },
+        physicalResourceId: PhysicalResourceId.of("manage-users"),
       },
-    );
+      onUpdate: {
+        service: "Lambda",
+        action: "invoke",
+        parameters: {
+          FunctionName: manageUsers.functionName,
+          Payload: JSON.stringify({
+            RequestType: "Update",
+            ResourceProperties: {
+              userPoolId: userPool.userPoolId,
+              users,
+              passwordSecretArn: passwordSecretArn,
+            },
+          }),
+        },
+        physicalResourceId: PhysicalResourceId.of("manage-users"),
+      },
+      logGroup: customResourceLogGroup,
+      policy: AwsCustomResourcePolicy.fromStatements([
+        new PolicyStatement({
+          actions: ["lambda:InvokeFunction"],
+          resources: [manageUsers.functionArn],
+        }),
+        new PolicyStatement({
+          effect: Effect.DENY,
+          actions: ["logs:CreateLogGroup"],
+          resources: ["*"],
+        }),
+      ]),
+    });
     const policy = customResource.node.findChild("CustomResourcePolicy");
     customResource.node.addDependency(policy);
     customResourceLogGroup.node.addDependency(policy);

@@ -15,9 +15,7 @@ export const formSchema = events["temporary-extension"].baseSchema
       .object({
         validAuthority: z
           .object({
-            waiverNumber: events[
-              "temporary-extension"
-            ].baseSchema.shape.waiverNumber
+            waiverNumber: events["temporary-extension"].baseSchema.shape.waiverNumber
               .refine(async (value) => await itemExists(value), {
                 message:
                   "According to our records, this Approved Initial or Renewal Waiver Number does not yet exist. Please check the Approved Initial or Renewal Waiver Number and try entering it again.",
@@ -33,9 +31,7 @@ export const formSchema = events["temporary-extension"].baseSchema
               try {
                 const originalWaiverData = await getItem(data.waiverNumber);
 
-                return !(
-                  originalWaiverData._source.authority !== data.authority
-                );
+                return !(originalWaiverData._source.authority !== data.authority);
               } catch {
                 return z.never;
               }

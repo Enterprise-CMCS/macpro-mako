@@ -10,9 +10,7 @@ describe("seatool has valid data", () => {
 
   it("can be transformed into a new object", () => {
     for (const record of seaToolRecords) {
-      const transformedRecord = opensearch.main.seatool
-        .transform("randomid")
-        .parse(record);
+      const transformedRecord = opensearch.main.seatool.transform("randomid").parse(record);
       expect(transformedRecord.id).toEqual("randomid");
     }
   });

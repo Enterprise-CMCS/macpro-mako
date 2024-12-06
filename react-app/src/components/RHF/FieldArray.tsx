@@ -7,9 +7,7 @@ import { slotInitializer } from "./utils";
 import { Field } from "./Field";
 import { cn } from "@/utils";
 
-export const RHFFieldArray = <TFields extends FieldValues>(
-  props: FieldArrayProps<TFields>,
-) => {
+export const RHFFieldArray = <TFields extends FieldValues>(props: FieldArrayProps<TFields>) => {
   const fieldArr = useFieldArray<any>({
     control: props.control,
     name: props.name,
@@ -31,19 +29,9 @@ export const RHFFieldArray = <TFields extends FieldValues>(
     <div className={"flex flex-col gap-6 w-full"}>
       {fieldArr.fields.map((FLD, index) => {
         return (
-          <div
-            className={cn("flex flex-row gap-6", props.fieldArrayClassName)}
-            key={FLD.id}
-          >
+          <div className={cn("flex flex-row gap-6", props.fieldArrayClassName)} key={FLD.id}>
             {props.fields.map((SLOT, i) => {
-              return (
-                <Field
-                  key={`${SLOT.name}-${i}`}
-                  {...props}
-                  index={index}
-                  SLOT={SLOT}
-                />
-              );
+              return <Field key={`${SLOT.name}-${i}`} {...props} index={index} SLOT={SLOT} />;
             })}
             {/* FieldArray Removal */}
             {index >= 1 && !props.removeText && (
@@ -66,19 +54,12 @@ export const RHFFieldArray = <TFields extends FieldValues>(
                 {props.removeText ?? "Remove Group"}
               </Button>
             )}
-            {props.divider && (
-              <div className="w-full border-slate-300 border-b-[1px]" />
-            )}
+            {props.divider && <div className="w-full border-slate-300 border-b-[1px]" />}
           </div>
         );
       })}
       {props.lastDivider && (
-        <div
-          className={cn(
-            "w-full border-slate-300 border-b-[1px]",
-            props.lastDivider,
-          )}
-        />
+        <div className={cn("w-full border-slate-300 border-b-[1px]", props.lastDivider)} />
       )}
       <div className={cn("flex items-center", props.appendClassName)}>
         <Button

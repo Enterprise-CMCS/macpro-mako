@@ -7,17 +7,13 @@ import { useLabelMapping } from "@/hooks";
 import { useFilterDrawerContext } from "../FilterProvider";
 import { checkMultiFilter, useOsAggregate, useOsUrl } from "@/components";
 
-type FilterGroup = Partial<
-  Record<opensearch.main.Field, C.DrawerFilterableGroup>
->;
+type FilterGroup = Partial<Record<opensearch.main.Field, C.DrawerFilterableGroup>>;
 
 export const useFilterState = () => {
   const { data: user } = useGetUser();
   const url = useOsUrl();
 
-  const isCms =
-    !!user?.isCms &&
-    !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK);
+  const isCms = !!user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK);
 
   const filters: FilterGroup = (() => {
     // ------------------------ SPAS ------------------------ //

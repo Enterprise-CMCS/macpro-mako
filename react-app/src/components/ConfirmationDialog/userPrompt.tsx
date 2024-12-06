@@ -31,9 +31,7 @@ export const userPrompt = (newUserPrompt: UserPrompt) => {
 };
 
 export const UserPrompt = () => {
-  const [activeUserPrompt, setActiveUserPrompt] = useState<UserPrompt | null>(
-    null,
-  );
+  const [activeUserPrompt, setActiveUserPrompt] = useState<UserPrompt | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {

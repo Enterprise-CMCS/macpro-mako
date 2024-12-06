@@ -1,11 +1,7 @@
 import { response } from "../libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 import { getStateFilter } from "../libs/api/auth/user";
-import {
-  getAppkChildren,
-  getPackage,
-  getPackageChangelog,
-} from "../libs/api/package";
+import { getAppkChildren, getPackage, getPackageChangelog } from "../libs/api/package";
 import { validateEnvVariable } from "shared-utils";
 
 export const getItemData = async (event: APIGatewayEvent) => {
@@ -32,9 +28,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
       filter.push({
         range: {
           timestamp: {
-            gte: new Date(
-              packageResult._source.legacySubmissionTimestamp,
-            ).getTime(),
+            gte: new Date(packageResult._source.legacySubmissionTimestamp).getTime(),
           },
         },
       });
@@ -44,9 +38,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
     if (
       stateFilter &&
       (!packageResult._source.state ||
-        !stateFilter.terms.state.includes(
-          packageResult._source.state.toLocaleLowerCase(),
-        ))
+        !stateFilter.terms.state.includes(packageResult._source.state.toLocaleLowerCase()))
     ) {
       return response({
         statusCode: 401,

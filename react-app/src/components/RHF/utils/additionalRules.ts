@@ -9,9 +9,9 @@ export const sortFunctions: {
 };
 
 // New function to sort options from lowest to highest
-export function sortOptionsLowestToHighest<
-  T extends { value: string | number },
->(options: T[]): T[] {
+export function sortOptionsLowestToHighest<T extends { value: string | number }>(
+  options: T[],
+): T[] {
   return [...options].sort((a, b) => {
     const aValue = typeof a.value === "string" ? parseFloat(a.value) : a.value;
     const bValue = typeof b.value === "string" ? parseFloat(b.value) : b.value;
@@ -19,10 +19,7 @@ export function sortOptionsLowestToHighest<
   });
 }
 
-export function stringCompare(
-  a: { label: string },
-  b: { label: string },
-): number {
+export function stringCompare(a: { label: string }, b: { label: string }): number {
   const aIsNumber = !isNaN(parseFloat(a.label));
   const bIsNumber = !isNaN(parseFloat(b.label));
 
@@ -36,9 +33,7 @@ export function stringCompare(
 export const ruleGenerator: RuleGenerator = (rules, addtnlRules) => {
   if (!rules && !addtnlRules) return undefined;
   const simpleRules = rules ?? {};
-  const customRules = addtnlRules
-    ? { validate: addtnlRules.reduce(valReducer, {}) }
-    : {};
+  const customRules = addtnlRules ? { validate: addtnlRules.reduce(valReducer, {}) } : {};
 
   return { ...simpleRules, ...customRules };
 };
@@ -55,13 +50,9 @@ export const valReducer = (
       return {
         ...valSet,
         [valName]: (value, fields) => {
-          if (
-            !rule.strictGreater &&
-            parseFloat(value) <= parseFloat(fields[rule.fieldName])
-          )
+          if (!rule.strictGreater && parseFloat(value) <= parseFloat(fields[rule.fieldName]))
             return true;
-          else if (parseFloat(value) < parseFloat(fields[rule.fieldName]))
-            return true;
+          else if (parseFloat(value) < parseFloat(fields[rule.fieldName])) return true;
           return rule.message;
         },
       };
@@ -69,13 +60,9 @@ export const valReducer = (
       return {
         ...valSet,
         [valName]: (value, fields) => {
-          if (
-            !rule.strictGreater &&
-            parseFloat(value) >= parseFloat(fields[rule.fieldName])
-          )
+          if (!rule.strictGreater && parseFloat(value) >= parseFloat(fields[rule.fieldName]))
             return true;
-          else if (parseFloat(value) > parseFloat(fields[rule.fieldName]))
-            return true;
+          else if (parseFloat(value) > parseFloat(fields[rule.fieldName])) return true;
           return rule.message;
         },
       };
@@ -83,10 +70,8 @@ export const valReducer = (
       return {
         ...valSet,
         [valName]: (value, fields) => {
-          if (value !== undefined && fields[rule.fieldName] === undefined)
-            return true;
-          if (value === undefined && fields[rule.fieldName] !== undefined)
-            return true;
+          if (value !== undefined && fields[rule.fieldName] === undefined) return true;
+          if (value === undefined && fields[rule.fieldName] !== undefined) return true;
           return rule.message;
         },
       };
@@ -95,11 +80,7 @@ export const valReducer = (
         ...valSet,
         [valName]: (_, fields) => {
           const fieldArray = fields[rule.fieldName];
-          if (
-            !fieldArray ||
-            !Array.isArray(fieldArray) ||
-            fieldArray.length <= 1
-          ) {
+          if (!fieldArray || !Array.isArray(fieldArray) || fieldArray.length <= 1) {
             return true; // No validation needed for 0 or 1 entry
           }
 
@@ -138,9 +119,7 @@ export const valReducer = (
             return true; // Skip validation if field array is not valid
           }
 
-          const currentIndex = fieldArray.findIndex(
-            (item) => item[rule.fromField] === value,
-          );
+          const currentIndex = fieldArray.findIndex((item) => item[rule.fromField] === value);
           if (currentIndex === -1) {
             return true; // Skip validation if current item is not found
           }
@@ -151,11 +130,7 @@ export const valReducer = (
             return true; // Skip validation if values are not valid numbers
           }
 
-          return (
-            toValue > fromValue ||
-            rule.message ||
-            "To age must be greater than From age"
-          );
+          return toValue > fromValue || rule.message || "To age must be greater than From age";
         },
       };
     default:

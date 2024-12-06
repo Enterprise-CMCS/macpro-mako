@@ -2,8 +2,7 @@ import { FormSchema } from "shared-types";
 import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 export const v202401: FormSchema = {
-  header:
-    "ABP 3: Selection of benchmark or benchmark-equivalent benefit package",
+  header: "ABP 3: Selection of benchmark or benchmark-equivalent benefit package",
   formId: "abp3",
   sections: [
     {
@@ -11,8 +10,7 @@ export const v202401: FormSchema = {
       sectionId: "benefit-package",
       form: [
         {
-          description:
-            "For the population defined in section 1, the state/territory wants to:",
+          description: "For the population defined in section 1, the state/territory wants to:",
           slots: [
             {
               rhf: "Radio",
@@ -168,22 +166,19 @@ export const v202401: FormSchema = {
                                                         rhf: "Radio",
                                                         name: "approved-state-plan-opts",
                                                         rules: {
-                                                          required:
-                                                            "* Required",
+                                                          required: "* Required",
                                                         },
                                                         props: {
                                                           options: [
                                                             {
                                                               label:
                                                                 "Benefits provided in the approved state plan",
-                                                              value:
-                                                                "approved_state_plan",
+                                                              value: "approved_state_plan",
                                                             },
                                                             {
                                                               label:
                                                                 "All benefits provided in the approved state plan plus additional benefits",
-                                                              value:
-                                                                "additional_benefits",
+                                                              value: "additional_benefits",
                                                             },
                                                             {
                                                               label:
@@ -194,8 +189,7 @@ export const v202401: FormSchema = {
                                                             {
                                                               label:
                                                                 "A partial list of benefits provided in the approved state plan",
-                                                              value:
-                                                                "partial_list_of_benefits",
+                                                              value: "partial_list_of_benefits",
                                                             },
                                                             {
                                                               label:
@@ -227,8 +221,7 @@ export const v202401: FormSchema = {
                                           rules: {
                                             required: "* Required",
                                             pattern: {
-                                              value:
-                                                noLeadingTrailingWhitespace,
+                                              value: noLeadingTrailingWhitespace,
                                               message:
                                                 "Must not have leading or trailing whitespace.",
                                             },
@@ -351,8 +344,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Select",
-              label:
-                "Is the base benchmark plan the same as the Section 1937 coverage option?",
+              label: "Is the base benchmark plan the same as the Section 1937 coverage option?",
               labelClassName: "font-bold",
               name: "same-as-sect-1937",
               rules: { required: "* Required" },

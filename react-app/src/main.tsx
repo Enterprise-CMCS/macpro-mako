@@ -12,9 +12,7 @@ import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 
 const ldClientId = config.launchDarkly?.CLIENT_ID;
 if (ldClientId === undefined) {
-  throw new Error(
-    "To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID",
-  );
+  throw new Error("To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID");
 }
 
 const initializeLaunchDarkly = async () => {

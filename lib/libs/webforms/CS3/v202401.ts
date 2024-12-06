@@ -41,8 +41,7 @@ export const v202401: FormSchema = {
               name: "inc-standards",
               rhf: "WrappedGroup",
               label: "Age and household income ranges",
-              description:
-                "There should be no overlaps in or gaps between ages.",
+              description: "There should be no overlaps in or gaps between ages.",
               descriptionAbove: true,
               labelClassName: "font-bold",
               fields: [
@@ -50,8 +49,7 @@ export const v202401: FormSchema = {
                   rhf: "FieldArray",
                   name: "age-and-house-inc-range",
                   descriptionClassName: "age-and-house-inc-range",
-                  formItemClassName:
-                    "age-and-house-inc-range [&_select~.slot-form-message]:w-max",
+                  formItemClassName: "age-and-house-inc-range [&_select~.slot-form-message]:w-max",
                   props: {
                     appendText: "Add range",
                   },
