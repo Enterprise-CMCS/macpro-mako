@@ -1,9 +1,11 @@
-import { describe, test, expect, vi } from "vitest";
-import { render, fireEvent } from "@testing-library/react";
+import { describe, test, expect } from "vitest";
+import { screen } from "@testing-library/react";
+import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
 import { RHFSlot } from "../.";
 import { Form, FormField } from "../../Inputs";
 import { Control, useForm } from "react-hook-form";
 import { RHFSlotProps } from "shared-types";
+import userEvent from "@testing-library/user-event";
 
 const TestWrapper = (props: RHFSlotProps) => {
   const form = useForm();
@@ -35,73 +37,57 @@ const testValues: RHFSlotProps = {
   formItemClassName: "py-4",
 };
 
-vi.mock("@/api", async (importOriginal) => {
-  const actual = await importOriginal();
-  return {
-    ...(actual as object),
-    useGetCounties: vi.fn(() => {
-      return { data: [], isLoading: false, error: null };
-    }),
-  };
-});
-
 describe("Slot Input Field Tests", () => {
-  test("renders Input", () => {
-    const rend = render(<TestWrapper {...testValues} />);
-    const input = rend.getByRole("textbox", { name: `${testValues.name}` });
+  test("renders Input", async () => {
+    renderWithQueryClient(<TestWrapper {...testValues} />);
+    const input = screen.getByRole("textbox", { name: `${testValues.name}` });
     expect(input.id).toBe(testValues.name);
   });
 
-  test("renders Textarea", () => {
-    const rend = render(
-      <TestWrapper {...testValues} rhf="Textarea" props={{}} />,
-    );
-    const input = rend.getByRole("textbox", { name: `${testValues.name}` });
+  test("renders Textarea", async () => {
+    renderWithQueryClient(<TestWrapper {...testValues} rhf="Textarea" props={{}} />);
+    const input = screen.getByRole("textbox", { name: `${testValues.name}` });
     expect((input as any)?.name).toBe(testValues.name);
   });
 
-  test("renders TextDisplay", () => {
-    const rend = render(
+  test("renders TextDisplay", async () => {
+    renderWithQueryClient(
       <TestWrapper {...testValues} rhf="TextDisplay" text="Sample Text Comp" />,
     );
-    const input = rend.getByTestId(testValues.name);
-    const input2 = rend.getByText("Sample Text Comp");
+    const input = screen.getByTestId(testValues.name);
+    const input2 = screen.getByText("Sample Text Comp");
     expect(input.firstChild).toEqual(input2.firstChild);
   });
 
-  test("renders Upload", () => {
-    const rend = render(
-      <TestWrapper {...testValues} rhf="Upload" props={{}} />,
-    );
-    const input = rend.getByRole("presentation");
-    const fileText = rend.getByText("choose from folder");
+  test("renders Upload", async () => {
+    renderWithQueryClient(<TestWrapper {...testValues} rhf="Upload" props={{}} />);
+    const input = screen.getByRole("presentation");
+    const fileText = screen.getByText("choose from folder");
     expect(fileText.classList.contains("underline")).toBeTruthy();
     expect(input).toBeTruthy();
   });
 
-  test("renders DatePicker", () => {
-    const rend = render(
-      <TestWrapper {...testValues} rhf="DatePicker" props={{}} />,
-    );
-    const dpt = rend.getByText("Pick a date");
+  test("renders DatePicker", async () => {
+    renderWithQueryClient(<TestWrapper {...testValues} rhf="DatePicker" props={{}} />);
+    const dpt = screen.getByText("Pick a date");
     expect(dpt).toBeTruthy();
   });
 
-  test("renders Select", () => {
-    const rend = render(
+  test("renders Select", async () => {
+    renderWithQueryClient(
       <TestWrapper
         {...testValues}
         rhf="Select"
         props={{ options: [{ label: "test", value: "test" }] }}
       />,
     );
-    const selectBox = rend.getByRole("combobox");
+    const selectBox = screen.getByRole("combobox");
     expect(selectBox).toBeTruthy();
   });
 
   describe("Multiselect", () => {
-    test("renders Multiselect", () => {
-      const { getByRole } = render(
+    test("renders Multiselect", async () => {
+      renderWithQueryClient(
         <TestWrapper
           {...testValues}
           rhf="Multiselect"
@@ -114,11 +100,12 @@ describe("Slot Input Field Tests", () => {
         />,
       );
 
-      expect(getByRole("combobox")).toBeInTheDocument();
+      expect(screen.getByRole("combobox")).toBeInTheDocument();
     });
 
-    test("renders options correctly", () => {
-      const { getByText, getByRole } = render(
+    test("renders options correctly", async () => {
+      const user = userEvent.setup();
+      renderWithQueryClient(
         <TestWrapper
           {...testValues}
           rhf="Multiselect"
@@ -131,13 +118,14 @@ describe("Slot Input Field Tests", () => {
         />,
       );
 
-      fireEvent.mouseDown(getByRole("combobox"));
-      expect(getByText("test 1")).toBeInTheDocument();
-      expect(getByText("test 2")).toBeInTheDocument();
+      await user.click(screen.getByRole("combobox"));
+      expect(screen.getByText("test 1")).toBeInTheDocument();
+      expect(screen.getByText("test 2")).toBeInTheDocument();
     });
 
-    test("allows multiple selections", () => {
-      const { getByText, getByRole, container } = render(
+    test("allows multiple selections", async () => {
+      const user = userEvent.setup();
+      renderWithQueryClient(
         <TestWrapper
           {...testValues}
           rhf="Multiselect"
@@ -150,22 +138,24 @@ describe("Slot Input Field Tests", () => {
         />,
       );
 
-      fireEvent.mouseDown(getByRole("combobox"));
-      fireEvent.click(getByText("test 1"));
-      fireEvent.mouseDown(getByRole("combobox"));
-      fireEvent.click(getByText("test 2"));
+      expect(screen.queryByText("test 1")).not.toBeInTheDocument();
+      expect(screen.queryByText("test 2")).not.toBeInTheDocument();
+      expect(screen.queryByText("test 3")).not.toBeInTheDocument();
 
-      const selectedOptions = container.querySelectorAll(
-        ".css-1p3m7a8-multiValue",
-      );
-      expect(selectedOptions).toHaveLength(2);
-      expect(selectedOptions[0]).toHaveTextContent("test 1");
-      expect(selectedOptions[1]).toHaveTextContent("test 2");
+      const multiselect = screen.getByRole("combobox");
+      await user.type(multiselect, "test 1{enter}");
+      await user.type(multiselect, "test 2{enter}");
+      await user.type(multiselect, "test 3{enter}");
+
+      expect(screen.queryByText("test 1")).toBeInTheDocument();
+      expect(screen.queryByText("test 2")).toBeInTheDocument();
+      expect(screen.queryByText("test 3")).not.toBeInTheDocument();
     });
   });
 
-  test("renders RadioGroup", () => {
-    const rend = render(
+  test("renders RadioGroup", async () => {
+    const user = userEvent.setup();
+    renderWithQueryClient(
       <TestWrapper
         {...testValues}
         rhf="Radio"
@@ -177,16 +167,17 @@ describe("Slot Input Field Tests", () => {
         }}
       />,
     );
-    const radio1 = rend.getByLabelText("test1");
-    const radio2 = rend.getByLabelText("test2");
+    const radio1 = screen.getByLabelText("test1");
+    const radio2 = screen.getByLabelText("test2");
 
-    fireEvent.click(radio1);
+    await user.click(radio1);
     expect(radio1).toBeChecked();
     expect(radio2).not.toBeChecked();
   });
 
-  test("render CheckGroup with OptChildren", () => {
-    const rend = render(
+  test("render CheckGroup with OptChildren", async () => {
+    const user = userEvent.setup();
+    renderWithQueryClient(
       <TestWrapper
         {...testValues}
         rhf="Checkbox"
@@ -224,18 +215,18 @@ describe("Slot Input Field Tests", () => {
       />,
     );
 
-    const check1 = rend.getByLabelText("test1");
-    const check2 = rend.getByLabelText("test2");
+    const check1 = screen.getByLabelText("test1");
+    const check2 = screen.getByLabelText("test2");
 
-    fireEvent.click(check1);
+    await user.click(check1);
     expect(check1).toBeChecked();
     expect(check2).not.toBeChecked();
 
-    fireEvent.click(check2);
-    const text1 = rend.getByText("sample text display 1");
-    const text2 = rend.getByText("sample text display 2");
+    await user.click(check2);
+    const text1 = screen.getByText("sample text display 1");
+    const text2 = screen.getByText("sample text display 2");
     expect(check2).toBeChecked();
-    expect(text1).toBeTruthy();
-    expect(text2).toBeTruthy();
+    expect(text1).toBeInTheDocument();
+    expect(text2).toBeInTheDocument();
   });
 });
