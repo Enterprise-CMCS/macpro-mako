@@ -12,6 +12,7 @@ export const e2e = {
     }),
   handler: async ({ ui }: { ui: boolean }) => {
     await checkIfAuthenticated();
+    console.log(ui);
     await runCommand("bun", ["playwright", "install", "--with-deps", "chromium"], ".");
 
     await runCommand("cd", ["test/e2e"], ".");
