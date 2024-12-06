@@ -25,7 +25,7 @@ export const AppKCMSEmail = (props: {
     >
       <PackageDetails
         details={{
-          "State or territory": variables.territory,
+          "State or Territory": variables.territory,
           "1915(c) Appendix K ID": variables.id,
           Summary: variables.additionalInformation,
         }}
