@@ -35,7 +35,7 @@ describe("Package Activity", () => {
   it("displays the correct title with changelog length, a changelog entry, and the 'Download all documents' button", async () => {
     await renderFormWithPackageSectionAsync(<PackageActivities />, WITHDRAWN_CHANGELOG_ITEM_ID);
 
-    expect(screen.getByText("Package Activity (5)"));
+    expect(screen.getByText("Package Activity (7)"));
     expect(screen.getByText("Initial package submitted"));
     expect(screen.getByText("Download all documents"));
     expect(screen.getByText("Contract Amendment"));
@@ -76,6 +76,16 @@ describe("Package Activity", () => {
         filename: "compliance_documents.xlsx",
         key: "subdoc004",
         title: "Compliance Files",
+      },
+      {
+        filename: "rai_withdrawal_notice.pdf",
+        key: "withdraw005",
+        title: "Withdrawal Notice",
+      },
+      {
+        filename: "package_withdrawal_request.docx",
+        key: "withdraw006",
+        title: "Package Withdrawal",
       },
       {
         filename: "miscellaneous_info.txt",

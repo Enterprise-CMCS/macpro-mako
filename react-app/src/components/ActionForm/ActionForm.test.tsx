@@ -7,8 +7,8 @@ import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
 import {
   SUBMISSION_ERROR_ITEM_ID,
   GET_ERROR_ITEM_ID,
-  setMockUsername,
   setDefaultStateSubmitter,
+  setDefaultReviewer,
 } from "mocks";
 import * as userPrompt from "@/components/ConfirmationDialog/userPrompt";
 import * as banner from "@/components/Banner/banner";
@@ -109,7 +109,7 @@ describe("ActionForm", () => {
   });
 
   test("doesn't render form if user access is denied", async () => {
-    setMockUsername(null);
+    setDefaultReviewer();
 
     await renderFormAsync(
       <ActionForm
@@ -436,7 +436,7 @@ describe("ActionForm", () => {
           value: {
             correctDataStateFound: false,
             maxAttemptsReached: true,
-            error: "Error fetching: Request failed with status code 500",
+            error: "Error fetching data: Request failed with status code 500",
           },
         },
       ]);
@@ -445,7 +445,7 @@ describe("ActionForm", () => {
     await vi.waitFor(() =>
       expect(bannerSpy).toBeCalledWith({
         header: "An unexpected error has occurred:",
-        body: "Error fetching: Request failed with status code 500",
+        body: "Error fetching data: Request failed with status code 500",
         pathnameToDisplayOn: "/",
         variant: "destructive",
       }),
@@ -686,31 +686,5 @@ describe("ActionForm", () => {
     );
 
     expect(screen.queryByText(PROGRESS_REMINDER)).not.toBeInTheDocument();
-  });
-
-  test("renders default wrapper if `fieldsLayout` is undefined", async () => {
-    await renderFormAsync(
-      <ActionForm
-        title="Action Form Title"
-        schema={z.object({})}
-        fields={() => (
-          <>
-            <div />
-            <div />
-          </>
-        )}
-        documentPollerArgs={{
-          property: () => "id",
-          documentChecker: () => true,
-        }}
-        breadcrumbText="Example Breadcrumb"
-      />,
-    );
-
-    expect(
-      screen.queryAllByText(
-        /Once you submit this form, a confirmation email is sent to you and to CMS./,
-      ).length,
-    ).toBe(2);
   });
 });

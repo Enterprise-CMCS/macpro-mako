@@ -52,7 +52,7 @@ export const TimeoutModal = () => {
       startCountdown();
       setIsModalOpen(true);
     }
-  }, [isIdleForTwentyMins, user, isUserLoading]);
+  }, [isIdleForTwentyMins, user, isUserLoading, startCountdown]);
 
   const duration = intervalToDuration({
     start: 0,

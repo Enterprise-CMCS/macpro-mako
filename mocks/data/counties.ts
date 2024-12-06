@@ -1,6 +1,6 @@
-export type County = string[];
+import { TestCounty } from "../index.d";
 
-const counties: Record<string, County[]> = {
+const counties: Record<string, TestCounty[]> = {
   "24": [
     ["NAME", "state", "county"],
     ["Worcester County, Maryland", "24", "047"],

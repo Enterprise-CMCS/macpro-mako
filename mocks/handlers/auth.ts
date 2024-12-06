@@ -1,15 +1,13 @@
-import type { UserData } from "index.d";
+import type { TestUserData } from "index.d";
 import { CognitoUserAttributes } from "shared-types";
 import { isCmsUser } from "shared-utils";
 import { makoReviewer, makoStateSubmitter, userResponses } from "../data/users";
 
-export const setMockUsername = (user?: string | UserData | null): void => {
-  if (user) {
-    if (typeof user === "string") {
-      process.env.MOCK_USER_USERNAME = user;
-    } else {
-      process.env.MOCK_USER_USERNAME = user.Username;
-    }
+export const setMockUsername = (user?: TestUserData | string | null): void => {
+  if (user && typeof user === "string") {
+    process.env.MOCK_USER_USERNAME = user;
+  } else if (user && (user as TestUserData).Username !== undefined) {
+    process.env.MOCK_USER_USERNAME = (user as TestUserData).Username;
   } else {
     delete process.env.MOCK_USER_USERNAME;
   }
@@ -19,31 +17,24 @@ export const setDefaultStateSubmitter = () => setMockUsername(makoStateSubmitter
 
 export const setDefaultReviewer = () => setMockUsername(makoReviewer);
 
-export const mockCurrentAuthenticatedUser = async () => {
+export const mockCurrentAuthenticatedUser = (): TestUserData | undefined => {
   if (process.env.MOCK_USER_USERNAME) {
-    const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
-    if (user) {
-      return {
-        username: user.Username,
-        attributes: user.UserAttributes,
-        preferredMFA: "NOMFA",
-      };
-    }
-    return undefined;
+    return findUserByUsername(process.env.MOCK_USER_USERNAME);
   }
   return undefined;
 };
 
-export const mockUserAttributes = async (currentAuthenticatedUser: unknown) => {
-  console.log("mockUserAttributes: ", JSON.stringify(currentAuthenticatedUser, null, 2));
-  // if (currentAuthenticatedUser?.currentAuthenticatedUser !== undefined ) {
-  //   return currentAuthenticatedUser.currentAuthenticatedUser.attributes;
-  // }
+export const mockUserAttributes = async (currentAuthenticatedUser: TestUserData | unknown) => {
+  if (
+    currentAuthenticatedUser &&
+    (currentAuthenticatedUser as TestUserData).UserAttributes !== undefined
+  ) {
+    return (currentAuthenticatedUser as TestUserData).UserAttributes;
+  }
+
   if (process.env.MOCK_USER_USERNAME) {
     const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
-    if (user) {
-      return user.UserAttributes;
-    }
+    return user?.UserAttributes;
   }
   return undefined;
 };
@@ -87,5 +78,5 @@ export const mockUseGetUser = () => {
   };
 };
 
-const findUserByUsername = (username: string): UserData | undefined =>
+const findUserByUsername = (username: string): TestUserData | undefined =>
   userResponses.find((user) => user.Username == username);

@@ -1,10 +1,10 @@
-import type { UserData } from "../../index.d";
+import type { TestUserData } from "../../index.d";
 import { reviewers } from "./cmsReviewer";
 import { helpDeskUsers } from "./helpDeskUsers";
 import { readOnlyUsers } from "./readOnlyCMSUsers";
 import { stateSubmitters } from "./stateSubmitters";
 
-export const noRoleUser: UserData = {
+export const noRoleUser: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -31,7 +31,7 @@ export const noRoleUser: UserData = {
 };
 
 // return all of the possible responses
-export const userResponses: UserData[] = [
+export const userResponses: TestUserData[] = [
   ...stateSubmitters,
   ...reviewers,
   ...helpDeskUsers,

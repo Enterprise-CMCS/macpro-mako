@@ -1,49 +1,51 @@
-import { Response as Res, Hit, Filterable as FIL, QueryState, AggQuery } from "./../_";
 import { z } from "zod";
+import { AggQuery, Filterable as FIL, Hit, QueryState, Response as Res } from "./../_";
 import { ItemResult as Changelog } from "./../changelog";
 import {
-  capitatedInitial,
+  appK,
   capitatedAmendment,
+  capitatedInitial,
   capitatedRenewal,
-  contractingInitial,
+  changedDate,
   contractingAmendment,
+  contractingInitial,
   contractingRenewal,
+  legacyPackageView,
   newChipSubmission,
   newMedicaidSubmission,
-  legacyPackageView,
-  withdrawPackage,
   respondToRai,
-  withdrawRai,
-  toggleWithdrawRai,
   seatool,
-  changedDate,
   temporaryExtension,
-  appK,
+  toggleWithdrawRai,
   uploadSubsequentDocuments,
+  withdrawPackage,
+  withdrawRai,
 } from "./transforms";
 
-export type Document = z.infer<capitatedAmendment.Schema> &
-  z.infer<capitatedInitial.Schema> &
-  z.infer<capitatedRenewal.Schema> &
-  z.infer<contractingAmendment.Schema> &
-  z.infer<contractingInitial.Schema> &
-  z.infer<contractingRenewal.Schema> &
-  z.infer<newChipSubmission.Schema> &
-  z.infer<newMedicaidSubmission.Schema> &
-  z.infer<temporaryExtension.Schema> &
-  z.infer<legacyPackageView.Schema> &
-  z.infer<respondToRai.Schema> &
-  z.infer<withdrawRai.Schema> &
-  z.infer<withdrawPackage.Schema> &
-  z.infer<toggleWithdrawRai.Schema> &
-  z.infer<appK.Schema> &
-  z.infer<seatool.Schema> &
-  z.infer<changedDate.Schema> &
-  z.infer<uploadSubsequentDocuments.Schema> & {
-    makoChangedDate: string;
-    changelog?: Changelog[];
-    appkChildren?: Omit<ItemResult, "found">[];
-  };
+export type Document = (
+  | (z.infer<capitatedAmendment.Schema> &
+      z.infer<capitatedInitial.Schema> &
+      z.infer<capitatedRenewal.Schema> &
+      z.infer<contractingAmendment.Schema> &
+      z.infer<contractingInitial.Schema> &
+      z.infer<contractingRenewal.Schema> &
+      z.infer<newChipSubmission.Schema> &
+      z.infer<newMedicaidSubmission.Schema> &
+      z.infer<temporaryExtension.Schema> &
+      z.infer<legacyPackageView.Schema> &
+      z.infer<respondToRai.Schema> &
+      z.infer<withdrawRai.Schema> &
+      z.infer<withdrawPackage.Schema> &
+      z.infer<toggleWithdrawRai.Schema> &
+      z.infer<appK.Schema> &
+      z.infer<changedDate.Schema> &
+      z.infer<uploadSubsequentDocuments.Schema>)
+  | z.infer<seatool.Schema>
+) & {
+  makoChangedDate: string;
+  changelog?: Changelog[];
+  appkChildren?: Omit<ItemResult, "found">[];
+};
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {

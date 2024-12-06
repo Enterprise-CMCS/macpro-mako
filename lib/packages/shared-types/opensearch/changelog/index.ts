@@ -1,14 +1,15 @@
+import { z } from "zod";
 import {
-  Response as Res,
-  Hit,
-  Filterable as FIL,
-  QueryState,
   AggQuery,
   ExportHeaderOptions,
+  Filterable as FIL,
+  Hit,
+  QueryState,
+  Response as Res,
 } from "./../_";
-import { z } from "zod";
 
 import {
+  appK,
   capitatedAmendment,
   capitatedInitial,
   capitatedRenewal,
@@ -17,30 +18,34 @@ import {
   contractingRenewal,
   newChipSubmission,
   newMedicaidSubmission,
+  respondToRai,
   temporaryExtension,
+  toggleWithdrawRai,
+  uploadSubsequentDocuments,
   withdrawPackage,
   withdrawRai,
-  toggleWithdrawRai,
-  respondToRai,
-  appK,
-  uploadSubsequentDocuments,
 } from "./transforms";
 
 // legacy
-import { legacyAdminChange, legacyEvent } from "./transforms";
+// import { legacyAdminChange, legacyEvent } from "./transforms";
+// | z.infer<legacyEvent.Schema>
+// | z.infer<legacyAdminChange.Schema>
 
-export type Document = z.infer<capitatedAmendment.Schema> &
-  z.infer<capitatedInitial.Schema> &
-  z.infer<capitatedRenewal.Schema> &
-  z.infer<contractingAmendment.Schema> &
-  z.infer<contractingInitial.Schema> &
-  z.infer<contractingRenewal.Schema> &
-  z.infer<newChipSubmission.Schema> &
-  z.infer<newMedicaidSubmission.Schema> &
-  z.infer<temporaryExtension.Schema> &
-  z.infer<legacyEvent.Schema> &
-  z.infer<legacyAdminChange.Schema> &
-  z.infer<toggleWithdrawRai.Schema>;
+export type Document =
+  | z.infer<capitatedAmendment.Schema>
+  | z.infer<capitatedInitial.Schema>
+  | z.infer<capitatedRenewal.Schema>
+  | z.infer<contractingAmendment.Schema>
+  | z.infer<contractingInitial.Schema>
+  | z.infer<contractingRenewal.Schema>
+  | z.infer<newChipSubmission.Schema>
+  | z.infer<newMedicaidSubmission.Schema>
+  | z.infer<respondToRai.Schema>
+  | z.infer<temporaryExtension.Schema>
+  | z.infer<toggleWithdrawRai.Schema>
+  | z.infer<uploadSubsequentDocuments.Schema>
+  | z.infer<withdrawPackage.Schema>
+  | z.infer<withdrawRai.Schema>;
 
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
@@ -56,6 +61,7 @@ export type ExportHeader = ExportHeaderOptions<Document>;
 export * from "./transforms";
 
 export const transforms = {
+  "app-k": appK,
   "capitated-amendment": capitatedAmendment,
   "capitated-initial": capitatedInitial,
   "capitated-renewal": capitatedRenewal,
@@ -64,11 +70,10 @@ export const transforms = {
   "contracting-renewal": contractingRenewal,
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
+  "respond-to-rai": respondToRai,
   "temporary-extension": temporaryExtension,
+  "toggle-withdraw-rai": toggleWithdrawRai,
+  "upload-subsequent-documents": uploadSubsequentDocuments,
   "withdraw-package": withdrawPackage,
   "withdraw-rai": withdrawRai,
-  "toggle-withdraw-rai": toggleWithdrawRai,
-  "respond-to-rai": respondToRai,
-  "app-k": appK,
-  "upload-subsequent-documents": uploadSubsequentDocuments,
 };
