@@ -10,12 +10,12 @@ import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 import { Text } from "@react-email/components";
 
-export const ChipSpaCMSEmail = (props: {
+export const AppKCMSEmail = (props: {
   variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
-  const previewText = `Action required: review new documents for CHIP SPA ${variables.id} in OneMAC.`;
-  const heading = `New documents have been submitted for CHIP SPA ${variables.id} in OneMAC.`;
+  const previewText = `Action required: review new documents for 1915(c) ${variables.id} in OneMAC.`;
+  const heading = `New documents have been submitted for 1915(c) ${variables.id} in OneMAC.`;
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -25,14 +25,14 @@ export const ChipSpaCMSEmail = (props: {
     >
       <PackageDetails
         details={{
-          "State or territory": variables.territory,
-          "CHIP SPA Package ID": variables.id,
+          "State or Territory": variables.territory,
+          "1915(c) Appendix K ID": variables.id,
           Summary: variables.additionalInformation,
         }}
       />
       <Attachments attachments={variables.attachments} />
-      <Divider />
       <SubDocHowToAccess appEndpointURL={variables.applicationEndpointUrl} />
+      <Divider />
       <Text style={{ ...styles.text.base, marginTop: "16px" }}>Thank you.</Text>
     </BaseEmailTemplate>
   );
