@@ -15,6 +15,7 @@ export const e2e = {
     console.log(ui);
     await runCommand("bun", ["playwright", "install", "--with-deps", "chromium"], ".");
 
+    await runCommand("turbo", ["telemetry", "disable"], ".")
     await runCommand("turbo", [ui ? "e2e:ui" : "e2e", "-vvv"], ".");
   },
 };
