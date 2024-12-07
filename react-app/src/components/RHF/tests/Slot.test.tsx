@@ -1,5 +1,6 @@
-import { describe, test, expect, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { describe, test, expect } from "vitest";
+import { screen } from "@testing-library/react";
+import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
 import { RHFSlot } from "../.";
 import { Form, FormField } from "../../Inputs";
 import { Control, useForm } from "react-hook-form";
@@ -35,29 +36,19 @@ const testValues: RHFSlotProps = {
   formItemClassName: "py-4",
 };
 
-vi.mock("@/api", async (importOriginal) => {
-  const actual = await importOriginal();
-  return {
-    ...(actual as object),
-    useGetCounties: vi.fn(() => {
-      return { data: [], isLoading: false, error: null };
-    }),
-  };
-});
-
 describe("RHFSlot tests", () => {
   test("render label, desc, and comp", () => {
-    const rend = render(<TestWrapper {...testValues} />);
-    const desc = rend.getByText(`${testValues.description}`);
-    const wrap = rend.getByTestId(`${testValues.name}Wrapper`);
-    const input = rend.getByRole("textbox", { name: `${testValues.name}` });
+    renderWithQueryClient(<TestWrapper {...testValues} />);
+    const desc = screen.getByText(`${testValues.description}`);
+    const wrap = screen.getByTestId(`${testValues.name}Wrapper`);
+    const input = screen.getByRole("textbox", { name: `${testValues.name}` });
     expect(desc.classList.contains("py-2")).toBeTruthy();
     expect(wrap.classList.contains("py-4")).toBeTruthy();
     expect(input.id).toBe(testValues.name);
   });
 
   test("desc above, swap values", () => {
-    const rend = render(
+    renderWithQueryClient(
       <TestWrapper
         {...testValues}
         descriptionAbove={true}
@@ -65,21 +56,19 @@ describe("RHFSlot tests", () => {
         formItemClassName={"py-6"}
       />,
     );
-    const desc = rend.getByText(`${testValues.description}`);
-    const wrap = rend.getByTestId(`${testValues.name}Wrapper`);
-    const input = rend.getByRole("textbox", { name: `${testValues.name}` });
+    const desc = screen.getByText(`${testValues.description}`);
+    const wrap = screen.getByTestId(`${testValues.name}Wrapper`);
+    const input = screen.getByRole("textbox", { name: `${testValues.name}` });
     expect(desc.classList.contains("py-4")).toBeTruthy();
     expect(wrap.classList.contains("py-6")).toBeTruthy();
     expect(input.id).toBe(testValues.name);
   });
 
   test("no desc, no form styling", () => {
-    const rend = render(
-      <TestWrapper {...testValues} description={""} formItemClassName={""} />,
-    );
-    const desc = rend.queryByText(`${testValues.description}`);
-    const wrap = rend.getByTestId(`${testValues.name}Wrapper`);
-    const input = rend.getByRole("textbox", { name: `${testValues.name}` });
+    renderWithQueryClient(<TestWrapper {...testValues} description={""} formItemClassName={""} />);
+    const desc = screen.queryByText(`${testValues.description}`);
+    const wrap = screen.getByTestId(`${testValues.name}Wrapper`);
+    const input = screen.getByRole("textbox", { name: `${testValues.name}` });
     expect(desc).toBeNull();
     expect(wrap.classList.contains("gap-4")).toBeTruthy();
     expect(input.id).toBe(testValues.name);
