@@ -15,7 +15,7 @@ export const e2e = {
     console.log(ui);
     await runCommand("bun", ["playwright", "install", "--with-deps", "chromium"], ".");
 
-    await runCommand("cd", ["test/e2e"], ".");
+    await runCommand("cd", ["test/e2e/"], ".");
     await runCommand("npx", ["playwright", "test"], ".");
     await runCommand("cd", ["../.."], ".");
     // await runCommand("bun", [ui ? "e2e:ui" : "e2e", "-vvv"], ".");
