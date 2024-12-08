@@ -23,7 +23,11 @@ export const router = createBrowserRouter([
         element: <F.Dashboard />,
         loader: F.dashboardLoader(queryClient),
       },
-      { path: "/details/:authority/:id", element: <F.Details /> },
+      {
+        path: "/details/:authority/:id",
+        element: <F.Details />,
+        loader: F.packageDetailsLoader,
+      },
       {
         path: "/new-submission/spa/medicaid/create",
         element: <F.MedicaidForm />,
