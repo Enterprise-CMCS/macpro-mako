@@ -1,18 +1,7 @@
 import { Handler } from "aws-lambda";
 import { KafkaRecord, opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
-import {
-  ErrorType,
-  bulkUpdateDataWrapper,
-  getTopic,
-  logError,
-} from "../libs/sink-lib";
-import { Index } from "shared-types/opensearch";
-const osDomain = process.env.osDomain;
-if (!osDomain) {
-  throw new Error("Missing required environment variable(s)");
-}
-const index: Index = `${process.env.indexNamespace}types`;
+import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "../libs/sink-lib";
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   const loggableEvent = { ...event, records: "too large to display" };
@@ -63,5 +52,5 @@ const types = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
       });
     }
   }
-  await bulkUpdateDataWrapper(osDomain, index, docs);
+  await bulkUpdateDataWrapper(docs, "types");
 };
