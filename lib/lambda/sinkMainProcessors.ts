@@ -131,6 +131,8 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
 
         const id: string = decodeBase64WithUtf8(key);
 
+        console.log({ splitId: id.split(""), makoDocTimestamps });
+
         if (!value) {
           // record in seatool has been deleted
           // nulls the seatool properties from the record
