@@ -1,10 +1,30 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { handler } from "./deleteIndex";
 import * as os from "libs/opensearch-lib";
+import { Context } from 'aws-lambda';
 
 vi.mock("libs/opensearch-lib", () => ({
   deleteIndex: vi.fn(),
 }));
+
+const mockedDeleteIndex = vi.mocked(os.deleteIndex);
+mockedDeleteIndex.mockResolvedValue(undefined);
+
+// Mock AWS Lambda Context
+const mockContext: Context = {
+  callbackWaitsForEmptyEventLoop: true,
+  functionName: "test",
+  functionVersion: "1",
+  invokedFunctionArn: "arn:test",
+  memoryLimitInMB: "128",
+  awsRequestId: "test-id",
+  logGroupName: "test-group",
+  logStreamName: "test-stream",
+  getRemainingTimeInMillis: () => 1000,
+  done: () => {},
+  fail: () => {},
+  succeed: () => {},
+};
 
 describe("Lambda Handler", () => {
   const callback = vi.fn();
@@ -19,9 +39,9 @@ describe("Lambda Handler", () => {
       indexNamespace: "test-namespace-",
     };
 
-    (os.deleteIndex as vi.Mock).mockResolvedValueOnce(null);
+    mockedDeleteIndex.mockResolvedValueOnce(undefined);
 
-    await handler(event, null, callback);
+    await handler(event, mockContext, callback);
 
     const expectedIndices = [
       "test-namespace-main",
@@ -45,7 +65,7 @@ describe("Lambda Handler", () => {
       indexNamespace: "test-namespace-",
     };
 
-    await handler(event, null, callback);
+    await handler(event, mockContext, callback);
 
     expect(callback).toHaveBeenCalledWith(expect.any(String), {
       statusCode: 500,
@@ -58,9 +78,9 @@ describe("Lambda Handler", () => {
       indexNamespace: "test-namespace-",
     };
 
-    (os.deleteIndex as vi.Mock).mockRejectedValueOnce(new Error("Test error"));
+    mockedDeleteIndex.mockRejectedValueOnce(new Error("Test error"));
 
-    await handler(event, null, callback);
+    await handler(event, mockContext, callback);
 
     expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,

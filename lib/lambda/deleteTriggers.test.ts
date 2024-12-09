@@ -18,6 +18,7 @@ vi.mock("@aws-sdk/client-lambda", () => ({
 describe("Lambda Handler", () => {
   const callback = vi.fn();
   const mockLambdaClientSend = vi.fn();
+  const mockContext = {} as any;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -44,7 +45,7 @@ describe("Lambda Handler", () => {
       })
       .mockRejectedValueOnce(new Error("Test error"));
 
-    await handler(event, null, callback);
+    await handler(event, mockContext, callback);
 
     expect(mockLambdaClientSend).toHaveBeenCalledWith(
       expect.any(ListEventSourceMappingsCommand),
@@ -66,7 +67,7 @@ describe("Lambda Handler", () => {
       EventSourceMappings: [],
     });
 
-    await handler(event, null, callback);
+    await handler(event, mockContext, callback);
 
     expect(mockLambdaClientSend).toHaveBeenCalledWith(
       expect.any(ListEventSourceMappingsCommand),

@@ -142,7 +142,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
     const { key, value } = kafkaRecord;
     try {
       const id: string = JSON.parse(decodeBase64WithUtf8(key));
-
+      console.log("id", id);
       // Handle deletes and continue
       if (!value) {
         docs.push(opensearch.main.seatool.tombstone(id));
@@ -154,6 +154,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         id,
         ...JSON.parse(decodeBase64WithUtf8(value)),
       };
+      console.log("record", JSON.stringify(record));
       const result = opensearch.main.seatool.transform(id).safeParse(record);
       if (!result.success) {
         logError({

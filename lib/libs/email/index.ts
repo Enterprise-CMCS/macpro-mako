@@ -1,6 +1,6 @@
 import { Authority } from "shared-types";
 import { getPackageChangelog } from "../api/package";
-import * as EmailContent from "./content";
+import * as EmailContent from "./content/index.js";
 
 export type UserType = "cms" | "state";
 
@@ -22,30 +22,60 @@ export type AuthoritiesWithUserTypesTemplate = {
 export type EmailTemplates = {
   "new-medicaid-submission": AuthoritiesWithUserTypesTemplate;
   "new-chip-submission": AuthoritiesWithUserTypesTemplate;
-  "temp-extension": UserTypeOnlyTemplate;
+  "temporary-extension": UserTypeOnlyTemplate;
   "withdraw-package": AuthoritiesWithUserTypesTemplate;
   "withdraw-rai": AuthoritiesWithUserTypesTemplate;
+
+  "upload-subsequent-documents": AuthoritiesWithUserTypesTemplate;
   "contracting-initial": AuthoritiesWithUserTypesTemplate;
+  "contracting-renewal": AuthoritiesWithUserTypesTemplate;
+  "contracting-waiver": AuthoritiesWithUserTypesTemplate;
+  "contracting-amendment": AuthoritiesWithUserTypesTemplate;
+
   "capitated-initial": AuthoritiesWithUserTypesTemplate;
+  "capitated-renewal": AuthoritiesWithUserTypesTemplate;
+  "capitated-waiver": AuthoritiesWithUserTypesTemplate;
+  "capitated-amendment": AuthoritiesWithUserTypesTemplate;
+
+  "app-k": AuthoritiesWithUserTypesTemplate;
+
+  "respond-to-rai": AuthoritiesWithUserTypesTemplate;
 };
 
 // Create a type-safe mapping of email templates
 const emailTemplates: EmailTemplates = {
   "new-medicaid-submission": EmailContent.newSubmission,
   "new-chip-submission": EmailContent.newSubmission,
-  "temp-extension": EmailContent.tempExtention,
+  "temporary-extension": EmailContent.tempExtention,
+
+  "capitated-initial": EmailContent.newSubmission,
+  "capitated-renewal": EmailContent.newSubmission,
+  "capitated-waiver": EmailContent.newSubmission,
+  "capitated-amendment": EmailContent.newSubmission,
+  "upload-subsequent-documents": EmailContent.uploadSubsequentDocuments,
+
+  "contracting-initial": EmailContent.newSubmission,
+  "contracting-renewal": EmailContent.newSubmission,
+  "contracting-waiver": EmailContent.newSubmission,
+  "contracting-amendment": EmailContent.newSubmission,
+
+  "app-k": EmailContent.newSubmission, // 1915(c) Appendix K
+
   "withdraw-package": EmailContent.withdrawPackage,
   "withdraw-rai": EmailContent.withdrawRai,
-  "contracting-initial": EmailContent.newSubmission,
-  "capitated-initial": EmailContent.newSubmission,
+  "respond-to-rai": EmailContent.respondToRai,
 };
 
 // Create a type-safe lookup function
 export function getEmailTemplate(
   action: keyof EmailTemplates,
 ): AuthoritiesWithUserTypesTemplate | UserTypeOnlyTemplate {
-  // Handle -state suffix variants
+  // Handle -state suffix variants and old key references
+  console.log("Action:", action);
   const baseAction = action.replace(/-state$/, "") as keyof EmailTemplates;
+  if (baseAction === "temporary-extension") {
+    return emailTemplates["temporary-extension"];
+  }
   return emailTemplates[baseAction];
 }
 
