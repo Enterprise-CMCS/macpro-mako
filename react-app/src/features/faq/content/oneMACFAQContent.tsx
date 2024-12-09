@@ -704,8 +704,7 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <section className="space-y-2 ">
             <p>
-              CHIP eligibility SPA implementation guides can be downloaded at the links below. The
-              guides include detailed instructions for completing your submissions.
+              CHIP eligibility SPA implementation guides can be downloaded at the links below. 
             </p>
             <ul className="list-disc pl-6 space-y-2">
               {renderSection(
