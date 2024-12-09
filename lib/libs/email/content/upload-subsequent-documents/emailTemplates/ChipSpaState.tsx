@@ -34,7 +34,6 @@ export const ChipSpaStateEmail = ({
       <Text style={{ ...styles.text.base, marginTop: "16px" }}>
         If you have questions or did not expect this email, please contact your CPOC.
       </Text>
-      <Text style={{ ...styles.text.base, marginTop: "16px" }}>Thank you.</Text>
     </BaseEmailTemplate>
   );
 };

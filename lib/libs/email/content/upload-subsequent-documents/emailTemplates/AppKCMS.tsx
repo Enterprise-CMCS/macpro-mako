@@ -7,8 +7,6 @@ import {
   Divider,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
-import { styles } from "../../email-styles";
-import { Text } from "@react-email/components";
 
 export const AppKCMSEmail = (props: {
   variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;
@@ -32,8 +30,6 @@ export const AppKCMSEmail = (props: {
       />
       <Attachments attachments={variables.attachments} />
       <SubDocHowToAccess appEndpointURL={variables.applicationEndpointUrl} />
-      <Divider />
-      <Text style={{ ...styles.text.base, marginTop: "16px" }}>Thank you.</Text>
     </BaseEmailTemplate>
   );
 };

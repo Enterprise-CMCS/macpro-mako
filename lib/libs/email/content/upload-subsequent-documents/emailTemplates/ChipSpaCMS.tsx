@@ -4,11 +4,8 @@ import {
   BasicFooter,
   Attachments,
   SubDocHowToAccess,
-  Divider,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
-import { styles } from "../../email-styles";
-import { Text } from "@react-email/components";
 
 export const ChipSpaCMSEmail = ({
   variables,
@@ -32,9 +29,7 @@ export const ChipSpaCMSEmail = ({
         }}
       />
       <Attachments attachments={variables.attachments} />
-      <Divider />
       <SubDocHowToAccess appEndpointURL={variables.applicationEndpointUrl} />
-      <Text style={{ ...styles.text.base, marginTop: "16px" }}>Thank you.</Text>
     </BaseEmailTemplate>
   );
 };
