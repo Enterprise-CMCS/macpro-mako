@@ -92,11 +92,11 @@ export const UploadSubsequentDocuments = () => {
     return <LoadingSpinner />;
   }
 
-  if (submission === undefined || submission === null || !submission?._source) {
+  if (!submission?._source) {
     return <Navigate to="/dashboard" />;
   }
 
-  const originalSubmissionEvent = (submission?._source?.changelog ?? []).reduce<string | null>(
+  const originalSubmissionEvent = (submission._source.changelog ?? []).reduce<string | null>(
     (acc, { _source }) => (_source?.event ? _source?.event : acc),
     null,
   );

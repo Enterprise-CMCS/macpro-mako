@@ -1,12 +1,12 @@
 import { screen, waitFor } from "@testing-library/react";
 import { describe, test, expect, afterEach } from "vitest";
 import { Profile } from ".";
-import { setMockUsername, useDefaultStateSubmitter, multiStateSubmitter } from "mocks";
+import { setMockUsername, setDefaultStateSubmitter, multiStateSubmitter } from "mocks";
 import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
 
 describe("Profile", () => {
   afterEach(() => {
-    useDefaultStateSubmitter();
+    setDefaultStateSubmitter();
   });
 
   test("renders state names", async () => {

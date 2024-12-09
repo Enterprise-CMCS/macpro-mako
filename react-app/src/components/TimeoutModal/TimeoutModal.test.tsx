@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import { TimeoutModal } from ".";
 import * as api from "@/api";
-import { mockUseGetUser, useDefaultStateSubmitter } from "mocks";
+import { mockUseGetUser, setDefaultStateSubmitter } from "mocks";
 import { UseQueryResult } from "@tanstack/react-query";
 import { OneMacUser } from "@/api";
 
@@ -62,6 +62,6 @@ describe("Timeout Modal", () => {
 
     expect(screen.queryByText(/Your session will expire in/i)).not.toBeInTheDocument();
 
-    useDefaultStateSubmitter();
+    setDefaultStateSubmitter();
   });
 });

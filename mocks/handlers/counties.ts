@@ -10,11 +10,19 @@ export type PopulationParams = {
 const defaultCountiesHandler = http.get<PopulationParams>(
   "https://api.census.gov/data/2019/pep/population",
   async ({ request }) => {
-    const url = new URL(request.url);
-    const stateParam = url.searchParams.get("in");
-    const arr = stateParam?.split(":");
-    const list = arr?.length && arr.length > 1 ? counties[arr[1]] : null;
-    return list ? HttpResponse.json(list) : new HttpResponse(null, { status: 404 });
+    const requestUrl = new URL(request.url);
+    const stateSearchParam = requestUrl.searchParams.get("in") || "";
+    const stateParamStringArray = stateSearchParam.split(":");
+    const stateCode =
+      stateParamStringArray &&
+      Array.isArray(stateParamStringArray) &&
+      stateParamStringArray.length > 1
+        ? stateParamStringArray[1]
+        : null;
+    const countyListForState = stateCode ? counties[stateCode] : null;
+    return countyListForState
+      ? HttpResponse.json(countyListForState)
+      : new HttpResponse(null, { status: 404 });
   },
 );
 

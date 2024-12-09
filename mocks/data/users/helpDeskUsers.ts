@@ -1,4 +1,6 @@
-export const helpDeskUser = {
+import { TestUserData } from "../../index.d";
+
+export const helpDeskUser: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -32,7 +34,7 @@ export const helpDeskUser = {
   Username: "7ebff3df-a133-4eb7-b62c-3346f2f81fd1",
 };
 
-export const automatedHelpDeskUser = {
+export const automatedHelpDeskUser: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -66,4 +68,4 @@ export const automatedHelpDeskUser = {
   Username: "63d9033c-5122-48eb-a664-74d391178938",
 };
 
-export const helpDeskUsers = [helpDeskUser, automatedHelpDeskUser];
+export const helpDeskUsers: TestUserData[] = [helpDeskUser, automatedHelpDeskUser];

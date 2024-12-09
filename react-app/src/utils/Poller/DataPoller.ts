@@ -26,29 +26,20 @@ export class DataPoller<TFetcherReturn> {
         if (timesPolled <= this.options.pollAttempts) {
           errorMessage = null;
 
-          let data: Awaited<TFetcherReturn> | null = null;
-          let stopPoll: boolean = false;
-
           try {
-            data = await this.options.fetcher();
-          } catch (error) {
-            errorMessage = `Error fetching: ${error.message}`;
-          }
-
-          if (data) {
-            try {
-              stopPoll = this.options.onPoll(data);
-            } catch (error) {
-              errorMessage = `Error polling: ${error.message}`;
+            const data = await this.options.fetcher();
+            if (data) {
+              const stopPoll = this.options.onPoll(data);
+              if (stopPoll) {
+                resolve({
+                  correctDataStateFound: true,
+                  maxAttemptsReached: false,
+                });
+                clearInterval(intervalId);
+              }
             }
-          }
-
-          if (stopPoll) {
-            resolve({
-              correctDataStateFound: true,
-              maxAttemptsReached: false,
-            });
-            clearInterval(intervalId);
+          } catch (error) {
+            errorMessage = `Error fetching data: ${error.message}`;
           }
         } else {
           reject({

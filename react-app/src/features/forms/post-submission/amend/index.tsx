@@ -8,15 +8,19 @@ export const Amendment = () => {
   const { id } = useParams();
   const { data: submission, isLoading: isSubmissionLoading } = useGetItem(id);
 
-  if (isSubmissionLoading === true) {
+  if (submission == undefined && isSubmissionLoading === true) {
     return <LoadingSpinner />;
   }
 
-  const isCapitated = submission?._source?.changelog.find(
+  if (submission == undefined && isSubmissionLoading === false) {
+    return <Navigate to="/dashboard" />;
+  }
+
+  const isCapitated = submission._source.changelog.find(
     (event) =>
-      event?._source?.event === "capitated-initial" || event._source.event === "capitated-renewal",
+      event._source.event === "capitated-initial" || event._source.event === "capitated-renewal",
   );
-  const isContracting = submission?._source?.changelog.find(
+  const isContracting = submission._source.changelog.find(
     (event) =>
       event._source.event === "contracting-initial" ||
       event._source.event === "contracting-renewal",

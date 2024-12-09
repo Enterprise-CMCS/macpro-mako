@@ -1,5 +1,5 @@
-import type { opensearch } from "shared-types";
 import { SEATOOL_STATUS } from "shared-types";
+import type { TestItemResult } from "../index.d";
 
 export const EXISTING_ITEM_PENDING_ID = "MD-0002.R00.00";
 export const EXISTING_ITEM_APPROVED_NEW_ID = "MD-0000.R00.00";
@@ -20,36 +20,7 @@ export const WITHDRAWN_CHANGELOG_ITEM_ID = "MD-009.R00.01";
 export const SUBMISSION_ERROR_ITEM_ID = "Throw Submission Error";
 export const GET_ERROR_ITEM_ID = "Throw Get Item Error";
 
-export type AttachmentTestFields = {
-  key?: string;
-  title?: string;
-  filename?: string;
-};
-
-export type ChangelogTestFields = {
-  _source: {
-    event: string;
-    packageId?: string;
-    id?: string;
-    attachments?: AttachmentTestFields[] | [];
-    additionalInformation?: string;
-    timestamp?: number | null;
-    isAdminChange?: boolean;
-  };
-};
-
-export type ItemTestFields = {
-  _id: string;
-  found: boolean;
-  _source?: Pick<opensearch.main.Document, "id" | "seatoolStatus" | "actionType"> & {
-    authority?: string;
-    state?: string;
-    changelog?: ChangelogTestFields[] | [];
-    appkChildren?: Omit<opensearch.main.ItemResult, "found">[];
-  };
-};
-
-const items: Record<string, ItemTestFields> = {
+const items: Record<string, TestItemResult> = {
   [EXISTING_ITEM_ID]: {
     _id: EXISTING_ITEM_ID,
     found: true,
@@ -109,7 +80,7 @@ const items: Record<string, ItemTestFields> = {
       id: TEST_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
       actionType: "New",
-      changelog: [{ _source: { event: "new-medicaid-submission" } }],
+      changelog: [{ _source: { id: "0001", event: "new-medicaid-submission" } }],
       authority: "Medicaid SPA",
     },
   },
@@ -190,7 +161,6 @@ const items: Record<string, ItemTestFields> = {
             ],
             additionalInformation: "Amendment to the capitated contract terms for 2024.",
             timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
-            isAdminChange: false,
           },
         },
         {
@@ -207,7 +177,6 @@ const items: Record<string, ItemTestFields> = {
             ],
             additionalInformation: "Detailed response to the request for additional information.",
             timestamp: 1675123200000, // Feb 1, 2023
-            isAdminChange: false,
           },
         },
         {
@@ -224,7 +193,6 @@ const items: Record<string, ItemTestFields> = {
             ],
             additionalInformation: "Supporting documents uploaded as follow-up.",
             timestamp: 1677715200000, // Mar 1, 2023
-            isAdminChange: false,
           },
         },
         {
@@ -241,7 +209,6 @@ const items: Record<string, ItemTestFields> = {
             ],
             additionalInformation: "Compliance review files uploaded.",
             timestamp: 1680307200000, // Apr 1, 2023
-            isAdminChange: false,
           },
         },
         {
@@ -258,7 +225,6 @@ const items: Record<string, ItemTestFields> = {
             ],
             additionalInformation: "Official notice of RAI withdrawal submitted.",
             timestamp: 1682899200000, // May 1, 2023
-            isAdminChange: true,
           },
         },
         {
@@ -275,14 +241,13 @@ const items: Record<string, ItemTestFields> = {
             ],
             additionalInformation: "Package has been withdrawn from submission pipeline.",
             timestamp: 1685491200000, // Jun 1, 2023
-            isAdminChange: true,
           },
         },
         {
           _source: {
             packageId: "0007",
             id: "20007",
-            event: "event-not-specified",
+            event: undefined,
             attachments: [
               {
                 key: "misc007",
@@ -291,7 +256,6 @@ const items: Record<string, ItemTestFields> = {
               },
             ],
             additionalInformation: "Uncategorized file upload.",
-            timestamp: null, // Missing timestamp to simulate incomplete data
             isAdminChange: false,
           },
         },

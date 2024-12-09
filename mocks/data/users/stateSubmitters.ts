@@ -1,4 +1,6 @@
-export const makoStateSubmitter = {
+import { TestUserData } from "../../index.d";
+
+export const makoStateSubmitter: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -32,7 +34,7 @@ export const makoStateSubmitter = {
   Username: "cd400c39-9e7c-4341-b62f-234e2ecb339d",
 };
 
-export const stateSubmitter = {
+export const stateSubmitter: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -66,7 +68,7 @@ export const stateSubmitter = {
   Username: "c4087448-d0e1-70c1-3d74-4f8bd1fa13fd",
 };
 
-export const noDataStateSubmitter = {
+export const noDataStateSubmitter: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -100,7 +102,7 @@ export const noDataStateSubmitter = {
   Username: "068f3852-dd7e-484d-a423-578556f52886",
 };
 
-export const coStateSubmitter = {
+export const coStateSubmitter: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -134,7 +136,7 @@ export const coStateSubmitter = {
   Username: "c16071b6-e24b-4405-962c-37ad6262708c",
 };
 
-export const multiStateSubmitter = {
+export const multiStateSubmitter: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -168,7 +170,7 @@ export const multiStateSubmitter = {
   Username: "3de7904e-fc0a-498f-9527-8e39044edf4c",
 };
 
-export const automatedStateSubmitter = {
+export const automatedStateSubmitter: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -202,7 +204,7 @@ export const automatedStateSubmitter = {
   Username: "f3a1b6d6-3bc9-498d-ac22-41a6d46982c9",
 };
 
-export const stateSubmitters = [
+export const stateSubmitters: TestUserData[] = [
   makoStateSubmitter,
   stateSubmitter,
   noDataStateSubmitter,

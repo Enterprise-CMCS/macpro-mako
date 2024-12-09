@@ -6,8 +6,8 @@ import {
   AUTH_CONFIG,
   mockCurrentAuthenticatedUser,
   mockUserAttributes,
+  setDefaultStateSubmitter,
   setMockUsername,
-  useDefaultStateSubmitter,
 } from "mocks";
 import { mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
@@ -51,7 +51,7 @@ vi.spyOn(Auth, "signOut").mockImplementation(async () => {
 
 // Add this to remove all the expected errors in console when running unit tests.
 beforeAll(() => {
-  useDefaultStateSubmitter();
+  setDefaultStateSubmitter();
 
   vi.spyOn(console, "error").mockImplementation(() => {});
 
@@ -76,7 +76,7 @@ afterEach(() => {
   vi.useRealTimers();
   vi.clearAllMocks();
 
-  useDefaultStateSubmitter();
+  setDefaultStateSubmitter();
   // Reset any request handlers that we may add during the tests,
   // so they don't affect other tests.
   mockedServer.resetHandlers();

@@ -1,4 +1,6 @@
-export const readOnlyUser = {
+import { TestUserData } from "../../index.d";
+
+export const readOnlyUser: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -32,7 +34,7 @@ export const readOnlyUser = {
   Username: "cd613967-c034-4e02-baad-03221840a35c",
 };
 
-export const automatedReadOnlyUser = {
+export const automatedReadOnlyUser: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -66,4 +68,4 @@ export const automatedReadOnlyUser = {
   Username: "acfaf0ae-1af5-4e48-ad1e-54abcee4f3bf",
 };
 
-export const readOnlyUsers = [readOnlyUser, automatedReadOnlyUser];
+export const readOnlyUsers: TestUserData[] = [readOnlyUser, automatedReadOnlyUser];

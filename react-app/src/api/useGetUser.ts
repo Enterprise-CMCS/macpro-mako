@@ -29,9 +29,9 @@ export const getUser = async (): Promise<OneMacUser> => {
       {} as CognitoUserAttributes,
     );
     // Manual additions and normalizations
-    userAttributesObj["custom:cms-roles"] = userAttributesObj?.["custom:cms-roles"] || "";
+    userAttributesObj["custom:cms-roles"] = userAttributesObj["custom:cms-roles"] || "";
 
-    userAttributesObj.username = currentAuthenticatedUser?.username || "";
+    userAttributesObj.username = currentAuthenticatedUser.username || "";
 
     return {
       user: userAttributesObj,

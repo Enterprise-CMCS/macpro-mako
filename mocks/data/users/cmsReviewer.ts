@@ -1,4 +1,6 @@
-export const makoReviewer = {
+import { TestUserData } from "../../index.d";
+
+export const makoReviewer: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -32,7 +34,7 @@ export const makoReviewer = {
   Username: "53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
 };
 
-export const reviewer = {
+export const reviewer: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -66,7 +68,7 @@ export const reviewer = {
   Username: "07a2519e-0bdd-4bf6-8ec0-6f88ffa684fc",
 };
 
-export const automatedReviewer = {
+export const automatedReviewer: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -100,7 +102,7 @@ export const automatedReviewer = {
   Username: "e04f3cc5-4cd6-4acb-9fff-210b469bc934",
 };
 
-export const superReviewer = {
+export const superReviewer: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -134,4 +136,4 @@ export const superReviewer = {
   Username: "1bddab21-ddc0-4e5b-8ee1-fe16a7883673",
 };
 
-export const reviewers = [makoReviewer, reviewer, automatedReviewer, superReviewer];
+export const reviewers: TestUserData[] = [makoReviewer, reviewer, automatedReviewer, superReviewer];

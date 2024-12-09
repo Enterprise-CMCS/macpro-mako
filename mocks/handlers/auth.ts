@@ -2,56 +2,44 @@ import jwt from "jsonwebtoken";
 import { http, HttpResponse, passthrough, PathParams } from "msw";
 import { CognitoUserAttributes } from "shared-types";
 import { isCmsUser } from "shared-utils";
-import {
-  CognitoUserResponse,
-  makoReviewer,
-  makoStateSubmitter,
-  userResponses,
-} from "../data/users";
+import { makoReviewer, makoStateSubmitter, userResponses } from "../data/users";
+import type { TestUserData } from "../index.d";
 
 export const ACCESS_KEY_ID = "ASIAZHXA3XOU7XZ53M36";
 export const SECRET_KEY = "UWKCFxhrgbPnixgLnL1JKwFEwiK9ZKvTAtpk8cGa";
 
-export const setMockUsername = (user?: string | CognitoUserResponse | null): void => {
-  if (user) {
-    if (typeof user === "string") {
-      process.env.MOCK_USER_USERNAME = user;
-    } else {
-      process.env.MOCK_USER_USERNAME = user.Username;
-    }
+export const setMockUsername = (user?: TestUserData | string | null): void => {
+  if (user && typeof user === "string") {
+    process.env.MOCK_USER_USERNAME = user;
+  } else if (user && (user as TestUserData).Username !== undefined) {
+    process.env.MOCK_USER_USERNAME = (user as TestUserData).Username;
   } else {
     delete process.env.MOCK_USER_USERNAME;
   }
 };
 
-export const useDefaultStateSubmitter = () => setMockUsername(makoStateSubmitter);
+export const setDefaultStateSubmitter = () => setMockUsername(makoStateSubmitter);
 
-export const useDefaultReviewer = () => setMockUsername(makoReviewer);
+export const setDefaultReviewer = () => setMockUsername(makoReviewer);
 
-export const mockCurrentAuthenticatedUser = async () => {
+export const mockCurrentAuthenticatedUser = (): TestUserData | undefined => {
   if (process.env.MOCK_USER_USERNAME) {
-    const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
-    if (user) {
-      return {
-        username: user.Username,
-        attributes: user.UserAttributes,
-        preferredMFA: "NOMFA",
-      };
-    }
-    return undefined;
+    return findUserByUsername(process.env.MOCK_USER_USERNAME);
   }
   return undefined;
 };
 
-export const mockUserAttributes = async (currentAuthenticatedUser: any) => {
-  if (currentAuthenticatedUser?.currentAuthenticatedUser?.attributes) {
-    return currentAuthenticatedUser.currentAuthenticatedUser.attributes;
+export const mockUserAttributes = async (currentAuthenticatedUser: TestUserData | unknown) => {
+  if (
+    currentAuthenticatedUser &&
+    (currentAuthenticatedUser as TestUserData).UserAttributes !== undefined
+  ) {
+    return (currentAuthenticatedUser as TestUserData).UserAttributes;
   }
+
   if (process.env.MOCK_USER_USERNAME) {
     const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
-    if (user) {
-      return user.UserAttributes;
-    }
+    return user?.UserAttributes;
   }
   return undefined;
 };
@@ -60,21 +48,24 @@ export const mockUseGetUser = () => {
   if (process.env.MOCK_USER_USERNAME) {
     const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
     if (user) {
+      // Copied from useGetUser.getUser
       // Set object up with key/values from attributes array
-      const userAttributesObj = user?.UserAttributes?.reduce(
-        (obj, item) =>
-          item?.Name && item?.Value
-            ? {
-                ...obj,
-                [item.Name]: item.Value,
-              }
-            : obj,
-        {} as CognitoUserAttributes,
-      );
+      const userAttributesObj = user.UserAttributes
+        ? user.UserAttributes.reduce(
+            (obj, item) =>
+              item?.Name && item?.Value
+                ? {
+                    ...obj,
+                    [item.Name]: item.Value,
+                  }
+                : obj,
+            {} as CognitoUserAttributes,
+          )
+        : ({} as CognitoUserAttributes);
       // Manual additions and normalizations
-      userAttributesObj["custom:cms-roles"] = userAttributesObj?.["custom:cms-roles"] || "";
+      userAttributesObj["custom:cms-roles"] = userAttributesObj["custom:cms-roles"] || "";
 
-      userAttributesObj.username = user?.Username || "";
+      userAttributesObj.username = user.Username || "";
 
       return {
         data: {
@@ -93,7 +84,7 @@ export const mockUseGetUser = () => {
   };
 };
 
-const findUserByUsername = (username: string): CognitoUserResponse | undefined =>
+const findUserByUsername = (username: string): TestUserData | undefined =>
   userResponses.find((user) => user.Username == username);
 
 export type IdpRequestBody = {
