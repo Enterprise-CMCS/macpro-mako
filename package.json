@@ -6,7 +6,7 @@
     "mako": "bin/app.js"
   },
   "scripts": {
-    "build": "cd react-app && bun run build",
+    "build": "tsc",
     "watch": "tsc -w",
     "cdk": "cdk",
     "build:cli": "turbo build:cli",
@@ -15,8 +15,9 @@
     "e2e:ui": "turbo e2e:ui",
     "test-tsc": "tsc --skipLibCheck --noEmit",
     "test": "vitest",
-    "test:coverage": "vitest --coverage",
+    "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
+    "cdk:watch": "cdk watch -c stage=${STAGE:-local} --no-rollback",
     "bun:dev": "cd react-app && bun run dev"
   },
   "repository": "https://github.com/Enterprise-CMCS/macpro-mako",
@@ -36,10 +37,8 @@
     "@aws-sdk/client-sqs": "^3.687.0",
     "@react-email/components": "0.0.25",
     "@types/aws-lambda": "^8.10.145",
-    "@types/jsdom": "^21.1.7",
-    "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.4",
-    "aws-cdk-lib": "^2.171.1",
+    "aws-cdk-lib": "^2.150.0",
+    "cdk": "^2.156.0",
     "constructs": "^10.3.0",
     "esbuild": "^0.23.1",
     "react-email": "^3.0.1",
@@ -92,5 +91,5 @@
       "@semantic-release/github"
     ]
   },
-  "packageManager": "bun@1.1.38"
+  "packageManager": "bun@1.1.20"
 }
