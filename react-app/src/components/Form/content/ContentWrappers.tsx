@@ -57,7 +57,7 @@ export const ActionFormDescription = ({
 };
 
 export const ActionFormHeading = ({ title }: { title: string }) => {
-  return <h1 className="text-2xl font-semibold mt-4 mb-2">{title}</h1>;
+  return <h1 data-testid="AFH" className="text-2xl font-semibold mt-4 mb-2">{title}</h1>;
 };
 
 export const PreSubmitNotice = ({
