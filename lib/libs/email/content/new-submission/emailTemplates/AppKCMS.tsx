@@ -4,7 +4,6 @@ import {
   PackageDetails,
   Attachments,
   BasicFooter,
-  SpamWarning,
   Divider,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
@@ -36,7 +35,6 @@ export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
         }}
       />
       <Attachments attachments={variables.attachments} />
-      <SpamWarning />
     </BaseEmailTemplate>
   );
 };

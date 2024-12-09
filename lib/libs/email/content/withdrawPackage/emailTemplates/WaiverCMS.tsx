@@ -1,5 +1,5 @@
 import { CommonEmailVariables, Events } from "shared-types";
-import { SpamWarning, PackageDetails, BasicFooter } from "../../email-components";
+import { PackageDetails, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const WaiverCMSEmail = ({
@@ -22,6 +22,5 @@ export const WaiverCMSEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
-    <SpamWarning />
   </BaseEmailTemplate>
 );

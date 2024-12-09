@@ -1,5 +1,5 @@
 import { CommonEmailVariables, Events } from "shared-types";
-import { PackageDetails, BasicFooter, Divider, SpamWarning } from "../../email-components";
+import { PackageDetails, BasicFooter, Divider } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const MedSpaCMSEmail = ({
@@ -23,6 +23,5 @@ export const MedSpaCMSEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
-    <SpamWarning />
   </BaseEmailTemplate>
 );

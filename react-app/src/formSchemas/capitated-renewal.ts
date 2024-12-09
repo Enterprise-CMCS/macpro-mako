@@ -1,6 +1,6 @@
-import { events } from "shared-types/events";
-import { isAuthorizedState } from "@/utils";
 import { canBeRenewedOrAmended, idIsApproved, itemExists } from "@/api";
+import { isAuthorizedState } from "@/utils";
+import { events } from "shared-types/events";
 
 export const formSchema = events["capitated-renewal"].baseSchema.extend({
   id: events["capitated-renewal"].baseSchema.shape.id
