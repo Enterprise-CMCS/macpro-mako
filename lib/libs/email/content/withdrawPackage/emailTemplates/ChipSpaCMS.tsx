@@ -1,5 +1,5 @@
 import { CommonEmailVariables, Events } from "lib/packages/shared-types";
-import { BasicFooter, Divider, PackageDetails, SpamWarning } from "../../email-components";
+import { BasicFooter, Divider, PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const ChipSpaCMSEmail = ({
@@ -16,13 +16,12 @@ export const ChipSpaCMSEmail = ({
     <Divider />
     <PackageDetails
       details={{
-        "State or territory": variables.territory,
+        "State or Territory": variables.territory,
         Name: variables.submitterName,
         "Email Address": variables.submitterEmail,
         "CHIP SPA Package ID": variables.id,
         Summary: variables.additionalInformation,
       }}
     />
-    <SpamWarning />
   </BaseEmailTemplate>
 );
