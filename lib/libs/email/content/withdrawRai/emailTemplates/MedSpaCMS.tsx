@@ -13,7 +13,7 @@ export const MedSpaCMSEmail = (props: {
         <WithdrawRAI {...variables} />
         <PackageDetails
           details={{
-            "State or territory": variables.territory,
+            "State or Territory": variables.territory,
             Name: relatedEvent.submitterName,
             "Email Address": relatedEvent.submitterEmail,
             "SPA Package ID": variables.id,

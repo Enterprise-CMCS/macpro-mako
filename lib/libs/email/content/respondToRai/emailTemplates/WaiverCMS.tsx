@@ -4,7 +4,6 @@ import {
   PackageDetails,
   Attachments,
   BasicFooter,
-  SpamWarning,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
@@ -24,7 +23,7 @@ export const WaiverCMSEmail = (props: {
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
       <PackageDetails
         details={{
-          "State or territory": variables.territory,
+          "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
           "Waiver Number": variables.id,
@@ -32,7 +31,6 @@ export const WaiverCMSEmail = (props: {
         }}
       />
       <Attachments attachments={variables.attachments} />
-      <SpamWarning />
     </BaseEmailTemplate>
   );
 };

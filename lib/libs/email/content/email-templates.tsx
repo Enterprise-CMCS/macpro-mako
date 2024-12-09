@@ -1,4 +1,4 @@
-import { Body, Container, Head, Heading, Html, Preview } from "@react-email/components";
+import { Body, Container, Head, Heading, Html, Preview, Text } from "@react-email/components";
 import { EmailNav, EmailFooter } from "./email-components";
 import { styles } from "./email-styles";
 import { ReactNode } from "react";
@@ -27,6 +27,7 @@ export const BaseEmailTemplate = ({
         <div style={styles.section.primary}>
           <Heading style={styles.heading.h1}>{heading}</Heading>
           {children}
+          <Text style={{ ...styles.text.base }}>Thank you.</Text>
         </div>
         <EmailFooter>{footerContent}</EmailFooter>
       </Container>
