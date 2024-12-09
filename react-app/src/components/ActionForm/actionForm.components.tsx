@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { z } from "zod";
 
 export const AttachmentFileFormatInstructions = () => (
-  <p>
+  <p data-testid="accepted-files">
     We accept the following file formats:{" "}
     <span className="font-bold">.doc, .docx, .pdf, .jpg, .xlsx, and more. </span>{" "}
     <Link
