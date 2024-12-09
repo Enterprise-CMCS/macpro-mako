@@ -1,14 +1,11 @@
-import { screen } from "@testing-library/react";
-import { beforeAll, describe, expect, test } from "vitest";
-import userEvent from "@testing-library/user-event";
-import { renderForm } from "@/utils/test-helpers/renderForm";
-import {
-  mockApiRefinements,
-  skipCleanup,
-} from "@/utils/test-helpers/skipCleanup";
-import { Renewal } from "./Renewal";
-import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { formSchemas } from "@/formSchemas";
+import { renderForm } from "@/utils/test-helpers/renderForm";
+import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
+import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { beforeAll, describe, expect, test } from "vitest";
+import { Renewal } from "./Renewal";
 
 const upload = uploadFiles<(typeof formSchemas)["capitated-renewal"]>();
 
@@ -25,9 +22,7 @@ describe("Capitated Renewal", () => {
   });
 
   test("EXISTING RENEWAL NUMBER TO RENEW", async () => {
-    const existingWaiverInput = screen.getByLabelText(
-      /Existing Waiver Number to Renew/,
-    );
+    const existingWaiverInput = screen.getByLabelText(/Existing Waiver Number to Renew/);
     const existingWaiverLabel = screen.getByTestId("existing-waiver-label");
 
     // test record does not exist error occurs
@@ -76,21 +71,24 @@ describe("Capitated Renewal", () => {
     );
     expect(invalidStateErrorMessage).toBeInTheDocument();
     await userEvent.clear(waiverRenewalInput);
-    // end of error validations
 
     await userEvent.type(waiverRenewalInput, "MD-0005.R01.01");
+    const invalidAmendmentInput = screen.getByText(
+      "The 1915(b) Waiver Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00. For renewals, the “R##” starts with ‘01’ and ascends.",
+    );
+    expect(invalidAmendmentInput).toBeInTheDocument();
+    // end of error validations
+
+    await userEvent.clear(waiverRenewalInput);
+    await userEvent.type(waiverRenewalInput, "MD-0005.R99.00");
 
     expect(waiverRenewalLabel).not.toHaveClass("text-destructive");
   });
 
   test("PROPOSED EFFECTIVE DATE OF 1915(B) WAIVER RENEWAL", async () => {
-    await userEvent.click(
-      screen.getByTestId("proposedEffectiveDate-datepicker"),
-    );
+    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector(
-      '[for="proposedEffectiveDate"]',
-    );
+    const proposedEffectiveDateLabel = container.querySelector('[for="proposedEffectiveDate"]');
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });
