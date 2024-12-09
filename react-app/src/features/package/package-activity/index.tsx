@@ -17,11 +17,11 @@ import { ItemResult } from "shared-types/opensearch/changelog";
 
 type AttachmentDetailsProps = {
   id: string;
-  attachments: opensearch.changelog.Document["attachments"];
+  attachments?: opensearch.changelog.Document["attachments"];
   onClick: (attachment: Attachments[number]) => Promise<string>;
 };
 
-const AttachmentDetails = ({ id, attachments, onClick }: AttachmentDetailsProps) => (
+const AttachmentDetails = ({ id, attachments = [], onClick }: AttachmentDetailsProps) => (
   <Table.TableBody>
     {attachments.map((attachment) => {
       return (
@@ -54,7 +54,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="font-bold text-lg mb-2">Attachments</h2>
-        {attachments?.length > 0 ? (
+        {attachments.length > 0 ? (
           <Table.Table>
             <Table.TableHeader>
               <Table.TableRow>
@@ -69,7 +69,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
         )}
       </div>
 
-      {attachments?.length > 0 && (
+      {attachments.length > 0 && (
         <Table.Button
           variant="outline"
           className="w-max"
