@@ -4,7 +4,10 @@ import * as cdk from "aws-cdk-lib";
 import { ParentStack } from "../lib/stacks/parent";
 import { DeploymentConfig } from "../lib/config/deployment-config";
 import { getSecret, validateEnvVariable } from "shared-utils";
-import { IamPathAspect, IamPermissionsBoundaryAspect } from "../lib/local-aspects";
+import {
+  IamPathAspect,
+  IamPermissionsBoundaryAspect,
+} from "../lib/local-aspects";
 
 async function main() {
   try {
@@ -33,7 +36,9 @@ async function main() {
     });
 
     cdk.Aspects.of(app).add(
-      new IamPermissionsBoundaryAspect(deploymentConfig.config.iamPermissionsBoundary),
+      new IamPermissionsBoundaryAspect(
+        deploymentConfig.config.iamPermissionsBoundary,
+      ),
     );
     cdk.Aspects.of(app).add(new IamPathAspect(deploymentConfig.config.iamPath));
   } catch (error) {

@@ -34,10 +34,10 @@ export async function writeUiEnvFile(stage, local = false) {
     VITE_COGNITO_USER_POOL_CLIENT_ID: deploymentOutput.userPoolClientId,
     VITE_COGNITO_USER_POOL_CLIENT_DOMAIN: deploymentOutput.userPoolClientDomain,
     VITE_COGNITO_REDIRECT_SIGNIN: local
-      ? `"http://localhost:5173/"`
+      ? `"http://localhost:5000/"`
       : deploymentOutput.applicationEndpointUrl,
     VITE_COGNITO_REDIRECT_SIGNOUT: local
-      ? `"http://localhost:5173/"`
+      ? `"http://localhost:5000/"`
       : deploymentOutput.applicationEndpointUrl,
     VITE_IDM_HOME_URL: deploymentOutput.idmHomeUrl,
     VITE_GOOGLE_ANALYTICS_GTAG: `"${deploymentConfig.googleAnalyticsGTag}"`,
