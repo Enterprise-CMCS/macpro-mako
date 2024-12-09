@@ -26,13 +26,9 @@ const getFullStateNamesFromUser = (states: string | undefined) => {
 export const Profile = () => {
   const { data: userData } = useGetUser();
 
-  const fullStateNames = getFullStateNamesFromUser(
-    userData.user["custom:state"],
-  );
+  const fullStateNames = getFullStateNamesFromUser(userData?.user["custom:state"]);
 
-  const userRoles = getRoleDescriptionsFromUser(
-    userData.user["custom:cms-roles"],
-  );
+  const userRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
 
   return (
     <>

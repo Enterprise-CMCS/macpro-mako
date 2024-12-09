@@ -1,5 +1,6 @@
-import { describe, test, expect, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { describe, test, expect } from "vitest";
+import { screen } from "@testing-library/react";
+import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
 import { RHFDocument } from "../.";
 import { Form } from "../../Inputs";
 import { useForm } from "react-hook-form";
@@ -42,9 +43,7 @@ const testForm: FormSchema = {
       title: "Test Section 2",
       form: [
         {
-          slots: [
-            { name: "testInput3", rhf: "Input", label: "Test Input 3 Label" },
-          ],
+          slots: [{ name: "testInput3", rhf: "Input", label: "Test Input 3 Label" }],
         },
       ],
     },
@@ -69,28 +68,18 @@ const TestWrapper = (props: { onSubmit: (d: any) => void }) => {
   );
 };
 
-vi.mock("@/api", async (importOriginal) => {
-  const actual = await importOriginal();
-  return {
-    ...(actual as object),
-    useGetCounties: vi.fn(() => {
-      return { data: [], isLoading: false, error: null };
-    }),
-  };
-});
-
 describe("Test Name Generation", () => {
   test("Generate Structure Correctly", () => {
-    const rend = render(
+    renderWithQueryClient(
       <TestWrapper
         onSubmit={() => {
           console.error("onSubmit Called In Invalid Test State");
         }}
       />,
     );
-    const input1 = rend.getByLabelText("Test Input 1 Label");
-    const input3 = rend.getByLabelText("Test Input 3 Label");
-    const input2 = rend.queryByLabelText("Test Input 2 (dependency)");
+    const input1 = screen.getByLabelText("Test Input 1 Label");
+    const input3 = screen.getByLabelText("Test Input 3 Label");
+    const input2 = screen.queryByLabelText("Test Input 2 (dependency)");
 
     expect(input1).toBeTruthy();
     expect(input3).toBeTruthy();
@@ -98,38 +87,40 @@ describe("Test Name Generation", () => {
   });
 
   test("Test Dependency Wrapper works with name generation", async () => {
-    const rend = render(
+    const user = userEvent.setup();
+    renderWithQueryClient(
       <TestWrapper
         onSubmit={() => {
           console.error("onSubmit Called In Invalid Test State");
         }}
       />,
     );
-    const input1 = rend.getByLabelText("Test Input 1 Label");
-    const input3 = rend.getByLabelText("Test Input 3 Label");
+    const input1 = screen.getByLabelText("Test Input 1 Label");
+    const input3 = screen.getByLabelText("Test Input 3 Label");
 
-    await userEvent.type(input1, "sample text 1");
+    await user.type(input1, "sample text 1");
 
-    const input2 = rend.getByLabelText("Test Input 2 (dependency)");
+    const input2 = screen.getByLabelText("Test Input 2 (dependency)");
     expect(input1).toBeTruthy();
     expect(input3).toBeTruthy();
     expect(input2).toBeTruthy();
   });
 
   test("Test data structure matches expectation", async () => {
-    const rend = render(
+    const user = userEvent.setup();
+    renderWithQueryClient(
       <TestWrapper
         onSubmit={(d) => {
           console.log("d", d);
         }}
       />,
     );
-    const input1 = rend.getByLabelText("Test Input 1 Label");
-    const input3 = rend.getByLabelText("Test Input 3 Label");
+    const input1 = screen.getByLabelText("Test Input 1 Label");
+    const input3 = screen.getByLabelText("Test Input 3 Label");
 
-    await userEvent.type(input1, "sample text 1");
+    await user.type(input1, "sample text 1");
 
-    const input2 = rend.getByLabelText("Test Input 2 (dependency)");
+    const input2 = screen.getByLabelText("Test Input 2 (dependency)");
 
     expect(input1.id).toBe("testFormId_testSection1_testInput1");
     expect(input2.id).toBe("testFormId_testSection1_testInput2");

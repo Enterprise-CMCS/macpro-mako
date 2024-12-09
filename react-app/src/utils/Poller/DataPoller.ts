@@ -16,26 +16,38 @@ export class DataPoller<TFetcherReturn> {
     return new Promise<{
       maxAttemptsReached: boolean;
       correctDataStateFound: boolean;
-    }>((resolve) => {
+      error?: string;
+    }>((resolve, reject) => {
       let timesPolled = 0;
+      let errorMessage: string | null = null;
 
       const intervalId = setInterval(async () => {
         timesPolled++;
         if (timesPolled <= this.options.pollAttempts) {
-          const data = await this.options.fetcher();
-          const stopPoll = this.options.onPoll(data);
+          errorMessage = null;
 
-          if (stopPoll) {
-            resolve({
-              correctDataStateFound: true,
-              maxAttemptsReached: false,
-            });
-            clearInterval(intervalId);
+          try {
+            const data = await this.options.fetcher();
+            if (data) {
+              const stopPoll = this.options.onPoll(data);
+              if (stopPoll) {
+                resolve({
+                  correctDataStateFound: true,
+                  maxAttemptsReached: false,
+                });
+                clearInterval(intervalId);
+              }
+            }
+          } catch (error) {
+            errorMessage = `Error fetching data: ${error.message}`;
           }
         } else {
-          resolve({
+          reject({
             correctDataStateFound: false,
             maxAttemptsReached: true,
+            error:
+              errorMessage ||
+              "Error polling data: Correct data state not found, after max attempts reached",
           });
           clearInterval(intervalId);
         }

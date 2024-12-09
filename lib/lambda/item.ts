@@ -1,12 +1,8 @@
-import { response } from "../libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
-import { getStateFilter } from "../libs/api/auth/user";
-import {
-  getAppkChildren,
-  getPackage,
-  getPackageChangelog,
-} from "../libs/api/package";
 import { validateEnvVariable } from "shared-utils";
+import { getStateFilter } from "../libs/api/auth/user";
+import { getAppkChildren, getPackage, getPackageChangelog } from "../libs/api/package";
+import { response } from "../libs/handler-lib";
 
 export const getItemData = async (event: APIGatewayEvent) => {
   validateEnvVariable("osDomain");
@@ -22,19 +18,20 @@ export const getItemData = async (event: APIGatewayEvent) => {
     const packageResult = await getPackage(body.id);
 
     let appkChildren: any[] = [];
-    if (packageResult._source.appkParent) {
+    if (packageResult?._source?.appkParent) {
       const children = await getAppkChildren(body.id);
       appkChildren = children.hits.hits;
     }
     const filter = [];
     // This is to handle hard deletes in legacy
-    if (packageResult._source.legacySubmissionTimestamp !== null) {
+    if (
+      packageResult?._source?.legacySubmissionTimestamp !== null &&
+      packageResult?._source?.legacySubmissionTimestamp !== undefined
+    ) {
       filter.push({
         range: {
           timestamp: {
-            gte: new Date(
-              packageResult._source.legacySubmissionTimestamp,
-            ).getTime(),
+            gte: new Date(packageResult._source.legacySubmissionTimestamp).getTime(),
           },
         },
       });
@@ -43,10 +40,8 @@ export const getItemData = async (event: APIGatewayEvent) => {
     const changelog = await getPackageChangelog(body.id, filter);
     if (
       stateFilter &&
-      (!packageResult._source.state ||
-        !stateFilter.terms.state.includes(
-          packageResult._source.state.toLocaleLowerCase(),
-        ))
+      (!packageResult?._source.state ||
+        !stateFilter.terms.state.includes(packageResult._source.state.toLocaleLowerCase()))
     ) {
       return response({
         statusCode: 401,
@@ -54,7 +49,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
       });
     }
 
-    if (!packageResult.found) {
+    if (!packageResult?.found) {
       return response({
         statusCode: 404,
         body: { message: "No record found for the given id" },
