@@ -12,7 +12,7 @@ import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
 import { Authority } from "shared-types";
-import { LoaderFunctionArgs, useLoaderData, useParams, redirect } from "react-router-dom";
+import { LoaderFunctionArgs, useParams, redirect } from "react-router-dom";
 import { detailsAndActionsCrumbs } from "@/utils";
 
 export const DetailCardWrapper = ({
