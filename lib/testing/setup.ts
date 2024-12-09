@@ -1,5 +1,5 @@
 import { Amplify } from "aws-amplify";
-import { API_CONFIG, AUTH_CONFIG, useDefaultStateSubmitter } from "mocks";
+import { API_CONFIG, AUTH_CONFIG, setDefaultStateSubmitter } from "mocks";
 import { mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, vi } from "vitest";
 
@@ -9,7 +9,7 @@ Amplify.configure({
 });
 
 beforeAll(() => {
-  useDefaultStateSubmitter();
+  setDefaultStateSubmitter();
 
   vi.spyOn(console, "error").mockImplementation(() => {});
 
@@ -23,7 +23,7 @@ afterEach(() => {
   vi.useRealTimers();
   vi.clearAllMocks();
 
-  useDefaultStateSubmitter();
+  setDefaultStateSubmitter();
   // Reset any request handlers that we may add during the tests,
   // so they don't affect other tests.
   mockedServer.resetHandlers();

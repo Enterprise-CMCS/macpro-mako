@@ -166,7 +166,11 @@ export async function mapRole(
 }
 
 export async function search(host: string, index: opensearch.Index, query: any) {
-  console.log("opensearch-lib search parameters: ", { host, index, query });
+  console.log("opensearch-lib search parameters: ", {
+    host,
+    index,
+    query: JSON.stringify(query, null, 2),
+  });
   client = client || (await getClient(host));
   console.log("client: ", JSON.stringify(client));
   try {
