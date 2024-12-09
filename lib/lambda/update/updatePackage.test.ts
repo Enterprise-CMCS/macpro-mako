@@ -137,6 +137,4 @@ describe("Update package", () => {
       ],
     });
   });
-
-  it("handles updating ID of a package", async () => {});
 });
