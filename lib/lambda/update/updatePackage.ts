@@ -101,16 +101,6 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     if (action === "delete") {
-      // await produceMessage(
-      //   topicName,
-      //   packageId,
-      //   JSON.stringify({
-      //     id: packageId,
-      //     deleted: true,
-      //     isAdminChange: true,
-      //     adminChangeType: "delete",
-      //   }),
-      // );
       await sendDeleteMessage(topicName, packageId);
     }
 
@@ -128,7 +118,6 @@ export const handler = async (event: APIGatewayEvent) => {
         JSON.stringify({
           id: packageId,
           isAdminChange: true,
-          origin: "mako",
         }),
       );
       await sendUpdateIdMessage(topicName, packageResult, updatedId);
@@ -164,18 +153,6 @@ export const handler = async (event: APIGatewayEvent) => {
         changeMadeText = `${Object.keys(updatedFields)} has been updated.`;
       }
 
-      // await produceMessage(
-      //   topicName,
-      //   packageId,
-      //   JSON.stringify({
-      //     id: packageId,
-      //     ...updatedFields,
-      //     isAdminChange: true,
-      //     adminChangeType: "update-values",
-      //     changeMade: changeMadeText,
-      //     changeReason,
-      //   }),
-      // );
       await sendUpdateValuesMessage(
         topicName,
         packageId,
