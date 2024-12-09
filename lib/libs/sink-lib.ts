@@ -2,6 +2,7 @@ import pino from "pino";
 const logger = pino();
 
 import * as os from "./opensearch-lib";
+import { BaseIndex } from "lib/packages/shared-types/opensearch";
 
 export function getTopic(topicPartition: string) {
   return topicPartition.split("--").pop()?.split("-").slice(0, -1)[0];
@@ -19,8 +20,7 @@ const ErrorMessages = {
   [ErrorType.VALIDATION]: "A validation error occurred.",
   [ErrorType.UNKNOWN]: "An unknown error occurred.",
   [ErrorType.BULKUPDATE]: "An error occurred while bulk updating records.",
-  [ErrorType.BADTOPIC]:
-    "Topic is unknown, unsupported, or unable to be parsed.",
+  [ErrorType.BADTOPIC]: "Topic is unknown, unsupported, or unable to be parsed.",
   [ErrorType.BADPARSE]: "An error occurred while parsing the record.",
 };
 
@@ -82,17 +82,45 @@ const prettyPrintJsonInObject = (obj: any): any => {
   return obj;
 };
 
+/**
+ * Returns the `osDomain` and `indexNamespace` env variables. Passing `baseIndex` appends the arg to the `index` variable
+ * @throws if env variables are not defined, `getDomainAndNamespace` throws error indicating which variable is missing
+ * @returns
+ */
+export function getDomainAndNamespace<T extends BaseIndex>(
+  baseIndex: T,
+): { domain: string; index: `${string}${T}` };
+export function getDomainAndNamespace(): { domain: string; index: string };
+export function getDomainAndNamespace(baseIndex?: BaseIndex) {
+  const domain = process.env.osDomain;
+
+  if (domain === undefined) {
+    throw new Error("osDomain is undefined in environment variables");
+  }
+
+  const indexNamespace = process.env.indexNamespace;
+
+  if (indexNamespace === undefined) {
+    throw new Error("indexName is undefined in environment variables");
+  }
+
+  return { index: baseIndex ? `${indexNamespace}${baseIndex}` : indexNamespace, domain };
+}
+
 export async function bulkUpdateDataWrapper(
-  domain: string,
-  index: string,
-  docs: any[],
+  docs: { id: string; [key: string]: unknown }[],
+  baseIndex: BaseIndex,
 ) {
   try {
-    await os.bulkUpdateData(process.env.osDomain!, index, docs);
-  } catch (error: any) {
+    const { domain, index } = getDomainAndNamespace(baseIndex);
+
+    await os.bulkUpdateData(domain, index, docs);
+  } catch (error) {
     logError({
       type: ErrorType.BULKUPDATE,
+      error,
     });
+
     throw error;
   }
 }
