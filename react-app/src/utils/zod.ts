@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { isAuthorizedState } from "@/utils";
 import { canBeRenewedOrAmended, idIsApproved, itemExists } from "@/api";
-import { validId } from "../zodIdValidator";
+import { validId } from "@/zodIdValidator";
 
 export const zSpaIdSchema = z
   .string()
@@ -32,9 +32,11 @@ export const zAttachmentRequired = ({
   max?: number;
   message?: string;
 }) =>
-  z.array(z.instanceof(File)).refine((value) => value.length >= min && value.length <= max, {
-    message: message,
-  });
+  z
+    .array(z.instanceof(File))
+    .refine((value) => value.length >= min && value.length <= max, {
+      message: message,
+    });
 
 export const zAdditionalInfoOptional = z
   .string()

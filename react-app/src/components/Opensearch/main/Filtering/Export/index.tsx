@@ -85,7 +85,9 @@ export const OsExportData: FC<{
           </Button>
         </TooltipTrigger>
         {disabled && (
-          <TooltipContent data-testid="tooltip-content">No records available</TooltipContent>
+          <TooltipContent data-testid="tooltip-content">
+            No records available
+          </TooltipContent>
         )}
       </Tooltip>
     </TooltipProvider>

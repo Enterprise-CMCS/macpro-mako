@@ -10,6 +10,7 @@ import {
 import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 
+import { Fragment } from "react/jsx-runtime";
 import {
   AttachmentFAQInstructions,
   AttachmentFileFormatInstructions,
@@ -60,10 +61,10 @@ export const ActionFormAttachments = ({
           </>
         )}
         {attachmentInstructions.map((instruction, i) => (
-          <>
+          <Fragment key={i}>
             {instruction}
             {i < attachmentInstructions.length - 1 && <br />}
-          </>
+          </Fragment>
         ))}
       </div>
       <section className="space-y-8" data-testid="attachments-section">

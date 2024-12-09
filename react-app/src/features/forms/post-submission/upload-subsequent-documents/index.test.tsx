@@ -8,7 +8,7 @@ import {
 } from "@/utils/test-helpers/skipCleanup";
 import { UploadSubsequentDocuments } from ".";
 import userEvent from "@testing-library/user-event";
-import { renderForm } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
 
 const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
 
@@ -17,7 +17,7 @@ describe("Upload Subsequent Documents (for Medicaid SPA)", () => {
     skipCleanup();
     mockApiRefinements();
 
-    renderForm(<UploadSubsequentDocuments />);
+    renderFormWithPackageSection(<UploadSubsequentDocuments />);
   });
 
   test("CMS FORM 179", async () => {
