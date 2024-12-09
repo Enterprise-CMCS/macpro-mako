@@ -4,6 +4,8 @@ import { Document, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
 import { isBefore } from "date-fns";
 
+const removeDoubleQuotesSurroundingString = (str: string) => str.replace(/^"|"$/g, "");
+
 type OneMacRecord = {
   id: string;
   makoChangedDate: string | null;
@@ -97,7 +99,9 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
 };
 
 const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
-  const kafkaIds = kafkaRecords.map((record) => decodeBase64WithUtf8(record.key));
+  const kafkaIds = kafkaRecords.map((record) =>
+    removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(record.key)),
+  );
   const openSearchRecords = await getItems(kafkaIds);
 
   return openSearchRecords.reduce<Map<string, number>>((map, item) => {
@@ -129,7 +133,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
           return collection;
         }
 
-        const id: string = decodeBase64WithUtf8(key);
+        const id: string = removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(key));
 
         if (!value) {
           // record in seatool has been deleted
