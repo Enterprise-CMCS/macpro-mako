@@ -3,9 +3,9 @@
 node_modules
 testcafe_results
 .DS_Store
+.serverless
 .webpack
 tsconfig.tsbuildinfo
 build_run
+**/*.test.{ts,tsx}
 docs/
-.github/actions/**
-.github/workflows/**
