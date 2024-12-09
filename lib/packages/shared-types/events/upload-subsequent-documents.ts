@@ -3,7 +3,7 @@ import { attachmentArraySchemaOptional } from "../attachments";
 
 export const baseSchema = z.object({
   event: z.literal("upload-subsequent-documents").default("upload-subsequent-documents"),
-  additionalInformation: z.string().max(4000).default(null),
+  additionalInformation: z.string().max(4000),
   attachments: z.record(
     z.string(),
     z.object({

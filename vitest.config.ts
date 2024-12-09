@@ -33,6 +33,7 @@ export default defineConfig({
         "**/*.config.{ts,js,cjs}",
         "**/coverage/**",
         "test/e2e/**",
+        "mocks/**",
         "**/*.js",
         "**/assets/**",
         "node_modules/**",

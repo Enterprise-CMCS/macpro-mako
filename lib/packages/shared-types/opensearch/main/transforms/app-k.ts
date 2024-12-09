@@ -1,4 +1,4 @@
-import { events, SEATOOL_STATUS, getStatus } from "shared-types";
+import { events, getStatus, SEATOOL_STATUS } from "shared-types";
 import {
   getNextBusinessDayTimestamp,
   seaToolFriendlyTimestamp,
@@ -7,7 +7,7 @@ import {
 export const transform = () => {
   return events["app-k"].schema.transform((data) => {
     const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.PENDING);
-    const timestampDate = new Date(data.timestamp);
+    const timestampDate = data.timestamp ? new Date(data.timestamp) : undefined;
     const todayEpoch = seaToolFriendlyTimestamp(timestampDate);
     const nextBusinessDayEpoch = getNextBusinessDayTimestamp(timestampDate);
 
@@ -15,20 +15,20 @@ export const transform = () => {
       title: data.title,
       additionalInformation: data.additionalInformation,
       authority: data.authority,
-      changedDate: new Date(data.timestamp).toISOString(),
+      changedDate: timestampDate?.toISOString() || null,
       cmsStatus,
       description: null,
       id: data.id,
-      makoChangedDate: new Date(data.timestamp).toISOString(),
+      makoChangedDate: timestampDate?.toISOString() || null,
       origin: "OneMAC",
       raiWithdrawEnabled: false, // Set to false for new submissions
       seatoolStatus: SEATOOL_STATUS.PENDING,
-      state: data.id.split("-")[0],
+      state: data.id?.split("-")?.[0],
       stateStatus,
-      statusDate: new Date(todayEpoch).toISOString(),
+      statusDate: new Date(todayEpoch).toISOString() || null,
       proposedDate: data.proposedEffectiveDate,
       subject: null,
-      submissionDate: new Date(nextBusinessDayEpoch).toISOString(),
+      submissionDate: new Date(nextBusinessDayEpoch).toISOString() || null,
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
       actionType: data.actionType,

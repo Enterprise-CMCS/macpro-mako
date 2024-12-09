@@ -13,7 +13,7 @@ export const renderCellDate = (key: keyof opensearch.main.Document) =>
 
 type CellIdLinkProps = {
   id: string;
-  authority: Authority;
+  authority: Authority | string;
 };
 
 export const CellDetailsLink = ({ id, authority }: CellIdLinkProps) => (
@@ -39,10 +39,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) => {
         >
           <EllipsisVerticalIcon
             aria-label="record actions"
-            className={cn(
-              "w-8 ",
-              actions.length ? "text-blue-700" : "text-gray-400",
-            )}
+            className={cn("w-8 ", actions.length ? "text-blue-700" : "text-gray-400")}
           />
         </POP.PopoverTrigger>
         <POP.PopoverContent>

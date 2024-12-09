@@ -6,9 +6,7 @@ export const transform = () => {
   return events["toggle-withdraw-rai"].schema.transform((data) => ({
     id: data.id,
     raiWithdrawEnabled: data.raiWithdrawEnabled,
-    makoChangedDate: data.timestamp
-      ? new Date(data.timestamp).toISOString()
-      : null,
+    makoChangedDate: data.timestamp ? new Date(data.timestamp).toISOString() : null,
   }));
 };
 

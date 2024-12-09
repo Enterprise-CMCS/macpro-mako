@@ -1,12 +1,21 @@
-import { beforeAll, describe, expect, test, vi } from "vitest";
+import { beforeAll, afterEach, describe, expect, test, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { formSchemas } from "@/formSchemas";
 import { TemporaryExtensionForm } from ".";
-import { renderForm, renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
+import {
+  renderFormAsync,
+  renderFormWithPackageSectionAsync,
+} from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
-import * as api from "@/api";
+import {
+  EXISTING_ITEM_PENDING_ID,
+  EXISTING_ITEM_APPROVED_NEW_ID,
+  NOT_FOUND_ITEM_ID,
+  VALID_ITEM_TEMPORARY_EXTENSION_ID,
+  TEST_ITEM_ID,
+} from "mocks";
 
 const upload = uploadFiles<(typeof formSchemas)["temporary-extension"]>();
 
@@ -15,12 +24,22 @@ describe("Temporary Extension", () => {
     mockApiRefinements();
   });
 
-  test("EXISTING WAIVER ID", () => {
-    renderFormWithPackageSection(<TemporaryExtensionForm />);
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
 
-    // "Medicaid SPA" comes from `useGetItem` in testing/setup.ts
+  const user = userEvent.setup();
+
+  test("EXISTING WAIVER ID", async () => {
+    // set the Item Id to TEST_ITEM_ID
+    await renderFormWithPackageSectionAsync(
+      <TemporaryExtensionForm />,
+      TEST_ITEM_ID,
+      "Medicaid SPA",
+    );
+
+    const temporaryExtensionValue = await vi.waitUntil(() => screen.getByText("Medicaid SPA"));
     const temporaryExtensionLabel = screen.getByText(/Temporary Extension Type/);
-    const temporaryExtensionValue = screen.getByText("Medicaid SPA");
 
     // ensure Temporary Extension label and value exist and are in correct order
     expect(temporaryExtensionLabel.compareDocumentPosition(temporaryExtensionValue)).toBe(
@@ -30,8 +49,8 @@ describe("Temporary Extension", () => {
     const approvedInitialAndRenewalLabel = screen.getByText(
       "Approved Initial or Renewal Waiver Number",
     );
-    // grab second 12345 (first one is in the breadcrumbs)
-    const approvedInitialAndRenewalValue = screen.getAllByText(/12345/)[1];
+    // grab second TEST_ITEM_ID (first one is in the breadcrumbs)
+    const approvedInitialAndRenewalValue = screen.getAllByText(TEST_ITEM_ID)[1];
 
     // ensure Approved Initial and Renewal label and value exist and are in correct order
     expect(
@@ -40,23 +59,20 @@ describe("Temporary Extension", () => {
   });
 
   test("TEMPORARY EXTENSION TYPE", async () => {
-    // mock `useGetItem` to signal there's temp-ext submission to render
-    // @ts-ignore - expects the _whole_ React-Query object (annoying to type out)
-    vi.spyOn(api, "useGetItem").mockImplementation(() => ({ data: undefined }));
-    // render temp-ext form with no route params
-    renderForm(<TemporaryExtensionForm />);
+    await renderFormAsync(<TemporaryExtensionForm />);
+
     // enable render cleanup here
     skipCleanup();
 
     const teTypeDropdown = screen.getByRole("combobox");
 
-    await userEvent.click(teTypeDropdown);
+    await user.click(teTypeDropdown);
 
     const teOptionToClick = screen.getByRole("option", {
       name: "1915(b)",
     });
 
-    await userEvent.click(teOptionToClick);
+    await user.click(teOptionToClick);
 
     expect(teTypeDropdown).toHaveTextContent("1915(b)");
   });
@@ -66,22 +82,22 @@ describe("Temporary Extension", () => {
     const waiverNumberLabel = screen.getByTestId("waiverNumber-label");
 
     // test record does not exist error occurs
-    await userEvent.type(waiverNumberInput, "MD-0004.R00.00");
+    await user.type(waiverNumberInput, NOT_FOUND_ITEM_ID);
     const recordDoesNotExistError = screen.getByText(
       "According to our records, this Approved Initial or Renewal Waiver Number does not yet exist. Please check the Approved Initial or Renewal Waiver Number and try entering it again.",
     );
     expect(recordDoesNotExistError).toBeInTheDocument();
-    await userEvent.clear(waiverNumberInput);
+    await user.clear(waiverNumberInput);
 
     // test record is not approved error occurs
-    await userEvent.type(waiverNumberInput, "MD-0002.R00.00");
+    await user.type(waiverNumberInput, EXISTING_ITEM_PENDING_ID);
     const recordIsNotApproved = screen.getByText(
       "According to our records, this Approved Initial or Renewal Waiver Number is not approved. You must supply an approved Initial or Renewal Waiver Number.",
     );
     expect(recordIsNotApproved).toBeInTheDocument();
-    await userEvent.clear(waiverNumberInput);
+    await user.clear(waiverNumberInput);
 
-    await userEvent.type(waiverNumberInput, "MD-0000.R00.00");
+    await user.type(waiverNumberInput, EXISTING_ITEM_APPROVED_NEW_ID);
 
     expect(waiverNumberLabel).not.toHaveClass("text-destructive");
   });
@@ -91,14 +107,14 @@ describe("Temporary Extension", () => {
     const requestNumberLabel = screen.getByTestId("requestNumber-label");
 
     // invalid TE request format
-    await userEvent.type(requestNumberInput, "MD-0000.R00.00");
+    await user.type(requestNumberInput, EXISTING_ITEM_APPROVED_NEW_ID);
     const invalidRequestNumberError = screen.getByText(
       "The Temporary Extension Request Number must be in the format of SS-####.R##.TE## or SS-#####.R##.TE##",
     );
     expect(invalidRequestNumberError).toBeInTheDocument();
-    await userEvent.clear(requestNumberInput);
+    await user.clear(requestNumberInput);
 
-    await userEvent.type(requestNumberInput, "MD-0000.R00.TE00");
+    await user.type(requestNumberInput, VALID_ITEM_TEMPORARY_EXTENSION_ID);
 
     expect(requestNumberLabel).not.toHaveClass("text-destructive");
   });

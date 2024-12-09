@@ -1,6 +1,21 @@
-import { afterEach, beforeAll, afterAll, vi, expect } from "vitest";
-import { cleanup } from "@testing-library/react";
 import * as matchers from "@testing-library/jest-dom/matchers";
+import { cleanup } from "@testing-library/react";
+import { Amplify, Auth } from "aws-amplify";
+import {
+  API_CONFIG,
+  AUTH_CONFIG,
+  mockCurrentAuthenticatedUser,
+  mockUserAttributes,
+  setDefaultStateSubmitter,
+  setMockUsername,
+} from "mocks";
+import { mockedServer } from "mocks/server";
+import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
+
+Amplify.configure({
+  API: API_CONFIG,
+  Auth: AUTH_CONFIG,
+});
 
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
@@ -28,9 +43,23 @@ window.HTMLElement.prototype.scrollIntoView = vi.fn();
 window.HTMLElement.prototype.releasePointerCapture = vi.fn();
 window.HTMLElement.prototype.hasPointerCapture = vi.fn();
 
+vi.spyOn(Auth, "currentAuthenticatedUser").mockImplementation(mockCurrentAuthenticatedUser);
+vi.spyOn(Auth, "userAttributes").mockImplementation(mockUserAttributes);
+vi.spyOn(Auth, "signOut").mockImplementation(async () => {
+  setMockUsername(null);
+});
+
 // Add this to remove all the expected errors in console when running unit tests.
 beforeAll(() => {
+  setDefaultStateSubmitter();
+
   vi.spyOn(console, "error").mockImplementation(() => {});
+
+  console.log("starting MSW listener");
+  mockedServer.listen({
+    onUnhandledRequest: "warn",
+  });
+
   if (process.env.MOCK_API_REFINES) {
     vi.mock("@/components/Inputs/upload.utilities", () => ({
       getPresignedUrl: vi.fn(async () => "hello world"),
@@ -40,62 +69,27 @@ beforeAll(() => {
         key: "world",
       })),
     }));
-    vi.mock("@/api", () => ({
-      idIsApproved: vi.fn(async (id: string) => {
-        const idsThatAreApproved = ["MD-0000.R00.00", "MD-0001.R00.00"];
-
-        return idsThatAreApproved.includes(id);
-      }),
-      canBeRenewedOrAmended: vi.fn(async (id: string) => {
-        const idsThatCanBeRenewedOrAmended = ["MD-0000.R00.00", "MD-0002.R00.00"];
-
-        return idsThatCanBeRenewedOrAmended.includes(id);
-      }),
-      itemExists: vi.fn(async (id: string) => {
-        const idsThatExist = [
-          "MD-00-0000",
-          "MD-0000.R00.00",
-          "MD-0000.R00.01",
-          "MD-0001.R00.00",
-          "MD-0002.R00.00",
-          "MD-0005.R01.00",
-        ];
-
-        return idsThatExist.includes(id);
-      }),
-      useGetItem: () => ({
-        data: {
-          _source: {
-            _id: "12345",
-            changelog: [{ _source: { event: "new-medicaid-submission" } }],
-            authority: "Medicaid SPA",
-          },
-        },
-      }),
-      useGetUser: () => ({
-        data: {
-          user: {
-            "custom:cms-roles": "onemac-micro-statesubmitter,onemac-micro-super",
-          },
-        },
-      }),
-    }));
-    vi.mock("@/utils/user", () => ({
-      isAuthorizedState: vi.fn(async (id: string) => {
-        const validStates = ["MD"];
-
-        return validStates.includes(id.substring(0, 2));
-      }),
-    }));
   }
 });
 
 afterEach(() => {
+  vi.useRealTimers();
+  vi.clearAllMocks();
+
+  setDefaultStateSubmitter();
+  // Reset any request handlers that we may add during the tests,
+  // so they don't affect other tests.
+  mockedServer.resetHandlers();
+
   if (process.env.SKIP_CLEANUP) return;
   cleanup();
 });
 
 afterAll(() => {
+  vi.clearAllMocks();
+
+  // Clean up after the tests are finished.
+  mockedServer.close();
+
   delete process.env.SKIP_CLEANUP;
-  vi.restoreAllMocks();
 });
