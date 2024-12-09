@@ -1,6 +1,9 @@
 export const REGION = "us-east-1";
 export const API_ENDPOINT = `https://test-domain.execute-api.${REGION}.amazonaws.com/mocked-tests`;
 
+export const ACCESS_KEY_ID = "ASIAZHXA3XOU7XZ53M36";
+export const SECRET_KEY = "UWKCFxhrgbPnixgLnL1JKwFEwiK9ZKvTAtpk8cGa";
+
 export const API_CONFIG = {
   endpoints: [
     {
