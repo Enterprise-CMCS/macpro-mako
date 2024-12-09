@@ -9,12 +9,14 @@ const baseURL = process.env.STAGE_NAME
       (
         await new SSMClient({ region: "us-east-1" }).send(
           new GetParameterCommand({
-            Name: `/${process.env.PROJECT}/${process.env.STAGE_NAME || "main"}/deployment-output`,
+            Name: `/${process.env.PROJECT}/${
+              process.env.STAGE_NAME || "main"
+            }/deployment-output`,
           }),
         )
       ).Parameter!.Value!,
     ).applicationEndpointUrl
-  : "http://localhost:5173";
+  : "http://localhost:5000";
 
 console.log(`Playwright configured to run against ${baseURL}`);
 export default defineConfig({
@@ -50,7 +52,7 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"],
         // Use prepared auth state for state submitter.
-        storageState: "../playwright/.auth/state-user.json",
+        storageState: "playwright/.auth/state-user.json",
       },
       // Tests start already authenticated because we specified storageState in the config.
       dependencies: ["setup"],

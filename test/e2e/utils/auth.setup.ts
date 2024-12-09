@@ -1,27 +1,11 @@
 import { test as setup } from "@playwright/test";
-import { vi } from "vitest";
 import { testUsers } from "./users";
 import { LoginPage } from "../pages";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
-import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
-
-vi.mock("@aws-sdk/client-ssm", () => ({
-  SSMClient: vi.fn(() => ({
-    send: vi.fn().mockResolvedValue({
-      Parameter: { Value: JSON.stringify({ devPasswordArn: "mock-arn" }) },
-    }),
-  })),
-  GetParameterCommand: vi.fn(),
-}));
-
-vi.mock("@aws-sdk/client-secrets-manager", () => ({
-  SecretsManagerClient: vi.fn(() => ({
-    send: vi.fn().mockResolvedValue({
-      SecretString: "mock-password",
-    }),
-  })),
-  GetSecretValueCommand: vi.fn(),
-}));
+import {
+  SecretsManagerClient,
+  GetSecretValueCommand,
+} from "@aws-sdk/client-secrets-manager";
 
 const stage = process.env.STAGE_NAME || "main";
 const deploymentConfig = JSON.parse(
