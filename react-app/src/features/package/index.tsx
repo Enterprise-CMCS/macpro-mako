@@ -76,7 +76,7 @@ type LoaderData = {
 };
 
 export const Details = () => {
-  const { id, authority } = useLoaderData() as LoaderData;
+  const { id, authority } = useLoaderData<typeof packageDetailsLoader>();
   return (
     <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row">
       <div className="px-4 lg:px-8">
