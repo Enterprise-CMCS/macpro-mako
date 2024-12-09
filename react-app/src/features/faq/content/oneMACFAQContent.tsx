@@ -703,9 +703,7 @@ export const oneMACFAQContent: FAQContent[] = [
         question: "Where can I download CHIP eligibility SPA implementation guides?",
         answerJSX: (
           <section className="space-y-2 ">
-            <p>
-              CHIP eligibility SPA implementation guides can be downloaded at the links below. 
-            </p>
+            <p>CHIP eligibility SPA implementation guides can be downloaded at the links below.</p>
             <ul className="list-disc pl-6 space-y-2">
               {renderSection(
                 "MAGI Eligibility & Methods",

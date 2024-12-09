@@ -41,9 +41,7 @@ export const ABP_TEMPLATES: Template[] = [
     title: "ABP 3.1",
     text: "Selection of Benchmark Benefit or Benchmark-Equivalent Benefit Package",
     href: abp31PDF,
-    subtext: [
-      "Use only for ABPs effective on or after 1/1/2020",
-    ],
+    subtext: ["Use only for ABPs effective on or after 1/1/2020"],
   },
   {
     title: "ABP 4",

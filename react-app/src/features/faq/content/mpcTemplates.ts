@@ -30,5 +30,5 @@ export const MPC_TEMPLATES: Template[] = [
     title: "G 3",
     text: " Cost-Sharing Limitations",
     href: g3PDF,
-  }
+  },
 ];
