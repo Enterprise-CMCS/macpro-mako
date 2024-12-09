@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
 import { handler } from "./search";
 import { response } from "libs/handler-lib";
@@ -52,8 +52,8 @@ describe("getSearchData Handler", () => {
       },
     };
 
-    (os.search as vi.Mock).mockResolvedValueOnce(mockResults);
-    (getAppkChildren as vi.Mock).mockResolvedValueOnce({
+    (os.search as Mock).mockResolvedValueOnce(mockResults);
+    (getAppkChildren as Mock).mockResolvedValueOnce({
       hits: {
         hits: [{ _id: "2", _source: { child: "child-data" } }],
       },
@@ -62,7 +62,7 @@ describe("getSearchData Handler", () => {
     const event = {
       pathParameters: { index: "main" },
       body: JSON.stringify({ query: { match_all: {} } }),
-    } as APIGatewayEvent;
+    } as unknown as APIGatewayEvent;
 
     await handler(event);
 
