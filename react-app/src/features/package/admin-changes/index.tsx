@@ -64,7 +64,7 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
       //   return ["Package ID Update", AC_UpdateId];
       case "legacy-admin-change":
         return [props.changeType || "Manual Update", AC_LegacyAdminChange];
-      // TODO: get approval, update language. make dynamic?
+      // TODO: discuss with HCD. Will be handled in another ticket.
       case "update-values":
         return ["Package detail(s) have been changed", AC_LegacyAdminChange];
       case "delete":
