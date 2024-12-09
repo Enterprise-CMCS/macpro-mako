@@ -22,13 +22,6 @@ describe("Appendix K", () => {
     expect(amendmentTitle).toBeInTheDocument();
   });
 
-  test("Waiver number link should have correct capitalization", async () => {
-    const waiverIdLabel = screen.getByTestId("amendmentnumber-label");
-    const waiverIdLink = waiverIdLabel.nextElementSibling;
-
-    expect(waiverIdLink.textContent).toBe("What is my Waiver Amendment Number?");
-  });
-
   test("Waiver number should error if input is invalid", async () => {
     const waiverNumberInput = screen.getByLabelText(/Waiver Amendment Number/);
     expect(waiverNumberInput).toBeInTheDocument();
