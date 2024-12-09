@@ -104,7 +104,9 @@ async function updateUserAttributes(params: any): Promise<void> {
       UserPoolId: params.UserPoolId,
       Username: params.Username,
     });
+    console.log("getUserCommand: ", JSON.stringify(getUserCommand));
     const user = await client.send(getUserCommand);
+    console.log("user response: ", JSON.stringify(user));
 
     // Check for existing "custom:cms-roles"
     const cmsRolesAttribute = user.UserAttributes?.find((attr) => attr.Name === "custom:cms-roles");
