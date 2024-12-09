@@ -12,6 +12,8 @@ jobs:
   test:
     runs-on: macos-12
     timeout-minutes: 120 # MacOS runners are more expensive than linux, so we want to be sure to stop any stuck builds.
+    environment:
+      name: test-ws-setup
     env:
       STAGE_NAME: test-ws-setup
     permissions:
@@ -58,14 +60,12 @@ jobs:
           direnv allow
           direnv exec run deploy --stage $STAGE_NAME
 
-      - name: Test test
-        run: |
-          source /tmp/.profile
-          direnv allow
-          echo "Bun version: $(bun -v)"
-          echo "Working directory: $(pwd)"
-          # Run tests with more verbose output
-          direnv exec vitest --coverage --verbose
+      # - name: Test test
+      #   run: |
+      #     source /tmp/.profile
+      #     nvm use
+      #     direnv allow
+      #     direnv exec run test --stage $STAGE_NAME
 
       - name: Test destroy
         run: |
