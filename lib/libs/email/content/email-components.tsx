@@ -26,6 +26,8 @@ const areAllAttachmentsEmpty = (
   return Object.values(attachments).every((att) => !att || att.files?.length === 0);
 };
 
+const Divider = () => <Hr style={styles.divider} />;
+
 const Textarea = ({ children }: { children: React.ReactNode }) => (
   <Text
     style={{
@@ -92,11 +94,41 @@ const LoginInstructions = ({
   </ul>
 );
 
-const Divider = () => <Hr style={styles.divider} />;
+const SubDocHowToAccess = ({
+  appEndpointURL,
+}: {
+  appEndpointURL: string;
+  useThisLink?: boolean;
+}) => (
+  <>
+    <Divider />
+    <Text style={{ ...styles.text.base, fontWeight: "bold" }}>How to Access:</Text>
+    <ul>
+      <li>
+        <Text style={styles.text.description}>
+          These documents can be found in OneMAC through this link{" "}
+          <Link href={appEndpointURL}>{appEndpointURL}</Link>.
+        </Text>
+      </li>
+      <li>
+        <Text style={styles.text.description}>
+          If you are not already logged in, click “Login” at the top of the page and log in using
+          your Enterprise User Administration (EUA) credentials.
+        </Text>
+      </li>
+
+      <li>
+        <Text style={styles.text.description}>
+          After you logged in, click the submission ID number on the dashboard page to view details.
+        </Text>
+      </li>
+    </ul>
+  </>
+);
 
 const DetailsHeading = () => (
   <div>
-    <Hr style={styles.divider} />
+    <Divider />
     <Heading as="h2" style={styles.heading.h2}>
       Details:
     </Heading>
@@ -114,7 +146,7 @@ const Attachments = ({
 
   return (
     <>
-      <Hr style={styles.divider} />
+      <Divider />
       <Heading as="h2" style={styles.heading.h2}>
         Files:
       </Heading>
@@ -156,7 +188,7 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
       if (label === "Summary") {
         return (
           <Row key={label + index}>
-            <Hr style={styles.divider} />
+            <Divider />
             <Text style={{ margin: ".5em" }}>
               <Heading as="h2" style={styles.heading.h2}>
                 Summary:
@@ -282,6 +314,7 @@ export {
   Textarea,
   EmailNav,
   LoginInstructions,
+  SubDocHowToAccess,
   DetailsHeading,
   Divider,
   Attachments,

@@ -4,16 +4,16 @@ import {
   BasicFooter,
   Attachments,
   SubDocHowToAccess,
+  Divider,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const ChipSpaCMSEmail = ({
-  variables,
-}: {
+export const AppKCMSEmail = (props: {
   variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;
 }) => {
-  const previewText = `Action required: review new documents for CHIP SPA ${variables.id} in OneMAC.`;
-  const heading = `New documents have been submitted for CHIP SPA ${variables.id} in OneMAC.`;
+  const variables = props.variables;
+  const previewText = `Action required: review new documents for 1915(c) ${variables.id} in OneMAC.`;
+  const heading = `New documents have been submitted for 1915(c) ${variables.id} in OneMAC.`;
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -24,7 +24,7 @@ export const ChipSpaCMSEmail = ({
       <PackageDetails
         details={{
           "State or Territory": variables.territory,
-          "CHIP SPA Package ID": variables.id,
+          "1915(c) Appendix K ID": variables.id,
           Summary: variables.additionalInformation,
         }}
       />
