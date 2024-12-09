@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, test, expect, beforeAll } from "vitest";
+import { beforeAll, describe, expect, test } from "vitest";
 import { RenewalForm } from "./Renewal";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
@@ -73,7 +73,16 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
     );
     expect(invalidStateErrorMessage).toBeInTheDocument();
     await userEvent.clear(waiverIdInput);
+
+    // test record doesn't have an amendment number
+    await userEvent.type(waiverIdInput, "MD-0000.R00.01");
+    const waiverIdHasAmendment = screen.getByText(
+      "The 1915(b) Waiver Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00. For renewals, the “R##” starts with ‘01’ and ascends.",
+    );
+    expect(waiverIdHasAmendment).toBeInTheDocument();
     // end of error validations
+
+    await userEvent.clear(waiverIdInput);
 
     await userEvent.type(waiverIdInput, "MD-0006.R01.00");
 
@@ -83,9 +92,11 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
   test("PROPOSED EFFECTIVE DATE OF RENEWAL CONTRACTING WAIVER", async () => {
     await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
+
     const proposedEffectiveDateLabel = screen.getByText(
       "Proposed Effective Date of 1915(b) Waiver Renewal",
     );
+
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });
 

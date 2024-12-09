@@ -3,6 +3,9 @@ TODO for PR Author:
 - Would your work benefit from unit tests?
 - Have you formatted your files using Prettier/ESLint?
 - Delete any irrelevant sections below before opening the pull request
+- title your PR using the angular commit convention -> https://www.conventionalcommits.org/en/v1.0.0/
+  type-of-changes(scope-in-codebase): distilled description of changes
+  e.g. feat/fix/test(ui/api/lib): refactor Hello World console log
 -->
 
 ## 🎫 Linked Ticket
