@@ -1,10 +1,9 @@
 import { CommonEmailVariables, Events } from "shared-types";
 import {
-  PackageDetails,
-  BasicFooter,
   Attachments,
+  BasicFooter,
+  PackageDetails,
   SubDocHowToAccess,
-  Divider,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
