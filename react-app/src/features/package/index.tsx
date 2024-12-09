@@ -11,8 +11,7 @@ import { PackageDetails } from "./package-details";
 import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
-import { Authority } from "shared-types";
-import { LoaderFunctionArgs, useParams, redirect } from "react-router-dom";
+import { LoaderFunctionArgs, useLoaderData, useParams, redirect } from "react-router-dom";
 import { detailsAndActionsCrumbs } from "@/utils";
 
 export const DetailCardWrapper = ({
@@ -68,11 +67,6 @@ export const packageDetailsLoader = async ({ params }: LoaderFunctionArgs) => {
   }
 
   return { id, authority };
-};
-
-type LoaderData = {
-  id: string;
-  authority: Authority;
 };
 
 export const Details = () => {
