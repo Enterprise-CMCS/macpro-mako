@@ -1,6 +1,6 @@
 import { Action, CognitoUserAttributes, opensearch } from "../../shared-types";
-import rules from "./rules";
 import { PackageCheck } from "../package-check";
+import rules from "./rules";
 
 export const getAvailableActions = (
   user: CognitoUserAttributes,
@@ -9,6 +9,7 @@ export const getAvailableActions = (
   const allActions: Action[][] = [];
 
   const allMembers = [result];
+
   if (result.appkChildren) {
     allMembers.push(...result.appkChildren.map((el) => el._source));
   }
@@ -27,17 +28,13 @@ export const getAvailableActions = (
     return acc.filter((action: Action) => currentActions.includes(action));
   }, []);
 
-  const allRaiRequestedDates = allMembers.map((member) => {
-    return member.raiRequestedDate;
-  });
-  const isRaiRequestedDateIdentical = allRaiRequestedDates.every(
-    (date, _, arr) => date === arr[0],
-  );
+  const allRaiRequestedDates = allMembers
+    .filter((member) => (member as opensearch.main.SeatoolDocument)?.raiRequestedDate !== undefined)
+    .map((member) => (member as opensearch.main.SeatoolDocument)?.raiRequestedDate);
+  const isRaiRequestedDateIdentical = allRaiRequestedDates.every((date, _, arr) => date === arr[0]);
   if (!isRaiRequestedDateIdentical) {
     const actionsToRemove = [Action.RESPOND_TO_RAI, Action.WITHDRAW_RAI];
-    commonActions = commonActions.filter(
-      (action: any) => !actionsToRemove.includes(action),
-    );
+    commonActions = commonActions.filter((action: any) => !actionsToRemove.includes(action));
   }
   return commonActions;
 };

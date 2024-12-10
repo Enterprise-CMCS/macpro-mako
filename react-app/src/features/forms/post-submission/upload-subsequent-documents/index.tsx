@@ -1,5 +1,10 @@
 import { useGetItem } from "@/api";
-import { ActionForm, PackageSection, SchemaWithEnforcableProps } from "@/components";
+import {
+  ActionForm,
+  PackageSection,
+  SchemaWithEnforcableProps,
+  LoadingSpinner,
+} from "@/components";
 import {
   AttachmentFAQInstructions,
   AttachmentFileFormatInstructions,
@@ -81,14 +86,18 @@ const getTitle = (originalSubmissionEvent: string) => {
 
 export const UploadSubsequentDocuments = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: submission } = useGetItem(id);
+  const { data: submission, isLoading: isSubmissionLoading } = useGetItem(id);
 
-  if (submission === undefined) {
+  if (isSubmissionLoading === true) {
+    return <LoadingSpinner />;
+  }
+
+  if (!submission?._source) {
     return <Navigate to="/dashboard" />;
   }
 
   const originalSubmissionEvent = (submission._source.changelog ?? []).reduce<string | null>(
-    (acc, { _source }) => (_source.event ? _source.event : acc),
+    (acc, { _source }) => (_source?.event ? _source?.event : acc),
     null,
   );
 
