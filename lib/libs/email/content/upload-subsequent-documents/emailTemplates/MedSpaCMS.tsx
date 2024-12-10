@@ -6,8 +6,6 @@ import {
   SubDocHowToAccess,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
-import { styles } from "../../email-styles";
-import { Text } from "@react-email/components";
 
 export const MedSpaCMSEmail = (props: {
   variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;

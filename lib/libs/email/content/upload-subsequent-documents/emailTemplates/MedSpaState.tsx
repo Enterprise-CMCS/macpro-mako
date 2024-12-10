@@ -1,7 +1,7 @@
 import { Events } from "shared-types";
 import { CommonEmailVariables } from "shared-types";
 import { Text } from "@react-email/components";
-import { PackageDetails, DetailsHeading, Attachments, BasicFooter } from "../../email-components";
+import { PackageDetails, Attachments, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
