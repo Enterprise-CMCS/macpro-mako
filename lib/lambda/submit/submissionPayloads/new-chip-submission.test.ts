@@ -3,9 +3,10 @@ import { newChipSubmission } from "./new-chip-submission";
 import { isAuthorized, getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 
 import { type APIGatewayEvent } from "aws-lambda";
+import { itemExists } from "libs/api/package";
 
-// Mock AppK Payload
-const mockAppKPayload = {
+
+const payload = {
   id: "SS-11-2020",
   event: "new-chip-submission",
   authority: "1915(b)",
@@ -13,7 +14,7 @@ const mockAppKPayload = {
   title: "Sample Title for Appendix K",
   attachments: {
     currentStatePlan: {
-      label: "Appendix K Template",
+      label: "Current State Plan",
       files: [
         {
           filename: "appendix-k-amendment.docx",
@@ -25,7 +26,7 @@ const mockAppKPayload = {
       ],
     },
     amendedLanguage: {
-        label: "Appendix K Template",
+        label: "Amended State Plan Language",
         files: [
           {
             filename: "appendix-k-amendment.docx",
@@ -37,7 +38,7 @@ const mockAppKPayload = {
         ],
       },
       coverLetter: {
-        label: "Appendix K Template",
+        label: "Cover Letter",
         files: [
           {
             filename: "appendix-k-amendment.docx",
@@ -49,7 +50,7 @@ const mockAppKPayload = {
         ],
       },   
       budgetDocuments: {
-        label: "Appendix K Template",
+        label: "Budget Document",
         files: [
           {
             filename: "appendix-k-amendment.docx",
@@ -61,7 +62,7 @@ const mockAppKPayload = {
         ],
       },
       publicNotice: {
-        label: "Appendix K Template",
+        label: "Public Notice",
         files: [
           {
             filename: "appendix-k-amendment.docx",
@@ -73,7 +74,7 @@ const mockAppKPayload = {
         ],
       },
       tribalConsultation: {
-        label: "Appendix K Template",
+        label: "Tribal Consultation",
         files: [
           {
             filename: "appendix-k-amendment.docx",
@@ -112,11 +113,11 @@ vi.mock("libs/api/package", () => ({
   itemExists: vi.fn(),
 }));
 
-describe("appK function", () => {
+describe("new chip submission payload", () => {
   const mockIsAuthorized = vi.mocked(isAuthorized);
   const mockGetAuthDetails = vi.mocked(getAuthDetails);
   const mockLookupUserAttributes = vi.mocked(lookupUserAttributes);
-
+  const mockItemExists = vi.mocked(itemExists)
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -135,12 +136,33 @@ describe("appK function", () => {
     });
 
 
-    // Mock API Gateway Event
     const mockEvent = {
-        body: JSON.stringify(mockAppKPayload),
+        body: JSON.stringify(payload),
     } as APIGatewayEvent;
 
     await expect(newChipSubmission(mockEvent)).rejects.toThrow("Unauthorized");
+
+  });
+  it("should find an item already exists", async () => {
+    mockIsAuthorized.mockResolvedValueOnce(true);
+    mockGetAuthDetails.mockReturnValueOnce({ userId: "user-123", poolId: "pool-123" });
+    mockLookupUserAttributes.mockResolvedValueOnce({
+        email: "john.doe@example.com",
+        given_name: "John",
+        family_name: "Doe",
+        sub: "",
+        "custom:cms-roles": "",
+        email_verified: false,
+        username: ""
+    });
+    mockItemExists.mockResolvedValueOnce(true)
+
+
+    const mockEvent = {
+      body: JSON.stringify(payload),
+    } as APIGatewayEvent;
+
+    await expect(newChipSubmission(mockEvent)).rejects.toThrow("Item Already Exists");
 
   });
   it("should have no body on submission and throw an error", async () => {
@@ -182,7 +204,7 @@ describe("appK function", () => {
 
 
     const mockEvent = {
-      body: JSON.stringify(mockAppKPayload),
+      body: JSON.stringify(payload),
     } as APIGatewayEvent;
 
     const result = await newChipSubmission(mockEvent);

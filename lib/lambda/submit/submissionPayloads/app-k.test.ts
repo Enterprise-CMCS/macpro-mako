@@ -1,12 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { appK } from "./app-k"; // Adjust the path as necessary
-import { events } from "shared-types/events";
+import { appK } from "./app-k";
 import { isAuthorized, getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
-import { itemExists } from "libs/api/package";
 import { type APIGatewayEvent } from "aws-lambda";
 
-// Mock AppK Payload
-const mockAppKPayload = {
+
+const payload = {
   id: "SS-1234.R11.01",
   event: "app-k",
   authority: "1915(c)",
@@ -39,21 +37,7 @@ const mockAppKPayload = {
     },
   },
   additionalInformation: "Some additional information about this submission.",
-
 };
-
-// vi.mock("shared-types/events", () => ({
-//   events: {
-//     "app-k": {
-//       baseSchema: {
-//         safeParse: vi.fn(),
-//       },
-//       schema: {
-//         parse: vi.fn(),
-//       },
-//     },
-//   },
-// }));
 
 vi.mock("libs/api/auth/user", () => ({
   isAuthorized: vi.fn(),
@@ -66,12 +50,9 @@ vi.mock("libs/api/package", () => ({
 }));
 
 describe("appK function", () => {
-//   const mockSafeParse = vi.mocked(events["app-k"].baseSchema.safeParse);
-//   const mockParse = vi.mocked(events["app-k"].schema.parse);
   const mockIsAuthorized = vi.mocked(isAuthorized);
   const mockGetAuthDetails = vi.mocked(getAuthDetails);
   const mockLookupUserAttributes = vi.mocked(lookupUserAttributes);
-
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -83,17 +64,17 @@ describe("appK function", () => {
       email: "john.doe@example.com",
       given_name: "John",
       family_name: "Doe",
+      sub: "",
+      "custom:cms-roles": "",
+      email_verified: false,
+      username: ""
     });
 
 
-    // Mock API Gateway Event
     const mockEvent = {
-        body: JSON.stringify(mockAppKPayload),
+        body: JSON.stringify(payload),
     } as APIGatewayEvent;
 
-    // Call the function
-
-    // Assertions
     await expect(appK(mockEvent)).rejects.toThrow("Unauthorized");
 
   });
@@ -104,17 +85,20 @@ describe("appK function", () => {
       email: "john.doe@example.com",
       given_name: "John",
       family_name: "Doe",
+      sub: "",
+      "custom:cms-roles": "",
+      email_verified: false,
+      username: ""
     });
 
 
-    // Mock API Gateway Event
     const mockEvent = {
       fail: 'fail',
-    } as APIGatewayEvent;
+    } as unknown as APIGatewayEvent;
 
-    // Call the function
+  
     const result = await appK(mockEvent);
-    // Assertions
+
     expect(result?.submitterName).toBeUndefined();
 
   });
@@ -126,18 +110,19 @@ describe("appK function", () => {
       email: "john.doe@example.com",
       given_name: "John",
       family_name: "Doe",
+      sub: "",
+      "custom:cms-roles": "",
+      email_verified: false,
+      username: ""
     });
 
 
-    // Mock API Gateway Event
     const mockEvent = {
-      body: JSON.stringify(mockAppKPayload),
+      body: JSON.stringify(payload),
     } as APIGatewayEvent;
 
-    // Call the function
     const result = await appK(mockEvent);
-    // Assertions
-    expect(result?.submitterName).toEqual('John Doe');
 
+    expect(result?.submitterName).toEqual('John Doe');
   });
 });

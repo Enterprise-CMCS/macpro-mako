@@ -4,8 +4,7 @@ import { isAuthorized, getAuthDetails, lookupUserAttributes } from "libs/api/aut
 import { itemExists } from "libs/api/package";
 import { type APIGatewayEvent } from "aws-lambda";
 
-// Mock AppK Payload
-const mockAppKPayload = {
+const payload = {
   id: "SS-11-2020",
   event: "respond-to-rai",
   authority: "1915(b)",
@@ -53,7 +52,7 @@ vi.mock("libs/api/package", () => ({
   itemExists: vi.fn(),
 }));
 
-describe("appK function", () => {
+describe("respond to rai payload", () => {
   const mockIsAuthorized = vi.mocked(isAuthorized);
   const mockGetAuthDetails = vi.mocked(getAuthDetails);
   const mockLookupUserAttributes = vi.mocked(lookupUserAttributes);
@@ -75,13 +74,55 @@ describe("appK function", () => {
         username: ""
     });
 
-
-    // Mock API Gateway Event
     const mockEvent = {
-        body: JSON.stringify(mockAppKPayload),
+        body: JSON.stringify(payload),
     } as APIGatewayEvent;
 
     await expect(respondToRai(mockEvent)).rejects.toThrow("Unauthorized");
+
+  });
+  it("should find an item already exists", async () => {
+    mockIsAuthorized.mockResolvedValueOnce(true);
+    mockGetAuthDetails.mockReturnValueOnce({ userId: "user-123", poolId: "pool-123" });
+    mockLookupUserAttributes.mockResolvedValueOnce({
+        email: "john.doe@example.com",
+        given_name: "John",
+        family_name: "Doe",
+        sub: "",
+        "custom:cms-roles": "",
+        email_verified: false,
+        username: ""
+    });
+    mockItemExists.mockResolvedValueOnce(false)
+
+
+    const mockEvent = {
+      body: JSON.stringify(payload),
+    } as APIGatewayEvent;
+
+    await expect(respondToRai(mockEvent)).rejects.toThrow("Item Doesn't Exist");
+
+  });
+  it("should find an item already exists", async () => {
+    mockIsAuthorized.mockResolvedValueOnce(true);
+    mockGetAuthDetails.mockReturnValueOnce({ userId: "user-123", poolId: "pool-123" });
+    mockLookupUserAttributes.mockResolvedValueOnce({
+        email: "john.doe@example.com",
+        given_name: "John",
+        family_name: "Doe",
+        sub: "",
+        "custom:cms-roles": "",
+        email_verified: false,
+        username: ""
+    });
+    mockItemExists.mockResolvedValueOnce(false)
+
+
+    const mockEvent = {
+      body: JSON.stringify(payload),
+    } as APIGatewayEvent;
+
+    await expect(respondToRai(mockEvent)).rejects.toThrow("Item Doesn't Exist");
 
   });
   it("should have no body on submission and throw an error", async () => {
@@ -124,7 +165,7 @@ describe("appK function", () => {
 
 
     const mockEvent = {
-      body: JSON.stringify(mockAppKPayload),
+      body: JSON.stringify(payload),
     } as APIGatewayEvent;
 
     const result = await respondToRai(mockEvent);

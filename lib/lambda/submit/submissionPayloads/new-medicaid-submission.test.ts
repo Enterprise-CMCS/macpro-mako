@@ -1,11 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { newMedicaidSubmission } from "./new-medicaid-submission";
 import { isAuthorized, getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
-
 import { type APIGatewayEvent } from "aws-lambda";
+import { itemExists } from "libs/api/package";
 
-// Mock AppK Payload
-const mockAppKPayload = {
+const payload = {
   id: "SS-11-2020",
   event: "new-medicaid-submission",
   authority: "1915(b)",
@@ -136,11 +135,11 @@ vi.mock("libs/api/package", () => ({
   itemExists: vi.fn(),
 }));
 
-describe("appK function", () => {
+describe("new medicaid submission payload", () => {
   const mockIsAuthorized = vi.mocked(isAuthorized);
   const mockGetAuthDetails = vi.mocked(getAuthDetails);
   const mockLookupUserAttributes = vi.mocked(lookupUserAttributes);
-
+  const mockItemExists = vi.mocked(itemExists)
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -158,10 +157,8 @@ describe("appK function", () => {
         username: ""
     });
 
-
-    // Mock API Gateway Event
     const mockEvent = {
-        body: JSON.stringify(mockAppKPayload),
+        body: JSON.stringify(payload),
     } as APIGatewayEvent;
 
     await expect(newMedicaidSubmission(mockEvent)).rejects.toThrow("Unauthorized");
@@ -190,7 +187,28 @@ describe("appK function", () => {
     expect(result?.submitterName).toBeUndefined();
 
   });
+  it("should find an item already exists", async () => {
+    mockIsAuthorized.mockResolvedValueOnce(true);
+    mockGetAuthDetails.mockReturnValueOnce({ userId: "user-123", poolId: "pool-123" });
+    mockLookupUserAttributes.mockResolvedValueOnce({
+        email: "john.doe@example.com",
+        given_name: "John",
+        family_name: "Doe",
+        sub: "",
+        "custom:cms-roles": "",
+        email_verified: false,
+        username: ""
+    });
+    mockItemExists.mockResolvedValueOnce(true)
 
+
+    const mockEvent = {
+      body: JSON.stringify(payload),
+    } as APIGatewayEvent;
+
+    await expect(newMedicaidSubmission(mockEvent)).rejects.toThrow("Item Already Exists");
+
+  });
   it("should process valisd input and return transformed data", async () => {
     mockIsAuthorized.mockResolvedValueOnce(true);
     mockGetAuthDetails.mockReturnValueOnce({ userId: "user-123", poolId: "pool-123" });
@@ -206,7 +224,7 @@ describe("appK function", () => {
 
 
     const mockEvent = {
-      body: JSON.stringify(mockAppKPayload),
+      body: JSON.stringify(payload),
     } as APIGatewayEvent;
 
     const result = await newMedicaidSubmission(mockEvent);

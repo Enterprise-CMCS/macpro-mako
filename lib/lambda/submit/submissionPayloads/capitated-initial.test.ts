@@ -3,9 +3,9 @@ import { capitatedInitial } from "./capitated-initial";
 import { isAuthorized, getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 
 import { type APIGatewayEvent } from "aws-lambda";
+import { itemExists } from "libs/api/package";
 
-// Mock AppK Payload
-const mockAppKPayload = {
+const payload = {
   id: "SS-1234.R00.00",
   event: "capitated-initial",
   authority: "1915(c)",
@@ -13,7 +13,7 @@ const mockAppKPayload = {
   title: "Sample Title for Appendix K",
   attachments: {
     bCapWaiverApplication: {
-      label: "Appendix K Template",
+      label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
       files: [
         {
           filename: "appendix-k-amendment.docx",
@@ -25,7 +25,7 @@ const mockAppKPayload = {
       ],
     },
     bCapCostSpreadsheets: {
-        label: "Appendix K Template",
+        label: "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
         files: [
           {
             filename: "appendix-k-amendment.docx",
@@ -37,7 +37,7 @@ const mockAppKPayload = {
         ],
       },
       tribalConsultation: {
-        label: "Appendix K Template",
+        label: "Tribal Consultation",
         files: [
           {
             filename: "appendix-k-amendment.docx",
@@ -76,13 +76,11 @@ vi.mock("libs/api/package", () => ({
   itemExists: vi.fn(),
 }));
 
-describe("appK function", () => {
-//   const mockSafeParse = vi.mocked(events["app-k"].baseSchema.safeParse);
-//   const mockParse = vi.mocked(events["app-k"].schema.parse);
+describe("capitated intiial payload", () => {
   const mockIsAuthorized = vi.mocked(isAuthorized);
   const mockGetAuthDetails = vi.mocked(getAuthDetails);
   const mockLookupUserAttributes = vi.mocked(lookupUserAttributes);
-
+  const mockItemExists = vi.mocked(itemExists)
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -94,17 +92,17 @@ describe("appK function", () => {
       email: "john.doe@example.com",
       given_name: "John",
       family_name: "Doe",
+      sub: "",
+      "custom:cms-roles": "",
+      email_verified: false,
+      username: ""
     });
 
-
-    // Mock API Gateway Event
     const mockEvent = {
-        body: JSON.stringify(mockAppKPayload),
+        body: JSON.stringify(payload),
     } as APIGatewayEvent;
 
-    // Call the function
 
-    // Assertions
     await expect(capitatedInitial(mockEvent)).rejects.toThrow("Unauthorized");
 
   });
@@ -115,39 +113,66 @@ describe("appK function", () => {
       email: "john.doe@example.com",
       given_name: "John",
       family_name: "Doe",
+      sub: "",
+      "custom:cms-roles": "",
+      email_verified: false,
+      username: ""
     });
 
-
-    // Mock API Gateway Event
     const mockEvent = {
       fail: 'fail',
-    } as APIGatewayEvent;
+    } as unknown as APIGatewayEvent;
 
-    // Call the function
     const result = await capitatedInitial(mockEvent);
-    // Assertions
+
     expect(result?.submitterName).toBeUndefined();
 
   });
+  it("should find an item already exists", async () => {
+    mockIsAuthorized.mockResolvedValueOnce(true);
+    mockGetAuthDetails.mockReturnValueOnce({ userId: "user-123", poolId: "pool-123" });
+    mockLookupUserAttributes.mockResolvedValueOnce({
+        email: "john.doe@example.com",
+        given_name: "John",
+        family_name: "Doe",
+        sub: "",
+        "custom:cms-roles": "",
+        email_verified: false,
+        username: ""
+    });
+    mockItemExists.mockResolvedValueOnce(true)
 
-  it("should process valisd input and return transformed data", async () => {
+
+    const mockEvent = {
+      body: JSON.stringify(payload),
+    } as APIGatewayEvent;
+
+    await expect(capitatedInitial(mockEvent)).rejects.toThrow("Item Already Exists");
+
+  });
+  
+  it("should process valid input and return transformed data", async () => {
     mockIsAuthorized.mockResolvedValueOnce(true);
     mockGetAuthDetails.mockReturnValueOnce({ userId: "user-123", poolId: "pool-123" });
     mockLookupUserAttributes.mockResolvedValueOnce({
       email: "john.doe@example.com",
       given_name: "John",
       family_name: "Doe",
+      sub: "",
+      "custom:cms-roles": "",
+      email_verified: false,
+      username: ""
     });
 
 
-    // Mock API Gateway Event
+
     const mockEvent = {
-      body: JSON.stringify(mockAppKPayload),
+      body: JSON.stringify(payload),
     } as APIGatewayEvent;
 
-    // Call the function
+
     const result = await capitatedInitial(mockEvent);
-    // Assertions
+
     expect(result?.submitterName).toEqual('John Doe');
 
   });

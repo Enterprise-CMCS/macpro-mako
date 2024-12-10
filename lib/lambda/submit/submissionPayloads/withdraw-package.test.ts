@@ -4,8 +4,7 @@ import { isAuthorized, getAuthDetails, lookupUserAttributes } from "libs/api/aut
 import { itemExists } from "libs/api/package";
 import { type APIGatewayEvent } from "aws-lambda";
 
-// Mock AppK Payload
-const mockAppKPayload = {
+const payload = {
   id: "SS-1234.R11.TE12",
   event: "withdraw-package",
   authority: "1915(b)",
@@ -40,7 +39,7 @@ vi.mock("libs/api/package", () => ({
   itemExists: vi.fn(),
 }));
 
-describe("appK function", () => {
+describe("withdraw package payload", () => {
   const mockIsAuthorized = vi.mocked(isAuthorized);
   const mockGetAuthDetails = vi.mocked(getAuthDetails);
   const mockLookupUserAttributes = vi.mocked(lookupUserAttributes);
@@ -62,10 +61,8 @@ describe("appK function", () => {
         username: ""
     });
 
-
-    // Mock API Gateway Event
     const mockEvent = {
-        body: JSON.stringify(mockAppKPayload),
+        body: JSON.stringify(payload),
     } as APIGatewayEvent;
 
     await expect(withdrawPackage(mockEvent)).rejects.toThrow("Unauthorized");
@@ -110,7 +107,7 @@ describe("appK function", () => {
 
 
     const mockEvent = {
-      body: JSON.stringify(mockAppKPayload),
+      body: JSON.stringify(payload),
     } as APIGatewayEvent;
 
     await expect(withdrawPackage(mockEvent)).rejects.toThrow("Item doesn't exist");
@@ -133,7 +130,7 @@ describe("appK function", () => {
 
 
     const mockEvent = {
-      body: JSON.stringify(mockAppKPayload),
+      body: JSON.stringify(payload),
     } as APIGatewayEvent;
 
     const result = await withdrawPackage(mockEvent);
