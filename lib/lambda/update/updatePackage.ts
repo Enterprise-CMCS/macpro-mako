@@ -56,6 +56,8 @@ const sendUpdateIdMessage = async (
     JSON.stringify({
       _id: updatedId,
       originalProperties,
+      isAdminChange: true,
+      adminChangeType: "update-id",
     }),
   );
 };
