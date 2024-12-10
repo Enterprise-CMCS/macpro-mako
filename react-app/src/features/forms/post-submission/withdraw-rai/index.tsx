@@ -5,6 +5,11 @@ import { useParams } from "react-router-dom";
 
 export const WithdrawRaiForm = () => {
   const { authority, id } = useParams();
+  const faqLink = authority?.includes("SPA")
+    ? authority?.includes("CHIP")
+      ? "chip-spa"
+      : "spa"
+    : "waiver";
 
   return (
     <ActionForm
@@ -16,7 +21,7 @@ export const WithdrawRaiForm = () => {
         authority,
       }}
       attachments={{
-        faqLink: "/faq",
+        faqLink: `/faq/withdraw-${faqLink}-rai-response`,
       }}
       documentPollerArgs={{
         property: "id",

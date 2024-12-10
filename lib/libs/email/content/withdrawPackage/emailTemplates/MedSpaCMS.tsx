@@ -1,5 +1,5 @@
 import { CommonEmailVariables, Events } from "shared-types";
-import { PackageDetails, BasicFooter, Divider, SpamWarning } from "../../email-components";
+import { PackageDetails, BasicFooter, Divider } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const MedSpaCMSEmail = ({
@@ -16,13 +16,12 @@ export const MedSpaCMSEmail = ({
     <Divider />
     <PackageDetails
       details={{
-        "State or territory": variables.territory,
+        "State or Territory": variables.territory,
         Name: variables.submitterName,
         "Email Address": variables.submitterEmail,
         "Medicaid SPA Package ID": variables.id,
         Summary: variables.additionalInformation,
       }}
     />
-    <SpamWarning />
   </BaseEmailTemplate>
 );

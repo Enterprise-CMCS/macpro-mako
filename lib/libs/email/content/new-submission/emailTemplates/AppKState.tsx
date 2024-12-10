@@ -27,7 +27,7 @@ export const AppKStateEmail = (props: {
       <Divider />
       <PackageDetails
         details={{
-          "State or territory": variables.territory,
+          "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
           "Initial Waiver Number": variables.id,
