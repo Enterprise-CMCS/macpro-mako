@@ -54,7 +54,7 @@ const sendUpdateIdMessage = async (
     topicName,
     updatedId,
     JSON.stringify({
-      _id: updatedId,
+      id: updatedId,
       originalProperties,
       isAdminChange: true,
       adminChangeType: "update-id",
