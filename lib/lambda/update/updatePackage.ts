@@ -109,9 +109,17 @@ export const handler = async (event: APIGatewayEvent) => {
         return response({
           statusCode: 400,
           body: { message: "New ID required to update package" },
-          // handle validation in frontend?
         });
       }
+      // handle regex validation in frontend later or here too?
+      const existingPackage = await getPackage(updatedId);
+      if (existingPackage) {
+        return response({
+          statusCode: 400,
+          body: { message: "This ID already exists" },
+        });
+      }
+
       await produceMessage(
         topicName,
         packageId,
