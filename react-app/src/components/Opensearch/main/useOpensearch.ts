@@ -5,7 +5,7 @@ import { getOsData, useOsSearch, useGetUser } from "@/api";
 import { useLzUrl } from "@/hooks";
 import { OsTab } from "./types";
 import { createSearchFilterable } from "../utils";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 
 export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
   spas: {
@@ -104,13 +104,11 @@ export const useOsAggregate = () => {
           },
           {
             field:
-              user?.isCms &&
-              !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
+              user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
                 ? "cmsStatus.keyword"
                 : "stateStatus.keyword",
             name:
-              user?.isCms &&
-              !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
+              user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
                 ? "cmsStatus.keyword"
                 : "stateStatus.keyword",
             type: "terms",

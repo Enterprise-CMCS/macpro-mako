@@ -1,7 +1,7 @@
 import { PackageSection } from "@/components/Form/content/PackageSection";
 import { ActionForm } from "@/components/ActionForm";
 import { formSchemas } from "@/formSchemas";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 export const WithdrawRaiForm = () => {
   const { authority, id } = useParams();

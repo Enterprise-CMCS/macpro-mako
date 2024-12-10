@@ -1,5 +1,5 @@
 import { PropsWithChildren, ReactNode } from "react";
-import { Link, LinkProps } from "react-router-dom";
+import { Link, LinkProps } from "react-router";
 import { ChevronRight } from "lucide-react";
 import { CardWithTopBorder } from "@/components";
 
@@ -13,10 +13,7 @@ export type MACFieldsetOption = {
   altBg?: boolean;
 };
 /** A fieldset for nesting {@link OptionCard} with MACCard styling */
-export const OptionFieldset = ({
-  children,
-  legend,
-}: OptionCardFieldsetProps) => {
+export const OptionFieldset = ({ children, legend }: OptionCardFieldsetProps) => {
   return (
     <section className="max-w-3xl mx-auto mb-6">
       <fieldset>
@@ -28,12 +25,7 @@ export const OptionFieldset = ({
 };
 /** An element for use in options lists that lead to a destination, such as
  * the new submission options found in {@link NewSubmissionInitialOptions} */
-export const OptionCard = ({
-  title,
-  description,
-  to,
-  altBg = false,
-}: MACFieldsetOption) => {
+export const OptionCard = ({ title, description, to, altBg = false }: MACFieldsetOption) => {
   return (
     <label>
       <Link to={to} relative="path">
