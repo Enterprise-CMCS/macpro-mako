@@ -29,13 +29,7 @@ const trimData = (data) => {
   return data;
 };
 
-export function WebformBody({
-  version,
-  id,
-  data,
-  values,
-  readonly,
-}: WebformBodyProps) {
+export function WebformBody({ version, id, data, values, readonly }: WebformBodyProps) {
   const { form, onSave, reset, subData, setSubData } = useWebform({
     values,
     id,

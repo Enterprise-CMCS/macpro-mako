@@ -1,14 +1,14 @@
 import {
-  opensearch,
-  Authority,
-  SEATOOL_STATUS,
-  ActionType,
   Action,
+  ActionType,
+  Authority,
   CognitoUserAttributes,
+  opensearch,
+  SEATOOL_STATUS,
 } from "shared-types";
 
-const checkAuthority = (authority: Authority | null, validAuthorities: Authority[]) =>
-  !authority ? false : validAuthorities.includes(authority.toLowerCase() as Authority);
+const checkAuthority = (authority: Authority | string | null, validAuthorities: string[]) =>
+  !authority ? false : validAuthorities.includes(authority.toLowerCase());
 
 const checkStatus = (seatoolStatus: string, authorized: string | string[]) =>
   typeof authorized === "string"
@@ -44,7 +44,7 @@ export const PackageCheck = ({
     isAppk: false,
     isAppkChild: false,
     /** Keep excess methods to a minimum with `is` **/
-    authorityIs: (validAuthorities: Authority[]) => checkAuthority(authority, validAuthorities),
+    authorityIs: (validAuthorities: string[]) => checkAuthority(authority, validAuthorities),
     hasCpoc: !!leadAnalystName,
   };
   const statusChecks = {
