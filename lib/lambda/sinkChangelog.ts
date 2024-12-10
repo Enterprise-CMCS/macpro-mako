@@ -10,6 +10,7 @@ import {
 import { Index } from "shared-types/opensearch";
 import {
   deleteAdminChangeSchema,
+  updateIdAdminChangeSchema,
   updateValuesAdminChangeSchema,
 } from "./update/adminChangeSchemas";
 const osDomain = process.env.osDomain;
@@ -98,7 +99,17 @@ const processAndIndex = async ({
         timestamp: Date.now(),
       }));
 
-      const schema = transformedDeleteSchema.or(transformedUpdateValuesSchema);
+      const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((data) => ({
+        ...data,
+        event: "update-id",
+        packageId: data.id,
+        id: `${data.id}-${offset}`,
+        timestamp: Date.now(),
+      }));
+
+      const schema = transformedDeleteSchema
+        .or(transformedUpdateValuesSchema)
+        .or(transformedUpdateIdSchema);
       console.log("RECORDDDD", record);
 
       if (record.isAdminChange) {
