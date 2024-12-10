@@ -1,11 +1,11 @@
 import {
-  seatoolSchema,
-  SEATOOL_STATUS,
-  getStatus,
   finalDispositionStatuses,
+  getStatus,
   SeaTool,
-  SeatoolOfficer,
   SEATOOL_SPW_STATUS,
+  SEATOOL_STATUS,
+  SeatoolOfficer,
+  seatoolSchema,
 } from "../../..";
 
 import { Authority, SEATOOL_AUTHORITIES } from "shared-types";
@@ -24,9 +24,9 @@ function getLeadAnalyst(eventData: SeaTool) {
     );
 
     if (leadAnalyst) {
-      leadAnalystOfficerId = leadAnalyst.OFFICER_ID;
-      leadAnalystName = `${leadAnalyst.FIRST_NAME} ${leadAnalyst.LAST_NAME}`;
-      leadAnalystEmail = leadAnalyst.EMAIL;
+      leadAnalystOfficerId = leadAnalyst.OFFICER_ID || null;
+      leadAnalystName = `${leadAnalyst.FIRST_NAME || ""} ${leadAnalyst.LAST_NAME || ""}`;
+      leadAnalystEmail = leadAnalyst.EMAIL || null;
     }
   }
   return {
@@ -79,8 +79,8 @@ const compileSrtList = (
 ): { name: string; email: string }[] =>
   officers?.length
     ? officers.map((o) => ({
-        name: `${o.FIRST_NAME} ${o.LAST_NAME}`,
-        email: o.EMAIL,
+        name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
+        email: o.EMAIL || "",
       }))
     : [];
 

@@ -125,7 +125,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
-  const { data: userObj } = useGetUser();
+  const { data: userObj, isLoading: isUserLoading } = useGetUser();
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
 
@@ -149,15 +149,23 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const onSubmit = form.handleSubmit(async (formData) => {
     try {
-      await mutateAsync(formData);
+      try {
+        await mutateAsync(formData);
+      } catch (error) {
+        throw Error(`Error submitting form: ${error.message}`);
+      }
 
       const { documentChecker, property } = documentPollerArgs;
 
       const documentPollerId =
         typeof property === "function" ? property(formData) : formData[property];
 
-      const poller = documentPoller(documentPollerId, documentChecker);
-      await poller.startPollingData();
+      try {
+        const poller = documentPoller(documentPollerId, documentChecker);
+        await poller.startPollingData();
+      } catch (error) {
+        throw Error(error.error);
+      }
 
       const formOrigins = getFormOrigin({ authority, id });
       banner({
@@ -180,11 +188,15 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
 
+  if (isUserLoading === true) {
+    return <LoadingSpinner />;
+  }
+
   const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some((condition) =>
-    condition(userObj.user),
+    condition(userObj?.user),
   );
 
-  if (doesUserHaveAccessToForm === false) {
+  if (!userObj || doesUserHaveAccessToForm === false) {
     return <Navigate to="/" replace />;
   }
 
@@ -203,7 +215,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       {form.formState.isSubmitting && <LoadingSpinner />}
       <Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 mx-auto justify-center flex flex-col">
-          <SectionCard title={title}>
+          <SectionCard testId="detail-section" title={title}>
             <div>
               {areFieldsRequired && <RequiredFieldDescription />}
               <ActionFormDescription boldReminder={areFieldsRequired}>
@@ -217,6 +229,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           )}
           {additionalInformation && (
             <SectionCard
+              testId = "additional-info"
               title={
                 <>
                   {additionalInformation.title}{" "}

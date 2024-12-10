@@ -1,5 +1,6 @@
-import { describe, test, expect, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { describe, test, expect } from "vitest";
+import { screen } from "@testing-library/react";
+import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
 import { RHFDocument, documentInitializer } from "..";
 import { Form } from "../../Inputs";
 import { useForm } from "react-hook-form";
@@ -49,37 +50,23 @@ const testDocData: FormSchema = {
   ],
 };
 
-vi.mock("@/api", async (importOriginal) => {
-  const actual = await importOriginal();
-  return {
-    ...(actual as object),
-    useGetCounties: vi.fn(() => {
-      return { data: [], isLoading: false, error: null };
-    }),
-  };
-});
-
 describe("Section Tests", () => {
   test("renders, subsections distinct", () => {
-    const rend = render(<TestWrapper data={testDocData} />);
-    const sectionHeader = rend.getByText("Section");
-    const subsectionHeader = rend.getByText("Subsection");
+    renderWithQueryClient(<TestWrapper data={testDocData} />);
+    const sectionHeader = screen.getByText("Section");
+    const subsectionHeader = screen.getByText("Subsection");
 
     expect(sectionHeader.parentElement).toBeTruthy();
-    expect(
-      sectionHeader.parentElement?.className.includes("bg-primary"),
-    ).toBeTruthy();
+    expect(sectionHeader.parentElement?.className.includes("bg-primary")).toBeTruthy();
     expect(subsectionHeader.parentElement).toBeTruthy();
-    expect(
-      subsectionHeader.parentElement?.className.includes("bg-primary"),
-    ).toBeFalsy();
+    expect(subsectionHeader.parentElement?.className.includes("bg-primary")).toBeFalsy();
   });
 });
 
 describe("FormGroup Tests", () => {
   test("renders, allows rules for slots", () => {
-    const rend = render(<TestWrapper data={testDocData} />);
-    const formDesc = rend.getByText("test form group");
+    renderWithQueryClient(<TestWrapper data={testDocData} />);
+    const formDesc = screen.getByText("test form group");
 
     expect(formDesc).toBeTruthy();
   });
