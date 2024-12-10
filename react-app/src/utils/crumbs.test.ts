@@ -98,13 +98,86 @@ describe('detailsCrumb', () => {
   });
 });
 
+
 describe('actionCrumb', () => {
   it('should return the correct action breadcrumb', () => {
-    const actionType = Action.RESPOND_TO_RAI;
-    const id = "12345";
-    const result = actionCrumb(actionType, id);
-    const expected = {
+    let actionType = Action.DISABLE_RAI_WITHDRAW;
+    let id = "12345";
+    let result = actionCrumb(actionType, id);
+    let expected = {
+      displayText: "Disable Formal RAI Response Withdraw",
+      order: 3,
+      to: `/actions/${id}/${actionType}`,
+    };
+    actionType = Action.ENABLE_RAI_WITHDRAW;
+    id = "12345";
+    result = actionCrumb(actionType, id);
+    expected = {
+      displayText: "Enable Formal RAI Response Withdraw",
+      order: 3,
+      to: `/actions/${id}/${actionType}`,
+    };
+    actionType = Action.RESPOND_TO_RAI;
+    id = "12345";
+    result = actionCrumb(actionType, id);
+    expected = {
       displayText: "Respond to Formal RAI",
+      order: 3,
+      to: `/actions/${id}/${actionType}`,
+    };
+    expect(result).toEqual(expected);
+ 
+    expect(result).toEqual(expected);
+    actionType = Action.WITHDRAW_PACKAGE;
+    id = "12345";
+    result = actionCrumb(actionType, id);
+    expected = {
+      displayText: "Withdraw Package",
+      order: 3,
+      to: `/actions/${id}/${actionType}`,
+    };
+    expect(result).toEqual(expected);
+    actionType = Action.WITHDRAW_RAI;
+    id = "12345";
+    result = actionCrumb(actionType, id);
+    expected = {
+      displayText: "Withdraw Formal RAI Response",
+      order: 3,
+      to: `/actions/${id}/${actionType}`,
+    };
+    expect(result).toEqual(expected);
+    actionType = Action.TEMP_EXTENSION;
+    id = "12345";
+    result = actionCrumb(actionType, id);
+    expected = {
+      displayText: "Request Temporary Extension",
+      order: 3,
+      to: `/actions/${id}/${actionType}`,
+    };
+    expect(result).toEqual(expected);
+    actionType = Action.AMEND_WAIVER;
+    id = "12345";
+    result = actionCrumb(actionType, id);
+    expected = {
+      displayText: "Add Amendment",
+      order: 3,
+      to: `/actions/${id}/${actionType}`,
+    };
+    expect(result).toEqual(expected);
+    actionType = Action.UPDATE_ID;
+    id = "12345";
+    result = actionCrumb(actionType, id);
+    expected = {
+      displayText: "Update ID",
+      order: 3,
+      to: `/actions/${id}/${actionType}`,
+    };
+    expect(result).toEqual(expected);
+    actionType = Action.UPLOAD_SUBSEQUENT_DOCUMENTS;
+    id = "12345";
+    result = actionCrumb(actionType, id);
+    expected = {
+      displayText: "Upload Subsequent Documents",
       order: 3,
       to: `/actions/${id}/${actionType}`,
     };
