@@ -1,4 +1,4 @@
-import { opensearch, Authority } from "shared-types";
+import { Authority, opensearch } from "shared-types";
 import { OneMacUser } from "ui/src/api";
 
 export const testStateCognitoUser: OneMacUser = {
@@ -91,7 +91,7 @@ export const testItemResult: opensearch.main.ItemResult = {
     raiReceivedDate: null,
     raiRequestedDate: null,
     leadAnalystOfficerId: null,
-    proposedDate: "2024-03-30T00:00:00.000Z",
+    // proposedDate: "2024-03-30T00:00:00.000Z", // TODO
     state: "MD",
     raiWithdrawnDate: null,
     finalDispositionDate: null,
@@ -114,7 +114,6 @@ export const testItemResult: opensearch.main.ItemResult = {
         _source: {
           authority: "medicaid spa",
           origin: "mako",
-          //@ts-expect-error
           appkParentId: null,
           additionalInformation: "does the main branch work?!",
           submitterName: "George Harrison",
@@ -129,8 +128,7 @@ export const testItemResult: opensearch.main.ItemResult = {
               uploadDate: 1709319909222,
             },
             {
-              filename:
-                "10-20-17 MT 1915(b)(4) Big Sky Waiver app revised (6).docx",
+              filename: "10-20-17 MT 1915(b)(4) Big Sky Waiver app revised (6).docx",
               title: "SPA Pages",
               bucket: "test-bucket",
               key: "test-key",
@@ -138,7 +136,6 @@ export const testItemResult: opensearch.main.ItemResult = {
             },
           ],
           raiWithdrawEnabled: false,
-          //@ts-expect-error
           actionType: "new-submission",
           //@ts-expect-error
           timestamp: "1709319909826",

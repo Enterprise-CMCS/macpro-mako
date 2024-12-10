@@ -1,39 +1,31 @@
-import { fireEvent, waitFor } from "@testing-library/react";
+import { fireEvent, waitFor, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, test, expect, vi } from "vitest";
 import { ActionForm } from "./index";
 import { z } from "zod";
 import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
+import {
+  SUBMISSION_ERROR_ITEM_ID,
+  GET_ERROR_ITEM_ID,
+  setDefaultStateSubmitter,
+  setDefaultReviewer,
+} from "mocks";
 import * as userPrompt from "@/components/ConfirmationDialog/userPrompt";
 import * as banner from "@/components/Banner/banner";
 import * as documentPoller from "@/utils/Poller/documentPoller";
-import { renderForm } from "@/utils/test-helpers/renderForm";
+import { DataPoller } from "@/utils/Poller/DataPoller";
+import { EXISTING_ITEM_PENDING_ID } from "mocks";
+import {
+  renderFormAsync,
+  renderFormWithPackageSectionAsync,
+} from "@/utils/test-helpers/renderForm";
 import { isCmsReadonlyUser } from "shared-utils";
-import { API as awsAmplifyAPI } from "aws-amplify";
-
-vi.mock("aws-amplify", async (importOriginal) => {
-  const actual = await importOriginal();
-  return {
-    ...(actual as object),
-    API: {
-      post: vi.fn(),
-    },
-  };
-});
-
-vi.mock("../../utils/Poller/DataPoller", () => {
-  return {
-    DataPoller: vi.fn().mockImplementation(() => ({
-      startPollingData: vi.fn(() => Promise.resolve()),
-    })),
-  };
-});
 
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
 
 describe("ActionForm", () => {
-  test("renders `breadcrumbText`", () => {
-    const { queryByText } = renderForm(
+  test("renders `breadcrumbText`", async () => {
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -46,11 +38,11 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByText("Example Breadcrumb")).toBeInTheDocument();
+    expect(screen.queryByText("Example Breadcrumb")).toBeInTheDocument();
   });
 
-  test("renders `title`", () => {
-    const { queryByText } = renderForm(
+  test("renders `title`", async () => {
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -63,11 +55,11 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByText("Action Form Title")).toBeInTheDocument();
+    expect(screen.queryByText("Action Form Title")).toBeInTheDocument();
   });
 
-  test("renders `attachments.faqLink`", () => {
-    const { queryByText } = renderForm(
+  test("renders `attachments.faqLink`", async () => {
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -88,11 +80,11 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByText("FAQ Page")).toHaveAttribute("href", "/hello-world-link");
+    expect(screen.queryByText("FAQ Page")).toHaveAttribute("href", "/hello-world-link");
   });
 
-  test("renders `attachments.title`", () => {
-    const { queryByText } = renderForm(
+  test("renders `attachments.title`", async () => {
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -113,11 +105,13 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByText("this is an attachments title")).toBeInTheDocument();
+    expect(screen.queryByText("this is an attachments title")).toBeInTheDocument();
   });
 
-  test("doesn't render form if user access is denied", () => {
-    const { queryByText } = renderForm(
+  test("doesn't render form if user access is denied", async () => {
+    setDefaultReviewer();
+
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -139,11 +133,12 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByText("Action Form Title")).not.toBeInTheDocument();
+    expect(screen.queryByText("Action Form Title")).not.toBeInTheDocument();
+    setDefaultStateSubmitter();
   });
 
-  test("renders `defaultValues` in appropriate input", () => {
-    const { queryByDisplayValue } = renderForm(
+  test("renders `defaultValues` in appropriate input", async () => {
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -159,11 +154,11 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByDisplayValue("default value for id")).toBeInTheDocument();
+    expect(screen.queryByDisplayValue("default value for id")).toBeInTheDocument();
   });
 
-  test("renders `attachments.instructions`", () => {
-    const { queryByText } = renderForm(
+  test("renders `attachments.instructions`", async () => {
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -186,11 +181,11 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByText(/hello world special instructions./)).toBeInTheDocument();
+    expect(screen.queryByText(/hello world special instructions./)).toBeInTheDocument();
   });
 
-  test("renders `attachments.callout`", () => {
-    const { queryByText } = renderForm(
+  test("renders `attachments.callout`", async () => {
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -213,11 +208,11 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByText(/this is a callout/)).toBeInTheDocument();
+    expect(screen.queryByText(/this is a callout/)).toBeInTheDocument();
   });
 
   test("renders custom `promptOnLeavingForm` when clicking Cancel", async () => {
-    const { container } = renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -239,7 +234,7 @@ describe("ActionForm", () => {
       .spyOn(userPrompt, "userPrompt")
       .mockImplementation((args) => (args.onAccept = onAcceptMock));
 
-    const cancelBtn = container.querySelector('button[type="reset"]');
+    const cancelBtn = await screen.findByTestId("cancel-action-form");
     await userEvent.click(cancelBtn);
 
     expect(userPromptSpy).toBeCalledWith({
@@ -248,9 +243,9 @@ describe("ActionForm", () => {
       onAccept: onAcceptMock,
     });
   });
-
+  //
   test("renders custom `promptPreSubmission` when clicking Submit", async () => {
-    const { container } = renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -275,7 +270,7 @@ describe("ActionForm", () => {
       .spyOn(userPrompt, "userPrompt")
       .mockImplementation((args) => (args.onAccept = onAcceptMock));
 
-    const submitBtn = container.querySelector('button[type="button"]');
+    const submitBtn = await screen.findByTestId("submit-action-form");
     await userEvent.click(submitBtn);
 
     expect(userPromptSpy).toBeCalledWith({
@@ -286,71 +281,48 @@ describe("ActionForm", () => {
   });
 
   test("calls `documentPoller` with `documentPollerArgs`", async () => {
-    const mockStatusChecks = {
-      recordExists: true,
-      hasStatus: vi.fn(() => true),
-    };
+    const documentPollerSpy = vi.spyOn(documentPoller, "documentPoller");
+    const documentChecker: documentPoller.CheckDocumentFunction = (checker) =>
+      checker.hasStatus(SEATOOL_STATUS.PENDING);
 
-    const documentPollerSpy = vi
-      .spyOn(documentPoller, "documentPoller")
-      // @ts-ignore - mocking documentPollerSpy expects private class members
-      .mockImplementation(() => ({
-        startPollingData: vi.fn().mockResolvedValue({
-          maxAttemptsReached: false,
-          correctDataStateFound: true,
-        }),
-        options: {
-          fetcher: vi.fn().mockResolvedValue({}),
-          onPoll: vi.fn().mockImplementationOnce(() => mockStatusChecks),
-          pollAttempts: 1,
-          interval: 1000,
-        },
-      }));
-
-    const { container } = renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
           id: z.string(),
+          status: z.string(),
         })}
-        defaultValues={{ id: "Example Breadcrumb" }}
+        defaultValues={{ id: EXISTING_ITEM_PENDING_ID, status: SEATOOL_STATUS.PENDING }}
         fields={() => null}
         documentPollerArgs={{
-          property: () => "id",
-          documentChecker: (checker) => checker.hasStatus(SEATOOL_STATUS.PENDING),
+          property: "id",
+          documentChecker,
         }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
 
-    const form = container.querySelector("form");
-    fireEvent.submit(form);
+    fireEvent.submit(await screen.findByTestId("submit-action-form"));
 
-    await waitFor(() => {
-      expect(documentPollerSpy).toHaveBeenCalledWith("id", expect.any(Function));
-    });
-
-    const [, checkerFn] = documentPollerSpy.mock.lastCall;
-
-    // @ts-expect-error - mocking status checks expects all declared status checks
-    const resultValue = checkerFn(mockStatusChecks);
-
-    expect(mockStatusChecks.hasStatus).toHaveBeenCalledWith(SEATOOL_STATUS.PENDING);
-
-    expect(resultValue).toBe(true);
+    await waitFor(() =>
+      expect(documentPollerSpy).toHaveBeenCalledWith(EXISTING_ITEM_PENDING_ID, documentChecker),
+    );
   });
 
   test("calls `banner` with `bannerPostSubmission`", async () => {
-    const { container } = renderForm(
+    const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData");
+    const bannerSpy = vi.spyOn(banner, "banner");
+
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
           id: z.string(),
         })}
-        defaultValues={{ id: "Example Breadcrumb" }}
+        defaultValues={{ id: EXISTING_ITEM_PENDING_ID }}
         fields={() => null}
         documentPollerArgs={{
-          property: () => "id",
+          property: "id",
           documentChecker: () => true,
         }}
         bannerPostSubmission={{
@@ -359,60 +331,188 @@ describe("ActionForm", () => {
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
-    const bannerPollerSpy = vi.spyOn(banner, "banner");
+    const submitButton = await screen.findByTestId("submit-action-form");
 
-    const form = container.querySelector("form");
-    fireEvent.submit(form);
+    vi.useFakeTimers();
 
-    await waitFor(() =>
-      expect(bannerPollerSpy).toBeCalledWith({
+    fireEvent.submit(submitButton);
+
+    await vi.waitFor(async () => {
+      await vi.runAllTimersAsync();
+      expect(dataPollerSpy).toHaveResolvedWith({
+        correctDataStateFound: true,
+        maxAttemptsReached: false,
+      });
+    });
+
+    await vi.waitFor(() =>
+      expect(bannerSpy).toBeCalledWith({
         header: "Hello World Header",
         body: "Hello World Body",
         pathnameToDisplayOn: "/dashboard",
       }),
     );
+
+    vi.useRealTimers();
   });
 
   test("calls error banner if submission fails", async () => {
-    vi.spyOn(awsAmplifyAPI, "post").mockImplementationOnce(
-      vi.fn().mockRejectedValue("Intentional failure"),
-    );
+    const bannerSpy = vi.spyOn(banner, "banner");
 
-    const { container } = renderForm(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
           id: z.string(),
         })}
-        defaultValues={{ id: "Example Breadcrumb" }}
+        defaultValues={{ id: SUBMISSION_ERROR_ITEM_ID }}
         fields={() => null}
         documentPollerArgs={{
-          property: () => "id",
+          property: "id",
           documentChecker: () => true,
+        }}
+        bannerPostSubmission={{
+          header: "Hello World Header",
+          body: "Hello World Body",
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+      SUBMISSION_ERROR_ITEM_ID,
     );
 
-    const bannerPollerSpy = vi.spyOn(banner, "banner");
+    const submitButton = await screen.findByTestId("submit-action-form");
 
-    const form = container.querySelector("form");
-    fireEvent.submit(form);
+    fireEvent.submit(submitButton);
 
-    await waitFor(() =>
-      expect(bannerPollerSpy).toBeCalledWith({
+    await vi.waitFor(() =>
+      expect(bannerSpy).toBeCalledWith({
         header: "An unexpected error has occurred:",
-        body: "Intentional failure",
+        body: "Error submitting form: Request failed with status code 500",
         pathnameToDisplayOn: "/",
         variant: "destructive",
       }),
     );
   });
 
+  test("calls error banner on submit if fetch fails", async () => {
+    const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData");
+    const bannerSpy = vi.spyOn(banner, "banner");
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Action Form Title"
+        schema={z.object({
+          id: z.string(),
+        })}
+        defaultValues={{ id: GET_ERROR_ITEM_ID }}
+        fields={() => null}
+        documentPollerArgs={{
+          property: "id",
+          documentChecker: () => true,
+        }}
+        bannerPostSubmission={{
+          header: "Hello World Header",
+          body: "Hello World Body",
+        }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      GET_ERROR_ITEM_ID,
+    );
+
+    const submitBtn = await screen.findByTestId("submit-action-form");
+
+    vi.useFakeTimers();
+
+    fireEvent.submit(submitBtn);
+
+    await vi.waitFor(async () => {
+      await vi.runAllTimersAsync();
+      expect(dataPollerSpy.mock.settledResults).toEqual([
+        {
+          type: "rejected",
+          value: {
+            correctDataStateFound: false,
+            maxAttemptsReached: true,
+            error: "Error fetching data: Request failed with status code 500",
+          },
+        },
+      ]);
+    });
+
+    await vi.waitFor(() =>
+      expect(bannerSpy).toBeCalledWith({
+        header: "An unexpected error has occurred:",
+        body: "Error fetching data: Request failed with status code 500",
+        pathnameToDisplayOn: "/",
+        variant: "destructive",
+      }),
+    );
+
+    vi.useRealTimers();
+  }, 30000);
+
+  test("calls error banner on submit if document check fails", async () => {
+    const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData");
+    const bannerSpy = vi.spyOn(banner, "banner");
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Action Form Title"
+        schema={z.object({
+          id: z.string(),
+        })}
+        defaultValues={{ id: EXISTING_ITEM_PENDING_ID }}
+        fields={() => null}
+        documentPollerArgs={{
+          property: "id",
+          documentChecker: () => false,
+        }}
+        bannerPostSubmission={{
+          header: "Hello World Header",
+          body: "Hello World Body",
+        }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      EXISTING_ITEM_PENDING_ID,
+    );
+
+    const submitBtn = await screen.findByTestId("submit-action-form");
+
+    vi.useFakeTimers();
+
+    fireEvent.submit(submitBtn);
+
+    await vi.waitFor(async () => {
+      await vi.runAllTimersAsync();
+      expect(dataPollerSpy.mock.settledResults).toEqual([
+        {
+          type: "rejected",
+          value: {
+            correctDataStateFound: false,
+            maxAttemptsReached: true,
+            error: "Error polling data: Correct data state not found, after max attempts reached",
+          },
+        },
+      ]);
+    });
+
+    await vi.waitFor(() =>
+      expect(bannerSpy).toBeCalledWith({
+        header: "An unexpected error has occurred:",
+        body: "Error polling data: Correct data state not found, after max attempts reached",
+        pathnameToDisplayOn: "/",
+        variant: "destructive",
+      }),
+    );
+
+    vi.useRealTimers();
+  }, 30000);
+
   test("renders all attachment properties within `attachments`", async () => {
-    const { queryAllByText } = renderForm(
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -440,13 +540,13 @@ describe("ActionForm", () => {
       />,
     );
 
-    const otherAttachmentLabels = queryAllByText("Other");
+    const otherAttachmentLabels = screen.queryAllByText("Other");
 
     expect(otherAttachmentLabels.length).toBe(3);
   });
 
-  test("renders Additional Information if `additionalInformation` is defined in schema", () => {
-    const { queryByText } = renderForm(
+  test("renders Additional Information if `additionalInformation` is defined in schema", async () => {
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -461,11 +561,11 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByText("Additional Information")).toBeInTheDocument();
+    expect(screen.queryByText("Additional Information")).toBeInTheDocument();
   });
 
-  test("doesn't render Additional Information if `additionalInformation` is undefined in schema", () => {
-    const { queryByText } = renderForm(
+  test("doesn't render Additional Information if `additionalInformation` is undefined in schema", async () => {
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -479,11 +579,11 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByText("Additional Information")).not.toBeInTheDocument();
+    expect(screen.queryByText("Additional Information")).not.toBeInTheDocument();
   });
 
-  test("renders Attachments if `attachments` is defined in schema", () => {
-    const { queryByText } = renderForm(
+  test("renders Attachments if `attachments` is defined in schema", async () => {
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -503,12 +603,12 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByText("Attachments")).toBeInTheDocument();
-    expect(queryByText("Other")).toBeInTheDocument();
+    expect(screen.queryByText("Attachments")).toBeInTheDocument();
+    expect(screen.queryByText("Other")).toBeInTheDocument();
   });
 
-  test("doesn't render Attachments if `attachments` is undefined in schema", () => {
-    const { queryByText } = renderForm(
+  test("doesn't render Attachments if `attachments` is undefined in schema", async () => {
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -521,11 +621,11 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByText("Attachments")).not.toBeInTheDocument();
+    expect(screen.queryByText("Attachments")).not.toBeInTheDocument();
   });
 
-  test("renders ProgressReminder if schema has `attachments` property", () => {
-    const { queryAllByText } = renderForm(
+  test("renders ProgressReminder if schema has `attachments` property", async () => {
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -545,11 +645,11 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryAllByText(PROGRESS_REMINDER).length).toBe(2);
+    expect(screen.queryAllByText(PROGRESS_REMINDER).length).toBe(2);
   });
 
-  test("renders ProgressReminder if `areFieldsRequired` property is undefined", () => {
-    const { queryAllByText } = renderForm(
+  test("renders ProgressReminder if `areFieldsRequired` property is undefined", async () => {
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -567,11 +667,11 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryAllByText(PROGRESS_REMINDER).length).toBe(2);
+    expect(screen.queryAllByText(PROGRESS_REMINDER).length).toBe(2);
   });
 
-  test("doesn't render ProgressReminder if `areFieldsRequired` is false", () => {
-    const { queryByText } = renderForm(
+  test("doesn't render ProgressReminder if `areFieldsRequired` is false", async () => {
+    await renderFormAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -585,31 +685,6 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(queryByText(PROGRESS_REMINDER)).not.toBeInTheDocument();
-  });
-
-  test("renders default wrapper if `fieldsLayout` is undefined", () => {
-    const { queryAllByText } = renderForm(
-      <ActionForm
-        title="Action Form Title"
-        schema={z.object({})}
-        fields={() => (
-          <>
-            <div />
-            <div />
-          </>
-        )}
-        documentPollerArgs={{
-          property: () => "id",
-          documentChecker: () => true,
-        }}
-        breadcrumbText="Example Breadcrumb"
-      />,
-    );
-
-    expect(
-      queryAllByText(/Once you submit this form, a confirmation email is sent to you and to CMS./)
-        .length,
-    ).toBe(2);
+    expect(screen.queryByText(PROGRESS_REMINDER)).not.toBeInTheDocument();
   });
 });
