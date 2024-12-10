@@ -4,20 +4,17 @@ import { describe, test, expect, beforeAll } from "vitest";
 import { ChipForm } from "./Chip";
 import { formSchemas } from "@/formSchemas";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { renderForm } from "@/utils/test-helpers/renderForm";
+import { renderFormAsync } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
+import { EXISTING_ITEM_ID } from "mocks";
 
 const upload = uploadFiles<(typeof formSchemas)["new-chip-submission"]>();
 
-let container: HTMLElement;
-
 describe("CHIP SPA", () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     skipCleanup();
 
-    const { container: renderedContainer } = renderForm(<ChipForm />);
-
-    container = renderedContainer;
+    await renderFormAsync(<ChipForm />);
   });
 
   test("SPA ID", async () => {
@@ -26,7 +23,7 @@ describe("CHIP SPA", () => {
 
     // test id validations
     // fails if item exists
-    await userEvent.type(spaIdInput, "MD-00-0000");
+    await userEvent.type(spaIdInput, EXISTING_ITEM_ID);
     const recordExistsErrorText = screen.getByText(
       /According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again./,
     );
@@ -50,13 +47,9 @@ describe("CHIP SPA", () => {
   });
 
   test("PROPOSED EFFECTIVE DATE OF CHIP SPA", async () => {
-    await userEvent.click(
-      screen.getByTestId("proposedEffectiveDate-datepicker"),
-    );
+    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
-    const proposedEffectiveDateLabel = container.querySelector(
-      '[for="proposedEffectiveDate"]',
-    );
+    const proposedEffectiveDateLabel = screen.getByText("Proposed Effective Date of CHIP SPA");
 
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });
