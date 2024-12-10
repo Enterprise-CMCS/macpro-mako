@@ -14,3 +14,10 @@ export const updateValuesAdminChangeSchema = z
     adminChangeType: z.literal("update-values"),
   })
   .and(z.record(z.string(), z.any()));
+
+  export const updateIdAdminChangeSchema = z
+    .object({
+      id: z.string(),
+      adminChangeType: z.literal("update-id"),
+    })
+    .and(z.record(z.string(), z.any()));

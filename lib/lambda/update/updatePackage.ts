@@ -120,14 +120,6 @@ export const handler = async (event: APIGatewayEvent) => {
         });
       }
 
-      await produceMessage(
-        topicName,
-        packageId,
-        JSON.stringify({
-          id: packageId,
-          isAdminChange: true,
-        }),
-      );
       await sendUpdateIdMessage(topicName, packageResult, updatedId);
       // delete/hide old record and create new one with new id but same values
     }
