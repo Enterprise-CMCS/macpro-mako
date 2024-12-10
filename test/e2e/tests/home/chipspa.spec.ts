@@ -40,16 +40,20 @@ test.describe.skip("Form Submission", async () => {
     // Enter the SPA ID in the following formats: SS-YY-NNNN, SS-YY-NNNN-XXXX where SS is the state and YY is the current year.
     // Enter the Proposed Effective Date of CHIP SPA. Default date is the date of SPA creation. 
     await page.getByRole("textbox", { name: "SPA ID" }).type("SS-YY-NNNN");
-    await page.getByRole("button", { name: "Proposed Effective Date of CHIP SPA" })
+    await page.getByRole("button", { name: "Proposed Effective Date of CHIP SPA" }).click();
 
     /* Attachments */
-    // Generate a sample CMS Form 179 file and attach it to the CMS Form 179 field. 
-    // Generate a sample SPA Pages file and attach it to the SPA Pages field.
+    // Generate a sample Current State Plan file and attach it to the Current State Plan field. 
+    // Generate a sample Amended State Plan file and attach it to the Amended State Plan  field.
     // Generate a sample Cover Letter file and attach it to the Cover Letter field.
+    await page.locator('//*[@id="root"]/div/main/div[2]/form/section[2]/div/section/div[1]/div/p/span').click();
+    await page.locator('//*[@id="root"]/div/main/div[2]/form/section[2]/div/section/div[2]/div/p/span').click();
+    await page.locator('//*[@id="root"]/div/main/div[2]/form/section[2]/div/section/div[3]/div/p/span').click();
 
     /* Submission */
     // Click Submit. The user should then be returned to the Dashboard page. 
     // Verify the submission of the SPA by searching for the newly created SPA using the Dashboard. 
-    // Confirm that a search of the newly-created SPA opens a Package Details page of the Medicaid SPA. 
+    // Confirm that a search of the newly-created SPA opens a Package Details page of the CHIP SPA. 
+    await page.locator('//*[@id="root"]/div/main/div[2]/form/section[4]/button[1]').click();
   });
 });
