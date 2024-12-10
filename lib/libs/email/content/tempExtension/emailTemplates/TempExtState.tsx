@@ -1,11 +1,6 @@
 import { formatNinetyDaysDate } from "shared-utils";
 import { CommonEmailVariables } from "shared-types";
-import {
-  PackageDetails,
-  MailboxNotice,
-  ContactStateLead,
-  Attachments,
-} from "../../email-components";
+import { PackageDetails, MailboxNotice, FollowUpNotice, Attachments } from "../../email-components";
 
 import { BaseEmailTemplate } from "../../email-templates";
 
@@ -19,11 +14,11 @@ export const TempExtStateEmail = (props: { variables: any & CommonEmailVariables
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<ContactStateLead />}
+      footerContent={<FollowUpNotice />}
     >
       <PackageDetails
         details={{
-          "State or territory": variables.territory,
+          "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
           "Temporary Extension Request Number": variables.id,

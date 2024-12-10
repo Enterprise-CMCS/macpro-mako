@@ -1,10 +1,9 @@
-import { CommonEmailVariables } from "shared-types";
-import { RaiWithdraw } from "shared-types";
+import { CommonEmailVariables, Events } from "shared-types";
 import { Container, Html } from "@react-email/components";
 import { WithdrawRAI, PackageDetails, BasicFooter } from "../../email-components";
 
 export const Waiver1915bCMSEmail = (props: {
-  variables: RaiWithdraw & CommonEmailVariables;
+  variables: Events["RespondToRai"] & CommonEmailVariables;
   relatedEvent: any;
 }) => {
   const { variables, relatedEvent } = { ...props };
@@ -14,7 +13,7 @@ export const Waiver1915bCMSEmail = (props: {
         <WithdrawRAI {...variables} />
         <PackageDetails
           details={{
-            "State or territory": variables.territory,
+            "State or Territory": variables.territory,
             Name: relatedEvent.submitterName,
             "Email Address": relatedEvent.submitterEmail,
             "Waiver Number": variables.id,

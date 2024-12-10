@@ -1,7 +1,6 @@
 import { CommonEmailVariables, Events } from "lib/packages/shared-types";
-import { BasicFooter, EMAIL_CONFIG, PackageDetails } from "../../email-components";
+import { BasicFooter, FollowUpNotice, Divider, PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
-import { Link, Section, Text } from "@react-email/components";
 
 export const ChipSpaStateEmail = ({
   variables,
@@ -14,24 +13,16 @@ export const ChipSpaStateEmail = ({
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >
+    <Divider />
     <PackageDetails
       details={{
-        "State or territory": variables.territory,
+        "State or Territory": variables.territory,
         Name: variables.submitterName,
-        Email: variables.submitterEmail,
+        "Email Address": variables.submitterEmail,
         "CHIP SPA Package ID": variables.id,
         Summary: variables.additionalInformation,
       }}
     />
-    <Section>
-      <Text style={{ marginTop: "8px", fontSize: "14px" }}>
-        If you have any questions, please contact{" "}
-        <Link href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`} style={{ textDecoration: "underline" }}>
-          {EMAIL_CONFIG.CHIP_EMAIL}
-        </Link>{" "}
-        or your state lead.
-      </Text>
-      <Text>Thank you.</Text>
-    </Section>
+    <FollowUpNotice isChip />
   </BaseEmailTemplate>
 );

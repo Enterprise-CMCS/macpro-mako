@@ -3,9 +3,9 @@ import { CommonEmailVariables, Events } from "shared-types";
 import { formatNinetyDaysDate, formatDate } from "shared-utils";
 import {
   PackageDetails,
-  ContactStateLead,
-  DetailsHeading,
-  Attachments,
+  BasicFooter,
+  FollowUpNotice,
+  Divider,
   MailboxNotice,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
@@ -22,28 +22,29 @@ export const AppKStateEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<ContactStateLead />}
+      footerContent={<BasicFooter />}
     >
-      <DetailsHeading />
+      <Divider />
       <PackageDetails
         details={{
-          "State or territory": variables.territory,
+          "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
-          "Initial Waiver Numbers": variables.waiverIds.join(", "),
-          "Waiver Authority": variables.seaActionType,
+          "Initial Waiver Number": variables.id,
+          "Waiver Authority": variables.actionType,
           "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
           Summary: variables.additionalInformation,
         }}
       />
-      <Attachments attachments={variables.attachments} />
+      <Divider />
       <Text style={styles.text.description}>
         {`This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
         before ${formatNinetyDaysDate(variables.timestamp)}.`}
       </Text>
+      <FollowUpNotice />
       <MailboxNotice type="Waiver" />
     </BaseEmailTemplate>
   );

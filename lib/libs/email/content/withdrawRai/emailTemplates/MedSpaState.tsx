@@ -1,10 +1,9 @@
-import { CommonEmailVariables } from "shared-types";
-import { RaiWithdraw } from "shared-types";
+import { CommonEmailVariables, Events } from "shared-types";
 import { Container, Html } from "@react-email/components";
-import { WithdrawRAI, PackageDetails, ContactStateLead } from "../../email-components";
+import { WithdrawRAI, PackageDetails, FollowUpNotice } from "../../email-components";
 
 export const MedSpaStateEmail = (props: {
-  variables: RaiWithdraw & CommonEmailVariables;
+  variables: Events["RespondToRai"] & CommonEmailVariables;
   relatedEvent: any;
 }) => {
   const { variables, relatedEvent } = { ...props };
@@ -14,14 +13,14 @@ export const MedSpaStateEmail = (props: {
         <WithdrawRAI {...variables} />
         <PackageDetails
           details={{
-            "State or territory": variables.territory,
+            "State or Territory": variables.territory,
             Name: relatedEvent.submitterName,
             "Email Address": relatedEvent.submitterEmail,
             "Medicaid SPA Package ID": variables.id,
             Summary: variables.additionalInformation,
           }}
         />
-        <ContactStateLead />
+        <FollowUpNotice />
       </Container>
     </Html>
   );
