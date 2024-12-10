@@ -1,7 +1,6 @@
 import { ActionForm, PackageSection } from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { useParams } from "react-router-dom";
-import { SEATOOL_STATUS } from "shared-types";
 
 export const RespondToRaiMedicaid = () => {
   const { authority, id } = useParams();
