@@ -16,67 +16,67 @@ import { Template } from "./chpRenderSection";
 export const ABP_TEMPLATES: Template[] = [
   {
     title: "ABP 1",
-    text: "Alternative Benefit Plan Populations Implementation Guide",
+    text: "Alternative Benefit Plan Populations",
     href: abp1PDF,
   },
   {
     title: "ABP 2a",
-    text: "Voluntary Benefit Package Selection Assurances - Eligibility Group under Section 1902(a)(10)(A)(i)(VIII) of the Act Implementation Guide",
+    text: "Voluntary Benefit Package Selection Assurances - Eligibility Group under Section 1902(a)(10)(A)(i)(VIII) of the Act",
     href: abp2aPDF,
   },
   {
     title: "ABP 2b",
-    text: "Voluntary Enrollment Assurances for Eligibility Groups other than the Adult Group under Section 1902(a)(10)(A)(i)(VIII) of the Act Implementation Guide",
+    text: "Voluntary Enrollment Assurances for Eligibility Groups other than the Adult Group under Section 1902(a)(10)(A)(i)(VIII) of the Act",
     href: abp2bPDF,
   },
   {
     title: "ABP 3",
-    text: "Selection of Benchmark Benefit Package or Benchmark-Equivalent Benefit Package Implementation Guide",
+    text: "Selection of Benchmark Benefit Package or Benchmark-Equivalent Benefit Package",
     href: abp3PDF,
   },
   {
     title: "ABP 3.1",
-    text: "Selection of Benchmark Benefit or Benchmark-Equivalent Benefit Package Implementation Guide",
+    text: "Selection of Benchmark Benefit or Benchmark-Equivalent Benefit Package",
     href: abp31PDF,
   },
   {
     title: "ABP 4",
-    text: "Alternative Benefit Plan Cost Sharing Implementation Guide",
+    text: "Alternative Benefit Plan Cost Sharing",
     href: abp4PDF,
   },
   {
     title: "ABP 5",
-    text: "Benefits Description Implementation Guide",
+    text: "Benefits Description",
     href: abp5PDF,
   },
   {
     title: "ABP 6",
-    text: "Benchmark-Equivalent Benefit Package Implementation Guide",
+    text: "Benchmark-Equivalent Benefit Package",
     href: abp6PDF,
   },
   {
     title: "ABP 7",
-    text: "Benefits Assurances Implementation Guide",
+    text: "Benefits Assurances",
     href: abp7PDF,
   },
   {
     title: "ABP 8",
-    text: "Service Delivery Systems Implementation Guide",
+    text: "Service Delivery Systems",
     href: abp8PDF,
   },
   {
     title: "ABP 9",
-    text: "Employer-Sponsored Insurance and Payment of Premiums Implementation Guide",
+    text: "Employer-Sponsored Insurance and Payment of Premiums",
     href: abp9PDF,
   },
   {
     title: "ABP 10",
-    text: "General Assurances Implementation Guide",
+    text: "General Assurances",
     href: abp10PDF,
   },
   {
     title: "ABP 11",
-    text: "Payment Methodology Implementation Guide",
+    text: "Payment Methodology",
     href: abp11PDF,
   },
 ];
