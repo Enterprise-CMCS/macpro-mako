@@ -16,7 +16,7 @@ export const RespondToRaiMedicaid = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.hasStatus(SEATOOL_STATUS.PENDING),
+        documentChecker: (check) => check.recordExists,
       }}
       breadcrumbText="Respond to Formal RAI"
       preSubmissionMessage="Once you submit this form, a confirmation email is sent to you and to CMS.
@@ -44,7 +44,7 @@ export const RespondToRaiWaiver = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.hasStatus(SEATOOL_STATUS.PENDING),
+        documentChecker: (check) => check.recordExists,
       }}
       breadcrumbText="Respond to Formal RAI"
       preSubmissionMessage="Once you submit this form, a confirmation email is sent to you and to CMS.
@@ -72,7 +72,7 @@ export const RespondToRaiChip = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.hasStatus(SEATOOL_STATUS.PENDING),
+        documentChecker: (check) => check.recordExists,
       }}
       breadcrumbText="Respond to Formal RAI"
       preSubmissionMessage="Once you submit this form, a confirmation email is sent to you and to CMS.
