@@ -19,7 +19,6 @@ export const MedSpaStateEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <DetailsHeading />
       <PackageDetails
         details={{
           "State or territory": variables.territory,
@@ -33,7 +32,6 @@ export const MedSpaStateEmail = (props: {
       <Text style={{ ...styles.text.base, marginTop: "16px" }}>
         If you have questions or did not expect this email, please contact your CPOC.
       </Text>
-      <Text style={{ ...styles.text.base, marginTop: "16px" }}>Thank you.</Text>
     </BaseEmailTemplate>
   );
 };
