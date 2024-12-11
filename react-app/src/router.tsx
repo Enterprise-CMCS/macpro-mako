@@ -111,5 +111,6 @@ export const router = createBrowserRouter([
       },
     ],
     loader: F.loader(queryClient),
+    HydrateFallback: () => null,
   },
 ]);

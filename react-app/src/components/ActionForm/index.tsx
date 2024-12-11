@@ -168,12 +168,16 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       }
 
       const formOrigins = getFormOrigin({ authority, id });
-      banner({
-        ...bannerPostSubmission,
-        pathnameToDisplayOn: formOrigins.pathname,
-      });
 
       navigate(formOrigins);
+
+      // artificially delaying allows the banner to be displayed after navigation
+      setTimeout(() => {
+        banner({
+          ...bannerPostSubmission,
+          pathnameToDisplayOn: formOrigins.pathname,
+        });
+      }, 50);
     } catch (error) {
       console.error(error);
       banner({
