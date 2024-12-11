@@ -1,7 +1,7 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Authority, CognitoUserAttributes, opensearch } from "shared-types";
 import { getAvailableActions, formatSeatoolDate } from "shared-utils";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import * as POP from "@/components";
 import { cn, DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
 
