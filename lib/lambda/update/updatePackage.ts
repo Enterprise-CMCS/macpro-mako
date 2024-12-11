@@ -47,16 +47,18 @@ const sendUpdateIdMessage = async (
 ) => {
   // get fields of package with old id and copy
   //eslint-disable-next-line
-  const { _id, _index, ..._source } = currentPackage;
+  const { _id, _index, ...originalFields } = currentPackage;
+  //eslint-disable-next-line
+  const { id, ...source } = originalFields._source;
   await sendDeleteMessage(topicName, currentPackage._id);
   // send message with new id and old fields
-  console.log({ ..._source }, "ORIGINAL SPREAD");
+  console.log({ ...originalFields._source }, "ORIGINAL SPREAD");
   await produceMessage(
     topicName,
     updatedId,
     JSON.stringify({
       id: updatedId,
-      ..._source,
+      ...source,
       isAdminChange: true,
       adminChangeType: "update-id",
     }),
