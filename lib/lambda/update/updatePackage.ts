@@ -5,8 +5,6 @@ import { produceMessage } from "libs/api/kafka";
 import { ItemResult } from "shared-types/opensearch/main";
 import { z } from "zod";
 
-// type ActionType = "update-id" | "update-values" | "delete";
-
 const sendDeleteMessage = async (topicName: string, packageId: string) => {
   await produceMessage(
     topicName,
