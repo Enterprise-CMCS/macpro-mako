@@ -1,8 +1,9 @@
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
-import { getPackage } from "libs/api/package";
+import { getPackage, getPackageChangelog } from "libs/api/package";
 import { produceMessage } from "libs/api/kafka";
 import { ItemResult } from "shared-types/opensearch/main";
+import { events } from "lib/packages/shared-types";
 import { z } from "zod";
 
 const sendDeleteMessage = async (topicName: string, packageId: string) => {
@@ -124,7 +125,6 @@ export const handler = async (event: APIGatewayEvent) => {
           body: { message: "New ID required to update package" },
         });
       }
-      // handle regex validation in frontend later or here too?
       const existingPackage = await getPackage(updatedId);
       if (existingPackage) {
         return response({
@@ -132,8 +132,29 @@ export const handler = async (event: APIGatewayEvent) => {
           body: { message: "This ID already exists" },
         });
       }
+      // use event of current package to determine how ID should be formatted
+      const packageChangelog = await getPackageChangelog(packageId);
+      if (packageChangelog.hits.hits.length) {
+        const packageType = packageChangelog.hits.hits[0]._source.event;
+        const packageTypeSchema = events[packageType as keyof typeof events].baseSchema;
+        const idSchema = packageTypeSchema.shape.id;
 
-      await sendUpdateIdMessage(topicName, packageResult, updatedId);
+        const parsedId = idSchema.safeParse(updatedId);
+        if (parsedId.success) {
+          await sendUpdateIdMessage(topicName, packageResult, updatedId);
+        } else {
+          return response({
+            statusCode: 400,
+            body: parsedId.error.message,
+          });
+        }
+      } else {
+        // TODO: Update message? Is this case necessary?
+        return response({
+          statusCode: 500,
+          body: { message: "The type of package could not be determined." },
+        });
+      }
     }
 
     if (action === "update-values") {
