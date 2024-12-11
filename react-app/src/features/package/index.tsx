@@ -12,7 +12,7 @@ import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
 import { Authority } from "shared-types";
-import { LoaderFunctionArgs, useLoaderData, useParams, redirect } from "react-router-dom";
+import { LoaderFunctionArgs, Navigate, useParams, useLoaderData, redirect } from "react-router";
 import { detailsAndActionsCrumbs } from "@/utils";
 
 export const DetailCardWrapper = ({
@@ -51,7 +51,12 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
   );
 };
 
-export const packageDetailsLoader = async ({ params }: LoaderFunctionArgs) => {
+type LoaderData = {
+  id: string;
+  authority: Authority;
+};
+
+export const packageDetailsLoader = async ({ params }: LoaderFunctionArgs): Promise<LoaderData | Response> => {
   const { id, authority } = params;
   if (id === undefined || authority === undefined) {
     return redirect("/dashboard");
@@ -67,16 +72,11 @@ export const packageDetailsLoader = async ({ params }: LoaderFunctionArgs) => {
     return redirect("/dashboard");
   }
 
-  return { id, authority };
-};
-
-type LoaderData = {
-  id: string;
-  authority: Authority;
+  return { id, authority: authority as Authority };
 };
 
 export const Details = () => {
-  const { id, authority } = useLoaderData() as LoaderData;
+  const { id, authority } = useLoaderData<LoaderData>();
   return (
     <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row">
       <div className="px-4 lg:px-8">

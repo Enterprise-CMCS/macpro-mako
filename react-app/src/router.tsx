@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router";
 import * as F from "@/features";
 import * as C from "@/components";
 import {
@@ -115,5 +115,6 @@ export const router = createBrowserRouter([
       },
     ],
     loader: F.loader(queryClient),
+    HydrateFallback: () => null,
   },
 ]);
