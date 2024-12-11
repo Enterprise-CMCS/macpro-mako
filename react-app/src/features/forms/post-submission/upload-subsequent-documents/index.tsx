@@ -1,9 +1,9 @@
 import { useGetItem } from "@/api";
 import {
   ActionForm,
+  LoadingSpinner,
   PackageSection,
   SchemaWithEnforcableProps,
-  LoadingSpinner,
 } from "@/components";
 import {
   AttachmentFAQInstructions,
@@ -70,8 +70,8 @@ const getTitle = (originalSubmissionEvent: string) => {
       return "Medicaid SPA";
     case originalSubmissionEvent === "new-chip-submission":
       return "CHIP SPA";
-    case originalSubmissionEvent === "appk":
-      return "Appendix K";
+    case originalSubmissionEvent === "app-k":
+      return "1915(c) Appendix K";
     case originalSubmissionEvent.includes("amendment"):
       return "1915(b) Waiver Amendment";
     case originalSubmissionEvent.includes("initial"):
