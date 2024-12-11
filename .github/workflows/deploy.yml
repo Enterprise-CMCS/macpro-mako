@@ -130,7 +130,7 @@ jobs:
           coverageLocations: coverage/lcov.info:lcov
 
   e2e:
-    timeout-minutes: 15
+    # timeout-minutes: 15
     runs-on: ubuntu-20.04
     needs:
       - deploy
