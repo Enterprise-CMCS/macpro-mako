@@ -38,7 +38,12 @@ export const AppKAmendmentForm = () => (
               <FormLabel className="font-bold" htmlFor="amendment-title">
                 Amendment Title <RequiredIndicator />
               </FormLabel>
-              <Textarea {...field} className="h-[80px]" id="amendment-title" maxLength={125} />
+              <Textarea
+                {...field}
+                className="h-[76px] w-[355px]"
+                id="amendment-title"
+                maxLength={125}
+              />
               <FormDescription>
                 <span
                   tabIndex={0}
@@ -75,7 +80,7 @@ export const AppKAmendmentForm = () => (
                   rel="noopener noreferrer"
                   className="text-blue-900 underline"
                 >
-                  What is my waiver amendment number?
+                  What is my Waiver Amendment Number?
                 </Link>
               </div>
               <p className="text-neutral-500" id="waiver-number-format">
