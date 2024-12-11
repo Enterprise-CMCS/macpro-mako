@@ -3,8 +3,9 @@ import { APIGatewayEvent } from "aws-lambda";
 import { getPackage } from "libs/api/package";
 import { produceMessage } from "libs/api/kafka";
 import { ItemResult } from "shared-types/opensearch/main";
+import { z } from "zod";
 
-type ActionType = "update-id" | "update-values" | "delete";
+// type ActionType = "update-id" | "update-values" | "delete";
 
 const sendDeleteMessage = async (topicName: string, packageId: string) => {
   await produceMessage(
@@ -49,7 +50,7 @@ const sendUpdateIdMessage = async (
   const { _id, _index, _source } = currentPackage;
   //eslint-disable-next-line
   const { id, changeMade, ...remainingFields } = _source;
-  console.log({ ..._source }, "ORIGINAL SPREAD");
+
   await sendDeleteMessage(topicName, currentPackage._id);
   await produceMessage(
     topicName,
@@ -63,6 +64,14 @@ const sendUpdateIdMessage = async (
     }),
   );
 };
+
+const updatePackageEventBodySchema = z.object({
+  packageId: z.string(),
+  action: z.enum(["update-values", "update-id", "delete"]),
+  updatedId: z.string().optional(),
+  updatedFields: z.record(z.unknown()).optional(),
+  changeReason: z.string().optional(),
+});
 
 export const handler = async (event: APIGatewayEvent) => {
   const topicName = process.env.topicName as string;
@@ -78,15 +87,17 @@ export const handler = async (event: APIGatewayEvent) => {
     });
   }
   try {
-    // TODO: allow user to input title of the accordion
-    const { packageId, action, updatedId, updatedFields, changeReason } =
-      typeof event.body === "string"
-        ? JSON.parse(event.body)
-        : (event.body as {
-            packageId: string;
-            action: ActionType;
-            updatedFields: object;
-          });
+    const parseEventBody = (body: unknown) => {
+      return updatePackageEventBodySchema.parse(typeof body === "string" ? JSON.parse(body) : body);
+    };
+
+    const {
+      packageId,
+      action,
+      updatedId,
+      updatedFields = {},
+      changeReason,
+    } = parseEventBody(event.body);
 
     if (!packageId || !action) {
       return response({
@@ -125,7 +136,6 @@ export const handler = async (event: APIGatewayEvent) => {
       }
 
       await sendUpdateIdMessage(topicName, packageResult, updatedId);
-      // delete/hide old record and create new one with new id but same values
     }
 
     if (action === "update-values") {
