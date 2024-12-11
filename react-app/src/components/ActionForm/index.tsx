@@ -21,7 +21,7 @@ import {
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { getFormOrigin } from "@/utils";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
 import { API } from "aws-amplify";
@@ -168,12 +168,16 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       }
 
       const formOrigins = getFormOrigin({ authority, id });
-      banner({
-        ...bannerPostSubmission,
-        pathnameToDisplayOn: formOrigins.pathname,
-      });
 
       navigate(formOrigins);
+
+      // artificially delaying allows the banner to be displayed after navigation
+      setTimeout(() => {
+        banner({
+          ...bannerPostSubmission,
+          pathnameToDisplayOn: formOrigins.pathname,
+        });
+      }, 50);
     } catch (error) {
       console.error(error);
       banner({
@@ -229,7 +233,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           )}
           {additionalInformation && (
             <SectionCard
-              testId = "additional-info"
+              testId="additional-info"
               title={
                 <>
                   {additionalInformation.title}{" "}

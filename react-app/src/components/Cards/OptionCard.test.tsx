@@ -1,25 +1,17 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { OptionCard, OptionFieldset } from "@/components";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 
 describe("OptionFieldset", () => {
   beforeEach(() => {
-    render(
-      <OptionFieldset legend={"Test Legend"}>
-        Testing rendering of children
-      </OptionFieldset>,
-    );
+    render(<OptionFieldset legend={"Test Legend"}>Testing rendering of children</OptionFieldset>);
   });
   test("legend prop populates legend element in fieldset", () => {
-    expect(
-      screen.getByRole("group", { name: "Test Legend" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Test Legend" })).toBeInTheDocument();
   });
   test("renders children", () => {
-    expect(
-      screen.getByText("Testing rendering of children"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("Testing rendering of children")).toBeInTheDocument();
   });
 });
 

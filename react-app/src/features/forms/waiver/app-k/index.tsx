@@ -13,7 +13,7 @@ import {
 } from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { Authority } from "shared-types";
 import { getFAQLinkForAttachments } from "../../faqLinks";
 
