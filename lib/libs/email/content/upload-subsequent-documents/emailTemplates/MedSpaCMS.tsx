@@ -21,7 +21,7 @@ export const MedSpaCMSEmail = (props: {
     >
       <PackageDetails
         details={{
-          "State or territory": variables.territory,
+          "State or Territory": variables.territory,
           "Medicaid SPA Package ID": variables.id,
           Summary: variables.additionalInformation,
         }}
