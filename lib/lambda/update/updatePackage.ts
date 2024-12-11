@@ -19,7 +19,6 @@ export const handler = async (event: APIGatewayEvent) => {
     });
   }
   try {
-    // TODO: allow user to input title of the accordion
     const { packageId, action, updatedFields, changeReason } =
       typeof event.body === "string"
         ? JSON.parse(event.body)
@@ -68,7 +67,6 @@ export const handler = async (event: APIGatewayEvent) => {
           origin: "mako",
         }),
       );
-      // delete/hide old record and create new one with new id but same values
     }
 
     if (action === "update-values") {
@@ -80,7 +78,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
       if (!areValidFields) {
         return response({
-          statusCode: 500,
+          statusCode: 400,
           body: {
             message: `Cannot update invalid field(s)`,
           },
@@ -89,7 +87,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
       if ("id" in updatedFields) {
         return response({
-          statusCode: 500,
+          statusCode: 400,
           body: { message: "ID is not a valid field to update" },
         });
       }
