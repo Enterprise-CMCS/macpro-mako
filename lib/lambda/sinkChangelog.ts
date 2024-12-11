@@ -107,7 +107,6 @@ const processAndIndex = async ({
       const schema = transformedDeleteSchema
         .or(transformedUpdateValuesSchema)
         .or(transformedUpdateIdSchema);
-      console.log("RECORDDDD", record);
 
       if (record.isAdminChange) {
         const result = schema.safeParse(record);
