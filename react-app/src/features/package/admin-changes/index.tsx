@@ -65,10 +65,10 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
       case "legacy-admin-change":
         return [props.changeType || "Manual Update", AC_LegacyAdminChange];
       // TODO: discuss with HCD. Will be handled in another ticket.
-      case "update-values":
-        return ["Package detail(s) have been changed", AC_LegacyAdminChange];
-      case "delete":
-        return ["Package has been deleted", AC_LegacyAdminChange];
+      // case "update-values":
+      //   return ["Package detail(s) have been changed", AC_LegacyAdminChange];
+      // case "delete":
+      //   return ["Package has been deleted", AC_LegacyAdminChange];
       default:
         return [BLANK_VALUE, AC_Update];
     }
