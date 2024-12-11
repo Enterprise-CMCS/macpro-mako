@@ -7,6 +7,9 @@ import { SEATOOL_STATUS } from "shared-types";
 export const WithdrawPackageActionWaiver = () => {
   const { authority, id } = useParams();
   const { data: waiver, isLoading: isWaiverLoading } = useGetItem(id);
+
+  const authorityText = authority === "1915(c)" ? `1915(c) Appendix K` : authority;
+
   const waiverActionType = {
     New: "Initial Waiver",
     Renew: "Waiver Renewal",
@@ -20,7 +23,7 @@ export const WithdrawPackageActionWaiver = () => {
   return (
     <ActionForm
       schema={formSchemas["withdraw-package"]}
-      title={`Withdraw ${authority}`}
+      title={`Withdraw ${authorityText}`}
       fields={() => <PackageSection />}
       defaultValues={{
         id,
