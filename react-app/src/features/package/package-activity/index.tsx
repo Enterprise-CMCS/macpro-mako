@@ -12,7 +12,7 @@ import {
 import * as Table from "@/components";
 import { BLANK_VALUE } from "@/consts";
 import { useAttachmentService, Attachments } from "./hook";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { useGetItem } from "@/api";
 import { ItemResult } from "shared-types/opensearch/changelog";
 
