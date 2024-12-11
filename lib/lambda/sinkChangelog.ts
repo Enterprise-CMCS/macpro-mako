@@ -71,9 +71,6 @@ const processAndIndex = async ({
     console.log(JSON.stringify(kafkaRecord, null, 2));
     const { value, offset } = kafkaRecord;
 
-    // enforce type?
-    let transformedData;
-
     try {
       // If a legacy tombstone, continue
       if (!value) {
@@ -134,9 +131,7 @@ const processAndIndex = async ({
       if (record.event in transforms) {
         const transformForEvent = transforms[record.event as keyof typeof transforms];
 
-        const result = transformForEvent
-          .transform(offset)
-          .safeParse(record.adminChangeType === "update-values" ? transformedData : record);
+        const result = transformForEvent.transform(offset).safeParse(record);
 
         if (result.success && result.data === undefined) continue;
         if (!result.success) {

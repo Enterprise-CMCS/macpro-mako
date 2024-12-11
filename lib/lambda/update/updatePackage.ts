@@ -147,7 +147,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
       if (!areValidFields) {
         return response({
-          statusCode: 500,
+          statusCode: 400,
           body: {
             message: `Cannot update invalid field(s)`,
           },
@@ -156,7 +156,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
       if ("id" in updatedFields) {
         return response({
-          statusCode: 500,
+          statusCode: 400,
           body: { message: "ID is not a valid field to update" },
         });
       }
