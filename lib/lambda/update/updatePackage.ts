@@ -50,8 +50,7 @@ const sendUpdateIdMessage = async (
   const { _id, _index, ..._source } = currentPackage;
   await sendDeleteMessage(topicName, currentPackage._id);
   // send message with new id and old fields
-  // console.log(...originalProperties, 'ORIGINAL SPREAD')
-  // console.log("NOT SPREAD", { ...originalProperties }, "NOT SPREAD");
+  console.log({ ..._source }, "ORIGINAL SPREAD");
   await produceMessage(
     topicName,
     updatedId,
