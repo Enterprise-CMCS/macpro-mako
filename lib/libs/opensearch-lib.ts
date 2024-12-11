@@ -166,23 +166,12 @@ export async function mapRole(
 }
 
 export async function search(host: string, index: opensearch.Index, query: any) {
-  console.log("opensearch-lib search parameters: ", {
-    host,
-    index,
-    query: JSON.stringify(query, null, 2),
-  });
   client = client || (await getClient(host));
-  console.log("client: ", JSON.stringify(client, null, 2));
-  try {
-    const response = await client.search({
-      index: index,
-      body: query,
-    });
-    console.log("search response: ", JSON.stringify(decodeUtf8(response).body, null, 2));
-    return decodeUtf8(response).body;
-  } catch (e) {
-    console.log({ e });
-  }
+  const response = await client.search({
+    index: index,
+    body: query,
+  });
+  return decodeUtf8(response).body;
 }
 
 export async function getItem(
@@ -190,21 +179,9 @@ export async function getItem(
   index: opensearch.Index,
   id: string,
 ): Promise<ItemResult | undefined> {
-  console.log("opensearch-lib getItem parameters: ", {
-    host,
-    index,
-    id,
-  });
   client = client || (await getClient(host));
-  console.log("client: ", JSON.stringify(client, null, 2));
-  try {
-    const response = await client.get({ id, index });
-    console.log("getItem response: ", JSON.stringify(decodeUtf8(response).body));
-    return decodeUtf8(response).body;
-  } catch (e) {
-    console.log({ e });
-    return undefined;
-  }
+  const response = await client.get({ id, index });
+  return decodeUtf8(response).body;
 }
 
 export async function getItems(
@@ -213,15 +190,9 @@ export async function getItems(
   ids: string[],
 ): Promise<OSDocument[]> {
   try {
-    console.log("opensearch-lib getItems parameters: ", {
-      host,
-      indexNamespace,
-      ids,
-    });
     const index = `${indexNamespace}main`;
 
     client = client || (await getClient(host));
-    console.log("client: ", JSON.stringify(client, null, 2));
 
     const response = await client.mget<{ docs: ItemResult[] }>({
       index,

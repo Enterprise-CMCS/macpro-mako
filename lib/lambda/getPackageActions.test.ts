@@ -1,100 +1,82 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
-import { handler } from "./getPackageActions";
-import { response } from "libs/handler-lib";
-import { getAvailableActions } from "shared-utils";
-import { getPackage } from "../libs/api/package/getPackage";
+import { getRequestContext, OPENSEARCH_DOMAIN, OPENSEARCH_INDEX_NAMESPACE } from "mocks";
 import {
-  getAuthDetails,
-  isAuthorizedToGetPackageActions,
-  lookupUserAttributes,
-} from "../libs/api/auth/user";
-
-vi.mock("libs/handler-lib", () => ({
-  response: vi.fn(),
-}));
-
-vi.mock("shared-utils", () => ({
-  getAvailableActions: vi.fn(),
-}));
-
-vi.mock("../libs/api/package/getPackage", () => ({
-  getPackage: vi.fn(),
-}));
-
-vi.mock("../libs/api/auth/user", () => ({
-  getAuthDetails: vi.fn(),
-  isAuthorizedToGetPackageActions: vi.fn(),
-  lookupUserAttributes: vi.fn(),
-}));
+  GET_ERROR_ITEM_ID,
+  HI_TEST_ITEM_ID,
+  NOT_FOUND_ITEM_ID,
+  WITHDRAWN_CHANGELOG_ITEM_ID,
+} from "mocks/data/items";
+import { beforeEach, describe, expect, it } from "vitest";
+import { handler } from "./getPackageActions";
 
 describe("getPackageActions Handler", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    process.env.osDomain = OPENSEARCH_DOMAIN;
+    process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE;
   });
 
   it("should return 400 if event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 400,
-      body: { message: "Event body required" },
-    });
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(400);
   });
 
   it("should return 401 if not authorized to view resources from the state", async () => {
-    const packageData = { found: true, _source: { state: "test-state" } };
-    (getPackage as vi.Mock).mockResolvedValueOnce(packageData);
-    (isAuthorizedToGetPackageActions as vi.Mock).mockResolvedValueOnce(false);
-
     const event = {
-      body: JSON.stringify({ id: "test-id" }),
+      body: JSON.stringify({ id: HI_TEST_ITEM_ID }),
+      requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 401,
-      body: { message: "Not authorized to view resources from this state" },
-    });
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(401);
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "Not authorized to view resources from this state" }),
+    );
+  });
+
+  it("should return 404 if the package is not found", async () => {
+    const event = {
+      body: JSON.stringify({ id: NOT_FOUND_ITEM_ID }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toEqual(JSON.stringify({ message: "No record found for the given id" }));
   });
 
   it("should return 200 with available actions if authorized and package is found", async () => {
-    const packageData = { found: true, _source: { state: "test-state" } };
-    const userAttributes = { userId: "test-user", poolId: "test-pool" };
-    const actions = ["action1", "action2"];
-    (getPackage as vi.Mock).mockResolvedValueOnce(packageData);
-    (isAuthorizedToGetPackageActions as vi.Mock).mockResolvedValueOnce(true);
-    (getAuthDetails as vi.Mock).mockReturnValueOnce(userAttributes);
-    (lookupUserAttributes as vi.Mock).mockResolvedValueOnce(userAttributes);
-    (getAvailableActions as vi.Mock).mockReturnValueOnce(actions);
-
     const event = {
-      body: JSON.stringify({ id: "test-id" }),
+      body: JSON.stringify({ id: WITHDRAWN_CHANGELOG_ITEM_ID }),
+      requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 200,
-      body: { actions },
-    });
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ actions: [] }));
   });
 
   it("should handle errors during processing", async () => {
-    (getPackage as vi.Mock).mockRejectedValueOnce(new Error("Test error"));
-
     const event = {
-      body: JSON.stringify({ id: "test-id" }),
+      body: JSON.stringify({ id: GET_ERROR_ITEM_ID }),
+      requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 500,
-      body: { message: "Internal server error" },
-    });
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(
+      JSON.stringify({ error: "Internal server error", message: "Response Error" }),
+    );
   });
 });

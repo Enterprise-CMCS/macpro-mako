@@ -1,18 +1,16 @@
-import { Handler } from "aws-lambda";
-import { UserRoles, STATE_ROLES } from "shared-types";
 import {
-  CognitoIdentityProviderClient,
-  AdminUpdateUserAttributesCommand,
   AdminGetUserCommand,
+  AdminUpdateUserAttributesCommand,
+  CognitoIdentityProviderClient,
 } from "@aws-sdk/client-cognito-identity-provider";
+import { Handler } from "aws-lambda";
+import { STATE_ROLES, UserRoles } from "shared-types";
 import { getSecret } from "shared-utils";
 
 // Initialize Cognito client
 const client = new CognitoIdentityProviderClient({});
 
 export const handler: Handler = async (event) => {
-  console.log("handler in postAuth event: ", JSON.stringify(event, null, 2));
-
   // Check if idmInfoSecretArn is provided
   if (!process.env.idmAuthzApiKeyArn) {
     throw "ERROR: process.env.idmAuthzApiKeyArn is required";
@@ -40,7 +38,6 @@ export const handler: Handler = async (event) => {
 
     try {
       const username = userAttributes["custom:username"]; // This is the four-letter IDM username
-      console.log(`fetching user: ${apiEndpoint}/api/v1/authz/id/all?userId=${username}`);
       const response = await fetch(`${apiEndpoint}/api/v1/authz/id/all?userId=${username}`, {
         method: "GET",
         headers: {
@@ -48,15 +45,13 @@ export const handler: Handler = async (event) => {
           "x-api-key": apiKey,
         },
       });
-      console.log("response: ", JSON.stringify(response, null, 2));
       if (!response.ok) {
-        console.log(response);
+        console.error(response);
         throw new Error(
           `Network response was not ok. Response was ${response.status}: ${response.statusText}`,
         );
       }
       const data = await response.json();
-      console.log("data: ", JSON.stringify(data, null, 2));
       const roleArray: string[] = [];
       const stateArray: string[] = [];
       data.userProfileAppRoles.userRolesInfoList.forEach((element: any) => {
@@ -87,8 +82,7 @@ export const handler: Handler = async (event) => {
           },
         ],
       };
-      console.log("Putting user attributes as: ");
-      console.log(JSON.stringify(attributeData, null, 2));
+
       await updateUserAttributes(attributeData);
     } catch (error) {
       console.error("Error performing post auth:", error);
@@ -104,9 +98,7 @@ async function updateUserAttributes(params: any): Promise<void> {
       UserPoolId: params.UserPoolId,
       Username: params.Username,
     });
-    console.log("getUserCommand: ", JSON.stringify(getUserCommand));
     const user = await client.send(getUserCommand);
-    console.log("user response: ", JSON.stringify(user));
 
     // Check for existing "custom:cms-roles"
     const cmsRolesAttribute = user.UserAttributes?.find((attr) => attr.Name === "custom:cms-roles");

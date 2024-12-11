@@ -9,13 +9,14 @@
     "build": "tsc"
   },
   "dependencies": {
-    "msw": "^2.3.1",
-    "shared-types": "*",
-    "shared-utils": "*",
-    "react-app": "*",
-    "jsonwebtoken": "9.0.2",
+    "@opensearch-project/opensearch": "^2.3.0",
+    "@types/jsonwebtoken": "9.0.7",
     "amazon-cognito-identity-js": "6.3.12",
-    "@types/jsonwebtoken": "9.0.7"
+    "jsonwebtoken": "9.0.2",
+    "msw": "^2.3.1",
+    "react-app": "*",
+    "shared-types": "*",
+    "shared-utils": "*"
   },
   "author": "",
   "license": "ISC"

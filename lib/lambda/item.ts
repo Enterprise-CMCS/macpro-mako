@@ -1,3 +1,4 @@
+import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
 import { APIGatewayEvent } from "aws-lambda";
 import { validateEnvVariable } from "shared-utils";
 import { getStateFilter } from "../libs/api/auth/user";
@@ -14,8 +15,26 @@ export const getItemData = async (event: APIGatewayEvent) => {
   }
   try {
     const body = JSON.parse(event.body);
-    const stateFilter = await getStateFilter(event);
+
     const packageResult = await getPackage(body.id);
+    if (!packageResult?.found) {
+      return response({
+        statusCode: 404,
+        body: { message: "No record found for the given id" },
+      });
+    }
+
+    const stateFilter = await getStateFilter(event);
+    if (
+      stateFilter &&
+      (!packageResult?._source.state ||
+        !stateFilter.terms.state.includes(packageResult._source.state.toLocaleLowerCase()))
+    ) {
+      return response({
+        statusCode: 401,
+        body: { message: "Not authorized to view this resource" },
+      });
+    }
 
     let appkChildren: any[] = [];
     if (packageResult?._source?.appkParent) {
@@ -38,23 +57,6 @@ export const getItemData = async (event: APIGatewayEvent) => {
     }
 
     const changelog = await getPackageChangelog(body.id, filter);
-    if (
-      stateFilter &&
-      (!packageResult?._source.state ||
-        !stateFilter.terms.state.includes(packageResult._source.state.toLocaleLowerCase()))
-    ) {
-      return response({
-        statusCode: 401,
-        body: { message: "Not authorized to view this resource" },
-      });
-    }
-
-    if (!packageResult?.found) {
-      return response({
-        statusCode: 404,
-        body: { message: "No record found for the given id" },
-      });
-    }
 
     return response<unknown>({
       statusCode: 200,
@@ -68,6 +70,16 @@ export const getItemData = async (event: APIGatewayEvent) => {
       },
     });
   } catch (error) {
+    if (error instanceof OpensearchErrors.ResponseError) {
+      return response({
+        statusCode: error?.statusCode || error?.meta?.statusCode || 500,
+        body: {
+          error: error?.body || error?.meta?.body || error,
+          message: error.message,
+        },
+      });
+    }
+
     return response({
       statusCode: 500,
       body: { error, message: error.message },

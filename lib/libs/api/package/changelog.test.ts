@@ -1,88 +1,44 @@
 // getPackageChangelog.test.ts
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import * as os from "libs/opensearch-lib";
+import {
+  OPENSEARCH_DOMAIN,
+  OPENSEARCH_INDEX_NAMESPACE,
+  TEST_ITEM_ID,
+  WITHDRAWN_CHANGELOG_ITEM_ID,
+} from "mocks";
+import items from "mocks/data/items";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getPackageChangelog } from "./changelog";
-import { opensearch } from "shared-types";
-
-vi.mock("libs/opensearch-lib");
 
 describe("getPackageChangelog", () => {
-  const mockOsDomain = "mock-os-domain";
-  const mockIndexNamespace = "mock-index-namespace";
-  const mockPackageId = "mock-package-id";
-  const mockFilter = [{ term: { status: "active" } }];
-  const mockResponse = {
-    hits: {
-      hits: [
-        {
-          _source: {
-            timestamp: "2024-01-01T00:00:00Z",
-            change: "Initial release",
-          },
-        },
-      ],
-    },
-  } as opensearch.changelog.Response;
-
   beforeEach(() => {
-    process.env.osDomain = mockOsDomain;
-    process.env.indexNamespace = mockIndexNamespace;
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
+    process.env.osDomain = OPENSEARCH_DOMAIN;
+    process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE;
   });
 
   it("should throw an error if osDomain is not defined", async () => {
     delete process.env.osDomain;
-    await expect(getPackageChangelog(mockPackageId)).rejects.toThrow(
+    await expect(getPackageChangelog(TEST_ITEM_ID)).rejects.toThrow(
       "process.env.osDomain must be defined",
     );
   });
 
   it("should return the changelog with the specified packageId and no additional filters", async () => {
-    vi.mocked(os.search).mockResolvedValue(mockResponse);
+    const expectedHits = items[WITHDRAWN_CHANGELOG_ITEM_ID]?._source?.changelog || [];
+    const result = await getPackageChangelog(WITHDRAWN_CHANGELOG_ITEM_ID);
 
-    const result = await getPackageChangelog(mockPackageId);
-
-    expect(os.search).toHaveBeenCalledWith(
-      mockOsDomain,
-      `${mockIndexNamespace}changelog`,
-      {
-        from: 0,
-        size: 200,
-        sort: [{ timestamp: "desc" }],
-        query: {
-          bool: {
-            must: [{ term: { "packageId.keyword": mockPackageId } }],
-          },
-        },
-      },
-    );
-    expect(result).toEqual(mockResponse);
+    expect(result).toBeTruthy();
+    expect(result.hits.hits).toEqual(expectedHits);
   });
 
   it("should return the changelog with the specified packageId and additional filters", async () => {
-    vi.mocked(os.search).mockResolvedValue(mockResponse);
-
-    const result = await getPackageChangelog(mockPackageId, mockFilter);
-
-    expect(os.search).toHaveBeenCalledWith(
-      mockOsDomain,
-      `${mockIndexNamespace}changelog`,
-      {
-        from: 0,
-        size: 200,
-        sort: [{ timestamp: "desc" }],
-        query: {
-          bool: {
-            must: [{ term: { "packageId.keyword": mockPackageId } }].concat(
-              mockFilter,
-            ),
-          },
-        },
-      },
+    const expectedHit = items[WITHDRAWN_CHANGELOG_ITEM_ID]?._source?.changelog?.find(
+      (log) => log?._source?.event == "withdraw-package",
     );
-    expect(result).toEqual(mockResponse);
+    const result = await getPackageChangelog(WITHDRAWN_CHANGELOG_ITEM_ID, [
+      { term: { event: "withdraw-package" } },
+    ]);
+
+    expect(result).toBeTruthy();
+    expect(result.hits.hits).toEqual([expectedHit]);
   });
 });

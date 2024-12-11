@@ -1,30 +1,22 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { HI_TEST_ITEM_ID } from "mocks";
-import { beforeEach, describe, expect, it, Mock } from "vitest";
-import { getStateFilter } from "../libs/api/auth/user";
+import {
+  GET_ERROR_ITEM_ID,
+  HI_TEST_ITEM_ID,
+  NOT_FOUND_ITEM_ID,
+  OPENSEARCH_DOMAIN,
+  OPENSEARCH_INDEX_NAMESPACE,
+  WITHDRAWN_CHANGELOG_ITEM_ID,
+  getRequestContext,
+} from "mocks";
+import items from "mocks/data/items";
+import { beforeEach, describe, expect, it } from "vitest";
 
-import { getAppkChildren, getPackage, getPackageChangelog } from "../libs/api/package";
-import { response } from "../libs/handler-lib";
 import { handler } from "./item";
-
-// vi.mock("libs/handler-lib", () => ({
-//   response: vi.fn(),
-// }));
-
-// vi.mock("../libs/api/auth/user", () => ({
-//   getStateFilter: vi.fn(),
-// }));
-
-// vi.mock("../libs/api/package", () => ({
-//   getAppkChildren: vi.fn(),
-//   getPackage: vi.fn(),
-//   getPackageChangelog: vi.fn(),
-// }));
 
 describe("getItemData Handler", () => {
   beforeEach(() => {
-    // vi.clearAllMocks();
-    process.env.osDomain = "test-domain"; // Set the environment variable before each test
+    process.env.osDomain = OPENSEARCH_DOMAIN;
+    process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE; // Set the environment variable before each test
   });
 
   it("should return 400 if event body is missing", async () => {
@@ -37,88 +29,59 @@ describe("getItemData Handler", () => {
     expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
   });
 
-  it.only("should return 401 if not authorized to view this resource", async () => {
-    // const packageData = { found: true, _source: { state: "test-state" } };
-    // (getPackage as Mock).mockResolvedValueOnce(packageData);
-    // (getStateFilter as Mock).mockResolvedValueOnce({
-    //   terms: { state: ["other-state"] },
-    // });
-
+  it("should return 401 if not authorized to view this resource", async () => {
     const event = {
       body: JSON.stringify({ id: HI_TEST_ITEM_ID }),
-      requestContext: {
-        identity: {
-          cognitoAuthenticationProvider:
-            "cognito-idp.us-east-1.amazonaws.com/us-east-1_n12JUn0cM,cognito-idp.us-east-1.amazonaws.com/us-east-1_n12JUn0cM:CognitoSignIn:d4284448-3091-7066-2b41-cb9d57de9194",
-        },
-      },
+      requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
     const res = await handler(event);
-    console.log({ res });
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(401);
     expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
   });
 
-  it("should return 200 with package data, children, and changelog if authorized", async () => {
-    const packageData = {
-      found: true,
-      _source: {
-        state: "test-state",
-        appkParent: true,
-        legacySubmissionTimestamp: null,
-      },
-    };
-    const childrenData = {
-      hits: { hits: [{ _source: { child: "child-data" } }] },
-    };
-    const changelogData = {
-      hits: { hits: [{ _source: { change: "change-data" } }] },
-    };
-
-    (getPackage as Mock).mockResolvedValueOnce(packageData);
-    (getStateFilter as Mock).mockResolvedValueOnce({
-      terms: { state: ["test-state"] },
-    });
-    (getAppkChildren as Mock).mockResolvedValueOnce(childrenData);
-    (getPackageChangelog as Mock).mockResolvedValueOnce(changelogData);
-
+  it("should return 404 if the item is not found", async () => {
     const event = {
-      body: JSON.stringify({ id: "test-id" }),
+      body: JSON.stringify({ id: NOT_FOUND_ITEM_ID }),
+      requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 200,
-      body: {
-        ...packageData,
-        _source: {
-          ...packageData._source,
-          appkChildren: childrenData.hits.hits,
-          changelog: changelogData.hits.hits,
-        },
-      },
-    });
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toEqual(JSON.stringify({ message: "No record found for the given id" }));
+  });
+
+  it("should return 200 with package data, children, and changelog if authorized", async () => {
+    const packageData = items[WITHDRAWN_CHANGELOG_ITEM_ID];
+
+    const event = {
+      body: JSON.stringify({ id: WITHDRAWN_CHANGELOG_ITEM_ID }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify(packageData));
   });
 
   it("should return 500 if an error occurs during processing", async () => {
-    (getPackage as Mock).mockRejectedValueOnce(new Error("Test error"));
-
     const event = {
-      body: JSON.stringify({ id: "test-id" }),
+      body: JSON.stringify({ id: GET_ERROR_ITEM_ID }),
+      requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 500,
-      body: {
-        error: new Error("Test error"),
-        message: "Test error",
-      },
-    });
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(
+      JSON.stringify({ error: "Internal server error", message: "Response Error" }),
+    );
   });
 });
