@@ -9,13 +9,11 @@ export const MedSpaStateEmail = (props: {
   variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
-  const previewText = `Additional documents submitted for Medicaid SPA ${variables.id}`;
-  const heading = `You’ve successfully submitted the following to CMS reviewers for Medicaid SPA ${variables.id}`;
 
   return (
     <BaseEmailTemplate
-      previewText={previewText}
-      heading={heading}
+      previewText={`Additional documents submitted for Medicaid SPA ${variables.id}`}
+      heading={`You’ve successfully submitted the following to CMS reviewers for Medicaid SPA ${variables.id}`}
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >

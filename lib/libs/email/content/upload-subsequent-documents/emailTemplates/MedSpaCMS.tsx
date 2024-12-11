@@ -11,12 +11,11 @@ export const MedSpaCMSEmail = (props: {
   variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
-  const previewText = `Medicaid SPA ${variables.id}`;
-  const heading = `New documents have been submitted for Medicaid SPA ${variables.id} in OneMAC.`;
+
   return (
     <BaseEmailTemplate
-      previewText={previewText}
-      heading={heading}
+      previewText={`Medicaid SPA ${variables.id}`}
+      heading={`New documents have been submitted for Medicaid SPA ${variables.id} in OneMAC.`}
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
