@@ -4,7 +4,6 @@ import { validateOption } from "./validator";
 
 describe("validators", ()=>{
         it('checks to see that a value matches', () =>{
-            console.log('hi')
             const a = {
                 "name": "test",
                 "value": "test"
