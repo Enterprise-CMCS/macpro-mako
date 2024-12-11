@@ -1,5 +1,5 @@
 import { formSchemas } from "@/formSchemas";
-import { renderForm } from "@/utils/test-helpers/renderForm";
+import { renderFormAsync } from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 import { screen } from "@testing-library/react";
@@ -9,11 +9,11 @@ import { AppKAmendmentForm } from ".";
 const upload = uploadFiles<(typeof formSchemas)["app-k"]>();
 
 describe("Appendix K", () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     skipCleanup();
     mockApiRefinements();
 
-    renderForm(<AppKAmendmentForm />);
+    await renderFormAsync(<AppKAmendmentForm />);
   });
 
   test("Amendment title", async () => {

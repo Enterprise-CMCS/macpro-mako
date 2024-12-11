@@ -10,9 +10,7 @@ export const transform = (id: string) => {
     const noso = isLegacyNoso(data);
     if (data.submitterName === "-- --" && !noso) return undefined;
     // This is used to handle legacy hard deletes
-    const legacySubmissionTimestamp = getDateStringOrNullFromEpoc(
-      data.submissionTimestamp,
-    );
+    const legacySubmissionTimestamp = getDateStringOrNullFromEpoc(data.submissionTimestamp);
     if (data.componentType?.startsWith("waiverextension")) {
       return {
         id,
@@ -58,9 +56,7 @@ export const tombstone = (id: string) => {
 };
 
 const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
-  epocDate !== null && epocDate !== undefined
-    ? new Date(epocDate).toISOString()
-    : null;
+  epocDate !== null && epocDate !== undefined ? new Date(epocDate)?.toISOString() : null;
 
 function isLegacyNoso(record: LegacyPackageAction): boolean {
   return (
