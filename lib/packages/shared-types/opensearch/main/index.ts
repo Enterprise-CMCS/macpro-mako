@@ -62,6 +62,9 @@ export type Document = AppkDocument &
     makoChangedDate: string;
     changelog?: Changelog[];
     appkChildren?: Omit<ItemResult, "found">[];
+    deleted?: boolean;
+    adminChangeType?: string;
+    changeMade?: string;
   };
 
 export type Response = Res<Document>;
