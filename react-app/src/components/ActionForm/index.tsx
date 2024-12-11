@@ -21,7 +21,7 @@ import {
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { getFormOrigin } from "@/utils";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
 import { API } from "aws-amplify";
@@ -125,7 +125,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
-  const { data: userObj } = useGetUser();
+  const { data: userObj, isLoading: isUserLoading } = useGetUser();
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
 
@@ -149,23 +149,35 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const onSubmit = form.handleSubmit(async (formData) => {
     try {
-      await mutateAsync(formData);
+      try {
+        await mutateAsync(formData);
+      } catch (error) {
+        throw Error(`Error submitting form: ${error.message}`);
+      }
 
       const { documentChecker, property } = documentPollerArgs;
 
       const documentPollerId =
         typeof property === "function" ? property(formData) : formData[property];
 
-      const poller = documentPoller(documentPollerId, documentChecker);
-      await poller.startPollingData();
+      try {
+        const poller = documentPoller(documentPollerId, documentChecker);
+        await poller.startPollingData();
+      } catch (error) {
+        throw Error(error.error);
+      }
 
       const formOrigins = getFormOrigin({ authority, id });
-      banner({
-        ...bannerPostSubmission,
-        pathnameToDisplayOn: formOrigins.pathname,
-      });
 
       navigate(formOrigins);
+
+      // artificially delaying allows the banner to be displayed after navigation
+      setTimeout(() => {
+        banner({
+          ...bannerPostSubmission,
+          pathnameToDisplayOn: formOrigins.pathname,
+        });
+      }, 50);
     } catch (error) {
       console.error(error);
       banner({
@@ -180,11 +192,15 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
 
+  if (isUserLoading === true) {
+    return <LoadingSpinner />;
+  }
+
   const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some((condition) =>
-    condition(userObj.user),
+    condition(userObj?.user),
   );
 
-  if (doesUserHaveAccessToForm === false) {
+  if (!userObj || doesUserHaveAccessToForm === false) {
     return <Navigate to="/" replace />;
   }
 
@@ -217,7 +233,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           )}
           {additionalInformation && (
             <SectionCard
-              testId = "additional-info"
+              testId="additional-info"
               title={
                 <>
                   {additionalInformation.title}{" "}
