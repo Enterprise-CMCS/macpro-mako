@@ -2,7 +2,7 @@ import { getItem } from "@/api";
 import { queryClient } from "../../../router";
 import { RespondToRaiChip, RespondToRaiMedicaid, RespondToRaiWaiver } from "./respond-to-rai";
 import { DisableWithdrawRaiForm, EnableWithdrawRaiForm } from "./toggle-withdraw-rai";
-import { LoaderFunction, Navigate, useParams } from "react-router-dom";
+import { LoaderFunction, Navigate, useParams } from "react-router";
 import { Action, AuthorityUnion } from "shared-types";
 import {
   WithdrawPackageAction,
