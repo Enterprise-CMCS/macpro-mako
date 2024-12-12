@@ -154,7 +154,6 @@ export const Layout = () => {
     <div className="min-h-full flex flex-col">
       <ScrollToTop />
       <UserPrompt />
-      {/* Render the MMDLAlertBanner if the user is signed in */}
       {user?.user && <MMDLAlertBanner />}
       <UsaBanner isUserMissingRole={user?.user && customUserRoles === undefined} />
       <nav data-testid="nav-banner-d" className="bg-primary">
