@@ -20,6 +20,7 @@ const baseURL = process.env.STAGE_NAME
 
 console.log(`Playwright configured to run against ${baseURL}`);
 export default defineConfig({
+  // need to find a reasonable timeout less than 30s
   // timeout: 10_000,
   testDir: ".",
   /* Run tests in files in parallel */
