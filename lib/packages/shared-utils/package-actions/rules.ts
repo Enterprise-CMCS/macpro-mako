@@ -93,7 +93,7 @@ const arWithdrawPackage: ActionRule = {
     !checker.isTempExtension &&
     !checker.hasStatus(finalDispositionStatuses) &&
     isStateUser(user) &&
-    !checker.hasStatus(SEATOOL_STATUS.SUBMITTED),
+    !checker.isPlaceholderStatus,
 };
 
 const arUpdateId: ActionRule = {
