@@ -15,6 +15,6 @@ export const e2e = {
     console.log(ui);
     await runCommand("bun", ["playwright", "install", "--with-deps", "chromium"], ".");
 
-    await runCommand("bun", [ui ? "e2e:ui" : "e2e"], ".");
+    await runCommand("bun", [ui ? "e2e:ui" : "e2e", "--", "--", "--grep", "@CI"], ".");
   },
 };

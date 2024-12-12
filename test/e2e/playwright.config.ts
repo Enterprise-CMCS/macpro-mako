@@ -20,9 +20,10 @@ const baseURL = process.env.STAGE_NAME
 
 console.log(`Playwright configured to run against ${baseURL}`);
 export default defineConfig({
+  // timeout: 10_000,
   testDir: ".",
   /* Run tests in files in parallel */
-  fullyParallel: false,
+  fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */

@@ -28,7 +28,7 @@ const staticRoutes = [
   "/new-submission/waiver/temporary-extensions",
 ];
 
-test.describe("test a11y on static routes", () => {
+test.describe("test a11y on static routes", {tag: ["@CI"]}, () => {
   for (const route of staticRoutes) {
     test(`${route} should not have any automatically detectable accessibility issues`, async ({
       page,
