@@ -135,6 +135,7 @@ export const handler = async (event: APIGatewayEvent) => {
       // use event of current package to determine how ID should be formatted
       const packageChangelog = await getPackageChangelog(packageId);
       if (packageChangelog.hits.hits.length) {
+        console.log(packageChangelog.hits.hits, "HITS");
         const packageWithSubmissionType = packageChangelog.hits.hits.find(
           (packageChange) => packageChange._source.event in Object.keys(events),
         );
