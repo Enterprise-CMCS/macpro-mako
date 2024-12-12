@@ -7,7 +7,6 @@ const MMDLAlertBanner = () => {
 
   const handleDismiss = () => {
     setIsVisible(false);
-    localStorage.setItem("mmdlAlertDismissed", "true");
   };
 
   if (!isVisible) return null;
