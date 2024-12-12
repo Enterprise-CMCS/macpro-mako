@@ -17,6 +17,11 @@ const sendDeleteMessage = async (topicName: string, packageId: string) => {
       adminChangeType: "delete",
     }),
   );
+
+  return response({
+    statusCode: 200,
+    body: { message: `${packageId} has been deleted.` },
+  });
 };
 
 const sendUpdateValuesMessage = async ({
@@ -201,11 +206,11 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     if (action === "delete") {
-      await sendDeleteMessage(topicName, packageId);
+      return await sendDeleteMessage(topicName, packageId);
     }
 
     if (action === "update-id") {
-      await sendUpdateIdMessage({ topicName, currentPackage: packageResult, updatedId });
+      return await sendUpdateIdMessage({ topicName, currentPackage: packageResult, updatedId });
 
       // if (!updatedId) {
       //   return response({
@@ -276,7 +281,7 @@ export const handler = async (event: APIGatewayEvent) => {
       //   Object.keys(updatedFields).length > 1 ? "have" : "has"
       // } been updated.`;
 
-      await sendUpdateValuesMessage({
+      return await sendUpdateValuesMessage({
         topicName,
         currentPackage: packageResult,
         updatedFields,
@@ -304,6 +309,10 @@ export const handler = async (event: APIGatewayEvent) => {
       //   body: { message: "success" },
       // });
     }
+    // return response({
+    //   statusCode: 200,
+    //   body: { message: "success" },
+    // });
     return response({
       statusCode: 400,
       body: { message: "Could not update package." },
