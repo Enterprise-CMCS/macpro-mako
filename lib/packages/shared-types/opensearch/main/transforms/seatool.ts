@@ -71,7 +71,7 @@ const getRaiDate = (data: SeaTool) => {
   };
 };
 
-const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
+const normalizeDate = (epocDate: number | null | undefined) =>
   epocDate !== null && epocDate !== undefined ? new Date(epocDate).toISOString() : null;
 
 const compileSrtList = (
@@ -86,7 +86,7 @@ const compileSrtList = (
 
 const getFinalDispositionDate = (status: string, record: SeaTool) => {
   return status && finalDispositionStatuses.includes(status)
-    ? getDateStringOrNullFromEpoc(record.STATE_PLAN.STATUS_DATE)
+    ? normalizeDate(record.STATE_PLAN.STATUS_DATE)
     : null;
 };
 
@@ -123,7 +123,7 @@ const getAuthority = (authorityId: number | null): string | null => {
 };
 
 export const transform = (id: string) => {
-  return seatoolSchema.transform((data) => {
+  return seatoolSchema.transform((data, ctx) => {
     const { leadAnalystName, leadAnalystOfficerId, leadAnalystEmail } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } = getRaiDate(data);
     const seatoolStatus = data.STATE_PLAN.SPW_STATUS_ID
@@ -133,7 +133,7 @@ export const transform = (id: string) => {
     const resp = {
       id,
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
-      approvedEffectiveDate: getDateStringOrNullFromEpoc(
+      approvedEffectiveDate: normalizeDate(
         data.STATE_PLAN.APPROVED_EFFECTIVE_DATE || data.STATE_PLAN.ACTUAL_EFFECTIVE_DATE,
       ),
       changed_date: data.STATE_PLAN.CHANGED_DATE,
@@ -162,18 +162,18 @@ export const transform = (id: string) => {
             TYPE_NAME: subType.TYPE_NAME.replace(/â|â/g, "-"),
           };
         }) || null,
-      proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
+      proposedDate: normalizeDate(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
       raiWithdrawnDate,
       reviewTeam: compileSrtList(data.ACTION_OFFICERS),
       state: data.STATE_PLAN.STATE_CODE,
       stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
-      statusDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.STATUS_DATE),
+      statusDate: normalizeDate(data.STATE_PLAN.STATUS_DATE),
       cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
       seatoolStatus,
       locked: false,
-      submissionDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.SUBMISSION_DATE),
+      submissionDate: normalizeDate(data.STATE_PLAN.SUBMISSION_DATE),
       subject: data.STATE_PLAN.TITLE_NAME,
       secondClock: isInSecondClock(
         raiReceivedDate,
@@ -213,5 +213,6 @@ export const tombstone = (id: string) => {
     subject: null,
     types: null,
     subTypes: null,
+    origin: null,
   };
 };

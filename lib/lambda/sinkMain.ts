@@ -121,18 +121,16 @@ const processAndIndex = async ({
 const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   const docs: any[] = [];
 
-  // fetch the date for all kafkaRecords in the list from opensearch
   const ids = kafkaRecords.map((record) => {
     const decodedId = JSON.parse(decodeBase64WithUtf8(record.key));
-
-    return decodedId;
+    return String(decodedId);
   });
 
   const openSearchRecords = await os.getItems(osDomain, indexNamespace, ids);
 
   const existingRecordsLookup = openSearchRecords.reduce<Record<string, number>>((acc, item) => {
-    const epochDate = new Date(item.changedDate).getTime(); // Convert `changedDate` to epoch number
-    acc[item.id] = epochDate; // Use `id` as the key and epoch date as the value
+    const epochDate = item.changedDate ? new Date(item.changedDate).valueOf() : 0;
+    acc[String(item.id)] = epochDate;
     return acc;
   }, {});
 
@@ -141,7 +139,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
   for (const kafkaRecord of kafkaRecords) {
     const { key, value } = kafkaRecord;
     try {
-      const id: string = JSON.parse(decodeBase64WithUtf8(key));
+      const id = JSON.parse(decodeBase64WithUtf8(key));
       console.log("id", id);
       // Handle deletes and continue
       if (!value) {
