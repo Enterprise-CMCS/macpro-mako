@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Link, MemoryRouter, Route, Routes } from "react-router-dom";
+import { Link, MemoryRouter, Route, Routes } from "react-router";
 import { describe, expect, test } from "vitest";
 import { act, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -8,14 +8,8 @@ import { banner, Banner } from ".";
 const wrapper = ({ children }: { children: ReactNode }) => (
   <MemoryRouter initialEntries={["/dashboard"]}>
     <Routes>
-      <Route
-        path="/dashboard"
-        element={<Link to="/example" id="dashboard-link" />}
-      />
-      <Route
-        path="/example"
-        element={<Link to="/dashboard" id="example-link" />}
-      />
+      <Route path="/dashboard" element={<Link to="/example" id="dashboard-link" />} />
+      <Route path="/example" element={<Link to="/dashboard" id="example-link" />} />
     </Routes>
     {children}
   </MemoryRouter>

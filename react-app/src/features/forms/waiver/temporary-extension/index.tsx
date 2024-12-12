@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
 import { useGetItem } from "@/api";
