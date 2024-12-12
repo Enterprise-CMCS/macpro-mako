@@ -4,6 +4,7 @@ import { configDefaults, defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     globals: true,
+    environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
     coverage: {
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),

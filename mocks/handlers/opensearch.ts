@@ -32,35 +32,50 @@ const defaultMainDocumentHandler = http.get(
 );
 
 const getFilterValue = (
-  must: SearchTerm | SearchTerm[],
+  query: SearchTerm | SearchTerm[],
   filterName: string,
 ): string | string[] | undefined => {
-  if (must) {
-    const rule = Array.isArray(must)
-      ? (must as SearchTerm[]).find((rule) => rule.terms[filterName] !== undefined)
-      : (must as SearchTerm);
+  if (query) {
+    const rule: SearchTerm | undefined = Array.isArray(query)
+      ? (query as SearchTerm[]).find(
+          (rule) =>
+            rule?.term?.[filterName] !== undefined || rule?.terms?.[filterName] !== undefined,
+        )
+      : (query as SearchTerm);
 
-    const values = rule?.terms[filterName];
+    if (rule?.term?.[filterName]) {
+      return rule.term[filterName].toString();
+    }
 
-    return Array.isArray(values)
-      ? values.map((value) => value?.toString()?.toLocaleLowerCase())
-      : values?.toString()?.toLocaleLowerCase();
+    if (rule?.terms?.[filterName]) {
+      return rule.terms[filterName].map((value: string) => value?.toString());
+    }
   }
   return;
 };
 
-const getFilterTerms = (must: SearchTerm[] | SearchTerm): string[] => {
-  const terms: string[] = [];
-  if (must) {
-    if (Array.isArray(must)) {
-      (must as SearchTerm[]).forEach((rule) => {
-        terms.push(...Object.keys(rule.terms));
+const getFilterKeys = (query: SearchTerm[] | SearchTerm): string[] => {
+  const filterKeys: string[] = [];
+  if (query) {
+    if (Array.isArray(query)) {
+      (query as SearchTerm[]).forEach((rule) => {
+        if (rule?.term !== undefined) {
+          filterKeys.push(...Object.keys(rule.term));
+        }
+        if (rule?.terms !== undefined) {
+          filterKeys.push(...Object.keys(rule.terms));
+        }
       });
+    } else {
+      if ((query as SearchTerm)?.term !== undefined) {
+        filterKeys.push(...Object.keys((query as SearchTerm).term));
+      }
+      if ((query as SearchTerm)?.terms !== undefined) {
+        filterKeys.push(...Object.keys((query as SearchTerm).terms));
+      }
     }
-
-    if ((must as SearchTerm)?.terms) terms.push(...Object.keys((must as SearchTerm)?.terms));
   }
-  return terms;
+  return filterKeys;
 };
 
 function matchFilter<T>(
@@ -71,13 +86,14 @@ function matchFilter<T>(
   if (!item || !filterTerm || !filterValue) {
     return false;
   }
+
   const itemValue = item?.[filterTerm]?.toString()?.toLocaleLowerCase() || "";
 
   if (Array.isArray(filterValue)) {
-    return filterValue.includes(itemValue);
+    return filterValue.map((value) => value?.toString().toLocaleLowerCase()).includes(itemValue);
   }
 
-  return filterValue == itemValue;
+  return filterValue?.toString()?.toLocaleLowerCase() == itemValue;
 }
 
 const filterItemResultByTerm = (
@@ -136,7 +152,7 @@ const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
     console.log({ query });
     const must = query?.bool?.must;
     console.log({ must });
-    const mustTerms = must ? getFilterTerms(must) : [];
+    const mustTerms = must ? getFilterKeys(must) : [];
     console.log({ mustTerms });
 
     // check if searching for appkChildren
@@ -238,10 +254,14 @@ const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
       body: JSON.stringify(body),
     });
     const { query } = body;
+    console.log({ query });
     const must = query?.bool?.must;
-    const mustTerms = must ? getFilterTerms(must) : [];
+    console.log({ must });
+    const mustTerms = must ? getFilterKeys(must) : [];
+    console.log({ mustTerms });
 
     const packageIdValue = getFilterValue(must, "packageId.keyword");
+    console.log({ packageIdValue });
 
     if (!packageIdValue) {
       return new HttpResponse("No packageId provided", { status: 400 });

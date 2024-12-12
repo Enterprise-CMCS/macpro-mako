@@ -70,6 +70,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
       },
     });
   } catch (error) {
+    console.log(JSON.stringify(error, null, 2));
     if (error instanceof OpensearchErrors.ResponseError) {
       return response({
         statusCode: error?.statusCode || error?.meta?.statusCode || 500,

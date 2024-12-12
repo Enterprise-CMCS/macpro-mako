@@ -55,7 +55,7 @@ beforeAll(() => {
 
   vi.spyOn(console, "error").mockImplementation(() => {});
 
-  console.log("starting MSW listener");
+  console.log("starting MSW listener for react-app");
   mockedServer.listen({
     onUnhandledRequest: "warn",
   });

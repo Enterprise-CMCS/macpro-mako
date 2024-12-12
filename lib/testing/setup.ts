@@ -13,7 +13,7 @@ beforeAll(() => {
 
   vi.spyOn(console, "error").mockImplementation(() => {});
 
-  console.log("starting MSW listener");
+  console.log("starting MSW listener for lib tests");
   mockedServer.listen({
     onUnhandledRequest: "warn",
   });

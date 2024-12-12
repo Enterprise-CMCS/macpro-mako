@@ -132,9 +132,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const form = useForm<z.TypeOf<Schema>>({
     resolver: zodResolver(schema),
     mode: "onChange",
-    defaultValues: {
-      ...defaultValues,
-    },
+    defaultValues,
   });
 
   const { mutateAsync } = useMutation({
@@ -151,8 +149,12 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     try {
       try {
         await mutateAsync(formData);
-      } catch (error) {
-        throw Error(`Error submitting form: ${error.message}`);
+      } catch (error: unknown) {
+        throw Error(
+          `Error submitting form: ${
+            (error as Error)?.message !== undefined ? (error as Error).message : error
+          }`,
+        );
       }
 
       const { documentChecker, property } = documentPollerArgs;
@@ -164,7 +166,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         const poller = documentPoller(documentPollerId, documentChecker);
         await poller.startPollingData();
       } catch (error) {
-        throw Error(error.error);
+        const message = `${
+          (error as Error)?.message !== undefined ? (error as Error).message : error
+        }`;
+        throw Error(message);
       }
 
       const formOrigins = getFormOrigin({ authority, id });
@@ -197,7 +202,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   }
 
   const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some((condition) =>
-    condition(userObj?.user),
+    condition(userObj?.user || null),
   );
 
   if (!userObj || doesUserHaveAccessToForm === false) {

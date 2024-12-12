@@ -20,8 +20,6 @@ export type TestChangelogItemResult = DeepPartial<opensearch.changelog.ItemResul
 
 export type TestChangelogDocument = TestChangelogItemResult["_source"];
 
-export type TestCounty = [string, string, string];
-
 export type IdpRequestSessionBody = {
   AccessToken: string;
 };

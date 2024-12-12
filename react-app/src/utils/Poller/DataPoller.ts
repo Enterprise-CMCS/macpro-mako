@@ -39,13 +39,15 @@ export class DataPoller<TFetcherReturn> {
               }
             }
           } catch (error) {
-            errorMessage = `Error fetching data: ${error.message}`;
+            const message =
+              (error as Error)?.message !== undefined ? (error as Error).message : error;
+            errorMessage = `Error fetching data: ${message}`;
           }
         } else {
           reject({
             correctDataStateFound: false,
             maxAttemptsReached: true,
-            error:
+            message:
               errorMessage ||
               "Error polling data: Correct data state not found, after max attempts reached",
           });

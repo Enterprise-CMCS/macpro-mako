@@ -1,3 +1,4 @@
+import { CognitoUserAttribute } from "amazon-cognito-identity-js";
 import jwt from "jsonwebtoken";
 import { http, HttpResponse, passthrough, PathParams } from "msw";
 import { APIGatewayEventRequestContext, CognitoUserAttributes } from "shared-types";
@@ -31,26 +32,25 @@ export const setDefaultStateSubmitter = () => setMockUsername(makoStateSubmitter
 
 export const setDefaultReviewer = () => setMockUsername(makoReviewer);
 
-export const mockCurrentAuthenticatedUser = (): TestUserData | undefined => {
+// using any here because the function that this is mocking uses any
+export const mockCurrentAuthenticatedUser = (): TestUserData | any => {
   if (process.env.MOCK_USER_USERNAME) {
     return findUserByUsername(process.env.MOCK_USER_USERNAME);
   }
   return undefined;
 };
 
-export const mockUserAttributes = async (currentAuthenticatedUser: TestUserData | unknown) => {
-  if (
-    currentAuthenticatedUser &&
-    (currentAuthenticatedUser as TestUserData).UserAttributes !== undefined
-  ) {
-    return (currentAuthenticatedUser as TestUserData).UserAttributes;
+// using any here because the function that this is mocking uses any
+export const mockUserAttributes = async (user: any): Promise<CognitoUserAttribute[]> => {
+  if (user && (user as TestUserData).UserAttributes !== undefined) {
+    return (user as TestUserData).UserAttributes as CognitoUserAttribute[];
   }
 
   if (process.env.MOCK_USER_USERNAME) {
-    const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
-    return user?.UserAttributes;
+    const defaultUser = findUserByUsername(process.env.MOCK_USER_USERNAME);
+    return defaultUser?.UserAttributes as CognitoUserAttribute[];
   }
-  return undefined;
+  return {} as CognitoUserAttribute[];
 };
 
 export const convertUserAttributes = (user: TestUserData): CognitoUserAttributes => {

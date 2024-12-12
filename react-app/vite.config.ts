@@ -30,10 +30,10 @@ export default defineConfig(({ mode }) => {
       port: 5000,
     },
     test: {
-      environment: "jsdom",
       root: ".",
       setupFiles: "./testing/setup.ts",
       exclude: ["**/node_modules/**"],
+      environment: "jsdom",
     },
     resolve: {
       alias: {

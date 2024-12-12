@@ -2,7 +2,11 @@ import { BLANK_VALUE } from "@/consts";
 import { useParams } from "react-router";
 import { AuthorityUnion } from "shared-types";
 
-export const getIdLabel = (authority: AuthorityUnion) => {
+export const getIdLabel = (authority: AuthorityUnion | null | undefined) => {
+  if (authority === undefined || authority === null) {
+    return BLANK_VALUE;
+  }
+
   const idLabels = new Map<AuthorityUnion, string>([
     ["CHIP SPA", "Package ID"],
     ["Medicaid SPA", "Package ID"],
@@ -13,7 +17,11 @@ export const getIdLabel = (authority: AuthorityUnion) => {
   return idLabels.get(authority) ?? BLANK_VALUE;
 };
 
-export const getAuthorityLabel = (authority: AuthorityUnion) => {
+export const getAuthorityLabel = (authority: AuthorityUnion | null | undefined) => {
+  if (authority === undefined || authority === null) {
+    return BLANK_VALUE;
+  }
+
   const authorityLabels = new Map<AuthorityUnion, string>([
     ["CHIP SPA", "CHIP SPA"],
     ["Medicaid SPA", "Medicaid SPA"],
