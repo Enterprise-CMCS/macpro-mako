@@ -90,7 +90,10 @@ const arWithdrawRaiResponse: ActionRule = {
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
-    !checker.isTempExtension && !checker.hasStatus(finalDispositionStatuses) && isStateUser(user),
+    !checker.isTempExtension &&
+    !checker.hasStatus(finalDispositionStatuses) &&
+    isStateUser(user) &&
+    !checker.hasStatus(SEATOOL_STATUS.SUBMITTED),
 };
 
 const arUpdateId: ActionRule = {
