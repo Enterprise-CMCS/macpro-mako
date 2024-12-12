@@ -17,11 +17,10 @@ describe("CleanupKafka", () => {
     new ec2.PrivateSubnet(stack, "PrivateSubnet", {
       vpcId: vpc.vpcId,
       availabilityZone: "us-west-2a",
+      cidrBlock: "10.0.0.0/24",
     }),
   ];
-  const securityGroups = [
-    new ec2.SecurityGroup(stack, "SecurityGroup", { vpc }),
-  ];
+  const securityGroups = [new ec2.SecurityGroup(stack, "SecurityGroup", { vpc })];
   const brokerString = "mockBrokerString";
   const topicPatternsToDelete = ["mockTopicPattern"];
 
@@ -34,9 +33,7 @@ describe("CleanupKafka", () => {
   });
 
   it("should create a log group for the Lambda function", () => {
-    const logGroup = cleanupKafka.node.findChild(
-      "cleanupKafkaLogGroup",
-    ) as logs.LogGroup;
+    const logGroup = cleanupKafka.node.findChild("cleanupKafkaLogGroup") as logs.LogGroup;
     expect(logGroup).toBeInstanceOf(logs.LogGroup);
   });
 
@@ -50,7 +47,8 @@ describe("CleanupKafka", () => {
 
     const role = lambdaFunction.role as iam.Role;
     expect(role).toBeInstanceOf(iam.Role);
-    expect(role.assumeRolePolicy?.statements).toEqual(
+    const policyDocument = JSON.parse(role.assumeRolePolicy?.toJSON() as string);
+    expect(policyDocument.Statement).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           principals: expect.arrayContaining([
