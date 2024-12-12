@@ -135,10 +135,12 @@ export const handler = async (event: APIGatewayEvent) => {
       // use event of current package to determine how ID should be formatted
       const packageChangelog = await getPackageChangelog(packageId);
       if (packageChangelog.hits.hits.length) {
-        const packageType = packageChangelog.hits.hits[0]._source.event;
-        console.log(packageType, "PACKAGE TYPE");
-        console.log(events[packageType as keyof typeof events], "WHAT IS THIS");
-        const packageTypeSchema = events[packageType as keyof typeof events].baseSchema;
+        const packageWithSubmissionType = packageChangelog.hits.hits.find(
+          (packageChange) => packageChange._source.event in Object.keys(events),
+        );
+        const packageEvent = packageWithSubmissionType?._source.event;
+        console.log(packageWithSubmissionType, "PACKAGE TYPE");
+        const packageTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
         console.log(packageTypeSchema, "PACKAGE TYPE SCHEMA");
         const idSchema = packageTypeSchema.shape.id;
         const parsedId = idSchema.safeParse(updatedId);
