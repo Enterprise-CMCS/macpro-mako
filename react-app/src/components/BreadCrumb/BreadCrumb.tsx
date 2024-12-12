@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { type ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
 
@@ -29,11 +29,7 @@ export const BreadCrumbs = ({ options }: BreadCrumbsProps) => {
         .toSorted((option, prevOption) => option.order - prevOption.order)
         .map(({ displayText, to }, index, optionsArray) => {
           return (
-            <BreadCrumb
-              key={displayText}
-              to={to}
-              active={index !== optionsArray.length - 1}
-            >
+            <BreadCrumb key={displayText} to={to} active={index !== optionsArray.length - 1}>
               {displayText}
             </BreadCrumb>
           );
@@ -78,11 +74,7 @@ export const BreadCrumbSeperator = () => <ChevronRight className="w-5 h-5" />;
 
 export const BreadCrumbBar = ({ children }: React.PropsWithChildren) => {
   return (
-    <nav
-      role="navigation"
-      aria-label="breadcrumbs for spa or waiver choices"
-      className="my-4"
-    >
+    <nav role="navigation" aria-label="breadcrumbs for spa or waiver choices" className="my-4">
       <ul className="flex gap-1">{children}</ul>
     </nav>
   );

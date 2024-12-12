@@ -7,11 +7,12 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  LoadingSpinner,
 } from "@/components";
 import * as Table from "@/components";
 import { BLANK_VALUE } from "@/consts";
 import { useAttachmentService, Attachments } from "./hook";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { useGetItem } from "@/api";
 import { ItemResult } from "shared-types/opensearch/changelog";
 
@@ -149,7 +150,7 @@ type DownloadAllButtonProps = {
 const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButtonProps) => {
   const { onZip, loading } = useAttachmentService({ packageId });
 
-  if (submissionChangelog.length === 0) {
+  if (submissionChangelog?.length === 0) {
     return null;
   }
 
@@ -178,26 +179,30 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
 
 export const PackageActivities = () => {
   const { id: packageId } = useParams<{ id: string }>();
-  const { data: submission } = useGetItem(packageId);
+  const { data: submission, isLoading: isSubmissionLoading } = useGetItem(packageId);
 
-  if (submission === undefined) {
+  if (isSubmissionLoading === true) {
+    return <LoadingSpinner />;
+  }
+
+  if (submission === undefined || submission === null || submission?.found === false) {
     return null;
   }
 
-  const submissionChangelogWithoutAdminChanges = submission._source.changelog.filter(
+  const submissionChangelogWithoutAdminChanges = submission?._source?.changelog?.filter(
     (activity) =>
       // isAdminChange can be `undefined` or `boolean`
-      !activity._source.isAdminChange,
+      !activity?._source?.isAdminChange,
   );
 
-  const keyAndDefaultValue = submissionChangelogWithoutAdminChanges[0]?._source?.id;
+  const keyAndDefaultValue = submissionChangelogWithoutAdminChanges?.[0]?._source?.id;
 
   return (
     <DetailsSection
       id="package_activity"
       title={
         <div className="flex justify-between">
-          Package Activity ({submissionChangelogWithoutAdminChanges.length})
+          Package Activity ({submissionChangelogWithoutAdminChanges?.length || 0})
           <DownloadAllButton
             submissionChangelog={submissionChangelogWithoutAdminChanges}
             packageId={packageId}
@@ -205,7 +210,7 @@ export const PackageActivities = () => {
         </div>
       }
     >
-      {submissionChangelogWithoutAdminChanges.length > 0 ? (
+      {submissionChangelogWithoutAdminChanges?.length > 0 ? (
         <Accordion
           // `key` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
           key={keyAndDefaultValue}

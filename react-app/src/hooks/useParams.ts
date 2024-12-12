@@ -1,6 +1,6 @@
 import LZ from "lz-string";
 import { useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 /**
  * useLzQuery syncs a url query parameter with a given state.
  * LZ is a library which can compresses JSON into a uri string
@@ -30,9 +30,7 @@ export const useLzUrl = <T>(props: { key: string; initValue?: T }) => {
       return arg(state);
     })();
 
-    const compressedValue = LZ.compressToEncodedURIComponent(
-      JSON.stringify(val),
-    );
+    const compressedValue = LZ.compressToEncodedURIComponent(JSON.stringify(val));
 
     setParams(
       (s) => {

@@ -12,7 +12,7 @@ import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
 import { Authority } from "shared-types";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router";
 import { detailsAndActionsCrumbs } from "@/utils";
 
 export const DetailCardWrapper = ({
@@ -38,10 +38,7 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
 
   return (
     <div className="w-full py-1 px-4 lg:px-8">
-      <section
-        id="package_overview"
-        className="block md:flex space-x-0 md:space-x-8"
-      >
+      <section id="package_overview" className="block md:flex space-x-0 md:space-x-8">
         <PackageStatusCard id={id} />
         <PackageActionsCard id={id} />
       </section>

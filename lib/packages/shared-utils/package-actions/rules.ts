@@ -47,7 +47,6 @@ const arEnableWithdrawRaiResponse: ActionRule = {
         checker.hasRaiResponse &&
         !checker.hasEnabledRaiWithdraw &&
         isCmsWriteUser(user) &&
-        checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) &&
         !checker.hasStatus(finalDispositionStatuses)
       );
     }

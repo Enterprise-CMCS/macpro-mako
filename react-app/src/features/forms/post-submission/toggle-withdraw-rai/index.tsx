@@ -1,7 +1,7 @@
 import { ActionForm } from "@/components/ActionForm";
 import { formSchemas } from "@/formSchemas";
 import { PackageSection } from "@/components/Form/content/PackageSection";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { isCmsUser } from "shared-utils";
 
 export const EnableWithdrawRaiForm = () => {

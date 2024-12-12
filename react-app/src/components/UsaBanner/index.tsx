@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import config from "@/config";
 import { LockIcon } from "../LockIcon";
@@ -57,14 +57,8 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
   return (
     <div className="bg-[#f0f0f0]" role="banner">
       <div className="max-w-screen-xl px-4 py-1 lg:px-8 text-xs mx-auto gap-2 items-center hidden md:flex">
-        <img
-          className="w-4 h-[11px]"
-          src={UsFlag}
-          alt="A United States Flag icon"
-        />
-        <p data-testid="usa-statement-d">
-          An official website of the United States government
-        </p>
+        <img className="w-4 h-[11px]" src={UsFlag} alt="A United States Flag icon" />
+        <p data-testid="usa-statement-d">An official website of the United States government</p>
         <button
           data-testid="usa-expand-btn-d"
           className="flex"
@@ -83,20 +77,11 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
         className="w-full flex items-center text-[0.8rem] px-4 py-1 leading-4 gap-2 md:hidden"
         onClick={() => setIsOpen((value) => !value)}
       >
-        <img
-          className="w-4 h-[11px]"
-          src={UsFlag}
-          alt="A United States Flag icon"
-        />
+        <img className="w-4 h-[11px]" src={UsFlag} alt="A United States Flag icon" />
         <div>
-          <p data-testid="usa-statement-m">
-            An official website of the United States government
-          </p>
+          <p data-testid="usa-statement-m">An official website of the United States government</p>
           <div className="flex">
-            <span
-              data-testid="usa-expand-btn-m"
-              className="underline text-[#005ea2] block"
-            >
+            <span data-testid="usa-expand-btn-m" className="underline text-[#005ea2] block">
               Here's how you know
             </span>
             {isOpen ? (
@@ -130,18 +115,16 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
           <div className="flex gap-2">
             <GovernmentBuildingIcon />
             <p data-testid="official-usage" className="text-sm max-w-md">
-              <strong className="block">Official websites use .gov</strong>A
-              <strong>.gov</strong> website belongs to an official government
-              organization in the United States.
+              <strong className="block">Official websites use .gov</strong>A<strong>.gov</strong>{" "}
+              website belongs to an official government organization in the United States.
             </p>
           </div>
           <div className="flex gap-2">
             <LockIcon className="min-w-[40px] min-h-[40px] w-10" />
             <p data-testid="secure-usage" className="text-sm max-w-md">
               <strong className="block">Secure .gov websites use HTTPS</strong>
-              A lock (<MiniLock />) or <strong>https://</strong> means you've
-              safely connected to the .gov website. Share sensitive information
-              only on official, secure websites.
+              A lock (<MiniLock />) or <strong>https://</strong> means you've safely connected to
+              the .gov website. Share sensitive information only on official, secure websites.
             </p>
           </div>
         </div>

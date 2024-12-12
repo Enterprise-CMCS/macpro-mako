@@ -6,7 +6,7 @@ import {
 } from "@/components";
 import { FAQ_TAB } from "@/router";
 import { Info } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 type FormIntroTextProps = {
   hasProgressLossReminder?: boolean;

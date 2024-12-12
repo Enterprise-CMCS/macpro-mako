@@ -12,8 +12,9 @@ export const e2e = {
     }),
   handler: async ({ ui }: { ui: boolean }) => {
     await checkIfAuthenticated();
-    await runCommand("bun", ["playwright", "install", "--with-deps"], ".");
+    console.log(ui);
+    await runCommand("bun", ["playwright", "install", "--with-deps", "chromium"], ".");
 
-    await runCommand("bun", [ui ? "e2e:ui" : "e2e"], ".");
+    await runCommand("bun", [ui ? "e2e:ui" : "e2e", "--", "--", "--grep", "@CI"], ".");
   },
 };

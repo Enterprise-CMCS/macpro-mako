@@ -1,9 +1,9 @@
-import { legacyEventSchema, handleLegacyAttachment, Action } from "../../..";
+import { Action, handleLegacyAttachment, legacyEventSchema } from "../../..";
 
 export const transform = (id: string) => {
   return legacyEventSchema.transform((data) => {
     // Resolve the action type based on the GSI1pk
-    const eventType = data.GSI1pk.split("OneMAC#submit")[1];
+    const eventType = data?.GSI1pk?.split("OneMAC#submit")?.[1] || "";
 
     let actionType;
 

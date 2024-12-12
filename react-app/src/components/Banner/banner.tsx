@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Alert, AlertVariant } from "../Alert";
 import { Check, X } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import { Observer } from "@/utils/basic-observable";
 
 export type Banner = {
@@ -57,10 +57,7 @@ export const Banner = () => {
 
   if (activeBanner && activeBanner.pathnameToDisplayOn === pathname) {
     return (
-      <Alert
-        variant={activeBanner.variant}
-        className="mt-4 mb-8 flex-row text-sm"
-      >
+      <Alert variant={activeBanner.variant} className="mt-4 mb-8 flex-row text-sm">
         <div className="flex items-start justify-between">
           <Check />
           <div className="ml-2 w-full">

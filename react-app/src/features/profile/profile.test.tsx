@@ -1,74 +1,45 @@
-import { render, screen } from "@testing-library/react";
-import { describe, vi, test, expect } from "vitest";
+import { screen, waitFor } from "@testing-library/react";
+import { describe, test, expect, afterEach } from "vitest";
 import { Profile } from ".";
-import * as api from "@/api";
-
-vi.mock("@/api", async (importOriginals) => ({
-  ...((await importOriginals()) as object),
-  useGetUser: vi.fn(() => ({
-    data: {
-      user: {
-        "custom:state": "MD,OH,NY",
-        "custom:cms-roles": "onemac-micro-statesubmitter",
-        given_name: "George",
-        family_name: "Harrison",
-        email: "george@example.com",
-      },
-    },
-  })),
-}));
+import { setMockUsername, setDefaultStateSubmitter, multiStateSubmitter } from "mocks";
+import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
 
 describe("Profile", () => {
-  test("renders state names", () => {
-    render(<Profile />);
-
-    const states = screen.getByText("Maryland, Ohio, New York");
-
-    expect(states).toBeInTheDocument();
+  afterEach(() => {
+    setDefaultStateSubmitter();
   });
 
-  test("renders nothing if user has no states", () => {
-    vi.spyOn(api, "useGetUser").mockImplementationOnce(() => ({
-      data: {
-        // @ts-expect-error - avoid mocking whole user object for test
-        user: {
-          "custom:state": undefined,
-          "custom:cms-roles": "onemac-micro-statesubmitter",
-          given_name: "George",
-          family_name: "Harrison",
-          email: "george@example.com",
-        },
-      },
-    }));
+  test("renders state names", async () => {
+    setMockUsername(multiStateSubmitter);
 
-    render(<Profile />);
+    renderWithQueryClient(<Profile />);
 
-    const accessGranted = screen.queryByText("Access Granted");
-
-    expect(accessGranted).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByText("California, New York, Maryland")).toBeInTheDocument(),
+    );
   });
 
-  test("renders roles", () => {
-    render(<Profile />);
+  test("renders nothing if user has no states", async () => {
+    renderWithQueryClient(<Profile />);
 
-    const states = screen.getByText("State Submitter");
-
-    expect(states).toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByText("Access Granted")).not.toBeInTheDocument());
   });
 
-  test("renders full name", () => {
-    render(<Profile />);
+  test("renders roles", async () => {
+    renderWithQueryClient(<Profile />);
 
-    const states = screen.getByText("George Harrison");
-
-    expect(states).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("State Submitter")).toBeInTheDocument());
   });
 
-  test("renders email", () => {
-    render(<Profile />);
+  test("renders full name", async () => {
+    renderWithQueryClient(<Profile />);
 
-    const states = screen.getByText("george@example.com");
+    await waitFor(() => expect(screen.getByText("Stateuser Tester")).toBeInTheDocument());
+  });
 
-    expect(states).toBeInTheDocument();
+  test("renders email", async () => {
+    renderWithQueryClient(<Profile />);
+
+    await waitFor(() => expect(screen.getByText("mako.stateuser@gmail.com")).toBeInTheDocument());
   });
 });

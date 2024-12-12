@@ -12,9 +12,11 @@ export type OneMacUser = {
 export const getUser = async (): Promise<OneMacUser> => {
   try {
     const currentAuthenticatedUser = await Auth.currentAuthenticatedUser();
-    const userAttributesArray = await Auth.userAttributes(
-      currentAuthenticatedUser,
-    );
+    if (!currentAuthenticatedUser) {
+      return { user: null } satisfies OneMacUser;
+    }
+    const userAttributesArray = (await Auth.userAttributes(currentAuthenticatedUser)) || [];
+
     // Set object up with key/values from attributes array
     const userAttributesObj = userAttributesArray.reduce(
       (obj, item) =>
@@ -27,9 +29,9 @@ export const getUser = async (): Promise<OneMacUser> => {
       {} as CognitoUserAttributes,
     );
     // Manual additions and normalizations
-    userAttributesObj["custom:cms-roles"] =
-      userAttributesObj?.["custom:cms-roles"] || "";
-    userAttributesObj.username = currentAuthenticatedUser?.username || "";
+    userAttributesObj["custom:cms-roles"] = userAttributesObj["custom:cms-roles"] || "";
+
+    userAttributesObj.username = currentAuthenticatedUser.username || "";
 
     return {
       user: userAttributesObj,

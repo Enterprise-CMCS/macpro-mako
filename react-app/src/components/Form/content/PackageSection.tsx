@@ -1,5 +1,5 @@
 import { BLANK_VALUE } from "@/consts";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { AuthorityUnion } from "shared-types";
 
 export const getIdLabel = (authority: AuthorityUnion) => {

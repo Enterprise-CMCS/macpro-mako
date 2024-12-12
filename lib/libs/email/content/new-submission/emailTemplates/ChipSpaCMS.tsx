@@ -25,7 +25,7 @@ export const ChipSpaCMSEmail = (props: {
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
       <PackageDetails
         details={{
-          "State or territory": variables.territory,
+          "State or Territory": variables.territory,
           Name: variables.submitterName,
           Email: variables.submitterEmail,
           "CHIP SPA Package ID": variables.id,

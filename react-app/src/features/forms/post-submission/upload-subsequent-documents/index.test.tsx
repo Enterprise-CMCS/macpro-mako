@@ -2,22 +2,20 @@ import { screen, waitFor } from "@testing-library/react";
 import { describe, test, expect, beforeAll } from "vitest";
 import { formSchemas } from "@/formSchemas";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import {
-  mockApiRefinements,
-  skipCleanup,
-} from "@/utils/test-helpers/skipCleanup";
+import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { UploadSubsequentDocuments } from ".";
 import userEvent from "@testing-library/user-event";
-import { renderFormWithPackageSection } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
+import { TEST_ITEM_ID } from "mocks";
 
 const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
 
 describe("Upload Subsequent Documents (for Medicaid SPA)", () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     skipCleanup();
     mockApiRefinements();
 
-    renderFormWithPackageSection(<UploadSubsequentDocuments />);
+    await renderFormWithPackageSectionAsync(<UploadSubsequentDocuments />, TEST_ITEM_ID);
   });
 
   test("CMS FORM 179", async () => {
@@ -31,17 +29,12 @@ describe("Upload Subsequent Documents (for Medicaid SPA)", () => {
     );
     const additionalInfoLabel = screen.getByTestId("addl-info-label");
 
-    await userEvent.type(
-      additionalInfoInput,
-      "this is additional information in the test",
-    );
+    await userEvent.type(additionalInfoInput, "this is additional information in the test");
 
     expect(additionalInfoLabel).not.toHaveClass("text-destructive");
   });
 
   test("submit button is enabled", async () => {
-    waitFor(() =>
-      expect(screen.getByTestId("submit-action-form")).toBeEnabled(),
-    );
+    waitFor(() => expect(screen.getByTestId("submit-action-form")).toBeEnabled());
   });
 });

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router";
 
 import { Footer, FAQFooter } from "./index";
 
@@ -32,8 +32,6 @@ describe("FAQFooter", () => {
     );
 
     expect(screen.queryByText("View FAQ")).toBeInTheDocument();
-    expect(
-      screen.queryByText("Do you have questions or need support?"),
-    ).toBeInTheDocument();
+    expect(screen.queryByText("Do you have questions or need support?")).toBeInTheDocument();
   });
 });
