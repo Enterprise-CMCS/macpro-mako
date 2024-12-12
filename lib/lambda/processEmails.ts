@@ -4,7 +4,7 @@ import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
 import { getEmailTemplates, getAllStateUsers } from "libs/email";
 import * as os from "./../libs/opensearch-lib";
-import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
+import { EMAIL_CONFIG } from "libs/email/content/email-components";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
 import pLimit from "p-limit";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
@@ -122,12 +122,12 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   };
 
   console.log("Kafka record:", JSON.stringify(record, null, 2));
-  
+
   // Validate record structure based on origin
   if (record.origin === "seatool") {
     // Validate seatool record structure
     const requiredFields = ["event", "authority"];
-    const missingFields = requiredFields.filter(field => !record[field]);
+    const missingFields = requiredFields.filter((field) => !record[field]);
     if (missingFields.length > 0) {
       console.error(`Invalid seatool record: missing fields ${missingFields.join(", ")}`);
       return;
@@ -135,7 +135,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   } else if (record.origin === "mako") {
     // Validate mako record structure
     const requiredFields = ["event", "authority"];
-    const missingFields = requiredFields.filter(field => !record[field]);
+    const missingFields = requiredFields.filter((field) => !record[field]);
     if (missingFields.length > 0) {
       console.error(`Invalid mako record: missing fields ${missingFields.join(", ")}`);
       return;
