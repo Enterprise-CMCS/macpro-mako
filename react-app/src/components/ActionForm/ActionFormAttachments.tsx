@@ -40,8 +40,8 @@ export const ActionFormAttachments = ({
   const form = useFormContext();
 
   const attachmentInstructions = instructions ?? [
-    <AttachmentFileFormatInstructions />,
     <AttachmentFAQInstructions faqLink={faqLink} />,
+    <AttachmentFileFormatInstructions />,
   ];
 
   return (
