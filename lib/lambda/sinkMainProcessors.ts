@@ -105,7 +105,9 @@ const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
   const openSearchRecords = await getItems(kafkaIds);
 
   return openSearchRecords.reduce<Map<string, number>>((map, item) => {
-    map.set(item.id, new Date(item.changedDate).getTime());
+    if (item.changedDate !== null) {
+      map.set(item.id, new Date(item.changedDate).getTime());
+    }
 
     return map;
   }, new Map());
