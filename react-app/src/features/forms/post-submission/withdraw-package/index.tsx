@@ -1,7 +1,7 @@
 import { useGetItem } from "@/api";
 import { ActionForm, LoadingSpinner, PackageSection } from "@/components";
 import { formSchemas } from "@/formSchemas";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { SEATOOL_STATUS } from "shared-types";
 
 export const WithdrawPackageActionWaiver = () => {
@@ -32,7 +32,7 @@ export const WithdrawPackageActionWaiver = () => {
         },
       }}
       attachments={{
-        faqLink: "/faq",
+        faqLink: "/faq/withdraw-package-waiver",
         callout:
           "Upload your supporting documentation for withdrawal or explain your need for withdrawal in the Additional Information section.",
       }}
@@ -84,7 +84,7 @@ export const WithdrawPackageAction = () => {
         },
       }}
       attachments={{
-        faqLink: "/faq",
+        faqLink: "/faq/withdraw-package-spa",
         callout:
           "Upload your supporting documentation for withdrawal or explain your need for withdrawal in the Additional Information section.",
       }}
@@ -127,7 +127,7 @@ export const WithdrawPackageActionChip = () => {
         authority,
       }}
       attachments={{
-        faqLink: "/faq",
+        faqLink: "/faq/withdraw-package-chip-spa",
         callout:
           "Official withdrawal letters are required and must be on state letterhead signed by the State Medicaid Director or CHIP Director.",
       }}

@@ -45,3 +45,5 @@ export type SearchQueryBody = Search_RequestBody;
 export type SearchTerm = Record<string, TermQuery | Common.FieldValue>;
 
 export type EventRequestContext = Partial<APIGatewayEventRequestContext>;
+
+export type TestCounty = [string, string, string];

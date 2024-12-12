@@ -1,10 +1,15 @@
 import { PackageSection } from "@/components/Form/content/PackageSection";
 import { ActionForm } from "@/components/ActionForm";
 import { formSchemas } from "@/formSchemas";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 export const WithdrawRaiForm = () => {
   const { authority, id } = useParams();
+  const faqLink = authority?.includes("SPA")
+    ? authority?.includes("CHIP")
+      ? "chip-spa"
+      : "spa"
+    : "waiver";
 
   return (
     <ActionForm
@@ -16,7 +21,7 @@ export const WithdrawRaiForm = () => {
         authority,
       }}
       attachments={{
-        faqLink: "/faq",
+        faqLink: `/faq/withdraw-${faqLink}-rai-response`,
       }}
       documentPollerArgs={{
         property: "id",
