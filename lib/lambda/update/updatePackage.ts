@@ -139,7 +139,7 @@ export const handler = async (event: APIGatewayEvent) => {
         console.log(Object.keys(events));
         const packageWithSubmissionType = packageChangelog.hits.hits.find((packageChange) => {
           console.log(packageChange, "CHANGE HIT??");
-          return packageChange._source.event in Object.keys(events);
+          return packageChange._source.event in events;
         });
         const packageEvent = packageWithSubmissionType?._source.event;
         console.log(packageWithSubmissionType, "PACKAGE TYPE");
