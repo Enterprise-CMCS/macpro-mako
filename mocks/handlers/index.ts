@@ -1,6 +1,8 @@
 import { http, HttpResponse } from "msw";
+import { defaultHandlers as authHandlers } from "./auth.js";
 import { defaultHandlers as countiesHandler } from "./counties.js";
 import { defaultHandlers as itemHandlers } from "./items.js";
+import { defaultHandlers as searchHandlers } from "./opensearch.js";
 import { defaultHandlers as submissionHandlers } from "./submissions.js";
 import { defaultHandlers as typeHandlers } from "./types.js";
 
@@ -23,9 +25,18 @@ export const putOnceHandler = (endpoint: string, status: number = 200, body?: Bo
     { once: true },
   );
 
-export default [...itemHandlers, ...typeHandlers, ...submissionHandlers, ...countiesHandler];
+export default [
+  ...itemHandlers,
+  ...typeHandlers,
+  ...submissionHandlers,
+  ...countiesHandler,
+  ...authHandlers,
+  ...searchHandlers,
+];
 
 export {
+  convertUserAttributes,
+  getRequestContext,
   mockCurrentAuthenticatedUser,
   mockUseGetUser,
   mockUserAttributes,

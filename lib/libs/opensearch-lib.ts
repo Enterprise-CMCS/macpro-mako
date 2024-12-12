@@ -1,12 +1,11 @@
-import { Client, Connection } from "@opensearch-project/opensearch";
+import { AssumeRoleCommand, STSClient } from "@aws-sdk/client-sts";
 import { defaultProvider } from "@aws-sdk/credential-provider-node";
+import { Client, Connection, errors as OpensearchErrors } from "@opensearch-project/opensearch";
 import * as aws4 from "aws4";
-import axios from "axios";
 import { aws4Interceptor } from "aws4-axios";
-import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
-import { opensearch } from "shared-types";
-import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
+import axios from "axios";
 import { ItemResult, Document as OSDocument } from "lib/packages/shared-types/opensearch/main";
+import { opensearch } from "shared-types";
 
 let client: Client;
 
@@ -168,15 +167,11 @@ export async function mapRole(
 
 export async function search(host: string, index: opensearch.Index, query: any) {
   client = client || (await getClient(host));
-  try {
-    const response = await client.search({
-      index: index,
-      body: query,
-    });
-    return decodeUtf8(response).body;
-  } catch (e) {
-    console.log({ e });
-  }
+  const response = await client.search({
+    index: index,
+    body: query,
+  });
+  return decodeUtf8(response).body;
 }
 
 export async function getItem(
@@ -185,13 +180,8 @@ export async function getItem(
   id: string,
 ): Promise<ItemResult | undefined> {
   client = client || (await getClient(host));
-  try {
-    const response = await client.get({ id, index });
-    return decodeUtf8(response).body;
-  } catch (e) {
-    console.log({ e });
-    return undefined;
-  }
+  const response = await client.get({ id, index });
+  return decodeUtf8(response).body;
 }
 
 export async function getItems(
@@ -210,6 +200,7 @@ export async function getItems(
         ids,
       },
     });
+    console.log("getItems response: ", JSON.stringify(response, null, 2));
 
     return response.body.docs.reduce<OSDocument[]>((acc, doc) => {
       if (doc.found && doc._source) {

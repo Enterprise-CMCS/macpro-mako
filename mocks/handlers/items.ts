@@ -9,7 +9,9 @@ const defaultItemHandler = http.post<GetItemBody, GetItemBody>(/\/item$/, async 
   if (id == GET_ERROR_ITEM_ID) {
     return new HttpResponse("Internal server error", { status: 500 });
   }
+
   const item = items[id] || null;
+
   return item ? HttpResponse.json(item) : new HttpResponse(null, { status: 404 });
 });
 

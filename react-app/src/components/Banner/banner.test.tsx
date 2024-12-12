@@ -98,7 +98,9 @@ describe("banner", () => {
       });
     });
 
-    await user.click(container.querySelector("#dashboard-link"));
+    const dashboardLink = container.querySelector("#dashboard-link");
+    expect(dashboardLink).toBeTruthy();
+    if (dashboardLink) await user.click(dashboardLink);
 
     expect(queryByTestId("banner-header")).not.toBeInTheDocument();
   });

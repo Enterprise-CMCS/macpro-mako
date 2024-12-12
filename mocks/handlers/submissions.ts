@@ -19,9 +19,9 @@ const defaultUploadUrlHandler = http.post(/\/getUploadUrl/, () =>
   ),
 );
 
-const defaultTestHandler = http.post(/\/test/, () =>
-  HttpResponse.json({ message: "pass" }, { status: 200 }),
-);
+// const defaultTestHandler = http.post(/\/test$/, () =>
+//   HttpResponse.json({ message: "pass" }, { status: 200 }),
+// );
 
 const defaultSubmitHandler = http.post<SubmitRequestBody, SubmitRequestBody>(
   /\/submit$/,
@@ -39,6 +39,6 @@ const defaultSubmitHandler = http.post<SubmitRequestBody, SubmitRequestBody>(
 export const defaultHandlers = [
   defaultUploadHandler,
   defaultUploadUrlHandler,
-  defaultTestHandler,
+  // defaultTestHandler,
   defaultSubmitHandler,
 ];

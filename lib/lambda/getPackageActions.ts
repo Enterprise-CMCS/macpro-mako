@@ -1,12 +1,13 @@
+import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
 import { APIGatewayEvent } from "aws-lambda";
+import { response } from "libs/handler-lib";
 import { getAvailableActions } from "shared-utils";
-import { getPackage } from "../libs/api/package/getPackage";
 import {
   getAuthDetails,
   isAuthorizedToGetPackageActions,
   lookupUserAttributes,
 } from "../libs/api/auth/user";
-import { response } from "libs/handler-lib";
+import { getPackage } from "../libs/api/package/getPackage";
 
 export const getPackageActions = async (event: APIGatewayEvent) => {
   if (!event.body) {
@@ -20,7 +21,7 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
   try {
     const result = await getPackage(body.id);
 
-    if (result === undefined) {
+    if (result === undefined || !result.found) {
       return response({
         statusCode: 404,
         body: { message: "No record found for the given id" },
@@ -35,11 +36,6 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
         body: { message: "Not authorized to view resources from this state" },
       });
 
-    if (!result.found)
-      return response({
-        statusCode: 404,
-        body: { message: "No record found for the given id" },
-      });
     const authDetails = getAuthDetails(event);
     const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
 
@@ -51,6 +47,16 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
     });
   } catch (err) {
     console.error({ err });
+    if (err instanceof OpensearchErrors.ResponseError) {
+      return response({
+        statusCode: err?.statusCode || err?.meta?.statusCode || 500,
+        body: {
+          error: err?.body || err?.meta?.body || err,
+          message: err.message,
+        },
+      });
+    }
+
     return response({
       statusCode: 500,
       body: { message: "Internal server error" },

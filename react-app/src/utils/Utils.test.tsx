@@ -47,7 +47,7 @@ describe("DataPoller", () => {
       expect(error).toEqual({
         correctDataStateFound: false,
         maxAttemptsReached: true,
-        error: "Error polling data: Correct data state not found, after max attempts reached",
+        message: "Error polling data: Correct data state not found, after max attempts reached",
       });
     }
 
@@ -83,7 +83,7 @@ describe("DataPoller", () => {
       expect(error).toEqual({
         correctDataStateFound: false,
         maxAttemptsReached: true,
-        error: "Error polling data: Correct data state not found, after max attempts reached",
+        message: "Error polling data: Correct data state not found, after max attempts reached",
       });
     }
   });
