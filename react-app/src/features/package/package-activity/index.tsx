@@ -48,7 +48,7 @@ type SubmissionProps = {
 };
 
 const Submission = ({ packageActivity }: SubmissionProps) => {
-  const { attachments, id, packageId, additionalInformation } = packageActivity;
+  const { attachments = [], id, packageId, additionalInformation } = packageActivity;
   const { onUrl, loading, onZip } = useAttachmentService({ packageId });
 
   return (

@@ -8,6 +8,11 @@ import {
   logError,
 } from "../libs/sink-lib";
 import { Index } from "shared-types/opensearch";
+import {
+  deleteAdminChangeSchema,
+  updateIdAdminChangeSchema,
+  updateValuesAdminChangeSchema,
+} from "./update/adminChangeSchemas";
 const osDomain = process.env.osDomain;
 if (!osDomain) {
   throw new Error("Missing required environment variable(s)");
@@ -61,11 +66,11 @@ const processAndIndex = async ({
   transforms: any;
   topicPartition: string;
 }) => {
-  const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> =
-    [];
+  const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
     const { value, offset } = kafkaRecord;
+
     try {
       // If a legacy tombstone, continue
       if (!value) {
@@ -75,6 +80,46 @@ const processAndIndex = async ({
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
 
+      const transformedDeleteSchema = deleteAdminChangeSchema.transform((data) => ({
+        ...data,
+        event: "delete",
+        packageId: data.id,
+        id: `${data.id}-${offset}`,
+        timestamp: Date.now(),
+      }));
+
+      const transformedUpdateValuesSchema = updateValuesAdminChangeSchema.transform((data) => ({
+        ...data,
+        event: "update-values",
+        packageId: data.id,
+        id: `${data.id}-${offset}`,
+        timestamp: Date.now(),
+      }));
+
+      const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((data) => ({
+        ...data,
+        event: "update-id",
+        packageId: data.id,
+        id: `${data.id}-${offset}`,
+        timestamp: Date.now(),
+      }));
+
+      const schema = transformedDeleteSchema
+        .or(transformedUpdateValuesSchema)
+        .or(transformedUpdateIdSchema);
+
+      if (record.isAdminChange) {
+        const result = schema.safeParse(record);
+
+        if (result.success) {
+          docs.push(result.data);
+        } else {
+          console.log(
+            `Skipping package with invalid format for type "${record.adminChangeType}"`,
+            result.error.message,
+          );
+        }
+      }
       // If we're not a mako event, continue
       // TODO:  handle legacy.  for now, just continue
       if (!record.event || record?.origin !== "mako") {
@@ -82,12 +127,8 @@ const processAndIndex = async ({
       }
 
       // If the event is a supported event, transform and push to docs array for indexing
-      console.log("event below");
-      console.log(record.event);
-
       if (record.event in transforms) {
-        const transformForEvent =
-          transforms[record.event as keyof typeof transforms];
+        const transformForEvent = transforms[record.event as keyof typeof transforms];
 
         const result = transformForEvent.transform(offset).safeParse(record);
 
