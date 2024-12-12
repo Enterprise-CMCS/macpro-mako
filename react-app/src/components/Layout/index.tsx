@@ -12,6 +12,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
 import { ScrollToTop, SimplePageContainer, UserPrompt, Banner } from "@/components";
 import { isFaqPage, isProd } from "@/utils";
+import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 
 /**
  * Custom hook that generates a list of navigation links based on the user's status and whether the current page is the FAQ page.
@@ -153,6 +154,8 @@ export const Layout = () => {
     <div className="min-h-full flex flex-col">
       <ScrollToTop />
       <UserPrompt />
+      {/* Render the MMDLAlertBanner if the user is signed in */}
+      {user?.user && <MMDLAlertBanner />}
       <UsaBanner isUserMissingRole={user?.user && customUserRoles === undefined} />
       <nav data-testid="nav-banner-d" className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
