@@ -1,5 +1,8 @@
-import { Common, Search_RequestBody, TermQuery } from "@opensearch-project/opensearch";
+import type { Common, Search_RequestBody, TermQuery } from "@opensearch-project/opensearch";
 import type { APIGatewayEventRequestContext, UserData, opensearch } from "shared-types";
+
+import type { Export } from "@aws-sdk/client-cloudformation";
+import type { GetSecretValueCommandOutput } from "@aws-sdk/client-secrets-manager";
 
 // code borrowed from https://stackoverflow.com/questions/47914536/use-partial-in-nested-property-with-typescript
 export type DeepPartial<T> = {
@@ -20,6 +23,13 @@ export type TestChangelogItemResult = DeepPartial<opensearch.changelog.ItemResul
 
 export type TestChangelogDocument = TestChangelogItemResult["_source"];
 
+export type TestSecretData = Partial<Omit<GetSecretValueCommandOutput, "CreatedDate">> & {
+  CreatedDate: number;
+  DeletedDate?: number;
+};
+
+export type TestExport = Partial<Export>;
+
 export type IdpRequestSessionBody = {
   AccessToken: string;
 };
@@ -37,6 +47,12 @@ export type IdpListUsersRequestBody = {
   UserPoolId: string;
   Filter: string;
 };
+
+export type SecretManagerRequestBody = {
+  SecretId: string;
+};
+
+export type GetItemBody = { id: string };
 
 export type SearchQueryBody = Search_RequestBody;
 

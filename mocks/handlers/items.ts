@@ -1,7 +1,6 @@
 import { http, HttpResponse } from "msw";
 import items, { GET_ERROR_ITEM_ID } from "../data/items";
-
-export type GetItemBody = { id: string };
+import { GetItemBody } from "../index.d";
 
 const defaultItemHandler = http.post<GetItemBody, GetItemBody>(/\/item$/, async ({ request }) => {
   const { id } = await request.json();

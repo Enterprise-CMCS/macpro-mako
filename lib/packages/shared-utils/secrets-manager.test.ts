@@ -1,65 +1,34 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  TEST_SECRET_ERROR_ID,
+  TEST_SECRET_ID,
+  TEST_SECRET_NO_VALUE_ID,
+  TEST_SECRET_TO_DELETE_ID,
+} from "mocks";
+import secrets from "mocks/data/secrets";
+import { describe, expect, it } from "vitest";
 import { getSecret } from ".";
 
-const mockSend = vi.fn();
-
-vi.mock("@aws-sdk/client-secrets-manager", () => {
-  return {
-    SecretsManagerClient: vi.fn(() => ({
-      send: mockSend,
-    })),
-    GetSecretValueCommand: vi.fn(),
-    DescribeSecretCommand: vi.fn(),
-  };
-});
-
 describe("getSecret", () => {
-  beforeEach(() => {
-    mockSend.mockClear();
-  });
-
   it("should return the secret value if the secret exists and is not marked for deletion", async () => {
-    const secretId = "test-secret";
-    const expectedSecretValue = "test-secret-value"; // pragma: allowlist secret
-
-    mockSend
-      .mockResolvedValueOnce({ DeletedDate: null }) // Mock DescribeSecretCommand response
-      .mockResolvedValueOnce({ SecretString: expectedSecretValue }); // Mock GetSecretValueCommand response
-
-    const result = await getSecret(secretId);
-    expect(result).toBe(expectedSecretValue);
+    const result = await getSecret(TEST_SECRET_ID);
+    expect(result).toBe(secrets[TEST_SECRET_ID].SecretString);
   });
 
   it("should throw an error if the secret is marked for deletion", async () => {
-    const secretId = "test-secret";
-
-    mockSend.mockResolvedValueOnce({ DeletedDate: new Date() }); // Mock DescribeSecretCommand response
-
-    await expect(getSecret(secretId)).rejects.toThrow(
-      `Secret ${secretId} is marked for deletion and will not be used.`,
+    await expect(getSecret(TEST_SECRET_TO_DELETE_ID)).rejects.toThrow(
+      `Secret ${TEST_SECRET_TO_DELETE_ID} is marked for deletion and will not be used.`,
     );
   });
 
   it("should throw an error if the secret has no SecretString field", async () => {
-    const secretId = "test-secret";
-
-    mockSend
-      .mockResolvedValueOnce({ DeletedDate: null }) // Mock DescribeSecretCommand response
-      .mockResolvedValueOnce({ SecretString: null }); // Mock GetSecretValueCommand response
-
-    await expect(getSecret(secretId)).rejects.toThrow(
-      `Secret ${secretId} has no SecretString field present in response`,
+    await expect(getSecret(TEST_SECRET_NO_VALUE_ID)).rejects.toThrow(
+      `Secret ${TEST_SECRET_NO_VALUE_ID} has no SecretString field present in response`,
     );
   });
 
   it("should throw an error if there is an issue with the AWS SDK call", async () => {
-    const secretId = "test-secret";
-    const errorMessage = "AWS SDK error";
-
-    mockSend.mockRejectedValueOnce(new Error(errorMessage)); // Mock DescribeSecretCommand failure
-
-    await expect(getSecret(secretId)).rejects.toThrow(
-      `Failed to fetch secret ${secretId}: Error: ${errorMessage}`,
+    await expect(getSecret(TEST_SECRET_ERROR_ID)).rejects.toThrow(
+      `Failed to fetch secret ${TEST_SECRET_ERROR_ID}: Secret Throw Get Secret Error has no SecretString field present in response`,
     );
   });
 });

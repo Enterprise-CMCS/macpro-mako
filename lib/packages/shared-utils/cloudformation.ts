@@ -1,17 +1,12 @@
-import {
-  CloudFormationClient,
-  ListExportsCommand,
-} from "@aws-sdk/client-cloudformation";
+import { CloudFormationClient, ListExportsCommand } from "@aws-sdk/client-cloudformation";
 
-export async function getExport(
-  exportName: string,
-  region: string = "us-east-1",
-): Promise<string> {
+export async function getExport(exportName: string, region: string = "us-east-1"): Promise<string> {
   const client = new CloudFormationClient({ region });
   const command = new ListExportsCommand({});
 
   try {
     const response = await client.send(command);
+    console.log({ response });
     const exports = response.Exports || [];
     const exportItem = exports.find((exp) => exp.Name === exportName);
     if (!exportItem) {
