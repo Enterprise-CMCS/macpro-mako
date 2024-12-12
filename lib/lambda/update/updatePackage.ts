@@ -135,26 +135,22 @@ export const handler = async (event: APIGatewayEvent) => {
       // use event of current package to determine how ID should be formatted
       const packageChangelog = await getPackageChangelog(packageId);
       if (packageChangelog.hits.hits.length) {
-        console.log(packageChangelog.hits.hits, "HITS");
-        console.log(Object.keys(events));
         const packageWithSubmissionType = packageChangelog.hits.hits.find((packageChange) => {
-          console.log(packageChange, "CHANGE HIT??");
           return packageChange._source.event in events;
         });
         const packageEvent = packageWithSubmissionType?._source.event;
-        console.log(packageWithSubmissionType, "PACKAGE TYPE");
-        const packageTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
-        console.log(packageTypeSchema, "PACKAGE TYPE SCHEMA");
-        const idSchema = packageTypeSchema.shape.id;
+        const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
+        console.log(packageSubmissionTypeSchema, "PACKAGE TYPE SCHEMA");
+        const idSchema = packageSubmissionTypeSchema.shape.id;
         const parsedId = idSchema.safeParse(updatedId);
 
         if (parsedId.success) {
           await sendUpdateIdMessage(topicName, packageResult, updatedId);
         } else {
-          console.log(parsedId.error.message, "ERROR MSG");
+          console.log(parsedId.error.message[0], "ERROR MSG");
           return response({
             statusCode: 400,
-            body: JSON.stringify(parsedId.error.message),
+            body: parsedId.error.message[0],
           });
         }
       } else {
