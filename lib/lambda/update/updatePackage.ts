@@ -19,18 +19,44 @@ const sendDeleteMessage = async (topicName: string, packageId: string) => {
   );
 };
 
-const sendUpdateValuesMessage = async (
-  topicName: string,
-  packageId: string,
-  updatedFields: object,
-  changeMadeText: string,
-  changeReason?: string,
-) => {
+const sendUpdateValuesMessage = async ({
+  topicName,
+  currentPackage,
+  updatedFields,
+  changeReason,
+}: {
+  topicName: string;
+  currentPackage: ItemResult;
+  updatedFields: object;
+  changeReason?: string;
+}) => {
+  const invalidFields = Object.keys(updatedFields).filter(
+    (field) => !(field in currentPackage._source),
+  );
+  if (invalidFields.length > 0) {
+    return response({
+      statusCode: 400,
+      body: { message: `Cannot update invalid field(s): ${invalidFields.join(", ")}` },
+    });
+  }
+
+  if ("id" in updatedFields) {
+    return response({
+      statusCode: 400,
+      body: { message: "ID is not a valid field to update" },
+    });
+  }
+
+  const fieldNames = Object.keys(updatedFields).join(", ");
+  const changeMadeText = `${fieldNames} ${
+    Object.keys(updatedFields).length > 1 ? "have" : "has"
+  } been updated.`;
+
   await produceMessage(
     topicName,
-    packageId,
+    currentPackage._id,
     JSON.stringify({
-      id: packageId,
+      id: currentPackage._id,
       ...updatedFields,
       isAdminChange: true,
       adminChangeType: "update-values",
@@ -38,17 +64,72 @@ const sendUpdateValuesMessage = async (
       changeReason,
     }),
   );
+
+  return response({
+    statusCode: 200,
+    body: { message: `${changeMadeText} in package ${currentPackage._id}` },
+  });
 };
 
-const sendUpdateIdMessage = async (
-  topicName: string,
-  currentPackage: ItemResult,
-  updatedId: string,
-) => {
+const sendUpdateIdMessage = async ({
+  topicName,
+  currentPackage,
+  updatedId,
+}: {
+  topicName: string;
+  currentPackage: ItemResult;
+  updatedId: string;
+}) => {
   //eslint-disable-next-line
   const { _id, _index, _source } = currentPackage;
   //eslint-disable-next-line
   const { id, changeMade, ...remainingFields } = _source;
+
+  if (!updatedId) {
+    return response({
+      statusCode: 400,
+      body: { message: "New ID required to update package" },
+    });
+  }
+
+  const existingPackage = await getPackage(updatedId);
+  if (existingPackage) {
+    return response({
+      statusCode: 400,
+      body: { message: "This ID already exists" },
+    });
+  }
+  // use event of current package to determine how ID should be formatted
+  const packageChangelog = await getPackageChangelog(_id);
+  if (!packageChangelog.hits.hits.length) {
+    return response({
+      statusCode: 500,
+      body: { message: "The type of package could not be determined." },
+    });
+  }
+
+  const packageWithSubmissionType = packageChangelog.hits.hits.find((pkg) => {
+    return pkg._source.event in events;
+  });
+  const packageEvent = packageWithSubmissionType?._source.event;
+  const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
+
+  if (!packageSubmissionTypeSchema) {
+    return response({
+      statusCode: 500,
+      body: { message: "Could not validate the ID of this type of package." },
+    });
+  }
+
+  const idSchema = packageSubmissionTypeSchema.shape.id;
+  const parsedId = idSchema.safeParse(updatedId);
+
+  if (!parsedId.success) {
+    return response({
+      statusCode: 400,
+      body: parsedId.error.message,
+    });
+  }
 
   await sendDeleteMessage(topicName, currentPackage._id);
   await produceMessage(
@@ -62,6 +143,11 @@ const sendUpdateIdMessage = async (
       adminChangeType: "update-id",
     }),
   );
+
+  return response({
+    statusCode: 200,
+    body: { message: `The ID of package ${currentPackage._id} has been updated to ${updatedId}.` },
+  });
 };
 
 const updatePackageEventBodySchema = z.object({
@@ -93,7 +179,7 @@ export const handler = async (event: APIGatewayEvent) => {
     const {
       packageId,
       action,
-      updatedId,
+      updatedId = packageId,
       updatedFields = {},
       changeReason,
     } = parseEventBody(event.body);
@@ -119,95 +205,114 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     if (action === "update-id") {
-      if (!updatedId) {
-        return response({
-          statusCode: 400,
-          body: { message: "New ID required to update package" },
-        });
-      }
-      const existingPackage = await getPackage(updatedId);
-      if (existingPackage) {
-        return response({
-          statusCode: 400,
-          body: { message: "This ID already exists" },
-        });
-      }
-      // use event of current package to determine how ID should be formatted
-      const packageChangelog = await getPackageChangelog(packageId);
-      if (packageChangelog.hits.hits.length) {
-        const packageWithSubmissionType = packageChangelog.hits.hits.find((packageChange) => {
-          return packageChange._source.event in events;
-        });
-        const packageEvent = packageWithSubmissionType?._source.event;
-        const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
-        console.log(packageSubmissionTypeSchema, "PACKAGE TYPE SCHEMA");
-        const idSchema = packageSubmissionTypeSchema.shape.id;
-        const parsedId = idSchema.safeParse(updatedId);
+      await sendUpdateIdMessage({ topicName, currentPackage: packageResult, updatedId });
 
-        if (parsedId.success) {
-          await sendUpdateIdMessage(topicName, packageResult, updatedId);
-        } else {
-          console.log(parsedId.error.message[0], "ERROR MSG");
-          return response({
-            statusCode: 400,
-            body: parsedId.error.message[0],
-          });
-        }
-      } else {
-        // TODO: Update message? Is this case necessary?
-        return response({
-          statusCode: 500,
-          body: { message: "The type of package could not be determined." },
-        });
-      }
+      // if (!updatedId) {
+      //   return response({
+      //     statusCode: 400,
+      //     body: { message: "New ID required to update package" },
+      //   });
+      // }
+      // const existingPackage = await getPackage(updatedId);
+      // if (existingPackage) {
+      //   return response({
+      //     statusCode: 400,
+      //     body: { message: "This ID already exists" },
+      //   });
+      // }
+      // // use event of current package to determine how ID should be formatted
+      // const packageChangelog = await getPackageChangelog(packageId);
+      // if (packageChangelog.hits.hits.length) {
+      //   const packageWithSubmissionType = packageChangelog.hits.hits.find((packageChange) => {
+      //     return packageChange._source.event in events;
+      //   });
+      //   const packageEvent = packageWithSubmissionType?._source.event;
+      //   const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
+      //   console.log(packageSubmissionTypeSchema, "PACKAGE TYPE SCHEMA");
+      //   const idSchema = packageSubmissionTypeSchema.shape.id;
+      //   const parsedId = idSchema.safeParse(updatedId);
+
+      //   if (parsedId.success) {
+      //     await sendUpdateIdMessage(topicName, packageResult, updatedId);
+      //   } else {
+      //     console.log(parsedId.error.message, "ERROR MSG");
+      //     return response({
+      //       statusCode: 400,
+      //       body: parsedId.error.message[0],
+      //     });
+      //   }
     }
 
     if (action === "update-values") {
-      const areValidFields = Object.keys(updatedFields).every((fieldKey) => {
-        return fieldKey in packageResult._source;
-      });
+      // const areValidFields = Object.keys(updatedFields).every((fieldKey) => {
+      //   return fieldKey in packageResult._source;
+      // });
+      // const invalidFields = Object.keys(updatedFields).filter((field) => !(field in packageResult._source));
+      // if (invalidFields.length > 0) {
+      //   return response({
+      //     statusCode: 400,
+      //     body: { message: `Cannot update invalid field(s): ${invalidFields.join(", ")}` },
+      //   });
+      // }
 
-      let changeMadeText: string;
+      // if (!areValidFields) {
+      //   return response({
+      //     statusCode: 400,
+      //     body: {
+      //       message: "Cannot update invalid field(s)",
+      //     },
+      //   });
+      // }
 
-      if (!areValidFields) {
-        return response({
-          statusCode: 400,
-          body: {
-            message: `Cannot update invalid field(s)`,
-          },
-        });
-      }
+      // if ("id" in updatedFields) {
+      //   return response({
+      //     statusCode: 400,
+      //     body: { message: "ID is not a valid field to update" },
+      //   });
+      // }
 
-      if ("id" in updatedFields) {
-        return response({
-          statusCode: 400,
-          body: { message: "ID is not a valid field to update" },
-        });
-      }
+      // const fieldNames = Object.keys(updatedFields).join(", ");
+      // const changeMadeText = `${fieldNames} ${
+      //   Object.keys(updatedFields).length > 1 ? "have" : "has"
+      // } been updated.`;
 
-      if (Object.keys(updatedFields).length > 1) {
-        changeMadeText = `${Object.keys(updatedFields).join(", ")} have been updated.`;
-      } else {
-        changeMadeText = `${Object.keys(updatedFields)} has been updated.`;
-      }
-
-      await sendUpdateValuesMessage(
+      await sendUpdateValuesMessage({
         topicName,
-        packageId,
+        currentPackage: packageResult,
         updatedFields,
-        changeMadeText,
         changeReason,
-      );
+      });
+      // if (Object.keys(updatedFields).length > 1) {
+      //   await sendUpdateValuesMessage(
+      //     {topicName,
+      //     packageId,
+      //     updatedFields,
+      //     changeMadeText: `${Object.keys(updatedFields).join(", ")} have been updated.`,
+      //     changeReason},
+      //   );
+      // } else {
+      //   await sendUpdateValuesMessage(
+      //     {topicName,
+      //     packageId,
+      //     updatedFields,
+      //     changeMadeText: `${Object.keys(updatedFields)} has been updated.`,
+      //     changeReason},
+      //   );
+      // }
+      // return response({
+      //   statusCode: 200,
+      //   body: { message: "success" },
+      // });
     }
     return response({
-      statusCode: 200,
-      body: { message: "success" },
+      statusCode: 400,
+      body: { message: "Could not update package." },
     });
   } catch (err) {
     console.error("Error has occured modifying package:", err);
     return response({
       statusCode: 500,
-      body: { message: err.message },
+      body: { message: err.message || "Internal Server Error" },
     });
   }
 };
