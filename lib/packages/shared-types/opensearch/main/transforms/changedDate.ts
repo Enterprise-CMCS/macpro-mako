@@ -6,7 +6,7 @@ export const transform = () => {
       id: data.ID_Number,
       changedDate:
         data.Changed_Date !== null && data.Changed_Date !== undefined
-          ? new Date(data.Changed_Date).getTime()
+          ? new Date(data.Changed_Date).toISOString()
           : null,
     };
     return transformedData;

@@ -6,7 +6,7 @@ import {
 } from "../../..";
 
 export const transform = (id: string) => {
-  return legacyPackageViewSchema.transform((data, ctx) => {
+  return legacyPackageViewSchema.transform((data) => {
     const noso = isLegacyNoso(data);
     if (data.submitterName === "-- --" && !noso) return undefined;
     // This is used to handle legacy hard deletes
@@ -55,7 +55,7 @@ export const tombstone = (id: string) => {
   };
 };
 
-const  normalizeDate = (epocDate: number | null | undefined) =>
+const normalizeDate = (epocDate: number | null | undefined) =>
   epocDate !== null && epocDate !== undefined ? new Date(epocDate)?.toISOString() : null;
 
 function isLegacyNoso(record: LegacyPackageAction): boolean {
