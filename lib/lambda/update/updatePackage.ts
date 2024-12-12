@@ -151,9 +151,10 @@ export const handler = async (event: APIGatewayEvent) => {
         if (parsedId.success) {
           await sendUpdateIdMessage(topicName, packageResult, updatedId);
         } else {
+          console.log(parsedId.error.message, "ERROR MSG");
           return response({
             statusCode: 400,
-            body: parsedId.error.message,
+            body: JSON.stringify(parsedId.error.message),
           });
         }
       } else {
