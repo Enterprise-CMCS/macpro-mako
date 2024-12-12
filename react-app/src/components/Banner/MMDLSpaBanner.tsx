@@ -11,7 +11,7 @@ const MMDLAlertBanner = () => {
   };
 
   const goToFAQs = () => {
-    window.location.href = "/faq#mmdl-section"; // Adjust the URL fragment to match the MMDL section
+    window.open("/faq#mmdl-section", "_blank");
   };
 
   if (!isVisible) return null;
@@ -30,7 +30,9 @@ const MMDLAlertBanner = () => {
             MMDL SPA forms available in OneMAC
           </h3>
           <p className="text-black leading-normal text-[16px] pr-4 break-words mb-2">
-            Medicaid Alternative Benefit Plan, Premium and Cost Sharing, and CHIP Eligibility SPA templates and implementation guides are now available in OneMAC. New submissions for these SPA types are submitted through the OneMAC system effective [add date].
+            Medicaid Alternative Benefit Plan, Premium and Cost Sharing, and CHIP Eligibility SPA
+            templates and implementation guides are now available in OneMAC. New submissions for
+            these SPA types are submitted through the OneMAC system effective [add date].
           </p>
         </div>
       </div>
@@ -46,11 +48,7 @@ const MMDLAlertBanner = () => {
           aria-label="Dismiss"
           className="rounded-full w-[24px] h-[24px] left-[1108px] flex justify-center"
         >
-          <img
-            src={XIcon}
-            alt="Dismiss Icon"
-            className="object-contain w-full h-full"
-          />
+          <img src={XIcon} alt="Dismiss Icon" className="object-contain w-full h-full" />
         </button>
       </div>
     </div>
