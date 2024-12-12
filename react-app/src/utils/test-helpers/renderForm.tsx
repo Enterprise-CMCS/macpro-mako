@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, waitForElementToBeRemoved } from "@testing-library/react";
 import React, { ReactElement } from "react";
-import { MemoryRouter, createMemoryRouter, RouterProvider } from "react-router-dom";
+import { MemoryRouter, createMemoryRouter, RouterProvider } from "react-router";
 import items from "mocks/data/items";
 import { Authority } from "shared-types";
 

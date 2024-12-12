@@ -1,4 +1,4 @@
-import { NavLink, NavLinkProps, Outlet, Link, useNavigate } from "react-router-dom";
+import { NavLink, NavLinkProps, Outlet, Link, useNavigate } from "react-router";
 import oneMacLogo from "@/assets/onemac-logo.png";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";

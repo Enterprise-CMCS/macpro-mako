@@ -1,11 +1,9 @@
-import { useNavigation } from "react-router-dom";
+import { useNavigation } from "react-router";
 import { useFormContext } from "react-hook-form";
 import { LoadingSpinner } from "@/components";
 
 export const FormLoadingSpinner = () => {
   const { state } = useNavigation();
   const { formState } = useFormContext();
-  return (
-    (state === "submitting" || formState.isSubmitting) && <LoadingSpinner />
-  );
+  return (state === "submitting" || formState.isSubmitting) && <LoadingSpinner />;
 };

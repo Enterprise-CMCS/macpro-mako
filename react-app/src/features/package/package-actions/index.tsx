@@ -3,7 +3,7 @@ import { LoadingSpinner } from "@/components";
 import { DETAILS_ORIGIN, ORIGIN, mapActionLabel } from "@/utils";
 import { DetailCardWrapper } from "..";
 import { FC } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 
 export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
   const location = useLocation();

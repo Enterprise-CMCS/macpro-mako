@@ -4,7 +4,7 @@ import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api";
 import { Button } from "@/components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { FAQ_TAB } from "@/router";
 import { CardWithTopBorder } from "@/components";
 
