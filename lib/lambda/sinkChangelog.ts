@@ -81,7 +81,7 @@ const processAndIndex = async ({
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
       console.log(record, "RECORD??");
-      const packageEvent = await getPackageType(record._id);
+      const packageEvent = await getPackageType(record.id);
       console.log(packageEvent, "WBAT IS THIS");
 
       const transformedDeleteSchema = deleteAdminChangeSchema.transform((data) => ({
