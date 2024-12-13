@@ -13,6 +13,7 @@ import {
   updateIdAdminChangeSchema,
   updateValuesAdminChangeSchema,
 } from "./update/adminChangeSchemas";
+import { getPackageType } from "./update/getPackageType";
 const osDomain = process.env.osDomain;
 if (!osDomain) {
   throw new Error("Missing required environment variable(s)");
@@ -79,10 +80,11 @@ const processAndIndex = async ({
 
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
+      const packageEvent = await getPackageType(record._id);
 
       const transformedDeleteSchema = deleteAdminChangeSchema.transform((data) => ({
         ...data,
-        event: "delete",
+        event: packageEvent,
         packageId: data.id,
         id: `${data.id}-${offset}`,
         timestamp: Date.now(),
@@ -90,7 +92,7 @@ const processAndIndex = async ({
 
       const transformedUpdateValuesSchema = updateValuesAdminChangeSchema.transform((data) => ({
         ...data,
-        event: "update-values",
+        event: packageEvent,
         packageId: data.id,
         id: `${data.id}-${offset}`,
         timestamp: Date.now(),
@@ -98,7 +100,7 @@ const processAndIndex = async ({
 
       const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((data) => ({
         ...data,
-        event: "update-id",
+        event: packageEvent,
         packageId: data.id,
         id: `${data.id}-${offset}`,
         timestamp: Date.now(),

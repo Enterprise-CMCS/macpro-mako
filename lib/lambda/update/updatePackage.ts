@@ -3,6 +3,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import { getPackage, getPackageChangelog } from "libs/api/package";
 import { produceMessage } from "libs/api/kafka";
 import { ItemResult } from "shared-types/opensearch/main";
+import { getPackageType } from "./getPackageType";
 import { events } from "lib/packages/shared-types";
 import { z } from "zod";
 
@@ -110,18 +111,19 @@ const sendUpdateIdMessage = async ({
     });
   }
   // use event of current package to determine how ID should be formatted
-  const packageChangelog = await getPackageChangelog(currentPackage._id);
-  if (!packageChangelog.hits.hits.length) {
-    return response({
-      statusCode: 500,
-      body: { message: "The type of package could not be determined." },
-    });
-  }
+  // const packageChangelog = await getPackageChangelog(currentPackage._id);
+  // if (!packageChangelog.hits.hits.length) {
+  //   return response({
+  //     statusCode: 500,
+  //     body: { message: "The type of package could not be determined." },
+  //   });
+  // }
 
-  const packageWithSubmissionType = packageChangelog.hits.hits.find((pkg) => {
-    return pkg._source.event in events;
-  });
-  const packageEvent = packageWithSubmissionType?._source.event;
+  // const packageWithSubmissionType = packageChangelog.hits.hits.find((pkg) => {
+  //   return pkg._source.event in events;
+  // });
+  // const packageEvent = packageWithSubmissionType?._source.event;
+  const packageEvent = await getPackageType(currentPackage._id);
   const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
 
   if (!packageSubmissionTypeSchema) {
