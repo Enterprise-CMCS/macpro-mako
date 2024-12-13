@@ -55,7 +55,7 @@ const sendUpdateValuesMessage = async ({
   const fieldNames = Object.keys(updatedFields).join(", ");
   const changeMadeText = `${fieldNames} ${
     Object.keys(updatedFields).length > 1 ? "have" : "has"
-  } been updated.`;
+  } been updated`;
 
   await produceMessage(
     topicName,
@@ -72,7 +72,7 @@ const sendUpdateValuesMessage = async ({
 
   return response({
     statusCode: 200,
-    body: { message: `${changeMadeText} in package ${currentPackage._id}` },
+    body: { message: `${changeMadeText} in package ${currentPackage._id}.` },
   });
 };
 
