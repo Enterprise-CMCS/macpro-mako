@@ -1,4 +1,5 @@
 import { http, HttpResponse } from "msw";
+import { defaultHandlers as apiTokenHandlers } from "./api-token.js";
 import { defaultHandlers as authHandlers } from "./auth.js";
 import { defaultHandlers as cloudFormationHandlers } from "./cloudformation.js";
 import { defaultHandlers as countiesHandler } from "./counties.js";
@@ -36,6 +37,7 @@ export default [
   ...searchHandlers,
   ...secretsManagerHandlers,
   ...cloudFormationHandlers,
+  ...apiTokenHandlers,
 ];
 
 export {
