@@ -64,6 +64,8 @@ export async function bulkUpdateData(
   for (const doc of arrayOfDocuments) {
     if (doc.delete) {
       body.push({ delete: { _index: index, _id: doc.id } });
+    } else if (doc.updatedId) {
+      body.push({ update: { _index: index, _id: doc.updatedId } }, { doc: doc, doc_as_upsert: true });
     } else {
       body.push({ update: { _index: index, _id: doc.id } }, { doc: doc, doc_as_upsert: true });
     }
