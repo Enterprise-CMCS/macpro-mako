@@ -1,4 +1,4 @@
-import { isCmsUser, isStateUser } from "shared-utils";
+import { isCmsUser, isStateUser, formatSeatoolDate } from "shared-utils";
 
 import { OneMacUser } from "@/api/useGetUser";
 import { BLANK_VALUE } from "@/consts";
@@ -8,7 +8,6 @@ import { Authority, opensearch } from "shared-types";
 import { convertStateAbbrToFullName, LABELS } from "@/utils";
 import { format } from "date-fns";
 import { useMemo, useState } from "react";
-import { formatSeatoolDate } from "shared-utils";
 
 export const ReviewTeamList: FC<opensearch.main.Document> = (props) => {
   const [expanded, setExpanded] = useState(false);
