@@ -5,12 +5,10 @@ import {
   makoReviewer,
   makoStateSubmitter,
   noStateSubmitter,
-  OPENSEARCH_DOMAIN,
-  OPENSEARCH_INDEX_NAMESPACE,
   setMockUsername,
   USER_POOL_ID,
 } from "mocks";
-import { afterAll, beforeEach, describe, expect, it } from "vitest";
+import { afterAll, describe, expect, it } from "vitest";
 import {
   getAuthDetails,
   getStateFilter,
@@ -20,11 +18,6 @@ import {
 } from "./user";
 
 describe("Auth functions", () => {
-  beforeEach(() => {
-    process.env.osDomain = OPENSEARCH_DOMAIN;
-    process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE;
-  });
-
   afterAll(() => {
     setMockUsername(makoStateSubmitter);
   });

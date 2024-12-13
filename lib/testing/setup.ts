@@ -1,7 +1,17 @@
 import { Amplify } from "aws-amplify";
-import { API_CONFIG, AUTH_CONFIG, setDefaultStateSubmitter } from "mocks";
+import {
+  API_CONFIG,
+  AUTH_CONFIG,
+  OPENSEARCH_DOMAIN,
+  OPENSEARCH_INDEX_NAMESPACE,
+  setDefaultStateSubmitter,
+  REGION,
+  PROJECT,
+  API_ENDPOINT,
+  USER_POOL_ID,
+} from "mocks";
 import { mockedServer } from "mocks/server";
-import { afterAll, afterEach, beforeAll, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
 
 Amplify.configure({
   API: API_CONFIG,
@@ -17,6 +27,51 @@ beforeAll(() => {
   mockedServer.listen({
     onUnhandledRequest: "warn",
   });
+});
+
+beforeEach(() => {
+  process.env.PROJECT = PROJECT;
+  process.env.REGION_A = REGION;
+
+  process.env.project = PROJECT;
+  process.env.stage = STAGE;
+
+  process.env.osDomain = OPENSEARCH_DOMAIN;
+  process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE;
+  process.env.region = REGION;
+  process.env.applicationEndpointUrl = API_ENDPOINT;
+  process.env.userPoolId = USER_POOL_ID;
+  process.env.isDev = true;
+
+  process.env.brokerString = "brokerString";
+  process.env.legacyS3AccessRoleArn = "legacyS3AccessRoleArn";
+  process.env.attachmentsBucketName = "test-bucket";
+  process.env.attachmentsBucketRegion = REGION;
+  process.env.idmAuthzApiKeyArn = "idmAuthzApiKeyArn";
+  process.env.idmAuthzApiEndpoint = API_ENDPOINT;
+  process.env.idmClientId = USER_POOL_CLIENT_ID;
+  process.env.idmClientIssuer = USER_POOL_CLIENT_DOMAIN;
+  process.env.idmClientSecretArn = "idmClientSecretArn";
+  process.env.idmEnable = "false";
+  process.env.idmHomeUrl = "https://test.home.idm.cms.gov";
+  //bucket
+  //topicName
+  // process.env.emailAddressLookupSecretName!;
+  // process.env.configurationSetName!;
+  process.env.STATUS_CLEAN_FILE = "CLEAN";
+  process.env.STATUS_INFECTED_FILE = "INFECTED";
+  process.env.STATUS_ERROR_PROCESSING_FILE = "ERROR";
+  process.env.STATUS_SKIPPED_FILE = "SKIPPED";
+  process.env.STATUS_EXTENSION_MISMATCH_FILE = "EXTMISMATCH";
+  process.env.STATUS_UNKNOWN_EXTENSION = "UKNOWNEXT";
+  process.env.STATUS_TOO_BIG = "TOOBIG";
+  process.env.VIRUS_SCAN_STATUS_KEY = "virusScanStatus";
+  process.env.VIRUS_SCAN_TIMESTAMP_KEY = "virusScanTimestamp";
+  process.env.MAX_FILE_SIZE = "314572800";
+  // process.env.DLQ_URL!;
+  // process.env.ATTACHMENTS_BUCKET!;
+  // process.env.CLAMAV_BUCKET_NAME!;
+  // process.env.PATH_TO_AV_DEFINITIONS!;
 });
 
 afterEach(() => {

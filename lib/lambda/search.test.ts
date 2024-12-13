@@ -1,19 +1,9 @@
 import { APIGatewayEvent, APIGatewayProxyEventPathParameters } from "aws-lambda";
-import {
-  getRequestContext,
-  makoStateSubmitter,
-  OPENSEARCH_DOMAIN,
-  OPENSEARCH_INDEX_NAMESPACE,
-} from "mocks";
-import { beforeEach, describe, expect, it } from "vitest";
+import { getRequestContext, makoStateSubmitter } from "mocks";
+import { describe, expect, it } from "vitest";
 import { handler } from "./search";
 
 describe("getSearchData Handler", () => {
-  beforeEach(() => {
-    process.env.osDomain = OPENSEARCH_DOMAIN;
-    process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE;
-  });
-
   it("should call validateEnvVariable and return 400 if index path parameter is missing", async () => {
     const event = { pathParameters: {} } as APIGatewayEvent;
 

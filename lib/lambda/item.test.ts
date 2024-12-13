@@ -3,22 +3,15 @@ import {
   GET_ERROR_ITEM_ID,
   HI_TEST_ITEM_ID,
   NOT_FOUND_ITEM_ID,
-  OPENSEARCH_DOMAIN,
-  OPENSEARCH_INDEX_NAMESPACE,
   WITHDRAWN_CHANGELOG_ITEM_ID,
   getRequestContext,
 } from "mocks";
 import items from "mocks/data/items";
-import { beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { handler } from "./item";
 
 describe("getItemData Handler", () => {
-  beforeEach(() => {
-    process.env.osDomain = OPENSEARCH_DOMAIN;
-    process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE; // Set the environment variable before each test
-  });
-
   it("should return 400 if event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 

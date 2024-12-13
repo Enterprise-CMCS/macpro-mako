@@ -1,20 +1,15 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { getRequestContext, OPENSEARCH_DOMAIN, OPENSEARCH_INDEX_NAMESPACE } from "mocks";
+import { getRequestContext } from "mocks";
 import {
   GET_ERROR_ITEM_ID,
   HI_TEST_ITEM_ID,
   NOT_FOUND_ITEM_ID,
   WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks/data/items";
-import { beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { handler } from "./getPackageActions";
 
 describe("getPackageActions Handler", () => {
-  beforeEach(() => {
-    process.env.osDomain = OPENSEARCH_DOMAIN;
-    process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE;
-  });
-
   it("should return 400 if event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 

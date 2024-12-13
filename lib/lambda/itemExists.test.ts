@@ -1,20 +1,9 @@
 import { APIGatewayEvent } from "aws-lambda";
-import {
-  GET_ERROR_ITEM_ID,
-  NOT_FOUND_ITEM_ID,
-  OPENSEARCH_DOMAIN,
-  OPENSEARCH_INDEX_NAMESPACE,
-  TEST_ITEM_ID,
-} from "mocks";
-import { beforeEach, describe, expect, it } from "vitest";
+import { GET_ERROR_ITEM_ID, NOT_FOUND_ITEM_ID, TEST_ITEM_ID } from "mocks";
+import { describe, expect, it } from "vitest";
 import { handler } from "./itemExists";
 
 describe("Handler for checking if record exists", () => {
-  beforeEach(() => {
-    process.env.osDomain = OPENSEARCH_DOMAIN;
-    process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE;
-  });
-
   it("should return 400 if event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
