@@ -10,7 +10,7 @@ import {
 import { Index } from "shared-types/opensearch";
 import {
   deleteAdminChangeSchema,
-  updateIdAdminChangeSchema,
+  // updateIdAdminChangeSchema,
   updateValuesAdminChangeSchema,
 } from "./update/adminChangeSchemas";
 import { getPackageType } from "./update/getPackageType";
@@ -86,7 +86,7 @@ const processAndIndex = async ({
 
       const transformedDeleteSchema = deleteAdminChangeSchema.transform((data) => ({
         ...data,
-        // event: packageEvent,
+        event: "delete",
         packageId: data.id,
         id: `${data.id}-${offset}`,
         timestamp: Date.now(),
@@ -94,25 +94,27 @@ const processAndIndex = async ({
 
       const transformedUpdateValuesSchema = updateValuesAdminChangeSchema.transform((data) => ({
         ...data,
-        // event: packageEvent,
+        event: "update-values",
         packageId: data.id,
         id: `${data.id}-${offset}`,
         timestamp: Date.now(),
       }));
 
-      const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((data) => ({
-        ...data,
-        // event: packageEvent,
-        packageId: data.id,
-        id: `${data.id}-${offset}`,
-        timestamp: Date.now(),
-      }));
+      // const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((data) => ({
+      //   ...data,
+      //   // event: packageEvent,
+      //   packageId: data.id,
+      //   id: `${data.id}-${offset}`,
+      //   timestamp: Date.now(),
+      // }));
 
-      const schema = transformedDeleteSchema
-        .or(transformedUpdateValuesSchema)
-        .or(transformedUpdateIdSchema);
+      const schema = transformedDeleteSchema.or(transformedUpdateValuesSchema);
+      // .or(transformedUpdateIdSchema);
 
-      if (record.isAdminChange) {
+      if (
+        record.isAdminChange &&
+        (record.adminChangeType === "delete" || record.adminChangeType === "update-values")
+      ) {
         const result = schema.safeParse(record);
         // console.log("IN THIS RESULT?");
 

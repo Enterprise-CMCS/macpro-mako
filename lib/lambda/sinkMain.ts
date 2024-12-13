@@ -8,7 +8,7 @@ import * as os from "./../libs/opensearch-lib";
 import {
   deleteAdminChangeSchema,
   updateValuesAdminChangeSchema,
-  updateIdAdminChangeSchema,
+  // updateIdAdminChangeSchema,
 } from "./update/adminChangeSchemas";
 
 const osDomain = process.env.osDomain;
@@ -87,11 +87,13 @@ const processAndIndex = async ({
       // If we're not a mako event, continue
       // TODO:  handle legacy.  for now, just continue
 
-      const schema = deleteAdminChangeSchema
-        .or(updateValuesAdminChangeSchema)
-        .or(updateIdAdminChangeSchema);
+      const schema = deleteAdminChangeSchema.or(updateValuesAdminChangeSchema);
+      // .or(updateIdAdminChangeSchema);
 
-      if (record.isAdminChange) {
+      if (
+        record.isAdminChange &&
+        (record.adminChangeType === "delete" || record.adminChangeType === "update-values")
+      ) {
         const result = schema.safeParse(record);
         if (result.success) {
           docs.push(record);
