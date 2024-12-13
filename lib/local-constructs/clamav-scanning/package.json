@@ -19,7 +19,7 @@
     "esbuild": "^0.21.5"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.697.0",
+    "@aws-sdk/client-s3": "^3.698.0",
     "@types/mime-types": "^2.1.4",
     "file-type": "^19.6.0",
     "mime-types": "^2.1.35",
