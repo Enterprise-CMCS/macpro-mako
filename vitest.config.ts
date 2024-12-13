@@ -30,6 +30,7 @@ export default defineConfig({
         "vitest.workspace.ts",
         "**/*/.eslintrc.{ts,js,cjs}",
         "**/*.config.{ts,js,cjs}",
+        "**/*.test.{ts,tsx}",
         "**/coverage/**",
         "test/e2e/**",
         "mocks/**",
