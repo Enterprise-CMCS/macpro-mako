@@ -80,6 +80,7 @@ const processAndIndex = async ({
 
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
+      console.log(record, "RECORD??");
       const packageEvent = await getPackageType(record._id);
       console.log(packageEvent, "WBAT IS THIS");
 

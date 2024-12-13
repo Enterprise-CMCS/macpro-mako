@@ -7,7 +7,7 @@ export const getPackageType = async (packageId: string) => {
   try {
     const packageChangelog = await getPackageChangelog(packageId);
     if (!packageChangelog.hits.hits.length) {
-      throw "The type of package could not be determined.";
+      throw new Error("The type of package could not be determined.");
     }
 
     const packageWithSubmissionType = packageChangelog.hits.hits.find((pkg) => {
