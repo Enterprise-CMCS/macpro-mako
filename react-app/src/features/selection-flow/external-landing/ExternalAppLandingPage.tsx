@@ -1,11 +1,6 @@
 import { PropsWithChildren, ReactElement } from "react";
-import { useLocation, Link } from "react-router-dom";
-import {
-  Button,
-  SimplePageContainer,
-  BreadCrumbs,
-  optionCrumbsFromPath,
-} from "@/components";
+import { useLocation, Link } from "react-router";
+import { Button, SimplePageContainer, BreadCrumbs, optionCrumbsFromPath } from "@/components";
 import { SimplePageTitle } from "@/features";
 import { FAQ_TAB } from "@/router";
 
@@ -21,12 +16,7 @@ export interface ExternalAppLandingPageConfig {
   buttonLabel: string;
   buttonLink: EXTERNAL_APP;
 }
-const MACProLogo = () => (
-  <img src={"/images/logos/macpro.png"} alt={"MACPro system logo"} />
-);
-const MMDLLogo = () => (
-  <img src={"/images/logos/mmdl.png"} alt={"MMDL system logo"} />
-);
+const MACProLogo = () => <img src={"/images/logos/macpro.png"} alt={"MACPro system logo"} />;
 const FAQHelperText = () => (
   <span className="max-w-xl">
     <i>
@@ -76,53 +66,16 @@ const ExternalAppLandingPage = ({
   );
 };
 
-export const MedicaidABPLandingPage = () => (
-  <ExternalAppLandingPage
-    pageTitle={
-      "Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing"
-    }
-    image={<MMDLLogo />}
-    description={
-      <LandingPageDescription>
-        <p className="mb-4">
-          <b>
-            Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and
-            Cost Sharing are managed within the{" "}
-            <a
-              className="text-sky-700 hover:text-sky-800 underline"
-              href={EXTERNAL_APP.MMDL}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Medicaid Model Data Lab (MMDL)
-            </a>
-            .
-          </b>
-        </p>
-        <p>
-          The MMDL system allows states to apply for changes to their State
-          plan, and access report on Medicaid program
-          administration/implementation.
-        </p>
-      </LandingPageDescription>
-    }
-    buttonLabel={"Enter the MMDL system"}
-    buttonLink={EXTERNAL_APP.MMDL}
-  />
-);
-
 export const MedicaidEligibilityLandingPage = () => (
   <ExternalAppLandingPage
-    pageTitle={
-      "Medicaid Eligibility, Enrollment, Administration, and Health Homes"
-    }
+    pageTitle={"Medicaid Eligibility, Enrollment, Administration, and Health Homes"}
     image={<MACProLogo />}
     description={
       <LandingPageDescription>
         <p className="mb-4">
           <b>
-            Medicaid Eligibility, Enrollment, Administration, and Health Homes
-            SPA packages are submitted within the{" "}
+            Medicaid Eligibility, Enrollment, Administration, and Health Homes SPA packages are
+            submitted within the{" "}
             <a
               className="text-sky-700 hover:text-sky-800 underline"
               href={EXTERNAL_APP.MAC_PRO}
@@ -135,44 +88,12 @@ export const MedicaidEligibilityLandingPage = () => (
           </b>
         </p>
         <p>
-          The MACPro system allows CMS and states to collaborate online to
-          process certain types of Medicaid SPA submissions.
+          The MACPro system allows CMS and states to collaborate online to process certain types of
+          Medicaid SPA submissions.
         </p>
       </LandingPageDescription>
     }
     buttonLabel={"Enter the MACPro system"}
     buttonLink={EXTERNAL_APP.MAC_PRO}
-  />
-);
-
-export const CHIPEligibilityLandingPage = () => (
-  <ExternalAppLandingPage
-    pageTitle={"CHIP Eligibility SPAs"}
-    image={<MMDLLogo />}
-    description={
-      <LandingPageDescription>
-        <p className="mb-4">
-          <b>
-            CHIP Eligibility SPAs are managed within the{" "}
-            <a
-              className="text-sky-700 hover:text-sky-800 underline"
-              href={EXTERNAL_APP.MMDL}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Medicaid Model Data Lab (MMDL)
-            </a>
-            .
-          </b>
-        </p>
-        <p>
-          The MMDL system allows states to apply for changes to their State
-          plan, and access report on Medicaid program
-          administration/implementation.
-        </p>
-      </LandingPageDescription>
-    }
-    buttonLabel={"Enter the MMDL system"}
-    buttonLink={EXTERNAL_APP.MMDL}
   />
 );

@@ -229,7 +229,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "submit",
-        entry: join(__dirname, "../lambda/submit/submit.ts"),
+        entry: join(__dirname, "../lambda/submit/index.ts"),
         environment: {
           dbInfoSecretName,
           topicName,
@@ -238,17 +238,6 @@ export class Api extends cdk.NestedStack {
           indexNamespace,
         },
         provisionedConcurrency: 2,
-      },
-      {
-        id: "action",
-        entry: join(__dirname, "../lambda/action.ts"),
-        environment: {
-          dbInfoSecretName,
-          topicName,
-          brokerString,
-          osDomain: `https://${openSearchDomainEndpoint}`,
-          indexNamespace,
-        },
       },
       {
         id: "getTypes",
@@ -291,18 +280,6 @@ export class Api extends cdk.NestedStack {
         id: "getAllForms",
         entry: join(__dirname, "../lambda/getAllForms.ts"),
         environment: {},
-      },
-      {
-        id: "appkNewSubmission",
-        entry: join(__dirname, "../lambda/appkNewSubmission.ts"),
-        environment: {
-          dbInfoSecretName,
-          topicName,
-          brokerString,
-          osDomain: `https://${openSearchDomainEndpoint}`,
-          indexNamespace,
-        },
-        provisionedConcurrency: 2,
       },
     ];
 
@@ -359,18 +336,17 @@ export class Api extends cdk.NestedStack {
         accessLogDestination: new cdk.aws_apigateway.LogGroupLogDestination(
           apiExecutionLogsLogGroup,
         ),
-        accessLogFormat:
-          cdk.aws_apigateway.AccessLogFormat.jsonWithStandardFields({
-            caller: true,
-            httpMethod: true,
-            ip: true,
-            protocol: true,
-            requestTime: true,
-            resourcePath: true,
-            responseLength: true,
-            status: true,
-            user: true,
-          }),
+        accessLogFormat: cdk.aws_apigateway.AccessLogFormat.jsonWithStandardFields({
+          caller: true,
+          httpMethod: true,
+          ip: true,
+          protocol: true,
+          requestTime: true,
+          resourcePath: true,
+          responseLength: true,
+          status: true,
+          user: true,
+        }),
       },
       defaultCorsPreflightOptions: {
         allowOrigins: cdk.aws_apigateway.Cors.ALL_ORIGINS,
@@ -391,32 +367,24 @@ export class Api extends cdk.NestedStack {
     });
 
     // Add GatewayResponse for 4XX errors
-    new cdk.aws_apigateway.CfnGatewayResponse(
-      this,
-      "GatewayResponseDefault4XX",
-      {
-        restApiId: api.restApiId,
-        responseType: "DEFAULT_4XX",
-        responseParameters: {
-          "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
-          "gatewayresponse.header.Access-Control-Allow-Headers": "'*'",
-        },
+    new cdk.aws_apigateway.CfnGatewayResponse(this, "GatewayResponseDefault4XX", {
+      restApiId: api.restApiId,
+      responseType: "DEFAULT_4XX",
+      responseParameters: {
+        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+        "gatewayresponse.header.Access-Control-Allow-Headers": "'*'",
       },
-    );
+    });
 
     // Add GatewayResponse for 5XX errors
-    new cdk.aws_apigateway.CfnGatewayResponse(
-      this,
-      "GatewayResponseDefault5XX",
-      {
-        restApiId: api.restApiId,
-        responseType: "DEFAULT_5XX",
-        responseParameters: {
-          "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
-          "gatewayresponse.header.Access-Control-Allow-Headers": "'*'",
-        },
+    new cdk.aws_apigateway.CfnGatewayResponse(this, "GatewayResponseDefault5XX", {
+      restApiId: api.restApiId,
+      responseType: "DEFAULT_5XX",
+      responseParameters: {
+        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+        "gatewayresponse.header.Access-Control-Allow-Headers": "'*'",
       },
-    );
+    });
 
     const apiResources = {
       search: {
@@ -441,11 +409,6 @@ export class Api extends cdk.NestedStack {
       },
       item: { path: "item", lambda: lambdas.item, method: "POST" },
       submit: { path: "submit", lambda: lambdas.submit, method: "POST" },
-      action: {
-        path: "action/{actionType}",
-        lambda: lambdas.action,
-        method: "POST",
-      },
       getTypes: {
         path: "getTypes",
         lambda: lambdas.getTypes,
@@ -471,11 +434,6 @@ export class Api extends cdk.NestedStack {
         path: "allForms",
         lambda: lambdas.getAllForms,
         method: "GET",
-      },
-      appk: {
-        path: "appk",
-        lambda: lambdas.appkNewSubmission,
-        method: "POST",
       },
     };
 

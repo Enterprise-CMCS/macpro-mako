@@ -1,7 +1,7 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Authority, CognitoUserAttributes, opensearch } from "shared-types";
 import { getAvailableActions, formatSeatoolDate } from "shared-utils";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import * as POP from "@/components";
 import { cn, DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
 
@@ -13,7 +13,7 @@ export const renderCellDate = (key: keyof opensearch.main.Document) =>
 
 type CellIdLinkProps = {
   id: string;
-  authority: Authority;
+  authority: Authority | string;
 };
 
 export const CellDetailsLink = ({ id, authority }: CellIdLinkProps) => (
@@ -39,10 +39,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) => {
         >
           <EllipsisVerticalIcon
             aria-label="record actions"
-            className={cn(
-              "w-8 ",
-              actions.length ? "text-blue-700" : "text-gray-400",
-            )}
+            className={cn("w-8 ", actions.length ? "text-blue-700" : "text-gray-400")}
           />
         </POP.PopoverTrigger>
         <POP.PopoverContent>
@@ -53,7 +50,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) => {
                   from: `${location.pathname}${location.search}`,
                 }}
                 to={{
-                  pathname: `/action/${data.authority}/${data.id}/${action}`,
+                  pathname: `/actions/${action}/${data.authority}/${data.id}`,
                   search: new URLSearchParams({
                     [ORIGIN]: DASHBOARD_ORIGIN,
                   }).toString(),

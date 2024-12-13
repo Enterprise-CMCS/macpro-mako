@@ -1,8 +1,5 @@
 import { z } from "zod";
-import {
-  attachmentArraySchema,
-  attachmentArraySchemaOptional,
-} from "../attachments";
+import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
 
 export const baseSchema = z.object({
   event: z.literal("capitated-renewal").default("capitated-renewal"),
@@ -10,26 +7,20 @@ export const baseSchema = z.object({
   id: z
     .string()
     .min(1, { message: "Required" })
-    .refine((id) => /^[A-Z]{2}-\d{4,5}\.R(?!00)\d{2}\.\d{2}$/.test(id), {
+    .refine((id) => /^[A-Z]{2}-\d{4,5}\.R(?!00)\d{2}\.[0]{2}$/.test(id), {
       message:
-        "Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00 For renewals, the “R##” starts with '01' and ascends.",
+        "The 1915(b) Waiver Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00. For renewals, the “R##” starts with ‘01’ and ascends.",
     }),
   proposedEffectiveDate: z.number(),
   attachments: z.object({
     bCapWaiverApplication: z.object({
-      label: z
-        .string()
-        .default(
-          "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
-        ),
+      label: z.string().default("1915(b) Comprehensive (Capitated) Waiver Application Pre-print"),
       files: attachmentArraySchema(),
     }),
     bCapCostSpreadsheets: z.object({
       label: z
         .string()
-        .default(
-          "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
-        ),
+        .default("1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets"),
       files: attachmentArraySchema(),
     }),
     bCapIndependentAssessment: z.object({
@@ -49,7 +40,7 @@ export const baseSchema = z.object({
       files: attachmentArraySchemaOptional(),
     }),
   }),
-  additionalInformation: z.string().max(4000).nullable().default(null),
+  additionalInformation: z.string().max(4000).nullable().default(null).optional(),
   waiverNumber: z
     .string()
     .min(1, { message: "Required" })

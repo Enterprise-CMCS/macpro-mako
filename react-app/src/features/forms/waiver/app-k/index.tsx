@@ -2,33 +2,32 @@ import {
   ActionForm,
   DatePicker,
   FormControl,
+  FormDescription,
   FormField,
-  FormIntroText,
   FormItem,
   FormLabel,
   FormMessage,
+  Input,
   RequiredIndicator,
   Textarea,
 } from "@/components";
-import { Authority, appkSchema } from "shared-types";
-import { WaiverIdField } from "./WaiverIdField";
-import { StateField } from "./StateField";
+import { formSchemas } from "@/formSchemas";
+import { FAQ_TAB } from "@/router";
+import { Link } from "react-router";
+import { Authority } from "shared-types";
+import { getFAQLinkForAttachments } from "../../faqLinks";
 
 export const AppKAmendmentForm = () => (
   <ActionForm
-    title="1915(c) Appendix K Amendment Request Details"
+    title="1915(c) Appendix K Amendment Details"
     breadcrumbText="Request a 1915(c) Appendix K Amendment"
-    schema={appkSchema}
+    schema={formSchemas["app-k"]}
     fields={(form) => (
       <>
         <div>
-          <FormIntroText />
-          <p className="max-w-4xl mt-4 text-gray-700 font-light">
-            <span className="font-bold">
-              If your Appendix K submission is for more than one waiver number,
-              please enter one of the applicable waiver numbers. You do not need
-              to create multiple submissions.
-            </span>
+          <p className="mt-4 font-bold">
+            If your Appendix K submission is for more than one waiver number, please enter one of
+            the applicable waiver numbers. You do not need to create multiple submissions.
           </p>
         </div>
         <FormField
@@ -39,13 +38,27 @@ export const AppKAmendmentForm = () => (
               <FormLabel className="font-bold" htmlFor="amendment-title">
                 Amendment Title <RequiredIndicator />
               </FormLabel>
-              <Textarea {...field} className="h-[80px]" id="amendment-title" />
-              <FormMessage />
+              <Textarea
+                {...field}
+                className="h-[76px] w-[355px]"
+                id="amendment-title"
+                maxLength={125}
+              />
+              <FormDescription>
+                <span
+                  tabIndex={0}
+                  id="character-count"
+                  aria-label="character-count"
+                  aria-live="polite"
+                >
+                  {`${125 - (field?.value?.length || 0)} characters remaining`}
+                </span>
+              </FormDescription>
             </FormItem>
           )}
         />
         <div className="flex flex-col">
-          <FormLabel className="font-semibold" htmlFor="1975c">
+          <FormLabel className="font-bold" htmlFor="1975c">
             Waiver Authority
           </FormLabel>
           <span className="text-lg font-thin" id="1975c">
@@ -54,35 +67,50 @@ export const AppKAmendmentForm = () => (
         </div>
         <FormField
           control={form.control}
-          name="state"
+          name="id"
           render={({ field }) => (
-            <StateField value={field.value} onChange={field.onChange} />
+            <FormItem>
+              <div className="flex gap-4">
+                <FormLabel className="font-bold" data-testid="amendmentnumber-label">
+                  Waiver Amendment Number <RequiredIndicator />
+                </FormLabel>
+                <Link
+                  to={"/faq/waiver-c-id"}
+                  target={FAQ_TAB}
+                  rel="noopener noreferrer"
+                  className="text-blue-900 underline"
+                >
+                  What is my Waiver Amendment Number?
+                </Link>
+              </div>
+              <p className="text-neutral-500" id="waiver-number-format">
+                The Waiver Number must be in the the format SS-####.R##.## or SS-#####.R##.##. For
+                amendments, the last two digits start with '01' and ascends.
+              </p>
+              <FormControl className="max-w-sm">
+                <Input
+                  ref={field.ref}
+                  value={field.value}
+                  onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
         />
-
-        <WaiverIdField
-          control={form.control}
-          name="waiverIds"
-          state={form.watch("state")}
-        />
-
         <FormField
           control={form.control}
           name="proposedEffectiveDate"
           render={({ field }) => (
             <FormItem className="max-w-sm">
-              <FormLabel
-                className="font-bold block"
-                data-testid="proposedEffectiveDate-label"
-              >
-                Proposed Effective Date of 1915(c) Appendix K Amendment{" "}
-                <RequiredIndicator />
+              <FormLabel className="font-bold block" data-testid="proposedEffectiveDate-label">
+                Proposed Effective Date of 1915(c) Appendix K Amendment <RequiredIndicator />
               </FormLabel>
               <FormControl>
                 <DatePicker
+                  onChange={(date) => field.onChange(date.getTime())}
+                  date={field.value ? new Date(field.value) : undefined}
                   dataTestId="proposedEffectiveDate"
-                  onChange={field.onChange}
-                  date={field.value}
                 />
               </FormControl>
               <FormMessage />
@@ -91,14 +119,19 @@ export const AppKAmendmentForm = () => (
         />
       </>
     )}
-    defaultValues={{ waiverIds: [], title: "" }}
+    defaultValues={{ id: "", title: "" }}
     documentPollerArgs={{
-      property: (data) => `${data.state}-${data.waiverIds[0]}`,
+      property: "id",
       documentChecker: (checks) =>
         checks.authorityIs([Authority["1915c"]]) && checks.actionIs("Amend"),
     }}
     attachments={{
-      faqLink: "/faq/appk-attachments",
+      faqLink: getFAQLinkForAttachments("app-k"),
+    }}
+    bannerPostSubmission={{
+      header: "Package submitted",
+      body: "The 1915(c) Appendix K Amendment request has been submitted.",
+      variant: "success",
     }}
   />
 );

@@ -1,20 +1,19 @@
-import * as React from "react";
-import { Authority, EmailAddresses, RaiResponse } from "shared-types";
-import { CommonVariables, AuthoritiesWithUserTypesTemplate } from "../..";
+import { Authority, EmailAddresses, Events, CommonEmailVariables } from "shared-types";
+import { AuthoritiesWithUserTypesTemplate } from "../..";
 import {
   MedSpaCMSEmail,
   MedSpaStateEmail,
   ChipSpaCMSEmail,
   ChipSpaStateEmail,
-  Waiver1915bCMSEmail,
-  Waiver1915bStateEmail,
+  WaiverCMSEmail,
+  WaiverStateEmail,
 } from "./emailTemplates";
 import { render } from "@react-email/render";
 
 export const respondToRai: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
     cms: async (
-      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+      variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [
@@ -23,31 +22,22 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.srtEmails,
         ],
         subject: `Medicaid SPA RAI Response for ${variables.id} Submitted`,
-        html: await render(<MedSpaCMSEmail variables={variables} />),
-        text: await render(<MedSpaCMSEmail variables={variables} />, {
-          plainText: true,
-        }),
+        body: await render(<MedSpaCMSEmail variables={variables} />),
       };
     },
     state: async (
-      variables: RaiResponse &
-        CommonVariables & { emails: EmailAddresses } & {
-          emails: EmailAddresses;
-        },
+      variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Your Medicaid SPA RAI Response for ${variables.id} has been submitted to CMS`,
-        html: await render(<MedSpaStateEmail variables={variables} />),
-        text: await render(<MedSpaStateEmail variables={variables} />, {
-          plainText: true,
-        }),
+        body: await render(<MedSpaStateEmail variables={variables} />),
       };
     },
   },
   [Authority.CHIP_SPA]: {
     cms: async (
-      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+      variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [
@@ -57,28 +47,22 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
         ],
         cc: variables.emails.chipCcList,
         subject: `CHIP SPA RAI Response for ${variables.id} Submitted`,
-        html: await render(<ChipSpaCMSEmail variables={variables} />),
-        text: await render(<ChipSpaCMSEmail variables={variables} />, {
-          plainText: true,
-        }),
+        body: await render(<ChipSpaCMSEmail variables={variables} />),
       };
     },
     state: async (
-      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+      variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Your CHIP SPA RAI Response for ${variables.id} has been submitted to CMS`,
-        html: await render(<ChipSpaStateEmail variables={variables} />),
-        text: await render(<ChipSpaStateEmail variables={variables} />, {
-          plainText: true,
-        }),
+        body: await render(<ChipSpaStateEmail variables={variables} />),
       };
     },
   },
   [Authority["1915b"]]: {
     cms: async (
-      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+      variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [
@@ -88,23 +72,43 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.srtEmails,
         ],
         subject: `Waiver RAI Response for ${variables.id} Submitted`,
-        html: await render(<Waiver1915bCMSEmail variables={variables} />),
-        text: await render(<Waiver1915bCMSEmail variables={variables} />, {
-          plainText: true,
-        }),
+        body: await render(<WaiverCMSEmail variables={variables} />),
       };
     },
     state: async (
-      variables: RaiResponse & CommonVariables & { emails: EmailAddresses },
+      variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [`"${variables.submitterName}" <${variables.submitterEmail}>`],
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         cc: variables.allStateUsersEmails,
-        subject: `Your ${variables.authority} ${variables.authority} Response for ${variables.id} has been submitted to CMS`,
-        html: await render(<Waiver1915bStateEmail variables={variables} />),
-        text: await render(<Waiver1915bStateEmail variables={variables} />, {
-          plainText: true,
-        }),
+        subject: `Your 1915(b) RAI Response for ${variables.id} has been submitted to CMS`,
+        body: await render(<WaiverStateEmail variables={variables} />),
+      };
+    },
+  },
+  [Authority["1915c"]]: {
+    cms: async (
+      variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: [
+          ...variables.emails.osgEmail,
+          ...variables.emails.dmcoEmail,
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+        ],
+        subject: `Waiver RAI Response for ${variables.id} Submitted`,
+        body: await render(<WaiverCMSEmail variables={variables} />),
+      };
+    },
+    state: async (
+      variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
+        cc: variables.allStateUsersEmails,
+        subject: `Your 1915(c) RAI Response for ${variables.id} has been submitted to CMS`,
+        body: await render(<WaiverStateEmail variables={variables} />),
       };
     },
   },

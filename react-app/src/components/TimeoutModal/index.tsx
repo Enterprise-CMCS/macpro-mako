@@ -12,6 +12,7 @@ import { useIdle, useCountdown } from "@/hooks";
 import { useGetUser } from "@/api";
 import { intervalToDuration } from "date-fns";
 import pluralize from "pluralize";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 const TWENTY_MINS_IN_MILS = 1000 * 60 * 20;
 const TEN_MINS_IN_MILS = 60 * 10;
@@ -24,9 +25,10 @@ export const TimeoutModal = () => {
 
   const [timeoutModalCountdown, { startCountdown, resetCountdown }] =
     useCountdown(TEN_MINS_IN_MILS);
-  const { data: user } = useGetUser();
+  const { data: user, isLoading: isUserLoading } = useGetUser();
 
   const onLogOut = () => {
+    setIsModalOpen(false);
     Auth.signOut();
   };
 
@@ -50,7 +52,7 @@ export const TimeoutModal = () => {
       startCountdown();
       setIsModalOpen(true);
     }
-  }, [isIdleForTwentyMins]);
+  }, [isIdleForTwentyMins, user, isUserLoading, startCountdown]);
 
   const duration = intervalToDuration({
     start: 0,
@@ -60,14 +62,14 @@ export const TimeoutModal = () => {
   return (
     <Dialog open={isModalOpen} onOpenChange={onExtendSession}>
       <DialogContent className="sm:max-w-[425px]">
+        <DialogDescription>Session expiring soon</DialogDescription>
         <DialogHeader>
           <DialogTitle>Session expiring soon</DialogTitle>
         </DialogHeader>
         <div className="py-4">
           <span>
             Your session will expire in <strong>{duration.minutes}</strong>{" "}
-            {pluralize("minute", duration.minutes)} and{" "}
-            <strong>{duration.seconds}</strong>{" "}
+            {pluralize("minute", duration.minutes)} and <strong>{duration.seconds}</strong>{" "}
             {pluralize("second", duration.seconds)}.
           </span>
         </div>

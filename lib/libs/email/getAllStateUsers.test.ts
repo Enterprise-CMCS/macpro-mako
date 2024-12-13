@@ -18,7 +18,7 @@ describe("getAllStateUsers", () => {
       },
     ]);
 
-    const result = await getAllStateUsers("CA");
+    const result = await getAllStateUsers({ userPoolId: "ID", state: "CA" });
     expect(result).toEqual([
       {
         firstName: "John",
@@ -32,16 +32,14 @@ describe("getAllStateUsers", () => {
   it("should return an empty array when no users are found", async () => {
     vi.mocked(getAllStateUsers).mockResolvedValue([]);
 
-    const result = await getAllStateUsers("CA");
+    const result = await getAllStateUsers({ userPoolId: "ID", state: "CA" });
     expect(result).toEqual([]);
   });
 
   it("should throw an error when there is an issue fetching users", async () => {
-    vi.mocked(getAllStateUsers).mockRejectedValue(
-      new Error("Error fetching users"),
-    );
+    vi.mocked(getAllStateUsers).mockRejectedValue(new Error("Error fetching users"));
 
-    await expect(getAllStateUsers("CA")).rejects.toThrow(
+    await expect(getAllStateUsers({ userPoolId: "ID", state: "CA" })).rejects.toThrow(
       "Error fetching users",
     );
   });

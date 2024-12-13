@@ -1,7 +1,7 @@
-import { FC, useEffect, useState } from "react";
 import { useDebounce } from "@/hooks";
-import { XIcon, Loader } from "lucide-react";
 import { motion } from "framer-motion";
+import { Loader, XIcon } from "lucide-react";
+import { FC, useEffect, useState } from "react";
 
 export const SearchForm: FC<{
   handleSearch: (s: string) => void;
@@ -21,9 +21,8 @@ export const SearchForm: FC<{
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const updateText = event.target.value.trim();
+    const updateText = event.target.value;
     setSearchText(updateText);
-    if (!updateText) handleSearch("");
   };
 
   return (
@@ -67,6 +66,7 @@ export const SearchForm: FC<{
         {!!searchText && (
           <XIcon
             className="absolute cursor-pointer top-0 bottom-0 w-6 h-6 my-auto left-[28rem]"
+            data-testid="close-icon"
             onClick={() => {
               setSearchText("");
               handleSearch("");

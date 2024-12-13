@@ -23,18 +23,9 @@ const newSubmissionPageRouteMapper: Record<
     displayText:
       "Medicaid Eligibility, Enrollment, Administration, and Health Homes",
   },
-  "medicaid-abp": {
-    to: "/new-submission/spa/medicaid/landing/medicaid-abp",
-    displayText:
-      "Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing",
-  },
   chip: {
     to: "/new-submission/spa/chip",
     displayText: "CHIP SPA Type",
-  },
-  "chip-eligibility": {
-    to: "/new-submission/spa/chip/landing/chip-eligibility",
-    displayText: "CHIP Eligibility SPAs",
   },
   waiver: {
     to: "/new-submission/waiver",
@@ -57,8 +48,9 @@ const newSubmissionPageRouteMapper: Record<
 export const optionCrumbsFromPath = (
   path: string,
   authority?: Authority,
-): BreadCrumbConfig[] =>
-  [dashboardCrumb(authority)].concat(
+  id?: string,
+): BreadCrumbConfig[] => {
+  const breadcrumbs = [dashboardCrumb(authority)].concat(
     path.split("/").reduce<BreadCrumbConfig[]>((acc, subPath, index) => {
       if (subPath in newSubmissionPageRouteMapper) {
         return acc.concat({
@@ -70,3 +62,14 @@ export const optionCrumbsFromPath = (
       return acc;
     }, []),
   );
+
+  if (id) {
+    return breadcrumbs.concat({
+      displayText: id,
+      to: `/details/${authority}/${id}`,
+      order: breadcrumbs.length,
+    });
+  }
+
+  return breadcrumbs;
+};

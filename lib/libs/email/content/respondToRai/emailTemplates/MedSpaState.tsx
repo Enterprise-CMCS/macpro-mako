@@ -1,55 +1,40 @@
-import * as React from "react";
-import { emailTemplateValue } from "../data";
-import { CommonVariables, formatNinetyDaysDate } from "../../..";
-import { RaiResponse } from "shared-types";
-import { Html, Container } from "@react-email/components";
-import {
-  PackageDetails,
-  MailboxSPA,
-  ContactStateLead,
-} from "../../email-components";
+import { formatNinetyDaysDate } from "shared-utils";
+import { CommonEmailVariables, Events } from "shared-types";
+import { Text } from "@react-email/components";
+import { PackageDetails, MailboxNotice, FollowUpNotice } from "../../email-components";
+import { BaseEmailTemplate } from "../../email-templates";
+import { styles } from "../../email-styles";
 
 export const MedSpaStateEmail = (props: {
-  variables: RaiResponse & CommonVariables;
+  variables: Events["RespondToRai"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
+  const previewText = `Medicaid SPA ${variables.id} RAI Response Submitted`;
+  const heading =
+    "This response confirms you submitted a Medicaid SPA RAI Response to CMS for review";
   return (
-    <Html lang="en" dir="ltr">
-      <Container>
-        <h3>
-          This response confirms you submitted a Medicaid SPA RAI Response to
-          CMS for review:
-        </h3>
-        <PackageDetails
-          details={{
-            "State or territory": variables.territory,
-            Name: variables.submitterName,
-            "Email Address": variables.submitterEmail,
-            "Medicaid SPA ID": variables.id,
-            "90th Day Deadline": formatNinetyDaysDate(variables.responseDate),
-            Summary: variables.additionalInformation,
-          }}
-        />
-        <p>
-          This response confirms receipt of your Medicaid State Plan Amendment
-          (SPA or your response to a SPA Request for Additional Information
-          (RAI)). You can expect a formal response to your submittal to be
-          issued within 90 days, before{" "}
-          {formatNinetyDaysDate(variables.responseDate)}.
-        </p>
-        <MailboxSPA />
-        <ContactStateLead />
-      </Container>
-    </Html>
+    <BaseEmailTemplate
+      previewText={previewText}
+      heading={heading}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<FollowUpNotice />}
+    >
+      <PackageDetails
+        details={{
+          "State or Territory": variables.territory,
+          Name: variables.submitterName,
+          "Email Address": variables.submitterEmail,
+          "Medicaid SPA ID": variables.id,
+          "90th Day Deadline": formatNinetyDaysDate(variables.responseDate),
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <Text style={styles.text.description}>
+        {`This response confirms receipt of your response to a SPA Request for Additional Information
+        (RAI). You can expect a formal response to your submittal to be issued within 90 days,
+        before ${formatNinetyDaysDate(variables.responseDate)}.`}
+      </Text>
+      <MailboxNotice type="SPA" />
+    </BaseEmailTemplate>
   );
 };
-
-const MedSpaCMSEmailPreview = () => {
-  return (
-    <MedSpaStateEmail
-      variables={emailTemplateValue as RaiResponse & CommonVariables}
-    />
-  );
-};
-
-export default MedSpaCMSEmailPreview;

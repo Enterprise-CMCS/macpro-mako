@@ -39,12 +39,6 @@ export const MEDICAID_SPA_OPTIONS: OptionData[] = [
     to: "/new-submission/spa/medicaid/landing/medicaid-eligibility",
   },
   {
-    title:
-      "Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing",
-    description: "Redirects to the MMDL submission system",
-    to: "/new-submission/spa/medicaid/landing/medicaid-abp",
-  },
-  {
     title: "All Other Medicaid SPA Submissions",
     description: "Create a new Medicaid State Plan Amendment",
     to: {
@@ -57,11 +51,6 @@ export const MEDICAID_SPA_OPTIONS: OptionData[] = [
 ];
 
 export const CHIP_SPA_OPTIONS: OptionData[] = [
-  {
-    title: "CHIP Eligibility",
-    description: "Redirects to the MMDL submission system",
-    to: "/new-submission/spa/chip/landing/chip-eligibility",
-  },
   {
     title: "All Other CHIP SPA Submissions",
     description: "Create a new CHIP State Plan Amendment",

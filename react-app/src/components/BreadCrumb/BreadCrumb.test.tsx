@@ -1,8 +1,11 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { BreadCrumb, BreadCrumbBar } from "./BreadCrumb";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BreadCrumb, BreadCrumbBar, BreadCrumbs } from "./BreadCrumb";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router";
+
+import { optionCrumbsFromPath } from "./create-breadcrumbs";
+import { Authority } from "shared-types";
 
 export const LocationDisplay = () => {
   const location = useLocation();
@@ -66,5 +69,36 @@ describe("Bread Crumb Tests", () => {
     });
   });
 
-  // TODO: Write a test to test the functionality of the BreadCrumbs component with a test config passed in
+  describe("Create Bread Crumbs From Path", async () => {
+    test("return the dashboard crum as the first breadcrumb", () => {
+      const result = optionCrumbsFromPath("/details/package-id");
+
+      expect(result[0].displayText).toEqual("Dashboard");
+      expect(result[0].to).toEqual("/dashboard");
+    });
+
+    test("when a path is a new submission; newSubmissionPageRouteMapper is used", () => {
+      const result = optionCrumbsFromPath("/new-submission/spa/medicaid/create?origin=spas");
+
+      const medicaid = {
+        to: "/new-submission/spa/medicaid",
+        displayText: "Medicaid SPA Type",
+      };
+
+      expect(result.length).toBe(4); // dashboard > submission type > SPA > medicaid
+      expect(result[3].to).toBe(medicaid.to);
+      expect(result[3].displayText).toBe(medicaid.displayText);
+    });
+
+    test("optionCrumbsFromPath creates config passed into component & displays correct bread crumbs ", () => {
+      const path = "/details/Medicaid%20SPA/MD-24-0114-P";
+      const testConfig = optionCrumbsFromPath(path, "Medicaid SPA" as Authority);
+
+      render(<BreadCrumbs options={[...testConfig]} />, { wrapper: BrowserRouter });
+
+      const dashboardBreadCrum = screen.getByRole("link", { name: "Dashboard" });
+      expect(dashboardBreadCrum).toBeInTheDocument();
+      expect(dashboardBreadCrum).toHaveAttribute("href", "/dashboard?tab=spas");
+    });
+  });
 });

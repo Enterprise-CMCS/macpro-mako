@@ -1,21 +1,15 @@
-import { API } from "aws-amplify";
-import {
-  Attachment,
-  ReactQueryApiError,
-  Action,
-  AttachmentKey,
-  Authority,
-} from "shared-types";
-import { buildActionUrl, SubmissionServiceEndpoint } from "@/utils";
 import { OneMacUser } from "@/api";
+import { buildActionUrl, SubmissionServiceEndpoint } from "@/utils";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { API } from "aws-amplify";
+import { Action, Attachment, AttachmentKey, Authority, ReactQueryApiError } from "shared-types";
 import { seaToolFriendlyTimestamp } from "shared-utils";
 
 export type SubmissionServiceParameters<T> = {
   data: T;
   endpoint: SubmissionServiceEndpoint;
   user: OneMacUser | undefined;
-  authority: Authority;
+  authority: Authority | string;
 };
 type SubmissionServiceResponse = {
   body: {
@@ -58,7 +52,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
   data: T,
   user: OneMacUser | undefined,
   endpoint: SubmissionServiceEndpoint,
-  authority: Authority,
+  authority: Authority | string,
   attachments?: UploadRecipe[],
 ) => {
   const userDetails = {
@@ -70,7 +64,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
   };
   const baseProperties = {
     authority: authority,
-    origin: "micro",
+    origin: "mako",
   };
 
   switch (endpoint) {
@@ -80,9 +74,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...userDetails,
         ...baseProperties,
         authority: Authority["1915c"],
-        proposedEffectiveDate: seaToolFriendlyTimestamp(
-          data.proposedEffectiveDate as Date,
-        ),
+        proposedEffectiveDate: seaToolFriendlyTimestamp(data.proposedEffectiveDate as Date),
         attachments: attachments ? buildAttachmentObject(attachments) : null,
       };
     case buildActionUrl(Action.REMOVE_APPK_CHILD):
@@ -97,9 +89,7 @@ export const buildSubmissionPayload = <T extends Record<string, unknown>>(
         ...data,
         ...baseProperties,
         ...userDetails,
-        proposedEffectiveDate: seaToolFriendlyTimestamp(
-          data.proposedEffectiveDate as Date,
-        ),
+        proposedEffectiveDate: seaToolFriendlyTimestamp(data.proposedEffectiveDate as Date),
         attachments: attachments ? buildAttachmentObject(attachments) : null,
         state: (data.id as string).split("-")[0],
       };
@@ -155,9 +145,7 @@ export const submit = async <T extends Record<string, unknown>>({
 }: SubmissionServiceParameters<T>): Promise<SubmissionServiceResponse> => {
   if (data?.attachments) {
     // Drop nulls and non arrays
-    const attachments = buildAttachmentKeyValueArr(
-      data.attachments as Record<string, File[]>,
-    );
+    const attachments = buildAttachmentKeyValueArr(data.attachments as Record<string, File[]>);
     // Generate a presigned url for each attachment
     const preSignedURLs: PreSignedURL[] = await Promise.all(
       attachments.map((attachment) =>
@@ -169,10 +157,7 @@ export const submit = async <T extends Record<string, unknown>>({
       ),
     );
     // For each attachment, add name, title, and a presigned url... and push to uploadRecipes
-    const uploadRecipes: UploadRecipe[] = urlsToRecipes(
-      preSignedURLs,
-      attachments,
-    );
+    const uploadRecipes: UploadRecipe[] = urlsToRecipes(preSignedURLs, attachments);
     // Upload attachments
     await Promise.all(
       uploadRecipes.map(async ({ url, data }) => {
@@ -184,13 +169,7 @@ export const submit = async <T extends Record<string, unknown>>({
     );
     // Submit form data
     return await API.post("os", endpoint, {
-      body: buildSubmissionPayload(
-        data,
-        user,
-        endpoint,
-        authority,
-        uploadRecipes,
-      ),
+      body: buildSubmissionPayload(data, user, endpoint, authority, uploadRecipes),
     });
   } else {
     // Submit form data

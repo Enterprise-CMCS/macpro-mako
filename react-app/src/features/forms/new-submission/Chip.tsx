@@ -10,9 +10,10 @@ import {
   Input,
   DatePicker,
 } from "@/components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
+import { getFAQLinkForAttachments } from "../faqLinks";
 
 export const ChipForm = () => (
   <ActionForm
@@ -45,9 +46,7 @@ export const ChipForm = () => (
                   className="max-w-sm"
                   ref={field.ref}
                   value={field.value}
-                  onChange={(e) =>
-                    field.onChange(e.currentTarget.value.toUpperCase())
-                  }
+                  onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                 />
               </FormControl>
               <FormMessage />
@@ -77,7 +76,7 @@ export const ChipForm = () => (
     )}
     defaultValues={{ id: "" }}
     attachments={{
-      faqLink: "/faq/chip-spa-attachments",
+      faqLink: getFAQLinkForAttachments("new-chip-submission"),
     }}
     documentPollerArgs={{
       property: "id",

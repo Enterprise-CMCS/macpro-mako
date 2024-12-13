@@ -8,43 +8,31 @@ import {
   Form,
   LoadingSpinner,
   SectionCard,
-  FormIntroText,
   FormField,
   banner,
   userPrompt,
   FAQFooter,
   PreSubmissionMessage,
   optionCrumbsFromPath,
+  ActionFormDescription,
+  RequiredFieldDescription,
+  RequiredIndicator,
 } from "@/components";
-import {
-  DefaultValues,
-  FieldPath,
-  useForm,
-  UseFormReturn,
-} from "react-hook-form";
+import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import {
-  Navigate,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
-import { SlotAdditionalInfo } from "@/features";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { getFormOrigin } from "@/utils";
-import {
-  CheckDocumentFunction,
-  documentPoller,
-} from "@/utils/Poller/documentPoller";
+import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
 import { API } from "aws-amplify";
 import { Authority, CognitoUserAttributes } from "shared-types";
-import { ActionFormAttachments } from "./ActionFormAttachments";
-import {
-  getAttachments,
-  getAdditionalInformation,
-} from "./actionForm.utilities";
+import { ActionFormAttachments, AttachmentsOptions } from "./ActionFormAttachments";
+import { getAttachments } from "./actionForm.utilities";
 import { isStateUser } from "shared-utils";
 import { useGetUser } from "@/api";
+import { AdditionalInformation } from "./AdditionalInformation";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "@/router";
 
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {
@@ -54,15 +42,14 @@ type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
         files: z.ZodTypeAny;
       }>;
     }>;
-    additionalInformation?: z.ZodDefault<z.ZodNullable<z.ZodString>>;
   },
   "strip",
   z.ZodTypeAny
 >;
 
-export type SchemaWithEnforcableProps<
-  Shape extends z.ZodRawShape = z.ZodRawShape,
-> = z.ZodEffects<EnforceSchemaProps<Shape>> | EnforceSchemaProps<Shape>;
+export type SchemaWithEnforcableProps<Shape extends z.ZodRawShape = z.ZodRawShape> =
+  | z.ZodEffects<EnforceSchemaProps<Shape>>
+  | EnforceSchemaProps<Shape>;
 
 // Utility type to handle Zod schema with or without a transform
 type InferUntransformedSchema<T> = T extends z.ZodEffects<infer U> ? U : T;
@@ -71,27 +58,28 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   schema: Schema;
   defaultValues?: DefaultValues<z.infer<InferUntransformedSchema<Schema>>>;
   title: string;
-  fieldsLayout?: (props: { children: ReactNode; title: string }) => ReactNode;
-  fields: (
-    form: UseFormReturn<z.infer<InferUntransformedSchema<Schema>>>,
-  ) => ReactNode;
+  fields: (form: UseFormReturn<z.infer<InferUntransformedSchema<Schema>>>) => ReactNode;
   bannerPostSubmission?: Omit<Banner, "pathnameToDisplayOn">;
   promptPreSubmission?: Omit<UserPrompt, "onAccept">;
   promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
-  attachments: {
-    faqLink: string;
-    specialInstructions?: string;
-  };
+  attachments?: AttachmentsOptions;
+  additionalInformation?:
+    | {
+        required: boolean;
+        title: string;
+        label: string;
+      }
+    | false;
   documentPollerArgs: {
-    property:
-      | (keyof z.TypeOf<Schema> & string)
-      | ((values: z.TypeOf<Schema>) => string);
+    property: (keyof z.TypeOf<Schema> & string) | ((values: z.TypeOf<Schema>) => string);
     documentChecker: CheckDocumentFunction;
   };
-  conditionsDeterminingUserAccess?: ((
-    user: CognitoUserAttributes | null,
-  ) => boolean)[];
+  conditionsDeterminingUserAccess?: ((user: CognitoUserAttributes | null) => boolean)[];
   breadcrumbText: string;
+  formDescription?: string;
+  preSubmissionMessage?: string;
+  showPreSubmissionMessage?: boolean;
+  areFieldsRequired?: boolean;
 };
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
@@ -99,7 +87,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   defaultValues,
   title,
   fields: Fields,
-  fieldsLayout: FieldsLayout,
   bannerPostSubmission = {
     header: "Package submitted",
     body: "Your submission has been received.",
@@ -117,13 +104,30 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   attachments,
   conditionsDeterminingUserAccess = [isStateUser],
   breadcrumbText,
+  formDescription = `Once you submit this form, a confirmation email is sent to you and to CMS.
+      CMS will use this content to review your package, and you will not be able
+      to edit this form. If CMS needs any additional information, they will
+      follow up by email.`,
+  preSubmissionMessage,
+  additionalInformation = {
+    required: false,
+    label: "Add anything else you would like to share with CMS.",
+    title: "Additional Information",
+  },
+  showPreSubmissionMessage = true,
+  areFieldsRequired = true,
 }: ActionFormProps<Schema>) => {
-  const { id, authority } = useParams<{ id: string; authority: Authority }>();
+  const { id, authority } = useParams<{
+    id: string;
+    authority: Authority;
+    type: string;
+  }>();
   const { pathname } = useLocation();
-  const navigate = useNavigate();
-  const { data: userObj } = useGetUser();
 
-  const breadcrumbs = optionCrumbsFromPath(pathname, authority);
+  const navigate = useNavigate();
+  const { data: userObj, isLoading: isUserLoading } = useGetUser();
+
+  const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
 
   const form = useForm<z.TypeOf<Schema>>({
     resolver: zodResolver(schema),
@@ -133,29 +137,47 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     },
   });
 
+  const { mutateAsync } = useMutation({
+    mutationFn: (formData: z.TypeOf<Schema>) =>
+      API.post("os", "/submit", {
+        body: formData,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["record"] });
+    },
+  });
+
   const onSubmit = form.handleSubmit(async (formData) => {
     try {
-      await API.post("os", "/submit", {
-        body: formData,
-      });
+      try {
+        await mutateAsync(formData);
+      } catch (error) {
+        throw Error(`Error submitting form: ${error.message}`);
+      }
 
       const { documentChecker, property } = documentPollerArgs;
 
       const documentPollerId =
-        typeof property === "function"
-          ? property(formData)
-          : formData[property];
+        typeof property === "function" ? property(formData) : formData[property];
 
-      const poller = documentPoller(documentPollerId, documentChecker);
-      await poller.startPollingData();
+      try {
+        const poller = documentPoller(documentPollerId, documentChecker);
+        await poller.startPollingData();
+      } catch (error) {
+        throw Error(error.error);
+      }
 
       const formOrigins = getFormOrigin({ authority, id });
-      banner({
-        ...bannerPostSubmission,
-        pathnameToDisplayOn: formOrigins.pathname,
-      });
 
       navigate(formOrigins);
+
+      // artificially delaying allows the banner to be displayed after navigation
+      setTimeout(() => {
+        banner({
+          ...bannerPostSubmission,
+          pathnameToDisplayOn: formOrigins.pathname,
+        });
+      }, 50);
     } catch (error) {
       console.error(error);
       banner({
@@ -169,20 +191,16 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   });
 
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
-  const additionalInformationFromSchema = useMemo(
-    () => getAdditionalInformation(schema),
-    [schema],
-  );
-  const hasProgressLossReminder = useMemo(
-    () => Fields({ ...form }) !== null || attachmentsFromSchema.length > 0,
-    [attachmentsFromSchema, Fields, form],
+
+  if (isUserLoading === true) {
+    return <LoadingSpinner />;
+  }
+
+  const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some((condition) =>
+    condition(userObj?.user),
   );
 
-  const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some(
-    (condition) => condition(userObj.user),
-  );
-
-  if (doesUserHaveAccessToForm === false) {
+  if (!userObj || doesUserHaveAccessToForm === false) {
     return <Navigate to="/" replace />;
   }
 
@@ -200,53 +218,51 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       />
       {form.formState.isSubmitting && <LoadingSpinner />}
       <Form {...form}>
-        <form
-          onSubmit={onSubmit}
-          className="my-6 space-y-8 mx-auto justify-center flex flex-col"
-        >
-          {FieldsLayout ? (
-            <FieldsLayout title={title}>
-              <Fields {...form} />
-            </FieldsLayout>
-          ) : (
-            <SectionCard title={title}>
-              <FormIntroText
-                hasProgressLossReminder={hasProgressLossReminder}
-              />
-              <Fields {...form} />
-            </SectionCard>
-          )}
+        <form onSubmit={onSubmit} className="my-6 space-y-8 mx-auto justify-center flex flex-col">
+          <SectionCard testId="detail-section" title={title}>
+            <div>
+              {areFieldsRequired && <RequiredFieldDescription />}
+              <ActionFormDescription boldReminder={areFieldsRequired}>
+                {formDescription}
+              </ActionFormDescription>
+            </div>
+            <Fields {...form} />
+          </SectionCard>
           {attachmentsFromSchema.length > 0 && (
-            <ActionFormAttachments
-              attachmentsFromSchema={attachmentsFromSchema}
-              {...attachments}
-            />
+            <ActionFormAttachments attachmentsFromSchema={attachmentsFromSchema} {...attachments} />
           )}
-          {additionalInformationFromSchema && (
-            <SectionCard title="Additional Information">
+          {additionalInformation && (
+            <SectionCard
+              testId="additional-info"
+              title={
+                <>
+                  {additionalInformation.title}{" "}
+                  {additionalInformation.required && <RequiredIndicator />}
+                </>
+              }
+            >
               <FormField
                 control={form.control}
                 name={"additionalInformation" as FieldPath<z.TypeOf<Schema>>}
-                render={SlotAdditionalInfo({
-                  withoutHeading: true,
-                  label: (
-                    <p>Add anything else you would like to share with CMS.</p>
-                  ),
-                })}
+                render={({ field }) => (
+                  <AdditionalInformation label={additionalInformation.label} field={field} />
+                )}
               />
             </SectionCard>
           )}
-          <PreSubmissionMessage
-            hasProgressLossReminder={hasProgressLossReminder}
-          />
+          {showPreSubmissionMessage && (
+            <PreSubmissionMessage
+              hasProgressLossReminder={areFieldsRequired}
+              preSubmissionMessage={preSubmissionMessage}
+            />
+          )}
           <section className="flex justify-end gap-2 p-4 ml-auto">
             <Button
               className="px-12"
               type={promptPreSubmission ? "button" : "submit"}
               onClick={
                 promptPreSubmission
-                  ? () =>
-                      userPrompt({ ...promptPreSubmission, onAccept: onSubmit })
+                  ? () => userPrompt({ ...promptPreSubmission, onAccept: onSubmit })
                   : undefined
               }
               disabled={form.formState.isValid === false}

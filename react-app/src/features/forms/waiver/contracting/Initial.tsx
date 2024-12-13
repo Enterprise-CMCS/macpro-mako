@@ -9,9 +9,10 @@ import {
   Input,
   RequiredIndicator,
 } from "@/components";
-import { Link } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
+import { Link } from "react-router";
+import { getFAQLinkForAttachments } from "../../faqLinks";
 
 export const InitialForm = () => {
   return (
@@ -35,10 +36,7 @@ export const InitialForm = () => {
             render={({ field }) => (
               <FormItem>
                 <div className="flex gap-4">
-                  <FormLabel
-                    className="text-lg font-semibold mr-1"
-                    data-testid="waiverid-label"
-                  >
+                  <FormLabel className="text-lg font-semibold mr-1" data-testid="waiverid-label">
                     Initial Waiver Number <RequiredIndicator />
                   </FormLabel>
                   <Link
@@ -50,20 +48,14 @@ export const InitialForm = () => {
                     What is my Initial Waiver Number?
                   </Link>
                 </div>
-                <p
-                  className="text-gray-500 font-light"
-                  id="waiver-number-format"
-                >
-                  Must be a new initial number with the format SS-####.R00.00 or
-                  SS-#####.R00.00
+                <p className="text-neutral-500" id="waiver-number-format">
+                  Must be a new initial number with the format SS-####.R00.00 or SS-#####.R00.00
                 </p>
                 <FormControl className="max-w-sm">
                   <Input
                     ref={field.ref}
                     value={field.value}
-                    onChange={(e) =>
-                      field.onChange(e.currentTarget.value.toUpperCase())
-                    }
+                    onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                   />
                 </FormControl>
                 <FormMessage />
@@ -79,8 +71,7 @@ export const InitialForm = () => {
                   className="text-lg font-semibold block"
                   data-testid="proposedEffectiveDate-label"
                 >
-                  Proposed Effective Date of 1915(b) Initial Waiver{" "}
-                  <RequiredIndicator />
+                  Proposed Effective Date of 1915(b) Initial Waiver <RequiredIndicator />
                 </FormLabel>
                 <FormControl className="max-w-sm">
                   <DatePicker
@@ -96,7 +87,7 @@ export const InitialForm = () => {
         </>
       )}
       attachments={{
-        faqLink: "/faq/waiverb-attachments",
+        faqLink: getFAQLinkForAttachments("contracting-initial"),
       }}
       defaultValues={{ id: "" }}
       documentPollerArgs={{

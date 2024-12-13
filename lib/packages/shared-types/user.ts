@@ -1,5 +1,8 @@
 import { UserStatusType } from "@aws-sdk/client-cognito-identity-provider";
 
+export { CognitoUser } from "amazon-cognito-identity-js";
+export type { UserData } from "amazon-cognito-identity-js";
+
 export enum UserRoles {
   CMS_READ_ONLY = "onemac-micro-readonly",
   CMS_REVIEWER = "onemac-micro-reviewer",
@@ -28,15 +31,9 @@ export const CMS_ROLES = [
   UserRoles.CMS_SUPER_USER,
 ];
 
-export const CMS_WRITE_ROLES = [
-  UserRoles.CMS_REVIEWER,
-  UserRoles.CMS_SUPER_USER,
-];
+export const CMS_WRITE_ROLES = [UserRoles.CMS_REVIEWER, UserRoles.CMS_SUPER_USER];
 
-export const CMS_READ_ONLY_ROLES = [
-  UserRoles.CMS_READ_ONLY,
-  UserRoles.HELPDESK,
-];
+export const CMS_READ_ONLY_ROLES = [UserRoles.CMS_READ_ONLY, UserRoles.HELPDESK];
 
 export const STATE_ROLES = [UserRoles.STATE_SUBMITTER];
 

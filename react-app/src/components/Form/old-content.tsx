@@ -1,27 +1,24 @@
-import { Link } from "react-router-dom";
-import { Info } from "lucide-react";
 import {
-  Alert,
-  RequiredFieldDescription,
   ActionFormDescription,
+  Alert,
   ProgressLossReminder,
+  RequiredFieldDescription,
 } from "@/components";
 import { FAQ_TAB } from "@/router";
+import { Info } from "lucide-react";
+import { Link } from "react-router";
 
 type FormIntroTextProps = {
   hasProgressLossReminder?: boolean;
 };
 
-export const FormIntroText = ({
-  hasProgressLossReminder = true,
-}: FormIntroTextProps) => (
+export const FormIntroText = ({ hasProgressLossReminder = true }: FormIntroTextProps) => (
   <div>
     <RequiredFieldDescription />
     <ActionFormDescription boldReminder={hasProgressLossReminder}>
-      Once you submit this form, a confirmation email is sent to you and to CMS.
-      CMS will use this content to review your package, and you will not be able
-      to edit this form. If CMS needs any additional information, they will
-      follow up by email.{" "}
+      Once you submit this form, a confirmation email is sent to you and to CMS. CMS will use this
+      content to review your package, and you will not be able to edit this form. If CMS needs any
+      additional information, they will follow up by email.{" "}
     </ActionFormDescription>
   </div>
 );
@@ -31,9 +28,8 @@ export const FormIntroTextForAppK = () => (
     <FormIntroText />
     <p className="max-w-4xl mt-4 text-gray-700 font-light">
       <span className="font-bold">
-        If your Appendix K submission is for more than one waiver number, please
-        enter one of the applicable waiver numbers. You do not need to create
-        multiple submissions.
+        If your Appendix K submission is for more than one waiver number, please enter one of the
+        applicable waiver numbers. You do not need to create multiple submissions.
       </span>
     </p>
   </div>
@@ -41,12 +37,10 @@ export const FormIntroTextForAppK = () => (
 
 export const SpaIdFormattingDesc = () => (
   <>
-    <p className="text-gray-800 font-light">
-      Must follow the format SS-YY-NNNN or SS-YY-NNNN-XXXX.
-    </p>
-    <p className="text-gray-500 font-light">
-      Reminder - CMS recommends that all SPA numbers start with the year in
-      which the package is submitted.
+    <p>Must follow the format SS-YY-NNNN or SS-YY-NNNN-XXXX.</p>
+    <p className="text-neutral-500">
+      Reminder - CMS recommends that all SPA numbers start with the year in which the package is
+      submitted.
     </p>
   </>
 );
@@ -60,10 +54,12 @@ export const AttachmentsSizeTypesDesc = ({
 }) => (
   <div className="text-gray-700 font-light">
     <p>
-      Maximum file size of 80 MB per attachment. You can add multiple files per
-      attachment type
-      {includeCMS179 && ", except for the CMS Form 179."}. Read the description
-      for each of the attachment types on the{" "}
+      Maximum file size of 80 MB per attachment.{" "}
+      <span className="font-bold">
+        You can add multiple files per attachment type
+        {includeCMS179 && ", except for the CMS Form 179."}.
+      </span>{" "}
+      Read the description for each of the attachment types on the{" "}
       {
         <Link
           to={faqAttLink}
@@ -79,9 +75,7 @@ export const AttachmentsSizeTypesDesc = ({
     <br />
     <p>
       We accept the following file formats:{" "}
-      <strong className="bold">
-        .doc, .docx, .pdf, .jpg, .xlsx, and more.{" "}
-      </strong>{" "}
+      <strong className="bold">.doc, .docx, .pdf, .jpg, .xlsx, and more. </strong>{" "}
       {
         <Link
           to={"/faq/acceptable-file-formats"}
@@ -99,18 +93,18 @@ export const AttachmentsSizeTypesDesc = ({
 
 type PreSubmissionMessageProps = {
   hasProgressLossReminder?: boolean;
+  preSubmissionMessage?: string;
 };
 export const PreSubmissionMessage = ({
   hasProgressLossReminder = true,
+  preSubmissionMessage = `Once you submit this form, a confirmation email is sent to you and to CMS.
+      CMS will use this content to review your package, and you will not be able
+      to edit this form. If CMS needs any additional information, they will
+      follow up by email.`,
 }: PreSubmissionMessageProps) => (
   <Alert variant="infoBlock" className="my-2 flex-row text-sm">
     <Info />
-    <p className="ml-2">
-      Once you submit this form, a confirmation email is sent to you and to CMS.
-      CMS will use this content to review your package, and you will not be able
-      to edit this form. If CMS needs any additional information, they will
-      follow up by email.
-    </p>
+    <p className="ml-2">{preSubmissionMessage}</p>
     {hasProgressLossReminder && <ProgressLossReminder className="ml-2" />}
   </Alert>
 );
