@@ -1,18 +1,18 @@
 import { Amplify } from "aws-amplify";
 import {
   API_CONFIG,
+  API_ENDPOINT,
   AUTH_CONFIG,
+  IDENTITY_POOL_ID,
   OPENSEARCH_DOMAIN,
   OPENSEARCH_INDEX_NAMESPACE,
-  IDENTITY_POOL_ID,
-  USER_POOL_CLIENT_ID,
-  USER_POOL_CLIENT_DOMAIN,
-  setDefaultStateSubmitter,
-  REGION,
   PROJECT,
+  REGION,
   STAGE,
-  API_ENDPOINT,
+  USER_POOL_CLIENT_DOMAIN,
+  USER_POOL_CLIENT_ID,
   USER_POOL_ID,
+  setDefaultStateSubmitter,
 } from "mocks";
 import { mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
@@ -37,6 +37,18 @@ import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
 //     at startTests (file:///home/runner/work/macpro-mako/macpro-mako/node_modules/@vitest/runner/dist/index.js:1197:3)
 //  ✓ |lib| local-constructs/manage-users/src/manageUsers.test.ts  (2 tests) 15ms
 
+// { username: '53832e35-1fbe-4c74-9111-4a0cd29ce2cf' }
+// getAuthDetails event:  {"requestContext":{"identity":{"cognitoAuthenticationProvider":"https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf"}}}
+// {
+//   authDetails: {
+//     userId: '53832e35-1fbe-4c74-9111-4a0cd29ce2cf',
+//     poolId: 'us-east-1_userPool1'
+//   }
+// }
+// defaultApiTokenHandler:  {}
+// defaultSecurityCredentialsHandler:  {}
+// defaultSecurityCredentialsHandler:  {}
+
 Amplify.configure({
   API: API_CONFIG,
   Auth: AUTH_CONFIG,
@@ -57,7 +69,7 @@ beforeEach(() => {
   process.env.PROJECT = PROJECT;
   process.env.REGION_A = REGION;
   process.env.STAGE = STAGE;
-  process.env.isDev = true;
+  process.env.isDev = "true";
 
   process.env.project = PROJECT;
   process.env.region = REGION;
