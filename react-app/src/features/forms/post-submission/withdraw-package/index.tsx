@@ -59,9 +59,9 @@ export const WithdrawPackageActionWaiver = () => {
       promptPreSubmission={{
         acceptButtonText: "Yes, withdraw package",
         header: "Withdraw package?",
-        body: `You are about to withdraw ${authority} ${
+        body: `You are about to withdraw ${authorityText} ${
           waiverActionType[waiver?._source?.actionType]
-        } ${id}. Completing this action will conclude the review of this ${authority} ${
+        } ${id}. Completing this action will conclude the review of this ${authorityText} ${
           waiverActionType[waiver?._source.actionType]
         } package. If you are not sure this is the correct action to select, contact your CMS point of contact for assistance.`,
       }}
