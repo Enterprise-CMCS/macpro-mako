@@ -90,6 +90,7 @@ const processAndIndex = async ({
       const schema = deleteAdminChangeSchema.or(updateValuesAdminChangeSchema);
       // .or(updateIdAdminChangeSchema);
 
+      console.log("WHATS THE RECORD", record);
       if (
         record.isAdminChange &&
         (record.adminChangeType === "delete" || record.adminChangeType === "update-values")
