@@ -209,108 +209,16 @@ export const handler = async (event: APIGatewayEvent) => {
 
     if (action === "update-id") {
       return await sendUpdateIdMessage({ topicName, currentPackage: packageResult, updatedId });
-
-      // if (!updatedId) {
-      //   return response({
-      //     statusCode: 400,
-      //     body: { message: "New ID required to update package" },
-      //   });
-      // }
-      // const existingPackage = await getPackage(updatedId);
-      // if (existingPackage) {
-      //   return response({
-      //     statusCode: 400,
-      //     body: { message: "This ID already exists" },
-      //   });
-      // }
-      // // use event of current package to determine how ID should be formatted
-      // const packageChangelog = await getPackageChangelog(packageId);
-      // if (packageChangelog.hits.hits.length) {
-      //   const packageWithSubmissionType = packageChangelog.hits.hits.find((packageChange) => {
-      //     return packageChange._source.event in events;
-      //   });
-      //   const packageEvent = packageWithSubmissionType?._source.event;
-      //   const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
-      //   console.log(packageSubmissionTypeSchema, "PACKAGE TYPE SCHEMA");
-      //   const idSchema = packageSubmissionTypeSchema.shape.id;
-      //   const parsedId = idSchema.safeParse(updatedId);
-
-      //   if (parsedId.success) {
-      //     await sendUpdateIdMessage(topicName, packageResult, updatedId);
-      //   } else {
-      //     console.log(parsedId.error.message, "ERROR MSG");
-      //     return response({
-      //       statusCode: 400,
-      //       body: parsedId.error.message[0],
-      //     });
-      //   }
     }
 
     if (action === "update-values") {
-      // const areValidFields = Object.keys(updatedFields).every((fieldKey) => {
-      //   return fieldKey in packageResult._source;
-      // });
-      // const invalidFields = Object.keys(updatedFields).filter((field) => !(field in packageResult._source));
-      // if (invalidFields.length > 0) {
-      //   return response({
-      //     statusCode: 400,
-      //     body: { message: `Cannot update invalid field(s): ${invalidFields.join(", ")}` },
-      //   });
-      // }
-
-      // if (!areValidFields) {
-      //   return response({
-      //     statusCode: 400,
-      //     body: {
-      //       message: "Cannot update invalid field(s)",
-      //     },
-      //   });
-      // }
-
-      // if ("id" in updatedFields) {
-      //   return response({
-      //     statusCode: 400,
-      //     body: { message: "ID is not a valid field to update" },
-      //   });
-      // }
-
-      // const fieldNames = Object.keys(updatedFields).join(", ");
-      // const changeMadeText = `${fieldNames} ${
-      //   Object.keys(updatedFields).length > 1 ? "have" : "has"
-      // } been updated.`;
-
       return await sendUpdateValuesMessage({
         topicName,
         currentPackage: packageResult,
         updatedFields,
         changeReason,
       });
-      // if (Object.keys(updatedFields).length > 1) {
-      //   await sendUpdateValuesMessage(
-      //     {topicName,
-      //     packageId,
-      //     updatedFields,
-      //     changeMadeText: `${Object.keys(updatedFields).join(", ")} have been updated.`,
-      //     changeReason},
-      //   );
-      // } else {
-      //   await sendUpdateValuesMessage(
-      //     {topicName,
-      //     packageId,
-      //     updatedFields,
-      //     changeMadeText: `${Object.keys(updatedFields)} has been updated.`,
-      //     changeReason},
-      //   );
-      // }
-      // return response({
-      //   statusCode: 200,
-      //   body: { message: "success" },
-      // });
     }
-    // return response({
-    //   statusCode: 200,
-    //   body: { message: "success" },
-    // });
     return response({
       statusCode: 400,
       body: { message: "Could not update package." },
