@@ -1,8 +1,10 @@
 import { test } from "@playwright/test";
 import { HomePage, LoginPage } from "pages";
 
-test.describe.skip("Form Submission", async () => {
-  test.beforeAll(async ({ page }) => {
+test.describe("Form Submission", async () => {
+
+  test("Create and submit a Medicaid SPA", async ({ page }) => {
+
     /* Login */
     // Navigate to the OneMAC Home Page using the home.page.ts file. 
     // Login to MAKO as a State User, using the loginPage.ts script to navigate to the Login prompt. 
@@ -14,9 +16,6 @@ test.describe.skip("Form Submission", async () => {
     await homePage;
     await loginPage.login("", "");
 
-  });
-  test("Create and submit a Medicaid SPA", async ({ page }) => {
-
     /* Dashboard */
     // Select New Submission on the Dashboard page. 
     // Select State Plan Amendment (SPA) on the Submission Type page. 
@@ -24,16 +23,16 @@ test.describe.skip("Form Submission", async () => {
     // Select All Other Medicaid SPA Submissions for Medicaid SPA Type. 
     // This should take the user to the Medicaid SPA Details page. 
     // Navigate to the Dashboard and click on "New Submission" Button. Convert to Page object in the future. 
-    await page.goto("https://mako-val.cms.gov/dashboard");
-    await page.getByRole("button", { name: "New Submission" }).click();
-    await page.getByText("State Plan Amendment (SPA)").click();
-    await page.getByText("Medicaid SPA").click();
-    await page.getByText("All Other Medicaid SPA Submissions").click();
+    await page.goto("https://mako-dev.cms.gov");
+    await page.getByText("New Submission").click();
+    await page.getByRole('heading', { name: "State Plan Amendment (SPA)" }).click();
+    await page.getByRole('heading', { name: "Medicaid SPA" }).click();
+    await page.getByRole('heading', { name: "All Other Medicaid SPA Submissions" }).click();
 
     /* Medicaid SPA Details */
     // Enter the SPA ID in the following formats: SS-YY-NNNN, SS-YY-NNNN-XXXX where SS is the state and YY is the current year.
     // Enter the Proposed Effective Date of Medicaid SPA. Default date is the date of SPA creation. 
-    await page.getByRole("textbox", { name: "SPA ID" }).type("SS-YY-NNNN");
+    await page.getByRole("textbox", { name: "SPA ID" }).fill("MD-24-NNNN");
     await page.getByRole("button", { name: "Proposed Effective Date of Medicaid SPA" }).click();
 
     /* Attachments */
