@@ -1,20 +1,10 @@
 // getPackage.test.ts
-import {
-  INITIAL_RELEASE_APPK_ITEM_ID,
-  OPENSEARCH_DOMAIN,
-  OPENSEARCH_INDEX_NAMESPACE,
-  TEST_ITEM_ID,
-} from "mocks";
+import { INITIAL_RELEASE_APPK_ITEM_ID, TEST_ITEM_ID } from "mocks";
 import items from "mocks/data/items";
-import { beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { getPackage } from "./getPackage";
 
 describe("getPackage", () => {
-  beforeEach(() => {
-    process.env.osDomain = OPENSEARCH_DOMAIN;
-    process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE;
-  });
-
   it("should throw an error if osDomain is not defined", async () => {
     delete process.env.osDomain;
     await expect(getPackage(TEST_ITEM_ID)).rejects.toThrow("process.env.osDomain must be defined");

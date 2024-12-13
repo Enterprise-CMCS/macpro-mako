@@ -7,6 +7,7 @@ import {
   setDefaultStateSubmitter,
   REGION,
   PROJECT,
+  STAGE,
   API_ENDPOINT,
   USER_POOL_ID,
 } from "mocks";
@@ -30,24 +31,24 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-  // process.env.PROJECT = PROJECT;
-  // process.env.REGION_A = REGION;
-  // process.env.STAGE = STAGE;
+  process.env.PROJECT = PROJECT;
+  process.env.REGION_A = REGION;
+  process.env.STAGE = STAGE;
 
   process.env.project = PROJECT;
   process.env.region = REGION;
   process.env.stage = STAGE;
+  process.env.isDev = true;
 
   process.env.userPoolId = USER_POOL_ID;
   process.env.applicationEndpointUrl = API_ENDPOINT;
   process.env.osDomain = OPENSEARCH_DOMAIN;
   process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE;
-  process.env.isDev = true;
-
-  process.env.brokerString = "brokerString";
-  process.env.legacyS3AccessRoleArn = "legacyS3AccessRoleArn";
   process.env.attachmentsBucketName = "test-bucket";
   process.env.attachmentsBucketRegion = REGION;
+  process.env.brokerString = "broker1,broker2";
+
+  process.env.legacyS3AccessRoleArn = "legacyS3AccessRoleArn";
   process.env.idmAuthzApiKeyArn = "idmAuthzApiKeyArn";
   process.env.idmAuthzApiEndpoint = API_ENDPOINT;
   process.env.idmClientId = USER_POOL_CLIENT_ID;
