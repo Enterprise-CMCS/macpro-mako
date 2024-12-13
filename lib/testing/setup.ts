@@ -17,6 +17,26 @@ import {
 import { mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
 
+// TODO to mock
+// defaultApiTokenHandler:  {}
+// [MSW] Warning: intercepted a request without a matching request handler:
+//   • GET http://169.254.169.254/latest/meta-data/iam/security-credentials/
+
+// starting MSW listener for lib tests
+// stdout | local-constructs/manage-users/src/manageUsers.test.ts > Cognito User Lambda Handler > should handle errors and send FAILED response
+// Error: Failed to get secret
+//     at /home/runner/work/macpro-mako/macpro-mako/lib/local-constructs/manage-users/src/manageUsers.test.ts:126:37
+//     at file:///home/runner/work/macpro-mako/macpro-mako/node_modules/@vitest/runner/dist/index.js:146:14
+//     at file:///home/runner/work/macpro-mako/macpro-mako/node_modules/@vitest/runner/dist/index.js:529:11
+//     at runWithTimeout (file:///home/runner/work/macpro-mako/macpro-mako/node_modules/@vitest/runner/dist/index.js:61:7)
+//     at runTest (file:///home/runner/work/macpro-mako/macpro-mako/node_modules/@vitest/runner/dist/index.js:982:17)
+//     at processTicksAndRejections (node:internal/process/task_queues:95:5)
+//     at runSuite (file:///home/runner/work/macpro-mako/macpro-mako/node_modules/@vitest/runner/dist/index.js:1131:15)
+//     at runSuite (file:///home/runner/work/macpro-mako/macpro-mako/node_modules/@vitest/runner/dist/index.js:1131:15)
+//     at runFiles (file:///home/runner/work/macpro-mako/macpro-mako/node_modules/@vitest/runner/dist/index.js:1188:5)
+//     at startTests (file:///home/runner/work/macpro-mako/macpro-mako/node_modules/@vitest/runner/dist/index.js:1197:3)
+//  ✓ |lib| local-constructs/manage-users/src/manageUsers.test.ts  (2 tests) 15ms
+
 Amplify.configure({
   API: API_CONFIG,
   Auth: AUTH_CONFIG,
