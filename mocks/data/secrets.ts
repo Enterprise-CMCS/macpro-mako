@@ -10,7 +10,7 @@ const secrets: Record<string, TestSecretData> = {
     ARN: `arn://${TEST_SECRET_ID}`,
     CreatedDate: new Date("2023-01-01T12:00:00Z").getTime(),
     Name: TEST_SECRET_ID,
-    SecretString: "test-secret-value",
+    SecretString: "test-secret-value", // pragma: allowlist secret (not actual secret)
     VersionId: "1.0",
     VersionStages: ["prod"],
   },
@@ -19,7 +19,7 @@ const secrets: Record<string, TestSecretData> = {
     CreatedDate: new Date("2022-01-01T12:00:00Z").getTime(),
     DeletedDate: new Date("2022-12-31T23:59:59Z").getTime(),
     Name: TEST_SECRET_TO_DELETE_ID,
-    SecretString: "deleted-test-secret-value",
+    SecretString: "deleted-test-secret-value", // pragma: allowlist secret (not actual secret)
     VersionId: "1.0",
     VersionStages: ["prod"],
   },
