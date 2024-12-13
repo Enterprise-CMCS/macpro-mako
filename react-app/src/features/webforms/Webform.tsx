@@ -2,7 +2,7 @@ import { documentInitializer, LoadingSpinner } from "@/components";
 import { useGetForm } from "@/api";
 import { useReadOnlyUser } from "../../hooks/useReadOnlyUser";
 import { WebformBody } from "./WebFormBody";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 export function Webform() {
   const { id, version } = useParams<{ id: string; version: string }>();

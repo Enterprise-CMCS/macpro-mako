@@ -1,5 +1,5 @@
 import { FAQ_TAB } from "@/router";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { z } from "zod";
 
 export const AttachmentFileFormatInstructions = () => (
