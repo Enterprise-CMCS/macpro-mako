@@ -86,9 +86,7 @@ const sendUpdateIdMessage = async ({
   updatedId: string;
 }) => {
   //eslint-disable-next-line
-  const { _id, _index, _source } = currentPackage;
-  //eslint-disable-next-line
-  const { id, changeMade, ...remainingFields } = _source;
+  const { id, changeMade, ...remainingFields } = currentPackage._source;
 
   if (!updatedId) {
     return response({
@@ -105,7 +103,7 @@ const sendUpdateIdMessage = async ({
     });
   }
   // use event of current package to determine how ID should be formatted
-  const packageChangelog = await getPackageChangelog(_id);
+  const packageChangelog = await getPackageChangelog(currentPackage._id);
   if (!packageChangelog.hits.hits.length) {
     return response({
       statusCode: 500,
