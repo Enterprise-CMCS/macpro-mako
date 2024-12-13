@@ -30,18 +30,18 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-  process.env.PROJECT = PROJECT;
-  process.env.REGION_A = REGION;
-  process.env.STAGE = STAGE;
+  // process.env.PROJECT = PROJECT;
+  // process.env.REGION_A = REGION;
+  // process.env.STAGE = STAGE;
 
   process.env.project = PROJECT;
+  process.env.region = REGION;
   process.env.stage = STAGE;
 
+  process.env.userPoolId = USER_POOL_ID;
+  process.env.applicationEndpointUrl = API_ENDPOINT;
   process.env.osDomain = OPENSEARCH_DOMAIN;
   process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE;
-  process.env.region = REGION;
-  process.env.applicationEndpointUrl = API_ENDPOINT;
-  process.env.userPoolId = USER_POOL_ID;
   process.env.isDev = true;
 
   process.env.brokerString = "brokerString";

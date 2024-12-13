@@ -12,6 +12,10 @@ import {
 import { mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
 
+// TODO to mock
+// [MSW] Warning: intercepted a request without a matching request handler:
+//   • GET http://example.com/file1.md
+
 Amplify.configure({
   API: API_CONFIG,
   Auth: AUTH_CONFIG,
