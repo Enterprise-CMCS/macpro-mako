@@ -85,6 +85,7 @@ const sendUpdateIdMessage = async ({
   currentPackage: ItemResult;
   updatedId: string;
 }) => {
+  // ID and changeMade are excluded but the rest of the object has to be spread into the new package
   //eslint-disable-next-line
   const { id, changeMade, ...remainingFields } = currentPackage._source;
 
