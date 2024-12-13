@@ -1,4 +1,4 @@
-import { isCmsUser } from "shared-utils";
+import { isCmsUser, isStateUser } from "shared-utils";
 
 import { OneMacUser } from "@/api/useGetUser";
 import { BLANK_VALUE } from "@/consts";
@@ -77,8 +77,8 @@ export const recordDetails = (data: opensearch.main.Document): DetailSectionItem
     value: data.types
       ? data.types.map((T) => <p key={T?.SPA_TYPE_ID}>{T?.SPA_TYPE_NAME}</p>)
       : BLANK_VALUE,
-    canView: () => {
-      return !(data.actionType === "Extend");
+    canView: ({ user }) => {
+      return !(data.actionType === "Extend") && isStateUser(user) === false;
     },
   },
   {
@@ -86,8 +86,8 @@ export const recordDetails = (data: opensearch.main.Document): DetailSectionItem
     value: data.subTypes
       ? data.subTypes.map((T) => <p key={T?.TYPE_ID}>{T?.TYPE_NAME}</p>)
       : BLANK_VALUE,
-    canView: () => {
-      return !(data.actionType === "Extend");
+    canView: ({ user }) => {
+      return !(data.actionType === "Extend") && isStateUser(user) === false;
     },
   },
   {
