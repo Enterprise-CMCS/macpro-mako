@@ -9,9 +9,7 @@ export async function getSecret(secretId: string, region: string = "us-east-1"):
   try {
     // Check if the secret is marked for deletion
     const describeCommand = new DescribeSecretCommand({ SecretId: secretId });
-    console.log("create command");
     const secretMetadata = await client.send(describeCommand);
-    console.log("retrieved secret", JSON.stringify(secretMetadata));
     if (secretMetadata.DeletedDate) {
       throw new Error(`Secret ${secretId} is marked for deletion and will not be used.`);
     }

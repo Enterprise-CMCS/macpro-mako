@@ -1,21 +1,20 @@
 import { Handler } from "aws-lambda";
-import { send, SUCCESS, FAILED } from "cfn-response-async";
-type ResponseStatus = typeof SUCCESS | typeof FAILED;
+import { FAILED, send, SUCCESS } from "cfn-response-async";
 import * as os from "./../libs/opensearch-lib";
+type ResponseStatus = typeof SUCCESS | typeof FAILED;
 
 export const handler: Handler = async (event, context) => {
-  console.log("request:", JSON.stringify(event, undefined, 2));
+  console.log("mapRoles request:", JSON.stringify(event, undefined, 2));
   const responseData: any = {};
   let responseStatus: ResponseStatus = SUCCESS;
   try {
     if (event.RequestType == "Create" || event.RequestType == "Update") {
-      const reply = await os.mapRole(
+      await os.mapRole(
         event.ResourceProperties.OsDomain,
         event.ResourceProperties.MasterRoleToAssume,
         event.ResourceProperties.OsRoleName,
-        event.ResourceProperties.IamRoleName
+        event.ResourceProperties.IamRoleName,
       );
-      console.log(reply);
     } else if (event.RequestType == "Delete") {
       console.log("This resource does nothing on delete");
     }

@@ -1,13 +1,13 @@
-import { Handler } from "aws-lambda";
 import {
   DeleteEventSourceMappingCommand,
   GetEventSourceMappingCommand,
   LambdaClient,
   ListEventSourceMappingsCommand,
 } from "@aws-sdk/client-lambda";
+import { Handler } from "aws-lambda";
 
 export const handler: Handler = async (event, _, callback) => {
-  console.log("request:", JSON.stringify(event, undefined, 2));
+  console.log("deleteTriggers request:", JSON.stringify(event, undefined, 2));
   const response = {
     statusCode: 200,
   };
@@ -31,9 +31,7 @@ export const deleteAllTriggersForFunctions = async (functions: string[]) => {
     );
     for (const eventSourceMapping of response.EventSourceMappings || []) {
       if (eventSourceMapping.SelfManagedKafkaEventSourceConfig) {
-        console.log(
-          `Disabling all Kafka triggers for function:  ${functionName}`,
-        );
+        console.log(`Disabling all Kafka triggers for function:  ${functionName}`);
         await lambdaClient.send(
           new DeleteEventSourceMappingCommand({
             UUID: eventSourceMapping.UUID,

@@ -4,16 +4,8 @@ import secrets, { TEST_SECRET_ERROR_ID } from "../data/secrets";
 
 const defaultSecretHandler = http.post<PathParams, SecretManagerRequestBody>(
   `https://secretsmanager.us-east-1.amazonaws.com`,
-  async ({ request, params }) => {
-    console.log("secret handler request called with: ", {
-      method: request.method,
-      url: request.url,
-      params: JSON.stringify(params),
-      headers: request.headers,
-      body: request.body,
-    });
+  async ({ request }) => {
     const { SecretId } = await request.json();
-    console.log({ SecretId });
     if (!SecretId) {
       return HttpResponse.json({
         name: "InvalidParameterException",
@@ -23,7 +15,6 @@ const defaultSecretHandler = http.post<PathParams, SecretManagerRequestBody>(
     }
 
     if (SecretId == TEST_SECRET_ERROR_ID) {
-      console.log("throw error");
       return HttpResponse.json({
         name: "InternalServiceError",
         message: "Internal service error",

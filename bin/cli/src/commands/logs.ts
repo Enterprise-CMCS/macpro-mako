@@ -1,22 +1,16 @@
-import { Argv } from "yargs";
 import {
-  checkIfAuthenticated,
-  runCommand,
-  project,
-  region,
-  setStageFromBranch,
-} from "../lib/";
-import {
-  ResourceGroupsTaggingAPIClient,
-  GetResourcesCommand,
-  TagFilter,
-} from "@aws-sdk/client-resource-groups-tagging-api";
-import {
-  LambdaClient,
   GetFunctionCommand,
   GetFunctionConfigurationCommand,
+  LambdaClient,
 } from "@aws-sdk/client-lambda";
+import {
+  GetResourcesCommand,
+  ResourceGroupsTaggingAPIClient,
+  TagFilter,
+} from "@aws-sdk/client-resource-groups-tagging-api";
 import prompts from "prompts";
+import { Argv } from "yargs";
+import { checkIfAuthenticated, project, region, runCommand, setStageFromBranch } from "../lib/";
 
 const lambdaClient = new LambdaClient({ region });
 
@@ -24,13 +18,11 @@ export const logs = {
   command: "logs",
   describe: "Stream a lambda's cloudwatch logs.",
   builder: (yargs: Argv) =>
-    yargs
-      .option("stage", { type: "string", demandOption: false })
-      .option("functionName", {
-        alias: "f",
-        type: "string",
-        demandOption: true,
-      }),
+    yargs.option("stage", { type: "string", demandOption: false }).option("functionName", {
+      alias: "f",
+      type: "string",
+      demandOption: true,
+    }),
   handler: async (options: { stage?: string; functionName: string }) => {
     await checkIfAuthenticated();
     const stage = options.stage || (await setStageFromBranch());
@@ -77,11 +69,7 @@ export const logs = {
     const lambdaLogGroup = await getLambdaLogGroup(lambda);
 
     // Stream the logs
-    await runCommand(
-      "awslogs",
-      ["get", lambdaLogGroup, "-s10m", "--watch"],
-      ".",
-    );
+    await runCommand("awslogs", ["get", lambdaLogGroup, "-s10m", "--watch"], ".");
   },
 };
 
@@ -115,9 +103,7 @@ async function getLambdasWithTags(tags: Tag[]): Promise<string[]> {
     }
 
     // Extract Lambda function ARNs from the response
-    const lambdaArns = data.ResourceTagMappingList.map(
-      (resource) => resource.ResourceARN!,
-    );
+    const lambdaArns = data.ResourceTagMappingList.map((resource) => resource.ResourceARN!);
 
     // Fetch Lambda function names from their ARNs
     const lambdaNames = await Promise.all(
@@ -127,7 +113,7 @@ async function getLambdasWithTags(tags: Tag[]): Promise<string[]> {
           const functionData = await lambdaClient.send(functionCommand);
           return functionData.Configuration?.FunctionName || "";
         } catch {
-          console.log(`Ecluding function ${arn}.`);
+          console.log(`Excluding function ${arn}.`);
           return "";
         }
       }),

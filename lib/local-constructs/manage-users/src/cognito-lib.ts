@@ -11,11 +11,8 @@ const client = new CognitoIdentityProviderClient({
 
 export async function createUser(params: any): Promise<void> {
   try {
-    console.log("createUser params:", JSON.stringify(params, null, 2));
     const command = new AdminCreateUserCommand(params);
-    console.log("command: ", JSON.stringify(command, null, 2));
-    const resp = await client.send(command);
-    console.log("response: ", JSON.stringify(resp, null, 2));
+    await client.send(command);
     console.log(`User ${params.Username} created successfully.`);
   } catch (error) {
     console.error(`Error creating user:`, error);
@@ -24,13 +21,9 @@ export async function createUser(params: any): Promise<void> {
 
 export async function setPassword(params: any): Promise<void> {
   try {
-    console.log("setPassword params: ", JSON.stringify(params, null, 2));
     // Set the user's password
     const command = new AdminSetUserPasswordCommand(params);
-    console.log("command: ", JSON.stringify(command, null, 2));
-    const resp = await client.send(command);
-    console.log("response: ", JSON.stringify(resp, null, 2));
-
+    await client.send(command);
     console.log(`Password for user ${params.Username} set successfully.`);
   } catch (error) {
     console.error("Error setting user's password:", error);
@@ -39,29 +32,22 @@ export async function setPassword(params: any): Promise<void> {
 
 export async function updateUserAttributes(params: any): Promise<void> {
   try {
-    console.log("updateUserAttributes params: ", JSON.stringify(params, null, 2));
     // Fetch existing user attributes
     const getUserCommand = new AdminGetUserCommand({
       UserPoolId: params.UserPoolId,
       Username: params.Username,
     });
-    console.log("getUserCommand: ", JSON.stringify(getUserCommand, null, 2));
     const user = await client.send(getUserCommand);
-    console.log("user: ", JSON.stringify(user, null, 2));
 
     // Check for existing "custom:cms-roles"
     const cmsRolesAttribute = user.UserAttributes?.find((attr) => attr.Name === "custom:cms-roles");
-    console.log({ cmsRolesAttribute });
     const existingRoles =
       cmsRolesAttribute && cmsRolesAttribute.Value ? cmsRolesAttribute.Value.split(",") : [];
-    console.log({ existingRoles });
 
     // Check for existing "custom:state"
     const stateAttribute = user.UserAttributes?.find((attr) => attr.Name === "custom:state");
-    console.log({ stateAttribute });
     const existingStates =
       stateAttribute && stateAttribute.Value ? stateAttribute.Value.split(",") : [];
-    console.log({ existingStates });
 
     // Prepare for updating user attributes
     const attributeData: any = {
@@ -115,11 +101,8 @@ export async function updateUserAttributes(params: any): Promise<void> {
     }
 
     // Update the user's attributes
-    console.log("attributeData: ", JSON.stringify(attributeData, null, 2));
     const updateCommand = new AdminUpdateUserAttributesCommand(attributeData);
-    console.log("updateCommand: ", JSON.stringify(updateCommand, null, 2));
-    const resp = await client.send(updateCommand);
-    console.log("response: ", JSON.stringify(resp, null, 2));
+    await client.send(updateCommand);
     console.log(`Attributes for user ${params.Username} updated successfully.`);
   } catch (error) {
     console.error("Error updating user's attributes:", error);

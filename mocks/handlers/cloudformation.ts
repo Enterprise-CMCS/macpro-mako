@@ -20,13 +20,7 @@ export const errorCloudFormation = http.post(
 
 const defaultCloudFormation = http.post(
   `https://cloudformation.us-east-1.amazonaws.com/`,
-  async ({ request }) => {
-    const params = await request.text();
-    const searchParams = new URLSearchParams(params);
-    const Action = searchParams.get("Action") || "";
-    const Version = searchParams.get("Version") || "";
-    console.log({ Action, Version });
-
+  async () => {
     let xmlResponse = `
   <ListExportsResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">
   <ListExportsResult>

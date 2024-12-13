@@ -10,33 +10,20 @@ const generateSessionToken = (): string | null => {
   return null;
 };
 
-const defaultApiTokenHandler = http.put(/\/api\/token/, ({ request }) => {
-  console.log("api token request called with: ", {
-    method: request.method,
-    url: request.url,
-    body: request.body,
-  });
+const defaultApiTokenHandler = http.put(/\/api\/token/, () => {
   return HttpResponse.text(generateSessionToken());
 });
 
-const defaultSecurityCredentialsHandler = http.get(
-  /\/meta-data\/iam\/security-credentials/,
-  ({ request }) => {
-    console.log("security credentials request called with: ", {
-      method: request.method,
-      url: request.url,
-      body: request.body,
-    });
-    return HttpResponse.json({
-      Code: "Success",
-      LastUpdated: new Date().toISOString(),
-      Type: "AWS-HMAC",
-      AccessKeyId: ACCESS_KEY_ID,
-      SecretAccessKey: SECRET_KEY,
-      Token: generateSessionToken(),
-      Expiration: "2017-05-17T15:09:54Z",
-    });
-  },
-);
+const defaultSecurityCredentialsHandler = http.get(/\/meta-data\/iam\/security-credentials/, () => {
+  return HttpResponse.json({
+    Code: "Success",
+    LastUpdated: new Date().toISOString(),
+    Type: "AWS-HMAC",
+    AccessKeyId: ACCESS_KEY_ID,
+    SecretAccessKey: SECRET_KEY,
+    Token: generateSessionToken(),
+    Expiration: "2017-05-17T15:09:54Z",
+  });
+});
 
 export const defaultHandlers = [defaultApiTokenHandler, defaultSecurityCredentialsHandler];

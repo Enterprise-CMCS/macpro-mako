@@ -9,8 +9,8 @@ import { isCmsUser, isCmsWriteUser } from "shared-utils";
 
 // Retrieve user authentication details from the APIGatewayEvent
 export function getAuthDetails(event: APIGatewayEvent) {
+  console.log("getAuthDetails request:", JSON.stringify(event, undefined, 2));
   const authProvider = event.requestContext.identity.cognitoAuthenticationProvider;
-  console.log("getAuthDetails event: ", JSON.stringify(event));
   if (!authProvider) {
     throw new Error("No auth provider!");
   }
@@ -73,7 +73,6 @@ export async function fetchUserFromCognito(
 
   try {
     const listUsersResponse = await cognitoClient.send(commandListUsers);
-    console.log({ listUsersResponse });
 
     if (listUsersResponse.Users === undefined || listUsersResponse.Users.length !== 1) {
       throw new Error("No user found with this sub");
@@ -123,7 +122,6 @@ export const isAuthorizedToGetPackageActions = async (
 export const getStateFilter = async (event: APIGatewayEvent) => {
   // Retrieve authentication details of the user
   const authDetails = getAuthDetails(event);
-  console.log({ authDetails });
 
   // Look up user attributes from Cognito
   const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);

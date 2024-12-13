@@ -6,7 +6,6 @@ import { execSync } from "child_process";
  */
 export function cleanupFolder(folderToClean: string): void {
   let result: Buffer = execSync(`ls -l ${folderToClean}`);
-  // console.log(result.toString());
   console.log("-- Folder before cleanup--");
   console.log(result.toString());
 

@@ -14,12 +14,7 @@ import {
 
 const defaultMainDocumentHandler = http.get(
   `https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_doc/:id`,
-  async ({ request, params }) => {
-    console.log("opensearch main document request called with: ", {
-      method: request.method,
-      url: request.url,
-      params: JSON.stringify(params),
-    });
+  async ({ params }) => {
     const { id } = params;
     if (id == GET_ERROR_ITEM_ID) {
       return new HttpResponse("Internal server error", { status: 500 });
@@ -137,23 +132,14 @@ const filterChangelogByTerm = (
 const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_search",
   async ({ request }) => {
-    console.log("opensearch main document request called with: ", {
-      method: request.method,
-      url: request.url,
-      body: request.body,
-    });
-    const body = await request.json();
-    const { query } = body;
+    const { query } = await request.json();
 
     if (query?.match_all == "throw-error") {
       return new HttpResponse("Internal server error", { status: 500 });
     }
 
-    console.log({ query });
     const must = query?.bool?.must;
-    console.log({ must });
     const mustTerms = must ? getFilterKeys(must) : [];
-    console.log({ mustTerms });
 
     // check if searching for appkChildren
     if (mustTerms.includes("appkParentId.keyword") || mustTerms.includes("appkParentId")) {
@@ -247,21 +233,11 @@ const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
 const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-changelog/_search",
   async ({ request }) => {
-    const body = await request.json();
-    console.log("opensearch changelog document request called with: ", {
-      method: request.method,
-      url: request.url,
-      body: JSON.stringify(body),
-    });
-    const { query } = body;
-    console.log({ query });
+    const { query } = await request.json();
     const must = query?.bool?.must;
-    console.log({ must });
     const mustTerms = must ? getFilterKeys(must) : [];
-    console.log({ mustTerms });
 
     const packageIdValue = getFilterValue(must, "packageId.keyword");
-    console.log({ packageIdValue });
 
     if (!packageIdValue) {
       return new HttpResponse("No packageId provided", { status: 400 });

@@ -1,13 +1,8 @@
 import { Handler } from "aws-lambda";
-import { decodeBase64WithUtf8 } from "shared-utils";
 import { KafkaEvent, KafkaRecord, opensearch } from "shared-types";
-import {
-  ErrorType,
-  bulkUpdateDataWrapper,
-  getTopic,
-  logError,
-} from "../libs/sink-lib";
 import { Index } from "shared-types/opensearch";
+import { decodeBase64WithUtf8 } from "shared-utils";
+import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "../libs/sink-lib";
 const osDomain = process.env.osDomain;
 if (!osDomain) {
   throw new Error("Missing required environment variable(s)");
@@ -18,6 +13,7 @@ const index: Index = `${process.env.indexNamespace}changelog`;
 // The order in which records are processed for the changelog doesn't matter.
 // Because each event is a unique record, and so there is no upserting, order doesn't matter.
 export const handler: Handler<KafkaEvent> = async (event) => {
+  console.log("sinkChangelog request:", JSON.stringify(event, undefined, 2));
   const loggableEvent = { ...event, records: "too large to display" };
   try {
     for (const topicPartition of Object.keys(event.records)) {
@@ -61,10 +57,9 @@ const processAndIndex = async ({
   transforms: any;
   topicPartition: string;
 }) => {
-  const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> =
-    [];
+  const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
   for (const kafkaRecord of kafkaRecords) {
-    console.log(JSON.stringify(kafkaRecord, null, 2));
+    console.log("kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
     const { value, offset } = kafkaRecord;
     try {
       // If a legacy tombstone, continue
@@ -84,10 +79,8 @@ const processAndIndex = async ({
       // If the event is a supported event, transform and push to docs array for indexing
       console.log("event below");
       console.log(record.event);
-
       if (record.event in transforms) {
-        const transformForEvent =
-          transforms[record.event as keyof typeof transforms];
+        const transformForEvent = transforms[record.event as keyof typeof transforms];
 
         const result = transformForEvent.transform(offset).safeParse(record);
 
@@ -100,7 +93,7 @@ const processAndIndex = async ({
           });
           continue;
         }
-        console.log(JSON.stringify(result.data, null, 2));
+        console.log("result of transformation event: ", JSON.stringify(result.data, null, 2));
         docs.push(result.data);
       } else {
         console.log(`No transform found for event: ${record.event}`);

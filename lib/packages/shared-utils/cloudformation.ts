@@ -6,7 +6,6 @@ export async function getExport(exportName: string, region: string = "us-east-1"
 
   try {
     const response = await client.send(command);
-    console.log({ response });
     const exports = response.Exports || [];
     const exportItem = exports.find((exp) => exp.Name === exportName);
     if (!exportItem) {

@@ -200,7 +200,6 @@ export async function getItems(
         ids,
       },
     });
-    console.log("getItems response: ", JSON.stringify(response, null, 2));
 
     return response.body.docs.reduce<OSDocument[]>((acc, doc) => {
       if (doc.found && doc._source) {
