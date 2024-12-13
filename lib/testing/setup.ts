@@ -76,9 +76,9 @@ beforeEach(() => {
   // process.env.brokerString = "broker1,broker2";
 
   // process.env.legacyS3AccessRoleArn = "legacyS3AccessRoleArn";
-  // process.env.idmAuthzApiKeyArn = "idmAuthzApiKeyArn";
+  // process.env.idmAuthzApiKeyArn = "idmAuthzApiKeyArn"; // pragma: allowlist secret
   // process.env.idmAuthzApiEndpoint = API_ENDPOINT;
-  // process.env.idmClientSecretArn = "idmClientSecretArn";
+  // process.env.idmClientSecretArn = "idmClientSecretArn"; // pragma: allowlist secret
   // process.env.idmEnable = "false";
   // process.env.idmHomeUrl = "https://test.home.idm.cms.gov";
   //bucket

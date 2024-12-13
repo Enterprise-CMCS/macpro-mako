@@ -6,7 +6,7 @@ const defaultApiTokenHandler = http.put(/\/api\/token$/, ({ request }) => {
 });
 
 const defaultSecurityCredentialsHandler = http.get(
-  /\/meta-data\/iam\/security-credentials$/,
+  /\/meta-data\/iam\/security-credentials(\/?)$/,
   ({ request }) => {
     console.log("defaultSecurityCredentialsHandler: ", JSON.stringify(request));
     return new HttpResponse();
