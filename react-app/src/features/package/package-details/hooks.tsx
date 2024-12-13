@@ -1,14 +1,14 @@
 import { isCmsUser } from "shared-utils";
 
-import { BLANK_VALUE } from "@/consts";
-import { Authority, opensearch } from "shared-types";
-import { FC, ReactNode } from "react";
 import { OneMacUser } from "@/api/useGetUser";
+import { BLANK_VALUE } from "@/consts";
+import { FC, ReactNode } from "react";
+import { Authority, opensearch } from "shared-types";
 
-import { formatSeatoolDate } from "shared-utils";
-import { useMemo, useState } from "react";
 import { convertStateAbbrToFullName, LABELS } from "@/utils";
 import { format } from "date-fns";
+import { useMemo, useState } from "react";
+import { formatSeatoolDate } from "shared-utils";
 
 export const ReviewTeamList: FC<opensearch.main.Document> = (props) => {
   const [expanded, setExpanded] = useState(false);
@@ -117,7 +117,7 @@ export const recordDetails = (data: opensearch.main.Document): DetailSectionItem
     canView: () => true,
   },
   {
-    label: "Formal RAI response",
+    label: "Formal RAI response date",
     value: data.raiReceivedDate ? formatSeatoolDate(data.raiReceivedDate) : BLANK_VALUE,
     canView: () => {
       return !(data.actionType === "Extend");
