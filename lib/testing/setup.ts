@@ -32,6 +32,7 @@ beforeAll(() => {
 beforeEach(() => {
   process.env.PROJECT = PROJECT;
   process.env.REGION_A = REGION;
+  process.env.STAGE = STAGE;
 
   process.env.project = PROJECT;
   process.env.stage = STAGE;
