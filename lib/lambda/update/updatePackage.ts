@@ -95,7 +95,12 @@ const sendUpdateIdMessage = async ({
     throw new Error("Topic name is not defined");
   }
   // ID and changeMade are excluded but the rest of the object has to be spread into the new package
-  const { id: _id, changeMade: _changeMade, ...remainingFields } = currentPackage._source;
+  const {
+    id: _id,
+    changeMade: _changeMade,
+    origin: _origin,
+    ...remainingFields
+  } = currentPackage._source;
   if (!updatedId) {
     return response({
       statusCode: 400,
@@ -150,6 +155,7 @@ const sendUpdateIdMessage = async ({
     JSON.stringify({
       id: updatedId,
       event: packageEvent,
+      origin: "mako",
       ...remainingFields,
       changeMade: "ID has been updated.",
       isAdminChange: true,
