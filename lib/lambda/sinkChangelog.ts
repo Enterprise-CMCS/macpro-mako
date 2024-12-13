@@ -86,7 +86,7 @@ const processAndIndex = async ({
 
       const transformedDeleteSchema = deleteAdminChangeSchema.transform((data) => ({
         ...data,
-        event: packageEvent,
+        // event: packageEvent,
         packageId: data.id,
         id: `${data.id}-${offset}`,
         timestamp: Date.now(),
@@ -94,7 +94,7 @@ const processAndIndex = async ({
 
       const transformedUpdateValuesSchema = updateValuesAdminChangeSchema.transform((data) => ({
         ...data,
-        event: packageEvent,
+        // event: packageEvent,
         packageId: data.id,
         id: `${data.id}-${offset}`,
         timestamp: Date.now(),
@@ -102,7 +102,7 @@ const processAndIndex = async ({
 
       const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((data) => ({
         ...data,
-        event: packageEvent,
+        // event: packageEvent,
         packageId: data.id,
         id: `${data.id}-${offset}`,
         timestamp: Date.now(),
@@ -114,6 +114,7 @@ const processAndIndex = async ({
 
       if (record.isAdminChange) {
         const result = schema.safeParse(record);
+        // console.log("IN THIS RESULT?");
 
         if (result.success) {
           docs.push(result.data);

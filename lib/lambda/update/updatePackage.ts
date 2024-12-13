@@ -149,6 +149,7 @@ const sendUpdateIdMessage = async ({
     updatedId,
     JSON.stringify({
       id: updatedId,
+      event: packageEvent,
       ...remainingFields,
       changeMade: "ID has been updated.",
       isAdminChange: true,
