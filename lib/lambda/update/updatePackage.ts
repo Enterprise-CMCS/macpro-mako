@@ -1,6 +1,6 @@
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
-import { getPackage, getPackageChangelog } from "libs/api/package";
+import { getPackage } from "libs/api/package";
 import { produceMessage } from "libs/api/kafka";
 import { ItemResult } from "shared-types/opensearch/main";
 import { getPackageType } from "./getPackageType";
