@@ -86,9 +86,7 @@ const sendUpdateIdMessage = async ({
   updatedId: string;
 }) => {
   // ID and changeMade are excluded but the rest of the object has to be spread into the new package
-  //eslint-disable-next-line
-  const { id, changeMade, ...remainingFields } = currentPackage._source;
-
+  const { id: _id, changeMade: _changeMade, ...remainingFields } = currentPackage._source;
   if (!updatedId) {
     return response({
       statusCode: 400,
