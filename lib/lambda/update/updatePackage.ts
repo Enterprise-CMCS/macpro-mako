@@ -6,7 +6,11 @@ import { ItemResult } from "shared-types/opensearch/main";
 import { events } from "lib/packages/shared-types";
 import { z } from "zod";
 
-const sendDeleteMessage = async (topicName: string, packageId: string) => {
+const sendDeleteMessage = async (packageId: string) => {
+  const topicName = process.env.topicName as string;
+  if (!topicName) {
+    throw new Error("Topic name is not defined");
+  }
   await produceMessage(
     topicName,
     packageId,
@@ -25,16 +29,18 @@ const sendDeleteMessage = async (topicName: string, packageId: string) => {
 };
 
 const sendUpdateValuesMessage = async ({
-  topicName,
   currentPackage,
   updatedFields,
   changeReason,
 }: {
-  topicName: string;
   currentPackage: ItemResult;
   updatedFields: object;
   changeReason?: string;
 }) => {
+  const topicName = process.env.topicName as string;
+  if (!topicName) {
+    throw new Error("Topic name is not defined");
+  }
   const invalidFields = Object.keys(updatedFields).filter(
     (field) => !(field in currentPackage._source),
   );
@@ -77,14 +83,16 @@ const sendUpdateValuesMessage = async ({
 };
 
 const sendUpdateIdMessage = async ({
-  topicName,
   currentPackage,
   updatedId,
 }: {
-  topicName: string;
   currentPackage: ItemResult;
   updatedId: string;
 }) => {
+  const topicName = process.env.topicName as string;
+  if (!topicName) {
+    throw new Error("Topic name is not defined");
+  }
   // ID and changeMade are excluded but the rest of the object has to be spread into the new package
   const { id: _id, changeMade: _changeMade, ...remainingFields } = currentPackage._source;
   if (!updatedId) {
@@ -133,7 +141,7 @@ const sendUpdateIdMessage = async ({
     });
   }
 
-  await sendDeleteMessage(topicName, currentPackage._id);
+  await sendDeleteMessage(currentPackage._id);
   await produceMessage(
     topicName,
     updatedId,
@@ -161,11 +169,11 @@ const updatePackageEventBodySchema = z.object({
 });
 
 export const handler = async (event: APIGatewayEvent) => {
-  const topicName = process.env.topicName as string;
+  // const topicName = process.env.topicName as string;
 
-  if (!topicName) {
-    throw new Error("Topic name is not defined");
-  }
+  // if (!topicName) {
+  //   throw new Error("Topic name is not defined");
+  // }
 
   if (!event.body) {
     return response({
@@ -203,16 +211,15 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     if (action === "delete") {
-      return await sendDeleteMessage(topicName, packageId);
+      return await sendDeleteMessage(packageId);
     }
 
     if (action === "update-id") {
-      return await sendUpdateIdMessage({ topicName, currentPackage: packageResult, updatedId });
+      return await sendUpdateIdMessage({ currentPackage: packageResult, updatedId });
     }
 
     if (action === "update-values") {
       return await sendUpdateValuesMessage({
-        topicName,
         currentPackage: packageResult,
         updatedFields,
         changeReason,
