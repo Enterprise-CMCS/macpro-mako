@@ -131,7 +131,6 @@ const processAndIndex = async ({
         if (record.adminChangeType) {
           docs.push({ ...result.data, updatedId: record.id });
           continue;
-          ``;
         }
         console.log(JSON.stringify(result.data, null, 2));
         docs.push(result.data);
