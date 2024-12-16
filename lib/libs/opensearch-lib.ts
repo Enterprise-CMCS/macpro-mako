@@ -65,8 +65,10 @@ export async function bulkUpdateData(
     if (doc.delete) {
       body.push({ delete: { _index: index, _id: doc.id } });
     } else if (doc.updatedId) {
+      console.log("ARE WE IN THIS IF", doc);
       body.push({ update: { _index: index, _id: doc.updatedId } }, { doc: doc, doc_as_upsert: true });
     } else {
+      console.log("OR THIS ONE");
       body.push({ update: { _index: index, _id: doc.id } }, { doc: doc, doc_as_upsert: true });
     }
   }
