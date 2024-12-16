@@ -8,29 +8,7 @@ import {
   TestItemResult,
   TestMainDocument,
 } from "../../index.d";
-import { getFilterKeys, getFilterValue, matchFilter } from "./util";
-
-const filterItemResultByTerm = (
-  hits: TestItemResult[],
-  filterTerm: keyof TestMainDocument,
-  filterValue: string | string[],
-): TestItemResult[] => {
-  return hits.filter(
-    (hit) => hit?._source && matchFilter<TestMainDocument>(hit._source, filterTerm, filterValue),
-  );
-};
-
-const filterAppkChildrenByTerm = (
-  hits: TestAppkItemResult[],
-  filterTerm: keyof TestAppkDocument,
-  filterValue: string | string[],
-): TestAppkItemResult[] => {
-  return hits.filter(
-    (hit) =>
-      hit?._source &&
-      matchFilter<TestAppkDocument>(hit._source as TestAppkDocument, filterTerm, filterValue),
-  );
-};
+import { getFilterKeys, getFilterValue, filterItemsByTerm } from "./util";
 
 export const defaultMainDocumentHandler = http.get(
   `https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_doc/:id`,
@@ -85,7 +63,7 @@ export const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
               "",
             ) as keyof TestAppkDocument;
             if (filterValue) {
-              appkChildren = filterAppkChildrenByTerm(appkChildren, filterTerm, filterValue);
+              appkChildren = filterItemsByTerm<TestAppkItemResult, TestAppkDocument>(appkChildren, filterTerm, filterValue);
             }
           });
         }
@@ -121,7 +99,7 @@ export const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
           "",
         ) as keyof TestMainDocument;
         if (filterValue) {
-          itemHits = filterItemResultByTerm(itemHits, filterTerm, filterValue);
+          itemHits = filterItemsByTerm<TestItemResult, TestMainDocument>(itemHits, filterTerm, filterValue);
         }
       });
     }

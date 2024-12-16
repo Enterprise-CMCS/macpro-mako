@@ -30,6 +30,14 @@ export type TestSecretData = Partial<Omit<GetSecretValueCommandOutput, "CreatedD
 
 export type TestExport = Partial<Export>;
 
+export type TestTypeResult = DeepPartial<opensearch.type.ItemResult>;
+
+export type TestTypeDocument = TestTypeDocument["_source"];
+
+export type TestSubtypeResult = DeepPartial<opensearch.subtype.ItemResult>;
+
+export type TestSubtypeDocument = TestSubtypeResult["_source"];
+
 export type IdpRequestSessionBody = {
   AccessToken: string;
 };

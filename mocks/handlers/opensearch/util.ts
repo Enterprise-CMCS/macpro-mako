@@ -47,11 +47,11 @@ export const getFilterKeys = (query: SearchTerm[] | SearchTerm): string[] => {
   return filterKeys;
 };
 
-export function matchFilter<T>(
+export const matchFilter = <T>(
   item: T | null | undefined,
   filterTerm: keyof T | null | undefined,
   filterValue: string | string[] | null | undefined,
-): boolean {
+): boolean  => {
   if (!item || !filterTerm || !filterValue) {
     return false;
   }
@@ -63,4 +63,14 @@ export function matchFilter<T>(
   }
 
   return filterValue?.toString()?.toLocaleLowerCase() == itemValue;
+}
+
+export const filterItemsByTerm = <R, D>(
+  hits: R[],
+  filterTerm: keyof D,
+  filterValue: string | string[]
+): R[] => {
+  return hits.filter(
+    (hit) => hit?._source && matchFilter<D>(hit._source, filterTerm, filterValue)
+  )
 }

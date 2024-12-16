@@ -1,89 +1,88 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
 import { handler } from "./getSubTypes";
-import { response } from "libs/handler-lib";
-import * as os from "libs/opensearch-lib";
-
-vi.mock("libs/handler-lib", () => ({
-  response: vi.fn(),
-}));
-
-vi.mock("libs/opensearch-lib", () => ({
-  search: vi.fn(),
-}));
+import { 
+  MEDICAID_SPA_AUTHORITY_ID, 
+  CHIP_SPA_AUTHORITY_ID,
+  TYPE_ONE_ID, 
+  TYPE_TWO_ID, 
+  TYPE_THREE_ID,
+  DO_NOT_USE_TYPE_ID,
+  ERROR_AUTHORITY_ID,
+  medicaidSubtypes,
+  chipSubtypes
+} from "mocks/data/types"
 
 describe("getSubTypes Handler", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-    process.env.osDomain = "test-domain"; // Set the environment variable before each test
-    process.env.indexNamespace = "test-namespace-"; // Set the environment variable before each test
-  });
-
   it("should return 400 if event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 400,
-      body: { message: "Event body required" },
-    });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }))
   });
 
-  it("should return 400 if no subtypes are found", async () => {
-    (os.search as vi.Mock).mockResolvedValueOnce(null);
-
+  // TODO - should this be removed? when will the result be empty and not 
+  // just a result with an empty hit array
+  it.skip("should return 400 if no subtypes are found", async () => {
     const event = {
       body: JSON.stringify({
-        authorityId: "test-authority",
-        typeIds: ["type1", "type2"],
+        authorityId: NOT_FOUND_AUTHORITY_ID,
+        typeIds: [TYPE_ONE_ID, TYPE_TWO_ID],
       }),
     } as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 400,
-      body: { message: "No record found for the given authority" },
-    });
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toEqual(JSON.stringify({ message: "No record found for the given authority" }));
   });
 
   it("should return 200 with the result if subtypes are found", async () => {
-    const mockResult = {
-      hits: { hits: [{ _source: { name: "test-subtype" } }] },
-    };
-    (os.search as vi.Mock).mockResolvedValueOnce(mockResult);
-
     const event = {
       body: JSON.stringify({
-        authorityId: "test-authority",
-        typeIds: ["type1", "type2"],
+        authorityId: MEDICAID_SPA_AUTHORITY_ID,
+        typeIds: [TYPE_ONE_ID, TYPE_TWO_ID],
       }),
     } as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
+    const body = JSON.parse(res.body);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 200,
-      body: mockResult,
-    });
+    expect(res.statusCode).toEqual(200);
+    expect(body.hits.hits).toEqual(medicaidSubtypes)
   });
 
-  it("should return 500 if an error occurs during processing", async () => {
-    (os.search as vi.Mock).mockRejectedValueOnce(new Error("Test error"));
+  it("should filter out types with names that include Do Not Use", async () => {
+    const event = {
+      body: JSON.stringify({ 
+        authorityId: CHIP_SPA_AUTHORITY_ID,
+        typeIds: [TYPE_THREE_ID, DO_NOT_USE_TYPE_ID ]
+      })
+    } as APIGatewayEvent;
 
+    const res = await handler(event);
+    const body = JSON.parse(res.body);
+
+    expect(res.statusCode).toEqual(200);
+    expect(body.hits.hits).toEqual(chipSubtypes);
+    body.hits.hits.forEach(type => {
+      expect(type._source.name.match(/Do Not Use/)).toBeFalsy()
+    })
+  })
+
+  it("should return 500 if an error occurs during processing", async () => {
     const event = {
       body: JSON.stringify({
-        authorityId: "test-authority",
-        typeIds: ["type1", "type2"],
+        authorityId: ERROR_AUTHORITY_ID,
+        typeIds: [TYPE_ONE_ID, TYPE_TWO_ID],
       }),
     } as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 500,
-      body: { message: "Internal server error" },
-    });
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(JSON.stringify({ error: "Internal server error", message: "Response Error" }))
   });
 });

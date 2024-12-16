@@ -2,23 +2,7 @@ import { http, HttpResponse, PathParams } from "msw";
 import { GET_ERROR_ITEM_ID } from "../../data";
 import items from "../../data/items";
 import { SearchQueryBody, TestChangelogDocument, TestChangelogItemResult } from "../../index.d";
-import { getFilterKeys, getFilterValue, matchFilter } from "./util";
-
-const filterChangelogByTerm = (
-  hits: TestChangelogItemResult[],
-  filterTerm: keyof TestChangelogDocument,
-  filterValue: string | string[],
-): TestChangelogItemResult[] => {
-  return hits.filter(
-    (hit) =>
-      hit?._source &&
-      matchFilter<TestChangelogDocument>(
-        hit._source as TestChangelogDocument,
-        filterTerm,
-        filterValue,
-      ),
-  );
-};
+import { getFilterKeys, getFilterValue, filterItemsByTerm } from "./util";
 
 export const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-changelog/_search",
@@ -55,7 +39,7 @@ export const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBo
             "",
           ) as keyof TestChangelogDocument;
           if (filterValue) {
-            changelog = filterChangelogByTerm(changelog, filterTerm, filterValue);
+            changelog = filterItemsByTerm<TestChangelogItemResult, TestChangelogDocument>(changelog, filterTerm, filterValue);
           }
         });
       }

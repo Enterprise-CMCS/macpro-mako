@@ -4,7 +4,7 @@ import { defaultHandlers as authHandlers } from "./auth";
 import { defaultHandlers as cloudFormationHandlers } from "./cloudformation";
 import { defaultHandlers as countiesHandler } from "./counties";
 import { defaultHandlers as itemHandlers } from "./items";
-import { defaultHandlers as searchHandlers } from "./search/index";
+import { defaultHandlers as opensearchHandlers } from "./opensearch/index";
 import { defaultHandlers as secretsManagerHandlers } from "./secretsmanager";
 import { defaultHandlers as submissionHandlers } from "./submissions";
 import { defaultHandlers as typeHandlers } from "./types";
@@ -34,7 +34,7 @@ export default [
   ...submissionHandlers,
   ...countiesHandler,
   ...authHandlers,
-  ...searchHandlers,
+  ...opensearchHandlers,
   ...secretsManagerHandlers,
   ...cloudFormationHandlers,
   ...apiTokenHandlers,
