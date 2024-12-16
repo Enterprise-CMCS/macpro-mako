@@ -92,9 +92,11 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
   test("PROPOSED EFFECTIVE DATE OF RENEWAL CONTRACTING WAIVER", async () => {
     await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
+
     const proposedEffectiveDateLabel = screen.getByText(
       "Proposed Effective Date of 1915(b) Waiver Renewal",
     );
+
     expect(proposedEffectiveDateLabel).not.toHaveClass("text-destructive");
   });
 

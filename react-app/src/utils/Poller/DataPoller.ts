@@ -40,7 +40,7 @@ export class DataPoller<TFetcherReturn> {
             }
           } catch (error) {
             const message =
-              (error as Error)?.message !== undefined ? (error as Error).message : error;
+              error instanceof Error ? (error as Error).message : error;
             errorMessage = `Error fetching data: ${message}`;
           }
         } else {

@@ -1,10 +1,11 @@
 import { Handler } from "aws-lambda";
-import { FAILED, send, SUCCESS } from "cfn-response-async";
-import { getSecret } from "shared-utils";
-import * as cognitolib from "./cognito-lib";
+import { send, SUCCESS, FAILED } from "cfn-response-async";
 type ResponseStatus = typeof SUCCESS | typeof FAILED;
+import * as cognitolib from "./cognito-lib";
+import { getSecret } from "shared-utils";
 
 export const handler: Handler = async (event, context) => {
+  console.log("request:", JSON.stringify(event, undefined, 2));
   const responseData: any = {};
   let responseStatus: ResponseStatus = SUCCESS;
   try {
@@ -13,6 +14,7 @@ export const handler: Handler = async (event, context) => {
       const devUserPassword = await getSecret(passwordSecretArn);
 
       for (let i = 0; i < users.length; i++) {
+        console.log(users[i]);
         const poolData = {
           UserPoolId: userPoolId,
           Username: users[i].username,

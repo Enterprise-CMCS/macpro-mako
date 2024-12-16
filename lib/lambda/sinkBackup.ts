@@ -1,15 +1,14 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { Handler } from "aws-lambda";
-import { sortBy } from "lodash";
 import { KafkaEvent, KafkaRecord } from "shared-types";
 import { ErrorType, logError } from "../libs/sink-lib";
+import { sortBy } from "lodash";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 const client = new S3Client({
   maxAttempts: 3,
 });
 const bucket = process.env.bucket;
 
 export const handler: Handler<KafkaEvent> = async (event) => {
-  console.log("sinkBackup request:", JSON.stringify(event, undefined, 2));
   const loggableEvent = { ...event, records: "too large to display" };
   try {
     for (const topicPartition of Object.keys(event.records)) {
@@ -46,7 +45,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           consecutiveEvents = [];
         }
       }
-      console.log({ topicPartition });
+      console.log(topicPartition);
     }
   } catch (error) {
     logError({ type: ErrorType.UNKNOWN, metadata: { event: loggableEvent } });

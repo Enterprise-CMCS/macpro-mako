@@ -1,7 +1,7 @@
-import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
 import { getAvailableActions } from "shared-utils";
+import { handleOpensearchError } from "./utils";
 import {
   getAuthDetails,
   isAuthorizedToGetPackageActions,
@@ -16,9 +16,10 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
       body: { message: "Event body required" },
     });
   }
-  const body = JSON.parse(event.body);
 
   try {
+    const body = JSON.parse(event.body);
+
     const result = await getPackage(body.id);
 
     if (result === undefined || !result.found) {
@@ -46,21 +47,7 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
       },
     });
   } catch (err) {
-    console.error({ err });
-    if (err instanceof OpensearchErrors.ResponseError) {
-      return response({
-        statusCode: err?.statusCode || err?.meta?.statusCode || 500,
-        body: {
-          error: err?.body || err?.meta?.body || err,
-          message: err.message,
-        },
-      });
-    }
-
-    return response({
-      statusCode: 500,
-      body: { message: "Internal server error" },
-    });
+    return response(handleOpensearchError(err));
   }
 };
 export const handler = getPackageActions;

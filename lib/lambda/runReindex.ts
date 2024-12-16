@@ -1,9 +1,9 @@
-import { SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
 import { Handler } from "aws-lambda";
-import { FAILED, send, SUCCESS } from "cfn-response-async";
+import { send, SUCCESS, FAILED } from "cfn-response-async";
+import { SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
 
 export const handler: Handler = async (event, context) => {
-  console.log("runReindex request:", JSON.stringify(event, undefined, 2));
+  console.log("request:", JSON.stringify(event, undefined, 2));
   try {
     if (event.RequestType == "Create") {
       const stepFunctionsClient = new SFNClient({});
@@ -20,7 +20,7 @@ export const handler: Handler = async (event, context) => {
       const execution = await stepFunctionsClient.send(startExecutionCommand);
       console.log(`State machine execution started: ${execution.executionArn}`);
       console.log(
-        "The state machine is now in charge of this resource, and will notify of success or failure upon completion.",
+        "The state machine is now in charge of this resource, and will notify of success or failure upon completion."
       );
     } else if (event.RequestType == "Update") {
       await send(event, context, SUCCESS, {}, "static");

@@ -1,12 +1,15 @@
 import * as os from "libs/opensearch-lib";
 import { opensearch } from "shared-types";
 
-export const getPackageChangelog = async (packageId: string, filter: any[] = []) => {
+export const getPackageChangelog = async (
+  packageId: string,
+  filter: any[] = [],
+) => {
   if (!process.env.osDomain) {
     throw new Error("process.env.osDomain must be defined");
   }
 
-  const changelogResult = await os.search(
+  return (await os.search(
     process.env.osDomain,
     `${process.env.indexNamespace}changelog`,
     {
@@ -19,7 +22,5 @@ export const getPackageChangelog = async (packageId: string, filter: any[] = [])
         },
       },
     },
-  );
-
-  return changelogResult as opensearch.changelog.Response;
+  )) as opensearch.changelog.Response;
 };

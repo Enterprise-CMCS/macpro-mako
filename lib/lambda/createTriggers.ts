@@ -1,14 +1,14 @@
+import { Handler } from "aws-lambda";
 import {
   CreateEventSourceMappingCommand,
   CreateEventSourceMappingCommandInput,
   GetEventSourceMappingCommand,
   LambdaClient,
 } from "@aws-sdk/client-lambda";
-import { Handler } from "aws-lambda";
 import { randomUUID } from "crypto";
 
 export const handler: Handler = async (event, _, callback) => {
-  console.log("createTriggers request:", JSON.stringify(event, undefined, 2));
+  console.log("request:", JSON.stringify(event, undefined, 2));
   const response = {
     statusCode: 200,
   };
@@ -46,10 +46,12 @@ export const handler: Handler = async (event, _, callback) => {
           StartingPosition: event.startingPosition || "TRIM_HORIZON",
           Topics: [topic],
         };
+        console.log(JSON.stringify(createEventSourceMappingParams, null, 2));
         const command = new CreateEventSourceMappingCommand(
           createEventSourceMappingParams as CreateEventSourceMappingCommandInput,
         );
         const result = await lambdaClient.send(command);
+        console.log(result);
         if (createEventSourceMappingParams.Enabled) {
           uuidsToCheck.push(result.UUID);
         }
