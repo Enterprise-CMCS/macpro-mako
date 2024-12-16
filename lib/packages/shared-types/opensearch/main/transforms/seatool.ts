@@ -96,6 +96,7 @@ const isInSecondClock = (
   seatoolStatus: any,
   authority: any,
 ) => {
+  console.log("what is the authority?", authority);
   if (
     authority != Authority.CHIP_SPA && // if it's not a chip
     [
