@@ -101,7 +101,7 @@ const processAndIndex = async ({
         ...data,
         event: "update-id",
         packageId: data.id,
-        id: `${data.id}-${offset}`,
+        id: `${data.id}`,
         timestamp: Date.now(),
       }));
 
