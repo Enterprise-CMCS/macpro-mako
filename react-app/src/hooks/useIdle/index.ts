@@ -48,11 +48,9 @@ export function useIdle(
     events.forEach((event) => document.addEventListener(event, handleEvents));
 
     return () => {
-      events.forEach((event) =>
-        document.removeEventListener(event, handleEvents),
-      );
+      events.forEach((event) => document.removeEventListener(event, handleEvents));
     };
-  }, [timeout]);
+  }, [timeout, events]);
 
   return idle;
 }
