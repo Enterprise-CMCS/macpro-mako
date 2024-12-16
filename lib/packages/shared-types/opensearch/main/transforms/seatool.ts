@@ -115,8 +115,13 @@ export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId, leadAnalystEmail } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } = getRaiDate(data);
-    const seatoolStatus = SEATOOL_SPW_STATUS[data?.STATE_PLAN?.SPW_STATUS_ID] ?? "Unknown";
-    const authority = SEATOOL_AUTHORITIES[data?.STATE_PLAN?.PLAN_TYPE] ?? null;
+    const seatoolStatus = data?.STATE_PLAN?.SPW_STATUS_ID
+      ? SEATOOL_SPW_STATUS[data?.STATE_PLAN?.SPW_STATUS_ID]
+      : "Unknown";
+    const authority =
+      data?.STATE_PLAN?.PLAN_TYPE && data.STATE_PLAN.PLAN_TYPE in SEATOOL_AUTHORITIES
+        ? SEATOOL_AUTHORITIES[data?.STATE_PLAN?.PLAN_TYPE]
+        : null;
 
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
     const resp = {
@@ -132,7 +137,7 @@ export const transform = (id: string) => {
       leadAnalystEmail,
       initialIntakeNeeded: !leadAnalystName && !finalDispositionStatuses.includes(seatoolStatus),
       leadAnalystName,
-      authority: authority as Authority | null,
+      authority,
       types:
         data.STATE_PLAN_SERVICETYPES?.filter(
           (type): type is NonNullable<typeof type> => type != null,
