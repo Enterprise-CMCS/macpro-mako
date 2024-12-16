@@ -7,8 +7,28 @@ import {
 import * as sinkLib from "libs";
 import { Document, seatool } from "shared-types/opensearch/main";
 import { offsetToUtc } from "shared-utils";
+import { KafkaRecord } from "lib/packages/shared-types";
 
 const convertObjToBase64 = (obj: object) => Buffer.from(JSON.stringify(obj)).toString("base64");
+
+const createKafkaRecord = ({
+  topic,
+  key,
+  value,
+}: {
+  topic: string;
+  key: string;
+  value: string;
+}): KafkaRecord => ({
+  topic,
+  partition: 0,
+  offset: 0,
+  timestamp: 1732645041557,
+  timestampType: "CREATE_TIME",
+  headers: {},
+  key,
+  value,
+});
 
 describe("insertOneMacRecordsFromKafkaIntoMako", () => {
   const spiedOnBulkUpdateDataWrapper = vi.fn();
@@ -26,12 +46,8 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
   it("handles valid kafka records", () => {
     insertOneMacRecordsFromKafkaIntoMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 0,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
           value: convertObjToBase64({
             event: "new-medicaid-submission",
@@ -76,8 +92,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
             submitterEmail: "george@example.com",
             timestamp: 1732645041526,
           }),
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -113,16 +128,11 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
   it("skips value-less kafka records", () => {
     insertOneMacRecordsFromKafkaIntoMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 0,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
           value: "", // <-- missing value
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -133,12 +143,8 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
   it("skips kafka records with invalid event name", () => {
     insertOneMacRecordsFromKafkaIntoMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 0,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
           // encoded string with `invalid-event-name` as 'record.event`
           value: convertObjToBase64({
@@ -184,8 +190,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
             submitterEmail: "george@example.com",
             timestamp: 1732645041526,
           }),
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -196,12 +201,8 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
   it("skips kafka records with invalid properties", () => {
     insertOneMacRecordsFromKafkaIntoMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 0,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
           // encoded string with `attachments` as an empty {}
           value: convertObjToBase64({
@@ -215,8 +216,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
             submitterEmail: "george@example.com",
             timestamp: 1732645041526,
           }),
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -229,16 +229,11 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
 
     insertOneMacRecordsFromKafkaIntoMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 0,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
           value: "bunch-of-gibberish",
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -296,12 +291,8 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
   it("outputs kafka records into mako records", async () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 5,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
           value: convertObjToBase64({
             id: "MD-24-2300",
@@ -352,8 +343,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
             STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
             STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
           }),
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -417,12 +407,8 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
   it("skips newer mako records", async () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 5,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "V1YtMjQtMzIzMA==",
           value: convertObjToBase64({
             id: "WV-24-3230",
@@ -473,8 +459,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
             STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 4, SPA_TYPE_NAME: "Type D" }],
             STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 4, TYPE_NAME: "SubType W" }],
           }),
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -487,16 +472,11 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
 
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 5,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TlktMjMtMjIwMA==",
           value: "", // <-- missing value
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -537,12 +517,8 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
   it("skips over records with no key property", async () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 5,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "", // <-- missing key
           value: convertObjToBase64({
             id: "IL-25-3130",
@@ -593,8 +569,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
             STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 5, SPA_TYPE_NAME: "Type E" }],
             STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 5, TYPE_NAME: "SubType V" }],
           }),
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -605,17 +580,12 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
   it("skips over records with invalid properties", async () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 5,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "V1YtMjQtMzIzMA==",
           // value is invalid JSON
           value: "bunch-of-gibberish",
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -631,12 +601,8 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
   it("skips over records with seatoolStatus:'Unknown' || authority: null property values", async () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 5,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
           value: convertObjToBase64({
             id: "MD-24-2300",
@@ -687,8 +653,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
             STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
             STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
           }),
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -699,12 +664,8 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
   it("skips over records that fail SEATOOL safeParse", async () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 5,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
           value: convertObjToBase64({
             ACTION_OFFICERS: [
@@ -754,8 +715,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
             STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
             STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
           }),
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -788,18 +748,13 @@ describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
   it("processes a valid date change to mako", async () => {
     await syncSeatoolRecordDatesFromKafkaWithMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 5,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
           value: convertObjToBase64({
             payload: { after: { ID_Number: "12345", Changed_Date: 1672531200000 } },
           }),
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -818,18 +773,13 @@ describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
   it("processes a date change that's null to mako", async () => {
     await syncSeatoolRecordDatesFromKafkaWithMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 5,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
           value: convertObjToBase64({
             payload: { after: { ID_Number: "67890", Changed_Date: null } },
           }),
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -848,16 +798,11 @@ describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
   it("skips records with no value property", async () => {
     await syncSeatoolRecordDatesFromKafkaWithMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 5,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
           value: "",
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -868,16 +813,11 @@ describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
   it("skips payloads that're null or undefined", async () => {
     await syncSeatoolRecordDatesFromKafkaWithMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 5,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
           value: convertObjToBase64({ payload: { after: null } }),
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -886,20 +826,15 @@ describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
 
     await syncSeatoolRecordDatesFromKafkaWithMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 5,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
           value: convertObjToBase64({
             payload: {
               after: undefined,
             },
           }),
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -910,17 +845,12 @@ describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
   it("skips payloads with missing Id property", async () => {
     await syncSeatoolRecordDatesFromKafkaWithMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 5,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
           // missing required Id property
           value: convertObjToBase64({ payload: { after: { Changed_Date: 1672531200000 } } }),
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
@@ -936,16 +866,11 @@ describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
   it("skips payloads with invalid JSON", async () => {
     await syncSeatoolRecordDatesFromKafkaWithMako(
       [
-        {
+        createKafkaRecord({
           topic: TOPIC,
-          partition: 0,
-          offset: 5,
-          timestamp: 1732645041557,
-          timestampType: "CREATE_TIME",
           key: "TUQtMjQtMjMwMA==",
           value: "bunch-of-gibberish",
-          headers: {},
-        },
+        }),
       ],
       TOPIC,
     );
