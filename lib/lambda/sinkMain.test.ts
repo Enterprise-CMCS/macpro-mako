@@ -1,6 +1,13 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { handler } from "./sinkMain";
 import * as sinkMainProcessors from "./sinkMainProcessors";
+import { KafkaEvent } from "lib/packages/shared-types";
+
+const createKafkaEvent = (records: KafkaEvent["records"]) => ({
+  eventSource: "SelfManagedKafka",
+  bootstrapServers: "kafka",
+  records,
+});
 
 describe("sinkMain handler", () => {
   vi.stubEnv("osDomain", "os-domain");
@@ -17,11 +24,7 @@ describe("sinkMain handler", () => {
       .mockImplementation(vi.fn());
 
     await handler(
-      {
-        eventSource: "SelfManagedKafka",
-        bootstrapServers: "b-1.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094",
-        records: { "aws.onemac.migration.cdc-0": [] },
-      },
+      createKafkaEvent({ "aws.onemac.migration.cdc-0": [] }),
       expect.anything(),
       vi.fn(),
     );
@@ -35,11 +38,7 @@ describe("sinkMain handler", () => {
       .mockImplementation(vi.fn());
 
     await handler(
-      {
-        eventSource: "SelfManagedKafka",
-        bootstrapServers: "b-1.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094",
-        records: { "aws.seatool.ksql.onemac.three.agg.State_Plan-0": [] },
-      },
+      createKafkaEvent({ "aws.seatool.ksql.onemac.three.agg.State_Plan-0": [] }),
       expect.anything(),
       vi.fn(),
     );
@@ -56,11 +55,7 @@ describe("sinkMain handler", () => {
       .mockImplementation(vi.fn());
 
     await handler(
-      {
-        eventSource: "SelfManagedKafka",
-        bootstrapServers: "b-1.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094",
-        records: { "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan-0": [] },
-      },
+      createKafkaEvent({ "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan-0": [] }),
       expect.anything(),
       vi.fn(),
     );
@@ -73,15 +68,7 @@ describe("sinkMain handler", () => {
 
   it("throws error with invalid topic partition", async () => {
     await expect(
-      handler(
-        {
-          eventSource: "SelfManagedKafka",
-          bootstrapServers: "b-1.master-msk.zf7e0q.c7.kafka.us-east-1.amazonaws.com:9094",
-          records: { "invalid-topic-partition": [] },
-        },
-        expect.anything(),
-        vi.fn(),
-      ),
+      handler(createKafkaEvent({ "invalid-topic-partition": [] }), expect.anything(), vi.fn()),
     ).rejects.toThrowError("topic (invalid-topic-partition) is invalid");
   });
 });
