@@ -91,12 +91,9 @@ const processAndIndex = async ({
         .or(updateValuesAdminChangeSchema)
         .or(updateIdAdminChangeSchema);
 
-      // console.log("WHATS THE RECORD", record);
       if (record.isAdminChange) {
-        console.log("ARE WE IN HERE", record.adminChangeType);
         const result = schema.safeParse(record);
         if (result.success) {
-          console.log("SUCCESS??");
           docs.push(record);
         } else {
           console.log(

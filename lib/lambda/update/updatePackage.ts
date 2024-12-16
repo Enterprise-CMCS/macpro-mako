@@ -108,6 +108,7 @@ const sendUpdateIdMessage = async ({
     });
   }
 
+  // Check if package with this inputted ID already exists
   const existingPackage = await getPackage(updatedId);
   if (existingPackage) {
     return response({
@@ -116,18 +117,6 @@ const sendUpdateIdMessage = async ({
     });
   }
   // use event of current package to determine how ID should be formatted
-  // const packageChangelog = await getPackageChangelog(currentPackage._id);
-  // if (!packageChangelog.hits.hits.length) {
-  //   return response({
-  //     statusCode: 500,
-  //     body: { message: "The type of package could not be determined." },
-  //   });
-  // }
-
-  // const packageWithSubmissionType = packageChangelog.hits.hits.find((pkg) => {
-  //   return pkg._source.event in events;
-  // });
-  // const packageEvent = packageWithSubmissionType?._source.event;
   const packageEvent = await getPackageType(currentPackage._id);
   const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
 
@@ -147,6 +136,8 @@ const sendUpdateIdMessage = async ({
       body: parsedId.error.message,
     });
   }
+  console.log("REMAINING FIELDS", remainingFields);
+  console.log("EXCLUDED ID", _id);
 
   await sendDeleteMessage(currentPackage._id);
   await produceMessage(
@@ -154,7 +145,6 @@ const sendUpdateIdMessage = async ({
     updatedId,
     JSON.stringify({
       id: updatedId,
-      event: packageEvent,
       ...remainingFields,
       changeMade: "ID has been updated.",
       isAdminChange: true,
