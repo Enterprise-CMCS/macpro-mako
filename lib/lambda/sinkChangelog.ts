@@ -10,7 +10,7 @@ import {
 import { Index } from "shared-types/opensearch";
 import {
   deleteAdminChangeSchema,
-  // updateIdAdminChangeSchema,
+  updateIdAdminChangeSchema,
   updateValuesAdminChangeSchema,
 } from "./update/adminChangeSchemas";
 import { getPackageType } from "./update/getPackageType";
@@ -100,23 +100,20 @@ const processAndIndex = async ({
         timestamp: Date.now(),
       }));
 
-      // const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((data) => ({
-      //   ...data,
-      //   // event: packageEvent,
-      //   packageId: data.id,
-      //   id: `${data.id}-${offset}`,
-      //   timestamp: Date.now(),
-      // }));
+      const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((data) => ({
+        ...data,
+        event: "update-id",
+        packageId: data.id,
+        id: `${data.id}-${offset}`,
+        timestamp: Date.now(),
+      }));
 
-      const schema = transformedDeleteSchema.or(transformedUpdateValuesSchema);
-      // .or(transformedUpdateIdSchema);
+      const schema = transformedDeleteSchema
+        .or(transformedUpdateValuesSchema)
+        .or(transformedUpdateIdSchema);
 
-      if (
-        record.isAdminChange &&
-        (record.adminChangeType === "delete" || record.adminChangeType === "update-values")
-      ) {
+      if (record.isAdminChange) {
         const result = schema.safeParse(record);
-        // console.log("IN THIS RESULT?");
 
         if (result.success) {
           docs.push(result.data);
