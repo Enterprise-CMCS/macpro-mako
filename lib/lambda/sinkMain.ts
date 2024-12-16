@@ -8,7 +8,7 @@ import * as os from "./../libs/opensearch-lib";
 import {
   deleteAdminChangeSchema,
   updateValuesAdminChangeSchema,
-  // updateIdAdminChangeSchema,
+  updateIdAdminChangeSchema,
 } from "./update/adminChangeSchemas";
 
 const osDomain = process.env.osDomain;
@@ -87,14 +87,12 @@ const processAndIndex = async ({
       // If we're not a mako event, continue
       // TODO:  handle legacy.  for now, just continue
 
-      const schema = deleteAdminChangeSchema.or(updateValuesAdminChangeSchema);
-      // .or(updateIdAdminChangeSchema);
+      const schema = deleteAdminChangeSchema
+        .or(updateValuesAdminChangeSchema)
+        .or(updateIdAdminChangeSchema);
 
-      console.log("WHATS THE RECORD", record);
-      if (
-        record.isAdminChange &&
-        (record.adminChangeType === "delete" || record.adminChangeType === "update-values")
-      ) {
+      // console.log("WHATS THE RECORD", record);
+      if (record.isAdminChange) {
         console.log("ARE WE IN HERE", record.adminChangeType);
         const result = schema.safeParse(record);
         if (result.success) {
@@ -125,12 +123,6 @@ const processAndIndex = async ({
             error: result?.error,
             metadata: { topicPartition, kafkaRecord, record },
           });
-          continue;
-        }
-
-        if (record.isAdminChange) {
-          docs.push({ ...result.data, updatedId: record.id });
-          console.log("WHAT IS DOCS NOW", docs);
           continue;
         }
         console.log(JSON.stringify(result.data, null, 2));
