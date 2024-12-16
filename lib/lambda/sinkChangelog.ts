@@ -120,6 +120,8 @@ const processAndIndex = async ({
 
             const updatedPackageChangelogs = packageChangelogs.hits.hits.forEach((log) => {
               const recordOffset = log._id.split("-").at(-1);
+              console.log("RESULT ID", result.data.id);
+              console.log("RECORD OFFSET", recordOffset);
               docs.push({
                 ...log._source,
                 id: `${result.data.id}-${recordOffset}`,
