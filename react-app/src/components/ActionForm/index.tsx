@@ -149,10 +149,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     try {
       try {
         await mutateAsync(formData);
-      } catch (error: unknown) {
+      } catch (error) {
         throw Error(
           `Error submitting form: ${
-            (error as Error)?.message !== undefined ? (error as Error).message : error
+            error?.message || error
           }`,
         );
       }
@@ -166,8 +166,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         const poller = documentPoller(documentPollerId, documentChecker);
         await poller.startPollingData();
       } catch (error) {
+        console.log("is error an Error? ", error instanceof Error);
         const message = `${
-          (error as Error)?.message !== undefined ? (error as Error).message : error
+          error?.message || error
         }`;
         throw Error(message);
       }

@@ -1,4 +1,4 @@
-import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterAll } from "vitest";
 import { buildStatusMemoQuery } from "./statusMemo"; // replace with the actual path to your module
 
 describe("buildStatusMemoQuery", () => {

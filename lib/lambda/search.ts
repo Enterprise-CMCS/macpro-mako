@@ -1,4 +1,4 @@
-import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
+import { handleOpensearchError } from "./utils";
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
 import { Index } from "shared-types/opensearch";
@@ -60,21 +60,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       body: results,
     });
   } catch (error) {
-    console.error({ error });
-    if (error instanceof OpensearchErrors.ResponseError) {
-      return response({
-        statusCode: error?.statusCode || error?.meta?.statusCode || 500,
-        body: {
-          error: error?.body || error?.meta?.body || error,
-          message: error.message,
-        },
-      });
-    }
-
-    return response({
-      statusCode: 500,
-      body: { message: "Internal server error" },
-    });
+    return response(handleOpensearchError(error));
   }
 };
 

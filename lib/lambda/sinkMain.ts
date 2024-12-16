@@ -1,8 +1,9 @@
 import { Handler } from "aws-lambda";
-import { KafkaEvent, KafkaRecord, opensearch } from "shared-types";
+import { KafkaRecord, opensearch } from "shared-types";
+import { KafkaEvent } from "shared-types";
+import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "../libs/sink-lib";
 import { Index } from "shared-types/opensearch";
 import { decodeBase64WithUtf8 } from "shared-utils";
-import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "../libs/sink-lib";
 import * as os from "./../libs/opensearch-lib";
 
 const osDomain = process.env.osDomain;
@@ -13,11 +14,16 @@ if (!indexNamespace || !osDomain) {
 const index: Index = `${process.env.indexNamespace}main`;
 
 export const handler: Handler<KafkaEvent> = async (event) => {
-  console.log("sinkMain request:", JSON.stringify(event, undefined, 2));
+  console.log("event");
+  console.log(JSON.stringify(event, null, 2));
   const loggableEvent = { ...event, records: "too large to display" };
+  console.log("loggableEvent");
+  console.log(loggableEvent);
   try {
     for (const topicPartition of Object.keys(event.records)) {
       const topic = getTopic(topicPartition);
+      console.log("topics");
+      console.log(topic);
       switch (topic) {
         case undefined:
           logError({ type: ErrorType.BADTOPIC });
@@ -60,7 +66,7 @@ const processAndIndex = async ({
 }) => {
   const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
   for (const kafkaRecord of kafkaRecords) {
-    console.log("kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
+    console.log(JSON.stringify(kafkaRecord, null, 2));
     const { value } = kafkaRecord;
     try {
       // If a legacy tombstone, handle and continue
@@ -94,6 +100,7 @@ const processAndIndex = async ({
           });
           continue;
         }
+        console.log(JSON.stringify(result.data, null, 2));
         docs.push(result.data);
       } else {
         console.log(`No transform found for event: ${record.event}`);
@@ -128,6 +135,8 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
     acc[item.id] = epochDate; // Use `id` as the key and epoch date as the value
     return acc;
   }, {});
+
+  console.log("are we here 4");
 
   for (const kafkaRecord of kafkaRecords) {
     const { key, value } = kafkaRecord;

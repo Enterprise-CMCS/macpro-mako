@@ -1,4 +1,4 @@
-import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
+import { handleOpensearchError } from "./utils";
 import { APIGatewayEvent } from "aws-lambda";
 import { validateEnvVariable } from "shared-utils";
 import { getStateFilter } from "../libs/api/auth/user";
@@ -13,11 +13,12 @@ export const getItemData = async (event: APIGatewayEvent) => {
       body: { message: "Event body required" },
     });
   }
+
   try {
     const body = JSON.parse(event.body);
 
     const packageResult = await getPackage(body.id);
-    if (!packageResult?.found) {
+    if (packageResult === undefined || !packageResult.found) {
       return response({
         statusCode: 404,
         body: { message: "No record found for the given id" },
@@ -70,20 +71,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
       },
     });
   } catch (error) {
-    if (error instanceof OpensearchErrors.ResponseError) {
-      return response({
-        statusCode: error?.statusCode || error?.meta?.statusCode || 500,
-        body: {
-          error: error?.body || error?.meta?.body || error,
-          message: error.message,
-        },
-      });
-    }
-
-    return response({
-      statusCode: 500,
-      body: { error, message: error.message },
-    });
+    return response(handleOpensearchError(error));
   }
 };
 

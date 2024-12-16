@@ -7,12 +7,16 @@ interface TopicConfig {
   replicationFactor: number;
 }
 
-export const handler = async function (event: CloudFormationCustomResourceEvent) {
-  console.log("createTopics request:", JSON.stringify(event, undefined, 2));
+export const handler = async function (
+  event: CloudFormationCustomResourceEvent,
+) {
+  console.log("Request:", JSON.stringify(event, undefined, 2));
   const resourceProperties = event.ResourceProperties;
   const topicsToCreate: TopicConfig[] = resourceProperties.topicsToCreate;
   const brokerString: string = resourceProperties.brokerString;
-  const topicConfig: TopicConfig[] = topicsToCreate.map(function (element: TopicConfig) {
+  const topicConfig: TopicConfig[] = topicsToCreate.map(function (
+    element: TopicConfig,
+  ) {
     const topic: string = element.topic;
     const replicationFactor: number = element.replicationFactor || 3;
     const numPartitions: number = element.numPartitions ?? 1;
