@@ -8,7 +8,7 @@ import {
   seatoolSchema,
 } from "../../..";
 
-import { Authority, SEATOOL_AUTHORITIES } from "shared-types";
+import { SEATOOL_AUTHORITIES } from "shared-types";
 
 function getLeadAnalyst(eventData: SeaTool) {
   let leadAnalystOfficerId: null | number = null;
