@@ -1,13 +1,13 @@
 import { http, HttpResponse } from "msw";
-import { defaultHandlers as apiTokenHandlers } from "./api-security.js";
-import { defaultHandlers as authHandlers } from "./auth.js";
-import { defaultHandlers as cloudFormationHandlers } from "./cloudformation.js";
-import { defaultHandlers as countiesHandler } from "./counties.js";
-import { defaultHandlers as itemHandlers } from "./items.js";
-import { defaultHandlers as searchHandlers } from "./opensearch.js";
-import { defaultHandlers as secretsManagerHandlers } from "./secretsmanager.js";
-import { defaultHandlers as submissionHandlers } from "./submissions.js";
-import { defaultHandlers as typeHandlers } from "./types.js";
+import { defaultHandlers as apiTokenHandlers } from "./api-security";
+import { defaultHandlers as authHandlers } from "./auth";
+import { defaultHandlers as cloudFormationHandlers } from "./cloudformation";
+import { defaultHandlers as countiesHandler } from "./counties";
+import { defaultHandlers as itemHandlers } from "./items";
+import { defaultHandlers as searchHandlers } from "./search/index";
+import { defaultHandlers as secretsManagerHandlers } from "./secretsmanager";
+import { defaultHandlers as submissionHandlers } from "./submissions";
+import { defaultHandlers as typeHandlers } from "./types";
 
 export type Body =
   | Blob
