@@ -4,10 +4,10 @@ import { http, HttpResponse, passthrough, PathParams } from "msw";
 import { APIGatewayEventRequestContext, CognitoUserAttributes } from "shared-types";
 import { isCmsUser } from "shared-utils";
 import {
+  ACCESS_KEY_ID,
   COGNITO_IDP_DOMAIN,
-  FAKE_ACCESS_KEY_ID,
-  FAKE_SECRET_KEY,
   IDENTITY_POOL_ID,
+  SECRET_KEY,
   USER_POOL_CLIENT_ID,
 } from "../consts";
 import { makoReviewer, makoStateSubmitter, userResponses } from "../data/users";
@@ -147,7 +147,7 @@ const generateIdToken = (user: TestUserData, authTime: number, expTime: number):
         iat: authTime,
         email: getAttributeFromUser(user, "email"),
       },
-      FAKE_SECRET_KEY,
+      SECRET_KEY,
       {
         algorithm: "RS256",
         expiresIn: "30m",
@@ -178,7 +178,7 @@ const generateAccessToken = (
         iat: authTime,
         username: user.Username,
       },
-      FAKE_SECRET_KEY,
+      SECRET_KEY,
       {
         algorithm: "RS256",
         expiresIn: "30m",
@@ -197,7 +197,7 @@ const generateRefreshToken = (user: TestUserData): string | null => {
         sub: getAttributeFromUser(user, "sub"),
         "cognito:username": user.Username,
       },
-      FAKE_SECRET_KEY,
+      SECRET_KEY,
       {
         expiresIn: "30m",
       },
@@ -292,9 +292,9 @@ export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
             const responseBuffer = Buffer.from(
               JSON.stringify({
                 Credentials: {
-                  AccessKeyId: FAKE_ACCESS_KEY_ID,
+                  AccessKeyId: ACCESS_KEY_ID,
                   Expiration: 1.73,
-                  SecretKey: FAKE_SECRET_KEY,
+                  SecretKey: SECRET_KEY,
                   SessionToken: generateSessionToken(user),
                 },
                 IdentityId: IDENTITY_POOL_ID,

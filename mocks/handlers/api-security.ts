@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-import { FAKE_ACCESS_KEY_ID, FAKE_SECRET_KEY } from "../consts";
+import { ACCESS_KEY_ID, SECRET_KEY } from "../consts";
 
 const generateSessionToken = (): string | null => {
   if (process.env.MOCK_USER_USERNAME) {
@@ -19,8 +19,8 @@ const defaultSecurityCredentialsHandler = http.get(/\/meta-data\/iam\/security-c
     Code: "Success",
     LastUpdated: new Date().toISOString(),
     Type: "AWS-HMAC",
-    AccessKeyId: FAKE_ACCESS_KEY_ID,
-    SecretAccessKey: FAKE_SECRET_KEY,
+    AccessKeyId: ACCESS_KEY_ID,
+    SecretAccessKey: SECRET_KEY,
     Token: generateSessionToken(),
     Expiration: "2017-05-17T15:09:54Z",
   });
