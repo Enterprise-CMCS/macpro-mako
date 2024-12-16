@@ -108,9 +108,9 @@ const sendUpdateIdMessage = async ({
     });
   }
 
-  // Check if package with this inputted ID already exists
-  const existingPackage = await getPackage(updatedId);
-  if (existingPackage) {
+  // check if a package with this new ID already exists
+  const packageExists = await getPackage(updatedId);
+  if (packageExists) {
     return response({
       statusCode: 400,
       body: { message: "This ID already exists" },
@@ -145,6 +145,7 @@ const sendUpdateIdMessage = async ({
     updatedId,
     JSON.stringify({
       id: updatedId,
+      idToBeUpdated: currentPackage._id,
       ...remainingFields,
       changeMade: "ID has been updated.",
       isAdminChange: true,

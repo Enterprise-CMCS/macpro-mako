@@ -19,5 +19,6 @@ export const updateValuesAdminChangeSchema = z
     .object({
       id: z.string(),
       adminChangeType: z.literal("update-id"),
+      idToBeUpdated: z.string(),
     })
     .and(z.record(z.string(), z.any()));

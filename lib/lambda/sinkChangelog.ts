@@ -115,7 +115,7 @@ const processAndIndex = async ({
 
         if (result.success) {
           if (result.data.adminChangeType === "update-id") {
-            const packageChangelogs = await getPackageChangelog(record.id);
+            const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
             console.log("PACKAGECHANGELOGS", packageChangelogs);
             const updatedPackageChangelogs = packageChangelogs.hits.hits.map((log) => ({
               ...log._source,
