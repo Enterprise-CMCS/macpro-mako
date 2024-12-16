@@ -127,12 +127,6 @@ const processAndIndex = async ({
           });
           continue;
         }
-
-        if (record.adminChangeType) {
-          docs.push({ ...result.data, updatedId: record.id });
-          console.log("WHAT IS DOCS NOW", docs);
-          continue;
-        }
         console.log(JSON.stringify(result.data, null, 2));
         docs.push(result.data);
       } else {
