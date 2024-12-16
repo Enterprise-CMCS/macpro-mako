@@ -13,7 +13,7 @@ import {
   updateIdAdminChangeSchema,
   updateValuesAdminChangeSchema,
 } from "./update/adminChangeSchemas";
-import { getPackageType } from "./update/getPackageType";
+import { getPackageChangelog } from "lib/libs/api/package";
 const osDomain = process.env.osDomain;
 if (!osDomain) {
   throw new Error("Missing required environment variable(s)");
@@ -80,9 +80,6 @@ const processAndIndex = async ({
 
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
-      console.log(record, "RECORD??");
-      const packageEvent = await getPackageType(record.id);
-      console.log(packageEvent, "WBAT IS THIS");
 
       const transformedDeleteSchema = deleteAdminChangeSchema.transform((data) => ({
         ...data,
@@ -112,11 +109,24 @@ const processAndIndex = async ({
         .or(transformedUpdateValuesSchema)
         .or(transformedUpdateIdSchema);
 
+      // TODO: query all changelog entries for this ID and create copies of all entries with new ID
       if (record.isAdminChange) {
         const result = schema.safeParse(record);
 
         if (result.success) {
-          docs.push(result.data);
+          if (result.data.adminChangeType === "update-id") {
+            const packageChangelogs = await getPackageChangelog(result.data.id);
+            console.log("PACKAGECHANGELOGS", packageChangelogs);
+            const updatedPackageChangelogs = packageChangelogs.hits.hits.map((log) => ({
+              ...log._source,
+              id: result.data.id,
+              packageId: result.data.id,
+            }));
+            console.log("UPDATEDPACKAGECHANGELOGS", updatedPackageChangelogs);
+            docs.push(updatedPackageChangelogs);
+          } else {
+            docs.push(result.data);
+          }
         } else {
           console.log(
             `Skipping package with invalid format for type "${record.adminChangeType}"`,
