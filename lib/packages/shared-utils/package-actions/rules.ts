@@ -47,7 +47,8 @@ const arEnableWithdrawRaiResponse: ActionRule = {
         checker.hasRaiResponse &&
         !checker.hasEnabledRaiWithdraw &&
         isCmsWriteUser(user) &&
-        !checker.hasStatus(finalDispositionStatuses)
+        !checker.hasStatus(finalDispositionStatuses) &&
+        !checker.isPlaceholderStatus
       );
     }
 
