@@ -23,6 +23,8 @@ describe("bulkUpdateDataWrapper", () => {
 
   it("throws an Error when env vars are missing", async () => {
     vi.unstubAllEnvs();
+    delete process.env.osDomain;
+    delete process.env.indexNamespace;
 
     await expect(bulkUpdateDataWrapper(DOCS, "main")).rejects.toThrow(
       "osDomain is undefined in environment variables",
