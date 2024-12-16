@@ -8,7 +8,7 @@ export const WithdrawPackageActionWaiver = () => {
   const { authority, id } = useParams();
   const { data: waiver, isLoading: isWaiverLoading } = useGetItem(id);
 
-  const authorityText = authority === "1915(c)" ? `1915(c) Appendix K` : authority;
+  const authorityText = authority === "1915(c)" ? "1915(c) Appendix K" : authority;
 
   const waiverActionType = {
     New: "Initial Waiver",
@@ -49,7 +49,7 @@ export const WithdrawPackageActionWaiver = () => {
         variant: "success",
       }}
       breadcrumbText="Withdraw Package"
-      formDescription={`Complete this form to withdraw ${authority == "1915(c)" ? "this 1915(c) Appendix K" : "a"} package. Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.`}
+      formDescription={`Complete this form to withdraw ${authority === "1915(c)" ? "this 1915(c) Appendix K" : "a"} package. Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.`}
       preSubmissionMessage="Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email."
       additionalInformation={{
         required: false,

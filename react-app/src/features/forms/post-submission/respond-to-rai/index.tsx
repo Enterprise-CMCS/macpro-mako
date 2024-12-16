@@ -32,7 +32,7 @@ export const RespondToRaiMedicaid = () => {
 };
 export const RespondToRaiWaiver = () => {
   const { authority, id } = useParams();
-  const authorityText = authority === "1915(c)" ? `1915(c) Appendix K` : authority;
+  const authorityText = authority === "1915(c)" ? "1915(c) Appendix K" : authority;
 
   return (
     <ActionForm
