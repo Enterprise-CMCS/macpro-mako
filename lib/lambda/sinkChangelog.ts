@@ -117,7 +117,7 @@ const processAndIndex = async ({
           if (result.data.adminChangeType === "update-id") {
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
             console.log("WHAT IS THIS", result.data.idToBeUpdated);
-            console.log("PACKAGECHANGELOGS", packageChangelogs);
+            console.log("PACKAGECHANGELOGS", packageChangelogs.hits.hits);
 
             packageChangelogs.hits.hits.forEach((log) => {
               const recordOffset = log._id.split("-").at(-1);
