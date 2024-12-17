@@ -6,6 +6,7 @@ import { aws4Interceptor } from "aws4-axios";
 import axios from "axios";
 import { ItemResult, Document as OSDocument } from "lib/packages/shared-types/opensearch/main";
 import { opensearch } from "shared-types";
+import { getDomainAndNamespace } from "./sink-lib";
 
 let client: Client;
 
@@ -184,15 +185,11 @@ export async function getItem(
   return decodeUtf8(response).body;
 }
 
-export async function getItems(
-  host: string,
-  indexNamespace: string,
-  ids: string[],
-): Promise<OSDocument[]> {
+export async function getItems(ids: string[]): Promise<OSDocument[]> {
   try {
-    const index = `${indexNamespace}main`;
+    const { domain, index } = getDomainAndNamespace("main");
 
-    client = client || (await getClient(host));
+    client = client || (await getClient(domain));
 
     const response = await client.mget<{ docs: ItemResult[] }>({
       index,
