@@ -1,12 +1,9 @@
-import { response } from "../libs/handler-lib";
+import { handleOpensearchError } from "./utils";
 import { APIGatewayEvent } from "aws-lambda";
-import { getStateFilter } from "../libs/api/auth/user";
-import {
-  getAppkChildren,
-  getPackage,
-  getPackageChangelog,
-} from "../libs/api/package";
 import { validateEnvVariable } from "shared-utils";
+import { getStateFilter } from "../libs/api/auth/user";
+import { getAppkChildren, getPackage, getPackageChangelog } from "../libs/api/package";
+import { response } from "../libs/handler-lib";
 
 export const getItemData = async (event: APIGatewayEvent) => {
   validateEnvVariable("osDomain");
@@ -16,37 +13,23 @@ export const getItemData = async (event: APIGatewayEvent) => {
       body: { message: "Event body required" },
     });
   }
+
   try {
     const body = JSON.parse(event.body);
-    const stateFilter = await getStateFilter(event);
-    const packageResult = await getPackage(body.id);
 
-    let appkChildren: any[] = [];
-    if (packageResult._source.appkParent) {
-      const children = await getAppkChildren(body.id);
-      appkChildren = children.hits.hits;
-    }
-    const filter = [];
-    // This is to handle hard deletes in legacy
-    if (packageResult._source.legacySubmissionTimestamp !== null) {
-      filter.push({
-        range: {
-          timestamp: {
-            gte: new Date(
-              packageResult._source.legacySubmissionTimestamp,
-            ).getTime(),
-          },
-        },
+    const packageResult = await getPackage(body.id);
+    if (packageResult === undefined || !packageResult.found) {
+      return response({
+        statusCode: 404,
+        body: { message: "No record found for the given id" },
       });
     }
 
-    const changelog = await getPackageChangelog(body.id, filter);
+    const stateFilter = await getStateFilter(event);
     if (
       stateFilter &&
-      (!packageResult._source.state ||
-        !stateFilter.terms.state.includes(
-          packageResult._source.state.toLocaleLowerCase(),
-        ))
+      (!packageResult?._source.state ||
+        !stateFilter.terms.state.includes(packageResult._source.state.toLocaleLowerCase()))
     ) {
       return response({
         statusCode: 401,
@@ -54,12 +37,27 @@ export const getItemData = async (event: APIGatewayEvent) => {
       });
     }
 
-    if (!packageResult.found) {
-      return response({
-        statusCode: 404,
-        body: { message: "No record found for the given id" },
+    let appkChildren: any[] = [];
+    if (packageResult?._source?.appkParent) {
+      const children = await getAppkChildren(body.id);
+      appkChildren = children.hits.hits;
+    }
+    const filter = [];
+    // This is to handle hard deletes in legacy
+    if (
+      packageResult?._source?.legacySubmissionTimestamp !== null &&
+      packageResult?._source?.legacySubmissionTimestamp !== undefined
+    ) {
+      filter.push({
+        range: {
+          timestamp: {
+            gte: new Date(packageResult._source.legacySubmissionTimestamp).getTime(),
+          },
+        },
       });
     }
+
+    const changelog = await getPackageChangelog(body.id, filter);
 
     return response<unknown>({
       statusCode: 200,
@@ -73,10 +71,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
       },
     });
   } catch (error) {
-    return response({
-      statusCode: 500,
-      body: { error, message: error.message },
-    });
+    return response(handleOpensearchError(error));
   }
 };
 
