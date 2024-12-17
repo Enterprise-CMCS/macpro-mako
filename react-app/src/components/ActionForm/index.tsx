@@ -84,7 +84,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   schema,
-  defaultValues,
+  defaultValues = {} as DefaultValues<z.TypeOf<InferUntransformedSchema<Schema>>>,
   title,
   fields: Fields,
   bannerPostSubmission = {
@@ -132,7 +132,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const form = useForm<z.TypeOf<Schema>>({
     resolver: zodResolver(schema),
     mode: "onChange",
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+    },
   });
 
   const { mutateAsync } = useMutation({
