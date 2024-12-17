@@ -94,13 +94,14 @@ const sendUpdateIdMessage = async ({
   if (!topicName) {
     throw new Error("Topic name is not defined");
   }
-  // ID and changeMade are excluded but the rest of the object has to be spread into the new package
+  // ID and changeMade are excluded; the rest of the object has to be spread into the new package
   const {
     id: _id,
     changeMade: _changeMade,
     origin: _origin,
     ...remainingFields
   } = currentPackage._source;
+
   if (!updatedId) {
     return response({
       statusCode: 400,
@@ -136,8 +137,6 @@ const sendUpdateIdMessage = async ({
       body: parsedId.error.message,
     });
   }
-  console.log("REMAINING FIELDS", remainingFields);
-  console.log("EXCLUDED ID", _id);
 
   await sendDeleteMessage(currentPackage._id);
   await produceMessage(
@@ -169,12 +168,6 @@ const updatePackageEventBodySchema = z.object({
 });
 
 export const handler = async (event: APIGatewayEvent) => {
-  // const topicName = process.env.topicName as string;
-
-  // if (!topicName) {
-  //   throw new Error("Topic name is not defined");
-  // }
-
   if (!event.body) {
     return response({
       statusCode: 400,
