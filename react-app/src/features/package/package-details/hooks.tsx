@@ -1,4 +1,4 @@
-import { isCmsUser } from "shared-utils";
+import { isCmsUser, isStateUser, formatSeatoolDate } from "shared-utils";
 
 import { OneMacUser } from "@/api/useGetUser";
 import { BLANK_VALUE } from "@/consts";
@@ -8,7 +8,6 @@ import { Authority, opensearch } from "shared-types";
 import { convertStateAbbrToFullName, LABELS } from "@/utils";
 import { format } from "date-fns";
 import { useMemo, useState } from "react";
-import { formatSeatoolDate } from "shared-utils";
 
 export const ReviewTeamList: FC<opensearch.main.Document> = (props) => {
   const [expanded, setExpanded] = useState(false);
@@ -77,8 +76,8 @@ export const recordDetails = (data: opensearch.main.Document): DetailSectionItem
     value: data.types
       ? data.types.map((T) => <p key={T?.SPA_TYPE_ID}>{T?.SPA_TYPE_NAME}</p>)
       : BLANK_VALUE,
-    canView: () => {
-      return !(data.actionType === "Extend");
+    canView: ({ user }) => {
+      return !(data.actionType === "Extend") && isStateUser(user) === false;
     },
   },
   {
@@ -86,8 +85,8 @@ export const recordDetails = (data: opensearch.main.Document): DetailSectionItem
     value: data.subTypes
       ? data.subTypes.map((T) => <p key={T?.TYPE_ID}>{T?.TYPE_NAME}</p>)
       : BLANK_VALUE,
-    canView: () => {
-      return !(data.actionType === "Extend");
+    canView: ({ user }) => {
+      return !(data.actionType === "Extend") && isStateUser(user) === false;
     },
   },
   {
