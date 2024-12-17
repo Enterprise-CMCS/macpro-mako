@@ -1,10 +1,11 @@
-import { describe, it, expect, vi, beforeAll, afterAll } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterAll } from "vitest";
 import { buildStatusMemoQuery } from "./statusMemo"; // replace with the actual path to your module
 
 describe("buildStatusMemoQuery", () => {
   const mockDate = new Date("2023-01-01T12:00:00Z").getTime();
 
-  beforeAll(() => {
+  beforeEach(() => {
+    vi.useFakeTimers();
     vi.setSystemTime(mockDate);
   });
 

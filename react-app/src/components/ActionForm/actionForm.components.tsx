@@ -1,5 +1,5 @@
 import { FAQ_TAB } from "@/router";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { z } from "zod";
 
 export const AttachmentFileFormatInstructions = () => (
@@ -36,7 +36,11 @@ export const AttachmentFAQInstructions = ({ faqLink }: { faqLink?: string }) => 
 );
 
 const isZodArrayDef = (def: unknown): def is z.ZodArrayDef =>
-  def && typeof def === "object" && "typeName" in def && def.typeName === "ZodArray";
+  def !== undefined &&
+  def !== null &&
+  typeof def === "object" &&
+  "typeName" in def &&
+  def.typeName === "ZodArray";
 
 export const AttachmentInstructions = ({ fileValidation }: { fileValidation: z.ZodArray<any> }) => {
   if (isZodArrayDef(fileValidation)) {

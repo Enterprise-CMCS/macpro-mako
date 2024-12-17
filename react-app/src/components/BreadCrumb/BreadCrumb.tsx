@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { type ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
 
@@ -29,11 +29,7 @@ export const BreadCrumbs = ({ options }: BreadCrumbsProps) => {
         .toSorted((option, prevOption) => option.order - prevOption.order)
         .map(({ displayText, to }, index, optionsArray) => {
           return (
-            <BreadCrumb
-              key={displayText}
-              to={to}
-              active={index !== optionsArray.length - 1}
-            >
+            <BreadCrumb key={displayText} to={to} active={index !== optionsArray.length - 1}>
               {displayText}
             </BreadCrumb>
           );

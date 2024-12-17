@@ -1,16 +1,7 @@
 import { Upload } from "./upload";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-
-// Mock global fetch
-global.fetch = vi.fn();
-
-// Mock AWS Amplify API
-vi.mock("aws-amplify", () => ({
-  API: {
-    post: vi.fn(),
-  },
-}));
+import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
 
 const defaultProps = {
   dataTestId: "upload-component",
@@ -18,6 +9,30 @@ const defaultProps = {
   setFiles: vi.fn(),
   setErrorMessage: vi.fn(),
 };
+
+const files = [
+  {
+    key: "file-1",
+    title: "file-1.txt",
+    filename: "file-1.txt",
+    bucket: "bucket-1",
+    uploadDate: Date.now(),
+  },
+  {
+    key: "file-to-remove",
+    title: "file-to-remove.txt",
+    filename: "file-to-remove.txt",
+    bucket: "bucket-1",
+    uploadDate: Date.now(),
+  },
+  {
+    key: "file-2",
+    title: "file-2.txt",
+    filename: "file-2.txt",
+    bucket: "bucket-1",
+    uploadDate: Date.now(),
+  },
+];
 
 describe("Upload", () => {
   const testIdSuffix = "upload";
@@ -27,13 +42,13 @@ describe("Upload", () => {
   });
 
   it("renders correctly with initial props", () => {
-    render(<Upload {...defaultProps} />);
+    renderWithQueryClient(<Upload {...defaultProps} />);
     expect(screen.getByTestId(`${defaultProps.dataTestId}-${testIdSuffix}`)).toBeInTheDocument();
     expect(screen.queryByText("Uploading...")).not.toBeInTheDocument();
   });
 
   it("uploads files correctly", async () => {
-    render(<Upload {...defaultProps} />);
+    renderWithQueryClient(<Upload {...defaultProps} />);
 
     const dropzone = screen.getByRole("presentation");
     const file = new File(["file contents"], "file.pdf", { type: "application/pdf" });
@@ -59,7 +74,7 @@ describe("Upload", () => {
   });
 
   it("displays an error for unsupported file types", async () => {
-    render(<Upload {...defaultProps} />);
+    renderWithQueryClient(<Upload {...defaultProps} />);
 
     const dropzone = screen.getByRole("presentation");
     const file = new File(["file contents"], "file.exe", { type: "application/x-msdownload" });
@@ -79,7 +94,7 @@ describe("Upload", () => {
   });
 
   it("does not display the dropzone when uploading", async () => {
-    render(<Upload {...defaultProps} />);
+    renderWithQueryClient(<Upload {...defaultProps} />);
 
     const dropzone = screen.getByTestId("upload-component-upload");
     const file = new File(["file contents"], "file.pdf", { type: "application/pdf" });
@@ -98,23 +113,17 @@ describe("Upload", () => {
 
   it("handles file removal on event", () => {
     const mockSetFiles = vi.fn();
-    const files = [
-      { filename: "file-1.txt" },
-      { filename: "file-to-remove.txt" },
-      { filename: "file-2.txt" },
-    ];
 
     // Render the component with necessary props
-    render(<Upload {...defaultProps} files={files} setFiles={mockSetFiles} />);
+    renderWithQueryClient(<Upload {...defaultProps} files={files} setFiles={mockSetFiles} />);
 
     // Simulate the event (e.g., a click on the remove button)
     const removeButton = screen.getByTestId("upload-component-remove-file-file-to-remove.txt"); // Ensure your component uses this testId
     fireEvent.click(removeButton);
 
     // Assert that setFiles was called with the updated files array
-    expect(mockSetFiles).toHaveBeenCalledWith([
-      { filename: "file-1.txt" },
-      { filename: "file-2.txt" },
-    ]);
+    expect(mockSetFiles).toHaveBeenCalledWith(
+      files.filter((file) => file.filename !== "file-to-remove.txt"),
+    );
   });
 });

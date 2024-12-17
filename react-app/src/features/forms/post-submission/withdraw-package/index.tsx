@@ -1,17 +1,21 @@
 import { useGetItem } from "@/api";
-import { ActionForm, PackageSection } from "@/components";
+import { ActionForm, LoadingSpinner, PackageSection } from "@/components";
 import { formSchemas } from "@/formSchemas";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { SEATOOL_STATUS } from "shared-types";
 
 export const WithdrawPackageActionWaiver = () => {
   const { authority, id } = useParams();
-  const { data } = useGetItem(id);
+  const { data: waiver, isLoading: isWaiverLoading } = useGetItem(id);
   const waiverActionType = {
     New: "Initial Waiver",
     Renew: "Waiver Renewal",
     Amend: "Waiver Amendment",
   };
+
+  if (isWaiverLoading === true) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <ActionForm
@@ -53,9 +57,9 @@ export const WithdrawPackageActionWaiver = () => {
         acceptButtonText: "Yes, withdraw package",
         header: "Withdraw package?",
         body: `You are about to withdraw ${authority} ${
-          waiverActionType[data._source.actionType]
+          waiverActionType[waiver?._source?.actionType]
         } ${id}. Completing this action will conclude the review of this ${authority} ${
-          waiverActionType[data._source.actionType]
+          waiverActionType[waiver?._source.actionType]
         } package. If you are not sure this is the correct action to select, contact your CMS point of contact for assistance.`,
       }}
     />

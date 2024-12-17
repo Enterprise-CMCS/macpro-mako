@@ -38,13 +38,7 @@ export type FilterType =
   | "exists";
 
 export type RangeValue = { gte?: string; lte?: string };
-export type FilterValue =
-  | string
-  | string[]
-  | number
-  | boolean
-  | RangeValue
-  | null;
+export type FilterValue = string | string[] | number | boolean | RangeValue | null;
 
 export type Filterable<_FIELD> = {
   type: FilterType;
@@ -85,7 +79,7 @@ export type ExportHeaderOptions<TData> = {
   name: string;
 };
 
-type BaseIndex =
+export type BaseIndex =
   | "main"
   | "insights"
   | "changelog"

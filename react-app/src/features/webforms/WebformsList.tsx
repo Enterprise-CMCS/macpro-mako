@@ -2,7 +2,7 @@ import { useGetAllForms } from "@/api";
 import { SubNavHeader } from "../../components/Layout";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { MaintenanceBanner } from "@/components/MaintenanceBanner";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 export const WebformsList = () => {
   const { data, isLoading } = useGetAllForms();
@@ -52,10 +52,7 @@ export const WebformsList = () => {
           </table>
 
           <div className="mt-2">
-            <Link
-              className="cursor-pointer text-blue-600 ml-0"
-              to="/guides/abp"
-            >
+            <Link className="cursor-pointer text-blue-600 ml-0" to="/guides/abp">
               Implementation Guide
             </Link>
           </div>
