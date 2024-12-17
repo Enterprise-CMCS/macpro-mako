@@ -68,7 +68,11 @@ export const packageDetailsLoader = async ({ params }: LoaderFunctionArgs): Prom
       return redirect("/dashboard");
     }
   } catch (error) {
-    console.log("Error: ", error);
+    if (error instanceof Error) {
+      console.log("Error fetching package: ", error.message);
+    } else {
+      console.log("Unknown error fetching package: ", error);
+    }
     return redirect("/dashboard");
   }
 
