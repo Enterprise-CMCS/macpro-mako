@@ -9,9 +9,12 @@ import {
 } from "../libs/sink-lib";
 import { Index } from "shared-types/opensearch";
 import {
-  deleteAdminChangeSchema,
-  updateIdAdminChangeSchema,
-  updateValuesAdminChangeSchema,
+  // deleteAdminChangeSchema,
+  // updateIdAdminChangeSchema,
+  // updateValuesAdminChangeSchema,
+  transformDeleteSchema,
+  transformUpdateValuesSchema,
+  transformedUpdateIdSchema,
 } from "./update/adminChangeSchemas";
 import { getPackageChangelog } from "lib/libs/api/package";
 const osDomain = process.env.osDomain;
@@ -81,65 +84,63 @@ const processAndIndex = async ({
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
 
-      const transformedDeleteSchema = deleteAdminChangeSchema.transform((data) => ({
-        ...data,
-        event: "delete",
-        packageId: data.id,
-        id: `${data.id}-${offset}`,
-        timestamp: Date.now(),
-      }));
+      // const transformedDeleteSchema = deleteAdminChangeSchema.transform((data) => ({
+      //   ...data,
+      //   event: "delete",
+      //   packageId: data.id,
+      //   id: `${data.id}-${offset}`,
+      //   timestamp: Date.now(),
+      // }));
 
-      const transformedUpdateValuesSchema = updateValuesAdminChangeSchema.transform((data) => ({
-        ...data,
-        event: "update-values",
-        packageId: data.id,
-        id: `${data.id}-${offset}`,
-        timestamp: Date.now(),
-      }));
+      // const transformedUpdateValuesSchema = updateValuesAdminChangeSchema.transform((data) => ({
+      //   ...data,
+      //   event: "update-values",
+      //   packageId: data.id,
+      //   id: `${data.id}-${offset}`,
+      //   timestamp: Date.now(),
+      // }));
 
-      const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((data) => ({
-        ...data,
-        event: "update-id",
-        packageId: data.id,
-        id: `${data.id}`,
-        timestamp: Date.now(),
-      }));
+      // const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((data) => ({
+      //   ...data,
+      //   event: "update-id",
+      //   packageId: data.id,
+      //   id: `${data.id}`,
+      //   timestamp: Date.now(),
+      // }));
 
-      const schema = transformedDeleteSchema
-        .or(transformedUpdateValuesSchema)
-        .or(transformedUpdateIdSchema);
+      // const schema = transformedDeleteSchema
+      //   .or(transformedUpdateValuesSchema)
+      //   .or(transformedUpdateIdSchema);
 
-      // TODO: query all changelog entries for this ID and create copies of all entries with new ID
+      // query all changelog entries for this ID and create copies of all entries with new ID
       if (record.isAdminChange) {
+        const schema = transformDeleteSchema(offset).or(
+          transformUpdateValuesSchema(offset).or(transformedUpdateIdSchema),
+        );
+
         const result = schema.safeParse(record);
 
         if (result.success) {
-          console.log("DOCS BEFORE", docs);
           if (result.data.adminChangeType === "update-id") {
             docs.forEach((log) => {
               const recordOffset = log.id.split("-").at(-1);
+
               docs.push({
                 ...log,
                 id: `${result.data.id}-${recordOffset}`,
                 packageId: result.data.id,
               });
             });
-
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
-            console.log("WHAT IS THIS", result.data.idToBeUpdated);
-            console.log("PACKAGECHANGELOGS", packageChangelogs.hits.hits);
 
             packageChangelogs.hits.hits.forEach((log) => {
               const recordOffset = log._id.split("-").at(-1);
-              console.log("RESULT ID", result.data.id);
-              console.log("RECORD OFFSET", recordOffset);
               docs.push({
                 ...log._source,
                 id: `${result.data.id}-${recordOffset}`,
                 packageId: result.data.id,
               });
             });
-            console.log("DOCS", docs);
           } else {
             docs.push(result.data);
           }
