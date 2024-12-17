@@ -1,3 +1,4 @@
+import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
 import * as os from "../../../libs/opensearch-lib";
 
 export async function itemExists(params: {
@@ -13,7 +14,12 @@ export async function itemExists(params: {
     );
     return !!packageResult?._source;
   } catch (error) {
+    if (error instanceof OpensearchErrors.ResponseError && error.statusCode === 404 || error.meta?.statusCode === 404) {
+      console.log("Error (404) retrieving in OpenSearch:", error);
+      return false;
+    }
+
     console.error("Error checking item existence in OpenSearch:", error);
-    return false;
+    throw error;
   }
 }
