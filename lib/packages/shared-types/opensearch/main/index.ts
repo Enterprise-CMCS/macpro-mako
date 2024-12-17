@@ -65,6 +65,7 @@ export type Document = AppkDocument &
     deleted?: boolean;
     adminChangeType?: string;
     changeMade?: string;
+    idToBeUpdated?: string;
   };
 
 export type Response = Res<Document>;
