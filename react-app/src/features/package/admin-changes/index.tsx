@@ -68,7 +68,6 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
         return [BLANK_VALUE, AC_Update];
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // actionType and changeType come from legacy dataset
   }, [props.actionType, props.changeType]);
 
   return (
