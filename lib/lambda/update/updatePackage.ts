@@ -70,6 +70,7 @@ const sendUpdateValuesMessage = async ({
     JSON.stringify({
       id: currentPackage._id,
       ...updatedFields,
+      origin: "OneMAC",
       isAdminChange: true,
       adminChangeType: "update-values",
       changeMade: changeMadeText,
