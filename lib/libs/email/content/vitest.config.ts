@@ -3,8 +3,7 @@ import { defineProject } from "vitest/config";
 export default defineProject({
   test: {
     name: "email",
-    root: ".",
-    setupFiles: ["./vitest.setup.ts"],
+    root: "./lib/libs/email/content",
     exclude: ["**/node_modules/**"],
     environment: "jsdom",
   },
