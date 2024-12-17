@@ -8,16 +8,18 @@ const defaultSubtypeSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-subtypes/_search",
   async ({ request }) => {
     const { query } = await request.json();
+    const must = query?.bool?.must;
     
-    const [{ match: { authorityId } }, { terms: { typeId }}] = query?.bool?.must || [];
-    
+    const authorityId = (Array.isArray(must)) ? must.find(rule => rule?.match?.authorityId)?.match?.authorityId : must?.match?.authorityId;
+    const typeIds = ((Array.isArray(must)) ? must.find(rule => rule?.terms?.typeId)?.terms?.typeId : must?.terms?.typeId) || [];
+
     if (authorityId === ERROR_AUTHORITY_ID) {
       return new HttpResponse("Internal server error", { status: 500 });
     }
 
     const hits = subtypes.filter(type =>
       type?._source?.authorityId == authorityId 
-      && typeId.includes(type?._source?.typeId)
+      && typeIds.includes(type?._source?.typeId)
       && !type?._source?.name.match(/Do Not Use/)
     ) || []
 

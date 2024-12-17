@@ -4,6 +4,7 @@ import { handler } from "./getSubTypes";
 import { 
   MEDICAID_SPA_AUTHORITY_ID, 
   CHIP_SPA_AUTHORITY_ID,
+  NOT_FOUND_AUTHORITY_ID,
   TYPE_ONE_ID, 
   TYPE_TWO_ID, 
   TYPE_THREE_ID,
@@ -12,6 +13,7 @@ import {
   medicaidSubtypes,
   chipSubtypes
 } from "mocks/data/types"
+import { TestSubtypeItemResult } from "mocks";
 
 describe("getSubTypes Handler", () => {
   it("should return 400 if event body is missing", async () => {
@@ -67,8 +69,9 @@ describe("getSubTypes Handler", () => {
 
     expect(res.statusCode).toEqual(200);
     expect(body.hits.hits).toEqual(chipSubtypes);
-    body.hits.hits.forEach(type => {
-      expect(type._source.name.match(/Do Not Use/)).toBeFalsy()
+    body.hits.hits.forEach((type: TestSubtypeItemResult) => {
+      expect(type?._source?.name).toBeTruthy()
+      expect(type?._source?.name?.match(/Do Not Use/)).toBeFalsy()
     })
   })
 

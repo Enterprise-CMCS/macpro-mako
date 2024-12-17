@@ -9,6 +9,7 @@ import {
   medicaidTypes,
   chipTypes
 } from "mocks/data/types"
+import { TestTypeItemResult } from "mocks";
 
 describe("getTypes Handler", () => {
   it("should return 400 if event body is missing", async () => {
@@ -55,8 +56,9 @@ describe("getTypes Handler", () => {
 
     expect(res.statusCode).toEqual(200);
     expect(body.hits.hits).toEqual(chipTypes)
-    body.hits.hits.forEach(type => {
-      expect(type._source.name.match(/Do Not Use/)).toBeFalsy()
+    body.hits.hits.forEach((type: TestTypeItemResult) => {
+      expect(type?._source?.name).toBeTruthy()
+      expect(type?._source?.name?.match(/Do Not Use/)).toBeFalsy()
     })
   });
 
