@@ -31,7 +31,7 @@ export default defineConfig(({ mode }) => {
     },
     test: {
       root: ".",
-      setupFiles: "./testing/setup.ts",
+      setupFiles: "./vitest.setup.ts",
       exclude: ["**/node_modules/**"],
       environment: "jsdom",
     },

@@ -326,7 +326,7 @@ const items: Record<string, TestItemResult> = {
       id: INITIAL_RELEASE_APPK_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.PENDING,
       actionType: "New",
-      authority: "CHIP SPA",
+      authority: "1915(c)",
       state: "MD",
       origin: "OneMAC",
       appkChildren: [
