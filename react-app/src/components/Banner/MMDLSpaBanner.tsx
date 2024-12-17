@@ -27,7 +27,7 @@ const MMDLAlertBanner = () => {
           href="/faq#mmdl-section"
           target="_blank"
           rel="noopener noreferrer"
-          className="border-2 border-black rounded h-[38px] px-4 text font-bold text-center whitespace-nowrap"
+          className="border-2 border-black rounded h-[38px] px-4 text font-bold text-center whitespace-nowrap pt-1"
         >
           Go to FAQs
         </a>
