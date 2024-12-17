@@ -9,7 +9,7 @@ import {
 import { BaseEmailTemplate } from "../../email-templates";
 import { formatDate } from "shared-utils";
 
-type AppKEmailProps = Events["NewAppKSubmission"] & CommonEmailVariables;
+export type AppKEmailProps = Events["NewAppKSubmission"] & CommonEmailVariables;
 
 // 1915c - app K
 export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
