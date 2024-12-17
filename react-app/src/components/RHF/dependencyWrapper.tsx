@@ -1,30 +1,15 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import {
-  Condition,
-  DependencyRule,
-  DependencyWrapperProps,
-} from "shared-types";
+import { Condition, DependencyRule, DependencyWrapperProps } from "shared-types";
 
-const checkTriggeringValue = (
-  dependentValue: unknown[],
-  dependency?: DependencyRule,
-) => {
+const checkTriggeringValue = (dependentValue: unknown[], dependency?: DependencyRule) => {
   if (dependency?.looseConditions) {
-    return !!dependency?.conditions?.some((d, i) =>
-      triggerCheckSwitch(dependentValue, d, i),
-    );
+    return !!dependency?.conditions?.some((d, i) => triggerCheckSwitch(dependentValue, d, i));
   }
-  return !!dependency?.conditions?.every((d, i) =>
-    triggerCheckSwitch(dependentValue, d, i),
-  );
+  return !!dependency?.conditions?.every((d, i) => triggerCheckSwitch(dependentValue, d, i));
 };
 
-const triggerCheckSwitch = (
-  dependentValue: unknown[],
-  d: Condition,
-  i: number,
-) => {
+const triggerCheckSwitch = (dependentValue: unknown[], d: Condition, i: number) => {
   switch (d.type) {
     case "expectedValue":
       if (Array.isArray(dependentValue[i])) {
@@ -52,28 +37,20 @@ const triggerCheckSwitch = (
       }
     case "valueExists":
       return (
-        (Array.isArray(dependentValue[i]) &&
-          (dependentValue[i] as unknown[]).length > 0) ||
+        (Array.isArray(dependentValue[i]) && (dependentValue[i] as unknown[]).length > 0) ||
         (!Array.isArray(dependentValue[i]) && !!dependentValue[i])
       );
     case "valueNotExist":
       return (
-        (Array.isArray(dependentValue[i]) &&
-          (dependentValue[i] as unknown[]).length === 0) ||
+        (Array.isArray(dependentValue[i]) && (dependentValue[i] as unknown[]).length === 0) ||
         !dependentValue[i]
       );
   }
 };
 
-export const DependencyWrapper = (
-  props: PropsWithChildren<DependencyWrapperProps>,
-) => {
+export const DependencyWrapper = (props: PropsWithChildren<DependencyWrapperProps>) => {
   // Check for dependencies which won't exist outside of forms
-  if (
-    !props.dependency ||
-    !props.dependency.conditions ||
-    !props.dependency.effect
-  ) {
+  if (!props.dependency || !props.dependency.conditions || !props.dependency.effect) {
     return <>{props.children}</>;
   }
 
@@ -89,11 +66,8 @@ const DependencyWrapperHandler = ({
 }: PropsWithChildren<DependencyWrapperProps>) => {
   const { watch, setValue, getValues } = useFormContext();
   const [wasSetLast, setWasSetLast] = useState(false);
-  const dependentValues = watch(
-    dependency?.conditions?.map((c) => c.name) ?? [],
-  );
-  const isTriggered =
-    dependency && checkTriggeringValue(dependentValues, dependency);
+  const dependentValues = watch(dependency?.conditions?.map((c) => c.name) ?? []);
+  const isTriggered = dependency && checkTriggeringValue(dependentValues, dependency);
   useEffect(() => {
     if (
       !wasSetLast &&
@@ -140,6 +114,7 @@ const DependencyWrapperHandler = ({
       });
       changeMethod(filteredArray);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dependentValues, parentValue, changeMethod, dependency]);
 
   switch (dependency?.effect.type) {
