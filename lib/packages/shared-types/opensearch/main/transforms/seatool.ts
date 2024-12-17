@@ -135,9 +135,11 @@ export const transform = (id: string) => {
       : "Unknown";
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
 
-    const capitalizeId = (id) => typeof id === "string" ? id.charAt(0).toUpperCase() + id.slice(1) : "";
+    //const capitalizeId = (id) => typeof id === "string" ? id.charAt(0).toUpperCase() + id.slice(1) : "";
+    const capitalizeLastThree = (id: string): string => id.replace(/([a-z]{3})$/, (match) => match.toUpperCase());
+
     const resp = {
-      id: capitalizeId(id),
+      id: capitalizeLastThree(id),
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.APPROVED_EFFECTIVE_DATE ||
