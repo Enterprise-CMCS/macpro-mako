@@ -111,6 +111,8 @@ type BoolQuery = QueryBase & {
   should?: QueryContainer | QueryContainer[];
 }
 
+export type SearchTerm = Record<string, TermQuery | FieldValue>;
+
 export type SearchQueryBody = {
   from?: number;
   search?: string;
