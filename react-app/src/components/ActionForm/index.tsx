@@ -166,7 +166,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         const poller = documentPoller(documentPollerId, documentChecker);
         await poller.startPollingData();
       } catch (error) {
-        console.log("is error an Error? ", error instanceof Error);
         const message = `${
           error?.message || error
         }`;

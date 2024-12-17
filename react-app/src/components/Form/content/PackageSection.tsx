@@ -17,7 +17,7 @@ export const getIdLabel = (authority: AuthorityUnion | null | undefined) => {
   return idLabels.get(authority) ?? BLANK_VALUE;
 };
 
-export const getAuthorityLabel = (authority: AuthorityUnion | null | undefined) => {
+export const getAuthorityLabel = (authority: AuthorityUnion) => {
   if (authority === undefined || authority === null) {
     return BLANK_VALUE;
   }
