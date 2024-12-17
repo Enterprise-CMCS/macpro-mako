@@ -13,6 +13,7 @@ export const SearchForm: FC<{
 
   useEffect(() => {
     handleSearch(debouncedSearchString);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchString]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
