@@ -1,6 +1,3 @@
-import { FC, useMemo } from "react";
-import { opensearch } from "shared-types";
-import { format } from "date-fns";
 import {
   Accordion,
   AccordionContent,
@@ -9,6 +6,9 @@ import {
   DetailsSection,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+import { format } from "date-fns";
+import { FC, useMemo } from "react";
+import { opensearch } from "shared-types";
 import { usePackageDetailsCache } from "..";
 
 export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (props) => {
@@ -67,6 +67,8 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
       default:
         return [BLANK_VALUE, AC_Update];
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // actionType and changeType come from legacy dataset
   }, [props.actionType, props.changeType]);
 
   return (
