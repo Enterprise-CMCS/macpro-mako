@@ -12,9 +12,9 @@ export const handleOpensearchError = (error: unknown): ErrorResponse => {
   console.error({ error });
   if (error instanceof OpensearchErrors.ResponseError) {
     return {
-      statusCode: error?.statusCode || error?.meta?.statusCode || 500,
+      statusCode: error.statusCode || error.meta?.statusCode || 500,
       body: {
-        error: error?.body || error?.meta?.body || error,
+        error: error.body || error.meta?.body || error,
         message: error.message,
       }
     };
