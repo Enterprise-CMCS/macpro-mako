@@ -71,7 +71,7 @@ const getTitle = (originalSubmissionEvent: string) => {
     case originalSubmissionEvent === "new-chip-submission":
       return "CHIP SPA";
     case originalSubmissionEvent === "app-k":
-      return "1915(c) Appendix K";
+      return "1915(c) Appendix K Waiver Amendment";
     case originalSubmissionEvent.includes("amendment"):
       return "1915(b) Waiver Amendment";
     case originalSubmissionEvent.includes("initial"):
