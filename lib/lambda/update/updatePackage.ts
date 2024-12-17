@@ -70,7 +70,6 @@ const sendUpdateValuesMessage = async ({
     JSON.stringify({
       id: currentPackage._id,
       ...updatedFields,
-      origin: "OneMAC",
       isAdminChange: true,
       adminChangeType: "update-values",
       changeMade: changeMadeText,
@@ -148,6 +147,7 @@ const sendUpdateIdMessage = async ({
       id: updatedId,
       idToBeUpdated: currentPackage._id,
       ...remainingFields,
+      origin: "OneMAC",
       changeMade: "ID has been updated.",
       isAdminChange: true,
       adminChangeType: "update-id",
