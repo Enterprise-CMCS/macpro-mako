@@ -1,4 +1,4 @@
-import { SearchTerm } from "../../index.d";
+import { SearchTerm, TestHit } from "../../index.d";
 
 export const getFilterValue = (
   query: SearchTerm | SearchTerm[],
@@ -65,12 +65,12 @@ export const matchFilter = <T>(
   return filterValue?.toString()?.toLocaleLowerCase() == itemValue;
 }
 
-export const filterItemsByTerm = <R, D>(
-  hits: R[],
+export const filterItemsByTerm = <D>(
+  hits: TestHit<D>[],
   filterTerm: keyof D,
   filterValue: string | string[]
-): R[] => {
+): TestHit<D>[] => {
   return hits.filter(
-    (hit) => hit?._source && matchFilter<D>(hit._source, filterTerm, filterValue)
+    (hit) => (hit as TestHit<D>)?._source && matchFilter<D>((hit._source as D), filterTerm, filterValue)
   )
 }

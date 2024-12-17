@@ -4,7 +4,7 @@ import items from "../../data/items";
 import { SearchQueryBody, TestChangelogDocument, TestChangelogItemResult } from "../../index.d";
 import { getFilterKeys, getFilterValue, filterItemsByTerm } from "./util";
 
-export const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
+const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-changelog/_search",
   async ({ request }) => {
     const { query } = await request.json();
@@ -39,7 +39,7 @@ export const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBo
             "",
           ) as keyof TestChangelogDocument;
           if (filterValue) {
-            changelog = filterItemsByTerm<TestChangelogItemResult, TestChangelogDocument>(changelog, filterTerm, filterValue);
+            changelog = filterItemsByTerm<TestChangelogDocument>(changelog, filterTerm, filterValue);
           }
         });
       }
@@ -67,3 +67,5 @@ export const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBo
     return new HttpResponse(null, { status: 404 });
   },
 );
+
+export const changelogSearchHandlers = [defaultChangelogSearchHandler];

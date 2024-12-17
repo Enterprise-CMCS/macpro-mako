@@ -1,13 +1,8 @@
 import { http, HttpResponse } from "msw";
-import { defaultHandlers as apiTokenHandlers } from "./api-security";
-import { defaultHandlers as authHandlers } from "./auth";
-import { defaultHandlers as cloudFormationHandlers } from "./cloudformation";
-import { defaultHandlers as countiesHandler } from "./counties";
-import { defaultHandlers as itemHandlers } from "./items";
-import { defaultHandlers as opensearchHandlers } from "./opensearch/index";
-import { defaultHandlers as secretsManagerHandlers } from "./secretsmanager";
-import { defaultHandlers as submissionHandlers } from "./submissions";
-import { defaultHandlers as typeHandlers } from "./types";
+import { apiHandlers } from "./api";
+import { awsHandlers } from "./aws";
+import { opensearchHandlers } from "./opensearch";
+import { countiesHandlers } from "./counties";
 
 export type Body =
   | Blob
@@ -28,27 +23,33 @@ export const postOnceHandler = (endpoint: string, status: number = 200, body?: B
     { once: true },
   );
 
-export default [
-  ...itemHandlers,
-  ...typeHandlers,
-  ...submissionHandlers,
-  ...countiesHandler,
-  ...authHandlers,
+// Handlers that mock calls to the API
+export const defaultApiHandlers = [
+  ...apiHandlers,
+  ...countiesHandlers
+]
+
+// Handlers that mock calls to 3rd party services from the API
+export const defaultServiceHandlers = [
+  ...awsHandlers,
   ...opensearchHandlers,
-  ...secretsManagerHandlers,
-  ...cloudFormationHandlers,
-  ...apiTokenHandlers,
+  ...countiesHandlers
+]
+
+export default [
+  ...apiHandlers,
+  ...awsHandlers,
+  ...opensearchHandlers,
+  ...countiesHandlers,
 ];
 
 export {
   convertUserAttributes,
-  getRequestContext,
-  mockCurrentAuthenticatedUser,
-  mockUseGetUser,
-  mockUserAttributes,
   setDefaultReviewer,
   setDefaultStateSubmitter,
   setMockUsername,
-} from "./auth.js";
+} from "./authUtils.js";
 
-export { errorCloudFormation } from "./cloudformation.js";
+export * from "./api";
+export * from "./aws";
+export * from "./opensearch";

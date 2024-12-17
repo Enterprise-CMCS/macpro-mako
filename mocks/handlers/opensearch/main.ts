@@ -10,7 +10,7 @@ import {
 } from "../../index.d";
 import { getFilterKeys, getFilterValue, filterItemsByTerm } from "./util";
 
-export const defaultMainDocumentHandler = http.get(
+const defaultMainDocumentHandler = http.get(
   `https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_doc/:id`,
   async ({ params }) => {
     const { id } = params;
@@ -24,7 +24,7 @@ export const defaultMainDocumentHandler = http.get(
   },
 );
 
-export const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
+const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_search",
   async ({ request }) => {
     const { query } = await request.json();
@@ -63,7 +63,7 @@ export const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
               "",
             ) as keyof TestAppkDocument;
             if (filterValue) {
-              appkChildren = filterItemsByTerm<TestAppkItemResult, TestAppkDocument>(appkChildren, filterTerm, filterValue);
+              appkChildren = filterItemsByTerm<TestAppkDocument>(appkChildren, filterTerm, filterValue);
             }
           });
         }
@@ -99,7 +99,7 @@ export const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
           "",
         ) as keyof TestMainDocument;
         if (filterValue) {
-          itemHits = filterItemsByTerm<TestItemResult, TestMainDocument>(itemHits, filterTerm, filterValue);
+          itemHits = filterItemsByTerm<TestMainDocument>(itemHits, filterTerm, filterValue);
         }
       });
     }
@@ -124,3 +124,5 @@ export const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
     });
   },
 );
+
+export const mainSearchHandlers = [defaultMainDocumentHandler, defaultMainSearchHandler];

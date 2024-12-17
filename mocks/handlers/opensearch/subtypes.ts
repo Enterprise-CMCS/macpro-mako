@@ -2,9 +2,9 @@ import { http, HttpResponse, PathParams } from "msw";
 import { subtypes, ERROR_AUTHORITY_ID } from "../../data/types"
 import {
   SearchQueryBody,
-} from "../index.d";
+} from "../../index.d";
 
-export const defaultSubtypeSearchHandler = http.post<PathParams, SearchQueryBody>(
+const defaultSubtypeSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-subtypes/_search",
   async ({ request }) => {
     const { query } = await request.json();
@@ -42,3 +42,4 @@ export const defaultSubtypeSearchHandler = http.post<PathParams, SearchQueryBody
   },
 );
 
+export const subtypeSearchHandlers = [defaultSubtypeSearchHandler];

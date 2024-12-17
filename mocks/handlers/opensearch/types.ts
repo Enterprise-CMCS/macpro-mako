@@ -2,9 +2,9 @@ import { http, HttpResponse, PathParams } from "msw";
 import { types, ERROR_AUTHORITY_ID } from "../../data/types"
 import {
   SearchQueryBody,
-} from "../index.d";
+} from "../../index.d";
 
-export const defaultTypeSearchHandler = http.post<PathParams, SearchQueryBody>(
+const defaultTypeSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-types/_search",
   async ({ request }) => {
     const { query } = await request.json();
@@ -38,3 +38,4 @@ export const defaultTypeSearchHandler = http.post<PathParams, SearchQueryBody>(
   },
 );
 
+export const typeSearchHandlers = [defaultTypeSearchHandler];

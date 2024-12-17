@@ -1,8 +1,8 @@
 import { http, HttpResponse } from "msw";
-import { types, subtypes, ERROR_AUTHORITY_ID } from "../data/types";
+import { types, subtypes, ERROR_AUTHORITY_ID } from "../../data/types";
 
-type GetTypesBody = { authorityId: number };
-type GetSubTypesBody = { authorityId: number; typeIds: number[] };
+type GetTypesBody = { authorityId: string };
+type GetSubTypesBody = { authorityId: string; typeIds: string[] };
 
 const defaultTypeHandler = http.post<any, GetTypesBody>(/\/getTypes$/, async ({ request }) => {
   const { authorityId } = await request.json();
@@ -43,4 +43,4 @@ const defaultSubTypesHandler = http.post<any, GetSubTypesBody>(
   },
 );
 
-export const defaultHandlers = [defaultTypeHandler, defaultSubTypesHandler];
+export const typeHandlers = [defaultTypeHandler, defaultSubTypesHandler];

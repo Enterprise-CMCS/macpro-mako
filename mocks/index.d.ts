@@ -9,6 +9,8 @@ export type DeepPartial<T> = {
   [P in keyof T]?: DeepPartial<T[P]>;
 };
 
+export type TestHit<T> = DeepPartial<opensearch.Hit<T>>;
+
 export type TestUserData = DeepPartial<UserData>;
 
 export type TestItemResult = DeepPartial<opensearch.main.ItemResult>;
@@ -37,6 +39,11 @@ export type TestTypeDocument = TestTypeDocument["_source"];
 export type TestSubtypeResult = DeepPartial<opensearch.subtype.ItemResult>;
 
 export type TestSubtypeDocument = TestSubtypeResult["_source"];
+
+export type IdentityRequest = {
+  IdentityPoolId: string;
+  Logins: Record<string, string>;
+};
 
 export type IdpRequestSessionBody = {
   AccessToken: string;

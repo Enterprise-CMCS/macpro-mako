@@ -1,12 +1,11 @@
-import { defaultChangelogSearchHandler } from "./changelog";
-import { defaultMainDocumentHandler, defaultMainSearchHandler } from "./main";
-import { defaultTypeSearchHandler } from "./types"
-import { defaultSubtypeSearchHandler } from "./subtypes";
+import { changelogSearchHandlers } from "./changelog";
+import { mainSearchHandlers } from "./main";
+import { typeSearchHandlers } from "./types"
+import { subtypeSearchHandlers } from "./subtypes";
 
-export const defaultHandlers = [
-  defaultChangelogSearchHandler,
-  defaultMainDocumentHandler,
-  defaultMainSearchHandler,
-  defaultTypeSearchHandler,
-  defaultSubtypeSearchHandler
+export const opensearchHandlers = [
+  ...changelogSearchHandlers,
+  ...mainSearchHandlers,
+  ...typeSearchHandlers,
+  ...subtypeSearchHandlers,
 ];
