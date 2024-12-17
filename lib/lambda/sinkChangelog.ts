@@ -9,9 +9,6 @@ import {
 } from "../libs/sink-lib";
 import { Index } from "shared-types/opensearch";
 import {
-  // deleteAdminChangeSchema,
-  // updateIdAdminChangeSchema,
-  // updateValuesAdminChangeSchema,
   transformDeleteSchema,
   transformUpdateValuesSchema,
   transformedUpdateIdSchema,
@@ -83,34 +80,6 @@ const processAndIndex = async ({
 
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
-
-      // const transformedDeleteSchema = deleteAdminChangeSchema.transform((data) => ({
-      //   ...data,
-      //   event: "delete",
-      //   packageId: data.id,
-      //   id: `${data.id}-${offset}`,
-      //   timestamp: Date.now(),
-      // }));
-
-      // const transformedUpdateValuesSchema = updateValuesAdminChangeSchema.transform((data) => ({
-      //   ...data,
-      //   event: "update-values",
-      //   packageId: data.id,
-      //   id: `${data.id}-${offset}`,
-      //   timestamp: Date.now(),
-      // }));
-
-      // const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((data) => ({
-      //   ...data,
-      //   event: "update-id",
-      //   packageId: data.id,
-      //   id: `${data.id}`,
-      //   timestamp: Date.now(),
-      // }));
-
-      // const schema = transformedDeleteSchema
-      //   .or(transformedUpdateValuesSchema)
-      //   .or(transformedUpdateIdSchema);
 
       // query all changelog entries for this ID and create copies of all entries with new ID
       if (record.isAdminChange) {
