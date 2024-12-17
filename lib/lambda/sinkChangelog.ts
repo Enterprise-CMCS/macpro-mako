@@ -114,6 +114,7 @@ const processAndIndex = async ({
         const result = schema.safeParse(record);
 
         if (result.success) {
+          console.log("DOCS BEFORE", docs);
           if (result.data.adminChangeType === "update-id") {
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
             console.log("WHAT IS THIS", result.data.idToBeUpdated);
