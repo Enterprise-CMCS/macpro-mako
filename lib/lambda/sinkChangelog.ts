@@ -116,6 +116,15 @@ const processAndIndex = async ({
         if (result.success) {
           console.log("DOCS BEFORE", docs);
           if (result.data.adminChangeType === "update-id") {
+            docs.forEach((log) => {
+              const recordOffset = log._id.split("-").at(-1);
+              docs.push({
+                ...log._source,
+                id: `${result.data.id}-${recordOffset}`,
+                packageId: result.data.id,
+              });
+            });
+            
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
             console.log("WHAT IS THIS", result.data.idToBeUpdated);
             console.log("PACKAGECHANGELOGS", packageChangelogs.hits.hits);
