@@ -119,7 +119,7 @@ const processAndIndex = async ({
             console.log("WHAT IS THIS", result.data.idToBeUpdated);
             console.log("PACKAGECHANGELOGS", packageChangelogs);
 
-            const updatedPackageChangelogs = packageChangelogs.hits.hits.forEach((log) => {
+            packageChangelogs.hits.hits.forEach((log) => {
               const recordOffset = log._id.split("-").at(-1);
               console.log("RESULT ID", result.data.id);
               console.log("RECORD OFFSET", recordOffset);
@@ -130,7 +130,6 @@ const processAndIndex = async ({
               });
             });
             console.log("DOCS", docs);
-            console.log("UPDATEDPACKAGECHANGELOGS", updatedPackageChangelogs);
           } else {
             docs.push(result.data);
           }
