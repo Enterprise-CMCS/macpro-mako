@@ -119,7 +119,7 @@ const processAndIndex = async ({
             docs.forEach((log) => {
               const recordOffset = log.id.split("-").at(-1);
               docs.push({
-                ...log._source,
+                ...log,
                 id: `${result.data.id}-${recordOffset}`,
                 packageId: result.data.id,
               });
