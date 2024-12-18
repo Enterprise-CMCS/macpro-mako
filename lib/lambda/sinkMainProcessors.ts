@@ -225,7 +225,7 @@ export const syncSeatoolRecordDatesFromKafkaWithMako = async (
       }
 
       const payloadWithUpdatedDate: { payload?: { after?: SeatoolRecordWithUpdatedDate | null } } =
-        JSON.parse(decodeBase64WithUtf8(value));
+        decodeBase64WithUtf8(value) as any;
 
       // .after could be `null` or `undefined`
       if (!payloadWithUpdatedDate?.payload?.after) {
