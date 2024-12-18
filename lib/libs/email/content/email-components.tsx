@@ -236,12 +236,7 @@ const FollowUpNotice = ({
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
           If you have any questions, please contact{" "}
-          <Link
-            href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`}
-            style={{ textDecoration: "underline", color: "#fff" }}
-          >
-            {EMAIL_CONFIG.CHIP_EMAIL}
-          </Link>
+          <Link href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`}>{EMAIL_CONFIG.CHIP_EMAIL}</Link>
           {includeStateLead ? " or your state lead." : "."}
         </Text>
       </Section>
@@ -249,12 +244,7 @@ const FollowUpNotice = ({
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
           If you have any questions or did not expect this email, please contact{" "}
-          <Link
-            href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`}
-            style={{ textDecoration: "underline", color: "#fff" }}
-          >
-            {EMAIL_CONFIG.SPA_EMAIL}
-          </Link>
+          <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`}>{EMAIL_CONFIG.SPA_EMAIL}</Link>
           {includeStateLead ? " or your state lead." : "."}
         </Text>
       </Section>

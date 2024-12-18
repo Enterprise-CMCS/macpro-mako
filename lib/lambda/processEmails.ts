@@ -1,21 +1,16 @@
 import { SESClient, SendEmailCommand, SendEmailCommandInput } from "@aws-sdk/client-ses";
-import { EmailAddresses, KafkaEvent, KafkaRecord } from "shared-types";
+import { KafkaEvent, KafkaRecord } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
-import { getEmailTemplates, getAllStateUsers } from "libs/email";
+import { getEmailTemplates } from "libs/email";
 import * as os from "./../libs/opensearch-lib";
 import { EMAIL_CONFIG } from "libs/email/content/email-components";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
 import pLimit from "p-limit";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 import { Document as CpocUser } from "shared-types/opensearch/cpocs";
-
-class TemporaryError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "TemporaryError";
-  }
-}
+import { Document as MainDocument } from "shared-types/opensearch/main";
+import { getAllStateUsers } from "lib/libs/email/getAllStateUsers";
 
 interface ProcessEmailConfig {
   emailAddressLookupSecretName: string;
@@ -27,6 +22,33 @@ interface ProcessEmailConfig {
   userPoolId: string;
   configurationSetName: string;
   isDev: boolean;
+}
+
+interface FilledTemplate {
+  to: string[];
+  subject: string;
+  body: string;
+  cc?: string[];
+}
+
+interface EmailVariables {
+  [key: string]: unknown;
+  id: string;
+  territory: string;
+  applicationEndpointUrl: string;
+  emails: Record<string, string[]>;
+  allStateUsersEmails: string[];
+  authority: string;
+  event: string;
+  origin: string;
+}
+
+/** Temporary error represents a retryable failure */
+class TemporaryError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "TemporaryError";
+  }
 }
 
 export const handler: Handler<KafkaEvent> = async (event) => {
@@ -47,33 +69,21 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     throw new Error(`Missing required environment variables: ${missingVars.join(", ")}`);
   }
 
-  const emailAddressLookupSecretName = process.env.emailAddressLookupSecretName!;
-  const applicationEndpointUrl = process.env.applicationEndpointUrl!;
-  const osDomain = process.env.osDomain!;
-  const indexNamespace = process.env.indexNamespace!;
-  const region = process.env.region!;
-  const DLQ_URL = process.env.DLQ_URL!;
-  const userPoolId = process.env.userPoolId!;
-  const configurationSetName = process.env.configurationSetName!;
-  const isDev = process.env.isDev!;
   const config: ProcessEmailConfig = {
-    emailAddressLookupSecretName,
-    applicationEndpointUrl,
-    osDomain: `https://${osDomain}`,
-    indexNamespace,
-    region,
-    DLQ_URL,
-    userPoolId,
-    configurationSetName,
-    isDev: isDev === "true",
+    emailAddressLookupSecretName: process.env.emailAddressLookupSecretName!,
+    applicationEndpointUrl: process.env.applicationEndpointUrl!,
+    osDomain: `https://${process.env.osDomain!}`,
+    indexNamespace: process.env.indexNamespace!,
+    region: process.env.region!,
+    DLQ_URL: process.env.DLQ_URL!,
+    userPoolId: process.env.userPoolId!,
+    configurationSetName: process.env.configurationSetName!,
+    isDev: process.env.isDev! === "true",
   };
 
   try {
-    const results = await Promise.allSettled(
-      Object.values(event.records)
-        .flat()
-        .map((rec) => processRecord(rec, config)),
-    );
+    const records = Object.values(event.records).flat();
+    const results = await Promise.allSettled(records.map((rec) => processRecord(rec, config)));
 
     const failures = results.filter((r) => r.status === "rejected");
     if (failures.length > 0) {
@@ -90,7 +100,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           new SendMessageCommand({
             QueueUrl: config.DLQ_URL,
             MessageBody: JSON.stringify({
-              error: error.message,
+              error: (error as Error).message,
               originalEvent: event,
               timestamp: new Date().toISOString(),
             }),
@@ -106,77 +116,48 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   }
 };
 
-export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
+async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig): Promise<void> {
   const { key, value, timestamp } = kafkaRecord;
 
   const id: string = decodeBase64WithUtf8(key);
-
   if (!value) {
-    console.log("Tombstone detected. Doing nothing for this event");
+    // Tombstone or irrelevant event
+    console.log("Tombstone detected. No action taken.");
     return;
   }
-  console.log("Kafka record value:", JSON.stringify(value, null, 2));
+
   const record = {
     timestamp,
     ...JSON.parse(decodeBase64WithUtf8(value)),
   };
 
-  console.log("Kafka record:", JSON.stringify(record, null, 2));
+  // Ensure minimal fields
+  if (!record.event || !record.authority) {
+    console.log("Record does not have required fields (event, authority). Skipping.");
+    return;
+  }
 
-  // Validate record structure based on origin
-  if (record.origin === "seatool") {
-    // Validate seatool record structure
-    const requiredFields = ["event", "authority"];
-    const missingFields = requiredFields.filter((field) => !record[field]);
-    if (missingFields.length > 0) {
-      console.error(`Invalid seatool record: missing fields ${missingFields.join(", ")}`);
-      return;
-    }
-  } else if (record.origin === "mako") {
-    // Validate mako record structure
-    const requiredFields = ["event", "authority"];
-    const missingFields = requiredFields.filter((field) => !record[field]);
-    if (missingFields.length > 0) {
-      console.error(`Invalid mako record: missing fields ${missingFields.join(", ")}`);
-      return;
-    }
-  } else {
-    console.log(
-      "Kafka event is not of mako or seatool origin. Doing nothing.",
-      JSON.stringify(record, null, 2),
-    );
+  if (record.origin !== "mako") {
+    console.log("Record not from mako origin, no email required.");
     return;
   }
 
   try {
-    console.log("Processing record:", JSON.stringify(record, null, 2));
-    console.log("Config:", JSON.stringify(config, null, 2));
     await processAndSendEmails(record, id, config);
   } catch (error) {
-    console.error("Error processing record:", JSON.stringify(error, null, 2));
+    console.error("Error processing record:", error);
     throw error;
   }
 }
 
-function validateEmailTemplate(template: any) {
-  const requiredFields = ["to", "subject", "body"];
-  const missingFields = requiredFields.filter((field) => !template[field]);
-
-  if (missingFields.length > 0) {
-    throw new Error(`Email template missing required fields: ${missingFields.join(", ")}`);
-  }
-}
-
-export async function processAndSendEmails(record: any, id: string, config: ProcessEmailConfig) {
+async function processAndSendEmails(record: any, id: string, config: ProcessEmailConfig) {
   const templates = await getEmailTemplates<typeof record>(
     record.event,
     record.authority.toLowerCase(),
   );
 
-  if (!templates) {
-    console.log(
-      `The kafka record has an event type that does not have email support.  event: ${record.event}.  Doing nothing.`,
-    );
+  if (!templates || templates.length === 0) {
+    console.log(`No email templates for event: ${record.event}`);
     return;
   }
 
@@ -188,15 +169,18 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
 
-  const item = await os.getItem(config.osDomain, `${config.indexNamespace}main`, id);
+  const item = (await os.getItem(config.osDomain, `${config.indexNamespace}main`, id))?._source as
+    | MainDocument
+    | undefined;
 
   const cpocEmail = getCpocEmail(item as unknown as CpocUser);
-  const srtEmails = getSrtEmails(item as any);
-  const emails: EmailAddresses = JSON.parse(sec);
+  const srtEmails = getSrtEmails(item);
+
+  const emails: Record<string, string[]> = JSON.parse(sec);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
 
-  const templateVariables = {
+  const templateVariables: EmailVariables = {
     ...record,
     id,
     applicationEndpointUrl: config.applicationEndpointUrl,
@@ -206,46 +190,56 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
   };
 
   console.log("TEMPLATE VARIABLES:", JSON.stringify(templateVariables, null, 2));
-  const limit = pLimit(5); // Limit concurrent emails
+
+  const limit = pLimit(5);
   const sendEmailPromises = templates.map((template) =>
     limit(async () => {
       const filledTemplate = await template(templateVariables);
       validateEmailTemplate(filledTemplate);
       const params = createEmailParams(
         filledTemplate,
-        emails.sourceEmail,
+        emails.sourceEmail?.[0] || "noreply@example.com",
         config.applicationEndpointUrl,
         config.isDev,
       );
-      try {
-        await sendEmail(params, config.region);
-      } catch (error) {
-        console.error("Error sending email:", error);
-        throw error;
-      }
+      await sendEmail(params, config.region);
     }),
   );
 
   try {
     await Promise.all(sendEmailPromises);
+    console.log("All emails sent successfully");
   } catch (error) {
     console.error("Error sending emails:", error);
     throw error;
   }
 }
 
-export function createEmailParams(
-  filledTemplate: any,
+function validateEmailTemplate(template: FilledTemplate) {
+  const requiredFields = ["to", "subject", "body"] as const;
+  for (const field of requiredFields) {
+    if (
+      !template[field] ||
+      (Array.isArray(template[field]) && (template[field] as string[]).length === 0)
+    ) {
+      throw new Error(`Email template missing required field: ${field}`);
+    }
+  }
+}
+
+function createEmailParams(
+  filledTemplate: FilledTemplate,
   sourceEmail: string,
   baseUrl: string,
   isDev: boolean,
 ): SendEmailCommandInput {
   const toAddresses = isDev ? [`State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`] : filledTemplate.to;
-  console.log("toAddresses:", toAddresses);
-  const params = {
+  const ccAddresses = isDev ? [] : filledTemplate.cc || [];
+
+  return {
     Destination: {
       ToAddresses: toAddresses,
-      CcAddresses: filledTemplate.cc,
+      CcAddresses: ccAddresses,
     },
     Message: {
       Body: {
@@ -260,118 +254,78 @@ export function createEmailParams(
     Source: sourceEmail,
     ConfigurationSetName: process.env.configurationSetName,
   };
-  console.log("Email params:", JSON.stringify(params, null, 2));
-  return params;
 }
 
-export async function sendEmail(params: SendEmailCommandInput, region: string): Promise<any> {
+async function sendEmail(params: SendEmailCommandInput, region: string) {
   const sesClient = new SESClient({ region });
-  console.log("sendEmail called with params:", JSON.stringify(params, null, 2));
-
   const command = new SendEmailCommand(params);
-  try {
-    const result = await sesClient.send(command);
-    return { status: result.$metadata.httpStatusCode };
-  } catch (error) {
-    console.error("Error sending email:", error);
-    throw error;
-  }
+  const result = await sesClient.send(command);
+  console.log("Email sent with status:", result.$metadata.httpStatusCode);
 }
 
-const htmlToTextOptions = (baseUrl: string): HtmlToTextOptions => ({
-  wordwrap: 80,
-  preserveNewlines: true,
-  selectors: [
-    {
-      selector: "h1",
-      options: {
-        uppercase: true,
-        leadingLineBreaks: 2,
-        trailingLineBreaks: 1,
+function htmlToTextOptions(baseUrl: string): HtmlToTextOptions {
+  return {
+    wordwrap: 80,
+    preserveNewlines: true,
+    selectors: [
+      {
+        selector: "h1",
+        options: {
+          uppercase: true,
+          leadingLineBreaks: 2,
+          trailingLineBreaks: 1,
+        },
       },
-    },
-    {
-      selector: "img",
-      options: {
-        ignoreHref: true,
-        src: true,
+      {
+        selector: "img",
+        options: {
+          ignoreHref: true,
+          src: true,
+        },
       },
-    },
-    {
-      selector: "p",
-      options: {
-        leadingLineBreaks: 1,
-        trailingLineBreaks: 1,
+      {
+        selector: "p",
+        options: {
+          leadingLineBreaks: 1,
+          trailingLineBreaks: 1,
+        },
       },
-    },
-    {
-      selector: "a",
-      options: {
-        linkBrackets: ["[", "]"],
-        baseUrl,
-        hideLinkHrefIfSameAsText: true,
+      {
+        selector: "a",
+        options: {
+          linkBrackets: ["[", "]"],
+          baseUrl,
+          hideLinkHrefIfSameAsText: true,
+        },
       },
+    ],
+    limits: {
+      maxInputLength: 50000,
+      ellipsis: "...",
+      maxBaseElements: 1000,
     },
-  ],
-  limits: {
-    maxInputLength: 50000,
-    ellipsis: "...",
-    maxBaseElements: 1000,
-  },
-  longWordSplit: {
-    forceWrapOnLimit: false,
-    wrapCharacters: ["-", "/"],
-  },
-});
+    longWordSplit: {
+      forceWrapOnLimit: false,
+      wrapCharacters: ["-", "/"],
+    },
+  };
+}
 
 function getCpocEmail(item: CpocUser | undefined): string[] {
-  try {
-    if (!item) return [];
-    const source = (item as any)?._source || item;
-    const { firstName, lastName, email } = source; // Ensure these fields exist
-
-    if (!firstName || !lastName || !email) {
-      console.warn("Missing required CPOC user fields:", { firstName, lastName, email });
-      return [];
-    }
-
-    return [`${firstName} ${lastName} <${email}>`];
-  } catch (e) {
-    console.error("Error getting CPOC email", JSON.stringify(e, null, 2));
+  if (!item || !item.firstName || !item.lastName || !item.email) {
+    console.warn("Missing required CPOC user fields");
     return [];
   }
+  return [`${item.firstName} ${item.lastName} <${item.email}>`];
 }
 
-function getSrtEmails(item: Document | undefined): string[] {
-  try {
-    if (!item) {
-      console.warn("No item provided to getSrtEmails");
-      return [];
-    }
-
-    const source = (item as any)?._source || item;
-    const reviewTeam = source?.reviewTeam; // Ensure this is an array
-
-    if (!reviewTeam || !Array.isArray(reviewTeam)) {
-      console.warn("No valid review team found:", {
-        hasSource: Boolean(source),
-        reviewTeamType: typeof reviewTeam,
-        isArray: Array.isArray(reviewTeam),
-      });
-      return [];
-    }
-
-    return reviewTeam
-      .filter((reviewer: any) => {
-        if (!reviewer?.name || !reviewer?.email) {
-          console.warn("Invalid reviewer entry:", reviewer);
-          return false;
-        }
-        return true;
-      })
-      .map((reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`);
-  } catch (e) {
-    console.error("Error getting SRT emails:", e);
+function getSrtEmails(item: MainDocument | undefined): string[] {
+  if (!item || !Array.isArray(item.reviewTeam)) {
+    console.warn("No valid review team found or item missing");
     return [];
   }
+
+  return item.reviewTeam
+    .filter((reviewer: any) => reviewer?.name && reviewer?.email)
+    .map((reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`);
 }
