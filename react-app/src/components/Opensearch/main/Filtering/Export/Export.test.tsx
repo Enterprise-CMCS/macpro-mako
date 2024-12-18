@@ -22,9 +22,11 @@ describe("Tooltip component within export button", () => {
 
   test("Tooltip content shown on hover", async () => {
     const tooltipTrigger = screen.queryByTestId("tooltip-trigger");
+    expect(tooltipTrigger).toBeTruthy();
+
     expect(tooltipTrigger).toBeDisabled();
 
-    userEvent.hover(screen.queryByTestId("tooltip-trigger"));
+    if (tooltipTrigger) userEvent.hover(tooltipTrigger);
 
     await waitFor(() => screen.getByTestId("tooltip-content"));
     expect(screen.queryAllByText("No records available")[0]).toBeVisible();
