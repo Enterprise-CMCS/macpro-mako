@@ -1,4 +1,28 @@
 import { defineWorkspace } from "vitest/config";
 
-// defineWorkspace provides a nice type hinting DX
-export default defineWorkspace(["react-app", "lib", "lib/libs/email/content"]);
+export default defineWorkspace([
+  {
+    root: "./react-app",
+    test: {
+      environment: "jsdom",
+      setupFiles: ["./react-app/vitest.setup.ts"],
+      include: ["**/*.{test}.{ts,tsx}"],
+    },
+  },
+  {
+    root: "./lib",
+    test: {
+      environment: "node",
+      setupFiles: ["./vitest.setup.ts"],
+      include: ["**/*.{test}.{ts,tsx}"],
+    },
+  },
+  {
+    root: "./lib/libs/email",
+    test: {
+      environment: "node",
+      setupFiles: ["./lib/libs/email/vitest.setup.ts"],
+      include: ["**/*.{test}.{ts,tsx}"],
+    },
+  },
+]);

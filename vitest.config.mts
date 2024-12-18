@@ -7,7 +7,7 @@ EventEmitter.defaultMaxListeners = 100;
 export default defineConfig({
   test: {
     globals: true,
-    environment: "jsdom",
+    environment: "node",
     setupFiles: ["./vitest.setup.ts"],
     environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
     coverage: {
