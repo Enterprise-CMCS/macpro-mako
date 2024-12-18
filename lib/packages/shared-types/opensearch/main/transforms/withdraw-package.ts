@@ -9,7 +9,6 @@ export const transform = () => {
       makoChangedDate: data.timestamp ? new Date(data.timestamp).toISOString() : null,
       cmsStatus,
       stateStatus,
-      finalDispositionDate: data.timestamp ? new Date(data.timestamp).toISOString() : null,
       seatoolStatus: SEATOOL_STATUS.WITHDRAW_REQUESTED,
       initialIntakeNeeded: true,
       locked: true,
