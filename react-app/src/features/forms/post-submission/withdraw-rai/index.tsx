@@ -44,8 +44,8 @@ export const WithdrawRaiForm = () => {
         label: "Explain your need for withdrawal.",
       }}
       promptPreSubmission={{
-        header: "Withdraw RAI response?",
-        body: `The RAI response for ${id} will be withdrawn, and CMS will be notified.`,
+        header: "Withdraw Formal RAI response?",
+        body: `You are about to withdraw the Formal RAI Response for ${id}. CMS will be notified.`,
         acceptButtonText: "Yes, withdraw response",
         cancelButtonText: "Cancel",
       }}
