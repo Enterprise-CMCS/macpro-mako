@@ -87,11 +87,11 @@ type MatchQuery = FieldValue | (QueryBase & {
   query: FieldValue;
 })
 type MatchAllQuery = QueryBase & Record<string, any>;
-type TermQuery = FieldValue | (QueryBase & {
+export type TermQuery = FieldValue | (QueryBase & {
   case_insensitive?: boolean;
   value: FieldValue;
 });
-type TermsQuery = QueryBase & {
+export type TermsQuery = QueryBase & {
   _name?: any;
   boost?: any;
   [key: string]: any | TermsQueryField;
@@ -110,8 +110,6 @@ type BoolQuery = QueryBase & {
   must_not?: QueryContainer | QueryContainer[];
   should?: QueryContainer | QueryContainer[];
 }
-
-export type SearchTerm = Record<string, TermQuery | FieldValue>;
 
 export type SearchQueryBody = {
   from?: number;

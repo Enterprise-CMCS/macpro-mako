@@ -1,16 +1,16 @@
-import { SearchTerm, TestHit } from "../../index.d";
+import { QueryContainer, TermQuery, TermsQuery, TestHit } from "../../index.d";
 
 export const getFilterValue = (
-  query: SearchTerm | SearchTerm[],
+  query: QueryContainer | QueryContainer[] | undefined,
   filterName: string,
 ): string | string[] | undefined => {
   if (query) {
-    const rule: SearchTerm | undefined = Array.isArray(query)
-      ? (query as SearchTerm[]).find(
+    const rule: QueryContainer | undefined = Array.isArray(query)
+      ? (query as QueryContainer[]).find(
           (rule) =>
             rule?.term?.[filterName] !== undefined || rule?.terms?.[filterName] !== undefined,
         )
-      : (query as SearchTerm);
+      : (query as QueryContainer);
 
     if (rule?.term?.[filterName]) {
       return rule.term[filterName].toString();
@@ -23,11 +23,11 @@ export const getFilterValue = (
   return;
 };
 
-export const getFilterKeys = (query: SearchTerm[] | SearchTerm): string[] => {
+export const getFilterKeys = (query: QueryContainer[] | QueryContainer): string[] => {
   const filterKeys: string[] = [];
   if (query) {
     if (Array.isArray(query)) {
-      (query as SearchTerm[]).forEach((rule) => {
+      (query as QueryContainer[]).forEach((rule) => {
         if (rule?.term !== undefined) {
           filterKeys.push(...Object.keys(rule.term));
         }
@@ -36,11 +36,11 @@ export const getFilterKeys = (query: SearchTerm[] | SearchTerm): string[] => {
         }
       });
     } else {
-      if ((query as SearchTerm)?.term !== undefined) {
-        filterKeys.push(...Object.keys((query as SearchTerm).term));
+      if ((query as QueryContainer)?.term !== undefined) {
+        filterKeys.push(...Object.keys((query.term as Record<string, TermQuery>)));
       }
-      if ((query as SearchTerm)?.terms !== undefined) {
-        filterKeys.push(...Object.keys((query as SearchTerm).terms));
+      if ((query as QueryContainer)?.terms !== undefined) {
+        filterKeys.push(...Object.keys((query.terms as TermsQuery)));
       }
     }
   }
