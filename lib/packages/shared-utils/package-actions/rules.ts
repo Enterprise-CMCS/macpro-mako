@@ -123,7 +123,11 @@ const arUploadSubsequentDocuments: ActionRule = {
       return false;
     }
 
-    if (checker.hasStatus([SEATOOL_STATUS.PENDING, SEATOOL_STATUS.PENDING_RAI])) {
+    if (checker.hasStatus([SEATOOL_STATUS.PENDING_RAI])) {
+      return false;
+    }
+
+    if (checker.hasStatus([SEATOOL_STATUS.PENDING])) {
       if (checker.hasRequestedRai) {
         return false;
       }
