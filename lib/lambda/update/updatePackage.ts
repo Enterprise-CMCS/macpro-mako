@@ -194,9 +194,9 @@ export const handler = async (event: APIGatewayEvent) => {
       });
     }
 
-    const packageResult = await getPackage(packageId);
+    const currentPackage = await getPackage(packageId);
 
-    if (!packageResult) {
+    if (!currentPackage) {
       return response({
         statusCode: 404,
         body: { message: "No record found for the given id" },
@@ -208,12 +208,12 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     if (action === "update-id") {
-      return await sendUpdateIdMessage({ currentPackage: packageResult, updatedId });
+      return await sendUpdateIdMessage({ currentPackage, updatedId });
     }
 
     if (action === "update-values") {
       return await sendUpdateValuesMessage({
-        currentPackage: packageResult,
+        currentPackage,
         updatedFields,
         changeReason,
       });

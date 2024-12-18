@@ -6,20 +6,21 @@ export const getPackageType = async (packageId: string) => {
   // use event of current package to determine how ID should be formatted
   try {
     const packageChangelog = await getPackageChangelog(packageId);
-    if (!packageChangelog.hits.hits.length) {
+    const packageSubmissionType = packageChangelog.hits.hits.find(
+      (pkg) => pkg._source.event in events,
+    );
+
+    if (!packageSubmissionType) {
       throw new Error("The type of package could not be determined.");
     }
 
-    const packageWithSubmissionType = packageChangelog.hits.hits.find((pkg) => {
-      return pkg._source.event in events;
-    });
-    const packageEvent = packageWithSubmissionType?._source.event;
-
-    return packageEvent;
+    return packageSubmissionType._source.event;
   } catch (error) {
     return response({
       statusCode: 500,
-      body: { message: error },
+      body: {
+        message: error.message || "An error occurred determining the package submission type.",
+      },
     });
   }
 };
