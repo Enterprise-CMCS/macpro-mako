@@ -2,7 +2,6 @@ import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
 import { EventEmitter } from "events";
 
-// Increase the maximum number of listeners
 EventEmitter.defaultMaxListeners = 30;
 
 export default defineConfig({
@@ -16,6 +15,7 @@ export default defineConfig({
       reportsDirectory: join(__dirname, "coverage"),
       reporter: ["html", "text", "json-summary", "json", "lcovonly"],
       reportOnFailure: true,
+      // Removed or adjusted excludes to allow new tests to run
       exclude: [
         ...configDefaults.exclude,
         ".build_run",
@@ -30,7 +30,6 @@ export default defineConfig({
         "lib/packages/eslint-config-custom-server/**",
         "lib/local-aspects",
         "lib/local-constructs/**",
-        "lib/libs/email/content/**",
         "bin/cli/**",
         "bin/app.ts",
         "vitest.workspace.ts",
@@ -43,7 +42,8 @@ export default defineConfig({
         "**/assets/**",
         "node_modules/**",
         "**/node_modules/**",
-        "test/e2e/**",
+        // Removed "lib/libs/email/content/**" and others from excludes
+        // to ensure tests in those directories run
       ],
     },
   },
