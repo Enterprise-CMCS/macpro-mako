@@ -24,7 +24,6 @@ export default defineConfig({
         "lib/packages/eslint-config-custom-server/**",
         "lib/local-aspects",
         "lib/local-constructs/**",
-        "lib/libs/email/content/**",
         "bin/cli/**",
         "bin/app.ts",
         "vitest.workspace.ts",

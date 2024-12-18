@@ -1,11 +1,5 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { getAllForms } from "./getAllForms";
-import { response } from "../libs/handler-lib";
-
-// Mock the dependencies
-vi.mock("../libs/handler-lib", () => ({
-  response: vi.fn((arg) => arg),
-}));
 
 vi.mock("../libs/webforms", () => ({
   webformVersions: {
@@ -31,7 +25,6 @@ describe("getAllForms", () => {
 
     const result = await getAllForms();
     expect(result?.statusCode).toEqual(200);
-    expect(result?.body).toEqual(expectedResponse.body);
-    expect(response).toHaveBeenCalledWith(expectedResponse);
+    expect(result?.body).toEqual(JSON.stringify(expectedResponse.body));
   });
 });

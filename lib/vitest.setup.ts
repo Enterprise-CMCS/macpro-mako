@@ -14,7 +14,7 @@ import {
   USER_POOL_ID,
   setDefaultStateSubmitter,
 } from "mocks";
-import { mockedServer } from "mocks/server";
+import { mockedServiceServer as mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
 
 // TODO to mock
