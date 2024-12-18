@@ -127,7 +127,7 @@ async function getLambdasWithTags(tags: Tag[]): Promise<string[]> {
           const functionData = await lambdaClient.send(functionCommand);
           return functionData.Configuration?.FunctionName || "";
         } catch {
-          console.log(`Ecluding function ${arn}.`);
+          console.log(`Excluding function ${arn}.`);
           return "";
         }
       }),

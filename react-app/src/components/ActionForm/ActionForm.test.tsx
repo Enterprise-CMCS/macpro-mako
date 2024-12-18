@@ -436,7 +436,7 @@ describe("ActionForm", () => {
           value: {
             correctDataStateFound: false,
             maxAttemptsReached: true,
-            error: "Error fetching data: Request failed with status code 500",
+            message: "Error fetching data: Request failed with status code 500",
           },
         },
       ]);
@@ -493,7 +493,7 @@ describe("ActionForm", () => {
           value: {
             correctDataStateFound: false,
             maxAttemptsReached: true,
-            error: "Error polling data: Correct data state not found, after max attempts reached",
+            message: "Error polling data: Correct data state not found, after max attempts reached",
           },
         },
       ]);
