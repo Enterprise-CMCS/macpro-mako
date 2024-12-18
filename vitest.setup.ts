@@ -12,10 +12,6 @@ import {
 import { mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
 
-// TODO to mock
-// [MSW] Warning: intercepted a request without a matching request handler:
-//   • GET http://example.com/file1.md
-
 Amplify.configure({
   API: API_CONFIG,
   Auth: AUTH_CONFIG,
@@ -53,12 +49,11 @@ vi.spyOn(Auth, "signOut").mockImplementation(async () => {
   setMockUsername(null);
 });
 
-// Add this to remove all the expected errors in console when running unit tests.
+// Set up the test environment before all tests
 beforeAll(() => {
   setDefaultStateSubmitter();
 
   vi.spyOn(console, "error").mockImplementation(() => {});
-
   console.log("starting MSW listener for react-app");
   mockedServer.listen({
     onUnhandledRequest: "warn",
@@ -76,24 +71,22 @@ beforeAll(() => {
   }
 });
 
+// Clean up after each test
 afterEach(() => {
   vi.useRealTimers();
   vi.clearAllMocks();
 
   setDefaultStateSubmitter();
-  // Reset any request handlers that we may add during the tests,
-  // so they don't affect other tests.
   mockedServer.resetHandlers();
 
-  if (process.env.SKIP_CLEANUP) return;
-  cleanup();
+  if (!process.env.SKIP_CLEANUP) {
+    cleanup();
+  }
 });
 
+// Clean up once all tests are done
 afterAll(() => {
   vi.clearAllMocks();
-
-  // Clean up after the tests are finished.
   mockedServer.close();
-
   delete process.env.SKIP_CLEANUP;
 });

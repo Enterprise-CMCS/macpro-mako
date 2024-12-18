@@ -1,10 +1,15 @@
 import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
+import { EventEmitter } from "events";
+
+// Increase the maximum number of listeners
+EventEmitter.defaultMaxListeners = 20;
 
 export default defineConfig({
   test: {
     globals: true,
-    setupFiles: ["./test/setup.ts"],
+    environment: "jsdom",
+    setupFiles: ["./vitest.setup.ts"],
     environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
     coverage: {
       provider: "istanbul",
@@ -19,7 +24,7 @@ export default defineConfig({
         "docs/**",
         "lib/libs/webforms/**",
         "react-app/src/features/webforms/**",
-        "TestWrapper.tsx",
+        "**/*/TestWrapper.tsx",
         "lib/stacks/**",
         "lib/packages/eslint-config-custom/**",
         "lib/packages/eslint-config-custom-server/**",
@@ -38,6 +43,7 @@ export default defineConfig({
         "**/assets/**",
         "node_modules/**",
         "**/node_modules/**",
+        "test/e2e/**",
       ],
     },
   },
