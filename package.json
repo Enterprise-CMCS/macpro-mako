@@ -89,7 +89,15 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
-      "@semantic-release/github"
+      "@semantic-release/github",
+      [
+          "@semantic-release/github",
+          {
+              "options": {
+                  "successComment": false
+              }
+          }
+      ]
     ]
   },
   "packageManager": "bun@1.1.20"
