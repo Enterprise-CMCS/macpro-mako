@@ -8,7 +8,7 @@ import {
   TestItemResult,
   TestMainDocument,
 } from "../../index.d";
-import { getFilterKeys, getFilterValue, filterItemsByTerm } from "./util";
+import { getTermKeys, filterItemsByTerm, getTermValues } from "./util";
 
 const defaultMainDocumentHandler = http.get(
   `https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_doc/:id`,
@@ -35,13 +35,13 @@ const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
     }
 
     const must = query?.bool?.must;
-    const mustTerms = must ? getFilterKeys(must) : [];
+    console.log("must: ", JSON.stringify(must))
+    const mustTerms = getTermKeys(must);
+    console.log({ mustTerms })
 
-    // check if searching for appkChildren
-    if (mustTerms.includes("appkParentId.keyword") || mustTerms.includes("appkParentId")) {
-      const appkParentIdValue =
-        getFilterValue(must, "appkParentId.keyword") || getFilterValue(must, "appkParentId");
+    const appkParentIdValue = getTermValues(must, "appkParentId.keyword") || getTermValues(must, "appkParentId");
 
+    if (appkParentIdValue) {
       const appkParentId =
         Array.isArray(appkParentIdValue) && appkParentIdValue.length > 0
           ? appkParentIdValue[0]?.toString()
@@ -58,7 +58,7 @@ const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
           (item._source?.appkChildren as TestAppkItemResult[]) || [];
         if (appkChildren.length > 0) {
           mustTerms.forEach((term) => {
-            const filterValue = getFilterValue(must, term);
+            const filterValue = getTermValues(must, term);
             const filterTerm: keyof TestAppkDocument = term.replace(
               ".keyword",
               "",
@@ -94,11 +94,13 @@ const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
 
     if (itemHits.length > 0) {
       mustTerms.forEach((term) => {
-        const filterValue = getFilterValue(must, term);
+        const filterValue = getTermValues(must, term);
+        console.log({ filterValue })
         const filterTerm: keyof TestMainDocument = term.replace(
           ".keyword",
           "",
         ) as keyof TestMainDocument;
+        console.log({ filterTerm })
         if (filterValue) {
           itemHits = filterItemsByTerm<TestMainDocument>(itemHits, filterTerm, filterValue);
         }

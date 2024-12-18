@@ -2,28 +2,52 @@ import { QueryContainer, TermQuery, TermsQuery, TestHit } from "../../index.d";
 
 export const getFilterValue = (
   query: QueryContainer | QueryContainer[] | undefined,
+  queryKey: keyof QueryContainer,
   filterName: string,
 ): string | string[] | undefined => {
   if (query) {
-    const rule: QueryContainer | undefined = Array.isArray(query)
-      ? (query as QueryContainer[]).find(
-          (rule) =>
-            rule?.term?.[filterName] !== undefined || rule?.terms?.[filterName] !== undefined,
-        )
-      : (query as QueryContainer);
+    const rules: QueryContainer[] = (Array.isArray(query)) ? query : [query];
+    const values: string[] = [];
+    rules.forEach(rule => {
+      if (rule?.[queryKey]?.[filterName] !== undefined) {
+        if (Array.isArray(rule[queryKey][filterName])) {
+          rule[queryKey][filterName].forEach(value => {
+            if (value !== undefined) {
+              values.push(value.toString())
+            }
+          })
+        } else {
+          values.push(rule[queryKey][filterName].toString());
+        }
+      }
+    })
 
-    if (rule?.term?.[filterName]) {
-      return rule.term[filterName].toString();
-    }
+    if (values.length === 0) return undefined;
+    if (values.length === 1) return values[0].toString();
 
-    if (rule?.terms?.[filterName]) {
-      return rule.terms[filterName].map((value: string) => value?.toString());
-    }
+    return values.map(value => value.toString());
   }
-  return;
+  return undefined;
 };
 
-export const getFilterKeys = (query: QueryContainer[] | QueryContainer): string[] => {
+export const getTermValues = (
+  query: QueryContainer | QueryContainer[] | undefined,
+  filterName: string,
+): string | string[] | undefined => {
+  const term = getFilterValue(query, 'term', filterName);
+  const terms = getFilterValue(query, 'terms', filterName);
+
+  if (term && terms) {
+    const values: string[] = [];
+    values.concat(Array.isArray(term) ? term : [term])
+    values.concat(Array.isArray(terms) ? terms : [terms]);
+    return values;
+  }
+  
+  return term || terms;
+}
+
+export const getTermKeys = (query: QueryContainer[] | QueryContainer | undefined): string[] => {
   const filterKeys: string[] = [];
   if (query) {
     if (Array.isArray(query)) {

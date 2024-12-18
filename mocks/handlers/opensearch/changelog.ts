@@ -2,16 +2,16 @@ import { http, HttpResponse, PathParams } from "msw";
 import { GET_ERROR_ITEM_ID } from "../../data";
 import items from "../../data/items";
 import { SearchQueryBody, TestChangelogDocument, TestChangelogItemResult } from "../../index.d";
-import { getFilterKeys, getFilterValue, filterItemsByTerm } from "./util";
+import { getTermKeys, getTermValues, filterItemsByTerm } from "./util";
 
 const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-changelog/_search",
   async ({ request }) => {
     const { query } = await request.json();
     const must = query?.bool?.must;
-    const mustTerms = must ? getFilterKeys(must) : [];
+    const mustTerms = must ? getTermKeys(must) : [];
 
-    const packageIdValue = getFilterValue(must, "packageId.keyword");
+    const packageIdValue = getTermValues(must, "packageId.keyword") || getTermValues(must, "packageId");
 
     if (!packageIdValue) {
       return new HttpResponse("No packageId provided", { status: 400 });
@@ -33,7 +33,7 @@ const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
         (item._source?.changelog as TestChangelogItemResult[]) || [];
       if (changelog.length > 0) {
         mustTerms.forEach((term) => {
-          const filterValue = getFilterValue(must, term);
+          const filterValue = getTermValues(must, term);
           const filterTerm: keyof TestChangelogDocument = term.replace(
             ".keyword",
             "",

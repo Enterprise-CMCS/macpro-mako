@@ -1,6 +1,7 @@
 import { http, HttpResponse, PathParams } from "msw";
 import { types, ERROR_AUTHORITY_ID } from "../../data/types"
 import { SearchQueryBody } from "../../index.d";
+import { getFilterValue } from "./util";
 
 const defaultTypeSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-types/_search",
@@ -8,7 +9,7 @@ const defaultTypeSearchHandler = http.post<PathParams, SearchQueryBody>(
     const { query } = await request.json();
     const must = query?.bool?.must;
     
-    const authorityId = (Array.isArray(must)) ? must.find(rule => rule?.match?.authorityId)?.match?.authorityId : must?.match?.authorityId;
+    const authorityId = getFilterValue(must, 'match', 'authorityId');
 
     if (authorityId === ERROR_AUTHORITY_ID) {
       return new HttpResponse("Internal server error", { status: 500 });
