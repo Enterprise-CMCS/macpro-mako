@@ -2,6 +2,12 @@ import { Handler } from "aws-lambda";
 import { decodeBase64WithUtf8 } from "shared-utils";
 import { KafkaEvent, KafkaRecord, opensearch } from "shared-types";
 import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "../libs/sink-lib";
+import {
+  transformUpdateValuesSchema,
+  transformDeleteSchema,
+  transformedUpdateIdSchema,
+} from "./update/adminChangeSchemas";
+import { getPackageChangelog } from "lib/libs/api/package";
 
 // One notable difference between this handler and sinkMain's...
 // The order in which records are processed for the changelog doesn't matter.
@@ -48,6 +54,7 @@ const processAndIndex = async ({
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
     const { value, offset } = kafkaRecord;
+
     try {
       // If a legacy tombstone, continue
       if (!value) {
@@ -57,6 +64,45 @@ const processAndIndex = async ({
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
 
+      // query all changelog entries for this ID and create copies of all entries with new ID
+      if (record.isAdminChange) {
+        const schema = transformDeleteSchema(offset).or(
+          transformUpdateValuesSchema(offset).or(transformedUpdateIdSchema),
+        );
+
+        const result = schema.safeParse(record);
+
+        if (result.success) {
+          if (result.data.adminChangeType === "update-id") {
+            docs.forEach((log) => {
+              const recordOffset = log.id.split("-").at(-1);
+
+              docs.push({
+                ...log,
+                id: `${result.data.id}-${recordOffset}`,
+                packageId: result.data.id,
+              });
+            });
+            const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
+
+            packageChangelogs.hits.hits.forEach((log) => {
+              const recordOffset = log._id.split("-").at(-1);
+              docs.push({
+                ...log._source,
+                id: `${result.data.id}-${recordOffset}`,
+                packageId: result.data.id,
+              });
+            });
+          } else {
+            docs.push(result.data);
+          }
+        } else {
+          console.log(
+            `Skipping package with invalid format for type "${record.adminChangeType}"`,
+            result.error.message,
+          );
+        }
+      }
       // If we're not a mako event, continue
       // TODO:  handle legacy.  for now, just continue
       if (!record.event || record?.origin !== "mako") {
@@ -64,9 +110,6 @@ const processAndIndex = async ({
       }
 
       // If the event is a supported event, transform and push to docs array for indexing
-      console.log("event below");
-      console.log(record.event);
-
       if (record.event in transforms) {
         const transformForEvent = transforms[record.event as keyof typeof transforms];
 

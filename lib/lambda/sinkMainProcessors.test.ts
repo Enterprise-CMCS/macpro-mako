@@ -125,6 +125,87 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     );
   });
 
+  it("handles valid kafka admin records", () => {
+    insertOneMacRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: "TUQtMjQtMjMwMA==",
+          value: convertObjToBase64({
+            id: "MD-24-2301",
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+            changeMade: "ID has been updated.",
+            isAdminChange: true,
+            adminChangeType: "update-id",
+            idToBeUpdated: "MD-24-2300",
+          }),
+        }),
+        createKafkaRecord({
+          topic: TOPIC,
+          key: "TUQtMjQtMjMwMA==",
+          value: convertObjToBase64({
+            id: "MD-24-2301",
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+            changeMade: "title has been updated.",
+            isAdminChange: true,
+            adminChangeType: "update-values",
+            title: "updated title",
+          }),
+        }),
+        createKafkaRecord({
+          topic: TOPIC,
+          key: "TUQtMjQtMjMwMA==",
+          value: convertObjToBase64({
+            id: "MD-24-2301",
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+            isAdminChange: true,
+            adminChangeType: "delete",
+            deleted: true,
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith(
+      [
+        // record deleted
+        {
+          id: "MD-24-2301",
+          submitterName: "George Harrison",
+          submitterEmail: "george@example.com",
+          changeMade: "ID has been updated.",
+          isAdminChange: true,
+          adminChangeType: "update-id",
+          idToBeUpdated: "MD-24-2300",
+        },
+        // property updated
+        {
+          id: "MD-24-2301",
+          submitterName: "George Harrison",
+          submitterEmail: "george@example.com",
+          changeMade: "title has been updated.",
+          isAdminChange: true,
+          adminChangeType: "update-values",
+          title: "updated title",
+        },
+        // id updated
+        {
+          id: "MD-24-2301",
+          submitterName: "George Harrison",
+          submitterEmail: "george@example.com",
+          isAdminChange: true,
+          adminChangeType: "delete",
+          deleted: true,
+        },
+      ],
+      "main",
+    );
+  });
+
   it("skips value-less kafka records", () => {
     insertOneMacRecordsFromKafkaIntoMako(
       [
