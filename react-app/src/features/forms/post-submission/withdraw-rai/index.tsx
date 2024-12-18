@@ -34,8 +34,8 @@ export const WithdrawRaiForm = () => {
           you and CMS will receive an email confirmation."
       preSubmissionMessage="Once complete, you and CMS will receive an email confirmation."
       bannerPostSubmission={{
-        header: "RAI response withdrawn",
-        body: `The RAI response for ${id} has been withdrawn. CMS may follow up if additional information is needed.`,
+        header: "Withdraw Formal RAI Response request has been submitted.",
+        body: "Your Formal RAI Response has been withdrawn successfully. If CMS needs any additional information, they will follow up by email.",
         variant: "success",
       }}
       additionalInformation={{
