@@ -14,7 +14,7 @@ import {
   USER_POOL_ID,
   setDefaultStateSubmitter,
 } from "mocks";
-import { mockedServiceServer } from "mocks/server";
+import { mockedServiceServer as mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
 
 // TODO to mock
@@ -60,7 +60,7 @@ beforeAll(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
 
   console.log("starting MSW listener for lib tests");
-  mockedServiceServer.listen({
+  mockedServer.listen({
     onUnhandledRequest: "warn",
   });
 });
@@ -91,12 +91,12 @@ afterEach(() => {
   setDefaultStateSubmitter();
   // Reset any request handlers that we may add during the tests,
   // so they don't affect other tests.
-  mockedServiceServer.resetHandlers();
+  mockedServer.resetHandlers();
 });
 
 afterAll(() => {
   vi.clearAllMocks();
 
   // Clean up after the tests are finished.
-  mockedServiceServer.close();
+  mockedServer.close();
 });
