@@ -3,7 +3,7 @@ import { configDefaults, defineConfig } from "vitest/config";
 import { EventEmitter } from "events";
 
 // Increase the maximum number of listeners
-EventEmitter.defaultMaxListeners = 20;
+EventEmitter.defaultMaxListeners = 30;
 
 export default defineConfig({
   test: {
