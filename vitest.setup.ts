@@ -53,6 +53,47 @@ vi.spyOn(Auth, "signOut").mockImplementation(async () => {
 beforeAll(() => {
   setDefaultStateSubmitter();
 
+
+  (global as any).window = {
+    location: {
+      href: "http://localhost:3000",
+      pathname: "/",
+      search: "",
+      hash: "",
+      origin: "http://localhost:3000",
+      protocol: "http:",
+      host: "localhost:3000",
+      hostname: "localhost",
+      port: "3000"
+    },
+    localStorage: {
+      getItem: vi.fn(),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+      clear: vi.fn()
+    },
+    sessionStorage: {
+      getItem: vi.fn(),
+      setItem: vi.fn(), 
+      removeItem: vi.fn(),
+      clear: vi.fn()
+    },
+    matchMedia: vi.fn().mockImplementation(query => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+    scrollTo: vi.fn(),
+    alert: vi.fn(),
+    confirm: vi.fn(),
+    prompt: vi.fn()
+  }
+
   vi.spyOn(console, "error").mockImplementation(() => {});
   console.log("starting MSW listener for react-app");
   mockedServer.listen({
@@ -86,6 +127,7 @@ afterEach(() => {
 
 // Clean up once all tests are done
 afterAll(() => {
+  delete (global as any).window;
   vi.clearAllMocks();
   mockedServer.close();
   delete process.env.SKIP_CLEANUP;
