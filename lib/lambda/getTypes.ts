@@ -1,3 +1,4 @@
+import { handleOpensearchError } from "./utils";
 import { APIGatewayEvent } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import { response } from "libs/handler-lib";
@@ -69,11 +70,7 @@ export const getTypes = async (event: APIGatewayEvent) => {
       body: result,
     });
   } catch (err) {
-    console.error({ err });
-    return response({
-      statusCode: 500,
-      body: { message: "Internal server error" },
-    });
+    return response(handleOpensearchError(err));
   }
 };
 

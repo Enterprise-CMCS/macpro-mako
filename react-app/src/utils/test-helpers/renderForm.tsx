@@ -19,7 +19,7 @@ const createTestQueryClient = () =>
     },
   });
 
-export const queryClientWrapper = ({ children }) => (
+export const queryClientWrapper = ({ children }: { children: ReactElement }) => (
   <QueryClientProvider client={createTestQueryClient()}>{children}</QueryClientProvider>
 );
 
