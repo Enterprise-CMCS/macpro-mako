@@ -93,7 +93,8 @@
         "@semantic-release/github",
         {
           "options": {
-            "successComment": false
+            "successComment": false,
+            "failComment": false
           }
         }
       ]
