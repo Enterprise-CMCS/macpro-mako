@@ -10,6 +10,7 @@ export const transform = () => {
       cmsStatus,
       stateStatus,
       seatoolStatus: SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED,
+      secondClock: false,
       locked: true,
     };
   });
