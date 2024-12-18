@@ -10,6 +10,30 @@ const defaultProps = {
   setErrorMessage: vi.fn(),
 };
 
+const files = [
+  {
+    key: "file-1",
+    title: "file-1.txt",
+    filename: "file-1.txt",
+    bucket: "bucket-1",
+    uploadDate: Date.now(),
+  },
+  {
+    key: "file-to-remove",
+    title: "file-to-remove.txt",
+    filename: "file-to-remove.txt",
+    bucket: "bucket-1",
+    uploadDate: Date.now(),
+  },
+  {
+    key: "file-2",
+    title: "file-2.txt",
+    filename: "file-2.txt",
+    bucket: "bucket-1",
+    uploadDate: Date.now(),
+  },
+];
+
 describe("Upload", () => {
   const testIdSuffix = "upload";
 
@@ -89,11 +113,6 @@ describe("Upload", () => {
 
   it("handles file removal on event", () => {
     const mockSetFiles = vi.fn();
-    const files = [
-      { filename: "file-1.txt" },
-      { filename: "file-to-remove.txt" },
-      { filename: "file-2.txt" },
-    ];
 
     // Render the component with necessary props
     renderWithQueryClient(<Upload {...defaultProps} files={files} setFiles={mockSetFiles} />);
@@ -103,9 +122,8 @@ describe("Upload", () => {
     fireEvent.click(removeButton);
 
     // Assert that setFiles was called with the updated files array
-    expect(mockSetFiles).toHaveBeenCalledWith([
-      { filename: "file-1.txt" },
-      { filename: "file-2.txt" },
-    ]);
+    expect(mockSetFiles).toHaveBeenCalledWith(
+      files.filter((file) => file.filename !== "file-to-remove.txt"),
+    );
   });
 });
