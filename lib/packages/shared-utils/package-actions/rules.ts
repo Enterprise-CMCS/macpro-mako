@@ -48,6 +48,7 @@ const arEnableWithdrawRaiResponse: ActionRule = {
         !checker.hasEnabledRaiWithdraw &&
         isCmsWriteUser(user) &&
         !checker.hasStatus(finalDispositionStatuses) &&
+        !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]) &&
         !checker.isPlaceholderStatus
       );
     }
@@ -59,7 +60,8 @@ const arEnableWithdrawRaiResponse: ActionRule = {
       !checker.hasEnabledRaiWithdraw &&
       checker.isInSecondClock &&
       isCmsWriteUser(user) &&
-      !checker.hasStatus(finalDispositionStatuses)
+      !checker.hasStatus(finalDispositionStatuses) &&
+      !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL])
     );
   },
 };
@@ -72,7 +74,8 @@ const arDisableWithdrawRaiResponse: ActionRule = {
     checker.hasRaiResponse &&
     checker.hasEnabledRaiWithdraw &&
     isCmsWriteUser(user) &&
-    !checker.hasStatus(finalDispositionStatuses),
+    !checker.hasStatus(finalDispositionStatuses) &&
+    !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]),
 };
 
 const arWithdrawRaiResponse: ActionRule = {
