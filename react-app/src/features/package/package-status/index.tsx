@@ -31,13 +31,6 @@ export const PackageStatusCard: FC<{ id: string }> = ({ id }) => {
               <p className="text-xs opacity-80">2nd Clock</p>
             </div>
           )}
-
-          {user?.isCms && data._source.initialIntakeNeeded && (
-            <div className="flex flex-row gap-1">
-              <p className="text-xs font-bold opacity-80">·</p>
-              <p className="text-xs opacity-80">Intake Needed</p>
-            </div>
-          )}
         </div>
       </div>
     </DetailCardWrapper>
