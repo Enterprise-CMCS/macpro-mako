@@ -111,7 +111,7 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
       case "withdraw-package":
         return "Package - Withdrawal Requested";
       case "withdraw-rai":
-        return "RAI response withdrawn";
+        return "Formal RAI Response - Withdrawal Requested";
 
       case "respond-to-rai":
         return "RAI response submitted";
