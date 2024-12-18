@@ -15,7 +15,7 @@ export const errorCloudFormationHandler = http.post(
         status: 503,
         statusText: "ServiceUnavailable",
       },
-    ),
+    )
 );
 
 const defaultCloudFormationHandler = http.post(
