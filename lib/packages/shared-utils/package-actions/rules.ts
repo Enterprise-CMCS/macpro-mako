@@ -86,6 +86,7 @@ const arWithdrawRaiResponse: ActionRule = {
     checker.hasRaiResponse &&
     // safety; prevent bad status from causing overwrite
     !checker.hasRaiWithdrawal &&
+    !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]) &&
     checker.hasEnabledRaiWithdraw &&
     isStateUser(user) &&
     !checker.isLocked,
