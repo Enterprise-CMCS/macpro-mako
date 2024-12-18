@@ -1,6 +1,6 @@
 import { Authority, CommonEmailVariables, EmailAddresses } from "shared-types";
 import { getPackageChangelog } from "../api/package";
-import * as EmailContent from "./content/index.js";
+import * as EmailContent from "./content";
 
 export type UserType = "cms" | "state";
 
