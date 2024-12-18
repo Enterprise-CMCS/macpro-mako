@@ -52,7 +52,7 @@ describe("getSearchData Handler", () => {
       },
     };
 
-    (os.search as Mock).mockResolvedValueOnce(mockResults);
+    vi.mocked(os.search).mockResolvedValueOnce(mockResults);
     (getAppkChildren as Mock).mockResolvedValueOnce({
       hits: {
         hits: [{ _id: "2", _source: { child: "child-data" } }],
