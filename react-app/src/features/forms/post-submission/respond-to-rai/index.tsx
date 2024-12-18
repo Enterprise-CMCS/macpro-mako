@@ -1,7 +1,6 @@
 import { ActionForm, PackageSection } from "@/components";
 import { formSchemas } from "@/formSchemas";
-import { useParams } from "react-router-dom";
-import { SEATOOL_STATUS } from "shared-types";
+import { useParams } from "react-router";
 
 export const RespondToRaiMedicaid = () => {
   const { authority, id } = useParams();
@@ -16,7 +15,7 @@ export const RespondToRaiMedicaid = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.hasStatus(SEATOOL_STATUS.PENDING),
+        documentChecker: (check) => check.recordExists,
       }}
       breadcrumbText="Respond to Formal RAI"
       preSubmissionMessage="Once you submit this form, a confirmation email is sent to you and to CMS.
@@ -33,10 +32,12 @@ export const RespondToRaiMedicaid = () => {
 };
 export const RespondToRaiWaiver = () => {
   const { authority, id } = useParams();
+  const authorityText = authority === "1915(c)" ? "1915(c) Appendix K" : authority;
+
   return (
     <ActionForm
       schema={formSchemas["respond-to-rai-waiver"]}
-      title={`${authority} Waiver Formal RAI Response Details`}
+      title={`${authorityText} Waiver Formal RAI Response Details`}
       fields={() => <PackageSection />}
       defaultValues={{ id }}
       attachments={{
@@ -44,7 +45,7 @@ export const RespondToRaiWaiver = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.hasStatus(SEATOOL_STATUS.PENDING),
+        documentChecker: (check) => check.recordExists,
       }}
       breadcrumbText="Respond to Formal RAI"
       preSubmissionMessage="Once you submit this form, a confirmation email is sent to you and to CMS.
@@ -72,7 +73,7 @@ export const RespondToRaiChip = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.hasStatus(SEATOOL_STATUS.PENDING),
+        documentChecker: (check) => check.recordExists,
       }}
       breadcrumbText="Respond to Formal RAI"
       preSubmissionMessage="Once you submit this form, a confirmation email is sent to you and to CMS.

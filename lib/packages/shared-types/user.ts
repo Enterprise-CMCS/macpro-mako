@@ -1,5 +1,13 @@
 import { UserStatusType } from "@aws-sdk/client-cognito-identity-provider";
 
+export { CognitoUser } from "amazon-cognito-identity-js";
+export type { UserData } from "amazon-cognito-identity-js";
+export type {
+  APIGatewayEvent,
+  APIGatewayEventIdentity,
+  APIGatewayEventRequestContext,
+} from "aws-lambda";
+
 export enum UserRoles {
   CMS_READ_ONLY = "onemac-micro-readonly",
   CMS_REVIEWER = "onemac-micro-reviewer",

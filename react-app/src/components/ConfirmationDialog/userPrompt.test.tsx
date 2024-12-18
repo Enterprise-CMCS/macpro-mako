@@ -144,6 +144,9 @@ describe("userPrompt", () => {
 
     const { children: dialogFooterChildren } = getByTestId("dialog-footer");
 
+    expect(dialogFooterChildren.length).toEqual(2);
+    expect(dialogFooterChildren.item(0)).not.toBeNull();
+    expect(dialogFooterChildren.item(1)).not.toBeNull();
     expect(dialogFooterChildren.item(0).textContent).toEqual("Custom Accept");
     expect(dialogFooterChildren.item(1).textContent).toEqual("Custom Cancel");
   });

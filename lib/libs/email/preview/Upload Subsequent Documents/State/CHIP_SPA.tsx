@@ -9,6 +9,7 @@ const ChipSpaStateEmailPreview = () => {
         id: "CO-24-1234",
         event: "upload-subsequent-documents",
         actionType: "Amend",
+        authority: "CHIP SPA",
         attachments: {
           currentStatePlan: attachments.currentStatePlan,
           amendedLanguage: attachments.amendedLanguage,

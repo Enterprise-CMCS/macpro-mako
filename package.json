@@ -30,6 +30,7 @@
     "lib/packages/*",
     "react-app",
     "bin/cli",
+    "mocks",
     "test/e2e"
   ],
   "license": "CC0-1.0",

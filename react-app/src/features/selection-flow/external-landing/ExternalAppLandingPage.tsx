@@ -1,11 +1,6 @@
 import { PropsWithChildren, ReactElement } from "react";
-import { useLocation, Link } from "react-router-dom";
-import {
-  Button,
-  SimplePageContainer,
-  BreadCrumbs,
-  optionCrumbsFromPath,
-} from "@/components";
+import { useLocation, Link } from "react-router";
+import { Button, SimplePageContainer, BreadCrumbs, optionCrumbsFromPath } from "@/components";
 import { SimplePageTitle } from "@/features";
 import { FAQ_TAB } from "@/router";
 
@@ -21,9 +16,7 @@ export interface ExternalAppLandingPageConfig {
   buttonLabel: string;
   buttonLink: EXTERNAL_APP;
 }
-const MACProLogo = () => (
-  <img src={"/images/logos/macpro.png"} alt={"MACPro system logo"} />
-);
+const MACProLogo = () => <img src={"/images/logos/macpro.png"} alt={"MACPro system logo"} />;
 const FAQHelperText = () => (
   <span className="max-w-xl">
     <i>
@@ -75,16 +68,14 @@ const ExternalAppLandingPage = ({
 
 export const MedicaidEligibilityLandingPage = () => (
   <ExternalAppLandingPage
-    pageTitle={
-      "Medicaid Eligibility, Enrollment, Administration, and Health Homes"
-    }
+    pageTitle={"Medicaid Eligibility, Enrollment, Administration, and Health Homes"}
     image={<MACProLogo />}
     description={
       <LandingPageDescription>
         <p className="mb-4">
           <b>
-            Medicaid Eligibility, Enrollment, Administration, and Health Homes
-            SPA packages are submitted within the{" "}
+            Medicaid Eligibility, Enrollment, Administration, and Health Homes SPA packages are
+            submitted within the{" "}
             <a
               className="text-sky-700 hover:text-sky-800 underline"
               href={EXTERNAL_APP.MAC_PRO}
@@ -97,8 +88,8 @@ export const MedicaidEligibilityLandingPage = () => (
           </b>
         </p>
         <p>
-          The MACPro system allows CMS and states to collaborate online to
-          process certain types of Medicaid SPA submissions.
+          The MACPro system allows CMS and states to collaborate online to process certain types of
+          Medicaid SPA submissions.
         </p>
       </LandingPageDescription>
     }

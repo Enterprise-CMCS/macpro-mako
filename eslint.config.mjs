@@ -1,13 +1,13 @@
 // @ts-check
 import { fixupPluginRules, includeIgnoreFile } from "@eslint/compat";
 import eslint from "@eslint/js";
+import eslintConfigPrettier from "eslint-config-prettier";
+import prettier from "eslint-plugin-prettier";
 import react from "eslint-plugin-react";
 import eslintReactHooks from "eslint-plugin-react-hooks";
 import path from "path";
 import tseslint from "typescript-eslint";
 import { fileURLToPath } from "url";
-import prettier from "eslint-plugin-prettier";
-import eslintConfigPrettier from "eslint-config-prettier";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -50,6 +50,12 @@ export default tseslint.config(
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
       "@typescript-eslint/no-empty-interface": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          varsIgnorePattern: "^_",
+        },
+      ],
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/ban-ts-comment": [
