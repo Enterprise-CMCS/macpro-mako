@@ -1,13 +1,14 @@
 import { describe, it, expect } from "vitest";
-import AppKCMSEmailPreview from "./AppK";
 import { render } from "@testing-library/react";
+
+import AppKCMSEmailPreview from "./AppK";
 import ChipSpaStateEmailPreview from "./CHIP_SPA";
 import MedSpaStateEmailPreview from "./Medicaid_SPA";
 import TempExtStatePreview from "./Temp_Extension";
 import Waiver1915bStateEmailPreview from "./Waiver_Capitated";
 import Waiver1915bContractingStateEmailPreview from "./Waiver_Contracting";
 
-describe("Initial Submission Email Snapshot Test", () => {
+describe("Initial Submission State Email Snapshot Test", () => {
   it("renders a AppKCMSEmailPreview Preview Template", () => {
     const template = render(<AppKCMSEmailPreview />);
 
