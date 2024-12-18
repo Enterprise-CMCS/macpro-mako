@@ -52,7 +52,7 @@ export const CHECK_STATESTATUS: DrawerFilterableGroup = {
 };
 
 export const BOOL_INITIALINTAKENEEDED: DrawerFilterableGroup = {
-  label: "Initial Intake Needed",
+  label: "Intake Needed",
   field: "initialIntakeNeeded",
   component: "boolean",
   prefix: "must",
