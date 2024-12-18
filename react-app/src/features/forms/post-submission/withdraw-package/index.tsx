@@ -138,7 +138,7 @@ export const WithdrawPackageActionChip = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.hasStatus(SEATOOL_STATUS.WITHDRAWN),
+        documentChecker: (check) => check.recordExists,
       }}
       breadcrumbText="Withdraw Package"
       additionalInformation={{
