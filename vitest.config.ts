@@ -23,7 +23,7 @@ export default defineConfig({
         ".cdk",
         "docs/**",
         "lib/libs/webforms/**",
-        "react-app/src/features/webforms/**",
+        "react-app/**",
         "**/*/TestWrapper.tsx",
         "lib/stacks/**",
         "lib/packages/eslint-config-custom/**",
