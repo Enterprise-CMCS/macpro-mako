@@ -112,7 +112,7 @@ const isInSecondClock = (
 };
 
 export const transform = (id: string) => {
-  return seatoolSchema.transform((data, ctx) => {
+  return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId, leadAnalystEmail } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } = getRaiDate(data);
     const seatoolStatus = data?.STATE_PLAN?.SPW_STATUS_ID
