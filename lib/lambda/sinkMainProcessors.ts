@@ -65,6 +65,8 @@ const getOneMacRecordWithAllProperties = (
 
     const { data: oneMacAdminRecord } = safeRecord;
 
+    console.log(`admin record: ${JSON.stringify(oneMacAdminRecord, null, 2)}`);
+
     return oneMacAdminRecord;
   }
 

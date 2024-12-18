@@ -1,6 +1,6 @@
 import { APIGatewayEvent, APIGatewayProxyEventPathParameters } from "aws-lambda";
 import { getRequestContext, makoStateSubmitter } from "mocks";
-import { describe, expect, it } from "optest";
+import { describe, expect, it } from "vitest";
 import { handler } from "./search";
 
 describe("getSearchData Handler", () => {
