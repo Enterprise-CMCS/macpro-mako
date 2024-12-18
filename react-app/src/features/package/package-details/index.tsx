@@ -21,6 +21,7 @@ export const DetailItemsGrid: FC<{
   containerStyle?: string;
 }> = (props) => {
   const { data: user } = useGetUser();
+
   return (
     <div
       className={cn(
@@ -29,14 +30,14 @@ export const DetailItemsGrid: FC<{
       )}
     >
       {props.displayItems.map(({ label, value, canView }) => {
-        return !canView(user) ? null : (
+        return canView(user) ? (
           <div key={label}>
             <h3 style={{ fontWeight: 700 }}>{label}</h3>
             <div style={{ fontWeight: 400 }} className="py-2">
               {value}
             </div>
           </div>
-        );
+        ) : null;
       })}
     </div>
   );

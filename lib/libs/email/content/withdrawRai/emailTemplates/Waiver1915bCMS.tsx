@@ -13,7 +13,7 @@ export const Waiver1915bCMSEmail = (props: {
         <WithdrawRAI {...variables} />
         <PackageDetails
           details={{
-            "State or territory": variables.territory,
+            "State or Territory": variables.territory,
             Name: relatedEvent.submitterName,
             "Email Address": relatedEvent.submitterEmail,
             "Waiver Number": variables.id,

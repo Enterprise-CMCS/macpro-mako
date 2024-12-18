@@ -83,11 +83,16 @@ export async function getEmailTemplates<T>(
 
 // I think this needs to be written to handle not finding any matching events and so forth
 export async function getLatestMatchingEvent(id: string, actionType: string) {
-  const item = await getPackageChangelog(id);
-  const events = item.hits.hits.filter((hit: any) => hit._source.actionType === actionType);
-  events.sort((a: any, b: any) => b._source.timestamp - a._source.timestamp);
-  const latestMatchingEvent = events[0]._source;
-  return latestMatchingEvent;
+  try {
+    const item = await getPackageChangelog(id);
+    const events = item.hits.hits.filter((hit: any) => hit._source.actionType === actionType);
+    events.sort((a: any, b: any) => b._source.timestamp - a._source.timestamp);
+    const latestMatchingEvent = events[0]._source;
+    return latestMatchingEvent;
+  } catch (error) {
+    console.error({ error })
+    return null;
+  }
 }
 
 export * from "./getAllStateUsers";

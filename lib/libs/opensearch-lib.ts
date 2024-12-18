@@ -1,12 +1,12 @@
-import { Client, Connection } from "@opensearch-project/opensearch";
+import { AssumeRoleCommand, STSClient } from "@aws-sdk/client-sts";
 import { defaultProvider } from "@aws-sdk/credential-provider-node";
+import { Client, Connection, errors as OpensearchErrors } from "@opensearch-project/opensearch";
 import * as aws4 from "aws4";
-import axios from "axios";
 import { aws4Interceptor } from "aws4-axios";
-import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
-import { opensearch } from "shared-types";
-import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
+import axios from "axios";
 import { ItemResult, Document as OSDocument } from "lib/packages/shared-types/opensearch/main";
+import { opensearch } from "shared-types";
+import { getDomainAndNamespace } from "./sink-lib";
 
 let client: Client;
 
@@ -168,15 +168,11 @@ export async function mapRole(
 
 export async function search(host: string, index: opensearch.Index, query: any) {
   client = client || (await getClient(host));
-  try {
-    const response = await client.search({
-      index: index,
-      body: query,
-    });
-    return decodeUtf8(response).body;
-  } catch (e) {
-    console.log({ e });
-  }
+  const response = await client.search({
+    index: index,
+    body: query,
+  });
+  return decodeUtf8(response).body;
 }
 
 export async function getItem(
@@ -184,25 +180,24 @@ export async function getItem(
   index: opensearch.Index,
   id: string,
 ): Promise<ItemResult | undefined> {
-  client = client || (await getClient(host));
   try {
+    client = client || (await getClient(host));
     const response = await client.get({ id, index });
     return decodeUtf8(response).body;
-  } catch (e) {
-    console.log({ e });
-    return undefined;
+  } catch (error) {
+    if (error instanceof OpensearchErrors.ResponseError && error.statusCode === 404 || error.meta?.statusCode === 404) {
+      console.log("Error (404) retrieving in OpenSearch:", error);
+      return undefined
+    }
+    throw error;
   }
 }
 
-export async function getItems(
-  host: string,
-  indexNamespace: string,
-  ids: string[],
-): Promise<OSDocument[]> {
+export async function getItems(ids: string[]): Promise<OSDocument[]> {
   try {
-    const index = `${indexNamespace}main`;
+    const { domain, index } = getDomainAndNamespace("main");
 
-    client = client || (await getClient(host));
+    client = client || (await getClient(domain));
 
     const response = await client.mget<{ docs: ItemResult[] }>({
       index,

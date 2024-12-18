@@ -1,22 +1,29 @@
-import { PackageSection } from "@/components/Form/content/PackageSection";
 import { ActionForm } from "@/components/ActionForm";
+import { PackageSection } from "@/components/Form/content/PackageSection";
 import { formSchemas } from "@/formSchemas";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 export const WithdrawRaiForm = () => {
   const { authority, id } = useParams();
+  const faqLink = authority?.includes("SPA")
+    ? authority?.includes("CHIP")
+      ? "chip-spa"
+      : "spa"
+    : "waiver";
+
+  const authorityText = authority === "1915(c)" ? `1915(c) Appendix K` : authority;
 
   return (
     <ActionForm
       schema={formSchemas["withdraw-rai"]}
-      title={`${authority} Withdraw Formal RAI Response Details`}
+      title={`${authorityText} Withdraw Formal RAI Response Details`}
       fields={() => <PackageSection />}
       defaultValues={{
         id,
         authority,
       }}
       attachments={{
-        faqLink: "/faq",
+        faqLink: `/faq/withdraw-${faqLink}-rai-response`,
       }}
       documentPollerArgs={{
         property: "id",

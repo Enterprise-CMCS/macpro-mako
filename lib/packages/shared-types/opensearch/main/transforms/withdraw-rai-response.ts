@@ -6,12 +6,9 @@ export const transform = () => {
     return {
       id: data.id,
       raiWithdrawEnabled: false,
-      makoChangedDate: data.timestamp
-        ? new Date(data.timestamp).toISOString()
-        : null,
+      makoChangedDate: data.timestamp ? new Date(data.timestamp).toISOString() : null,
       cmsStatus,
       stateStatus,
-      raiReceivedDate: null,
       seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
       locked: true,
     };

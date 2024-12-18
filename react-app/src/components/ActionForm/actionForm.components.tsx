@@ -1,9 +1,9 @@
 import { FAQ_TAB } from "@/router";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { z } from "zod";
 
 export const AttachmentFileFormatInstructions = () => (
-  <p>
+  <p data-testid="accepted-files">
     We accept the following file formats:{" "}
     <span className="font-bold">.doc, .docx, .pdf, .jpg, .xlsx, and more. </span>{" "}
     <Link
@@ -36,7 +36,11 @@ export const AttachmentFAQInstructions = ({ faqLink }: { faqLink?: string }) => 
 );
 
 const isZodArrayDef = (def: unknown): def is z.ZodArrayDef =>
-  def && typeof def === "object" && "typeName" in def && def.typeName === "ZodArray";
+  def !== undefined &&
+  def !== null &&
+  typeof def === "object" &&
+  "typeName" in def &&
+  def.typeName === "ZodArray";
 
 export const AttachmentInstructions = ({ fileValidation }: { fileValidation: z.ZodArray<any> }) => {
   if (isZodArrayDef(fileValidation)) {

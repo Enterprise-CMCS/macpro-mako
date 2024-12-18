@@ -1,11 +1,16 @@
 import { useGetItem } from "@/api";
-import { ActionForm, PackageSection, SchemaWithEnforcableProps } from "@/components";
+import {
+  ActionForm,
+  LoadingSpinner,
+  PackageSection,
+  SchemaWithEnforcableProps,
+} from "@/components";
 import {
   AttachmentFAQInstructions,
   AttachmentFileFormatInstructions,
 } from "@/components/ActionForm/actionForm.components";
 import { formSchemas } from "@/formSchemas";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router";
 import { z } from "zod";
 import { getFAQLinkForAttachments } from "../../faqLinks";
 
@@ -65,8 +70,8 @@ const getTitle = (originalSubmissionEvent: string) => {
       return "Medicaid SPA";
     case originalSubmissionEvent === "new-chip-submission":
       return "CHIP SPA";
-    case originalSubmissionEvent === "appk":
-      return "Appendix K";
+    case originalSubmissionEvent === "app-k":
+      return "1915(c) Appendix K Waiver Amendment";
     case originalSubmissionEvent.includes("amendment"):
       return "1915(b) Waiver Amendment";
     case originalSubmissionEvent.includes("initial"):
@@ -81,14 +86,18 @@ const getTitle = (originalSubmissionEvent: string) => {
 
 export const UploadSubsequentDocuments = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: submission } = useGetItem(id);
+  const { data: submission, isLoading: isSubmissionLoading } = useGetItem(id);
 
-  if (submission === undefined) {
+  if (isSubmissionLoading === true) {
+    return <LoadingSpinner />;
+  }
+
+  if (!submission?._source) {
     return <Navigate to="/dashboard" />;
   }
 
   const originalSubmissionEvent = (submission._source.changelog ?? []).reduce<string | null>(
-    (acc, { _source }) => (_source.event ? _source.event : acc),
+    (acc, { _source }) => (_source?.event ? _source?.event : acc),
     null,
   );
 

@@ -40,12 +40,13 @@ export const ActionFormAttachments = ({
   const form = useFormContext();
 
   const attachmentInstructions = instructions ?? [
-    <AttachmentFileFormatInstructions />,
     <AttachmentFAQInstructions faqLink={faqLink} />,
+    <AttachmentFileFormatInstructions />,
   ];
 
   return (
     <SectionCard
+      testId="attachment-section"
       title={
         <>
           {title} {requiredIndicatorForTitle && <RequiredIndicator />}
