@@ -5,6 +5,11 @@ import { EventEmitter } from "events";
 EventEmitter.defaultMaxListeners = 30;
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      "@": join(__dirname, "./react-app/src"),
+    },
+  },
   test: {
     globals: true,
     environment: "jsdom",
@@ -15,7 +20,6 @@ export default defineConfig({
       reportsDirectory: join(__dirname, "coverage"),
       reporter: ["html", "text", "json-summary", "json", "lcovonly"],
       reportOnFailure: true,
-      // Removed or adjusted excludes to allow new tests to run
       exclude: [
         ...configDefaults.exclude,
         ".build_run",
@@ -42,8 +46,6 @@ export default defineConfig({
         "**/assets/**",
         "node_modules/**",
         "**/node_modules/**",
-        // Removed "lib/libs/email/content/**" and others from excludes
-        // to ensure tests in those directories run
       ],
     },
   },
