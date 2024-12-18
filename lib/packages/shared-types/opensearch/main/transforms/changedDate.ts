@@ -1,23 +1,11 @@
-import { seaChangedDateSchema } from "../../..";
+import { seatoolRecordWithUpdatedDateSchema } from "../../../seatool-tables";
 
 export const transform = () => {
-  return seaChangedDateSchema.transform((data) => {
-    const transformedData = {
-      id: data.ID_Number,
-      changedDate:
-        data.Changed_Date !== null && data.Changed_Date !== undefined
-          ? new Date(data.Changed_Date).toISOString()
-          : null,
-    };
-    return transformedData;
-  });
+  return seatoolRecordWithUpdatedDateSchema.transform((data) => ({
+    id: data.ID_Number,
+    changedDate:
+      typeof data.Changed_Date === "number" ? new Date(data.Changed_Date).toISOString() : null,
+  }));
 };
 
 export type Schema = ReturnType<typeof transform>;
-
-export const tombstone = (id: string) => {
-  return {
-    id,
-    changedDate: null,
-  };
-};

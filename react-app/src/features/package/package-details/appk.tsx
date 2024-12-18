@@ -6,7 +6,6 @@ import { Button } from "@/components/Inputs";
 import { Undo2 } from "lucide-react";
 
 import { useGetUser } from "@/api/useGetUser";
-import { SubmissionServiceParameters, submit } from "@/api/submissionService";
 import { useMutation } from "@tanstack/react-query";
 import { usePackageDetailsCache } from "..";
 
@@ -16,7 +15,7 @@ export const AppK = () => {
   const { data: user } = useGetUser();
   const cache = usePackageDetailsCache();
   const submission = useMutation({
-    mutationFn: (config: SubmissionServiceParameters<any>) => submit(config),
+    mutationFn: async (config: unknown) => console.log(config),
   });
 
   const onChildRemove = async (id: string) => {
@@ -73,10 +72,7 @@ export const AppK = () => {
                 </T.TableCell>
                 <T.TableCell>
                   <Button
-                    disabled={
-                      cache.data.seatoolStatus === SEATOOL_STATUS.WITHDRAWN ||
-                      user?.isCms
-                    }
+                    disabled={cache.data.seatoolStatus === SEATOOL_STATUS.WITHDRAWN || user?.isCms}
                     size="sm"
                     className="flex gap-1"
                     onClick={() => setRemoveChild(CHILD._id)}
@@ -98,12 +94,7 @@ export const AppK = () => {
         acceptButtonText="Yes, withdraw"
         cancelButtonText="Cancel"
         title="Are you sure you want to withdraw this 1915(c) Appendix K?"
-        body={
-          <p>
-            Any 1915(c) Appendix Ks associated with {removeChild} will not be
-            affected.
-          </p>
-        }
+        body={<p>Any 1915(c) Appendix Ks associated with {removeChild} will not be affected.</p>}
       />
     </div>
   );
