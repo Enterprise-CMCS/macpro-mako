@@ -1,8 +1,9 @@
 import { defineConfig, loadEnv } from "vite";
 //import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react-swc";
-import { fileURLToPath } from "url";
 import { VitePluginRadar } from "vite-plugin-radar";
+
+EventEmitter.defaultMaxListeners = 100;
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -11,6 +12,11 @@ export default defineConfig(({ mode }) => {
   console.log({ env });
 
   return {
+    resolve: {
+      alias: {
+        "@": join(__dirname, "./src"),
+      },
+    },
     optimizeDeps: {
       exclude: ["@aws-sdk/client-sts", "@smithy/shared-ini-file-loader"],
     },
@@ -34,11 +40,6 @@ export default defineConfig(({ mode }) => {
       setupFiles: "./vitest.setup.ts",
       exclude: ["**/node_modules/**"],
       environment: "jsdom",
-    },
-    resolve: {
-      alias: {
-        "@": fileURLToPath(new URL("./src", import.meta.url)),
-      },
     },
     root: "./",
     publicDir: "src/assets",
