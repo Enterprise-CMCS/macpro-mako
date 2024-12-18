@@ -1,9 +1,9 @@
 import { handleOpensearchError } from "./utils"; 
 import { APIGatewayEvent } from "aws-lambda";
-import * as os from "libs/opensearch-lib";
 import { response } from "libs/handler-lib";
+import * as os from "libs/opensearch-lib";
 
-type GetSubTypesBoby = {
+type GetSubTypesBody = {
   authorityId: string;
   typeIds: string[];
 };
@@ -49,11 +49,7 @@ export const querySubTypes = async (authorityId: string, typeIds: string[]) => {
     ],
   };
 
-  return await os.search(
-    process.env.osDomain,
-    `${process.env.indexNamespace}subtypes`,
-    query,
-  );
+  return await os.search(process.env.osDomain, `${process.env.indexNamespace}subtypes`, query);
 };
 
 export const getSubTypes = async (event: APIGatewayEvent) => {
@@ -63,7 +59,7 @@ export const getSubTypes = async (event: APIGatewayEvent) => {
       body: { message: "Event body required" },
     });
   }
-  const body = JSON.parse(event.body) as GetSubTypesBoby;
+  const body = JSON.parse(event.body) as GetSubTypesBody;
   try {
     const result = await querySubTypes(body.authorityId, body.typeIds);
 

@@ -1,5 +1,5 @@
-import { TEST_CF_EXPORT_ID, TEST_CF_EXPORT_NOT_FOUND_ID, errorCloudFormation } from "mocks";
-import { mockedServer } from "mocks/server";
+import { TEST_CF_EXPORT_ID, TEST_CF_EXPORT_NOT_FOUND_ID, errorCloudFormationHandler } from "mocks";
+import { mockedServiceServer } from "mocks/server";
 import { describe, expect, it } from "vitest";
 import { getExport } from "./cloudformation";
 
@@ -16,7 +16,7 @@ describe("getExport", () => {
   });
 
   it("should throw an error if there is an issue with the AWS SDK call", async () => {
-    mockedServer.use(errorCloudFormation);
+    mockedServiceServer.use(errorCloudFormationHandler);
 
     await expect(getExport(TEST_CF_EXPORT_ID)).rejects.toThrow("UnknownError");
   });

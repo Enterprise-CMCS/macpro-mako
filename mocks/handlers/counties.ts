@@ -26,4 +26,4 @@ const defaultCountiesHandler = http.get<PopulationParams>(
   },
 );
 
-export const defaultHandlers = [defaultCountiesHandler];
+export const countiesHandlers = [defaultCountiesHandler];

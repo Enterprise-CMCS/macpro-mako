@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
-import items, { GET_ERROR_ITEM_ID } from "../data/items";
-import { GetItemBody } from "../index.d";
+import items, { GET_ERROR_ITEM_ID } from "../../data/items";
+import type { GetItemBody } from "../../index.d";
 
 const defaultItemHandler = http.post<GetItemBody, GetItemBody>(/\/item$/, async ({ request }) => {
   const { id } = await request.json();
@@ -25,4 +25,4 @@ const defaultItemExistsHandler = http.post<GetItemBody, GetItemBody>(
   },
 );
 
-export const defaultHandlers = [defaultItemHandler, defaultItemExistsHandler];
+export const itemHandlers = [defaultItemHandler, defaultItemExistsHandler];
