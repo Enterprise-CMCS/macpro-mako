@@ -1,135 +1,27 @@
-import { CognitoUserAttribute } from "amazon-cognito-identity-js";
 import jwt from "jsonwebtoken";
 import { http, HttpResponse, passthrough, PathParams } from "msw";
-import { APIGatewayEventRequestContext, CognitoUserAttributes } from "shared-types";
-import { isCmsUser } from "shared-utils";
 import {
   ACCESS_KEY_ID,
-  COGNITO_IDP_DOMAIN,
   IDENTITY_POOL_ID,
   SECRET_KEY,
   USER_POOL_CLIENT_ID,
-} from "../consts";
-import { makoReviewer, makoStateSubmitter, userResponses } from "../data/users";
+  COGNITO_IDP_DOMAIN
+} from "../../consts";
 import type {
+  IdentityRequest,
   IdpListUsersRequestBody,
   IdpRefreshRequestBody,
   IdpRequestSessionBody,
-  TestUserData,
-} from "../index.d";
-
-export const setMockUsername = (user?: TestUserData | string | null): void => {
-  if (user && typeof user === "string") {
-    process.env.MOCK_USER_USERNAME = user;
-  } else if (user && (user as TestUserData).Username !== undefined) {
-    process.env.MOCK_USER_USERNAME = (user as TestUserData).Username;
-  } else {
-    delete process.env.MOCK_USER_USERNAME;
-  }
-};
-
-export const setDefaultStateSubmitter = () => setMockUsername(makoStateSubmitter);
-
-export const setDefaultReviewer = () => setMockUsername(makoReviewer);
-
-// using any here because the function that this is mocking uses any
-export const mockCurrentAuthenticatedUser = (): TestUserData | any => {
-  if (process.env.MOCK_USER_USERNAME) {
-    return findUserByUsername(process.env.MOCK_USER_USERNAME);
-  }
-  return undefined;
-};
-
-// using any here because the function that this is mocking uses any
-export const mockUserAttributes = async (user: any): Promise<CognitoUserAttribute[]> => {
-  if (user && (user as TestUserData).UserAttributes !== undefined) {
-    return (user as TestUserData).UserAttributes as CognitoUserAttribute[];
-  }
-
-  if (process.env.MOCK_USER_USERNAME) {
-    const defaultUser = findUserByUsername(process.env.MOCK_USER_USERNAME);
-    return defaultUser?.UserAttributes as CognitoUserAttribute[];
-  }
-  return {} as CognitoUserAttribute[];
-};
-
-export const convertUserAttributes = (user: TestUserData): CognitoUserAttributes => {
-  if (user?.UserAttributes) {
-    const userAttributesObj = user.UserAttributes.reduce(
-      (obj, item) =>
-        item?.Name && item?.Value
-          ? {
-              ...obj,
-              [item.Name]: item.Value,
-            }
-          : obj,
-      {} as CognitoUserAttributes,
-    );
-    // Manual additions and normalizations
-    userAttributesObj["custom:cms-roles"] = userAttributesObj["custom:cms-roles"] || "";
-
-    userAttributesObj.username = user.Username || "";
-
-    return userAttributesObj;
-  }
-
-  return {} as CognitoUserAttributes;
-};
-
-export const mockUseGetUser = () => {
-  if (process.env.MOCK_USER_USERNAME) {
-    const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
-    if (user) {
-      // Copied from useGetUser.getUser
-      // Set object up with key/values from attributes array
-      const userAttributesObj = convertUserAttributes(user);
-
-      return {
-        data: {
-          user: userAttributesObj,
-          isCms: isCmsUser(userAttributesObj),
-        },
-        isLoading: false,
-        isSuccess: true,
-      };
-    }
-  }
-  return {
-    data: null,
-    isLoading: false,
-    isSuccess: true,
-  };
-};
-
-const findUserByUsername = (username: string): TestUserData | undefined =>
-  userResponses.find((user) => user.Username == username);
+  TestUserData
+} from "../../index.d";
+import { findUserByUsername } from "../authUtils";
+import { APIGatewayEventRequestContext } from "shared-types";
 
 const getUsernameFromAccessToken = (accessToken?: string): string | undefined => {
   if (accessToken) {
     return jwt.decode(accessToken, { json: true })?.get("username");
   }
   return undefined;
-};
-
-// const getUsernameFromSessionToken = (sessionToken?: string | null): string | undefined => {
-//   if (sessionToken) {
-//     const session = JSON.parse(Buffer.from(sessionToken, "base64").toString());
-//     return session?.username;
-//   }
-//   return undefined;
-// };
-
-const getAttributeFromUser = (user: TestUserData, attrName: string): string | null => {
-  if (
-    attrName &&
-    user?.UserAttributes &&
-    Array.isArray(user.UserAttributes) &&
-    user.UserAttributes.length > 0
-  ) {
-    const attribute = user.UserAttributes.find((attr) => attr?.Name == attrName);
-    return attribute?.Value || null;
-  }
-  return null;
 };
 
 const generateIdToken = (user: TestUserData, authTime: number, expTime: number): string | null => {
@@ -209,6 +101,19 @@ const generateRefreshToken = (user: TestUserData): string | null => {
 const generateSessionToken = (user: TestUserData): string | null => {
   if (user?.Username) {
     return Buffer.from(JSON.stringify({ username: user?.Username })).toString("base64");
+  }
+  return null;
+};
+
+const getAttributeFromUser = (user: TestUserData, attrName: string): string | null => {
+  if (
+    attrName &&
+    user?.UserAttributes &&
+    Array.isArray(user.UserAttributes) &&
+    user.UserAttributes.length > 0
+  ) {
+    const attribute = user.UserAttributes.find((attr) => attr?.Name == attrName);
+    return attribute?.Value || null;
   }
   return null;
 };
@@ -439,12 +344,7 @@ export const identityProviderServiceHandler = http.post<
   return passthrough();
 });
 
-export type IdentityRequest = {
-  IdentityPoolId: string;
-  Logins: Record<string, string>;
-};
-
-export const defaultHandlers = [
+export const cognitoHandlers = [
   signInHandler,
   identityProviderServiceHandler,
   identityServiceHandler,
