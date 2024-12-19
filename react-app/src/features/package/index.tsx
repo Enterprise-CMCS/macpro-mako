@@ -1,6 +1,6 @@
 import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
 
-import { useGetItem, useGetItemCache } from "@/api";
+import { useGetItem, useGetItemCache, getItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { FC, PropsWithChildren } from "react";
 
@@ -12,7 +12,7 @@ import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
 import { Authority } from "shared-types";
-import { Navigate, useParams } from "react-router";
+import { LoaderFunctionArgs, useParams, useLoaderData, redirect } from "react-router";
 import { detailsAndActionsCrumbs } from "@/utils";
 
 export const DetailCardWrapper = ({
@@ -51,16 +51,36 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
   );
 };
 
-export const Details = () => {
-  const { id, authority } = useParams<{
-    id: string;
-    authority: Authority;
-  }>();
+type LoaderData = {
+  id: string;
+  authority: Authority;
+};
 
+export const packageDetailsLoader = async ({ params }: LoaderFunctionArgs): Promise<LoaderData | Response> => {
+  const { id, authority } = params;
   if (id === undefined || authority === undefined) {
-    return <Navigate to="/dashboard" />;
+    return redirect("/dashboard");
   }
 
+  try {
+    const packageResult = await getItem(id);
+    if (!packageResult || packageResult?._source?.deleted === true) {
+      return redirect("/dashboard");
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log("Error fetching package: ", error.message);
+    } else {
+      console.log("Unknown error fetching package: ", error);
+    }
+    return redirect("/dashboard");
+  }
+
+  return { id, authority: authority as Authority };
+};
+
+export const Details = () => {
+  const { id, authority } = useLoaderData<LoaderData>();
   return (
     <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row">
       <div className="px-4 lg:px-8">
