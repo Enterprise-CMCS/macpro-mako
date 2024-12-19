@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
-import exports from "../data/cloudFormationsExports";
+import exports from "../../data/cloudFormationsExports";
 
-export const errorCloudFormation = http.post(
+export const errorCloudFormationHandler = http.post(
   `https://cloudformation.us-east-1.amazonaws.com/`,
   async () =>
     HttpResponse.xml(
@@ -18,7 +18,7 @@ export const errorCloudFormation = http.post(
     ),
 );
 
-const defaultCloudFormation = http.post(
+const defaultCloudFormationHandler = http.post(
   `https://cloudformation.us-east-1.amazonaws.com/`,
   async () => {
     let xmlResponse = `
@@ -51,4 +51,4 @@ const defaultCloudFormation = http.post(
   },
 );
 
-export const defaultHandlers = [defaultCloudFormation];
+export const cloudFormationHandlers = [defaultCloudFormationHandler];

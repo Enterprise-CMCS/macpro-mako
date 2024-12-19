@@ -1,52 +1,60 @@
 import { describe, expect, it } from "vitest";
 import { fetchData } from "./useGetTypes";
+import { 
+  MEDICAID_SPA_AUTHORITY_ID, 
+  CHIP_SPA_AUTHORITY_ID, 
+  NOT_FOUND_AUTHORITY_ID, 
+  ERROR_AUTHORITY_ID, 
+  TYPE_ONE_ID,
+  TYPE_TWO_ID,
+  TYPE_THREE_ID,
+  DO_NOT_USE_TYPE_ID,
+  medicaidTypes, 
+  medicaidSubtypes,
+  chipTypes,
+  chipSubtypes
+} from "mocks/data/types"
 
 describe("fetchData", () => {
   describe("fetchTypes", () => {
     it("makes an AWS Amplify post request for types", async () => {
-      const types = await fetchData({ authorityId: 1 });
-      expect(types).toEqual([
-        { id: 101, authorityId: 1, name: "typeOne" },
-        { id: 102, authorityId: 1, name: "typetwo" },
-      ]);
+      const types = await fetchData({ authorityId: MEDICAID_SPA_AUTHORITY_ID });
+      expect(types).toEqual(medicaidTypes.map(type => type?._source));
     });
 
     it("successfully fetches types for a given authorityId", async () => {
-      const types = await fetchData({ authorityId: 2 });
-      expect(types).toEqual([{ id: 103, authorityId: 2, name: "typethree" }]);
+      const types = await fetchData({ authorityId: CHIP_SPA_AUTHORITY_ID });
+      expect(types).toEqual(chipTypes.map(type => type?._source));
     });
 
     it("returns an empty array when there are no types", async () => {
-      const types = await fetchData({ authorityId: 3 });
+      const types = await fetchData({ authorityId: NOT_FOUND_AUTHORITY_ID });
       expect(types).toEqual([]);
     });
 
     it("throws an error when fetch fails", async () => {
-      await expect(fetchData({ authorityId: -1 })).rejects.toThrow("Failed to fetch types");
+      await expect(fetchData({ authorityId: ERROR_AUTHORITY_ID })).rejects.toThrow("Failed to fetch types");
     });
   });
 
   describe("fetchSubTypes", () => {
     it("makes an AWS Amplify post request for subtypes", async () => {
-      const subtypes = await fetchData({ authorityId: 1, typeIds: [1, 2] });
-      expect(subtypes).toEqual([
-        { id: 101, authorityId: 1, name: "subtypeOne", typeId: 1 },
-        { id: 102, authorityId: 1, name: "subtypetwo", typeId: 2 },
-      ]);
+      const subtypes = await fetchData({ authorityId: MEDICAID_SPA_AUTHORITY_ID, typeIds: [TYPE_ONE_ID, TYPE_TWO_ID] });
+      expect(subtypes).toEqual(medicaidSubtypes.map(subtype => subtype?._source));
     });
 
     it("successfully fetches subtypes for a given authorityId and typeIds", async () => {
-      const subtypes = await fetchData({ authorityId: 2, typeIds: [4] });
-      expect(subtypes).toEqual([{ id: 104, authorityId: 2, name: "subtypethree", typeId: 4 }]);
+      const subtypes = await fetchData({ authorityId: CHIP_SPA_AUTHORITY_ID, typeIds: [TYPE_THREE_ID, DO_NOT_USE_TYPE_ID] });
+      expect(subtypes).toEqual(chipSubtypes.map(subtype => subtype?._source));
     });
 
     it("returns an empty array when there are no subtypes", async () => {
-      const subtypes = await fetchData({ authorityId: 3, typeIds: [4, 5] });
+      const subtypes = await fetchData({ authorityId: CHIP_SPA_AUTHORITY_ID, typeIds: [DO_NOT_USE_TYPE_ID] });
       expect(subtypes).toEqual([]);
     });
 
     it("throws an error when fetch fails", async () => {
-      await expect(fetchData({ authorityId: -1, typeIds: [] })).rejects.toThrow(
+      await expect(fetchData({ authorityId: ERROR_AUTHORITY_ID, typeIds: [] })).rejects.toThrow(
         "Failed to fetch subtypes",
       );
     });
