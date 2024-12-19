@@ -1,4 +1,4 @@
-import { checkEnvVars } from "..";
+import { checkEnvVars } from "../..";
 import { test, describe, expect, afterEach } from "vitest";
 describe("checkEnvVars", () => {
   afterEach(() => {
