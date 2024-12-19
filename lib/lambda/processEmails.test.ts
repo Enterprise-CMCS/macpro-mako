@@ -1,13 +1,14 @@
 import { describe, it, expect, vi } from "vitest";
 import { handler as processEmailsHandler } from "./processEmails";
+import { handler as sinkMainHandler } from "./sinkMain";
 
 vi.mock("aws-sdk/clients/sqs", () => {
   return {
     SQS: vi.fn().mockImplementation(() => {
       return {
-        sendMessage: vi.fn().mockReturnValue({ promise: () => Promise.resolve({}) })
+        sendMessage: vi.fn().mockReturnValue({ promise: () => Promise.resolve({}) }),
       };
-    })
+    }),
   };
 });
 
@@ -22,7 +23,7 @@ vi.mock("../processEmails", async () => {
 describe("processEmails handler", () => {
   it("should gracefully handle an empty records set", async () => {
     const event = {
-      records: {}
+      records: {},
     };
     const res = await processEmailsHandler(event as any, {} as any, () => {});
     // no error means passed
@@ -35,36 +36,35 @@ describe("processEmails handler", () => {
         "test-topic": [
           {
             key: Buffer.from("testKey").toString("base64"),
-            value: Buffer.from(JSON.stringify({ event: "new-medicaid-submission", authority: "Medicaid SPA", origin: "mako" })).toString("base64"),
+            value: Buffer.from(
+              JSON.stringify({
+                event: "new-medicaid-submission",
+                authority: "Medicaid SPA",
+                origin: "mako",
+              }),
+            ).toString("base64"),
             timestamp: Date.now(),
-          }
-        ]
-      }
+          },
+        ],
+      },
     };
     const res = await processEmailsHandler(event as any, {} as any, () => {});
     expect(res).toBeUndefined();
   });
 });
- 40 changes: 40 additions & 0 deletions40  
-lib/lambda/__tests__/sinkMain.test.ts
-Viewed
-Original file line number	Original file line	Diff line number	Diff line change
-@@ -0,0 +1,40 @@
-import { describe, it, expect, vi } from "vitest";
-import { handler as sinkMainHandler } from "../sinkMain";
 
 vi.mock("../sinkMainProcessors", () => {
   return {
     insertOneMacRecordsFromKafkaIntoMako: vi.fn(() => Promise.resolve()),
     insertNewSeatoolRecordsFromKafkaIntoMako: vi.fn(() => Promise.resolve()),
-    syncSeatoolRecordDatesFromKafkaWithMako: vi.fn(() => Promise.resolve())
+    syncSeatoolRecordDatesFromKafkaWithMako: vi.fn(() => Promise.resolve()),
   };
 });
 
 describe("sinkMain handler", () => {
   it("handles empty event gracefully", async () => {
     const event = {
-      records: {}
+      records: {},
     };
     const res = await sinkMainHandler(event as any, {} as any, () => {});
     expect(res).toBeUndefined();
@@ -82,10 +82,10 @@ describe("sinkMain handler", () => {
             offset: 0,
             timestamp: Date.now(),
             timestampType: "CREATE_TIME",
-            headers: {}
-          }
-        ]
-      }
+            headers: {},
+          },
+        ],
+      },
     };
     await expect(sinkMainHandler(event as any, {} as any, () => {})).rejects.toThrow();
   });
