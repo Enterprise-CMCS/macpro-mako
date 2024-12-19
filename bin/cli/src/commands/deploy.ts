@@ -1,8 +1,17 @@
 import { Argv } from "yargs";
-import { checkIfAuthenticated, runCommand, project, region, writeUiEnvFile } from "../lib/";
-import * as path from "path";
+import {
+  checkIfAuthenticated,
+  runCommand,
+  project,
+  region,
+  writeUiEnvFile,
+} from "../lib/";
+import path from "path";
 import { execSync } from "child_process";
-import { CloudFrontClient, CreateInvalidationCommand } from "@aws-sdk/client-cloudfront";
+import {
+  CloudFrontClient,
+  CreateInvalidationCommand,
+} from "@aws-sdk/client-cloudfront";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 
 export const deploy = {
@@ -13,7 +22,11 @@ export const deploy = {
   },
   handler: async (options: { stage: string; stack?: string }) => {
     await checkIfAuthenticated();
-    await runCommand("cdk", ["deploy", "-c", `stage=${options.stage}`, "--all"], ".");
+    await runCommand(
+      "cdk",
+      ["deploy", "-c", `stage=${options.stage}`, "--all"],
+      ".",
+    );
 
     await writeUiEnvFile(options.stage);
 
@@ -44,8 +57,16 @@ export const deploy = {
     // There's a mime type issue when aws s3 syncing files up
     // Empirically, this issue never presents itself if the bucket is cleared just before.
     // Until we have a neat way of ensuring correct mime types, we'll remove all files from the bucket.
-    await runCommand("aws", ["s3", "rm", `s3://${s3BucketName}/`, "--recursive"], ".");
-    await runCommand("aws", ["s3", "sync", buildDir, `s3://${s3BucketName}/`], ".");
+    await runCommand(
+      "aws",
+      ["s3", "rm", `s3://${s3BucketName}/`, "--recursive"],
+      ".",
+    );
+    await runCommand(
+      "aws",
+      ["s3", "sync", buildDir, `s3://${s3BucketName}/`],
+      ".",
+    );
 
     const cloudfrontClient = new CloudFrontClient({
       region,
@@ -61,7 +82,9 @@ export const deploy = {
       },
     };
 
-    await cloudfrontClient.send(new CreateInvalidationCommand(invalidationParams));
+    await cloudfrontClient.send(
+      new CreateInvalidationCommand(invalidationParams),
+    );
 
     console.log(
       `Deployed UI to S3 bucket ${s3BucketName} and invalidated CloudFront distribution ${cloudfrontDistributionId}`,
