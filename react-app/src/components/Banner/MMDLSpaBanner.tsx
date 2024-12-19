@@ -8,7 +8,10 @@ const MMDLAlertBanner = () => {
   };
   if (!isVisible) return null;
   return (
-    <div className="bg-[#E1F3F8] grid md:grid-cols-[min-content_auto_min-content] md:grid-rows-[auto_auto] grid-cols-[auto_auto] gap-4 md:gap-x-4 border-l-[8px] border-[#00A6D2] p-3">
+    <section
+      className="bg-[#E1F3F8] grid md:grid-cols-[min-content_auto_min-content] md:grid-rows-[auto_auto] grid-cols-[auto_auto] gap-4 md:gap-x-4 border-l-[8px] border-[#00A6D2] p-3"
+      aria-label="mmdl-alert-banner"
+    >
       <InfoCircledIcon className="w-10 h-10" aria-hidden="true" />
       <div className="flex gap-x-4 flex-grow">
         <div className="flex flex-col flex-grow">
@@ -35,7 +38,7 @@ const MMDLAlertBanner = () => {
           <Cross2Icon className="w-full h-full" aria-hidden="true" />
         </button>
       </div>
-    </div>
+    </section>
   );
 };
 export default MMDLAlertBanner;
