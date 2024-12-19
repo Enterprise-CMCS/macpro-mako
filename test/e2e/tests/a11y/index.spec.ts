@@ -69,7 +69,8 @@ const webformRoutes = [
   "/webform/abp1/202402",
 ];
 
-test.describe("test a11y on webform routes", () => {
+// Add to CI when prior to going to Prod
+test.describe("test a11y on webform routes", {tag: ["@CI"]}, () => {
   for (const route of webformRoutes) {
     test(`${route} should not have any automatically detectable accessibility issues`, async ({
       page,
