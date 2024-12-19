@@ -1,51 +1,91 @@
-export const AUTHORITY_ONE_ID = 1;
-export const AUTHORITY_TWO_ID = 2;
+export const CHIP_SPA_AUTHORITY_ID = "124";
+export const MEDICAID_SPA_AUTHORITY_ID = "125";
+export const NOT_FOUND_AUTHORITY_ID = "10";
+export const ERROR_AUTHORITY_ID = "throw error";
 
-export const TYPE_ONE_ID = 1;
-export const TYPE_TWO_ID = 2;
-export const TYPE_THREE_ID = 3;
-export const TYPE_FOUR_ID = 4;
+export const TYPE_ONE_ID = "1";
+export const TYPE_TWO_ID = "2";
+export const TYPE_THREE_ID = "3";
+export const DO_NOT_USE_TYPE_ID = "4";
 
-const types = [
-  {
-    _source: { id: 101, authorityId: AUTHORITY_ONE_ID, name: "typeOne" },
-  },
-  {
-    _source: { id: 102, authorityId: AUTHORITY_ONE_ID, name: "typetwo" },
-  },
-  {
-    _source: { id: 103, authorityId: AUTHORITY_TWO_ID, name: "typethree" },
-  },
-  {
-    _source: { id: 101, authorityId: AUTHORITY_ONE_ID, name: "subtypeOne", typeId: TYPE_ONE_ID },
-  },
-  {
-    _source: { id: 102, authorityId: AUTHORITY_ONE_ID, name: "subtypetwo", typeId: TYPE_TWO_ID },
-  },
-  {
-    _source: {
-      id: 103,
-      authorityId: AUTHORITY_TWO_ID,
-      name: "subtypethree",
-      typeId: TYPE_ONE_ID,
+export const medicaidTypes = [{
+    _source: { 
+      id: TYPE_ONE_ID, 
+      authorityId: MEDICAID_SPA_AUTHORITY_ID, 
+      name: "Type One" 
     },
   },
   {
-    _source: {
-      id: 104,
-      authorityId: AUTHORITY_TWO_ID,
-      name: "subtypethree",
-      typeId: TYPE_FOUR_ID,
+    _source: { 
+      id: TYPE_TWO_ID, 
+      authorityId: MEDICAID_SPA_AUTHORITY_ID, 
+      name: "Type Two" 
     },
-  },
+  }];
+
+export const chipTypes = [{
+    _source: { 
+      id: TYPE_THREE_ID, 
+      authorityId: CHIP_SPA_AUTHORITY_ID, 
+      name: "Type Three" 
+    },
+  }]
+
+export const types = [
+  ...medicaidTypes,
+  ...chipTypes,
   {
-    _source: {
-      id: 105,
-      authorityId: AUTHORITY_TWO_ID,
-      name: "subtypethree",
-      typeId: TYPE_THREE_ID,
+    _source: { 
+      id: DO_NOT_USE_TYPE_ID, 
+      authorityId: CHIP_SPA_AUTHORITY_ID, 
+      name: "Do Not Use Type Four" 
     },
   },
 ];
 
-export default types;
+export const medicaidSubtypes = [{
+    _source: { 
+      id: "4", 
+      authorityId: MEDICAID_SPA_AUTHORITY_ID, 
+      name: "Sub Type Four", 
+      typeId: TYPE_ONE_ID
+    },
+  },
+  {
+    _source: { 
+      id: "5", 
+      authorityId: MEDICAID_SPA_AUTHORITY_ID, 
+      name: "Sub Type Five", 
+      typeId: TYPE_TWO_ID
+    },
+  }]
+
+export const chipSubtypes = [{
+    _source: {
+      id: "6",
+      authorityId: CHIP_SPA_AUTHORITY_ID,
+      name: "Sub Type Six",
+      typeId: TYPE_THREE_ID,
+    },
+  },
+  {
+    _source: {
+      id: "7",
+      authorityId: CHIP_SPA_AUTHORITY_ID,
+      name: "Sub Type Seven",
+      typeId: TYPE_THREE_ID,
+    },
+  }]
+
+export const subtypes = [
+  ...medicaidSubtypes,
+  ...chipSubtypes,
+  {
+    _source: {
+      id: "8",
+      authorityId: CHIP_SPA_AUTHORITY_ID,
+      name: "Do Not Use Sub Type Eight",
+      typeId: DO_NOT_USE_TYPE_ID,
+    },
+  },
+];
