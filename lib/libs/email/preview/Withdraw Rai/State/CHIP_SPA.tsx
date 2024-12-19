@@ -1,6 +1,6 @@
-import { ChipSpaStateEmail } from "lib/libs/email/content/withdrawRai/emailTemplates";
-import { emailTemplateValue } from "lib/libs/email/mock-data/withdraw-rai";
-import { relatedEvent } from "../CMS/AppK";
+import { ChipSpaStateEmail } from "libs/email/content/withdrawRai/emailTemplates";
+import { emailTemplateValue } from "libs/email/mock-data/withdraw-rai";
+import { relatedEvent } from "./AppK";
 import * as attachments from "../../../mock-data/attachments";
 
 export default () => {

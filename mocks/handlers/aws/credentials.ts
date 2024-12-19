@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-import { ACCESS_KEY_ID, SECRET_KEY } from "../consts";
+import { ACCESS_KEY_ID, SECRET_KEY } from "../../consts";
 
 const generateSessionToken = (): string | null => {
   if (process.env.MOCK_USER_USERNAME) {
@@ -26,4 +26,4 @@ const defaultSecurityCredentialsHandler = http.get(/\/meta-data\/iam\/security-c
   });
 });
 
-export const defaultHandlers = [defaultApiTokenHandler, defaultSecurityCredentialsHandler];
+export const credentialHandlers = [defaultApiTokenHandler, defaultSecurityCredentialsHandler];
