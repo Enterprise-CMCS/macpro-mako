@@ -304,7 +304,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
       <div className="flex-1"></div>
       {isOpen && (
         <div className="w-full absolute top-[100px] sm:top-[85px] left-0 z-50">
-          <ul className="font-medium flex flex-col items-start p-4 md:p-0 mt-2 gap-4 rounded-b-lg bg-primary">
+          <ul className="font-medium flex flex-col items-start p-4 md:p-0 mt-2 -mx-4 gap-4 rounded-b-lg bg-primary">
             {links.map((link) => (
               <li key={link.link}>
                 <Link
