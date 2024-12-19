@@ -1,6 +1,6 @@
-import { WaiversEmailCMS } from "lib/libs/email/content/upload-subsequent-documents/emailTemplates/Waiver1915BCMS";
-import { emailTemplateValue } from "lib/libs/email/mock-data/upload-subsequent-documents";
-import * as attachments from "lib/libs/email/mock-data/attachments";
+import { WaiversEmailCMS } from "libs/email/content/upload-subsequent-documents/emailTemplates/Waiver1915BCMS";
+import { emailTemplateValue } from "libs/email/mock-data/upload-subsequent-documents";
+import * as attachments from "libs/email/mock-data/attachments";
 
 const Waiver1915bCMSEmail = () => {
   return (

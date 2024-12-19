@@ -1,7 +1,7 @@
 import { AppKStateEmail } from "../../../content/upload-subsequent-documents/emailTemplates";
 import { emailTemplateValue } from "../../../mock-data/new-submission";
 import * as attachments from "../../../mock-data/attachments";
-const AppKCMSEmailPreview = () => {
+const AppKStateEmailPreview = () => {
   return (
     <AppKStateEmail
       variables={{
@@ -21,4 +21,4 @@ const AppKCMSEmailPreview = () => {
   );
 };
 
-export default AppKCMSEmailPreview;
+export default AppKStateEmailPreview;
