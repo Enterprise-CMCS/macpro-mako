@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
 import AppK from "./AppK";
 import CHIP_SPA from "./CHIP_SPA";
@@ -6,14 +6,6 @@ import Medicaid_SPA from "./Medicaid_SPA";
 import Waiver_Capitated from "./Waiver_Capitated";
 
 describe("Respond To RAI CMS Email Snapshot Test", () => {
-  beforeEach(() => {
-    vi.useFakeTimers();
-    const now = new Date(2023, 0, 1);
-    vi.setSystemTime(now);
-  });
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
   it("renders a AppKCMSEmailPreview Preview Template", () => {
     const template = render(<AppK />);
 
