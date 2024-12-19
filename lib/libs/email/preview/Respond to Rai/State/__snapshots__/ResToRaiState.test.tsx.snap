@@ -363,9 +363,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a AppKStateEmailPrev
                         </tr>
                       </tbody>
                     </table>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                     >
@@ -380,9 +377,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a AppKStateEmailPrev
                       This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
                        Any other correspondence will be disregarded.
                     </p>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <table
                       align="center"
                       border="0"
@@ -829,9 +823,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a AppKStateEmailPrev
                       </tr>
                     </tbody>
                   </table>
-                  <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                  />
                   <p
                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                   >
@@ -846,9 +837,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a AppKStateEmailPrev
                     This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
                      Any other correspondence will be disregarded.
                   </p>
-                  <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                  />
                   <table
                     align="center"
                     border="0"
@@ -1352,9 +1340,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a ChipSPA Preview Te
                         </tr>
                       </tbody>
                     </table>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                     >
@@ -1369,9 +1354,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a ChipSPA Preview Te
                       This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
                        Any other correspondence will be disregarded.
                     </p>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <table
                       align="center"
                       border="0"
@@ -2648,9 +2630,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
                         </tr>
                       </tbody>
                     </table>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                     >
@@ -2665,9 +2644,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
                       This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
                        Any other correspondence will be disregarded.
                     </p>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <table
                       align="center"
                       border="0"
@@ -3492,9 +3468,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
                     <tbody>
                       <tr>
                         <td>
-                          <hr
-                            style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                          />
                           <table
                             align="center"
                             border="0"
@@ -3888,9 +3861,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
                   <tbody>
                     <tr>
                       <td>
-                        <hr
-                          style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                        />
                         <table
                           align="center"
                           border="0"
@@ -4348,9 +4318,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                         </tr>
                       </tbody>
                     </table>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                     >
@@ -4365,9 +4332,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                       This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
                        Any other correspondence will be disregarded.
                     </p>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <table
                       align="center"
                       border="0"
@@ -5192,9 +5156,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                     <tbody>
                       <tr>
                         <td>
-                          <hr
-                            style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                          />
                           <table
                             align="center"
                             border="0"
@@ -5594,9 +5555,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                         </tr>
                       </tbody>
                     </table>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                     >
@@ -5611,9 +5569,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                       This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
                        Any other correspondence will be disregarded.
                     </p>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <table
                       align="center"
                       border="0"
@@ -6060,9 +6015,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                       </tr>
                     </tbody>
                   </table>
-                  <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                  />
                   <p
                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                   >
@@ -6077,9 +6029,6 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                     This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
                      Any other correspondence will be disregarded.
                   </p>
-                  <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                  />
                   <table
                     align="center"
                     border="0"
