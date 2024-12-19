@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { UserRoles, opensearch } from "shared-types";
-import { getOsData, useOsSearch, useGetUser } from "@/api";
+import { getOsData, useGetUser, useOsSearch } from "@/api";
 import { useLzUrl } from "@/hooks";
-import { OsTab } from "./types";
-import { createSearchFilterable } from "../utils";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import { UserRoles, opensearch } from "shared-types";
+import { createSearchFilterable } from "../utils";
+import { OsTab } from "./types";
 
 export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
   spas: {
@@ -71,6 +71,7 @@ export const useOsData = () => {
   };
   useEffect(() => {
     onRequest(params.state);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.queryString]);
   return { data, isLoading, error, ...params };
 };
