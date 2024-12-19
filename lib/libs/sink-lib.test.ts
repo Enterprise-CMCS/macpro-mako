@@ -16,7 +16,11 @@ describe("bulkUpdateDataWrapper", () => {
 
     await bulkUpdateDataWrapper(DOCS, "main");
 
-    expect(mockBulkUpdateData).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, `${OPENSEARCH_INDEX_NAMESPACE}main`, DOCS);
+    expect(mockBulkUpdateData).toHaveBeenCalledWith(
+      OPENSEARCH_DOMAIN,
+      `${OPENSEARCH_INDEX_NAMESPACE}main`,
+      DOCS,
+    );
   });
 
   it("throws an Error when env vars are missing", async () => {

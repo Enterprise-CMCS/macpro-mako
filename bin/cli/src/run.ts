@@ -1,4 +1,5 @@
 import yargs from "yargs";
+
 import {
   deploy,
   destroy,
@@ -8,20 +9,12 @@ import {
   logs,
   openApp,
   openKibana,
-  test,
   ui,
   getCost,
-  watch,
   emails,
 } from "./commands";
 
-yargs
-  .fail((msg, err) => {
-    if (err) throw err;
-    if (msg) console.error(msg);
-    process.exit(1);
-  })
-  .command(watch)
+yargs(process.argv.slice(2))
   .command(deploy)
   .command(destroy)
   .command(docs)
@@ -30,11 +23,12 @@ yargs
   .command(logs)
   .command(openApp)
   .command(openKibana)
-  .command(test)
   .command(ui)
   .command(emails)
   .command(getCost)
   .strict()
   .scriptName("run")
   .demandCommand(1, "")
+  .showHelpOnFail(false, "Specify --help for available options")
+  .exitProcess(true)
   .parse();
