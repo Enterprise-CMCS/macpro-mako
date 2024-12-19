@@ -1,7 +1,7 @@
 import { emailTemplateValue } from "libs/email/mock-data/upload-subsequent-documents";
 import { MedSpaStateEmail } from "libs/email/content/upload-subsequent-documents/emailTemplates";
 import * as attachments from "libs/email/mock-data/attachments";
-const MedSpaStateEmailPreview = () => {
+const MedicaidSpaStateEmailPreview = () => {
   return (
     <MedSpaStateEmail
       variables={{
@@ -24,4 +24,4 @@ const MedSpaStateEmailPreview = () => {
   );
 };
 
-export default MedSpaStateEmailPreview;
+export default MedicaidSpaStateEmailPreview;

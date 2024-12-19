@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
 import AppKStateEmailPreview from "./AppK";
 import ChipSpaStateEmailPreview from "./CHIP_SPA";
-import MedSpaStateEmailPreview from "./MED_SPA";
+import MedicaidSpaStateEmailPreview from "./MED_SPA";
 import Waiver1915bStateEmail from "./Waiver1915b";
 
 describe("Upload Subsequent Document CMS Email Snapshot Test", () => {
@@ -17,7 +17,7 @@ describe("Upload Subsequent Document CMS Email Snapshot Test", () => {
     expect(template).toMatchSnapshot();
   });
   it("renders a Medicaid_SPA Preview Template", () => {
-    const template = render(<MedSpaStateEmailPreview />);
+    const template = render(<MedicaidSpaStateEmailPreview />);
 
     expect(template).toMatchSnapshot();
   });
