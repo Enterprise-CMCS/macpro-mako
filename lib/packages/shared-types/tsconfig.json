@@ -9,6 +9,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "verbatimModuleSyntax": false,
+    "noImplicitAny": false,
     "noEmit": true
   },
   "include": ["./**/*.ts"],
