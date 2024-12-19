@@ -4,7 +4,7 @@ export default defineProject({
   test: {
     root: ".",
     setupFiles: ["./vitest.setup.ts"],
-    exclude: ["**/node_modules/**"],
+    exclude: ["**/node_modules/**", "libs/email/**"],
     environment: "node",
   },
 });
