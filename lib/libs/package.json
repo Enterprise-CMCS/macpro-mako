@@ -23,5 +23,6 @@
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui"
-  }
+  },
+  "packageManager": "bun@1.1.40"
 }
