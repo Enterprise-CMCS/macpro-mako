@@ -170,12 +170,12 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         console.log(`mako: ${makoDocumentTimestamp}`);
         console.log(`seatool: ${seatoolDocument.changed_date}`);
 
-        const isNewerOrUndefined =
+        const isOlderThanMako =
           seatoolDocument.changed_date &&
           makoDocumentTimestamp &&
-          isBefore(makoDocumentTimestamp, seatoolDocument.changed_date);
+          isBefore(seatoolDocument.changed_date, makoDocumentTimestamp);
 
-        if (isNewerOrUndefined) {
+        if (isOlderThanMako) {
           console.log("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
           return collection;
         }
@@ -225,7 +225,7 @@ export const syncSeatoolRecordDatesFromKafkaWithMako = async (
       }
 
       const payloadWithUpdatedDate: { payload?: { after?: SeatoolRecordWithUpdatedDate | null } } =
-        JSON.parse(decodeBase64WithUtf8(value));
+        decodeBase64WithUtf8(value) as any;
 
       // .after could be `null` or `undefined`
       if (!payloadWithUpdatedDate?.payload?.after) {

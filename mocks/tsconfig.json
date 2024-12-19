@@ -13,11 +13,10 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "noImplicitAny": false,
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "declaration": true
-  },
-  "include": ["."],
-  "exclude": ["node_modules"]
+    "declaration": false // idk
+  }
 }

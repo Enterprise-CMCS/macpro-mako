@@ -1,10 +1,14 @@
 import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
+import { EventEmitter } from "events";
+
+EventEmitter.defaultMaxListeners = 100;
 
 export default defineConfig({
   test: {
     globals: true,
-    environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
+    environment: "jsdom",
+    setupFiles: ["./vitest.setup.ts"],
     coverage: {
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),
@@ -17,14 +21,11 @@ export default defineConfig({
         ".cdk",
         "docs/**",
         "lib/libs/webforms/**",
-        "react-app/src/features/webforms/**",
-        "TestWrapper.tsx",
+        "react-app/**",
+        "**/*/TestWrapper.tsx",
         "lib/stacks/**",
-        "lib/packages/eslint-config-custom/**",
-        "lib/packages/eslint-config-custom-server/**",
         "lib/local-aspects",
         "lib/local-constructs/**",
-        "lib/libs/email/content/**",
         "bin/cli/**",
         "bin/app.ts",
         "vitest.workspace.ts",
