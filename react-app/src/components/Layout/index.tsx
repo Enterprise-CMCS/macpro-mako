@@ -154,7 +154,7 @@ export const Layout = () => {
     <div className="min-h-full flex flex-col">
       <ScrollToTop />
       <UserPrompt />
-      {user?.user && <MMDLAlertBanner />}
+      {user?.user && !isFaqPage && <MMDLAlertBanner />}
       <UsaBanner isUserMissingRole={user?.user && customUserRoles === undefined} />
       <nav data-testid="nav-banner-d" className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
