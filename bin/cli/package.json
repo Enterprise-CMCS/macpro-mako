@@ -2,7 +2,7 @@
   "name": "cli",
   "version": "0.0.0",
   "scripts": {
-    "build:cli": "tsc"
+    "build": "tsc src/run.ts"
   },
   "private": true,
   "dependencies": {

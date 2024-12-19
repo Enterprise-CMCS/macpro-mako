@@ -5,10 +5,6 @@
     "lint": {
       "cache": false
     },
-    "build:cli": {
-      "inputs": ["bin/cli/"],
-      "cache": false
-    },
     "e2e": {
       "cache": false,
       "env": [

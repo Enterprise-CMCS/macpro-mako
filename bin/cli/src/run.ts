@@ -15,12 +15,7 @@ import {
   emails,
 } from "./commands";
 
-yargs
-  .fail((msg, err) => {
-    if (err) throw err;
-    if (msg) console.error(msg);
-    process.exit(1);
-  })
+yargs(process.argv.slice(2))
   .command(watch)
   .command(deploy)
   .command(destroy)
@@ -37,4 +32,6 @@ yargs
   .strict()
   .scriptName("run")
   .demandCommand(1, "")
+  .showHelpOnFail(false, "Specify --help for available options")
+  .exitProcess(true)
   .parse();

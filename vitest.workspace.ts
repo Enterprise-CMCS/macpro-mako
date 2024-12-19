@@ -4,26 +4,30 @@ import react from "@vitejs/plugin-react-swc";
 
 export default defineWorkspace([
   {
+    root: "./react-app",
+    extends: "./react-app/vite.config.ts",
+    plugins: [react()],
+    resolve: {
+      alias: {
+        "@": join(__dirname, "react-app/src"),
+      },
+    },
     test: {
       name: "react-app",
-      root: "./react-app",
       environment: "jsdom",
       setupFiles: ["./vitest.setup.ts"],
       include: ["**/*.test.{ts,tsx}"],
       globals: true,
-      alias: {
-        "@": join(__dirname, "react-app/src"),
-      },
       deps: {
         inline: ["vitest-canvas-mock"],
       },
     },
-    plugins: [react()],
   },
   {
+    root: "./lib",
+    extends: "./lib/vite.config.ts",
     test: {
       name: "lib",
-      root: "./lib",
       environment: "node",
       setupFiles: ["./vitest.setup.ts"],
       include: ["**/*.test.{ts,tsx}"],
@@ -31,9 +35,10 @@ export default defineWorkspace([
     },
   },
   {
+    root: "./lib/libs/email",
+    extends: "./lib/libs/email/vite.config.ts",
     test: {
       name: "email",
-      root: "./lib/libs/email",
       environment: "node",
       setupFiles: ["./vitest.setup.ts"],
       include: ["**/*.test.{ts,tsx}"],

@@ -1,8 +1,7 @@
 {
-  "name": "y",
+  "name": "lambda",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {},
   "author": "",
   "license": "ISC",
@@ -14,12 +13,10 @@
     "@aws-sdk/s3-request-presigner": "^3.600.0",
     "base-64": "^1.0.0",
     "cfn-response-async": "^1.0.0",
-    "mssql": "^11.0.0",
-    "uuid": "^10.0.0"
+    "mssql": "^11.0.0"
   },
   "devDependencies": {
     "@types/base-64": "^1.0.2",
-    "@types/mssql": "^9.1.5",
-    "@types/uuid": "^10.0.0"
+    "@types/mssql": "^9.1.5"
   }
 }

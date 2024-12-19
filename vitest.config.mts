@@ -25,8 +25,6 @@ export default defineConfig({
         "react-app/**",
         "**/*/TestWrapper.tsx",
         "lib/stacks/**",
-        "lib/packages/eslint-config-custom/**",
-        "lib/packages/eslint-config-custom-server/**",
         "lib/local-aspects",
         "lib/local-constructs/**",
         "bin/cli/**",
