@@ -34,7 +34,7 @@ describe("getSearchData Handler", () => {
 
   it("should handle errors during processing", async () => {
     const event = {
-      body: JSON.stringify({ query: { match_all: "throw-error" } }),
+      body: JSON.stringify({ query: { match_all: { id: "throw-error" } } }),
       pathParameters: { index: "main" } as APIGatewayProxyEventPathParameters,
       requestContext: getRequestContext(makoStateSubmitter),
     } as APIGatewayEvent;
