@@ -8,7 +8,7 @@ import {
   seatoolSchema,
 } from "../../..";
 
-import { Authority, SEATOOL_AUTHORITIES } from "shared-types";
+import { SEATOOL_AUTHORITIES } from "shared-types";
 
 function getLeadAnalyst(eventData: SeaTool) {
   let leadAnalystOfficerId: null | number = null;
@@ -97,7 +97,7 @@ const isInSecondClock = (
   authority: any,
 ) => {
   if (
-    authority != Authority.CHIP_SPA && // if it's not a chip
+    authority !== "CHIP SPA" && // if it's not a chip
     [
       SEATOOL_STATUS.PENDING,
       SEATOOL_STATUS.PENDING_CONCURRENCE,

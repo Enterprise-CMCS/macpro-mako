@@ -13,6 +13,11 @@ export const RespondToRaiMedicaid = () => {
       attachments={{
         faqLink: "/faq/medicaid-spa-rai-attachments",
       }}
+      promptPreSubmission={{
+        acceptButtonText: "Yes, Submit",
+        header: "Do you want to submit your official formal RAI response?",
+        body: "By clicking Yes, Submit, you are submitting your official formal RAI Response to start the 90 day clock review process.",
+      }}
       documentPollerArgs={{
         property: "id",
         documentChecker: (check) => check.recordExists,
@@ -43,6 +48,11 @@ export const RespondToRaiWaiver = () => {
       attachments={{
         faqLink: "/faq/waiverb-rai-attachments",
       }}
+      promptPreSubmission={{
+        acceptButtonText: "Yes, Submit",
+        header: "Do you want to submit your official formal RAI response?",
+        body: "By clicking Yes, Submit, you are submitting your official formal RAI Response to start the 90 day clock review process.",
+      }}
       documentPollerArgs={{
         property: "id",
         documentChecker: (check) => check.recordExists,
@@ -70,6 +80,11 @@ export const RespondToRaiChip = () => {
       defaultValues={{ id }}
       attachments={{
         faqLink: "/faq/chip-spa-rai-attachments",
+      }}
+      promptPreSubmission={{
+        acceptButtonText: "Yes, Submit",
+        header: "Do you want to submit your official formal RAI response?",
+        body: "By clicking Yes, Submit, you are submitting your official formal RAI Response to restart the SPA review process and a new 90th day will be identified.",
       }}
       documentPollerArgs={{
         property: "id",
