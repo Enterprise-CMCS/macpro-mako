@@ -3,11 +3,18 @@
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "base-64": "^1.0.0",
+    "eslint": "^8.38.0",
+    "eslint-config-custom-server": "*",
+    "zod": "^3.22.3"
+  },
   "scripts": {
     "test": "vitest",
-    "test:coverage": "vitest --coverage",
+    "test:coverage": "vitest run --coverage.enabled true",
     "test:ui": "vitest --ui"
   },
-  "dependencies": {}
+  "dependencies": {
+    "s3-url-parser": "^1.0.3"
+  }
 }
