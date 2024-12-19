@@ -5,7 +5,7 @@ import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import { fixupPluginRules, includeIgnoreFile } from "@eslint/compat";
 import { fileURLToPath } from "url";
-import path from "path";
+import * as path from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

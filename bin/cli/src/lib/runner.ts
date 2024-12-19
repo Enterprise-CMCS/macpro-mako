@@ -1,5 +1,5 @@
 import { spawn, SpawnOptions } from "child_process";
-import path from "path";
+import * as path from "path";
 
 export async function runCommand(
   command: string,

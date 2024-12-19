@@ -2,7 +2,7 @@ import { MimeType, fileTypeFromFile } from "file-type";
 import { lookup } from "mime-types";
 import * as constants from "./constants";
 import fs from "fs";
-import path from "path";
+import * as path from "path";
 import readline from "readline";
 import pino from "pino";
 const logger = pino();
@@ -37,10 +37,7 @@ export async function checkFileExt(pathToFile: string): Promise<string> {
     logger.info(`File mimetype from contents:   ${mimeTypeFromContents}`);
 
     // Check if the mimes are equivalent
-    const same = areMimeTypesEquivalent(
-      mimeTypeFromExtension,
-      mimeTypeFromContents,
-    );
+    const same = areMimeTypesEquivalent(mimeTypeFromExtension, mimeTypeFromContents);
     // Error out if we can't determine equivalence
     if (!same) {
       logger.info(
@@ -61,9 +58,7 @@ function isAllowedMime(mime: string): boolean {
   return FILE_TYPES.some((fileType) => fileType.mime === mime);
 }
 
-async function getFileTypeFromContents(
-  filePath: string,
-): Promise<MimeType | false> {
+async function getFileTypeFromContents(filePath: string): Promise<MimeType | false> {
   try {
     const fileBuffer = await fs.promises.readFile(filePath);
 
@@ -90,9 +85,7 @@ async function getFileTypeFromContents(
       }
     }
     if (!type?.mime) {
-      logger.info(
-        `getFileTypeFromContents: File determined to be mime:${type?.mime}`,
-      );
+      logger.info(`getFileTypeFromContents: File determined to be mime:${type?.mime}`);
       return false;
     }
     logger.info(

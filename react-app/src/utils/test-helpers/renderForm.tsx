@@ -19,18 +19,12 @@ const createTestQueryClient = () =>
     },
   });
 
-export const queryClientWrapper = ({ children }: { children: ReactElement }) => (
-  <QueryClientProvider client={createTestQueryClient()}>{children}</QueryClientProvider>
-);
-
 export const renderWithQueryClient = (element: ReactElement) =>
-  render(element, {
-    wrapper: ({ children }) => (
-      <QueryClientProvider client={createTestQueryClient()}>
-        <MemoryRouter>{children}</MemoryRouter>,
-      </QueryClientProvider>
-    ),
-  });
+  render(
+    <QueryClientProvider client={createTestQueryClient()}>
+      <MemoryRouter>{element}</MemoryRouter>
+    </QueryClientProvider>
+  );
 
 export const renderWithQueryClientAndMemoryRouter = (
   element: ReactElement,

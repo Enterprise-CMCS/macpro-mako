@@ -1,4 +1,5 @@
 import yargs from "yargs";
+
 import {
   deploy,
   destroy,
@@ -8,15 +9,12 @@ import {
   logs,
   openApp,
   openKibana,
-  test,
   ui,
   getCost,
-  watch,
   emails,
 } from "./commands";
 
 yargs(process.argv.slice(2))
-  .command(watch)
   .command(deploy)
   .command(destroy)
   .command(docs)
@@ -25,7 +23,6 @@ yargs(process.argv.slice(2))
   .command(logs)
   .command(openApp)
   .command(openKibana)
-  .command(test)
   .command(ui)
   .command(emails)
   .command(getCost)

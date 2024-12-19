@@ -17,7 +17,7 @@
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
     "typeRoots": ["./node_modules/@types", "@types", "vitest/globals"],
-    "moduleResolution": "bundler",
+    "moduleResolution": "Node",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": false,
     "noEmit": true,
@@ -29,6 +29,6 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", "cdk.out", ".cdk"],
+  "exclude": ["node_modules", "cdk.out", ".cdk", "node_modules/bun-types"],
   "include": ["lib/**/*", "react-app/**/*", "test/**/*", "mocks/**/*", "bin/**/*"]
 }

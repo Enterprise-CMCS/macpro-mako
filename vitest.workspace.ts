@@ -5,7 +5,7 @@ import react from "@vitejs/plugin-react-swc";
 export default defineWorkspace([
   {
     root: "./react-app",
-    extends: "./react-app/vite.config.ts",
+    extends: "./react-app/vite.config.mts",
     plugins: [react()],
     resolve: {
       alias: {
@@ -25,7 +25,6 @@ export default defineWorkspace([
   },
   {
     root: "./lib",
-    extends: "./lib/vite.config.ts",
     test: {
       name: "lib",
       environment: "node",
@@ -36,7 +35,6 @@ export default defineWorkspace([
   },
   {
     root: "./lib/libs/email",
-    extends: "./lib/libs/email/vite.config.ts",
     test: {
       name: "email",
       environment: "node",
