@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render } from "@testing-library/react";
 
 import AppKCMSEmailPreview from "./AppK";
@@ -8,6 +8,15 @@ import TempExtCMSPreview from "./Temp_Extension";
 import Waiver1915bCMSEmailPreview from "./Waiver_Capitated";
 
 describe("Initial Submission CMS Email Snapshot Test", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    const now = new Date(2023, 0, 1);
+    vi.setSystemTime(now);
+  });
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("renders a AppkCMSEmail Preview Template", () => {
     const template = render(<AppKCMSEmailPreview />);
 

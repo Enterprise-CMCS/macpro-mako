@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render } from "@testing-library/react";
 
 import AppKCMSEmailPreview from "./AppK";
@@ -9,6 +9,14 @@ import Waiver1915bStateEmailPreview from "./Waiver_Capitated";
 import Waiver1915bContractingStateEmailPreview from "./Waiver_Contracting";
 
 describe("Initial Submission State Email Snapshot Test", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    const now = new Date(2023, 0, 1);
+    vi.setSystemTime(now);
+  });
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
   it("renders a AppKCMSEmailPreview Preview Template", () => {
     const template = render(<AppKCMSEmailPreview />);
 
