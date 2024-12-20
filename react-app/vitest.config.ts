@@ -1,31 +1,55 @@
-import { join } from "path";
-import { configDefaults, defineConfig } from "vitest/config";
-import { EventEmitter } from "events";
+import { defineConfig, loadEnv } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import { fileURLToPath } from "url";
+import { VitePluginRadar } from "vite-plugin-radar";
 
-EventEmitter.defaultMaxListeners = 100;
+// https://vitejs.dev/config/
+export default defineConfig(({ mode }) => {
+  // Load environment variables based on the current mode
+  const env = loadEnv(mode, process.cwd());
+  console.log({ env });
 
-export default defineConfig({
-  test: {
-    globals: true,
-    environment: "jsdom",
-    setupFiles: ["./vitest.setup.ts"],
-    coverage: {
-      provider: "istanbul",
-      reportsDirectory: join(__dirname, "coverage"),
-      reporter: ["html", "text", "json-summary", "json", "lcovonly"],
-      reportOnFailure: true,
-      exclude: [
-        ...configDefaults.exclude,
-        "src/utils/TestWrapper.tsx",
-        "**/*.config.{ts,js,cjs}",
-        "**/*.js",
-        "**/*.json",
-        "public/**",
-        "src/assets/**",
-        "node_modules",
-        ".env*",
-        ".gitignore",
-      ],
+  return {
+    optimizeDeps: {
+      exclude: ["@aws-sdk/client-sts", "@smithy/shared-ini-file-loader"],
     },
-  },
+    plugins: [
+      react(),
+      VitePluginRadar({
+        enableDev: true,
+        analytics: [
+          {
+            id: env.VITE_GOOGLE_ANALYTICS_GTAG,
+            disable: env.VITE_GOOGLE_ANALYTICS_DISABLE === "true",
+          },
+        ],
+      }),
+    ],
+    server: {
+      port: 5000,
+    },
+    test: {
+      root: ".",
+      setupFiles: "./vitest.setup.ts",
+      exclude: ["**/node_modules/**"],
+      environment: "jsdom",
+    },
+    resolve: {
+      alias: {
+        "@": fileURLToPath(new URL("./src", import.meta.url)),
+      },
+    },
+    root: "./",
+    publicDir: "src/assets",
+    build: {
+      outDir: "dist",
+      minify: env.VITE_NODE_ENV === "production",
+      rollupOptions: {
+        treeshake: true,
+      },
+    },
+    define: {
+      __IS_FRONTEND__: "true",
+    },
+  };
 });

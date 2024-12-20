@@ -12,16 +12,9 @@ import {
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
 
-declare module "vitest" {
-  interface TestContext {
-    IS_REACT_ACT_ENVIRONMENT: boolean;
-  }
-}
-
-(global as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
-
-// extends Vitest's expect method with methods from react-testing-library
-expect.extend(matchers);
+// TODO to mock
+// [MSW] Warning: intercepted a request without a matching request handler:
+//   • GET http://example.com/file1.md
 
 Amplify.configure({
   API: API_CONFIG,
@@ -33,6 +26,9 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 }));
+
+// extends Vitest's expect method with methods from react-testing-library
+expect.extend(matchers);
 
 class MockPointerEvent extends Event {
   button: number;
@@ -56,10 +52,6 @@ vi.spyOn(Auth, "userAttributes").mockImplementation(mockUserAttributes);
 vi.spyOn(Auth, "signOut").mockImplementation(async () => {
   setMockUsername(null);
 });
-
-// Mock Date.now() to return a fixed timestamp for tests
-const FIXED_TIMESTAMP = new Date("2024-12-19T12:00:00Z").getTime();
-vi.spyOn(Date, "now").mockImplementation(() => FIXED_TIMESTAMP);
 
 // Add this to remove all the expected errors in console when running unit tests.
 beforeAll(() => {

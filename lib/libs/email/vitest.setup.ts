@@ -5,7 +5,8 @@ beforeAll(() => {});
 beforeEach(() => {
   process.env.isDev = "true";
   vi.useFakeTimers();
-  const now = new Date(2023, 0, 1);
+  // Set to January 1, 2023 at 9:30am EST
+  const now = new Date('2023-01-01T14:30:00.000Z'); // 9:30am EST = 14:30 UTC
   vi.setSystemTime(now);
 });
 
