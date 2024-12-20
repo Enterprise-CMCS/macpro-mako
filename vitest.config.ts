@@ -4,7 +4,10 @@ import { configDefaults, defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     globals: true,
-    environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
+    root: ".",
+    setupFiles: ["./vitest.setup.ts"],
+    include: ["**/*.test.ts", "**/*.test.tsx"],
+    environment: "node",
     coverage: {
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),
