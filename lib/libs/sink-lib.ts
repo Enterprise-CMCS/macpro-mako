@@ -97,14 +97,17 @@ export function getDomainAndNamespace(baseIndex?: BaseIndex) {
   if (domain === undefined) {
     throw new Error("osDomain is undefined in environment variables");
   }
-
   const indexNamespace = process.env.indexNamespace;
+  const index = `${indexNamespace}${baseIndex}`;
 
-  if (indexNamespace === undefined) {
-    throw new Error("indexName is undefined in environment variables");
+  if (indexNamespace !== undefined) {
+    console.log(
+      "you are in an ephemeral environment and your record will be upserted to the index: ",
+      index,
+    );
   }
 
-  return { index: baseIndex ? `${indexNamespace}${baseIndex}` : indexNamespace, domain };
+  return { index, domain };
 }
 
 export async function bulkUpdateDataWrapper(
