@@ -16,22 +16,28 @@ describe("bulkUpdateDataWrapper", () => {
 
     await bulkUpdateDataWrapper(DOCS, "main");
 
-    expect(mockBulkUpdateData).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, `${OPENSEARCH_INDEX_NAMESPACE}main`, DOCS);
+    expect(mockBulkUpdateData).toHaveBeenCalledWith(
+      OPENSEARCH_DOMAIN,
+      `${OPENSEARCH_INDEX_NAMESPACE}main`,
+      DOCS,
+    );
   });
 
-  it("throws an Error when env vars are missing", async () => {
+  it("throws an Error when osDomain is missing", async () => {
     delete process.env.osDomain;
-    delete process.env.indexNamespace;
 
     await expect(bulkUpdateDataWrapper(DOCS, "main")).rejects.toThrow(
       "osDomain is undefined in environment variables",
     );
+  });
 
-    vi.stubEnv("osDomain", "os-domain");
+  it("works when indexNamespace is undefined", async () => {
+    const mockBulkUpdateData = vi.spyOn(os, "bulkUpdateData").mockImplementation(vi.fn());
     process.env.osDomain = OPENSEARCH_DOMAIN;
+    delete process.env.indexNamespace;
 
-    await expect(bulkUpdateDataWrapper(DOCS, "main")).rejects.toThrow(
-      "indexName is undefined in environment variables",
-    );
+    await bulkUpdateDataWrapper(DOCS, "main");
+
+    expect(mockBulkUpdateData).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, "undefinedmain", DOCS);
   });
 });

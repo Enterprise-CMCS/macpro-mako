@@ -5,7 +5,7 @@ beforeAll(() => {});
 beforeEach(() => {
   process.env.isDev = "true";
   vi.useFakeTimers();
-  const now = new Date(2023, 0, 1);
+  const now = new Date(1672531200000);
   vi.setSystemTime(now);
 });
 

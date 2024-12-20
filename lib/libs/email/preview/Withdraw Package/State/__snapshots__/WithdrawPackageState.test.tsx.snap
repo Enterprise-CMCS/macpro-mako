@@ -296,9 +296,6 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Appk Preview Tem
                       This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
                        Any other correspondence will be disregarded.
                     </p>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <table
                       align="center"
                       border="0"
@@ -367,7 +364,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Appk Preview Tem
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
@@ -678,9 +675,6 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Appk Preview Tem
                     This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
                      Any other correspondence will be disregarded.
                   </p>
-                  <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                  />
                   <table
                     align="center"
                     border="0"
@@ -749,7 +743,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Appk Preview Tem
                                   style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                 >
                                   © 
-                                  2023
+                                  2022
                                    | 7500 Security Boulevard, Baltimore, MD 21244
                                 </p>
                               </td>
@@ -1117,9 +1111,6 @@ exports[`Withdraw Package State Email Snapshot Test > renders a ChipSPA Preview 
                       This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
                        Any other correspondence will be disregarded.
                     </p>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <table
                       align="center"
                       border="0"
@@ -1188,7 +1179,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a ChipSPA Preview 
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
@@ -1492,9 +1483,6 @@ exports[`Withdraw Package State Email Snapshot Test > renders a ChipSPA Preview 
                         </tr>
                       </tbody>
                     </table>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <table
                       align="center"
                       border="0"
@@ -1563,7 +1551,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a ChipSPA Preview 
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
@@ -1868,9 +1856,6 @@ exports[`Withdraw Package State Email Snapshot Test > renders a ChipSPA Preview 
                       </tr>
                     </tbody>
                   </table>
-                  <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                  />
                   <table
                     align="center"
                     border="0"
@@ -1939,7 +1924,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a ChipSPA Preview 
                                   style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                 >
                                   © 
-                                  2023
+                                  2022
                                    | 7500 Security Boulevard, Baltimore, MD 21244
                                 </p>
                               </td>
@@ -2307,9 +2292,6 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Medicaid_SPA Pre
                       This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
                        Any other correspondence will be disregarded.
                     </p>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <table
                       align="center"
                       border="0"
@@ -2378,7 +2360,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Medicaid_SPA Pre
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
@@ -2682,9 +2664,6 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Medicaid_SPA Pre
                         </tr>
                       </tbody>
                     </table>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <table
                       align="center"
                       border="0"
@@ -2753,7 +2732,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Medicaid_SPA Pre
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
@@ -3057,9 +3036,6 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Medicaid_SPA Pre
                         </tr>
                       </tbody>
                     </table>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <table
                       align="center"
                       border="0"
@@ -3128,7 +3104,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Medicaid_SPA Pre
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
@@ -3433,9 +3409,6 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Medicaid_SPA Pre
                       </tr>
                     </tbody>
                   </table>
-                  <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                  />
                   <table
                     align="center"
                     border="0"
@@ -3504,7 +3477,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Medicaid_SPA Pre
                                   style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                 >
                                   © 
-                                  2023
+                                  2022
                                    | 7500 Security Boulevard, Baltimore, MD 21244
                                 </p>
                               </td>
@@ -3872,9 +3845,6 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Waiver Capitated
                       This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
                        Any other correspondence will be disregarded.
                     </p>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <table
                       align="center"
                       border="0"
@@ -3943,7 +3913,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Waiver Capitated
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
@@ -4247,9 +4217,6 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Waiver Capitated
                         </tr>
                       </tbody>
                     </table>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <table
                       align="center"
                       border="0"
@@ -4318,7 +4285,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Waiver Capitated
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
@@ -4622,9 +4589,6 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Waiver Capitated
                         </tr>
                       </tbody>
                     </table>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <table
                       align="center"
                       border="0"
@@ -4693,7 +4657,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Waiver Capitated
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
@@ -5003,9 +4967,6 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Waiver Capitated
                       This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
                        Any other correspondence will be disregarded.
                     </p>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
                     <table
                       align="center"
                       border="0"
@@ -5074,7 +5035,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Waiver Capitated
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
@@ -5385,9 +5346,6 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Waiver Capitated
                     This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
                      Any other correspondence will be disregarded.
                   </p>
-                  <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                  />
                   <table
                     align="center"
                     border="0"
@@ -5456,7 +5414,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Waiver Capitated
                                   style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                 >
                                   © 
-                                  2023
+                                  2022
                                    | 7500 Security Boulevard, Baltimore, MD 21244
                                 </p>
                               </td>

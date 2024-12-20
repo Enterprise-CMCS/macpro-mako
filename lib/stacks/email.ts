@@ -222,35 +222,42 @@ export class Email extends cdk.NestedStack {
 
     alarm.addAlarmAction(new cdk.aws_cloudwatch_actions.SnsAction(alarmTopic));
 
-    new CfnEventSourceMapping(this, "SinkSESTrigger", {
-      batchSize: 1,
-      enabled: true,
-      selfManagedEventSource: {
-        endpoints: {
-          kafkaBootstrapServers: brokerString.split(","),
+    // Create separate event source mappings for each topic
+    const topics = [
+      `${topicNamespace}aws.onemac.migration.cdc`,
+      "aws.ksqldb.seatool.agg.State_Plan",
+    ];
+
+    topics.forEach((topic, index) => {
+      new CfnEventSourceMapping(this, `SinkSESTrigger${index + 1}`, {
+        batchSize: 1,
+        enabled: true,
+        selfManagedEventSource: {
+          endpoints: {
+            kafkaBootstrapServers: brokerString.split(","),
+          },
         },
-      },
-      functionName: processEmailsLambda.functionName,
-      sourceAccessConfigurations: [
-        ...privateSubnets.map((subnet) => ({
-          type: "VPC_SUBNET",
-          uri: subnet.subnetId,
-        })),
-        {
-          type: "VPC_SECURITY_GROUP",
-          uri: `security_group:${lambdaSecurityGroup.securityGroupId}`,
+        functionName: processEmailsLambda.functionName,
+        sourceAccessConfigurations: [
+          ...privateSubnets.map((subnet) => ({
+            type: "VPC_SUBNET",
+            uri: subnet.subnetId,
+          })),
+          {
+            type: "VPC_SECURITY_GROUP",
+            uri: `security_group:${lambdaSecurityGroup.securityGroupId}`,
+          },
+        ],
+        startingPosition: "LATEST",
+        topics: [topic],
+        destinationConfig: {
+          onFailure: {
+            destination: dlq.queueArn,
+          },
         },
-      ],
-      startingPosition: "LATEST",
-      topics: [`${topicNamespace}aws.onemac.migration.cdc`],
-      destinationConfig: {
-        onFailure: {
-          destination: dlq.queueArn,
-        },
-      },
+      });
     });
 
-    // Add CloudWatch alarms
     new cdk.aws_cloudwatch.Alarm(this, "EmailProcessingErrors", {
       metric: processEmailsLambda.metricErrors(),
       threshold: 1,
