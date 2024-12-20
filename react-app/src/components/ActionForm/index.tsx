@@ -152,11 +152,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       try {
         await mutateAsync(formData);
       } catch (error) {
-        throw Error(
-          `Error submitting form: ${
-            error?.message || error
-          }`,
-        );
+        throw Error(`Error submitting form: ${error?.message || error}`);
       }
 
       const { documentChecker, property } = documentPollerArgs;
@@ -168,9 +164,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         const poller = documentPoller(documentPollerId, documentChecker);
         await poller.startPollingData();
       } catch (error) {
-        const message = `${
-          error?.message || error
-        }`;
+        const message = `${error?.message || error}`;
         throw Error(message);
       }
 
@@ -184,7 +178,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           ...bannerPostSubmission,
           pathnameToDisplayOn: formOrigins.pathname,
         });
-      }, 50);
+      }, 1000);
     } catch (error) {
       console.error(error);
       banner({

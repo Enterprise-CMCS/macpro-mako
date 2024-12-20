@@ -97,8 +97,8 @@ export const WithdrawPackageAction = () => {
         documentChecker: (check) => check.recordExists,
       }}
       bannerPostSubmission={{
-        header: "Package withdrawn",
-        body: `The package ${id} has been withdrawn.`,
+        header: "Withdraw package request has been submitted",
+        body: `If CMS needs any additional information, they will follow up by email.`,
         variant: "success",
       }}
       breadcrumbText="Withdraw Package"
