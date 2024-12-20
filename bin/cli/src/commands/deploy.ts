@@ -1,5 +1,5 @@
 import { Argv } from "yargs";
-import { checkIfAuthenticated, runCommand, project, region, writeUiEnvFile } from "../lib/";
+import { checkIfAuthenticated, runCommand, project, region, writeUiEnvFile } from "../lib";
 import * as path from "path";
 import { execSync } from "child_process";
 import { CloudFrontClient, CreateInvalidationCommand } from "@aws-sdk/client-cloudfront";

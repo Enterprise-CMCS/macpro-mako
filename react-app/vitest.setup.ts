@@ -12,9 +12,16 @@ import {
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
 
-// TODO to mock
-// [MSW] Warning: intercepted a request without a matching request handler:
-//   • GET http://example.com/file1.md
+declare module "vitest" {
+  interface TestContext {
+    IS_REACT_ACT_ENVIRONMENT: boolean;
+  }
+}
+
+(global as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+
+// extends Vitest's expect method with methods from react-testing-library
+expect.extend(matchers);
 
 Amplify.configure({
   API: API_CONFIG,
@@ -26,9 +33,6 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 }));
-
-// extends Vitest's expect method with methods from react-testing-library
-expect.extend(matchers);
 
 class MockPointerEvent extends Event {
   button: number;

@@ -12,8 +12,8 @@ vi.mock("aws-sdk/clients/sqs", () => {
   };
 });
 
-vi.mock("../processEmails", async () => {
-  const actual = await vi.importActual("../processEmails");
+vi.mock("./processEmails", async () => {
+  const actual = await vi.importActual("./processEmails");
   return {
     ...actual,
     // If needed, mock internal functions
@@ -53,7 +53,7 @@ describe("processEmails handler", () => {
   });
 });
 
-vi.mock("../sinkMainProcessors", () => {
+vi.mock("./sinkMainProcessors", () => {
   return {
     insertOneMacRecordsFromKafkaIntoMako: vi.fn(() => Promise.resolve()),
     insertNewSeatoolRecordsFromKafkaIntoMako: vi.fn(() => Promise.resolve()),
