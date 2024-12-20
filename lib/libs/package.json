@@ -1,5 +1,5 @@
 {
-  "name": "libs",
+  "name": "emails",
   "version": "0.0.0",
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.350.0",
@@ -12,6 +12,8 @@
     "kafkajs": "^2.2.4",
     "lodash": "^4.17.21",
     "pino": "^9.2.0",
+    "react-email": "^3.0.1",
+    "@react-email/components": "0.0.25",
     "shared-types": "*",
     "shared-utils": "*"
   },
@@ -21,9 +23,10 @@
     "vitest": "2.0.5"
   },
   "scripts": {
-    "email-dev": "email dev --dir email/preview",
+    "email-dev": "email dev --dir preview",
     "test": "vitest",
     "test:coverage": "vitest run --coverage.enabled true",
     "test:ui": "vitest --ui"
-  }
+  },
+  "packageManager": "bun@1.1.20"
 }

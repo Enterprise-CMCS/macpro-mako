@@ -69,6 +69,6 @@ describe("sinkMain handler", () => {
   it("throws error with invalid topic partition", async () => {
     await expect(
       handler(createKafkaEvent({ "invalid-topic-partition": [] }), expect.anything(), vi.fn()),
-    ).rejects.toThrowError("topic (invalid-topic-partition) is invalid");
+    ).rejects.toThrowError("Unsupported topic: invalid");
   });
 });

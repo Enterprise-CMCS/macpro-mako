@@ -90,13 +90,14 @@ const prettyPrintJsonInObject = (obj: any): any => {
 export function getDomainAndNamespace<T extends BaseIndex>(
   baseIndex: T,
 ): { domain: string; index: `${string}${T}` };
-export function getDomainAndNamespace(): { domain: string; index: string };
+
 export function getDomainAndNamespace(baseIndex?: BaseIndex) {
   const domain = process.env.osDomain;
 
   if (domain === undefined) {
     throw new Error("osDomain is undefined in environment variables");
   }
+
   const indexNamespace = process.env.indexNamespace;
   const index = `${indexNamespace}${baseIndex}`;
 

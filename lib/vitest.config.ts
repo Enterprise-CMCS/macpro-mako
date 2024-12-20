@@ -5,7 +5,6 @@ export default defineProject({
     root: ".",
     setupFiles: ["./vitest.setup.ts"],
     include: ["**/*.test.ts", "**/*.test.tsx"],
-    exclude: ["**/email/preview/**/*.test.tsx"],
     environment: "node",
   },
 });
