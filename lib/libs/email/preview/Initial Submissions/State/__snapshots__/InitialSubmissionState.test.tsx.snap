@@ -486,7 +486,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
@@ -987,7 +987,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                                   style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                 >
                                   © 
-                                  2023
+                                  2022
                                    | 7500 Security Boulevard, Baltimore, MD 21244
                                 </p>
                               </td>
@@ -1545,7 +1545,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
@@ -2828,7 +2828,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
@@ -4629,7 +4629,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
@@ -6952,7 +6952,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
@@ -9946,7 +9946,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                                     style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                                   >
                                     © 
-                                    2023
+                                    2022
                                      | 7500 Security Boulevard, Baltimore, MD 21244
                                   </p>
                                 </td>
