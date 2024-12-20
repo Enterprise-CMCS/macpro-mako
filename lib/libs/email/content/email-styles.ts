@@ -79,8 +79,9 @@ export const styles = {
     },
   },
   divider: {
-    margin: "16px 0",
+    width: "100%",
     borderTop: "1px solid #0071BD",
+    margin: "16px 0px",
   },
   logo: {
     container: {

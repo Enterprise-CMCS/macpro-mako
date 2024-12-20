@@ -57,6 +57,10 @@ vi.spyOn(Auth, "signOut").mockImplementation(async () => {
   setMockUsername(null);
 });
 
+// Mock Date.now() to return a fixed timestamp for tests
+const FIXED_TIMESTAMP = new Date("2024-12-19T12:00:00Z").getTime();
+vi.spyOn(Date, "now").mockImplementation(() => FIXED_TIMESTAMP);
+
 // Add this to remove all the expected errors in console when running unit tests.
 beforeAll(() => {
   setDefaultStateSubmitter();
