@@ -9,9 +9,7 @@ const baseURL = process.env.STAGE_NAME
       (
         await new SSMClient({ region: "us-east-1" }).send(
           new GetParameterCommand({
-            Name: `/${process.env.PROJECT}/${
-              process.env.STAGE_NAME || "main"
-            }/deployment-output`,
+            Name: `/${process.env.PROJECT}/${process.env.STAGE_NAME || "main"}/deployment-output`,
           }),
         )
       ).Parameter!.Value!,
@@ -47,7 +45,7 @@ export default defineConfig({
   // Note: we can test on multiple browsers and resolutions defined here
   projects: [
     // Setup project
-    { name: "setup", testMatch: /.*\.setup\.ts/, fullyParallel: false },
+    { name: "setup", testMatch: "auth.ts", fullyParallel: false },
 
     {
       // we can have different projects for different users/use cases
