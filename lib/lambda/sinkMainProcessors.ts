@@ -143,13 +143,12 @@ const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
   const kafkaIds = kafkaRecords.map((record) =>
     removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(record.key)),
   );
-  const openSearchRecords = await getItems(kafkaIds);
+  const openSearchRecords = await getItems<Document>(kafkaIds);
 
   return openSearchRecords.reduce<Map<string, number>>((map, item) => {
     if (item.changedDate !== null) {
       map.set(item.id, new Date(item.changedDate).getTime());
     }
-
     return map;
   }, new Map());
 };
