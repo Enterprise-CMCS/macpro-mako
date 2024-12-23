@@ -3,8 +3,8 @@ export const emailTemplateValue = {
   applicationEndpointUrl: "https://mako-dev.cms.gov/",
   actionType: "Withdrawal",
   origin: "mako",
-  requestedDate: Date.now() - 5 * 24 * 60 * 60,
-  withdrawnDate: Date.now(),
+  requestedDate: 1728495786285,
+  withdrawnDate: 1728495786285,
   attachments: {
     cmsForm179: {
       files: [
