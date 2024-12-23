@@ -1,4 +1,4 @@
-import { bulkUpdateDataWrapper, ErrorType, logError, getItems } from "libs";
+import { bulkUpdateDataWrapper, ErrorType, logError, getItems } from "../libs";
 import { KafkaRecord, opensearch, SeatoolRecordWithUpdatedDate } from "shared-types";
 import { Document, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
