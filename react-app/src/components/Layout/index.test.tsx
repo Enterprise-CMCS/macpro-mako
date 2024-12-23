@@ -1,7 +1,10 @@
+/// <reference types="@testing-library/jest-dom" />
+
 import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
 import { Layout, SubNavHeader } from "./index";
 import { screen, render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import "@testing-library/jest-dom/vitest";
 import { Auth } from "aws-amplify";
 import * as hooks from "@/hooks";
 import * as api from "@/api";

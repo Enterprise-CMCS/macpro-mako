@@ -9,7 +9,7 @@ import {
 } from "@aws-sdk/client-secrets-manager";
 import { fromEnv } from "@aws-sdk/credential-providers";
 
-const stage = process.env.STAGE_NAME || "brain";
+const stage = process.env.STAGE_NAME;
 const deploymentConfig = JSON.parse(
   (
     await new SSMClient({
