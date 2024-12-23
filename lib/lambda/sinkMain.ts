@@ -1,6 +1,6 @@
 import { Handler } from "aws-lambda";
 import { KafkaEvent, KafkaRecord } from "shared-types";
-import { ErrorType, getTopic, logError } from "libs";
+import { ErrorType, getTopic, logError } from "../libs";
 import {
   insertOneMacRecordsFromKafkaIntoMako,
   insertNewSeatoolRecordsFromKafkaIntoMako,
@@ -24,7 +24,10 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   }
 };
 
-async function processTopicPartition(topicPartition: string, records: KafkaRecord[]): Promise<void> {
+async function processTopicPartition(
+  topicPartition: string,
+  records: KafkaRecord[],
+): Promise<void> {
   const topic = getTopic(topicPartition);
   if (!topic) {
     logError({ type: ErrorType.BADTOPIC });
