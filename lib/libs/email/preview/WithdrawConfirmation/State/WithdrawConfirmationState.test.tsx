@@ -1,10 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
-
-import Appk from "../../WithdrawConfirmation/State/AppK";
-import CHIP_SPA from "../../WithdrawConfirmation/State/CHIP_SPA";
-import Medicaid_SPA from "../../WithdrawConfirmation/State/Medicaid_SPA";
-import Waiver from "../../WithdrawConfirmation/State/Waiver";
+import Appk from "./AppK";
+import CHIP_SPA from "./CHIP_SPA";
+import Medicaid_SPA from "./Medicaid_SPA";
+import Waiver from "./Waiver";
 
 describe("Withdraw Confirmation State Email Snapshot Test", () => {
   it("renders a Appk Preview Template", () => {
@@ -22,7 +21,7 @@ describe("Withdraw Confirmation State Email Snapshot Test", () => {
 
     expect(template).toMatchSnapshot();
   });
-  it("renders a Waiver Capitated Preview Template", () => {
+  it("renders a Waiver Preview Template", () => {
     const template = render(<Waiver />);
 
     expect(template).toMatchSnapshot();
