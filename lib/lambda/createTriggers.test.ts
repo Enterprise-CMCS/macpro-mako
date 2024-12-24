@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { Context } from "aws-lambda";
 import { handler } from "./createTriggers";
 import {
   LambdaClient,
@@ -53,14 +54,10 @@ describe("Lambda Handler", () => {
       .mockResolvedValueOnce({ UUID: "uuid-1" }) // Response for CreateEventSourceMappingCommand
       .mockResolvedValueOnce({ State: "Enabled" }); // Response for GetEventSourceMappingCommand
 
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
-    expect(mockLambdaClientSend).toHaveBeenCalledWith(
-      expect.any(CreateEventSourceMappingCommand),
-    );
-    expect(mockLambdaClientSend).toHaveBeenCalledWith(
-      expect.any(GetEventSourceMappingCommand),
-    );
+    expect(mockLambdaClientSend).toHaveBeenCalledWith(expect.any(CreateEventSourceMappingCommand));
+    expect(mockLambdaClientSend).toHaveBeenCalledWith(expect.any(GetEventSourceMappingCommand));
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
@@ -81,11 +78,9 @@ describe("Lambda Handler", () => {
 
     mockLambdaClientSend.mockRejectedValueOnce(new Error("Test error"));
 
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
-    expect(mockLambdaClientSend).toHaveBeenCalledWith(
-      expect.any(CreateEventSourceMappingCommand),
-    );
+    expect(mockLambdaClientSend).toHaveBeenCalledWith(expect.any(CreateEventSourceMappingCommand));
     expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,
     });

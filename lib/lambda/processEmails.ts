@@ -2,10 +2,10 @@ import { SESClient, SendEmailCommand, SendEmailCommandInput } from "@aws-sdk/cli
 import { KafkaEvent, KafkaRecord } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
-import { getEmailTemplates } from "libs/email";
-import { getAllStateUsers } from "libs/email/getAllStateUsers";
+import { getEmailTemplates } from "../libs/email";
+import { getAllStateUsers } from "../libs/email/getAllStateUsers";
 import * as os from "./../libs/opensearch-lib";
-import { EMAIL_CONFIG } from "libs/email/content/email-components";
+import { EMAIL_CONFIG } from "../libs/email/content/email-components";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
 import pLimit from "p-limit";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";

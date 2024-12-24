@@ -156,6 +156,8 @@ export class Api extends cdk.NestedStack {
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry,
         handler: "handler",
+        tsconfig: "tsconfig.json",
+        bundling: { externalModules: ["aws-sdk"] },
         role: lambdaRole,
         environment: sanitizedEnvironment,
         timeout: cdk.Duration.seconds(30),

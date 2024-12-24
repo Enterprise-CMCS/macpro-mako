@@ -2,9 +2,9 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { handler } from "./processEmails";
 import { SESClient } from "@aws-sdk/client-ses";
 import { SQSClient } from "@aws-sdk/client-sqs";
-import * as os from "libs/opensearch-lib";
-import { EMAIL_CONFIG } from "libs/email/content/email-components";
-import { getEmailTemplates } from "libs/email";
+import * as os from "../libs/opensearch-lib";
+import { EMAIL_CONFIG } from "../libs/email/content/email-components";
+import { getEmailTemplates } from "../libs/email";
 import type { Context } from "aws-lambda";
 
 vi.mock("libs/email", () => ({

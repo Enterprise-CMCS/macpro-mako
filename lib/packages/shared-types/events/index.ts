@@ -15,7 +15,6 @@ import * as appk from "./app-k";
 import * as withdrawRai from "./withdraw-rai";
 import * as toggleWithdrawRai from "./toggle-withdraw-rai";
 import * as respondToRai from "./respond-to-rai";
-
 export * from "./respond-to-rai";
 export * from "./legacy-event";
 export * from "./legacy-package-view";
@@ -58,4 +57,5 @@ export type Events = {
   RespondToRai: z.infer<typeof respondToRai.schema>;
   UploadSubsequentDocuments: z.infer<typeof uploadSubsequentDocuments.schema>;
   WithdrawPackage: z.infer<typeof withdrawPackage.schema>;
+  WithdrawRai: z.infer<typeof withdrawRai.schema>;
 };

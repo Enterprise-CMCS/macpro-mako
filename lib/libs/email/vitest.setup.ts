@@ -1,3 +1,4 @@
+import { cleanup } from "@testing-library/react";
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
 
 beforeAll(() => {});
@@ -12,6 +13,7 @@ beforeEach(() => {
 afterEach(() => {
   vi.useRealTimers();
   vi.clearAllMocks();
+  cleanup();
 });
 
 afterAll(() => {

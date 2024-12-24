@@ -45,6 +45,9 @@ export interface NewSubmissionTemplateProps<T extends keyof Events> {
 export interface WithdrawPackageTemplateProps {
   variables: Events["WithdrawPackage"] & CommonEmailVariables;
 }
+export interface WithdrawRaiTemplateProps {
+  variables: Events["WithdrawRai"] & CommonEmailVariables;
+}
 
 export interface TempExtensionTemplateProps {
   variables: Events["TempExtension"] & CommonEmailVariables;

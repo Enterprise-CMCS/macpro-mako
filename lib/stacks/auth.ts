@@ -295,6 +295,8 @@ export class Auth extends cdk.NestedStack {
         runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
         entry: join(__dirname, "../lambda/postAuth.ts"),
         handler: "handler",
+        tsconfig: "tsconfig.json",
+        bundling: { externalModules: ["aws-sdk"] },
         role: postAuthLambdaRole,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         environment: {

@@ -17,10 +17,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/selectors": ["e2e/selectors"],
-      "@/*": ["src/*"]
-    },
-    "types": ["@testing-library/jest-dom"]
-  },
-  "include": ["."]
+      "@/selectors": ["e2e/selectors"]
+    }
+  }
 }

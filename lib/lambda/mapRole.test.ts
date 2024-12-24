@@ -1,7 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
 import { send, SUCCESS, FAILED } from "cfn-response-async";
 import { handler } from "./mapRole";
 import * as os from "../libs/opensearch-lib";
+import { Context } from "aws-lambda";
 
 vi.mock("cfn-response-async", () => ({
   send: vi.fn(),
@@ -34,9 +35,9 @@ describe("CloudFormation Custom Resource Handler", () => {
       RequestType: "Create",
     };
 
-    (os.mapRole as vi.Mock).mockResolvedValueOnce("Role mapped successfully");
+    (os.mapRole as Mock).mockResolvedValueOnce("Role mapped successfully");
 
-    await handler(mockEvent, mockContext);
+    await handler(mockEvent, {} as Context, () => {});
 
     expect(os.mapRole).toHaveBeenCalledWith(
       mockEvent.ResourceProperties.OsDomain,
@@ -44,13 +45,7 @@ describe("CloudFormation Custom Resource Handler", () => {
       mockEvent.ResourceProperties.OsRoleName,
       mockEvent.ResourceProperties.IamRoleName,
     );
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(send).toHaveBeenCalledWith(mockEvent, mockContext, SUCCESS, {}, "static");
   });
 
   it("should call os.mapRole on Update request type", async () => {
@@ -59,9 +54,9 @@ describe("CloudFormation Custom Resource Handler", () => {
       RequestType: "Update",
     };
 
-    (os.mapRole as vi.Mock).mockResolvedValueOnce("Role mapped successfully");
+    (os.mapRole as Mock).mockResolvedValueOnce("Role mapped successfully");
 
-    await handler(mockEvent, mockContext);
+    await handler(mockEvent, {} as Context, () => {});
 
     expect(os.mapRole).toHaveBeenCalledWith(
       mockEvent.ResourceProperties.OsDomain,
@@ -69,13 +64,7 @@ describe("CloudFormation Custom Resource Handler", () => {
       mockEvent.ResourceProperties.OsRoleName,
       mockEvent.ResourceProperties.IamRoleName,
     );
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(send).toHaveBeenCalledWith(mockEvent, mockContext, SUCCESS, {}, "static");
   });
 
   it("should do nothing on Delete request type", async () => {
@@ -84,16 +73,10 @@ describe("CloudFormation Custom Resource Handler", () => {
       RequestType: "Delete",
     };
 
-    await handler(mockEvent, mockContext);
+    await handler(mockEvent, {} as Context, () => {});
 
     expect(os.mapRole).not.toHaveBeenCalled();
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(send).toHaveBeenCalledWith(mockEvent, mockContext, SUCCESS, {}, "static");
   });
 
   it("should send FAILED status on error", async () => {
@@ -102,16 +85,10 @@ describe("CloudFormation Custom Resource Handler", () => {
       RequestType: "Create",
     };
 
-    (os.mapRole as vi.Mock).mockRejectedValueOnce(new Error("Test error"));
+    (os.mapRole as Mock).mockRejectedValueOnce(new Error("Test error"));
 
-    await handler(mockEvent, mockContext);
+    await handler(mockEvent, {} as Context, () => {});
 
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      FAILED,
-      {},
-      "static",
-    );
+    expect(send).toHaveBeenCalledWith(mockEvent, mockContext, FAILED, {}, "static");
   });
 });

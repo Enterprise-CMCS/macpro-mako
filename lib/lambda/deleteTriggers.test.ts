@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { Context } from "aws-lambda";
 import { handler } from "./deleteTriggers";
 import {
   LambdaClient,
@@ -44,7 +45,7 @@ describe("Lambda Handler", () => {
       })
       .mockRejectedValueOnce(new Error("Test error"));
 
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
     expect(mockLambdaClientSend).toHaveBeenCalledWith(
       expect.any(ListEventSourceMappingsCommand),
@@ -66,7 +67,7 @@ describe("Lambda Handler", () => {
       EventSourceMappings: [],
     });
 
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
     expect(mockLambdaClientSend).toHaveBeenCalledWith(
       expect.any(ListEventSourceMappingsCommand),

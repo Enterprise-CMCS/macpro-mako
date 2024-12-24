@@ -16,7 +16,7 @@
     "inlineSources": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
-    "typeRoots": ["@types", "vitest/globals", "@testing-library/jest-dom"],
+    "typeRoots": ["@types", "vitest/globals"],
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": false,
@@ -24,7 +24,9 @@
     "baseUrl": ".",
     "rootDir": "./",
     "paths": {
-      "*": ["./*"]
+      "libs/*": ["libs/*"],
+      "shared-types/*": ["shared-types/*"],
+      "shared-utils/*": ["shared-utils/*"]
     }
   },
   "exclude": ["node_modules", "cdk.out", ".cdk"],

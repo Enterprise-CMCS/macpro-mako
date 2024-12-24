@@ -84,6 +84,8 @@ export class EmptyBuckets extends Construct {
     const lambda = new NodejsFunction(this, "Lambda", {
       runtime: Runtime.NODEJS_18_X,
       handler: "handler",
+      tsconfig: "tsconfig.json",
+      bundling: { externalModules: ["aws-sdk"] },
       depsLockFilePath: join(__dirname, "../../../bun.lockb"),
       entry: join(__dirname, "src", "emptyBuckets.ts"),
       timeout: Duration.minutes(15),

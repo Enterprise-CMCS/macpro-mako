@@ -181,6 +181,8 @@ export class Email extends cdk.NestedStack {
       depsLockFilePath: join(__dirname, "../../bun.lockb"),
       entry: join(__dirname, "../lambda/processEmails.ts"),
       handler: "handler",
+      tsconfig: "tsconfig.json",
+      bundling: { externalModules: ["aws-sdk"] },
       runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
       memorySize: envConfig[props.isDev ? "dev" : "prod"].memorySize,
       timeout: cdk.Duration.minutes(envConfig[props.isDev ? "dev" : "prod"].timeout),

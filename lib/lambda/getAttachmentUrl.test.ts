@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
 import { handler } from "./getAttachmentUrl";
-import { response } from "libs/handler-lib";
+import { response } from "../libs/handler-lib";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { getStateFilter } from "../libs/api/auth/user";
 import { getPackage, getPackageChangelog } from "../libs/api/package";

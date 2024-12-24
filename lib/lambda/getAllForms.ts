@@ -1,4 +1,4 @@
-import { response } from "libs/handler-lib";
+import { response } from "../libs/handler-lib";
 import { webformVersions } from "../libs/webforms";
 import { FormSchema } from "shared-types";
 
@@ -17,13 +17,10 @@ export const mapWebformsKeys = (
 export const getAllForms = async () => {
   try {
     const formsWithVersions = mapWebformsKeys(webformVersions);
-
-    if (formsWithVersions) {
-      return response({
-        statusCode: 200,
-        body: formsWithVersions,
-      });
-    }
+    return response({
+      statusCode: 200,
+      body: formsWithVersions,
+    });
   } catch (error: any) {
     console.error("Error:", error);
     return response({

@@ -1,32 +1,30 @@
 import { handleOpensearchError } from "./utils";
-import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-
 import { getStateFilter } from "../libs/api/auth/user";
 import { getPackage, getPackageChangelog } from "../libs/api/package";
 
 // Handler function to get Seatool data
 export const handler = async (event: APIGatewayEvent) => {
   if (!process.env.osDomain) {
-    return response({
+    return {
       statusCode: 500,
       body: { message: "ERROR:  osDomain env variable is required" },
-    });
+    };
   }
   if (!event.body) {
-    return response({
+    return {
       statusCode: 400,
       body: { message: "Event body required" },
-    });
+    };
   }
   if (!process.env.osDomain) {
-    return response({
+    return {
       statusCode: 500,
       body: { message: "Handler is missing process.env.osDomain env var" },
-    });
+    };
   }
 
   try {
@@ -34,10 +32,10 @@ export const handler = async (event: APIGatewayEvent) => {
 
     const mainResult = await getPackage(body.id);
     if (!mainResult) {
-      return response({
+      return {
         statusCode: 404,
         body: { message: "No record found for the given id" },
-      });
+      };
     }
 
     const stateFilter = await getStateFilter(event);
@@ -47,10 +45,10 @@ export const handler = async (event: APIGatewayEvent) => {
       );
 
       if (!stateAccessAllowed) {
-        return response({
+        return {
           statusCode: 404,
           body: { message: "state access not permitted for the given id" },
-        });
+        };
       }
     }
 
@@ -63,12 +61,12 @@ export const handler = async (event: APIGatewayEvent) => {
       );
     });
     if (!attachmentExists) {
-      return response({
+      return {
         statusCode: 500,
         body: {
           message: "Attachment details not found for given record id.",
         },
-      });
+      };
     }
 
     // Now we can generate the presigned url
@@ -79,12 +77,12 @@ export const handler = async (event: APIGatewayEvent) => {
       60,
     );
 
-    return response<unknown>({
+    return {
       statusCode: 200,
       body: { url },
-    });
+    };
   } catch (error) {
-    return response(handleOpensearchError(error));
+    return handleOpensearchError(error);
   }
 };
 

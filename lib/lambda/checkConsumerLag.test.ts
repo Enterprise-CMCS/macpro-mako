@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { Context } from "aws-lambda";
 import { handler } from "./checkConsumerLag";
 import { Kafka } from "kafkajs";
 
@@ -8,9 +9,7 @@ const mockKafkaAdmin = {
     groups: [{ state: "Stable" }],
   }),
   fetchTopicOffsets: vi.fn().mockResolvedValue([{ offset: "100" }]),
-  fetchOffsets: vi
-    .fn()
-    .mockResolvedValue([{ partitions: [{ offset: "100" }] }]),
+  fetchOffsets: vi.fn().mockResolvedValue([{ partitions: [{ offset: "100" }] }]),
   disconnect: vi.fn(),
 };
 
@@ -56,7 +55,7 @@ describe("Lambda Handler", () => {
       ],
     });
 
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 200,
@@ -81,7 +80,7 @@ describe("Lambda Handler", () => {
       EventSourceMappings: [],
     });
 
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
     expect(callback).toHaveBeenCalledWith(
       new Error(
@@ -122,7 +121,7 @@ describe("Lambda Handler", () => {
       ],
     });
 
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
     expect(callback).toHaveBeenCalledWith(
       new Error(
@@ -162,7 +161,7 @@ describe("Lambda Handler", () => {
       disconnect: vi.fn(),
     });
 
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
     expect(callback).toHaveBeenCalledWith(
       expect.any(Error),
@@ -192,12 +191,10 @@ describe("Lambda Handler", () => {
       ],
     });
 
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
     expect(callback).toHaveBeenCalledWith(
-      new Error(
-        "ERROR: No ConsumerGroupId found for function test-function and topic test-topic",
-      ),
+      new Error("ERROR: No ConsumerGroupId found for function test-function and topic test-topic"),
       {
         statusCode: 500,
         stable: false,

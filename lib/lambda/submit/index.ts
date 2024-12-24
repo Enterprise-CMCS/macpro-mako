@@ -1,8 +1,8 @@
-import { response } from "libs/handler-lib";
+import { response } from "lib/libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 
 import { submissionPayloads } from "./submissionPayloads";
-import { produceMessage } from "libs/api/kafka";
+import { produceMessage } from "lib/libs/api/kafka";
 import { BaseSchemas } from "shared-types/events";
 
 export const submit = async (event: APIGatewayEvent) => {
@@ -33,11 +33,7 @@ export const submit = async (event: APIGatewayEvent) => {
 
   try {
     const eventBody = await submissionPayloads[body.event](event);
-    await produceMessage(
-      process.env.topicName as string,
-      body.id,
-      JSON.stringify(eventBody),
-    );
+    await produceMessage(process.env.topicName as string, body.id, JSON.stringify(eventBody));
 
     return response({
       statusCode: 200,
