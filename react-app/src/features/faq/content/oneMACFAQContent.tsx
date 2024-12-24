@@ -1221,7 +1221,7 @@ export const oneMACFAQContent: FAQContent[] = [
         ),
       },
       {
-        anchorText: "temporary-extensions-b-attachments",
+        anchorText: "temporary-extensions-c-attachments",
         question:
           "What are the attachments for a 1915(c) Waiver - Request for Temporary Extension?",
         answerJSX: (
