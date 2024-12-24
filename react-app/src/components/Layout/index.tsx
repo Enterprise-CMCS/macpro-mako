@@ -1,5 +1,4 @@
 import { NavLink, NavLinkProps, Outlet, Link, useNavigate } from "react-router";
-import oneMacLogo from "@/assets/onemac-logo.png";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
@@ -162,7 +161,7 @@ export const Layout = () => {
               <Link to="/">
                 <img
                   className="h-10 w-28 min-w-[112px] resize-none"
-                  src={oneMacLogo}
+                  src="/onemac-logo.png"
                   alt="onemac site logo"
                 />
               </Link>
@@ -171,7 +170,7 @@ export const Layout = () => {
               <div>
                 <img
                   className="h-10 w-28 min-w-[112px] resize-none"
-                  src={oneMacLogo}
+                  src="/onemac-logo.png"
                   alt="onemac site logo"
                 />
               </div>

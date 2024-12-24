@@ -1,9 +1,3 @@
-import eligibilityPDF from "@/assets/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf";
-import WelcometoOneMAC from "@/assets/onboarding/WelcometoOneMAC.pdf";
-import IDMInstructionsforOneMACUsers from "@/assets/onboarding/IDMInstructionsforOneMACUsers.pdf";
-import OneMACIDMGuide from "@/assets/onboarding/OneMACIDMGuide.pdf";
-import OneMACStateUserGuide from "@/assets/onboarding/OneMACStateUserGuide.pdf";
-import OneMACCMSUserGuide from "@/assets/onboarding/OneMACCMSUserGuide.pdf";
 import { FILE_TYPES } from "shared-types/uploads";
 import { ABP_TEMPLATES } from "@/features/faq/content/abpTemplate";
 import { renderSection } from "@/features/faq/content/chpRenderSection";
@@ -45,7 +39,7 @@ export const oneMACFAQContent: FAQContent[] = [
               <li>
                 <a
                   className="text-blue-800 underline hover:no-underline "
-                  href={eligibilityPDF}
+                  href="/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -198,11 +192,14 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <ul>
             {[
-              [WelcometoOneMAC, "Welcome to OneMAC"],
-              [IDMInstructionsforOneMACUsers, "IDM Instructions for OneMAC Users"],
-              [OneMACIDMGuide, "OneMAC IDM Guide"],
-              [OneMACStateUserGuide, "OneMAC State User Guide"],
-              [OneMACCMSUserGuide, "OneMAC CMS User Guide"],
+              ["/onboarding/WelcometoOneMAC.pdf", "Welcome to OneMAC"],
+              [
+                "/onboarding/IDMInstructionsforOneMACUsers.pdf",
+                "IDM Instructions for OneMAC Users",
+              ],
+              ["/onboarding/OneMACIDMGuide.pdf", "OneMAC IDM Guide"],
+              ["/onboarding/OneMACStateUserGuide.pdf", "OneMAC State User Guide"],
+              ["/onboarding/OneMACCMSUserGuide.pdf", "OneMAC CMS User Guide"],
             ].map(([file, label]) => (
               <li key={label}>
                 <a
