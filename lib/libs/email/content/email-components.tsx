@@ -298,15 +298,22 @@ const WithdrawRAI = ({
 const getCpocEmail = (item: CpocUser | undefined): string[] => {
   try {
     if (!item) return [];
-    const source = (item as any)?._source || item;
-    const { firstName, lastName, email } = source;
 
-    if (!firstName || !lastName || !email) {
-      console.warn("Missing required CPOC user fields:", { firstName, lastName, email });
-      return [];
+    // Handle both new and old data structures
+    const source = (item as any)?._source || item;
+
+    // Try new structure first
+    if (source.firstName && source.lastName && source.email) {
+      return [`${source.firstName} ${source.lastName} <${source.email}>`];
     }
 
-    return [`${firstName} ${lastName} <${email}>`];
+    // Fall back to old structure
+    if (source.leadAnalystName && source.leadAnalystEmail) {
+      return [`${source.leadAnalystName} <${source.leadAnalystEmail}>`];
+    }
+
+    console.warn("Missing required CPOC user fields in both new and old structures");
+    return [];
   } catch (e) {
     console.error("Error getting CPOC email", JSON.stringify(e, null, 2));
     return [];
@@ -315,32 +322,35 @@ const getCpocEmail = (item: CpocUser | undefined): string[] => {
 
 const getSrtEmails = (item: Document | undefined): string[] => {
   try {
-    if (!item) {
-      console.warn("No item provided to getSrtEmails");
-      return [];
-    }
+    if (!item) return [];
 
+    // Handle both new and old data structures
     const source = (item as any)?._source || item;
     const reviewTeam = source?.reviewTeam;
 
     if (!reviewTeam || !Array.isArray(reviewTeam)) {
-      console.warn("No valid review team found:", {
-        hasSource: Boolean(source),
-        reviewTeamType: typeof reviewTeam,
-        isArray: Array.isArray(reviewTeam),
-      });
+      console.warn("No valid review team found");
       return [];
     }
 
     return reviewTeam
       .filter((reviewer: any) => {
-        if (!reviewer?.name || !reviewer?.email) {
+        // Support both structures
+        const hasNewStructure = reviewer?.name && reviewer?.email;
+        const hasOldStructure = reviewer?.reviewerName && reviewer?.reviewerEmail;
+
+        if (!hasNewStructure && !hasOldStructure) {
           console.warn("Invalid reviewer entry:", reviewer);
           return false;
         }
         return true;
       })
-      .map((reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`);
+      .map((reviewer: any) => {
+        // Use new structure if available, fall back to old
+        const name = reviewer.name || reviewer.reviewerName;
+        const email = reviewer.email || reviewer.reviewerEmail;
+        return `${name} <${email}>`;
+      });
   } catch (e) {
     console.error("Error getting SRT emails:", e);
     return [];

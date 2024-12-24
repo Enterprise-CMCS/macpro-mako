@@ -67,8 +67,13 @@ const emailTemplates: EmailTemplates = {
  * @param authority The package authority
  */
 export function getEmailTemplate(
-  action: keyof EmailTemplates,
+  action: keyof EmailTemplates | "temp-extension",
 ): AuthoritiesWithUserTypesTemplate | UserTypeOnlyTemplate {
+  // Handle legacy "temp-extension" key
+  if (action === "temp-extension") {
+    return emailTemplates["temporary-extension"];
+  }
+  // Handle -state suffix variants
   const baseAction = action.replace(/-state$/, "") as keyof EmailTemplates;
   return emailTemplates[baseAction];
 }

@@ -312,20 +312,63 @@ function htmlToTextOptions(baseUrl: string): HtmlToTextOptions {
 }
 
 function getCpocEmail(item: CpocUser | undefined): string[] {
-  if (!item || !item.firstName || !item.lastName || !item.email) {
-    console.warn("Missing required CPOC user fields");
+  try {
+    if (!item) return [];
+
+    // Handle both new and old data structures
+    const source = (item as any)?._source || item;
+
+    // Try new structure first
+    if (source.firstName && source.lastName && source.email) {
+      return [`${source.firstName} ${source.lastName} <${source.email}>`];
+    }
+
+    // Fall back to old structure
+    if (source.leadAnalystName && source.leadAnalystEmail) {
+      return [`${source.leadAnalystName} <${source.leadAnalystEmail}>`];
+    }
+
+    console.warn("Missing required CPOC user fields in both new and old structures");
+    return [];
+  } catch (e) {
+    console.error("Error getting CPOC email:", e);
     return [];
   }
-  return [`${item.firstName} ${item.lastName} <${item.email}>`];
 }
 
 function getSrtEmails(item: MainDocument | undefined): string[] {
-  if (!item || !Array.isArray(item.reviewTeam)) {
-    console.warn("No valid review team found or item missing");
+  try {
+    if (!item) return [];
+
+    // Handle both new and old data structures
+    const source = (item as any)?._source || item;
+    const reviewTeam = source?.reviewTeam;
+
+    if (!reviewTeam || !Array.isArray(reviewTeam)) {
+      console.warn("No valid review team found");
+      return [];
+    }
+
+    return reviewTeam
+      .filter((reviewer: any) => {
+        // Support both structures
+        const hasNewStructure = reviewer?.name && reviewer?.email;
+        const hasOldStructure = reviewer?.reviewerName && reviewer?.reviewerEmail;
+
+        if (!hasNewStructure && !hasOldStructure) {
+          console.warn("Invalid reviewer entry:", reviewer);
+          return false;
+        }
+        return true;
+      })
+      .map((reviewer: any) => {
+        // Use new structure if available, fall back to old
+        const name = reviewer.name || reviewer.reviewerName;
+        const email = reviewer.email || reviewer.reviewerEmail;
+        return `${name} <${email}>`;
+      });
+  } catch (e) {
+    console.error("Error getting SRT emails:", e);
     return [];
   }
-
-  return item.reviewTeam
-    .filter((reviewer: any) => reviewer?.name && reviewer?.email)
-    .map((reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`);
 }

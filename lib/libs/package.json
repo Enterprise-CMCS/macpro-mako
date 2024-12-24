@@ -5,12 +5,12 @@
     "shared-types": "*",
     "shared-utils": "*"
   },
-  "devDependencies": {},
-  "scripts": {
-    "email-dev": "email dev --dir preview",
-    "test": "vitest",
-    "test:coverage": "vitest run --coverage.enabled true",
-    "test:ui": "vitest --ui"
+  "peerDependencies": {
+    "@testing-library/react": "*",
+    "jsdom": "*",
+    "vitest": "*",
+    "react": "*",
+    "react-dom": "*"
   },
   "packageManager": "bun@1.1.40"
 }
