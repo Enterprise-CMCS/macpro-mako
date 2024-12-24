@@ -1,7 +1,7 @@
 import { events } from "shared-types/events";
-import { isAuthorized, getAuthDetails, lookupUserAttributes } from "../../../libs/api/auth/user";
+import { isAuthorized, getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user";
 import { type APIGatewayEvent } from "aws-lambda";
-import { itemExists } from "../../../libs/api/package";
+import { itemExists } from "lib/libs/api/package";
 
 export const newChipSubmission = async (event: APIGatewayEvent) => {
   if (!event.body) return;

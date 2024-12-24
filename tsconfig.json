@@ -24,7 +24,8 @@
     "baseUrl": ".",
     "rootDir": "./",
     "paths": {
-      "libs/*": ["libs/*"],
+      "libs/*": ["lib/libs/*"],
+      "lib/*": ["lib/*"],
       "shared-types/*": ["shared-types/*"],
       "shared-utils/*": ["shared-utils/*"]
     }

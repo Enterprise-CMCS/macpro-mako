@@ -16,10 +16,13 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
+    "typeRoots": ["@types", "vitest/globals", "./src/assets/_.d.ts"],
     "paths": {
-      "@/*": ["src/*"]
-    },
-    "types": ["@testing-library/jest-dom"]
-  },
-  "include": ["src", "e2e", "src/assets/_.d.ts"]
+      "@/*": ["src/*"],
+      "libs/*": ["lib/libs/*"],
+      "lib/*": ["lib/*"],
+      "shared-types/*": ["shared-types/*"],
+      "shared-utils/*": ["shared-utils/*"]
+    }
+  }
 }
