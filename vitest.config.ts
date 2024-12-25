@@ -4,7 +4,15 @@ import { configDefaults, defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     globals: true,
-    environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
+
+    environmentMatchGlobs: [
+      ["src/**/*.test.ts?(x)", "jsdom"],
+      ["lib/libs/email/**/*.test.ts?(x)", "jsdom"],
+      ["src/**/*.test.ts?(x)", "node"],
+      ["lib/libs/**/*.test.ts?(x)", "node"],
+      ["lib/**/*.test.ts?(x)", "node"],
+    ],
+    setupFiles: ["./lib/vitest.setup.ts"],
     coverage: {
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),
@@ -16,9 +24,8 @@ export default defineConfig({
         "build_run",
         ".cdk",
         "docs/**",
-        "lib/libs/webforms/**",
         "react-app/src/features/webforms/**",
-        "TestWrapper.tsx",
+        "**/*TestWrapper.tsx",
         "lib/stacks/**",
         "lib/packages/eslint-config-custom/**",
         "lib/packages/eslint-config-custom-server/**",
@@ -28,13 +35,13 @@ export default defineConfig({
         "bin/app.ts",
         "vitest.workspace.ts",
         "**/*/.eslintrc.{ts,js,cjs}",
-        "**/*.config.{ts,js,cjs}",
+        "**/*.config.{ts,tsx,js,cjs}",
         "**/coverage/**",
         "test/e2e/**",
         "mocks/**",
         "**/*.js",
         "**/assets/**",
-        "node_modules/**",
+        "node_modules",
         "**/node_modules/**",
       ],
     },

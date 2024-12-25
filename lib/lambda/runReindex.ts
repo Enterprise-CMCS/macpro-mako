@@ -25,7 +25,6 @@ export const handler: Handler = async (event, context) => {
     } else if (event.RequestType == "Update") {
       await send(event, context, SUCCESS, {}, "static");
     } else if (event.RequestType == "Delete") {
-      // need to delete all triggers here  to do
       await send(event, context, SUCCESS, {}, "static");
     }
   } catch (error) {

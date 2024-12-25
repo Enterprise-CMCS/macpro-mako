@@ -1,7 +1,7 @@
 import { Handler } from "aws-lambda";
 import { send, SUCCESS, FAILED } from "cfn-response-async";
 type ResponseStatus = typeof SUCCESS | typeof FAILED;
-import * as os from "./../libs/opensearch-lib";
+import * as os from "../libs/opensearch-lib";
 
 export const handler: Handler = async (event, context) => {
   console.log("request:", JSON.stringify(event, undefined, 2));

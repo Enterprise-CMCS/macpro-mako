@@ -1,3 +1,6 @@
 [test]
-ignore-patterns = ["**/*.spec.ts", "**/*.spec.tsx", "**/*.test.ts", "**/*.test.tsx"]
-coverageSkipTestFiles = true
+# Include test patterns for vitest
+include = ["**/*.test.ts", "**/*.test.tsx"]
+# Additional options if needed:
+# concurrency = 4
+# watch = true

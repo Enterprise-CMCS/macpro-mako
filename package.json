@@ -18,7 +18,8 @@
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
     "cdk:watch": "cdk watch -c stage=${STAGE:-local} --no-rollback",
-    "bun:dev": "cd react-app && bun run dev"
+    "bun:dev": "cd react-app && bun run dev",
+    "multiInstall": "find . -type f -name \"package.json\" -not -path \"*/node_modules/*\" -execdir bun install \\;"
   },
   "repository": "https://github.com/Enterprise-CMCS/macpro-mako",
   "workspaces": [
