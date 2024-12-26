@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
-import Appk from "./AppK";
-import CHIP_SPA from "./CHIP_SPA";
-import Medicaid_SPA from "./Medicaid_SPA";
-import Waiver_Contracting from "./Waiver_Contracting";
+import Appk from "../preview/Withdraw_Rai/State/AppK";
+import CHIP_SPA from "../preview/Withdraw_Rai/State/CHIP_SPA";
+import Medicaid_SPA from "../preview/Withdraw_Rai/State/Medicaid_SPA";
+import Waiver_Contracting from "../preview/Withdraw_Rai/State/Waiver_Contracting";
 
-describe("Withdraw RAI CMS Email Snapshot Test", () => {
+describe("Withdraw RAI State Email Snapshot Test", () => {
   it("renders a Appk Preview Template", () => {
     const template = render(<Appk />);
 
