@@ -29,14 +29,7 @@
         "PROJECT"
       ]
     },
-    "test": {
-      "cache": false,
-      "env": ["STAGE_NAME", "PROJECT"]
-    },
-    "test:coverage": {
-      "cache": false,
-      "env": ["STAGE_NAME", "PROJECT"]
-    },
+
     "email-dev": {
       "cache": false,
       "persistent": true

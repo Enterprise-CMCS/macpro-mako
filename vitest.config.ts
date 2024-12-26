@@ -2,7 +2,7 @@ import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
 import { EventEmitter } from "events";
 
-EventEmitter.defaultMaxListeners = Infinity;
+EventEmitter.defaultMaxListeners = 100;
 
 export default defineConfig({
   test: {
