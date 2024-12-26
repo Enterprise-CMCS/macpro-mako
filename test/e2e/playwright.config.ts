@@ -9,12 +9,14 @@ const baseURL = process.env.STAGE_NAME
       (
         await new SSMClient({ region: "us-east-1" }).send(
           new GetParameterCommand({
-            Name: `/${process.env.PROJECT}/${process.env.STAGE_NAME || "main"}/deployment-output`,
+            Name: `/${process.env.PROJECT}/${process.env.STAGE_NAME}/deployment-output`,
           }),
         )
       ).Parameter!.Value!,
     ).applicationEndpointUrl
   : "http://localhost:5000";
+
+console.log({ baseURL });
 
 console.log(`Playwright configured to run against ${baseURL}`);
 export default defineConfig({
@@ -22,7 +24,7 @@ export default defineConfig({
   // timeout: 10_000,
   testDir: ".",
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -45,7 +47,7 @@ export default defineConfig({
   // Note: we can test on multiple browsers and resolutions defined here
   projects: [
     // Setup project
-    { name: "setup", testMatch: "auth.ts", fullyParallel: false },
+    { name: "setup", testMatch: ".utils/auth.ts", fullyParallel: true },
 
     {
       // we can have different projects for different users/use cases
@@ -53,7 +55,7 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"],
         // Use prepared auth state for state submitter.
-        storageState: "playwright/.auth/state-user.json",
+        storageState: ".auth/state-user.json",
       },
       // Tests start already authenticated because we specified storageState in the config.
       dependencies: ["setup"],
