@@ -130,7 +130,7 @@ export class Auth extends cdk.NestedStack {
           },
         );
     }
-
+    console.log("hello temporary");
     // Cognito User Pool Client
     const userPoolClient = new cdk.aws_cognito.CfnUserPoolClient(this, "CognitoUserPoolClient", {
       clientName: `${project}-${stage}-${stack}`,
