@@ -5,7 +5,6 @@ import {
 } from "../attachments";
 
 export const baseSchema = z.object({
-  // zAmendmentWaiverNumberSchema
   event: z.literal("contracting-amendment").default("contracting-amendment"),
   authority: z.string().default("1915(b)"),
   id: z
@@ -34,7 +33,12 @@ export const baseSchema = z.object({
       files: attachmentArraySchemaOptional(),
     }),
   }),
-  additionalInformation: z.string().max(4000).nullable().default(null),
+  additionalInformation: z
+    .string()
+    .max(4000)
+    .nullable()
+    .default(null)
+    .optional(),
   waiverNumber: z
     .string()
     .min(1, { message: "Required" })

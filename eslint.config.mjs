@@ -14,10 +14,10 @@ const gitignorePath = path.resolve(__dirname, ".gitignore");
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
-  // @ts-expect-error https://github.com/typescript-eslint/typescript-eslint/issues/8522
   includeIgnoreFile(gitignorePath),
   {
     plugins: {
+      // @ts-expect-error Types mismatch for eslint-plugin-react
       react,
       // @ts-expect-error https://github.com/facebook/react/pull/28773#issuecomment-2147149016
       "react-hooks": fixupPluginRules(eslintReactHooks),
@@ -45,6 +45,12 @@ export default tseslint.config(
       "react/jsx-no-useless-fragment": ["error", { allowExpressions: true }],
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          varsIgnorePattern: "^_",
+        },
+      ],
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/ban-ts-comment": [

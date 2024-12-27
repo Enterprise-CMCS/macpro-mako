@@ -104,7 +104,7 @@ describe("helpers", () => {
           mockUploadRecipes(3),
         );
       expect(payload.authority).toEqual("medicaid spa");
-      expect(payload.origin).toEqual("micro");
+      expect(payload.origin).toEqual("mako");
       expect(payload.attachments).toHaveLength(3);
       expect(payload.test).toEqual("data");
     });
@@ -120,7 +120,7 @@ describe("helpers", () => {
         mockUploadRecipes(3),
       );
     expect(payload.authority).toEqual("medicaid spa");
-    expect(payload.origin).toEqual("micro");
+    expect(payload.origin).toEqual("mako");
     expect(payload.attachments).toHaveLength(3);
     expect(payload.test).toEqual("data");
     expect(payload.proposedEffectiveDate).toBeTypeOf("number");

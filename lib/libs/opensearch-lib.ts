@@ -6,8 +6,7 @@ import { aws4Interceptor } from "aws4-axios";
 import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
 import { opensearch } from "shared-types";
 import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
-import * as main from "shared-types/opensearch/main";
-import { decodeBase64WithUtf8 } from "shared-utils";
+import { ItemResult, Document as OSDocument } from "lib/packages/shared-types/opensearch/main";
 
 let client: Client;
 
@@ -66,17 +65,11 @@ export async function bulkUpdateData(
     if (doc.delete) {
       body.push({ delete: { _index: index, _id: doc.id } });
     } else {
-      body.push(
-        { update: { _index: index, _id: doc.id } },
-        { doc: doc, doc_as_upsert: true },
-      );
+      body.push({ update: { _index: index, _id: doc.id } }, { doc: doc, doc_as_upsert: true });
     }
   }
 
-  async function attemptBulkUpdate(
-    retries: number = 5,
-    delay: number = 1000,
-  ): Promise<void> {
+  async function attemptBulkUpdate(retries: number = 5, delay: number = 1000): Promise<void> {
     try {
       const response = await client.bulk({ refresh: true, body: body });
       if (response.body.errors) {
@@ -91,10 +84,7 @@ export async function bulkUpdateData(
           return attemptBulkUpdate(retries - 1, delay * 2); // Exponential backoff
         } else if (!hasRateLimitErrors) {
           // Handle or throw other errors normally
-          console.error(
-            "Bulk update errors:",
-            JSON.stringify(response.body.items, null, 2),
-          );
+          console.error("Bulk update errors:", JSON.stringify(response.body.items, null, 2));
           throw "ERROR:  Bulk update had an error that was not rate related.";
         }
       } else {
@@ -102,10 +92,7 @@ export async function bulkUpdateData(
       }
     } catch (error: any) {
       if (error.statusCode === 429 && retries > 0) {
-        console.log(
-          `Rate limit exceeded, retrying in ${delay}ms...`,
-          error.message,
-        );
+        console.log(`Rate limit exceeded, retrying in ${delay}ms...`, error.message);
         await sleep(delay);
         return attemptBulkUpdate(retries - 1, delay * 2); // Exponential backoff
       } else {
@@ -157,8 +144,7 @@ export async function mapRole(
       },
       credentials: {
         accessKeyId: assumedRoleCommandData?.Credentials?.AccessKeyId || "",
-        secretAccessKey:
-          assumedRoleCommandData?.Credentials?.SecretAccessKey || "",
+        secretAccessKey: assumedRoleCommandData?.Credentials?.SecretAccessKey || "",
         sessionToken: assumedRoleCommandData?.Credentials?.SessionToken,
       },
     });
@@ -180,11 +166,7 @@ export async function mapRole(
   }
 }
 
-export async function search(
-  host: string,
-  index: opensearch.Index,
-  query: any,
-) {
+export async function search(host: string, index: opensearch.Index, query: any) {
   client = client || (await getClient(host));
   try {
     const response = await client.search({
@@ -201,13 +183,14 @@ export async function getItem(
   host: string,
   index: opensearch.Index,
   id: string,
-) {
+): Promise<ItemResult | undefined> {
   client = client || (await getClient(host));
   try {
     const response = await client.get({ id, index });
     return decodeUtf8(response).body;
   } catch (e) {
     console.log({ e });
+    return undefined;
   }
 }
 
@@ -215,43 +198,33 @@ export async function getItems(
   host: string,
   indexNamespace: string,
   ids: string[],
-): Promise<main.Document[]> {
+): Promise<OSDocument[]> {
   try {
     const index = `${indexNamespace}main`;
+
     client = client || (await getClient(host));
-    const response = await client.mget({
+
+    const response = await client.mget<{ docs: ItemResult[] }>({
       index,
       body: {
         ids,
       },
     });
 
-    const retVal: main.Document[] = [];
-
-    response.body.docs.forEach((doc: any) => {
+    return response.body.docs.reduce<OSDocument[]>((acc, doc) => {
       if (doc.found && doc._source) {
-        const decoded = decodeBase64WithUtf8(doc._source);
-        if (!decoded) {
-          console.error(
-            `Decoded value is null or empty for document with ID ${doc._id}.`,
-          );
-          return;
-        }
         try {
-          const parsedDocument = JSON.parse(decoded) as main.Document;
-          retVal.push(parsedDocument);
+          return acc.concat(doc._source);
         } catch (e) {
-          console.error(
-            `Failed to parse JSON for document with ID ${doc._id}:`,
-            e,
-          );
+          console.error(`Failed to parse JSON for document with ID ${doc._id}:`, e);
+          return acc;
         }
       } else {
         console.error(`Document with ID ${doc._id} not found.`);
       }
-    });
 
-    return retVal;
+      return acc;
+    }, []);
   } catch (e) {
     console.log({ e });
     return [];

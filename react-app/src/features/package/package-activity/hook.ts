@@ -3,29 +3,29 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { opensearch } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
-import { usePackageDetailsCache } from "..";
 
-type Attachments = NonNullable<opensearch.changelog.Document["attachments"]>;
+export type Attachments = NonNullable<opensearch.changelog.Document["attachments"]>;
 
-export const useAttachmentService = (
-  props: Pick<opensearch.changelog.Document, "packageId">,
-) => {
-  const { mutateAsync, error, isLoading } = useMutation(
-    (att: Attachments[number]) =>
-      getAttachmentUrl(props.packageId, att.bucket, att.key, att.filename),
+export const useAttachmentService = ({ packageId }: { packageId: string }) => {
+  const { mutateAsync, error, isLoading } = useMutation((attachment: Attachments[number]) =>
+    getAttachmentUrl(packageId, attachment.bucket, attachment.key, attachment.filename),
   );
 
   const onZip = (attachments: Attachments) => {
+    if (attachments.length === 0) {
+      return;
+    }
+
     const zip = new JSZip();
 
-    const remoteZips = attachments.map(async (ATT, index) => {
-      const url = await mutateAsync(ATT);
+    const remoteZips = attachments.map(async (attachment, index) => {
+      const url = await mutateAsync(attachment);
       if (!url) return;
       const data = await fetch(url).then((res) => res.blob());
 
       // append index for uniqueness (fileone.md -> fileone(1).md)
       const filename = (() => {
-        const pieces = ATT.filename.split(".");
+        const pieces = attachment.filename.split(".");
         const ext = pieces.pop();
         return `${pieces.join(".")}(${index + 1}).${ext}`;
       })();
@@ -35,42 +35,12 @@ export const useAttachmentService = (
     });
 
     Promise.allSettled(remoteZips)
-      .then(() => {
-        zip.generateAsync({ type: "blob" }).then((content) => {
-          saveAs(
-            content,
-            `${props.packageId} - ${new Date().toDateString()}.zip`,
-          );
-        });
+      .then(async () => {
+        const asyncZipContent = await zip.generateAsync({ type: "blob" });
+        saveAs(asyncZipContent, `${packageId} - ${new Date().toDateString()}.zip`);
       })
-      .catch((e) => {
-        console.error(e);
-      });
+      .catch(console.error);
   };
 
   return { loading: isLoading, error, onUrl: mutateAsync, onZip };
-};
-
-export const usePackageActivities = () => {
-  const cache = usePackageDetailsCache();
-  const service = useAttachmentService({ packageId: cache.data.id });
-  const data = cache.data.changelog;
-
-  const onDownloadAll = () => {
-    const attachmentsAggregate = cache.data.changelog?.reduce((ACC, ATT) => {
-      if (!ATT._source.attachments) return ACC;
-      return ACC.concat(ATT._source.attachments);
-    }, [] as any);
-
-    if (!attachmentsAggregate.length) return;
-
-    service.onZip(attachmentsAggregate);
-  };
-
-  return {
-    data,
-    accordianDefault: [data?.[0]?._source?.id as string],
-    onDownloadAll,
-    ...service,
-  };
 };

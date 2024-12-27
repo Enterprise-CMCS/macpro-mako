@@ -40,12 +40,17 @@ describe("DataPoller", () => {
     onPoll.mockReturnValue(false);
 
     const poller = createPoller(50, 5);
-    const result = await poller.startPollingData();
 
-    expect(result).toEqual({
-      correctDataStateFound: false,
-      maxAttemptsReached: true,
-    });
+    try {
+      await poller.startPollingData();
+    } catch (error) {
+      expect(error).toEqual({
+        correctDataStateFound: false,
+        maxAttemptsReached: true,
+        error: "Error polling data: Correct data state not found, after max attempts reached",
+      });
+    }
+
     expect(fetcher).toHaveBeenCalledTimes(5);
     expect(onPoll).toHaveBeenCalledTimes(5);
   });
@@ -68,14 +73,18 @@ describe("DataPoller", () => {
   });
 
   test("should stop polling when interval is reached", async () => {
-    setInterval(() => onPoll.mockReturnValue(true), 300)
+    setInterval(() => onPoll.mockReturnValue(true), 300);
 
     const poller = createPoller(50, 3);
-    const result = await poller.startPollingData();
 
-    expect(result).toEqual({
-      correctDataStateFound: false,
-      maxAttemptsReached: true,
-    });
+    try {
+      await poller.startPollingData();
+    } catch (error) {
+      expect(error).toEqual({
+        correctDataStateFound: false,
+        maxAttemptsReached: true,
+        error: "Error polling data: Correct data state not found, after max attempts reached",
+      });
+    }
   });
 });

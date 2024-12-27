@@ -3,7 +3,7 @@ import { LoadingSpinner } from "@/components";
 import { DETAILS_ORIGIN, ORIGIN, mapActionLabel } from "@/utils";
 import { DetailCardWrapper } from "..";
 import { FC } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 
 export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
   const location = useLocation();
@@ -37,7 +37,7 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
                 from: `${location.pathname}${location.search}`,
               }}
               to={{
-                pathname: `/action/${item.data?._source.authority}/${id}/${type}`,
+                pathname: `/actions/${type}/${item.data?._source.authority}/${id}`,
                 search: new URLSearchParams({
                   [ORIGIN]: DETAILS_ORIGIN,
                 }).toString(),

@@ -1,11 +1,11 @@
 import {
-  seatoolSchema,
-  SEATOOL_STATUS,
-  getStatus,
   finalDispositionStatuses,
+  getStatus,
   SeaTool,
-  SeatoolOfficer,
   SEATOOL_SPW_STATUS,
+  SEATOOL_STATUS,
+  SeatoolOfficer,
+  seatoolSchema,
 } from "../../..";
 
 import { Authority, SEATOOL_AUTHORITIES } from "shared-types";
@@ -24,9 +24,9 @@ function getLeadAnalyst(eventData: SeaTool) {
     );
 
     if (leadAnalyst) {
-      leadAnalystOfficerId = leadAnalyst.OFFICER_ID;
-      leadAnalystName = `${leadAnalyst.FIRST_NAME} ${leadAnalyst.LAST_NAME}`;
-      leadAnalystEmail = leadAnalyst.EMAIL;
+      leadAnalystOfficerId = leadAnalyst.OFFICER_ID || null;
+      leadAnalystName = `${leadAnalyst.FIRST_NAME || ""} ${leadAnalyst.LAST_NAME || ""}`;
+      leadAnalystEmail = leadAnalyst.EMAIL || null;
     }
   }
   return {
@@ -72,17 +72,15 @@ const getRaiDate = (data: SeaTool) => {
 };
 
 const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
-  epocDate !== null && epocDate !== undefined
-    ? new Date(epocDate).toISOString()
-    : null;
+  epocDate !== null && epocDate !== undefined ? new Date(epocDate).toISOString() : null;
 
 const compileSrtList = (
   officers: SeatoolOfficer[] | null | undefined,
 ): { name: string; email: string }[] =>
   officers?.length
     ? officers.map((o) => ({
-        name: `${o.FIRST_NAME} ${o.LAST_NAME}`,
-        email: o.EMAIL,
+        name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
+        email: o.EMAIL || "",
       }))
     : [];
 
@@ -113,7 +111,7 @@ const isInSecondClock = (
   return false; // otherwise, we're not
 };
 
-const getAuthority = (authorityId: number | null) => {
+const getAuthority = (authorityId: number | null): string | null => {
   try {
     if (!authorityId) return null;
     return SEATOOL_AUTHORITIES[authorityId];
@@ -126,10 +124,8 @@ const getAuthority = (authorityId: number | null) => {
 
 export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
-    const { leadAnalystName, leadAnalystOfficerId, leadAnalystEmail } =
-      getLeadAnalyst(data);
-    const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } =
-      getRaiDate(data);
+    const { leadAnalystName, leadAnalystOfficerId, leadAnalystEmail } = getLeadAnalyst(data);
+    const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } = getRaiDate(data);
     const seatoolStatus = data.STATE_PLAN.SPW_STATUS_ID
       ? SEATOOL_SPW_STATUS[data.STATE_PLAN.SPW_STATUS_ID]
       : "Unknown";
@@ -138,18 +134,16 @@ export const transform = (id: string) => {
       id,
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
-        data.STATE_PLAN.APPROVED_EFFECTIVE_DATE ||
-          data.STATE_PLAN.ACTUAL_EFFECTIVE_DATE,
+        data.STATE_PLAN.APPROVED_EFFECTIVE_DATE || data.STATE_PLAN.ACTUAL_EFFECTIVE_DATE,
       ),
       changed_date: data.STATE_PLAN.CHANGED_DATE,
       description: data.STATE_PLAN.SUMMARY_MEMO,
       finalDispositionDate: getFinalDispositionDate(seatoolStatus, data),
       leadAnalystOfficerId,
       leadAnalystEmail,
-      initialIntakeNeeded:
-        !leadAnalystName && !finalDispositionStatuses.includes(seatoolStatus),
+      initialIntakeNeeded: !leadAnalystName && !finalDispositionStatuses.includes(seatoolStatus),
       leadAnalystName,
-      authority: getAuthority(data.STATE_PLAN?.PLAN_TYPE) as Authority | null,
+      authority: getAuthority(data.STATE_PLAN?.PLAN_TYPE),
       types:
         data.STATE_PLAN_SERVICETYPES?.filter(
           (type): type is NonNullable<typeof type> => type != null,
@@ -178,9 +172,8 @@ export const transform = (id: string) => {
       statusDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.STATUS_DATE),
       cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
       seatoolStatus,
-      submissionDate: getDateStringOrNullFromEpoc(
-        data.STATE_PLAN.SUBMISSION_DATE,
-      ),
+      locked: false,
+      submissionDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.SUBMISSION_DATE),
       subject: data.STATE_PLAN.TITLE_NAME,
       secondClock: isInSecondClock(
         raiReceivedDate,
@@ -188,9 +181,7 @@ export const transform = (id: string) => {
         seatoolStatus,
         getAuthority(data.STATE_PLAN.PLAN_TYPE),
       ),
-      raiWithdrawEnabled: finalDispositionStatuses.includes(seatoolStatus)
-        ? false
-        : undefined,
+      raiWithdrawEnabled: finalDispositionStatuses.includes(seatoolStatus) ? false : undefined,
     };
     return resp;
   });

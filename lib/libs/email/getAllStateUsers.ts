@@ -14,10 +14,16 @@ export type StateUser = {
 
 const cognitoClient = new CognitoIdentityProviderClient();
 
-export const getAllStateUsers = async (state: string): Promise<StateUser[]> => {
+export const getAllStateUsers = async ({
+  userPoolId,
+  state,
+}: {
+  userPoolId: string;
+  state: string;
+}): Promise<StateUser[]> => {
   try {
     const params: ListUsersCommandInput = {
-      UserPoolId: process.env.userPoolId,
+      UserPoolId: userPoolId,
       Limit: 60,
     };
 
@@ -29,9 +35,7 @@ export const getAllStateUsers = async (state: string): Promise<StateUser[]> => {
     }
 
     const filteredStateUsers = response.Users.filter((user) => {
-      const stateAttribute = user.Attributes?.find(
-        (attr) => attr.Name === "custom:state",
-      );
+      const stateAttribute = user.Attributes?.find((attr) => attr.Name === "custom:state");
       return stateAttribute?.Value?.split(",").includes(state);
     }).map((user) => {
       const attributes = user.Attributes?.reduce((acc, attr) => {

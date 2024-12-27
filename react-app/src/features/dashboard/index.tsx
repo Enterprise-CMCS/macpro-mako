@@ -13,9 +13,8 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components";
-import { useScrollToTop } from "@/hooks";
 import { isStateUser } from "shared-utils";
-import { Link, Navigate, redirect } from "react-router-dom";
+import { Link, Navigate, redirect } from "react-router";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -26,9 +25,7 @@ const loader = (queryClient: QueryClient) => {
       });
     }
 
-    const isUser = queryClient.getQueryData(["user"]) as Awaited<
-      ReturnType<typeof getUser>
-    >;
+    const isUser = queryClient.getQueryData(["user"]) as Awaited<ReturnType<typeof getUser>>;
     if (!isUser.user) {
       return redirect("/");
     }
@@ -42,7 +39,6 @@ export const dashboardLoader = loader;
 export const Dashboard = () => {
   const { data: userObj } = useGetUser();
   const osData = useOsData();
-  useScrollToTop();
 
   if (userObj === undefined) {
     return <Navigate to="/" />;

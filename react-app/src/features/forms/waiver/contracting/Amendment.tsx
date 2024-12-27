@@ -9,11 +9,16 @@ import {
   Input,
   RequiredIndicator,
 } from "@/components";
-import { Link } from "react-router-dom";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
+import { Link } from "react-router";
+import { getFAQLinkForAttachments } from "../../faqLinks";
 
-export const AmendmentForm = () => {
+interface AmendmentFormProps {
+  waiverId?: string;
+}
+
+export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
   return (
     <ActionForm
       schema={formSchemas["contracting-amendment"]}
@@ -29,45 +34,45 @@ export const AmendmentForm = () => {
               1915(b)
             </span>
           </div>
-          <FormField
-            control={control}
-            name="waiverNumber"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel
-                  className="font-semibold"
-                  data-testid="waiverid-existing-label"
-                >
-                  Existing Waiver Number to Amend <RequiredIndicator />
-                </FormLabel>
-                <p className="text-gray-500 font-light">
-                  Enter the existing waiver number you are seeking to amend in
-                  the format it was approved, using a dash after the two
-                  character state abbreviation.
-                </p>
-                <FormControl className="max-w-sm">
-                  <Input
-                    ref={field.ref}
-                    value={field.value}
-                    onChange={(e) =>
-                      field.onChange(e.currentTarget.value.toUpperCase())
-                    }
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {waiverId !== undefined ? (
+            <div>
+              <p className="font-semibold">Existing Waiver Number to Amend</p>
+              <p className="text-lg font-thin" data-testid="existing-waiver-id">
+                {waiverId}
+              </p>
+            </div>
+          ) : (
+            <FormField
+              control={control}
+              name="waiverNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold" data-testid="existing-waiver-label">
+                    Existing Waiver Number to Amend <RequiredIndicator />
+                  </FormLabel>
+                  <p className="text-neutral-500">
+                    Enter the existing waiver number you are seeking to amend in the format it was
+                    approved, using a dash after the two character state abbreviation.
+                  </p>
+                  <FormControl className="max-w-sm">
+                    <Input
+                      ref={field.ref}
+                      value={field.value}
+                      onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
           <FormField
             control={control}
             name="id"
             render={({ field }) => (
               <FormItem>
                 <div className="flex gap-4">
-                  <FormLabel
-                    className="font-semibold"
-                    data-testid="waiverid-amendment-label"
-                  >
+                  <FormLabel className="font-semibold" data-testid="waiverid-amendment-label">
                     1915(b) Waiver Amendment Number <RequiredIndicator />
                   </FormLabel>
                   <Link
@@ -79,18 +84,15 @@ export const AmendmentForm = () => {
                     What is my 1915(b) Waiver Amendment Number?
                   </Link>
                 </div>
-                <p className="text-gray-500 font-light">
-                  The Waiver Number must be in the format of SS-####.R##.## or
-                  SS-#####.R##.##. For amendments, the last two digits start
-                  with {"'01'"} and ascends.
+                <p className="text-neutral-500">
+                  The Waiver Number must be in the format of SS-####.R##.## or SS-#####.R##.##. For
+                  amendments, the last two digits start with {"'01'"} and ascends.
                 </p>
                 <FormControl className="max-w-sm">
                   <Input
                     ref={field.ref}
                     value={field.value}
-                    onChange={(e) =>
-                      field.onChange(e.currentTarget.value.toUpperCase())
-                    }
+                    onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                   />
                 </FormControl>
                 <FormMessage />
@@ -103,8 +105,7 @@ export const AmendmentForm = () => {
             render={({ field }) => (
               <FormItem className="max-w-lg">
                 <FormLabel className="text-lg font-semibold block">
-                  Proposed Effective Date of 1915(b) Waiver Amendment{" "}
-                  <RequiredIndicator />
+                  Proposed Effective Date of 1915(b) Waiver Amendment <RequiredIndicator />
                 </FormLabel>
                 <FormControl className="max-w-sm">
                   <DatePicker
@@ -120,9 +121,9 @@ export const AmendmentForm = () => {
         </>
       )}
       attachments={{
-        faqLink: "/faq/waiverb-attachments",
+        faqLink: getFAQLinkForAttachments("contracting-amendment"),
       }}
-      defaultValues={{ id: "" }}
+      defaultValues={{ id: "", waiverNumber: waiverId ?? "" }}
       documentPollerArgs={{
         property: "id",
         documentChecker: (check) => check.recordExists,

@@ -1,6 +1,10 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router";
 import * as F from "@/features";
 import * as C from "@/components";
+import {
+  postSubmissionLoader,
+  PostSubmissionWrapper,
+} from "@/features/forms/post-submission/post-submission-forms";
 import { QueryClient } from "@tanstack/react-query";
 export const queryClient = new QueryClient();
 
@@ -93,23 +97,20 @@ export const router = createBrowserRouter([
         element: <F.ChipSPASubmissionOptions />,
       },
       {
-        path: "/new-submission/spa/medicaid/landing/medicaid-abp",
-        element: <F.MedicaidABPLandingPage />,
-      },
-      {
         path: "/new-submission/spa/medicaid/landing/medicaid-eligibility",
         element: <F.MedicaidEligibilityLandingPage />,
       },
-      {
-        path: "/new-submission/spa/chip/landing/chip-eligibility",
-        element: <F.CHIPEligibilityLandingPage />,
-      },
-      { path: "/action/:authority/:id/:type", element: <F.ActionPage /> },
       { path: "/webforms", element: <F.WebformsList /> },
       { path: "/webform/:id/:version", element: <F.Webform /> },
       { path: "/profile", element: <F.Profile /> },
       { path: "/guides/abp", element: <F.ABPGuide /> },
+      {
+        path: "/actions/:type/:authority/:id",
+        element: <PostSubmissionWrapper />,
+        loader: postSubmissionLoader,
+      },
     ],
     loader: F.loader(queryClient),
+    HydrateFallback: () => null,
   },
 ]);

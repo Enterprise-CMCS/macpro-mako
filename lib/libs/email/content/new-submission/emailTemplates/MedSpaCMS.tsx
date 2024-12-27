@@ -1,51 +1,41 @@
-import * as React from "react";
-import { emailTemplateValue } from "../data";
-import { OneMac } from "shared-types";
-import { CommonVariables, formatDate } from "../../..";
-import { Html, Container } from "@react-email/components";
+import { CommonEmailVariables, Events } from "shared-types";
 import {
+  Attachments,
+  DetailsHeading,
   LoginInstructions,
   PackageDetails,
-  SpamWarning,
+  BasicFooter,
 } from "../../email-components";
+import { BaseEmailTemplate } from "../../email-templates";
+import { formatDate } from "lib/packages/shared-utils";
 
 export const MedSpaCMSEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables: Events["NewMedicaidSubmission"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
+  const previewText = `Medicaid SPA ${variables.id} Submitted`;
+  const heading = "The OneMAC Submission Portal received a Medicaid SPA Submission:";
+
   return (
-    <Html lang="en" dir="ltr">
-      <Container>
-        <h3>
-          The OneMAC Submission Portal received a Medicaid SPA Submission:
-        </h3>
-        <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
-        <PackageDetails
-          details={{
-            "State or territory": variables.territory,
-            Name: variables.submitterName,
-            Email: variables.submitterEmail,
-            "Medicaid SPA ID": variables.id,
-            "Proposed Effective Date": formatDate(
-              variables.notificationMetadata?.proposedEffectiveDate,
-            ),
-            Summary: variables.additionalInformation,
-          }}
-          attachments={variables.attachments}
-        />
-        <SpamWarning />
-      </Container>
-    </Html>
+    <BaseEmailTemplate
+      previewText={previewText}
+      heading={heading}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<BasicFooter />}
+    >
+      <DetailsHeading />
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+      <PackageDetails
+        details={{
+          "State or Territory": variables.territory,
+          Name: variables.submitterName,
+          Email: variables.submitterEmail,
+          "Medicaid SPA ID": variables.id,
+          "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <Attachments attachments={variables.attachments} />
+    </BaseEmailTemplate>
   );
 };
-
-// To preview with 'email-dev'
-const MedSpaCMSEmailPreview = () => {
-  return (
-    <MedSpaCMSEmail
-      variables={emailTemplateValue as OneMac & CommonVariables}
-    />
-  );
-};
-
-export default MedSpaCMSEmailPreview;

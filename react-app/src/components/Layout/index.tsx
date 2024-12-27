@@ -1,11 +1,5 @@
-import {
-  NavLink,
-  NavLinkProps,
-  Outlet,
-  Link,
-  useNavigate,
-} from "react-router-dom";
-import oneMacLogo from "@/assets/onemac_logo.svg";
+import { NavLink, NavLinkProps, Outlet, Link, useNavigate } from "react-router";
+import oneMacLogo from "@/assets/onemac-logo.png";
 import { useMediaQuery } from "@/hooks";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
@@ -16,9 +10,16 @@ import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
-import { SimplePageContainer, UserPrompt, Banner } from "@/components";
+import { ScrollToTop, SimplePageContainer, UserPrompt, Banner } from "@/components";
 import { isFaqPage, isProd } from "@/utils";
 
+/**
+ * Custom hook that generates a list of navigation links based on the user's status and whether the current page is the FAQ page.
+ *
+ * @returns {Object} An object containing:
+ * - `links`: An array of link objects with `name`, `link`, and `condition` properties.
+ * - `isFaqPage`: A boolean indicating if the current page is the FAQ page.
+ */
 const useGetLinks = () => {
   const { isLoading, data: userObj } = useGetUser();
 
@@ -51,6 +52,22 @@ const useGetLinks = () => {
   return { links, isFaqPage };
 };
 
+/**
+ * UserDropdownMenu component renders a dropdown menu for user actions.
+ *
+ * This component provides options for viewing the user's profile and signing out.
+ * It uses the `useNavigate` hook for navigation and `Auth.signOut` for logging out.
+ *
+ * The dropdown menu is not rendered on the FAQ page.
+ *
+ * @component
+ * @example
+ * return (
+ *   <UserDropdownMenu />
+ * )
+ *
+ * @returns {JSX.Element} The rendered dropdown menu component.
+ */
 const UserDropdownMenu = () => {
   const navigate = useNavigate();
 
@@ -68,7 +85,7 @@ const UserDropdownMenu = () => {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
         asChild
-        className="hover:text-white/70 p-4 data-[state=open]:bg-white data-[state=open]:text-primary"
+        className="hover:text-white/70 py-2 pl-3 pr-4 data-[state=open]:bg-white data-[state=open]:text-primary"
       >
         <button className="flex flex-row gap-4 items-center cursor-pointer">
           <p className="flex">My Account</p>
@@ -80,11 +97,7 @@ const UserDropdownMenu = () => {
             stroke="currentColor"
             className="w-4 h-4 flex"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
           </svg>
         </button>
       </DropdownMenu.Trigger>
@@ -94,18 +107,12 @@ const UserDropdownMenu = () => {
           className="bg-white z-50 flex flex-col gap-4 px-10 py-4 shadow-md rounded-b-sm "
         >
           <DropdownMenu.Item className="flex">
-            <button
-              className="text-primary hover:text-primary/70"
-              onClick={handleViewProfile}
-            >
+            <button className="text-primary hover:text-primary/70" onClick={handleViewProfile}>
               View Profile
             </button>
           </DropdownMenu.Item>
           <DropdownMenu.Item className="flex">
-            <button
-              className="text-primary hover:text-primary/70"
-              onClick={handleLogout}
-            >
+            <button className="text-primary hover:text-primary/70" onClick={handleLogout}>
               Sign Out
             </button>
           </DropdownMenu.Item>
@@ -115,6 +122,28 @@ const UserDropdownMenu = () => {
   );
 };
 
+/**
+ * Layout component that serves as the main structure of the application.
+ * It includes a navigation bar, main content area, and footer.
+ *
+ * @returns {JSX.Element} The rendered Layout component.
+ *
+ * @component
+ * @example
+ * return (
+ *   <Layout />
+ * )
+ *
+ * @remarks
+ * - Uses `useMediaQuery` to determine if the screen width is at least 768px.
+ * - Fetches user data using `useGetUser` hook.
+ * - Displays a `UserPrompt` component.
+ * - Displays a `UsaBanner` component, indicating if the user is missing a role.
+ * - Contains a navigation bar with a logo and a `ResponsiveNav` component.
+ * - The logo is a clickable `Link` unless on the FAQ page, where it is a non-clickable `div`.
+ * - The main content area includes a `SimplePageContainer` with a `Banner` and an `Outlet` for nested routes.
+ * - The footer displays contact information.
+ */
 export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
@@ -122,11 +151,10 @@ export const Layout = () => {
 
   return (
     <div className="min-h-full flex flex-col">
+      <ScrollToTop />
       <UserPrompt />
-      <UsaBanner
-        isUserMissingRole={user?.user && customUserRoles === undefined}
-      />
-      <nav data-test="nav-banner-d" className="bg-primary">
+      <UsaBanner isUserMissingRole={user?.user && customUserRoles === undefined} />
+      <nav data-testid="nav-banner-d" className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="h-[70px] flex gap-12 items-center text-white">
             {!isFaqPage ? (
@@ -175,6 +203,27 @@ type ResponsiveNavProps = {
   isDesktop: boolean;
 };
 
+/**
+ * ResponsiveNav component renders a navigation bar that adapts to desktop and mobile views.
+ * It displays navigation links and user authentication buttons (Sign In/Register) based on the user's authentication status.
+ *
+ * @param {ResponsiveNavProps} props - The properties for the ResponsiveNav component.
+ * @param {boolean} props.isDesktop - A boolean indicating if the current view is desktop.
+ *
+ * @returns {JSX.Element | null} The rendered navigation bar component.
+ *
+ * @component
+ *
+ * @example
+ * // Usage example:
+ * <ResponsiveNav isDesktop={true} />
+ *
+ * @remarks
+ * - The component uses `useGetLinks` to fetch navigation links.
+ * - The component uses `useGetUser` to fetch user data.
+ * - The component conditionally renders different layouts for desktop and mobile views.
+ * - The component handles user authentication redirection for login and registration.
+ */
 const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const [prevMediaQuery, setPrevMediaQuery] = useState(isDesktop);
   const [isOpen, setIsOpen] = useState(false);
@@ -183,8 +232,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
 
   const handleLogin = () => {
     const authConfig = Auth.configure();
-    const { domain, redirectSignIn, responseType } =
-      authConfig.oauth as AwsCognitoOAuthOpts;
+    const { domain, redirectSignIn, responseType } = authConfig.oauth as AwsCognitoOAuthOpts;
     const clientId = authConfig.userPoolWebClientId;
     const url = `https://${domain}/oauth2/authorize?redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
     window.location.assign(url);
@@ -254,7 +302,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
       <div className="flex-1"></div>
       {isOpen && (
         <div className="w-full absolute top-[100px] sm:top-[85px] left-0 z-50">
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-2 gap-4 rounded-b-lg bg-primary">
+          <ul className="font-medium flex flex-col items-start p-4 md:p-0 mt-2 gap-4 rounded-b-lg bg-primary">
             {links.map((link) => (
               <li key={link.link}>
                 <Link
@@ -281,7 +329,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                     Sign In
                   </button>
                   <button
-                    className="text-white hover:text-white/70"
+                    className="text-left block py-2 pl-3 pr-4 text-white rounded"
                     onClick={handleRegister}
                   >
                     Register
@@ -293,6 +341,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
         </div>
       )}
       <button
+        data-testid="mobile-menu-button"
         onClick={() => {
           setIsOpen((prev) => !prev);
         }}
@@ -304,8 +353,19 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   );
 };
 
+/**
+ * SubNavHeader component
+ *
+ * This component renders a sub-navigation header with a background color and
+ * centers its children content within a maximum width container.
+ *
+ * @param {Object} props - The properties object.
+ * @param {React.ReactNode} props.children - The content to be displayed inside the sub-navigation header.
+ *
+ * @returns {JSX.Element} The rendered sub-navigation header component.
+ */
 export const SubNavHeader = ({ children }: { children: React.ReactNode }) => (
-  <div className="bg-sky-100">
+  <div className="bg-sky-100" data-testid="sub-nav-header">
     <div className="max-w-screen-xl m-auto px-4 lg:px-8">
       <div className="flex items-center">
         <div className="flex align-middle py-4">{children}</div>

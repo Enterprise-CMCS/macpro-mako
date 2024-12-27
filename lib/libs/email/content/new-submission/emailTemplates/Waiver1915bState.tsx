@@ -1,64 +1,53 @@
-import * as React from "react";
-import { DateTime } from "luxon";
-import { emailTemplateValue } from "../data";
-import { OneMac } from "shared-types";
-import { CommonVariables, formatNinetyDaysDate } from "../../..";
-import { Container, Html } from "@react-email/components";
+import { CommonEmailVariables, Events } from "shared-types";
+import { formatNinetyDaysDate, formatDate } from "shared-utils";
+import { Text } from "@react-email/components";
 import {
-  MailboxWaiver,
   PackageDetails,
-  ContactStateLead,
+  FollowUpNotice,
+  DetailsHeading,
+  Attachments,
+  MailboxNotice,
 } from "../../email-components";
+import { styles } from "../../email-styles";
+import { BaseEmailTemplate } from "../../email-templates";
 
 export const Waiver1915bStateEmail = (props: {
-  variables: OneMac & CommonVariables;
+  variables:
+    | (Events["CapitatedInitial"] & CommonEmailVariables)
+    | (Events["ContractingInitial"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
+  const previewText = `${variables.authority} ${variables.actionType} Submitted`;
+  const heading = `This response confirms the submission of your ${variables.authority} ${variables.actionType} to CMS for review:`;
   return (
-    <Html lang="en" dir="ltr">
-      <Container>
-        <h3>
-          This response confirms the submission of your {variables.authority}{" "}
-          {variables.actionType} to CMS for review:
-        </h3>
-        <PackageDetails
-          details={{
-            "State or territory": variables.territory,
-            Name: variables.submitterName,
-            "Email Address": variables.submitterEmail,
-            [`${variables.actionType} Number`]: variables.id,
-            "Waiver Authority": variables.authority,
-            "Proposed Effective Date": DateTime.fromMillis(
-              Number(variables.notificationMetadata?.proposedEffectiveDate),
-            ).toFormat("DDDD"),
-            "90th Day Deadline": formatNinetyDaysDate(
-              variables.notificationMetadata?.submissionDate,
-            ),
-            Summary: variables.additionalInformation,
-          }}
-        />
-        <p>
-          This response confirms the receipt of your Waiver request or your
-          response to a Waiver Request for Additional Information (RAI). You can
-          expect a formal response to your submittal to be issued within 90
-          days, before
-          {formatNinetyDaysDate(variables.notificationMetadata?.submissionDate)}
-          .
-        </p>
-        <MailboxWaiver />
-        <ContactStateLead />
-      </Container>
-    </Html>
+    <BaseEmailTemplate
+      previewText={previewText}
+      heading={heading}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<FollowUpNotice />}
+    >
+      <DetailsHeading />
+      <PackageDetails
+        details={{
+          "State or Territory": variables.territory,
+          Name: variables.submitterName,
+          "Email Address": variables.submitterEmail,
+          [`${variables.actionType} Number`]: variables.id,
+          "Waiver Authority": variables.authority,
+          "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
+          "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <Attachments attachments={variables.attachments} />
+      <Text style={{ ...styles.text, marginTop: "16px" }}>
+        {`This response confirms the receipt of your Waiver request. You
+              can expect a formal response to your submittal to be issued within
+              90 days, before
+              ${formatNinetyDaysDate(variables.timestamp)}
+              .`}
+      </Text>
+      <MailboxNotice type="Waiver" />
+    </BaseEmailTemplate>
   );
 };
-
-// To preview with 'email-dev'
-const Waiver1915bStateEmailPreview = () => {
-  return (
-    <Waiver1915bStateEmail
-      variables={emailTemplateValue as OneMac & CommonVariables}
-    />
-  );
-};
-
-export default Waiver1915bStateEmailPreview;
