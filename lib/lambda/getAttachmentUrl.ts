@@ -1,3 +1,4 @@
+import { handleOpensearchError } from "./utils";
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
@@ -83,11 +84,7 @@ export const handler = async (event: APIGatewayEvent) => {
       body: { url },
     });
   } catch (error) {
-    console.error({ error });
-    return response({
-      statusCode: 500,
-      body: { message: "Internal server error" },
-    });
+    return response(handleOpensearchError(error));
   }
 };
 

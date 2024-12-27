@@ -1,8 +1,8 @@
 import { http, HttpResponse } from "msw";
-import { defaultHandlers as countiesHandler } from "./counties.js";
-import { defaultHandlers as itemHandlers } from "./items.js";
-import { defaultHandlers as submissionHandlers } from "./submissions.js";
-import { defaultHandlers as typeHandlers } from "./types.js";
+import { apiHandlers } from "./api";
+import { awsHandlers } from "./aws";
+import { opensearchHandlers } from "./opensearch";
+import { countiesHandlers } from "./counties";
 
 export type Body =
   | Blob
@@ -14,7 +14,7 @@ export type Body =
   | null
   | undefined;
 
-export const putOnceHandler = (endpoint: string, status: number = 200, body?: Body) =>
+export const postOnceHandler = (endpoint: string, status: number = 200, body?: Body) =>
   http.post(
     endpoint,
     async () => {
@@ -23,14 +23,33 @@ export const putOnceHandler = (endpoint: string, status: number = 200, body?: Bo
     { once: true },
   );
 
-export default [...itemHandlers, ...typeHandlers, ...submissionHandlers, ...countiesHandler];
+// Handlers that mock calls to the API
+export const defaultApiHandlers = [
+  ...apiHandlers,
+  ...countiesHandlers
+]
+
+// Handlers that mock calls to 3rd party services from the API
+export const defaultServiceHandlers = [
+  ...awsHandlers,
+  ...opensearchHandlers,
+  ...countiesHandlers
+]
+
+export default [
+  ...apiHandlers,
+  ...awsHandlers,
+  ...opensearchHandlers,
+  ...countiesHandlers,
+];
 
 export {
-  mockCurrentAuthenticatedUser,
-  mockUseGetUser,
-  mockUserAttributes,
+  convertUserAttributes,
   setDefaultReviewer,
   setDefaultStateSubmitter,
   setMockUsername,
-} from "./auth.js";
-export type { GetItemBody } from "./items.js";
+} from "./authUtils.js";
+
+export * from "./api";
+export * from "./aws";
+export * from "./opensearch";

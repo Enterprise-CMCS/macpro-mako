@@ -1,8 +1,9 @@
+import { handleOpensearchError } from "./utils";
 import { APIGatewayEvent } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import { response } from "libs/handler-lib";
 
-type GetTypesBoby = {
+type GetTypesBody = {
   authorityId: string;
 };
 
@@ -55,7 +56,7 @@ export const getTypes = async (event: APIGatewayEvent) => {
       body: { message: "Event body required" },
     });
   }
-  const body = JSON.parse(event.body) as GetTypesBoby;
+  const body = JSON.parse(event.body) as GetTypesBody;
   try {
     const result = await queryTypes(body.authorityId);
     if (!result)
@@ -69,11 +70,7 @@ export const getTypes = async (event: APIGatewayEvent) => {
       body: result,
     });
   } catch (err) {
-    console.error({ err });
-    return response({
-      statusCode: 500,
-      body: { message: "Internal server error" },
-    });
+    return response(handleOpensearchError(err));
   }
 };
 

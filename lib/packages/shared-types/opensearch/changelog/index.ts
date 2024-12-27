@@ -79,7 +79,10 @@ export type Document = Omit<AppkDocument, "event"> &
       | "toggle-withdraw-rai"
       | "upload-subsequent-documents"
       | "withdraw-package"
-      | "withdraw-rai";
+      | "withdraw-rai"
+      | "update-values"
+      | "update-id"
+      | "delete";
   };
 
 export type Response = Res<Document>;

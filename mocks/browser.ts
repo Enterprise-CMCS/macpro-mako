@@ -1,4 +1,4 @@
 import { setupWorker } from "msw/browser";
-import handlers from "./handlers";
+import { defaultApiHandlers } from "./handlers";
 
-export const mockedWorker = setupWorker(...handlers);
+export const mockedWorker = setupWorker(...defaultApiHandlers);
