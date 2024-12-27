@@ -132,37 +132,33 @@ export class Auth extends cdk.NestedStack {
     }
 
     // Cognito User Pool Client
-    const userPoolClient = new cdk.aws_cognito.CfnUserPoolClient(
-      this,
-      "CognitoUserPoolClient",
-      {
-        clientName: `${project}-${stage}-${stack}`,
-        userPoolId: userPool.userPoolId,
-        explicitAuthFlows: ["ADMIN_NO_SRP_AUTH"],
-        generateSecret: false,
-        allowedOAuthFlows: ["code"],
-        allowedOAuthFlowsUserPoolClient: true,
-        allowedOAuthScopes: [
-          "email",
-          "openid",
-          "aws.cognito.signin.user.admin",
-        ],
-        callbackUrLs: [applicationEndpointUrl, "http://localhost:5000/"],
-        defaultRedirectUri: applicationEndpointUrl,
-        logoutUrLs: [applicationEndpointUrl, "http://localhost:5000/"],
-        supportedIdentityProviders: userPoolIdentityProviderOidc
-          ? ["COGNITO", userPoolIdentityProviderOidc.providerName]
-          : ["COGNITO"],
-        accessTokenValidity: 30,
-        idTokenValidity: 30,
-        refreshTokenValidity: 12,
-        tokenValidityUnits: {
-          accessToken: "minutes",
-          idToken: "minutes",
-          refreshToken: "hours",
-        },
+    const userPoolClient = new cdk.aws_cognito.CfnUserPoolClient(this, "CognitoUserPoolClient", {
+      clientName: `${project}-${stage}-${stack}`,
+      userPoolId: userPool.userPoolId,
+      explicitAuthFlows: ["ADMIN_NO_SRP_AUTH"],
+      generateSecret: false,
+      allowedOAuthFlows: ["code"],
+      allowedOAuthFlowsUserPoolClient: true,
+      allowedOAuthScopes: ["email", "openid", "aws.cognito.signin.user.admin"],
+      callbackUrLs: [
+        applicationEndpointUrl,
+        "http://localhost:5000/",
+        "http://localhost:5000/dashboard",
+      ],
+      defaultRedirectUri: applicationEndpointUrl,
+      logoutUrLs: [applicationEndpointUrl, "http://localhost:5000/"],
+      supportedIdentityProviders: userPoolIdentityProviderOidc
+        ? ["COGNITO", userPoolIdentityProviderOidc.providerName]
+        : ["COGNITO"],
+      accessTokenValidity: 30,
+      idTokenValidity: 30,
+      refreshTokenValidity: 12,
+      tokenValidityUnits: {
+        accessToken: "minutes",
+        idToken: "minutes",
+        refreshToken: "hours",
       },
-    );
+    });
 
     const userPoolDomain = new cdk.aws_cognito.CfnUserPoolDomain(
       this,
