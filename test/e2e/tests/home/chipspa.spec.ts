@@ -5,16 +5,6 @@ import { testUsers } from "utils/users";
 test.describe("Form Submission", async () => {
 
   test("Create and submit a CHIP SPA", async ({ page }) => {
-    /* Login */
-    // Navigate to the OneMAC Home Page using the home.page.ts file. 
-    // Login to MAKO as a State User, using the loginPage.ts script to navigate to the Login prompt. 
-    // Refer to the users.ts file to view the available users for MAKO.
-
-    const homePage = new HomePage(page);
-    const loginPage = new LoginPage(page);
-
-    await homePage;
-    await loginPage.login("", "");
 
     /* Dashboard */
     // Select New Submission on the Dashboard page. 
@@ -38,14 +28,14 @@ test.describe("Form Submission", async () => {
     // Generate a sample Current State Plan file and attach it to the Current State Plan field. 
     // Generate a sample Amended State Plan file and attach it to the Amended State Plan  field.
     // Generate a sample Cover Letter file and attach it to the Cover Letter field.
-    await page.locator('//*[@id="root"]/div/main/div[2]/form/section[2]/div/section/div[1]/div/p/span').click();
-    await page.locator('//*[@id="root"]/div/main/div[2]/form/section[2]/div/section/div[2]/div/p/span').click();
-    await page.locator('//*[@id="root"]/div/main/div[2]/form/section[2]/div/section/div[3]/div/p/span').click();
+    await page.getByText("choose from folder").click();
+    await page.getByText("choose from folder").click();
+    await page.getByText("choose from folder").click();
 
     /* Submission */
     // Click Submit. The user should then be returned to the Dashboard page. 
     // Verify the submission of the SPA by searching for the newly created SPA using the Dashboard. 
     // Confirm that a search of the newly-created SPA opens a Package Details page of the CHIP SPA. 
-    await page.locator('//*[@id="root"]/div/main/div[2]/form/section[4]/button[1]').click();
+    await page.getByRole("button", { name: "Submit" }).click();
   });
 });

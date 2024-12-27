@@ -10,14 +10,6 @@ test.describe.skip("Form Submission", async () => {
     // Login to MAKO as a State User, using the loginPage.ts script to navigate to the Login prompt. 
     // Refer to the users.ts file to view the available users for MAKO.
 
-    const homePage = new HomePage(page);
-    const loginPage = new LoginPage(page);
-    const email = "Testing";
-    const password = "Testing";
-
-    await homePage;
-    await loginPage.login(email, password);
-
   });
   test("Create and submit an Appendix K Amendment Waiver", () => { });
 });
