@@ -1,11 +1,10 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { render } from "@testing-library/react";
-import { cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
-import AppKStateEmailPreview from "./AppK";
-import CHIP_SPA from "./CHIP_SPA";
-import Medicaid_SPA from "./Medicaid_SPA";
-import Waiver_Capitated from "./Waiver_Capitated";
+import { describe, it, expect, beforeEach } from "vitest";
+import { render, cleanup } from "@testing-library/react";
+import AppKStateEmailPreview from "../preview/Respond_to_Rai/State/AppK";
+import CHIP_SPA from "../preview/Respond_to_Rai/State/CHIP_SPA";
+import Medicaid_SPA from "../preview/Respond_to_Rai/State/Medicaid_SPA";
+import Waiver_Capitated from "../preview/Respond_to_Rai/State/Waiver_Capitated";
 
 beforeEach(() => {
   cleanup();

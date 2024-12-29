@@ -32,9 +32,8 @@ export default defineConfig(({ mode }) => {
       port: 5000,
     },
     test: {
-      root: ".",
+      root: "./src",
       setupFiles: "./vitest.setup.ts",
-      exclude: ["**/node_modules/**"],
       environment: "jsdom",
     },
     resolve: {

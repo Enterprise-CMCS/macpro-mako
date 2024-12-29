@@ -1,6 +1,16 @@
-import { Handler } from "aws-lambda";
-import * as os from "../libs/opensearch-lib";
+import type { Handler } from "aws-lambda";
+import { createIndex, updateFieldMapping } from "../libs/opensearch-lib";
 import { opensearch } from "../packages/shared-types";
+
+const manageIndexResource = async (resource: {
+  osDomain: string;
+  index: opensearch.Index;
+  update?: object;
+}) => {
+  await createIndex(resource.osDomain, resource.index);
+  if (!resource.update) return;
+  await updateFieldMapping(resource.osDomain, resource.index, resource.update);
+};
 
 export const handler: Handler = async (event, __, callback) => {
   const response = {
@@ -50,18 +60,4 @@ export const handler: Handler = async (event, __, callback) => {
   } finally {
     callback(errorResponse, response);
   }
-};
-
-const manageIndexResource = async (resource: {
-  osDomain: string;
-  index: opensearch.Index;
-  update?: object;
-}) => {
-  await os.createIndex(resource.osDomain, resource.index);
-  if (!resource.update) return;
-  await os.updateFieldMapping(
-    resource.osDomain,
-    resource.index,
-    resource.update,
-  );
 };
