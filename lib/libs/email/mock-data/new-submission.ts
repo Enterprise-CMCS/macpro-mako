@@ -1,7 +1,7 @@
 export const emailTemplateValue = {
   territory: "CO",
   applicationEndpointUrl: "https://mako-dev.cms.gov/",
-  timestamp: Date.now(),
+  timestamp: 1728495786285,
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",
   additionalInformation:

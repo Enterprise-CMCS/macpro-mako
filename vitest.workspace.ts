@@ -1,6 +1,8 @@
 import { configDefaults, defineWorkspace } from "vitest/config";
-// import "@testing-library/jest-dom";
 import path from "path";
+import { EventEmitter } from "events";
+
+EventEmitter.defaultMaxListeners = Infinity;
 
 export default defineWorkspace([
   {
@@ -9,26 +11,10 @@ export default defineWorkspace([
       include: ["lib/**/*.test.{ts,tsx}"],
       exclude: [
         ...configDefaults.exclude,
-        // ".build_run",
-        // ".cdk",
         "lib/libs/webforms/**",
         "lib/libs/email/**",
         "lib/local-constructs/**",
-        // "react-app/src/features/webforms/**",
-        // "**/TestWrapper.tsx",
-        // "lib/stacks",
-        // "lib/local-aspects",
-        // "bin",
-        // "vitest.workspace.ts",
-        // "**/*.config.{ts,js,cjs}",
-        // "**/coverage/**",
-        // "test/e2e",
-        // "mocks",
-        // "react-app/src/assets",
-        // "node_modules",
-        // "**/node_modules",
       ],
-      // Server-side tests configuration
       environment: "node",
       globals: true,
       setupFiles: ["./lib/vitest.setup.ts"],
@@ -45,36 +31,38 @@ export default defineWorkspace([
       },
     },
   },
-  // {
-  //   // React application tests configuration
-  //   test: {
-  //     name: "react-app",
-  //     include: ["react-app/src/**/*.test.{ts,tsx}"],
-  //     exclude: ["react-app/src/features/webforms/**"],
-  //     environment: "jsdom",
-  //     globals: true,
-  //     setupFiles: ["./react-app/vitest.setup.ts"],
-  //     pool: "threads",
-  //     poolOptions: {
-  //       threads: {
-  //         singleThread: false,
-  //       },
-  //     },
-  //   },
-  // },
-  // {
-  //   test: {
-  //     name: "emails",
-  //     include: ["lib/libs/email/**/*.test.{ts,tsx}"],
-  //     environment: "jsdom",
-  //     setupFiles: ["./react-app/vitest.setup.ts"],
-  //     globals: true,
-  //     pool: "threads",
-  //     poolOptions: {
-  //       threads: {
-  //         singleThread: false,
-  //       },
-  //     },
-  //   },
-  // },
+  {
+    test: {
+      name: "react-app",
+      include: ["./react-app/src/**/*.test.tsx", "react-app/src/**/*.test.ts"],
+      exclude: ["./react-app/src/features/**"],
+      environment: "jsdom",
+      globals: true,
+      setupFiles: ["./react-app/vitest.setup.ts"],
+      pool: "threads",
+      poolOptions: {
+        threads: {
+          singleThread: false,
+        },
+      },
+      alias: {
+        "@": path.resolve(__dirname, "./react-app/src"),
+      },
+    },
+  },
+  {
+    test: {
+      name: "emails",
+      include: ["lib/libs/email/**/*.test.tsx", "lib/libs/email/**/*.test.ts"],
+      environment: "jsdom",
+      setupFiles: ["lib/libs/email/vitest.setup.ts"],
+      globals: true,
+      pool: "threads",
+      poolOptions: {
+        threads: {
+          singleThread: false,
+        },
+      },
+    },
+  },
 ]);
