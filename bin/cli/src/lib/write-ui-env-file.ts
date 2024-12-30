@@ -24,6 +24,7 @@ export async function writeUiEnvFile(stage, local = false) {
     ).Parameter!.Value!,
   );
 
+  console.log(deploymentOutput.applicationEndpointUrl, "HELLO WHAT IS THIS");
   const envVariables = {
     VITE_API_REGION: `"${region}"`,
     VITE_API_URL: deploymentOutput.apiGatewayRestApiUrl,
@@ -35,7 +36,7 @@ export async function writeUiEnvFile(stage, local = false) {
     VITE_COGNITO_USER_POOL_CLIENT_DOMAIN: deploymentOutput.userPoolClientDomain,
     VITE_COGNITO_REDIRECT_SIGNIN: local
       ? `"http://localhost:5000/dashboard"`
-      : `${deploymentOutput.applicationEndpointUrl}/dashboard`,
+      : `${deploymentOutput.applicationEndpointUrl}dashboard`,
     VITE_COGNITO_REDIRECT_SIGNOUT: local
       ? `"http://localhost:5000/"`
       : deploymentOutput.applicationEndpointUrl,
