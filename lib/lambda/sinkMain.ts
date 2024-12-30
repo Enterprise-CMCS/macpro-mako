@@ -1,5 +1,5 @@
 import { Handler } from "aws-lambda";
-import { KafkaEvent, KafkaRecord } from "shared-types";
+import { KafkaEvent } from "shared-types";
 import { ErrorType, getTopic, logError } from "libs";
 import {
   insertOneMacRecordsFromKafkaIntoMako,
@@ -8,41 +8,36 @@ import {
 } from "./sinkMainProcessors";
 
 export const handler: Handler<KafkaEvent> = async (event) => {
-  const eventInfo = JSON.stringify(event, null, 2);
-  console.log(`Received event: ${eventInfo}`);
+  const prettifiedEventJSON = JSON.stringify(event, null, 2);
+
+  console.log(`event: ${prettifiedEventJSON}`);
 
   try {
-    // Process each topicPartition concurrently
     await Promise.all(
-      Object.entries(event.records).map(async ([topicPartition, records]) =>
-        processTopicPartition(topicPartition, records),
-      ),
+      Object.entries(event.records).map(async ([topicPartition, records]) => {
+        const topic = getTopic(topicPartition);
+
+        console.log(`topic: ${topic}`);
+
+        switch (topic) {
+          case "aws.onemac.migration.cdc":
+            return insertOneMacRecordsFromKafkaIntoMako(records, topicPartition);
+
+          case "aws.seatool.ksql.onemac.three.agg.State_Plan":
+            return insertNewSeatoolRecordsFromKafkaIntoMako(records, topicPartition);
+
+          case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
+            return syncSeatoolRecordDatesFromKafkaWithMako(records, topicPartition);
+
+          default:
+            logError({ type: ErrorType.BADTOPIC });
+            throw new Error(`topic (${topicPartition}) is invalid`);
+        }
+      }),
     );
   } catch (error) {
-    logError({ type: ErrorType.UNKNOWN, metadata: { event: eventInfo } });
+    logError({ type: ErrorType.UNKNOWN, metadata: { event: prettifiedEventJSON } });
+
     throw error;
   }
 };
-
-async function processTopicPartition(topicPartition: string, records: KafkaRecord[]): Promise<void> {
-  const topic = getTopic(topicPartition);
-  if (!topic) {
-    logError({ type: ErrorType.BADTOPIC });
-    throw new Error(`Invalid topic: ${topicPartition}`);
-  }
-
-  switch (topic) {
-    case "aws.onemac.migration.cdc":
-      await insertOneMacRecordsFromKafkaIntoMako(records, topicPartition);
-      break;
-    case "aws.seatool.ksql.onemac.three.agg.State_Plan":
-      await insertNewSeatoolRecordsFromKafkaIntoMako(records, topicPartition);
-      break;
-    case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
-      await syncSeatoolRecordDatesFromKafkaWithMako(records, topicPartition);
-      break;
-    default:
-      logError({ type: ErrorType.BADTOPIC, metadata: { topic } });
-      throw new Error(`Unsupported topic: ${topic}`);
-  }
-}

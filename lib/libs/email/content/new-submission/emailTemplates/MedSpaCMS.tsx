@@ -7,7 +7,7 @@ import {
   BasicFooter,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
-import { formatDate } from "shared-utils";
+import { formatDate } from "lib/packages/shared-utils";
 
 export const MedSpaCMSEmail = (props: {
   variables: Events["NewMedicaidSubmission"] & CommonEmailVariables;

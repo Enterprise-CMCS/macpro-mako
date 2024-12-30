@@ -71,7 +71,7 @@ const getRaiDate = (data: SeaTool) => {
   };
 };
 
-const normalizeDate = (epocDate: number | null | undefined) =>
+const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
   epocDate !== null && epocDate !== undefined ? new Date(epocDate).toISOString() : null;
 
 const compileSrtList = (
@@ -86,7 +86,7 @@ const compileSrtList = (
 
 const getFinalDispositionDate = (status: string, record: SeaTool) => {
   return status && finalDispositionStatuses.includes(status)
-    ? normalizeDate(record.STATE_PLAN.STATUS_DATE)
+    ? getDateStringOrNullFromEpoc(record.STATE_PLAN.STATUS_DATE)
     : null;
 };
 
@@ -127,7 +127,7 @@ export const transform = (id: string) => {
     const resp = {
       id,
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
-      approvedEffectiveDate: normalizeDate(
+      approvedEffectiveDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.APPROVED_EFFECTIVE_DATE || data.STATE_PLAN.ACTUAL_EFFECTIVE_DATE,
       ),
       changed_date: data.STATE_PLAN.CHANGED_DATE,
@@ -156,22 +156,21 @@ export const transform = (id: string) => {
             TYPE_NAME: subType.TYPE_NAME.replace(/â|â/g, "-"),
           };
         }) || null,
-      proposedDate: normalizeDate(data.STATE_PLAN.PROPOSED_DATE),
+      proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
       raiWithdrawnDate,
       reviewTeam: compileSrtList(data.ACTION_OFFICERS),
       state: data.STATE_PLAN.STATE_CODE,
       stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
-      statusDate: normalizeDate(data.STATE_PLAN.STATUS_DATE),
+      statusDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.STATUS_DATE),
       cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
       seatoolStatus,
       locked: false,
-      submissionDate: normalizeDate(data.STATE_PLAN.SUBMISSION_DATE),
+      submissionDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.SUBMISSION_DATE),
       subject: data.STATE_PLAN.TITLE_NAME,
       secondClock: isInSecondClock(raiReceivedDate, raiWithdrawnDate, seatoolStatus, authority),
       raiWithdrawEnabled: finalDispositionStatuses.includes(seatoolStatus) ? false : undefined,
-      origin: "seatool",
     };
     return resp;
   });
@@ -202,6 +201,5 @@ export const tombstone = (id: string) => {
     subject: null,
     types: null,
     subTypes: null,
-    origin: null,
   };
 };

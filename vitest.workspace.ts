@@ -1,5 +1,4 @@
 import { defineWorkspace } from "vitest/config";
-import { join } from "path";
-import react from "@vitejs/plugin-react-swc";
 
-export default defineWorkspace(["react-app", "lib", "lib/libs/email"]);
+// defineWorkspace provides a nice type hinting DX
+export default defineWorkspace(["react-app", "lib", "lib/libs/email/content"]);
