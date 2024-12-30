@@ -1,13 +1,19 @@
-import "@testing-library/jest-dom/vitest";
-import { afterAll, afterEach, beforeAll } from "vitest";
-import { cleanup } from "@testing-library/react";
+import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
 
-// If using MSW or other mocks, you could import and initialize here:
-import { mockedServer } from "../../../mocks/server";
-beforeAll(() => mockedServer.listen());
-afterEach(() => mockedServer.resetHandlers());
-afterAll(() => mockedServer.close());
+beforeAll(() => {});
+
+beforeEach(() => {
+  process.env.isDev = "true";
+  vi.useFakeTimers();
+  const now = new Date(2023, 0, 1);
+  vi.setSystemTime(now);
+});
 
 afterEach(() => {
-  cleanup();
+  vi.useRealTimers();
+  vi.clearAllMocks();
+});
+
+afterAll(() => {
+  vi.clearAllMocks();
 });

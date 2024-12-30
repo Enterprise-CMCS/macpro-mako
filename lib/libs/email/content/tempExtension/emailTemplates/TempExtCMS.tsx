@@ -8,7 +8,6 @@ import {
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { formatNinetyDaysDate } from "shared-utils";
-import React from "react";
 
 export const TempExtCMSEmail = (props: {
   variables: Events["TempExtension"] & CommonEmailVariables;

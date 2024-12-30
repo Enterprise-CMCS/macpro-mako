@@ -1,6 +1,6 @@
 import { http, HttpResponse, PathParams } from "msw";
-import type { SecretManagerRequestBody } from "..";
-import secrets, { TEST_SECRET_ERROR_ID } from "../data/secrets";
+import type { SecretManagerRequestBody } from "../..";
+import secrets, { TEST_SECRET_ERROR_ID } from "../../data/secrets";
 
 const defaultSecretHandler = http.post<PathParams, SecretManagerRequestBody>(
   `https://secretsmanager.us-east-1.amazonaws.com`,
@@ -50,4 +50,4 @@ const defaultSecretHandler = http.post<PathParams, SecretManagerRequestBody>(
   },
 );
 
-export const defaultHandlers = [defaultSecretHandler];
+export const secretsManagerHandlers = [defaultSecretHandler];
