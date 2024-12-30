@@ -1,5 +1,5 @@
-import { AppKStateEmail } from "libs/email/content/withdrawRai/emailTemplates";
-import { emailTemplateValue } from "libs/email/mock-data/withdraw-rai";
+import { AppKStateEmail } from "lib/libs/email/content/withdrawRai/emailTemplates";
+import { emailTemplateValue } from "lib/libs/email/mock-data/withdraw-rai";
 import * as attachments from "../../../mock-data/attachments";
 
 export const relatedEvent = {

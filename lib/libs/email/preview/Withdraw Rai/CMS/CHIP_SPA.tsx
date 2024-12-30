@@ -1,5 +1,5 @@
-import { ChipSpaCMSEmail } from "libs/email/content/withdrawRai/emailTemplates";
-import { emailTemplateValue } from "libs/email/mock-data/withdraw-rai";
+import { ChipSpaCMSEmail } from "lib/libs/email/content/withdrawRai/emailTemplates";
+import { emailTemplateValue } from "lib/libs/email/mock-data/withdraw-rai";
 import { relatedEvent } from "./AppK";
 import * as attachments from "../../../mock-data/attachments";
 

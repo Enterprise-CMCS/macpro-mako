@@ -12,6 +12,8 @@
   "dependencies": {
     "@18f/us-federal-holidays": "^4.0.0",
     "moment-timezone": "^0.5.45",
-    "shared-types": "*"
+    "shared-types": "*",
+    "eslint-config-custom-server": "*",
+    "eslint-config-custom": "*"
   }
 }

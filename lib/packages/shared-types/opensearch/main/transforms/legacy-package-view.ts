@@ -10,7 +10,7 @@ export const transform = (id: string) => {
     const noso = isLegacyNoso(data);
     if (data.submitterName === "-- --" && !noso) return undefined;
     // This is used to handle legacy hard deletes
-    const legacySubmissionTimestamp = normalizeDate(data.submissionTimestamp);
+    const legacySubmissionTimestamp = getDateStringOrNullFromEpoc(data.submissionTimestamp);
     if (data.componentType?.startsWith("waiverextension")) {
       return {
         id,
@@ -24,9 +24,9 @@ export const transform = (id: string) => {
         stateStatus: "Submitted",
         cmsStatus: "Requested",
         seatoolStatus: SEATOOL_STATUS.PENDING,
-        statusDate: normalizeDate(data.submissionTimestamp),
-        submissionDate: normalizeDate(data.submissionTimestamp),
-        changedDate: normalizeDate(data.submissionTimestamp),
+        statusDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
+        submissionDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
+        changedDate: getDateStringOrNullFromEpoc(data.submissionTimestamp),
         subject: null,
         description: null,
         legacySubmissionTimestamp,
@@ -55,7 +55,7 @@ export const tombstone = (id: string) => {
   };
 };
 
-const normalizeDate = (epocDate: number | null | undefined) =>
+const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
   epocDate !== null && epocDate !== undefined ? new Date(epocDate)?.toISOString() : null;
 
 function isLegacyNoso(record: LegacyPackageAction): boolean {

@@ -1,6 +1,6 @@
-import { Waiver1915bStateEmail } from "libs/email/content/withdrawRai/emailTemplates";
-import { emailTemplateValue } from "libs/email/mock-data/withdraw-rai";
-import { relatedEvent } from "./AppK";
+import { Waiver1915bStateEmail } from "lib/libs/email/content/withdrawRai/emailTemplates";
+import { emailTemplateValue } from "lib/libs/email/mock-data/withdraw-rai";
+import { relatedEvent } from "../CMS/AppK";
 import * as attachments from "../../../mock-data/attachments";
 
 export default () => {

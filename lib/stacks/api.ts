@@ -281,16 +281,6 @@ export class Api extends cdk.NestedStack {
         entry: join(__dirname, "../lambda/getAllForms.ts"),
         environment: {},
       },
-      {
-        id: "updatePackage",
-        entry: join(__dirname, "../lambda/update/updatePackage.ts"),
-        environment: {
-          topicName,
-          brokerString,
-          osDomain: `https://${openSearchDomainEndpoint}`,
-          indexNamespace,
-        },
-      },
     ];
 
     const lambdas = lambdaDefinitions.reduce((acc, lambdaDef) => {
