@@ -106,7 +106,7 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
       case "new-medicaid-submission":
       case "temporary-extension":
       case "app-k":
-        return "Initial package submitted";
+        return "Initial Package Submitted";
 
       case "withdraw-package":
         return "Package - Withdrawal Requested";
@@ -114,10 +114,10 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
         return "Formal RAI Response - Withdrawal Requested";
 
       case "respond-to-rai":
-        return "RAI response submitted";
+        return "RAI Response Submitted";
 
       case "upload-subsequent-documents":
-        return "Subsequent documentation uploaded";
+        return "Subsequent Documentation Uploaded";
 
       default:
         return BLANK_VALUE;
