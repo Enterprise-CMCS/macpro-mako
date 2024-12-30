@@ -869,7 +869,6 @@ export class Data extends cdk.NestedStack {
         },
       }),
       logGroup: runReindexLogGroup,
-      bundling: commonBundlingOptions,
     });
 
     const runReindexProviderProvider = new cdk.custom_resources.Provider(
