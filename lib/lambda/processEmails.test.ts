@@ -19,7 +19,7 @@ vi.mock("libs/email", () => ({
 
 describe("processEmails handler", () => {
   const mockEnv = {
-    emailAddressLookupSecretName: "test-secret",
+    emailAddressLookupSecretName: "test-secret", //pragma: allowlist secret
     applicationEndpointUrl: "https://test.com",
     osDomain: "test-domain",
     indexNamespace: "test-",

@@ -28,8 +28,7 @@
     "lib/packages/*",
     "react-app",
     "bin/cli",
-    "mocks",
-    "test/e2e"
+    "mocks"
   ],
   "license": "CC0-1.0",
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mako#readme",

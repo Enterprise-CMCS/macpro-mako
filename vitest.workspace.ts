@@ -16,6 +16,10 @@ export default defineWorkspace([
         "lib/local-constructs/**",
       ],
       environment: "node",
+      coverage: {
+        reporter: ["text", "json-summary", "html"], // Make sure 'json-summary' is included
+        reportsDirectory: "./coverage",
+      },
       globals: true,
       setupFiles: ["./lib/vitest.setup.ts"],
       pool: "threads",
@@ -37,6 +41,10 @@ export default defineWorkspace([
       include: ["./react-app/src/**/*.test.tsx", "react-app/src/**/*.test.ts"],
       exclude: ["./react-app/src/features/**"],
       environment: "jsdom",
+      coverage: {
+        reporter: ["text", "json-summary", "html"],
+        reportsDirectory: "./coverage",
+      },
       globals: true,
       setupFiles: ["./react-app/vitest.setup.ts"],
       pool: "threads",
@@ -55,6 +63,10 @@ export default defineWorkspace([
       name: "emails",
       include: ["lib/libs/email/**/*.test.tsx", "lib/libs/email/**/*.test.ts"],
       environment: "jsdom",
+      coverage: {
+        reporter: ["text", "json-summary", "html"],
+        reportsDirectory: "./coverage",
+      },
       setupFiles: ["lib/libs/email/vitest.setup.ts"],
       globals: true,
       pool: "threads",

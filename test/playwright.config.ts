@@ -24,7 +24,7 @@ export default defineConfig({
   /* Limit concurrency on CI */
   workers: process.env.CI ? 4 : undefined,
   // Minimal reporter; you could also chain reporters if needed
-  reporter: "dot",
+  reporter: [["list"], ["json", { outputFile: "e2e/playwright-report/index.html" }]],
   // Shared settings
   use: {
     baseURL,
