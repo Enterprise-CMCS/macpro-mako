@@ -142,6 +142,7 @@ export class Auth extends cdk.NestedStack {
       allowedOAuthScopes: ["email", "openid", "aws.cognito.signin.user.admin"],
       callbackUrLs: [
         applicationEndpointUrl,
+        `${applicationEndpointUrl}/dashboard`,
         "http://localhost:5000/",
         "http://localhost:5000/dashboard",
       ],
