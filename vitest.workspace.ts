@@ -17,7 +17,8 @@ export default defineWorkspace([
       ],
       environment: "node",
       coverage: {
-        reporter: ["text", "json-summary", "html"], // Make sure 'json-summary' is included
+        provider: "v8", // or 'istanbul'
+        reporter: ["text", "json-summary", "lcov", "html"], // Make sure 'json-summary' is included
         reportsDirectory: "./coverage",
       },
       globals: true,
@@ -42,7 +43,8 @@ export default defineWorkspace([
       exclude: ["./react-app/src/features/**"],
       environment: "jsdom",
       coverage: {
-        reporter: ["text", "json-summary", "html"],
+        provider: "v8",
+        reporter: ["text", "json-summary", "lcov", "html"],
         reportsDirectory: "./coverage",
       },
       globals: true,
@@ -64,7 +66,8 @@ export default defineWorkspace([
       include: ["lib/libs/email/**/*.test.tsx", "lib/libs/email/**/*.test.ts"],
       environment: "jsdom",
       coverage: {
-        reporter: ["text", "json-summary", "html"],
+        provider: "v8",
+        reporter: ["text", "json-summary", "lcov", "html"],
         reportsDirectory: "./coverage",
       },
       setupFiles: ["lib/libs/email/vitest.setup.ts"],

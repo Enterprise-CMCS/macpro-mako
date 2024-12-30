@@ -118,7 +118,9 @@ jobs:
           role-duration-seconds: 10800
 
       - name: Test
-        run: npx vitest run --coverage
+        run: |
+          bun add -d vitest @vitest/coverage-v8
+          bun vitest run --coverage
       - name: Upload Coverage
         uses: actions/upload-artifact@v4
         with:
