@@ -66,6 +66,12 @@ export const PackageCheck = ({
      * object attributes! **/
     hasStatus: (authorizedStatuses: string | string[]) =>
       checkStatus(seatoolStatus, authorizedStatuses),
+    /** Is Placeholder Status is a check that is used to determine if the record is in one of the in between status while waiting on seatool intake */
+    isPlaceholderStatus: [
+      SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED,
+      SEATOOL_STATUS.SUBMITTED,
+      SEATOOL_STATUS.WITHDRAW_REQUESTED,
+    ].includes(seatoolStatus),
     /** If submission date exists */
     hasSubmissionDate: submissionDate !== undefined,
     isLocked: locked,

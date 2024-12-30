@@ -47,7 +47,9 @@ const arEnableWithdrawRaiResponse: ActionRule = {
         checker.hasRaiResponse &&
         !checker.hasEnabledRaiWithdraw &&
         isCmsWriteUser(user) &&
-        !checker.hasStatus(finalDispositionStatuses)
+        !checker.hasStatus(finalDispositionStatuses) &&
+        !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]) &&
+        !checker.isPlaceholderStatus
       );
     }
 
@@ -58,7 +60,8 @@ const arEnableWithdrawRaiResponse: ActionRule = {
       !checker.hasEnabledRaiWithdraw &&
       checker.isInSecondClock &&
       isCmsWriteUser(user) &&
-      !checker.hasStatus(finalDispositionStatuses)
+      !checker.hasStatus(finalDispositionStatuses) &&
+      !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL])
     );
   },
 };
@@ -71,7 +74,8 @@ const arDisableWithdrawRaiResponse: ActionRule = {
     checker.hasRaiResponse &&
     checker.hasEnabledRaiWithdraw &&
     isCmsWriteUser(user) &&
-    !checker.hasStatus(finalDispositionStatuses),
+    !checker.hasStatus(finalDispositionStatuses) &&
+    !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]),
 };
 
 const arWithdrawRaiResponse: ActionRule = {
@@ -82,6 +86,7 @@ const arWithdrawRaiResponse: ActionRule = {
     checker.hasRaiResponse &&
     // safety; prevent bad status from causing overwrite
     !checker.hasRaiWithdrawal &&
+    !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]) &&
     checker.hasEnabledRaiWithdraw &&
     isStateUser(user) &&
     !checker.isLocked,
@@ -90,7 +95,10 @@ const arWithdrawRaiResponse: ActionRule = {
 const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
-    !checker.isTempExtension && !checker.hasStatus(finalDispositionStatuses) && isStateUser(user),
+    !checker.isTempExtension &&
+    !checker.hasStatus(finalDispositionStatuses) &&
+    isStateUser(user) &&
+    !checker.isPlaceholderStatus,
 };
 
 const arUpdateId: ActionRule = {
@@ -119,7 +127,11 @@ const arUploadSubsequentDocuments: ActionRule = {
       return false;
     }
 
-    if (checker.hasStatus([SEATOOL_STATUS.PENDING, SEATOOL_STATUS.PENDING_RAI])) {
+    if (checker.hasStatus([SEATOOL_STATUS.PENDING_RAI])) {
+      return false;
+    }
+
+    if (checker.hasStatus([SEATOOL_STATUS.PENDING])) {
       if (checker.hasRequestedRai) {
         return false;
       }

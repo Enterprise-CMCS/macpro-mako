@@ -7,7 +7,7 @@ import {
 export const transform = () => {
   // any adhoc logic
   return events["contracting-amendment"].schema.transform((data) => {
-    const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.PENDING);
+    const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.SUBMITTED);
     const timestampDate = data.timestamp ? new Date(data.timestamp) : undefined;
     const todayEpoch = seaToolFriendlyTimestamp(timestampDate);
     const nextBusinessDayEpoch = getNextBusinessDayTimestamp(timestampDate);
@@ -22,7 +22,7 @@ export const transform = () => {
       makoChangedDate: timestampDate?.toISOString() || null,
       origin: "OneMAC",
       raiWithdrawEnabled: false, // Set to false for new submissions
-      seatoolStatus: SEATOOL_STATUS.PENDING,
+      seatoolStatus: SEATOOL_STATUS.SUBMITTED,
       state: data.id?.split("-")?.[0],
       stateStatus,
       statusDate: new Date(todayEpoch).toISOString() || null,
