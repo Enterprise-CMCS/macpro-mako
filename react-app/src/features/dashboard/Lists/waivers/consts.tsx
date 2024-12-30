@@ -1,7 +1,7 @@
 import { removeUnderscoresAndCapitalize, LABELS } from "@/utils";
 import { OsTableColumn } from "@/components";
 import { BLANK_VALUE } from "@/consts";
-import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
+import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
 import { useGetUser } from "@/api";
 import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 import { formatSeatoolDate } from "shared-utils";
@@ -85,9 +85,11 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
         return (
           <>
             <p>{status}</p>
-            {data.raiWithdrawEnabled && (
-              <p className="text-xs opacity-60">· Withdraw Formal RAI Response - Enabled</p>
-            )}
+            {data.raiWithdrawEnabled &&
+              data.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
+              data.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE && (
+                <p className="text-xs opacity-60">· Withdraw Formal RAI Response - Enabled</p>
+              )}
           </>
         );
       },

@@ -1,6 +1,6 @@
 import { removeUnderscoresAndCapitalize } from "@/utils";
 import { OsTableColumn } from "@/components";
-import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
+import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
 import { useGetUser } from "@/api";
 import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 import { BLANK_VALUE } from "@/consts";
@@ -56,9 +56,12 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
           return data.cmsStatus;
         })();
 
-        const subStatusRAI = data.raiWithdrawEnabled
-          ? " (Withdraw Formal RAI Response - Enabled)"
-          : "";
+        const subStatusRAI =
+          data.raiWithdrawEnabled &&
+          data.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
+          data.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE
+            ? " (Withdraw Formal RAI Response - Enabled)"
+            : "";
 
         return `${status}${subStatusRAI}`;
       },
