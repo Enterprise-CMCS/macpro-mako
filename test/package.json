@@ -10,6 +10,8 @@
     "e2e:ui": "playwright test --ui --project=state-user-chrome"
   },
   "dependencies": {
+    "@playwright/test": "^1.49.1",
+    "dotenv": "^16.4.7",
     "shared-utils": "*"
   },
   "author": "",

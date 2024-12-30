@@ -151,7 +151,11 @@ jobs:
           role-duration-seconds: 10800
       - name: Run e2e tests
         run: run e2e
-      - uses: actions/upload-artifact@v3
+      - name: Upload Playwright Report
+        env:
+          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
+          E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: playwright-report
