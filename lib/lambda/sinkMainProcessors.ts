@@ -3,43 +3,24 @@ import { KafkaRecord, opensearch, SeatoolRecordWithUpdatedDate } from "shared-ty
 import { Document, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
 import { isBefore } from "date-fns";
-import {
-  deleteAdminChangeSchema,
-  updateValuesAdminChangeSchema,
-  updateIdAdminChangeSchema,
-} from "./update/adminChangeSchemas";
 
 const removeDoubleQuotesSurroundingString = (str: string) => str.replace(/^"|"$/g, "");
-const adminRecordSchema = deleteAdminChangeSchema
-  .or(updateValuesAdminChangeSchema)
-  .or(updateIdAdminChangeSchema);
 
 type OneMacRecord = {
   id: string;
-  [key: string]: unknown | undefined;
+  makoChangedDate: string | null;
 };
 
-type ParsedRecordFromKafka = Partial<{
-  event: string;
-  origin: string;
-  isAdminChange: boolean;
-  adminChangeType: string;
-}>;
-
 const isRecordAOneMacRecord = (
-  record: ParsedRecordFromKafka,
+  record: Partial<{
+    event: string;
+    origin: string;
+  }>,
 ): record is { event: keyof typeof transforms } =>
   typeof record === "object" &&
   record?.event !== undefined &&
   record.event in transforms &&
   record?.origin === "mako";
-
-const isRecordAnAdminOneMacRecord = (
-  record: ParsedRecordFromKafka,
-): record is { adminChangeType: string; isAdminChange: boolean } =>
-  typeof record === "object" &&
-  record?.isAdminChange === true &&
-  record?.adminChangeType !== undefined;
 
 const getOneMacRecordWithAllProperties = (
   value: string,
@@ -47,28 +28,6 @@ const getOneMacRecordWithAllProperties = (
   kafkaRecord: KafkaRecord,
 ): OneMacRecord | undefined => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
-
-  if (isRecordAnAdminOneMacRecord(record)) {
-    const safeRecord = adminRecordSchema.safeParse(record);
-
-    if (safeRecord.success === false) {
-      console.log(`Skipping package with invalid format for type "${record.adminChangeType}"`);
-
-      logError({
-        type: ErrorType.VALIDATION,
-        error: safeRecord.error.errors,
-        metadata: { topicPartition, kafkaRecord, record },
-      });
-
-      return;
-    }
-
-    const { data: oneMacAdminRecord } = safeRecord;
-
-    console.log(`admin record: ${JSON.stringify(oneMacAdminRecord, null, 2)}`);
-
-    return oneMacAdminRecord;
-  }
 
   if (isRecordAOneMacRecord(record)) {
     const transformForEvent = transforms[record.event];
@@ -78,7 +37,7 @@ const getOneMacRecordWithAllProperties = (
     if (safeEvent.success === false) {
       logError({
         type: ErrorType.VALIDATION,
-        error: safeEvent.error.errors,
+        error: safeEvent.error,
         metadata: { topicPartition, kafkaRecord, record },
       });
 

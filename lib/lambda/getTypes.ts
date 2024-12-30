@@ -3,7 +3,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import { response } from "libs/handler-lib";
 
-type GetTypesBody = {
+type GetTypesBoby = {
   authorityId: string;
 };
 
@@ -56,7 +56,7 @@ export const getTypes = async (event: APIGatewayEvent) => {
       body: { message: "Event body required" },
     });
   }
-  const body = JSON.parse(event.body) as GetTypesBody;
+  const body = JSON.parse(event.body) as GetTypesBoby;
   try {
     const result = await queryTypes(body.authorityId);
     if (!result)

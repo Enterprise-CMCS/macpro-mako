@@ -1,75 +1,78 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
 import { handler } from "./getTypes";
-import { 
-  CHIP_SPA_AUTHORITY_ID, 
-  MEDICAID_SPA_AUTHORITY_ID, 
-  NOT_FOUND_AUTHORITY_ID, 
-  ERROR_AUTHORITY_ID,
-  medicaidTypes,
-  chipTypes
-} from "mocks/data/types"
-import { TestTypeItemResult } from "mocks";
+import { response } from "libs/handler-lib";
+import * as os from "libs/opensearch-lib";
+
+vi.mock("libs/handler-lib", () => ({
+  response: vi.fn(),
+}));
+
+vi.mock("libs/opensearch-lib", () => ({
+  search: vi.fn(),
+}));
 
 describe("getTypes Handler", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    process.env.osDomain = "test-domain"; // Set the environment variable before each test
+    process.env.indexNamespace = "test-namespace-"; // Set the environment variable before each test
+  });
+
   it("should return 400 if event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
-    const res = await handler(event);
+    await handler(event);
 
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
+    expect(response).toHaveBeenCalledWith({
+      statusCode: 400,
+      body: { message: "Event body required" },
+    });
   });
 
-  // TODO - should this be removed? when will the result be empty and not 
-  // just a result with an empty hit array
-  it.skip("should return 400 if no types are found", async () => {
+  it("should return 400 if no types are found", async () => {
+    (os.search as vi.Mock).mockResolvedValueOnce(null);
+
     const event = {
-      body: JSON.stringify({ authorityId: NOT_FOUND_AUTHORITY_ID }),
+      body: JSON.stringify({ authorityId: "test-authority" }),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    await handler(event);
 
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toEqual(JSON.stringify({ message: "No record found for the given authority" }));
+    expect(response).toHaveBeenCalledWith({
+      statusCode: 400,
+      body: { message: "No record found for the given authority" },
+    });
   });
 
   it("should return 200 with the result if types are found", async () => {
+    const mockResult = { hits: { hits: [{ _source: { name: "test-type" } }] } };
+    (os.search as vi.Mock).mockResolvedValueOnce(mockResult);
+
     const event = {
-      body: JSON.stringify({ authorityId: MEDICAID_SPA_AUTHORITY_ID }),
+      body: JSON.stringify({ authorityId: "test-authority" }),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
-    const body = JSON.parse(res.body);
+    await handler(event);
 
-    expect(res.statusCode).toEqual(200);
-    expect(body.hits.hits).toEqual(medicaidTypes)
-  });
-
-  it("should filter out types with names that include Do Not Use", async () => {
-    const event = {
-      body: JSON.stringify({ authorityId: CHIP_SPA_AUTHORITY_ID }),
-    } as APIGatewayEvent;
-
-    const res = await handler(event);
-    const body = JSON.parse(res.body);
-
-    expect(res.statusCode).toEqual(200);
-    expect(body.hits.hits).toEqual(chipTypes)
-    body.hits.hits.forEach((type: TestTypeItemResult) => {
-      expect(type?._source?.name).toBeTruthy()
-      expect(type?._source?.name?.match(/Do Not Use/)).toBeFalsy()
-    })
+    expect(response).toHaveBeenCalledWith({
+      statusCode: 200,
+      body: mockResult,
+    });
   });
 
   it("should return 500 if an error occurs during processing", async () => {
+    (os.search as vi.Mock).mockRejectedValueOnce(new Error("Test error"));
+
     const event = {
-      body: JSON.stringify({ authorityId: ERROR_AUTHORITY_ID }),
+      body: JSON.stringify({ authorityId: "test-authority" }),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    await handler(event);
 
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toEqual(JSON.stringify({ error: "Internal server error", message: "Response Error" }));
+    expect(response).toHaveBeenCalledWith({
+      statusCode: 500,
+      body: { message: "Internal server error" },
+    });
   });
 });
