@@ -16,16 +16,10 @@ export default defineWorkspace([
         "lib/local-constructs/**",
       ],
       environment: "node",
-      coverage: {
-        provider: "v8", // or 'istanbul'
-        reporter: ["text", "json-summary", "lcov", "html"], // Make sure 'json-summary' is included
-        reportsDirectory: "./coverage",
-      },
       globals: true,
       setupFiles: ["./lib/vitest.setup.ts"],
       pool: "threads",
       alias: {
-        // Add path aliases to match your imports
         lib: path.resolve(__dirname, "./lib"),
         libs: path.resolve(__dirname, "./lib/libs"),
       },
@@ -35,6 +29,12 @@ export default defineWorkspace([
         },
       },
     },
+    build: {
+      target: "esnext",
+    },
+    define: {
+      "import.meta.vitest": "undefined",
+    },
   },
   {
     test: {
@@ -42,11 +42,7 @@ export default defineWorkspace([
       include: ["./react-app/src/**/*.test.tsx", "react-app/src/**/*.test.ts"],
       exclude: ["./react-app/src/features/**"],
       environment: "jsdom",
-      coverage: {
-        provider: "v8",
-        reporter: ["text", "json-summary", "lcov", "html"],
-        reportsDirectory: "./coverage",
-      },
+
       globals: true,
       setupFiles: ["./react-app/vitest.setup.ts"],
       pool: "threads",
@@ -65,11 +61,7 @@ export default defineWorkspace([
       name: "emails",
       include: ["lib/libs/email/**/*.test.tsx", "lib/libs/email/**/*.test.ts"],
       environment: "jsdom",
-      coverage: {
-        provider: "v8",
-        reporter: ["text", "json-summary", "lcov", "html"],
-        reportsDirectory: "./coverage",
-      },
+
       setupFiles: ["lib/libs/email/vitest.setup.ts"],
       globals: true,
       pool: "threads",
