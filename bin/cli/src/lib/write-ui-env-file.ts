@@ -24,7 +24,6 @@ export async function writeUiEnvFile(stage, local = false) {
     ).Parameter!.Value!,
   );
 
-  console.log(deploymentOutput.applicationEndpointUrl, "HELLO WHAT IS THIS");
   const envVariables = {
     VITE_API_REGION: `"${region}"`,
     VITE_API_URL: deploymentOutput.apiGatewayRestApiUrl,
