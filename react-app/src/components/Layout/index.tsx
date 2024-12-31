@@ -11,6 +11,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import config from "@/config";
 import { ScrollToTop, SimplePageContainer, UserPrompt, Banner } from "@/components";
 import { isFaqPage, isProd } from "@/utils";
+import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 
 /**
  * Custom hook that generates a list of navigation links based on the user's status and whether the current page is the FAQ page.
@@ -152,10 +153,11 @@ export const Layout = () => {
     <div className="min-h-full flex flex-col">
       <ScrollToTop />
       <UserPrompt />
+      {user?.user && !isFaqPage && <MMDLAlertBanner />}
       <UsaBanner isUserMissingRole={user?.user && customUserRoles === undefined} />
       <nav data-testid="nav-banner-d" className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
-          <div className="h-[70px] flex gap-12 items-center text-white">
+          <div className="h-[70px] relative flex gap-12 items-center text-white">
             {!isFaqPage ? (
               // This is the original Link component
               <Link to="/">
@@ -300,8 +302,8 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     <>
       <div className="flex-1"></div>
       {isOpen && (
-        <div className="w-full absolute top-[100px] sm:top-[85px] left-0 z-50">
-          <ul className="font-medium flex flex-col items-start p-4 md:p-0 mt-2 gap-4 rounded-b-lg bg-primary">
+        <div className="w-full absolute top-[100px] sm:top-[70px] left-0 z-50">
+          <ul className="font-medium flex flex-col items-start p-4 md:p-0 -mx-4 gap-4 rounded-b-lg bg-primary">
             {links.map((link) => (
               <li key={link.link}>
                 <Link
