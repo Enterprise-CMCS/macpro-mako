@@ -1,0 +1,25 @@
+{
+  "name": "emails",
+  "version": "0.0.0",
+  "type": "module",
+  "dependencies": {
+    "shared-types": "*",
+    "shared-utils": "*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.5.1",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "vitest": "^2.1.8"
+  },
+  "scripts": {
+    "email-dev": "email dev --dir email/preview",
+    "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --ui"
+  },
+  "packageManager": "bun@1.1.40"
+}
