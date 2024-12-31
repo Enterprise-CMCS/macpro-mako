@@ -119,9 +119,34 @@ jobs:
           CC_TEST_REPORTER_ID: "${{ secrets.CC_TEST_REPORTER_ID }}"
         with:
           coverageLocations: "coverage/lcov.info:lcov"
-      - name: Report Coverage
-        if: always()
+      - name: Report React coverage
         uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          name: "React Coverage"
+          vite-config-path: "."
+          working-directory: "react-app"
+          json-summary-path: "coverage/coverage-summary.json"
+          json-final-path: "coverage/coverage-final.json"
+          pr-number: "auto"
+          comment-on: "pr"
+      - name: Report Lib coverage
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          name: "Lib Coverage"
+          vite-config-path: "."
+          working-directory: "lib"
+          json-summary-path: "coverage/coverage-summary.json"
+          json-final-path: "coverage/coverage-final.json"
+          pr-number: "auto"
+          comment-on: "pr"
+      - name: Report Emails coverage
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          name: "Emails Coverage"
+          vite-config-path: "."
+          working-directory: "lib/libs/emails"
+          pr-number: "auto"
+          comment-on: "pr"
   e2e:
     runs-on: ubuntu-20.04
     needs:
