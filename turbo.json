@@ -10,6 +10,7 @@
       "cache": false
     },
     "e2e": {
+      "inputs": ["test"],
       "cache": false,
       "env": [
         "AWS_ACCESS_KEY_ID",
@@ -20,6 +21,7 @@
       ]
     },
     "e2e:ui": {
+      "inputs": ["test"],
       "cache": false,
       "env": [
         "AWS_ACCESS_KEY_ID",
@@ -30,16 +32,37 @@
       ]
     },
     "test": {
+      "inputs": ["lib", "lib/libs/email", "react-app"],
       "cache": false,
-      "env": ["STAGE_NAME", "PROJECT"]
+      "env": [
+        "AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY",
+        "AWS_SESSION_TOKEN",
+        "STAGE_NAME",
+        "PROJECT"
+      ]
     },
     "test:coverage": {
+      "inputs": ["lib", "lib/libs/email", "react-app"],
       "cache": false,
-      "env": ["STAGE_NAME", "PROJECT"]
+      "env": [
+        "AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY",
+        "AWS_SESSION_TOKEN",
+        "STAGE_NAME",
+        "PROJECT"
+      ]
     },
     "email-dev": {
+      "inputs": ["lib/libs/email"],
       "cache": false,
-      "persistent": true
+      "env": [
+        "AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY",
+        "AWS_SESSION_TOKEN",
+        "STAGE_NAME",
+        "PROJECT"
+      ]
     }
   }
 }
