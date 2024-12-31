@@ -6,7 +6,7 @@
       "cache": false
     },
     "build:cli": {
-      "inputs": ["bin/cli"],
+      "inputs": ["bin/cli/"],
       "cache": false
     },
     "e2e": {
@@ -31,7 +31,7 @@
         "PROJECT"
       ]
     },
-    "test:coverage": {
+    "coverage": {
       "inputs": ["lib", "lib/libs/email", "react-app"],
       "cache": false,
       "env": [

@@ -10,7 +10,6 @@
     "resolveJsonModule": true,
     "verbatimModuleSyntax": false,
     "noEmit": true,
-    "types": ["@testing-library/jest-dom"]
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules"]

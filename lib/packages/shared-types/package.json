@@ -3,7 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
-  "devDependencies": {},
-  "scripts": {},
-  "dependencies": {}
+  "devDependencies": {
+    "base-64": "^1.0.0",
+    "eslint": "^8.38.0",
+    "zod": "^3.22.3"
+  },
+  "scripts": {
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "s3-url-parser": "^1.0.3"
+  }
 }

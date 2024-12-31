@@ -19,7 +19,7 @@
   },
   "scripts": {
     "email-dev": "email dev --dir libs/email/preview",
-    "test:coverage": "vitest run --coverage --config=vitest.config.mts",
+    "coverage": "vitest --coverage --config=vitest.config.mts",
     "test:ui": "vitest --ui --config=vitest.config.mts"
   },
   "packageManager": "bun@1.1.40"
