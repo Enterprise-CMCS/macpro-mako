@@ -6,8 +6,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "e2e": "playwright test --project=state-user-chrome",
-    "e2e:ui": "playwright test --ui --project=state-user-chrome"
+    "e2e": "npx playwright test --project=state-user-chrome",
+    "e2e:ui": "npx playwright test --ui --project=state-user-chrome"
   },
   "dependencies": {
     "@playwright/test": "^1.49.1",
