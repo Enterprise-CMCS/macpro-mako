@@ -58,8 +58,7 @@
     "zod": "^3.22.3"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.8.3",
-    "@playwright/test": "^1.45.3",
+    "@vitest/coverage-v8": "^2.0.5",
     "@tailwindcss/typography": "^0.5.10",
     "@types/lodash.debounce": "^4.0.7",
     "@testing-library/jest-dom": "^6.6.3",

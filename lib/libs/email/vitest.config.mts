@@ -4,6 +4,7 @@ export default defineConfig({
   test: {
     name: "emails",
     include: ["**/*.test.tsx", "**/*.test.ts"],
+    
     environment: "jsdom",
     maxConcurrency: 2,
     setupFiles: ["./vitest.setup.ts"],
