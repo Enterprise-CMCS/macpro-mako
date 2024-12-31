@@ -1,8 +1,5 @@
-import { configDefaults, defineWorkspace } from "vitest/config";
+import { defineWorkspace, configDefaults } from "vitest/config";
 import path from "path";
-import { EventEmitter } from "events";
-
-EventEmitter.defaultMaxListeners = Infinity;
 
 export default defineWorkspace([
   {
