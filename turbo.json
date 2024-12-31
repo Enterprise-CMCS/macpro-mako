@@ -12,24 +12,12 @@
     "e2e": {
       "inputs": ["test"],
       "cache": false,
-      "env": [
-        "AWS_ACCESS_KEY_ID",
-        "AWS_SECRET_ACCESS_KEY",
-        "AWS_SESSION_TOKEN",
-        "STAGE_NAME",
-        "PROJECT"
-      ]
+      "env": ["VITE_BASE_URL", "VITE_E2E_PASSWORD"]
     },
     "e2e:ui": {
       "inputs": ["test"],
       "cache": false,
-      "env": [
-        "AWS_ACCESS_KEY_ID",
-        "AWS_SECRET_ACCESS_KEY",
-        "AWS_SESSION_TOKEN",
-        "STAGE_NAME",
-        "PROJECT"
-      ]
+      "env": ["VITE_BASE_URL", "VITE_E2E_PASSWORD"]
     },
     "test": {
       "inputs": ["lib", "lib/libs/email", "react-app"],

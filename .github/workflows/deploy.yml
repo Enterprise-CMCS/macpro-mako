@@ -102,6 +102,9 @@ jobs:
     runs-on: ubuntu-20.04
     needs:
       - init
+      - deploy
+      - application-url
+      - kibana-url
     environment:
       name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     steps:
@@ -118,9 +121,7 @@ jobs:
           role-duration-seconds: 10800
 
       - name: Test
-        run: |
-          bun add -d vitest @vitest/coverage-v8
-          bun vitest run --coverage
+        run: run test:coverage
       - name: Upload Coverage
         uses: actions/upload-artifact@v4
         with:
@@ -152,12 +153,11 @@ jobs:
           aws-region: us-east-1
           role-duration-seconds: 10800
       - name: Run e2e test
-        working-directory: test
-        run: bun run e2e
-      - name: Upload Playwright Report
+        run: run e2e
         env:
-          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
-          E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
+          VITE_BASE_URL: ${{ needs.deploy.outputs.app-url }}
+          VITE_E2E_PASSWORD: ${{ secrets.VITE_E2E_PASSWORD }}
+      - name: Upload Playwright Report
         uses: actions/upload-artifact@v3
         if: always()
         with:

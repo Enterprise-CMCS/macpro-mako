@@ -8,14 +8,14 @@ const authCMSFile = "./playwright/.auth/cms.json";
  * Consolidated test user credentials.
  */
 const testUsers = {
-  state: process.env.STATE_USER ?? "george@example.com",
-  reviewer: process.env.REVIEWER_USER ?? "reviewer@example.com",
+  state: process.env.VITE_STATE_USER ?? "george@example.com",
+  reviewer: process.env.VITE_REVIEWER_USER ?? "reviewer@example.com",
 };
 
 /**
- * We'll load the E2E password from environment variables or .env.
+ * We'll load the E2E password from environment variables or local .env from test/e2e/.env file you fill need to define.
  */
-const password = process.env.E2E_PASSWORD || process.env.VITE_E2E_PW;
+const password = process.env.VITE_E2E_PASSWORD;
 
 /*
  * "authenticate state submitter"

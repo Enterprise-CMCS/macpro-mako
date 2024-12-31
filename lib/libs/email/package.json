@@ -18,7 +18,7 @@
     "vitest": "^2.1.8"
   },
   "scripts": {
-    "email-dev": "email dev --dir email/preview",
+    "email-dev": "email dev --dir preview",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui"
   },

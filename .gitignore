@@ -18,7 +18,7 @@ DS_Store
 .serverless
 ./src
 .env*
-
+!.env.example
 # tests
 coverage
 .repo_ignore

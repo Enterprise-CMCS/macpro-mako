@@ -23,7 +23,6 @@
   "repository": "https://github.com/Enterprise-CMCS/macpro-mako",
   "workspaces": [
     "lib/lambda",
-    "lib/libs",
     "lib/libs/email",
     "lib/local-constructs",
     "lib/packages/*",

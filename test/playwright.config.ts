@@ -7,7 +7,7 @@ dotenv.config();
 /**
  * We'll read a baseURL from the environment, or default to localhost:5000.
  */
-const baseURL = process.env.BASE_URL || "http://localhost:5000";
+const baseURL = process.env.VITE_BASE_URL || "http://localhost:5000";
 
 /**
  * See https://playwright.dev/docs/test-configuration
