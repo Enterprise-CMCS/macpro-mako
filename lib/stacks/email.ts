@@ -3,7 +3,6 @@ import { Construct } from "constructs";
 import { join } from "path";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
-import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "lib/config/deployment-config";
 
 interface EmailServiceStackProps extends cdk.StackProps {
@@ -181,7 +180,7 @@ export class Email extends cdk.NestedStack {
       depsLockFilePath: join(__dirname, "../../bun.lockb"),
       entry: join(__dirname, "../lambda/processEmails.ts"),
       handler: "handler",
-      tsconfig: "tsconfig.json",
+      projectRoot: join(__dirname, "../../"),
       bundling: { externalModules: ["aws-sdk"] },
       runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
       memorySize: envConfig[props.isDev ? "dev" : "prod"].memorySize,
@@ -207,7 +206,7 @@ export class Email extends cdk.NestedStack {
         VPC_ID: vpc.vpcId,
         SECURITY_GROUP_ID: lambdaSecurityGroup.securityGroupId,
       },
-      bundling: commonBundlingOptions,
+      // bundling: defaultBundlingOptions,
       tracing: cdk.aws_lambda.Tracing.ACTIVE,
     });
 
