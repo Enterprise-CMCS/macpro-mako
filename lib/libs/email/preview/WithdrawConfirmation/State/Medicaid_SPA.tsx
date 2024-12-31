@@ -1,10 +1,10 @@
-import { WaiverStateEmail } from "libs/email/content/withdrawConfirmation/emailTemplates";
+import { MedSpaStateEmail } from "libs/email/content/withdrawConfirmation/emailTemplates";
 import { emailTemplateValue } from "libs/email/mock-data/new-submission";
 import * as attachments from "../../../mock-data/attachments";
 
 export default () => {
   return (
-    <WaiverStateEmail
+    <MedSpaStateEmail
       variables={{
         ...emailTemplateValue,
         event: "withdraw-package",
