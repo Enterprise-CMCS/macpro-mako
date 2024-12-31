@@ -14,7 +14,7 @@
     "e2e": "turbo run e2e",
     "e2e:ui": "turbo run e2e:ui",
     "test": "turbo run test",
-    "test:coverage": "turbo run test:coverage",
+    "test:coverage": "turbo test:coverage",
     "test:ui": "turbo run test:ui",
     "test-tsc": "tsc --skipLibCheck --noEmit",
     "cdk:watch": "cdk watch -c stage=${STAGE:-local} --no-rollback",
