@@ -3,7 +3,7 @@ name: PR - coverage annotation
 on:
   pull_request:
     branches:
-      - main
+      - obe
 
 jobs:
   coverage-report:
