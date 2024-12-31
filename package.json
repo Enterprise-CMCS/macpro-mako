@@ -15,7 +15,7 @@
     "e2e:ui": "turbo e2e:ui",
     "test-tsc": "tsc --skipLibCheck --noEmit",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "vitest run --coverage VITE_CJS_TRACE=true vite dev",
     "test:ui": "vitest --ui",
     "cdk:watch": "cdk watch -c stage=${STAGE:-local} --no-rollback",
     "bun:dev": "cd react-app && bun run dev"
