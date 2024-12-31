@@ -6,7 +6,7 @@
       "cache": false
     },
     "build:cli": {
-      "inputs": ["bin/cli/"],
+      "inputs": ["bin/cli"],
       "cache": false
     },
     "e2e": {
@@ -26,6 +26,7 @@
         "AWS_ACCESS_KEY_ID",
         "AWS_SECRET_ACCESS_KEY",
         "AWS_SESSION_TOKEN",
+        "GITHUB_TOKEN",
         "STAGE_NAME",
         "PROJECT"
       ]
@@ -37,6 +38,7 @@
         "AWS_ACCESS_KEY_ID",
         "AWS_SECRET_ACCESS_KEY",
         "AWS_SESSION_TOKEN",
+        "GITHUB_TOKEN",
         "STAGE_NAME",
         "PROJECT"
       ]

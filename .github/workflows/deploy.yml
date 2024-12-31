@@ -1,25 +1,18 @@
-# yaml-language-server: disable
 name: Deploy
-
 on:
   push:
     branches:
       - "*"
       - "!skipci*"
-
-# yaml-language-server: $schema: https://json.schemastore.org/github-workflow.json
 concurrency:
   group: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}-group
-
 env:
   STAGE_NAME: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
-
 permissions:
   id-token: write
   contents: write
   issues: write
   pull-requests: write
-
 jobs:
   init:
     runs-on: ubuntu-20.04
@@ -29,99 +22,92 @@ jobs:
           if [[ ! $STAGE_NAME =~ ^[a-z][a-z0-9-]*$ ]]; then
               echo "ERROR:  Your branch name, $STAGE_NAME, is not a valid Serverless Framework stage name." && exit 1
           fi
-
   deploy:
     runs-on: ubuntu-20.04
     needs:
       - init
     environment:
-      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
+      name: "${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}"
     outputs:
-      app-url: ${{ steps.deployment-data.outputs.APPURL }}
-      kibana-url: ${{ steps.deployment-data.outputs.KIBANAURL }}
+      app-url: "${{ steps.deployment-data.outputs.APPURL }}"
+      kibana-url: "${{ steps.deployment-data.outputs.KIBANAURL }}"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - uses: ./.github/actions/setup
-
       - uses: docker/setup-qemu-action@v2
         with:
-          platforms: "amd64"
-
+          platforms: amd64
       - uses: docker/setup-buildx-action@v2
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          role-to-assume: "${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}"
           aws-region: us-east-1
           role-duration-seconds: 10800
-
       - name: Deploy
         run: run deploy --stage $STAGE_NAME
-
       - name: Set Application URLs
         id: deployment-data
-        run: |
+        run: >
           secret_value=$(aws ssm get-parameter \
             --region us-east-1 \
             --name "/$PROJECT/$STAGE_NAME/deployment-output" \
             --query Parameter.Value \
             --output text)
-          application_endpoint_url=$(echo $secret_value | jq -r '.applicationEndpointUrl')
-          echo "APPURL=$application_endpoint_url" >> $GITHUB_OUTPUT
-          kibana_url=$(echo $secret_value | jq -r '.kibanaUrl')
-          echo "KIBANAURL=$kibana_url" >> $GITHUB_OUTPUT
+          application_endpoint_url=$(echo $secret_value | jq -r
+          '.applicationEndpointUrl')
 
+          echo "APPURL=$application_endpoint_url" >> $GITHUB_OUTPUT
+
+          kibana_url=$(echo $secret_value | jq -r '.kibanaUrl')
+
+          echo "KIBANAURL=$kibana_url" >> $GITHUB_OUTPUT
   application-url:
     runs-on: ubuntu-20.04
     needs:
       - deploy
     environment:
-      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}-app
-      url: ${{ needs.deploy.outputs.app-url }}
+      name: >-
+        ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name
+        }}-app
+      url: "${{ needs.deploy.outputs.app-url }}"
     steps:
       - name: Display App URL
         run: |
           echo "App URL: ${{ needs.deploy.outputs.app-url }}"
-
   kibana-url:
     runs-on: ubuntu-20.04
     needs:
       - deploy
     environment:
-      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}-kibana
-      url: ${{ needs.deploy.outputs.kibana-url }}
+      name: >-
+        ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name
+        }}-kibana
+      url: "${{ needs.deploy.outputs.kibana-url }}"
     steps:
       - name: Display Kibana URL
         run: |
           echo "Kibana URL: ${{ needs.deploy.outputs.kibana-url }}"
-
   test:
     runs-on: ubuntu-20.04
     needs:
       - init
       - deploy
-      - application-url
-      - kibana-url
     environment:
-      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
+      name: "${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - uses: ./.github/actions/setup
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          role-to-assume: "${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}"
           aws-region: us-east-1
           role-duration-seconds: 10800
-
       - name: Test
-        run: run test:coverage
+        run: "run test:coverage"
       - name: Upload Coverage
         uses: actions/upload-artifact@v4
         with:
@@ -130,20 +116,21 @@ jobs:
       - name: Report coverage to Code Climate
         uses: paambaati/codeclimate-action@v8.0.0
         env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+          CC_TEST_REPORTER_ID: "${{ secrets.CC_TEST_REPORTER_ID }}"
         with:
-          coverageLocations: coverage/lcov.info:lcov
+          coverageLocations: "coverage/lcov.info:lcov"
       - name: Report Coverage
         if: always()
         uses: davelosert/vitest-coverage-report-action@v2
-
   e2e:
     runs-on: ubuntu-20.04
     needs:
       - deploy
+      - application-url
+      - kibana-url
     environment:
-      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
-    if: ${{ github.ref != 'refs/heads/production' }}
+      name: "${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}"
+    if: "${{ github.ref != 'refs/heads/production' }}"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -152,14 +139,14 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          role-to-assume: "${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}"
           aws-region: us-east-1
           role-duration-seconds: 10800
       - name: Run e2e test
         run: run e2e
         env:
-          VITE_BASE_URL: ${{ needs.deploy.outputs.app-url }}
-          VITE_E2E_PASSWORD: ${{ secrets.VITE_E2E_PASSWORD }}
+          VITE_BASE_URL: "${{ needs.deploy.outputs.app-url }}"
+          VITE_E2E_PASSWORD: "${{ secrets.VITE_E2E_PASSWORD }}"
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v3
         if: always()
@@ -167,40 +154,38 @@ jobs:
           name: playwright-report
           path: test/e2e/playwright-report/index.html
           retention-days: 30
-
   cfn-nag:
     runs-on: ubuntu-20.04
     needs:
       - deploy
     environment:
-      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
+      name: "${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - uses: ./.github/actions/setup
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          role-to-assume: "${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}"
           aws-region: us-east-1
           role-duration-seconds: 10800
-
       - name: Get CloudFormation templates
         id: getCfts
-        run: |
+        run: >
           mkdir -p cftemplates
-          stackList=(`aws cloudformation describe-stacks --query "Stacks[?Tags[?Key=='STAGE' && Value=='$STAGE_NAME'] && Tags[?Key=='PROJECT' && Value=='$PROJECT']].StackName" --output text`)
+
+          stackList=(`aws cloudformation describe-stacks --query
+          "Stacks[?Tags[?Key=='STAGE' && Value=='$STAGE_NAME'] &&
+          Tags[?Key=='PROJECT' && Value=='$PROJECT']].StackName" --output text`)
+
           for stack in "${stackList[@]}"; do
             aws cloudformation get-template --stack-name "$stack" --query TemplateBody > "cftemplates/${stack}.json"
           done
-
       - name: Stelligent cfn_nag
         uses: stelligent/cfn_nag@v0.8.6
         with:
           input_path: cftemplates
-
   release:
     runs-on: ubuntu-20.04
     needs:
@@ -210,13 +195,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - uses: ./.github/actions/setup
-
       - name: Install
         run: bun install
-
       - name: Release
         run: bun semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
