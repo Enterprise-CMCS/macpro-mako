@@ -4,10 +4,6 @@
   "private": true,
   "license": "MIT",
   "devDependencies": {},
-  "scripts": {
-    "test": "vitest",
-    "test:coverage": "vitest --coverage",
-    "test:ui": "vitest --ui"
-  },
+  "scripts": {},
   "dependencies": {}
 }
