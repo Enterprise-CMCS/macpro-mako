@@ -1,7 +1,6 @@
 // my-lib.test.ts
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { handler } from "./setupIndex"; // The code that calls createIndex, updateFieldMapping
-import { Context } from "aws-lambda";
 
 // 1) Define mocks first
 const mockCreateIndex = vi.fn();
@@ -20,7 +19,7 @@ describe.skip("handler", () => {
   });
 
   it("should create and update indices without errors", async () => {
-    await handler(mockEvent, {} as Context, mockCallback);
+    await handler(mockEvent, expect.anything(), mockCallback);
 
     // 3. Use the mocked functions in the expectations:
     expect(mockCreateIndex).toHaveBeenCalledTimes(7);
@@ -49,7 +48,7 @@ describe.skip("handler", () => {
     // Make the first call to mockCreateIndex reject:
     mockCreateIndex.mockRejectedValueOnce(new Error("Test error"));
 
-    await handler(mockEvent, {} as Context, mockCallback);
+    await handler(mockEvent, expect.anything(), mockCallback);
 
     expect(mockCreateIndex).toHaveBeenCalledTimes(1);
     expect(mockUpdateFieldMapping).not.toHaveBeenCalled();
