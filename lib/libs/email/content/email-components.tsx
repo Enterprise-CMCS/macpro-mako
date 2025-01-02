@@ -1,6 +1,6 @@
-import { Text, Link, Section, Row, Column, Hr, Heading } from "@react-email/components";
-import { Attachment, AttachmentTitle, AttachmentKey } from "shared-types";
+import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/components";
 import { createRef, forwardRef, ReactNode } from "react";
+import { Attachment, AttachmentKey, AttachmentTitle } from "shared-types";
 import { styles } from "./email-styles";
 
 export const EMAIL_CONFIG = {
@@ -54,7 +54,6 @@ const LogoContainer = forwardRef<HTMLSpanElement, { url: string }>(({ url }, ref
         src={`${url}onemac-logo.png`}
         alt="OneMAC Logo"
       />
-      <img alt="" />
     </Link>
   </header>
 ));
