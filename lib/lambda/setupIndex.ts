@@ -4,7 +4,7 @@ import { opensearch } from "../packages/shared-types";
 
 export const handler: Handler = async (event, __, callback) => {
   const response = {
-    statusCode: 200
+    statusCode: 200,
   };
   let errorResponse = null;
   try {
@@ -17,32 +17,32 @@ export const handler: Handler = async (event, __, callback) => {
         finalDispositionDate: { type: "date" },
         proposedDate: { type: "date" },
         statusDate: { type: "date" },
-        submissionDate: { type: "date" }
-      }
+        submissionDate: { type: "date" },
+      },
     });
     await manageIndexResource({
       osDomain: event.osDomain,
-      index: `${event.indexNamespace}changelog`
+      index: `${event.indexNamespace}changelog`,
     });
     await manageIndexResource({
       osDomain: event.osDomain,
-      index: `${event.indexNamespace}types`
+      index: `${event.indexNamespace}types`,
     });
     await manageIndexResource({
       osDomain: event.osDomain,
-      index: `${event.indexNamespace}subtypes`
+      index: `${event.indexNamespace}subtypes`,
     });
     await manageIndexResource({
       osDomain: event.osDomain,
-      index: `${event.indexNamespace}cpocs`
+      index: `${event.indexNamespace}cpocs`,
     });
     await manageIndexResource({
       osDomain: event.osDomain,
-      index: `${event.indexNamespace}insights`
+      index: `${event.indexNamespace}insights`,
     });
     await manageIndexResource({
       osDomain: event.osDomain,
-      index: `${event.indexNamespace}legacyinsights`
+      index: `${event.indexNamespace}legacyinsights`,
     });
   } catch (error: any) {
     response.statusCode = 500;
