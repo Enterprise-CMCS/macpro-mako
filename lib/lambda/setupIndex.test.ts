@@ -3,7 +3,7 @@ import { handler } from "./setupIndex";
 
 const mockFns = vi.hoisted(() => ({
   createIndex: vi.fn(),
-  updateFieldMapping: vi.fn(),
+  updateFieldMapping: vi.fn()
 }));
 
 vi.mock("../libs/opensearch-lib", () => mockFns);
@@ -12,7 +12,7 @@ describe("handler", () => {
   const mockCallback = vi.fn();
   const mockEvent = {
     osDomain: "test-domain",
-    indexNamespace: "test-namespace-",
+    indexNamespace: "test-namespace-"
   };
 
   beforeEach(() => {
@@ -32,7 +32,7 @@ describe("handler", () => {
     expect(mockFns.createIndex).toHaveBeenCalledWith("test-domain", "test-namespace-insights");
     expect(mockFns.createIndex).toHaveBeenCalledWith(
       "test-domain",
-      "test-namespace-legacyinsights",
+      "test-namespace-legacyinsights"
     );
 
     expect(mockFns.updateFieldMapping).toHaveBeenCalledTimes(1);
@@ -42,7 +42,7 @@ describe("handler", () => {
       finalDispositionDate: { type: "date" },
       proposedDate: { type: "date" },
       statusDate: { type: "date" },
-      submissionDate: { type: "date" },
+      submissionDate: { type: "date" }
     });
 
     expect(mockCallback).toHaveBeenCalledWith(null, { statusCode: 200 });
@@ -56,7 +56,7 @@ describe("handler", () => {
     expect(mockFns.createIndex).toHaveBeenCalledTimes(1);
     expect(mockFns.updateFieldMapping).not.toHaveBeenCalled();
     expect(mockCallback).toHaveBeenCalledWith(expect.any(Error), {
-      statusCode: 500,
+      statusCode: 500
     });
   });
 });
