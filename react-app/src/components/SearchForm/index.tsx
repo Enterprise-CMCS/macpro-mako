@@ -48,7 +48,7 @@ export const SearchForm: FC<{
         <input
           id="searchInput"
           type="text"
-          className="w-full lg:w-[30rem] py-3 pl-12 pr-4 text-gray-500 border border-gray-300 outline-none focus:bg-white focus:border-indigo-600 flex"
+          className="w-full lg:w-[30rem] py-3 pl-12 pr-4 text-gray-500 border border-gray-300 outline-none focus:bg-white focus:border-indigo-600"
           maxLength={28}
           value={searchText}
           onChange={handleInputChange}
@@ -65,7 +65,7 @@ export const SearchForm: FC<{
         )}
         {!!searchText && (
           <XIcon
-            className="absolute cursor-pointer top-0 bottom-0 w-6 h-6 my-auto left-[28rem] justify-end"
+            className="absolute cursor-pointer top-0 bottom-0 w-6 h-6 my-auto left-[28rem] right-0"
             data-testid="close-icon"
             onClick={() => {
               setSearchText("");
