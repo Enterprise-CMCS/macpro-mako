@@ -19,8 +19,8 @@
   },
   "scripts": {
     "email-dev": "email dev --dir preview",
-    "coverage": "vitest --coverage --config=vitest.config.mts",
-    "test:ui": "vitest --ui"
+    "test:coverage": "vitest --coverage.enabled true --config=vitest.config.mts",
+    "test:ui": "vitest --ui --config=vitest.config.mts"
   },
   "packageManager": "bun@1.1.40"
 }

@@ -8,8 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "coverage": "vitest --coverage --config=vitest.config.mts",
-    "test:ui": "vitest --ui"
+    "test:coverage": "vitest --coverage.enabled true --config=vitest.config.mts",
+    "test:ui": "vitest --ui --config=vitest.config.mts"
   },
   "dependencies": {
     "@aws-amplify/auth": "^5.4.0",

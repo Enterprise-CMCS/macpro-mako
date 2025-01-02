@@ -1,13 +1,12 @@
-export const commonBundlingOptions = {
+import * as lambda from "aws-cdk-lib/aws-lambda-nodejs";
+
+export const commonBundlingOptions: lambda.BundlingOptions = {
   esbuildArgs: {
     "--loader:.png=dataurl": true,
-    "--define:window=undefined": true,
-    "--define:document=undefined": true,
-    "--define:navigator=undefined": true,
-    "--define:canvas=undefined": true,
-    "--define:__IS_FRONTEND__=true": true,
-    "--define:OPENSEARCH=true": true,
-    "--preserve-symlinks": true,
+    '--define:window="undefined"': true,
+    '--define:document="undefined"': true,
+    '--define:navigator="undefined"': true,
+    '--define:canvas="undefined"': true,
   },
   define: {
     "global.window": "undefined",
