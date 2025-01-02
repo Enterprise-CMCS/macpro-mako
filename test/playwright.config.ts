@@ -41,7 +41,7 @@ export default defineConfig({
       // We'll only run "utils/auth.ts" under e2e
       testMatch: ["e2e/utils/auth.ts"],
       // No parallel runs for setup
-      fullyParallel: false,
+      fullyParallel: true,
     },
     // Main test project for the state user
     {

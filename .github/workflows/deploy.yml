@@ -168,7 +168,7 @@ jobs:
           aws-region: us-east-1
           role-duration-seconds: 10800
       - name: Run e2e test
-        run: run e2e
+        run: cd test && bun run e2e
         env:
           VITE_BASE_URL: "${{ needs.deploy.outputs.app-url }}"
           VITE_E2E_PASSWORD: "${{ secrets.VITE_E2E_PASSWORD }}"
