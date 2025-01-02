@@ -79,9 +79,9 @@ const compileSrtList = (
 ): { name: string; email: string }[] =>
   officers?.length
     ? officers.map((o) => ({
-        name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
-        email: o.EMAIL || "",
-      }))
+      name: `${o.FIRST_NAME} ${o.LAST_NAME}`,
+      email: o.EMAIL,
+    }))
     : [];
 
 const getFinalDispositionDate = (status: string, record: SeaTool) => {
@@ -124,11 +124,13 @@ export const transform = (id: string) => {
         : null;
 
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
+
     const resp = {
-      id,
+      id: id.toUpperCase(),
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
-        data.STATE_PLAN.APPROVED_EFFECTIVE_DATE || data.STATE_PLAN.ACTUAL_EFFECTIVE_DATE,
+        data.STATE_PLAN.APPROVED_EFFECTIVE_DATE ||
+        data.STATE_PLAN.ACTUAL_EFFECTIVE_DATE,
       ),
       changed_date: data.STATE_PLAN.CHANGED_DATE,
       description: data.STATE_PLAN.SUMMARY_MEMO,
