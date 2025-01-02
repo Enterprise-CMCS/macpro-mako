@@ -106,6 +106,10 @@ jobs:
           role-to-assume: "${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}"
           aws-region: us-east-1
           role-duration-seconds: 10800
+      - name: Install dependencies
+        run: bun install
+      - name: Add Node.js bin to PATH
+        run: echo "PATH=$(pwd)/node_modules/.bin:\$PATH" >> $GITHUB_ENV
       - name: Test
         run: bun run coverage
       - name: Upload Coverage
@@ -119,6 +123,7 @@ jobs:
           CC_TEST_REPORTER_ID: "${{ secrets.CC_TEST_REPORTER_ID }}"
         with:
           coverageLocations: "coverage/lcov.info:lcov"
+
       # - name: Report React coverage
       #   uses: davelosert/vitest-coverage-report-action@v2
       #   with:

@@ -25,8 +25,10 @@ export default defineConfig({
   workers: process.env.CI ? 4 : undefined,
   // Minimal reporter; you could also chain reporters if needed
   reporter: [
-    ["list", "json-summary", "json", "html"],
-    ["json", { outputFile: "e2e/playwright-report/index.html" }],
+    ["list"],
+    ["json-summary"],
+    ["json", { outputFile: "e2e/playwright-report/report.json" }],
+    ["html", { outputFolder: "e2e/playwright-report", open: "never" }],
   ],
   // Shared settings
   use: {
