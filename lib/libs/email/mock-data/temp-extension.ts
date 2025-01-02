@@ -6,7 +6,9 @@ export const emailTemplateValue = {
   authority: "1915(b)",
   actionType: "Extend",
   applicationEndpointUrl: "https://mako-dev.cms.gov/",
-  timestamp: Date.now(),
+  get timestamp() {
+    return Date.now() + 5184000000;
+  },
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",
   additionalInformation:
@@ -21,21 +23,27 @@ export const emailTemplateValue = {
           title: "Temporary Extention Document for submission",
           bucket: "mako-outbox-attachments-635052997545",
           key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
-          uploadDate: Date.now(),
+          get uploadDate() {
+            return Date.now() + 5184000000;
+          },
         },
         {
           filename: "Second Extention Document for submission.pdf",
           title: "TempSecondorary Extention Document for submission",
           bucket: "mako-outbox-attachments-635052997545",
           key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
-          uploadDate: Date.now(),
+          get uploadDate() {
+            return Date.now() + 5184000000;
+          },
         },
         {
           filename: "Third Extention Document for submission.pdf",
           title: "Third Temporary Extention Document for submission",
           bucket: "mako-outbox-attachments-635052997545",
           key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
-          uploadDate: Date.now(),
+          get uploadDate() {
+            return Date.now() + 5184000000;
+          },
         },
       ],
       label: "Waiver Extension Request",
@@ -45,5 +53,8 @@ export const emailTemplateValue = {
       label: "Other",
     },
   },
-  proposedEffectiveDate: Date.now() + 5184000000,
+
+  get proposedEffectiveDate() {
+    return Date.now() + 5184000000;
+  },
 };
