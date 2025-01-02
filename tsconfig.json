@@ -25,7 +25,7 @@
     "rootDir": "./",
     "paths": {
       "mocks/*": ["mocks/*"],
-      "libs/*": ["libs/*"],
+      "libs/*": ["lib/libs/*"],
       "shared-types/*": ["shared-types/*"],
       "shared-utils/*": ["shared-utils/*"]
     }

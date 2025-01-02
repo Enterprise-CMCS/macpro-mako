@@ -24,7 +24,10 @@ export default defineConfig({
   /* Limit concurrency on CI */
   workers: process.env.CI ? 4 : undefined,
   // Minimal reporter; you could also chain reporters if needed
-  reporter: [["list"], ["json", { outputFile: "e2e/playwright-report/index.html" }]],
+  reporter: [
+    ["list", "json-summary", "json", "html"],
+    ["json", { outputFile: "e2e/playwright-report/index.html" }],
+  ],
   // Shared settings
   use: {
     baseURL,
@@ -36,7 +39,7 @@ export default defineConfig({
     {
       name: "setup",
       // We'll only run "utils/auth.ts" under e2e
-      testMatch: ["utils/auth.ts"],
+      testMatch: ["e2e/utils/auth.ts"],
       // No parallel runs for setup
       fullyParallel: false,
     },

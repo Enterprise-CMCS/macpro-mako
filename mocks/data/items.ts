@@ -8,7 +8,7 @@ export const EXISTING_ITEM_APPROVED_AMEND_ID = "MD-0000.R00.01";
 export const EXISTING_ITEM_APPROVED_RENEW_ID = "MD-0000.R01.00";
 export const EXISTING_ITEM_ID = "MD-00-0000";
 export const NOT_FOUND_ITEM_ID = "MD-0004.R00.00";
-export const NOT_EXISTING_ITEM_ID = "MD-11-0000"
+export const NOT_EXISTING_ITEM_ID = "MD-11-0000";
 export const TEST_ITEM_ID = "MD-0005.R01.00";
 export const EXISTING_ITEM_TEMPORARY_EXTENSION_ID = "MD-0005.R01.TE00";
 export const HI_TEST_ITEM_ID = "HI-0000.R00.00";
@@ -211,7 +211,7 @@ const items: Record<string, TestItemResult> = {
               },
             ],
             additionalInformation: "Amendment to the capitated contract terms for 2024.",
-            timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            timestamp: 1672592200000, // Jan 1, 2023, in milliseconds
           },
         },
         {
