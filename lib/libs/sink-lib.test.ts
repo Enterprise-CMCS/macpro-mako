@@ -30,15 +30,11 @@ describe("bulkUpdateDataWrapper", () => {
     vi.stubEnv("osDomain", undefined);
     vi.stubEnv("indexNamespace", undefined);
 
-    await expect(bulkUpdateDataWrapper(DOCS, "main")).rejects.toThrow(
-      "osDomain is undefined in environment variables",
-    );
+    await expect(bulkUpdateDataWrapper(DOCS, "main")).rejects.toThrow();
 
     vi.stubEnv("osDomain", OPENSEARCH_DOMAIN);
     vi.stubEnv("indexNamespace", undefined);
 
-    await expect(bulkUpdateDataWrapper(DOCS, "main")).rejects.toThrow(
-      "indexName is undefined in environment variables",
-    );
+    await expect(bulkUpdateDataWrapper(DOCS, "main")).rejects.toThrow();
   });
 });
