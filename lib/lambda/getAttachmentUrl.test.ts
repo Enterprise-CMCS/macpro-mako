@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
 import { handler } from "./getAttachmentUrl";
 import { response } from "libs/handler-lib";
@@ -75,7 +75,7 @@ describe("Lambda Handler", () => {
   });
 
   it("should return 404 if no package is found", async () => {
-    (getPackage as Mock).mockResolvedValueOnce(null);
+    vi.mocked(getPackage).mockResolvedValueOnce(null);
 
     const event = {
       body: JSON.stringify({
@@ -95,10 +95,10 @@ describe("Lambda Handler", () => {
   });
 
   it("should return 404 if state access is not permitted", async () => {
-    (getPackage as Mock).mockResolvedValueOnce({
+    vi.mocked(getPackage).mockResolvedValueOnce({
       _source: { state: "test-state" },
     });
-    (getStateFilter as Mock).mockResolvedValueOnce({
+    vi.mocked(getStateFilter).mockResolvedValueOnce({
       terms: { state: ["other-state"] },
     });
 
@@ -120,13 +120,13 @@ describe("Lambda Handler", () => {
   });
 
   it("should return 500 if attachment details are not found", async () => {
-    (getPackage as Mock).mockResolvedValueOnce({
+    vi.mocked(getPackage).mockResolvedValueOnce({
       _source: { state: "test-state" },
     });
-    (getStateFilter as Mock).mockResolvedValueOnce({
+    vi.mocked(getStateFilter).mockResolvedValueOnce({
       terms: { state: ["test-state"] },
     });
-    (getPackageChangelog as Mock).mockResolvedValueOnce({
+    vi.mocked(getPackageChangelog).mockResolvedValueOnce({
       hits: {
         hits: [
           {
@@ -156,13 +156,13 @@ describe("Lambda Handler", () => {
   });
 
   it("should return 200 with the presigned URL if all checks pass", async () => {
-    (getPackage as Mock).mockResolvedValueOnce({
+    vi.mocked(getPackage).mockResolvedValueOnce({
       _source: { state: "test-state" },
     });
-    (getStateFilter as Mock).mockResolvedValueOnce({
+    vi.mocked(getStateFilter).mockResolvedValueOnce({
       terms: { state: ["test-state"] },
     });
-    (getPackageChangelog as Mock).mockResolvedValueOnce({
+    vi.mocked(getPackageChangelog).mockResolvedValueOnce({
       hits: {
         hits: [
           {
@@ -173,7 +173,7 @@ describe("Lambda Handler", () => {
         ],
       },
     });
-    (getSignedUrl as Mock).mockResolvedValueOnce("test-presigned-url");
+    vi.mocked(getSignedUrl).mockResolvedValueOnce("test-presigned-url");
 
     const event = {
       body: JSON.stringify({
@@ -193,7 +193,7 @@ describe("Lambda Handler", () => {
   });
 
   it("should handle errors during processing", async () => {
-    (getPackage as Mock).mockRejectedValueOnce(new Error("Test error"));
+    vi.mocked(getPackage).mockRejectedValueOnce(new Error("Test error"));
 
     const event = {
       body: JSON.stringify({
