@@ -168,7 +168,11 @@ jobs:
           aws-region: us-east-1
           role-duration-seconds: 10800
       - name: Run e2e test
-        run: cd test && bun run e2e
+        run: |
+          bun install &&
+          cd test &&
+          bun install &&
+          npx playwright test --project=state-user-chrome
         env:
           VITE_BASE_URL: "${{ needs.deploy.outputs.app-url }}"
           VITE_E2E_PASSWORD: "${{ secrets.VITE_E2E_PASSWORD }}"
