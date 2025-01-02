@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-import { SUBMISSION_ERROR_ITEM_ID } from "../data/items";
+import { SUBMISSION_ERROR_ITEM_ID } from "../../data/items";
 
 export type SubmitRequestBody = { id: string };
 
@@ -19,10 +19,6 @@ const defaultUploadUrlHandler = http.post(/\/getUploadUrl/, () =>
   ),
 );
 
-const defaultTestHandler = http.post(/\/test/, () =>
-  HttpResponse.json({ message: "pass" }, { status: 200 }),
-);
-
 const defaultSubmitHandler = http.post<SubmitRequestBody, SubmitRequestBody>(
   /\/submit$/,
   async ({ request }) => {
@@ -36,9 +32,8 @@ const defaultSubmitHandler = http.post<SubmitRequestBody, SubmitRequestBody>(
   },
 );
 
-export const defaultHandlers = [
+export const submissionHandlers = [
   defaultUploadHandler,
   defaultUploadUrlHandler,
-  defaultTestHandler,
   defaultSubmitHandler,
 ];

@@ -1,10 +1,11 @@
-import { response } from "libs/handler-lib";
+import { handleOpensearchError } from "./utils";
 import { APIGatewayEvent } from "aws-lambda";
-import { getStateFilter } from "../libs/api/auth/user";
-import * as os from "../libs/opensearch-lib";
+import { response } from "libs/handler-lib";
 import { Index } from "shared-types/opensearch";
-import { getAppkChildren } from "../libs/api/package";
 import { validateEnvVariable } from "shared-utils";
+import { getStateFilter } from "../libs/api/auth/user";
+import { getAppkChildren } from "../libs/api/package";
+import * as os from "../libs/opensearch-lib";
 
 // Handler function to search index
 export const getSearchData = async (event: APIGatewayEvent) => {
@@ -23,6 +24,8 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     query.query = query?.query || {};
     query.query.bool = query.query?.bool || {};
     query.query.bool.must = query.query.bool?.must || [];
+    query.query.bool.must_not = query.query.bool?.must_not || [];
+    query.query.bool.must_not.push({ term: { deleted: true } });
 
     const stateFilter = await getStateFilter(event);
     if (stateFilter) {
@@ -45,10 +48,10 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       query,
     );
 
-    for (let i = 0; i < results.hits.hits.length; i++) {
-      if (results.hits.hits[i]._source.appkParent) {
+    for (let i = 0; i < results?.hits?.hits?.length; i++) {
+      if (results.hits.hits[i]._source?.appkParent) {
         const children = await getAppkChildren(results.hits.hits[i]._id);
-        if (children.hits?.hits.length > 0) {
+        if (children?.hits?.hits?.length > 0) {
           results.hits.hits[i]._source.appkChildren = children.hits.hits;
         }
       }
@@ -59,11 +62,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       body: results,
     });
   } catch (error) {
-    console.error({ error });
-    return response({
-      statusCode: 500,
-      body: { message: "Internal server error" },
-    });
+    return response(handleOpensearchError(error));
   }
 };
 

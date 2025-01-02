@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Alert, AlertVariant } from "../Alert";
 import { Check, X } from "lucide-react";
 import { useLocation } from "react-router";
@@ -30,29 +30,42 @@ export const banner = (newBanner: Banner) => {
 };
 
 export const Banner = () => {
+  const bannerObserverRef = useRef<(() => void) | null>(null);
+
   const [activeBanner, setActiveBanner] = useState<Banner | null>(null);
   const { pathname } = useLocation();
+  const previousPathRef = useRef(pathname);
 
   const onClose = () => {
     bannerState.dismiss();
   };
 
   useEffect(() => {
-    const unsubscribe = bannerState.subscribe((banner) => {
-      if (banner) {
+    if (bannerObserverRef.current === null) {
+      bannerObserverRef.current = bannerState.subscribe((banner) => {
         setActiveBanner(banner);
-      } else {
-        setActiveBanner(null);
-      }
-    });
+      });
 
-    return unsubscribe;
+      return () => {
+        bannerObserverRef.current?.();
+        bannerObserverRef.current = null;
+      };
+    }
   }, []);
 
   useEffect(() => {
-    if (activeBanner && activeBanner.pathnameToDisplayOn !== pathname) {
-      onClose();
+    // only run cleanup if:
+    // 1. we've actually navigated (pathname changed from previous render)
+    // 2. there's an active banner to clean up
+    // 3. the banner's target pathname doesn't match where we navigated to
+    if (pathname !== previousPathRef.current) {
+      if (activeBanner && activeBanner.pathnameToDisplayOn !== pathname) {
+        onClose();
+      }
     }
+
+    // store current pathname for next render's comparison
+    previousPathRef.current = pathname;
   }, [pathname, activeBanner]);
 
   if (activeBanner && activeBanner.pathnameToDisplayOn === pathname) {
