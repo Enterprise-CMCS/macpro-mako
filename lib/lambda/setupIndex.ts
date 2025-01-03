@@ -59,9 +59,5 @@ const manageIndexResource = async (resource: {
 }) => {
   await os.createIndex(resource.osDomain, resource.index);
   if (!resource.update) return;
-  await os.updateFieldMapping(
-    resource.osDomain,
-    resource.index,
-    resource.update,
-  );
+  await os.updateFieldMapping(resource.osDomain, resource.index, resource.update);
 };
