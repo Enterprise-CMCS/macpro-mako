@@ -1,21 +1,26 @@
 name: PR - coverage annotation
-
 on:
   pull_request:
     branches:
-      - obe
-
+      - main
 jobs:
   coverage-report:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     permissions:
       contents: read
       pull-requests: write
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
       - uses: ./.github/actions/setup
       - name: Test
-        run: bun run test
+        run: run test --coverage
       - name: Report Coverage
         if: always()
         uses: davelosert/vitest-coverage-report-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          coverage-file: coverage/coverage-final.json
+          coverage-threshold: 80
+          coverage-threshold-type: lines
+          coverage-threshold-color: green
