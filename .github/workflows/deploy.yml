@@ -6,13 +6,16 @@ on:
       - "!skipci*"
 concurrency:
   group: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}-group
+
 env:
   STAGE_NAME: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
+
 permissions:
   id-token: write
   contents: write
   issues: write
   pull-requests: write
+
 jobs:
   init:
     runs-on: ubuntu-20.04
@@ -22,6 +25,7 @@ jobs:
           if [[ ! $STAGE_NAME =~ ^[a-z][a-z0-9-]*$ ]]; then
               echo "ERROR:  Your branch name, $STAGE_NAME, is not a valid Serverless Framework stage name." && exit 1
           fi
+
   deploy:
     runs-on: ubuntu-20.04
     needs:
@@ -34,19 +38,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - uses: ./.github/actions/setup
+
       - uses: docker/setup-qemu-action@v2
         with:
-          platforms: amd64
+          platforms: "amd64"
+
       - uses: docker/setup-buildx-action@v2
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
           role-duration-seconds: 10800
+
       - name: Deploy
         run: run deploy --stage $STAGE_NAME
+
       - name: Set Application URLs
         id: deployment-data
         run: |
@@ -55,31 +65,30 @@ jobs:
             --name "/$PROJECT/$STAGE_NAME/deployment-output" \
             --query Parameter.Value \
             --output text)
-          application_endpoint_url=$(echo $secret_value | jq -r
-          '.applicationEndpointUrl')
-
+          application_endpoint_url=$(echo $secret_value | jq -r '.applicationEndpointUrl')
           echo "APPURL=$application_endpoint_url" >> $GITHUB_OUTPUT
-
           kibana_url=$(echo $secret_value | jq -r '.kibanaUrl')
-
           echo "KIBANAURL=$kibana_url" >> $GITHUB_OUTPUT
+
   application-url:
     runs-on: ubuntu-20.04
     needs:
       - deploy
     environment:
-      name: ${{ github.ref_name }}-app
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}-app
       url: ${{ needs.deploy.outputs.app-url }}
+
     steps:
       - name: Display App URL
         run: |
           echo "App URL: ${{ needs.deploy.outputs.app-url }}"
+
   kibana-url:
     runs-on: ubuntu-20.04
     needs:
       - deploy
     environment:
-      name: ${{ github.ref_name }}-kibana
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}-kibana
       url: ${{ needs.deploy.outputs.kibana-url }}
     steps:
       - name: Display Kibana URL
@@ -89,25 +98,27 @@ jobs:
     runs-on: ubuntu-20.04
     needs:
       - init
-      - deploy
     environment:
-      name: ${{ github.ref_name }}
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - uses: ./.github/actions/setup
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
           role-duration-seconds: 10800
+
       - name: Install dependencies
         run: bun install
       - name: Add Node.js bin to PATH
         run: echo "PATH=$(pwd)/node_modules/.bin:\$PATH" >> $GITHUB_ENV
       - name: Test
-        run: bun test:coverage
+        run: run test --coverage
       - name: Upload Coverage
         uses: actions/upload-artifact@v4
         with:
@@ -120,34 +131,6 @@ jobs:
         with:
           coverageLocations: "coverage/lcov.info:lcov"
 
-      # - name: Report React coverage
-      #   uses: davelosert/vitest-coverage-report-action@v2
-      #   with:
-      #     name: "React Coverage"
-      #     vite-config-path: "."
-      #     working-directory: "react-app"
-      #     json-summary-path: "coverage/coverage-summary.json"
-      #     json-final-path: "coverage/coverage-final.json"
-      #     pr-number: "auto"
-      #     comment-on: "pr"
-      # - name: Report Lib coverage
-      #   uses: davelosert/vitest-coverage-report-action@v2
-      #   with:
-      #     name: "Lib Coverage"
-      #     vite-config-path: "."
-      #     working-directory: "lib"
-      #     json-summary-path: "coverage/coverage-summary.json"
-      #     json-final-path: "coverage/coverage-final.json"
-      #     pr-number: "auto"
-      #     comment-on: "pr"
-      # - name: Report Emails coverage
-      #   uses: davelosert/vitest-coverage-report-action@v2
-      #   with:
-      #     name: "Emails Coverage"
-      #     vite-config-path: "."
-      #     working-directory: "lib/libs/emails"
-      #     pr-number: "auto"
-      #     comment-on: "pr"
   e2e:
     runs-on: ubuntu-20.04
     needs:
@@ -160,8 +143,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup
-        uses: ./.github/actions/setup
+
+      - uses: ./.github/actions/setup
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -173,7 +157,7 @@ jobs:
       - name: Run e2e test
         working-directory: test
         run: |
-          bun inastall
+          bun install
           bun e2e
         env:
           VITE_BASE_URL: ${{ needs.deploy.outputs.app-url }}
@@ -196,29 +180,30 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - uses: ./.github/actions/setup
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
           role-duration-seconds: 10800
+
       - name: Get CloudFormation templates
         id: getCfts
         run: |
           mkdir -p cftemplates
-
-          stackList=(`aws cloudformation describe-stacks --query
-          "Stacks[?Tags[?Key=='STAGE' && Value=='$STAGE_NAME'] &&
-          Tags[?Key=='PROJECT' && Value=='$PROJECT']].StackName" --output text`)
-
+          stackList=(`aws cloudformation describe-stacks --query "Stacks[?Tags[?Key=='STAGE' && Value=='$STAGE_NAME'] && Tags[?Key=='PROJECT' && Value=='$PROJECT']].StackName" --output text`)
           for stack in "${stackList[@]}"; do
             aws cloudformation get-template --stack-name "$stack" --query TemplateBody > "cftemplates/${stack}.json"
           done
+
       - name: Stelligent cfn_nag
         uses: stelligent/cfn_nag@v0.8.6
         with:
           input_path: cftemplates
+
   release:
     runs-on: ubuntu-20.04
     needs:
@@ -228,7 +213,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - uses: ./.github/actions/setup
+
       - name: Install
         run: bun install
       - name: Release
