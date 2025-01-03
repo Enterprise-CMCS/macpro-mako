@@ -11,8 +11,8 @@ export default defineConfig({
     globals: true,
     pool: "threads",
     alias: {
+      libs: path.resolve(__dirname, ".."),
       lib: path.resolve(__dirname, "../.."),
-      libs: path.resolve(__dirname, "../libs"),
     },
     coverage: {
       enabled: true,
