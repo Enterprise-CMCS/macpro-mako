@@ -22,7 +22,7 @@ export const MedSpaStateEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<FollowUpNotice />}
+      // footerContent={<FollowUpNotice />}
     >
       <DetailsHeading />
       <PackageDetails
@@ -38,10 +38,11 @@ export const MedSpaStateEmail = (props: {
       />
       <Text style={styles.text.description}>
         {`This response confirms the receipt of your Medicaid State Plan Amendment
-        (SPA). You can expect a formal response to your submittal to be issued
+        (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
         within 90 days, before ${formatNinetyDaysDate(variables.timestamp)}.`}
       </Text>
       <MailboxNotice type="SPA" />
+      <FollowUpNotice includeStateLead={false} />
     </BaseEmailTemplate>
   );
 };

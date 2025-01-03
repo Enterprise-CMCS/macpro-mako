@@ -1661,7 +1661,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      This response confirms the submission of your CHIP State Plan Amendment to CMS:
+                      This is confirmation that you submitted a CHIP State Plan Amendment to CMS for review:
                     </h1>
                     <div>
                       <hr
@@ -1782,7 +1782,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Email
+                                      Email Address
                                       :
                                     </p>
                                   </td>
@@ -1880,10 +1880,18 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                       This response confirms the receipt of your CHIP State Plan Amendment (CHIP SPA). You can expect a formal response to your submittal from CMS at a later date.
                     </p>
                     <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
-                      This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only.
-                       Any other correspondence will be disregarded.
+                       
+                      If you have questions or did not expect this email, please contact
+                       
+                      <a
+                        href="mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov"
+                        style="color: rgb(6, 125, 247); text-decoration: underline;"
+                        target="_blank"
+                      >
+                        CHIPSPASubmissionMailBox@CMS.HHS.gov
+                      </a>
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
@@ -1902,40 +1910,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                   >
                     <tbody>
                       <tr>
-                        <td>
-                          <hr
-                            style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                          />
-                          <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            width="100%"
-                          >
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
-                                  >
-                                    If you have any questions, please contact
-                                     
-                                    <a
-                                      href="mailto:CHIPSPASubmissionMailBox@cms.hhs.gov"
-                                      style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                      target="_blank"
-                                    >
-                                      CHIPSPASubmissionMailBox@cms.hhs.gov
-                                    </a>
-                                     or your state lead.
-                                  </p>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
+                        <td />
                       </tr>
                     </tbody>
                   </table>
@@ -2027,7 +2002,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                   <h1
                     style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                   >
-                    This response confirms the submission of your CHIP State Plan Amendment to CMS:
+                    This is confirmation that you submitted a CHIP State Plan Amendment to CMS for review:
                   </h1>
                   <div>
                     <hr
@@ -2148,7 +2123,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                   >
-                                    Email
+                                    Email Address
                                     :
                                   </p>
                                 </td>
@@ -2246,10 +2221,18 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                     This response confirms the receipt of your CHIP State Plan Amendment (CHIP SPA). You can expect a formal response to your submittal from CMS at a later date.
                   </p>
                   <p
-                    style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                    style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                   >
-                    This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only.
-                     Any other correspondence will be disregarded.
+                     
+                    If you have questions or did not expect this email, please contact
+                     
+                    <a
+                      href="mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov"
+                      style="color: rgb(6, 125, 247); text-decoration: underline;"
+                      target="_blank"
+                    >
+                      CHIPSPASubmissionMailBox@CMS.HHS.gov
+                    </a>
                   </p>
                   <p
                     style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
@@ -2268,40 +2251,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                 >
                   <tbody>
                     <tr>
-                      <td>
-                        <hr
-                          style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                        />
-                        <table
-                          align="center"
-                          border="0"
-                          cellpadding="0"
-                          cellspacing="0"
-                          role="presentation"
-                          width="100%"
-                        >
-                          <tbody>
-                            <tr>
-                              <td>
-                                <p
-                                  style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
-                                >
-                                  If you have any questions, please contact
-                                   
-                                  <a
-                                    href="mailto:CHIPSPASubmissionMailBox@cms.hhs.gov"
-                                    style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                    target="_blank"
-                                  >
-                                    CHIPSPASubmissionMailBox@cms.hhs.gov
-                                  </a>
-                                   or your state lead.
-                                </p>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </td>
+                      <td />
                     </tr>
                   </tbody>
                 </table>
@@ -2956,7 +2906,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      This response confirms the submission of your CHIP State Plan Amendment to CMS:
+                      This is confirmation that you submitted a CHIP State Plan Amendment to CMS for review:
                     </h1>
                     <div>
                       <hr
@@ -3077,7 +3027,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Email
+                                      Email Address
                                       :
                                     </p>
                                   </td>
@@ -3175,10 +3125,18 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                       This response confirms the receipt of your CHIP State Plan Amendment (CHIP SPA). You can expect a formal response to your submittal from CMS at a later date.
                     </p>
                     <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
-                      This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only.
-                       Any other correspondence will be disregarded.
+                       
+                      If you have questions or did not expect this email, please contact
+                       
+                      <a
+                        href="mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov"
+                        style="color: rgb(6, 125, 247); text-decoration: underline;"
+                        target="_blank"
+                      >
+                        CHIPSPASubmissionMailBox@CMS.HHS.gov
+                      </a>
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
@@ -3197,40 +3155,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                   >
                     <tbody>
                       <tr>
-                        <td>
-                          <hr
-                            style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                          />
-                          <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            width="100%"
-                          >
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
-                                  >
-                                    If you have any questions, please contact
-                                     
-                                    <a
-                                      href="mailto:CHIPSPASubmissionMailBox@cms.hhs.gov"
-                                      style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                      target="_blank"
-                                    >
-                                      CHIPSPASubmissionMailBox@cms.hhs.gov
-                                    </a>
-                                     or your state lead.
-                                  </p>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
+                        <td />
                       </tr>
                     </tbody>
                   </table>
@@ -3614,7 +3539,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
-        (SPA). You can expect a formal response to your submittal to be issued
+        (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
         within 90 days, before Apr 1, 2023 @ 11:59pm ET.
                     </p>
                     <p
@@ -3623,6 +3548,38 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                       This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only.
                        Any other correspondence will be disregarded.
                     </p>
+                    <hr
+                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    />
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      width="100%"
+                    >
+                      <tbody>
+                        <tr>
+                          <td>
+                            <p
+                              style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                            >
+                              If you have any questions or did not expect this email, please contact
+                               
+                              <a
+                                href="mailto:spa@cms.hhs.gov"
+                                style="color: rgb(6, 125, 247); text-decoration: underline;"
+                                target="_blank"
+                              >
+                                spa@cms.hhs.gov
+                              </a>
+                              .
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
@@ -3640,40 +3597,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                   >
                     <tbody>
                       <tr>
-                        <td>
-                          <hr
-                            style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                          />
-                          <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            width="100%"
-                          >
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
-                                  >
-                                    If you have any questions or did not expect this email, please contact
-                                     
-                                    <a
-                                      href="mailto:spa@cms.hhs.gov"
-                                      style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                      target="_blank"
-                                    >
-                                      spa@cms.hhs.gov
-                                    </a>
-                                     or your state lead.
-                                  </p>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
+                        <td />
                       </tr>
                     </tbody>
                   </table>
@@ -4058,7 +3982,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                   >
                     This response confirms the receipt of your Medicaid State Plan Amendment
-        (SPA). You can expect a formal response to your submittal to be issued
+        (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
         within 90 days, before Apr 1, 2023 @ 11:59pm ET.
                   </p>
                   <p
@@ -4067,6 +3991,38 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                     This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only.
                      Any other correspondence will be disregarded.
                   </p>
+                  <hr
+                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                  />
+                  <table
+                    align="center"
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    role="presentation"
+                    width="100%"
+                  >
+                    <tbody>
+                      <tr>
+                        <td>
+                          <p
+                            style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                          >
+                            If you have any questions or did not expect this email, please contact
+                             
+                            <a
+                              href="mailto:spa@cms.hhs.gov"
+                              style="color: rgb(6, 125, 247); text-decoration: underline;"
+                              target="_blank"
+                            >
+                              spa@cms.hhs.gov
+                            </a>
+                            .
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                   <p
                     style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                   >
@@ -4084,40 +4040,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                 >
                   <tbody>
                     <tr>
-                      <td>
-                        <hr
-                          style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                        />
-                        <table
-                          align="center"
-                          border="0"
-                          cellpadding="0"
-                          cellspacing="0"
-                          role="presentation"
-                          width="100%"
-                        >
-                          <tbody>
-                            <tr>
-                              <td>
-                                <p
-                                  style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
-                                >
-                                  If you have any questions or did not expect this email, please contact
-                                   
-                                  <a
-                                    href="mailto:spa@cms.hhs.gov"
-                                    style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                    target="_blank"
-                                  >
-                                    spa@cms.hhs.gov
-                                  </a>
-                                   or your state lead.
-                                </p>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </td>
+                      <td />
                     </tr>
                   </tbody>
                 </table>
@@ -4772,7 +4695,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      This response confirms the submission of your CHIP State Plan Amendment to CMS:
+                      This is confirmation that you submitted a CHIP State Plan Amendment to CMS for review:
                     </h1>
                     <div>
                       <hr
@@ -4893,7 +4816,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Email
+                                      Email Address
                                       :
                                     </p>
                                   </td>
@@ -4991,10 +4914,18 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                       This response confirms the receipt of your CHIP State Plan Amendment (CHIP SPA). You can expect a formal response to your submittal from CMS at a later date.
                     </p>
                     <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
-                      This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only.
-                       Any other correspondence will be disregarded.
+                       
+                      If you have questions or did not expect this email, please contact
+                       
+                      <a
+                        href="mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov"
+                        style="color: rgb(6, 125, 247); text-decoration: underline;"
+                        target="_blank"
+                      >
+                        CHIPSPASubmissionMailBox@CMS.HHS.gov
+                      </a>
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
@@ -5013,40 +4944,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                   >
                     <tbody>
                       <tr>
-                        <td>
-                          <hr
-                            style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                          />
-                          <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            width="100%"
-                          >
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
-                                  >
-                                    If you have any questions, please contact
-                                     
-                                    <a
-                                      href="mailto:CHIPSPASubmissionMailBox@cms.hhs.gov"
-                                      style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                      target="_blank"
-                                    >
-                                      CHIPSPASubmissionMailBox@cms.hhs.gov
-                                    </a>
-                                     or your state lead.
-                                  </p>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
+                        <td />
                       </tr>
                     </tbody>
                   </table>
@@ -5430,7 +5328,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
-        (SPA). You can expect a formal response to your submittal to be issued
+        (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
         within 90 days, before Apr 1, 2023 @ 11:59pm ET.
                     </p>
                     <p
@@ -5439,6 +5337,38 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                       This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only.
                        Any other correspondence will be disregarded.
                     </p>
+                    <hr
+                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    />
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      width="100%"
+                    >
+                      <tbody>
+                        <tr>
+                          <td>
+                            <p
+                              style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                            >
+                              If you have any questions or did not expect this email, please contact
+                               
+                              <a
+                                href="mailto:spa@cms.hhs.gov"
+                                style="color: rgb(6, 125, 247); text-decoration: underline;"
+                                target="_blank"
+                              >
+                                spa@cms.hhs.gov
+                              </a>
+                              .
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
@@ -5456,40 +5386,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                   >
                     <tbody>
                       <tr>
-                        <td>
-                          <hr
-                            style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                          />
-                          <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            width="100%"
-                          >
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
-                                  >
-                                    If you have any questions or did not expect this email, please contact
-                                     
-                                    <a
-                                      href="mailto:spa@cms.hhs.gov"
-                                      style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                      target="_blank"
-                                    >
-                                      spa@cms.hhs.gov
-                                    </a>
-                                     or your state lead.
-                                  </p>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
+                        <td />
                       </tr>
                     </tbody>
                   </table>
@@ -7113,7 +7010,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      This response confirms the submission of your CHIP State Plan Amendment to CMS:
+                      This is confirmation that you submitted a CHIP State Plan Amendment to CMS for review:
                     </h1>
                     <div>
                       <hr
@@ -7234,7 +7131,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Email
+                                      Email Address
                                       :
                                     </p>
                                   </td>
@@ -7332,10 +7229,18 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                       This response confirms the receipt of your CHIP State Plan Amendment (CHIP SPA). You can expect a formal response to your submittal from CMS at a later date.
                     </p>
                     <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
-                      This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only.
-                       Any other correspondence will be disregarded.
+                       
+                      If you have questions or did not expect this email, please contact
+                       
+                      <a
+                        href="mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov"
+                        style="color: rgb(6, 125, 247); text-decoration: underline;"
+                        target="_blank"
+                      >
+                        CHIPSPASubmissionMailBox@CMS.HHS.gov
+                      </a>
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
@@ -7354,40 +7259,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                   >
                     <tbody>
                       <tr>
-                        <td>
-                          <hr
-                            style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                          />
-                          <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            width="100%"
-                          >
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
-                                  >
-                                    If you have any questions, please contact
-                                     
-                                    <a
-                                      href="mailto:CHIPSPASubmissionMailBox@cms.hhs.gov"
-                                      style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                      target="_blank"
-                                    >
-                                      CHIPSPASubmissionMailBox@cms.hhs.gov
-                                    </a>
-                                     or your state lead.
-                                  </p>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
+                        <td />
                       </tr>
                     </tbody>
                   </table>
@@ -7771,7 +7643,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
-        (SPA). You can expect a formal response to your submittal to be issued
+        (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
         within 90 days, before Apr 1, 2023 @ 11:59pm ET.
                     </p>
                     <p
@@ -7780,6 +7652,38 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                       This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only.
                        Any other correspondence will be disregarded.
                     </p>
+                    <hr
+                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    />
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      width="100%"
+                    >
+                      <tbody>
+                        <tr>
+                          <td>
+                            <p
+                              style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                            >
+                              If you have any questions or did not expect this email, please contact
+                               
+                              <a
+                                href="mailto:spa@cms.hhs.gov"
+                                style="color: rgb(6, 125, 247); text-decoration: underline;"
+                                target="_blank"
+                              >
+                                spa@cms.hhs.gov
+                              </a>
+                              .
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
@@ -7797,40 +7701,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                   >
                     <tbody>
                       <tr>
-                        <td>
-                          <hr
-                            style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                          />
-                          <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            width="100%"
-                          >
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
-                                  >
-                                    If you have any questions or did not expect this email, please contact
-                                     
-                                    <a
-                                      href="mailto:spa@cms.hhs.gov"
-                                      style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                      target="_blank"
-                                    >
-                                      spa@cms.hhs.gov
-                                    </a>
-                                     or your state lead.
-                                  </p>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
+                        <td />
                       </tr>
                     </tbody>
                   </table>
@@ -10128,7 +9999,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      This response confirms the submission of your CHIP State Plan Amendment to CMS:
+                      This is confirmation that you submitted a CHIP State Plan Amendment to CMS for review:
                     </h1>
                     <div>
                       <hr
@@ -10249,7 +10120,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Email
+                                      Email Address
                                       :
                                     </p>
                                   </td>
@@ -10347,10 +10218,18 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                       This response confirms the receipt of your CHIP State Plan Amendment (CHIP SPA). You can expect a formal response to your submittal from CMS at a later date.
                     </p>
                     <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
-                      This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only.
-                       Any other correspondence will be disregarded.
+                       
+                      If you have questions or did not expect this email, please contact
+                       
+                      <a
+                        href="mailto:CHIPSPASubmissionMailBox@CMS.HHS.gov"
+                        style="color: rgb(6, 125, 247); text-decoration: underline;"
+                        target="_blank"
+                      >
+                        CHIPSPASubmissionMailBox@CMS.HHS.gov
+                      </a>
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
@@ -10369,40 +10248,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                   >
                     <tbody>
                       <tr>
-                        <td>
-                          <hr
-                            style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                          />
-                          <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            width="100%"
-                          >
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
-                                  >
-                                    If you have any questions, please contact
-                                     
-                                    <a
-                                      href="mailto:CHIPSPASubmissionMailBox@cms.hhs.gov"
-                                      style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                      target="_blank"
-                                    >
-                                      CHIPSPASubmissionMailBox@cms.hhs.gov
-                                    </a>
-                                     or your state lead.
-                                  </p>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
+                        <td />
                       </tr>
                     </tbody>
                   </table>
@@ -10786,7 +10632,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
-        (SPA). You can expect a formal response to your submittal to be issued
+        (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
         within 90 days, before Apr 1, 2023 @ 11:59pm ET.
                     </p>
                     <p
@@ -10795,6 +10641,38 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                       This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only.
                        Any other correspondence will be disregarded.
                     </p>
+                    <hr
+                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    />
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      width="100%"
+                    >
+                      <tbody>
+                        <tr>
+                          <td>
+                            <p
+                              style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                            >
+                              If you have any questions or did not expect this email, please contact
+                               
+                              <a
+                                href="mailto:spa@cms.hhs.gov"
+                                style="color: rgb(6, 125, 247); text-decoration: underline;"
+                                target="_blank"
+                              >
+                                spa@cms.hhs.gov
+                              </a>
+                              .
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
@@ -10812,40 +10690,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                   >
                     <tbody>
                       <tr>
-                        <td>
-                          <hr
-                            style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                          />
-                          <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            width="100%"
-                          >
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
-                                  >
-                                    If you have any questions or did not expect this email, please contact
-                                     
-                                    <a
-                                      href="mailto:spa@cms.hhs.gov"
-                                      style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                      target="_blank"
-                                    >
-                                      spa@cms.hhs.gov
-                                    </a>
-                                     or your state lead.
-                                  </p>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
+                        <td />
                       </tr>
                     </tbody>
                   </table>

@@ -2047,7 +2047,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Chipspa Preview 
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Email
+                                      Email Address
                                       :
                                     </p>
                                   </td>
@@ -2754,7 +2754,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Chipspa Preview 
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                   >
-                                    Email
+                                    Email Address
                                     :
                                   </p>
                                 </td>
@@ -4101,7 +4101,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Medicaid Spa Pre
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Email
+                                      Email Address
                                       :
                                     </p>
                                   </td>
@@ -7137,7 +7137,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a TempExt Preview 
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Email
+                                      Email Address
                                       :
                                     </p>
                                   </td>
@@ -10365,7 +10365,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Waiver Capitated
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Email
+                                      Email Address
                                       :
                                     </p>
                                   </td>

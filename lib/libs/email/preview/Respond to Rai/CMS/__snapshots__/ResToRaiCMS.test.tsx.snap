@@ -4175,7 +4175,7 @@ exports[`Respond To RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Email
+                                      Email Address
                                       :
                                     </p>
                                   </td>
@@ -4818,7 +4818,7 @@ exports[`Respond To RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                   >
-                                    Email
+                                    Email Address
                                     :
                                   </p>
                                 </td>
@@ -6638,7 +6638,7 @@ exports[`Respond To RAI CMS Email Snapshot Test > renders a Waiver Capitated Pre
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Email
+                                      Email Address
                                       :
                                     </p>
                                   </td>
