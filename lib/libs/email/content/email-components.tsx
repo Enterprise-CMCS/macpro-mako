@@ -1,5 +1,5 @@
 import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/components";
-import { createRef, forwardRef, ReactNode } from "react";
+import { ReactNode } from "react";
 import { Attachment, AttachmentKey, AttachmentTitle } from "shared-types";
 import { styles } from "./email-styles";
 
@@ -44,23 +44,17 @@ const Textarea = ({ children }: { children: React.ReactNode }) => (
   </Text>
 );
 
-const LogoContainer = forwardRef<HTMLSpanElement, { url: string }>(({ url }, ref) => (
-  <header ref={ref} style={styles.logo.container}>
-    <Link href={url} target="_blank" style={styles.logo.link}>
+const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
+  <Section style={styles.logo.container}>
+    <Link href={appEndpointUrl} target="_blank" style={styles.logo.link}>
       <img
         height={40}
         width={112}
         style={{ maxWidth: "112px" }}
-        src={`${url}onemac-logo.png`}
+        src={`${appEndpointUrl}onemac-logo.png`}
         alt="OneMAC Logo"
       />
     </Link>
-  </header>
-));
-
-const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
-  <Section>
-    <LogoContainer ref={createRef()} url={appEndpointUrl} />
   </Section>
 );
 
