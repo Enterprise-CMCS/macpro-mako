@@ -2,6 +2,7 @@ import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/comp
 import { ReactNode } from "react";
 import { Attachment, AttachmentKey, AttachmentTitle } from "shared-types";
 import { styles } from "./email-styles";
+import { onemacLogoBase64 } from "./onemac-logo-base64";
 
 export const EMAIL_CONFIG = {
   DEV_EMAIL: "mako.stateuser+dev-to@gmail.com",
@@ -51,7 +52,7 @@ const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
         height={40}
         width={112}
         style={{ maxWidth: "112px" }}
-        src={`${appEndpointUrl}onemac-logo.png`}
+        src={`data:image/png;base64,${onemacLogoBase64}`}
         alt="OneMAC Logo"
       />
     </Link>
