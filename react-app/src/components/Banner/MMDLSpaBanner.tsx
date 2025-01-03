@@ -27,7 +27,7 @@ const MMDLAlertBanner = () => {
       </div>
       <div className="flex space-x-4 col-start-2 md:col-start-auto">
         <a
-          href="/faq#mmdl-section"
+          href="/faq#spa-admendments"
           target="_blank"
           rel="noopener noreferrer"
           className="border-2 border-black rounded h-[38px] px-4 text font-bold text-center whitespace-nowrap pt-1"

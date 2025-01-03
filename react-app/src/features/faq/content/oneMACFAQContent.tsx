@@ -221,22 +221,66 @@ export const oneMACFAQContent: FAQContent[] = [
     sectionTitle: "State Plan Amendments (SPAs)",
     qanda: [
       {
-        anchorText: "spa-id-format",
-        question: "What format is used to enter a SPA ID?",
+        anchorText: "spa-admendments",
+        question: "Which state plan amendments (SPAs) can I submit in OneMAC?",
         answerJSX: (
-          <>
-            Enter the State Plan Amendment transmittal number. Assign consecutive numbers on a
-            calendar year basis (e.g., 20-0001-XXXX, 20-0002-XXXX, etc.).
-            <br />
-            The Official Submission package SPA ID must follow the format SS-YY-#### OR
-            SS-YY-####-XXXX to include:
-            <ul>
-              <li>SS = 2 alpha character (State Abbreviation)</li>
-              <li>YY = 2 numeric digits (Year)</li>
-              <li>#### = 4 numeric digits (Serial number)</li>
-              <li>XXXX = OPTIONAL, 4 characters alpha/numeric modifier (Suffix)</li>
+          <div className="w-full space-y-3" id="spa-admendments">
+            <p>
+                All Medicaid and CHIP state plan amendments (SPAs), <b>except </b> 
+                Medicaid SPA submissions processed in the Medicaid & CHIP 
+                Program System portal (MACPro), must be submitted in OneMac.
+            </p>
+            <p>Starting [month,date,year,] Medicaid Model Data Lab (MMDL) no longer accepts new submissions for these SPAs, including:</p>
+            <ul className="ml-8 list-disc space-y-2">
+              <li>
+                Medicaid Alternative Benefit Plan (ABP)
+              </li>
+              <li>
+                Medicaid Premiums & Cost Sharing 
+              </li>
+              <li>
+                CHIP  Eligibility 
+              </li>
             </ul>
-          </>
+            <p>
+              Pending SPAs submitted in MMDL before [month, day, year,] including those on RAI (request for additional information) status, 
+              will continue to be processed through MMDL.
+            </p>
+            <p>Templates and implementation guides for OneMac SPAs can be downloaded from the respective FAQ:</p>
+            <ul className="ml-8 list-disc space-y-2 text-blue-600">
+            {[
+              { href: "#abp-spa-templates", text: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?" },
+              { href: "#abp-implementation-guides-spa", text: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?" },
+              { href: "#mpc-spa-templates", text: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?" },
+              { href: "#mpc-spa-implementation-guides", text: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?" },
+              { href: "#chip-spa-templates", text: "Where can I download CHIP eligibility SPA templates?" },
+              { href: "#chip-spa-implentation-guides", text: "Where can I download CHIP eligibility SPA implementation guides?" }
+            ].map(({ href, text }) => (
+              <li key={href}>
+                 <a
+                  href={href}
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent default anchor link behavior
+                    const targetElement = document.getElementById(href.substring(1)); // Remove '#' from href
+                    if (targetElement) {
+                      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                      // Find the button inside the section that controls the dropdown
+                      const buttonElement = targetElement.querySelector('button');
+                      if (buttonElement) {
+                        // Simulate a click to open the section
+                        buttonElement.click();
+                      }
+                    }
+                  }}
+                >
+                  {text}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p>For more information, refer to CMCS Information Bulletin #25-TBD.</p>
+        </div>
         ),
       },
       {
@@ -698,7 +742,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "abp-spa-templates",
         question: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
         answerJSX: (
-          <section className="space-y-2 p-2">
+          <section id="abp-spa-templates" className="space-y-2 p-2">
             <p>
               Medicaid Alternative Benefit Plan (ABP) SPA templates can be downloaded at the links
               below. After downloading and completing the templates you need, upload them as part of
