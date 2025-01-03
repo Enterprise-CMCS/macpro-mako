@@ -1,14 +1,16 @@
 // my-lib.test.ts
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { handler } from "./setupIndex"; // The code that calls createIndex, updateFieldMapping
-import { Context } from "aws-lambda";
+import { handler } from "./setupIndex";
 
-// 1) Define mocks first
-const mockCreateIndex = vi.fn();
-const mockUpdateFieldMapping = vi.fn();
+const mockFns = vi.hoisted(() => ({
+  createIndex: vi.fn(),
+  updateFieldMapping: vi.fn(),
+}));
 
+vi.mock("../libs/opensearch-lib", () => mockFns);
 
 describe.skip("handler", () => {
+  // TODO: fix this test - it shows an error: SyntaxError: Unexpected token ')' [which is just not the case]
   const mockCallback = vi.fn();
   const mockEvent = {
     osDomain: "test-domain",
@@ -21,20 +23,22 @@ describe.skip("handler", () => {
   });
 
   it("should create and update indices without errors", async () => {
-    await handler(mockEvent, {} as Context, mockCallback);
+    await handler(mockEvent, expect.anything(), mockCallback);
 
-    // 3. Use the mocked functions in the expectations:
-    expect(mockCreateIndex).toHaveBeenCalledTimes(7);
-    expect(mockCreateIndex).toHaveBeenCalledWith("test-domain", "test-namespace-main");
-    expect(mockCreateIndex).toHaveBeenCalledWith("test-domain", "test-namespace-changelog");
-    expect(mockCreateIndex).toHaveBeenCalledWith("test-domain", "test-namespace-types");
-    expect(mockCreateIndex).toHaveBeenCalledWith("test-domain", "test-namespace-subtypes");
-    expect(mockCreateIndex).toHaveBeenCalledWith("test-domain", "test-namespace-cpocs");
-    expect(mockCreateIndex).toHaveBeenCalledWith("test-domain", "test-namespace-insights");
-    expect(mockCreateIndex).toHaveBeenCalledWith("test-domain", "test-namespace-legacyinsights");
+    expect(mockFns.createIndex).toHaveBeenCalledTimes(7);
+    expect(mockFns.createIndex).toHaveBeenCalledWith("test-domain", "test-namespace-main");
+    expect(mockFns.createIndex).toHaveBeenCalledWith("test-domain", "test-namespace-changelog");
+    expect(mockFns.createIndex).toHaveBeenCalledWith("test-domain", "test-namespace-types");
+    expect(mockFns.createIndex).toHaveBeenCalledWith("test-domain", "test-namespace-subtypes");
+    expect(mockFns.createIndex).toHaveBeenCalledWith("test-domain", "test-namespace-cpocs");
+    expect(mockFns.createIndex).toHaveBeenCalledWith("test-domain", "test-namespace-insights");
+    expect(mockFns.createIndex).toHaveBeenCalledWith(
+      "test-domain",
+      "test-namespace-legacyinsights",
+    );
 
-    expect(mockUpdateFieldMapping).toHaveBeenCalledTimes(1);
-    expect(mockUpdateFieldMapping).toHaveBeenCalledWith("test-domain", "test-namespace-main", {
+    expect(mockFns.updateFieldMapping).toHaveBeenCalledTimes(1);
+    expect(mockFns.updateFieldMapping).toHaveBeenCalledWith("test-domain", "test-namespace-main", {
       approvedEffectiveDate: { type: "date" },
       changedDate: { type: "date" },
       finalDispositionDate: { type: "date" },
@@ -47,13 +51,12 @@ describe.skip("handler", () => {
   });
 
   it("should handle errors and return status 500", async () => {
-    // Make the first call to mockCreateIndex reject:
-    mockCreateIndex.mockRejectedValueOnce(new Error("Test error"));
+    mockFns.createIndex.mockRejectedValueOnce(new Error("Test error"));
 
-    await handler(mockEvent, {} as Context, mockCallback);
+    await handler(mockEvent, expect.anything(), mockCallback);
 
-    expect(mockCreateIndex).toHaveBeenCalledTimes(1);
-    expect(mockUpdateFieldMapping).not.toHaveBeenCalled();
+    expect(mockFns.createIndex).toHaveBeenCalledTimes(1);
+    expect(mockFns.updateFieldMapping).not.toHaveBeenCalled();
     expect(mockCallback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,
     });

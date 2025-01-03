@@ -93,18 +93,17 @@ export function getDomainAndNamespace<T extends BaseIndex>(
 
 export function getDomainAndNamespace(baseIndex?: BaseIndex) {
   const domain = process.env.osDomain;
+  const indexNamespace = process.env.indexNamespace ?? "";
 
   if (domain === undefined) {
     throw new Error("osDomain is undefined in environment variables");
   }
-  
-  if (indexNamespace !== "" && indexNamespace === undefined) {
+
+  if (indexNamespace === undefined) {
     throw new Error("indexName is undefined in environment variables");
   }
 
-  const indexNamespace = process.env.indexNamespace || "";
   const index = `${indexNamespace}${baseIndex}`;
-
 
   return { index, domain };
 }
