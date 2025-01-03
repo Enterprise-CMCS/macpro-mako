@@ -1,5 +1,6 @@
 import { handleOpensearchError } from "./utils";
 import { APIGatewayEvent } from "aws-lambda";
+import { response } from "libs/handler-lib";
 import { Index } from "shared-types/opensearch";
 import { validateEnvVariable } from "shared-utils";
 import { getStateFilter } from "../libs/api/auth/user";
@@ -10,10 +11,10 @@ import * as os from "../libs/opensearch-lib";
 export const getSearchData = async (event: APIGatewayEvent) => {
   validateEnvVariable("osDomain");
   if (!event.pathParameters || !event.pathParameters.index) {
-    return {
+    return response({
       statusCode: 400,
       body: { message: "Index path parameter required" },
-    };
+    });
   }
   try {
     let query: any = {};
@@ -56,12 +57,12 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       }
     }
 
-    return {
+    return response<unknown>({
       statusCode: 200,
       body: results,
-    };
+    });
   } catch (error) {
-    return handleOpensearchError(error);
+    return response(handleOpensearchError(error));
   }
 };
 

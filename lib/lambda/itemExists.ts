@@ -1,7 +1,7 @@
 import { handleOpensearchError } from "./utils";
 import { APIGatewayEvent } from "aws-lambda";
-import { itemExists } from "../libs/api/package";
-import { response } from "../libs/handler-lib";
+import { itemExists } from "libs/api/package";
+import { response } from "libs/handler-lib";
 
 export const handler = async (event: APIGatewayEvent) => {
   if (!event.body) {

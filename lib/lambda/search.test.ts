@@ -11,26 +11,22 @@ describe("getSearchData Handler", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(400);
-    expect(res.body).toEqual({ message: "Index path parameter required" });
+    expect(res.body).toEqual(JSON.stringify({ message: "Index path parameter required" }));
   });
 
-  it.skip("should return 200 with search results", async () => {
+  it("should return 200 with search results", async () => {
     const event = {
-      body: {
-        query: {
-          match_all: {},
-        },
-      },
+      body: JSON.stringify({ query: { match_all: {} } }),
       pathParameters: { index: "main" } as APIGatewayProxyEventPathParameters,
       requestContext: getRequestContext(makoStateSubmitter),
-    } as unknown as APIGatewayEvent;
+    } as APIGatewayEvent;
 
     const res = await handler(event);
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
 
-    const body = res.body;
+    const body = JSON.parse(res.body);
     expect(body).toBeTruthy();
     expect(body?.hits?.hits).toBeTruthy();
     expect(body?.hits?.hits?.length).toEqual(11);
@@ -47,6 +43,8 @@ describe("getSearchData Handler", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(500);
-    expect(res.body).toEqual({ error: "Internal server error", message: "Response Error" });
+    expect(res.body).toEqual(
+      JSON.stringify({ error: "Internal server error", message: "Response Error" }),
+    );
   });
 });
