@@ -93,7 +93,7 @@ jobs:
     steps:
       - name: Display Kibana URL
         run: |
-          echo "Kibana URL: ${{ needs.deploy.outputs.kibana-url }}
+          echo "Kibana URL: ${{ needs.deploy.outputs.kibana-url }}"
   test:
     runs-on: ubuntu-20.04
     needs:

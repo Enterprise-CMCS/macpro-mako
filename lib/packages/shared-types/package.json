@@ -10,7 +10,6 @@
   },
   "scripts": {
     "test": "vitest",
-    "test:coverage": "vitest --coverage.enabled true --reporter=json-summary",
     "test:ui": "vitest --ui"
   },
   "dependencies": {
