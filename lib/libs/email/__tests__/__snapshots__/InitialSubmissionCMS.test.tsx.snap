@@ -1,0 +1,34 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Initial Submission CMS Email Snapshot Test > renders a AppkCMSEmail Preview Template 1`] = `
+<AppKCMSEmail
+  variables={
+    {
+      "actionType": "Amend",
+      "additionalInformation": "This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.",
+      "appkParentId": null,
+      "applicationEndpointUrl": "https://mako-dev.cms.gov/",
+      "attachments": {
+        "appk": {
+          "files": [],
+          "label": "AppK",
+        },
+        "other": {
+          "files": [],
+          "label": "Other",
+        },
+      },
+      "authority": "1915(c)",
+      "event": "app-k",
+      "id": "CO-1234.R21.00",
+      "origin": "mako",
+      "proposedEffectiveDate": 1728495789885,
+      "submitterEmail": "george@example.com",
+      "submitterName": "George Harrison",
+      "territory": "CO",
+      "timestamp": 1728495786285,
+      "title": "A Perfect Appendix K Amendment Title",
+    }
+  }
+/>
+`;

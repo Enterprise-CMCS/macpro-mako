@@ -2,15 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext",
-      "ES2022",
-      "ES2015.Core",
-      "ES2015.Collection",
-      "ES2015.Iterable"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "ES2022"],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": false,
@@ -18,7 +10,7 @@
     "strict": false,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
@@ -26,8 +18,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    },
-    "types": ["@testing-library/jest-dom"]
+    }
   },
   "include": ["src", "e2e", "src/assets/_.d.ts"]
 }

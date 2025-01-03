@@ -24,10 +24,7 @@
     "baseUrl": ".",
     "rootDir": "./",
     "paths": {
-      "mocks/*": ["mocks/*"],
-      "libs/*": ["lib/libs/*"],
-      "shared-types/*": ["shared-types/*"],
-      "shared-utils/*": ["shared-utils/*"]
+      "*": ["./*"]
     }
   },
   "exclude": ["node_modules", "cdk.out", ".cdk"],

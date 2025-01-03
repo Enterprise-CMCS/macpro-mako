@@ -1,4 +1,3 @@
-import { cleanup } from "@testing-library/react";
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
 
 beforeAll(() => {});
@@ -6,14 +5,13 @@ beforeAll(() => {});
 beforeEach(() => {
   process.env.isDev = "true";
   vi.useFakeTimers();
-  const now = new Date(1672592200000);
+  const now = new Date(2023, 0, 1);
   vi.setSystemTime(now);
 });
 
 afterEach(() => {
   vi.useRealTimers();
   vi.clearAllMocks();
-  cleanup();
 });
 
 afterAll(() => {

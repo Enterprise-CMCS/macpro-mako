@@ -10,14 +10,16 @@
     "strict": false,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/selectors": ["e2e/selectors"]
+      "@/selectors": ["e2e/selectors"],
+      "@/*": ["src/*"]
     }
-  }
+  },
+  "include": ["."]
 }

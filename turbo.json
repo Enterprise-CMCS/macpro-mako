@@ -10,49 +10,36 @@
       "cache": false
     },
     "e2e": {
-      "inputs": ["test"],
       "cache": false,
-      "env": ["VITE_BASE_URL", "VITE_E2E_PASSWORD"]
+      "env": [
+        "AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY",
+        "AWS_SESSION_TOKEN",
+        "STAGE_NAME",
+        "PROJECT"
+      ]
     },
     "e2e:ui": {
-      "inputs": ["test"],
-      "cache": false,
-      "env": ["VITE_BASE_URL", "VITE_E2E_PASSWORD"]
-    },
-    "test": {
-      "inputs": ["lib", "lib/libs/email", "react-app"],
       "cache": false,
       "env": [
         "AWS_ACCESS_KEY_ID",
         "AWS_SECRET_ACCESS_KEY",
         "AWS_SESSION_TOKEN",
-        "GITHUB_TOKEN",
         "STAGE_NAME",
         "PROJECT"
       ]
+    },
+    "test": {
+      "cache": false,
+      "env": ["STAGE_NAME", "PROJECT"]
     },
     "test:coverage": {
-      "inputs": ["lib", "lib/libs/email", "react-app"],
       "cache": false,
-      "env": [
-        "AWS_ACCESS_KEY_ID",
-        "AWS_SECRET_ACCESS_KEY",
-        "AWS_SESSION_TOKEN",
-        "GITHUB_TOKEN",
-        "STAGE_NAME",
-        "PROJECT"
-      ]
+      "env": ["STAGE_NAME", "PROJECT"]
     },
     "email-dev": {
-      "inputs": ["lib/libs/email"],
       "cache": false,
-      "env": [
-        "AWS_ACCESS_KEY_ID",
-        "AWS_SECRET_ACCESS_KEY",
-        "AWS_SESSION_TOKEN",
-        "STAGE_NAME",
-        "PROJECT"
-      ]
+      "persistent": true
     }
   }
 }
