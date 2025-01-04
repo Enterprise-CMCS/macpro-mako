@@ -1,4 +1,4 @@
-import { response } from "../libs/handler-lib";
+import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";

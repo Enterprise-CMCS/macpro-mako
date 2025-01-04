@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { Context } from "aws-lambda";
 import { handler } from "./deleteTriggers";
 import {
   LambdaClient,
@@ -39,20 +38,14 @@ describe("Lambda Handler", () => {
 
     mockLambdaClientSend
       .mockResolvedValueOnce({
-        EventSourceMappings: [
-          { UUID: "uuid-1", SelfManagedKafkaEventSourceConfig: {} },
-        ],
+        EventSourceMappings: [{ UUID: "uuid-1", SelfManagedKafkaEventSourceConfig: {} }],
       })
       .mockRejectedValueOnce(new Error("Test error"));
 
-    await handler(event, {} as Context, callback);
+    await handler(event, expect.anything(), callback);
 
-    expect(mockLambdaClientSend).toHaveBeenCalledWith(
-      expect.any(ListEventSourceMappingsCommand),
-    );
-    expect(mockLambdaClientSend).toHaveBeenCalledWith(
-      expect.any(DeleteEventSourceMappingCommand),
-    );
+    expect(mockLambdaClientSend).toHaveBeenCalledWith(expect.any(ListEventSourceMappingsCommand));
+    expect(mockLambdaClientSend).toHaveBeenCalledWith(expect.any(DeleteEventSourceMappingCommand));
     expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,
     });
@@ -67,11 +60,9 @@ describe("Lambda Handler", () => {
       EventSourceMappings: [],
     });
 
-    await handler(event, {} as Context, callback);
+    await handler(event, expect.anything(), callback);
 
-    expect(mockLambdaClientSend).toHaveBeenCalledWith(
-      expect.any(ListEventSourceMappingsCommand),
-    );
+    expect(mockLambdaClientSend).toHaveBeenCalledWith(expect.any(ListEventSourceMappingsCommand));
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 });

@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, Mock, beforeEach } from "vitest";
-import { Context } from "aws-lambda";
 import { handler } from "./deleteIndex";
 import * as os from "../libs/opensearch-lib";
 
@@ -22,7 +21,7 @@ describe("Lambda Handler", () => {
 
     (os.deleteIndex as Mock).mockResolvedValueOnce(null);
 
-    await handler(event, {} as Context, callback);
+    await handler(event, expect.anything(), callback);
 
     const expectedIndices = [
       "test-namespace-main",
@@ -46,7 +45,7 @@ describe("Lambda Handler", () => {
       indexNamespace: "test-namespace-",
     };
 
-    await handler(event, {} as Context, callback);
+    await handler(event, expect.anything(), callback);
 
     expect(callback).toHaveBeenCalledWith(expect.any(String), {
       statusCode: 500,
@@ -61,7 +60,7 @@ describe("Lambda Handler", () => {
 
     (os.deleteIndex as Mock).mockRejectedValueOnce(new Error("Test error"));
 
-    await handler(event, {} as Context, callback);
+    await handler(event, expect.anything(), callback);
 
     expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,

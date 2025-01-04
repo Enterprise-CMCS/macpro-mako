@@ -1,12 +1,12 @@
-import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
 import { handler } from "./getAttachmentUrl";
-import { response } from "../libs/handler-lib";
+import { response } from "libs/handler-lib";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { getStateFilter } from "../libs/api/auth/user";
 import { getPackage, getPackageChangelog } from "../libs/api/package";
 
-vi.mock("../libs/handler-lib", () => ({
+vi.mock("libs/handler-lib", () => ({
   response: vi.fn(),
 }));
 
@@ -37,9 +37,10 @@ vi.mock("../libs/api/package", () => ({
   getPackageChangelog: vi.fn(),
 }));
 
-describe.skip("Lambda Handler", () => {
+describe("Lambda Handler", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    process.env.osDomain = "test-domain"; // Set the environment variable before each test
   });
 
   it("should return 400 if event body is missing", async () => {

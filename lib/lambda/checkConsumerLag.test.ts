@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { Context } from "aws-lambda";
 import { handler } from "./checkConsumerLag";
 import { Kafka } from "kafkajs";
 
@@ -55,7 +54,7 @@ describe("Lambda Handler", () => {
       ],
     });
 
-    await handler(event, {} as Context, callback);
+    await handler(event, expect.anything(), callback);
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 200,
@@ -80,7 +79,7 @@ describe("Lambda Handler", () => {
       EventSourceMappings: [],
     });
 
-    await handler(event, {} as Context, callback);
+    await handler(event, expect.anything(), callback);
 
     expect(callback).toHaveBeenCalledWith(
       new Error(
@@ -121,7 +120,7 @@ describe("Lambda Handler", () => {
       ],
     });
 
-    await handler(event, {} as Context, callback);
+    await handler(event, expect.anything(), callback);
 
     expect(callback).toHaveBeenCalledWith(
       new Error(
@@ -161,7 +160,7 @@ describe("Lambda Handler", () => {
       disconnect: vi.fn(),
     });
 
-    await handler(event, {} as Context, callback);
+    await handler(event, expect.anything(), callback);
 
     expect(callback).toHaveBeenCalledWith(
       expect.any(Error),
@@ -191,7 +190,7 @@ describe("Lambda Handler", () => {
       ],
     });
 
-    await handler(event, {} as Context, callback);
+    await handler(event, expect.anything(), callback);
 
     expect(callback).toHaveBeenCalledWith(
       new Error("ERROR: No ConsumerGroupId found for function test-function and topic test-topic"),

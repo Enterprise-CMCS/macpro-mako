@@ -22,7 +22,7 @@ describe("getItemData Handler", () => {
     expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
   });
 
-  it.skip("should return 401 if not authorized to view this resource", async () => {
+  it("should return 401 if not authorized to view this resource", async () => {
     const event = {
       body: JSON.stringify({ id: HI_TEST_ITEM_ID }),
       requestContext: getRequestContext(),
@@ -48,7 +48,7 @@ describe("getItemData Handler", () => {
     expect(res.body).toEqual(JSON.stringify({ message: "No record found for the given id" }));
   });
 
-  it.skip("should return 200 with package data, children, and changelog if authorized", async () => {
+  it("should return 200 with package data, children, and changelog if authorized", async () => {
     const packageData = items[WITHDRAWN_CHANGELOG_ITEM_ID];
 
     const event = {

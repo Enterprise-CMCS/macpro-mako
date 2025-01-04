@@ -6,7 +6,6 @@ export * as getPackageActions from "./getPackageActions";
 export * as getSubTypes from "./getSubTypes";
 export * as getTypes from "./getTypes";
 export * as getUploadUrl from "./getUploadUrl";
-export * as mapRole from "./mapRole";
 export * as processEmails from "./processEmails";
 export * as runReindex from "./runReindex";
 export * as search from "./search";
