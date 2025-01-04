@@ -1,9 +1,14 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, afterEach } from "vitest";
 import { render } from "@testing-library/react";
-// import AppKCMSEmailPreview from "./AppK";
-// import ChipSpaCMSEmailPreview from "./CHIP_SPA";
-// import MedicaidSpaCMSEmailPreview from "./MED_SPA";
-// import Waiver1915bCMSEmail from "./Waiver1915b"; // TODO: fix these imports
+import AppKCMSEmailPreview from "../preview/Upload_Subsequent_Documents/CMS/AppK";
+import ChipSpaCMSEmailPreview from "../preview/Upload_Subsequent_Documents/CMS/CHIP_SPA";
+import MedicaidSpaCMSEmailPreview from "../preview/Upload_Subsequent_Documents/CMS/MED_SPA";
+import Waiver1915bCMSEmail from "../preview/Upload_Subsequent_Documents/CMS/Waiver1915b";
+import { cleanup } from "@testing-library/react";
+
+afterEach(() => {
+  cleanup();
+});
 
 describe.skip("Upload Subsequent Document CMS Email Snapshot Test", () => {
   it("renders a AppKCMSEmailPreview Preview Template", () => {
@@ -21,7 +26,7 @@ describe.skip("Upload Subsequent Document CMS Email Snapshot Test", () => {
 
     expect(template).toMatchSnapshot();
   });
-  it("renders a Waiver Capitated Preview Template", () => {
+  it("renders a Waiver1915b Preview Template", () => {
     const template = render(<Waiver1915bCMSEmail />);
 
     expect(template).toMatchSnapshot();

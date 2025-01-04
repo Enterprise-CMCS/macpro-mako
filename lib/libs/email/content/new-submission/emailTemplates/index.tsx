@@ -1,8 +1,8 @@
 export { MedSpaCMSEmail } from "./MedSpaCMS";
-export { MedSpaStateEmail } from "./MedSpaState";
 export { ChipSpaCMSEmail } from "./ChipSpaCMS";
-export { ChipSpaStateEmail } from "./ChipSpaState";
 export { AppKCMSEmail } from "./AppKCMS";
+export { WaiverInitialCMSEmail } from "./Waiver1915bCMS";
+export { MedSpaStateEmail } from "./MedSpaState";
+export { ChipSpaStateEmail } from "./ChipSpaState";
 export { AppKStateEmail } from "./AppKState";
-export { Waiver1915bCMSEmail } from "./Waiver1915bCMS";
-export { Waiver1915bStateEmail } from "./Waiver1915bState";
+export { WaiverInitialStateEmail } from "./Waiver1915bState";

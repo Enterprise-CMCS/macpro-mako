@@ -8,8 +8,8 @@ import {
   ChipSpaStateEmail,
   AppKCMSEmail,
   AppKStateEmail,
-  Waiver1915bCMSEmail,
-  Waiver1915bStateEmail,
+  WaiverInitialCMSEmail,
+  WaiverInitialStateEmail,
 } from "./emailTemplates";
 import { render } from "@react-email/render";
 
@@ -66,7 +66,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       return {
         to: variables.emails.osgEmail,
         subject: `${variables.authority} ${variables.id} Submitted`,
-        body: await render(<Waiver1915bCMSEmail variables={variables} />),
+        body: await render(<WaiverInitialCMSEmail variables={variables} />),
       };
     },
     state: async (
@@ -77,7 +77,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Your ${variables.actionType} ${variables.id} has been submitted to CMS`,
-        body: await render(<Waiver1915bStateEmail variables={variables} />),
+        body: await render(<WaiverInitialStateEmail variables={variables} />),
       };
     },
   },
