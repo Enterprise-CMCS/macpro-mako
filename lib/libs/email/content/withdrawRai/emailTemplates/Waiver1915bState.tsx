@@ -9,7 +9,7 @@ import {
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const Waiver1915bStateEmail = (props: {
-  variables: Events["RespondToRai"] & CommonEmailVariables;
+  variables: Events["WithdrawRai"] & CommonEmailVariables;
   relatedEvent: any;
 }) => {
   const { variables, relatedEvent } = { ...props };

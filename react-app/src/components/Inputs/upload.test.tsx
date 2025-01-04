@@ -93,7 +93,7 @@ describe("Upload", () => {
     });
   });
 
-  it.skip("does not display the dropzone when uploading", async () => {
+  it("does not display the dropzone when uploading", async () => {
     renderWithQueryClient(<Upload {...defaultProps} />);
 
     const dropzone = screen.getByTestId("upload-component-upload");

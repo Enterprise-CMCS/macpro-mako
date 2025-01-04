@@ -1,5 +1,5 @@
 import { Handler } from "aws-lambda";
-import { send, SUCCESS, FAILED} from "cfn-response-async";
+import { send, SUCCESS, FAILED } from "cfn-response-async";
 type ResponseStatus = typeof SUCCESS | typeof FAILED;
 import * as cognitolib from "./cognito-lib";
 import { getSecret } from "shared-utils";

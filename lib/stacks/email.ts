@@ -182,7 +182,7 @@ export class Email extends cdk.NestedStack {
       handler: "handler",
       projectRoot: join(__dirname, "../../"),
       bundling: { externalModules: ["aws-sdk"] },
-      runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+      runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
       memorySize: envConfig[props.isDev ? "dev" : "prod"].memorySize,
       timeout: cdk.Duration.minutes(envConfig[props.isDev ? "dev" : "prod"].timeout),
       role: lambdaRole,

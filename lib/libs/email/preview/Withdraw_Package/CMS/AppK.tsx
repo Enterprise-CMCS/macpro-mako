@@ -10,9 +10,8 @@ export default () => {
         authority: "1915(c)",
         event: "withdraw-package",
         id: "CO-1234.R21.00",
-        actionType: "",
+        actionType: "Amend",
         attachments: {
-          officialWithdrawalLetter: attachments.withdrawRequest,
           supportingDocumentation: attachments.supportingDocumentation,
         },
       }}

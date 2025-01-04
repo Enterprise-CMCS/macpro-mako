@@ -10,7 +10,7 @@ export default () => {
         authority: "Medicaid SPA",
         event: "withdraw-package",
         id: "CO-1234.R21.00",
-        actionType: "",
+        actionType: "New",
         attachments: {
           officialWithdrawalLetter: attachments.withdrawRequest,
           supportingDocumentation: attachments.supportingDocumentation,

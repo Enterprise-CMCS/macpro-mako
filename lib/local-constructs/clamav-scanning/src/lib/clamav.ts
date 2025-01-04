@@ -5,7 +5,7 @@ import {
   DeleteObjectsCommand,
 } from "@aws-sdk/client-s3";
 import { spawnSync, SpawnSyncReturns } from "child_process";
-import * as path from "path";
+import path from "path";
 import fs from "fs";
 import asyncfs from "fs/promises";
 import * as constants from "./constants";
@@ -20,7 +20,10 @@ export const updateAVDefinitonsWithFreshclam = (): boolean => {
   try {
     const { stdout, stderr }: SpawnSyncReturns<Buffer> = spawnSync(
       `${constants.PATH_TO_FRESHCLAM}`,
-      [`--config-file=${constants.FRESHCLAM_CONFIG}`, `--datadir=${constants.FRESHCLAM_WORK_DIR}`],
+      [
+        `--config-file=${constants.FRESHCLAM_CONFIG}`,
+        `--datadir=${constants.FRESHCLAM_WORK_DIR}`,
+      ],
     );
     logger.info("Update message");
     logger.info(stdout.toString());
@@ -49,41 +52,54 @@ export const downloadAVDefinitions = async (): Promise<void[]> => {
 
   // List all the files in the bucket
   logger.info("Downloading Definitions");
-  const allFileKeys: string[] = await listBucketFiles(constants.CLAMAV_BUCKET_NAME);
+  const allFileKeys: string[] = await listBucketFiles(
+    constants.CLAMAV_BUCKET_NAME,
+  );
 
   const definitionFileKeys: string[] = allFileKeys
     .filter((key) => key.startsWith(constants.PATH_TO_AV_DEFINITIONS))
     .map((fullPath) => path.basename(fullPath));
 
   // Download each file in the bucket
-  const downloadPromises: Promise<void>[] = definitionFileKeys.map((filenameToDownload) => {
-    return new Promise<void>((resolve, reject) => {
-      const destinationFile: string = path.join(constants.FRESHCLAM_WORK_DIR, filenameToDownload);
+  const downloadPromises: Promise<void>[] = definitionFileKeys.map(
+    (filenameToDownload) => {
+      return new Promise<void>((resolve, reject) => {
+        const destinationFile: string = path.join(
+          constants.FRESHCLAM_WORK_DIR,
+          filenameToDownload,
+        );
 
-      logger.info(`Downloading ${filenameToDownload} from S3 to ${destinationFile}`);
+        logger.info(
+          `Downloading ${filenameToDownload} from S3 to ${destinationFile}`,
+        );
 
-      const options = {
-        Bucket: constants.CLAMAV_BUCKET_NAME,
-        Key: `${constants.PATH_TO_AV_DEFINITIONS}/${filenameToDownload}`,
-      };
+        const options = {
+          Bucket: constants.CLAMAV_BUCKET_NAME,
+          Key: `${constants.PATH_TO_AV_DEFINITIONS}/${filenameToDownload}`,
+        };
 
-      try {
-        s3Client.send(new GetObjectCommand(options)).then(async ({ Body }) => {
-          if (!Body || !(Body instanceof Readable)) {
-            throw new Error("Invalid Body type received from S3");
-          }
+        try {
+          s3Client
+            .send(new GetObjectCommand(options))
+            .then(async ({ Body }) => {
+              if (!Body || !(Body instanceof Readable)) {
+                throw new Error("Invalid Body type received from S3");
+              }
 
-          await asyncfs.writeFile(destinationFile, Body);
-          resolve();
-          logger.info(`Finished download ${filenameToDownload}`);
-        });
-      } catch (err) {
-        logger.info(`Error downloading definition file ${filenameToDownload}`);
-        logger.error(err);
-        reject();
-      }
-    });
-  });
+              await asyncfs.writeFile(destinationFile, Body);
+              resolve();
+              logger.info(`Finished download ${filenameToDownload}`);
+            });
+        } catch (err) {
+          logger.info(
+            `Error downloading definition file ${filenameToDownload}`,
+          );
+          logger.error(err);
+          reject();
+        }
+      });
+    },
+  );
 
   return await Promise.all(downloadPromises);
 };
@@ -95,7 +111,9 @@ export const uploadAVDefinitions = async (): Promise<void[]> => {
   // delete all the definitions currently in the bucket.
   // first list them.
   logger.info("Uploading Definitions");
-  const s3AllFullKeys: string[] = await listBucketFiles(constants.CLAMAV_BUCKET_NAME);
+  const s3AllFullKeys: string[] = await listBucketFiles(
+    constants.CLAMAV_BUCKET_NAME,
+  );
   const s3DefinitionFileFullKeys: string[] = s3AllFullKeys.filter((key) =>
     key.startsWith(constants.PATH_TO_AV_DEFINITIONS),
   );
@@ -116,37 +134,47 @@ export const uploadAVDefinitions = async (): Promise<void[]> => {
 
       logger.info(`Deleted extant definitions: ${s3DefinitionFileFullKeys}`);
     } catch (err) {
-      logger.info(`Error deleting current definition files: ${s3DefinitionFileFullKeys}`);
+      logger.info(
+        `Error deleting current definition files: ${s3DefinitionFileFullKeys}`,
+      );
       logger.info(err);
       throw err;
     }
   }
 
   // list all the files in the work dir for upload
-  const definitionFiles: string[] = fs.readdirSync(constants.FRESHCLAM_WORK_DIR);
+  const definitionFiles: string[] = fs.readdirSync(
+    constants.FRESHCLAM_WORK_DIR,
+  );
 
-  const uploadPromises: Promise<void>[] = definitionFiles.map((filenameToUpload) => {
-    return new Promise<void>((resolve, reject) => {
-      logger.info(`Uploading updated definitions for file ${filenameToUpload} ---`);
+  const uploadPromises: Promise<void>[] = definitionFiles.map(
+    (filenameToUpload) => {
+      return new Promise<void>((resolve, reject) => {
+        logger.info(
+          `Uploading updated definitions for file ${filenameToUpload} ---`,
+        );
 
-      const options = {
-        Bucket: constants.CLAMAV_BUCKET_NAME,
-        Key: `${constants.PATH_TO_AV_DEFINITIONS}/${filenameToUpload}`,
-        Body: fs.readFileSync(path.join(constants.FRESHCLAM_WORK_DIR, filenameToUpload)),
-      };
+        const options = {
+          Bucket: constants.CLAMAV_BUCKET_NAME,
+          Key: `${constants.PATH_TO_AV_DEFINITIONS}/${filenameToUpload}`,
+          Body: fs.readFileSync(
+            path.join(constants.FRESHCLAM_WORK_DIR, filenameToUpload),
+          ),
+        };
 
-      try {
-        s3Client.send(new PutObjectCommand(options)).then(() => {
-          logger.info(`--- Finished uploading ${filenameToUpload} ---`);
-          resolve();
-        });
-      } catch (err) {
-        logger.info(`--- Error uploading ${filenameToUpload} ---`);
-        logger.info(err);
-        reject();
-      }
-    });
-  });
+        try {
+          s3Client.send(new PutObjectCommand(options)).then(() => {
+            logger.info(`--- Finished uploading ${filenameToUpload} ---`);
+            resolve();
+          });
+        } catch (err) {
+          logger.info(`--- Error uploading ${filenameToUpload} ---`);
+          logger.info(err);
+          reject();
+        }
+      });
+    },
+  );
 
   return await Promise.all(uploadPromises);
 };
@@ -162,7 +190,9 @@ export const uploadAVDefinitions = async (): Promise<void[]> => {
  *
  * @param pathToFile Path in the filesystem where the file is stored.
  */
-export const scanLocalFile = async (pathToFile: string): Promise<string | null> => {
+export const scanLocalFile = async (
+  pathToFile: string,
+): Promise<string | null> => {
   try {
     const avResult: SpawnSyncReturns<string> = spawnSync(
       "clamdscan",

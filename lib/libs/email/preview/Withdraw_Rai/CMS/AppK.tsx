@@ -2,14 +2,12 @@ import { AppKCMSEmail } from "../../../content/withdrawRai/emailTemplates/AppKCM
 import { emailTemplateValue } from "../../../mock-data/withdraw-rai";
 import * as attachments from "../../../mock-data/attachments";
 
-export const relatedEvent = {
-  submitterName: "George",
-  submitterEmail: "test@email.com",
-};
-
 export default () => (
   <AppKCMSEmail
-    relatedEvent={relatedEvent}
+    relatedEvent={{
+      submitterName: "George@example.com",
+      submitterEmail: "Ringo@example.com",
+    }}
     variables={{
       ...emailTemplateValue,
       origin: "mako",
@@ -19,12 +17,12 @@ export default () => (
       actionType: "Amend",
       territory: "CO",
       title: "A Perfect Appendix K Amendment Title",
+      responseDate: 1720000000000,
+      timestamp: 1720000000000,
+      additionalInformation: "This is a test",
       attachments: {
-        revisedAmendedStatePlanLanguage: attachments.other,
-        officialRAIResponse: attachments.other,
-        budgetDocuments: attachments.budgetDocuments,
-        publicNotice: attachments.publicNotice,
-        tribalConsultation: attachments.tribalConsultation,
+        cmsForm179: attachments.cmsForm179,
+        spaPages: attachments.spaPages,
         other: attachments.other,
       },
     }}

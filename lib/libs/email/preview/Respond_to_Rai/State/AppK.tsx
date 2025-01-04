@@ -1,4 +1,4 @@
-import { WaiverStateEmail } from "../../../content/respondToRai/emailTemplates/WaiverState"
+import { WaiverStateEmail } from "../../../content/respondToRai/emailTemplates/WaiverState";
 import { emailTemplateValue } from "../../../mock-data/respond-to-rai";
 import * as attachments from "../../../mock-data/attachments";
 
@@ -14,7 +14,8 @@ const AppKStateEmailPreview = () => {
         territory: "CO",
         title: "A Perfect Appendix K Amendment Title",
         attachments: {
-          raiResponseLetterWaiver: attachments.appk,
+          cmsForm179: attachments.cmsForm179,
+          spaPages: attachments.spaPages,
           other: attachments.other,
         },
       }}

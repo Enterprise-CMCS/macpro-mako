@@ -149,7 +149,7 @@ jobs:
           role-duration-seconds: 10800
       - name: Run e2e tests
         run: run e2e
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report

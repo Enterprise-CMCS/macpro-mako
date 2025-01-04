@@ -1,6 +1,5 @@
 import { ChipSpaCMSEmail } from "../../../content/withdrawPackage/emailTemplates/ChipSpaCMS";
 import { emailTemplateValue } from "../../../mock-data/new-submission";
-import * as attachments from "../../../mock-data/attachments";
 
 export default () => {
   return (
@@ -10,10 +9,20 @@ export default () => {
         authority: "CHIP SPA",
         event: "withdraw-package",
         id: "CO-1234.R21.00",
-        actionType: "",
+        actionType: "Amend",
         attachments: {
-          officialWithdrawalLetter: attachments.withdrawRequest,
-          supportingDocumentation: attachments.supportingDocumentation,
+          supportingDocumentation: {
+            label: "Supporting Documentation",
+            files: [
+              {
+                filename: "supportingDocumentation.pdf",
+                title: "Supporting Documentation",
+                bucket: "mock-data",
+                key: "attachments/supportingDocumentation.pdf",
+                uploadDate: 1719859200,
+              },
+            ],
+          },
         },
       }}
     />

@@ -12,15 +12,22 @@ jobs:
   test:
     runs-on: macos-12
     timeout-minutes: 120 # MacOS runners are more expensive than linux, so we want to be sure to stop any stuck builds.
-    environment:
-      name: test-ws-setup
     env:
       STAGE_NAME: test-ws-setup
     permissions:
       id-token: write
+      contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+
+      - uses: docker/setup-qemu-action@v2
+        with:
+          platforms: "amd64"
+
+      - uses: docker/setup-buildx-action@v2
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -30,21 +37,7 @@ jobs:
           role-duration-seconds: 10800
 
       - name: Run workspace setup
-        run: |
-          sh docs/assets/setup.sh
-
-      - name: Run nvm install
-        run: |
-          source /tmp/.profile
-          nvm install
-
-      - name: Test docs
-        run: |
-          source /tmp/.profile
-          nvm use
-          colima start
-          docker pull busybox
-          colima stop
+        run: sh run.sh
 
       - name: Test install
         run: |
@@ -56,20 +49,26 @@ jobs:
       - name: Test deploy
         run: |
           source /tmp/.profile
-          nvm use
-          direnv allow
-          direnv exec run deploy --stage $STAGE_NAME
+          if ! direnv exec run deploy --stage $STAGE_NAME; then
+            echo "::error::Deployment failed"
+            exit 1
+          fi
+        continue-on-error: true
+        id: deploy
 
-      # - name: Test test
-      #   run: |
-      #     source /tmp/.profile
-      #     nvm use
-      #     direnv allow
-      #     direnv exec run test --stage $STAGE_NAME
+      - name: Check deploy status
+        if: steps.deploy.outcome != 'success'
+        run: |
+          echo "::error::Deployment step failed, checking logs..."
+          # Add additional diagnostic commands
+          exit 1
+
+      - name: Test test
+        run: |
+          source /tmp/.profile
+          direnv exec run test --stage $STAGE_NAME
 
       - name: Test destroy
         run: |
           source /tmp/.profile
-          nvm use
-          direnv allow
           direnv exec run destroy --stage $STAGE_NAME --verify false --wait false

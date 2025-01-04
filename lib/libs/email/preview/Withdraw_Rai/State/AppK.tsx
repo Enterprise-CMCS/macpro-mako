@@ -20,11 +20,8 @@ export default () => (
       territory: "CO",
       title: "A Perfect Appendix K Amendment Title",
       attachments: {
-        revisedAmendedStatePlanLanguage: attachments.other,
-        officialRAIResponse: attachments.other,
-        budgetDocuments: attachments.budgetDocuments,
-        publicNotice: attachments.publicNotice,
-        tribalConsultation: attachments.tribalConsultation,
+        cmsForm179: attachments.cmsForm179,
+        spaPages: attachments.spaPages,
         other: attachments.other,
       },
     }}

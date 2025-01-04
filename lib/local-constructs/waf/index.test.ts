@@ -17,22 +17,27 @@ describe("WafConstruct", () => {
     awsBadInputsExcludeRules: ["BadInputsRule1"],
   };
 
-  const wafConstruct = new WafConstruct(stack, "WafConstruct", props, "REGIONAL");
+  const wafConstruct = new WafConstruct(
+    stack,
+    "WafConstruct",
+    props,
+    "REGIONAL",
+  );
 
   it("should create a log group with appropriate properties", () => {
     const logGroup = wafConstruct.logGroup;
     expect(logGroup).toBeInstanceOf(logs.LogGroup);
   });
 
-  it.skip("should create a WebACL with appropriate properties", () => {
+  it("should create a WebACL with appropriate properties", () => {
     const webAcl = wafConstruct.webAcl;
     expect(webAcl).toBeInstanceOf(wafv2.CfnWebACL);
     expect(webAcl.scope).toBe("REGIONAL");
     expect(webAcl.name).toBe(props.name);
-    // expect(webAcl.defaultAction.block).toBeDefined();
-    // expect(webAcl.visibilityConfig.cloudWatchMetricsEnabled).toBe(true);
-    // expect(webAcl.visibilityConfig.sampledRequestsEnabled).toBe(true);
-    // expect(webAcl.visibilityConfig.metricName).toBe(`${props.name}-webacl`);
+    expect(webAcl.defaultAction.block).toBeDefined();
+    expect(webAcl.visibilityConfig.cloudWatchMetricsEnabled).toBe(true);
+    expect(webAcl.visibilityConfig.sampledRequestsEnabled).toBe(true);
+    expect(webAcl.visibilityConfig.metricName).toBe(`${props.name}-webacl`);
   });
 
   it("should create a logging configuration with appropriate properties", () => {
@@ -41,7 +46,9 @@ describe("WafConstruct", () => {
       .node.findChild("LoggingConfiguration") as wafv2.CfnLoggingConfiguration;
     expect(loggingConfiguration).toBeInstanceOf(wafv2.CfnLoggingConfiguration);
     expect(loggingConfiguration.resourceArn).toBe(wafConstruct.webAcl.attrArn);
-    expect(loggingConfiguration.logDestinationConfigs).toContain(wafConstruct.logGroup.logGroupArn);
+    expect(loggingConfiguration.logDestinationConfigs).toContain(
+      wafConstruct.logGroup.logGroupArn,
+    );
   });
 });
 
@@ -96,7 +103,9 @@ describe("RegionalWaf", () => {
       .findChild("RegionalWaf")
       .node.findChild("WebACLAssociation") as wafv2.CfnWebACLAssociation;
     expect(webAclAssociation).toBeInstanceOf(wafv2.CfnWebACLAssociation);
-    expect(webAclAssociation.resourceArn).toBe(apiGateway.deploymentStage.stageArn);
+    expect(webAclAssociation.resourceArn).toBe(
+      apiGateway.deploymentStage.stageArn,
+    );
     expect(webAclAssociation.webAclArn).toBe(regionalWaf.webAcl.attrArn);
   });
 });

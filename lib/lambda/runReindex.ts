@@ -5,7 +5,6 @@ import { SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
 export const handler: Handler = async (event, context) => {
   try {
     if (event.RequestType == "Create") {
-      console.time("Starting reindex");
       const stepFunctionsClient = new SFNClient({});
       const stateMachineArn = event.ResourceProperties.stateMachine;
 
@@ -18,17 +17,14 @@ export const handler: Handler = async (event, context) => {
       });
 
       const execution = await stepFunctionsClient.send(startExecutionCommand);
-      console.log(`State machine execution started: ${execution.executionArn}`);
-      console.log(
-        "The state machine is now in charge of this resource, and will notify of success or failure upon completion.",
-      );
+      console.log(`State machine execution started with ARN: ${execution.executionArn}`);
     } else if (event.RequestType == "Update") {
       await send(event, context, SUCCESS);
     } else if (event.RequestType == "Delete") {
       await send(event, context, SUCCESS);
     }
   } catch (error) {
-    console.error(error);
+    console.error("Reindexing failed with error:", error);
     await send(event, context, FAILED);
   }
 };

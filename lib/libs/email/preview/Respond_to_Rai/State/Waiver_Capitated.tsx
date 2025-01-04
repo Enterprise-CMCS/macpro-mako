@@ -13,11 +13,8 @@ export default () => {
         actionType: "Amend",
         territory: "CO",
         attachments: {
-          revisedAmendedStatePlanLanguage: attachments.other,
-          officialRAIResponse: attachments.other,
-          budgetDocuments: attachments.budgetDocuments,
-          publicNotice: attachments.publicNotice,
-          tribalConsultation: attachments.tribalConsultation,
+          cmsForm179: attachments.cmsForm179,
+          spaPages: attachments.spaPages,
           other: attachments.other,
         },
       }}

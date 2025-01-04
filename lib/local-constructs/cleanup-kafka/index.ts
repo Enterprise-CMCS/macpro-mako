@@ -32,13 +32,7 @@ export class CleanupKafka extends Construct {
   constructor(scope: Construct, id: string, props: CleanupKafkaProps) {
     super(scope, id);
 
-    const {
-      vpc,
-      privateSubnets,
-      securityGroups,
-      brokerString,
-      topicPatternsToDelete,
-    } = props;
+    const { vpc, privateSubnets, securityGroups, brokerString, topicPatternsToDelete } = props;
 
     const logGroup = new LogGroup(this, `cleanupKafkaLogGroup`, {
       removalPolicy: RemovalPolicy.DESTROY,
@@ -47,10 +41,8 @@ export class CleanupKafka extends Construct {
     const lambda = new NodejsFunction(this, "CleanupKafkaLambdaFunction", {
       entry: join(__dirname, "src/cleanupKafka.ts"),
       handler: "handler",
-      tsconfig: "tsconfig.json",
-      bundling: { externalModules: ["aws-sdk"] },
       depsLockFilePath: join(__dirname, "../../../bun.lockb"),
-      runtime: Runtime.NODEJS_18_X,
+      runtime: Runtime.NODEJS_20_X,
       timeout: Duration.minutes(15),
       role: new Role(this, "CleanupKafkaLambdaExecutionRole", {
         assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
@@ -79,47 +71,39 @@ export class CleanupKafka extends Construct {
       bundling: commonBundlingOptions,
     });
 
-    const customResourceLogGroup = new LogGroup(
-      this,
-      `cleanupKafkaCustomResourceLogGroup`,
-      {
-        removalPolicy: RemovalPolicy.DESTROY,
-      },
-    );
+    const customResourceLogGroup = new LogGroup(this, `cleanupKafkaCustomResourceLogGroup`, {
+      removalPolicy: RemovalPolicy.DESTROY,
+    });
 
-    const customResource = new AwsCustomResource(
-      this,
-      "CleanupKafkaCustomResource",
-      {
-        onDelete: {
-          service: "Lambda",
-          action: "invoke",
-          parameters: {
-            FunctionName: lambda.functionName,
-            Payload: JSON.stringify({
-              RequestType: "Delete",
-              ResourceProperties: {
-                brokerString,
-                topicPatternsToDelete,
-              },
-            }),
-          },
-          physicalResourceId: PhysicalResourceId.of("cleanup-kafka"),
+    const customResource = new AwsCustomResource(this, "CleanupKafkaCustomResource", {
+      onDelete: {
+        service: "Lambda",
+        action: "invoke",
+        parameters: {
+          FunctionName: lambda.functionName,
+          Payload: JSON.stringify({
+            RequestType: "Delete",
+            ResourceProperties: {
+              brokerString,
+              topicPatternsToDelete,
+            },
+          }),
         },
-        logGroup: customResourceLogGroup,
-        policy: AwsCustomResourcePolicy.fromStatements([
-          new PolicyStatement({
-            actions: ["lambda:InvokeFunction"],
-            resources: [lambda.functionArn],
-          }),
-          new PolicyStatement({
-            effect: Effect.DENY,
-            actions: ["logs:CreateLogGroup"],
-            resources: ["*"],
-          }),
-        ]),
+        physicalResourceId: PhysicalResourceId.of("cleanup-kafka"),
       },
-    );
+      logGroup: customResourceLogGroup,
+      policy: AwsCustomResourcePolicy.fromStatements([
+        new PolicyStatement({
+          actions: ["lambda:InvokeFunction"],
+          resources: [lambda.functionArn],
+        }),
+        new PolicyStatement({
+          effect: Effect.DENY,
+          actions: ["logs:CreateLogGroup"],
+          resources: ["*"],
+        }),
+      ]),
+    });
     const policy = customResource.node.findChild("CustomResourcePolicy");
     customResource.node.addDependency(policy);
     customResourceLogGroup.node.addDependency(policy);

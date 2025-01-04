@@ -14,7 +14,8 @@ export default () => {
         territory: "CO",
         title: "A Perfect Appendix K Amendment Title",
         attachments: {
-          raiResponseLetterWaiver: attachments.appk,
+          cmsForm179: attachments.cmsForm179,
+          spaPages: attachments.spaPages,
           other: attachments.other,
         },
       }}

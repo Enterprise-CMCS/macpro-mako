@@ -37,9 +37,7 @@ export class ManageUsers extends Construct {
     const manageUsers = new NodejsFunction(this, "LambdaFunction", {
       entry: join(__dirname, "src/manageUsers.ts"),
       handler: "handler",
-      tsconfig: "tsconfig.json",
-      bundling: { externalModules: ["aws-sdk"] },
-      runtime: Runtime.NODEJS_18_X,
+      runtime: Runtime.NODEJS_20_X,
       depsLockFilePath: join(__dirname, "../../../bun.lockb"),
       timeout: Duration.minutes(5),
       logGroup,
@@ -78,64 +76,56 @@ export class ManageUsers extends Construct {
       bundling: commonBundlingOptions,
     });
 
-    const customResourceLogGroup = new LogGroup(
-      this,
-      `CustomResourceLogGroup`,
-      {
-        removalPolicy: RemovalPolicy.DESTROY,
-      },
-    );
+    const customResourceLogGroup = new LogGroup(this, `CustomResourceLogGroup`, {
+      removalPolicy: RemovalPolicy.DESTROY,
+    });
 
-    const customResource = new AwsCustomResource(
-      this,
-      "CleanupKafkaCustomResource",
-      {
-        onCreate: {
-          service: "Lambda",
-          action: "invoke",
-          parameters: {
-            FunctionName: manageUsers.functionName,
-            Payload: JSON.stringify({
-              RequestType: "Create",
-              ResourceProperties: {
-                userPoolId: userPool.userPoolId,
-                users,
-                passwordSecretArn: passwordSecretArn,
-              },
-            }),
-          },
-          physicalResourceId: PhysicalResourceId.of("manage-users"),
-        },
-        onUpdate: {
-          service: "Lambda",
-          action: "invoke",
-          parameters: {
-            FunctionName: manageUsers.functionName,
-            Payload: JSON.stringify({
-              RequestType: "Update",
-              ResourceProperties: {
-                userPoolId: userPool.userPoolId,
-                users,
-                passwordSecretArn: passwordSecretArn,
-              },
-            }),
-          },
-          physicalResourceId: PhysicalResourceId.of("manage-users"),
-        },
-        logGroup: customResourceLogGroup,
-        policy: AwsCustomResourcePolicy.fromStatements([
-          new PolicyStatement({
-            actions: ["lambda:InvokeFunction"],
-            resources: [manageUsers.functionArn],
+    const customResource = new AwsCustomResource(this, "CleanupKafkaCustomResource", {
+      onCreate: {
+        service: "Lambda",
+        action: "invoke",
+        parameters: {
+          FunctionName: manageUsers.functionName,
+          Payload: JSON.stringify({
+            RequestType: "Create",
+            ResourceProperties: {
+              userPoolId: userPool.userPoolId,
+              users,
+              passwordSecretArn: passwordSecretArn,
+            },
           }),
-          new PolicyStatement({
-            effect: Effect.DENY,
-            actions: ["logs:CreateLogGroup"],
-            resources: ["*"],
-          }),
-        ]),
+        },
+        physicalResourceId: PhysicalResourceId.of("manage-users"),
       },
-    );
+      onUpdate: {
+        service: "Lambda",
+        action: "invoke",
+        parameters: {
+          FunctionName: manageUsers.functionName,
+          Payload: JSON.stringify({
+            RequestType: "Update",
+            ResourceProperties: {
+              userPoolId: userPool.userPoolId,
+              users,
+              passwordSecretArn: passwordSecretArn,
+            },
+          }),
+        },
+        physicalResourceId: PhysicalResourceId.of("manage-users"),
+      },
+      logGroup: customResourceLogGroup,
+      policy: AwsCustomResourcePolicy.fromStatements([
+        new PolicyStatement({
+          actions: ["lambda:InvokeFunction"],
+          resources: [manageUsers.functionArn],
+        }),
+        new PolicyStatement({
+          effect: Effect.DENY,
+          actions: ["logs:CreateLogGroup"],
+          resources: ["*"],
+        }),
+      ]),
+    });
     const policy = customResource.node.findChild("CustomResourcePolicy");
     customResource.node.addDependency(policy);
     customResourceLogGroup.node.addDependency(policy);

@@ -17,7 +17,7 @@ describe("Capitated Renewal", () => {
     const result = schema.safeParse({ id: validId });
 
     expect(result.success).toBe(false);
-    expect(result.error.issues[0].message).toBe("Required");
+    expect(result.error?.issues[0].message).toBe("Required");
   });
 
   test("TOO SHORT ID FORMAT", () => {
@@ -25,7 +25,7 @@ describe("Capitated Renewal", () => {
     const result = schema.safeParse({ id: invalidId });
 
     expect(result.success).toBe(false);
-    expect(result.error.issues[0].message).toMatch(formatErrorMessage);
+    expect(result.error?.issues[0].message).toMatch(formatErrorMessage);
   });
 
   test("TOO LONG ID FORMAT", () => {
@@ -33,7 +33,7 @@ describe("Capitated Renewal", () => {
     const result = schema.safeParse({ id: invalidId });
 
     expect(result.success).toBe(false);
-    expect(result.error.issues[0].message).toMatch(formatErrorMessage);
+    expect(result.error?.issues[0].message).toMatch(formatErrorMessage);
   });
 
   test("INVALID CHARACTERS ID FORMAT", () => {
@@ -41,7 +41,7 @@ describe("Capitated Renewal", () => {
     const result = schema.safeParse({ id: invalidId });
 
     expect(result.success).toBe(false);
-    expect(result.error.issues[0].message).toMatch(formatErrorMessage);
+    expect(result.error?.issues[0].message).toMatch(formatErrorMessage);
   });
 
   test("INVALID R## ID FORMAT", () => {
@@ -49,7 +49,7 @@ describe("Capitated Renewal", () => {
     const result = schema.safeParse({ id: invalidId });
 
     expect(result.success).toBe(false);
-    expect(result.error.issues[0].message).toMatch(formatErrorMessage);
+    expect(result.error?.issues[0].message).toMatch(formatErrorMessage);
   });
 
   test("INVALID AMENDMENT ID", () => {
@@ -57,6 +57,6 @@ describe("Capitated Renewal", () => {
     const result = schema.safeParse({ id: invalidId });
 
     expect(result.success).toBe(false);
-    expect(result.error.issues[0].message).toMatch(formatErrorMessage);
+    expect(result.error?.issues[0].message).toMatch(formatErrorMessage);
   });
 });

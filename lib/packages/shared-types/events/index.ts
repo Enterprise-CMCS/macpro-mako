@@ -58,4 +58,5 @@ export type Events = {
   UploadSubsequentDocuments: z.infer<typeof uploadSubsequentDocuments.schema>;
   WithdrawPackage: z.infer<typeof withdrawPackage.schema>;
   WithdrawRai: z.infer<typeof withdrawRai.schema>;
+  ToggleWithdrawRai: z.infer<typeof toggleWithdrawRai.schema>;
 };

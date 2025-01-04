@@ -21,18 +21,14 @@ describe("EmptyBuckets", () => {
   });
 
   it("should create a log group for the Lambda function", () => {
-    const lambdaLogGroup = emptyBuckets.node.findChild(
-      "LambdaLogGroup",
-    ) as logs.LogGroup;
+    const lambdaLogGroup = emptyBuckets.node.findChild("LambdaLogGroup") as logs.LogGroup;
     expect(lambdaLogGroup).toBeInstanceOf(logs.LogGroup);
   });
 
   it("should create a Lambda function with appropriate properties", () => {
-    const lambdaFunction = emptyBuckets.node.findChild(
-      "Lambda",
-    ) as lambda.Function;
+    const lambdaFunction = emptyBuckets.node.findChild("Lambda") as lambda.Function;
     expect(lambdaFunction).toBeInstanceOf(lambda.Function);
-    expect(lambdaFunction.runtime).toBe(lambda.Runtime.NODEJS_18_X);
+    expect(lambdaFunction.runtime).toBe(lambda.Runtime.NODEJS_20_X);
     expect(lambdaFunction.timeout?.toMinutes()).toBe(15);
 
     const role = lambdaFunction.role as iam.Role;
@@ -69,9 +65,7 @@ describe("EmptyBuckets", () => {
   });
 
   it("should create a custom resource to invoke the Lambda function", () => {
-    const customResource = emptyBuckets.node.findChild(
-      "CustomResource",
-    ) as cr.AwsCustomResource;
+    const customResource = emptyBuckets.node.findChild("CustomResource") as cr.AwsCustomResource;
     expect(customResource).toBeInstanceOf(cr.AwsCustomResource);
 
     const customResourceLogGroup = emptyBuckets.node.findChild(

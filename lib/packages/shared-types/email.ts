@@ -1,29 +1,53 @@
-import { Events } from ".";
+import { Events, ActionType } from ".";
 
 import { Authority } from "./authority";
 
+type EmailString = string & { __brand: "email" };
+type EmailArray = EmailString[];
+
+/** Email addresses configuration for different roles and services */
 export type EmailAddresses = {
-  osgEmail: string[];
-  dpoEmail: string[];
-  dmcoEmail: string[];
-  dhcbsooEmail: string[];
-  chipInbox: string[];
-  chipCcList: string[];
+  osgEmail: EmailArray;
+  dpoEmail: EmailArray;
+  dmcoEmail: EmailArray;
+  dhcbsooEmail: EmailArray;
+  chipInbox: EmailArray;
+  chipCcList: EmailArray;
   sourceEmail: string;
   srtEmails: string[];
   cpocEmail: string[];
 };
 
+/** Common variables shared across all email templates */
 export interface CommonEmailVariables {
   id: string;
   authority: string;
   territory: string;
   applicationEndpointUrl: string;
-  actionType: string;
+  event: EventType;
+  actionType: ActionType;
   allStateUsersEmails?: string[];
   responseDate?: number;
   title?: string;
 }
+
+export type EventType =
+  | "new-submission"
+  | "new-chip-submission"
+  | "new-medicaid-submission"
+  | "upload-subsequent-documents"
+  | "toggle-withdraw-rai"
+  | "respond-to-rai"
+  | "temporary-extension"
+  | "withdraw-package"
+  | "withdraw-rai"
+  | "app-k"
+  | "capitated-initial"
+  | "capitated-renewal"
+  | "capitated-amendment"
+  | "contract-initial"
+  | "contract-renewal"
+  | "contract-amendment";
 
 export interface RelatedEventType {
   submitterName: string;
@@ -31,27 +55,32 @@ export interface RelatedEventType {
 }
 
 // Base email template props
-export interface BaseEmailProps {
+export interface BaseEmailProps<T = unknown> {
   previewText: string;
   heading: string;
   applicationEndpointUrl: string;
   children?: React.ReactNode;
   footerContent?: React.ReactNode;
+  customProps?: T;
 }
 
 // Base email response structure
 export interface EmailResponse {
   to: string[];
   subject: string;
-  html: string;
-  text: string;
+  body: string;
   cc?: string[];
 }
+
+export type EmailError = {
+  code: string;
+  message: string;
+};
 
 // Generic type for email template functions
 export type EmailTemplateFunction<T extends keyof Events> = (
   variables: Events[T] & CommonEmailVariables & { emails: EmailAddresses },
-) => Promise<EmailResponse>;
+) => Promise<EmailResponse | EmailError>;
 
 // Template types for different user types
 export interface UserTypeTemplate {
@@ -81,4 +110,24 @@ export interface WithdrawRaiTemplateProps {
 
 export interface TempExtensionTemplateProps {
   variables: Events["TempExtension"] & CommonEmailVariables;
+}
+
+export interface UploadSubsequentDocumentsTemplateProps {
+  variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;
+}
+
+export interface ContractingInitialTemplateProps {
+  variables: Events["ContractingInitial"] & CommonEmailVariables;
+}
+
+export interface ContractingAmendmentTemplateProps {
+  variables: Events["ContractingAmendment"] & CommonEmailVariables;
+}
+
+export interface ContractingRenewalTemplateProps {
+  variables: Events["ContractingRenewal"] & CommonEmailVariables;
+}
+
+export interface CapitatedAmendmentTemplateProps {
+  variables: Events["CapitatedAmendment"] & CommonEmailVariables;
 }

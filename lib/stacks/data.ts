@@ -260,11 +260,8 @@ export class Data extends cdk.NestedStack {
         functionName: `${project}-${stage}-${stack}-mapRole`,
         entry: join(__dirname, "../lambda/mapRole.ts"),
         handler: "handler",
-        tsconfig: "tsconfig.json",
-        tsconfig: "tsconfig.json",
-        bundling: { externalModules: ["aws-sdk"] },
-        depsLockFilePath: join(__dirname, "../../bun.lockb"),
-        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+        bundling: commonBundlingOptions,
+        runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
         role: new cdk.aws_iam.Role(this, "MapRoleLambdaExecutionRole", {
           assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
           managedPolicies: [
@@ -309,7 +306,6 @@ export class Data extends cdk.NestedStack {
           region: cdk.Stack.of(this).region,
           osDomain: `https://${openSearchDomain.attrDomainEndpoint}`,
         },
-        bundling: commonBundlingOptions,
       });
 
       const customResourceProvider = new cdk.custom_resources.Provider(
@@ -384,9 +380,7 @@ export class Data extends cdk.NestedStack {
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry: join(__dirname, `../lambda/${entry}`),
         handler: "handler",
-        tsconfig: "tsconfig.json",
-        bundling: { externalModules: ["aws-sdk"] },
-        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+        runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
         role,
         memorySize,
         vpc: useVpc ? vpc : undefined,
@@ -837,10 +831,8 @@ export class Data extends cdk.NestedStack {
       functionName: `${project}-${stage}-${stack}-runReindex`,
       entry: join(__dirname, "../lambda/runReindex.ts"),
       handler: "handler",
-      tsconfig: "tsconfig.json",
-      bundling: { externalModules: ["aws-sdk"] },
-      depsLockFilePath: join(__dirname, "../../bun.lockb"),
-      runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+      bundling: commonBundlingOptions,
+      runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
       timeout: cdk.Duration.minutes(5),
       role: new cdk.aws_iam.Role(this, "RunReindexLambdaExecutionRole", {
         assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
