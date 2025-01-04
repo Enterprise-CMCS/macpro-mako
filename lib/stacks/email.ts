@@ -3,7 +3,6 @@ import { Construct } from "constructs";
 import { join } from "path";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
-import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "lib/config/deployment-config";
 
 interface EmailServiceStackProps extends cdk.StackProps {
@@ -181,6 +180,8 @@ export class Email extends cdk.NestedStack {
       depsLockFilePath: join(__dirname, "../../bun.lockb"),
       entry: join(__dirname, "../lambda/processEmails.ts"),
       handler: "handler",
+      projectRoot: join(__dirname, "../../"),
+      bundling: { externalModules: ["aws-sdk"] },
       runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
       memorySize: envConfig[props.isDev ? "dev" : "prod"].memorySize,
       timeout: cdk.Duration.minutes(envConfig[props.isDev ? "dev" : "prod"].timeout),
@@ -205,7 +206,7 @@ export class Email extends cdk.NestedStack {
         VPC_ID: vpc.vpcId,
         SECURITY_GROUP_ID: lambdaSecurityGroup.securityGroupId,
       },
-      bundling: commonBundlingOptions,
+      // bundling: defaultBundlingOptions,
       tracing: cdk.aws_lambda.Tracing.ACTIVE,
     });
 
@@ -222,35 +223,42 @@ export class Email extends cdk.NestedStack {
 
     alarm.addAlarmAction(new cdk.aws_cloudwatch_actions.SnsAction(alarmTopic));
 
-    new CfnEventSourceMapping(this, "SinkSESTrigger", {
-      batchSize: 1,
-      enabled: true,
-      selfManagedEventSource: {
-        endpoints: {
-          kafkaBootstrapServers: brokerString.split(","),
+    // Create separate event source mappings for each topic
+    const topics = [
+      `${topicNamespace}aws.onemac.migration.cdc`,
+      "aws.ksqldb.seatool.agg.State_Plan",
+    ];
+
+    topics.forEach((topic, index) => {
+      new CfnEventSourceMapping(this, `SinkSESTrigger${index + 1}`, {
+        batchSize: 1,
+        enabled: true,
+        selfManagedEventSource: {
+          endpoints: {
+            kafkaBootstrapServers: brokerString.split(","),
+          },
         },
-      },
-      functionName: processEmailsLambda.functionName,
-      sourceAccessConfigurations: [
-        ...privateSubnets.map((subnet) => ({
-          type: "VPC_SUBNET",
-          uri: subnet.subnetId,
-        })),
-        {
-          type: "VPC_SECURITY_GROUP",
-          uri: `security_group:${lambdaSecurityGroup.securityGroupId}`,
+        functionName: processEmailsLambda.functionName,
+        sourceAccessConfigurations: [
+          ...privateSubnets.map((subnet) => ({
+            type: "VPC_SUBNET",
+            uri: subnet.subnetId,
+          })),
+          {
+            type: "VPC_SECURITY_GROUP",
+            uri: `security_group:${lambdaSecurityGroup.securityGroupId}`,
+          },
+        ],
+        startingPosition: "LATEST",
+        topics: [topic],
+        destinationConfig: {
+          onFailure: {
+            destination: dlq.queueArn,
+          },
         },
-      ],
-      startingPosition: "LATEST",
-      topics: [`${topicNamespace}aws.onemac.migration.cdc`],
-      destinationConfig: {
-        onFailure: {
-          destination: dlq.queueArn,
-        },
-      },
+      });
     });
 
-    // Add CloudWatch alarms
     new cdk.aws_cloudwatch.Alarm(this, "EmailProcessingErrors", {
       metric: processEmailsLambda.metricErrors(),
       threshold: 1,

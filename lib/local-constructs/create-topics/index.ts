@@ -41,18 +41,16 @@ export class CreateTopics extends Construct {
     const lambda = new NodejsFunction(this, "CreateTopicsLambda", {
       entry: join(__dirname, "src/createTopics.ts"),
       handler: "handler",
+      tsconfig: "tsconfig.json",
+      bundling: { externalModules: ["aws-sdk"] },
       runtime: Runtime.NODEJS_18_X,
       timeout: Duration.minutes(5),
       depsLockFilePath: join(__dirname, "../../../bun.lockb"),
       role: new Role(this, "CreateTopicsLambdaExecutionRole", {
         assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
         managedPolicies: [
-          ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole",
-          ),
-          ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaVPCAccessExecutionRole",
-          ),
+          ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole"),
+          ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaVPCAccessExecutionRole"),
         ],
         inlinePolicies: {
           InvokeLambdaPolicy: new PolicyDocument({

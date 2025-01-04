@@ -47,18 +47,16 @@ export class CleanupKafka extends Construct {
     const lambda = new NodejsFunction(this, "CleanupKafkaLambdaFunction", {
       entry: join(__dirname, "src/cleanupKafka.ts"),
       handler: "handler",
+      tsconfig: "tsconfig.json",
+      bundling: { externalModules: ["aws-sdk"] },
       depsLockFilePath: join(__dirname, "../../../bun.lockb"),
       runtime: Runtime.NODEJS_18_X,
       timeout: Duration.minutes(15),
       role: new Role(this, "CleanupKafkaLambdaExecutionRole", {
         assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
         managedPolicies: [
-          ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole",
-          ),
-          ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaVPCAccessExecutionRole",
-          ),
+          ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole"),
+          ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaVPCAccessExecutionRole"),
         ],
         inlinePolicies: {
           InvokeLambdaPolicy: new PolicyDocument({

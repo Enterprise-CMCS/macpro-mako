@@ -13,7 +13,7 @@ export const SearchForm: FC<{
 
   useEffect(() => {
     handleSearch(debouncedSearchString);
-  }, [debouncedSearchString]);
+  }, [debouncedSearchString, handleSearch]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

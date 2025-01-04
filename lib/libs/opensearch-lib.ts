@@ -4,7 +4,7 @@ import { Client, Connection, errors as OpensearchErrors } from "@opensearch-proj
 import * as aws4 from "aws4";
 import { aws4Interceptor } from "aws4-axios";
 import axios from "axios";
-import { ItemResult, Document as OSDocument } from "lib/packages/shared-types/opensearch/main";
+import { ItemResult } from "../packages/shared-types/opensearch/main";
 import { opensearch } from "shared-types";
 import { getDomainAndNamespace } from "./sink-lib";
 
@@ -185,15 +185,18 @@ export async function getItem(
     const response = await client.get({ id, index });
     return decodeUtf8(response).body;
   } catch (error) {
-    if (error instanceof OpensearchErrors.ResponseError && error.statusCode === 404 || error.meta?.statusCode === 404) {
+    if (
+      (error instanceof OpensearchErrors.ResponseError && error.statusCode === 404) ||
+      error.meta?.statusCode === 404
+    ) {
       console.log("Error (404) retrieving in OpenSearch:", error);
-      return undefined
+      return undefined;
     }
     throw error;
   }
 }
 
-export async function getItems(ids: string[]): Promise<OSDocument[]> {
+export async function getItems<T>(ids: string[]): Promise<T[]> {
   try {
     const { domain, index } = getDomainAndNamespace("main");
 
@@ -206,18 +209,15 @@ export async function getItems(ids: string[]): Promise<OSDocument[]> {
       },
     });
 
-    return response.body.docs.reduce<OSDocument[]>((acc, doc) => {
+    return response.body.docs.reduce<T[]>((acc, doc) => {
       if (doc.found && doc._source) {
         try {
-          return acc.concat(doc._source);
+          return acc.concat(doc._source as T);
         } catch (e) {
           console.error(`Failed to parse JSON for document with ID ${doc._id}:`, e);
           return acc;
         }
-      } else {
-        console.error(`Document with ID ${doc._id} not found.`);
       }
-
       return acc;
     }, []);
   } catch (e) {

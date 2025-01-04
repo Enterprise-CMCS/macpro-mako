@@ -1,39 +1,37 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, Mock } from "vitest";
 import { handler } from "./cleanupKafka";
-import * as topics from "../../../libs/topics-lib";
-import { CloudFormationCustomResourceEvent, Context } from "aws-lambda";
+import * as topics from "lib/libs/topics-lib";
+import { CloudFormationCustomResourceEvent } from "aws-lambda";
 
-vi.mock("../../../libs/topics-lib");
+vi.mock("lib/libs/topics-lib");
 
 describe("handler", () => {
   const BrokerString = "someBrokerString";
   const TopicPatternsToDelete = ["--valid--pattern--", "--another--pattern--"];
   const invalidTopicPatternsToDelete = ["invalidPattern", "--valid--pattern--"];
-  const context: Context = {} as Context;
 
   const event: CloudFormationCustomResourceEvent = {
     RequestType: "Delete",
-    ServiceToken: "",
-    ResponseURL: "",
-    StackId: "",
-    RequestId: "",
-    LogicalResourceId: "",
-    ResourceType: "",
+    PhysicalResourceId: "somePhysicalResourceId",
+    ResponseURL: "someResponseURL",
+    StackId: "someStackId",
+    RequestId: "someRequestId",
+    LogicalResourceId: "someLogicalResourceId",
+    ResourceType: "someResourceType",
+    ServiceToken: "arn:aws:lambda:us-east-1:123456789012:function:test-function",
     ResourceProperties: {
       brokerString: BrokerString,
       topicPatternsToDelete: TopicPatternsToDelete,
+      ServiceToken: "arn:aws:lambda:us-east-1:123456789012:function:test-function",
     },
   };
 
   it("should log request and delete topics successfully", async () => {
-    (topics.deleteTopics as vi.Mock).mockResolvedValue(undefined);
+    (topics.deleteTopics as Mock).mockResolvedValue(undefined);
 
-    await handler(event, context);
+    await handler(event);
 
-    expect(topics.deleteTopics).toHaveBeenCalledWith(
-      BrokerString,
-      TopicPatternsToDelete,
-    );
+    expect(topics.deleteTopics).toHaveBeenCalledWith(BrokerString, TopicPatternsToDelete);
     expect(topics.deleteTopics).toHaveBeenCalledTimes(1);
   });
 
@@ -43,10 +41,11 @@ describe("handler", () => {
       ResourceProperties: {
         brokerString: BrokerString,
         topicPatternsToDelete: invalidTopicPatternsToDelete,
+        ServiceToken: "arn:aws:lambda:us-east-1:123456789012:function:test-function",
       },
     };
 
-    await expect(handler(invalidEvent, context)).rejects.toThrow(
+    await expect(handler(invalidEvent)).rejects.toThrow(
       'Pattern "invalidPattern" does not start with the required format.  Refusing to continue.',
     );
   });

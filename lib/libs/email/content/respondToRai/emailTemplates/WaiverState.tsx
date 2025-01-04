@@ -1,13 +1,7 @@
 import { formatNinetyDaysDate } from "shared-utils";
 import { CommonEmailVariables, Events } from "shared-types";
 import { Text } from "@react-email/components";
-import {
-  PackageDetails,
-  MailboxNotice,
-  BasicFooter,
-  FollowUpNotice,
-  Divider,
-} from "../../email-components";
+import { PackageDetails, MailboxNotice, BasicFooter, FollowUpNotice } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
@@ -35,7 +29,6 @@ export const WaiverStateEmail = (props: {
           Summary: variables.additionalInformation,
         }}
       />
-      <Divider />
       <Text style={styles.text.description}>
         {`This response confirms the receipt of your Waiver request or your response to a Waiver
         Request for Additional Information (RAI). You can expect a formal response to your submittal

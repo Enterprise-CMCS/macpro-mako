@@ -66,6 +66,7 @@ export type Document = AppkDocument &
     adminChangeType?: string;
     changeMade?: string;
     idToBeUpdated?: string;
+    appkParent?: boolean;
   };
 
 export type Response = Res<Document>;

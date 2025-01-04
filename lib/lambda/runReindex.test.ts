@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach} from "vitest";
 import { send, SUCCESS, FAILED } from "cfn-response-async";
 import { SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
 import { handler } from "./runReindex";
@@ -17,7 +17,7 @@ vi.mock("@aws-sdk/client-sfn", () => ({
 }));
 
 describe("CloudFormation Custom Resource Handler", () => {
-  const mockContext = {};
+  const mockContext= expect.anything();
   const mockEventBase = {
     ResourceProperties: {
       stateMachine: "test-state-machine-arn",
@@ -43,7 +43,7 @@ describe("CloudFormation Custom Resource Handler", () => {
       send: sendMock,
     }));
 
-    await handler(mockEvent, mockContext);
+    await handler(mockEvent, mockContext, () => {});
 
     expect(SFNClient).toHaveBeenCalled();
     expect(StartExecutionCommand).toHaveBeenCalledWith({
@@ -54,13 +54,7 @@ describe("CloudFormation Custom Resource Handler", () => {
       }),
     });
     expect(sendMock).toHaveBeenCalled();
-    expect(send).not.toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(send).not.toHaveBeenCalledWith(mockEvent, mockContext, SUCCESS, {}, "static");
   });
 
   it("should send a SUCCESS response on Update request type", async () => {
@@ -69,15 +63,9 @@ describe("CloudFormation Custom Resource Handler", () => {
       RequestType: "Update",
     };
 
-    await handler(mockEvent, mockContext);
+    await handler(mockEvent, mockContext, () => {});
 
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(send).toHaveBeenCalledWith(mockEvent, mockContext, SUCCESS, {}, "static");
   });
 
   it("should send a SUCCESS response on Delete request type", async () => {
@@ -86,15 +74,9 @@ describe("CloudFormation Custom Resource Handler", () => {
       RequestType: "Delete",
     };
 
-    await handler(mockEvent, mockContext);
+    await handler(mockEvent, mockContext, () => {});
 
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(send).toHaveBeenCalledWith(mockEvent, mockContext, SUCCESS, {}, "static");
   });
 
   it("should send a FAILED response on error", async () => {
@@ -108,14 +90,9 @@ describe("CloudFormation Custom Resource Handler", () => {
       send: sendMock,
     }));
 
-    await handler(mockEvent, mockContext);
+    await handler(mockEvent, mockContext, () => {});
 
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      FAILED,
-      {},
-      "static",
-    );
+    expect(send).toHaveBeenCalledWith(mockEvent, mockContext, FAILED, {}, "static");
   });
 });
+

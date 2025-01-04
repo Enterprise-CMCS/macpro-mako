@@ -1,12 +1,10 @@
 import * as cdk from "aws-cdk-lib";
 import { AnyPrincipal, Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
-import {
-  BlockPublicAccess,
-  Bucket,
-  BucketEncryption,
-} from "aws-cdk-lib/aws-s3";
+import { BlockPublicAccess, Bucket, BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
 import * as LC from "local-constructs";
+import { AllowedMethods, Distribution } from "aws-cdk-lib/aws-cloudfront";
+import { S3Origin } from "aws-cdk-lib/aws-cloudfront-origins";
 
 interface UiInfraStackProps extends cdk.NestedStackProps {
   project: string;
@@ -18,7 +16,7 @@ interface UiInfraStackProps extends cdk.NestedStackProps {
 }
 
 export class UiInfra extends cdk.NestedStack {
-  public readonly distribution: cdk.aws_cloudfront.CloudFrontWebDistribution;
+  public readonly distribution: cdk.aws_cloudfront.Distribution;
   public readonly applicationEndpointUrl: string;
   public readonly cloudfrontEndpointUrl: string;
   public readonly bucket: cdk.aws_s3.Bucket;
@@ -35,7 +33,7 @@ export class UiInfra extends cdk.NestedStack {
   }
 
   private initializeResources(props: UiInfraStackProps): {
-    distribution: cdk.aws_cloudfront.CloudFrontWebDistribution;
+    distribution: cdk.aws_cloudfront.Distribution;
     bucket: cdk.aws_s3.Bucket;
   } {
     const { project, stage, isDev, domainCertificateArn, domainName } = props;
@@ -49,8 +47,7 @@ export class UiInfra extends cdk.NestedStack {
           )
         : null;
 
-    const sanitizedDomainName =
-      domainName && domainName.trim() ? domainName.trim() : null;
+    const sanitizedDomainName = domainName && domainName.trim() ? domainName.trim() : null;
 
     // S3 Bucket for hosting static website
     const bucket = new cdk.aws_s3.Bucket(this, "S3Bucket", {
@@ -105,22 +102,16 @@ export class UiInfra extends cdk.NestedStack {
     loggingBucket.addToResourcePolicy(
       new cdk.aws_iam.PolicyStatement({
         effect: cdk.aws_iam.Effect.ALLOW,
-        principals: [
-          new cdk.aws_iam.ServicePrincipal("cloudfront.amazonaws.com"),
-        ],
+        principals: [new cdk.aws_iam.ServicePrincipal("cloudfront.amazonaws.com")],
         actions: ["s3:PutObject"],
         resources: [`${loggingBucket.bucketArn}/*`],
       }),
     );
 
     // CloudFront Origin Access Identity
-    const cloudFrontOAI = new cdk.aws_cloudfront.OriginAccessIdentity(
-      this,
-      "CloudFrontOAI",
-      {
-        comment: "OAI to prevent direct public access to the bucket",
-      },
-    );
+    const cloudFrontOAI = new cdk.aws_cloudfront.OriginAccessIdentity(this, "CloudFrontOAI", {
+      comment: "OAI to prevent direct public access to the bucket",
+    });
 
     // HSTS Function
     const hstsFunction = new cdk.aws_cloudfront.Function(this, "HstsFunction", {
@@ -140,72 +131,44 @@ export class UiInfra extends cdk.NestedStack {
     });
 
     // CloudFront Distribution
-    const viewerCertificate = domainCertificate
-      ? cdk.aws_cloudfront.ViewerCertificate.fromAcmCertificate(
-          domainCertificate,
+    const distribution = new Distribution(this, "Distribution", {
+      defaultBehavior: {
+        origin: new S3Origin(bucket, {
+          originAccessIdentity: cloudFrontOAI,
+        }),
+        allowedMethods: AllowedMethods.ALLOW_GET_HEAD,
+        viewerProtocolPolicy: cdk.aws_cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        functionAssociations: [
           {
-            aliases: sanitizedDomainName ? [sanitizedDomainName] : [],
-            securityPolicy:
-              cdk.aws_cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
-            sslMethod: cdk.aws_cloudfront.SSLMethod.SNI,
-          },
-        )
-      : cdk.aws_cloudfront.ViewerCertificate.fromCloudFrontDefaultCertificate();
-
-    const distribution = new cdk.aws_cloudfront.CloudFrontWebDistribution(
-      this,
-      "CloudFrontDistribution",
-      {
-        originConfigs: [
-          {
-            s3OriginSource: {
-              s3BucketSource: bucket,
-              originAccessIdentity: cloudFrontOAI,
-            },
-            behaviors: [
-              {
-                isDefaultBehavior: true,
-                allowedMethods:
-                  cdk.aws_cloudfront.CloudFrontAllowedMethods.GET_HEAD,
-                viewerProtocolPolicy:
-                  cdk.aws_cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-                functionAssociations: [
-                  {
-                    function: hstsFunction,
-                    eventType:
-                      cdk.aws_cloudfront.FunctionEventType.VIEWER_RESPONSE,
-                  },
-                ],
-              },
-            ],
+            function: hstsFunction,
+            eventType: cdk.aws_cloudfront.FunctionEventType.VIEWER_RESPONSE,
           },
         ],
-        comment: `CloudFront Distro for the static website hosted in S3 for ${project}-${stage}`,
-        defaultRootObject: "index.html",
-        httpVersion: cdk.aws_cloudfront.HttpVersion.HTTP2,
-        viewerCertificate,
-        loggingConfig: {
-          bucket: loggingBucket,
-          includeCookies: false,
-          prefix: "cloudfront-logs/",
-        },
-        errorConfigurations: [
-          {
-            errorCode: 403,
-            responsePagePath: "/index.html",
-            responseCode: 200,
-            errorCachingMinTtl: 300,
-          },
-          {
-            errorCode: 404,
-            responsePagePath: "/index.html",
-            responseCode: 200,
-            errorCachingMinTtl: 300,
-          },
-        ],
-        webACLId: waf.webAcl.attrArn,
       },
-    );
+      comment: `CloudFront Distro for the static website hosted in S3 for ${project}-${stage}`,
+      defaultRootObject: "index.html",
+      httpVersion: cdk.aws_cloudfront.HttpVersion.HTTP2,
+      domainNames: sanitizedDomainName ? [sanitizedDomainName] : undefined,
+      certificate: domainCertificate || undefined,
+      logBucket: loggingBucket,
+      logIncludesCookies: false,
+      logFilePrefix: "cloudfront-logs/",
+      errorResponses: [
+        {
+          httpStatus: 403,
+          responsePagePath: "/index.html",
+          responseHttpStatus: 200,
+          ttl: cdk.Duration.seconds(300),
+        },
+        {
+          httpStatus: 404,
+          responsePagePath: "/index.html",
+          responseHttpStatus: 200,
+          ttl: cdk.Duration.seconds(300),
+        },
+      ],
+      webAclId: waf.webAcl.attrArn,
+    });
 
     const logBucket = new Bucket(this, "LogBucket", {
       versioned: true,

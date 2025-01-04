@@ -37,6 +37,8 @@ export class ManageUsers extends Construct {
     const manageUsers = new NodejsFunction(this, "LambdaFunction", {
       entry: join(__dirname, "src/manageUsers.ts"),
       handler: "handler",
+      tsconfig: "tsconfig.json",
+      bundling: { externalModules: ["aws-sdk"] },
       runtime: Runtime.NODEJS_18_X,
       depsLockFilePath: join(__dirname, "../../../bun.lockb"),
       timeout: Duration.minutes(5),
@@ -44,9 +46,7 @@ export class ManageUsers extends Construct {
       role: new Role(this, "LambdaExecutionRole", {
         assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
         managedPolicies: [
-          ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole",
-          ),
+          ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole"),
         ],
         inlinePolicies: {
           LambdaAssumeRolePolicy: new PolicyDocument({
@@ -68,10 +68,7 @@ export class ManageUsers extends Construct {
               }),
               new PolicyStatement({
                 effect: Effect.ALLOW,
-                actions: [
-                  "secretsmanager:GetSecretValue",
-                  "secretsmanager:DescribeSecret",
-                ],
+                actions: ["secretsmanager:GetSecretValue", "secretsmanager:DescribeSecret"],
                 resources: ["*"],
               }),
             ],

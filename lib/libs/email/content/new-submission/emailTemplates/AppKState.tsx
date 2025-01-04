@@ -37,7 +37,6 @@ export const AppKStateEmail = (props: {
           Summary: variables.additionalInformation,
         }}
       />
-      <Divider />
       <Text style={styles.text.description}>
         {`This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
