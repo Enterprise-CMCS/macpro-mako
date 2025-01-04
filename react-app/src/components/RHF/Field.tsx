@@ -1,7 +1,7 @@
 import { FieldValues, RegisterOptions } from "react-hook-form";
 import { FieldArrayProps, RHFSlotProps, RHFTextField } from "shared-types";
 import { FormField, FormLabel } from "../Inputs/form";
-import { DependencyWrapper, RHFSlot, RHFTextDisplay, ruleGenerator } from "./";
+import { DependencyWrapper, RHFSlot, RHFTextDisplay, ruleGenerator } from ".";
 
 interface FieldProps<T extends FieldValues> extends FieldArrayProps<T> {
   index: number;
@@ -32,22 +32,13 @@ export const Field = <TFields extends FieldValues>({
       <div className="w-full">
         {(SLOT.label || SLOT.styledLabel) && (
           <FormLabel className={SLOT.labelClassName}>
-            <RHFTextDisplay
-              text={(SLOT.styledLabel || SLOT.label) as RHFTextField}
-            />
+            <RHFTextDisplay text={(SLOT.styledLabel || SLOT.label) as RHFTextField} />
           </FormLabel>
         )}
-        <div
-          className={SLOT.props?.wrapperClassName}
-          key={`wrappedGroup-${name}-${index}`}
-        >
+        <div className={SLOT.props?.wrapperClassName} key={`wrappedGroup-${name}-${index}`}>
           {SLOT.fields?.map((F) => {
             return (
-              <Field
-                {...{ name, index, control, parentId, ...props }}
-                SLOT={F}
-                key={F.name}
-              />
+              <Field {...{ name, index, control, parentId, ...props }} SLOT={F} key={F.name} />
             );
           })}
         </div>
@@ -61,9 +52,7 @@ export const Field = <TFields extends FieldValues>({
       key={adjustedSlotName}
       // @ts-expect-error
       control={control}
-      rules={
-        ruleGenerator(SLOT.rules, SLOT.addtnlRules) as CustomRegisterOptions
-      }
+      rules={ruleGenerator(SLOT.rules, SLOT.addtnlRules) as CustomRegisterOptions}
       name={adjustedSlotName as never}
       render={RHFSlot({
         ...SLOT,

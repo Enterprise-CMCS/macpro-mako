@@ -1,18 +1,20 @@
-import { WaiverInitialCMSEmail } from "libs/email/content/new-submission/emailTemplates/Waiver1915bCMS";
+import {
+  WaiverInitialCMSEmail,
+} from "../../../content/new-submission/emailTemplates";
 import { emailTemplateValue } from "../../../mock-data/new-submission";
 import * as attachments from "../../../mock-data/attachments";
-export const WaiverInitialCapitatedCMSEmailPreview = () => {
+export const WaiverInitialCMSEmailPreview = () => {
   return (
     <WaiverInitialCMSEmail
       variables={{
         ...emailTemplateValue,
+        event: "capitated-initial" as const,
         attachments: {
           bCapWaiverApplication: attachments.bCapWaiverApplication,
           bCapCostSpreadsheets: attachments.bCapCostSpreadsheets,
           tribalConsultation: attachments.tribalConsultation,
           other: attachments.other,
         },
-        event: "capitated-initial",
         id: "CO-1234.R21.00",
         authority: "1915(b)",
         actionType: "New",
@@ -20,24 +22,3 @@ export const WaiverInitialCapitatedCMSEmailPreview = () => {
     />
   );
 };
-export const WaiverInitialContractingCMSEmailPreview = () => {
-  return (
-    <WaiverInitialCMSEmail
-      variables={{
-        ...emailTemplateValue,
-
-        attachments: {
-          bCapWaiverApplication: attachments.bCapWaiverApplication,
-          bCapCostSpreadsheets: attachments.bCapCostSpreadsheets,
-          tribalConsultation: attachments.tribalConsultation,
-          other: attachments.other,
-        },
-        event: "contracting-initial",
-        id: "CO-1234.R21.00",
-        authority: "1915(b)",
-        actionType: "New",
-      }}
-    />
-  );
-};
-

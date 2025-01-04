@@ -16,10 +16,9 @@ export const WaiverInitialStateEmail = (
     variables:
       | (Events["CapitatedInitial"] & CommonEmailVariables)
       | (Events["ContractingInitial"] & CommonEmailVariables);
-  },
-  rest: Partial<Events["CapitatedInitial"]> | Partial<Events["ContractingInitial"]>,
+  }
 ) => {
-  const variables = { ...props.variables, ...rest };
+  const variables = { ...props.variables };
   const previewText = `${variables.authority} ${variables.actionType} Submitted`;
   const heading = `This response confirms the submission of your ${variables.authority} ${variables.actionType} to CMS for review:`;
   return (

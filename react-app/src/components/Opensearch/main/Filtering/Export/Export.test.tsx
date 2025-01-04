@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, cleanup } from "@testing-library/react";
 import { describe, expect, test, vi, beforeEach } from "vitest";
 import { OsExportData } from "@/components";
 import userEvent from "@testing-library/user-event";
@@ -10,6 +10,10 @@ vi.mock("@/components/Opensearch/main/useOpensearch.ts", () => ({
 describe("Tooltip component within export button", () => {
   beforeEach(() => {
     render(<OsExportData columns={[]} disabled={true} />);
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   test("Tooltip content hidden when not hovering", async () => {

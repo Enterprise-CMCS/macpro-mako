@@ -1,4 +1,4 @@
-import { Events, Authority, EmailAddresses, CommonEmailVariables } from "shared-types";
+import { Authority, EmailAddresses, CommonEmailVariables } from "shared-types";
 import { AuthoritiesWithUserTypesTemplate } from "../..";
 
 import {
@@ -12,6 +12,7 @@ import {
   WaiverInitialStateEmail,
 } from "./emailTemplates";
 import { render } from "@react-email/render";
+import { Events } from "lib/packages/shared-types/events";
 
 export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {

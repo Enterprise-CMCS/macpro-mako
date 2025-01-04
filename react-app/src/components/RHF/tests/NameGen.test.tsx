@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { screen } from "@testing-library/react";
 import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
-import { RHFDocument } from "../.";
+import { RHFDocument } from "..";
 import { Form } from "../../Inputs";
 import { useForm } from "react-hook-form";
 import { FormSchema } from "shared-types";

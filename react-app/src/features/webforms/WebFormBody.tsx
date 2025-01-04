@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { Button, Form } from "@/components";
-import { WebformFooter } from "../webforms/WebformFooter";
+import { WebformFooter } from "./WebformFooter";
 import { FormSchema } from "shared-types";
 import { documentValidator, RHFDocument } from "../../components/RHF";
-import { useWebform } from "../webforms";
+import { useWebform } from ".";
 import { useLDClient } from "launchdarkly-react-client-sdk";
 import { featureFlags } from "shared-utils";
 

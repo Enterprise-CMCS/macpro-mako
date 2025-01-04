@@ -28,5 +28,5 @@
     }
   },
   "exclude": ["node_modules", "cdk.out", ".cdk"],
-  "include": ["lib/**/*", "react-app/**/*", "test/**/*", "mocks/**/*"]
+  "include": ["lib/**/*", "test/react-app/**/*", "test/**/*", "mocks/**/*"]
 }

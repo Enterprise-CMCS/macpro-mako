@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react";
-import { Amendment } from "../amend";
+import { Amendment } from ".";
 import { describe, expect, test, beforeAll } from "vitest";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements } from "@/utils/test-helpers/skipCleanup";

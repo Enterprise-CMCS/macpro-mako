@@ -27,10 +27,15 @@ export const attachmentTitleMap = {
   // RAI WITHDRAW
   supportingDocumentation: "Supporting Documentation",
   bCapWaiverApplication: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
+  bContractingWaiverApplication:
+    "1915(b) Selective Contracting (Streamlined) Waiver Application Pre-print",
   bCapCostSpreadsheets: "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
-  bCapIndependentAssessment: "1915(b) Comprehensive (Capitated) Waiver Independent Assessment (first two renewals only)",
-  b4WaiverApplication: "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
-  b4IndependentAssessment: "1915(b)(4) FFS Selective Contracting (Streamlined) Independent Assessment (first two renewals only)",
+  bCapIndependentAssessment:
+    "1915(b) Comprehensive (Capitated) Waiver Independent Assessment (first two renewals only)",
+  b4WaiverApplication:
+    "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
+  b4IndependentAssessment:
+    "1915(b)(4) FFS Selective Contracting (Streamlined) Independent Assessment (first two renewals only)",
   appk: "1915(c) Appendix K Amendment Waiver Template",
   waiverExtensionRequest: "Waiver Extension Request",
 };

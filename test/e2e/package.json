@@ -6,7 +6,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "e2e": "playwright test --project=state-user-chrome",
+    "e2e": "playwright test --project=state-user-chrome --path=tests --ext=spec.ts",
     "e2e:ui": "playwright test --ui --project=state-user-chrome"
   },
   "dependencies": {

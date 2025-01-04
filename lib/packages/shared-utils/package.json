@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "test": "vitest",
-    "test:coverage": "vitest run --coverage.enabled.true",
+    "test:coverage": "vitest run --coverage.enabled true",
     "test:ui": "vitest --ui"
   },
   "devDependencies": {},

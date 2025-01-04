@@ -1,9 +1,10 @@
-import { Events, ActionType } from ".";
+import { ActionType } from ".";
 
 import { Authority } from "./authority";
+import { Events } from "./events";
 
-type EmailString = string & { __brand: "email" };
-type EmailArray = EmailString[];
+export type EmailString = string & { __brand: "email" };
+export type EmailArray = EmailString[];
 
 /** Email addresses configuration for different roles and services */
 export type EmailAddresses = {
@@ -24,14 +25,14 @@ export interface CommonEmailVariables {
   authority: string;
   territory: string;
   applicationEndpointUrl: string;
-  event: EventType;
+  event: EmailEventType;
   actionType: ActionType;
   allStateUsersEmails?: string[];
   responseDate?: number;
   title?: string;
 }
 
-export type EventType =
+export type EmailEventType =
   | "new-submission"
   | "new-chip-submission"
   | "new-medicaid-submission"

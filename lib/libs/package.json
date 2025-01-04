@@ -23,7 +23,7 @@
   "scripts": {
     "email-dev": "email dev --dir email/preview",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage.enabled true",
+    "test:coverage": "vitest run --coverage.enabled.extension=.ts,.tsx true",
     "test:ui": "vitest --ui"
   }
 }

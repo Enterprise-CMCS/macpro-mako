@@ -1,4 +1,4 @@
-import { Authority, CommonEmailVariables, EmailAddresses, Events, RaiWithdraw, WithdrawPackage } from "shared-types";
+import { Authority, CommonEmailVariables, EmailAddresses, Events } from "shared-types";
 
 // Base email template props
 export interface BaseEmailProps {
@@ -13,8 +13,7 @@ export interface BaseEmailProps {
 export interface EmailResponse {
   to: string[];
   subject: string;
-  html: string;
-  text: string;
+  body: string;
   cc?: string[];
 }
 
@@ -34,7 +33,7 @@ export type AuthorityTemplate = Record<Authority, UserTypeTemplate>;
 
 // Event specific template props
 export interface RaiWithdrawTemplateProps {
-  variables: RaiWithdraw & CommonEmailVariables;
+  variables: Events["WithdrawRai"] & CommonEmailVariables;
   relatedEvent: any;
 }
 
@@ -43,7 +42,7 @@ export interface NewSubmissionTemplateProps<T extends keyof Events> {
 }
 
 export interface WithdrawPackageTemplateProps {
-  variables: WithdrawPackage & CommonEmailVariables;
+  variables: Events["WithdrawPackage"] & CommonEmailVariables;
 }
 
 export interface TempExtensionTemplateProps {

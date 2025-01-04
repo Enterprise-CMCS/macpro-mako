@@ -1,5 +1,5 @@
 import { Authority, opensearch } from "shared-types";
-import { OneMacUser } from "ui/src/api";
+import { OneMacUser } from "test/react-app/src/api";
 
 export const testStateCognitoUser: OneMacUser = {
   isCms: false,

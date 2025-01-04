@@ -315,6 +315,18 @@ export const bCapWaiverApplication = {
   ],
   label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
 };
+export const b4WaiverApplication = {
+  files: [
+    {
+      filename: "contracting-waiver-application.pdf",
+      title: "1915(b) Selective Contracting (Streamlined) Waiver Application Pre-print",
+      bucket: "mako-outbox-attachments-635052997545",
+      key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
+      uploadDate: 1728495786285,
+    },
+  ],
+  label: "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
+};
 
 export const bCapCostSpreadsheets = {
   files: [

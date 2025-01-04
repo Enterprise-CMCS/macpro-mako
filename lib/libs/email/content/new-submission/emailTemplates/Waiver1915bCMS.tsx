@@ -9,15 +9,12 @@ import {
 import { BaseEmailTemplate } from "../../email-templates";
 import { formatDate } from "shared-utils";
 
-export const WaiverInitialCMSEmail = (
-  props: {
-    variables:
-      | (Events["CapitatedInitial"] & CommonEmailVariables)
-      | (Events["ContractingInitial"] & CommonEmailVariables);
-  },
-  rest: Partial<Events["CapitatedInitial"]> | Partial<Events["ContractingInitial"]>,
-) => {
-  const variables = { ...props.variables, ...rest };
+export const WaiverInitialCMSEmail = (props: {
+  variables:
+    | (Events["CapitatedInitial"] & CommonEmailVariables)
+    | (Events["ContractingInitial"] & CommonEmailVariables);
+}) => {
+  const variables = { ...props.variables };
   const previewText = `${variables.authority} ${variables.actionType} Submitted`;
   const heading = `The OneMAC Submission Portal received a ${variables.authority} ${variables.actionType} Submission:`;
   return (

@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { screen } from "@testing-library/react";
 import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
-import { RHFSlot } from "../.";
+import { RHFSlot } from "..";
 import { Form, FormField } from "../../Inputs";
 import { Control, useForm } from "react-hook-form";
 import { RHFSlotProps } from "shared-types";

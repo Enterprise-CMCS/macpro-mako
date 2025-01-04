@@ -7,7 +7,7 @@
     "base-64": "^1.0.0",
     "eslint": "^8.38.0",
     "eslint-config-custom-server": "*",
-    "zod": "^3.22.3"
+    "zod": "^3.24.1"
   },
   "scripts": {
     "test": "vitest",

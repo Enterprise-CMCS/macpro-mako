@@ -1,5 +1,5 @@
 export * from "./actions";
-export * from "./events";
+export * from "./events"
 export * from "./attachments";
 export * from "./authority";
 export * from "./email";
