@@ -30,7 +30,6 @@ describe("Lambda Handler", () => {
 
     await handler(event, {} as Context, callback);
 
-    expect(lambdaSpy).toHaveBeenCalledTimes(3);
     expect(lambdaSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         input: {
@@ -52,6 +51,7 @@ describe("Lambda Handler", () => {
         },
       } as GetEventSourceMappingCommand),
     );
+    expect(lambdaSpy).toHaveBeenCalledTimes(3);
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 200,
     });
@@ -64,7 +64,6 @@ describe("Lambda Handler", () => {
 
     await handler(event, {} as Context, callback);
 
-    expect(lambdaSpy).toHaveBeenCalledTimes(1);
     expect(lambdaSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         input: {
@@ -72,6 +71,7 @@ describe("Lambda Handler", () => {
         },
       } as ListEventSourceMappingsCommand),
     );
+    expect(lambdaSpy).toHaveBeenCalledTimes(1);
     expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,
     });
@@ -84,7 +84,6 @@ describe("Lambda Handler", () => {
 
     await handler(event, {} as Context, callback);
 
-    expect(lambdaSpy).toHaveBeenCalledTimes(1);
     expect(lambdaSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         input: {
@@ -92,6 +91,7 @@ describe("Lambda Handler", () => {
         },
       } as ListEventSourceMappingsCommand),
     );
+    expect(lambdaSpy).toHaveBeenCalledTimes(1);
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 });

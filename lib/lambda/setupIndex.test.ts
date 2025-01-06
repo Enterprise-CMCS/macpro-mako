@@ -21,8 +21,6 @@ describe("handler", () => {
   it("should create and update indices without errors", async () => {
     await handler(baseEvent, {} as Context, callback);
 
-    expect(createIndexSpy).toHaveBeenCalledTimes(7);
-
     const expectedIndices = [
       `${OPENSEARCH_INDEX_NAMESPACE}main`,
       `${OPENSEARCH_INDEX_NAMESPACE}changelog`,
@@ -36,8 +34,8 @@ describe("handler", () => {
     for (const index of expectedIndices) {
       expect(createIndexSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, index);
     }
+    expect(createIndexSpy).toHaveBeenCalledTimes(7);
 
-    expect(updateMappingSpy).toHaveBeenCalledTimes(1);
     expect(updateMappingSpy).toHaveBeenCalledWith(
       OPENSEARCH_DOMAIN,
       `${OPENSEARCH_INDEX_NAMESPACE}main`,
@@ -50,6 +48,7 @@ describe("handler", () => {
         submissionDate: { type: "date" },
       },
     );
+    expect(updateMappingSpy).toHaveBeenCalledTimes(1);
 
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
