@@ -22,7 +22,6 @@ export const MedSpaStateEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      // footerContent={<FollowUpNotice />}
     >
       <DetailsHeading />
       <PackageDetails

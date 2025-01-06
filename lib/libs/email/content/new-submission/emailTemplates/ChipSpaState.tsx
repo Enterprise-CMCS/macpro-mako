@@ -23,7 +23,6 @@ export const ChipSpaStateEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      // footerContent={<FollowUpNotice isChip />}
     >
       <DetailsHeading />
       <PackageDetails
