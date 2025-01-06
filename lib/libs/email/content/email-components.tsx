@@ -225,9 +225,11 @@ const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
 const FollowUpNotice = ({
   isChip,
   includeStateLead = true,
+  includeDidNotExpect = true,
 }: {
   isChip?: boolean;
   includeStateLead?: boolean;
+  includeDidNotExpect?: boolean;
 }) => (
   <>
     <Divider />
@@ -244,7 +246,9 @@ const FollowUpNotice = ({
     ) : (
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
-          If you have any questions or did not expect this email, please contact{" "}
+          {`If you have any questions${
+            includeDidNotExpect ? " or did not expect this email" : ""
+          }, please contact `}
           <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`} style={{ textDecoration: "underline" }}>
             {EMAIL_CONFIG.SPA_EMAIL}
           </Link>
