@@ -44,7 +44,6 @@ describe("Cognito User Lambda Handler", () => {
 
     await handler(event, {} as Context, callback);
 
-    expect(cognitoSpy).toHaveBeenCalledTimes(4);
     expect(cognitoSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         input: {
@@ -82,6 +81,7 @@ describe("Cognito User Lambda Handler", () => {
         },
       } as AdminUpdateUserAttributesCommand),
     );
+    expect(cognitoSpy).toHaveBeenCalledTimes(4);
     expect(cfnSpy).toHaveBeenCalledWith(event, {}, cfn.SUCCESS, {}, "static");
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
