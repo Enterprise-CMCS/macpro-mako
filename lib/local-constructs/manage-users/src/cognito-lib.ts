@@ -5,8 +5,9 @@ import {
   AdminUpdateUserAttributesCommand,
   AdminGetUserCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
+
 const client = new CognitoIdentityProviderClient({
-  region: process.env.region,
+  region: process.env.region || process.env.REGION_A || "us-east-1",
 });
 
 export async function createUser(params: any): Promise<void> {
