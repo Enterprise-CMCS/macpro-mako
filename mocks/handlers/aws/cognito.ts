@@ -5,14 +5,14 @@ import {
   IDENTITY_POOL_ID,
   SECRET_KEY,
   USER_POOL_CLIENT_ID,
-  COGNITO_IDP_DOMAIN
+  COGNITO_IDP_DOMAIN,
 } from "../../consts";
 import type {
   IdentityRequest,
   IdpListUsersRequestBody,
   IdpRefreshRequestBody,
   IdpRequestSessionBody,
-  TestUserData
+  TestUserData,
 } from "../../index.d";
 import { findUserByUsername } from "../authUtils";
 import { APIGatewayEventRequestContext } from "shared-types";
@@ -162,6 +162,10 @@ export const signInHandler = http.post(/amazoncognito.com\/oauth2\/token/, async
 export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
   /cognito-identity/,
   async ({ request }) => {
+    console.log("identityServiceHandler", {
+      request,
+      headers: request.headers,
+    });
     const target = request.headers.get("x-amz-target");
     if (target) {
       if (target == "AWSCognitoIdentityService.GetId") {
@@ -233,6 +237,10 @@ export const identityProviderServiceHandler = http.post<
   PathParams,
   IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody
 >(/https:\/\/cognito-idp.\S*.amazonaws.com\//, async ({ request }) => {
+  console.log("identityProviderServiceHandler", {
+    request,
+    headers: request.headers,
+  });
   const target = request.headers.get("x-amz-target");
   if (target) {
     if (target == "AWSCognitoIdentityProviderService.InitiateAuth") {

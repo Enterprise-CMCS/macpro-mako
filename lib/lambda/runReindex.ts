@@ -2,8 +2,12 @@ import { Handler } from "aws-lambda";
 import { send, SUCCESS, FAILED } from "cfn-response-async";
 import { SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
 
-export const handler: Handler = async (event, context) => {
+export const handler: Handler = async (event, context, callback) => {
   console.log("request:", JSON.stringify(event, undefined, 2));
+  const response = {
+    statusCode: 200,
+  };
+  let errorResponse = null;
   try {
     if (event.RequestType == "Create") {
       const stepFunctionsClient = new SFNClient({});
@@ -20,7 +24,7 @@ export const handler: Handler = async (event, context) => {
       const execution = await stepFunctionsClient.send(startExecutionCommand);
       console.log(`State machine execution started: ${execution.executionArn}`);
       console.log(
-        "The state machine is now in charge of this resource, and will notify of success or failure upon completion."
+        "The state machine is now in charge of this resource, and will notify of success or failure upon completion.",
       );
     } else if (event.RequestType == "Update") {
       await send(event, context, SUCCESS, {}, "static");
@@ -30,6 +34,10 @@ export const handler: Handler = async (event, context) => {
     }
   } catch (error) {
     console.log(error);
+    response.statusCode = 500;
+    errorResponse = error;
     await send(event, context, FAILED, {}, "static");
+  } finally {
+    callback(errorResponse, response);
   }
 };

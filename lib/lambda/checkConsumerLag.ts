@@ -26,11 +26,6 @@ export const handler: Handler = async (event, _, callback) => {
             FunctionName: trigger.function,
           }),
         );
-        if (!lambdaResponse.EventSourceMappings) {
-          throw new Error(
-            `ERROR: No event source mapping found for function ${trigger.function} and topic ${topic}`,
-          );
-        }
         if (
           !lambdaResponse.EventSourceMappings ||
           lambdaResponse.EventSourceMappings.length === 0
@@ -44,6 +39,11 @@ export const handler: Handler = async (event, _, callback) => {
             (mapping) =>
               mapping.Topics && mapping.Topics.includes(topic as string),
           );
+        if (!mappingForCurrentTopic || mappingForCurrentTopic.length === 0) {
+          throw new Error(
+            `ERROR: No event source mapping found for function ${trigger.function} and topic ${topic}`,
+          );
+        }
         if (mappingForCurrentTopic.length > 1) {
           throw new Error(
             `ERROR: Multiple event source mappings found for function ${trigger.function} and topic ${topic}`,

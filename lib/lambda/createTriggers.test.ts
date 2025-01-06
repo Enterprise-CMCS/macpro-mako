@@ -1,36 +1,32 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { handler } from "./createTriggers";
+import { Context } from "aws-lambda";
+import {
+  TEST_ERROR_EVENT_SOURCE_FUNCTION_NAME,
+  TEST_FUNCTION_NAME,
+  TEST_TOPIC_NAME,
+  TEST_FUNCTION_TEST_TOPIC_UUID,
+} from "mocks";
 import {
   LambdaClient,
   CreateEventSourceMappingCommand,
   GetEventSourceMappingCommand,
 } from "@aws-sdk/client-lambda";
 
-vi.mock("@aws-sdk/client-lambda", () => ({
-  LambdaClient: vi.fn().mockImplementation(() => ({
-    send: vi.fn(),
-  })),
-  CreateEventSourceMappingCommand: vi.fn(),
-  GetEventSourceMappingCommand: vi.fn(),
-}));
-
 vi.mock("crypto", () => ({
   randomUUID: vi.fn().mockReturnValue("test-uuid"),
 }));
 
 describe("Lambda Handler", () => {
+  const lambdaSpy = vi.spyOn(LambdaClient.prototype, "send");
   const callback = vi.fn();
-  const mockLambdaClientSend = vi.fn();
 
   beforeEach(() => {
-    vi.clearAllMocks();
     vi.useFakeTimers();
-    (LambdaClient as any).mockImplementation(() => ({
-      send: mockLambdaClientSend,
-    }));
   });
 
   afterEach(() => {
+    vi.clearAllMocks();
     vi.useRealTimers();
   });
 
@@ -38,8 +34,8 @@ describe("Lambda Handler", () => {
     const event = {
       triggers: [
         {
-          function: "test-function",
-          topics: ["test-topic"],
+          function: TEST_FUNCTION_NAME,
+          topics: [TEST_TOPIC_NAME],
         },
       ],
       consumerGroupPrefix: "cg-",
@@ -49,17 +45,25 @@ describe("Lambda Handler", () => {
       startingPosition: "TRIM_HORIZON",
     };
 
-    mockLambdaClientSend
-      .mockResolvedValueOnce({ UUID: "uuid-1" }) // Response for CreateEventSourceMappingCommand
-      .mockResolvedValueOnce({ State: "Enabled" }); // Response for GetEventSourceMappingCommand
+    await handler(event, {} as Context, callback);
 
-    await handler(event, null, callback);
-
-    expect(mockLambdaClientSend).toHaveBeenCalledWith(
-      expect.any(CreateEventSourceMappingCommand),
+    expect(lambdaSpy).toHaveBeenCalledTimes(2);
+    expect(lambdaSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: expect.objectContaining({
+          BatchSize: 1000,
+          Enabled: true,
+          FunctionName: TEST_FUNCTION_NAME,
+          Topics: [TEST_TOPIC_NAME],
+        }),
+      } as CreateEventSourceMappingCommand),
     );
-    expect(mockLambdaClientSend).toHaveBeenCalledWith(
-      expect.any(GetEventSourceMappingCommand),
+    expect(lambdaSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: {
+          UUID: TEST_FUNCTION_TEST_TOPIC_UUID,
+        },
+      } as GetEventSourceMappingCommand),
     );
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
@@ -68,8 +72,8 @@ describe("Lambda Handler", () => {
     const event = {
       triggers: [
         {
-          function: "test-function",
-          topics: ["test-topic"],
+          function: TEST_ERROR_EVENT_SOURCE_FUNCTION_NAME,
+          topics: [TEST_TOPIC_NAME],
         },
       ],
       consumerGroupPrefix: "cg-",
@@ -79,12 +83,18 @@ describe("Lambda Handler", () => {
       startingPosition: "TRIM_HORIZON",
     };
 
-    mockLambdaClientSend.mockRejectedValueOnce(new Error("Test error"));
+    await handler(event, {} as Context, callback);
 
-    await handler(event, null, callback);
-
-    expect(mockLambdaClientSend).toHaveBeenCalledWith(
-      expect.any(CreateEventSourceMappingCommand),
+    expect(lambdaSpy).toHaveBeenCalledTimes(1);
+    expect(lambdaSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: expect.objectContaining({
+          BatchSize: 1000,
+          Enabled: true,
+          FunctionName: TEST_ERROR_EVENT_SOURCE_FUNCTION_NAME,
+          Topics: [TEST_TOPIC_NAME],
+        }),
+      } as CreateEventSourceMappingCommand),
     );
     expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,
