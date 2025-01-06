@@ -1,7 +1,8 @@
-import { Text, Link, Section, Row, Column, Hr, Heading } from "@react-email/components";
-import { Attachment, AttachmentTitle, AttachmentKey } from "shared-types";
-import { createRef, forwardRef, ReactNode } from "react";
+import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/components";
+import { ReactNode } from "react";
+import { Attachment, AttachmentKey, AttachmentTitle } from "shared-types";
 import { styles } from "./email-styles";
+import { ONEMAC_LOGO_BASE64 } from "./onemac-logo-base64";
 
 export const EMAIL_CONFIG = {
   DEV_EMAIL: "mako.stateuser+dev-to@gmail.com",
@@ -44,24 +45,17 @@ const Textarea = ({ children }: { children: React.ReactNode }) => (
   </Text>
 );
 
-const LogoContainer = forwardRef<HTMLSpanElement, { url: string }>(({ url }, ref) => (
-  <header ref={ref} style={styles.logo.container}>
-    <Link href={url} target="_blank" style={styles.logo.link}>
+const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
+  <Section style={styles.logo.container}>
+    <Link href={appEndpointUrl} target="_blank" style={styles.logo.link}>
       <img
         height={40}
         width={112}
         style={{ maxWidth: "112px" }}
-        src={`${url}onemac-logo.png`}
+        src={`data:image/png;base64,${ONEMAC_LOGO_BASE64}`}
         alt="OneMAC Logo"
       />
-      <img alt="" />
     </Link>
-  </header>
-));
-
-const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
-  <Section>
-    <LogoContainer ref={createRef()} url={appEndpointUrl} />
   </Section>
 );
 
