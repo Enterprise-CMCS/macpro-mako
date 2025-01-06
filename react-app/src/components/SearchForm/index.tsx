@@ -65,7 +65,7 @@ export const SearchForm: FC<{
         )}
         {!!searchText && (
           <XIcon
-            className="absolute cursor-pointer top-0 bottom-0 w-6 h-6 my-auto lg:left-[52%] right-0"
+            className="absolute cursor-pointer top-0 bottom-0 w-6 h-6 my-auto lg:left-[55%] xl:left-[65%] 2xl:left-[70%] right-0"
             data-testid="close-icon"
             onClick={() => {
               setSearchText("");
