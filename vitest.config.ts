@@ -1,5 +1,7 @@
 import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
+import { EventEmitter } from "events";
+EventEmitter.defaultMaxListeners = 25;
 
 export default defineConfig({
   test: {
