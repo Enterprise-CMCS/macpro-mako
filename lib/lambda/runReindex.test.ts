@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { Context } from "aws-lambda";
 import { handler } from "./runReindex";
+import { Context } from "aws-lambda";
 import { CLOUDFORMATION_NOTIFICATION_DOMAIN } from "mocks";
 import { SFNClient } from "@aws-sdk/client-sfn";
 import * as cfn from "cfn-response-async";
