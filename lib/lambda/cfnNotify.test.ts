@@ -1,7 +1,6 @@
-import { describe, it, expect, vi, Mock, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { handler } from "./cfnNotify";
 import { send, SUCCESS, FAILED } from "cfn-response-async";
-import { Context } from "aws-lambda";
 
 vi.mock("cfn-response-async", () => ({
   send: vi.fn(),
@@ -11,20 +10,6 @@ vi.mock("cfn-response-async", () => ({
 
 describe("Lambda Handler", () => {
   const callback = vi.fn();
-  const mockContext: Context = {
-    callbackWaitsForEmptyEventLoop: true,
-    functionName: "test",
-    functionVersion: "1",
-    invokedFunctionArn: "arn:test",
-    memoryLimitInMB: "128",
-    awsRequestId: "test-id",
-    logGroupName: "test-group",
-    logStreamName: "test-stream",
-    getRemainingTimeInMillis: () => 1000,
-    done: () => {},
-    fail: () => {},
-    succeed: () => {},
-  };
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -43,7 +28,7 @@ describe("Lambda Handler", () => {
       },
     };
 
-    await handler(event, mockContext, callback);
+    await handler(event, null, callback);
 
     expect(send).toHaveBeenCalledWith(
       event.Context.Execution.Input.cfnEvent,
@@ -68,7 +53,7 @@ describe("Lambda Handler", () => {
       },
     };
 
-    await handler(event, mockContext, callback);
+    await handler(event, null, callback);
 
     expect(send).toHaveBeenCalledWith(
       event.Context.Execution.Input.cfnEvent,
@@ -93,7 +78,7 @@ describe("Lambda Handler", () => {
       },
     };
 
-    await handler(event, mockContext, callback);
+    await handler(event, null, callback);
 
     expect(send).not.toHaveBeenCalled();
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
@@ -113,9 +98,9 @@ describe("Lambda Handler", () => {
     };
 
     // Simulate an error in send function
-    (send as Mock).mockRejectedValue(new Error("Test error"));
+    (send as vi.Mock).mockRejectedValue(new Error("Test error"));
 
-    await handler(event, mockContext, callback);
+    await handler(event, null, callback);
 
     expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,

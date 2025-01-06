@@ -1,6 +1,6 @@
 import { Handler } from "aws-lambda";
-import * as os from "lib/libs/opensearch-lib";
-import { Index } from "lib/packages/shared-types/opensearch";
+import * as os from "libs/opensearch-lib";
+import { Index } from "../packages/shared-types/opensearch";
 
 export const handler: Handler = async (event, __, callback) => {
   const response = {

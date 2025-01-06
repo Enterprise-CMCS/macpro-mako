@@ -50,12 +50,17 @@ describe("Lambda Handler", () => {
     };
 
     mockLambdaClientSend
-      .mockResolvedValueOnce({ UUID: "uuid-1" })
-      .mockResolvedValueOnce({ State: "Enabled" });
-    await handler(event, expect.anything(), callback);
+      .mockResolvedValueOnce({ UUID: "uuid-1" }) // Response for CreateEventSourceMappingCommand
+      .mockResolvedValueOnce({ State: "Enabled" }); // Response for GetEventSourceMappingCommand
 
-    expect(mockLambdaClientSend).toHaveBeenCalledWith(expect.any(CreateEventSourceMappingCommand));
-    expect(mockLambdaClientSend).toHaveBeenCalledWith(expect.any(GetEventSourceMappingCommand));
+    await handler(event, null, callback);
+
+    expect(mockLambdaClientSend).toHaveBeenCalledWith(
+      expect.any(CreateEventSourceMappingCommand),
+    );
+    expect(mockLambdaClientSend).toHaveBeenCalledWith(
+      expect.any(GetEventSourceMappingCommand),
+    );
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
@@ -76,9 +81,11 @@ describe("Lambda Handler", () => {
 
     mockLambdaClientSend.mockRejectedValueOnce(new Error("Test error"));
 
-    await handler(event, expect.anything(), callback);
+    await handler(event, null, callback);
 
-    expect(mockLambdaClientSend).toHaveBeenCalledWith(expect.any(CreateEventSourceMappingCommand));
+    expect(mockLambdaClientSend).toHaveBeenCalledWith(
+      expect.any(CreateEventSourceMappingCommand),
+    );
     expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,
     });

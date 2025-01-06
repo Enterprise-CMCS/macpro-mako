@@ -15,7 +15,6 @@ export const WaiverInitialStateEmail = (
   props: {
     variables:
       | (Events["CapitatedInitial"] & CommonEmailVariables)
-      | (Events["ContractingInitial"] & CommonEmailVariables);
   }
 ) => {
   const variables = { ...props.variables };

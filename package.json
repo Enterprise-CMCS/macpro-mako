@@ -96,6 +96,9 @@
   "trustedDependencies": [
     "@swc/core",
     "aws-sdk",
-    "serverless"
+    "esbuild",
+    "msw",
+    "serverless",
+    "sharp"
   ]
 }

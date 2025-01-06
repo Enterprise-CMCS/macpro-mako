@@ -22,7 +22,7 @@ export const queryCpocs = async () => {
   };
   return await os.search(
     process.env.osDomain,
-    `${process.env.indexNamespace}cpocs`,
+    `${process.env.indexNamespace ?? ""}cpocs`,
     query,
   );
 };

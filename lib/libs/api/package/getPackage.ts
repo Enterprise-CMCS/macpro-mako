@@ -10,9 +10,9 @@ export const getPackage = async (id: string): Promise<ItemResult | undefined> =>
   }
   const packageResult = await getItem(
     process.env.osDomain,
-    `${process.env.indexNamespace}main`,
+    `${process.env.indexNamespace ?? ""}main`,
     id,
   );
 
-  return packageResult as any;
+  return packageResult;
 };

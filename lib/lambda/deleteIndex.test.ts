@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, Mock, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { handler } from "./deleteIndex";
-import * as os from "../libs/opensearch-lib";
+import * as os from "libs/opensearch-lib";
 
 vi.mock("libs/opensearch-lib", () => ({
   deleteIndex: vi.fn(),
@@ -19,9 +19,9 @@ describe("Lambda Handler", () => {
       indexNamespace: "test-namespace-",
     };
 
-    (os.deleteIndex as Mock).mockResolvedValueOnce(null);
+    (os.deleteIndex as vi.Mock).mockResolvedValueOnce(null);
 
-    await handler(event, expect.anything(), callback);
+    await handler(event, null, callback);
 
     const expectedIndices = [
       "test-namespace-main",
@@ -45,7 +45,7 @@ describe("Lambda Handler", () => {
       indexNamespace: "test-namespace-",
     };
 
-    await handler(event, expect.anything(), callback);
+    await handler(event, null, callback);
 
     expect(callback).toHaveBeenCalledWith(expect.any(String), {
       statusCode: 500,
@@ -58,9 +58,9 @@ describe("Lambda Handler", () => {
       indexNamespace: "test-namespace-",
     };
 
-    (os.deleteIndex as Mock).mockRejectedValueOnce(new Error("Test error"));
+    (os.deleteIndex as vi.Mock).mockRejectedValueOnce(new Error("Test error"));
 
-    await handler(event, expect.anything(), callback);
+    await handler(event, null, callback);
 
     expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,
