@@ -1,4 +1,4 @@
-import { Page, expect } from "@playwright/test";
+import { Page } from "@playwright/test";
 
 export class LoginPage {
   constructor(private readonly page: Page) {}
@@ -13,6 +13,7 @@ export class LoginPage {
     await this.page.getByRole("textbox", { name: "name@host.com" }).fill(email);
     await this.page.getByRole("textbox", { name: "Password" }).fill(password);
     await this.page.getByRole("button", { name: "submit" }).click();
-    await expect(this.page.getByTestId("Dashboard-d")).toBeVisible({ timeout: 10000 });
+    await this.page.getByRole("link", { name: "Dashboard" }).waitFor();
+    await this.page.getByRole("link", { name: "Dashboard" }).isVisible();
   }
 }

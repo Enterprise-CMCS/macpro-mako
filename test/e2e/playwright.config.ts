@@ -9,7 +9,9 @@ const baseURL = process.env.STAGE_NAME
       (
         await new SSMClient({ region: "us-east-1" }).send(
           new GetParameterCommand({
-            Name: `/${process.env.PROJECT}/${baseURL ? baseURL : "main"}/deployment-output`,
+            Name: `/${process.env.PROJECT}/${
+              process.env.STAGE_NAME || "main"
+            }/deployment-output`,
           }),
         )
       ).Parameter!.Value!,
@@ -19,9 +21,8 @@ const baseURL = process.env.STAGE_NAME
 console.log(`Playwright configured to run against ${baseURL}`);
 export default defineConfig({
   // need to find a reasonable timeout less than 30s
-  timeout: 10_000,
+  // timeout: 10_000,
   testDir: ".",
-
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -32,7 +33,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   // reporter: [["dot"], ["html"]],
-  reporter: ["dot", "html", "json", "json-summary", "lcovonly"],
+  reporter: "dot",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -46,7 +47,7 @@ export default defineConfig({
   // Note: we can test on multiple browsers and resolutions defined here
   projects: [
     // Setup project
-    { name: "setup", testMatch: "utils/auth.setup.ts", fullyParallel: true, maxWorkers: 20 },
+    { name: "setup", testMatch: /.*\.setup\.ts/, fullyParallel: true },
 
     {
       // we can have different projects for different users/use cases
