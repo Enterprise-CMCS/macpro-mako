@@ -10,7 +10,9 @@ export const handler: Handler = async (event, context, callback) => {
   let errorResponse = null;
   try {
     if (event.RequestType == "Create") {
-      const stepFunctionsClient = new SFNClient({});
+      const stepFunctionsClient = new SFNClient({
+        region: process.env.region,
+      });
       const stateMachineArn = event.ResourceProperties.stateMachine;
 
       const startExecutionCommand = new StartExecutionCommand({

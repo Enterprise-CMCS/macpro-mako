@@ -238,6 +238,40 @@ export const automatedStateSubmitter: TestUserData = {
   Username: "f3a1b6d6-3bc9-498d-ac22-41a6d46982c9",
 };
 
+export const testNewStateSubmitter: TestUserData = {
+  UserAttributes: [
+    {
+      Name: "email",
+      Value: "new-state-submitter@example.com",
+    },
+    {
+      Name: "email_verified",
+      Value: "true",
+    },
+    {
+      Name: "given_name",
+      Value: "Test",
+    },
+    {
+      Name: "family_name",
+      Value: "Submitter",
+    },
+    {
+      Name: "custom:state",
+      Value: "VA",
+    },
+    {
+      Name: "custom:cms-roles",
+      Value: "onemac-micro-statesubmitter",
+    },
+    {
+      Name: "sub",
+      Value: "f8e64f73-d121-4252-b9e3-1f4df902a1c1",
+    },
+  ],
+  Username: "f8e64f73-d121-4252-b9e3-1f4df902a1c1",
+};
+
 export const stateSubmitters: TestUserData[] = [
   makoStateSubmitter,
   stateSubmitter,
@@ -246,4 +280,5 @@ export const stateSubmitters: TestUserData[] = [
   multiStateSubmitter,
   noStateSubmitter,
   automatedStateSubmitter,
+  testNewStateSubmitter,
 ];

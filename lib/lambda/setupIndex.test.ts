@@ -1,67 +1,67 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { handler } from "./setupIndex";
-import * as opensearchLib from "libs/opensearch-lib";
-
-const MOCK_EVENT = {
-  osDomain: "test-domain",
-  indexNamespace: "test-namespace-",
-};
-const MOCK_CALLBACK = vi.fn();
+import { Context } from "aws-lambda";
+import { OPENSEARCH_DOMAIN, OPENSEARCH_INDEX_NAMESPACE, errorCreateIndexHandler } from "mocks";
+import { mockedServiceServer as mockedServer } from "mocks/server";
+import * as os from "libs/opensearch-lib";
 
 describe("handler", () => {
-  const spiedOnUpdateFieldMapping = vi.spyOn(opensearchLib, "updateFieldMapping");
+  const baseEvent = {
+    osDomain: OPENSEARCH_DOMAIN,
+    indexNamespace: OPENSEARCH_INDEX_NAMESPACE,
+  };
+  const createIndexSpy = vi.spyOn(os, "createIndex");
+  const updateMappingSpy = vi.spyOn(os, "updateFieldMapping");
+  const callback = vi.fn();
 
-  beforeEach(() => {
-    vi.resetAllMocks();
-    MOCK_CALLBACK.mockClear();
+  afterEach(() => {
+    vi.clearAllMocks();
   });
 
   it("should create and update indices without errors", async () => {
-    const spiedOnCreateIndex = vi
-      .spyOn(opensearchLib, "createIndex")
-      .mockImplementation(() => Promise.resolve());
+    await handler(baseEvent, {} as Context, callback);
 
-    await handler(MOCK_EVENT, expect.anything(), MOCK_CALLBACK);
-
-    expect(spiedOnCreateIndex).toHaveBeenCalledTimes(7);
+    expect(createIndexSpy).toHaveBeenCalledTimes(7);
 
     const expectedIndices = [
-      "test-namespace-main",
-      "test-namespace-changelog",
-      "test-namespace-types",
-      "test-namespace-subtypes",
-      "test-namespace-cpocs",
-      "test-namespace-insights",
-      "test-namespace-legacyinsights",
+      `${OPENSEARCH_INDEX_NAMESPACE}main`,
+      `${OPENSEARCH_INDEX_NAMESPACE}changelog`,
+      `${OPENSEARCH_INDEX_NAMESPACE}types`,
+      `${OPENSEARCH_INDEX_NAMESPACE}subtypes`,
+      `${OPENSEARCH_INDEX_NAMESPACE}cpocs`,
+      `${OPENSEARCH_INDEX_NAMESPACE}insights`,
+      `${OPENSEARCH_INDEX_NAMESPACE}legacyinsights`,
     ];
 
     for (const index of expectedIndices) {
-      expect(opensearchLib.createIndex).toHaveBeenCalledWith("test-domain", index);
+      expect(createIndexSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, index);
     }
 
-    expect(spiedOnUpdateFieldMapping).toHaveBeenCalledTimes(1);
-    expect(spiedOnUpdateFieldMapping).toHaveBeenCalledWith("test-domain", "test-namespace-main", {
-      approvedEffectiveDate: { type: "date" },
-      changedDate: { type: "date" },
-      finalDispositionDate: { type: "date" },
-      proposedDate: { type: "date" },
-      statusDate: { type: "date" },
-      submissionDate: { type: "date" },
-    });
+    expect(updateMappingSpy).toHaveBeenCalledTimes(1);
+    expect(updateMappingSpy).toHaveBeenCalledWith(
+      OPENSEARCH_DOMAIN,
+      `${OPENSEARCH_INDEX_NAMESPACE}main`,
+      {
+        approvedEffectiveDate: { type: "date" },
+        changedDate: { type: "date" },
+        finalDispositionDate: { type: "date" },
+        proposedDate: { type: "date" },
+        statusDate: { type: "date" },
+        submissionDate: { type: "date" },
+      },
+    );
 
-    expect(MOCK_CALLBACK).toHaveBeenCalledWith(null, { statusCode: 200 });
+    expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
   it("should handle errors and return status 500", async () => {
-    const spiedOnCreateIndex = vi
-      .spyOn(opensearchLib, "createIndex")
-      .mockRejectedValueOnce(new Error("Test error"));
+    mockedServer.use(errorCreateIndexHandler);
 
-    await handler(MOCK_EVENT, expect.anything(), MOCK_CALLBACK);
+    await handler(baseEvent, {} as Context, callback);
 
-    expect(spiedOnCreateIndex).toHaveBeenCalledTimes(1);
-    expect(spiedOnUpdateFieldMapping).not.toHaveBeenCalled();
-    expect(MOCK_CALLBACK).toHaveBeenCalledWith(expect.any(Error), {
+    expect(createIndexSpy).toHaveBeenCalledTimes(1);
+    expect(updateMappingSpy).not.toHaveBeenCalled();
+    expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,
     });
   });

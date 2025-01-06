@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { handler } from "./deleteIndex";
 import { Context } from "aws-lambda";
 import { OPENSEARCH_DOMAIN, OPENSEARCH_INDEX_NAMESPACE, errorDeleteIndexHandler } from "mocks";
@@ -9,7 +9,7 @@ describe("Lambda Handler", () => {
   const deleteIndexSpy = vi.spyOn(os, "deleteIndex");
   const callback = vi.fn();
 
-  beforeEach(() => {
+  afterEach(() => {
     vi.clearAllMocks();
   });
 

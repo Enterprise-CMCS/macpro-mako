@@ -1,5 +1,30 @@
 import { http, HttpResponse } from "msw";
 
+const defaultCreateIndexHandler = http.head(
+  "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/:index",
+  async () => {
+    return new HttpResponse(null, { status: 200 });
+  },
+);
+
+export const errorCreateIndexHandler = http.head(
+  "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/:index",
+  () => new HttpResponse("Internal server error", { status: 500 }),
+);
+
+// updateFieldMapping
+const defaultUpdateFieldMappingHandler = http.put(
+  "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/:index/_mapping",
+  async () => {
+    return new HttpResponse(null, { status: 200 });
+  },
+);
+
+export const errorUpdateFieldMappingHandler = http.put(
+  "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/:index/_mapping",
+  () => new HttpResponse("Internal server error", { status: 500 }),
+);
+
 const defaultDeleteIndexHandler = http.delete(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/:index",
   async () => {
@@ -12,4 +37,8 @@ export const errorDeleteIndexHandler = http.delete(
   () => new HttpResponse("Internal server error", { status: 500 }),
 );
 
-export const indexHandlers = [defaultDeleteIndexHandler];
+export const indexHandlers = [
+  defaultCreateIndexHandler,
+  defaultDeleteIndexHandler,
+  defaultUpdateFieldMappingHandler,
+];

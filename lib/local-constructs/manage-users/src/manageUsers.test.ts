@@ -1,140 +1,111 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { handler } from "./manageUsers"; // Adjust the path as necessary
-import * as cfnResponse from "cfn-response-async";
-import * as cognitolib from "./cognito-lib";
-import { getSecret } from "shared-utils";
-
-vi.mock("cfn-response-async");
-vi.mock("./cognito-lib");
-vi.mock("shared-utils");
+import { Context } from "aws-lambda";
+import {
+  CognitoIdentityProviderClient,
+  AdminCreateUserCommand,
+  AdminSetUserPasswordCommand,
+  AdminUpdateUserAttributesCommand,
+  AdminGetUserCommand,
+} from "@aws-sdk/client-cognito-identity-provider";
+import {
+  CLOUDFORMATION_NOTIFICATION_DOMAIN,
+  TEST_PW_ARN,
+  TEST_SECRET_ERROR_ID,
+  USER_POOL_ID,
+  testNewStateSubmitter,
+} from "mocks";
+import * as cfn from "cfn-response-async";
 
 describe("Cognito User Lambda Handler", () => {
-  const mockSend = vi.fn();
-  const mockGetSecret = vi.fn();
-  const mockCreateUser = vi.fn();
-  const mockSetPassword = vi.fn();
-  const mockUpdateUserAttributes = vi.fn();
+  const cognitoSpy = vi.spyOn(CognitoIdentityProviderClient.prototype, "send");
+  const cfnSpy = vi.spyOn(cfn, "send");
+  const callback = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (cfnResponse.send as unknown as typeof mockSend).mockImplementation(
-      mockSend,
-    );
-    (getSecret as unknown as typeof mockGetSecret).mockImplementation(
-      mockGetSecret,
-    );
-    (
-      cognitolib.createUser as unknown as typeof mockCreateUser
-    ).mockImplementation(mockCreateUser);
-    (
-      cognitolib.setPassword as unknown as typeof mockSetPassword
-    ).mockImplementation(mockSetPassword);
-    (
-      cognitolib.updateUserAttributes as unknown as typeof mockUpdateUserAttributes
-    ).mockImplementation(mockUpdateUserAttributes);
   });
 
   it("should create, set password, and update attributes for each user on Create or Update", async () => {
     const event = {
+      ResponseURL: CLOUDFORMATION_NOTIFICATION_DOMAIN,
       RequestType: "Create",
       ResourceProperties: {
-        userPoolId: "userPoolId",
+        userPoolId: USER_POOL_ID,
         users: [
           {
-            username: "user1",
-            attributes: [
-              {
-                Name: "email",
-                Value: "user1@example.com",
-              },
-            ],
+            username: testNewStateSubmitter.Username,
+            attributes: testNewStateSubmitter.UserAttributes,
           },
         ],
-        passwordSecretArn: "passwordSecretArn", // pragma: allowlist secret
+        passwordSecretArn: TEST_PW_ARN,
       },
     };
 
-    const context = {};
+    await handler(event, {} as Context, callback);
 
-    mockGetSecret.mockResolvedValue("devUserPassword");
-    mockSend.mockResolvedValue(undefined);
-    mockCreateUser.mockResolvedValue(undefined);
-    mockSetPassword.mockResolvedValue(undefined);
-    mockUpdateUserAttributes.mockResolvedValue(undefined);
-
-    await handler(event, context);
-
-    expect(mockGetSecret).toHaveBeenCalledWith("passwordSecretArn");
-    expect(mockCreateUser).toHaveBeenCalledWith({
-      UserPoolId: "userPoolId",
-      Username: "user1",
-      UserAttributes: [
-        {
-          Name: "email",
-          Value: "user1@example.com",
+    expect(cognitoSpy).toHaveBeenCalledTimes(4);
+    expect(cognitoSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: {
+          UserPoolId: USER_POOL_ID,
+          Username: testNewStateSubmitter.Username,
+          UserAttributes: testNewStateSubmitter.UserAttributes,
+          MessageAction: "SUPPRESS",
         },
-      ],
-      MessageAction: "SUPPRESS",
-    });
-    expect(mockSetPassword).toHaveBeenCalledWith({
-      Password: "devUserPassword", // pragma: allowlist secret
-      UserPoolId: "userPoolId",
-      Username: "user1",
-      Permanent: true,
-    });
-    expect(mockUpdateUserAttributes).toHaveBeenCalledWith({
-      Username: "user1",
-      UserPoolId: "userPoolId",
-      UserAttributes: [
-        {
-          Name: "email",
-          Value: "user1@example.com",
-        },
-      ],
-    });
-    expect(mockSend).toHaveBeenCalledWith(
-      event,
-      context,
-      "SUCCESS",
-      {},
-      "static",
+      } as AdminCreateUserCommand),
     );
+    expect(cognitoSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: {
+          Password: "devUserPassword", // pragma: allowlist secret
+          UserPoolId: USER_POOL_ID,
+          Username: testNewStateSubmitter.Username,
+          Permanent: true,
+        },
+      } as AdminSetUserPasswordCommand),
+    );
+    expect(cognitoSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: {
+          UserPoolId: USER_POOL_ID,
+          Username: testNewStateSubmitter.Username,
+        },
+      } as AdminGetUserCommand),
+    );
+    expect(cognitoSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: {
+          Username: testNewStateSubmitter.Username,
+          UserPoolId: USER_POOL_ID,
+          UserAttributes: testNewStateSubmitter.UserAttributes,
+        },
+      } as AdminUpdateUserAttributesCommand),
+    );
+    expect(cfnSpy).toHaveBeenCalledWith(event, {}, cfn.SUCCESS, {}, "static");
+    expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
   it("should handle errors and send FAILED response", async () => {
     const event = {
+      ResponseURL: CLOUDFORMATION_NOTIFICATION_DOMAIN,
       RequestType: "Create",
       ResourceProperties: {
-        userPoolId: "userPoolId",
+        userPoolId: USER_POOL_ID,
         users: [
           {
-            username: "user1",
-            attributes: [
-              {
-                Name: "email",
-                Value: "user1@example.com",
-              },
-            ],
+            username: testNewStateSubmitter.Username,
+            attributes: testNewStateSubmitter.UserAttributes,
           },
         ],
-        passwordSecretArn: "passwordSecretArn", // pragma: allowlist secret
+        passwordSecretArn: TEST_SECRET_ERROR_ID,
       },
     };
 
-    const context = {};
+    await handler(event, {} as Context, callback);
 
-    mockGetSecret.mockRejectedValue(new Error("Failed to get secret"));
-    mockSend.mockResolvedValue(undefined);
-
-    await handler(event, context);
-
-    expect(mockGetSecret).toHaveBeenCalledWith("passwordSecretArn"); // pragma: allowlist secret
-    expect(mockSend).toHaveBeenCalledWith(
-      event,
-      context,
-      "FAILED",
-      {},
-      "static",
-    );
+    expect(cognitoSpy).not.toHaveBeenCalled();
+    expect(cfnSpy).toHaveBeenCalledWith(event, {}, cfn.FAILED, {}, "static");
+    expect(callback).toHaveBeenCalledWith(expect.any(Error), { statusCode: 500 });
   });
 });

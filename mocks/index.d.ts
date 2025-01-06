@@ -62,6 +62,11 @@ export type IdpListUsersRequestBody = {
   Filter: string;
 };
 
+export type AdminGetUserRequestBody = {
+  UserPoolId: string;
+  Username: string;
+};
+
 export type SecretManagerRequestBody = {
   SecretId: string;
 };

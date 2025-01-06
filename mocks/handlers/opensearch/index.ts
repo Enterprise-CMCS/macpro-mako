@@ -17,5 +17,9 @@ export const opensearchHandlers = [
 ];
 
 export { emptyCpocSearchHandler, errorCpocSearchHandler } from "./cpocs";
-export { errorDeleteIndexHandler } from "./indices";
+export {
+  errorCreateIndexHandler,
+  errorUpdateFieldMappingHandler,
+  errorDeleteIndexHandler,
+} from "./indices";
 export { errorSecurityRolesMappingHandler } from "./security";

@@ -12,6 +12,7 @@ import type {
   IdpListUsersRequestBody,
   IdpRefreshRequestBody,
   IdpRequestSessionBody,
+  AdminGetUserRequestBody,
   TestUserData,
 } from "../../index.d";
 import { findUserByUsername } from "../authUtils";
@@ -235,7 +236,7 @@ export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
 
 export const identityProviderServiceHandler = http.post<
   PathParams,
-  IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody
+  IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody | AdminGetUserRequestBody
 >(/https:\/\/cognito-idp.\S*.amazonaws.com\//, async ({ request }) => {
   console.log("identityProviderServiceHandler", {
     request,
@@ -319,6 +320,28 @@ export const identityProviderServiceHandler = http.post<
       return new HttpResponse("User not set", { status: 401 });
     }
 
+    if (target == "AWSCognitoIdentityProviderService.AdminCreateUser") {
+      return new HttpResponse(null, { status: 200 });
+    }
+
+    if (target == "AWSCognitoIdentityProviderService.AdminSetUserPassword") {
+      return new HttpResponse(null, { status: 200 });
+    }
+
+    if (target == "AWSCognitoIdentityProviderService.AdminGetUser") {
+      const { Username } = (await request.json()) as AdminGetUserRequestBody;
+      const username = Username || process.env.MOCK_USER_USERNAME;
+
+      if (username) {
+        const user = findUserByUsername(username);
+        if (user) {
+          return HttpResponse.json(user);
+        }
+        return new HttpResponse("No user found with this sub", { status: 404 });
+      }
+      return new HttpResponse("User not set", { status: 401 });
+    }
+
     if (target == "AWSCognitoIdentityProviderService.ListUsers") {
       const { Filter } = (await request.json()) as IdpListUsersRequestBody;
       const username =
@@ -344,7 +367,7 @@ export const identityProviderServiceHandler = http.post<
       });
     }
 
-    console.error(`x-amz-target ${target} not mocked`);
+    console.log(`x-amz-target ${target} not mocked`);
     return passthrough();
   }
 
