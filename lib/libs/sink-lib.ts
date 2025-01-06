@@ -93,7 +93,7 @@ export function getDomainAndNamespace<T extends BaseIndex>(
 
 export function getDomainAndNamespace(baseIndex?: BaseIndex) {
   const domain = process.env.osDomain;
-  const indexNamespace = process.env.indexNamespace ?? "";
+  const indexNamespace = process.env.indexNamespace;
 
   if (domain === undefined) {
     throw new Error("osDomain is undefined in environment variables");
@@ -117,6 +117,7 @@ export async function bulkUpdateDataWrapper(
 
     await os.bulkUpdateData(domain, index, docs);
   } catch (error) {
+    console.log({ error });
     logError({
       type: ErrorType.BULKUPDATE,
       error,

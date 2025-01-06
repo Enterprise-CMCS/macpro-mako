@@ -20,6 +20,7 @@ export { emptyCpocSearchHandler, errorCpocSearchHandler } from "./cpocs";
 export {
   errorCreateIndexHandler,
   errorUpdateFieldMappingHandler,
+  errorBulkUpdateDataHandler,
   errorDeleteIndexHandler,
 } from "./indices";
 export { errorSecurityRolesMappingHandler } from "./security";
