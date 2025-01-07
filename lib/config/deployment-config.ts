@@ -14,6 +14,7 @@ export type InjectedConfigProperties = {
   domainName: string;
   emailAddressLookupSecretName: string;
   notificationSecretName: string;
+  notificationSecretArn: string;
   googleAnalyticsDisable: boolean;
   googleAnalyticsGTag: string;
   iamPath: string;
@@ -119,6 +120,7 @@ export class DeploymentConfig {
       typeof config.domainName === "string" &&
       typeof config.emailAddressLookupSecretName === "string" && // pragma: allowlist secret
       typeof config.notificationSecretName === "string" && // pragma: allowlist secret
+      typeof config.notificationSecretArn === "string" && // pragma: allowlist secret
       typeof config.googleAnalyticsDisable == "boolean" &&
       typeof config.googleAnalyticsGTag === "string" &&
       typeof config.iamPermissionsBoundary === "string" &&

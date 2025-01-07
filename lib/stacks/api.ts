@@ -26,6 +26,7 @@ interface ApiStackProps extends cdk.NestedStackProps {
   dbInfoSecretName: DeploymentConfigProperties["dbInfoSecretName"];
   legacyS3AccessRoleArn: DeploymentConfigProperties["legacyS3AccessRoleArn"];
   notificationSecretName: DeploymentConfigProperties["notificationSecretName"];
+  notificationSecretArn: DeploymentConfigProperties["notificationSecretArn"];
 }
 
 export class Api extends cdk.NestedStack {
@@ -57,6 +58,7 @@ export class Api extends cdk.NestedStack {
       attachmentsBucket,
       dbInfoSecretName,
       notificationSecretName,
+      notificationSecretArn,
     } = props;
 
     const topicName = `${topicNamespace}aws.onemac.migration.cdc`;
@@ -296,6 +298,7 @@ export class Api extends cdk.NestedStack {
         entry: join(__dirname, "../lambda/getSystemNotifs.ts"),
         environment: {
           notificationSecretName,
+          notificationSecretArn,
         },
       },
     ];

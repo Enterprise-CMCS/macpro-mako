@@ -3,7 +3,7 @@ import { response } from "libs/handler-lib";
 
 export const getSystemNotifs = async () => {
   try {
-    const notifs = await getSecret(process.env.notificationSecretName!);
+    const notifs = await getSecret(process.env.notificationSecretArn!);
 
     return response({
       statusCode: 200,
