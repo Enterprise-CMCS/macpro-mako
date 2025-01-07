@@ -5,8 +5,8 @@ import { useGetSystemNotifs } from "@/api";
 
 const MMDLAlertBanner = () => {
   const { dismissed, clearNotif } = useNotifs();
-  const { data: notifs } = useGetSystemNotifs();
-  const notDismissed = notifs.filter((i) => !dismissed.includes(i.notifId)); //check dismissed
+  const result = useGetSystemNotifs();
+  const notDismissed = result.data?.filter((i) => !dismissed.includes(i.notifId)) ?? []; //check dismissed
   const currentNotifs = notDismissed.filter(
     (i) => i.expDate && new Date(i.expDate).getTime() > new Date().getTime(),
   ); //check expired
