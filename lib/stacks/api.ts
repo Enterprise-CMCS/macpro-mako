@@ -115,6 +115,13 @@ export class Api extends cdk.NestedStack {
                 `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${dbInfoSecretName}-*`,
               ],
             }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
+              resources: [
+                `arn:aws:secretsmanager:${this.region}:${this.account}:secret:*bannerNotifs`,
+              ],
+            }),
           ],
         }),
       },
