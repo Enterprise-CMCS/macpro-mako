@@ -5,14 +5,15 @@ import {
   IDENTITY_POOL_ID,
   SECRET_KEY,
   USER_POOL_CLIENT_ID,
-  COGNITO_IDP_DOMAIN
+  COGNITO_IDP_DOMAIN,
 } from "../../consts";
 import type {
   IdentityRequest,
   IdpListUsersRequestBody,
   IdpRefreshRequestBody,
   IdpRequestSessionBody,
-  TestUserData
+  AdminGetUserRequestBody,
+  TestUserData,
 } from "../../index.d";
 import { findUserByUsername } from "../authUtils";
 import { APIGatewayEventRequestContext } from "shared-types";
@@ -162,6 +163,10 @@ export const signInHandler = http.post(/amazoncognito.com\/oauth2\/token/, async
 export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
   /cognito-identity/,
   async ({ request }) => {
+    console.log("identityServiceHandler", {
+      request,
+      headers: request.headers,
+    });
     const target = request.headers.get("x-amz-target");
     if (target) {
       if (target == "AWSCognitoIdentityService.GetId") {
@@ -231,8 +236,12 @@ export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
 
 export const identityProviderServiceHandler = http.post<
   PathParams,
-  IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody
+  IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody | AdminGetUserRequestBody
 >(/https:\/\/cognito-idp.\S*.amazonaws.com\//, async ({ request }) => {
+  console.log("identityProviderServiceHandler", {
+    request,
+    headers: request.headers,
+  });
   const target = request.headers.get("x-amz-target");
   if (target) {
     if (target == "AWSCognitoIdentityProviderService.InitiateAuth") {
@@ -311,6 +320,28 @@ export const identityProviderServiceHandler = http.post<
       return new HttpResponse("User not set", { status: 401 });
     }
 
+    if (target == "AWSCognitoIdentityProviderService.AdminCreateUser") {
+      return new HttpResponse(null, { status: 200 });
+    }
+
+    if (target == "AWSCognitoIdentityProviderService.AdminSetUserPassword") {
+      return new HttpResponse(null, { status: 200 });
+    }
+
+    if (target == "AWSCognitoIdentityProviderService.AdminGetUser") {
+      const { Username } = (await request.json()) as AdminGetUserRequestBody;
+      const username = Username || process.env.MOCK_USER_USERNAME;
+
+      if (username) {
+        const user = findUserByUsername(username);
+        if (user) {
+          return HttpResponse.json(user);
+        }
+        return new HttpResponse("No user found with this sub", { status: 404 });
+      }
+      return new HttpResponse("User not set", { status: 401 });
+    }
+
     if (target == "AWSCognitoIdentityProviderService.ListUsers") {
       const { Filter } = (await request.json()) as IdpListUsersRequestBody;
       const username =
@@ -336,7 +367,7 @@ export const identityProviderServiceHandler = http.post<
       });
     }
 
-    console.error(`x-amz-target ${target} not mocked`);
+    console.log(`x-amz-target ${target} not mocked`);
     return passthrough();
   }
 

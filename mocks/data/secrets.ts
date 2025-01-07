@@ -4,6 +4,7 @@ export const TEST_SECRET_ID = "test-secret"; // pragma: allowlist secret
 export const TEST_SECRET_TO_DELETE_ID = "test-secret-to-delete"; // pragma: allowlist secret
 export const TEST_SECRET_NO_VALUE_ID = "test-secret-no-value"; // pragma: allowlist secret
 export const TEST_SECRET_ERROR_ID = "Throw Get Secret Error"; // pragma: allowlist secret
+export const TEST_PW_ARN = "test-arn-create-update-user"; // pragma: allowlist secret
 
 const secrets: Record<string, TestSecretData> = {
   [TEST_SECRET_ID]: {
@@ -27,6 +28,14 @@ const secrets: Record<string, TestSecretData> = {
     ARN: `arn://${TEST_SECRET_NO_VALUE_ID}`,
     CreatedDate: new Date("2020-03-15T12:00:00Z").getTime(),
     Name: TEST_SECRET_NO_VALUE_ID,
+    VersionId: "1.0",
+    VersionStages: ["prod"],
+  },
+  [TEST_PW_ARN]: {
+    ARN: `arn://${TEST_PW_ARN}`,
+    CreatedDate: Date.now(),
+    Name: TEST_PW_ARN,
+    SecretString: "devUserPassword", // pragma: allowlist secret
     VersionId: "1.0",
     VersionStages: ["prod"],
   },
