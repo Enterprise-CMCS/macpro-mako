@@ -65,7 +65,6 @@ describe("process emails  Handler", () => {
 
     await handler(mockEvent, {} as Context, callback);
     expect(secSPY).toHaveBeenCalledTimes(2);
-    // console.log(result);
   });
   it("should not be mako therefor not do an event", async () => {
     const callback = vi.fn();
