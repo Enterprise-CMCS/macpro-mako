@@ -343,10 +343,16 @@ export const identityProviderServiceHandler = http.post<
     }
 
     if (target == "AWSCognitoIdentityProviderService.ListUsers") {
-      const { Filter } = (await request.json()) as IdpListUsersRequestBody;
-      const username =
-        Filter.replace("sub = ", "").replaceAll('"', "") || process.env.MOCK_USER_USERNAME;
+      let username: string = "";
+      try {
+        const { Filter } = (await request.json()) as IdpListUsersRequestBody;
 
+        username = Filter.replace("sub = ", "").replaceAll('"', "");
+      } catch {
+        if (process.env.MOCK_USER_USERNAME) {
+          username = process.env.MOCK_USER_USERNAME;
+        }
+      }
       if (username) {
         const user = findUserByUsername(username);
         if (user) {
