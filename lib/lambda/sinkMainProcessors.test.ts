@@ -115,7 +115,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
           statusDate: offsetToUtc(new Date(1732645041526)).toISOString(),
           proposedDate: 1732597200000,
           subject: null,
-          submissionDate: "2024-11-26T00:00:00.000Z",
+          submissionDate: "2024-11-26T18:17:21.526Z",
           submitterEmail: "george@example.com",
           submitterName: "George Harrison",
           initialIntakeNeeded: true,
