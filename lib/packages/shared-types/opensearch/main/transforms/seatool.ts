@@ -74,15 +74,15 @@ const getRaiDate = (data: SeaTool) => {
 const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
   epocDate !== null && epocDate !== undefined ? new Date(epocDate).toISOString() : null;
 
-const compileSrtList = (
-  officers: SeatoolOfficer[] | null | undefined,
-): { name: string; email: string }[] =>
-  officers?.length
-    ? officers.map((o) => ({
-      name: `${o.FIRST_NAME} ${o.LAST_NAME}`,
-      email: o.EMAIL,
-    }))
-    : [];
+  const compileSrtList = (
+    officers: SeatoolOfficer[] | null | undefined,
+  ): { name: string; email: string }[] =>
+    officers?.length
+      ? officers.map((o) => ({
+          name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
+          email: o.EMAIL || "",
+        }))
+      : [];
 
 const getFinalDispositionDate = (status: string, record: SeaTool) => {
   return status && finalDispositionStatuses.includes(status)
