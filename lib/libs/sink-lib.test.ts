@@ -1,25 +1,20 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import * as os from "./opensearch-lib";
 import { bulkUpdateDataWrapper } from "./sink-lib";
 import { OPENSEARCH_DOMAIN, OPENSEARCH_INDEX_NAMESPACE } from "mocks";
+import * as os from "./opensearch-lib";
 
 describe("bulkUpdateDataWrapper", () => {
+  const bulkUpdateDataSpy = vi.spyOn(os, "bulkUpdateData");
   const DOCS = [{ id: "1" }];
 
   afterEach(() => {
     vi.restoreAllMocks();
-    vi.resetModules();
   });
 
   it("calls bulkUpdateData with correct arguments when env vars are defined", async () => {
-    const mockBulkUpdateData = vi.spyOn(os, "bulkUpdateData").mockImplementation(vi.fn());
-
-    vi.stubEnv("osDomain", OPENSEARCH_DOMAIN);
-    vi.stubEnv("indexNamespace", OPENSEARCH_INDEX_NAMESPACE);
-
     await bulkUpdateDataWrapper(DOCS, "main");
 
-    expect(mockBulkUpdateData).toHaveBeenCalledWith(
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(
       OPENSEARCH_DOMAIN,
       `${OPENSEARCH_INDEX_NAMESPACE}main`,
       DOCS,
@@ -27,14 +22,15 @@ describe("bulkUpdateDataWrapper", () => {
   });
 
   it("throws an Error when env vars are missing", async () => {
-    vi.stubEnv("osDomain", undefined);
-    vi.stubEnv("indexNamespace", undefined);
+    delete process.env.osDomain;
+    delete process.env.indexNamespace;
 
     await expect(bulkUpdateDataWrapper(DOCS, "main")).rejects.toThrow();
 
-    vi.stubEnv("osDomain", OPENSEARCH_DOMAIN);
-    vi.stubEnv("indexNamespace", undefined);
+    process.env.osDomain = OPENSEARCH_DOMAIN;
 
     await expect(bulkUpdateDataWrapper(DOCS, "main")).rejects.toThrow();
+
+    process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE;
   });
 });
