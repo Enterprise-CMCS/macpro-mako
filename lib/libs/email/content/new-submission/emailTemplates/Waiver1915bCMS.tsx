@@ -33,7 +33,7 @@ export const Waiver1915bCMSEmail = (props: {
           "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
-          [`${formatActionType(variables.actionType)}} Waiver Number`]: variables.id,
+          [`${formatActionType(variables.actionType)} Waiver Number`]: variables.id,
           "Waiver Authority": variables.authority,
           "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           Summary: variables.additionalInformation,

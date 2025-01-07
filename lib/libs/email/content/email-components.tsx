@@ -163,7 +163,12 @@ const Attachments = ({
                 verticalAlign: "top",
               }}
             >
-              <Text style={{ ...styles.text.title }}>{group.label}:</Text>
+              {group.files.map((file, index) => (
+                <span key={file.filename + index}>
+                  <Text style={{ ...styles.text.title }}>{group.label}:</Text>{" "}
+                  {index < (group.files?.length ?? 0) - 1 && <br />}
+                </span>
+              ))}
             </Column>
             <Column style={{ verticalAlign: "top" }}>
               <Text style={styles.text.description}>
