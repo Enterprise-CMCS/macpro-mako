@@ -21,6 +21,7 @@ describe("DeploymentConfig", () => {
     domainCertificateArn: "domainCertificateArn",
     domainName: "domainName",
     emailAddressLookupSecretName: "emailAddressLookupSecretName", // pragma: allowlist secret
+    notificationSecretName: "notificationSecretName", // pragma: allowlist secret
     googleAnalyticsDisable: "true",
     googleAnalyticsGTag: "googleAnalyticsGTag",
     idmAuthzApiEndpoint: "idmAuthzApiEndpoint",
@@ -81,6 +82,7 @@ describe("DeploymentConfig", () => {
       domainCertificateArn: "domainCertificateArn",
       domainName: "stage-domainName", // Overridden by stage secret
       emailAddressLookupSecretName: "emailAddressLookupSecretName", // pragma: allowlist secret
+      notificationSecretName: "notificationSecretName", // pragma: allowlist secret
       googleAnalyticsDisable: false, // Converted to boolean and overridden by stage secret
       googleAnalyticsGTag: "googleAnalyticsGTag",
       idmAuthzApiEndpoint: "idmAuthzApiEndpoint",
@@ -145,6 +147,7 @@ describe("DeploymentConfig", () => {
       domainCertificateArn: "domainCertificateArn",
       domainName: "domainName",
       emailAddressLookupSecretName: "emailAddressLookupSecretName", // pragma: allowlist secret
+      notificationSecretName: "notificationSecretName", // pragma: allowlist secret
       googleAnalyticsDisable: true,
       googleAnalyticsGTag: "googleAnalyticsGTag",
       idmAuthzApiEndpoint: "idmAuthzApiEndpoint",
