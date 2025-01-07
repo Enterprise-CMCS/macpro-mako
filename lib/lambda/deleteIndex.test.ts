@@ -1,40 +1,38 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { handler } from "./deleteIndex";
+import { Context } from "aws-lambda";
+import { OPENSEARCH_DOMAIN, OPENSEARCH_INDEX_NAMESPACE, errorDeleteIndexHandler } from "mocks";
+import { mockedServiceServer as mockedServer } from "mocks/server";
 import * as os from "libs/opensearch-lib";
 
-vi.mock("libs/opensearch-lib", () => ({
-  deleteIndex: vi.fn(),
-}));
-
 describe("Lambda Handler", () => {
+  const deleteIndexSpy = vi.spyOn(os, "deleteIndex");
   const callback = vi.fn();
 
-  beforeEach(() => {
+  afterEach(() => {
     vi.clearAllMocks();
   });
 
   it("should successfully delete all indices", async () => {
     const event = {
-      osDomain: "test-domain",
-      indexNamespace: "test-namespace-",
+      osDomain: OPENSEARCH_DOMAIN,
+      indexNamespace: OPENSEARCH_INDEX_NAMESPACE,
     };
 
-    (os.deleteIndex as vi.Mock).mockResolvedValueOnce(null);
-
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
     const expectedIndices = [
-      "test-namespace-main",
-      "test-namespace-changelog",
-      "test-namespace-insights",
-      "test-namespace-types",
-      "test-namespace-subtypes",
-      "test-namespace-legacyinsights",
-      "test-namespace-cpocs",
+      `${OPENSEARCH_INDEX_NAMESPACE}main`,
+      `${OPENSEARCH_INDEX_NAMESPACE}changelog`,
+      `${OPENSEARCH_INDEX_NAMESPACE}insights`,
+      `${OPENSEARCH_INDEX_NAMESPACE}types`,
+      `${OPENSEARCH_INDEX_NAMESPACE}subtypes`,
+      `${OPENSEARCH_INDEX_NAMESPACE}legacyinsights`,
+      `${OPENSEARCH_INDEX_NAMESPACE}cpocs`,
     ];
 
     expectedIndices.forEach((index) => {
-      expect(os.deleteIndex).toHaveBeenCalledWith("test-domain", index);
+      expect(deleteIndexSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, index);
     });
 
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
@@ -42,10 +40,10 @@ describe("Lambda Handler", () => {
 
   it("should handle missing osDomain", async () => {
     const event = {
-      indexNamespace: "test-namespace-",
+      indexNamespace: OPENSEARCH_INDEX_NAMESPACE,
     };
 
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
     expect(callback).toHaveBeenCalledWith(expect.any(String), {
       statusCode: 500,
@@ -53,14 +51,14 @@ describe("Lambda Handler", () => {
   });
 
   it("should handle errors during index deletion", async () => {
+    mockedServer.use(errorDeleteIndexHandler);
+
     const event = {
       osDomain: "test-domain",
       indexNamespace: "test-namespace-",
     };
 
-    (os.deleteIndex as vi.Mock).mockRejectedValueOnce(new Error("Test error"));
-
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
     expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,

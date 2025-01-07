@@ -1,30 +1,22 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { send, SUCCESS, FAILED } from "cfn-response-async";
-import { SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { handler } from "./runReindex";
-
-vi.mock("cfn-response-async", () => ({
-  send: vi.fn(),
-  SUCCESS: "SUCCESS",
-  FAILED: "FAILED",
-}));
-
-vi.mock("@aws-sdk/client-sfn", () => ({
-  SFNClient: vi.fn().mockImplementation(() => ({
-    send: vi.fn(),
-  })),
-  StartExecutionCommand: vi.fn(),
-}));
+import { Context } from "aws-lambda";
+import { CLOUDFORMATION_NOTIFICATION_DOMAIN } from "mocks";
+import { SFNClient } from "@aws-sdk/client-sfn";
+import * as cfn from "cfn-response-async";
 
 describe("CloudFormation Custom Resource Handler", () => {
-  const mockContext = {};
   const mockEventBase = {
+    ResponseURL: CLOUDFORMATION_NOTIFICATION_DOMAIN,
     ResourceProperties: {
       stateMachine: "test-state-machine-arn",
     },
   };
+  const stepFunctionSpy = vi.spyOn(SFNClient.prototype, "send");
+  const cfnSpy = vi.spyOn(cfn, "send");
+  const callback = vi.fn();
 
-  beforeEach(() => {
+  afterEach(() => {
     vi.clearAllMocks();
   });
 
@@ -34,33 +26,21 @@ describe("CloudFormation Custom Resource Handler", () => {
       RequestType: "Create",
     };
 
-    const startExecutionResponse = {
-      executionArn: "test-execution-arn",
-    };
+    await handler(mockEvent, {} as Context, callback);
 
-    const sendMock = vi.fn().mockResolvedValue(startExecutionResponse);
-    (SFNClient as any).mockImplementationOnce(() => ({
-      send: sendMock,
-    }));
-
-    await handler(mockEvent, mockContext);
-
-    expect(SFNClient).toHaveBeenCalled();
-    expect(StartExecutionCommand).toHaveBeenCalledWith({
-      stateMachineArn: "test-state-machine-arn",
-      input: JSON.stringify({
-        cfnEvent: mockEvent,
-        cfnContext: mockContext,
+    expect(stepFunctionSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: {
+          input: JSON.stringify({
+            cfnEvent: mockEvent,
+            cfnContext: {},
+          }),
+          stateMachineArn: "test-state-machine-arn",
+        },
       }),
-    });
-    expect(sendMock).toHaveBeenCalled();
-    expect(send).not.toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
     );
+    expect(cfnSpy).not.toHaveBeenCalled();
+    expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
   it("should send a SUCCESS response on Update request type", async () => {
@@ -69,15 +49,11 @@ describe("CloudFormation Custom Resource Handler", () => {
       RequestType: "Update",
     };
 
-    await handler(mockEvent, mockContext);
+    await handler(mockEvent, {} as Context, callback);
 
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(stepFunctionSpy).not.toHaveBeenCalled();
+    expect(cfnSpy).toHaveBeenCalledWith(mockEvent, {}, cfn.SUCCESS, {}, "static");
+    expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
   it("should send a SUCCESS response on Delete request type", async () => {
@@ -86,36 +62,36 @@ describe("CloudFormation Custom Resource Handler", () => {
       RequestType: "Delete",
     };
 
-    await handler(mockEvent, mockContext);
+    await handler(mockEvent, {} as Context, callback);
 
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(stepFunctionSpy).not.toHaveBeenCalled();
+    expect(cfnSpy).toHaveBeenCalledWith(mockEvent, {}, cfn.SUCCESS, {}, "static");
+    expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
   it("should send a FAILED response on error", async () => {
     const mockEvent = {
       ...mockEventBase,
       RequestType: "Create",
+      ResourceProperties: {
+        stateMachine: "error-test-state-machine-arn",
+      },
     };
 
-    const sendMock = vi.fn().mockRejectedValue(new Error("Test error"));
-    (SFNClient as any).mockImplementationOnce(() => ({
-      send: sendMock,
-    }));
+    await handler(mockEvent, {} as Context, callback);
 
-    await handler(mockEvent, mockContext);
-
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      FAILED,
-      {},
-      "static",
+    expect(stepFunctionSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: {
+          input: JSON.stringify({
+            cfnEvent: mockEvent,
+            cfnContext: {},
+          }),
+          stateMachineArn: "error-test-state-machine-arn",
+        },
+      }),
     );
+    expect(cfnSpy).toHaveBeenCalledWith(mockEvent, {}, cfn.FAILED, {}, "static");
+    expect(callback).toHaveBeenCalledWith(expect.any(Error), { statusCode: 500 });
   });
 });
