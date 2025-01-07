@@ -14,7 +14,9 @@ export const handler: Handler = async (event, _, callback) => {
   };
   let errorResponse = null;
   try {
-    const lambdaClient = new LambdaClient({});
+    const lambdaClient = new LambdaClient({
+      region: process.env.region,
+    });
     const uuidsToCheck = [];
     for (const trigger of event.triggers) {
       for (const topic of [...new Set(trigger.topics)]) {
