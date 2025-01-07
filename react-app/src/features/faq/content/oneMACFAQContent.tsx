@@ -1132,7 +1132,7 @@ export const oneMACFAQContent: FAQContent[] = [
               </thead>
               <tbody>
                 <tr>
-                  <td className="border border-gray-300 px-4 py-2">Waiver RAI Letter*</td>
+                  <td className="border border-gray-300 px-4 py-2">Waiver RAI Response Letter*</td>
                   <td className="border border-gray-300 px-4 py-2">
                     Official response to CMS to support RAI inquiries for the Waiver submission
                   </td>
