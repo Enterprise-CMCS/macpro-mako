@@ -119,7 +119,7 @@ export class Api extends cdk.NestedStack {
               effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
               resources: [
-                `arn:aws:secretsmanager:${this.region}:${this.account}:secret:*bannerNotifs`,
+                `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${notificationSecretName}`,
               ],
             }),
           ],
