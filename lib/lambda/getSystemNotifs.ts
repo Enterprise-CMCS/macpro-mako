@@ -7,7 +7,7 @@ export const getSystemNotifs = async () => {
 
     return response({
       statusCode: 200,
-      body: notifs || "[]",
+      body: JSON.parse(notifs) || "[]",
     });
   } catch (error: any) {
     console.error("Error:", error);
