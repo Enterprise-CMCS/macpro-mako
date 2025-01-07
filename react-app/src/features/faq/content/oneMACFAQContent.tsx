@@ -512,8 +512,7 @@ export const oneMACFAQContent: FAQContent[] = [
         ),
       },
       {
-        // TODO: what is anchorText?
-        anchorText: "public-health-emergency",
+        anchorText: "formal-request-medicaid-spa",
         question:
           "How do I submit a Formal Request for Additional Information (RAI) Response for a Medicaid SPA?",
         answerJSX: (
