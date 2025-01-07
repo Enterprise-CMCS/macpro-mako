@@ -309,12 +309,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -351,12 +354,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -393,12 +399,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Budget Documents
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Budget Documents
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -435,12 +444,35 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Public Notice
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -485,12 +517,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Tribal Consultation
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Tribal Consultation
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -527,12 +562,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -912,12 +950,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Other
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Other
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -954,12 +995,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Other
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Other
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -996,12 +1040,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Budget Documents
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Budget Documents
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -1038,12 +1085,35 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Public Notice
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Public Notice
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Public Notice
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Public Notice
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -1088,12 +1158,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Tribal Consultation
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Tribal Consultation
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -1130,12 +1203,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Other
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Other
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -1572,12 +1648,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -1614,12 +1693,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -1656,12 +1738,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Budget Documents
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Budget Documents
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -1698,12 +1783,35 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Public Notice
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -1748,12 +1856,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Tribal Consultation
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Tribal Consultation
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -1790,12 +1901,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -2789,12 +2903,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -2831,12 +2948,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -2873,12 +2993,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Budget Documents
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Budget Documents
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -2915,12 +3038,35 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Public Notice
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -2965,12 +3111,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Tribal Consultation
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Tribal Consultation
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -3007,12 +3156,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -4284,12 +4436,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -4326,12 +4481,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -4368,12 +4526,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Budget Documents
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Budget Documents
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -4410,12 +4571,35 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Public Notice
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -4460,12 +4644,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Tribal Consultation
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Tribal Consultation
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -4502,12 +4689,15 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
