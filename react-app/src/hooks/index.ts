@@ -5,3 +5,4 @@ export * from "./useLabelMappings";
 export * from "./useReadOnlyUser";
 export * from "./useCountdown";
 export * from "./useIdle";
+export * from "./useNotifications";
