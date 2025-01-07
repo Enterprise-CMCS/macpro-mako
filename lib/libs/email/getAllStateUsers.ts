@@ -12,7 +12,9 @@ export type StateUser = {
   formattedEmailAddress: string;
 };
 
-const cognitoClient = new CognitoIdentityProviderClient();
+const cognitoClient = new CognitoIdentityProviderClient({
+  region: "us-east-1",
+});
 
 export const getAllStateUsers = async ({
   userPoolId,
