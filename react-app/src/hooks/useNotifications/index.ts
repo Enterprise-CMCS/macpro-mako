@@ -21,12 +21,12 @@ export const useNotifs: NotifHook = () => {
     const cleared = [...dismissed, id].filter((v, i, a) => a.indexOf(v) === i);
 
     setDismissed(cleared);
-    localStorage.setItem(`notifs.${userQuery?.data?.user?.username}`, cleared.toString());
+    localStorage.setItem(`notifs.${userQuery?.data?.user?.username}`, JSON.stringify(cleared));
   };
 
   const resetNotifs = () => {
     setDismissed([]);
-    localStorage.setItem(`notifs.${userQuery?.data?.user?.username}`, [].toString());
+    localStorage.setItem(`notifs.${userQuery?.data?.user?.username}`, JSON.stringify([]));
   };
 
   return {
