@@ -1,10 +1,8 @@
-import { response } from "libs/handler-lib";
-import { APIGatewayEvent } from "aws-lambda";
-import { getPackage } from "libs/api/package";
-import { produceMessage } from "libs/api/kafka";
+import { getPackage } from "../../libs/api/package";
+import { produceMessage } from "../../libs/api/kafka";
 import { ItemResult } from "shared-types/opensearch/main";
 import { getPackageType } from "./getPackageType";
-import { events } from "lib/packages/shared-types";
+import { APIGatewayEvent, events } from "lib/packages/shared-types";
 import { z } from "zod";
 
 const sendDeleteMessage = async (packageId: string) => {
@@ -23,10 +21,10 @@ const sendDeleteMessage = async (packageId: string) => {
     }),
   );
 
-  return response({
+  return {
     statusCode: 200,
     body: { message: `${packageId} has been deleted.` },
-  });
+  };
 };
 
 const sendUpdateValuesMessage = async ({
@@ -46,17 +44,17 @@ const sendUpdateValuesMessage = async ({
     (field) => !(field in currentPackage._source),
   );
   if (invalidFields.length > 0) {
-    return response({
+    return {
       statusCode: 400,
       body: { message: `Cannot update invalid field(s): ${invalidFields.join(", ")}` },
-    });
+    };
   }
 
   if ("id" in updatedFields) {
-    return response({
+    return {
       statusCode: 400,
       body: { message: "ID is not a valid field to update" },
-    });
+    };
   }
 
   const fieldNames = Object.keys(updatedFields).join(", ");
@@ -77,10 +75,10 @@ const sendUpdateValuesMessage = async ({
     }),
   );
 
-  return response({
+  return {
     statusCode: 200,
     body: { message: `${changeMadeText} in package ${currentPackage._id}.` },
-  });
+  };
 };
 
 const sendUpdateIdMessage = async ({
@@ -103,39 +101,39 @@ const sendUpdateIdMessage = async ({
   } = currentPackage._source;
 
   if (!updatedId) {
-    return response({
+    return {
       statusCode: 400,
       body: { message: "New ID required to update package" },
-    });
+    };
   }
 
   // check if a package with this new ID already exists
   const packageExists = await getPackage(updatedId);
   if (packageExists) {
-    return response({
+    return {
       statusCode: 400,
       body: { message: "This ID already exists" },
-    });
+    };
   }
   // use event of current package to determine how ID should be formatted
   const packageEvent = await getPackageType(currentPackage._id);
   const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
 
   if (!packageSubmissionTypeSchema) {
-    return response({
+    return {
       statusCode: 500,
       body: { message: "Could not validate the ID of this type of package." },
-    });
+    };
   }
 
   const idSchema = packageSubmissionTypeSchema.shape.id;
   const parsedId = idSchema.safeParse(updatedId);
 
   if (!parsedId.success) {
-    return response({
+    return {
       statusCode: 400,
       body: parsedId.error.message,
-    });
+    };
   }
 
   await sendDeleteMessage(currentPackage._id);
@@ -153,10 +151,10 @@ const sendUpdateIdMessage = async ({
     }),
   );
 
-  return response({
+  return {
     statusCode: 200,
     body: { message: `The ID of package ${currentPackage._id} has been updated to ${updatedId}.` },
-  });
+  };
 };
 
 const updatePackageEventBodySchema = z.object({
@@ -169,10 +167,10 @@ const updatePackageEventBodySchema = z.object({
 
 export const handler = async (event: APIGatewayEvent) => {
   if (!event.body) {
-    return response({
+    return {
       statusCode: 400,
       body: { message: "Event body required" },
-    });
+    };
   }
   try {
     const parseEventBody = (body: unknown) => {
@@ -188,19 +186,19 @@ export const handler = async (event: APIGatewayEvent) => {
     } = parseEventBody(event.body);
 
     if (!packageId || !action) {
-      return response({
+      return {
         statusCode: 400,
         body: { message: "Package ID and action are required" },
-      });
+      };
     }
 
     const currentPackage = await getPackage(packageId);
 
     if (!currentPackage) {
-      return response({
+      return {
         statusCode: 404,
         body: { message: "No record found for the given id" },
-      });
+      };
     }
 
     if (action === "delete") {
@@ -218,15 +216,15 @@ export const handler = async (event: APIGatewayEvent) => {
         changeReason,
       });
     }
-    return response({
+    return {
       statusCode: 400,
       body: { message: "Could not update package." },
-    });
+    };
   } catch (err) {
     console.error("Error has occured modifying package:", err);
-    return response({
+    return {
       statusCode: 500,
       body: { message: err.message || "Internal Server Error" },
-    });
+    };
   }
 };

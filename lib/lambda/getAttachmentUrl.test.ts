@@ -70,7 +70,7 @@ describe("Lambda Handler", () => {
 
     expect(response).toHaveBeenCalledWith({
       statusCode: 500,
-      body: { message: "ERROR:  osDomain env variable is required" },
+      body: { message: "ERROR: process.env.osDomain must be defined" },
     });
   });
 

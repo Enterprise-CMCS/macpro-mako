@@ -7,25 +7,23 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 import { getStateFilter } from "../libs/api/auth/user";
 import { getPackage, getPackageChangelog } from "../libs/api/package";
+import { getDomain } from "libs/utils";
 
 // Handler function to get Seatool data
 export const handler = async (event: APIGatewayEvent) => {
-  if (!process.env.osDomain) {
+  try {
+    getDomain();
+  } catch (error) {
     return response({
       statusCode: 500,
-      body: { message: "ERROR:  osDomain env variable is required" },
+      body: { message: `ERROR: ${error?.message || error}` },
     });
   }
+
   if (!event.body) {
     return response({
       statusCode: 400,
       body: { message: "Event body required" },
-    });
-  }
-  if (!process.env.osDomain) {
-    return response({
-      statusCode: 500,
-      body: { message: "Handler is missing process.env.osDomain env var" },
     });
   }
 
@@ -72,12 +70,7 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     // Now we can generate the presigned url
-    const url = await generatePresignedUrl(
-      body.bucket,
-      body.key,
-      body.filename,
-      60,
-    );
+    const url = await generatePresignedUrl(body.bucket, body.key, body.filename, 60);
 
     return response<unknown>({
       statusCode: 200,

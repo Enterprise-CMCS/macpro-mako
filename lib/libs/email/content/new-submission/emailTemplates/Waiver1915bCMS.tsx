@@ -14,7 +14,7 @@ export const Waiver1915bCMSEmail = (props: {
     | (Events["CapitatedInitial"] & CommonEmailVariables)
     | (Events["ContractingInitial"] & CommonEmailVariables);
 }) => {
-  const variables = props.variables;
+  const variables = { ...props.variables };
   const previewText = `${variables.authority} ${variables.actionType} Submitted`;
   const heading = `The OneMAC Submission Portal received a ${variables.authority} ${variables.actionType} Submission:`;
   return (

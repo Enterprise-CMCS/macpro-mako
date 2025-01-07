@@ -5,8 +5,8 @@ export type ErrorResponse = {
   body: {
     error?: string;
     message?: string;
-  }
-}
+  };
+};
 
 export const handleOpensearchError = (error: unknown): ErrorResponse => {
   console.error({ error });
@@ -16,7 +16,7 @@ export const handleOpensearchError = (error: unknown): ErrorResponse => {
       body: {
         error: error.body || error.meta?.body || error,
         message: error.message,
-      }
+      },
     };
   }
 
@@ -24,4 +24,4 @@ export const handleOpensearchError = (error: unknown): ErrorResponse => {
     statusCode: 500,
     body: { message: "Internal server error" },
   };
-}
+};

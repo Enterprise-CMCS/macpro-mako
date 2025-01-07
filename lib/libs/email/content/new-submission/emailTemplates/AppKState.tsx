@@ -24,7 +24,6 @@ export const AppKStateEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <Divider />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,

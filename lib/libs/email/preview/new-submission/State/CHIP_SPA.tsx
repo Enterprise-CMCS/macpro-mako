@@ -6,10 +6,12 @@ const ChipSpaStateEmailPreview = () => {
     <ChipSpaStateEmail
       variables={{
         ...emailTemplateValue,
-        id: "CO-24-1234",
-        authority: "CHIP SPA",
+        id: "CO-CHIP-22-0123",
+        authority: "CHIP State Plan",
+        actionType: "New",
+        territory: "CO",
+        title: "Example CHIP SPA Submission",
         event: "new-chip-submission",
-        actionType: "Amend",
         attachments: {
           currentStatePlan: attachments.currentStatePlan,
           amendedLanguage: attachments.amendedLanguage,

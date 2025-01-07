@@ -12,11 +12,9 @@ import { styles } from "../../email-styles";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const Waiver1915bStateEmail = (props: {
-  variables:
-    | (Events["CapitatedInitial"] & CommonEmailVariables)
-    | (Events["ContractingInitial"] & CommonEmailVariables);
+  variables: Events["CapitatedInitial"] & CommonEmailVariables;
 }) => {
-  const variables = props.variables;
+  const variables = { ...props.variables };
   const previewText = `${variables.authority} ${variables.actionType} Submitted`;
   const heading = `This response confirms the submission of your ${variables.authority} ${variables.actionType} to CMS for review:`;
   return (

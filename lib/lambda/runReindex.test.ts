@@ -52,7 +52,7 @@ describe("CloudFormation Custom Resource Handler", () => {
     await handler(mockEvent, {} as Context, callback);
 
     expect(stepFunctionSpy).not.toHaveBeenCalled();
-    expect(cfnSpy).toHaveBeenCalledWith(mockEvent, {}, cfn.SUCCESS, {}, "static");
+    expect(cfnSpy).toHaveBeenCalledWith(mockEvent, {}, cfn.SUCCESS);
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
@@ -65,7 +65,7 @@ describe("CloudFormation Custom Resource Handler", () => {
     await handler(mockEvent, {} as Context, callback);
 
     expect(stepFunctionSpy).not.toHaveBeenCalled();
-    expect(cfnSpy).toHaveBeenCalledWith(mockEvent, {}, cfn.SUCCESS, {}, "static");
+    expect(cfnSpy).toHaveBeenCalledWith(mockEvent, {}, cfn.SUCCESS);
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
@@ -91,7 +91,7 @@ describe("CloudFormation Custom Resource Handler", () => {
         },
       }),
     );
-    expect(cfnSpy).toHaveBeenCalledWith(mockEvent, {}, cfn.FAILED, {}, "static");
+    expect(cfnSpy).toHaveBeenCalledWith(mockEvent, {}, cfn.FAILED);
     expect(callback).toHaveBeenCalledWith(expect.any(Error), { statusCode: 500 });
   });
 });

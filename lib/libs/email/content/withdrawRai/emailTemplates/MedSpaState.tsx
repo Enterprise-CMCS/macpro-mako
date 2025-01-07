@@ -3,7 +3,7 @@ import { Container, Html } from "@react-email/components";
 import { WithdrawRAI, PackageDetails, FollowUpNotice } from "../../email-components";
 
 export const MedSpaStateEmail = (props: {
-  variables: Events["RespondToRai"] & CommonEmailVariables;
+  variables: Events["WithdrawRai"] & CommonEmailVariables;
   relatedEvent: any;
 }) => {
   const { variables, relatedEvent } = { ...props };

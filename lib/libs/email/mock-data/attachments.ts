@@ -6,27 +6,21 @@ export const currentStatePlan = {
       title: "State Plan Document 2024",
       bucket: "mako-outbox-attachments-635052997545",
       key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
     {
       filename: "state-plan-summary.pdf",
       title: "State Plan Summary 2024",
       bucket: "mako-outbox-attachments-635052997545",
       key: "a1b2c3d4-9f8b-4d2e-84ff-5f6e7a8b9d0f.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
     {
       filename: "state-plan-financials.pdf",
       title: "State Plan Financial Overview",
       bucket: "mako-outbox-attachments-635052997545",
       key: "f1e2d3c4-9a0b-45f8-a7b6-9876abc54321.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
 };
@@ -39,27 +33,21 @@ export const tribalEngagement = {
       title: "Summary of Tribal Engagement",
       bucket: "mako-outbox-attachments-635052997545",
       key: "5b02dcea-4723-4dba-b2c1-15bde348f1f2.docx",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
     {
       filename: "tribal-engagement-outreach.pdf",
       title: "Tribal Engagement Outreach Report",
       bucket: "mako-outbox-attachments-635052997545",
       key: "1b9f8d7c-4731-4e0b-a1d2-f87e6b5a1e3c.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
     {
       filename: "tribal-engagement-meeting-notes.pdf",
       title: "Tribal Engagement Meeting Notes",
       bucket: "mako-outbox-attachments-635052997545",
       key: "4a5b6c7d-8e9f-4d5b-a1c2-3d4f6b7c8d9e.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
 };
@@ -72,27 +60,21 @@ export const existingStatePlanPages = {
       title: "Revised Page 23",
       bucket: "mako-outbox-attachments-635052997545",
       key: "2c46eaa6-abb2-4987-9b24-16a4f8c2825a.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
     {
       filename: "page-24-update.pdf",
       title: "Revised Page 24",
       bucket: "mako-outbox-attachments-635052997545",
       key: "b2c3d4e5-f1g2-4h3i-9j5k-6l7m8n9o0p1q.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
     {
       filename: "page-25-update.pdf",
       title: "Revised Page 25",
       bucket: "mako-outbox-attachments-635052997545",
       key: "c4d5e6f7-g8h9-4j0k-9l5m-2n3o4p5q6r7s.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
 };
@@ -105,27 +87,21 @@ export const publicNotice = {
       title: "Public Notice - October 2024",
       bucket: "mako-outbox-attachments-635052997545",
       key: "7dd0e2bb-c5d3-47d4-bf23-dae48229f1b2.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
     {
       filename: "public-notice-sept-2024.pdf",
       title: "Public Notice - September 2024",
       bucket: "mako-outbox-attachments-635052997545",
       key: "a5b6c7d8-e9f0-4a1b-b2c3-d4e5f6g7h8i9.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
     {
       filename: "public-notice-nov-2024.pdf",
       title: "Public Notice - November 2024",
       bucket: "mako-outbox-attachments-635052997545",
       key: "c8d7e6f5-g4h3-4j2k-9l5m-1n3o4p5q6r7s.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
 };
@@ -138,36 +114,28 @@ export const spaPages = {
       title: "SPA Documentation - Page 1",
       bucket: "mako-outbox-attachments-635052997545",
       key: "3aa8c5ec-a6de-4415-bc5a-eef752d68af2.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
     {
       filename: "spa-page2.pdf",
       title: "SPA Documentation - Page 2",
       bucket: "mako-outbox-attachments-635052997545",
       key: "4aa8c5ec-a6de-4415-bc5a-eef752d68af2.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
     {
       filename: "spa-summary.pdf",
       title: "SPA Summary Document",
       bucket: "mako-outbox-attachments-635052997545",
       key: "5bb8c5fc-a6de-4415-bc5a-abc345d78ef2.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
     {
       filename: "spa-changes-2024.pdf",
       title: "SPA Changes Overview 2024",
       bucket: "mako-outbox-attachments-635052997545",
       key: "6cc8d5ed-b6fe-4415-bd5a-bcd234e98af2.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
 };
@@ -179,9 +147,7 @@ export const cmsForm179 = {
       title: "CMS Form 179 Submission Document",
       bucket: "mako-outbox-attachments-635052997545",
       key: "12fb2e5d-7d01-441c-a5b1-bbcc72a8adf1.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
   label: "CMS Form 179",
@@ -194,9 +160,7 @@ export const appk = {
       title: "Appendix K Waiver Amendment",
       bucket: "mako-outbox-attachments-635052997545",
       key: "8b56f7ab-e1ad-4782-87f4-d43ab9d2f5d7.docx",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
   label: "1915(c) Appendix K Amendment Waiver Template",
@@ -209,18 +173,14 @@ export const amendedLanguage = {
       title: "Amendment Language - Section 1",
       bucket: "mako-outbox-attachments-635052997545",
       key: "1df7c8ef-a28d-41b8-9327-21767c16a11a.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
     {
       filename: "amended-language-2.pdf",
       title: "Amendment Language - Section 2",
       bucket: "mako-outbox-attachments-635052997545",
       key: "23df1f2c-9927-4d82-a58f-31fd4729b2e5.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
   label: "SPA Pages",
@@ -233,9 +193,7 @@ export const coverLetter = {
       title: "State Submission Cover Letter - George Harrison",
       bucket: "mako-outbox-attachments-635052997545",
       key: "8c7e8d9f-c332-499c-bb21-d14fb9f8e20b.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
   label: "Cover Letter",
@@ -248,9 +206,7 @@ export const budgetDocuments = {
       title: "FY2024 Medicaid Budget Outline",
       bucket: "mako-outbox-attachments-635052997545",
       key: "5e9dc2f3-71f4-4145-95b6-f6371cdea3ef.xlsx",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
   label: "Budget Documents",
@@ -262,9 +218,7 @@ export const tribalConsultation = {
       title: "Tribal Consultation Summary - September 2024",
       bucket: "mako-outbox-attachments-635052997545",
       key: "7a71e2b3-1d87-429c-99c8-f872ffdbb3f3.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
   label: "Tribal Consultation",
@@ -277,9 +231,7 @@ export const other = {
       title: "Additional Supporting Documents",
       bucket: "mako-outbox-attachments-635052997545",
       key: "c22aa4dc-e1b6-41d5-bf64-e45b6f74f5af.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
   label: "Other",
@@ -292,9 +244,7 @@ export const sfq = {
       title: "Responses to Standard Funding Questions",
       bucket: "mako-outbox-attachments-635052997545",
       key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.docx",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
   label: "Standard Funding Questions (SFQs)",
@@ -307,27 +257,21 @@ export const waiverExtensionRequest = {
       title: "Temporary Extention Document for submission",
       bucket: "mako-outbox-attachments-635052997545",
       key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
     {
       filename: "Second Extention Document for submission.pdf",
       title: "TempSecondorary Extention Document for submission",
       bucket: "mako-outbox-attachments-635052997545",
       key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
     {
       filename: "Third Extention Document for submission.pdf",
       title: "Third Temporary Extention Document for submission",
       bucket: "mako-outbox-attachments-635052997545",
       key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
   label: "Waiver Extension Request",
@@ -340,9 +284,7 @@ export const withdrawRequest = {
       title: "Withdrawal Letter",
       bucket: "mako-outbox-attachments-635052997545",
       key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
   label: "Official Withdrawal Letter",
@@ -355,10 +297,46 @@ export const supportingDocumentation = {
       title: "Supporting Documentation",
       bucket: "mako-outbox-attachments-635052997545",
       key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
-      get uploadDate() {
-        return Date.now();
-      },
+      uploadDate: 1728495786285,
     },
   ],
   label: "Supporting Documentation",
+};
+
+export const bCapWaiverApplication = {
+  files: [
+    {
+      filename: "capitated-waiver-application.pdf",
+      title: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
+      bucket: "mako-outbox-attachments-635052997545",
+      key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
+      uploadDate: 1728495786285,
+    },
+  ],
+  label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
+};
+export const b4WaiverApplication = {
+  files: [
+    {
+      filename: "contracting-waiver-application.pdf",
+      title: "1915(b) Selective Contracting (Streamlined) Waiver Application Pre-print",
+      bucket: "mako-outbox-attachments-635052997545",
+      key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
+      uploadDate: 1728495786285,
+    },
+  ],
+  label: "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
+};
+
+export const bCapCostSpreadsheets = {
+  files: [
+    {
+      filename: "capitated-waiver-cost-effectiveness-spreadsheet.pdf",
+      title: "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
+      bucket: "mako-outbox-attachments-635052997545",
+      key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
+      uploadDate: 1728495786285,
+    },
+  ],
+  label: "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
 };

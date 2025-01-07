@@ -1,8 +1,9 @@
-import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/components";
-import { ReactNode } from "react";
-import { Attachment, AttachmentKey, AttachmentTitle } from "shared-types";
+import { Text, Link, Section, Row, Column, Hr, Heading } from "@react-email/components";
+import { Attachment, AttachmentTitle, AttachmentKey } from "shared-types";
+import { createRef, forwardRef, ReactNode } from "react";
 import { styles } from "./email-styles";
-import { ONEMAC_LOGO_BASE64 } from "./onemac-logo-base64";
+import { Document as CpocUser } from "shared-types/opensearch/cpocs";
+import { Document } from "shared-types/opensearch/main";
 
 export const EMAIL_CONFIG = {
   DEV_EMAIL: "mako.stateuser+dev-to@gmail.com",
@@ -45,17 +46,24 @@ const Textarea = ({ children }: { children: React.ReactNode }) => (
   </Text>
 );
 
-const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
-  <Section style={styles.logo.container}>
-    <Link href={appEndpointUrl} target="_blank" style={styles.logo.link}>
+const LogoContainer = forwardRef<HTMLSpanElement, { url: string }>(({ url }, ref) => (
+  <header ref={ref} style={styles.logo.container}>
+    <Link href={url} target="_blank" style={styles.logo.link}>
       <img
         height={40}
         width={112}
         style={{ maxWidth: "112px" }}
-        src={`data:image/png;base64,${ONEMAC_LOGO_BASE64}`}
+        src={`${url}onemac-logo.png`}
         alt="OneMAC Logo"
       />
+      <img alt="" />
     </Link>
+  </header>
+));
+
+const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
+  <Section>
+    <LogoContainer ref={createRef()} url={appEndpointUrl} />
   </Section>
 );
 
@@ -224,12 +232,14 @@ const FollowUpNotice = ({
   includeStateLead?: boolean;
 }) => (
   <>
-    <Divider />
     {isChip ? (
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
           If you have any questions, please contact{" "}
-          <Link href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`} style={{ textDecoration: "underline" }}>
+          <Link
+            href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`}
+            style={{ color: "#067df7", textDecoration: "underline" }}
+          >
             {EMAIL_CONFIG.CHIP_EMAIL}
           </Link>
           {includeStateLead ? " or your state lead." : "."}
@@ -239,7 +249,10 @@ const FollowUpNotice = ({
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
           If you have any questions or did not expect this email, please contact{" "}
-          <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`} style={{ textDecoration: "underline" }}>
+          <Link
+            href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`}
+            style={{ color: "#067df7", textDecoration: "underline" }}
+          >
             {EMAIL_CONFIG.SPA_EMAIL}
           </Link>
           {includeStateLead ? " or your state lead." : "."}
@@ -282,24 +295,54 @@ const WithdrawRAI = ({
   </Section>
 );
 
-const getCpocEmail = (item: any): string[] => {
+const getCpocEmail = (item: CpocUser | undefined): string[] => {
   try {
-    const { leadAnalystName, leadAnalystEmail } = item._source;
-    return [`${leadAnalystName} <${leadAnalystEmail}>`];
+    if (!item) return [];
+    const source = (item as any)?._source || item;
+    const { firstName, lastName, email } = source;
+
+    if (!firstName || !lastName || !email) {
+      console.warn("Missing required CPOC user fields:", { firstName, lastName, email });
+      return [];
+    }
+
+    return [`${firstName} ${lastName} <${email}>`];
   } catch (e) {
-    console.error("Error getting CPCO email", e);
+    console.error("Error getting CPOC email", JSON.stringify(e, null, 2));
     return [];
   }
 };
 
-const getSrtEmails = (item: any): string[] => {
+const getSrtEmails = (item: Document | undefined): string[] => {
   try {
-    const reviewTeam = item._source.reviewTeam;
-    if (!reviewTeam) return [];
+    if (!item) {
+      console.warn("No item provided to getSrtEmails");
+      return [];
+    }
 
-    return reviewTeam.map((reviewer: any) => `${reviewer.name} <${reviewer.email}>`);
+    const source = (item as any)?._source || item;
+    const reviewTeam = source?.reviewTeam;
+
+    if (!reviewTeam || !Array.isArray(reviewTeam)) {
+      console.warn("No valid review team found:", {
+        hasSource: Boolean(source),
+        reviewTeamType: typeof reviewTeam,
+        isArray: Array.isArray(reviewTeam),
+      });
+      return [];
+    }
+
+    return reviewTeam
+      .filter((reviewer: any) => {
+        if (!reviewer?.name || !reviewer?.email) {
+          console.warn("Invalid reviewer entry:", reviewer);
+          return false;
+        }
+        return true;
+      })
+      .map((reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`);
   } catch (e) {
-    console.error("Error getting SRT emails", e);
+    console.error("Error getting SRT emails:", e);
     return [];
   }
 };

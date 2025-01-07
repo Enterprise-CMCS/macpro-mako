@@ -3,7 +3,6 @@ import { send, SUCCESS, FAILED } from "cfn-response-async";
 import { SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
 
 export const handler: Handler = async (event, context, callback) => {
-  console.log("request:", JSON.stringify(event, undefined, 2));
   const response = {
     statusCode: 200,
   };
@@ -24,21 +23,17 @@ export const handler: Handler = async (event, context, callback) => {
       });
 
       const execution = await stepFunctionsClient.send(startExecutionCommand);
-      console.log(`State machine execution started: ${execution.executionArn}`);
-      console.log(
-        "The state machine is now in charge of this resource, and will notify of success or failure upon completion.",
-      );
+      console.log(`State machine execution started with ARN: ${execution.executionArn}`);
     } else if (event.RequestType == "Update") {
-      await send(event, context, SUCCESS, {}, "static");
+      await send(event, context, SUCCESS);
     } else if (event.RequestType == "Delete") {
-      // need to delete all triggers here  to do
-      await send(event, context, SUCCESS, {}, "static");
+      await send(event, context, SUCCESS);
     }
   } catch (error) {
-    console.log(error);
+    console.error("Reindexing failed with error:", error);
     response.statusCode = 500;
     errorResponse = error;
-    await send(event, context, FAILED, {}, "static");
+    await send(event, context, FAILED);
   } finally {
     callback(errorResponse, response);
   }
