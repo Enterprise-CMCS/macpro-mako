@@ -19,8 +19,11 @@ const defaultMainDocumentHandler = http.get(
     }
     const itemId = id && Array.isArray(id) ? id[0] : id;
     const item = items[itemId] || null;
-
-    return item ? HttpResponse.json(item) : new HttpResponse(null, { status: 404 });
+    return item
+      ? HttpResponse.json(item)
+      : HttpResponse.json({
+          found: false,
+        });
   },
 );
 
