@@ -1,14 +1,14 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user";
-import { itemExists } from "lib/libs/api/package";
-import { events } from "lib/packages/shared-types";
+import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
+import { itemExists } from "libs/api/package";
+import { events } from "shared-types";
 
 export const uploadSubsequentDocuments = async (event: APIGatewayEvent) => {
   if (event.body === null) return;
 
-  const parsedResult = events[
-    "upload-subsequent-documents"
-  ].baseSchema.safeParse(JSON.parse(event.body));
+  const parsedResult = events["upload-subsequent-documents"].baseSchema.safeParse(
+    JSON.parse(event.body),
+  );
 
   if (parsedResult.success === false) {
     throw parsedResult.error;
@@ -19,10 +19,7 @@ export const uploadSubsequentDocuments = async (event: APIGatewayEvent) => {
   }
 
   const authDetails = getAuthDetails(event);
-  const userAttr = await lookupUserAttributes(
-    authDetails.userId,
-    authDetails.poolId,
-  );
+  const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
 
   const submitterEmail = userAttr.email;
   const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
