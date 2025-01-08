@@ -8,11 +8,13 @@ import {
   updateValuesAdminChangeSchema,
   updateIdAdminChangeSchema,
 } from "./update/adminChangeSchemas";
+import { submitNOSOAdminSchema } from "./submit/submitNOSO";
 
 const removeDoubleQuotesSurroundingString = (str: string) => str.replace(/^"|"$/g, "");
 const adminRecordSchema = deleteAdminChangeSchema
   .or(updateValuesAdminChangeSchema)
-  .or(updateIdAdminChangeSchema);
+  .or(updateIdAdminChangeSchema)
+  .or(submitNOSOAdminSchema);
 
 type OneMacRecord = {
   id: string;
