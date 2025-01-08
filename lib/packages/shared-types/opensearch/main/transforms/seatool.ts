@@ -24,8 +24,8 @@ function getLeadAnalyst(eventData: SeaTool) {
     );
 
     if (leadAnalyst) {
-      leadAnalystOfficerId = leadAnalyst.OFFICER_ID || null;
-      leadAnalystName = `${leadAnalyst.FIRST_NAME || ""} ${leadAnalyst.LAST_NAME || ""}`;
+      leadAnalystOfficerId = leadAnalyst.OFFICER_ID;
+      leadAnalystName = `${leadAnalyst.FIRST_NAME} ${leadAnalyst.LAST_NAME}`;
       leadAnalystEmail = leadAnalyst.EMAIL || null;
     }
   }

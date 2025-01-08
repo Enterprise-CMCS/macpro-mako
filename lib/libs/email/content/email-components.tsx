@@ -2,8 +2,8 @@ import { Text, Link, Section, Row, Column, Hr, Heading } from "@react-email/comp
 import { Attachment, AttachmentTitle, AttachmentKey } from "shared-types";
 import { createRef, forwardRef, ReactNode } from "react";
 import { styles } from "./email-styles";
-import { Document as CpocUser } from "shared-types/opensearch/cpocs";
-import { Document } from "shared-types/opensearch/main";
+import { ItemResult } from "shared-types/opensearch/main";
+import { ItemResult as CpocItemResult } from "lib/packages/shared-types/opensearch/cpocs";
 
 export const EMAIL_CONFIG = {
   DEV_EMAIL: "mako.stateuser+dev-to@gmail.com",
@@ -295,10 +295,10 @@ const WithdrawRAI = ({
   </Section>
 );
 
-const getCpocEmail = (item: CpocUser | undefined): string[] => {
+const getCpocEmail = (item: CpocItemResult | undefined): string[] => {
   try {
     if (!item) return [];
-    const source = (item as any)?._source || item;
+    const source = item._source;
     const { firstName, lastName, email } = source;
 
     if (!firstName || !lastName || !email) {
@@ -308,20 +308,19 @@ const getCpocEmail = (item: CpocUser | undefined): string[] => {
 
     return [`${firstName} ${lastName} <${email}>`];
   } catch (e) {
-    console.error("Error getting CPOC email", JSON.stringify(e, null, 2));
-    return [];
+    throw new Error("Error getting CPOC email", e);
   }
 };
 
-const getSrtEmails = (item: Document | undefined): string[] => {
+const getSrtEmails = (item: ItemResult | undefined): string[] => {
   try {
     if (!item) {
       console.warn("No item provided to getSrtEmails");
       return [];
     }
 
-    const source = (item as any)?._source || item;
-    const reviewTeam = source?.reviewTeam;
+    const source = item._source;
+    const reviewTeam = source.reviewTeam;
 
     if (!reviewTeam || !Array.isArray(reviewTeam)) {
       console.warn("No valid review team found:", {
@@ -332,15 +331,7 @@ const getSrtEmails = (item: Document | undefined): string[] => {
       return [];
     }
 
-    return reviewTeam
-      .filter((reviewer: any) => {
-        if (!reviewer?.name || !reviewer?.email) {
-          console.warn("Invalid reviewer entry:", reviewer);
-          return false;
-        }
-        return true;
-      })
-      .map((reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`);
+    return reviewTeam.map((reviewer) => `${reviewer.name} <${reviewer.email}>`);
   } catch (e) {
     console.error("Error getting SRT emails:", e);
     return [];

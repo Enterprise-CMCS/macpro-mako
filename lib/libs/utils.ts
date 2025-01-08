@@ -1,4 +1,4 @@
-import { BaseIndex } from "lib/packages/shared-types/opensearch";
+import { BaseIndex, Index } from "lib/packages/shared-types/opensearch";
 
 /**
  * Returns the `osDomain`
@@ -22,7 +22,7 @@ export function getDomain(): string {
  * the environment the application is running on `isDev`
  * @returns the value of `indexNamespace` or empty string if not in development
  */
-export function getNamespace<T extends BaseIndex>(baseIndex?: T): `${string}${T}`;
+export function getNamespace<T extends BaseIndex>(baseIndex?: T): Index;
 export function getNamespace(baseIndex?: BaseIndex) {
   const indexNamespace = process.env.indexNamespace ?? "";
 
@@ -42,9 +42,9 @@ export function getNamespace(baseIndex?: BaseIndex) {
  */
 export function getDomainAndNamespace<T extends BaseIndex>(
   baseIndex: T,
-): { domain: string; index: `${string}${T}` };
+): { domain: string; index: Index };
 
-export function getDomainAndNamespace(baseIndex?: BaseIndex) {
+export function getDomainAndNamespace(baseIndex: BaseIndex) {
   const domain = getDomain();
   const index = getNamespace(baseIndex);
 

@@ -9,6 +9,9 @@ import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/ema
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
 import pLimit from "p-limit";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
+import { getDomain, getNamespace } from "lib/libs/utils";
+import { Index } from "lib/packages/shared-types/opensearch";
+import { opensearch } from "shared-types";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -21,7 +24,8 @@ interface ProcessEmailConfig {
   emailAddressLookupSecretName: string;
   applicationEndpointUrl: string;
   osDomain: string;
-  indexNamespace: string;
+  mainIndex: Index;
+  cpocIndex: Index;
   region: string;
   DLQ_URL: string;
   userPoolId: string;
@@ -49,23 +53,26 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
   const emailAddressLookupSecretName = process.env.emailAddressLookupSecretName!;
   const applicationEndpointUrl = process.env.applicationEndpointUrl!;
-  const osDomain = process.env.osDomain!;
-  const indexNamespace = process.env.indexNamespace!;
+  const osDomain = getDomain();
+  const mainIndex = getNamespace("main");
+  const cpocIndex = getNamespace("cpocs");
   const region = process.env.region!;
   const DLQ_URL = process.env.DLQ_URL!;
   const userPoolId = process.env.userPoolId!;
   const configurationSetName = process.env.configurationSetName!;
-  const isDev = process.env.isDev!;
+  const isDev = process.env.isDev === "true";
+
   const config: ProcessEmailConfig = {
     emailAddressLookupSecretName,
     applicationEndpointUrl,
     osDomain: `https://${osDomain}`,
-    indexNamespace,
+    mainIndex,
+    cpocIndex,
     region,
     DLQ_URL,
     userPoolId,
     configurationSetName,
-    isDev: isDev === "true",
+    isDev,
   };
 
   try {
@@ -165,9 +172,14 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
 
-  const item = await os.getItem(config.osDomain, `${config.indexNamespace}main`, id);
+  const item = await os.getItem(config.osDomain, `${config.mainIndex}`, id);
+  const cpocItem = (await os.getItem(
+    config.osDomain,
+    `${config.cpocIndex}`,
+    id,
+  )) as unknown as opensearch.cpocs.ItemResult;
 
-  const cpocEmail = getCpocEmail(item);
+  const cpocEmail = getCpocEmail(cpocItem);
   const srtEmails = getSrtEmails(item);
   const emails: EmailAddresses = JSON.parse(sec);
 

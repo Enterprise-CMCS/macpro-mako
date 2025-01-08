@@ -1,6 +1,5 @@
 import { Authority, opensearch } from "shared-types";
 import { OneMacUser } from "ui/src/api";
-
 export const testStateCognitoUser: OneMacUser = {
   isCms: false,
   user: {
@@ -81,6 +80,7 @@ export const testItemResult: opensearch.main.ItemResult = {
     submitterEmail: "george@example.com",
     submitterName: "George Harrison",
     origin: "OneMAC",
+    event: "new-medicaid-submission",
     changedDate: "2024-03-01T19:05:09.773Z",
     statusDate: "2024-03-01T00:00:00.000Z",
     subTypeName: null,
@@ -136,7 +136,6 @@ export const testItemResult: opensearch.main.ItemResult = {
             },
           ],
           raiWithdrawEnabled: false,
-          actionType: "new-submission",
           //@ts-expect-error
           timestamp: "1709319909826",
           id: "MD-12-3456",

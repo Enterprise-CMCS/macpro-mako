@@ -59,6 +59,7 @@ export const baseSchema = z.object({
   }),
   authority: z.string().default("Medicaid SPA"),
   proposedEffectiveDate: z.number(),
+  actionType: z.string().default("New"),
   id: z
     .string()
     .min(1, { message: "Required" })
