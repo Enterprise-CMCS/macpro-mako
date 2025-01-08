@@ -134,7 +134,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   }
 }
 
-function validateEmailTemplate(template: any) {
+export function validateEmailTemplate(template: any) {
   const requiredFields = ["to", "subject", "body"];
   const missingFields = requiredFields.filter((field) => !template[field]);
 
