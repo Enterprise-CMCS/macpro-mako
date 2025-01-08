@@ -13,7 +13,7 @@ export type StateUser = {
 };
 
 const cognitoClient = new CognitoIdentityProviderClient({
-  region: "us-east-1",
+  region: process.env.region,
 });
 
 export const getAllStateUsers = async ({

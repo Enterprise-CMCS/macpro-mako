@@ -80,7 +80,7 @@ beforeEach(() => {
   process.env.idmClientIssuer = USER_POOL_CLIENT_DOMAIN;
   process.env.osDomain = OPENSEARCH_DOMAIN;
   process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE;
-  process.env.emailAddressLookupSecretName = "mock-email-secret";
+  process.env.emailAddressLookupSecretName = "mock-email-secret"; // pragma: allowlist secret
   process.env.DLQ_URL = "https://sqs.us-east-1.amazonaws.com/123/test";
   process.env.configurationSetName = "SES";
 });
