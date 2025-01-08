@@ -19,8 +19,7 @@ import {
   withdrawPackage,
   withdrawRai,
 } from "mocks/data/submit/base";
-import { Producer } from "kafkajs";
-import { attachments } from "mocks/data/submit/attachments";
+
 import { makoStateSubmitter } from "mocks";
 vi.mock("kafkajs", () => {
   const producer = {
