@@ -8,19 +8,20 @@ export const handler: Handler = async (event, __, callback) => {
   };
   let errorResponse = null;
   try {
-    if (!event.osDomain) throw "process.env.osDomain cannot be undefined";
+    const { osDomain, indexNamespace = "" } = event;
+    if (!osDomain) throw "osDomain cannot be undefined";
 
     const indices: Index[] = [
-      `${event.indexNamespace}main`,
-      `${event.indexNamespace}changelog`,
-      `${event.indexNamespace}insights`,
-      `${event.indexNamespace}types`,
-      `${event.indexNamespace}subtypes`,
-      `${event.indexNamespace}legacyinsights`,
-      `${event.indexNamespace}cpocs`,
+      `${indexNamespace}main`,
+      `${indexNamespace}changelog`,
+      `${indexNamespace}insights`,
+      `${indexNamespace}types`,
+      `${indexNamespace}subtypes`,
+      `${indexNamespace}legacyinsights`,
+      `${indexNamespace}cpocs`,
     ];
     for (const index of indices) {
-      await os.deleteIndex(event.osDomain, index);
+      await os.deleteIndex(osDomain, index);
     }
   } catch (error: any) {
     response.statusCode = 500;

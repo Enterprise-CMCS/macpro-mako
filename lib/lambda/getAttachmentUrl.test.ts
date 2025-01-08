@@ -50,7 +50,7 @@ describe("Lambda Handler", () => {
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(500);
     expect(res.body).toEqual(
-      JSON.stringify({ message: "ERROR: osDomain env variable is required" }),
+      JSON.stringify({ message: "ERROR: process.env.osDomain must be defined" }),
     );
 
     process.env.osDomain = OPENSEARCH_DOMAIN;

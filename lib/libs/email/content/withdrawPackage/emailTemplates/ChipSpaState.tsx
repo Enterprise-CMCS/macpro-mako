@@ -1,4 +1,4 @@
-import { CommonEmailVariables, Events } from "lib/packages/shared-types";
+import { CommonEmailVariables, Events } from "shared-types";
 import { BasicFooter, FollowUpNotice, Divider, PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
