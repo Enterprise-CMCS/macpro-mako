@@ -22,6 +22,8 @@ import { UserRoles } from "shared-types";
  */
 const useGetLinks = () => {
   const { isLoading, data: userObj } = useGetUser();
+  console.log(userObj.user, "WHAT IS THE USER");
+  console.log(userObj.user["custom:cms-roles"], "USER ROLES?");
 
   const links =
     isLoading || isFaqPage
