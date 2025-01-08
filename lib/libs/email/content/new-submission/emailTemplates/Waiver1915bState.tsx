@@ -14,7 +14,11 @@ import { BaseEmailTemplate } from "../../email-templates";
 export const Waiver1915bStateEmail = (props: {
   variables:
     | (Events["CapitatedInitial"] & CommonEmailVariables)
-    | (Events["ContractingInitial"] & CommonEmailVariables);
+    | (Events["CapitatedRenewal"] & CommonEmailVariables)
+    | (Events["CapitatedAmendment"] & CommonEmailVariables)
+    | (Events["ContractingInitial"] & CommonEmailVariables)
+    | (Events["ContractingRenewal"] & CommonEmailVariables)
+    | (Events["ContractingAmendment"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
   const previewText = `${variables.authority} ${formatActionType(variables.actionType)} Submitted`;
