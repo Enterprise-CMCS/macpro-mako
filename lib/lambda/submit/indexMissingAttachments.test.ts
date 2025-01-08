@@ -2,8 +2,8 @@ import { submit } from "./index";
 import { APIGatewayEvent } from "node_modules/shared-types";
 import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
 import { bma } from "mocks/data/submit/baseMissingAttachments";
+import { getRequestContext } from "mocks";
 
-import { makoStateSubmitter } from "mocks";
 vi.mock("kafkajs", () => {
   const producer = {
     connect: vi.fn(),
@@ -34,13 +34,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
@@ -51,13 +45,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
@@ -67,13 +55,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
@@ -83,13 +65,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
@@ -99,13 +75,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
@@ -115,13 +85,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
@@ -131,13 +95,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
@@ -147,13 +105,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
@@ -163,13 +115,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
@@ -179,13 +125,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
@@ -195,13 +135,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
@@ -211,13 +145,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
@@ -227,13 +155,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
@@ -243,13 +165,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
@@ -259,13 +175,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
@@ -275,13 +185,7 @@ describe("submit Lambda function missing objects in event", () => {
 
     const event = {
       body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
+      requestContext: getRequestContext(),
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
     expect(result.statusCode).toEqual(500);
