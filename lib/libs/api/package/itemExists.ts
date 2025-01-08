@@ -1,6 +1,5 @@
 import * as os from "libs/opensearch-lib";
-import { getDomain, getNamespace } from "libs/utils";
-import { BaseIndex } from "lib/packages/shared-types/opensearch";
+import { getDomain } from "libs/utils";
 
 export async function itemExists(params: {
   id: string;
@@ -8,9 +7,7 @@ export async function itemExists(params: {
   indexNamespace?: string;
 }): Promise<boolean> {
   const domain = params.osDomain || getDomain();
-  const index: `${string}${BaseIndex}` = params.indexNamespace
-    ? `${params.indexNamespace}main`
-    : getNamespace("main");
+  const index = `${params.indexNamespace ?? ""}main` as `${string}main`;
 
   const packageResult = await os.getItem(domain, index, params.id);
   return !!packageResult?._source;
