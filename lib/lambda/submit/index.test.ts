@@ -277,7 +277,7 @@ describe("submit Lambda function", () => {
     expect(result.body).toEqual('{"message":"success"}');
   });
   it("should start to create an withdraw rai event", async () => {
-    const base = JSON.stringify(withdrawPackage);
+    const base = JSON.stringify(withdrawRai);
 
     const event = {
       body: base,
