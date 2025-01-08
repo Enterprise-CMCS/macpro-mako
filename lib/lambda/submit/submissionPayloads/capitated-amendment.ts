@@ -10,8 +10,6 @@ export const capitatedAmendment = async (event: APIGatewayEvent) => {
 
   const parsedResult = events["capitated-amendment"].baseSchema.safeParse(JSON.parse(event.body));
   if (!parsedResult.success) {
-    console.log("hi");
-    console.log(parsedResult.error);
     throw parsedResult.error;
   }
 
