@@ -7,6 +7,7 @@ import {
   transformDeleteSchema,
   transformedUpdateIdSchema,
 } from "./update/adminChangeSchemas";
+import { transformSubmitValuesSchema } from "./submit/submitNOSO";
 import { getPackageChangelog } from "lib/libs/api/package";
 
 // One notable difference between this handler and sinkMain's...
@@ -67,7 +68,9 @@ const processAndIndex = async ({
       // query all changelog entries for this ID and create copies of all entries with new ID
       if (record.isAdminChange) {
         const schema = transformDeleteSchema(offset).or(
-          transformUpdateValuesSchema(offset).or(transformedUpdateIdSchema),
+          transformUpdateValuesSchema(offset)
+            .or(transformedUpdateIdSchema)
+            .or(transformSubmitValuesSchema),
         );
 
         const result = schema.safeParse(record);
