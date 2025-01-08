@@ -4,7 +4,6 @@ import { events } from "shared-types/events";
 import { isAuthorized, getAuthDetails, lookupUserAttributes } from "../../../libs/api/auth/user";
 import { type APIGatewayEvent } from "aws-lambda";
 import { itemExists } from "libs/api/package";
-import { CompositePrincipal } from "node_modules/aws-cdk-lib/aws-iam";
 
 export const capitatedAmendment = async (event: APIGatewayEvent) => {
   if (!event.body) return;
