@@ -4,7 +4,7 @@ import { Client, Connection, errors as OpensearchErrors } from "@opensearch-proj
 import * as aws4 from "aws4";
 import { aws4Interceptor } from "aws4-axios";
 import axios from "axios";
-import { ItemResult, Document as OSDocument } from "lib/packages/shared-types/opensearch/main";
+import { ItemResult, Document as OSDocument } from "shared-types/opensearch/main";
 import { opensearch } from "shared-types";
 import { getDomainAndNamespace } from "./sink-lib";
 
@@ -185,9 +185,12 @@ export async function getItem(
     const response = await client.get({ id, index });
     return decodeUtf8(response).body;
   } catch (error) {
-    if (error instanceof OpensearchErrors.ResponseError && error.statusCode === 404 || error.meta?.statusCode === 404) {
+    if (
+      (error instanceof OpensearchErrors.ResponseError && error.statusCode === 404) ||
+      error.meta?.statusCode === 404
+    ) {
       console.log("Error (404) retrieving in OpenSearch:", error);
-      return undefined
+      return undefined;
     }
     throw error;
   }

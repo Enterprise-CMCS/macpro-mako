@@ -2,7 +2,7 @@ import pino from "pino";
 const logger = pino();
 
 import * as os from "./opensearch-lib";
-import { BaseIndex } from "lib/packages/shared-types/opensearch";
+import { BaseIndex } from "shared-types/opensearch";
 import { getDomainAndNamespace } from "./utils";
 
 export function getTopic(topicPartition: string) {

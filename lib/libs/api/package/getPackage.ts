@@ -1,4 +1,4 @@
-import { ItemResult } from "lib/packages/shared-types/opensearch/main";
+import { ItemResult } from "shared-types/opensearch/main";
 import * as os from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "../../utils";
 
