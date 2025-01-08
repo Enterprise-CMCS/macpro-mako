@@ -1,22 +1,6 @@
 import { http, HttpResponse } from "msw";
+import { CLOUDFORMATION_NOTIFICATION_DOMAIN } from "../../consts";
 import exports from "../../data/cloudFormationsExports";
-
-export const errorCloudFormationHandler = http.post(
-  `https://cloudformation.us-east-1.amazonaws.com/`,
-  async () =>
-    HttpResponse.xml(
-      `
-<Error>
-  <Code>ServiceUnavailable</Code>
-  <Message>Service is unable to handle request.</Message>
-</Error>
-    `,
-      {
-        status: 503,
-        statusText: "ServiceUnavailable",
-      },
-    )
-);
 
 const defaultCloudFormationHandler = http.post(
   `https://cloudformation.us-east-1.amazonaws.com/`,
@@ -51,4 +35,32 @@ const defaultCloudFormationHandler = http.post(
   },
 );
 
-export const cloudFormationHandlers = [defaultCloudFormationHandler];
+export const errorCloudFormationHandler = http.post(
+  `https://cloudformation.us-east-1.amazonaws.com/`,
+  async () =>
+    HttpResponse.xml(
+      `
+<Error>
+  <Code>ServiceUnavailable</Code>
+  <Message>Service is unable to handle request.</Message>
+</Error>
+    `,
+      {
+        status: 503,
+        statusText: "ServiceUnavailable",
+      },
+    ),
+);
+
+const defaultCloudFormationResponseHandler = http.put(
+  CLOUDFORMATION_NOTIFICATION_DOMAIN,
+  async ({ request }) => {
+    console.log("notify", { request });
+    return new HttpResponse(null, { status: 200 });
+  },
+);
+
+export const cloudFormationHandlers = [
+  defaultCloudFormationHandler,
+  defaultCloudFormationResponseHandler,
+];
