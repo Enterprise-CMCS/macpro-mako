@@ -24,24 +24,12 @@ export const postOnceHandler = (endpoint: string, status: number = 200, body?: B
   );
 
 // Handlers that mock calls to the API
-export const defaultApiHandlers = [
-  ...apiHandlers,
-  ...countiesHandlers
-]
+export const defaultApiHandlers = [...apiHandlers, ...countiesHandlers];
 
 // Handlers that mock calls to 3rd party services from the API
-export const defaultServiceHandlers = [
-  ...awsHandlers,
-  ...opensearchHandlers,
-  ...countiesHandlers
-]
+export const defaultServiceHandlers = [...awsHandlers, ...opensearchHandlers, ...countiesHandlers];
 
-export default [
-  ...apiHandlers,
-  ...awsHandlers,
-  ...opensearchHandlers,
-  ...countiesHandlers,
-];
+export default [...apiHandlers, ...awsHandlers, ...opensearchHandlers, ...countiesHandlers];
 
 export {
   convertUserAttributes,

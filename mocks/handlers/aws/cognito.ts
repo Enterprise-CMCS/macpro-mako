@@ -17,6 +17,7 @@ import type {
 } from "../../index.d";
 import { findUserByUsername } from "../authUtils";
 import { APIGatewayEventRequestContext } from "shared-types";
+import { userResponses } from "../../data/users";
 
 const getUsernameFromAccessToken = (accessToken?: string): string | undefined => {
   if (accessToken) {
@@ -343,33 +344,34 @@ export const identityProviderServiceHandler = http.post<
     }
 
     if (target == "AWSCognitoIdentityProviderService.ListUsers") {
-      let username: string = "";
-      try {
-        const { Filter } = (await request.json()) as IdpListUsersRequestBody;
+      const { Filter } = (await request.json()) as IdpListUsersRequestBody;
 
-        username = Filter.replace("sub = ", "").replaceAll('"', "");
-      } catch {
-        if (process.env.MOCK_USER_USERNAME) {
-          username = process.env.MOCK_USER_USERNAME;
+      if (Filter && Filter.startsWith("sub = ")) {
+        const username = Filter.replace("sub = ", "").replaceAll('"', "");
+        if (username) {
+          const user = findUserByUsername(username);
+          if (user) {
+            return HttpResponse.json({
+              Users: [
+                {
+                  Attributes: user.UserAttributes,
+                  Username: user.Username,
+                  UserStatus: "CONFIRMED",
+                  Enabled: true,
+                },
+              ],
+            });
+          }
         }
       }
-      if (username) {
-        const user = findUserByUsername(username);
-        if (user) {
-          return HttpResponse.json({
-            Users: [
-              {
-                Attributes: user.UserAttributes,
-                Username: user.Username,
-                UserStatus: "CONFIRMED",
-                Enabled: true,
-              },
-            ],
-          });
-        }
-      }
+
       return HttpResponse.json({
-        Users: [],
+        Users: userResponses.map((user) => ({
+          Attributes: user.UserAttributes,
+          Username: user.Username,
+          UserStatus: "CONFIRMED",
+          Enabled: true,
+        })),
       });
     }
 

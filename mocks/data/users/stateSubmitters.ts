@@ -54,7 +54,7 @@ export const stateSubmitter: TestUserData = {
     },
     {
       Name: "custom:state",
-      Value: "VA,OH,SC,CO,GA,MD",
+      Value: "VA,OH,SC,CO,CA,MD",
     },
     {
       Name: "custom:cms-roles",
