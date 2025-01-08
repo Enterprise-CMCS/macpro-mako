@@ -12,10 +12,6 @@ export type StateUser = {
   formattedEmailAddress: string;
 };
 
-const cognitoClient = new CognitoIdentityProviderClient({
-  region: process.env.region,
-});
-
 export const getAllStateUsers = async ({
   userPoolId,
   state,
@@ -29,6 +25,9 @@ export const getAllStateUsers = async ({
       Limit: 60,
     };
     const command = new ListUsersCommand(params);
+    const cognitoClient = new CognitoIdentityProviderClient({
+      region: process.env.region,
+    });
     const response: ListUsersCommandOutput = await cognitoClient.send(command);
 
     if (!response.Users || response.Users.length === 0) {
