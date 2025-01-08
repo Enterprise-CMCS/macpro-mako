@@ -2,7 +2,6 @@ import { describe, it, expect, vi } from "vitest";
 import { Context } from "aws-lambda";
 import { SESClient } from "@aws-sdk/client-ses";
 import { sendEmail, validateEmailTemplate, handler } from "./processEmails";
-import { getRequestContext } from "mocks";
 import { KafkaRecord, KafkaEvent } from "node_modules/shared-types";
 
 describe("process emails  Handler", () => {
@@ -27,7 +26,7 @@ describe("process emails  Handler", () => {
         Body: { Text: { Data: "This is a mocked email body.", Charset: "UTF-8" } },
       },
     };
-    await expect(sendEmail(params, "tdfdest")).rejects.toThrowError();
+    await expect(sendEmail(params, "bad-test")).rejects.toThrowError();
   });
   it("should validate the email template and throw an error", async () => {
     const template = {
@@ -64,7 +63,7 @@ describe("process emails  Handler", () => {
       bootstrapServers: "",
     };
 
-    await handler(mockEvent, getRequestContext(), callback);
+    await handler(mockEvent, {} as Context, callback);
     expect(secSPY).toHaveBeenCalledTimes(2);
   });
   it("should not be mako therefor not do an event", async () => {
