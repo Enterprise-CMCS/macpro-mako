@@ -4,11 +4,12 @@ import type { TestItemResult } from "../index.d";
 export const EXISTING_ITEM_PENDING_ID = "MD-0002.R00.00";
 export const EXISTING_ITEM_APPROVED_NEW_ID = "MD-0000.R00.00";
 export const VALID_ITEM_TEMPORARY_EXTENSION_ID = "MD-0000.R00.TE00";
+export const VALID_ITEM_EXTENSION_ID = "VA-1111.R11.00";
 export const EXISTING_ITEM_APPROVED_AMEND_ID = "MD-0000.R00.01";
 export const EXISTING_ITEM_APPROVED_RENEW_ID = "MD-0000.R01.00";
 export const EXISTING_ITEM_ID = "MD-00-0000";
 export const NOT_FOUND_ITEM_ID = "MD-0004.R00.00";
-export const NOT_EXISTING_ITEM_ID = "MD-11-0000"
+export const NOT_EXISTING_ITEM_ID = "MD-11-0000";
 export const TEST_ITEM_ID = "MD-0005.R01.00";
 export const EXISTING_ITEM_TEMPORARY_EXTENSION_ID = "MD-0005.R01.TE00";
 export const HI_TEST_ITEM_ID = "HI-0000.R00.00";
@@ -17,7 +18,7 @@ export const CAPITATED_AMEND_ITEM_ID = "MD-006.R00.01";
 export const CONTRACTING_INITIAL_ITEM_ID = "MD-007.R00.00";
 export const CONTRACTING_AMEND_ITEM_ID = "MD-007.R00.01";
 export const MISSING_CHANGELOG_ITEM_ID = "MD-008.R00.00";
-export const WITHDRAWN_CHANGELOG_ITEM_ID = "MD-009.R00.01";
+export const WITHDRAWN_CHANGELOG_ITEM_ID = "VA-11-2020";
 export const INITIAL_RELEASE_APPK_ITEM_ID = "MD-010.R00.01";
 export const SUBMISSION_ERROR_ITEM_ID = "Throw Submission Error";
 export const GET_ERROR_ITEM_ID = "Throw Get Item Error";
@@ -32,11 +33,44 @@ const items: Record<string, TestItemResult> = {
       actionType: "New",
     },
   },
+  ["VA"]: {
+    _id: EXISTING_ITEM_ID,
+    found: true,
+    _source: {
+      leadAnalystEmail: "michael.chen@cms.hhs.gov",
+      leadAnalystName: "Michael Chen",
+      reviewTeam: [
+        {
+          email: "john.doe@medicaid.gov",
+          name: "John Doe",
+        },
+        {
+          email: "emily.rodriguez@medicaid.gov",
+          name: "Emily Rodriguez",
+        },
+      ],
+      id: EXISTING_ITEM_ID,
+      seatoolStatus: SEATOOL_STATUS.APPROVED,
+      actionType: "New",
+    },
+  },
   [EXISTING_ITEM_APPROVED_NEW_ID]: {
     _id: EXISTING_ITEM_APPROVED_NEW_ID,
     found: true,
     _source: {
       id: EXISTING_ITEM_APPROVED_NEW_ID,
+      seatoolStatus: SEATOOL_STATUS.APPROVED,
+      actionType: "New",
+      authority: "1915(b)",
+      origin: "OneMAC",
+      state: "MD",
+    },
+  },
+  [VALID_ITEM_EXTENSION_ID]: {
+    _id: VALID_ITEM_EXTENSION_ID,
+    found: true,
+    _source: {
+      id: VALID_ITEM_EXTENSION_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
       actionType: "New",
       authority: "1915(b)",

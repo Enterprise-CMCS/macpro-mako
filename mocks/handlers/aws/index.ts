@@ -4,7 +4,7 @@ import { credentialHandlers } from "./credentials";
 import { lambdaHandlers } from "./lambda";
 import { secretsManagerHandlers } from "./secretsManager";
 import { stepFunctionHandlers } from "./stepFunctions";
-
+import { emailHandlers } from "./email";
 export const awsHandlers = [
   ...cloudFormationHandlers,
   ...cognitoHandlers,
@@ -12,6 +12,7 @@ export const awsHandlers = [
   ...lambdaHandlers,
   ...secretsManagerHandlers,
   ...stepFunctionHandlers,
+  ...emailHandlers,
 ];
 
 export { errorCloudFormationHandler } from "./cloudFormation";
