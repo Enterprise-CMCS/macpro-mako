@@ -20,6 +20,7 @@ export const CONTRACTING_AMEND_ITEM_ID = "MD-007.R00.01";
 export const MISSING_CHANGELOG_ITEM_ID = "MD-008.R00.00";
 export const WITHDRAWN_CHANGELOG_ITEM_ID = "VA-11-2020";
 export const INITIAL_RELEASE_APPK_ITEM_ID = "MD-010.R00.01";
+export const EXISTING_ITEM_APPROVED_APPK_ITEM_ID = "MD-012.R00.01";
 export const SUBMISSION_ERROR_ITEM_ID = "Throw Submission Error";
 export const GET_ERROR_ITEM_ID = "Throw Get Item Error";
 
@@ -368,6 +369,38 @@ const items: Record<string, TestItemResult> = {
           _source: {
             changedDate: "2024-01-01T00:00:00Z",
             title: "Initial release",
+            cmsStatus: "Pending",
+            stateStatus: "Under Review",
+          },
+        },
+      ],
+    },
+  },
+  [EXISTING_ITEM_APPROVED_APPK_ITEM_ID]: {
+    _id: EXISTING_ITEM_APPROVED_APPK_ITEM_ID,
+    found: true,
+    _source: {
+      id: EXISTING_ITEM_APPROVED_APPK_ITEM_ID,
+      seatoolStatus: SEATOOL_STATUS.APPROVED,
+      actionType: "New",
+      authority: "1915(c)",
+      state: "MD",
+      origin: "OneMAC",
+      appkChildren: [
+        {
+          _source: {
+            changedDate: "2024-01-01T00:00:00Z",
+            title: "Initial release",
+            cmsStatus: "Pending",
+            stateStatus: "Under Review",
+          },
+        },
+        {
+          _source: {
+            changedDate: "2025-01-08T00:00:00Z",
+            title: "Approved release",
+            cmsStatus: "Approved",
+            stateStatus: "Approved",
           },
         },
       ],
