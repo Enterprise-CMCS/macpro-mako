@@ -20,7 +20,7 @@ export const emailHandlers = [
   http.post<PathParams>("https://sqs.us-east-1.amazonaws.com/", async () => {
     return new HttpResponse(null, { status: 200 });
   }),
-  http.post<PathParams>("https://email.us-east-1.amazonaws.com/", async () => {
+  http.post<PathParams>(`https://email.us-east-1.amazonaws.com/`, async () => {
     return HttpResponse.xml(`
       <SendEmailResponse xmlns="http://ses.amazonaws.com/doc/2010-12-01/">
         <SendEmailResult>
