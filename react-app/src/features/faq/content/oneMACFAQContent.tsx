@@ -600,7 +600,7 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <div className="w-full space-y-3">
             <p>When necessary, states will receive an RAI via email from CMS.</p>
-            <ul className="list-disc ml-8">
+            <ul className="ml-8 list-disc space-y-2">
               <li>The state will respond to the RAI through OneMAC.</li>
               <li>
                 A Request for Additional Information (RAI) stops the 90-day clock, is a formal
@@ -612,7 +612,7 @@ export const oneMACFAQContent: FAQContent[] = [
               </li>
             </ul>
             <p>To respond to a CHIP SPA RAI, select the SPA Tab view from the Package Dashboard.</p>
-            <ul className="list-disc ml-8">
+            <ul className="ml-8 list-disc space-y-2">
               <li>
                 Select the link to the SPA ID. Packages which are in need of an RAI response from
                 the state will have a Status of <b>RAI Issued.</b>
