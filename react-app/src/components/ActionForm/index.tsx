@@ -175,6 +175,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       });
 
       navigate(formOrigins);
+      queryClient.invalidateQueries({ queryKey: ["record"] });
     } catch (error) {
       console.error(error);
       banner({
