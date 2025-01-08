@@ -174,6 +174,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         pathnameToDisplayOn: formOrigins.pathname,
       });
 
+      // Prevent stale data from displaying on formOrigins page
       await queryClient.invalidateQueries({ queryKey: ["record"] });
       navigate(formOrigins);
     } catch (error) {
