@@ -158,6 +158,7 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
     record.event,
     record.authority.toLowerCase(),
   );
+  console.log(`we are here`);
 
   if (!templates) {
     console.log(
@@ -172,13 +173,19 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
     state: territory,
   });
 
+  console.log(`we are here`);
+
   const sec = await getSecret(config.emailAddressLookupSecretName);
+
+  console.log(`we are here 2`);
 
   const item = await os.getItem(config.osDomain, getNamespace("main"), id);
   if (!item?.found || !item?._source) {
     console.log(`The package was not found for id: ${id}. Doing nothing.`);
     return;
   }
+
+  console.log(`we are here 3`);
 
   const cpocEmail = [...getCpocEmail(item)];
   const srtEmails = [...getSrtEmails(item)];
