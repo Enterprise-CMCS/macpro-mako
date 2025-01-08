@@ -26,7 +26,7 @@ describe("process emails  Handler", () => {
         Body: { Text: { Data: "This is a mocked email body.", Charset: "UTF-8" } },
       },
     };
-    await expect(sendEmail(params, "test")).rejects.toThrowError();
+    await expect(sendEmail(params, "bad-test")).rejects.toThrowError();
   });
   it("should validate the email template and throw an error", async () => {
     const template = {
