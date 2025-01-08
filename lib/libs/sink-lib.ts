@@ -99,7 +99,7 @@ export function getDomainAndNamespace(baseIndex?: BaseIndex) {
     throw new Error("osDomain is undefined in environment variables");
   }
 
-  if (indexNamespace === undefined) {
+  if (indexNamespace == "" && process.env.isDev == "true") {
     throw new Error("indexName is undefined in environment variables");
   }
 
@@ -117,6 +117,7 @@ export async function bulkUpdateDataWrapper(
 
     await os.bulkUpdateData(domain, index, docs);
   } catch (error) {
+    console.log({ error });
     logError({
       type: ErrorType.BULKUPDATE,
       error,

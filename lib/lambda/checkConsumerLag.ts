@@ -1,9 +1,6 @@
 import { Handler } from "aws-lambda";
 import { Kafka } from "kafkajs";
-import {
-  LambdaClient,
-  ListEventSourceMappingsCommand,
-} from "@aws-sdk/client-lambda";
+import { LambdaClient, ListEventSourceMappingsCommand } from "@aws-sdk/client-lambda";
 
 export const handler: Handler = async (event, _, callback) => {
   const response = {
@@ -15,22 +12,17 @@ export const handler: Handler = async (event, _, callback) => {
   let errorResponse = null;
   try {
     const triggerInfo: any[] = [];
-    const lambdaClient = new LambdaClient({});
+    const lambdaClient = new LambdaClient({
+      region: process.env.region,
+    });
     for (const trigger of event.triggers) {
       for (const topic of [...new Set(trigger.topics)]) {
-        console.log(
-          `Getting consumer groups for function: ${trigger.function} and topic ${topic}`,
-        );
+        console.log(`Getting consumer groups for function: ${trigger.function} and topic ${topic}`);
         const lambdaResponse = await lambdaClient.send(
           new ListEventSourceMappingsCommand({
             FunctionName: trigger.function,
           }),
         );
-        if (!lambdaResponse.EventSourceMappings) {
-          throw new Error(
-            `ERROR: No event source mapping found for function ${trigger.function} and topic ${topic}`,
-          );
-        }
         if (
           !lambdaResponse.EventSourceMappings ||
           lambdaResponse.EventSourceMappings.length === 0
@@ -39,19 +31,21 @@ export const handler: Handler = async (event, _, callback) => {
             `ERROR: No event source mapping found for function ${trigger.function} and topic ${topic}`,
           );
         }
-        const mappingForCurrentTopic =
-          lambdaResponse.EventSourceMappings.filter(
-            (mapping) =>
-              mapping.Topics && mapping.Topics.includes(topic as string),
+        const mappingForCurrentTopic = lambdaResponse.EventSourceMappings.filter(
+          (mapping) => mapping.Topics && mapping.Topics.includes(topic as string),
+        );
+        if (!mappingForCurrentTopic || mappingForCurrentTopic.length === 0) {
+          throw new Error(
+            `ERROR: No event source mapping found for function ${trigger.function} and topic ${topic}`,
           );
+        }
         if (mappingForCurrentTopic.length > 1) {
           throw new Error(
             `ERROR: Multiple event source mappings found for function ${trigger.function} and topic ${topic}`,
           );
         }
         const groupId =
-          mappingForCurrentTopic[0]?.SelfManagedKafkaEventSourceConfig
-            ?.ConsumerGroupId;
+          mappingForCurrentTopic[0]?.SelfManagedKafkaEventSourceConfig?.ConsumerGroupId;
         if (!groupId) {
           throw new Error(
             `ERROR: No ConsumerGroupId found for function ${trigger.function} and topic ${topic}`,
@@ -98,9 +92,7 @@ export const handler: Handler = async (event, _, callback) => {
     }
     await admin.disconnect();
     response.stable = statuses.every((status) => status === "Stable");
-    response.current = Object.values(offsets).every(
-      (o) => o.latestOffset === o.currentOffset,
-    );
+    response.current = Object.values(offsets).every((o) => o.latestOffset === o.currentOffset);
     response.ready = response.stable && response.current;
   } catch (error: any) {
     response.statusCode = 500;

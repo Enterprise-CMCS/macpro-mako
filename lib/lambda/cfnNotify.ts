@@ -18,6 +18,7 @@ export const handler: Handler = async (event, _, callback) => {
       await send(cfnEvent, cfnContext, result, responseData, "static");
     }
   } catch (error: any) {
+    console.log({ error });
     response.statusCode = 500;
     errorResponse = error;
   } finally {
