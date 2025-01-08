@@ -28,18 +28,16 @@ const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_search",
   async ({ request }) => {
     const { query } = await request.json();
-    console.log({ query })
 
     if (query?.match_all?.id == "throw-error") {
       return new HttpResponse("Internal server error", { status: 500 });
     }
 
     const must = query?.bool?.must;
-    console.log("must: ", JSON.stringify(must))
     const mustTerms = getTermKeys(must);
-    console.log({ mustTerms })
 
-    const appkParentIdValue = getTermValues(must, "appkParentId.keyword") || getTermValues(must, "appkParentId");
+    const appkParentIdValue =
+      getTermValues(must, "appkParentId.keyword") || getTermValues(must, "appkParentId");
 
     if (appkParentIdValue) {
       const appkParentId =
@@ -57,14 +55,22 @@ const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
         let appkChildren: TestAppkItemResult[] =
           (item._source?.appkChildren as TestAppkItemResult[]) || [];
         if (appkChildren.length > 0) {
-          mustTerms.forEach((term) => {
+          // TODO We don't have this field in the TypeScript, not sure what the parent field actually is
+          const filteredTerms = mustTerms.filter(
+            (term) => term !== "appkParentId.keyword" && term !== "appkParentId",
+          );
+          filteredTerms.forEach((term) => {
             const filterValue = getTermValues(must, term);
             const filterTerm: keyof TestAppkDocument = term.replace(
               ".keyword",
               "",
             ) as keyof TestAppkDocument;
             if (filterValue) {
-              appkChildren = filterItemsByTerm<TestAppkDocument>(appkChildren, filterTerm, filterValue);
+              appkChildren = filterItemsByTerm<TestAppkDocument>(
+                appkChildren,
+                filterTerm,
+                filterValue,
+              );
             }
           });
         }
@@ -95,12 +101,10 @@ const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
     if (itemHits.length > 0) {
       mustTerms.forEach((term) => {
         const filterValue = getTermValues(must, term);
-        console.log({ filterValue })
         const filterTerm: keyof TestMainDocument = term.replace(
           ".keyword",
           "",
         ) as keyof TestMainDocument;
-        console.log({ filterTerm })
         if (filterValue) {
           itemHits = filterItemsByTerm<TestMainDocument>(itemHits, filterTerm, filterValue);
         }
