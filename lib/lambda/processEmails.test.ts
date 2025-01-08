@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { Context } from "aws-lambda";
 import { SESClient } from "@aws-sdk/client-ses";
 import { sendEmail, validateEmailTemplate, handler } from "./processEmails";
-import { KafkaRecord, KafkaEvent } from "node_modules/shared-types";
+import { KafkaRecord, KafkaEvent } from "shared-types";
 
 describe("process emails  Handler", () => {
   it("should return 200 with a proper email", async () => {
