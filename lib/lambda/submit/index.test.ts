@@ -8,6 +8,7 @@ import {
   capitatedAmendmentBase,
   appkBase,
   capitatedInitial,
+  capitatedRenewal,
   contractingAmmendment,
   contractingInitial,
   contractingRenewal,
@@ -16,6 +17,7 @@ import {
   respondToRai,
   temporaryExtension,
   toggleWithdrawRai,
+  uploadSubsequentDocuments,
   withdrawPackage,
   withdrawRai,
 } from "mocks/data/submit/base";
@@ -277,6 +279,57 @@ describe("submit Lambda function", () => {
   });
   it("should start to create an withdraw rai event", async () => {
     const base = JSON.stringify(withdrawRai);
+
+    const event = {
+      body: base,
+      requestContext: {
+        identity: {
+          makoStateSubmitter,
+          cognitoAuthenticationProvider:
+            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
+        },
+      },
+    } as unknown as APIGatewayEvent;
+    const result = await submit(event);
+    expect(result.statusCode).toEqual(200);
+    expect(result.body).toEqual('{"message":"success"}');
+  });
+  it("should start to create an capitated renewal event", async () => {
+    const base = JSON.stringify(capitatedRenewal);
+
+    const event = {
+      body: base,
+      requestContext: {
+        identity: {
+          makoStateSubmitter,
+          cognitoAuthenticationProvider:
+            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
+        },
+      },
+    } as unknown as APIGatewayEvent;
+    const result = await submit(event);
+    expect(result.statusCode).toEqual(200);
+    expect(result.body).toEqual('{"message":"success"}');
+  });
+  it("should start to create an contracting initial event", async () => {
+    const base = JSON.stringify(contractingInitial);
+
+    const event = {
+      body: base,
+      requestContext: {
+        identity: {
+          makoStateSubmitter,
+          cognitoAuthenticationProvider:
+            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
+        },
+      },
+    } as unknown as APIGatewayEvent;
+    const result = await submit(event);
+    expect(result.statusCode).toEqual(200);
+    expect(result.body).toEqual('{"message":"success"}');
+  });
+  it("should start to create an upload subsequent documents event", async () => {
+    const base = JSON.stringify(uploadSubsequentDocuments);
 
     const event = {
       body: base,

@@ -41,7 +41,22 @@ export const capitatedInitial = {
   additionalInformation: "Some additional information about this submission.",
   waiverNumber: "SS-1111.R11.11",
 };
-
+export const capitatedRenewal = {
+  id: "SS-1234.R01.00",
+  event: "capitated-renewal",
+  authority: "1915(c)",
+  proposedEffectiveDate: 1700000000,
+  title: "Sample Title for Appendix K",
+  attachments: {
+    ...attachments.bCapIndependentAssessment,
+    ...attachments.bCapWaiverApplication,
+    ...attachments.bCapCostSpreadsheets,
+    ...attachments.tribalConsultation,
+    ...attachments.other,
+  },
+  additionalInformation: "Some additional information about this submission.",
+  waiverNumber: "SS-1111.R11.11",
+};
 export const contractingAmmendment = {
   id: "SS-1234.R11.01",
   event: "contracting-amendment",
@@ -57,8 +72,8 @@ export const contractingAmmendment = {
   waiverNumber: "SS-1111.R11.11",
 };
 export const contractingInitial = {
-  id: "SS-1234.R11.01",
-  event: "contracting-amendment",
+  id: "SS-1234.R00.00",
+  event: "contracting-initial",
   authority: "1915(b)",
   proposedEffectiveDate: 1700000000,
   title: "Sample Title for Appendix K",
@@ -71,8 +86,8 @@ export const contractingInitial = {
   waiverNumber: "SS-1111.R11.11",
 };
 export const contractingRenewal = {
-  id: "SS-1234.R11.01",
-  event: "contracting-amendment",
+  id: "SS-1234.R01.00",
+  event: "contracting-renewal",
   authority: "1915(b)",
   proposedEffectiveDate: 1700000000,
   title: "Sample Title for Appendix K",
@@ -83,7 +98,7 @@ export const contractingRenewal = {
     ...attachments.other,
   },
   additionalInformation: "Some additional information about this submission.",
-  waiverNumber: "SS-1111.R11.11",
+  waiverNumber: "SS-1111.R01.00",
 };
 export const newChipSubmission = {
   id: "SS-11-2021",
@@ -177,6 +192,16 @@ export const withdrawRai = {
   attachments: {
     ...attachments.supportingDocumentation,
   },
+  additionalInformation: "Some additional information about this submission.",
+  waiverNumber: "SS-1111.R11.00",
+};
+export const uploadSubsequentDocuments = {
+  id: "SS-1111.R11.00",
+  event: "upload-subsequent-documents",
+  authority: "1915(b)",
+  proposedEffectiveDate: 1700000000,
+  title: "Sample Title for Appendix K",
+  attachments: {},
   additionalInformation: "Some additional information about this submission.",
   waiverNumber: "SS-1111.R11.00",
 };

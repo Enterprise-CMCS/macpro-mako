@@ -279,11 +279,27 @@ const supportingDocumentation = {
     ],
   },
 };
+const bCapIndependentAssessment = {
+  bCapIndependentAssessment: {
+    label:
+      "1915(b) Comprehensive (Capitated) Waiver Independent Assessment (first two renewals only)",
+    files: [
+      {
+        filename: "appendix-k-amendment.docx",
+        title: "Appendix K Waiver Amendment",
+        bucket: "mako-outbox-attachments-635052997545",
+        key: "8b56f7ab-e1ad-4782-87f4-d43ab9d2f5d7.docx",
+        uploadDate: Date.now(),
+      },
+    ],
+  },
+};
 export const attachments = {
   ammendedLanguage,
   appk,
-  bCapWaiverApplication,
+  bCapIndependentAssessment,
   bCapCostSpreadsheets,
+  bCapWaiverApplication,
   b4IndependentAssessment,
   b4Waiver,
   budgetDocuments,
