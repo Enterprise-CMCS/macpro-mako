@@ -1,21 +1,18 @@
 // can/should add the additional frontend checks here
 
 import { events } from "shared-types/events";
-import {
-  isAuthorized,
-  getAuthDetails,
-  lookupUserAttributes,
-} from "../../../libs/api/auth/user";
+import { isAuthorized, getAuthDetails, lookupUserAttributes } from "../../../libs/api/auth/user";
 import { type APIGatewayEvent } from "aws-lambda";
 import { itemExists } from "libs/api/package";
+import { CompositePrincipal } from "node_modules/aws-cdk-lib/aws-iam";
 
 export const capitatedAmendment = async (event: APIGatewayEvent) => {
   if (!event.body) return;
 
-  const parsedResult = events["capitated-amendment"].baseSchema.safeParse(
-    JSON.parse(event.body),
-  );
+  const parsedResult = events["capitated-amendment"].baseSchema.safeParse(JSON.parse(event.body));
   if (!parsedResult.success) {
+    console.log("hi");
+    console.log(parsedResult.error);
     throw parsedResult.error;
   }
 
@@ -30,10 +27,7 @@ export const capitatedAmendment = async (event: APIGatewayEvent) => {
   }
 
   const authDetails = getAuthDetails(event);
-  const userAttr = await lookupUserAttributes(
-    authDetails.userId,
-    authDetails.poolId,
-  );
+  const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
   const submitterEmail = userAttr.email;
   const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
 

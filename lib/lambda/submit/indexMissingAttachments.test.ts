@@ -1,23 +1,7 @@
 import { submit } from "./index";
 import { APIGatewayEvent } from "node_modules/shared-types";
 import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
-import {
-  capitatedAmendmentBase,
-  appkBase,
-  capitatedInitial,
-  capitatedRenewal,
-  contractingAmmendment,
-  contractingInitial,
-  contractingRenewal,
-  newChipSubmission,
-  newMedicaidSubmission,
-  respondToRai,
-  temporaryExtension,
-  toggleWithdrawRai,
-  uploadSubsequentDocuments,
-  withdrawPackage,
-  withdrawRai,
-} from "mocks/data/submit/base";
+import { bma } from "mocks/data/submit/baseMissingAttachments";
 
 import { makoStateSubmitter } from "mocks";
 vi.mock("kafkajs", () => {
@@ -34,7 +18,7 @@ vi.mock("kafkajs", () => {
     Producer: vi.fn(() => producer),
   };
 });
-describe("submit Lambda function", () => {
+describe("submit Lambda function missing objects in event", () => {
   let brokerString: string | undefined;
   beforeEach(() => {
     brokerString = process.env.brokerString;
@@ -44,31 +28,9 @@ describe("submit Lambda function", () => {
   afterEach(() => {
     process.env.brokerString = brokerString;
   });
-  it("should have no body", async () => {
-    const event = {} as APIGatewayEvent;
-    const result = await submit(event);
-    expect(result.statusCode).toEqual(400);
-    expect(result.body).toEqual('"Event body required"');
-  });
-  it("should have no event in the body", async () => {
-    const event = {
-      body: `{"event": ""}`,
-    } as unknown as APIGatewayEvent;
-    const result = await submit(event);
-    expect(result.statusCode).toEqual(400);
-    expect(result.body).toEqual('{"message":"Bad Request - Missing event name in body"}');
-  });
 
-  it("should have a bad event in the body", async () => {
-    const event = {
-      body: `{"event": "Not a real event"}`,
-    } as unknown as APIGatewayEvent;
-    const result = await submit(event);
-    expect(result.statusCode).toEqual(400);
-    expect(result.body).toEqual('{"message":"Bad Request - Unknown event type Not a real event"}');
-  });
   it("should start to create an capitated ammendment event", async () => {
-    const base = JSON.stringify(capitatedAmendmentBase);
+    const base = JSON.stringify(bma.capitatedAmendmentBase);
 
     const event = {
       body: base,
@@ -81,28 +43,11 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
-  it("should start to create an capitated ammendment event", async () => {
-    const base = JSON.stringify(capitatedAmendmentBase);
 
-    const event = {
-      body: base,
-      requestContext: {
-        identity: {
-          makoStateSubmitter,
-          cognitoAuthenticationProvider:
-            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1,https://cognito-idp.us-east-1.amazonaws.com/us-east-1_userPool1:CognitoSignIn:53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-        },
-      },
-    } as unknown as APIGatewayEvent;
-    const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
-  });
   it("should start to create an app-k event", async () => {
-    const base = JSON.stringify(appkBase);
+    const base = JSON.stringify(bma.appkBase);
 
     const event = {
       body: base,
@@ -115,11 +60,10 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
   it("should start to create an capitated initial event", async () => {
-    const base = JSON.stringify(capitatedInitial);
+    const base = JSON.stringify(bma.capitatedInitial);
 
     const event = {
       body: base,
@@ -132,11 +76,10 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
   it("should start to create an contracting ammendment event", async () => {
-    const base = JSON.stringify(contractingAmmendment);
+    const base = JSON.stringify(bma.contractingAmmendment);
 
     const event = {
       body: base,
@@ -149,11 +92,10 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
   it("should start to create an contracting initial event", async () => {
-    const base = JSON.stringify(contractingInitial);
+    const base = JSON.stringify(bma.contractingInitial);
 
     const event = {
       body: base,
@@ -166,11 +108,10 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
   it("should start to create an contracting renewal event", async () => {
-    const base = JSON.stringify(contractingRenewal);
+    const base = JSON.stringify(bma.contractingRenewal);
 
     const event = {
       body: base,
@@ -183,11 +124,10 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
   it("should start to create an new chip submission event", async () => {
-    const base = JSON.stringify(newChipSubmission);
+    const base = JSON.stringify(bma.newChipSubmission);
 
     const event = {
       body: base,
@@ -200,11 +140,10 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
   it("should start to create an new chip medicaid submission event", async () => {
-    const base = JSON.stringify(newMedicaidSubmission);
+    const base = JSON.stringify(bma.newMedicaidSubmission);
 
     const event = {
       body: base,
@@ -217,11 +156,10 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
   it("should start to create an new respond to rai event", async () => {
-    const base = JSON.stringify(respondToRai);
+    const base = JSON.stringify(bma.respondToRai);
 
     const event = {
       body: base,
@@ -234,11 +172,10 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
   it("should start to create an temporary extension event", async () => {
-    const base = JSON.stringify(temporaryExtension);
+    const base = JSON.stringify(bma.temporaryExtension);
 
     const event = {
       body: base,
@@ -251,11 +188,10 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
   it("should start to create an toggle withdraw event", async () => {
-    const base = JSON.stringify(toggleWithdrawRai);
+    const base = JSON.stringify(bma.toggleWithdrawRai);
 
     const event = {
       body: base,
@@ -268,11 +204,10 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
   it("should start to create an withdraw package event", async () => {
-    const base = JSON.stringify(withdrawPackage);
+    const base = JSON.stringify(bma.withdrawPackage);
 
     const event = {
       body: base,
@@ -285,11 +220,10 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
   it("should start to create an withdraw rai event", async () => {
-    const base = JSON.stringify(withdrawRai);
+    const base = JSON.stringify(bma.withdrawRai);
 
     const event = {
       body: base,
@@ -302,11 +236,10 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
   it("should start to create an capitated renewal event", async () => {
-    const base = JSON.stringify(capitatedRenewal);
+    const base = JSON.stringify(bma.capitatedRenewal);
 
     const event = {
       body: base,
@@ -319,11 +252,10 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
   it("should start to create an contracting initial event", async () => {
-    const base = JSON.stringify(contractingInitial);
+    const base = JSON.stringify(bma.contractingInitial);
 
     const event = {
       body: base,
@@ -336,11 +268,10 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
   it("should start to create an upload subsequent documents event", async () => {
-    const base = JSON.stringify(uploadSubsequentDocuments);
+    const base = JSON.stringify(bma.uploadSubsequentDocuments);
 
     const event = {
       body: base,
@@ -353,7 +284,6 @@ describe("submit Lambda function", () => {
       },
     } as unknown as APIGatewayEvent;
     const result = await submit(event);
-    expect(result.statusCode).toEqual(200);
-    expect(result.body).toEqual('{"message":"success"}');
+    expect(result.statusCode).toEqual(500);
   });
 });
