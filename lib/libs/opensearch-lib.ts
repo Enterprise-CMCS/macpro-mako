@@ -6,7 +6,7 @@ import { aws4Interceptor } from "aws4-axios";
 import axios from "axios";
 import { ItemResult, Document as OSDocument } from "shared-types/opensearch/main";
 import { opensearch } from "shared-types";
-import { getDomainAndNamespace } from "./sink-lib";
+import { getDomainAndNamespace } from "./utils";
 
 let client: Client;
 
