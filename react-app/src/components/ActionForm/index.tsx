@@ -174,8 +174,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         pathnameToDisplayOn: formOrigins.pathname,
       });
 
+      await queryClient.invalidateQueries({ queryKey: ["record"] });
       navigate(formOrigins);
-      queryClient.invalidateQueries({ queryKey: ["record"] });
     } catch (error) {
       console.error(error);
       banner({
