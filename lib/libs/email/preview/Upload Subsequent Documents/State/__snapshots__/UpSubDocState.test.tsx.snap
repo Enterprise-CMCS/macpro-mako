@@ -309,12 +309,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              1915(c) Appendix K Amendment Waiver Template
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                1915(c) Appendix K Amendment Waiver Template
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -351,12 +354,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -744,12 +750,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            1915(c) Appendix K Amendment Waiver Template
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              1915(c) Appendix K Amendment Waiver Template
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -786,12 +795,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Other
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Other
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -1236,12 +1248,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              1915(c) Appendix K Amendment Waiver Template
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                1915(c) Appendix K Amendment Waiver Template
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -1278,12 +1293,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -1670,12 +1688,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              CMS Form 179
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -1720,12 +1761,25 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              SPA Pages
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                SPA Pages
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                SPA Pages
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -1766,12 +1820,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Cover Letter
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Cover Letter
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -1808,12 +1865,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Budget Documents
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Budget Documents
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -1850,12 +1910,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Public Notice
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -1900,12 +1983,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Tribal Consultation
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Tribal Consultation
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -1942,12 +2028,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -2335,12 +2424,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            CMS Form 179
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              CMS Form 179
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              CMS Form 179
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              CMS Form 179
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -2385,12 +2497,25 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            SPA Pages
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              SPA Pages
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              SPA Pages
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -2431,12 +2556,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Cover Letter
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Cover Letter
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -2473,12 +2601,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Budget Documents
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Budget Documents
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -2515,12 +2646,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Public Notice
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Public Notice
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Public Notice
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Public Notice
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -2565,12 +2719,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Tribal Consultation
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Tribal Consultation
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -2607,12 +2764,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Other
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Other
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -3057,12 +3217,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              1915(c) Appendix K Amendment Waiver Template
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                1915(c) Appendix K Amendment Waiver Template
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -3099,12 +3262,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -3491,12 +3657,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              CMS Form 179
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -3541,12 +3730,25 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              SPA Pages
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                SPA Pages
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                SPA Pages
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -3587,12 +3789,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Cover Letter
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Cover Letter
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -3629,12 +3834,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Budget Documents
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Budget Documents
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -3671,12 +3879,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Public Notice
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -3721,12 +3952,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Tribal Consultation
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Tribal Consultation
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -3763,12 +3997,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -4155,12 +4392,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              CMS Form 179
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -4205,12 +4465,25 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              SPA Pages
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                SPA Pages
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                SPA Pages
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -4251,12 +4524,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Cover Letter
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Cover Letter
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -4293,12 +4569,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Budget Documents
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Budget Documents
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -4335,12 +4614,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Public Notice
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -4385,12 +4687,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Tribal Consultation
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Tribal Consultation
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -4427,12 +4732,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -4817,12 +5125,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            CMS Form 179
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              CMS Form 179
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              CMS Form 179
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              CMS Form 179
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -4867,12 +5198,25 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            SPA Pages
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              SPA Pages
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              SPA Pages
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -4913,12 +5257,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Cover Letter
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Cover Letter
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -4955,12 +5302,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Budget Documents
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Budget Documents
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -4997,12 +5347,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Public Notice
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Public Notice
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Public Notice
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Public Notice
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -5047,12 +5420,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Tribal Consultation
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Tribal Consultation
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -5089,12 +5465,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Other
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Other
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -5536,12 +5915,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              1915(c) Appendix K Amendment Waiver Template
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                1915(c) Appendix K Amendment Waiver Template
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -5578,12 +5960,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -5970,12 +6355,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              CMS Form 179
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -6020,12 +6428,25 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              SPA Pages
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                SPA Pages
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                SPA Pages
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -6066,12 +6487,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Cover Letter
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Cover Letter
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -6108,12 +6532,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Budget Documents
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Budget Documents
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -6150,12 +6577,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Public Notice
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -6200,12 +6650,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Tribal Consultation
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Tribal Consultation
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -6242,12 +6695,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -6634,12 +7090,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              CMS Form 179
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -6684,12 +7163,25 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              SPA Pages
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                SPA Pages
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                SPA Pages
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -6730,12 +7222,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Cover Letter
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Cover Letter
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -6772,12 +7267,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Budget Documents
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Budget Documents
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -6814,12 +7312,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Public Notice
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -6864,12 +7385,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Tribal Consultation
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Tribal Consultation
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -6906,12 +7430,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -7295,12 +7822,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              CMS Form 179
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                CMS Form 179
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -7345,12 +7895,25 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              SPA Pages
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                SPA Pages
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                SPA Pages
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -7391,12 +7954,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Cover Letter
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Cover Letter
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -7433,12 +7999,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Budget Documents
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Budget Documents
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -7475,12 +8044,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Public Notice
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                              <br />
+                            </span>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -7525,12 +8117,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Tribal Consultation
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Tribal Consultation
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -7567,12 +8162,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Other
-                              :
-                            </p>
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Other
+                                :
+                              </p>
+                               
+                            </span>
                           </td>
                           <td
                             data-id="__react-email-column"
@@ -7960,12 +8558,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            CMS Form 179
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              CMS Form 179
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              CMS Form 179
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              CMS Form 179
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -8010,12 +8631,25 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            SPA Pages
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              SPA Pages
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              SPA Pages
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -8056,12 +8690,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Cover Letter
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Cover Letter
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -8098,12 +8735,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Budget Documents
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Budget Documents
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -8140,12 +8780,35 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Public Notice
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Public Notice
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Public Notice
+                              :
+                            </p>
+                             
+                            <br />
+                          </span>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Public Notice
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -8190,12 +8853,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Tribal Consultation
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Tribal Consultation
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"
@@ -8232,12 +8898,15 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <p
-                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                          >
-                            Other
-                            :
-                          </p>
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Other
+                              :
+                            </p>
+                             
+                          </span>
                         </td>
                         <td
                           data-id="__react-email-column"

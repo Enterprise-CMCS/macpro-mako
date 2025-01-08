@@ -52,6 +52,9 @@ beforeEach(() => {
   process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE;
   process.env.attachmentsBucketName = ATTACHMENT_BUCKET_NAME;
   process.env.attachmentsBucketRegion = ATTACHMENT_BUCKET_REGION;
+  process.env.emailAddressLookupSecretName = "mock-email-secret"; // pragma: allowlist secret
+  process.env.DLQ_URL = "https://sqs.us-east-1.amazonaws.com/123/test";
+  process.env.configurationSetName = "SES";
 });
 
 afterEach(() => {

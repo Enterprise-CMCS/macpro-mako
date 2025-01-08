@@ -156,7 +156,12 @@ const Attachments = ({
                 verticalAlign: "top",
               }}
             >
-              <Text style={{ ...styles.text.title }}>{group.label}:</Text>
+              {group.files.map((file, index) => (
+                <span key={file.filename + index}>
+                  <Text style={{ ...styles.text.title }}>{group.label}:</Text>{" "}
+                  {index < (group.files?.length ?? 0) - 1 && <br />}
+                </span>
+              ))}
             </Column>
             <Column style={{ verticalAlign: "top" }}>
               <Text style={styles.text.description}>
@@ -218,9 +223,11 @@ const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
 const FollowUpNotice = ({
   isChip,
   includeStateLead = true,
+  includeDidNotExpect = true,
 }: {
   isChip?: boolean;
   includeStateLead?: boolean;
+  includeDidNotExpect?: boolean;
 }) => (
   <>
     <Divider />
@@ -237,7 +244,9 @@ const FollowUpNotice = ({
     ) : (
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
-          If you have any questions or did not expect this email, please contact{" "}
+          {`If you have any questions${
+            includeDidNotExpect ? " or did not expect this email" : ""
+          }, please contact `}
           <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`} style={{ textDecoration: "underline" }}>
             {EMAIL_CONFIG.SPA_EMAIL}
           </Link>

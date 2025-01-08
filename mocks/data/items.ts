@@ -33,6 +33,27 @@ const items: Record<string, TestItemResult> = {
       actionType: "New",
     },
   },
+  ["VA"]: {
+    _id: EXISTING_ITEM_ID,
+    found: true,
+    _source: {
+      leadAnalystEmail: "michael.chen@cms.hhs.gov",
+      leadAnalystName: "Michael Chen",
+      reviewTeam: [
+        {
+          email: "john.doe@medicaid.gov",
+          name: "John Doe",
+        },
+        {
+          email: "emily.rodriguez@medicaid.gov",
+          name: "Emily Rodriguez",
+        },
+      ],
+      id: EXISTING_ITEM_ID,
+      seatoolStatus: SEATOOL_STATUS.APPROVED,
+      actionType: "New",
+    },
+  },
   [EXISTING_ITEM_APPROVED_NEW_ID]: {
     _id: EXISTING_ITEM_APPROVED_NEW_ID,
     found: true,
