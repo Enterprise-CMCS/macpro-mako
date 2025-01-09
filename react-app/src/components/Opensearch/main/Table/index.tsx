@@ -33,31 +33,18 @@ export const OsTable: FC<{
                 {...(TH.isSystem && { className: "pointer-events-none" })}
                 onClick={() => {
                   if (!TH.field) return;
-                  url.onSet((s) => {
-                    const existingSortIndex = s.sort.findIndex((sort) => sort.field === TH.field);
-                    let newSort;
-
-                    if (existingSortIndex > -1) {
-                      // Update the existing sort field order
-                      newSort = [...s.sort];
-                      const currentOrder = newSort[existingSortIndex].order;
-
-                      // Toggle the order or remove the sort if toggled off
-                      if (currentOrder === "desc") {
-                        newSort.splice(existingSortIndex, 1); // Remove sort if toggled off
-                      } else {
-                        newSort[existingSortIndex].order = "desc";
-                      }
-                    } else {
-                      // Add a new sort entry
-                      newSort = [
-                        ...s.sort,
-                        { field: TH.field as opensearch.main.Field, order: "asc" },
-                      ];
-                    }
-
-                    return { ...s, sort: newSort };
-                  });
+                  url.onSet((s) => ({
+                    ...s,
+                    sort: [
+                      {
+                        field: TH.field as opensearch.main.Field,
+                        order:
+                          s.sort.find((sort) => sort.field === TH.field)?.order === "desc"
+                            ? "asc"
+                            : "desc",
+                      },
+                    ],
+                  }));
                 }}
               >
                 {TH.label}
