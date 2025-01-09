@@ -142,9 +142,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       API.post("os", "/submit", {
         body: formData,
       }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["record"] });
-    },
   });
 
   const onSubmit = form.handleSubmit(async (formData) => {
