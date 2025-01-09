@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { handler } from "./sinkMain";
 import * as sinkMainProcessors from "./sinkMainProcessors";
-import { KafkaEvent } from "lib/packages/shared-types";
+import { KafkaEvent } from "shared-types";
 
 const createKafkaEvent = (records: KafkaEvent["records"]) => ({
   eventSource: "SelfManagedKafka",

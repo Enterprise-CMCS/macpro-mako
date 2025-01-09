@@ -28,16 +28,11 @@ export const baseSchema = z.object({
       files: attachmentArraySchemaOptional(),
     }),
   }),
-  additionalInformation: z
-    .string()
-    .max(4000)
-    .nullable()
-    .default(null)
-    .optional(),
+  additionalInformation: z.string().max(4000).nullable().default(null).optional(),
 });
 
 export const schema = baseSchema.extend({
-  actionType: z.string().default("New"),
+  actionType: z.string().default("Initial"),
   origin: z.literal("mako").default("mako"),
   submitterName: z.string(),
   submitterEmail: z.string().email(),

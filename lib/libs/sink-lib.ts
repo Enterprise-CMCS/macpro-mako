@@ -2,7 +2,8 @@ import pino from "pino";
 const logger = pino();
 
 import * as os from "./opensearch-lib";
-import { BaseIndex } from "lib/packages/shared-types/opensearch";
+import { BaseIndex } from "shared-types/opensearch";
+import { getDomainAndNamespace } from "./utils";
 
 export function getTopic(topicPartition: string) {
   return topicPartition.split("--").pop()?.split("-").slice(0, -1)[0];
@@ -82,32 +83,6 @@ const prettyPrintJsonInObject = (obj: any): any => {
   return obj;
 };
 
-/**
- * Returns the `osDomain` and `indexNamespace` env variables. Passing `baseIndex` appends the arg to the `index` variable
- * @throws if env variables are not defined, `getDomainAndNamespace` throws error indicating which variable is missing
- * @returns
- */
-export function getDomainAndNamespace<T extends BaseIndex>(
-  baseIndex: T,
-): { domain: string; index: `${string}${T}` };
-
-export function getDomainAndNamespace(baseIndex?: BaseIndex) {
-  const domain = process.env.osDomain;
-  const indexNamespace = process.env.indexNamespace ?? "";
-
-  if (domain === undefined) {
-    throw new Error("osDomain is undefined in environment variables");
-  }
-
-  if (indexNamespace === undefined) {
-    throw new Error("indexName is undefined in environment variables");
-  }
-
-  const index = `${indexNamespace}${baseIndex}`;
-
-  return { index, domain };
-}
-
 export async function bulkUpdateDataWrapper(
   docs: { id: string; [key: string]: unknown }[],
   baseIndex: BaseIndex,
@@ -117,6 +92,7 @@ export async function bulkUpdateDataWrapper(
 
     await os.bulkUpdateData(domain, index, docs);
   } catch (error) {
+    console.log({ error });
     logError({
       type: ErrorType.BULKUPDATE,
       error,

@@ -1,6 +1,16 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { handler } from "./checkConsumerLag";
-import { Kafka } from "kafkajs";
+import { Context } from "aws-lambda";
+import {
+  TEST_FUNCTION_NAME,
+  TEST_TOPIC_NAME,
+  TEST_NONEXISTENT_TOPIC_NAME,
+  TEST_NONEXISTENT_FUNCTION_NAME,
+  TEST_MULTIPLE_TOPICS_FUNCTION_NAME,
+  TEST_MULTIPLE_TOPICS_TOPIC_NAME,
+  TEST_MISSING_CONSUMER_FUNCTION_NAME,
+  TEST_MISSING_CONSUMER_TOPIC_NAME,
+} from "mocks";
 
 const mockKafkaAdmin = {
   connect: vi.fn(),
@@ -8,9 +18,7 @@ const mockKafkaAdmin = {
     groups: [{ state: "Stable" }],
   }),
   fetchTopicOffsets: vi.fn().mockResolvedValue([{ offset: "100" }]),
-  fetchOffsets: vi
-    .fn()
-    .mockResolvedValue([{ partitions: [{ offset: "100" }] }]),
+  fetchOffsets: vi.fn().mockResolvedValue([{ partitions: [{ offset: "100" }] }]),
   disconnect: vi.fn(),
 };
 
@@ -20,19 +28,10 @@ vi.mock("kafkajs", () => ({
   })),
 }));
 
-const mockLambdaClient = {
-  send: vi.fn(),
-};
-
-vi.mock("@aws-sdk/client-lambda", () => ({
-  LambdaClient: vi.fn().mockImplementation(() => mockLambdaClient),
-  ListEventSourceMappingsCommand: vi.fn(),
-}));
-
 describe("Lambda Handler", () => {
   const callback = vi.fn();
 
-  beforeEach(() => {
+  afterEach(() => {
     vi.clearAllMocks();
   });
 
@@ -40,23 +39,14 @@ describe("Lambda Handler", () => {
     const event = {
       triggers: [
         {
-          function: "test-function",
-          topics: ["test-topic"],
+          function: TEST_FUNCTION_NAME,
+          topics: [TEST_TOPIC_NAME],
         },
       ],
       brokerString: "broker1,broker2",
     };
 
-    mockLambdaClient.send.mockResolvedValueOnce({
-      EventSourceMappings: [
-        {
-          Topics: ["test-topic"],
-          SelfManagedKafkaEventSourceConfig: { ConsumerGroupId: "test-group" },
-        },
-      ],
-    });
-
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
     expect(callback).toHaveBeenCalledWith(null, {
       statusCode: 200,
@@ -66,144 +56,72 @@ describe("Lambda Handler", () => {
     });
   });
 
-  it("should handle missing event source mappings", async () => {
+  it.each([
+    [
+      "should handle missing function",
+      TEST_NONEXISTENT_FUNCTION_NAME,
+      TEST_TOPIC_NAME,
+      `ERROR: No event source mapping found for function ${TEST_NONEXISTENT_FUNCTION_NAME} and topic ${TEST_TOPIC_NAME}`,
+    ],
+    [
+      "should handle missing topic",
+      TEST_FUNCTION_NAME,
+      TEST_NONEXISTENT_TOPIC_NAME,
+      `ERROR: No event source mapping found for function ${TEST_FUNCTION_NAME} and topic ${TEST_NONEXISTENT_TOPIC_NAME}`,
+    ],
+    [
+      "should handle multiple event source mappings",
+      TEST_MULTIPLE_TOPICS_FUNCTION_NAME,
+      TEST_MULTIPLE_TOPICS_TOPIC_NAME,
+      `ERROR: Multiple event source mappings found for function ${TEST_MULTIPLE_TOPICS_FUNCTION_NAME} and topic ${TEST_MULTIPLE_TOPICS_TOPIC_NAME}`,
+    ],
+    [
+      "should handle missing ConsumerGroupId",
+      TEST_MISSING_CONSUMER_FUNCTION_NAME,
+      TEST_MISSING_CONSUMER_TOPIC_NAME,
+      `ERROR: No ConsumerGroupId found for function ${TEST_MISSING_CONSUMER_FUNCTION_NAME} and topic ${TEST_MISSING_CONSUMER_TOPIC_NAME}`,
+    ],
+  ])("%s", async (_, funcName, topicName, errorMessage) => {
     const event = {
       triggers: [
         {
-          function: "test-function",
-          topics: ["nonexistent-topic"],
+          function: funcName,
+          topics: [topicName],
         },
       ],
       brokerString: "broker1,broker2",
     };
 
-    mockLambdaClient.send.mockResolvedValueOnce({
-      EventSourceMappings: [],
+    await handler(event, {} as Context, callback);
+
+    expect(callback).toHaveBeenCalledWith(new Error(errorMessage), {
+      statusCode: 500,
+      stable: false,
+      current: false,
+      ready: false,
     });
-
-    await handler(event, null, callback);
-
-    expect(callback).toHaveBeenCalledWith(
-      new Error(
-        "ERROR: No event source mapping found for function test-function and topic nonexistent-topic",
-      ),
-      {
-        statusCode: 500,
-        stable: false,
-        current: false,
-        ready: false,
-      },
-    );
-  });
-
-  it("should handle multiple event source mappings", async () => {
-    const event = {
-      triggers: [
-        {
-          function: "test-function",
-          topics: ["test-topic"],
-        },
-      ],
-      brokerString: "broker1,broker2",
-    };
-
-    mockLambdaClient.send.mockResolvedValueOnce({
-      EventSourceMappings: [
-        {
-          Topics: ["test-topic"],
-          SelfManagedKafkaEventSourceConfig: { ConsumerGroupId: "test-group" },
-        },
-        {
-          Topics: ["test-topic"],
-          SelfManagedKafkaEventSourceConfig: {
-            ConsumerGroupId: "test-group-2",
-          },
-        },
-      ],
-    });
-
-    await handler(event, null, callback);
-
-    expect(callback).toHaveBeenCalledWith(
-      new Error(
-        "ERROR: Multiple event source mappings found for function test-function and topic test-topic",
-      ),
-      {
-        statusCode: 500,
-        stable: false,
-        current: false,
-        ready: false,
-      },
-    );
   });
 
   it("should handle kafka admin errors", async () => {
     const event = {
       triggers: [
         {
-          function: "test-function",
-          topics: ["test-topic"],
+          function: TEST_FUNCTION_NAME,
+          topics: [TEST_TOPIC_NAME],
         },
       ],
       brokerString: "broker1,broker2",
     };
 
-    const kafka = new Kafka({
-      clientId: "consumerGroupResetter",
-      brokers: event.brokerString?.split(",") || [],
-      ssl: true,
+    mockKafkaAdmin.describeGroups.mockRejectedValueOnce(new Error("Kafka admin error"));
+
+    await handler(event, {} as Context, callback);
+
+    expect(callback).toHaveBeenCalledWith(new Error(`Kafka admin error`), {
+      statusCode: 500,
+      stable: false,
+      current: false,
+      ready: false,
     });
-
-    kafka.admin = vi.fn().mockReturnValueOnce({
-      connect: vi.fn(),
-      describeGroups: vi.fn().mockRejectedValue(new Error("Kafka admin error")),
-      fetchTopicOffsets: vi.fn(),
-      fetchOffsets: vi.fn(),
-      disconnect: vi.fn(),
-    });
-
-    await handler(event, null, callback);
-
-    expect(callback).toHaveBeenCalledWith(
-      expect.any(Error),
-      expect.objectContaining({
-        statusCode: 500,
-      }),
-    );
-  });
-
-  it("should handle missing ConsumerGroupId", async () => {
-    const event = {
-      triggers: [
-        {
-          function: "test-function",
-          topics: ["test-topic"],
-        },
-      ],
-      brokerString: "broker1,broker2",
-    };
-
-    mockLambdaClient.send.mockResolvedValueOnce({
-      EventSourceMappings: [
-        {
-          Topics: ["test-topic"],
-          SelfManagedKafkaEventSourceConfig: null,
-        },
-      ],
-    });
-
-    await handler(event, null, callback);
-
-    expect(callback).toHaveBeenCalledWith(
-      new Error(
-        "ERROR: No ConsumerGroupId found for function test-function and topic test-topic",
-      ),
-      {
-        statusCode: 500,
-        stable: false,
-        current: false,
-        ready: false,
-      },
-    );
   });
 });
