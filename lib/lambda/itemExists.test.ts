@@ -55,7 +55,7 @@ describe("Handler for checking if record exists", () => {
     );
   });
 
-  it("should return 500 error occurs during processing", async () => {
+  it("should return 200 and exists: false if an error occurs during processing", async () => {
     const event = {
       body: JSON.stringify({ id: GET_ERROR_ITEM_ID }),
     } as APIGatewayEvent;
@@ -63,9 +63,9 @@ describe("Handler for checking if record exists", () => {
     const res = await handler(event);
 
     expect(res).toBeTruthy();
-    expect(res.statusCode).toEqual(500);
+    expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(
-      JSON.stringify({ error: "Internal server error", message: "Response Error" }),
+      JSON.stringify({ message: "No record found for the given id", exists: false }),
     );
   });
 });

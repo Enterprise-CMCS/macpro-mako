@@ -1,5 +1,6 @@
 import { SEATOOL_STATUS } from "shared-types";
 import type { TestItemResult } from "../index.d";
+import { ATTACHMENT_BUCKET_NAME } from "../consts";
 
 export const EXISTING_ITEM_PENDING_ID = "MD-0002.R00.00";
 export const EXISTING_ITEM_APPROVED_NEW_ID = "MD-0000.R00.00";
@@ -20,6 +21,7 @@ export const CONTRACTING_AMEND_ITEM_ID = "MD-007.R00.01";
 export const MISSING_CHANGELOG_ITEM_ID = "MD-008.R00.00";
 export const WITHDRAWN_CHANGELOG_ITEM_ID = "VA-11-2020";
 export const INITIAL_RELEASE_APPK_ITEM_ID = "MD-010.R00.01";
+export const EXISTING_ITEM_APPROVED_APPK_ITEM_ID = "MD-012.R00.01";
 export const SUBMISSION_ERROR_ITEM_ID = "Throw Submission Error";
 export const GET_ERROR_ITEM_ID = "Throw Get Item Error";
 
@@ -242,6 +244,7 @@ const items: Record<string, TestItemResult> = {
                 key: "doc001",
                 title: "Contract Amendment",
                 filename: "contract_amendment_2024.pdf",
+                bucket: ATTACHMENT_BUCKET_NAME,
               },
             ],
             additionalInformation: "Amendment to the capitated contract terms for 2024.",
@@ -259,6 +262,7 @@ const items: Record<string, TestItemResult> = {
                 key: "rai002",
                 title: "Response to RAI",
                 filename: "rai_response.docx",
+                bucket: ATTACHMENT_BUCKET_NAME,
               },
             ],
             additionalInformation: "Detailed response to the request for additional information.",
@@ -276,6 +280,7 @@ const items: Record<string, TestItemResult> = {
                 key: "subdoc003",
                 title: "Follow-Up Documents",
                 filename: "followup_docs.zip",
+                bucket: ATTACHMENT_BUCKET_NAME,
               },
             ],
             additionalInformation: "Supporting documents uploaded as follow-up.",
@@ -293,6 +298,7 @@ const items: Record<string, TestItemResult> = {
                 key: "subdoc004",
                 title: "Compliance Files",
                 filename: "compliance_documents.xlsx",
+                bucket: ATTACHMENT_BUCKET_NAME,
               },
             ],
             additionalInformation: "Compliance review files uploaded.",
@@ -310,6 +316,7 @@ const items: Record<string, TestItemResult> = {
                 key: "withdraw005",
                 title: "Withdrawal Notice",
                 filename: "rai_withdrawal_notice.pdf",
+                bucket: ATTACHMENT_BUCKET_NAME,
               },
             ],
             additionalInformation: "Official notice of RAI withdrawal submitted.",
@@ -327,6 +334,7 @@ const items: Record<string, TestItemResult> = {
                 key: "withdraw006",
                 title: "Package Withdrawal",
                 filename: "package_withdrawal_request.docx",
+                bucket: ATTACHMENT_BUCKET_NAME,
               },
             ],
             additionalInformation: "Package has been withdrawn from submission pipeline.",
@@ -344,6 +352,7 @@ const items: Record<string, TestItemResult> = {
                 key: "misc007",
                 title: "Miscellaneous File",
                 filename: "miscellaneous_info.txt",
+                bucket: ATTACHMENT_BUCKET_NAME,
               },
             ],
             additionalInformation: "Uncategorized file upload.",
@@ -368,6 +377,38 @@ const items: Record<string, TestItemResult> = {
           _source: {
             changedDate: "2024-01-01T00:00:00Z",
             title: "Initial release",
+            cmsStatus: "Pending",
+            stateStatus: "Under Review",
+          },
+        },
+      ],
+    },
+  },
+  [EXISTING_ITEM_APPROVED_APPK_ITEM_ID]: {
+    _id: EXISTING_ITEM_APPROVED_APPK_ITEM_ID,
+    found: true,
+    _source: {
+      id: EXISTING_ITEM_APPROVED_APPK_ITEM_ID,
+      seatoolStatus: SEATOOL_STATUS.APPROVED,
+      actionType: "New",
+      authority: "1915(c)",
+      state: "MD",
+      origin: "OneMAC",
+      appkChildren: [
+        {
+          _source: {
+            changedDate: "2024-01-01T00:00:00Z",
+            title: "Initial release",
+            cmsStatus: "Pending",
+            stateStatus: "Under Review",
+          },
+        },
+        {
+          _source: {
+            changedDate: "2025-01-08T00:00:00Z",
+            title: "Approved release",
+            cmsStatus: "Approved",
+            stateStatus: "Approved",
           },
         },
       ],
