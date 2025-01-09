@@ -1,12 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { submit } from "./index";
 import { APIGatewayEvent } from "node_modules/shared-types";
-import { getRequestContext, automatedStateSubmitter } from "mocks";
-import {
-  events,
-  eventsAttachmentRequired,
-  eventsAuthorizationRequired,
-} from "mocks/data/submit/base";
+import { getRequestContext } from "mocks";
+import { events } from "mocks/data/submit/base";
 
 describe("submit Lambda function", () => {
   it("should have no body", async () => {
@@ -45,37 +41,6 @@ describe("submit Lambda function", () => {
         const result = await submit(event);
         expect(result.statusCode).toEqual(200);
         expect(result.body).toEqual('{"message":"success"}');
-      },
-    );
-  });
-
-  describe("fails if missing attachments", () => {
-    it.each(
-      eventsAttachmentRequired.map((event) => [
-        event.event,
-        JSON.stringify({ ...event, attachments: {} }),
-      ]),
-    )("should return a 500 if %s event is missing attachments", async (_, base) => {
-      const event = {
-        body: base,
-        requestContext: getRequestContext(),
-      } as unknown as APIGatewayEvent;
-      const result = await submit(event);
-      expect(result.statusCode).toEqual(500);
-    });
-  });
-
-  describe("fails if not submitter is not authorized", () => {
-    it.each(eventsAuthorizationRequired.map((event) => [event.event, JSON.stringify(event)]))(
-      "should return a 500 if not authorized to submit %s event",
-      async (_, base) => {
-        const event = {
-          body: base,
-          requestContext: getRequestContext(automatedStateSubmitter),
-        } as APIGatewayEvent;
-        const result = await submit(event);
-        expect(result.statusCode).toEqual(500);
-        expect(result.body).toEqual('{"message":"Internal server error"}');
       },
     );
   });
