@@ -16,7 +16,7 @@ export interface ExternalAppLandingPageConfig {
   buttonLabel: string;
   buttonLink: EXTERNAL_APP;
 }
-const MACProLogo = () => <img src={"/macpro.png"} alt={"MACPro system logo"} />;
+const MACProLogo = () => <img src="/macpro.png" alt="MACPro system logo" />;
 const FAQHelperText = () => (
   <span className="max-w-xl">
     <i>
