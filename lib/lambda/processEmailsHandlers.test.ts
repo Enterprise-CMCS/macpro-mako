@@ -3,7 +3,6 @@ import { Context } from "aws-lambda";
 import { SESClient } from "@aws-sdk/client-ses";
 import { handler } from "./processEmails";
 import { KafkaRecord, KafkaEvent } from "shared-types";
-import { getRequestContext } from "mocks";
 import { Authority } from "shared-types";
 
 const nms = "new-medicaid-submission";
@@ -129,8 +128,6 @@ describe("process emails  Handler", () => {
       eventSource: "",
       bootstrapServers: "",
     };
-    const x = getRequestContext();
-    console.log(x);
     await handler(mockEvent, {} as Context, callback);
     expect(secSPY).toHaveBeenCalledTimes(2);
   });
