@@ -81,6 +81,8 @@ export class ParentStack extends cdk.Stack {
       openSearchDomainEndpoint: dataStack.openSearchDomainEndpoint,
       alertsTopic: alertsStack.topic,
       attachmentsBucket: uploadsStack.attachmentsBucket,
+      notificationSecretName: props.notificationSecretName,
+      notificationSecretArn: props.notificationSecretArn,
     });
 
     const authStack = new Stacks.Auth(this, "auth", {

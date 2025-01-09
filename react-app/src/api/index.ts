@@ -5,6 +5,7 @@ export * from "./useGetUser";
 export * from "./getAttachmentUrl";
 export * from "./useGetPackageActions";
 export * from "./useGetCPOCs";
+export * from "./useGetSystemNotifs";
 export * from "./useGetTypes";
 export * from "./amplifyConfig";
 export * from "./itemExists";
