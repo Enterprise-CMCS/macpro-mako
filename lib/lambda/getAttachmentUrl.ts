@@ -31,7 +31,7 @@ export const handler = async (event: APIGatewayEvent) => {
     const body = JSON.parse(event.body);
 
     const mainResult = await getPackage(body.id);
-    if (!mainResult) {
+    if (!mainResult || !mainResult.found) {
       return response({
         statusCode: 404,
         body: { message: "No record found for the given id" },
@@ -46,7 +46,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
       if (!stateAccessAllowed) {
         return response({
-          statusCode: 404,
+          statusCode: 403,
           body: { message: "state access not permitted for the given id" },
         });
       }
@@ -97,7 +97,7 @@ async function getClient(bucket: string) {
     const assumedCredentials = assumedRoleResponse.Credentials;
 
     if (!assumedCredentials) {
-      throw new Error("No assumed redentials");
+      throw new Error("No assumed credentials");
     }
 
     // Create S3 client using the assumed role's credentials
