@@ -2,7 +2,6 @@ import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/comp
 import { ReactNode } from "react";
 import { Attachment, AttachmentKey, AttachmentTitle } from "shared-types";
 import { styles } from "./email-styles";
-import { ONEMAC_LOGO_BASE64 } from "./onemac-logo-base64";
 
 export const EMAIL_CONFIG = {
   DEV_EMAIL: "mako.stateuser+dev-to@gmail.com",
@@ -52,7 +51,7 @@ const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
         height={40}
         width={112}
         style={{ maxWidth: "112px" }}
-        src={`data:image/png;base64,${ONEMAC_LOGO_BASE64}`}
+        src={`${appEndpointUrl}onemac-logo.png`}
         alt="OneMAC Logo"
       />
     </Link>
@@ -157,7 +156,12 @@ const Attachments = ({
                 verticalAlign: "top",
               }}
             >
-              <Text style={{ ...styles.text.title }}>{group.label}:</Text>
+              {group.files.map((file, index) => (
+                <span key={file.filename + index}>
+                  <Text style={{ ...styles.text.title }}>{group.label}:</Text>{" "}
+                  {index < (group.files?.length ?? 0) - 1 && <br />}
+                </span>
+              ))}
             </Column>
             <Column style={{ verticalAlign: "top" }}>
               <Text style={styles.text.description}>
@@ -219,9 +223,11 @@ const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
 const FollowUpNotice = ({
   isChip,
   includeStateLead = true,
+  includeDidNotExpect = true,
 }: {
   isChip?: boolean;
   includeStateLead?: boolean;
+  includeDidNotExpect?: boolean;
 }) => (
   <>
     <Divider />
@@ -238,7 +244,9 @@ const FollowUpNotice = ({
     ) : (
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
-          If you have any questions or did not expect this email, please contact{" "}
+          {`If you have any questions${
+            includeDidNotExpect ? " or did not expect this email" : ""
+          }, please contact `}
           <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`} style={{ textDecoration: "underline" }}>
             {EMAIL_CONFIG.SPA_EMAIL}
           </Link>

@@ -1,21 +1,26 @@
 import { handleOpensearchError } from "./utils";
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
-import { Index } from "shared-types/opensearch";
+import { BaseIndex } from "shared-types/opensearch";
 import { validateEnvVariable } from "shared-utils";
 import { getStateFilter } from "../libs/api/auth/user";
 import { getAppkChildren } from "../libs/api/package";
 import * as os from "../libs/opensearch-lib";
+import { getDomainAndNamespace } from "libs/utils";
 
 // Handler function to search index
 export const getSearchData = async (event: APIGatewayEvent) => {
   validateEnvVariable("osDomain");
+
   if (!event.pathParameters || !event.pathParameters.index) {
     return response({
       statusCode: 400,
       body: { message: "Index path parameter required" },
     });
   }
+
+  const { domain, index } = getDomainAndNamespace(event.pathParameters.index as BaseIndex);
+
   try {
     let query: any = {};
     if (event.body) {
@@ -42,11 +47,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     query.from = query.from || 0;
     query.size = query.size || 100;
 
-    const results = await os.search(
-      process.env.osDomain as string,
-      `${process.env.indexNamespace}${event.pathParameters.index}` as Index,
-      query,
-    );
+    const results = await os.search(domain, index, query);
 
     for (let i = 0; i < results?.hits?.hits?.length; i++) {
       if (results.hits.hits[i]._source?.appkParent) {
