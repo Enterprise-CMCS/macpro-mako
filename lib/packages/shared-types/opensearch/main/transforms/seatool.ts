@@ -72,7 +72,7 @@ const getRaiDate = (data: SeaTool) => {
 };
 
 const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
-  epocDate !== null && epocDate !== undefined ? new Date(epocDate).toISOString() : null;
+  epocDate !== null && epocDate !== undefined ? new Date(epocDate).toISOString() : undefined;
 
 const compileSrtList = (
   officers: SeatoolOfficer[] | null | undefined,
