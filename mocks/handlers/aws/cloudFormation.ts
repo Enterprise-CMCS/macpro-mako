@@ -4,7 +4,8 @@ import exports from "../../data/cloudFormationsExports";
 
 const defaultCloudFormationHandler = http.post(
   `https://cloudformation.us-east-1.amazonaws.com/`,
-  async () => {
+  async ({ request }) => {
+    console.log("defaultCloudFormationHandler", { request, headers: request.headers });
     let xmlResponse = `
   <ListExportsResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">
   <ListExportsResult>

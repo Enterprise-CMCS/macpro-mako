@@ -10,24 +10,32 @@ const generateSessionToken = (): string | null => {
   return null;
 };
 
-const defaultApiTokenHandler = http.put(/\/api\/token/, () => {
+const defaultApiTokenHandler = http.put(/\/api\/token/, ({ request }) => {
+  console.log("defaultApiTokenHandler", { request, headers: request.headers });
   return HttpResponse.text(generateSessionToken());
 });
 
-const defaultSecurityCredentialsHandler = http.get(/\/meta-data\/iam\/security-credentials/, () => {
-  return HttpResponse.json({
-    Code: "Success",
-    LastUpdated: new Date().toISOString(),
-    Type: "AWS-HMAC",
-    AccessKeyId: ACCESS_KEY_ID,
-    SecretAccessKey: SECRET_KEY,
-    Token: generateSessionToken(),
-    Expiration: "2017-05-17T15:09:54Z",
-  });
-});
+const defaultSecurityCredentialsHandler = http.get(
+  /\/meta-data\/iam\/security-credentials/,
+  ({ request }) => {
+    console.log("defaultSecurityCredentialsHandler", { request, headers: request.headers });
+    return HttpResponse.json({
+      Code: "Success",
+      LastUpdated: new Date().toISOString(),
+      Type: "AWS-HMAC",
+      AccessKeyId: ACCESS_KEY_ID,
+      SecretAccessKey: SECRET_KEY,
+      Token: generateSessionToken(),
+      Expiration: "2017-05-17T15:09:54Z",
+    });
+  },
+);
 
-const defaultSecurityTokenServiceHandler = http.post("https://sts.us-east-1.amazonaws.com/", () => {
-  const xmlResponse = `
+const defaultSecurityTokenServiceHandler = http.post(
+  "https://sts.us-east-1.amazonaws.com/",
+  ({ request }) => {
+    console.log("defaultSecurityTokenServiceHandler", { request, headers: request.headers });
+    const xmlResponse = `
   <AssumeRoleResponse xmlns="https://sts.amazonaws.com/doc/2011-06-15/">
     <AssumeRoleResult>
       <SourceIdentity>DevUser123</SourceIdentity>
@@ -49,8 +57,9 @@ const defaultSecurityTokenServiceHandler = http.post("https://sts.us-east-1.amaz
   </AssumeRoleResponse>
 `;
 
-  return HttpResponse.xml(xmlResponse);
-});
+    return HttpResponse.xml(xmlResponse);
+  },
+);
 
 export const errorSecurityTokenServiceHandler = http.post(
   "https://sts.us-east-1.amazonaws.com/",

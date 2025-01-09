@@ -1,12 +1,12 @@
 import { CommonEmailVariables, Events } from "shared-types";
-import { formatNinetyDaysDate, formatDate } from "shared-utils";
+import { formatNinetyDaysDate, formatDate, formatActionType } from "shared-utils";
 import { Text } from "@react-email/components";
 import {
   PackageDetails,
   FollowUpNotice,
   DetailsHeading,
-  Attachments,
   MailboxNotice,
+  BasicFooter,
 } from "../../email-components";
 import { styles } from "../../email-styles";
 import { BaseEmailTemplate } from "../../email-templates";
@@ -14,17 +14,23 @@ import { BaseEmailTemplate } from "../../email-templates";
 export const Waiver1915bStateEmail = (props: {
   variables:
     | (Events["CapitatedInitial"] & CommonEmailVariables)
-    | (Events["ContractingInitial"] & CommonEmailVariables);
+    | (Events["CapitatedRenewal"] & CommonEmailVariables)
+    | (Events["CapitatedAmendment"] & CommonEmailVariables)
+    | (Events["ContractingInitial"] & CommonEmailVariables)
+    | (Events["ContractingRenewal"] & CommonEmailVariables)
+    | (Events["ContractingAmendment"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
-  const previewText = `${variables.authority} ${variables.actionType} Submitted`;
-  const heading = `This response confirms the submission of your ${variables.authority} ${variables.actionType} to CMS for review:`;
+  const previewText = `${variables.authority} ${formatActionType(variables.actionType)} Submitted`;
+  const heading = `This response confirms the submission of your ${
+    variables.authority
+  } ${formatActionType(variables.actionType)} waiver to CMS for review:`;
   return (
     <BaseEmailTemplate
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<FollowUpNotice />}
+      footerContent={<BasicFooter />}
     >
       <DetailsHeading />
       <PackageDetails
@@ -32,22 +38,22 @@ export const Waiver1915bStateEmail = (props: {
           "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
-          [`${variables.actionType} Number`]: variables.id,
+          [`${formatActionType(variables.actionType)} Waiver Number`]: variables.id,
           "Waiver Authority": variables.authority,
           "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
           Summary: variables.additionalInformation,
         }}
       />
-      <Attachments attachments={variables.attachments} />
       <Text style={{ ...styles.text, marginTop: "16px" }}>
-        {`This response confirms the receipt of your Waiver request. You
+        {`This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
               ${formatNinetyDaysDate(variables.timestamp)}
               .`}
       </Text>
       <MailboxNotice type="Waiver" />
+      <FollowUpNotice includeDidNotExpect={false} />
     </BaseEmailTemplate>
   );
 };

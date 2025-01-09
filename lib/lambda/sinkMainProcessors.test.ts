@@ -7,7 +7,7 @@ import {
 import * as sinkLib from "libs";
 import { Document, seatool } from "shared-types/opensearch/main";
 import { offsetToUtc } from "shared-utils";
-import { KafkaRecord } from "lib/packages/shared-types";
+import { KafkaRecord } from "shared-types";
 
 const convertObjToBase64 = (obj: object) => Buffer.from(JSON.stringify(obj)).toString("base64");
 
@@ -115,7 +115,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
           statusDate: offsetToUtc(new Date(1732645041526)).toISOString(),
           proposedDate: 1732597200000,
           subject: null,
-          submissionDate: "2024-11-26T00:00:00.000Z",
+          submissionDate: "2024-11-26T18:17:21.526Z",
           submitterEmail: "george@example.com",
           submitterName: "George Harrison",
           initialIntakeNeeded: true,
