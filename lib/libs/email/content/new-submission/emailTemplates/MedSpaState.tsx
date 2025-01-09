@@ -23,7 +23,6 @@ export const MedSpaStateEmail = (props: {
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
     >
-      <DetailsHeading />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,

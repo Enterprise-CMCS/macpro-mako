@@ -1636,16 +1636,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                     >
                       This is confirmation that you submitted a CHIP State Plan Amendment to CMS for review:
                     </h1>
-                    <div>
-                      <hr
-                        style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                      />
-                      <h2
-                        style="font-size: 16px;"
-                      >
-                        Details:
-                      </h2>
-                    </div>
                     <table
                       align="center"
                       border="0"
@@ -1971,16 +1961,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                   >
                     This is confirmation that you submitted a CHIP State Plan Amendment to CMS for review:
                   </h1>
-                  <div>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
-                    <h2
-                      style="font-size: 16px;"
-                    >
-                      Details:
-                    </h2>
-                  </div>
                   <table
                     align="center"
                     border="0"
@@ -2862,16 +2842,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                     >
                       This is confirmation that you submitted a CHIP State Plan Amendment to CMS for review:
                     </h1>
-                    <div>
-                      <hr
-                        style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                      />
-                      <h2
-                        style="font-size: 16px;"
-                      >
-                        Details:
-                      </h2>
-                    </div>
                     <table
                       align="center"
                       border="0"
@@ -3196,16 +3166,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                     >
                       This response confirms that you submitted a Medicaid SPA to CMS for review:
                     </h1>
-                    <div>
-                      <hr
-                        style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                      />
-                      <h2
-                        style="font-size: 16px;"
-                      >
-                        Details:
-                      </h2>
-                    </div>
                     <table
                       align="center"
                       border="0"
@@ -3632,16 +3592,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                   >
                     This response confirms that you submitted a Medicaid SPA to CMS for review:
                   </h1>
-                  <div>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
-                    <h2
-                      style="font-size: 16px;"
-                    >
-                      Details:
-                    </h2>
-                  </div>
                   <table
                     align="center"
                     border="0"
@@ -4624,16 +4574,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                     >
                       This is confirmation that you submitted a CHIP State Plan Amendment to CMS for review:
                     </h1>
-                    <div>
-                      <hr
-                        style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                      />
-                      <h2
-                        style="font-size: 16px;"
-                      >
-                        Details:
-                      </h2>
-                    </div>
                     <table
                       align="center"
                       border="0"
@@ -4958,16 +4898,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                     >
                       This response confirms that you submitted a Medicaid SPA to CMS for review:
                     </h1>
-                    <div>
-                      <hr
-                        style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                      />
-                      <h2
-                        style="font-size: 16px;"
-                      >
-                        Details:
-                      </h2>
-                    </div>
                     <table
                       align="center"
                       border="0"
@@ -6951,16 +6881,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                     >
                       This is confirmation that you submitted a CHIP State Plan Amendment to CMS for review:
                     </h1>
-                    <div>
-                      <hr
-                        style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                      />
-                      <h2
-                        style="font-size: 16px;"
-                      >
-                        Details:
-                      </h2>
-                    </div>
                     <table
                       align="center"
                       border="0"
@@ -7285,16 +7205,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                     >
                       This response confirms that you submitted a Medicaid SPA to CMS for review:
                     </h1>
-                    <div>
-                      <hr
-                        style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                      />
-                      <h2
-                        style="font-size: 16px;"
-                      >
-                        Details:
-                      </h2>
-                    </div>
                     <table
                       align="center"
                       border="0"
@@ -8220,16 +8130,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                     >
                       This response confirms the submission of your 1915(b) Initial waiver to CMS for review:
                     </h1>
-                    <div>
-                      <hr
-                        style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                      />
-                      <h2
-                        style="font-size: 16px;"
-                      >
-                        Details:
-                      </h2>
-                    </div>
                     <table
                       align="center"
                       border="0"
@@ -8725,16 +8625,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                   >
                     This response confirms the submission of your 1915(b) Initial waiver to CMS for review:
                   </h1>
-                  <div>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
-                    <h2
-                      style="font-size: 16px;"
-                    >
-                      Details:
-                    </h2>
-                  </div>
                   <table
                     align="center"
                     border="0"
@@ -9786,16 +9676,6 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                     >
                       This is confirmation that you submitted a CHIP State Plan Amendment to CMS for review:
                     </h1>
-                    <div>
-                      <hr
-                        style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                      />
-                      <h2
-                        style="font-size: 16px;"
-                      >
-                        Details:
-                      </h2>
-                    </div>
                     <table
                       align="center"
                       border="0"
@@ -10120,16 +10000,6 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                     >
                       This response confirms that you submitted a Medicaid SPA to CMS for review:
                     </h1>
-                    <div>
-                      <hr
-                        style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                      />
-                      <h2
-                        style="font-size: 16px;"
-                      >
-                        Details:
-                      </h2>
-                    </div>
                     <table
                       align="center"
                       border="0"
@@ -11055,16 +10925,6 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                     >
                       This response confirms the submission of your 1915(b) Initial waiver to CMS for review:
                     </h1>
-                    <div>
-                      <hr
-                        style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                      />
-                      <h2
-                        style="font-size: 16px;"
-                      >
-                        Details:
-                      </h2>
-                    </div>
                     <table
                       align="center"
                       border="0"
@@ -11559,16 +11419,6 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                     >
                       This response confirms the submission of your 1915(b) Initial waiver to CMS for review:
                     </h1>
-                    <div>
-                      <hr
-                        style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                      />
-                      <h2
-                        style="font-size: 16px;"
-                      >
-                        Details:
-                      </h2>
-                    </div>
                     <table
                       align="center"
                       border="0"
@@ -12064,16 +11914,6 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                   >
                     This response confirms the submission of your 1915(b) Initial waiver to CMS for review:
                   </h1>
-                  <div>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
-                    <h2
-                      style="font-size: 16px;"
-                    >
-                      Details:
-                    </h2>
-                  </div>
                   <table
                     align="center"
                     border="0"

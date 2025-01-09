@@ -28,7 +28,6 @@ export const Waiver1915bStateEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <DetailsHeading />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,

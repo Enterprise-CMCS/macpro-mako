@@ -23,8 +23,7 @@ export const MedSpaCMSEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <DetailsHeading />
-      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} useThisLink />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,

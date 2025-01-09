@@ -19,7 +19,6 @@ export const ChipSpaStateEmail = (props: {
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
     >
-      <DetailsHeading />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,
