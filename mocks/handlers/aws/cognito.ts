@@ -142,7 +142,8 @@ export const getRequestContext = (user?: TestUserData | string): APIGatewayEvent
   } as APIGatewayEventRequestContext;
 };
 
-export const signInHandler = http.post(/amazoncognito.com\/oauth2\/token/, async () => {
+export const signInHandler = http.post(/amazoncognito.com\/oauth2\/token/, async ({ request }) => {
+  console.log("signInHandler", { request, headers: request.headers });
   if (process.env.MOCK_USER_USERNAME) {
     const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
     if (user) {
@@ -164,10 +165,7 @@ export const signInHandler = http.post(/amazoncognito.com\/oauth2\/token/, async
 export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
   /cognito-identity/,
   async ({ request }) => {
-    console.log("identityServiceHandler", {
-      request,
-      headers: request.headers,
-    });
+    console.log("identityServiceHandler", { request, headers: request.headers });
     const target = request.headers.get("x-amz-target");
     if (target) {
       if (target == "AWSCognitoIdentityService.GetId") {
@@ -239,10 +237,7 @@ export const identityProviderServiceHandler = http.post<
   PathParams,
   IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody | AdminGetUserRequestBody
 >(/https:\/\/cognito-idp.\S*.amazonaws.com\//, async ({ request }) => {
-  console.log("identityProviderServiceHandler", {
-    request,
-    headers: request.headers,
-  });
+  console.log("identityProviderServiceHandler", { request, headers: request.headers });
   const target = request.headers.get("x-amz-target");
   if (target) {
     if (target == "AWSCognitoIdentityProviderService.InitiateAuth") {
