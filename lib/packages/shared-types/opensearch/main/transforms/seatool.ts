@@ -72,6 +72,7 @@ const getRaiDate = (data: SeaTool) => {
 };
 
 const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
+  // `undefined` fallback value is ignored by opensearch and doesn't overwrite the existing record value
   epocDate !== null && epocDate !== undefined ? new Date(epocDate).toISOString() : undefined;
 
 const compileSrtList = (
