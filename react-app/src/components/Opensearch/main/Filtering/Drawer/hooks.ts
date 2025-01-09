@@ -1,23 +1,19 @@
-import { useState, useEffect, useMemo } from "react";
 import { useGetUser } from "@/api";
+import { useEffect, useMemo, useState } from "react";
 import { UserRoles, opensearch } from "shared-types";
 
-import * as C from "./consts";
+import { checkMultiFilter, useOsAggregate, useOsUrl } from "@/components";
 import { useLabelMapping } from "@/hooks";
 import { useFilterDrawerContext } from "../FilterProvider";
-import { checkMultiFilter, useOsAggregate, useOsUrl } from "@/components";
+import * as C from "./consts";
 
-type FilterGroup = Partial<
-  Record<opensearch.main.Field, C.DrawerFilterableGroup>
->;
+type FilterGroup = Partial<Record<opensearch.main.Field, C.DrawerFilterableGroup>>;
 
 export const useFilterState = () => {
   const { data: user } = useGetUser();
   const url = useOsUrl();
 
-  const isCms =
-    !!user?.isCms &&
-    !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK);
+  const isCms = !!user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK);
 
   const filters: FilterGroup = (() => {
     // ------------------------ SPAS ------------------------ //
@@ -150,6 +146,7 @@ export const useFilterDrawer = () => {
       }, {} as any);
     });
     setAccordionValues(updateAccordions);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url.state.filters, drawer.drawerOpen]);
 
   const aggs = useMemo(() => {
@@ -167,7 +164,7 @@ export const useFilterDrawer = () => {
       },
       {} as Record<opensearch.main.Field, { label: string; value: string }[]>,
     );
-  }, [_aggs]);
+  }, [_aggs, labelMap]);
 
   return {
     aggs,
