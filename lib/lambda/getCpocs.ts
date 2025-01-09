@@ -2,13 +2,12 @@ import { handleOpensearchError } from "./utils";
 import { APIGatewayEvent } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import { response } from "libs/handler-lib";
+import { getDomainAndNamespace } from "libs/utils";
 
 // type GetCpocsBody = object;
 
 export const queryCpocs = async () => {
-  if (!process.env.osDomain) {
-    throw new Error("process.env.osDomain must be defined");
-  }
+  const { index, domain } = getDomainAndNamespace("cpocs");
 
   const query = {
     size: 1000,
@@ -20,11 +19,7 @@ export const queryCpocs = async () => {
       },
     ],
   };
-  return await os.search(
-    process.env.osDomain,
-    `${process.env.indexNamespace}cpocs`,
-    query,
-  );
+  return await os.search(domain, index, query);
 };
 
 export const getCpocs = async (event: APIGatewayEvent) => {
@@ -47,7 +42,7 @@ export const getCpocs = async (event: APIGatewayEvent) => {
       body: result,
     });
   } catch (err) {
-    return response(handleOpensearchError(err))
+    return response(handleOpensearchError(err));
   }
 };
 

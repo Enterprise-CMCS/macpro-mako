@@ -7,7 +7,7 @@ import {
 import * as sinkLib from "libs";
 import { Document, seatool } from "shared-types/opensearch/main";
 import { offsetToUtc } from "shared-utils";
-import { KafkaRecord } from "lib/packages/shared-types";
+import { KafkaRecord } from "shared-types";
 
 const convertObjToBase64 = (obj: object) => Buffer.from(JSON.stringify(obj)).toString("base64");
 

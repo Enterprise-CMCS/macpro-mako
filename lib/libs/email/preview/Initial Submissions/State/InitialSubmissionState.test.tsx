@@ -5,8 +5,8 @@ import AppKCMSEmailPreview from "./AppK";
 import ChipSpaStateEmailPreview from "./CHIP_SPA";
 import MedSpaStateEmailPreview from "./Medicaid_SPA";
 import TempExtStatePreview from "./Temp_Extension";
-import Waiver1915bStateEmailPreview from "./Waiver_Capitated";
-import Waiver1915bContractingStateEmailPreview from "./Waiver_Contracting";
+import * as WaiverCapitated from "./Waiver_Capitated";
+import * as WaiverContracting from "./Waiver_Contracting";
 
 describe("Initial Submission State Email Snapshot Test", () => {
   it("renders a AppKCMSEmailPreview Preview Template", () => {
@@ -29,14 +29,34 @@ describe("Initial Submission State Email Snapshot Test", () => {
 
     expect(template).toMatchSnapshot();
   });
-  it("renders a Waiver Capitated Preview Template", () => {
-    const template = render(<Waiver1915bStateEmailPreview />);
+  it("renders a Initial Capitated Waiver Preview Template", () => {
+    const template = render(<WaiverCapitated.Waiver1915bStateCapitatedInitialEmailPreview />);
 
     expect(template).toMatchSnapshot();
   });
-});
-it("renders a Waiver Contracting Preview Template", () => {
-  const template = render(<Waiver1915bContractingStateEmailPreview />);
+  it("renders a Renewal Capitated Waiver Preview Template", () => {
+    const template = render(<WaiverCapitated.Waiver1915bStateCapitatedRenewalEmailPreview />);
 
-  expect(template).toMatchSnapshot();
+    expect(template).toMatchSnapshot();
+  });
+  it("renders a Amendment Capitated Waiver Preview Template", () => {
+    const template = render(<WaiverCapitated.Waiver1915bStateCapitatedAmendmentEmailPreview />);
+
+    expect(template).toMatchSnapshot();
+  });
+  it("renders a Initial Contracting Waiver Preview Template", () => {
+    const template = render(<WaiverContracting.Waiver1915bContractingStateInitialEmailPreview />);
+
+    expect(template).toMatchSnapshot();
+  });
+  it("renders a Renewal Contracting Waiver Preview Template", () => {
+    const template = render(<WaiverContracting.Waiver1915bContractingStateRenewalEmailPreview />);
+
+    expect(template).toMatchSnapshot();
+  });
+  it("renders a Amendment Contracting Waiver Preview Template", () => {
+    const template = render(<WaiverContracting.Waiver1915bContractingStateAmendmentEmailPreview />);
+
+    expect(template).toMatchSnapshot();
+  });
 });

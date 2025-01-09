@@ -12,8 +12,6 @@ export type StateUser = {
   formattedEmailAddress: string;
 };
 
-const cognitoClient = new CognitoIdentityProviderClient();
-
 export const getAllStateUsers = async ({
   userPoolId,
   state,
@@ -26,14 +24,15 @@ export const getAllStateUsers = async ({
       UserPoolId: userPoolId,
       Limit: 60,
     };
-
     const command = new ListUsersCommand(params);
+    const cognitoClient = new CognitoIdentityProviderClient({
+      region: process.env.region,
+    });
     const response: ListUsersCommandOutput = await cognitoClient.send(command);
 
     if (!response.Users || response.Users.length === 0) {
       return [];
     }
-
     const filteredStateUsers = response.Users.filter((user) => {
       const stateAttribute = user.Attributes?.find((attr) => attr.Name === "custom:state");
       return stateAttribute?.Value?.split(",").includes(state);
@@ -42,7 +41,6 @@ export const getAllStateUsers = async ({
         acc[attr.Name as any] = attr.Value;
         return acc;
       }, {} as Record<string, string | undefined>);
-
       return {
         firstName: attributes?.["given_name"],
         lastName: attributes?.["family_name"],

@@ -4,7 +4,7 @@ import { getPackage } from "libs/api/package";
 import { produceMessage } from "libs/api/kafka";
 import { ItemResult } from "shared-types/opensearch/main";
 import { getPackageType } from "./getPackageType";
-import { events } from "lib/packages/shared-types";
+import { events } from "shared-types";
 import { z } from "zod";
 
 const sendDeleteMessage = async (packageId: string) => {

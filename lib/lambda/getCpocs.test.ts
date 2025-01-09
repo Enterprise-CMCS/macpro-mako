@@ -12,10 +12,10 @@ describe("getCpocs Handler", () => {
     const res = await handler(event);
 
     expect(res.statusCode).toEqual(400);
-    expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }))
+    expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
   });
 
-  // TODO - should this be removed? when will the result be empty and not 
+  // TODO - should this be removed? when will the result be empty and not
   // just a result with an empty hit array
   it("should return 400 if no Cpocs are found", async () => {
     mockedServiceServer.use(emptyCpocSearchHandler);
@@ -25,7 +25,7 @@ describe("getCpocs Handler", () => {
     const res = await handler(event);
 
     expect(res.statusCode).toEqual(400);
-    expect(res.body).toEqual(JSON.stringify({ message: "No Cpocs found" }))
+    expect(res.body).toEqual(JSON.stringify({ message: "No Cpocs found" }));
   });
 
   it("should return 200 with the result if Cpocs are found", async () => {
@@ -46,6 +46,6 @@ describe("getCpocs Handler", () => {
     const res = await handler(event);
 
     expect(res.statusCode).toEqual(500);
-    expect(res.body).toEqual(JSON.stringify({ error: "Internal server error", message: "Response Error" }))
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
   });
 });
