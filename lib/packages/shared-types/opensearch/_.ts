@@ -50,7 +50,7 @@ export type Filterable<_FIELD> = {
 };
 
 export type QueryState<_FIELD> = {
-  sort: { field: _FIELD; order: "asc" | "desc" };
+  sort: Array<{ field: _FIELD; order: "asc" | "desc" }>;
   pagination: { number: number; size: number };
   filters: Filterable<_FIELD>[];
   search?: string;

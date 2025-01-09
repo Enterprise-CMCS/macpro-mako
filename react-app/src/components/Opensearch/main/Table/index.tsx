@@ -1,10 +1,10 @@
 import * as UI from "@/components";
-import type { FC } from "react";
-import { OsTableColumn } from "./types";
-import { useOsContext } from "../Provider";
-import { useOsUrl, LoadingSpinner } from "@/components";
+import { LoadingSpinner, useOsUrl } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+import type { FC } from "react";
 import { opensearch } from "shared-types";
+import { useOsContext } from "../Provider";
+import { OsTableColumn } from "./types";
 
 export const OsTable: FC<{
   columns: OsTableColumn[];
@@ -19,22 +19,45 @@ export const OsTable: FC<{
         <UI.TableRow>
           {props.columns.map((TH) => {
             if (TH.hidden) return null;
+
+            const currentSort = url.state.sort.find((s) => s.field === TH.field);
+            console.log("sorted:", currentSort);
+
             return (
               <UI.TableHead
                 {...(!!TH.props && TH.props)}
                 key={`TH-${TH.field}`}
-                isActive={url.state.sort.field === TH.field}
-                desc={url.state.sort.order === "desc"}
+                // isActive={url.state.sort.field === TH.field}
+                isActive={!!currentSort}
+                desc={currentSort?.order === "desc"}
                 {...(TH.isSystem && { className: "pointer-events-none" })}
                 onClick={() => {
                   if (!TH.field) return;
-                  url.onSet((s) => ({
-                    ...s,
-                    sort: {
-                      field: TH.field as opensearch.main.Field,
-                      order: s.sort.order === "desc" ? "asc" : "desc",
-                    },
-                  }));
+                  url.onSet((s) => {
+                    const existingSortIndex = s.sort.findIndex((sort) => sort.field === TH.field);
+                    let newSort;
+
+                    if (existingSortIndex > -1) {
+                      // Update the existing sort field order
+                      newSort = [...s.sort];
+                      const currentOrder = newSort[existingSortIndex].order;
+
+                      // Toggle the order or remove the sort if toggled off
+                      if (currentOrder === "desc") {
+                        newSort.splice(existingSortIndex, 1); // Remove sort if toggled off
+                      } else {
+                        newSort[existingSortIndex].order = "desc";
+                      }
+                    } else {
+                      // Add a new sort entry
+                      newSort = [
+                        ...s.sort,
+                        { field: TH.field as opensearch.main.Field, order: "asc" },
+                      ];
+                    }
+
+                    return { ...s, sort: newSort };
+                  });
                 }}
               >
                 {TH.label}
@@ -60,8 +83,7 @@ export const OsTable: FC<{
               <div className="absolute right-[50%] translate-x-[50%] translate-y-[50%] font-medium text-lg text-gray-500">
                 No Results Found
                 <p className="absolute right-[50%] translate-x-[50%] translate-y-[50%] text-sm whitespace-nowrap h-[20px]">
-                  Adjust your search and filter to find what you are looking
-                  for.
+                  Adjust your search and filter to find what you are looking for.
                 </p>
               </div>
             </UI.TableCell>
