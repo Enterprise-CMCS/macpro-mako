@@ -1,6 +1,6 @@
 import { Events, Authority, EmailAddresses, CommonEmailVariables } from "shared-types";
+import { formatActionType } from "shared-utils";
 import { AuthoritiesWithUserTypesTemplate } from "../..";
-
 import {
   MedSpaCMSEmail,
   MedSpaStateEmail,
@@ -76,7 +76,9 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Your ${variables.actionType} ${variables.id} has been submitted to CMS`,
+        subject: `Your ${formatActionType(variables.actionType)} ${
+          variables.id
+        } has been submitted to CMS`,
         body: await render(<Waiver1915bStateEmail variables={variables} />),
       };
     },

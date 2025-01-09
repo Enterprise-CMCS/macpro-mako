@@ -1,30 +1,28 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { send, SUCCESS, FAILED } from "cfn-response-async";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { handler } from "./mapRole";
+import { Context } from "aws-lambda";
+import {
+  CLOUDFORMATION_NOTIFICATION_DOMAIN,
+  OPENSEARCH_DOMAIN,
+  errorSecurityRolesMappingHandler,
+} from "mocks";
+import { mockedServiceServer as mockedServer } from "mocks/server";
 import * as os from "../libs/opensearch-lib";
 
-vi.mock("cfn-response-async", () => ({
-  send: vi.fn(),
-  SUCCESS: "SUCCESS",
-  FAILED: "FAILED",
-}));
-
-vi.mock("../libs/opensearch-lib", () => ({
-  mapRole: vi.fn(),
-}));
-
 describe("CloudFormation Custom Resource Handler", () => {
-  const mockContext = {};
   const mockEventBase = {
+    ResponseURL: CLOUDFORMATION_NOTIFICATION_DOMAIN,
     ResourceProperties: {
-      OsDomain: "test-domain",
+      OsDomain: OPENSEARCH_DOMAIN,
       MasterRoleToAssume: "master-role",
       OsRoleName: "os-role",
       IamRoleName: "iam-role",
     },
   };
+  const mapRoleSpy = vi.spyOn(os, "mapRole");
+  const callback = vi.fn();
 
-  beforeEach(() => {
+  afterEach(() => {
     vi.clearAllMocks();
   });
 
@@ -34,23 +32,15 @@ describe("CloudFormation Custom Resource Handler", () => {
       RequestType: "Create",
     };
 
-    (os.mapRole as vi.Mock).mockResolvedValueOnce("Role mapped successfully");
+    await handler(mockEvent, {} as Context, callback);
 
-    await handler(mockEvent, mockContext);
-
-    expect(os.mapRole).toHaveBeenCalledWith(
+    expect(mapRoleSpy).toHaveBeenCalledWith(
       mockEvent.ResourceProperties.OsDomain,
       mockEvent.ResourceProperties.MasterRoleToAssume,
       mockEvent.ResourceProperties.OsRoleName,
       mockEvent.ResourceProperties.IamRoleName,
     );
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
   it("should call os.mapRole on Update request type", async () => {
@@ -59,23 +49,15 @@ describe("CloudFormation Custom Resource Handler", () => {
       RequestType: "Update",
     };
 
-    (os.mapRole as vi.Mock).mockResolvedValueOnce("Role mapped successfully");
+    await handler(mockEvent, {} as Context, callback);
 
-    await handler(mockEvent, mockContext);
-
-    expect(os.mapRole).toHaveBeenCalledWith(
+    expect(mapRoleSpy).toHaveBeenCalledWith(
       mockEvent.ResourceProperties.OsDomain,
       mockEvent.ResourceProperties.MasterRoleToAssume,
       mockEvent.ResourceProperties.OsRoleName,
       mockEvent.ResourceProperties.IamRoleName,
     );
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
   it("should do nothing on Delete request type", async () => {
@@ -84,34 +66,22 @@ describe("CloudFormation Custom Resource Handler", () => {
       RequestType: "Delete",
     };
 
-    await handler(mockEvent, mockContext);
+    await handler(mockEvent, {} as Context, callback);
 
-    expect(os.mapRole).not.toHaveBeenCalled();
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      SUCCESS,
-      {},
-      "static",
-    );
+    expect(mapRoleSpy).not.toHaveBeenCalled();
+    expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
   it("should send FAILED status on error", async () => {
+    mockedServer.use(errorSecurityRolesMappingHandler);
+
     const mockEvent = {
       ...mockEventBase,
       RequestType: "Create",
     };
 
-    (os.mapRole as vi.Mock).mockRejectedValueOnce(new Error("Test error"));
-
-    await handler(mockEvent, mockContext);
-
-    expect(send).toHaveBeenCalledWith(
-      mockEvent,
-      mockContext,
-      FAILED,
-      {},
-      "static",
-    );
+    await handler(mockEvent, {} as Context, callback);
+    expect(mapRoleSpy).toHaveBeenCalled();
+    expect(callback).toHaveBeenCalledWith(expect.any(Error), { statusCode: 500 });
   });
 });
