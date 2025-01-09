@@ -23,7 +23,9 @@ export const handler: Handler = async (event, _, callback) => {
 };
 
 export const deleteAllTriggersForFunctions = async (functions: string[]) => {
-  const lambdaClient = new LambdaClient({});
+  const lambdaClient = new LambdaClient({
+    region: process.env.region,
+  });
   const uuidsToCheck = [];
   for (const functionName of functions) {
     const response = await lambdaClient.send(
@@ -31,9 +33,7 @@ export const deleteAllTriggersForFunctions = async (functions: string[]) => {
     );
     for (const eventSourceMapping of response.EventSourceMappings || []) {
       if (eventSourceMapping.SelfManagedKafkaEventSourceConfig) {
-        console.log(
-          `Disabling all Kafka triggers for function:  ${functionName}`,
-        );
+        console.log(`Disabling all Kafka triggers for function:  ${functionName}`);
         await lambdaClient.send(
           new DeleteEventSourceMappingCommand({
             UUID: eventSourceMapping.UUID,

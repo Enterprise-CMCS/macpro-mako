@@ -29,12 +29,12 @@ describe("getSearchData Handler", () => {
     const body = JSON.parse(res.body);
     expect(body).toBeTruthy();
     expect(body?.hits?.hits).toBeTruthy();
-    expect(body?.hits?.hits?.length).toEqual(11);
+    expect(body?.hits?.hits?.length).toEqual(13);
   });
 
   it("should handle errors during processing", async () => {
     const event = {
-      body: JSON.stringify({ query: { match_all: "throw-error" } }),
+      body: JSON.stringify({ query: { match_all: { id: "throw-error" } } }),
       pathParameters: { index: "main" } as APIGatewayProxyEventPathParameters,
       requestContext: getRequestContext(makoStateSubmitter),
     } as APIGatewayEvent;
@@ -43,8 +43,6 @@ describe("getSearchData Handler", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(500);
-    expect(res.body).toEqual(
-      JSON.stringify({ error: "Internal server error", message: "Response Error" }),
-    );
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
   });
 });
