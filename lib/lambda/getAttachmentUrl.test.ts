@@ -1,57 +1,36 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
 import { handler } from "./getAttachmentUrl";
-import { response } from "libs/handler-lib";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { getStateFilter } from "../libs/api/auth/user";
-import { getPackage, getPackageChangelog } from "../libs/api/package";
-
-vi.mock("libs/handler-lib", () => ({
-  response: vi.fn(),
-}));
-
-vi.mock("@aws-sdk/client-sts", () => ({
-  STSClient: vi.fn().mockImplementation(() => ({
-    send: vi.fn(),
-  })),
-  AssumeRoleCommand: vi.fn(),
-}));
-
-vi.mock("@aws-sdk/client-s3", () => ({
-  S3Client: vi.fn().mockImplementation(() => ({
-    send: vi.fn(),
-  })),
-  GetObjectCommand: vi.fn(),
-}));
+import {
+  OPENSEARCH_DOMAIN,
+  getRequestContext,
+  NOT_FOUND_ITEM_ID,
+  HI_TEST_ITEM_ID,
+  TEST_ITEM_ID,
+  WITHDRAWN_CHANGELOG_ITEM_ID,
+  GET_ERROR_ITEM_ID,
+  ATTACHMENT_BUCKET_NAME,
+  ATTACHMENT_BUCKET_REGION,
+} from "mocks";
 
 vi.mock("@aws-sdk/s3-request-presigner", () => ({
   getSignedUrl: vi.fn(),
 }));
 
-vi.mock("../libs/api/auth/user", () => ({
-  getStateFilter: vi.fn(),
-}));
-
-vi.mock("../libs/api/package", () => ({
-  getPackage: vi.fn(),
-  getPackageChangelog: vi.fn(),
-}));
-
 describe("Lambda Handler", () => {
-  beforeEach(() => {
+  afterEach(() => {
     vi.clearAllMocks();
-    process.env.osDomain = "test-domain"; // Set the environment variable before each test
   });
 
   it("should return 400 if event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 400,
-      body: { message: "Event body required" },
-    });
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
   });
 
   it("should return 500 if osDomain is missing", async () => {
@@ -60,155 +39,117 @@ describe("Lambda Handler", () => {
     const event = {
       body: JSON.stringify({
         id: "test-id",
-        bucket: "test-bucket",
+        bucket: ATTACHMENT_BUCKET_NAME,
         key: "test-key",
         filename: "test-file",
       }),
     } as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 500,
-      body: { message: "ERROR: process.env.osDomain must be defined" },
-    });
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "ERROR: process.env.osDomain must be defined" }),
+    );
+
+    process.env.osDomain = OPENSEARCH_DOMAIN;
   });
 
   it("should return 404 if no package is found", async () => {
-    vi.mocked(getPackage).mockResolvedValueOnce(null);
-
     const event = {
       body: JSON.stringify({
-        id: "test-id",
-        bucket: "test-bucket",
+        id: NOT_FOUND_ITEM_ID,
+        bucket: ATTACHMENT_BUCKET_NAME,
         key: "test-key",
         filename: "test-file",
       }),
+      requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 404,
-      body: { message: "No record found for the given id" },
-    });
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toEqual(JSON.stringify({ message: "No record found for the given id" }));
   });
 
   it("should return 404 if state access is not permitted", async () => {
-    vi.mocked(getPackage).mockResolvedValueOnce({
-      _source: { state: "test-state" },
-    });
-    vi.mocked(getStateFilter).mockResolvedValueOnce({
-      terms: { state: ["other-state"] },
-    });
-
     const event = {
       body: JSON.stringify({
-        id: "test-id",
-        bucket: "test-bucket",
+        id: HI_TEST_ITEM_ID,
+        bucket: ATTACHMENT_BUCKET_NAME,
         key: "test-key",
         filename: "test-file",
       }),
+      requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 404,
-      body: { message: "state access not permitted for the given id" },
-    });
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(403);
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "state access not permitted for the given id" }),
+    );
   });
 
   it("should return 500 if attachment details are not found", async () => {
-    vi.mocked(getPackage).mockResolvedValueOnce({
-      _source: { state: "test-state" },
-    });
-    vi.mocked(getStateFilter).mockResolvedValueOnce({
-      terms: { state: ["test-state"] },
-    });
-    vi.mocked(getPackageChangelog).mockResolvedValueOnce({
-      hits: {
-        hits: [
-          {
-            _source: {
-              attachments: [{ bucket: "other-bucket", key: "other-key" }],
-            },
-          },
-        ],
-      },
-    });
-
     const event = {
       body: JSON.stringify({
-        id: "test-id",
-        bucket: "test-bucket",
+        id: TEST_ITEM_ID,
+        bucket: ATTACHMENT_BUCKET_NAME,
         key: "test-key",
         filename: "test-file",
       }),
+      requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 500,
-      body: { message: "Attachment details not found for given record id." },
-    });
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "Attachment details not found for given record id." }),
+    );
   });
 
   it("should return 200 with the presigned URL if all checks pass", async () => {
-    vi.mocked(getPackage).mockResolvedValueOnce({
-      _source: { state: "test-state" },
-    });
-    vi.mocked(getStateFilter).mockResolvedValueOnce({
-      terms: { state: ["test-state"] },
-    });
-    vi.mocked(getPackageChangelog).mockResolvedValueOnce({
-      hits: {
-        hits: [
-          {
-            _source: {
-              attachments: [{ bucket: "test-bucket", key: "test-key" }],
-            },
-          },
-        ],
-      },
-    });
-    vi.mocked(getSignedUrl).mockResolvedValueOnce("test-presigned-url");
+    const mockUrl = `https://${ATTACHMENT_BUCKET_NAME}.s3.${ATTACHMENT_BUCKET_REGION}.amazonaws.com/123e4567-e89b-12d3-a456-426614174000`;
+    vi.mocked(getSignedUrl).mockResolvedValueOnce(mockUrl);
 
     const event = {
       body: JSON.stringify({
-        id: "test-id",
-        bucket: "test-bucket",
-        key: "test-key",
-        filename: "test-file",
+        id: WITHDRAWN_CHANGELOG_ITEM_ID,
+        bucket: ATTACHMENT_BUCKET_NAME,
+        key: "doc001",
+        filename: "contract_amendment_2024.pdf",
       }),
+      requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 200,
-      body: { url: "test-presigned-url" },
-    });
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ url: mockUrl }));
   });
 
   it("should handle errors during processing", async () => {
-    vi.mocked(getPackage).mockRejectedValueOnce(new Error("Test error"));
-
     const event = {
       body: JSON.stringify({
-        id: "test-id",
-        bucket: "test-bucket",
+        id: GET_ERROR_ITEM_ID,
+        bucket: ATTACHMENT_BUCKET_NAME,
         key: "test-key",
         filename: "test-file",
       }),
+      requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    await handler(event);
+    const res = await handler(event);
 
-    expect(response).toHaveBeenCalledWith({
-      statusCode: 500,
-      body: { message: "Internal server error" },
-    });
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
   });
 });
