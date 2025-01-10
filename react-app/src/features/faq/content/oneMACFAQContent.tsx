@@ -592,6 +592,44 @@ export const oneMACFAQContent: FAQContent[] = [
         ),
       },
       {
+        anchorText: "formal-request-medicaid-spa",
+        question:
+          "How do I submit a Formal Request for Additional Information (RAI) Response for a Medicaid SPA?",
+        answerJSX: (
+          <div className="w-full space-y-3">
+            <p>When necessary, states will receive an RAI via email from CMS.</p>
+            <ul className="list-disc ml-8 space-y-2">
+              <li>The state will respond to the RAI through OneMAC.</li>
+              <li>
+                A Request for Additional Information (RAI) stops the 90-day clock, is a formal
+                request for additional information from CMS.
+              </li>
+              <li>
+                Packages pending an official RAI response from the state will have a Status of{" "}
+                <b>RAI Issued.</b>
+              </li>
+            </ul>
+            <p>
+              To respond to a Medicaid SPA RAI, select the SPA Tab view from the Package Dashboard.
+            </p>
+            <ul className="list-disc ml-8 space-y-2">
+              <li>
+                Select the link to the SPA ID. Packages which are in need of an RAI response from
+                the state will have a Status of <b>RAI Issued.</b>
+              </li>
+              <li>Then, under Package Actions, select the Respond to RAI link.</li>
+              <li>
+                After attaching any required files, you may include additional notes prior to
+                clicking on the submit button.
+              </li>
+              <li>
+                Check your entries, as you cannot edit the submission after you select Submit.
+              </li>
+            </ul>
+          </div>
+        ),
+      },
+      {
         anchorText: "withdraw-spa-rai-response",
         question: "How do I Withdraw a Formal RAI Response for a Medicaid SPA?",
         answerJSX: (
@@ -670,6 +708,42 @@ export const oneMACFAQContent: FAQContent[] = [
               cannot be resubmitted and this action will conclude the review of this package.
             </p>
             <p>Select Yes, withdraw package to complete the task.</p>
+          </div>
+        ),
+      },
+      {
+        anchorText: "formal-request-chip-spa",
+        question:
+          "How do I submit a Formal Request for Additional Information (RAI) Response for a CHIP SPA?",
+        answerJSX: (
+          <div className="w-full space-y-3">
+            <p>When necessary, states will receive an RAI via email from CMS.</p>
+            <ul className="ml-8 list-disc space-y-2">
+              <li>The state will respond to the RAI through OneMAC.</li>
+              <li>
+                A Request for Additional Information (RAI) stops the 90-day clock, is a formal
+                request for additional information from CMS.
+              </li>
+              <li>
+                Packages pending an official RAI response from the state will have a Status of{" "}
+                <b>RAI Issued.</b>
+              </li>
+            </ul>
+            <p>To respond to a CHIP SPA RAI, select the SPA Tab view from the Package Dashboard.</p>
+            <ul className="ml-8 list-disc space-y-2">
+              <li>
+                Select the link to the SPA ID. Packages which are in need of an RAI response from
+                the state will have a Status of <b>RAI Issued.</b>
+              </li>
+              <li>Then, under Package Actions, select the Respond to RAI link.</li>
+              <li>
+                After attaching any required files, you may include additional notes prior to
+                clicking on the submit button.
+              </li>
+              <li>
+                Check your entries, as you cannot edit the submission after you select Submit.
+              </li>
+            </ul>
           </div>
         ),
       },
@@ -1375,6 +1449,44 @@ export const oneMACFAQContent: FAQContent[] = [
               </tbody>
             </table>
           </>
+        ),
+      },
+      {
+        anchorText: "formal-request-waiver",
+        question:
+          "How do I submit a Formal Request for Additional Information (RAI) Response for a Waiver?",
+        answerJSX: (
+          <div className="w-full space-y-3">
+            <p>When necessary, states will receive an RAI via email from CMS.</p>
+            <ul className="ml-8 list-disc space-y-2">
+              <li>The state will respond to the RAI through OneMAC.</li>
+              <li>
+                A Request for Additional Information (RAI) stops the 90-day clock, is a formal
+                request for additional information from CMS.
+              </li>
+              <li>
+                Packages pending an official RAI response from the state will have a Status of{" "}
+                <b>RAI Issued.</b>
+              </li>
+            </ul>
+            <p>
+              To respond to a Waiver RAI, select the Waiver Tab view from the Package Dashboard.
+            </p>
+            <ul className="ml-8 list-disc space-y-2">
+              <li>
+                Select the link to the Waiver ID. Packages which are in need of an RAI response from
+                the state will have a Status of <b>RAI Issued.</b>
+              </li>
+              <li>Then, under Package Actions, select the Respond to RAI link.</li>
+              <li>
+                After attaching any required files, you may include additional notes prior to
+                clicking on the submit button.
+              </li>
+              <li>
+                Check your entries, as you cannot edit the submission after you select Submit.
+              </li>
+            </ul>
+          </div>
         ),
       },
       {
