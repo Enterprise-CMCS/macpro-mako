@@ -1,30 +1,31 @@
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
-// import { getPackage } from "libs/api/package";
 import { produceMessage } from "libs/api/kafka";
+import { getPackage } from "libs/api/package";
 import { z } from "zod";
+import { ItemResult } from "shared-types/opensearch/main";
 
 // create admin schemas
 export const submitNOSOAdminSchema = z
   .object({
     id: z.string(),
-    adminChangeType: z.literal("submit"),
+    adminChangeType: z.literal("NOSO"),
   })
   .and(z.record(z.string(), z.any()));
 
 export const transformSubmitValuesSchema = submitNOSOAdminSchema.transform((data) => ({
   ...data,
-  event: "submit",
+  event: "NOSO",
   packageId: data.id,
   timestamp: Date.now(),
 }));
 
 const sendSubmitMessage = async ({
-  id,
-  item,
+  packageId,
+  currentPackage,
 }: {
-  id: string;
-  item: Record<string, any>; // NOTE TO ANDIE: not sure if this is the right type
+  packageId: string;
+  currentPackage: ItemResult;
 }) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
@@ -32,19 +33,20 @@ const sendSubmitMessage = async ({
   }
   await produceMessage(
     topicName,
-    id,
+    packageId,
     JSON.stringify({
-      ...item,
+      ...currentPackage._source,
+      origin: "SEATool",
       isAdminChange: true,
       adminChangeType: "submit",
-      changeMade: `${id} added to OneMAC. Package not originally submitted in OneMAC. At this time, the attachments for this package are unavailable in this system. Contact your CPOC to verify the initial submission documents.`,
+      changeMade: `${packageId} added to OneMAC. Package not originally submitted in OneMAC. At this time, the attachments for this package are unavailable in this system. Contact your CPOC to verify the initial submission documents.`,
       changeReason: `This is a Not Originally Submitted in OneMAC (NOSO) that users need to see in OneMAC.`,
     }),
   );
 
   return response({
     statusCode: 200,
-    body: { message: `${id} has been submitted.` },
+    body: { message: `${packageId} has been submitted.` },
   });
 };
 
@@ -56,36 +58,29 @@ export const handler = async (event: APIGatewayEvent) => {
     });
   }
   try {
-    const { id, action, item } = submitNOSOAdminSchema.parse(
+    const { packageId, action } = submitNOSOAdminSchema.parse(
       event.body === "string" ? JSON.parse(event.body) : event.body,
     );
-    console.log("ID:", id);
-    console.log("item:", item);
+    console.log("ID:", packageId);
 
-    if (!id || !action) {
+    const currentPackage = await getPackage(packageId);
+
+    // currentpackage should have been entered in seaTool
+    if (!currentPackage || currentPackage.found == false) {
       return response({
-        statusCode: 400,
-        body: { message: "Package ID and action are required" },
+        statusCode: 404,
+        body: { message: `Package with id: ${packageId} is not in SEATool` },
       });
     }
 
-    // This is throwing an error so ignore atm
-    // const currentPackage = await getPackage(packageId);
-    // if (currentPackage) {
-    //   return response({
-    //     statusCode: 403,
-    //     body: { message: `Package with id: ${packageId} already exists` },
-    //   });
-    // }
-
-    if (item.action === "submit") {
+    if (action === "NOSO") {
       //add logic for coppying over attachments
-      return await sendSubmitMessage({ id, item });
+      return await sendSubmitMessage({ packageId, currentPackage });
     }
 
     return response({
       statusCode: 400,
-      body: { message: "Could not create package." },
+      body: { message: "Could not create OneMAC package." },
     });
   } catch (err) {
     console.error("Error has occured submitting package:", err);
