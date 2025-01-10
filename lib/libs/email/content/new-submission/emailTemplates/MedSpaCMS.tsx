@@ -1,7 +1,6 @@
 import { CommonEmailVariables, Events } from "shared-types";
 import {
   Attachments,
-  DetailsHeading,
   LoginInstructions,
   PackageDetails,
   BasicFooter,

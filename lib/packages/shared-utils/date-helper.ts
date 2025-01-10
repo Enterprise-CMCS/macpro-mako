@@ -19,5 +19,8 @@ export function formatNinetyDaysDate(date: number | null | undefined): string {
   };
 
   const timezoneAbbreviation = isDST(date) ? "EDT" : "EST";
-  return dateFns.format(new Date(date), `MMM d, yyyy '@ 11:59pm ${timezoneAbbreviation}'`);
+  return dateFns.format(
+    dateFns.add(date, { days: 90 }),
+    `MMM d, yyyy '@ 11:59pm ${timezoneAbbreviation}'`,
+  );
 }

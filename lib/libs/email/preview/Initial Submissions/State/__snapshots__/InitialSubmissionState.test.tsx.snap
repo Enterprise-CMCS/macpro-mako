@@ -354,7 +354,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Jan 1, 2023 @ 11:59pm EST
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -387,7 +387,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -407,7 +407,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Jan 1, 2023 @ 11:59pm EST.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -854,7 +854,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Jan 1, 2023 @ 11:59pm EST
+                                    Apr 1, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -887,7 +887,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -907,7 +907,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                     This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Jan 1, 2023 @ 11:59pm EST.
+        before Apr 1, 2023 @ 11:59pm EST.
                   </p>
                   <hr
                     style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -1411,7 +1411,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Jan 1, 2023 @ 11:59pm EST
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -1444,7 +1444,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -1464,7 +1464,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Jan 1, 2023 @ 11:59pm EST.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -1826,7 +1826,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -2151,7 +2151,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -2617,7 +2617,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Jan 1, 2023 @ 11:59pm EST
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -2650,7 +2650,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -2670,7 +2670,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Jan 1, 2023 @ 11:59pm EST.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -3032,7 +3032,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -3399,7 +3399,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Jan 1, 2023 @ 11:59pm EST
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -3432,7 +3432,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -3448,7 +3448,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before Jan 1, 2023 @ 11:59pm EST.
+        within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -3825,7 +3825,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Jan 1, 2023 @ 11:59pm EST
+                                    Apr 1, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -3858,7 +3858,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -3874,7 +3874,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                   >
                     This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before Jan 1, 2023 @ 11:59pm EST.
+        within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                   </p>
                   <p
                     style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -4349,7 +4349,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Jan 1, 2023 @ 11:59pm EST
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -4382,7 +4382,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -4402,7 +4402,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Jan 1, 2023 @ 11:59pm EST.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -4764,7 +4764,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -5131,7 +5131,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Jan 1, 2023 @ 11:59pm EST
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -5164,7 +5164,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -5180,7 +5180,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before Jan 1, 2023 @ 11:59pm EST.
+        within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -5556,7 +5556,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Mar 2, 2023 @ 11:59pm EST
+                                      May 31, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -5589,7 +5589,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -5628,26 +5628,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                Waiver Extension Request
-                                :
-                              </p>
-                               
-                              <br />
-                            </span>
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                Waiver Extension Request
-                                :
-                              </p>
-                               
-                              <br />
-                            </span>
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -5667,12 +5648,96 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                             >
                               <span>
                                 Temporary Extention Document for submission.pdf
-                                <br />
                               </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Waiver Extension Request
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
                               <span>
                                 Second Extention Document for submission.pdf
-                                <br />
                               </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Waiver Extension Request
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
                               <span>
                                 Third Extention Document for submission.pdf
                               </span>
@@ -6057,7 +6122,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Mar 2, 2023 @ 11:59pm EST
+                                    May 31, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -6090,7 +6155,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                 >
                                   Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                 </p>
@@ -6129,26 +6194,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <span>
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Waiver Extension Request
-                              :
-                            </p>
-                             
-                            <br />
-                          </span>
-                          <span>
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Waiver Extension Request
-                              :
-                            </p>
-                             
-                            <br />
-                          </span>
+                           
                           <span>
                             <p
                               style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -6168,12 +6214,96 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                           >
                             <span>
                               Temporary Extention Document for submission.pdf
-                              <br />
                             </span>
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table
+                    align="center"
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    role="presentation"
+                    style="margin-bottom: 2px; margin-top: 2px;"
+                    width="100%"
+                  >
+                    <tbody
+                      style="width: 100%;"
+                    >
+                      <tr
+                        style="width: 100%;"
+                      >
+                        <td
+                          align="left"
+                          data-id="__react-email-column"
+                          style="width: 50%; vertical-align: top;"
+                        >
+                           
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Waiver Extension Request
+                              :
+                            </p>
+                             
+                          </span>
+                        </td>
+                        <td
+                          data-id="__react-email-column"
+                          style="vertical-align: top;"
+                        >
+                          <p
+                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                          >
                             <span>
                               Second Extention Document for submission.pdf
-                              <br />
                             </span>
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table
+                    align="center"
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    role="presentation"
+                    style="margin-bottom: 2px; margin-top: 2px;"
+                    width="100%"
+                  >
+                    <tbody
+                      style="width: 100%;"
+                    >
+                      <tr
+                        style="width: 100%;"
+                      >
+                        <td
+                          align="left"
+                          data-id="__react-email-column"
+                          style="width: 50%; vertical-align: top;"
+                        >
+                           
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Waiver Extension Request
+                              :
+                            </p>
+                             
+                          </span>
+                        </td>
+                        <td
+                          data-id="__react-email-column"
+                          style="vertical-align: top;"
+                        >
+                          <p
+                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                          >
                             <span>
                               Third Extention Document for submission.pdf
                             </span>
@@ -6656,7 +6786,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Jan 1, 2023 @ 11:59pm EST
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -6689,7 +6819,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -6709,7 +6839,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Jan 1, 2023 @ 11:59pm EST.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -7071,7 +7201,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -7438,7 +7568,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Jan 1, 2023 @ 11:59pm EST
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -7471,7 +7601,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -7487,7 +7617,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before Jan 1, 2023 @ 11:59pm EST.
+        within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -7863,7 +7993,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Mar 2, 2023 @ 11:59pm EST
+                                      May 31, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -7896,7 +8026,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -7935,26 +8065,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                Waiver Extension Request
-                                :
-                              </p>
-                               
-                              <br />
-                            </span>
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                Waiver Extension Request
-                                :
-                              </p>
-                               
-                              <br />
-                            </span>
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -7974,12 +8085,96 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                             >
                               <span>
                                 Temporary Extention Document for submission.pdf
-                                <br />
                               </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Waiver Extension Request
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
                               <span>
                                 Second Extention Document for submission.pdf
-                                <br />
                               </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Waiver Extension Request
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
                               <span>
                                 Third Extention Document for submission.pdf
                               </span>
@@ -8401,7 +8596,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Jan 1, 2023 @ 11:59pm EST
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -8434,7 +8629,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -8451,7 +8646,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Jan 1, 2023 @ 11:59pm EST
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -8896,7 +9091,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Jan 1, 2023 @ 11:59pm EST
+                                    Apr 1, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -8929,7 +9124,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -8946,7 +9141,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                     This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Jan 1, 2023 @ 11:59pm EST
+              Apr 1, 2023 @ 11:59pm EST
               .
                   </p>
                   <p
@@ -9451,7 +9646,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Jan 1, 2023 @ 11:59pm EST
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -9484,7 +9679,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -9504,7 +9699,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Jan 1, 2023 @ 11:59pm EST.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -9866,7 +10061,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -10233,7 +10428,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Jan 1, 2023 @ 11:59pm EST
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -10266,7 +10461,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -10282,7 +10477,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before Jan 1, 2023 @ 11:59pm EST.
+        within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -10658,7 +10853,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Mar 2, 2023 @ 11:59pm EST
+                                      May 31, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -10691,7 +10886,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -10730,26 +10925,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                Waiver Extension Request
-                                :
-                              </p>
-                               
-                              <br />
-                            </span>
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                Waiver Extension Request
-                                :
-                              </p>
-                               
-                              <br />
-                            </span>
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -10769,12 +10945,96 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                             >
                               <span>
                                 Temporary Extention Document for submission.pdf
-                                <br />
                               </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Waiver Extension Request
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
                               <span>
                                 Second Extention Document for submission.pdf
-                                <br />
                               </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Waiver Extension Request
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
                               <span>
                                 Third Extention Document for submission.pdf
                               </span>
@@ -11196,7 +11456,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Jan 1, 2023 @ 11:59pm EST
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -11229,7 +11489,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -11246,7 +11506,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Jan 1, 2023 @ 11:59pm EST
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -11690,7 +11950,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Jan 1, 2023 @ 11:59pm EST
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -11723,7 +11983,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -11740,7 +12000,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Jan 1, 2023 @ 11:59pm EST
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -12185,7 +12445,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Jan 1, 2023 @ 11:59pm EST
+                                    Apr 1, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -12218,7 +12478,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -12235,7 +12495,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                     This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Jan 1, 2023 @ 11:59pm EST
+              Apr 1, 2023 @ 11:59pm EST
               .
                   </p>
                   <p

@@ -4,7 +4,6 @@ import {
   LoginInstructions,
   BasicFooter,
   Attachments,
-  DetailsHeading,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { formatNinetyDaysDate } from "shared-utils";

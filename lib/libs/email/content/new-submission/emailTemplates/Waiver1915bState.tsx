@@ -1,13 +1,7 @@
 import { CommonEmailVariables, Events } from "shared-types";
 import { formatNinetyDaysDate, formatDate, formatActionType } from "shared-utils";
 import { Text } from "@react-email/components";
-import {
-  PackageDetails,
-  FollowUpNotice,
-  DetailsHeading,
-  MailboxNotice,
-  BasicFooter,
-} from "../../email-components";
+import { PackageDetails, FollowUpNotice, MailboxNotice, BasicFooter } from "../../email-components";
 import { styles } from "../../email-styles";
 import { BaseEmailTemplate } from "../../email-templates";
 

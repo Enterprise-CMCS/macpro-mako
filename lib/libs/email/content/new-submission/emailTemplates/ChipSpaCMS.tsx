@@ -3,7 +3,6 @@ import {
   LoginInstructions,
   PackageDetails,
   BasicFooter,
-  DetailsHeading,
   Attachments,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
