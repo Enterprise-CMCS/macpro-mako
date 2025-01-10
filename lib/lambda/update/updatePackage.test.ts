@@ -27,7 +27,7 @@ describe("handler", () => {
     expect(result).toStrictEqual(expectedResult);
   });
 
-  it("should return 400 if package ID or action is not found", async () => {
+  it("should return 400 if package ID is not found", async () => {
     const noActionevent = {
       body: JSON.stringify({ packageId: "123", changeReason: "Nunya" }),
     } as APIGatewayEvent;
@@ -35,6 +35,8 @@ describe("handler", () => {
     const resultPackage = await handler(noActionevent);
 
     expect(resultPackage.statusCode).toBe(400);
+  });
+  it("should return 400 if action is not found", async () => {
     const noApackageEvent = {
       body: JSON.stringify({ action: "123", changeReason: "Nunya" }),
     } as APIGatewayEvent;
@@ -43,7 +45,6 @@ describe("handler", () => {
 
     expect(resultAction.statusCode).toBe(400);
   });
-
   it("should get a package", async () => {
     const noActionevent = {
       body: JSON.stringify({ packageId: "123", action: "delete", changeReason: "Nunya" }),
