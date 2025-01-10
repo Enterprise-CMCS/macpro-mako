@@ -111,7 +111,7 @@ const currentStatePlan = {
     ],
   },
 };
-const ammendedLanguage = {
+const amendedLanguage = {
   amendedLanguage: {
     label: "Amended State Plan Language",
     files: [
@@ -295,7 +295,7 @@ const bCapIndependentAssessment = {
   },
 };
 export const attachments = {
-  ammendedLanguage,
+  amendedLanguage,
   appk,
   bCapIndependentAssessment,
   bCapCostSpreadsheets,

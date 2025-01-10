@@ -59,7 +59,8 @@ export type IdpRefreshRequestBody = {
 
 export type IdpListUsersRequestBody = {
   UserPoolId: string;
-  Filter: string;
+  Limit?: number;
+  Filter?: string;
 };
 
 export type AdminGetUserRequestBody = {

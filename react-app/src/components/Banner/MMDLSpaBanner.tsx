@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { FAQ_TAB } from "@/router";
+import { Link } from "react-router";
 const MMDLAlertBanner = () => {
   const [isVisible, setIsVisible] = useState(true);
   const handleDismiss = () => {
@@ -26,14 +28,14 @@ const MMDLAlertBanner = () => {
         </div>
       </div>
       <div className="flex space-x-4 col-start-2 md:col-start-auto">
-        <a
-          href="/faq#mmdl-section"
-          target="_blank"
+        <Link
+          to={"/faq/spa-admendments"}
+          target={FAQ_TAB}
           rel="noopener noreferrer"
           className="border-2 border-black rounded h-[38px] px-4 text font-bold text-center whitespace-nowrap pt-1"
         >
           Go to FAQs
-        </a>
+        </Link>
         <button onClick={handleDismiss} aria-label="Dismiss" className="rounded-full w-6 h-6">
           <Cross2Icon className="w-full h-full" aria-hidden="true" />
         </button>

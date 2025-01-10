@@ -1,9 +1,9 @@
-import { Waiver1915bStateEmail } from "../../../content/new-submission/emailTemplates/Waiver1915bState";
+import { Waiver1915bCMSEmail } from "libs/email/content/new-submission/emailTemplates/Waiver1915bCMS";
 import { emailTemplateValue } from "../../../mock-data/new-submission";
 
-export const Waiver1915bContractingStateInitialEmailPreview = () => {
+export const Waiver1915bCMSContractingInitialEmailPreview = () => {
   return (
-    <Waiver1915bStateEmail
+    <Waiver1915bCMSEmail
       variables={{
         ...emailTemplateValue,
         attachments: {
@@ -17,21 +17,24 @@ export const Waiver1915bContractingStateInitialEmailPreview = () => {
                 key: "test",
                 uploadDate: Date.now(),
               },
+            ],
+          },
+          tribalConsultation: {
+            label: "Tribal Consultation",
+            files: [
               {
-                filename: "contracting-waiver-application-2.pdf",
-                title: "contracting-waiver-supporting-evidence.pdf",
+                filename: "contracting-waiver-tribal-consultation.pdf",
+                title: "test.pdf",
                 bucket: "test",
-                key: "test2",
+                key: "test",
                 uploadDate: Date.now(),
               },
             ],
           },
-
-          tribalConsultation: { label: "Tribal Consultation", files: [] },
           other: { label: "Other", files: [] },
         },
         event: "contracting-initial",
-        id: "CO-9987.R21.00",
+        id: "CO-1234.R21.00",
         authority: "1915(b)",
         actionType: "New",
       }}
@@ -39,15 +42,31 @@ export const Waiver1915bContractingStateInitialEmailPreview = () => {
   );
 };
 
-export const Waiver1915bContractingStateRenewalEmailPreview = () => {
+export const Waiver1915bCMSContractingRenewalEmailPreview = () => {
   return (
-    <Waiver1915bStateEmail
+    <Waiver1915bCMSEmail
       variables={{
         ...emailTemplateValue,
+        event: "contracting-renewal",
+        id: "CO-1234.R21.00",
+        authority: "1915(b)",
+        actionType: "Renewal",
         waiverNumber: "CO-1234.R21.00",
         attachments: {
+          b4WaiverApplication: {
+            label: "1915(b) Comprehensive (Contracting) Waiver Application Pre-print",
+            files: [
+              {
+                filename: "contracting-waiver-application.pdf",
+                title: "test.pdf",
+                bucket: "test",
+                key: "test",
+                uploadDate: Date.now(),
+              },
+            ],
+          },
           b4IndependentAssessment: {
-            label: "1915(b) Comprehensive (Contracting) Waiver Independent Assessment",
+            label: "1915(b) Comprehensive (Contracting) Independent Assessment",
             files: [
               {
                 filename: "contracting-waiver-independent-assessment.pdf",
@@ -58,36 +77,23 @@ export const Waiver1915bContractingStateRenewalEmailPreview = () => {
               },
             ],
           },
-          b4WaiverApplication: {
-            label: "1915(b) Comprehensive (Contracting) Waiver Application Pre-print",
-            files: [
-              {
-                filename: "contracting-waiver-application.pdf",
-                title: "test.pdf",
-                bucket: "test",
-                key: "test",
-                uploadDate: Date.now(),
-              },
-            ],
-          },
-
           tribalConsultation: { label: "Tribal Consultation", files: [] },
           other: { label: "Other", files: [] },
         },
-        event: "contracting-renewal",
-        id: "CO-9987.R21.00",
-        authority: "1915(b)",
-        actionType: "Renewal",
       }}
     />
   );
 };
 
-export const Waiver1915bContractingStateAmendmentEmailPreview = () => {
+export const Waiver1915bCMSContractingAmendmentEmailPreview = () => {
   return (
-    <Waiver1915bStateEmail
+    <Waiver1915bCMSEmail
       variables={{
         ...emailTemplateValue,
+        event: "contracting-amendment",
+        id: "CO-1234.R21.01",
+        authority: "1915(b)",
+        actionType: "Amendment",
         waiverNumber: "CO-1234.R21.00",
         attachments: {
           b4WaiverApplication: {
@@ -102,13 +108,20 @@ export const Waiver1915bContractingStateAmendmentEmailPreview = () => {
               },
             ],
           },
-          tribalConsultation: { label: "Tribal Consultation", files: [] },
+          tribalConsultation: {
+            label: "Tribal Consultation",
+            files: [
+              {
+                filename: "contracting-waiver-tribal-consultation.pdf",
+                title: "test.pdf",
+                bucket: "test",
+                key: "test",
+                uploadDate: Date.now(),
+              },
+            ],
+          },
           other: { label: "Other", files: [] },
         },
-        event: "contracting-amendment",
-        id: "CO-1234.R21.01",
-        authority: "1915(b)",
-        actionType: "Amendment",
       }}
     />
   );

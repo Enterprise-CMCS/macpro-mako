@@ -1,4 +1,4 @@
-import { Amplify } from "aws-amplify";
+import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
 import {
   API_CONFIG,
   API_ENDPOINT,
@@ -14,14 +14,23 @@ import {
   USER_POOL_ID,
   ATTACHMENT_BUCKET_NAME,
   ATTACHMENT_BUCKET_REGION,
+  KAFKA_BROKERS,
   setDefaultStateSubmitter,
+  mockedKafka,
 } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
-import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
+import { Amplify } from "aws-amplify";
 
 Amplify.configure({
   API: API_CONFIG,
   Auth: AUTH_CONFIG,
+});
+
+vi.mock("kafkajs", async (importOriginal) => {
+  return {
+    ...(await importOriginal<typeof import("kafkajs")>()),
+    Kafka: mockedKafka,
+  };
 });
 
 beforeAll(() => {
@@ -55,6 +64,7 @@ beforeEach(() => {
   process.env.emailAddressLookupSecretName = "mock-email-secret"; // pragma: allowlist secret
   process.env.DLQ_URL = "https://sqs.us-east-1.amazonaws.com/123/test";
   process.env.configurationSetName = "SES";
+  process.env.brokerString = KAFKA_BROKERS;
 });
 
 afterEach(() => {
@@ -62,14 +72,11 @@ afterEach(() => {
   vi.clearAllMocks();
 
   setDefaultStateSubmitter();
-  // Reset any request handlers that we may add during the tests,
-  // so they don't affect other tests.
   mockedServer.resetHandlers();
 });
 
 afterAll(() => {
-  vi.clearAllMocks();
+  vi.resetAllMocks();
 
-  // Clean up after the tests are finished.
   mockedServer.close();
 });

@@ -1,31 +1,13 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { Producer } from "kafkajs";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { produceMessage, getProducer } from "./kafka";
-
-vi.mock("kafkajs", () => {
-  const producer = {
-    connect: vi.fn(),
-    send: vi.fn(),
-    disconnect: vi.fn(),
-  };
-  const kafka = {
-    producer: () => producer,
-  };
-  return {
-    Kafka: vi.fn(() => kafka),
-    Producer: vi.fn(() => producer),
-  };
-});
+import { mockedProducer } from "mocks";
 
 describe("Kafka producer functions", () => {
-  let mockProducer: Producer;
   let brokerString: string | undefined;
 
   beforeEach(() => {
     brokerString = process.env.brokerString;
     process.env.brokerString = "broker1,broker2";
-
-    mockProducer = new Producer();
   });
 
   afterEach(() => {
@@ -34,7 +16,7 @@ describe("Kafka producer functions", () => {
 
   it("should create a Kafka producer", () => {
     const producer = getProducer();
-    expect(producer).toBe(mockProducer);
+    expect(producer).toEqual(mockedProducer);
   });
 
   it("should produce a message successfully", async () => {
@@ -44,8 +26,8 @@ describe("Kafka producer functions", () => {
 
     await produceMessage(topic, key, value);
 
-    expect(mockProducer.connect).toHaveBeenCalled();
-    expect(mockProducer.send).toHaveBeenCalledWith({
+    expect(mockedProducer.connect).toHaveBeenCalled();
+    expect(mockedProducer.send).toHaveBeenCalledWith({
       topic,
       messages: [
         {
@@ -56,7 +38,7 @@ describe("Kafka producer functions", () => {
         },
       ],
     });
-    expect(mockProducer.disconnect).toHaveBeenCalled();
+    expect(mockedProducer.disconnect).toHaveBeenCalled();
   });
 
   it("should handle errors when producing a message", async () => {
@@ -65,12 +47,12 @@ describe("Kafka producer functions", () => {
     const value = JSON.stringify({ foo: "bar" });
 
     const error = new Error("Failed to send message");
-    mockProducer.send.mockRejectedValueOnce(error);
+    mockedProducer.send.mockRejectedValueOnce(error);
 
     await produceMessage(topic, key, value);
 
-    expect(mockProducer.connect).toHaveBeenCalled();
-    expect(mockProducer.send).toHaveBeenCalledWith({
+    expect(mockedProducer.connect).toHaveBeenCalled();
+    expect(mockedProducer.send).toHaveBeenCalledWith({
       topic,
       messages: [
         {
@@ -81,7 +63,7 @@ describe("Kafka producer functions", () => {
         },
       ],
     });
-    expect(mockProducer.disconnect).toHaveBeenCalled();
+    expect(mockedProducer.disconnect).toHaveBeenCalled();
   });
 
   it("should throw an error if brokerString is not defined", () => {

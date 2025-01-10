@@ -1,46 +1,34 @@
 import { getAllStateUsers } from "./getAllStateUsers";
-import { describe, it, expect, beforeEach, vi } from "vitest";
-
-vi.mock("./getAllStateUsers");
+import { describe, it, expect } from "vitest";
+import { USER_POOL_ID } from "mocks";
 
 describe("getAllStateUsers", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   it("should fetch users successfully", async () => {
-    vi.mocked(getAllStateUsers).mockResolvedValue([
-      {
-        firstName: "John",
-        lastName: "Doe",
-        email: "john.doe@example.com",
-        formattedEmailAddress: "John Doe <john.doe@example.com>",
-      },
-    ]);
-
-    const result = await getAllStateUsers({ userPoolId: "ID", state: "CA" });
+    const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" });
     expect(result).toEqual([
       {
-        firstName: "John",
-        lastName: "Doe",
-        email: "john.doe@example.com",
-        formattedEmailAddress: "John Doe <john.doe@example.com>",
+        firstName: "George",
+        lastName: "Harrison",
+        email: "george@example.com",
+        formattedEmailAddress: "George Harrison <george@example.com>",
+      },
+      {
+        firstName: "State",
+        lastName: "Multi",
+        email: "statemulti@example.com",
+        formattedEmailAddress: "State Multi <statemulti@example.com>",
+      },
+      {
+        firstName: "Otto",
+        lastName: "State",
+        email: "automated-state@example.com",
+        formattedEmailAddress: "Otto State <automated-state@example.com>",
       },
     ]);
   });
 
   it("should return an empty array when no users are found", async () => {
-    vi.mocked(getAllStateUsers).mockResolvedValue([]);
-
-    const result = await getAllStateUsers({ userPoolId: "ID", state: "CA" });
+    const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "MA" });
     expect(result).toEqual([]);
-  });
-
-  it("should throw an error when there is an issue fetching users", async () => {
-    vi.mocked(getAllStateUsers).mockRejectedValue(new Error("Error fetching users"));
-
-    await expect(getAllStateUsers({ userPoolId: "ID", state: "CA" })).rejects.toThrow(
-      "Error fetching users",
-    );
   });
 });
