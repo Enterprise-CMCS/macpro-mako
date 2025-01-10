@@ -20,8 +20,10 @@ export const transformSubmitValuesSchema = submitNOSOAdminSchema.transform((data
 }));
 
 const sendSubmitMessage = async ({
+  id,
   item,
 }: {
+  id: string;
   item: Record<string, any>; // NOTE TO ANDIE: not sure if this is the right type
 }) => {
   const topicName = process.env.topicName as string;
@@ -30,19 +32,19 @@ const sendSubmitMessage = async ({
   }
   await produceMessage(
     topicName,
-    item.id,
+    id,
     JSON.stringify({
       ...item,
       isAdminChange: true,
       adminChangeType: "submit",
-      changeMade: `${item.id} added to OneMAC. Package not originally submitted in OneMAC. At this time, the attachments for this package are unavailable in this system. Contact your CPOC to verify the initial submission documents.`,
+      changeMade: `${id} added to OneMAC. Package not originally submitted in OneMAC. At this time, the attachments for this package are unavailable in this system. Contact your CPOC to verify the initial submission documents.`,
       changeReason: `This is a Not Originally Submitted in OneMAC (NOSO) that users need to see in OneMAC.`,
     }),
   );
 
   return response({
     statusCode: 200,
-    body: { message: `${item.id} has been submitted.` },
+    body: { message: `${id} has been submitted.` },
   });
 };
 
@@ -57,6 +59,8 @@ export const handler = async (event: APIGatewayEvent) => {
     const { id, action, item } = submitNOSOAdminSchema.parse(
       event.body === "string" ? JSON.parse(event.body) : event.body,
     );
+    console.log("ID:", id);
+    console.log("item:", item);
 
     if (!id || !action) {
       return response({
@@ -76,7 +80,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
     if (item.action === "submit") {
       //add logic for coppying over attachments
-      return await sendSubmitMessage(item);
+      return await sendSubmitMessage({ id, item });
     }
 
     return response({
@@ -84,7 +88,7 @@ export const handler = async (event: APIGatewayEvent) => {
       body: { message: "Could not create package." },
     });
   } catch (err) {
-    console.error("Error has occured modifying package:", err);
+    console.error("Error has occured submitting package:", err);
     return response({
       statusCode: 500,
       body: { message: err.message || "Internal Server Error" },
