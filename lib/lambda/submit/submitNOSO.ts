@@ -38,7 +38,7 @@ const sendSubmitMessage = async ({
       ...currentPackage._source,
       origin: "SEATool",
       isAdminChange: true,
-      adminChangeType: "submit",
+      adminChangeType: "NOSO",
       changeMade: `${packageId} added to OneMAC. Package not originally submitted in OneMAC. At this time, the attachments for this package are unavailable in this system. Contact your CPOC to verify the initial submission documents.`,
       changeReason: `This is a Not Originally Submitted in OneMAC (NOSO) that users need to see in OneMAC.`,
     }),
