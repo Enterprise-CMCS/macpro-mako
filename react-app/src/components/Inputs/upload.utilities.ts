@@ -1,6 +1,7 @@
 import { API } from "aws-amplify";
 
 export const getPresignedUrl = async (fileName: string): Promise<string> => {
+  console.log({ post: API.post });
   const response = await API.post("os", "/getUploadUrl", {
     body: { fileName },
   });
@@ -27,11 +28,7 @@ export const extractBucketAndKeyFromUrl = (
     let bucket: string | null = null;
     let key: string | null = null;
 
-    if (
-      hostnameParts.length > 3 &&
-      hostnameParts[1] === "s3" &&
-      hostnameParts[2] === "us-east-1"
-    ) {
+    if (hostnameParts.length > 3 && hostnameParts[1] === "s3" && hostnameParts[2] === "us-east-1") {
       bucket = hostnameParts[0]; // The bucket name is the first part of the hostname
     }
 

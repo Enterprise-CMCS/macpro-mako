@@ -1,19 +1,21 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import * as utilities from "@/components/Inputs/upload.utilities";
+import { getPresignedUrl } from "./upload.utilities";
+// import * as utilities from "@/components/Inputs/upload.utilities";
+// import { API_CONFIG } from "mocks";
 
 describe("getPresignedUrl", () => {
   beforeEach(() => {
-    vi.unmock("@/components/Inputs/upload.utilities");
-    vi.mock("aws-amplify", () => ({
-      API: {
-        post: vi.fn(async () => ({ url: "https://example.com/test-url" })),
-      },
-    }));
+    // vi.unmock("@/components/Inputs/upload.utilities");
+    // vi.mock("aws-amplify", () => ({
+    //   API: {
+    //     post: vi.fn(async () => ({ url: "https://example.com/test-url" })),
+    //   },
+    // }));
   });
 
-  it("gets a presigned URL from the API", async () => {
+  it.only("gets a presigned URL from the API", async () => {
     const fileName = "file.pdf";
-    const url = await utilities.getPresignedUrl(fileName);
+    const url = await getPresignedUrl(fileName);
     expect(url).toBe("https://example.com/test-url");
   });
 });

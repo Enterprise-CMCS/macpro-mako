@@ -1,23 +1,30 @@
 import { http, HttpResponse } from "msw";
+// import { API_ENDPOINT } from "../../consts";
 import { SUBMISSION_ERROR_ITEM_ID } from "../../data/items";
 
 export type SubmitRequestBody = { id: string };
 
 const defaultUploadHandler = http.put(
-  /\/upload/,
+  /\/upload$/,
   async () => new HttpResponse(null, { status: 200 }),
 );
 
-const defaultUploadUrlHandler = http.post(/\/getUploadUrl/, () =>
-  HttpResponse.json(
+const defaultUploadUrlHandler = http.post(/\/getUploadUrl$/, async ({ request }) => {
+  console.log("defaultUploadUrlHandler", {
+    request,
+    headers: request.headers,
+  });
+  const body = await request.json();
+  console.log({ body });
+  return HttpResponse.json(
     {
-      url: "/upload",
+      url: `/upload`,
       key: "test-key",
       bucket: "test-bucket",
     },
     { status: 200 },
-  ),
-);
+  );
+});
 
 const defaultSubmitHandler = http.post<SubmitRequestBody, SubmitRequestBody>(
   /\/submit$/,

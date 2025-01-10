@@ -64,16 +64,16 @@ beforeAll(() => {
     onUnhandledRequest: "warn",
   });
 
-  if (process.env.MOCK_API_REFINES) {
-    vi.mock("@/components/Inputs/upload.utilities", () => ({
-      getPresignedUrl: vi.fn(async () => "hello world"),
-      uploadToS3: vi.fn(async () => {}),
-      extractBucketAndKeyFromUrl: vi.fn(() => ({
-        bucket: "hello",
-        key: "world",
-      })),
-    }));
-  }
+  // if (process.env.MOCK_API_REFINES) {
+  //   vi.mock("@/components/Inputs/upload.utilities", () => ({
+  //     getPresignedUrl: vi.fn(async () => "hello world"),
+  //     uploadToS3: vi.fn(async () => {}),
+  //     extractBucketAndKeyFromUrl: vi.fn(() => ({
+  //       bucket: "hello",
+  //       key: "world",
+  //     })),
+  //   }));
+  // }
 });
 
 afterEach(() => {
