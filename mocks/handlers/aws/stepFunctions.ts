@@ -4,6 +4,7 @@ import { TestStepFunctionRequestBody } from "../../index.d";
 const defaultStepFunctionHandler = http.post<PathParams, TestStepFunctionRequestBody>(
   "https://states.us-east-1.amazonaws.com/",
   async ({ request }) => {
+    console.log("defaultStepFunctionHandler", { request, headers: request.headers });
     const { input } = await request.json();
     const {
       cfnEvent: {

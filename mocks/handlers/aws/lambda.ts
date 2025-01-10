@@ -10,7 +10,7 @@ import { TestEventSourceMappingRequestBody } from "../../index.d";
 const defaultListEventSourceMappingsHandler = http.get(
   "https://lambda.us-east-1.amazonaws.com/2015-03-31/event-source-mappings",
   async ({ request }) => {
-    console.log("get: ", { request });
+    console.log("defaultListEventSourceMappingsHandler", { request, headers: request.headers });
     const requestUrl = new URL(request.url);
     const functionName = requestUrl.searchParams.get("FunctionName") || "";
 
@@ -34,6 +34,7 @@ const defaultCreateEventSourceMappingsHandler = http.post<
 >(
   "https://lambda.us-east-1.amazonaws.com/2015-03-31/event-source-mappings",
   async ({ request }) => {
+    console.log("defaultCreateEventSourceMappingsHandler", { request, headers: request.headers });
     const { FunctionName, Topics } = await request.json();
 
     if (!FunctionName) {
@@ -68,7 +69,12 @@ const defaultCreateEventSourceMappingsHandler = http.post<
 
 const defaultGetEventSourceMappingHandler = http.get(
   "https://lambda.us-east-1.amazonaws.com/2015-03-31/event-source-mappings/:uuid",
-  async ({ params }) => {
+  async ({ request, params }) => {
+    console.log("defaultGetEventSourceMappingHandler", {
+      request,
+      headers: request.headers,
+      params,
+    });
     const { uuid } = params;
 
     if (!uuid) {
@@ -89,7 +95,8 @@ const defaultGetEventSourceMappingHandler = http.get(
 
 const defaultDeleteEventSourceMappingHandler = http.delete(
   "https://lambda.us-east-1.amazonaws.com/2015-03-31/event-source-mappings/:uuid",
-  async ({ params }) => {
+  async ({ request, params }) => {
+    console.log("", { request, headers: request.headers, params });
     const { uuid } = params;
 
     if (!uuid) {

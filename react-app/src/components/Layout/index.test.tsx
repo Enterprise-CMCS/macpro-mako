@@ -17,6 +17,9 @@ import { setMockUsername, makoStateSubmitter, noRoleUser, AUTH_CONFIG } from "mo
 vi.mock("../UsaBanner", () => ({ UsaBanner: () => null }));
 vi.mock("../Footer", () => ({ Footer: () => null }));
 vi.mock("@/components", () => ({
+  Layout: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="mocked-layout">{children}</div>
+  ),
   SimplePageContainer: ({ children }: { children: React.ReactNode }) => children,
   UserPrompt: () => null,
   Banner: () => null,
