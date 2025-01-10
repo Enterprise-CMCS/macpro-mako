@@ -21,13 +21,11 @@ export const OsTable: FC<{
             if (TH.hidden) return null;
 
             const currentSort = url.state.sort.find((s) => s.field === TH.field);
-            console.log("sorted:", currentSort);
 
             return (
               <UI.TableHead
                 {...(!!TH.props && TH.props)}
                 key={`TH-${TH.field}`}
-                // isActive={url.state.sort.field === TH.field}
                 isActive={!!currentSort}
                 desc={currentSort?.order === "desc"}
                 {...(TH.isSystem && { className: "pointer-events-none" })}
