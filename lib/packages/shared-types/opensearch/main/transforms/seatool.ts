@@ -72,7 +72,8 @@ const getRaiDate = (data: SeaTool) => {
 };
 
 const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
-  epocDate !== null && epocDate !== undefined ? new Date(epocDate).toISOString() : null;
+  // OpenSearch ignores `undefined`, preserving the existing record value
+  epocDate !== null && epocDate !== undefined ? new Date(epocDate).toISOString() : undefined;
 
   const compileSrtList = (
     officers: SeatoolOfficer[] | null | undefined,
