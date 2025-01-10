@@ -74,8 +74,12 @@ export const BreadCrumbSeperator = () => <ChevronRight className="w-5 h-5" />;
 
 export const BreadCrumbBar = ({ children }: React.PropsWithChildren) => {
   return (
-    <nav role="navigation" aria-label="breadcrumbs for spa or waiver choices" className="my-4">
-      <ul className="flex gap-1">{children}</ul>
+    <nav
+      role="navigation"
+      aria-label="breadcrumbs for spa or waiver choices"
+      className="my-4"
+    >
+      <ul className="flex flex-wrap gap-1">{children}</ul>
     </nav>
   );
 };
