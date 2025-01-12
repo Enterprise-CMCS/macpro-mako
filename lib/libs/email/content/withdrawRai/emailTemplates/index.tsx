@@ -1,3 +1,10 @@
+import { CommonEmailVariables, EmailAddresses, Events } from "shared-types";
+
+export interface EmailProps {
+  variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses };
+  relatedEvent: Events["WithdrawRai"] | null;
+}
+
 export { MedSpaCMSEmail } from "./MedSpaCMS";
 export { MedSpaStateEmail } from "./MedSpaState";
 export { ChipSpaCMSEmail } from "./ChipSpaCMS";

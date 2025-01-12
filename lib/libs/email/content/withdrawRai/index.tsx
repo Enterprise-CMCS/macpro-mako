@@ -1,4 +1,4 @@
-import { Action, Authority, CommonEmailVariables, EmailAddresses } from "shared-types";
+import { CommonEmailVariables, EmailAddresses, Events, Authority } from "shared-types";
 import { AuthoritiesWithUserTypesTemplate, getLatestMatchingEvent } from "../..";
 
 import {
@@ -12,15 +12,17 @@ import {
 } from "./emailTemplates";
 import { render } from "@react-email/render";
 
+const getWithdrawRaiEvent = async (id: string): Promise<Events["WithdrawRai"] | null> => {
+  const event = await getLatestMatchingEvent(id);
+  return event as unknown as Events["WithdrawRai"] | null;
+};
+
 export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
     cms: async (
-      variables: any &
-        CommonEmailVariables & { emails: EmailAddresses } & {
-          emails: EmailAddresses;
-        },
+      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
-      const relatedEvent = await getLatestMatchingEvent(variables.id, Action.RESPOND_TO_RAI);
+      const relatedEvent = await getWithdrawRaiEvent(variables.id);
       return {
         to: [
           ...variables.emails.osgEmail,
@@ -29,47 +31,63 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.srtEmails,
         ],
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
-        body: await render(<MedSpaCMSEmail relatedEvent={relatedEvent} variables={variables} />),
+        body: await render(
+          <MedSpaCMSEmail variables={variables as any} relatedEvent={relatedEvent as any} />,
+        ),
       };
     },
-    state: async (variables: any & CommonEmailVariables & { emails: EmailAddresses }) => {
-      const relatedEvent = await getLatestMatchingEvent(variables.id, Action.RESPOND_TO_RAI);
-
+    state: async (
+      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      const relatedEvent = await getWithdrawRaiEvent(variables.id);
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         cc: variables.allStateUsersEmails,
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
-        body: await render(<MedSpaStateEmail relatedEvent={relatedEvent} variables={variables} />),
+        body: await render(
+          <MedSpaStateEmail variables={variables as any} relatedEvent={relatedEvent as any} />,
+        ),
       };
     },
   },
   [Authority.CHIP_SPA]: {
     cms: async (
-      variables: any &
+      variables: Events["WithdrawRai"] &
         CommonEmailVariables & { emails: EmailAddresses } & {
           emails: EmailAddresses;
         },
     ) => {
-      const relatedEvent = await getLatestMatchingEvent(variables.id, Action.RESPOND_TO_RAI);
+      const relatedEvent = await getWithdrawRaiEvent(variables.id);
       return {
         to: variables.emails.chipInbox,
         cc: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
         subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
-        body: await render(<ChipSpaCMSEmail relatedEvent={relatedEvent} variables={variables} />),
+        body: await render(
+          <ChipSpaCMSEmail relatedEvent={relatedEvent as any} variables={variables} />,
+        ),
       };
     },
-    state: async (variables: any & CommonEmailVariables & { emails: EmailAddresses }) => {
-      const relatedEvent = await getLatestMatchingEvent(variables.id, Action.RESPOND_TO_RAI);
+    state: async (
+      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      const relatedEvent = await getWithdrawRaiEvent(variables.id);
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
-        body: await render(<ChipSpaStateEmail relatedEvent={relatedEvent} variables={variables} />),
+        body: await render(
+          <ChipSpaStateEmail relatedEvent={relatedEvent as any} variables={variables as any} />,
+        ),
       };
     },
   },
   [Authority["1915b"]]: {
-    cms: async (variables: any & CommonEmailVariables & { emails: EmailAddresses }) => {
-      const relatedEvent = await getLatestMatchingEvent(variables.id, Action.RESPOND_TO_RAI);
+    cms: async (
+      variables: Events["WithdrawRai"] &
+        CommonEmailVariables & { emails: EmailAddresses } & {
+          emails: EmailAddresses;
+        },
+    ) => {
+      const relatedEvent = await getWithdrawRaiEvent(variables.id);
       return {
         to: [
           ...variables.emails.dmcoEmail,
@@ -79,25 +97,29 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         ],
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id} `,
         body: await render(
-          <Waiver1915bCMSEmail relatedEvent={relatedEvent} variables={variables} />,
+          <Waiver1915bCMSEmail relatedEvent={relatedEvent as any} variables={variables as any} />,
         ),
       };
     },
-    state: async (variables: any & CommonEmailVariables & { emails: EmailAddresses }) => {
-      const relatedEvent = await getLatestMatchingEvent(variables.id, Action.RESPOND_TO_RAI);
+    state: async (
+      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      const relatedEvent = await getWithdrawRaiEvent(variables.id);
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`], // TODO: change to ALL state users
         cc: variables.allStateUsersEmails,
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
         body: await render(
-          <Waiver1915bStateEmail relatedEvent={relatedEvent} variables={variables} />,
+          <Waiver1915bStateEmail relatedEvent={relatedEvent as any} variables={variables as any} />,
         ),
       };
     },
   },
   [Authority["1915c"]]: {
-    cms: async (variables: any & CommonEmailVariables & { emails: EmailAddresses }) => {
-      const relatedEvent = await getLatestMatchingEvent(variables.id, Action.RESPOND_TO_RAI);
+    cms: async (
+      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      const relatedEvent = await getWithdrawRaiEvent(variables.id);
       return {
         to: [
           ...variables.emails.osgEmail,
@@ -106,7 +128,9 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.srtEmails,
         ],
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id} `,
-        body: await render(<AppKCMSEmail relatedEvent={relatedEvent} variables={variables} />),
+        body: await render(
+          <AppKCMSEmail variables={variables as any} relatedEvent={relatedEvent as any} />,
+        ),
       };
     },
   },

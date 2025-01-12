@@ -1,6 +1,6 @@
 import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/components";
 import { ReactNode } from "react";
-import { Attachment, AttachmentKey, AttachmentTitle } from "shared-types";
+import { Attachment, AttachmentKey, AttachmentTitle, Events } from "shared-types";
 import { styles } from "./email-styles";
 
 export const EMAIL_CONFIG = {
@@ -272,23 +272,31 @@ const BasicFooter = () => (
   </EmailFooter>
 );
 
-const WithdrawRAI = ({
-  id,
-  submitterName,
-  submitterEmail,
-}: {
+export interface WithdrawRAIProps {
+  relatedEvent: Events[keyof Events] | null;
   id: string;
-  submitterName: string;
-  submitterEmail: string;
-}) => (
-  <Section>
-    <Heading as="h2">
-      The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are
-      receiving this email notification as the Formal RAI for {id} was withdrawn by {submitterName}{" "}
-      {submitterEmail}.
-    </Heading>
-  </Section>
-);
+}
+
+const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ id, relatedEvent }) => {
+  const submitterInfo =
+    relatedEvent?.event === "respond-to-rai"
+      ? relatedEvent
+      : relatedEvent?.submitterName && relatedEvent?.submitterEmail
+      ? relatedEvent
+      : null;
+
+  return (
+    <Section>
+      <Heading as="h2">
+        {`The OneMAC Submission Portal received a request to withdraw the Formal RAI Response ${id}. ${
+          submitterInfo
+            ? `You are receiving this email notification as the Formal RAI for ${id} was withdrawn by ${submitterInfo.submitterName} ${submitterInfo.submitterEmail}.`
+            : ""
+        }`}
+      </Heading>
+    </Section>
+  );
+};
 
 const getCpocEmail = (item: any): string[] => {
   try {
