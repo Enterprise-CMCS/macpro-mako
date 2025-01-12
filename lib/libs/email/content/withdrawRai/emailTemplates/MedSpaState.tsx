@@ -10,7 +10,7 @@ export const MedSpaStateEmail = (props: {
   return (
     <Html lang="en" dir="ltr">
       <Container>
-        <WithdrawRAI {...variables} />
+        <WithdrawRAI {...variables} relatedEvent={relatedEvent as any} />
         <PackageDetails
           details={{
             "State or Territory": variables.territory,

@@ -22,7 +22,7 @@ export const Waiver1915bStateEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<FollowUpNotice />}
     >
-      <WithdrawRAI {...variables} />
+      <WithdrawRAI {...variables} relatedEvent={relatedEvent as any} />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,
