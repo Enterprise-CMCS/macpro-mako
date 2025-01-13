@@ -78,7 +78,6 @@ export const v202401: FormSchema = {
                   rhf: "Textarea",
                   label: "Eligibility group(s) included",
                   labelClassName: "font-bold text-black",
-                  props: { className: "w-[40rem]" },
                   rules: {
                     required: "* Required",
                     pattern: {
