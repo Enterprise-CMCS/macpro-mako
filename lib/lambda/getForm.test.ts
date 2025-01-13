@@ -48,4 +48,12 @@ describe("forms handler", () => {
     expect(result.statusCode).toBe(200);
     expect(result.body).toContain("Test Form");
   });
+  it("returns 200 with form data if form ID and version are valid", async () => {
+    const event = {
+      body: JSON.stringify({ formId: "TESTFORM", formVersion: "" }),
+    };
+    const result = await getForm(event as any);
+    expect(result.statusCode).toBe(200);
+    expect(result.body).toBe("{}");
+  });
 });
