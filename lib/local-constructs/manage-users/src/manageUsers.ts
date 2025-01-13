@@ -4,10 +4,14 @@ type ResponseStatus = typeof SUCCESS | typeof FAILED;
 import * as cognitolib from "./cognito-lib";
 import { getSecret } from "shared-utils";
 
-export const handler: Handler = async (event, context) => {
+export const handler: Handler = async (event, context, callback) => {
   console.log("request:", JSON.stringify(event, undefined, 2));
   const responseData: any = {};
   let responseStatus: ResponseStatus = SUCCESS;
+  const response = {
+    statusCode: 200,
+  };
+  let errorResponse = null;
   try {
     if (event.RequestType == "Create" || event.RequestType == "Update") {
       const { userPoolId, users, passwordSecretArn } = event.ResourceProperties;
@@ -43,7 +47,16 @@ export const handler: Handler = async (event, context) => {
   } catch (error) {
     console.log(error);
     responseStatus = FAILED;
-  } finally {
+    response.statusCode = 500;
+    errorResponse = error;
+  }
+
+  try {
     await send(event, context, responseStatus, responseData, "static");
+  } catch (error) {
+    response.statusCode = 500;
+    errorResponse = error;
+  } finally {
+    callback(errorResponse, response);
   }
 };

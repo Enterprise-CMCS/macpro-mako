@@ -1,6 +1,6 @@
-import { Text, Link, Section, Row, Column, Hr, Heading } from "@react-email/components";
-import { Attachment, AttachmentTitle, AttachmentKey } from "shared-types";
-import { createRef, forwardRef, ReactNode } from "react";
+import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/components";
+import { ReactNode } from "react";
+import { Attachment, AttachmentKey, AttachmentTitle } from "shared-types";
 import { styles } from "./email-styles";
 
 export const EMAIL_CONFIG = {
@@ -44,24 +44,17 @@ const Textarea = ({ children }: { children: React.ReactNode }) => (
   </Text>
 );
 
-const LogoContainer = forwardRef<HTMLSpanElement, { url: string }>(({ url }, ref) => (
-  <header ref={ref} style={styles.logo.container}>
-    <Link href={url} target="_blank" style={styles.logo.link}>
+const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
+  <Section style={styles.logo.container}>
+    <Link href={appEndpointUrl} target="_blank" style={styles.logo.link}>
       <img
         height={40}
         width={112}
         style={{ maxWidth: "112px" }}
-        src={`${url}onemac-logo.png`}
+        src={`${appEndpointUrl}onemac-logo.png`}
         alt="OneMAC Logo"
       />
-      <img alt="" />
     </Link>
-  </header>
-));
-
-const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
-  <Section>
-    <LogoContainer ref={createRef()} url={appEndpointUrl} />
   </Section>
 );
 
@@ -154,7 +147,7 @@ const Attachments = ({
       {Object.entries(attachments).map(([key, group]) => {
         if (!group?.files?.length) return null;
 
-        return (
+        return group.files.map((file, index) => (
           <Row key={key} style={{ marginBottom: "2px", marginTop: "2px" }}>
             <Column
               align="left"
@@ -163,20 +156,18 @@ const Attachments = ({
                 verticalAlign: "top",
               }}
             >
-              <Text style={{ ...styles.text.title }}>{group.label}:</Text>
+              {" "}
+              <span key={group.label + index}>
+                <Text style={{ ...styles.text.title }}>{group.label}:</Text>{" "}
+              </span>
             </Column>
             <Column style={{ verticalAlign: "top" }}>
               <Text style={styles.text.description}>
-                {group.files.map((file, index) => (
-                  <span key={file.filename + index}>
-                    {file.filename}
-                    {index < (group.files?.length ?? 0) - 1 && <br />}
-                  </span>
-                ))}
+                <span key={file.filename + index}>{file.filename}</span>
               </Text>
             </Column>
           </Row>
-        );
+        ));
       })}
     </>
   );
@@ -194,7 +185,13 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
                 Summary:
               </Heading>
             </Text>
-            <Text>{value ?? "No additional information submitted"}</Text>
+            <Text
+              style={{
+                whiteSpace: "pre-line",
+              }}
+            >
+              {value ?? "No additional information submitted"}
+            </Text>
           </Row>
         );
       }
@@ -225,9 +222,11 @@ const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
 const FollowUpNotice = ({
   isChip,
   includeStateLead = true,
+  includeDidNotExpect = true,
 }: {
   isChip?: boolean;
   includeStateLead?: boolean;
+  includeDidNotExpect?: boolean;
 }) => (
   <>
     <Divider />
@@ -244,7 +243,9 @@ const FollowUpNotice = ({
     ) : (
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
-          If you have any questions or did not expect this email, please contact{" "}
+          {`If you have any questions${
+            includeDidNotExpect ? " or did not expect this email" : ""
+          }, please contact `}
           <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`} style={{ textDecoration: "underline" }}>
             {EMAIL_CONFIG.SPA_EMAIL}
           </Link>

@@ -3,7 +3,6 @@ import {
   LoginInstructions,
   PackageDetails,
   BasicFooter,
-  DetailsHeading,
   Attachments,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
@@ -13,7 +12,7 @@ export const ChipSpaCMSEmail = (props: {
 }) => {
   const variables = props.variables;
   const previewText = `CHIP SPA ${variables.id} Submitted`;
-  const heading = "The OneMAC Submission Portal received a CHIP State Plan Amendment";
+  const heading = "The OneMAC Submission Portal received a CHIP State Plan Amendment:";
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -21,13 +20,12 @@ export const ChipSpaCMSEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <DetailsHeading />
-      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} useThisLink />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,
           Name: variables.submitterName,
-          Email: variables.submitterEmail,
+          "Email Address": variables.submitterEmail,
           "CHIP SPA Package ID": variables.id,
           Summary: variables.additionalInformation,
         }}

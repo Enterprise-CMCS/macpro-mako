@@ -49,31 +49,25 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Appk Previe
                     cellpadding="0"
                     cellspacing="0"
                     role="presentation"
+                    style="background-color: rgb(0, 113, 189); padding: 16px;"
                     width="100%"
                   >
                     <tbody>
                       <tr>
                         <td>
-                          <header
-                            style="background-color: rgb(0, 113, 189); padding: 16px;"
+                          <a
+                            href="https://mako-dev.cms.gov/"
+                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                            target="_blank"
                           >
-                            <a
-                              href="https://mako-dev.cms.gov/"
-                              style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                              target="_blank"
-                            >
-                              <img
-                                alt="OneMAC Logo"
-                                height="40"
-                                src="https://mako-dev.cms.gov/onemac-logo.png"
-                                style="max-width: 112px;"
-                                width="112"
-                              />
-                              <img
-                                alt=""
-                              />
-                            </a>
-                          </header>
+                            <img
+                              alt="OneMAC Logo"
+                              height="40"
+                              src="https://mako-dev.cms.gov/onemac-logo.png"
+                              style="max-width: 112px;"
+                              width="112"
+                            />
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -103,8 +97,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Appk Previe
                             <p
                               style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
                             >
-                              If you have any questions or did not expect this email, please contact
-                               
+                              If you have any questions or did not expect this email, please contact 
                               <a
                                 href="mailto:spa@cms.hhs.gov"
                                 style="color: rgb(6, 125, 247); text-decoration: underline;"
@@ -221,31 +214,25 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Appk Previe
                   cellpadding="0"
                   cellspacing="0"
                   role="presentation"
+                  style="background-color: rgb(0, 113, 189); padding: 16px;"
                   width="100%"
                 >
                   <tbody>
                     <tr>
                       <td>
-                        <header
-                          style="background-color: rgb(0, 113, 189); padding: 16px;"
+                        <a
+                          href="https://mako-dev.cms.gov/"
+                          style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                          target="_blank"
                         >
-                          <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
-                          >
-                            <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
-                            />
-                            <img
-                              alt=""
-                            />
-                          </a>
-                        </header>
+                          <img
+                            alt="OneMAC Logo"
+                            height="40"
+                            src="https://mako-dev.cms.gov/onemac-logo.png"
+                            style="max-width: 112px;"
+                            width="112"
+                          />
+                        </a>
                       </td>
                     </tr>
                   </tbody>
@@ -275,8 +262,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Appk Previe
                           <p
                             style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
                           >
-                            If you have any questions or did not expect this email, please contact
-                             
+                            If you have any questions or did not expect this email, please contact 
                             <a
                               href="mailto:spa@cms.hhs.gov"
                               style="color: rgb(6, 125, 247); text-decoration: underline;"
@@ -450,31 +436,25 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
                     cellpadding="0"
                     cellspacing="0"
                     role="presentation"
+                    style="background-color: rgb(0, 113, 189); padding: 16px;"
                     width="100%"
                   >
                     <tbody>
                       <tr>
                         <td>
-                          <header
-                            style="background-color: rgb(0, 113, 189); padding: 16px;"
+                          <a
+                            href="https://mako-dev.cms.gov/"
+                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                            target="_blank"
                           >
-                            <a
-                              href="https://mako-dev.cms.gov/"
-                              style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                              target="_blank"
-                            >
-                              <img
-                                alt="OneMAC Logo"
-                                height="40"
-                                src="https://mako-dev.cms.gov/onemac-logo.png"
-                                style="max-width: 112px;"
-                                width="112"
-                              />
-                              <img
-                                alt=""
-                              />
-                            </a>
-                          </header>
+                            <img
+                              alt="OneMAC Logo"
+                              height="40"
+                              src="https://mako-dev.cms.gov/onemac-logo.png"
+                              style="max-width: 112px;"
+                              width="112"
+                            />
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -504,8 +484,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
                             <p
                               style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
                             >
-                              If you have any questions or did not expect this email, please contact
-                               
+                              If you have any questions or did not expect this email, please contact 
                               <a
                                 href="mailto:spa@cms.hhs.gov"
                                 style="color: rgb(6, 125, 247); text-decoration: underline;"
@@ -621,31 +600,25 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
                     cellpadding="0"
                     cellspacing="0"
                     role="presentation"
+                    style="background-color: rgb(0, 113, 189); padding: 16px;"
                     width="100%"
                   >
                     <tbody>
                       <tr>
                         <td>
-                          <header
-                            style="background-color: rgb(0, 113, 189); padding: 16px;"
+                          <a
+                            href="https://mako-dev.cms.gov/"
+                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                            target="_blank"
                           >
-                            <a
-                              href="https://mako-dev.cms.gov/"
-                              style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                              target="_blank"
-                            >
-                              <img
-                                alt="OneMAC Logo"
-                                height="40"
-                                src="https://mako-dev.cms.gov/onemac-logo.png"
-                                style="max-width: 112px;"
-                                width="112"
-                              />
-                              <img
-                                alt=""
-                              />
-                            </a>
-                          </header>
+                            <img
+                              alt="OneMAC Logo"
+                              height="40"
+                              src="https://mako-dev.cms.gov/onemac-logo.png"
+                              style="max-width: 112px;"
+                              width="112"
+                            />
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -793,31 +766,25 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
                   cellpadding="0"
                   cellspacing="0"
                   role="presentation"
+                  style="background-color: rgb(0, 113, 189); padding: 16px;"
                   width="100%"
                 >
                   <tbody>
                     <tr>
                       <td>
-                        <header
-                          style="background-color: rgb(0, 113, 189); padding: 16px;"
+                        <a
+                          href="https://mako-dev.cms.gov/"
+                          style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                          target="_blank"
                         >
-                          <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
-                          >
-                            <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
-                            />
-                            <img
-                              alt=""
-                            />
-                          </a>
-                        </header>
+                          <img
+                            alt="OneMAC Logo"
+                            height="40"
+                            src="https://mako-dev.cms.gov/onemac-logo.png"
+                            style="max-width: 112px;"
+                            width="112"
+                          />
+                        </a>
                       </td>
                     </tr>
                   </tbody>
@@ -1022,31 +989,25 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                     cellpadding="0"
                     cellspacing="0"
                     role="presentation"
+                    style="background-color: rgb(0, 113, 189); padding: 16px;"
                     width="100%"
                   >
                     <tbody>
                       <tr>
                         <td>
-                          <header
-                            style="background-color: rgb(0, 113, 189); padding: 16px;"
+                          <a
+                            href="https://mako-dev.cms.gov/"
+                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                            target="_blank"
                           >
-                            <a
-                              href="https://mako-dev.cms.gov/"
-                              style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                              target="_blank"
-                            >
-                              <img
-                                alt="OneMAC Logo"
-                                height="40"
-                                src="https://mako-dev.cms.gov/onemac-logo.png"
-                                style="max-width: 112px;"
-                                width="112"
-                              />
-                              <img
-                                alt=""
-                              />
-                            </a>
-                          </header>
+                            <img
+                              alt="OneMAC Logo"
+                              height="40"
+                              src="https://mako-dev.cms.gov/onemac-logo.png"
+                              style="max-width: 112px;"
+                              width="112"
+                            />
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -1076,8 +1037,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                             <p
                               style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
                             >
-                              If you have any questions or did not expect this email, please contact
-                               
+                              If you have any questions or did not expect this email, please contact 
                               <a
                                 href="mailto:spa@cms.hhs.gov"
                                 style="color: rgb(6, 125, 247); text-decoration: underline;"
@@ -1193,31 +1153,25 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                     cellpadding="0"
                     cellspacing="0"
                     role="presentation"
+                    style="background-color: rgb(0, 113, 189); padding: 16px;"
                     width="100%"
                   >
                     <tbody>
                       <tr>
                         <td>
-                          <header
-                            style="background-color: rgb(0, 113, 189); padding: 16px;"
+                          <a
+                            href="https://mako-dev.cms.gov/"
+                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                            target="_blank"
                           >
-                            <a
-                              href="https://mako-dev.cms.gov/"
-                              style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                              target="_blank"
-                            >
-                              <img
-                                alt="OneMAC Logo"
-                                height="40"
-                                src="https://mako-dev.cms.gov/onemac-logo.png"
-                                style="max-width: 112px;"
-                                width="112"
-                              />
-                              <img
-                                alt=""
-                              />
-                            </a>
-                          </header>
+                            <img
+                              alt="OneMAC Logo"
+                              height="40"
+                              src="https://mako-dev.cms.gov/onemac-logo.png"
+                              style="max-width: 112px;"
+                              width="112"
+                            />
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -1364,31 +1318,25 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                     cellpadding="0"
                     cellspacing="0"
                     role="presentation"
+                    style="background-color: rgb(0, 113, 189); padding: 16px;"
                     width="100%"
                   >
                     <tbody>
                       <tr>
                         <td>
-                          <header
-                            style="background-color: rgb(0, 113, 189); padding: 16px;"
+                          <a
+                            href="https://mako-dev.cms.gov/"
+                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                            target="_blank"
                           >
-                            <a
-                              href="https://mako-dev.cms.gov/"
-                              style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                              target="_blank"
-                            >
-                              <img
-                                alt="OneMAC Logo"
-                                height="40"
-                                src="https://mako-dev.cms.gov/onemac-logo.png"
-                                style="max-width: 112px;"
-                                width="112"
-                              />
-                              <img
-                                alt=""
-                              />
-                            </a>
-                          </header>
+                            <img
+                              alt="OneMAC Logo"
+                              height="40"
+                              src="https://mako-dev.cms.gov/onemac-logo.png"
+                              style="max-width: 112px;"
+                              width="112"
+                            />
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -1418,8 +1366,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                             <p
                               style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
                             >
-                              If you have any questions or did not expect this email, please contact
-                               
+                              If you have any questions or did not expect this email, please contact 
                               <a
                                 href="mailto:spa@cms.hhs.gov"
                                 style="color: rgb(6, 125, 247); text-decoration: underline;"
@@ -1536,31 +1483,25 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                   cellpadding="0"
                   cellspacing="0"
                   role="presentation"
+                  style="background-color: rgb(0, 113, 189); padding: 16px;"
                   width="100%"
                 >
                   <tbody>
                     <tr>
                       <td>
-                        <header
-                          style="background-color: rgb(0, 113, 189); padding: 16px;"
+                        <a
+                          href="https://mako-dev.cms.gov/"
+                          style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                          target="_blank"
                         >
-                          <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
-                          >
-                            <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
-                            />
-                            <img
-                              alt=""
-                            />
-                          </a>
-                        </header>
+                          <img
+                            alt="OneMAC Logo"
+                            height="40"
+                            src="https://mako-dev.cms.gov/onemac-logo.png"
+                            style="max-width: 112px;"
+                            width="112"
+                          />
+                        </a>
                       </td>
                     </tr>
                   </tbody>
@@ -1590,8 +1531,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                           <p
                             style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
                           >
-                            If you have any questions or did not expect this email, please contact
-                             
+                            If you have any questions or did not expect this email, please contact 
                             <a
                               href="mailto:spa@cms.hhs.gov"
                               style="color: rgb(6, 125, 247); text-decoration: underline;"
@@ -1765,31 +1705,25 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                     cellpadding="0"
                     cellspacing="0"
                     role="presentation"
+                    style="background-color: rgb(0, 113, 189); padding: 16px;"
                     width="100%"
                   >
                     <tbody>
                       <tr>
                         <td>
-                          <header
-                            style="background-color: rgb(0, 113, 189); padding: 16px;"
+                          <a
+                            href="https://mako-dev.cms.gov/"
+                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                            target="_blank"
                           >
-                            <a
-                              href="https://mako-dev.cms.gov/"
-                              style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                              target="_blank"
-                            >
-                              <img
-                                alt="OneMAC Logo"
-                                height="40"
-                                src="https://mako-dev.cms.gov/onemac-logo.png"
-                                style="max-width: 112px;"
-                                width="112"
-                              />
-                              <img
-                                alt=""
-                              />
-                            </a>
-                          </header>
+                            <img
+                              alt="OneMAC Logo"
+                              height="40"
+                              src="https://mako-dev.cms.gov/onemac-logo.png"
+                              style="max-width: 112px;"
+                              width="112"
+                            />
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -1819,8 +1753,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                             <p
                               style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
                             >
-                              If you have any questions or did not expect this email, please contact
-                               
+                              If you have any questions or did not expect this email, please contact 
                               <a
                                 href="mailto:spa@cms.hhs.gov"
                                 style="color: rgb(6, 125, 247); text-decoration: underline;"
@@ -1936,31 +1869,25 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                     cellpadding="0"
                     cellspacing="0"
                     role="presentation"
+                    style="background-color: rgb(0, 113, 189); padding: 16px;"
                     width="100%"
                   >
                     <tbody>
                       <tr>
                         <td>
-                          <header
-                            style="background-color: rgb(0, 113, 189); padding: 16px;"
+                          <a
+                            href="https://mako-dev.cms.gov/"
+                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                            target="_blank"
                           >
-                            <a
-                              href="https://mako-dev.cms.gov/"
-                              style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                              target="_blank"
-                            >
-                              <img
-                                alt="OneMAC Logo"
-                                height="40"
-                                src="https://mako-dev.cms.gov/onemac-logo.png"
-                                style="max-width: 112px;"
-                                width="112"
-                              />
-                              <img
-                                alt=""
-                              />
-                            </a>
-                          </header>
+                            <img
+                              alt="OneMAC Logo"
+                              height="40"
+                              src="https://mako-dev.cms.gov/onemac-logo.png"
+                              style="max-width: 112px;"
+                              width="112"
+                            />
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -2107,31 +2034,25 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                     cellpadding="0"
                     cellspacing="0"
                     role="presentation"
+                    style="background-color: rgb(0, 113, 189); padding: 16px;"
                     width="100%"
                   >
                     <tbody>
                       <tr>
                         <td>
-                          <header
-                            style="background-color: rgb(0, 113, 189); padding: 16px;"
+                          <a
+                            href="https://mako-dev.cms.gov/"
+                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                            target="_blank"
                           >
-                            <a
-                              href="https://mako-dev.cms.gov/"
-                              style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                              target="_blank"
-                            >
-                              <img
-                                alt="OneMAC Logo"
-                                height="40"
-                                src="https://mako-dev.cms.gov/onemac-logo.png"
-                                style="max-width: 112px;"
-                                width="112"
-                              />
-                              <img
-                                alt=""
-                              />
-                            </a>
-                          </header>
+                            <img
+                              alt="OneMAC Logo"
+                              height="40"
+                              src="https://mako-dev.cms.gov/onemac-logo.png"
+                              style="max-width: 112px;"
+                              width="112"
+                            />
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -2161,8 +2082,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                             <p
                               style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
                             >
-                              If you have any questions or did not expect this email, please contact
-                               
+                              If you have any questions or did not expect this email, please contact 
                               <a
                                 href="mailto:spa@cms.hhs.gov"
                                 style="color: rgb(6, 125, 247); text-decoration: underline;"
@@ -2278,31 +2198,25 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                     cellpadding="0"
                     cellspacing="0"
                     role="presentation"
+                    style="background-color: rgb(0, 113, 189); padding: 16px;"
                     width="100%"
                   >
                     <tbody>
                       <tr>
                         <td>
-                          <header
-                            style="background-color: rgb(0, 113, 189); padding: 16px;"
+                          <a
+                            href="https://mako-dev.cms.gov/"
+                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                            target="_blank"
                           >
-                            <a
-                              href="https://mako-dev.cms.gov/"
-                              style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                              target="_blank"
-                            >
-                              <img
-                                alt="OneMAC Logo"
-                                height="40"
-                                src="https://mako-dev.cms.gov/onemac-logo.png"
-                                style="max-width: 112px;"
-                                width="112"
-                              />
-                              <img
-                                alt=""
-                              />
-                            </a>
-                          </header>
+                            <img
+                              alt="OneMAC Logo"
+                              height="40"
+                              src="https://mako-dev.cms.gov/onemac-logo.png"
+                              style="max-width: 112px;"
+                              width="112"
+                            />
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -2332,8 +2246,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                             <p
                               style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
                             >
-                              If you have any questions or did not expect this email, please contact
-                               
+                              If you have any questions or did not expect this email, please contact 
                               <a
                                 href="mailto:spa@cms.hhs.gov"
                                 style="color: rgb(6, 125, 247); text-decoration: underline;"
@@ -2450,31 +2363,25 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                   cellpadding="0"
                   cellspacing="0"
                   role="presentation"
+                  style="background-color: rgb(0, 113, 189); padding: 16px;"
                   width="100%"
                 >
                   <tbody>
                     <tr>
                       <td>
-                        <header
-                          style="background-color: rgb(0, 113, 189); padding: 16px;"
+                        <a
+                          href="https://mako-dev.cms.gov/"
+                          style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                          target="_blank"
                         >
-                          <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
-                          >
-                            <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
-                            />
-                            <img
-                              alt=""
-                            />
-                          </a>
-                        </header>
+                          <img
+                            alt="OneMAC Logo"
+                            height="40"
+                            src="https://mako-dev.cms.gov/onemac-logo.png"
+                            style="max-width: 112px;"
+                            width="112"
+                          />
+                        </a>
                       </td>
                     </tr>
                   </tbody>
@@ -2504,8 +2411,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                           <p
                             style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
                           >
-                            If you have any questions or did not expect this email, please contact
-                             
+                            If you have any questions or did not expect this email, please contact 
                             <a
                               href="mailto:spa@cms.hhs.gov"
                               style="color: rgb(6, 125, 247); text-decoration: underline;"
