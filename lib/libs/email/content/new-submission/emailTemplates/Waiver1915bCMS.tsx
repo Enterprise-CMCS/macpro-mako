@@ -1,7 +1,6 @@
 import { CommonEmailVariables, Events } from "shared-types";
 import {
   Attachments,
-  DetailsHeading,
   LoginInstructions,
   PackageDetails,
   BasicFooter,
@@ -30,8 +29,7 @@ export const Waiver1915bCMSEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <DetailsHeading />
-      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} useThisLink />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,

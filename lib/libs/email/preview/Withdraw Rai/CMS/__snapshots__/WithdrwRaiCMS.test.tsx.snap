@@ -270,7 +270,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This some additional information about the request to withdraw and what makes it important.
                                   </p>
@@ -309,6 +309,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -354,6 +355,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -399,6 +401,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -444,26 +447,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                Public Notice
-                                :
-                              </p>
-                               
-                              <br />
-                            </span>
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                Public Notice
-                                :
-                              </p>
-                               
-                              <br />
-                            </span>
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -483,12 +467,96 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                             >
                               <span>
                                 public-notice-oct-2024.pdf
-                                <br />
                               </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
                               <span>
                                 public-notice-sept-2024.pdf
-                                <br />
                               </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
                               <span>
                                 public-notice-nov-2024.pdf
                               </span>
@@ -517,6 +585,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -562,6 +631,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -911,7 +981,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                 >
                                   This some additional information about the request to withdraw and what makes it important.
                                 </p>
@@ -950,6 +1020,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
+                           
                           <span>
                             <p
                               style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -995,6 +1066,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
+                           
                           <span>
                             <p
                               style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -1040,6 +1112,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
+                           
                           <span>
                             <p
                               style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -1085,26 +1158,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
-                          <span>
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Public Notice
-                              :
-                            </p>
-                             
-                            <br />
-                          </span>
-                          <span>
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                            >
-                              Public Notice
-                              :
-                            </p>
-                             
-                            <br />
-                          </span>
+                           
                           <span>
                             <p
                               style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -1124,12 +1178,96 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                           >
                             <span>
                               public-notice-oct-2024.pdf
-                              <br />
                             </span>
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table
+                    align="center"
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    role="presentation"
+                    style="margin-bottom: 2px; margin-top: 2px;"
+                    width="100%"
+                  >
+                    <tbody
+                      style="width: 100%;"
+                    >
+                      <tr
+                        style="width: 100%;"
+                      >
+                        <td
+                          align="left"
+                          data-id="__react-email-column"
+                          style="width: 50%; vertical-align: top;"
+                        >
+                           
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Public Notice
+                              :
+                            </p>
+                             
+                          </span>
+                        </td>
+                        <td
+                          data-id="__react-email-column"
+                          style="vertical-align: top;"
+                        >
+                          <p
+                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                          >
                             <span>
                               public-notice-sept-2024.pdf
-                              <br />
                             </span>
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table
+                    align="center"
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    role="presentation"
+                    style="margin-bottom: 2px; margin-top: 2px;"
+                    width="100%"
+                  >
+                    <tbody
+                      style="width: 100%;"
+                    >
+                      <tr
+                        style="width: 100%;"
+                      >
+                        <td
+                          align="left"
+                          data-id="__react-email-column"
+                          style="width: 50%; vertical-align: top;"
+                        >
+                           
+                          <span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                            >
+                              Public Notice
+                              :
+                            </p>
+                             
+                          </span>
+                        </td>
+                        <td
+                          data-id="__react-email-column"
+                          style="vertical-align: top;"
+                        >
+                          <p
+                            style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                          >
                             <span>
                               public-notice-nov-2024.pdf
                             </span>
@@ -1158,6 +1296,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
+                           
                           <span>
                             <p
                               style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -1203,6 +1342,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Appk Preview Template 
                           data-id="__react-email-column"
                           style="width: 50%; vertical-align: top;"
                         >
+                           
                           <span>
                             <p
                               style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -1609,7 +1749,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This some additional information about the request to withdraw and what makes it important.
                                   </p>
@@ -1648,6 +1788,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -1693,6 +1834,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -1738,6 +1880,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -1783,26 +1926,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                Public Notice
-                                :
-                              </p>
-                               
-                              <br />
-                            </span>
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                Public Notice
-                                :
-                              </p>
-                               
-                              <br />
-                            </span>
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -1822,12 +1946,96 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                             >
                               <span>
                                 public-notice-oct-2024.pdf
-                                <br />
                               </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
                               <span>
                                 public-notice-sept-2024.pdf
-                                <br />
                               </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
                               <span>
                                 public-notice-nov-2024.pdf
                               </span>
@@ -1856,6 +2064,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -1901,6 +2110,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -2216,7 +2426,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                                 </h2>
                               </p>
                               <p
-                                style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                               >
                                 This some additional information about the request to withdraw and what makes it important.
                               </p>
@@ -2495,7 +2705,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a ChipSPA Preview Templa
                               </h2>
                             </p>
                             <p
-                              style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                              style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                             >
                               This some additional information about the request to withdraw and what makes it important.
                             </p>
@@ -2864,7 +3074,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This some additional information about the request to withdraw and what makes it important.
                                   </p>
@@ -2903,6 +3113,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -2948,6 +3159,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -2993,6 +3205,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -3038,26 +3251,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                Public Notice
-                                :
-                              </p>
-                               
-                              <br />
-                            </span>
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                Public Notice
-                                :
-                              </p>
-                               
-                              <br />
-                            </span>
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -3077,12 +3271,96 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                             >
                               <span>
                                 public-notice-oct-2024.pdf
-                                <br />
                               </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
                               <span>
                                 public-notice-sept-2024.pdf
-                                <br />
                               </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
                               <span>
                                 public-notice-nov-2024.pdf
                               </span>
@@ -3111,6 +3389,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -3156,6 +3435,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -3471,7 +3751,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                                 </h2>
                               </p>
                               <p
-                                style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                               >
                                 This some additional information about the request to withdraw and what makes it important.
                               </p>
@@ -3749,7 +4029,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                                 </h2>
                               </p>
                               <p
-                                style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                               >
                                 This some additional information about the request to withdraw and what makes it important.
                               </p>
@@ -4028,7 +4308,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview T
                               </h2>
                             </p>
                             <p
-                              style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                              style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                             >
                               This some additional information about the request to withdraw and what makes it important.
                             </p>
@@ -4397,7 +4677,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This some additional information about the request to withdraw and what makes it important.
                                   </p>
@@ -4436,6 +4716,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -4481,6 +4762,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -4526,6 +4808,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -4571,26 +4854,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                Public Notice
-                                :
-                              </p>
-                               
-                              <br />
-                            </span>
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                Public Notice
-                                :
-                              </p>
-                               
-                              <br />
-                            </span>
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -4610,12 +4874,96 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                             >
                               <span>
                                 public-notice-oct-2024.pdf
-                                <br />
                               </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
                               <span>
                                 public-notice-sept-2024.pdf
-                                <br />
                               </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Public Notice
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
                               <span>
                                 public-notice-nov-2024.pdf
                               </span>
@@ -4644,6 +4992,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -4689,6 +5038,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                             data-id="__react-email-column"
                             style="width: 50%; vertical-align: top;"
                           >
+                             
                             <span>
                               <p
                                 style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
@@ -5004,7 +5354,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                                 </h2>
                               </p>
                               <p
-                                style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                               >
                                 This some additional information about the request to withdraw and what makes it important.
                               </p>
@@ -5282,7 +5632,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                                 </h2>
                               </p>
                               <p
-                                style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                               >
                                 This some additional information about the request to withdraw and what makes it important.
                               </p>
@@ -5560,7 +5910,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                                 </h2>
                               </p>
                               <p
-                                style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                               >
                                 This some additional information about the request to withdraw and what makes it important.
                               </p>
@@ -5839,7 +6189,7 @@ exports[`Withdraw RAI CMS Email Snapshot Test > renders a Waiver Capitated Previ
                               </h2>
                             </p>
                             <p
-                              style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                              style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                             >
                               This some additional information about the request to withdraw and what makes it important.
                             </p>
