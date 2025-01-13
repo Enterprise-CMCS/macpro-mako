@@ -1,27 +1,27 @@
-import { CommonEmailVariables, Events } from "shared-types";
-import { Container, Html } from "@react-email/components";
-import { WithdrawRAI, PackageDetails, BasicFooter } from "../../email-components";
+import { WithdrawRAI, PackageDetails, BasicFooter, WithdrawRAIProps } from "../../email-components";
+import { BaseEmailTemplate } from "../../email-templates";
 
-export const Waiver1915bCMSEmail = (props: {
-  variables: Events["RespondToRai"] & CommonEmailVariables;
-  relatedEvent: any;
-}) => {
-  const { variables, relatedEvent } = { ...props };
+export const Waiver1915bCMSEmail = ({ variables, relatedEvent }: WithdrawRAIProps) => {
+  const previewText = `Waiver Package ${relatedEvent.id} withdrawn`;
+  const heading = `Withdraw Formal RAI Response for Waiver Package ${relatedEvent.id}`;
+
   return (
-    <Html lang="en" dir="ltr">
-      <Container>
-        <WithdrawRAI {...variables} />
-        <PackageDetails
-          details={{
-            "State or Territory": variables.territory,
-            Name: relatedEvent.submitterName,
-            "Email Address": relatedEvent.submitterEmail,
-            "Waiver Number": variables.id,
-            Summary: variables.additionalInformation,
-          }}
-        />
-        <BasicFooter />
-      </Container>
-    </Html>
+    <BaseEmailTemplate
+      previewText={previewText}
+      heading={heading}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<BasicFooter />}
+    >
+      <WithdrawRAI variables={variables} relatedEvent={relatedEvent} />
+      <PackageDetails
+        details={{
+          "State or Territory": variables.territory,
+          Name: variables.submitterName,
+          "Email Address": variables.submitterEmail,
+          "Waiver Number": variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
+    </BaseEmailTemplate>
   );
 };

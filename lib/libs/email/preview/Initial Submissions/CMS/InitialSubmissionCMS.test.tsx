@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
 
-import AppKCMSEmailPreview from "./AppK";
+import AppKCMSEmailPreview from "./__snapshots__/AppK";
 import ChipSpaCMSEmailPreview from "./CHIP_SPA";
 import Medicaid_SPA from "./Medicaid_SPA";
 import TempExtCMSPreview from "./Temp_Extension";
