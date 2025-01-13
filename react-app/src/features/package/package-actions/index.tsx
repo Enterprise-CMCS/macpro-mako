@@ -1,6 +1,6 @@
 import { useGetItem, useGetPackageActions } from "@/api";
 import { LoadingSpinner } from "@/components";
-import { DETAILS_ORIGIN, ORIGIN, mapActionLabel } from "@/utils";
+import { WAIVER_SUBMISSION_ORIGIN, DETAILS_ORIGIN, ORIGIN, mapActionLabel } from "@/utils";
 import { DetailCardWrapper } from "..";
 import { FC } from "react";
 import { Link, useLocation } from "react-router";
@@ -39,7 +39,10 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
               to={{
                 pathname: `/actions/${type}/${item.data?._source.authority}/${id}`,
                 search: new URLSearchParams({
-                  [ORIGIN]: DETAILS_ORIGIN,
+                  [ORIGIN]:
+                    type === "amend-waiver" || type === "temporary-extension"
+                      ? WAIVER_SUBMISSION_ORIGIN
+                      : DETAILS_ORIGIN,
                 }).toString(),
               }}
               className="text-sky-700 font-semibold text-lg"
