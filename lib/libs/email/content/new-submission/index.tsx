@@ -61,7 +61,8 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
     cms: async (
       variables:
         | (Events["CapitatedInitial"] & CommonEmailVariables & { emails: EmailAddresses })
-        | (Events["ContractingInitial"] & CommonEmailVariables & { emails: EmailAddresses }),
+        | (Events["ContractingInitial"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["CapitatedRenewal"] & CommonEmailVariables & { emails: EmailAddresses }),
     ) => {
       return {
         to: variables.emails.osgEmail,
@@ -72,7 +73,8 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
     state: async (
       variables:
         | (Events["CapitatedInitial"] & CommonEmailVariables & { emails: EmailAddresses })
-        | (Events["ContractingInitial"] & CommonEmailVariables & { emails: EmailAddresses }),
+        | (Events["ContractingInitial"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["CapitatedRenewal"] & CommonEmailVariables & { emails: EmailAddresses }),
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],

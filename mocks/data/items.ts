@@ -14,8 +14,10 @@ export const NOT_EXISTING_ITEM_ID = "MD-11-0000";
 export const TEST_ITEM_ID = "MD-0005.R01.00";
 export const EXISTING_ITEM_TEMPORARY_EXTENSION_ID = "MD-0005.R01.TE00";
 export const HI_TEST_ITEM_ID = "HI-0000.R00.00";
-export const CAPITATED_INITIAL_ITEM_ID = "MD-006.R00.00";
-export const CAPITATED_AMEND_ITEM_ID = "MD-006.R00.01";
+export const CAPITATED_INITIAL_ITEM_ID = "SS-2234.R00.00";
+export const CAPITATED_INITIAL_NEW_ITEM_ID = "SS-1235.R00.00";
+export const CAPITATED_AMEND_ITEM_ID = "VA-2234.R11.01";
+export const WEIRD_ID = "VA";
 export const CONTRACTING_INITIAL_ITEM_ID = "MD-007.R00.00";
 export const CONTRACTING_AMEND_ITEM_ID = "MD-007.R00.01";
 export const MISSING_CHANGELOG_ITEM_ID = "MD-008.R00.00";
@@ -35,7 +37,7 @@ const items: Record<string, TestItemResult> = {
       actionType: "New",
     },
   },
-  ["VA"]: {
+  [WEIRD_ID]: {
     _id: EXISTING_ITEM_ID,
     found: true,
     _source: {
@@ -109,6 +111,17 @@ const items: Record<string, TestItemResult> = {
     found: true,
     _source: {
       id: EXISTING_ITEM_PENDING_ID,
+      seatoolStatus: SEATOOL_STATUS.PENDING,
+      actionType: "New",
+      origin: "SEATool",
+      state: "MD",
+    },
+  },
+  [CAPITATED_AMEND_ITEM_ID]: {
+    _id: CAPITATED_AMEND_ITEM_ID,
+    found: true,
+    _source: {
+      id: CAPITATED_AMEND_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.PENDING,
       actionType: "New",
       origin: "SEATool",
