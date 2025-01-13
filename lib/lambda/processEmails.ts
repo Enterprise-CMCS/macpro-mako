@@ -131,7 +131,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     ...JSON.parse(decodeBase64WithUtf8(value)),
   };
   console.log("record: ", JSON.stringify(record, null, 2));
-  console.log("original record: ", JSON.stringify(record.origin, null, 2));
 
   if (record.origin !== "mako") {
     console.log("Kafka event is not of mako origin.  Doing nothing.");

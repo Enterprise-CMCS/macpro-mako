@@ -1,18 +1,14 @@
 import { events } from "shared-types/events";
-import {
-  isAuthorized,
-  getAuthDetails,
-  lookupUserAttributes,
-} from "../../../libs/api/auth/user";
+import { isAuthorized, getAuthDetails, lookupUserAttributes } from "../../../libs/api/auth/user";
 import { type APIGatewayEvent } from "aws-lambda";
 import { itemExists } from "libs/api/package";
+import { getNamespace } from "libs/utils";
+import * as os from "libs/opensearch-lib";
 
 export const respondToRai = async (event: APIGatewayEvent) => {
   if (!event.body) return;
 
-  const parsedResult = events["respond-to-rai"].baseSchema.safeParse(
-    JSON.parse(event.body),
-  );
+  const parsedResult = events["respond-to-rai"].baseSchema.safeParse(JSON.parse(event.body));
   if (!parsedResult.success) {
     throw parsedResult.error;
   }
@@ -27,16 +23,18 @@ export const respondToRai = async (event: APIGatewayEvent) => {
     throw "Item Doesn't Exist";
   }
 
+  if (!process.env.osDomain) {
+    throw "OS Domain not set";
+  }
+  const item = await os.getItem(process.env.osDomain, getNamespace("main"), parsedResult.data.id);
   const authDetails = getAuthDetails(event);
-  const userAttr = await lookupUserAttributes(
-    authDetails.userId,
-    authDetails.poolId,
-  );
+  const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
   const submitterEmail = userAttr.email;
   const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
 
   const transformedData = events["respond-to-rai"].schema.parse({
     ...parsedResult.data,
+    authority: item?._source.authority,
     submitterName,
     submitterEmail,
     timestamp: Date.now(),
