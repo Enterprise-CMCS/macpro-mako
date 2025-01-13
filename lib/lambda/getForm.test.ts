@@ -1,14 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { getForm } from "./getForm";
-
-vi.mock("../libs/webforms", () => ({
-  webformVersions: {
-    TESTFORM: {
-      v022024: { name: "Test Form", data: "hello world" },
-    },
-  },
-}));
-
+import { webformVersions } from "libs/webforms";
 describe("forms handler", () => {
   beforeEach(() => {
     // Reset mocks before each test
@@ -42,15 +34,15 @@ describe("forms handler", () => {
 
   it("returns 200 with form data if form ID and version are valid", async () => {
     const event = {
-      body: JSON.stringify({ formId: "TESTFORM", formVersion: "022024" }),
+      body: JSON.stringify({ formId: "ABP1", formVersion: "202401" }),
     };
     const result = await getForm(event as any);
     expect(result.statusCode).toBe(200);
-    expect(result.body).toContain("Test Form");
+    expect(JSON.parse(result.body).header).toBe(webformVersions["ABP1"]["v202401"].header);
   });
   it("returns 200 with form data if form ID and version are valid", async () => {
     const event = {
-      body: JSON.stringify({ formId: "TESTFORM", formVersion: "" }),
+      body: JSON.stringify({ formId: "ABP1", formVersion: "" }),
     };
     const result = await getForm(event as any);
     expect(result.statusCode).toBe(200);
