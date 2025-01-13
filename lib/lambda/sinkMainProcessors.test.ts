@@ -445,7 +445,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           leadAnalystName: "Michael Chen",
           leadAnalystOfficerId: 67890,
           locked: false,
-          proposedDate: undefined,
+          proposedDate: null,
           raiReceivedDate: null,
           raiRequestedDate: null,
           raiWithdrawEnabled: false,
