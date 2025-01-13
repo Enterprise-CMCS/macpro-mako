@@ -59,9 +59,6 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
         }
         return ["Disable formal RAI response withdraw", AC_WithdrawDisabled];
       }
-
-      // case "update-id":
-      //   return ["Package ID Update", AC_UpdateId];
       case "legacy-admin-change":
         return [props.changeType || "Manual Update", AC_LegacyAdminChange];
       default:

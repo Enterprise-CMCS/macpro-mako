@@ -1,6 +1,6 @@
 import { Events, Authority, EmailAddresses, CommonEmailVariables } from "shared-types";
+import { formatActionType } from "shared-utils";
 import { AuthoritiesWithUserTypesTemplate } from "../..";
-
 import {
   MedSpaCMSEmail,
   MedSpaStateEmail,
@@ -61,7 +61,8 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
     cms: async (
       variables:
         | (Events["CapitatedInitial"] & CommonEmailVariables & { emails: EmailAddresses })
-        | (Events["ContractingInitial"] & CommonEmailVariables & { emails: EmailAddresses }),
+        | (Events["ContractingInitial"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["CapitatedRenewal"] & CommonEmailVariables & { emails: EmailAddresses }),
     ) => {
       return {
         to: variables.emails.osgEmail,
@@ -72,11 +73,14 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
     state: async (
       variables:
         | (Events["CapitatedInitial"] & CommonEmailVariables & { emails: EmailAddresses })
-        | (Events["ContractingInitial"] & CommonEmailVariables & { emails: EmailAddresses }),
+        | (Events["ContractingInitial"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["CapitatedRenewal"] & CommonEmailVariables & { emails: EmailAddresses }),
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Your ${variables.actionType} ${variables.id} has been submitted to CMS`,
+        subject: `Your ${formatActionType(variables.actionType)} ${
+          variables.id
+        } has been submitted to CMS`,
         body: await render(<Waiver1915bStateEmail variables={variables} />),
       };
     },

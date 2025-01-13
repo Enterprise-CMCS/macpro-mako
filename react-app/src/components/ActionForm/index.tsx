@@ -142,9 +142,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       API.post("os", "/submit", {
         body: formData,
       }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["record"] });
-    },
   });
 
   const onSubmit = form.handleSubmit(async (formData) => {
@@ -152,11 +149,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       try {
         await mutateAsync(formData);
       } catch (error) {
-        throw Error(
-          `Error submitting form: ${
-            error?.message || error
-          }`,
-        );
+        throw Error(`Error submitting form: ${error?.message || error}`);
       }
 
       const { documentChecker, property } = documentPollerArgs;
@@ -168,23 +161,19 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         const poller = documentPoller(documentPollerId, documentChecker);
         await poller.startPollingData();
       } catch (error) {
-        const message = `${
-          error?.message || error
-        }`;
-        throw Error(message);
+        throw Error(`${error?.message || error}`);
       }
 
       const formOrigins = getFormOrigin({ authority, id });
 
-      navigate(formOrigins);
+      banner({
+        ...bannerPostSubmission,
+        pathnameToDisplayOn: formOrigins.pathname,
+      });
 
-      // artificially delaying allows the banner to be displayed after navigation
-      setTimeout(() => {
-        banner({
-          ...bannerPostSubmission,
-          pathnameToDisplayOn: formOrigins.pathname,
-        });
-      }, 50);
+      // Prevent stale data from displaying on formOrigins page
+      await queryClient.invalidateQueries({ queryKey: ["record"] });
+      navigate(formOrigins);
     } catch (error) {
       console.error(error);
       banner({

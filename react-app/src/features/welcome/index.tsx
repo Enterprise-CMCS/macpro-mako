@@ -1,5 +1,4 @@
 import * as C from "@/components";
-import OneMacLogo from "@/assets/onemac-logo.png";
 import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
 import { getUser } from "@/api";
@@ -36,7 +35,7 @@ export const Welcome = () => {
       <div className="w-full bg-primary p-2 md:p-4">
         <div className="max-w-screen-xl flex flex-col sm:flex-row sm:items-center gap-4 mx-auto p-4 lg:px-8">
           <h1>
-            <img src={OneMacLogo} alt="onemac" className="p-4 min-w-[400px]" />
+            <img src="/onemac-logo.png" alt="onemac" className="p-4 min-w-[400px]" />
           </h1>
           <p className="text-center text-white/100 font-light text-xl font-sans">
             Welcome to the official submission system for paper-based state plan amendments (SPAs)
@@ -55,7 +54,7 @@ export const Welcome = () => {
               Medicaid Alternative Benefit Plan, Premium and Cost Sharing, and CHIP Eligibility SPA
               templates and implementation guides are now available in OneMAC. New submissions for
               these SPA types are submitted through the OneMAC system effective [add date].{" "}
-              <Link to="/faq" target={FAQ_TAB} className="underline text-[#0071bc]">
+              <Link to="/faq/spa-admendments" target={FAQ_TAB} className="underline text-[#0071bc]">
                 Learn more
               </Link>
             </p>

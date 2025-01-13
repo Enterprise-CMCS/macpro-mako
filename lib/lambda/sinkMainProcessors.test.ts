@@ -7,7 +7,7 @@ import {
 import * as sinkLib from "libs";
 import { Document, seatool } from "shared-types/opensearch/main";
 import { offsetToUtc } from "shared-utils";
-import { KafkaRecord } from "lib/packages/shared-types";
+import { KafkaRecord } from "shared-types";
 
 const convertObjToBase64 = (obj: object) => Buffer.from(JSON.stringify(obj)).toString("base64");
 
@@ -115,10 +115,91 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
           statusDate: offsetToUtc(new Date(1732645041526)).toISOString(),
           proposedDate: 1732597200000,
           subject: null,
-          submissionDate: "2024-11-26T00:00:00.000Z",
+          submissionDate: "2024-11-26T18:17:21.526Z",
           submitterEmail: "george@example.com",
           submitterName: "George Harrison",
           initialIntakeNeeded: true,
+        },
+      ],
+      "main",
+    );
+  });
+
+  it("handles valid kafka admin records", () => {
+    insertOneMacRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: "TUQtMjQtMjMwMA==",
+          value: convertObjToBase64({
+            id: "MD-24-2301",
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+            changeMade: "ID has been updated.",
+            isAdminChange: true,
+            adminChangeType: "update-id",
+            idToBeUpdated: "MD-24-2300",
+          }),
+        }),
+        createKafkaRecord({
+          topic: TOPIC,
+          key: "TUQtMjQtMjMwMA==",
+          value: convertObjToBase64({
+            id: "MD-24-2301",
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+            changeMade: "title has been updated.",
+            isAdminChange: true,
+            adminChangeType: "update-values",
+            title: "updated title",
+          }),
+        }),
+        createKafkaRecord({
+          topic: TOPIC,
+          key: "TUQtMjQtMjMwMA==",
+          value: convertObjToBase64({
+            id: "MD-24-2301",
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+            isAdminChange: true,
+            adminChangeType: "delete",
+            deleted: true,
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith(
+      [
+        // record deleted
+        {
+          id: "MD-24-2301",
+          submitterName: "George Harrison",
+          submitterEmail: "george@example.com",
+          changeMade: "ID has been updated.",
+          isAdminChange: true,
+          adminChangeType: "update-id",
+          idToBeUpdated: "MD-24-2300",
+        },
+        // property updated
+        {
+          id: "MD-24-2301",
+          submitterName: "George Harrison",
+          submitterEmail: "george@example.com",
+          changeMade: "title has been updated.",
+          isAdminChange: true,
+          adminChangeType: "update-values",
+          title: "updated title",
+        },
+        // id updated
+        {
+          id: "MD-24-2301",
+          submitterName: "George Harrison",
+          submitterEmail: "george@example.com",
+          isAdminChange: true,
+          adminChangeType: "delete",
+          deleted: true,
         },
       ],
       "main",

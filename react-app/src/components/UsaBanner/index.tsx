@@ -3,7 +3,6 @@ import { useLoaderData } from "react-router-dom";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import config from "@/config";
 import { LockIcon } from "../LockIcon";
-import UsFlag from "@/assets/us_flag_small.png";
 
 const MiniLock = () => {
   return (
@@ -56,13 +55,13 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
   return (
     <div className="bg-[#f0f0f0]" role="banner">
       <div className="max-w-screen-xl px-4 py-1 lg:px-8 text-xs mx-auto gap-2 items-center hidden md:flex">
-        <img
-          className="w-4 h-[11px]"
-          src={UsFlag}
-          alt="A United States Flag icon"
-        />
-        <p>An official website of the United States government</p>
-        <button className="flex" onClick={() => setIsOpen((value) => !value)}>
+        <img className="w-4 h-[11px]" src="/us_flag_small.png" alt="A United States Flag icon" />
+        <p data-testid="usa-statement-d">An official website of the United States government</p>
+        <button
+          data-testid="usa-expand-btn-d"
+          className="flex"
+          onClick={() => setIsOpen((value) => !value)}
+        >
           <span className="underline text-[#005ea2]">Here's how you know</span>
           {isOpen ? (
             <ChevronUp className="w-4 h-4 text-[#005ea2]" />
@@ -76,11 +75,7 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
         className="w-full flex items-center text-[0.8rem] px-4 py-1 leading-4 gap-2 md:hidden"
         onClick={() => setIsOpen((value) => !value)}
       >
-        <img
-          className="w-4 h-[11px]"
-          src={UsFlag}
-          alt="A United States Flag icon"
-        />
+        <img className="w-4 h-[11px]" src="/us_flag_small.png" alt="A United States Flag icon" />
         <div>
           <p>An official website of the United States government</p>
           <div className="flex">
