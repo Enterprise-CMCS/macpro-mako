@@ -1,6 +1,7 @@
-import { Authority, Events } from "shared-types";
+import { Authority } from "shared-types";
 import { getPackageChangelog } from "../api/package";
 import * as EmailContent from "./content";
+import { changelog } from "shared-types/opensearch";
 
 export type UserType = "cms" | "state";
 
@@ -100,9 +101,9 @@ export async function getEmailTemplates<T>(
 }
 
 // I think this needs to be written to handle not finding any matching events and so forth
-export async function getLatestMatchingEvent(id: string): Promise<Events["RespondToRai"] | null> {
+export async function getLatestMatchingEvent(id: string): Promise<changelog.Document | null> {
   try {
-    const item = (await getPackageChangelog(id))
+    const item = await getPackageChangelog(id);
 
     // Check if item exists and has hits
     if (!item?.hits?.hits?.length) {
@@ -111,19 +112,16 @@ export async function getLatestMatchingEvent(id: string): Promise<Events["Respon
     }
 
     // Filter matching events
-    const events = item.hits.hits.filter((hit: any) => {
-      const source = hit._source;
-      return source?.event === "respond-to-rai" || source?.actionType === "respond-to-rai";
-    });
+    const events = item.hits.hits.filter(Boolean);
 
     // Check if any matching events were found
     if (!events.length) {
-      console.log(`No events found with actionType respond-to-rai for package ${id}`);
+      console.log(`No events found with for package ${id}`);
       return null;
     }
 
     // Sort events by timestamp (most recent first)
-    events.sort((a: any, b: any) => {
+    events.sort((a, b) => {
       const timestampA = a._source?.timestamp ?? 0;
       const timestampB = b._source?.timestamp ?? 0;
       return timestampB - timestampA;
@@ -132,11 +130,11 @@ export async function getLatestMatchingEvent(id: string): Promise<Events["Respon
     // Get the latest event
     const latestMatchingEvent = events[0]?._source;
     if (!latestMatchingEvent) {
-      console.log(`Latest event for ${id} with actionType respond-to-rai has no source data`);
+      console.log(`Latest event for ${id} with has no source data`);
       return null;
     }
 
-    return latestMatchingEvent as unknown as Events["RespondToRai"];
+    return latestMatchingEvent;
   } catch (error) {
     console.error("Error getting latest matching event:", { id, error });
     return null;

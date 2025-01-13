@@ -307,22 +307,24 @@ const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables, relatedEvent }) =>
   );
 };
 
-const getCpocEmail = (item: any): string[] => {
+const getCpocEmail = async (item: any): Promise<string[] | null> => {
   try {
-    const { leadAnalystName, leadAnalystEmail } = item._source;
-    return [`${leadAnalystName} <${leadAnalystEmail}>`];
+    if (!item.leadAnalystEmail || !item.leadAnalystName) return [];
+    const cpocEmail = `${item.leadAnalystName} <${item.leadAnalystEmail}>`;
+    return [cpocEmail];
   } catch (e) {
-    console.error("Error getting CPCO email", e);
+    console.error("Error getting CPOC email", e);
     return [];
   }
 };
 
 const getSrtEmails = (item: any): string[] => {
   try {
-    const reviewTeam = item._source.reviewTeam;
-    if (!reviewTeam) return [];
-
-    return reviewTeam.map((reviewer: any) => `${reviewer.name} <${reviewer.email}>`);
+    if (!item.reviewTeam) return [];
+    const reviewTeam = item.reviewTeam.map(
+      (reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`,
+    );
+    return reviewTeam;
   } catch (e) {
     console.error("Error getting SRT emails", e);
     return [];
@@ -342,7 +344,7 @@ export {
   FollowUpNotice,
   BasicFooter,
   WithdrawRAI,
+  EmailFooter,
   getCpocEmail,
   getSrtEmails,
-  EmailFooter,
 };

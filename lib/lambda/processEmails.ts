@@ -114,13 +114,11 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
   if (typeof key !== "string") {
-    console.log("key is not a string");
-    console.log("key object: ", JSON.stringify(key, null, 2));
+    console.log("key is not a string ", JSON.stringify(key, null, 2));
     throw new Error("Key is not a string");
   }
   const id: string = decodeBase64WithUtf8(key);
-  console.log("key: ", key);
-  console.log("id: ", id);
+
   if (!value) {
     console.log("Tombstone detected. Doing nothing for this event");
     return;
@@ -133,7 +131,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   console.log("record: ", JSON.stringify(record, null, 2));
 
   if (record.origin !== "mako") {
-    console.log("Kafka event is not of mako origin.  Doing nothing.");
+    console.log("Kafka event is not of mako origin. Doing nothing.");
     return;
   }
 
@@ -158,7 +156,7 @@ export function validateEmailTemplate(template: any) {
 export async function processAndSendEmails(record: any, id: string, config: ProcessEmailConfig) {
   const templates = await getEmailTemplates<typeof record>(
     record.event,
-    record.authority.toLowerCase(),
+    record.authority,
   );
 
   if (!templates) {
