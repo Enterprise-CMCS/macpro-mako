@@ -270,7 +270,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Appk Preview Tem
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -645,7 +645,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Appk Preview Tem
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -1077,7 +1077,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a ChipSPA Preview 
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -1454,7 +1454,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a ChipSPA Preview 
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -1824,7 +1824,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a ChipSPA Preview 
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -2248,7 +2248,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Medicaid_SPA Pre
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -2625,7 +2625,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Medicaid_SPA Pre
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -2994,7 +2994,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Medicaid_SPA Pre
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -3363,7 +3363,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Medicaid_SPA Pre
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -3786,7 +3786,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Waiver Capitated
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -4163,7 +4163,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Waiver Capitated
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -4532,7 +4532,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Waiver Capitated
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -4897,7 +4897,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Waiver Capitated
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -5272,7 +5272,7 @@ exports[`Withdraw Package State Email Snapshot Test > renders a Waiver Capitated
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px;"
+                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
