@@ -13,6 +13,14 @@ export const baseSchema = z.object({
     }),
   proposedEffectiveDate: z.number(),
   attachments: z.object({
+    bCapIndependentAssessment: z.object({
+      label: z
+        .string()
+        .default(
+          "1915(b) Comprehensive (Capitated) Waiver Independent Assessment (first two renewals only)",
+        ),
+      files: attachmentArraySchemaOptional(),
+    }),
     bCapWaiverApplication: z.object({
       label: z.string().default("1915(b) Comprehensive (Capitated) Waiver Application Pre-print"),
       files: attachmentArraySchema(),
@@ -22,14 +30,6 @@ export const baseSchema = z.object({
         .string()
         .default("1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets"),
       files: attachmentArraySchema(),
-    }),
-    bCapIndependentAssessment: z.object({
-      label: z
-        .string()
-        .default(
-          "1915(b) Comprehensive (Capitated) Waiver Independent Assessment (first two renewals only)",
-        ),
-      files: attachmentArraySchemaOptional(),
     }),
     tribalConsultation: z.object({
       label: z.string().default("Tribal Consultation"),

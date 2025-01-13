@@ -314,7 +314,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     ]);
   });
 
-  it("handles valid kafka admin records", async () => {
+  it("handles valid kafka admin record to update id", async () => {
     await insertOneMacRecordsFromKafkaIntoMako(
       [
         createKafkaRecord({
@@ -330,6 +330,26 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
             submitterEmail: "george@example.com",
           }),
         }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        id: "MD-24-2301",
+        isAdminChange: true,
+        adminChangeType: "update-id",
+        idToBeUpdated: "MD-24-2300",
+        changeMade: "ID has been updated.",
+        submitterName: "George Harrison",
+        submitterEmail: "george@example.com",
+      },
+    ]);
+  });
+
+  it("handles valid kafka admin record to update value", async () => {
+    await insertOneMacRecordsFromKafkaIntoMako(
+      [
         createKafkaRecord({
           topic: TOPIC,
           key: "TUQtMjQtMjMwMA==",
@@ -343,6 +363,26 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
             submitterEmail: "george@example.com",
           }),
         }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        id: "MD-24-2301",
+        isAdminChange: true,
+        adminChangeType: "update-values",
+        title: "updated title",
+        changeMade: "title has been updated.",
+        submitterName: "George Harrison",
+        submitterEmail: "george@example.com",
+      },
+    ]);
+  });
+
+  it("handles valid kafka admin record to delete", async () => {
+    await insertOneMacRecordsFromKafkaIntoMako(
+      [
         createKafkaRecord({
           topic: TOPIC,
           key: "TUQtMjQtMjMwMA==",
@@ -360,27 +400,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     );
 
     expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
-      // record deleted
-      {
-        id: "MD-24-2301",
-        isAdminChange: true,
-        adminChangeType: "update-id",
-        idToBeUpdated: "MD-24-2300",
-        changeMade: "ID has been updated.",
-        submitterName: "George Harrison",
-        submitterEmail: "george@example.com",
-      },
-      // property updated
-      {
-        id: "MD-24-2301",
-        isAdminChange: true,
-        adminChangeType: "update-values",
-        title: "updated title",
-        changeMade: "title has been updated.",
-        submitterName: "George Harrison",
-        submitterEmail: "george@example.com",
-      },
-      // id updated
       {
         id: "MD-24-2301",
         isAdminChange: true,
