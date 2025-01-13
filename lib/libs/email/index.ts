@@ -102,7 +102,7 @@ export async function getEmailTemplates<T>(
 // I think this needs to be written to handle not finding any matching events and so forth
 export async function getLatestMatchingEvent(id: string): Promise<Events["RespondToRai"] | null> {
   try {
-    const item = await getPackageChangelog(id);
+    const item = (await getPackageChangelog(id))
 
     // Check if item exists and has hits
     if (!item?.hits?.hits?.length) {

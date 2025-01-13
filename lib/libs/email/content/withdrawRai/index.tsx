@@ -1,137 +1,140 @@
 import { CommonEmailVariables, EmailAddresses, Events, Authority } from "shared-types";
 import { AuthoritiesWithUserTypesTemplate, getLatestMatchingEvent } from "../..";
-
-import {
-  MedSpaCMSEmail,
-  MedSpaStateEmail,
-  ChipSpaCMSEmail,
-  ChipSpaStateEmail,
-  Waiver1915bCMSEmail,
-  Waiver1915bStateEmail,
-  AppKCMSEmail,
-} from "./emailTemplates";
+import { Waiver1915bCMSEmail, Waiver1915bStateEmail, AppKCMSEmail } from "./emailTemplates";
 import { render } from "@react-email/render";
+import { EmailProcessingError } from "../../errors";
 
-const getWithdrawRaiEvent = async (id: string): Promise<Events["WithdrawRai"] | null> => {
+const getWithdrawRaiEvent = async (id: string) => {
   const event = await getLatestMatchingEvent(id);
-  return event as unknown as Events["WithdrawRai"] | null;
+
+  if (!event) {
+    return null;
+  }
+
+  return event;
 };
 
 export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
-  [Authority.MED_SPA]: {
-    cms: async (
-      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
-    ) => {
-      const relatedEvent = await getWithdrawRaiEvent(variables.id);
-      return {
-        to: [
-          ...variables.emails.osgEmail,
-          ...variables.emails.dpoEmail,
-          ...variables.emails.cpocEmail,
-          ...variables.emails.srtEmails,
-        ],
-        subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
-        body: await render(
-          <MedSpaCMSEmail variables={variables as any} relatedEvent={relatedEvent as any} />,
-        ),
-      };
-    },
-    state: async (
-      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
-    ) => {
-      const relatedEvent = await getWithdrawRaiEvent(variables.id);
-      return {
-        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        cc: variables.allStateUsersEmails,
-        subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
-        body: await render(
-          <MedSpaStateEmail variables={variables as any} relatedEvent={relatedEvent as any} />,
-        ),
-      };
-    },
-  },
-  [Authority.CHIP_SPA]: {
-    cms: async (
-      variables: Events["WithdrawRai"] &
-        CommonEmailVariables & { emails: EmailAddresses } & {
-          emails: EmailAddresses;
-        },
-    ) => {
-      const relatedEvent = await getWithdrawRaiEvent(variables.id);
-      return {
-        to: variables.emails.chipInbox,
-        cc: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
-        subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
-        body: await render(
-          <ChipSpaCMSEmail relatedEvent={relatedEvent as any} variables={variables} />,
-        ),
-      };
-    },
-    state: async (
-      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
-    ) => {
-      const relatedEvent = await getWithdrawRaiEvent(variables.id);
-      return {
-        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
-        body: await render(
-          <ChipSpaStateEmail relatedEvent={relatedEvent as any} variables={variables as any} />,
-        ),
-      };
-    },
-  },
   [Authority["1915b"]]: {
     cms: async (
-      variables: Events["WithdrawRai"] &
-        CommonEmailVariables & { emails: EmailAddresses } & {
-          emails: EmailAddresses;
-        },
+      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
-      const relatedEvent = await getWithdrawRaiEvent(variables.id);
-      return {
-        to: [
-          ...variables.emails.dmcoEmail,
-          ...variables.emails.osgEmail,
-          ...variables.emails.cpocEmail,
-          ...variables.emails.srtEmails,
-        ],
-        subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id} `,
-        body: await render(
-          <Waiver1915bCMSEmail relatedEvent={relatedEvent as any} variables={variables as any} />,
-        ),
-      };
+      try {
+        const relatedEvent = await getLatestMatchingEvent(variables.id);
+        if (!relatedEvent) {
+          throw new EmailProcessingError(
+            `Failed to find original RAI response event for withdrawal (ID: ${variables.id})`,
+            {
+              id: variables.id,
+              actionType: "RespondToRai",
+              emailType: "withdrawRai",
+              severity: "ERROR",
+            },
+          );
+        }
+        return {
+          to: [
+            ...variables.emails.dmcoEmail,
+            ...variables.emails.osgEmail,
+            ...variables.emails.cpocEmail,
+            ...variables.emails.srtEmails,
+          ],
+          subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
+          body: await render(
+            <Waiver1915bCMSEmail relatedEvent={relatedEvent} variables={variables} />,
+          ),
+        };
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
     },
     state: async (
       variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
-      const relatedEvent = await getWithdrawRaiEvent(variables.id);
-      return {
-        to: [`${variables.submitterName} <${variables.submitterEmail}>`], // TODO: change to ALL state users
-        cc: variables.allStateUsersEmails,
-        subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
-        body: await render(
-          <Waiver1915bStateEmail relatedEvent={relatedEvent as any} variables={variables as any} />,
-        ),
-      };
+      try {
+        const relatedEvent = await getWithdrawRaiEvent(variables.id);
+        if (!relatedEvent) {
+          throw new EmailProcessingError(
+            `Failed to find original RAI response event for withdrawal (ID: ${variables.id})`,
+            {
+              id: variables.id,
+              actionType: "RespondToRai",
+              emailType: "withdrawRai",
+              severity: "ERROR",
+            },
+          );
+        }
+        return {
+          to: variables.allStateUsersEmails || [],
+          subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
+          body: await render(
+            <Waiver1915bStateEmail relatedEvent={relatedEvent} variables={variables} />,
+          ),
+        };
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
     },
   },
   [Authority["1915c"]]: {
     cms: async (
       variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
-      const relatedEvent = await getWithdrawRaiEvent(variables.id);
-      return {
-        to: [
-          ...variables.emails.osgEmail,
-          ...variables.emails.dhcbsooEmail,
-          ...variables.emails.cpocEmail,
-          ...variables.emails.srtEmails,
-        ],
-        subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id} `,
-        body: await render(
-          <AppKCMSEmail variables={variables as any} relatedEvent={relatedEvent as any} />,
-        ),
-      };
+      try {
+        const relatedEvent = await getWithdrawRaiEvent(variables.id);
+        if (!relatedEvent) {
+          throw new EmailProcessingError(
+            `Failed to find original RAI response event for withdrawal (ID: ${variables.id})`,
+            {
+              id: variables.id,
+              actionType: "RespondToRai",
+              emailType: "withdrawRai",
+              severity: "ERROR",
+            },
+          );
+        }
+        return {
+          to: [
+            ...variables.emails.osgEmail,
+            ...variables.emails.dhcbsooEmail,
+            ...variables.emails.cpocEmail,
+            ...variables.emails.srtEmails,
+          ],
+          subject: `Withdraw Formal RAI Response for Waiver Package ${relatedEvent.id}`,
+          body: await render(<AppKCMSEmail variables={variables} relatedEvent={relatedEvent} />),
+        };
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    },
+    state: async (
+      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      try {
+        const relatedEvent = await getWithdrawRaiEvent(variables.id);
+        if (!relatedEvent) {
+          throw new EmailProcessingError(
+            `Failed to find original RAI response event for withdrawal (ID: ${variables.id})`,
+            {
+              id: variables.id,
+              actionType: "RespondToRai",
+              emailType: "withdrawRai",
+              severity: "ERROR",
+            },
+          );
+        }
+        return {
+          to: variables.allStateUsersEmails || [],
+          subject: `Withdraw Formal RAI Response for Waiver Package ${relatedEvent.id}`,
+          body: await render(<AppKCMSEmail variables={variables} relatedEvent={relatedEvent} />),
+        };
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
     },
   },
 };

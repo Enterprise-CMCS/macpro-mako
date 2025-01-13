@@ -1,6 +1,13 @@
 import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/components";
 import { ReactNode } from "react";
-import { Attachment, AttachmentKey, AttachmentTitle, Events } from "shared-types";
+import {
+  Attachment,
+  AttachmentKey,
+  AttachmentTitle,
+  CommonEmailVariables,
+  EmailAddresses,
+  Events,
+} from "shared-types";
 import { styles } from "./email-styles";
 
 export const EMAIL_CONFIG = {
@@ -273,26 +280,28 @@ const BasicFooter = () => (
 );
 
 export interface WithdrawRAIProps {
-  relatedEvent: Events[keyof Events] | null;
-  id: string;
+  variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses };
+  relatedEvent: Events["RespondToRai"];
 }
 
-const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ id, relatedEvent }) => {
-  const submitterInfo =
-    relatedEvent?.event === "respond-to-rai"
-      ? relatedEvent
-      : relatedEvent?.submitterName && relatedEvent?.submitterEmail
-      ? relatedEvent
-      : null;
+const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables, relatedEvent }) => {
+  if (!relatedEvent) {
+    return (
+      <Section>
+        <Heading as="h2">
+          {`The OneMAC Submission Portal received a request to withdraw a Formal RAI Response. You are receiving this email notification as the Formal RAI was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.`}
+        </Heading>
+        <Text style={styles.text.description}>
+          Note: The original RAI response details could not be retrieved.
+        </Text>
+      </Section>
+    );
+  }
 
   return (
     <Section>
       <Heading as="h2">
-        {`The OneMAC Submission Portal received a request to withdraw the Formal RAI Response ${id}. ${
-          submitterInfo
-            ? `You are receiving this email notification as the Formal RAI for ${id} was withdrawn by ${submitterInfo.submitterName} ${submitterInfo.submitterEmail}.`
-            : ""
-        }`}
+        {`The OneMAC Submission Portal received a request to withdraw the Formal RAI Response ${relatedEvent.id}. You are receiving this email notification as the Formal RAI for ${relatedEvent.id} was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.`}
       </Heading>
     </Section>
   );
