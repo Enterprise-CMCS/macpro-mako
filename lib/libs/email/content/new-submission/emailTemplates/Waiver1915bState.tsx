@@ -1,26 +1,24 @@
 import { CommonEmailVariables, Events } from "shared-types";
 import { formatNinetyDaysDate, formatDate, formatActionType } from "shared-utils";
 import { Text } from "@react-email/components";
-import {
-  PackageDetails,
-  FollowUpNotice,
-  DetailsHeading,
-  MailboxNotice,
-  BasicFooter,
-} from "../../email-components";
+import { PackageDetails, FollowUpNotice, MailboxNotice, BasicFooter } from "../../email-components";
 import { styles } from "../../email-styles";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const Waiver1915bStateEmail = (props: {
   variables:
     | (Events["CapitatedInitial"] & CommonEmailVariables)
-    | (Events["ContractingInitial"] & CommonEmailVariables);
+    | (Events["CapitatedRenewal"] & CommonEmailVariables)
+    | (Events["CapitatedAmendment"] & CommonEmailVariables)
+    | (Events["ContractingInitial"] & CommonEmailVariables)
+    | (Events["ContractingRenewal"] & CommonEmailVariables)
+    | (Events["ContractingAmendment"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
   const previewText = `${variables.authority} ${formatActionType(variables.actionType)} Submitted`;
   const heading = `This response confirms the submission of your ${
     variables.authority
-  } ${formatActionType(variables.actionType)} waiver to CMS for review:`;
+  } ${formatActionType(variables.actionType)} Waiver to CMS for review:`;
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -28,7 +26,6 @@ export const Waiver1915bStateEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <DetailsHeading />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,

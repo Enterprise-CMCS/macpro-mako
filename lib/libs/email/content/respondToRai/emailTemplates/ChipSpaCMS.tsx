@@ -2,7 +2,6 @@ import { CommonEmailVariables, Events } from "shared-types";
 import {
   PackageDetails,
   BasicFooter,
-  DetailsHeading,
   LoginInstructions,
   Attachments,
 } from "../../email-components";
@@ -21,7 +20,6 @@ export const ChipSpaCMSEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <DetailsHeading />
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
       <PackageDetails
         details={{

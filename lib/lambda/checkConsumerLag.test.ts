@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { handler } from "./checkConsumerLag";
 import { Context } from "aws-lambda";
 import {
@@ -10,30 +10,11 @@ import {
   TEST_MULTIPLE_TOPICS_TOPIC_NAME,
   TEST_MISSING_CONSUMER_FUNCTION_NAME,
   TEST_MISSING_CONSUMER_TOPIC_NAME,
+  mockedAdmin,
 } from "mocks";
-
-const mockKafkaAdmin = {
-  connect: vi.fn(),
-  describeGroups: vi.fn().mockResolvedValue({
-    groups: [{ state: "Stable" }],
-  }),
-  fetchTopicOffsets: vi.fn().mockResolvedValue([{ offset: "100" }]),
-  fetchOffsets: vi.fn().mockResolvedValue([{ partitions: [{ offset: "100" }] }]),
-  disconnect: vi.fn(),
-};
-
-vi.mock("kafkajs", () => ({
-  Kafka: vi.fn().mockImplementation(() => ({
-    admin: vi.fn().mockReturnValue(mockKafkaAdmin),
-  })),
-}));
 
 describe("Lambda Handler", () => {
   const callback = vi.fn();
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
 
   it("should handle successful execution with stable and current offsets", async () => {
     const event = {
@@ -113,7 +94,7 @@ describe("Lambda Handler", () => {
       brokerString: "broker1,broker2",
     };
 
-    mockKafkaAdmin.describeGroups.mockRejectedValueOnce(new Error("Kafka admin error"));
+    mockedAdmin.describeGroups.mockRejectedValueOnce(new Error("Kafka admin error"));
 
     await handler(event, {} as Context, callback);
 

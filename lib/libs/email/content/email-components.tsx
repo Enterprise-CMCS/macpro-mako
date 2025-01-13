@@ -147,7 +147,7 @@ const Attachments = ({
       {Object.entries(attachments).map(([key, group]) => {
         if (!group?.files?.length) return null;
 
-        return (
+        return group.files.map((file, index) => (
           <Row key={key} style={{ marginBottom: "2px", marginTop: "2px" }}>
             <Column
               align="left"
@@ -156,25 +156,18 @@ const Attachments = ({
                 verticalAlign: "top",
               }}
             >
-              {group.files.map((file, index) => (
-                <span key={file.filename + index}>
-                  <Text style={{ ...styles.text.title }}>{group.label}:</Text>{" "}
-                  {index < (group.files?.length ?? 0) - 1 && <br />}
-                </span>
-              ))}
+              {" "}
+              <span key={group.label + index}>
+                <Text style={{ ...styles.text.title }}>{group.label}:</Text>{" "}
+              </span>
             </Column>
             <Column style={{ verticalAlign: "top" }}>
               <Text style={styles.text.description}>
-                {group.files.map((file, index) => (
-                  <span key={file.filename + index}>
-                    {file.filename}
-                    {index < (group.files?.length ?? 0) - 1 && <br />}
-                  </span>
-                ))}
+                <span key={file.filename + index}>{file.filename}</span>
               </Text>
             </Column>
           </Row>
-        );
+        ));
       })}
     </>
   );
@@ -192,7 +185,13 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
                 Summary:
               </Heading>
             </Text>
-            <Text>{value ?? "No additional information submitted"}</Text>
+            <Text
+              style={{
+                whiteSpace: "pre-line",
+              }}
+            >
+              {value ?? "No additional information submitted"}
+            </Text>
           </Row>
         );
       }

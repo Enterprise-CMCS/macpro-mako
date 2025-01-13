@@ -1,26 +1,18 @@
 import * as os from "libs/opensearch-lib";
 import { opensearch } from "shared-types";
+import { getDomainAndNamespace } from "../../utils";
 
-export const getPackageChangelog = async (
-  packageId: string,
-  filter: any[] = [],
-) => {
-  if (!process.env.osDomain) {
-    throw new Error("process.env.osDomain must be defined");
-  }
+export const getPackageChangelog = async (packageId: string, filter: any[] = []) => {
+  const { domain, index } = getDomainAndNamespace("changelog");
 
-  return (await os.search(
-    process.env.osDomain,
-    `${process.env.indexNamespace}changelog`,
-    {
-      from: 0,
-      size: 200,
-      sort: [{ timestamp: "desc" }],
-      query: {
-        bool: {
-          must: [{ term: { "packageId.keyword": packageId } }].concat(filter),
-        },
+  return (await os.search(domain, index, {
+    from: 0,
+    size: 200,
+    sort: [{ timestamp: "desc" }],
+    query: {
+      bool: {
+        must: [{ term: { "packageId.keyword": packageId } }].concat(filter),
       },
     },
-  )) as opensearch.changelog.Response;
+  })) as opensearch.changelog.Response;
 };

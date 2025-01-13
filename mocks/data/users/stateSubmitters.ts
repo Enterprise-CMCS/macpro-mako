@@ -1,5 +1,6 @@
 import { TestUserData } from "../../index.d";
 
+export const automatedStateSubmitterUsername = "f3a1b6d6-3bc9-498d-ac22-41a6d46982c9";
 export const makoStateSubmitter: TestUserData = {
   UserAttributes: [
     {
@@ -54,7 +55,7 @@ export const stateSubmitter: TestUserData = {
     },
     {
       Name: "custom:state",
-      Value: "VA,OH,SC,CO,GA,MD",
+      Value: "VA,OH,SC,CO,CA,MD",
     },
     {
       Name: "custom:cms-roles",
@@ -232,10 +233,10 @@ export const automatedStateSubmitter: TestUserData = {
     },
     {
       Name: "sub",
-      Value: "f3a1b6d6-3bc9-498d-ac22-41a6d46982c9",
+      Value: automatedStateSubmitterUsername,
     },
   ],
-  Username: "f3a1b6d6-3bc9-498d-ac22-41a6d46982c9",
+  Username: automatedStateSubmitterUsername,
 };
 
 export const testNewStateSubmitter: TestUserData = {

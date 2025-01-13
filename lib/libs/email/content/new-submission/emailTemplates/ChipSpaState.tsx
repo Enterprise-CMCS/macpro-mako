@@ -1,7 +1,7 @@
 import { Events } from "shared-types";
 import { CommonEmailVariables } from "shared-types";
 import { Link, Text } from "@react-email/components";
-import { PackageDetails, DetailsHeading } from "../../email-components";
+import { PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
@@ -19,7 +19,6 @@ export const ChipSpaStateEmail = (props: {
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
     >
-      <DetailsHeading />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,
