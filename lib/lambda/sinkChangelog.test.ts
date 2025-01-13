@@ -257,6 +257,81 @@ describe("syncing Changelog events", () => {
     ]);
   });
 
+  it("should handle a valid admin value and id update", async () => {
+    const event = createKafkaEvent({
+      [`${TOPIC}-02`]: [
+        createKafkaRecord({
+          key: TEST_ITEM_KEY,
+          value: convertObjToBase64({
+            id: TEST_ITEM_ID,
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+            changeMade: "update additional information of the change",
+            isAdminChange: true,
+            adminChangeType: "update-values",
+            additionalInformation: "changed additional information",
+            timestamp: TIMESTAMP,
+          }),
+          offset: 3,
+        }),
+        createKafkaRecord({
+          key: TEST_ITEM_UPDATE_KEY,
+          value: convertObjToBase64({
+            id: TEST_ITEM_UPDATE_ID,
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+            changeMade: "update id of the change",
+            isAdminChange: true,
+            adminChangeType: "update-id",
+            idToBeUpdated: TEST_ITEM_ID,
+            timestamp: TIMESTAMP,
+          }),
+          offset: 3,
+        }),
+      ],
+    });
+
+    const changelogs = TEST_ITEM._source!.changelog!;
+    const expectedChangelogs = changelogs.map((log) => ({
+      ...log?._source,
+      id: log?._id?.replace(TEST_ITEM_ID, TEST_ITEM_UPDATE_ID),
+      packageId: TEST_ITEM_UPDATE_ID,
+    }));
+
+    await handler(event, {} as Context, vi.fn());
+
+    const { attachments: _, ...changes } = TEST_ITEM?._source?.changelog?.[3]?._source || {};
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        ...changes,
+        isAdminChange: true,
+        adminChangeType: "update-values",
+        changeMade: "update additional information of the change",
+        event: "update-values",
+        id: `${TEST_ITEM_ID}-3`,
+        packageId: TEST_ITEM_ID,
+        submitterName: "George Harrison",
+        submitterEmail: "george@example.com",
+        additionalInformation: "changed additional information",
+        timestamp: expect.any(Number),
+      },
+      {
+        ...changes,
+        isAdminChange: true,
+        adminChangeType: "update-values",
+        changeMade: "update additional information of the change",
+        event: "update-values",
+        id: `${TEST_ITEM_UPDATE_ID}-3`,
+        packageId: TEST_ITEM_UPDATE_ID,
+        submitterName: "George Harrison",
+        submitterEmail: "george@example.com",
+        additionalInformation: "changed additional information",
+        timestamp: expect.any(Number),
+      },
+      ...expectedChangelogs,
+    ]);
+  });
+
   it("should handle a valid admin toggle withdraw rai", async () => {
     const event = createKafkaEvent({
       [`${TOPIC}-01`]: [

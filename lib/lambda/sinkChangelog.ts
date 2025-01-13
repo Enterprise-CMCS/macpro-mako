@@ -83,6 +83,7 @@ const processAndIndex = async ({
                 packageId: result.data.id,
               });
             });
+
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
 
             packageChangelogs.hits.hits.forEach((log) => {
