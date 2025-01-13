@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { createTopics, deleteTopics } from "./topics-lib";
 import { mockedAdmin, TOPIC_ONE, TOPIC_THREE } from "mocks";
 
-describe("topics lib test", () => {
+describe("topics-lib test", () => {
   afterEach(() => {
     vi.restoreAllMocks();
   });
@@ -28,7 +28,7 @@ describe("topics lib test", () => {
     expect(spyCreate).toBeCalledTimes(1);
     expect(spyUpdate).toBeCalledTimes(1);
   });
-  it("deletes existing topics fails for bad filename", async () => {
+  it("tries to delete existing topics fails for bad filename", async () => {
     const spyDelete = vi.spyOn(mockedAdmin, "deleteTopics");
     await deleteTopics("", [TOPIC_ONE]);
     expect(spyDelete).toBeCalledTimes(1);
