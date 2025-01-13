@@ -8,7 +8,7 @@ import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/ema
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
 import pLimit from "p-limit";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
-import { getNamespace } from "lib/libs/utils";
+import { getNamespace } from "libs/utils";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -49,7 +49,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   const emailAddressLookupSecretName = process.env.emailAddressLookupSecretName!;
   const applicationEndpointUrl = process.env.applicationEndpointUrl!;
   const osDomain = process.env.osDomain!;
-  const indexNamespace = process.env.indexNamespace ;
+  const indexNamespace = process.env.indexNamespace;
   const region = process.env.region!;
   const DLQ_URL = process.env.DLQ_URL!;
   const userPoolId = process.env.userPoolId!;

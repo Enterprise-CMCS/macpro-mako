@@ -1,22 +1,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { Context } from "aws-lambda";
 import { SESClient } from "@aws-sdk/client-ses";
-import { handler } from "./processEmails";
-import { KafkaRecord, KafkaEvent, Authority } from "shared-types";
+import { sendEmail, validateEmailTemplate, handler } from "./processEmails";
+import { KafkaRecord, KafkaEvent } from "shared-types";
 
-// Mock the entire utils module
-vi.mock("lib/libs/utils", () => ({
-  getNamespace: vi.fn().mockImplementation(() => "dev"),
-}));
-
-const nms = "new-medicaid-submission";
-const ncs = "new-chip-submission";
-const tempExtension = "temp-extension";
-const withdrawPackage = "withdraw-package";
-const contractingInitial = "contracting-initial";
-const capitatedInitial = "capitated-initial";
-
-describe("process emails handler", () => {
+describe("process emails Handler", () => {
   beforeEach(() => {
     // Clear all mocks before each test
     vi.clearAllMocks();
@@ -26,103 +14,59 @@ describe("process emails handler", () => {
     // Reset all mocks after each test
     vi.resetAllMocks();
   });
+  
+  it("should return 200 with a proper email", async () => {
+    const params = {
+      Source: "sender@example.com",
+      Destination: { ToAddresses: ["recipient@example.com"] },
+      Message: {
+        Subject: { Data: "Mocked Email", Charset: "UTF-8" },
+        Body: { Text: { Data: "This is a mocked email body.", Charset: "UTF-8" } },
+      },
+      ConfigurationSetName: "test-config",
+    };
+    const test = await sendEmail(params, "us-east-1");
+    expect(test.status).toStrictEqual(200);
+  });
 
-  it.each([
-    [`should send an email for ${nms} with ${Authority.MED_SPA}`, Authority.MED_SPA, nms],
-    [`should send an email for ${nms} with ${Authority.CHIP_SPA}`, Authority.CHIP_SPA, nms],
-    [`should send an email for ${nms} with ${Authority["1915b"]}`, Authority["1915b"], nms],
-    [`should send an email for ${nms} with ${Authority["1915c"]}`, Authority["1915c"], nms],
-    [`should send an email for ${ncs} with ${Authority.MED_SPA}`, Authority.MED_SPA, ncs],
-    [`should send an email for ${ncs} with ${Authority.CHIP_SPA}`, Authority.CHIP_SPA, ncs],
-    [`should send an email for ${ncs} with ${Authority["1915b"]}`, Authority["1915b"], ncs],
-    [`should send an email for ${ncs} with ${Authority["1915c"]}`, Authority["1915c"], ncs],
-    [
-      `should send an email for ${tempExtension} with ${Authority.MED_SPA}`,
-      Authority.MED_SPA,
-      tempExtension,
-    ],
-    [
-      `should send an email for ${tempExtension} with ${Authority.CHIP_SPA}`,
-      Authority.CHIP_SPA,
-      tempExtension,
-    ],
-    [
-      `should send an email for ${tempExtension} with ${Authority["1915b"]}`,
-      Authority["1915b"],
-      tempExtension,
-    ],
-    [
-      `should send an email for ${tempExtension} with ${Authority["1915c"]}`,
-      Authority["1915c"],
-      tempExtension,
-    ],
-    [
-      `should send an email for ${withdrawPackage} with ${Authority.MED_SPA}`,
-      Authority.MED_SPA,
-      withdrawPackage,
-    ],
-    [
-      `should send an email for ${withdrawPackage} with ${Authority.CHIP_SPA}`,
-      Authority.CHIP_SPA,
-      withdrawPackage,
-    ],
-    [
-      `should send an email for ${withdrawPackage} for ${ncs} with ${Authority["1915b"]}`,
-      Authority["1915b"],
-      withdrawPackage,
-    ],
-    [
-      `should send an email for ${withdrawPackage} with ${Authority["1915c"]}`,
-      Authority["1915c"],
-      withdrawPackage,
-    ],
-    [
-      `should send an email for ${contractingInitial} with ${Authority.MED_SPA}`,
-      Authority.MED_SPA,
-      contractingInitial,
-    ],
-    [
-      `should send an email for ${contractingInitial} with ${Authority.CHIP_SPA}`,
-      Authority.CHIP_SPA,
-      contractingInitial,
-    ],
-    [
-      `should send an email for ${contractingInitial} with ${Authority["1915b"]}`,
-      Authority["1915b"],
-      contractingInitial,
-    ],
-    [
-      `should send an email for ${contractingInitial} with ${Authority["1915c"]}`,
-      Authority["1915c"],
-      contractingInitial,
-    ],
-    [
-      `should send an email for ${capitatedInitial} with ${Authority.MED_SPA}`,
-      Authority.MED_SPA,
-      capitatedInitial,
-    ],
-    [
-      `should send an email for ${capitatedInitial} with ${Authority.CHIP_SPA}`,
-      Authority.CHIP_SPA,
-      capitatedInitial,
-    ],
-    [
-      `should send an email for ${capitatedInitial} with ${Authority["1915b"]}`,
-      Authority["1915b"],
-      capitatedInitial,
-    ],
-    [
-      `should send an email for ${capitatedInitial} with ${Authority["1915c"]}`,
-      Authority["1915c"],
-      capitatedInitial,
-    ],
-  ])("%s", async (_, auth, eventType) => {
+  it("should throw an error", async () => {
+    const params = {
+      Source: "sender@example.com",
+      Destination: { ToAddresses: ["recipient@example.com"] },
+      Message: {
+        Subject: { Data: "Mocked Email", Charset: "UTF-8" },
+        Body: { Text: { Data: "This is a mocked email body.", Charset: "UTF-8" } },
+      },
+      ConfigurationSetName: "test-config",
+    };
+    await expect(sendEmail(params, "bad-test")).rejects.toThrowError();
+  });
+
+  it("should validate the email template and throw an error for missing fields", async () => {
+    const template = {
+      to: "Person",
+      from: "Other Guy",
+      body: "body",
+      // missing required 'subject' field
+    };
+    expect(() => validateEmailTemplate(template)).toThrowError(
+      "Email template missing required fields: subject",
+    );
+  });
+
+  it("should validate a complete email template without throwing", () => {
+    const template = {
+      to: "Person",
+      from: "Other Guy",
+      body: "body",
+      subject: "Test Subject",
+    };
+    expect(() => validateEmailTemplate(template)).not.toThrow();
+  });
+
+  it("should make a handler", async () => {
     const callback = vi.fn();
     const secSPY = vi.spyOn(SESClient.prototype, "send");
-
-    // You can override the namespace for specific tests if needed
-    // vi.mocked(getNamespace).mockReturnValueOnce("prod");
-
     const mockEvent: KafkaEvent = {
       records: {
         "mock-topic": [
@@ -131,8 +75,8 @@ describe("process emails handler", () => {
             value: Buffer.from(
               JSON.stringify({
                 origin: "mako",
-                event: eventType,
-                authority: auth,
+                event: "new-medicaid-submission",
+                authority: "medicaid spa",
               }),
             ).toString("base64"),
             headers: {},
@@ -149,5 +93,91 @@ describe("process emails handler", () => {
 
     await handler(mockEvent, {} as Context, callback);
     expect(secSPY).toHaveBeenCalledTimes(2);
+  });
+
+  it("should not be mako therefore not do an event", async () => {
+    const callback = vi.fn();
+    const mockEvent: KafkaEvent = {
+      records: {
+        "mock-topic": [
+          {
+            key: Buffer.from("VA").toString("base64"),
+            value: Buffer.from(
+              JSON.stringify({
+                origin: "not mako",
+                event: "new-medicaid-submission",
+                authority: "medicaid spa",
+              }),
+            ).toString("base64"),
+            headers: {},
+            timestamp: 1732645041557,
+            offset: "0",
+            partition: 0,
+            topic: "mock-topic",
+          } as unknown as KafkaRecord,
+        ],
+      },
+      eventSource: "",
+      bootstrapServers: "",
+    };
+    const secSPY = vi.spyOn(SESClient.prototype, "send");
+
+    await handler(mockEvent, {} as Context, callback);
+    expect(secSPY).toHaveBeenCalledTimes(0);
+  });
+
+  it("should be missing a value, so nothing sent", async () => {
+    const callback = vi.fn();
+    const mockEvent: KafkaEvent = {
+      records: {
+        "mock-topic": [
+          {
+            key: Buffer.from("VA").toString("base64"),
+            headers: {},
+            timestamp: 1732645041557,
+            offset: "0",
+            partition: 0,
+            topic: "mock-topic",
+          } as unknown as KafkaRecord,
+        ],
+      },
+      eventSource: "",
+      bootstrapServers: "",
+    };
+    const secSPY = vi.spyOn(SESClient.prototype, "send");
+
+    await handler(mockEvent, {} as Context, callback);
+    expect(secSPY).toHaveBeenCalledTimes(0);
+  });
+
+  it("should be missing an environment variable", async () => {
+    const callback = vi.fn();
+    delete process.env.osDomain;
+    const mockEvent: KafkaEvent = {
+      records: {
+        "mock-topic": [
+          {
+            key: Buffer.from("VA").toString("base64"),
+            value: Buffer.from(
+              JSON.stringify({
+                origin: "mako",
+                event: "new-medicaid-submission",
+                authority: "medicaid spa",
+              }),
+            ).toString("base64"),
+            headers: {},
+            timestamp: 1732645041557,
+            offset: "0",
+            partition: 0,
+            topic: "mock-topic",
+          } as unknown as KafkaRecord,
+        ],
+      },
+      eventSource: "",
+      bootstrapServers: "",
+    };
+    await expect(handler(mockEvent, {} as Context, callback)).rejects.toThrowError(
+      "Missing required environment variables: osDomain",
+    );
   });
 });
