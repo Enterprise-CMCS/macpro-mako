@@ -1,7 +1,7 @@
 import { events, getStatus, SEATOOL_STATUS } from "shared-types";
 export const transform = () => {
   return events["respond-to-rai"].schema.transform((data) => {
-    const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.PENDING);
+    const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.PENDING_RAI);
     return {
       id: data.id,
       raiWithdrawEnabled: false,

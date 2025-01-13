@@ -128,6 +128,7 @@ const items: Record<string, TestItemResult> = {
       actionType: "New",
       state: "MD",
       origin: "OneMAC",
+      changedDate: "2024-11-26T18:17:21.557Z",
       changelog: [
         {
           _id: `${TEST_ITEM_ID}-001`,
@@ -149,6 +150,7 @@ const items: Record<string, TestItemResult> = {
       seatoolStatus: SEATOOL_STATUS.APPROVED,
       actionType: "Amend",
       authority: "Medicaid SPA",
+      changedDate: undefined,
       origin: "OneMAC",
       state: "MD",
     },

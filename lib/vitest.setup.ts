@@ -12,6 +12,8 @@ import {
   USER_POOL_CLIENT_DOMAIN,
   USER_POOL_CLIENT_ID,
   USER_POOL_ID,
+  BUCKET_NAME,
+  BUCKET_REGION,
   ATTACHMENT_BUCKET_NAME,
   ATTACHMENT_BUCKET_REGION,
   KAFKA_BROKERS,
@@ -26,12 +28,10 @@ Amplify.configure({
   Auth: AUTH_CONFIG,
 });
 
-vi.mock("kafkajs", async (importOriginal) => {
-  return {
-    ...(await importOriginal<typeof import("kafkajs")>()),
-    Kafka: mockedKafka,
-  };
-});
+vi.mock("kafkajs", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("kafkajs")>()),
+  Kafka: mockedKafka,
+}));
 
 beforeAll(() => {
   setDefaultStateSubmitter();
@@ -59,6 +59,8 @@ beforeEach(() => {
   process.env.idmClientIssuer = USER_POOL_CLIENT_DOMAIN;
   process.env.osDomain = OPENSEARCH_DOMAIN;
   process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE;
+  process.env.bucket = BUCKET_NAME;
+  process.env.bucketRegion = BUCKET_REGION;
   process.env.attachmentsBucketName = ATTACHMENT_BUCKET_NAME;
   process.env.attachmentsBucketRegion = ATTACHMENT_BUCKET_REGION;
   process.env.emailAddressLookupSecretName = "mock-email-secret"; // pragma: allowlist secret
