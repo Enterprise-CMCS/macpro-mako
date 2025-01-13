@@ -3,15 +3,13 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, test, vi } from "vitest";
 import { UsaBanner } from ".";
 
-vi.mock("react-router-dom", () => ({
+vi.mock("react-router", () => ({
   useLoaderData: vi.fn().mockImplementation(() => ({ error: "" })),
 }));
 
 describe("UsaBanner", () => {
   test("clicking on button expands banner information", async () => {
-    const { queryAllByRole, queryByText } = render(
-      <UsaBanner isUserMissingRole={false} />,
-    );
+    const { queryAllByRole, queryByText } = render(<UsaBanner isUserMissingRole={false} />);
 
     const button = queryAllByRole("button")[0];
     await userEvent.click(button);

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import config from "@/config";
 import { LockIcon } from "../LockIcon";
@@ -79,9 +79,7 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
         <div>
           <p>An official website of the United States government</p>
           <div className="flex">
-            <span className="underline text-[#005ea2] block">
-              Here's how you know
-            </span>
+            <span className="underline text-[#005ea2] block">Here's how you know</span>
             {isOpen ? (
               <ChevronUp className="w-4 h-4 text-[#005ea2]" />
             ) : (
@@ -113,18 +111,16 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
           <div className="flex gap-2">
             <GovernmentBuildingIcon />
             <p className="text-sm max-w-md">
-              <strong className="block">Official websites use .gov</strong>A
-              <strong>.gov</strong> website belongs to an official government
-              organization in the United States.
+              <strong className="block">Official websites use .gov</strong>A<strong>.gov</strong>{" "}
+              website belongs to an official government organization in the United States.
             </p>
           </div>
           <div className="flex gap-2">
             <LockIcon className="min-w-[40px] min-h-[40px] w-10" />
             <p className="text-sm max-w-md">
               <strong className="block">Secure .gov websites use HTTPS</strong>
-              A lock (<MiniLock />) or <strong>https://</strong> means you've
-              safely connected to the .gov website. Share sensitive information
-              only on official, secure websites.
+              A lock (<MiniLock />) or <strong>https://</strong> means you've safely connected to
+              the .gov website. Share sensitive information only on official, secure websites.
             </p>
           </div>
         </div>
