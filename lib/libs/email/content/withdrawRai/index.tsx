@@ -5,7 +5,7 @@ import { render } from "@react-email/render";
 import { EmailProcessingError } from "../../errors";
 
 const getWithdrawRaiEvent = async (id: string) => {
-  const event = await getLatestMatchingEvent(id);
+  const event = await getLatestMatchingEvent(id, "WithdrawRai");
 
   if (!event) {
     return null;
@@ -20,7 +20,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       try {
-        const relatedEvent = await getLatestMatchingEvent(variables.id);
+        const relatedEvent = await getLatestMatchingEvent(variables.id, "RespondToRai");
         if (!relatedEvent) {
           throw new EmailProcessingError(
             `Failed to find original RAI response event for withdrawal (ID: ${variables.id})`,
@@ -41,7 +41,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
           ],
           subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
           body: await render(
-            <Waiver1915bCMSEmail relatedEvent={relatedEvent} variables={variables} />,
+            <Waiver1915bCMSEmail relatedEvent={relatedEvent as any} variables={variables} />,
           ),
         };
       } catch (error) {
@@ -69,7 +69,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
           to: variables.allStateUsersEmails || [],
           subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
           body: await render(
-            <Waiver1915bStateEmail relatedEvent={relatedEvent} variables={variables} />,
+            <Waiver1915bStateEmail relatedEvent={relatedEvent as any} variables={variables} />,
           ),
         };
       } catch (error) {
@@ -103,7 +103,9 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
             ...variables.emails.srtEmails,
           ],
           subject: `Withdraw Formal RAI Response for Waiver Package ${relatedEvent.id}`,
-          body: await render(<AppKCMSEmail variables={variables} relatedEvent={relatedEvent} />),
+          body: await render(
+            <AppKCMSEmail variables={variables} relatedEvent={relatedEvent as any} />,
+          ),
         };
       } catch (error) {
         console.error(error);
@@ -129,7 +131,9 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         return {
           to: variables.allStateUsersEmails || [],
           subject: `Withdraw Formal RAI Response for Waiver Package ${relatedEvent.id}`,
-          body: await render(<AppKCMSEmail variables={variables} relatedEvent={relatedEvent} />),
+          body: await render(
+            <AppKCMSEmail variables={variables} relatedEvent={relatedEvent as any} />,
+          ),
         };
       } catch (error) {
         console.error(error);

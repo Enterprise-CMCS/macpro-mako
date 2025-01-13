@@ -80,7 +80,7 @@ export async function getEmailTemplates<T>(
   action: keyof EmailTemplates,
   authority: Authority,
 ): Promise<EmailTemplateFunction<T>[] | null> {
-  const template = getEmailTemplate(action);
+  const template = getEmailTemplate(action || "new-medicaid-submission");
   if (!template) {
     console.log("No template found");
     return null;
@@ -101,7 +101,7 @@ export async function getEmailTemplates<T>(
 }
 
 // I think this needs to be written to handle not finding any matching events and so forth
-export async function getLatestMatchingEvent(id: string): Promise<changelog.Document | null> {
+export async function getLatestMatchingEvent(id: string, actionType: string): Promise<changelog.Document | null> {
   try {
     const item = await getPackageChangelog(id);
 
@@ -112,7 +112,7 @@ export async function getLatestMatchingEvent(id: string): Promise<changelog.Docu
     }
 
     // Filter matching events
-    const events = item.hits.hits.filter(Boolean);
+    const events = item.hits.hits.filter((event) => event._source.actionType === actionType);
 
     // Check if any matching events were found
     if (!events.length) {

@@ -1,20 +1,10 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { Context } from "aws-lambda";
 import { SESClient } from "@aws-sdk/client-ses";
 import { sendEmail, validateEmailTemplate, handler } from "./processEmails";
 import { KafkaRecord, KafkaEvent } from "shared-types";
 
 describe("process emails Handler", () => {
-  beforeEach(() => {
-    // Clear all mocks before each test
-    vi.clearAllMocks();
-  });
-
-  afterEach(() => {
-    // Reset all mocks after each test
-    vi.resetAllMocks();
-  });
-  
   it("should return 200 with a proper email", async () => {
     const params = {
       Source: "sender@example.com",

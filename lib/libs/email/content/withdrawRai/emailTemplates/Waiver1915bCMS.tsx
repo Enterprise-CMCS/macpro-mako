@@ -1,8 +1,7 @@
 import { WithdrawRAI, PackageDetails, BasicFooter, WithdrawRAIProps } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const Waiver1915bCMSEmail = (props: WithdrawRAIProps) => {
-  const { variables, relatedEvent } = { ...props };
+export const Waiver1915bCMSEmail = ({ variables, relatedEvent }: WithdrawRAIProps) => {
   const previewText = `Waiver Package ${relatedEvent.id} withdrawn`;
   const heading = `Withdraw Formal RAI Response for Waiver Package ${relatedEvent.id}`;
 

@@ -9,7 +9,7 @@ import {
   Events,
 } from "shared-types";
 import { styles } from "./email-styles";
-
+import * as os from "shared-types/opensearch";
 export const EMAIL_CONFIG = {
   DEV_EMAIL: "mako.stateuser+dev-to@gmail.com",
   CHIP_EMAIL: "CHIPSPASubmissionMailBox@cms.hhs.gov",
@@ -307,24 +307,27 @@ const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables, relatedEvent }) =>
   );
 };
 
-const getCpocEmail = async (item: any): Promise<string[] | null> => {
+const getCpocEmail = (item?: os.main.ItemResult): string[] => {
   try {
-    if (!item.leadAnalystEmail || !item.leadAnalystName) return [];
-    const cpocEmail = `${item.leadAnalystName} <${item.leadAnalystEmail}>`;
-    return [cpocEmail];
+    if (item?._source?.leadAnalystEmail && item?._source?.leadAnalystName) {
+      const cpocEmail = `${item._source.leadAnalystName} <${item._source.leadAnalystEmail}>`;
+      return [cpocEmail];
+    }
+    return [];
   } catch (e) {
     console.error("Error getting CPOC email", e);
     return [];
   }
 };
 
-const getSrtEmails = (item: any): string[] => {
+const getSrtEmails = (item?: os.main.ItemResult): string[] => {
   try {
-    if (!item.reviewTeam) return [];
-    const reviewTeam = item.reviewTeam.map(
-      (reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`,
-    );
-    return reviewTeam;
+    if (item?._source?.reviewTeam && item._source.reviewTeam.length > 0) {
+      return item._source.reviewTeam.map(
+        (reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`,
+      );
+    }
+    return [];
   } catch (e) {
     console.error("Error getting SRT emails", e);
     return [];

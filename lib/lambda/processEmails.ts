@@ -154,10 +154,7 @@ export function validateEmailTemplate(template: any) {
 }
 
 export async function processAndSendEmails(record: any, id: string, config: ProcessEmailConfig) {
-  const templates = await getEmailTemplates<typeof record>(
-    record.event,
-    record.authority,
-  );
+  const templates = await getEmailTemplates<typeof record>(record.event, record.authority);
 
   if (!templates) {
     console.log(
@@ -175,9 +172,9 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
   const sec = await getSecret(config.emailAddressLookupSecretName);
 
   const item = await os.getItem(config.osDomain, getNamespace("main"), id);
+  const cpocEmail = [...getCpocEmail(item)];
+  const srtEmails = [...getSrtEmails(item)];
 
-  const cpocEmail = getCpocEmail(item);
-  const srtEmails = getSrtEmails(item);
   const emails: EmailAddresses = JSON.parse(sec);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
@@ -226,11 +223,11 @@ export function createEmailParams(
   baseUrl: string,
   isDev: boolean,
 ): SendEmailCommandInput {
-  const toAddresses = isDev ? [`State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`] : filledTemplate.to;
   const params = {
     Destination: {
-      ToAddresses: toAddresses,
+      ToAddresses: filledTemplate.to,
       CcAddresses: filledTemplate.cc,
+      BccAddresses: isDev ? [`State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`] : [], // this is so emails can be tested in dev as they should have the correct recipients but be blind copied on all emails on dev
     },
     Message: {
       Body: {
