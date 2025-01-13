@@ -8323,7 +8323,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      This response confirms the submission of your 1915(b) Initial waiver to CMS for review:
+                      This response confirms the submission of your 1915(b) Initial Waiver to CMS for review:
                     </h1>
                     <table
                       align="center"
@@ -8818,7 +8818,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Waiver Capitat
                   <h1
                     style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                   >
-                    This response confirms the submission of your 1915(b) Initial waiver to CMS for review:
+                    This response confirms the submission of your 1915(b) Initial Waiver to CMS for review:
                   </h1>
                   <table
                     align="center"
@@ -11183,7 +11183,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      This response confirms the submission of your 1915(b) Initial waiver to CMS for review:
+                      This response confirms the submission of your 1915(b) Initial Waiver to CMS for review:
                     </h1>
                     <table
                       align="center"
@@ -11677,7 +11677,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      This response confirms the submission of your 1915(b) Initial waiver to CMS for review:
+                      This response confirms the submission of your 1915(b) Initial Waiver to CMS for review:
                     </h1>
                     <table
                       align="center"
@@ -12172,7 +12172,7 @@ exports[`renders a Waiver Contracting Preview Template 1`] = `
                   <h1
                     style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                   >
-                    This response confirms the submission of your 1915(b) Initial waiver to CMS for review:
+                    This response confirms the submission of your 1915(b) Initial Waiver to CMS for review:
                   </h1>
                   <table
                     align="center"

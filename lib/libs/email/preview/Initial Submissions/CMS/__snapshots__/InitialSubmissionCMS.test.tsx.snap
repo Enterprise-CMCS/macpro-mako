@@ -15202,7 +15202,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Waiver Capitated
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Initial Submission:
+                      The OneMAC Submission Portal received a 1915(b) Initial waiver Submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -15218,7 +15218,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Waiver Capitated
                             style="color: rgb(6, 125, 247); text-decoration: none;"
                             target="_blank"
                           >
-                            https://mako-dev.cms.gov/
+                            this link
                           </a>
                           .
                         </p>
@@ -15747,7 +15747,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Waiver Capitated
                   <h1
                     style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                   >
-                    The OneMAC Submission Portal received a 1915(b) Initial Submission:
+                    The OneMAC Submission Portal received a 1915(b) Initial waiver Submission:
                   </h1>
                   <ul
                     style="margin-left: -20px;"
@@ -15763,7 +15763,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Waiver Capitated
                           style="color: rgb(6, 125, 247); text-decoration: none;"
                           target="_blank"
                         >
-                          https://mako-dev.cms.gov/
+                          this link
                         </a>
                         .
                       </p>

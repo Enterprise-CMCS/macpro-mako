@@ -17,7 +17,7 @@ export const Waiver1915bCMSEmail = (props: {
   const previewText = `${variables.authority} ${variables.actionType} Submitted`;
   const heading = `The OneMAC Submission Portal received a ${
     variables.authority
-  } ${formatActionType(variables.actionType)} Submission:`;
+  } ${formatActionType(variables.actionType)} waiver Submission:`;
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -25,7 +25,7 @@ export const Waiver1915bCMSEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} useThisLink />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,

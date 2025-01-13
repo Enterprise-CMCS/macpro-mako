@@ -14,7 +14,7 @@ export const Waiver1915bStateEmail = (props: {
   const previewText = `${variables.authority} ${formatActionType(variables.actionType)} Submitted`;
   const heading = `This response confirms the submission of your ${
     variables.authority
-  } ${formatActionType(variables.actionType)} waiver to CMS for review:`;
+  } ${formatActionType(variables.actionType)} Waiver to CMS for review:`;
   return (
     <BaseEmailTemplate
       previewText={previewText}
