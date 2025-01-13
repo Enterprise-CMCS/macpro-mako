@@ -480,6 +480,7 @@ describe("syncing Changelog events", () => {
 
     await handler(event, {} as Context, vi.fn());
     expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+    expect(logErrorSpy).not.toHaveBeenCalled();
   });
 
   it("should skip non-mako updates", async () => {
@@ -501,6 +502,7 @@ describe("syncing Changelog events", () => {
 
     await handler(event, {} as Context, vi.fn());
     expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+    expect(logErrorSpy).not.toHaveBeenCalled();
   });
 
   it("should skip invalid update", async () => {
@@ -526,5 +528,40 @@ describe("syncing Changelog events", () => {
     await handler(event, {} as Context, vi.fn());
 
     expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: sink.ErrorType.VALIDATION,
+      }),
+    );
+  });
+
+  it("should handle errors in update", async () => {
+    const event = createKafkaEvent({
+      [`${TOPIC}-01`]: [
+        createKafkaRecord({
+          key: TEST_ITEM_KEY,
+          value: JSON.stringify({
+            ...appkBase,
+            id: TEST_ITEM_ID,
+            packageId: TEST_ITEM_ID,
+            title: undefined,
+            origin: "mako",
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+            timestamp: TIMESTAMP,
+          }),
+          offset: 1,
+        }),
+      ],
+    });
+
+    await handler(event, {} as Context, vi.fn());
+
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: sink.ErrorType.BADPARSE,
+      }),
+    );
   });
 });
