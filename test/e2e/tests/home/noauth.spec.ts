@@ -24,6 +24,8 @@ test.describe('home page - no auth', {tag: ['@e2e', '@smoke']}, () => {
     });
   
     test('should have a navigation banner', async () => {
+      // TODO logo assertion
+
       await expect(homePage.desktop.homeLink).toBeVisible();
       await expect(homePage.desktop.homeLink).toHaveText('Home');
       
@@ -36,6 +38,32 @@ test.describe('home page - no auth', {tag: ['@e2e', '@smoke']}, () => {
       await expect(homePage.desktop.registerBtn).toBeVisible();
       await expect(homePage.desktop.registerBtn).toHaveText('Register');
     });
+
+    // TODO
+    test.skip("header section", async () => {});
+
+    // TODO
+    test.skip("New and Notable section", async () => {});
+
+    // TODO
+    test.describe.skip("State Users section", () => {
+      test.skip("How it works", async () => {});
+
+      test.skip("Submission types", async () => {});
+    });
+
+    // TODO
+    test.describe.skip("CMS Users section", () => {
+      test.skip("How it works", async () => {});
+
+      test.skip("Submission types", async () => {});
+    });
+
+    // TODO
+    test.skip("do you need support", async () => {});
+
+    // TODO
+    test.skip("footer", async () => {});
   });
 
   test.describe('Workflow validations', () => {
@@ -70,6 +98,13 @@ test.describe('home page - no auth', {tag: ['@e2e', '@smoke']}, () => {
 
         await expect(newTab.locator('#crosswalk-system')).toBeVisible();
       });
+    });
+
+    // TODO
+    test.describe.skip("login", () => {
+      test.skip("valid login", async () => {});
+
+      test.skip("valid sign out", async () => {});
     });
   });
 });
