@@ -24,10 +24,10 @@ export function getDomain(): string {
  */
 export function getNamespace<T extends BaseIndex>(baseIndex?: T): Index;
 export function getNamespace(baseIndex?: BaseIndex) {
-  const indexNamespace = process.env.indexNamespace ?? "";
+  const indexNamespace = process.env.topicNamespace ?? "";
 
   if (indexNamespace == "" && process.env.isDev == "true") {
-    throw new Error("process.env.indexNamespace must be defined");
+    throw new Error("process.env.topicNamespace must be defined");
   }
 
   const index = `${indexNamespace}${baseIndex}`;
