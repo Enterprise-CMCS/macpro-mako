@@ -1,5 +1,4 @@
 import { Events, Authority, EmailAddresses, CommonEmailVariables } from "shared-types";
-import { formatActionType } from "shared-utils";
 import { AuthoritiesWithUserTypesTemplate } from "../..";
 import {
   MedSpaCMSEmail,
