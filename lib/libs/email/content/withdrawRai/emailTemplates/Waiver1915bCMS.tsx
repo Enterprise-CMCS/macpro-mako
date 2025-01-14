@@ -1,7 +1,14 @@
-import { WithdrawRAI, PackageDetails, BasicFooter, WithdrawRAIProps } from "../../email-components";
+import { CommonEmailVariables, Events, EmailAddresses } from "shared-types";
+import { WithdrawRAI, PackageDetails, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const Waiver1915bCMSEmail = ({ variables, relatedEvent }: WithdrawRAIProps) => {
+export const Waiver1915bCMSEmail = ({
+  variables,
+  relatedEvent,
+}: {
+  variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses };
+  relatedEvent: Events["RespondToRai"];
+}) => {
   const previewText = `Waiver Package ${relatedEvent.id} withdrawn`;
   const heading = `Withdraw Formal RAI Response for Waiver Package ${relatedEvent.id}`;
 
