@@ -1,7 +1,6 @@
 import { Authority } from "shared-types";
 import { getPackageChangelog } from "../api/package";
 import * as EmailContent from "./content";
-import { changelog } from "shared-types/opensearch";
 
 export type UserType = "cms" | "state";
 
@@ -28,15 +27,6 @@ export type EmailTemplates = {
   "withdraw-rai": AuthoritiesWithUserTypesTemplate;
   "contracting-initial": AuthoritiesWithUserTypesTemplate;
   "capitated-initial": AuthoritiesWithUserTypesTemplate;
-  "contracting-amendment": AuthoritiesWithUserTypesTemplate;
-  "capitated-amendment": AuthoritiesWithUserTypesTemplate;
-  "contracting-renewal": AuthoritiesWithUserTypesTemplate;
-  "capitated-renewal": AuthoritiesWithUserTypesTemplate;
-  "contracting-amendment-state": AuthoritiesWithUserTypesTemplate;
-  "capitated-amendment-state": AuthoritiesWithUserTypesTemplate;
-  "contracting-renewal-state": AuthoritiesWithUserTypesTemplate;
-  "capitated-renewal-state": AuthoritiesWithUserTypesTemplate;
-  "respond-to-rai": AuthoritiesWithUserTypesTemplate;
 };
 
 // Create a type-safe mapping of email templates
@@ -48,15 +38,6 @@ const emailTemplates: EmailTemplates = {
   "withdraw-rai": EmailContent.withdrawRai,
   "contracting-initial": EmailContent.newSubmission,
   "capitated-initial": EmailContent.newSubmission,
-  "contracting-amendment": EmailContent.newSubmission,
-  "capitated-amendment": EmailContent.newSubmission,
-  "contracting-renewal": EmailContent.newSubmission,
-  "capitated-renewal": EmailContent.newSubmission,
-  "contracting-amendment-state": EmailContent.newSubmission,
-  "capitated-amendment-state": EmailContent.newSubmission,
-  "contracting-renewal-state": EmailContent.newSubmission,
-  "capitated-renewal-state": EmailContent.newSubmission,
-  "respond-to-rai": EmailContent.respondToRai,
 };
 
 // Create a type-safe lookup function
@@ -80,7 +61,7 @@ export async function getEmailTemplates<T>(
   action: keyof EmailTemplates,
   authority: Authority,
 ): Promise<EmailTemplateFunction<T>[] | null> {
-  const template = getEmailTemplate(action || "new-medicaid-submission");
+  const template = getEmailTemplate(action);
   if (!template) {
     console.log("No template found");
     return null;
@@ -101,42 +82,15 @@ export async function getEmailTemplates<T>(
 }
 
 // I think this needs to be written to handle not finding any matching events and so forth
-export async function getLatestMatchingEvent(id: string, actionType: string): Promise<changelog.Document | null> {
+export async function getLatestMatchingEvent(id: string, actionType: string) {
   try {
     const item = await getPackageChangelog(id);
-
-    // Check if item exists and has hits
-    if (!item?.hits?.hits?.length) {
-      console.log(`No changelog found for package ${id}`);
-      return null;
-    }
-
-    // Filter matching events
-    const events = item.hits.hits.filter((event) => event._source.actionType === actionType);
-
-    // Check if any matching events were found
-    if (!events.length) {
-      console.log(`No events found with for package ${id}`);
-      return null;
-    }
-
-    // Sort events by timestamp (most recent first)
-    events.sort((a, b) => {
-      const timestampA = a._source?.timestamp ?? 0;
-      const timestampB = b._source?.timestamp ?? 0;
-      return timestampB - timestampA;
-    });
-
-    // Get the latest event
-    const latestMatchingEvent = events[0]?._source;
-    if (!latestMatchingEvent) {
-      console.log(`Latest event for ${id} with has no source data`);
-      return null;
-    }
-
+    const events = item.hits.hits.filter((hit: any) => hit._source.actionType === actionType);
+    events.sort((a: any, b: any) => b._source.timestamp - a._source.timestamp);
+    const latestMatchingEvent = events[0]._source;
     return latestMatchingEvent;
   } catch (error) {
-    console.error("Error getting latest matching event:", { id, error });
+    console.error({ error })
     return null;
   }
 }

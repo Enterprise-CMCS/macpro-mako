@@ -1,24 +1,24 @@
-import { WithdrawRAI, PackageDetails, BasicFooter, Attachments } from "../../email-components";
-import { WithdrawRAIProps } from "../../email-components";
+import { CommonEmailVariables, Events, RelatedEventType } from "shared-types";
+import { Attachments, PackageDetails, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const AppKCMSEmail = ({ variables, relatedEvent }: WithdrawRAIProps) => {
-  const previewText = `Withdraw Formal RAI Response for Waiver Package ${relatedEvent.id}`;
-  const heading = `Withdraw Formal RAI Response for Waiver Package ${relatedEvent.id}`;
-
+export const AppKCMSEmail = (props: {
+  variables: Events["RespondToRai"] & CommonEmailVariables;
+  relatedEvent: RelatedEventType;
+}) => {
+  const { variables, relatedEvent } = { ...props };
   return (
     <BaseEmailTemplate
-      previewText={previewText}
-      heading={heading}
+      previewText="Withdraw Formal RAI Response for Waiver Package"
+      heading={`The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are receiving this email notification as the Formal RAI for ${variables.id} was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.`}
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <WithdrawRAI relatedEvent={relatedEvent} variables={variables} />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,
-          Name: variables.submitterName,
-          "Email Address": variables.submitterEmail,
+          Name: relatedEvent.submitterName,
+          "Email Address": relatedEvent.submitterEmail,
           "Waiver Number": variables.id,
           Summary: variables.additionalInformation,
         }}

@@ -1,5 +1,4 @@
 export const emailTemplateValue = {
-  event: "respond-to-rai" as const,
   applicationEndpointUrl: "https://mako-dev.cms.gov/",
   get timestamp() {
     return Date.now();

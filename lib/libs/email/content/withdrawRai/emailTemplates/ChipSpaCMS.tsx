@@ -2,7 +2,7 @@ import { CommonEmailVariables, Events } from "shared-types";
 import { Container, Html } from "@react-email/components";
 import { WithdrawRAI, PackageDetails, BasicFooter } from "../../email-components";
 
-export const Waiver1915bCMSEmail = (props: {
+export const ChipSpaCMSEmail = (props: {
   variables: Events["RespondToRai"] & CommonEmailVariables;
   relatedEvent: any;
 }) => {
@@ -16,7 +16,7 @@ export const Waiver1915bCMSEmail = (props: {
             "State or Territory": variables.territory,
             Name: relatedEvent.submitterName,
             "Email Address": relatedEvent.submitterEmail,
-            "Waiver Number": variables.id,
+            "CHIP SPA Package ID": variables.id,
             Summary: variables.additionalInformation,
           }}
         />
