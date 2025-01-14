@@ -2,6 +2,11 @@ import { Template } from "./chpRenderSection";
 
 export const ABP_GUIDES: Template[] = [
   {
+    title: "Introduction",
+    text: "Alternative Benefit Plan (ABP) Implementation Guide",
+    href: "/abp/IG_AbpIntroduction_Final_20241205.pdf",
+  },
+  {
     title: "ABP 1",
     text: "Alternative Benefit Plan Populations Implementation Guide",
     href: "/abp/IG_ABP1_AlternativeBenefitPlanPopulations.pdf",
