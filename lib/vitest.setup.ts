@@ -20,7 +20,7 @@ import {
   setDefaultStateSubmitter,
   mockedKafka,
 } from "mocks";
-import { ConfigResourceTypes, Kafka } from "kafkajs";
+import { ConfigResourceTypes } from "kafkajs";
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import { Amplify } from "aws-amplify";
 type CreateType<T> = T & { default: T };
@@ -31,7 +31,7 @@ Amplify.configure({
 
 vi.mock("kafkajs", async (importOriginal) => ({
   ...(await importOriginal<typeof import("kafkajs")>()),
-  ConfigResourceTypes: (await importOriginal<CreateType<typeof ConfigResourceTypes>>()),
+  ConfigResourceTypes: await importOriginal<CreateType<typeof ConfigResourceTypes>>(),
   Kafka: mockedKafka,
 }));
 
