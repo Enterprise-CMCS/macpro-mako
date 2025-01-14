@@ -1,4 +1,4 @@
-import { WaiversEmailCMS } from "lib/libs/email/content/uploadSubsequentDocuments/emailTemplates/Waiver1915BCMS";
+import { WaiversEmailCMS } from "libs/email/content/uploadSubsequentDocuments/emailTemplates/Waiver1915BCMS";
 import { emailTemplateValue } from "libs/email/mock-data/upload-subsequent-documents";
 import * as attachments from "libs/email/mock-data/attachments";
 
