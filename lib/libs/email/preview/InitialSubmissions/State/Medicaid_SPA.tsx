@@ -1,4 +1,4 @@
-import { MedSpaStateEmail } from "../../../content/new-submission/emailTemplates";
+import { MedSpaStateEmail } from "../../../content/newSubmission/emailTemplates";
 import { emailTemplateValue } from "../../../mock-data/new-submission";
 import * as attachments from "../../../mock-data/attachments";
 

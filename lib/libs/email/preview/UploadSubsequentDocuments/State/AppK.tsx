@@ -1,4 +1,4 @@
-import { AppKStateEmail } from "../../../content/upload-subsequent-documents/emailTemplates";
+import { AppKStateEmail } from "../../../content/uploadSubsequentDocuments/emailTemplates";
 import { emailTemplateValue } from "../../../mock-data/new-submission";
 import * as attachments from "../../../mock-data/attachments";
 const AppKStateEmailPreview = () => {

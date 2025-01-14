@@ -1,16 +1,15 @@
-import { ChipSpaCMSEmail } from "libs/email/content/new-submission/emailTemplates/ChipSpaCMS";
-import { emailTemplateValue } from "libs/email/mock-data/new-submission";
+import { emailTemplateValue } from "libs/email/mock-data/upload-subsequent-documents";
+import { MedSpaStateEmail } from "lib/libs/email/content/uploadSubsequentDocuments/emailTemplates";
 import * as attachments from "libs/email/mock-data/attachments";
-
-const ChipSpaCMSEmailPreview = () => {
+const MedicaidSpaStateEmailPreview = () => {
   return (
-    <ChipSpaCMSEmail
+    <MedSpaStateEmail
       variables={{
         ...emailTemplateValue,
         id: "CO-24-1234",
-        authority: "CHIP SPA",
-        event: "new-chip-submission",
+        event: "upload-subsequent-documents",
         actionType: "Amend",
+        authority: "Medicaid SPA",
         attachments: {
           currentStatePlan: attachments.currentStatePlan,
           amendedLanguage: attachments.amendedLanguage,
@@ -25,4 +24,4 @@ const ChipSpaCMSEmailPreview = () => {
   );
 };
 
-export default ChipSpaCMSEmailPreview;
+export default MedicaidSpaStateEmailPreview;

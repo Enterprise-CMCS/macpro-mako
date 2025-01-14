@@ -1,15 +1,16 @@
+import { WaiversEmailCMS } from "lib/libs/email/content/uploadSubsequentDocuments/emailTemplates/Waiver1915BCMS";
 import { emailTemplateValue } from "libs/email/mock-data/upload-subsequent-documents";
-import { MedSpaStateEmail } from "libs/email/content/upload-subsequent-documents/emailTemplates";
 import * as attachments from "libs/email/mock-data/attachments";
-const MedicaidSpaStateEmailPreview = () => {
+
+const Waiver1915bCMSEmail = () => {
   return (
-    <MedSpaStateEmail
+    <WaiversEmailCMS
       variables={{
         ...emailTemplateValue,
         id: "CO-24-1234",
         event: "upload-subsequent-documents",
+        authority: "1915(b)",
         actionType: "Amend",
-        authority: "Medicaid SPA",
         attachments: {
           currentStatePlan: attachments.currentStatePlan,
           amendedLanguage: attachments.amendedLanguage,
@@ -24,4 +25,4 @@ const MedicaidSpaStateEmailPreview = () => {
   );
 };
 
-export default MedicaidSpaStateEmailPreview;
+export default Waiver1915bCMSEmail;

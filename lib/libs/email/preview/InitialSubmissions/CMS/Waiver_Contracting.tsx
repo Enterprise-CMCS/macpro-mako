@@ -1,4 +1,4 @@
-import { Waiver1915bCMSEmail } from "libs/email/content/new-submission/emailTemplates/Waiver1915bCMS";
+import { Waiver1915bCMSEmail } from "lib/libs/email/content/newSubmission/emailTemplates/Waiver1915bCMS";
 import { emailTemplateValue } from "../../../mock-data/new-submission";
 
 export const Waiver1915bCMSContractingInitialEmailPreview = () => {

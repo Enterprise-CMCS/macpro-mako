@@ -1,10 +1,10 @@
-import { WaiversEmailCMS } from "libs/email/content/upload-subsequent-documents/emailTemplates/Waiver1915BCMS";
+import { WaiversEmailState } from "lib/libs/email/content/uploadSubsequentDocuments/emailTemplates/Waiver1915BState";
 import { emailTemplateValue } from "libs/email/mock-data/upload-subsequent-documents";
 import * as attachments from "libs/email/mock-data/attachments";
 
-const Waiver1915bCMSEmail = () => {
+const Waiver1915bStateEmail = () => {
   return (
-    <WaiversEmailCMS
+    <WaiversEmailState
       variables={{
         ...emailTemplateValue,
         id: "CO-24-1234",
@@ -25,4 +25,4 @@ const Waiver1915bCMSEmail = () => {
   );
 };
 
-export default Waiver1915bCMSEmail;
+export default Waiver1915bStateEmail;
