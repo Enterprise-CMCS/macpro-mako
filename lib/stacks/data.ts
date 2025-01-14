@@ -461,12 +461,12 @@ export class Data extends cdk.NestedStack {
 
     const functionConfigs = {
       sinkChangelog: { provisionedConcurrency: 2 },
+      sinkCpocs: { provisionedConcurrency: 0 },
       sinkInsights: { provisionedConcurrency: 0 },
       sinkLegacyInsights: { provisionedConcurrency: 0 },
       sinkMain: { provisionedConcurrency: 2 },
       sinkSubtypes: { provisionedConcurrency: 0 },
       sinkTypes: { provisionedConcurrency: 0 },
-      sinkCpocs: { provisionedConcurrency: 0 },
     };
 
     const lambdaFunctions = Object.entries(functionConfigs).reduce((acc, [name, config]) => {

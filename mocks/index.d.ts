@@ -134,6 +134,8 @@ export type SearchQueryBody = {
 
 export type GetItemBody = { id: string };
 
+export type GetMultiItemBody = { ids: string[] };
+
 export type EventRequestContext = Partial<APIGatewayEventRequestContext>;
 
 export type TestEventSourceMapping = {
