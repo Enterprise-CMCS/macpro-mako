@@ -6,12 +6,7 @@ import {
 } from "./sinkMainProcessors";
 import { seatool } from "shared-types/opensearch/main";
 import { offsetToUtc } from "shared-utils";
-import {
-  KafkaRecord,
-  SEATOOL_STATUS,
-  statusToDisplayToCmsUser,
-  statusToDisplayToStateUser,
-} from "shared-types";
+import { SEATOOL_STATUS, statusToDisplayToCmsUser, statusToDisplayToStateUser } from "shared-types";
 import * as sink from "libs/sink-lib";
 import * as os from "libs/opensearch-lib";
 import {
@@ -19,6 +14,8 @@ import {
   OPENSEARCH_INDEX_NAMESPACE,
   TEST_ITEM_ID,
   EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
+  convertObjToBase64,
+  createKafkaRecord,
 } from "mocks";
 import {
   appkBase,
@@ -46,27 +43,6 @@ const EARLIER_TIMESTAMP = 1722645041557;
 const EARLIER_ISO_DATETIME = "2024-08-03T00:30:41.557Z";
 const LATER_TIMESTAMP = 1742645041557;
 const LATER_ISO_DATETIME = "2025-03-22T12:04:01.557Z";
-
-const convertObjToBase64 = (obj: object) => Buffer.from(JSON.stringify(obj)).toString("base64");
-
-const createKafkaRecord = ({
-  topic,
-  key,
-  value,
-}: {
-  topic: string;
-  key: string;
-  value: string;
-}): KafkaRecord => ({
-  topic,
-  partition: 0,
-  offset: 0,
-  timestamp: TIMESTAMP,
-  timestampType: "CREATE_TIME",
-  headers: {},
-  key,
-  value,
-});
 
 const bulkUpdateDataSpy = vi.spyOn(os, "bulkUpdateData");
 const logErrorSpy = vi.spyOn(sink, "logError");

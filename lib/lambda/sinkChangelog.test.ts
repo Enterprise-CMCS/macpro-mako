@@ -1,6 +1,5 @@
 import { describe, expect, it, vi, afterEach } from "vitest";
 import { handler } from "./sinkChangelog";
-import { KafkaEvent, KafkaRecord } from "shared-types";
 import { Context } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import * as sink from "libs/sink-lib";
@@ -8,6 +7,9 @@ import {
   OPENSEARCH_DOMAIN,
   OPENSEARCH_INDEX_NAMESPACE,
   WITHDRAWN_CHANGELOG_ITEM_ID as TEST_ITEM_ID,
+  convertObjToBase64,
+  createKafkaEvent,
+  createKafkaRecord,
 } from "mocks";
 import items from "mocks/data/items";
 import {
@@ -35,33 +37,6 @@ const TEST_ITEM_KEY = Buffer.from(TEST_ITEM_ID).toString("base64");
 const TEST_ITEM_UPDATE_ID = "MD-0005.R01.01";
 const TEST_ITEM_UPDATE_KEY = Buffer.from(TEST_ITEM_UPDATE_ID).toString("base64");
 const TIMESTAMP = 1732645041557;
-
-const convertObjToBase64 = (obj: object) => Buffer.from(JSON.stringify(obj)).toString("base64");
-
-const createKafkaEvent = (records: KafkaEvent["records"]) => ({
-  eventSource: "SelfManagedKafka",
-  bootstrapServers: "kafka",
-  records,
-});
-
-const createKafkaRecord = ({
-  key,
-  value,
-  offset,
-}: {
-  key: string;
-  value: string;
-  offset: number;
-}): KafkaRecord => ({
-  key,
-  value,
-  offset,
-  topic: TOPIC,
-  partition: 0,
-  timestamp: Date.now(),
-  timestampType: "CREATE_TIME",
-  headers: {},
-});
 
 describe("syncing Changelog events", () => {
   const bulkUpdateDataSpy = vi.spyOn(os, "bulkUpdateData");
@@ -144,6 +119,7 @@ describe("syncing Changelog events", () => {
     const event = createKafkaEvent({
       [`${TOPIC}-01`]: [
         createKafkaRecord({
+          topic: `${TOPIC}-01`,
           key: Buffer.from(log.id).toString("base64"),
           value: convertObjToBase64({
             ...log,
@@ -186,6 +162,7 @@ describe("syncing Changelog events", () => {
     const event = createKafkaEvent({
       [`${TOPIC}-02`]: [
         createKafkaRecord({
+          topic: `${TOPIC}-01`,
           key: TEST_ITEM_UPDATE_KEY,
           value: convertObjToBase64({
             id: TEST_ITEM_UPDATE_ID,
@@ -221,6 +198,7 @@ describe("syncing Changelog events", () => {
     const event = createKafkaEvent({
       [`${TOPIC}-02`]: [
         createKafkaRecord({
+          topic: `${TOPIC}-02`,
           key: TEST_ITEM_KEY,
           value: convertObjToBase64({
             id: TEST_ITEM_ID,
@@ -261,6 +239,7 @@ describe("syncing Changelog events", () => {
     const event = createKafkaEvent({
       [`${TOPIC}-02`]: [
         createKafkaRecord({
+          topic: `${TOPIC}-02`,
           key: TEST_ITEM_KEY,
           value: convertObjToBase64({
             id: TEST_ITEM_ID,
@@ -275,6 +254,7 @@ describe("syncing Changelog events", () => {
           offset: 3,
         }),
         createKafkaRecord({
+          topic: `${TOPIC}-02`,
           key: TEST_ITEM_UPDATE_KEY,
           value: convertObjToBase64({
             id: TEST_ITEM_UPDATE_ID,
@@ -336,6 +316,7 @@ describe("syncing Changelog events", () => {
     const event = createKafkaEvent({
       [`${TOPIC}-01`]: [
         createKafkaRecord({
+          topic: `${TOPIC}-01`,
           key: TEST_ITEM_KEY,
           value: convertObjToBase64({
             ...toggleWithdrawRai,
@@ -369,6 +350,7 @@ describe("syncing Changelog events", () => {
     const event = createKafkaEvent({
       [`${TOPIC}-02`]: [
         createKafkaRecord({
+          topic: `${TOPIC}-02`,
           key: TEST_ITEM_KEY,
           value: convertObjToBase64({
             id: TEST_ITEM_ID,
@@ -406,10 +388,51 @@ describe("syncing Changelog events", () => {
     ]);
   });
 
-  it("should throw an error if topic is invalid", async () => {
+  it("should throw an error if the topic is undefined", async () => {
+    const event = createKafkaEvent({
+      undefined: [
+        createKafkaRecord({
+          // @ts-expect-error ignore topic undefined
+          topic: undefined,
+          key: TEST_ITEM_KEY,
+          value: convertObjToBase64({
+            id: TEST_ITEM_ID,
+            isAdminChange: true,
+            adminChangeType: "delete",
+            deleted: false,
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+          }),
+          offset: 3,
+        }),
+      ],
+    });
+
+    await expect(() => handler(event, {} as Context, vi.fn())).rejects.toThrowError(
+      "topic (undefined) is invalid",
+    );
+
+    expect(logErrorSpy).toHaveBeenCalledWith({
+      type: sink.ErrorType.BADTOPIC,
+    });
+
+    expect(logErrorSpy).toHaveBeenCalledWith({
+      type: sink.ErrorType.UNKNOWN,
+      metadata: {
+        event: {
+          eventSource: "SelfManagedKafka",
+          bootstrapServers: "kafka",
+          records: "too large to display",
+        },
+      },
+    });
+  });
+
+  it("should throw an error if the topic is invalid", async () => {
     const event = createKafkaEvent({
       "invalid-topic": [
         createKafkaRecord({
+          topic: "invalid-topic",
           key: TEST_ITEM_KEY,
           value: convertObjToBase64({
             id: TEST_ITEM_ID,
@@ -463,6 +486,7 @@ describe("syncing Changelog events", () => {
     const event = createKafkaEvent({
       [`${TOPIC}-02`]: [
         createKafkaRecord({
+          topic: `${TOPIC}-02`,
           key: TEST_ITEM_UPDATE_KEY,
           value: convertObjToBase64({
             id: TEST_ITEM_UPDATE_ID,
@@ -487,6 +511,7 @@ describe("syncing Changelog events", () => {
     const event = createKafkaEvent({
       [`${TOPIC}-01`]: [
         createKafkaRecord({
+          topic: `${TOPIC}-01`,
           key: TEST_ITEM_KEY,
           value: convertObjToBase64({
             id: TEST_ITEM_ID,
@@ -509,6 +534,7 @@ describe("syncing Changelog events", () => {
     const event = createKafkaEvent({
       [`${TOPIC}-01`]: [
         createKafkaRecord({
+          topic: `${TOPIC}-01`,
           key: TEST_ITEM_KEY,
           value: convertObjToBase64({
             ...appkBase,
@@ -539,6 +565,7 @@ describe("syncing Changelog events", () => {
     const event = createKafkaEvent({
       [`${TOPIC}-01`]: [
         createKafkaRecord({
+          topic: `${TOPIC}-01`,
           key: TEST_ITEM_KEY,
           value: JSON.stringify({
             ...appkBase,
