@@ -1,4 +1,4 @@
-const bCapWaiverApplication = {
+export const bCapWaiverApplication = {
   bCapWaiverApplication: {
     label: "1915(b) Comprehensive (Capitated) Waiver Application Pre-print",
     files: [
@@ -12,7 +12,8 @@ const bCapWaiverApplication = {
     ],
   },
 };
-const bCapCostSpreadsheets = {
+
+export const bCapCostSpreadsheets = {
   bCapCostSpreadsheets: {
     label: "1915(b) Comprehensive (Capitated) Waiver Cost Effectiveness Spreadsheets",
     files: [
@@ -26,7 +27,8 @@ const bCapCostSpreadsheets = {
     ],
   },
 };
-const tribalConsultation = {
+
+export const tribalConsultation = {
   tribalConsultation: {
     label: "Tribal Consultation",
     files: [
@@ -40,7 +42,8 @@ const tribalConsultation = {
     ],
   },
 };
-const other = {
+
+export const other = {
   other: {
     files: [
       {
@@ -54,7 +57,8 @@ const other = {
     label: "Other",
   },
 };
-const appk = {
+
+export const appk = {
   appk: {
     label: "Appendix K Template",
     files: [
@@ -68,7 +72,8 @@ const appk = {
     ],
   },
 };
-const b4Waiver = {
+
+export const b4Waiver = {
   b4WaiverApplication: {
     label: "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
     files: [
@@ -82,7 +87,8 @@ const b4Waiver = {
     ],
   },
 };
-const b4IndependentAssessment = {
+
+export const b4IndependentAssessment = {
   b4IndependentAssessment: {
     label:
       "1915(b)(4) FFS Selective Contracting (Streamlined) Independent Assessment (first two renewals only)",
@@ -97,7 +103,8 @@ const b4IndependentAssessment = {
     ],
   },
 };
-const currentStatePlan = {
+
+export const currentStatePlan = {
   currentStatePlan: {
     label: "Current State Plan",
     files: [
@@ -111,7 +118,8 @@ const currentStatePlan = {
     ],
   },
 };
-const amendedLanguage = {
+
+export const amendedLanguage = {
   amendedLanguage: {
     label: "Amended State Plan Language",
     files: [
@@ -125,7 +133,8 @@ const amendedLanguage = {
     ],
   },
 };
-const coverLetter = {
+
+export const coverLetter = {
   coverLetter: {
     label: "Cover Letter",
     files: [
@@ -139,7 +148,8 @@ const coverLetter = {
     ],
   },
 };
-const budgetDocuments = {
+
+export const budgetDocuments = {
   budgetDocuments: {
     label: "Budget Document",
     files: [
@@ -153,7 +163,8 @@ const budgetDocuments = {
     ],
   },
 };
-const publicNotice = {
+
+export const publicNotice = {
   publicNotice: {
     label: "Public Notice",
     files: [
@@ -167,7 +178,8 @@ const publicNotice = {
     ],
   },
 };
-const cmsForm = {
+
+export const cmsForm = {
   cmsForm179: {
     label: "CMS Form 179",
     files: [
@@ -181,6 +193,7 @@ const cmsForm = {
     ],
   },
 };
+
 export const spaPages = {
   spaPages: {
     label: "Spa Pages",
@@ -195,7 +208,8 @@ export const spaPages = {
     ],
   },
 };
-const existingStatePlanPages = {
+
+export const existingStatePlanPages = {
   existingStatePlanPages: {
     label: "Existing State Plan Page(s)",
     files: [
@@ -209,7 +223,8 @@ const existingStatePlanPages = {
     ],
   },
 };
-const sfq = {
+
+export const sfq = {
   sfq: {
     label: "Standard Funding Questions (SFQs)",
     files: [
@@ -223,7 +238,8 @@ const sfq = {
     ],
   },
 };
-const tribalEngagement = {
+
+export const tribalEngagement = {
   tribalEngagement: {
     label: "Document Demonstrating Good-Faith Tribal Engagement",
     files: [
@@ -237,7 +253,8 @@ const tribalEngagement = {
     ],
   },
 };
-const raiResponseLetter = {
+
+export const raiResponseLetter = {
   raiResponseLetter: {
     label: "RAI Response Letter",
     files: [
@@ -251,7 +268,8 @@ const raiResponseLetter = {
     ],
   },
 };
-const waiverExtensionRequest = {
+
+export const waiverExtensionRequest = {
   waiverExtensionRequest: {
     label: "RAI Response Letter",
     files: [
@@ -265,7 +283,8 @@ const waiverExtensionRequest = {
     ],
   },
 };
-const supportingDocumentation = {
+
+export const supportingDocumentation = {
   supportingDocumentation: {
     label: "Supporting Documentation",
     files: [
@@ -279,7 +298,8 @@ const supportingDocumentation = {
     ],
   },
 };
-const bCapIndependentAssessment = {
+
+export const bCapIndependentAssessment = {
   bCapIndependentAssessment: {
     label:
       "1915(b) Comprehensive (Capitated) Waiver Independent Assessment (first two renewals only)",
@@ -294,6 +314,7 @@ const bCapIndependentAssessment = {
     ],
   },
 };
+
 export const attachments = {
   amendedLanguage,
   appk,
