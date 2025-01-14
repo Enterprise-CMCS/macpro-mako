@@ -77,12 +77,15 @@ const copyAttachments = async ({
   }
 
   if (attachPackage) {
-    // @ts-ignore
     // const attachments = structuredClone(attachPackage._source.changelog);
     console.log("ANDIEEEEEEE ***********");
     console.log("attachment package: ", attachPackage);
-    console.log("attach packagage change log: ", attachPackageChangelog.hits.hits);
-
+    // @ts-ignore
+    console.log(" change log: ", attachPackageChangelog.hits.hits._source.attachments);
+    // @ts-ignore
+    const attachments = structuredClone(attachPackageChangelog.hits.hits._source.attachments);
+    console.log("actual attachments:? ", attachments.stringify);
+    console.log("Current package: ", currentPackage);
     // @ts-ignore
     // currentPackage.attachments = attachments;
   }
