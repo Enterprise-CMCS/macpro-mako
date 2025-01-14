@@ -76,9 +76,11 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
         return (
           <>
             <p>{status}</p>
-            {data.raiWithdrawEnabled && (
-              <p className="text-xs opacity-60">· Withdraw Formal RAI Response - Enabled</p>
-            )}
+            {data.raiWithdrawEnabled &&
+              data.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
+              data.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE && (
+                <p className="text-xs opacity-60">· Withdraw Formal RAI Response - Enabled</p>
+              )}
           </>
         );
       },

@@ -27,12 +27,15 @@ export const PackageStatusCard: FC<{ id: string }> = ({ id }) => {
               </div>
             )}
 
-          {user?.isCms && data._source.secondClock && (
-            <div className="flex flex-row gap-1">
-              <p className="text-xs font-bold opacity-80">·</p>
-              <p className="text-xs opacity-80">2nd Clock</p>
-            </div>
-          )}
+          {user?.isCms &&
+            data._source.secondClock &&
+            data._source.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
+            data._source.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE && (
+              <div className="flex flex-row gap-1">
+                <p className="text-xs font-bold opacity-80">·</p>
+                <p className="text-xs opacity-80">2nd Clock</p>
+              </div>
+            )}
         </div>
       </div>
     </DetailCardWrapper>
