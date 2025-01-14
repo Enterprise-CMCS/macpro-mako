@@ -24,3 +24,5 @@ export {
   errorDeleteIndexHandler,
 } from "./indices";
 export { errorSecurityRolesMappingHandler } from "./security";
+export { errorSubtypeSearchHandler } from "./subtypes";
+export { errorTypeSearchHandler } from "./types";

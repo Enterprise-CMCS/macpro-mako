@@ -5,11 +5,11 @@ import {
   CHIP_SPA_AUTHORITY_ID,
   MEDICAID_SPA_AUTHORITY_ID,
   NOT_FOUND_AUTHORITY_ID,
-  ERROR_AUTHORITY_ID,
   medicaidTypes,
   chipTypes,
 } from "mocks/data/types";
-import { TestTypeItemResult } from "mocks";
+import { TestTypeItemResult, errorTypeSearchHandler } from "mocks";
+import { mockedServiceServer as mockedServer } from "mocks/server";
 
 describe("getTypes Handler", () => {
   it("should return 400 if event body is missing", async () => {
@@ -21,19 +21,40 @@ describe("getTypes Handler", () => {
     expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
   });
 
-  // TODO - should this be removed? when will the result be empty and not
-  // just a result with an empty hit array
-  it.skip("should return 400 if no types are found", async () => {
+  it("should return 400 if authority id is undefined", async () => {
     const event = {
-      body: JSON.stringify({ authorityId: NOT_FOUND_AUTHORITY_ID }),
+      body: JSON.stringify({ authorityId: undefined }),
     } as APIGatewayEvent;
 
     const res = await handler(event);
 
     expect(res.statusCode).toEqual(400);
-    expect(res.body).toEqual(
-      JSON.stringify({ message: "No record found for the given authority" }),
-    );
+    expect(res.body).toEqual(JSON.stringify({ message: "Authority Id is required" }));
+  });
+
+  it("should return 500 if there is a server error", async () => {
+    mockedServer.use(errorTypeSearchHandler);
+
+    const event = {
+      body: JSON.stringify({ authorityId: MEDICAID_SPA_AUTHORITY_ID }),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
+  });
+
+  it("should return 200 and no hits if no types are found", async () => {
+    const event = {
+      body: JSON.stringify({ authorityId: NOT_FOUND_AUTHORITY_ID }),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+    const body = JSON.parse(res.body);
+
+    expect(res.statusCode).toEqual(200);
+    expect(body.hits.hits).toEqual([]);
   });
 
   it("should return 200 with the result if types are found", async () => {
@@ -62,16 +83,5 @@ describe("getTypes Handler", () => {
       expect(type?._source?.name).toBeTruthy();
       expect(type?._source?.name?.match(/Do Not Use/)).toBeFalsy();
     });
-  });
-
-  it("should return 500 if an error occurs during processing", async () => {
-    const event = {
-      body: JSON.stringify({ authorityId: ERROR_AUTHORITY_ID }),
-    } as APIGatewayEvent;
-
-    const res = await handler(event);
-
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
   });
 });

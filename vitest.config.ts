@@ -17,6 +17,7 @@ export default defineConfig({
         ".cdk",
         "docs/**",
         "lib/libs/webforms/**",
+        "lib/libs/email/mock-data/**",
         "react-app/src/features/webforms/**",
         "TestWrapper.tsx",
         "lib/stacks/**",
