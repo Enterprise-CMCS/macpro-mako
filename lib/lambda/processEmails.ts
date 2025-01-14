@@ -77,7 +77,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     );
 
     console.log("results: ", JSON.stringify(results, null, 2));
-
+    console.log(results);
     const failures = results.filter((r) => r.status === "rejected");
     if (failures.length > 0) {
       console.error("Some records failed:", JSON.stringify(failures, null, 2));
