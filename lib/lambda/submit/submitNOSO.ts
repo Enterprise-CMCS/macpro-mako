@@ -67,7 +67,7 @@ const copyAttachments = async ({
   }
 
   // check if the authorities match
-  if (attachPackage?._source.authority === currentPackage._source.authority) {
+  if (attachPackage?._source.authority !== currentPackage._source.authority) {
     console.error(
       `Copy Attachment Package of id: ${copyAttachmentsFromId} does not have the same authority as ${currentPackage._id}.`,
     );
@@ -93,6 +93,7 @@ export const handler = async (event: APIGatewayEvent) => {
     });
   }
   try {
+    // add a property for new ID
     const { packageId, action, copyAttachmentsFromId } = submitNOSOAdminSchema.parse(
       event.body === "string" ? JSON.parse(event.body) : event.body,
     );

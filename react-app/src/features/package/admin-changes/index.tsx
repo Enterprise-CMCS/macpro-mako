@@ -51,6 +51,7 @@ export const AC_Update: FC<opensearch.changelog.Document> = () => {
 };
 
 export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
+  console.log(props.event);
   const [label, Content] = useMemo(() => {
     switch (props.event) {
       case "toggle-withdraw-rai": {
