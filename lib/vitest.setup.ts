@@ -69,7 +69,7 @@ beforeEach(() => {
   process.env.DLQ_URL = "https://sqs.us-east-1.amazonaws.com/123/test";
   process.env.configurationSetName = "SES";
   process.env.brokerString = KAFKA_BROKERS;
-  process.env.idmAuthzApiKeyArn = "test-secret";
+  process.env.idmAuthzApiKeyArn = "test-arn";
   process.env.idmAuthzApiEndpoint = "https://dimAuthzEndpoint.com";
 });
 
