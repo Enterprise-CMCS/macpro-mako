@@ -12,7 +12,12 @@ const defaultIDMHandler = http.get(
       return HttpResponse.json(
         {
           userProfileAppRoles: {
-            userRolesInfoList: [{ roleName: "role-1", "State/Territory": "VA" }],
+            userRolesInfoList: [
+              {
+                roleName: "onemac-micro-statesubmitter",
+                roleAttributes: [{ name: "State/Territory", value: "VA" }],
+              },
+            ],
           },
         },
         { status: 200 },

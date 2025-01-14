@@ -12,7 +12,6 @@ const client = new CognitoIdentityProviderClient({
   region: process.env.region || process.env.REGION_A || "us-east-1",
 });
 export const handler: Handler = async (event) => {
-  console.log(event);
   // Check if idmInfoSecretArn is provided
   if (!process.env.idmAuthzApiKeyArn) {
     throw "ERROR: process.env.idmAuthzApiKeyArn is required";
@@ -39,7 +38,6 @@ export const handler: Handler = async (event) => {
 
     try {
       const username = userAttributes["custom:username"]; // This is the four-letter IDM username
-      console.log(username);
       const response = await fetch(`${apiEndpoint}/api/v1/authz/id/all?userId=${username}`, {
         method: "GET",
         headers: {
@@ -47,19 +45,15 @@ export const handler: Handler = async (event) => {
           "x-api-key": apiKey,
         },
       });
-      console.log(response.ok);
       if (!response.ok) {
-        console.log("cheese");
         throw new Error(
           `Network response was not ok. Response was ${response.status}: ${response.statusText}`,
         );
       }
-      console.log("egg");
       const data = await response.json();
       console.log(JSON.stringify(data, null, 2));
       const roleArray: string[] = [];
       const stateArray: string[] = [];
-      console.log(data.userProfileAppRoles);
       data.userProfileAppRoles.userRolesInfoList.forEach((element: any) => {
         const role = element.roleName;
         if (Object.values(UserRoles).includes(role)) {
@@ -74,7 +68,6 @@ export const handler: Handler = async (event) => {
         }
       });
 
-      console.log(event);
       const attributeData: any = {
         Username: event.userName,
         UserPoolId: event.userPoolId,
@@ -102,9 +95,7 @@ export const handler: Handler = async (event) => {
 
 async function updateUserAttributes(params: any): Promise<void> {
   try {
-    console.log("hello");
     // Fetch existing user attributes
-    console.log(params);
     const getUserCommand = new AdminGetUserCommand({
       UserPoolId: params.UserPoolId,
       Username: params.Username,
