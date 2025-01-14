@@ -1,7 +1,8 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { handler } from "./sinkMain";
+import { Context } from "aws-lambda";
 import * as sinkMainProcessors from "./sinkMainProcessors";
-import { KafkaEvent } from "lib/packages/shared-types";
+import { KafkaEvent } from "shared-types";
 
 const createKafkaEvent = (records: KafkaEvent["records"]) => ({
   eventSource: "SelfManagedKafka",
@@ -10,24 +11,12 @@ const createKafkaEvent = (records: KafkaEvent["records"]) => ({
 });
 
 describe("sinkMain handler", () => {
-  vi.stubEnv("osDomain", "os-domain");
-  vi.stubEnv("indexNamespace", "index-namespace");
-
-  afterEach(() => {
-    vi.restoreAllMocks();
-    vi.resetModules();
-  });
-
   it("handles aws.onemac.migration.cdc topic successfully", async () => {
     const spiedOnProcessAndIndex = vi
       .spyOn(sinkMainProcessors, "insertOneMacRecordsFromKafkaIntoMako")
       .mockImplementation(vi.fn());
 
-    await handler(
-      createKafkaEvent({ "aws.onemac.migration.cdc-0": [] }),
-      expect.anything(),
-      vi.fn(),
-    );
+    await handler(createKafkaEvent({ "aws.onemac.migration.cdc-0": [] }), {} as Context, vi.fn());
 
     expect(spiedOnProcessAndIndex).toBeCalledWith([], "aws.onemac.migration.cdc-0");
   });
@@ -39,7 +28,7 @@ describe("sinkMain handler", () => {
 
     await handler(
       createKafkaEvent({ "aws.seatool.ksql.onemac.three.agg.State_Plan-0": [] }),
-      expect.anything(),
+      {} as Context,
       vi.fn(),
     );
 
@@ -56,7 +45,7 @@ describe("sinkMain handler", () => {
 
     await handler(
       createKafkaEvent({ "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan-0": [] }),
-      expect.anything(),
+      {} as Context,
       vi.fn(),
     );
 

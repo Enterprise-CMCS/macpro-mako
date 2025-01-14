@@ -9,6 +9,12 @@ export const USER_POOL_CLIENT_DOMAIN = `mocked-tests-login-${USER_POOL_CLIENT_ID
 export const COGNITO_IDP_DOMAIN = `https://cognito-idp.${REGION}.amazonaws.com/${USER_POOL_ID}`;
 export const OPENSEARCH_DOMAIN = `https://vpc-opensearchdomain-mock-domain.${REGION}.es.amazonaws.com`;
 export const OPENSEARCH_INDEX_NAMESPACE = "test-namespace-";
+export const CLOUDFORMATION_NOTIFICATION_DOMAIN = "https://test-cfn.amazonaws.com";
+export const BUCKET_NAME = "test-bucket";
+export const BUCKET_REGION = REGION;
+export const ATTACHMENT_BUCKET_NAME = "test-attachment-bucket";
+export const ATTACHMENT_BUCKET_REGION = REGION;
+export const KAFKA_BROKERS = "kafka1:9092,kafka2:9092";
 
 export const ACCESS_KEY_ID = "ASIAZHXA3XOU7XZ53M36"; // pragma: allowlist secret
 export const SECRET_KEY = "UWKCFxhrgbPnixgLnL1JKwFEwiK9ZKvTAtpk8cGa"; // pragma: allowlist secret

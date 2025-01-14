@@ -1,29 +1,19 @@
 import * as os from "../../opensearch-lib";
 import { opensearch } from "shared-types";
+import { getDomainAndNamespace } from "../../utils";
 
-export const getAppkChildren = async (
-  packageId: string,
-  filter: any[] = [],
-) => {
-  if (!process.env.osDomain) {
-    throw new Error("process.env.osDomain must be defined");
-  }
+export const getAppkChildren = async (packageId: string, filter: any[] = []) => {
+  const { domain, index } = getDomainAndNamespace("main");
 
-  const response = (await os.search(
-    process.env.osDomain,
-    `${process.env.indexNamespace}main`,
-    {
-      from: 0,
-      size: 200,
-      query: {
-        bool: {
-          must: [{ term: { "appkParentId.keyword": packageId } }].concat(
-            filter,
-          ),
-        },
+  const response = (await os.search(domain, index, {
+    from: 0,
+    size: 200,
+    query: {
+      bool: {
+        must: [{ term: { "appkParentId.keyword": packageId } }].concat(filter),
       },
     },
-  )) as opensearch.main.Response;
+  })) as opensearch.main.Response;
 
   return response;
 };

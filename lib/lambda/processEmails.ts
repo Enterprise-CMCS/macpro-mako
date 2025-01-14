@@ -3,11 +3,12 @@ import { EmailAddresses, KafkaEvent, KafkaRecord } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
 import { getEmailTemplates, getAllStateUsers } from "libs/email";
-import * as os from "./../libs/opensearch-lib";
+import * as os from "libs/opensearch-lib";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
 import pLimit from "p-limit";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
+import { getNamespace } from "libs/utils";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -20,7 +21,7 @@ interface ProcessEmailConfig {
   emailAddressLookupSecretName: string;
   applicationEndpointUrl: string;
   osDomain: string;
-  indexNamespace: string;
+  indexNamespace?: string;
   region: string;
   DLQ_URL: string;
   userPoolId: string;
@@ -33,7 +34,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     "emailAddressLookupSecretName",
     "applicationEndpointUrl",
     "osDomain",
-    "indexNamespace",
     "region",
     "DLQ_URL",
     "userPoolId",
@@ -49,7 +49,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   const emailAddressLookupSecretName = process.env.emailAddressLookupSecretName!;
   const applicationEndpointUrl = process.env.applicationEndpointUrl!;
   const osDomain = process.env.osDomain!;
-  const indexNamespace = process.env.indexNamespace!;
+  const indexNamespace = process.env.indexNamespace;
   const region = process.env.region!;
   const DLQ_URL = process.env.DLQ_URL!;
   const userPoolId = process.env.userPoolId!;
@@ -67,6 +67,8 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     isDev: isDev === "true",
   };
 
+  console.log("config: ", JSON.stringify(config, null, 2));
+
   try {
     const results = await Promise.allSettled(
       Object.values(event.records)
@@ -74,11 +76,14 @@ export const handler: Handler<KafkaEvent> = async (event) => {
         .map((rec) => processRecord(rec, config)),
     );
 
+    console.log("results: ", JSON.stringify(results, null, 2));
+
     const failures = results.filter((r) => r.status === "rejected");
     if (failures.length > 0) {
-      console.error("Some records failed:", failures);
+      console.error("Some records failed:", JSON.stringify(failures, null, 2));
       throw new TemporaryError("Some records failed processing");
     }
+    console.log("All records processed successfully", JSON.stringify(failures, null, 2));
   } catch (error) {
     console.error("Permanent failure:", error);
 
@@ -106,7 +111,12 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 };
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
+  console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
+  if (typeof key !== "string") {
+    console.log("key is not a string ", JSON.stringify(key, null, 2));
+    throw new Error("Key is not a string");
+  }
   const id: string = decodeBase64WithUtf8(key);
 
   if (!value) {
@@ -118,14 +128,14 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     timestamp,
     ...JSON.parse(decodeBase64WithUtf8(value)),
   };
+  console.log("record: ", JSON.stringify(record, null, 2));
 
   if (record.origin !== "mako") {
-    console.log("Kafka event is not of mako origin.  Doing nothing.");
+    console.log("Kafka event is not of mako origin. Doing nothing.");
     return;
   }
 
   try {
-    console.log("Processing record:", JSON.stringify(record, null, 2));
     console.log("Config:", JSON.stringify(config, null, 2));
     await processAndSendEmails(record, id, config);
   } catch (error) {
@@ -134,7 +144,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   }
 }
 
-function validateEmailTemplate(template: any) {
+export function validateEmailTemplate(template: any) {
   const requiredFields = ["to", "subject", "body"];
   const missingFields = requiredFields.filter((field) => !template[field]);
 
@@ -144,10 +154,7 @@ function validateEmailTemplate(template: any) {
 }
 
 export async function processAndSendEmails(record: any, id: string, config: ProcessEmailConfig) {
-  const templates = await getEmailTemplates<typeof record>(
-    record.event,
-    record.authority.toLowerCase(),
-  );
+  const templates = await getEmailTemplates<typeof record>(record.event, record.authority);
 
   if (!templates) {
     console.log(
@@ -164,10 +171,10 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
 
-  const item = await os.getItem(config.osDomain, `${config.indexNamespace}main`, id);
+  const item = await os.getItem(config.osDomain, getNamespace("main"), id);
+  const cpocEmail = [...getCpocEmail(item)];
+  const srtEmails = [...getSrtEmails(item)];
 
-  const cpocEmail = getCpocEmail(item);
-  const srtEmails = getSrtEmails(item);
   const emails: EmailAddresses = JSON.parse(sec);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
@@ -216,11 +223,11 @@ export function createEmailParams(
   baseUrl: string,
   isDev: boolean,
 ): SendEmailCommandInput {
-  const toAddresses = isDev ? [`State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`] : filledTemplate.to;
   const params = {
     Destination: {
-      ToAddresses: toAddresses,
+      ToAddresses: filledTemplate.to,
       CcAddresses: filledTemplate.cc,
+      BccAddresses: isDev ? [`State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`] : [], // this is so emails can be tested in dev as they should have the correct recipients but be blind copied on all emails on dev
     },
     Message: {
       Body: {

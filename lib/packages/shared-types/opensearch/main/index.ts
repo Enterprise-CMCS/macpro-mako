@@ -63,6 +63,9 @@ export type Document = AppkDocument &
     changelog?: Changelog[];
     appkChildren?: Omit<ItemResult, "found">[];
     deleted?: boolean;
+    adminChangeType?: string;
+    changeMade?: string;
+    idToBeUpdated?: string;
   };
 
 export type Response = Res<Document>;

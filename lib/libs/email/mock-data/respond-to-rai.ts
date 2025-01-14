@@ -1,14 +1,25 @@
 export const emailTemplateValue = {
+  event: "respond-to-rai" as const,
   applicationEndpointUrl: "https://mako-dev.cms.gov/",
-  timestamp: Date.now(),
+  get timestamp() {
+    return Date.now();
+  },
   actionType: "Respond to Formal RAI",
   origin: "mako" as const,
-  requestedDate: Date.now(),
-  responseDate: Date.now(),
+  get requestedDate() {
+    return Date.now();
+  },
+  get responseDate() {
+    return Date.now();
+  },
   additionalInformation:
     "Octopuses are usually very antisocial but when they’re under the influence of ecstasy they are more willing to spend time around each other or even hug other octopuses",
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",
-  submissionDate: Date.now(),
-  proposedEffectiveDate: Date.now() + 5184000000,
+  get submissionDate() {
+    return Date.now();
+  },
+  get proposedEffectiveDate() {
+    return Date.now() + 5184000000;
+  },
 };

@@ -17,6 +17,9 @@ import { setMockUsername, makoStateSubmitter, AUTH_CONFIG } from "mocks";
 vi.mock("../UsaBanner", () => ({ UsaBanner: () => null }));
 vi.mock("../Footer", () => ({ Footer: () => null }));
 vi.mock("@/components", () => ({
+  Layout: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="mocked-layout">{children}</div>
+  ),
   SimplePageContainer: ({ children }: { children: React.ReactNode }) => children,
   UserPrompt: () => null,
   Banner: () => null,
@@ -105,7 +108,7 @@ const setupUserDropdownTest = async (viewMode: ViewMode = VIEW_MODES.DESKTOP) =>
   await setupTest(viewMode);
 
   if (!viewMode.desktop) {
-    await user.click(screen.getByRole("button"));
+    await user.click(screen.getByTestId("mobile-menu-button"));
   }
 
   const myAccountButton = screen.getByText("My Account");
@@ -242,7 +245,7 @@ describe("Layout", () => {
       expect(screen.queryByText("Home")).not.toBeInTheDocument();
 
       // Open the menu
-      const menuButton = screen.getByRole("button");
+      const menuButton = screen.getByTestId("mobile-menu-button");
       await user.click(menuButton);
 
       expect(screen.getByText("Home")).toBeInTheDocument();

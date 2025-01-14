@@ -4,8 +4,8 @@ import { opensearch, ReactQueryApiError } from "shared-types";
 import { subtypes, types } from "shared-types/opensearch";
 
 type FetchOptions = {
-  authorityId: number;
-  typeIds?: number[];
+  authorityId: number | string;
+  typeIds?: number[] | string[];
 };
 
 export async function fetchData<T>({
@@ -47,15 +47,15 @@ export function useGetData<T>(
 }
 
 export function useGetTypes(
-  authorityId: number,
+  authorityId: number | string,
   options?: UseQueryOptions<opensearch.types.Document[], ReactQueryApiError>,
 ) {
   return useGetData<opensearch.types.Document>({ authorityId }, options);
 }
 
 export function useGetSubTypes(
-  authorityId: number,
-  typeIds: number[],
+  authorityId: number | string,
+  typeIds: number[] | string [],
   options?: UseQueryOptions<opensearch.subtypes.Document[], ReactQueryApiError>,
 ) {
   return useGetData<opensearch.subtypes.Document>(

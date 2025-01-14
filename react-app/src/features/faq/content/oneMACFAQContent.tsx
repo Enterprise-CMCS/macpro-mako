@@ -1,9 +1,3 @@
-import eligibilityPDF from "@/assets/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf";
-import WelcometoOneMAC from "@/assets/onboarding/WelcometoOneMAC.pdf";
-import IDMInstructionsforOneMACUsers from "@/assets/onboarding/IDMInstructionsforOneMACUsers.pdf";
-import OneMACIDMGuide from "@/assets/onboarding/OneMACIDMGuide.pdf";
-import OneMACStateUserGuide from "@/assets/onboarding/OneMACStateUserGuide.pdf";
-import OneMACCMSUserGuide from "@/assets/onboarding/OneMACCMSUserGuide.pdf";
 import { FILE_TYPES } from "shared-types/uploads";
 import { ABP_TEMPLATES } from "@/features/faq/content/abpTemplate";
 import { renderSection } from "@/features/faq/content/chpRenderSection";
@@ -45,7 +39,7 @@ export const oneMACFAQContent: FAQContent[] = [
               <li>
                 <a
                   className="text-blue-800 underline hover:no-underline "
-                  href={eligibilityPDF}
+                  href="/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -198,11 +192,14 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <ul>
             {[
-              [WelcometoOneMAC, "Welcome to OneMAC"],
-              [IDMInstructionsforOneMACUsers, "IDM Instructions for OneMAC Users"],
-              [OneMACIDMGuide, "OneMAC IDM Guide"],
-              [OneMACStateUserGuide, "OneMAC State User Guide"],
-              [OneMACCMSUserGuide, "OneMAC CMS User Guide"],
+              ["/onboarding/WelcometoOneMAC.pdf", "Welcome to OneMAC"],
+              [
+                "/onboarding/IDMInstructionsforOneMACUsers.pdf",
+                "IDM Instructions for OneMAC Users",
+              ],
+              ["/onboarding/OneMACIDMGuide.pdf", "OneMAC IDM Guide"],
+              ["/onboarding/OneMACStateUserGuide.pdf", "OneMAC State User Guide"],
+              ["/onboarding/OneMACCMSUserGuide.pdf", "OneMAC CMS User Guide"],
             ].map(([file, label]) => (
               <li key={label}>
                 <a
@@ -223,6 +220,86 @@ export const oneMACFAQContent: FAQContent[] = [
   {
     sectionTitle: "State Plan Amendments (SPAs)",
     qanda: [
+      {
+        anchorText: "spa-admendments",
+        question: "Which state plan amendments (SPAs) can I submit in OneMAC?",
+        answerJSX: (
+          <div className="w-full space-y-3">
+            <p>
+              All Medicaid and CHIP state plan amendments (SPAs), <b>except </b>
+              Medicaid SPA submissions processed in the Medicaid & CHIP Program System portal
+              (MACPro), must be submitted in OneMac.
+            </p>
+            <p>
+              Starting [month,date,year,] Medicaid Model Data Lab (MMDL) no longer accepts new
+              submissions for these SPAs, including:
+            </p>
+            <ul className="ml-8 list-disc space-y-2">
+              <li>Medicaid Alternative Benefit Plan (ABP)</li>
+              <li>Medicaid Premiums & Cost Sharing</li>
+              <li>CHIP Eligibility</li>
+            </ul>
+            <p>
+              Pending SPAs submitted in MMDL before [month, day, year,] including those on RAI
+              (request for additional information) status, will continue to be processed through
+              MMDL.
+            </p>
+            <p>
+              Templates and implementation guides for OneMac SPAs can be downloaded from the
+              respective FAQ:
+            </p>
+            <ul className="ml-8 list-disc space-y-2 text-blue-600">
+              {[
+                {
+                  href: "#abp-spa-templates",
+                  text: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
+                },
+                {
+                  href: "#abp-implementation-guides-spa",
+                  text: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
+                },
+                {
+                  href: "#mpc-spa-templates",
+                  text: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?",
+                },
+                {
+                  href: "#mpc-spa-implementation-guides",
+                  text: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?",
+                },
+                {
+                  href: "#chip-spa-templates",
+                  text: "Where can I download CHIP eligibility SPA templates?",
+                },
+                {
+                  href: "#chip-spa-implentation-guides",
+                  text: "Where can I download CHIP eligibility SPA implementation guides?",
+                },
+              ].map(({ href, text }) => (
+                <li key={href}>
+                  <a
+                    href={href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const targetElement = document.getElementById(href.substring(1));
+                      if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+
+                        const buttonElement = targetElement.querySelector("button");
+                        if (buttonElement) {
+                          buttonElement.click();
+                        }
+                      }
+                    }}
+                  >
+                    {text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p>For more information, refer to CMCS Information Bulletin #25-TBD.</p>
+          </div>
+        ),
+      },
       {
         anchorText: "spa-id-format",
         question: "What format is used to enter a SPA ID?",
@@ -515,6 +592,44 @@ export const oneMACFAQContent: FAQContent[] = [
         ),
       },
       {
+        anchorText: "formal-request-medicaid-spa",
+        question:
+          "How do I submit a Formal Request for Additional Information (RAI) Response for a Medicaid SPA?",
+        answerJSX: (
+          <div className="w-full space-y-3">
+            <p>When necessary, states will receive an RAI via email from CMS.</p>
+            <ul className="list-disc ml-8 space-y-2">
+              <li>The state will respond to the RAI through OneMAC.</li>
+              <li>
+                A Request for Additional Information (RAI) stops the 90-day clock, is a formal
+                request for additional information from CMS.
+              </li>
+              <li>
+                Packages pending an official RAI response from the state will have a Status of{" "}
+                <b>RAI Issued.</b>
+              </li>
+            </ul>
+            <p>
+              To respond to a Medicaid SPA RAI, select the SPA Tab view from the Package Dashboard.
+            </p>
+            <ul className="list-disc ml-8 space-y-2">
+              <li>
+                Select the link to the SPA ID. Packages which are in need of an RAI response from
+                the state will have a Status of <b>RAI Issued.</b>
+              </li>
+              <li>Then, under Package Actions, select the Respond to RAI link.</li>
+              <li>
+                After attaching any required files, you may include additional notes prior to
+                clicking on the submit button.
+              </li>
+              <li>
+                Check your entries, as you cannot edit the submission after you select Submit.
+              </li>
+            </ul>
+          </div>
+        ),
+      },
+      {
         anchorText: "withdraw-spa-rai-response",
         question: "How do I Withdraw a Formal RAI Response for a Medicaid SPA?",
         answerJSX: (
@@ -593,6 +708,42 @@ export const oneMACFAQContent: FAQContent[] = [
               cannot be resubmitted and this action will conclude the review of this package.
             </p>
             <p>Select Yes, withdraw package to complete the task.</p>
+          </div>
+        ),
+      },
+      {
+        anchorText: "formal-request-chip-spa",
+        question:
+          "How do I submit a Formal Request for Additional Information (RAI) Response for a CHIP SPA?",
+        answerJSX: (
+          <div className="w-full space-y-3">
+            <p>When necessary, states will receive an RAI via email from CMS.</p>
+            <ul className="ml-8 list-disc space-y-2">
+              <li>The state will respond to the RAI through OneMAC.</li>
+              <li>
+                A Request for Additional Information (RAI) stops the 90-day clock, is a formal
+                request for additional information from CMS.
+              </li>
+              <li>
+                Packages pending an official RAI response from the state will have a Status of{" "}
+                <b>RAI Issued.</b>
+              </li>
+            </ul>
+            <p>To respond to a CHIP SPA RAI, select the SPA Tab view from the Package Dashboard.</p>
+            <ul className="ml-8 list-disc space-y-2">
+              <li>
+                Select the link to the SPA ID. Packages which are in need of an RAI response from
+                the state will have a Status of <b>RAI Issued.</b>
+              </li>
+              <li>Then, under Package Actions, select the Respond to RAI link.</li>
+              <li>
+                After attaching any required files, you may include additional notes prior to
+                clicking on the submit button.
+              </li>
+              <li>
+                Check your entries, as you cannot edit the submission after you select Submit.
+              </li>
+            </ul>
           </div>
         ),
       },
@@ -682,7 +833,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "abp-spa-templates",
         question: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
         answerJSX: (
-          <section className="space-y-2 p-2">
+          <section id="abp-spa-templates" className="space-y-2 p-2">
             <p>
               Medicaid Alternative Benefit Plan (ABP) SPA templates can be downloaded at the links
               below. After downloading and completing the templates you need, upload them as part of
@@ -1224,7 +1375,7 @@ export const oneMACFAQContent: FAQContent[] = [
         ),
       },
       {
-        anchorText: "temporary-extensions-b-attachments",
+        anchorText: "temporary-extensions-c-attachments",
         question:
           "What are the attachments for a 1915(c) Waiver - Request for Temporary Extension?",
         answerJSX: (
@@ -1298,6 +1449,44 @@ export const oneMACFAQContent: FAQContent[] = [
               </tbody>
             </table>
           </>
+        ),
+      },
+      {
+        anchorText: "formal-request-waiver",
+        question:
+          "How do I submit a Formal Request for Additional Information (RAI) Response for a Waiver?",
+        answerJSX: (
+          <div className="w-full space-y-3">
+            <p>When necessary, states will receive an RAI via email from CMS.</p>
+            <ul className="ml-8 list-disc space-y-2">
+              <li>The state will respond to the RAI through OneMAC.</li>
+              <li>
+                A Request for Additional Information (RAI) stops the 90-day clock, is a formal
+                request for additional information from CMS.
+              </li>
+              <li>
+                Packages pending an official RAI response from the state will have a Status of{" "}
+                <b>RAI Issued.</b>
+              </li>
+            </ul>
+            <p>
+              To respond to a Waiver RAI, select the Waiver Tab view from the Package Dashboard.
+            </p>
+            <ul className="ml-8 list-disc space-y-2">
+              <li>
+                Select the link to the Waiver ID. Packages which are in need of an RAI response from
+                the state will have a Status of <b>RAI Issued.</b>
+              </li>
+              <li>Then, under Package Actions, select the Respond to RAI link.</li>
+              <li>
+                After attaching any required files, you may include additional notes prior to
+                clicking on the submit button.
+              </li>
+              <li>
+                Check your entries, as you cannot edit the submission after you select Submit.
+              </li>
+            </ul>
+          </div>
         ),
       },
       {

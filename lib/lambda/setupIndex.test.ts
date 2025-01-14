@@ -1,61 +1,44 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { handler } from "./setupIndex";
-import * as os from "../libs/opensearch-lib";
-
-vi.mock("../libs/opensearch-lib", () => ({
-  createIndex: vi.fn(),
-  updateFieldMapping: vi.fn(),
-}));
+import { Context } from "aws-lambda";
+import { OPENSEARCH_DOMAIN, OPENSEARCH_INDEX_NAMESPACE, errorCreateIndexHandler } from "mocks";
+import { mockedServiceServer as mockedServer } from "mocks/server";
+import * as os from "libs/opensearch-lib";
 
 describe("handler", () => {
-  const mockCallback = vi.fn();
-  const mockEvent = {
-    osDomain: "test-domain",
-    indexNamespace: "test-namespace-",
+  const baseEvent = {
+    osDomain: OPENSEARCH_DOMAIN,
+    indexNamespace: OPENSEARCH_INDEX_NAMESPACE,
   };
+  const createIndexSpy = vi.spyOn(os, "createIndex");
+  const updateMappingSpy = vi.spyOn(os, "updateFieldMapping");
+  const callback = vi.fn();
 
-  beforeEach(() => {
+  afterEach(() => {
     vi.clearAllMocks();
-    mockCallback.mockClear();
   });
 
   it("should create and update indices without errors", async () => {
-    await handler(mockEvent, null, mockCallback);
+    await handler(baseEvent, {} as Context, callback);
 
-    expect(os.createIndex).toHaveBeenCalledTimes(7);
-    expect(os.createIndex).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-main",
-    );
-    expect(os.createIndex).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-changelog",
-    );
-    expect(os.createIndex).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-types",
-    );
-    expect(os.createIndex).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-subtypes",
-    );
-    expect(os.createIndex).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-cpocs",
-    );
-    expect(os.createIndex).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-insights",
-    );
-    expect(os.createIndex).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-legacyinsights",
-    );
+    const expectedIndices = [
+      `${OPENSEARCH_INDEX_NAMESPACE}main`,
+      `${OPENSEARCH_INDEX_NAMESPACE}changelog`,
+      `${OPENSEARCH_INDEX_NAMESPACE}types`,
+      `${OPENSEARCH_INDEX_NAMESPACE}subtypes`,
+      `${OPENSEARCH_INDEX_NAMESPACE}cpocs`,
+      `${OPENSEARCH_INDEX_NAMESPACE}insights`,
+      `${OPENSEARCH_INDEX_NAMESPACE}legacyinsights`,
+    ];
 
-    expect(os.updateFieldMapping).toHaveBeenCalledTimes(1);
-    expect(os.updateFieldMapping).toHaveBeenCalledWith(
-      "test-domain",
-      "test-namespace-main",
+    for (const index of expectedIndices) {
+      expect(createIndexSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, index);
+    }
+    expect(createIndexSpy).toHaveBeenCalledTimes(7);
+
+    expect(updateMappingSpy).toHaveBeenCalledWith(
+      OPENSEARCH_DOMAIN,
+      `${OPENSEARCH_INDEX_NAMESPACE}main`,
       {
         approvedEffectiveDate: { type: "date" },
         changedDate: { type: "date" },
@@ -65,19 +48,19 @@ describe("handler", () => {
         submissionDate: { type: "date" },
       },
     );
+    expect(updateMappingSpy).toHaveBeenCalledTimes(1);
 
-    expect(mockCallback).toHaveBeenCalledWith(null, { statusCode: 200 });
+    expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
   it("should handle errors and return status 500", async () => {
-    (os.createIndex as vi.Mock).mockRejectedValueOnce(new Error("Test error"));
+    mockedServer.use(errorCreateIndexHandler);
 
-    await handler(mockEvent, null, mockCallback);
+    await handler(baseEvent, {} as Context, callback);
 
-    expect(os.createIndex).toHaveBeenCalledTimes(1);
-    expect(os.updateFieldMapping).not.toHaveBeenCalled();
-
-    expect(mockCallback).toHaveBeenCalledWith(expect.any(Error), {
+    expect(createIndexSpy).toHaveBeenCalledTimes(1);
+    expect(updateMappingSpy).not.toHaveBeenCalled();
+    expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,
     });
   });

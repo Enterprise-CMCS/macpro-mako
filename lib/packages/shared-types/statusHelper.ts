@@ -15,7 +15,7 @@ export const SEATOOL_STATUS = {
   WITHDRAW_REQUESTED: "Withdrawal Requested",
 };
 
-const statusToDisplayToStateUser = {
+export const statusToDisplayToStateUser = {
   [SEATOOL_STATUS.PENDING]: "Under Review",
   [SEATOOL_STATUS.PENDING_RAI]: "RAI Issued",
   [SEATOOL_STATUS.APPROVED]: "Approved",
@@ -31,7 +31,7 @@ const statusToDisplayToStateUser = {
   [SEATOOL_STATUS.WITHDRAW_REQUESTED]: "Withdrawal Requested",
 };
 
-const statusToDisplayToCmsUser = {
+export const statusToDisplayToCmsUser = {
   [SEATOOL_STATUS.PENDING]: "Pending",
   [SEATOOL_STATUS.PENDING_RAI]: "Pending - RAI",
   [SEATOOL_STATUS.APPROVED]: "Approved",
