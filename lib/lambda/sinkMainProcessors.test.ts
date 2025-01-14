@@ -1,132 +1,394 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, afterEach } from "vitest";
 import {
   insertNewSeatoolRecordsFromKafkaIntoMako,
   insertOneMacRecordsFromKafkaIntoMako,
   syncSeatoolRecordDatesFromKafkaWithMako,
 } from "./sinkMainProcessors";
-import * as sinkLib from "libs";
-import { Document, seatool } from "shared-types/opensearch/main";
+import { seatool } from "shared-types/opensearch/main";
 import { offsetToUtc } from "shared-utils";
-import { KafkaRecord } from "lib/packages/shared-types";
+import { SEATOOL_STATUS, statusToDisplayToCmsUser, statusToDisplayToStateUser } from "shared-types";
+import * as sink from "libs/sink-lib";
+import * as os from "libs/opensearch-lib";
+import {
+  OPENSEARCH_DOMAIN,
+  OPENSEARCH_INDEX_NAMESPACE,
+  TEST_ITEM_ID,
+  EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
+  convertObjToBase64,
+  createKafkaRecord,
+} from "mocks";
+import {
+  appkBase,
+  capitatedInitial,
+  capitatedAmendmentBase,
+  capitatedRenewal,
+  contractingInitial,
+  contractingAmendment,
+  contractingRenewal,
+  newChipSubmission,
+  newMedicaidSubmission,
+  uploadSubsequentDocuments,
+  temporaryExtension,
+  respondToRai,
+  toggleWithdrawRai,
+  withdrawPackage,
+  withdrawRai,
+} from "mocks/data/submit/base";
 
-const convertObjToBase64 = (obj: object) => Buffer.from(JSON.stringify(obj)).toString("base64");
+const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}main`;
+const TEST_ITEM_KEY = Buffer.from(TEST_ITEM_ID).toString("base64");
+const TIMESTAMP = 1732645041557;
+const ISO_DATETIME = "2024-11-26T18:17:21.557Z";
+const EARLIER_TIMESTAMP = 1722645041557;
+const EARLIER_ISO_DATETIME = "2024-08-03T00:30:41.557Z";
+const LATER_TIMESTAMP = 1742645041557;
+const LATER_ISO_DATETIME = "2025-03-22T12:04:01.557Z";
 
-const createKafkaRecord = ({
-  topic,
-  key,
-  value,
-}: {
-  topic: string;
-  key: string;
-  value: string;
-}): KafkaRecord => ({
-  topic,
-  partition: 0,
-  offset: 0,
-  timestamp: 1732645041557,
-  timestampType: "CREATE_TIME",
-  headers: {},
-  key,
-  value,
-});
+const bulkUpdateDataSpy = vi.spyOn(os, "bulkUpdateData");
+const logErrorSpy = vi.spyOn(sink, "logError");
 
 describe("insertOneMacRecordsFromKafkaIntoMako", () => {
-  const spiedOnBulkUpdateDataWrapper = vi.fn();
   const TOPIC = "--mako--branch-name--aws.onemac.migration.cdc";
 
-  beforeEach(() => {
+  afterEach(() => {
     vi.clearAllMocks();
-    vi.useFakeTimers();
-
-    vi.spyOn(sinkLib, "bulkUpdateDataWrapper").mockImplementation(spiedOnBulkUpdateDataWrapper);
-    vi.stubEnv("osDomain", "osDomain");
-    vi.stubEnv("indexNamespace", "indexNamespace");
   });
 
-  it("handles valid kafka records", () => {
-    insertOneMacRecordsFromKafkaIntoMako(
+  type BulkUpdateRequestBody = {
+    initialIntakeNeeded: boolean;
+    actionType?: string;
+    title?: string;
+    additionalInformation?: string;
+    originalWaiverNumber?: string;
+    cmsStatus?: string;
+    stateStatus?: string;
+  };
+
+  it.each([
+    [
+      "app-k",
+      appkBase,
+      SEATOOL_STATUS.PENDING,
+      {
+        title: appkBase.title,
+        proposedDate: appkBase.proposedEffectiveDate,
+        additionalInformation: appkBase.additionalInformation,
+        actionType: "Amend",
+        initialIntakeNeeded: true,
+      } as BulkUpdateRequestBody,
+    ],
+    [
+      "capitated-initial",
+      capitatedInitial,
+      SEATOOL_STATUS.PENDING,
+      {
+        proposedDate: capitatedInitial.proposedEffectiveDate,
+        additionalInformation: capitatedInitial.additionalInformation,
+        actionType: "Initial",
+        initialIntakeNeeded: true,
+      } as BulkUpdateRequestBody,
+    ],
+    [
+      "capitated-amendment",
+      capitatedAmendmentBase,
+      SEATOOL_STATUS.PENDING,
+      {
+        proposedDate: capitatedAmendmentBase.proposedEffectiveDate,
+        additionalInformation: capitatedAmendmentBase.additionalInformation,
+        actionType: "Amend",
+        initialIntakeNeeded: true,
+      } as BulkUpdateRequestBody,
+    ],
+    [
+      "capitated-renewal",
+      capitatedRenewal,
+      SEATOOL_STATUS.PENDING,
+      {
+        proposedDate: capitatedRenewal.proposedEffectiveDate,
+        additionalInformation: capitatedRenewal.additionalInformation,
+        actionType: "Renew",
+        initialIntakeNeeded: true,
+      } as BulkUpdateRequestBody,
+    ],
+    [
+      "contracting-initial",
+      contractingInitial,
+      SEATOOL_STATUS.PENDING,
+      {
+        proposedDate: contractingInitial.proposedEffectiveDate,
+        additionalInformation: contractingInitial.additionalInformation,
+        actionType: "Initial",
+        initialIntakeNeeded: true,
+      } as BulkUpdateRequestBody,
+    ],
+    [
+      "contracting-amendment",
+      contractingAmendment,
+      SEATOOL_STATUS.PENDING,
+      {
+        proposedDate: contractingAmendment.proposedEffectiveDate,
+        additionalInformation: contractingAmendment.additionalInformation,
+        actionType: "Amend",
+        initialIntakeNeeded: true,
+      } as BulkUpdateRequestBody,
+    ],
+    [
+      "contracting-renewal",
+      contractingRenewal,
+      SEATOOL_STATUS.PENDING,
+      {
+        proposedDate: contractingRenewal.proposedEffectiveDate,
+        additionalInformation: contractingRenewal.additionalInformation,
+        actionType: "Renew",
+        initialIntakeNeeded: true,
+      } as BulkUpdateRequestBody,
+    ],
+    [
+      "new-chip-submission",
+      newChipSubmission,
+      SEATOOL_STATUS.PENDING,
+      {
+        proposedDate: newChipSubmission.proposedEffectiveDate,
+        additionalInformation: newChipSubmission.additionalInformation,
+        actionType: "Amend",
+        initialIntakeNeeded: true,
+      } as BulkUpdateRequestBody,
+    ],
+    [
+      "new-medicaid-submission",
+      newMedicaidSubmission,
+      SEATOOL_STATUS.PENDING,
+      {
+        proposedDate: newMedicaidSubmission.proposedEffectiveDate,
+        additionalInformation: newMedicaidSubmission.additionalInformation,
+        initialIntakeNeeded: true,
+      } as BulkUpdateRequestBody,
+    ],
+    [
+      "temporary-extension",
+      temporaryExtension,
+      SEATOOL_STATUS.PENDING,
+      {
+        originalWaiverNumber: temporaryExtension.waiverNumber,
+        additionalInformation: temporaryExtension.additionalInformation,
+        actionType: "Extend",
+        initialIntakeNeeded: false,
+        cmsStatus: "Requested",
+        stateStatus: "Submitted",
+      } as BulkUpdateRequestBody,
+    ],
+  ])("should handle valid kafka records for %s", async (_, event, seatoolStatus, expectation) => {
+    await insertOneMacRecordsFromKafkaIntoMako(
       [
         createKafkaRecord({
           topic: TOPIC,
           key: "TUQtMjQtMjMwMA==",
           value: convertObjToBase64({
-            event: "new-medicaid-submission",
-            attachments: {
-              cmsForm179: {
-                files: [
-                  {
-                    filename: "Screenshot 2024-07-08 at 11.42.35 AM.png",
-                    title: "Screenshot 2024-07-08 at 11.42.35 AM",
-                    bucket: "mako-refactor-tests-sink-attachments-635052997545",
-                    key: "13513eea-ba62-4cba-af31-2ec3c160b5e1.png",
-                    uploadDate: 1732645033529,
-                  },
-                ],
-                label: "CMS Form 179",
-              },
-              spaPages: {
-                files: [
-                  {
-                    filename: "Screenshot 2024-07-08 at 11.42.35 AM.png",
-                    title: "Screenshot 2024-07-08 at 11.42.35 AM",
-                    bucket: "mako-refactor-tests-sink-attachments-635052997545",
-                    key: "bbdfa95f-f67c-4983-8517-2745cc08d3b6.png",
-                    uploadDate: 1732645038805,
-                  },
-                ],
-                label: "SPA Pages",
-              },
-              coverLetter: { label: "Cover Letter" },
-              tribalEngagement: { label: "Document Demonstrating Good-Faith Tribal Engagement" },
-              existingStatePlanPages: { label: "Existing State Plan Page(s)" },
-              publicNotice: { label: "Public Notice" },
-              sfq: { label: "Standard Funding Questions (SFQs)" },
-              tribalConsultation: { label: "Tribal Consultation" },
-              other: { label: "Other" },
-            },
-            authority: "Medicaid SPA",
-            proposedEffectiveDate: 1732597200000,
-            id: "MD-24-2300",
+            ...event,
             origin: "mako",
             submitterName: "George Harrison",
             submitterEmail: "george@example.com",
-            timestamp: 1732645041526,
+            timestamp: TIMESTAMP,
           }),
         }),
       ],
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith(
-      [
-        {
-          additionalInformation: undefined,
-          authority: "Medicaid SPA",
-          changedDate: "2024-11-26T18:17:21.526Z",
-          cmsStatus: "Pending",
-          description: null,
-          id: "MD-24-2300",
-          makoChangedDate: "2024-11-26T18:17:21.526Z",
-          origin: "OneMAC",
-          raiWithdrawEnabled: false,
-          seatoolStatus: "Pending",
-          state: "MD",
-          stateStatus: "Under Review",
-          statusDate: offsetToUtc(new Date(1732645041526)).toISOString(),
-          proposedDate: 1732597200000,
-          subject: null,
-          submissionDate: "2024-11-26T18:17:21.526Z",
-          submitterEmail: "george@example.com",
-          submitterName: "George Harrison",
-          initialIntakeNeeded: true,
-        },
-      ],
-      "main",
-    );
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        ...expectation,
+        id: event.id,
+        authority: event.authority,
+        seatoolStatus,
+        cmsStatus: expectation.cmsStatus || statusToDisplayToCmsUser[seatoolStatus],
+        stateStatus: expectation.stateStatus || statusToDisplayToStateUser[seatoolStatus],
+        changedDate: ISO_DATETIME,
+        makoChangedDate: ISO_DATETIME,
+        statusDate: offsetToUtc(new Date(TIMESTAMP)).toISOString(),
+        submissionDate: ISO_DATETIME,
+        state: "VA",
+        origin: "OneMAC",
+        raiWithdrawEnabled: false,
+        description: null,
+        subject: null,
+        submitterEmail: "george@example.com",
+        submitterName: "George Harrison",
+      },
+    ]);
   });
 
-  it("handles valid kafka admin records", () => {
-    insertOneMacRecordsFromKafkaIntoMako(
+  it.each([
+    ["upload-subsequent-documents", uploadSubsequentDocuments, {}],
+    [
+      "respond-to-rai",
+      respondToRai,
+      {
+        raiReceivedDate: ISO_DATETIME,
+        raiWithdrawEnabled: false,
+        seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
+        cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING_RAI],
+        stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING_RAI],
+        locked: true,
+      },
+    ],
+    [
+      "withdraw-rai",
+      withdrawRai,
+      {
+        seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
+        cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING_RAI],
+        stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING_RAI],
+        raiWithdrawEnabled: false,
+        locked: true,
+      },
+    ],
+    [
+      "toggle-withdraw-rai",
+      toggleWithdrawRai,
+      {
+        raiWithdrawEnabled: true,
+      },
+    ],
+    [
+      "withdraw-package",
+      withdrawPackage,
+      {
+        seatoolStatus: SEATOOL_STATUS.WITHDRAWN,
+        cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.WITHDRAWN],
+        stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.WITHDRAWN],
+        locked: true,
+        finalDispositionDate: ISO_DATETIME,
+        initialIntakeNeeded: false,
+        raiWithdrawEnabled: false,
+      },
+    ],
+  ])("should handle valid kafka records for %s", async (_, event, expectation) => {
+    await insertOneMacRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: "TUQtMjQtMjMwMA==",
+          value: convertObjToBase64({
+            ...event,
+            origin: "mako",
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+            timestamp: TIMESTAMP,
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        ...expectation,
+        id: event.id,
+        makoChangedDate: ISO_DATETIME,
+      },
+    ]);
+  });
+
+  it("handles valid kafka admin record to update id", async () => {
+    await insertOneMacRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: "TUQtMjQtMjMwMA==",
+          value: convertObjToBase64({
+            id: "MD-24-2301",
+            isAdminChange: true,
+            adminChangeType: "update-id",
+            idToBeUpdated: "MD-24-2300",
+            changeMade: "ID has been updated.",
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        id: "MD-24-2301",
+        isAdminChange: true,
+        adminChangeType: "update-id",
+        idToBeUpdated: "MD-24-2300",
+        changeMade: "ID has been updated.",
+        submitterName: "George Harrison",
+        submitterEmail: "george@example.com",
+      },
+    ]);
+  });
+
+  it("handles valid kafka admin record to update value", async () => {
+    await insertOneMacRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: "TUQtMjQtMjMwMA==",
+          value: convertObjToBase64({
+            id: "MD-24-2301",
+            isAdminChange: true,
+            adminChangeType: "update-values",
+            title: "updated title",
+            changeMade: "title has been updated.",
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        id: "MD-24-2301",
+        isAdminChange: true,
+        adminChangeType: "update-values",
+        title: "updated title",
+        changeMade: "title has been updated.",
+        submitterName: "George Harrison",
+        submitterEmail: "george@example.com",
+      },
+    ]);
+  });
+
+  it("handles valid kafka admin record to delete", async () => {
+    await insertOneMacRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: "TUQtMjQtMjMwMA==",
+          value: convertObjToBase64({
+            id: "MD-24-2301",
+            isAdminChange: true,
+            adminChangeType: "delete",
+            deleted: false,
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        id: "MD-24-2301",
+        isAdminChange: true,
+        adminChangeType: "delete",
+        deleted: false,
+        submitterName: "George Harrison",
+        submitterEmail: "george@example.com",
+      },
+    ]);
+  });
+
+  it("skips invalid kafka admin records", async () => {
+    await insertOneMacRecordsFromKafkaIntoMako(
       [
         createKafkaRecord({
           topic: TOPIC,
@@ -138,76 +400,17 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
             changeMade: "ID has been updated.",
             isAdminChange: true,
             adminChangeType: "update-id",
-            idToBeUpdated: "MD-24-2300",
-          }),
-        }),
-        createKafkaRecord({
-          topic: TOPIC,
-          key: "TUQtMjQtMjMwMA==",
-          value: convertObjToBase64({
-            id: "MD-24-2301",
-            submitterName: "George Harrison",
-            submitterEmail: "george@example.com",
-            changeMade: "title has been updated.",
-            isAdminChange: true,
-            adminChangeType: "update-values",
-            title: "updated title",
-          }),
-        }),
-        createKafkaRecord({
-          topic: TOPIC,
-          key: "TUQtMjQtMjMwMA==",
-          value: convertObjToBase64({
-            id: "MD-24-2301",
-            submitterName: "George Harrison",
-            submitterEmail: "george@example.com",
-            isAdminChange: true,
-            adminChangeType: "delete",
-            deleted: true,
           }),
         }),
       ],
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith(
-      [
-        // record deleted
-        {
-          id: "MD-24-2301",
-          submitterName: "George Harrison",
-          submitterEmail: "george@example.com",
-          changeMade: "ID has been updated.",
-          isAdminChange: true,
-          adminChangeType: "update-id",
-          idToBeUpdated: "MD-24-2300",
-        },
-        // property updated
-        {
-          id: "MD-24-2301",
-          submitterName: "George Harrison",
-          submitterEmail: "george@example.com",
-          changeMade: "title has been updated.",
-          isAdminChange: true,
-          adminChangeType: "update-values",
-          title: "updated title",
-        },
-        // id updated
-        {
-          id: "MD-24-2301",
-          submitterName: "George Harrison",
-          submitterEmail: "george@example.com",
-          isAdminChange: true,
-          adminChangeType: "delete",
-          deleted: true,
-        },
-      ],
-      "main",
-    );
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
   });
 
-  it("skips value-less kafka records", () => {
-    insertOneMacRecordsFromKafkaIntoMako(
+  it("skips value-less kafka records", async () => {
+    await insertOneMacRecordsFromKafkaIntoMako(
       [
         createKafkaRecord({
           topic: TOPIC,
@@ -218,97 +421,59 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
   });
 
-  it("skips kafka records with invalid event name", () => {
-    insertOneMacRecordsFromKafkaIntoMako(
+  it("skips kafka records with invalid event name", async () => {
+    await insertOneMacRecordsFromKafkaIntoMako(
       [
         createKafkaRecord({
           topic: TOPIC,
           key: "TUQtMjQtMjMwMA==",
           // encoded string with `invalid-event-name` as 'record.event`
           value: convertObjToBase64({
+            ...newMedicaidSubmission,
             event: "invalid-event-name",
-            attachments: {
-              cmsForm179: {
-                files: [
-                  {
-                    filename: "Screenshot 2024-07-08 at 11.42.35 AM.png",
-                    title: "Screenshot 2024-07-08 at 11.42.35 AM",
-                    bucket: "mako-refactor-tests-sink-attachments-635052997545",
-                    key: "13513eea-ba62-4cba-af31-2ec3c160b5e1.png",
-                    uploadDate: 1732645033529,
-                  },
-                ],
-                label: "CMS Form 179",
-              },
-              spaPages: {
-                files: [
-                  {
-                    filename: "Screenshot 2024-07-08 at 11.42.35 AM.png",
-                    title: "Screenshot 2024-07-08 at 11.42.35 AM",
-                    bucket: "mako-refactor-tests-sink-attachments-635052997545",
-                    key: "bbdfa95f-f67c-4983-8517-2745cc08d3b6.png",
-                    uploadDate: 1732645038805,
-                  },
-                ],
-                label: "SPA Pages",
-              },
-              coverLetter: { label: "Cover Letter" },
-              tribalEngagement: { label: "Document Demonstrating Good-Faith Tribal Engagement" },
-              existingStatePlanPages: { label: "Existing State Plan Page(s)" },
-              publicNotice: { label: "Public Notice" },
-              sfq: { label: "Standard Funding Questions (SFQs)" },
-              tribalConsultation: { label: "Tribal Consultation" },
-              other: { label: "Other" },
-            },
-            authority: "Medicaid SPA",
-            proposedEffectiveDate: 1732597200000,
-            id: "MD-24-2300",
             origin: "mako",
             submitterName: "George Harrison",
             submitterEmail: "george@example.com",
-            timestamp: 1732645041526,
+            timestamp: TIMESTAMP,
           }),
         }),
       ],
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
   });
 
-  it("skips kafka records with invalid properties", () => {
-    insertOneMacRecordsFromKafkaIntoMako(
+  it("skips kafka records with invalid properties", async () => {
+    await insertOneMacRecordsFromKafkaIntoMako(
       [
         createKafkaRecord({
           topic: TOPIC,
           key: "TUQtMjQtMjMwMA==",
           // encoded string with `attachments` as an empty {}
           value: convertObjToBase64({
-            event: "new-medicaid-submission",
+            ...newMedicaidSubmission,
             attachments: {},
-            authority: "Medicaid SPA",
-            proposedEffectiveDate: 1732597200000,
-            id: "MD-24-2300",
             origin: "mako",
             submitterName: "George Harrison",
             submitterEmail: "george@example.com",
-            timestamp: 1732645041526,
+            timestamp: TIMESTAMP,
           }),
         }),
       ],
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
   });
 
-  it("skips kafka records with invalid JSON", () => {
-    const spiedOnLogError = vi.spyOn(sinkLib, "logError").mockImplementation(vi.fn());
+  it("skips kafka records with invalid JSON", async () => {
+    const logErrorSpy = vi.spyOn(sink, "logError");
 
-    insertOneMacRecordsFromKafkaIntoMako(
+    await insertOneMacRecordsFromKafkaIntoMako(
       [
         createKafkaRecord({
           topic: TOPIC,
@@ -319,8 +484,8 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
-    expect(spiedOnLogError).toBeCalledWith({
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+    expect(logErrorSpy).toBeCalledWith({
       type: "badparse",
       error: expect.any(Object),
       metadata: expect.any(Object),
@@ -329,44 +494,10 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
 });
 
 describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
-  // @ts-expect-error – cannot bother typing out unnecessary Document properties
-  const spiedOnGetItems = vi.fn<() => Promise<Document[]>>(() =>
-    Promise.resolve([
-      {
-        id: "MD-24-2300",
-        changedDate: "2024-02-04 23:12:36",
-      },
-      {
-        id: "WA-22-2100",
-        changedDate: "2024-06-12 13:24:43",
-      },
-      {
-        id: "NY-23-2200",
-        changedDate: "2024-10-12 09:04:52",
-      },
-      {
-        id: "WV-24-3230",
-        changedDate: "2024-03-21 09:51:23",
-      },
-      {
-        id: "IL-25-3130",
-        changedDate: "2025-03-21 17:51:23",
-      },
-    ]),
-  );
-  const spiedOnBulkUpdateDataWrapper = vi.fn();
-  const spiedOnLogError = vi.fn();
   const TOPIC = "--mako--branch-name--aws.seatool.ksql.onemac.three.agg.State_Plan";
 
-  beforeEach(() => {
+  afterEach(() => {
     vi.clearAllMocks();
-
-    vi.spyOn(sinkLib, "getItems").mockImplementation(spiedOnGetItems);
-    vi.spyOn(sinkLib, "bulkUpdateDataWrapper").mockImplementation(spiedOnBulkUpdateDataWrapper);
-    vi.spyOn(sinkLib, "logError").mockImplementation(spiedOnLogError);
-
-    vi.stubEnv("osDomain", "osDomain");
-    vi.stubEnv("indexNamespace", "indexNamespace");
   });
 
   it("outputs kafka records into mako records", async () => {
@@ -374,9 +505,9 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       [
         createKafkaRecord({
           topic: TOPIC,
-          key: "TUQtMjQtMjMwMA==",
+          key: TEST_ITEM_KEY,
           value: convertObjToBase64({
-            id: "MD-24-2300",
+            id: TEST_ITEM_ID,
             ACTION_OFFICERS: [
               {
                 FIRST_NAME: "John",
@@ -408,12 +539,12 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
             STATE_PLAN: {
               PLAN_TYPE: 123,
               SPW_STATUS_ID: 4,
-              APPROVED_EFFECTIVE_DATE: 1707088356000,
-              CHANGED_DATE: 1704163200000,
+              APPROVED_EFFECTIVE_DATE: TIMESTAMP,
+              CHANGED_DATE: EARLIER_TIMESTAMP,
               SUMMARY_MEMO: "Sample summary",
               TITLE_NAME: "Sample Title",
-              STATUS_DATE: 1704240000000,
-              SUBMISSION_DATE: 1704326400000,
+              STATUS_DATE: EARLIER_TIMESTAMP,
+              SUBMISSION_DATE: TIMESTAMP,
               LEAD_ANALYST_ID: 67890,
               ACTUAL_EFFECTIVE_DATE: null,
               PROPOSED_DATE: null,
@@ -429,60 +560,170 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith(
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        actionType: "Initial Review",
+        approvedEffectiveDate: ISO_DATETIME,
+        authority: "1915(c)",
+        changed_date: EARLIER_TIMESTAMP,
+        cmsStatus: "Approved",
+        description: "Sample summary",
+        finalDispositionDate: EARLIER_ISO_DATETIME,
+        id: TEST_ITEM_ID,
+        initialIntakeNeeded: false,
+        leadAnalystEmail: "michael.chen@cms.hhs.gov",
+        leadAnalystName: "Michael Chen",
+        leadAnalystOfficerId: 67890,
+        locked: false,
+        proposedDate: null,
+        raiReceivedDate: null,
+        raiRequestedDate: null,
+        raiWithdrawEnabled: false,
+        raiWithdrawnDate: null,
+        reviewTeam: [
+          {
+            email: "john.doe@medicaid.gov",
+            name: "John Doe",
+          },
+          {
+            email: "emily.rodriguez@medicaid.gov",
+            name: "Emily Rodriguez",
+          },
+        ],
+        seatoolStatus: "Approved",
+        secondClock: false,
+        state: "10",
+        stateStatus: "Approved",
+        statusDate: EARLIER_ISO_DATETIME,
+        subTypes: [
+          {
+            TYPE_ID: 1,
+            TYPE_NAME: "SubType X",
+          },
+        ],
+        subject: "Sample Title",
+        submissionDate: ISO_DATETIME,
+        types: [
+          {
+            SPA_TYPE_ID: 1,
+            SPA_TYPE_NAME: "Type A",
+          },
+        ],
+      },
+    ]);
+  });
+
+  it("outputs kafka records into mako records without changedDates", async () => {
+    await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
-        {
-          actionType: "Initial Review",
-          approvedEffectiveDate: "2024-02-04T23:12:36.000Z",
-          authority: "1915(c)",
-          changed_date: 1704163200000,
-          cmsStatus: "Approved",
-          description: "Sample summary",
-          finalDispositionDate: "2024-01-03T00:00:00.000Z",
-          id: "MD-24-2300",
-          initialIntakeNeeded: false,
-          leadAnalystEmail: "michael.chen@cms.hhs.gov",
-          leadAnalystName: "Michael Chen",
-          leadAnalystOfficerId: 67890,
-          locked: false,
-          proposedDate: null,
-          raiReceivedDate: null,
-          raiRequestedDate: null,
-          raiWithdrawEnabled: false,
-          raiWithdrawnDate: null,
-          reviewTeam: [
-            {
-              email: "john.doe@medicaid.gov",
-              name: "John Doe",
+        createKafkaRecord({
+          topic: TOPIC,
+          key: Buffer.from(EXISTING_ITEM_TEMPORARY_EXTENSION_ID).toString("base64"),
+          value: convertObjToBase64({
+            id: EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
+            ACTION_OFFICERS: [
+              {
+                FIRST_NAME: "John",
+                LAST_NAME: "Doe",
+                EMAIL: "john.doe@medicaid.gov",
+                OFFICER_ID: 12345,
+                DEPARTMENT: "State Plan Review",
+                PHONE: "202-555-1234",
+              },
+              {
+                FIRST_NAME: "Emily",
+                LAST_NAME: "Rodriguez",
+                EMAIL: "emily.rodriguez@medicaid.gov",
+                OFFICER_ID: 12346,
+                DEPARTMENT: "Compliance Division",
+                PHONE: "202-555-5678",
+              },
+            ],
+            LEAD_ANALYST: [
+              {
+                FIRST_NAME: "Michael",
+                LAST_NAME: "Chen",
+                EMAIL: "michael.chen@cms.hhs.gov",
+                OFFICER_ID: 67890,
+                DEPARTMENT: "Medicaid Innovation Center",
+                PHONE: "202-555-9012",
+              },
+            ],
+            STATE_PLAN: {
+              PLAN_TYPE: 123,
+              SPW_STATUS_ID: 4,
+              APPROVED_EFFECTIVE_DATE: TIMESTAMP,
+              CHANGED_DATE: EARLIER_TIMESTAMP,
+              SUMMARY_MEMO: "Sample summary",
+              TITLE_NAME: "Sample Title",
+              STATUS_DATE: EARLIER_TIMESTAMP,
+              SUBMISSION_DATE: TIMESTAMP,
+              LEAD_ANALYST_ID: 67890,
+              ACTUAL_EFFECTIVE_DATE: null,
+              PROPOSED_DATE: null,
+              STATE_CODE: "10",
             },
-            {
-              email: "emily.rodriguez@medicaid.gov",
-              name: "Emily Rodriguez",
-            },
-          ],
-          seatoolStatus: "Approved",
-          secondClock: false,
-          state: "10",
-          stateStatus: "Approved",
-          statusDate: "2024-01-03T00:00:00.000Z",
-          subTypes: [
-            {
-              TYPE_ID: 1,
-              TYPE_NAME: "SubType X",
-            },
-          ],
-          subject: "Sample Title",
-          submissionDate: "2024-01-04T00:00:00.000Z",
-          types: [
-            {
-              SPA_TYPE_ID: 1,
-              SPA_TYPE_NAME: "Type A",
-            },
-          ],
-        },
+            RAI: [],
+            ACTIONTYPES: [{ ACTION_NAME: "Initial Review", ACTION_ID: 1, PLAN_TYPE_ID: 123 }],
+            STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
+            STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
+          }),
+        }),
       ],
-      "main",
+      TOPIC,
     );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        actionType: "Initial Review",
+        approvedEffectiveDate: ISO_DATETIME,
+        authority: "1915(c)",
+        changed_date: EARLIER_TIMESTAMP,
+        cmsStatus: "Approved",
+        description: "Sample summary",
+        finalDispositionDate: EARLIER_ISO_DATETIME,
+        id: EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
+        initialIntakeNeeded: false,
+        leadAnalystEmail: "michael.chen@cms.hhs.gov",
+        leadAnalystName: "Michael Chen",
+        leadAnalystOfficerId: 67890,
+        locked: false,
+        proposedDate: null,
+        raiReceivedDate: null,
+        raiRequestedDate: null,
+        raiWithdrawEnabled: false,
+        raiWithdrawnDate: null,
+        reviewTeam: [
+          {
+            email: "john.doe@medicaid.gov",
+            name: "John Doe",
+          },
+          {
+            email: "emily.rodriguez@medicaid.gov",
+            name: "Emily Rodriguez",
+          },
+        ],
+        seatoolStatus: "Approved",
+        secondClock: false,
+        state: "10",
+        stateStatus: "Approved",
+        statusDate: EARLIER_ISO_DATETIME,
+        subTypes: [
+          {
+            TYPE_ID: 1,
+            TYPE_NAME: "SubType X",
+          },
+        ],
+        subject: "Sample Title",
+        submissionDate: ISO_DATETIME,
+        types: [
+          {
+            SPA_TYPE_ID: 1,
+            SPA_TYPE_NAME: "Type A",
+          },
+        ],
+      },
+    ]);
   });
 
   it("skips newer mako records", async () => {
@@ -490,9 +731,9 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       [
         createKafkaRecord({
           topic: TOPIC,
-          key: "V1YtMjQtMzIzMA==",
+          key: TEST_ITEM_KEY,
           value: convertObjToBase64({
-            id: "WV-24-3230",
+            id: TEST_ITEM_ID,
             ACTION_OFFICERS: [
               {
                 FIRST_NAME: "Lisa",
@@ -524,12 +765,12 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
             STATE_PLAN: {
               PLAN_TYPE: 121,
               SPW_STATUS_ID: 11,
-              APPROVED_EFFECTIVE_DATE: 1711065600000,
-              CHANGED_DATE: 1711065600000,
+              APPROVED_EFFECTIVE_DATE: LATER_TIMESTAMP,
+              CHANGED_DATE: LATER_TIMESTAMP,
               SUMMARY_MEMO: "1115 Demonstration Waiver Review",
               TITLE_NAME: "WV 1115 Medicaid Demonstration Project",
-              STATUS_DATE: 1710979200000,
-              SUBMISSION_DATE: 1711065600000,
+              STATUS_DATE: LATER_TIMESTAMP,
+              SUBMISSION_DATE: LATER_TIMESTAMP,
               LEAD_ANALYST_ID: 23456,
               ACTUAL_EFFECTIVE_DATE: null,
               PROPOSED_DATE: null,
@@ -545,54 +786,51 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
   });
 
   it("tombstones records with no value property", async () => {
-    const spiedOnTombstone = vi.spyOn(seatool, "tombstone");
+    const tombstoneSpy = vi.spyOn(seatool, "tombstone");
 
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         createKafkaRecord({
           topic: TOPIC,
-          key: "TlktMjMtMjIwMA==",
+          key: TEST_ITEM_KEY,
           value: "", // <-- missing value
         }),
       ],
       TOPIC,
     );
 
-    expect(spiedOnTombstone).toBeCalledWith("NY-23-2200");
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith(
-      [
-        {
-          actionType: null,
-          approvedEffectiveDate: null,
-          authority: null,
-          changedDate: null,
-          cmsStatus: null,
-          description: null,
-          finalDispositionDate: null,
-          id: "NY-23-2200",
-          leadAnalystName: null,
-          leadAnalystOfficerId: null,
-          proposedDate: null,
-          raiReceivedDate: null,
-          raiRequestedDate: null,
-          raiWithdrawnDate: null,
-          reviewTeam: null,
-          seatoolStatus: null,
-          state: null,
-          stateStatus: null,
-          statusDate: null,
-          subTypes: null,
-          subject: null,
-          submissionDate: null,
-          types: null,
-        },
-      ],
-      "main",
-    );
+    expect(tombstoneSpy).toBeCalledWith(TEST_ITEM_ID);
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        actionType: null,
+        approvedEffectiveDate: null,
+        authority: null,
+        changedDate: null,
+        cmsStatus: null,
+        description: null,
+        finalDispositionDate: null,
+        id: TEST_ITEM_ID,
+        leadAnalystName: null,
+        leadAnalystOfficerId: null,
+        proposedDate: null,
+        raiReceivedDate: null,
+        raiRequestedDate: null,
+        raiWithdrawnDate: null,
+        reviewTeam: null,
+        seatoolStatus: null,
+        state: null,
+        stateStatus: null,
+        statusDate: null,
+        subTypes: null,
+        subject: null,
+        submissionDate: null,
+        types: null,
+      },
+    ]);
   });
 
   it("skips over records with no key property", async () => {
@@ -655,7 +893,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
   });
 
   it("skips over records with invalid properties", async () => {
@@ -671,8 +909,8 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
-    expect(spiedOnLogError).toBeCalledWith({
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+    expect(logErrorSpy).toBeCalledWith({
       type: "badparse",
       metadata: expect.any(Object),
       error: expect.any(Object),
@@ -684,9 +922,9 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       [
         createKafkaRecord({
           topic: TOPIC,
-          key: "TUQtMjQtMjMwMA==",
+          key: TEST_ITEM_KEY,
           value: convertObjToBase64({
-            id: "MD-24-2300",
+            id: TEST_ITEM_ID,
             ACTION_OFFICERS: [
               {
                 FIRST_NAME: "John",
@@ -739,7 +977,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
   });
 
   it("skips over records that fail SEATOOL safeParse", async () => {
@@ -747,7 +985,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       [
         createKafkaRecord({
           topic: TOPIC,
-          key: "TUQtMjQtMjMwMA==",
+          key: TEST_ITEM_KEY,
           value: convertObjToBase64({
             ACTION_OFFICERS: [
               {
@@ -801,8 +1039,8 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
-    expect(spiedOnLogError).toBeCalledWith({
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+    expect(logErrorSpy).toBeCalledWith({
       type: "validation",
       metadata: expect.any(Object),
       error: expect.any(Array),
@@ -811,19 +1049,10 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
 });
 
 describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
-  const spiedOnBulkUpdateDataWrapper = vi.fn();
-  const spiedOnLogError = vi.fn();
-
   const TOPIC = "--mako--branch-name--aws.seatool.debezium.changed_date.SEA.dbo.State_Plan";
 
-  beforeEach(() => {
-    vi.resetAllMocks();
-
-    vi.spyOn(sinkLib, "bulkUpdateDataWrapper").mockImplementation(spiedOnBulkUpdateDataWrapper);
-    vi.spyOn(sinkLib, "logError").mockImplementation(spiedOnLogError);
-
-    vi.stubEnv("osDomain", "osDomain");
-    vi.stubEnv("indexNamespace", "indexNamespace");
+  afterEach(() => {
+    vi.clearAllMocks();
   });
 
   it("processes a valid date change to mako", async () => {
@@ -831,32 +1060,29 @@ describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
       [
         createKafkaRecord({
           topic: TOPIC,
-          key: "TUQtMjQtMjMwMA==",
+          key: TEST_ITEM_KEY,
           value: convertObjToBase64({
-            payload: { after: { ID_Number: "12345", Changed_Date: 1672531200000 } },
+            payload: { after: { ID_Number: "12345", Changed_Date: LATER_TIMESTAMP } },
           }),
         }),
       ],
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith(
-      [
-        {
-          changedDate: "2023-01-01T00:00:00.000Z",
-          id: "12345",
-        },
-      ],
-      "main",
-    );
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        changedDate: LATER_ISO_DATETIME,
+        id: "12345",
+      },
+    ]);
   });
 
-  it("processes a date change that's null to mako", async () => {
+  it("processes a date change that is null to mako", async () => {
     await syncSeatoolRecordDatesFromKafkaWithMako(
       [
         createKafkaRecord({
           topic: TOPIC,
-          key: "TUQtMjQtMjMwMA==",
+          key: TEST_ITEM_KEY,
           value: convertObjToBase64({
             payload: { after: { ID_Number: "67890", Changed_Date: null } },
           }),
@@ -865,15 +1091,12 @@ describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith(
-      [
-        {
-          changedDate: null,
-          id: "67890",
-        },
-      ],
-      "main",
-    );
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        changedDate: null,
+        id: "67890",
+      },
+    ]);
   });
 
   it("skips records with no value property", async () => {
@@ -881,35 +1104,35 @@ describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
       [
         createKafkaRecord({
           topic: TOPIC,
-          key: "TUQtMjQtMjMwMA==",
+          key: TEST_ITEM_KEY,
           value: "",
         }),
       ],
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
   });
 
-  it("skips payloads that're null or undefined", async () => {
+  it("skips payloads that are null or undefined", async () => {
     await syncSeatoolRecordDatesFromKafkaWithMako(
       [
         createKafkaRecord({
           topic: TOPIC,
-          key: "TUQtMjQtMjMwMA==",
+          key: TEST_ITEM_KEY,
           value: convertObjToBase64({ payload: { after: null } }),
         }),
       ],
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
 
     await syncSeatoolRecordDatesFromKafkaWithMako(
       [
         createKafkaRecord({
           topic: TOPIC,
-          key: "TUQtMjQtMjMwMA==",
+          key: TEST_ITEM_KEY,
           value: convertObjToBase64({
             payload: {
               after: undefined,
@@ -920,7 +1143,7 @@ describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
   });
 
   it("skips payloads with missing Id property", async () => {
@@ -928,16 +1151,16 @@ describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
       [
         createKafkaRecord({
           topic: TOPIC,
-          key: "TUQtMjQtMjMwMA==",
+          key: TEST_ITEM_KEY,
           // missing required Id property
-          value: convertObjToBase64({ payload: { after: { Changed_Date: 1672531200000 } } }),
+          value: convertObjToBase64({ payload: { after: { Changed_Date: LATER_TIMESTAMP } } }),
         }),
       ],
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
-    expect(spiedOnLogError).toBeCalledWith({
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+    expect(logErrorSpy).toBeCalledWith({
       type: "validation",
       error: expect.any(Object),
       metadata: expect.any(Object),
@@ -949,15 +1172,15 @@ describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
       [
         createKafkaRecord({
           topic: TOPIC,
-          key: "TUQtMjQtMjMwMA==",
+          key: TEST_ITEM_KEY,
           value: "bunch-of-gibberish",
         }),
       ],
       TOPIC,
     );
 
-    expect(spiedOnBulkUpdateDataWrapper).toBeCalledWith([], "main");
-    expect(spiedOnLogError).toBeCalledWith({
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+    expect(logErrorSpy).toBeCalledWith({
       type: "badparse",
       error: expect.any(Object),
       metadata: expect.any(Object),

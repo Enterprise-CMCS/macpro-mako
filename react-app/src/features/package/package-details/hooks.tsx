@@ -1,4 +1,4 @@
-import { isCmsUser, isStateUser, formatSeatoolDate } from "shared-utils";
+import { formatSeatoolDate, isCmsUser, isStateUser } from "shared-utils";
 
 import { OneMacUser } from "@/api/useGetUser";
 import { BLANK_VALUE } from "@/consts";
@@ -98,7 +98,7 @@ export const recordDetails = (data: opensearch.main.Document): DetailSectionItem
   },
   {
     label: "Proposed effective date",
-    value: data.proposedDate ? formatSeatoolDate(data.proposedDate) : BLANK_VALUE,
+    value: data.proposedDate ? formatSeatoolDate(data.proposedDate) : "Pending",
     canView: () => {
       return !(data.actionType === "Extend");
     },
@@ -121,11 +121,6 @@ export const recordDetails = (data: opensearch.main.Document): DetailSectionItem
     canView: () => {
       return !(data.actionType === "Extend");
     },
-  },
-  {
-    label: "Status Date",
-    value: data.statusDate ? formatSeatoolDate(data.statusDate) : BLANK_VALUE,
-    canView: (u) => (!u || !u.user ? false : isCmsUser(u.user)),
   },
 ];
 

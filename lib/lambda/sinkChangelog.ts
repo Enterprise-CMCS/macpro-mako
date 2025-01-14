@@ -1,13 +1,13 @@
 import { Handler } from "aws-lambda";
 import { decodeBase64WithUtf8 } from "shared-utils";
 import { KafkaEvent, KafkaRecord, opensearch } from "shared-types";
-import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "../libs/sink-lib";
+import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "libs/sink-lib";
 import {
   transformUpdateValuesSchema,
   transformDeleteSchema,
   transformedUpdateIdSchema,
 } from "./update/adminChangeSchemas";
-import { getPackageChangelog } from "lib/libs/api/package";
+import { getPackageChangelog } from "libs/api/package";
 
 // One notable difference between this handler and sinkMain's...
 // The order in which records are processed for the changelog doesn't matter.
@@ -18,9 +18,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     for (const topicPartition of Object.keys(event.records)) {
       const topic = getTopic(topicPartition);
       switch (topic) {
-        case undefined:
-          logError({ type: ErrorType.BADTOPIC });
-          throw new Error();
         case "aws.onemac.migration.cdc":
           // await legacyAdminChanges(
           //   event.records[topicPartition],
@@ -33,6 +30,9 @@ export const handler: Handler<KafkaEvent> = async (event) => {
             topicPartition: topicPartition,
           });
           break;
+        default:
+          logError({ type: ErrorType.BADTOPIC });
+          throw new Error(`topic (${topicPartition}) is invalid`);
       }
     }
   } catch (error) {
@@ -83,6 +83,7 @@ const processAndIndex = async ({
                 packageId: result.data.id,
               });
             });
+
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
 
             packageChangelogs.hits.hits.forEach((log) => {
@@ -124,7 +125,6 @@ const processAndIndex = async ({
           });
           continue;
         }
-        console.log(JSON.stringify(result.data, null, 2));
         docs.push(result.data);
       } else {
         console.log(`No transform found for event: ${record.event}`);

@@ -59,7 +59,8 @@ export type IdpRefreshRequestBody = {
 
 export type IdpListUsersRequestBody = {
   UserPoolId: string;
-  Filter: string;
+  Limit?: number;
+  Filter?: string;
 };
 
 export type AdminGetUserRequestBody = {
@@ -132,6 +133,8 @@ export type SearchQueryBody = {
 };
 
 export type GetItemBody = { id: string };
+
+export type GetMultiItemBody = { ids: string[] };
 
 export type EventRequestContext = Partial<APIGatewayEventRequestContext>;
 

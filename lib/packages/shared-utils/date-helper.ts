@@ -10,7 +10,17 @@ export function formatDate(date: number | null | undefined) {
 export function formatNinetyDaysDate(date: number | null | undefined): string {
   if (!date || date === undefined) {
     return "Pending";
-  } else {
-    return dateFns.format(dateFns.add(date, { days: 90 }), "MMM d, yyyy '@ 11:59pm ET'");
   }
+
+  const isDST = (date: number): boolean => {
+    const jan = new Date(date).getTimezoneOffset();
+    const jul = new Date(new Date(date).setMonth(6)).getTimezoneOffset();
+    return new Date(date).getTimezoneOffset() < Math.max(jan, jul);
+  };
+
+  const timezoneAbbreviation = isDST(date) ? "EDT" : "EST";
+  return dateFns.format(
+    dateFns.add(date, { days: 90 }),
+    `MMM d, yyyy '@ 11:59pm ${timezoneAbbreviation}'`,
+  );
 }

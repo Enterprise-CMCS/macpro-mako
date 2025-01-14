@@ -2,7 +2,8 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { useNotifs } from "@/hooks";
 import { useGetSystemNotifs } from "@/api";
-
+import { FAQ_TAB } from "@/router";
+import { Link } from "react-router";
 const MMDLAlertBanner = () => {
   const { dismissed, clearNotif } = useNotifs();
   const result = useGetSystemNotifs();
@@ -30,16 +31,14 @@ const MMDLAlertBanner = () => {
         </div>
       </div>
       <div className="flex space-x-4 col-start-2 md:col-start-auto">
-        {currentNotifs[0].buttonText && (
-          <a
-            href={currentNotifs[0].buttonLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="border-2 border-black rounded h-[38px] px-4 text font-bold text-center whitespace-nowrap pt-1"
-          >
-            {currentNotifs[0].buttonText}
-          </a>
-        )}
+        {currentNotifs[0].buttonText && (<Link
+          to={currentNotifs[0].buttonLink}
+          target={FAQ_TAB}
+          rel="noopener noreferrer"
+          className="border-2 border-black rounded h-[38px] px-4 text font-bold text-center whitespace-nowrap pt-1"
+        >
+          {currentNotifs[0].buttonText}
+        </Link>)}
         <button onClick={handleDismiss} aria-label="Dismiss" className="rounded-full w-6 h-6">
           <Cross2Icon className="w-full h-full" aria-hidden="true" />
         </button>
