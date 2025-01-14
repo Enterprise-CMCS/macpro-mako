@@ -22,7 +22,6 @@ interface ProcessEmailConfig {
   applicationEndpointUrl: string;
   osDomain: string;
   indexNamespace?: string;
-  topicNamespace?: string;
   region: string;
   DLQ_URL: string;
   userPoolId: string;
@@ -51,7 +50,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   const applicationEndpointUrl = process.env.applicationEndpointUrl!;
   const osDomain = process.env.osDomain!;
   const indexNamespace = process.env.indexNamespace;
-  const topicNamespace = process.env.topicNamespace;
   const region = process.env.region!;
   const DLQ_URL = process.env.DLQ_URL!;
   const userPoolId = process.env.userPoolId!;
@@ -62,7 +60,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     applicationEndpointUrl,
     osDomain: `https://${osDomain}`,
     indexNamespace,
-    topicNamespace,
     region,
     DLQ_URL,
     userPoolId,
