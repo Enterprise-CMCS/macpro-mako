@@ -7,11 +7,11 @@ import {
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const MedSpaCMSEmail = (props: {
-  variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;
+export const MedSpaCMSEmail = ({
+  variables,
+}: {
+  variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables 
 }) => {
-  const variables = props.variables;
-
   return (
     <BaseEmailTemplate
       previewText={`Medicaid SPA ${variables.id}`}
