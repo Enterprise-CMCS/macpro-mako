@@ -84,7 +84,7 @@ const copyAttachments = async ({
     console.log(" change log: ", attachPackageChangelog.hits.hits._source.attachments);
     // @ts-ignore
     const attachments = structuredClone(attachPackageChangelog.hits.hits._source.attachments);
-    console.log("actual attachments:? ", attachments.stringify);
+    console.log("actual attachments:? ", JSON.stringify(attachments));
     console.log("Current package: ", currentPackage);
     // @ts-ignore
     // currentPackage.attachments = attachments;
