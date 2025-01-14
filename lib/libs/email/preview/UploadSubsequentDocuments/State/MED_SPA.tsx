@@ -1,5 +1,5 @@
-import { emailTemplateValue } from "lib/libs/email/mock-data/upload-subsequent-documents";
-import { MedSpaStateEmail } from "libs/email/content/uploadSubsequentDocuments/emailTemplates";
+import { emailTemplateValue } from "libs/email/mock-data/upload-subsequent-documents";
+import { MedSpaStateEmail } from "libs/email/content/uploadSubsequentDocuments/emailTemplates/MedSpaState";
 import * as attachments from "libs/email/mock-data/attachments";
 const MedicaidSpaStateEmailPreview = () => {
   return (

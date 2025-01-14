@@ -7,10 +7,11 @@ import {
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const ChipSpaCMSEmail = (props: {
+export const ChipSpaCMSEmail = ({
+  variables,
+}: {
   variables: Events["NewChipSubmission"] & CommonEmailVariables;
 }) => {
-  const variables = props.variables;
   const previewText = `CHIP SPA ${variables.id} Submitted`;
   const heading = "The OneMAC Submission Portal received a CHIP State Plan Amendment:";
   return (

@@ -1,5 +1,5 @@
 import { emailTemplateValue } from "libs/email/mock-data/new-submission";
-import { ChipSpaStateEmail } from "libs/email/content/new-submission/emailTemplates";
+import { ChipSpaStateEmail } from "libs/email/content/newSubmission/emailTemplates/ChipSpaState";
 import * as attachments from "libs/email/mock-data/attachments";
 const ChipSpaStateEmailPreview = () => {
   return (

@@ -1,6 +1,6 @@
-import { AppKStateEmail } from "../../../content/uploadSubsequentDocuments/emailTemplates";
-import { emailTemplateValue } from "../../../mock-data/new-submission";
-import * as attachments from "../../../mock-data/attachments";
+import { AppKStateEmail } from "libs/email/content/uploadSubsequentDocuments/emailTemplates/AppKState";
+import { emailTemplateValue } from "libs/email/mock-data/new-submission";
+import * as attachments from "libs/email/mock-data/attachments";
 const AppKStateEmailPreview = () => {
   return (
     <AppKStateEmail

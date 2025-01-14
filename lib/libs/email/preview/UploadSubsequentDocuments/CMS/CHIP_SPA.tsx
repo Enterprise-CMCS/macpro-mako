@@ -1,4 +1,4 @@
-import { ChipSpaCMSEmail } from "lib/libs/email/content/uploadSubsequentDocuments/emailTemplates";
+import { ChipSpaCMSEmail } from "libs/email/content/uploadSubsequentDocuments/emailTemplates";
 import { emailTemplateValue } from "libs/email/mock-data/upload-subsequent-documents";
 import * as attachments from "libs/email/mock-data/attachments";
 

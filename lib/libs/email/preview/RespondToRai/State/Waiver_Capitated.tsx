@@ -1,6 +1,6 @@
 import { WaiverStateEmail } from "libs/email/content/respondToRai/emailTemplates";
 import { emailTemplateValue } from "libs/email/mock-data/respond-to-rai";
-import * as attachments from "../../../mock-data/attachments";
+import * as attachments from "libs/email/mock-data/attachments";
 
 export default () => {
   return (
