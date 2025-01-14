@@ -3,6 +3,11 @@ import { Template } from "./chpRenderSection";
 export const CHP_GUIDES: Template[] = [
   // MAGI Eligibility & Methods
   {
+    title: "Introduction",
+    text: "Children's Health Program (CHIP) Implementation Guide",
+    href: "/chp/IG_ChipEligibilityIntroduction_Final_20241205.pdf",
+  },
+  {
     title: "CS 7",
     text: "Eligibility - Targeted Low-Income Children Implementation Guide",
     href: "/chp/IG_CS7_TargetedLow-IncomeChildren.pdf",
