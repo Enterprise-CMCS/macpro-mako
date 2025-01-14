@@ -2,6 +2,7 @@ import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
 import { getPackage } from "libs/api/package";
+import { getPackageChangelog } from "libs/api/package";
 import { z } from "zod";
 import { ItemResult } from "shared-types/opensearch/main";
 
@@ -60,6 +61,7 @@ const copyAttachments = async ({
 }) => {
   // get the attachementPackage
   const attachPackage = await getPackage(copyAttachmentsFromId);
+  const attachPackageChangelog = await getPackageChangelog(copyAttachmentsFromId);
 
   if (!attachPackage || attachPackage.found == false) {
     console.error(`Copy Attachment Package of id: ${copyAttachmentsFromId} not found`);
@@ -76,10 +78,13 @@ const copyAttachments = async ({
 
   if (attachPackage) {
     // @ts-ignore
-    const attachments = structuredClone(attachPackage._source.attachments);
-    console.log("ATTACHMENTS: ", attachments);
+    // const attachments = structuredClone(attachPackage._source.changelog);
+    console.log("ANDIEEEEEEE ***********");
+    console.log("attachment package: ", attachPackage);
+    console.log("attach packagage change log: ", attachPackageChangelog.hits.hits);
+
     // @ts-ignore
-    currentPackage.attachments = attachments;
+    // currentPackage.attachments = attachments;
   }
 
   return currentPackage;
