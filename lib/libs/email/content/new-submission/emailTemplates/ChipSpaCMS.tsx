@@ -1,11 +1,18 @@
-import { WithdrawRAI, PackageDetails, BasicFooter, Attachments } from "../../email-components";
-import { WithdrawRAIProps } from "../../email-components";
+import { CommonEmailVariables, Events } from "shared-types";
+import {
+  LoginInstructions,
+  PackageDetails,
+  BasicFooter,
+  Attachments,
+} from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const AppKCMSEmail = ({ variables, relatedEvent }: WithdrawRAIProps) => {
-  const previewText = `Withdraw Formal RAI Response for Waiver Package ${relatedEvent.id}`;
-  const heading = `Withdraw Formal RAI Response for Waiver Package ${relatedEvent.id}`;
-
+export const ChipSpaCMSEmail = (props: {
+  variables: Events["NewChipSubmission"] & CommonEmailVariables;
+}) => {
+  const variables = props.variables;
+  const previewText = `CHIP SPA ${variables.id} Submitted`;
+  const heading = "The OneMAC Submission Portal received a CHIP State Plan Amendment:";
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -13,13 +20,13 @@ export const AppKCMSEmail = ({ variables, relatedEvent }: WithdrawRAIProps) => {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <WithdrawRAI relatedEvent={relatedEvent} variables={variables} />
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} useThisLink />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
-          "Waiver Number": variables.id,
+          "CHIP SPA Package ID": variables.id,
           Summary: variables.additionalInformation,
         }}
       />
