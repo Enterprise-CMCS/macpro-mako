@@ -4,7 +4,7 @@ import { SESClient } from "@aws-sdk/client-ses";
 import { sendEmail, validateEmailTemplate, handler } from "./processEmails";
 import { KafkaRecord, KafkaEvent } from "shared-types";
 
-describe("process emails  Handler", () => {
+describe("process emails Handler", () => {
   it("should return 200 with a proper email", async () => {
     const params = {
       Source: "sender@example.com",
@@ -13,10 +13,12 @@ describe("process emails  Handler", () => {
         Subject: { Data: "Mocked Email", Charset: "UTF-8" },
         Body: { Text: { Data: "This is a mocked email body.", Charset: "UTF-8" } },
       },
+      ConfigurationSetName: "test-config",
     };
     const test = await sendEmail(params, "us-east-1");
     expect(test.status).toStrictEqual(200);
   });
+
   it("should throw an error", async () => {
     const params = {
       Source: "sender@example.com",
@@ -25,17 +27,33 @@ describe("process emails  Handler", () => {
         Subject: { Data: "Mocked Email", Charset: "UTF-8" },
         Body: { Text: { Data: "This is a mocked email body.", Charset: "UTF-8" } },
       },
+      ConfigurationSetName: "test-config",
     };
     await expect(sendEmail(params, "bad-test")).rejects.toThrowError();
   });
-  it("should validate the email template and throw an error", async () => {
+
+  it("should validate the email template and throw an error for missing fields", async () => {
     const template = {
       to: "Person",
       from: "Other Guy",
       body: "body",
+      // missing required 'subject' field
     };
-    expect(() => validateEmailTemplate(template)).toThrowError();
+    expect(() => validateEmailTemplate(template)).toThrowError(
+      "Email template missing required fields: subject",
+    );
   });
+
+  it("should validate a complete email template without throwing", () => {
+    const template = {
+      to: "Person",
+      from: "Other Guy",
+      body: "body",
+      subject: "Test Subject",
+    };
+    expect(() => validateEmailTemplate(template)).not.toThrow();
+  });
+
   it("should make a handler", async () => {
     const callback = vi.fn();
     const secSPY = vi.spyOn(SESClient.prototype, "send");
@@ -66,7 +84,8 @@ describe("process emails  Handler", () => {
     await handler(mockEvent, {} as Context, callback);
     expect(secSPY).toHaveBeenCalledTimes(2);
   });
-  it("should not be mako therefor not do an event", async () => {
+
+  it("should not be mako therefore not do an event", async () => {
     const callback = vi.fn();
     const mockEvent: KafkaEvent = {
       records: {
@@ -96,6 +115,7 @@ describe("process emails  Handler", () => {
     await handler(mockEvent, {} as Context, callback);
     expect(secSPY).toHaveBeenCalledTimes(0);
   });
+
   it("should be missing a value, so nothing sent", async () => {
     const callback = vi.fn();
     const mockEvent: KafkaEvent = {
@@ -119,6 +139,7 @@ describe("process emails  Handler", () => {
     await handler(mockEvent, {} as Context, callback);
     expect(secSPY).toHaveBeenCalledTimes(0);
   });
+
   it("should be missing an environment variable", async () => {
     const callback = vi.fn();
     delete process.env.osDomain;

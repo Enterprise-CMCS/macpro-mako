@@ -13,12 +13,6 @@ export const baseSchema = z.object({
     }),
   proposedEffectiveDate: z.number(),
   attachments: z.object({
-    b4WaiverApplication: z.object({
-      label: z
-        .string()
-        .default("1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print"),
-      files: attachmentArraySchema(),
-    }),
     b4IndependentAssessment: z.object({
       label: z
         .string()
@@ -26,6 +20,12 @@ export const baseSchema = z.object({
           "1915(b)(4) FFS Selective Contracting (Streamlined) Independent Assessment (first two renewals only)",
         ),
       files: attachmentArraySchemaOptional(),
+    }),
+    b4WaiverApplication: z.object({
+      label: z
+        .string()
+        .default("1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print"),
+      files: attachmentArraySchema(),
     }),
     tribalConsultation: z.object({
       label: z.string().default("Tribal Consultation"),
