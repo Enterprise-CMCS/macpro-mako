@@ -143,9 +143,7 @@ const initForm = {
   testForm_sec1_upload: [],
   testForm_sec1_checkbox: [],
   testForm_sec2_fieldArray: [{ input: "" }],
-  testForm_sec2_fieldGroup: [
-    { input: "", textArea: "", select: "", fieldArray: [{ input: "" }] },
-  ],
+  testForm_sec2_fieldGroup: [{ input: "", textArea: "", select: "", fieldArray: [{ input: "" }] }],
 };
 
 describe("Test Form Initializer", () => {

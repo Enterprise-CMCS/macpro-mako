@@ -14,27 +14,18 @@ export class IamPermissionsBoundaryAspect implements IAspect {
     // Check if the node is an instance of the higher-level iam.Role construct
     if (node instanceof iam.Role) {
       const roleResource = node.node.defaultChild as iam.CfnRole;
-      roleResource.addPropertyOverride(
-        "PermissionsBoundary",
-        this.permissionsBoundaryArn,
-      );
+      roleResource.addPropertyOverride("PermissionsBoundary", this.permissionsBoundaryArn);
     }
     // Check if the node is an instance of a low-level CloudFormation resource (CfnRole)
     else if (node instanceof iam.CfnRole) {
-      node.addPropertyOverride(
-        "PermissionsBoundary",
-        this.permissionsBoundaryArn,
-      );
+      node.addPropertyOverride("PermissionsBoundary", this.permissionsBoundaryArn);
     }
     // For roles created by other constructs such as AutoDeleteObjects which may not be of iam.Role or iam.CfnRole
     else if (
       CfnResource.isCfnResource(node) &&
       (node as CfnResource).cfnResourceType === "AWS::IAM::Role"
     ) {
-      (node as iam.CfnRole).addPropertyOverride(
-        "PermissionsBoundary",
-        this.permissionsBoundaryArn,
-      );
+      (node as iam.CfnRole).addPropertyOverride("PermissionsBoundary", this.permissionsBoundaryArn);
     }
   }
 }

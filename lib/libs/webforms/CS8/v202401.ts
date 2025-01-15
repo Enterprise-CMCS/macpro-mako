@@ -50,8 +50,7 @@ export const v202401: FormSchema = {
       subsection: true,
       form: [
         {
-          description:
-            "The state provides coverage to pregnant women in the following age ranges:",
+          description: "The state provides coverage to pregnant women in the following age ranges:",
           descriptionClassName: "text-base",
           slots: [
             {
@@ -103,8 +102,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                             label:
@@ -158,8 +156,7 @@ export const v202401: FormSchema = {
                                     type: "greaterThanField",
                                     strictGreater: true,
                                     fieldName: "cs8_age_start-age-range",
-                                    message:
-                                      "Must be greater than start of age range",
+                                    message: "Must be greater than start of age range",
                                   },
                                 ],
                                 label: "End of age range",
@@ -196,8 +193,7 @@ export const v202401: FormSchema = {
                   rhf: "WrappedGroup",
                   name: "wrapped",
                   props: {
-                    wrapperClassName:
-                      "ml-[0.6rem] px-4 border-l-4 border-l-primary mb-4",
+                    wrapperClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary mb-4",
                   },
                   fields: [
                     {
@@ -207,15 +203,13 @@ export const v202401: FormSchema = {
                         required: "* Required",
                         pattern: {
                           value: noLeadingTrailingWhitespace,
-                          message:
-                            "Must not have leading or trailing whitespace.",
+                          message: "Must not have leading or trailing whitespace.",
                         },
                       },
                       label:
                         "Describe how it’s determined whether the applicant will be provided coverage as a child or as a pregnant woman.",
                       labelClassName: "font-bold",
-                      formItemClassName:
-                        "ml-[0.6rem] px-4 border-l-4 border-l-primary my-4",
+                      formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary my-4",
                       props: {
                         className: "w-[658px]",
                       },
@@ -368,8 +362,7 @@ export const v202401: FormSchema = {
               props: {
                 className: "w-[696px]",
               },
-              formItemClassName:
-                "ml-[0.6rem] px-4 border-l-4 border-l-primary mb-4",
+              formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary mb-4",
               dependency: {
                 conditions: [
                   {
@@ -428,8 +421,7 @@ export const v202401: FormSchema = {
                                   required: "* Required",
                                   pattern: {
                                     value: noLeadingTrailingWhitespace,
-                                    message:
-                                      "Must not have leading or trailing whitespace.",
+                                    message: "Must not have leading or trailing whitespace.",
                                   },
                                 },
                                 label: "County",
@@ -518,8 +510,7 @@ export const v202401: FormSchema = {
                                   required: "* Required",
                                   pattern: {
                                     value: noLeadingTrailingWhitespace,
-                                    message:
-                                      "Must not have leading or trailing whitespace.",
+                                    message: "Must not have leading or trailing whitespace.",
                                   },
                                 },
                                 label: "City",
@@ -615,8 +606,7 @@ export const v202401: FormSchema = {
                                       required: "* Required",
                                       pattern: {
                                         value: noLeadingTrailingWhitespace,
-                                        message:
-                                          "Must not have leading or trailing whitespace.",
+                                        message: "Must not have leading or trailing whitespace.",
                                       },
                                     },
                                     label: "Geographic Area",
@@ -632,8 +622,7 @@ export const v202401: FormSchema = {
                                       required: "* Required",
                                       pattern: {
                                         value: noLeadingTrailingWhitespace,
-                                        message:
-                                          "Must not have leading or trailing whitespace.",
+                                        message: "Must not have leading or trailing whitespace.",
                                       },
                                     },
                                     label: "Describe",
@@ -655,8 +644,7 @@ export const v202401: FormSchema = {
                                         rules: {
                                           pattern: {
                                             value: /^[0-9]\d*$/,
-                                            message:
-                                              "Must be a positive integer value",
+                                            message: "Must be a positive integer value",
                                           },
                                           required: "* Required",
                                         },
@@ -674,8 +662,7 @@ export const v202401: FormSchema = {
                                         rules: {
                                           pattern: {
                                             value: /^[0-9]\d*$/,
-                                            message:
-                                              "Must be a positive integer value",
+                                            message: "Must be a positive integer value",
                                           },
                                           required: "* Required",
                                         },

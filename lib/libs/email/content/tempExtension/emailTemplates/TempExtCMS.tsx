@@ -4,7 +4,6 @@ import {
   LoginInstructions,
   BasicFooter,
   Attachments,
-  DetailsHeading,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { formatNinetyDaysDate } from "shared-utils";
@@ -22,7 +21,6 @@ export const TempExtCMSEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <DetailsHeading />
       <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
       <PackageDetails
         details={{

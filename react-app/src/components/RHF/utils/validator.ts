@@ -4,23 +4,10 @@
  * - creating/saving form data
  * - retrieving form data
  */
-import {
-  DependencyRule,
-  FormGroup,
-  FormSchema,
-  RHFOption,
-  RHFSlotProps,
-} from "shared-types/forms";
+import { DependencyRule, FormGroup, FormSchema, RHFOption, RHFSlotProps } from "shared-types/forms";
 import { RegisterOptions } from "react-hook-form";
 
-import {
-  isNullOrUndefined,
-  isUndefined,
-  isRegex,
-  getValueAndMessage,
-  isString,
-  ERROR,
-} from "./is";
+import { isNullOrUndefined, isUndefined, isRegex, getValueAndMessage, isString, ERROR } from "./is";
 
 export const validateInput = (inputValue: any, rules?: RegisterOptions) => {
   const isEmpty =
@@ -32,10 +19,7 @@ export const validateInput = (inputValue: any, rules?: RegisterOptions) => {
     return isString(rules.required) ? rules.required : "*Required";
   }
 
-  if (
-    !isEmpty &&
-    (!isNullOrUndefined(rules?.min) || !isNullOrUndefined(rules?.max))
-  ) {
+  if (!isEmpty && (!isNullOrUndefined(rules?.min) || !isNullOrUndefined(rules?.max))) {
     let exceedMax;
     let exceedMin;
     const maxOutput = getValueAndMessage(rules?.max);
@@ -69,19 +53,13 @@ export const validateInput = (inputValue: any, rules?: RegisterOptions) => {
     if (exceedMin) return minOutput.message;
   }
 
-  if (
-    (rules?.maxLength || rules?.minLength) &&
-    !isEmpty &&
-    isString(inputValue)
-  ) {
+  if ((rules?.maxLength || rules?.minLength) && !isEmpty && isString(inputValue)) {
     const maxLengthOutput = getValueAndMessage(rules?.maxLength);
     const minLengthOutput = getValueAndMessage(rules?.minLength);
     const exceedMax =
-      !isNullOrUndefined(maxLengthOutput.value) &&
-      inputValue.length > +maxLengthOutput.value;
+      !isNullOrUndefined(maxLengthOutput.value) && inputValue.length > +maxLengthOutput.value;
     const exceedMin =
-      !isNullOrUndefined(minLengthOutput.value) &&
-      inputValue.length < +minLengthOutput.value;
+      !isNullOrUndefined(minLengthOutput.value) && inputValue.length < +minLengthOutput.value;
 
     if (exceedMax) return maxLengthOutput.message;
     if (exceedMin) return minLengthOutput.message;
@@ -176,15 +154,14 @@ export const dependencyCheck = (dep: DependencyRule, data: any) => {
   if (dep.effect.type === "hide") return !conditionMatched;
 };
 
-export const formGroupValidator =
-  (data: any) => (ACC: ERROR, FORM: FormGroup) => {
-    if (FORM.dependency) {
-      const depMatch = dependencyCheck(FORM.dependency, data);
-      if (!depMatch) return ACC;
-    }
-    FORM.slots.reduce(slotValidator(data), ACC);
-    return ACC;
-  };
+export const formGroupValidator = (data: any) => (ACC: ERROR, FORM: FormGroup) => {
+  if (FORM.dependency) {
+    const depMatch = dependencyCheck(FORM.dependency, data);
+    if (!depMatch) return ACC;
+  }
+  FORM.slots.reduce(slotValidator(data), ACC);
+  return ACC;
+};
 
 export const slotValidator =
   (data: any) =>
@@ -224,9 +201,7 @@ export const slotValidator =
     }
 
     if (SLOT.rhf === "Radio") {
-      const validOption = SLOT.props?.options.find(
-        (OPT) => OPT.value === data[SLOT.name],
-      );
+      const validOption = SLOT.props?.options.find((OPT) => OPT.value === data[SLOT.name]);
       if (!validOption) {
         ACC[SLOT.name] = `invalid option - '${data[SLOT.name]}'`;
       } else {
@@ -235,9 +210,7 @@ export const slotValidator =
     }
 
     if (SLOT.rhf === "Select") {
-      const validOption = SLOT.props?.options.find(
-        (OPT) => OPT.value === data[SLOT.name],
-      );
+      const validOption = SLOT.props?.options.find((OPT) => OPT.value === data[SLOT.name]);
       if (!validOption) {
         ACC[SLOT.name] = `invalid option - '${data[SLOT.name]}'`;
       } else {
