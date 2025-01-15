@@ -32,6 +32,10 @@ export type TestSubtypeItemResult = DeepPartial<opensearch.subtypes.ItemResult>;
 
 export type TestSubtypeDocument = TestSubtypeItemResult["_source"];
 
+export type TestCpocsItemResult = DeepPartial<opensearch.cpocs.ItemResult>;
+
+export type TestCpocsDocument = TestCpocsItemResult["_source"];
+
 export type TestSecretData = Partial<Omit<GetSecretValueCommandOutput, "CreatedDate">> & {
   CreatedDate: number;
   DeletedDate?: number;
