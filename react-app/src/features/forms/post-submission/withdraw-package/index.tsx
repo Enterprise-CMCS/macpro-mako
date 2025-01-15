@@ -44,7 +44,7 @@ export const WithdrawPackageActionWaiver = () => {
       }}
       bannerPostSubmission={{
         header: "Withdraw package request has been submitted",
-        body: `If CMS needs any additional information, they will follow up by email.`,
+        body: "If CMS needs any additional information, they will follow up by email.",
         variant: "success",
       }}
       breadcrumbText="Withdraw Package"
