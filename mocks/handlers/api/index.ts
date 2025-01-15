@@ -11,3 +11,4 @@ export const apiHandlers = [
 ];
 
 export { mockCurrentAuthenticatedUser, mockUseGetUser, mockUserAttributes } from "./user";
+export { errorSubTypesHandler, errorTypeHandler } from "./types";

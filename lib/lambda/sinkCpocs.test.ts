@@ -1,55 +1,224 @@
-import { describe, expect, it, vi } from "vitest";
-import { handler as sinkCpocLamda } from "./sinkCpocs";
-import * as sinkLib from "../libs/sink-lib";
-import { ErrorType } from "../libs/sink-lib";
+import { describe, expect, it, vi, afterEach } from "vitest";
+import { handler } from "./sinkCpocs";
+import { Context } from "aws-lambda";
+import * as os from "libs/opensearch-lib";
+import * as sink from "../libs/sink-lib";
+import {
+  convertObjToBase64,
+  createKafkaEvent,
+  createKafkaRecord,
+  OPENSEARCH_DOMAIN,
+  OPENSEARCH_INDEX_NAMESPACE,
+} from "mocks";
+import cpocs, { MUHAMMAD_BASHAR_ID } from "mocks/data/cpocs";
 
-// key: base64EncodedString and when decoded is a string based id of a record
-// value: base64EncodedString and when decoded is a json string with the entire record
+const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}cpocs`;
+const TOPIC = "--mako--branch-name--aws.seatool.debezium.cdc.SEA.dbo.Officers";
+const MUHAMMAD_BASHAR_KEY = Buffer.from(`${MUHAMMAD_BASHAR_ID}`).toString("base64");
+const MUHAMMAD_BASHAR = cpocs[MUHAMMAD_BASHAR_ID];
 
-// const kafkaRecord: KafkaRecord = {
-//   topic: "testprefix--aws.seatool.debezium.cdc.SEA.dbo.Officers-xyz",
-//   headers: {},
-//   key: Buffer.from("OH-0001.R00.00").toString("base64"),
-//   value: Buffer.from(JSON.stringify({})).toString("base64"),
-//   offset: 1,
-//   partition: 1,
-//   timestamp: new Date().getTime(),
-//   timestampType: "",
-// };
+describe("test sync cpoc", () => {
+  const bulkUpdateDataSpy = vi.spyOn(os, "bulkUpdateData");
+  const logErrorSpy = vi.spyOn(sink, "logError");
 
-// export function getTopic(topicPartition: string) {
-//   return topicPartition.split("--").pop()?.split("-").slice(0, -1)[0];
-// }
-vi.stubEnv("osDomain", "testDomain");
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
 
-describe("test sink cpoc", () => {
-  it("calls log error when topic is undefined", async () => {
-    const logErrorSpy = vi
-      .spyOn(sinkLib, "logError")
-      .mockImplementation(({ type }: { type: ErrorType }) => {
-        console.log({ type });
-      });
-    try {
-      await sinkCpocLamda(
-        {
-          bootstrapServers: "123",
-          eventSource: "",
-          records: {
-            bad: [],
-          },
-        },
-        {} as any,
+  it("should throw an error if the topic is undefined", async () => {
+    await expect(() =>
+      handler(
+        createKafkaEvent({
+          undefined: [],
+        }),
+        {} as Context,
         vi.fn(),
-      );
-    } catch {
-      expect(logErrorSpy).toHaveBeenCalledWith({ type: ErrorType.BADTOPIC });
-    }
-    expect(logErrorSpy).toHaveBeenLastCalledWith(
-      expect.objectContaining({ type: ErrorType.UNKNOWN }),
+      ),
+    ).rejects.toThrowError("topic (undefined) is invalid");
+
+    expect(logErrorSpy).toHaveBeenCalledWith({ type: sink.ErrorType.BADTOPIC });
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: sink.ErrorType.UNKNOWN,
+      }),
     );
   });
 
-  it("has an empty array set in docs when given one undefined value", () => {
-    // spy on the bulkDataUpdateWrapper to determine if this test is true
+  it("should throw an error if the topic is invalid", async () => {
+    await expect(() =>
+      handler(
+        createKafkaEvent({
+          "invalid-topic": [],
+        }),
+        {} as Context,
+        vi.fn(),
+      ),
+    ).rejects.toThrowError("topic (invalid-topic) is invalid");
+
+    expect(logErrorSpy).toHaveBeenCalledWith({ type: sink.ErrorType.BADTOPIC });
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: sink.ErrorType.UNKNOWN,
+      }),
+    );
+  });
+
+  it("should skip if the key is invalid", async () => {
+    await handler(
+      createKafkaEvent({
+        [`${TOPIC}-xyz`]: [
+          createKafkaRecord({
+            topic: `${TOPIC}-xyz`,
+            // @ts-expect-error need key undefined for test
+            key: undefined,
+            value: convertObjToBase64({
+              id: MUHAMMAD_BASHAR_ID,
+            }),
+          }),
+        ],
+      }),
+      {} as Context,
+      vi.fn(),
+    );
+
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: sink.ErrorType.BADPARSE,
+      }),
+    );
+  });
+
+  it("should skip if record has no value", async () => {
+    await handler(
+      createKafkaEvent({
+        [`${TOPIC}-xyz`]: [
+          createKafkaRecord({
+            topic: `${TOPIC}-xyz`,
+            key: MUHAMMAD_BASHAR_KEY,
+            // @ts-expect-error needs to be undefined for the test
+            value: undefined,
+          }),
+        ],
+      }),
+      {} as Context,
+      vi.fn(),
+    );
+
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+    expect(logErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("should skip if there is no payload", async () => {
+    await handler(
+      createKafkaEvent({
+        [`${TOPIC}-xyz`]: [
+          createKafkaRecord({
+            topic: `${TOPIC}-xyz`,
+            key: MUHAMMAD_BASHAR_KEY,
+            value: convertObjToBase64({
+              id: MUHAMMAD_BASHAR_KEY,
+            }),
+          }),
+        ],
+      }),
+      {} as Context,
+      vi.fn(),
+    );
+
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: sink.ErrorType.BADPARSE,
+      }),
+    );
+  });
+
+  it("should skip if there is no record", async () => {
+    await handler(
+      createKafkaEvent({
+        [`${TOPIC}-xyz`]: [
+          createKafkaRecord({
+            topic: `${TOPIC}-xyz`,
+            key: MUHAMMAD_BASHAR_KEY,
+            value: convertObjToBase64({
+              payload: {
+                after: undefined,
+              },
+            }),
+          }),
+        ],
+      }),
+      {} as Context,
+      vi.fn(),
+    );
+
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        id: `${MUHAMMAD_BASHAR_ID}`,
+        delete: true,
+      },
+    ]);
+    expect(logErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("should handle an invalid record", async () => {
+    await handler(
+      createKafkaEvent({
+        [`${TOPIC}-xyz`]: [
+          createKafkaRecord({
+            topic: `${TOPIC}-xyz`,
+            key: MUHAMMAD_BASHAR_KEY,
+            value: convertObjToBase64({
+              payload: {
+                after: {
+                  Officer_ID: MUHAMMAD_BASHAR_ID,
+                },
+              },
+            }),
+          }),
+        ],
+      }),
+      {} as Context,
+      vi.fn(),
+    );
+
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: sink.ErrorType.VALIDATION,
+      }),
+    );
+  });
+
+  it("should handle a valid record", async () => {
+    await handler(
+      createKafkaEvent({
+        [`${TOPIC}-xyz`]: [
+          createKafkaRecord({
+            topic: `${TOPIC}-xyz`,
+            key: MUHAMMAD_BASHAR_KEY,
+            value: convertObjToBase64({
+              payload: {
+                after: {
+                  Officer_ID: MUHAMMAD_BASHAR_ID,
+                  First_Name: MUHAMMAD_BASHAR._source?.firstName,
+                  Last_Name: MUHAMMAD_BASHAR._source?.lastName,
+                  Email: MUHAMMAD_BASHAR._source?.email,
+                },
+              },
+            }),
+          }),
+        ],
+      }),
+      {} as Context,
+      vi.fn(),
+    );
+
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        ...MUHAMMAD_BASHAR._source,
+      },
+    ]);
   });
 });

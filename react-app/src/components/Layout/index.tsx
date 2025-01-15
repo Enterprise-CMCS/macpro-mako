@@ -12,7 +12,7 @@ import config from "@/config";
 import { ScrollToTop, SimplePageContainer, UserPrompt, Banner } from "@/components";
 import { isFaqPage, isProd } from "@/utils";
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
-
+import { UserRoles } from "shared-types";
 /**
  * Custom hook that generates a list of navigation links based on the user's status and whether the current page is the FAQ page.
  *
@@ -35,7 +35,12 @@ const useGetLinks = () => {
           {
             name: "Dashboard",
             link: "/dashboard",
-            condition: userObj.user && userObj.user["custom:cms-roles"],
+            condition:
+              userObj.user &&
+              userObj.user["custom:cms-roles"] &&
+              Object.values(UserRoles).some((role) =>
+                userObj.user["custom:cms-roles"].includes(role),
+              ),
           },
           {
             name: "FAQ",

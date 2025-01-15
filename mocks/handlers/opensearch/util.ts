@@ -6,46 +6,125 @@ export const getFilterValue = (
   filterName: string,
 ): string | string[] | undefined => {
   if (query) {
-    const rules: QueryContainer[] = (Array.isArray(query)) ? query : [query];
+    const rules: QueryContainer[] = Array.isArray(query) ? query : [query];
     const values: string[] = [];
-    rules.forEach(rule => {
+    rules.forEach((rule) => {
       if (rule?.[queryKey]?.[filterName] !== undefined) {
         if (Array.isArray(rule[queryKey][filterName])) {
-          rule[queryKey][filterName].forEach(value => {
+          rule[queryKey][filterName].forEach((value) => {
             if (value !== undefined) {
-              values.push(value.toString())
+              values.push(value.toString());
             }
-          })
+          });
         } else {
           values.push(rule[queryKey][filterName].toString());
         }
       }
-    })
+    });
 
     if (values.length === 0) return undefined;
     if (values.length === 1) return values[0].toString();
 
-    return values.map(value => value.toString());
+    return values.map((value) => value.toString());
   }
   return undefined;
+};
+
+export const getFilterValueAsBoolean = (
+  query: QueryContainer | QueryContainer[] | undefined,
+  queryKey: keyof QueryContainer,
+  filterName: string,
+): boolean | undefined => {
+  const value = getFilterValue(query, queryKey, filterName);
+
+  if (value === undefined) {
+    return undefined;
+  }
+
+  const parseSingleStringBoolean = (value: string | undefined): boolean | undefined => {
+    if (typeof value === "string") {
+      if (value.toLowerCase() === "true" || value.toLowerCase() === "yes") {
+        return true;
+      }
+      if (value.toLowerCase() === "false" || value.toLowerCase() === "no") {
+        return false;
+      }
+    }
+    return undefined;
+  };
+
+  if (typeof value === "string") {
+    return parseSingleStringBoolean(value);
+  }
+
+  if (Array.isArray(value) && value.length > 0) {
+    const boolValues = value
+      .map((val) => parseSingleStringBoolean(val))
+      .filter((val) => val !== undefined);
+    if (boolValues.length > 0) {
+      return boolValues.every((val) => val === true);
+    }
+  }
+
+  return undefined;
+};
+
+export const getFilterValueAsNumber = (
+  query: QueryContainer | QueryContainer[] | undefined,
+  queryKey: keyof QueryContainer,
+  filterName: string,
+): number | undefined => {
+  const value = getFilterValue(query, queryKey, filterName);
+
+  const intValues = parseValueAsNumberArray(value);
+
+  if (intValues.length > 0) {
+    return intValues[0];
+  }
+
+  return undefined;
+};
+
+export const getFilterValueAsNumberArray = (
+  query: QueryContainer | QueryContainer[] | undefined,
+  queryKey: keyof QueryContainer,
+  filterName: string,
+): number[] => {
+  const value = getFilterValue(query, queryKey, filterName);
+
+  return parseValueAsNumberArray(value);
+};
+
+const parseValueAsNumberArray = (value: string | string[] | undefined): number[] => {
+  if (value == undefined) {
+    return [];
+  }
+
+  if (typeof value === "string") {
+    return [Number.parseInt(value)];
+  }
+
+  return (
+    value.filter((val) => val && typeof val === "string").map((val) => Number.parseInt(val)) || []
+  );
 };
 
 export const getTermValues = (
   query: QueryContainer | QueryContainer[] | undefined,
   filterName: string,
 ): string | string[] | undefined => {
-  const term = getFilterValue(query, 'term', filterName);
-  const terms = getFilterValue(query, 'terms', filterName);
+  const term = getFilterValue(query, "term", filterName);
+  const terms = getFilterValue(query, "terms", filterName);
 
   if (term && terms) {
     const values: string[] = [];
-    values.concat(Array.isArray(term) ? term : [term])
+    values.concat(Array.isArray(term) ? term : [term]);
     values.concat(Array.isArray(terms) ? terms : [terms]);
     return values;
   }
-  
+
   return term || terms;
-}
+};
 
 export const getTermKeys = (query: QueryContainer[] | QueryContainer | undefined): string[] => {
   const filterKeys: string[] = [];
@@ -61,10 +140,10 @@ export const getTermKeys = (query: QueryContainer[] | QueryContainer | undefined
       });
     } else {
       if ((query as QueryContainer)?.term !== undefined) {
-        filterKeys.push(...Object.keys((query.term as Record<string, TermQuery>)));
+        filterKeys.push(...Object.keys(query.term as Record<string, TermQuery>));
       }
       if ((query as QueryContainer)?.terms !== undefined) {
-        filterKeys.push(...Object.keys((query.terms as TermsQuery)));
+        filterKeys.push(...Object.keys(query.terms as TermsQuery));
       }
     }
   }
@@ -75,7 +154,7 @@ export const matchFilter = <T>(
   item: T | null | undefined,
   filterTerm: keyof T | null | undefined,
   filterValue: string | string[] | null | undefined,
-): boolean  => {
+): boolean => {
   if (!item || !filterTerm || !filterValue) {
     return false;
   }
@@ -87,14 +166,15 @@ export const matchFilter = <T>(
   }
 
   return filterValue?.toString()?.toLocaleLowerCase() == itemValue;
-}
+};
 
 export const filterItemsByTerm = <D>(
   hits: TestHit<D>[],
   filterTerm: keyof D,
-  filterValue: string | string[]
+  filterValue: string | string[],
 ): TestHit<D>[] => {
   return hits.filter(
-    (hit) => (hit as TestHit<D>)?._source && matchFilter<D>((hit._source as D), filterTerm, filterValue)
-  )
-}
+    (hit) =>
+      (hit as TestHit<D>)?._source && matchFilter<D>(hit._source as D, filterTerm, filterValue),
+  );
+};

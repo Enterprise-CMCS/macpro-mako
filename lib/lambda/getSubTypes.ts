@@ -59,6 +59,12 @@ export const getSubTypes = async (event: APIGatewayEvent) => {
     });
   }
   const body = JSON.parse(event.body) as GetSubTypesBody;
+  if (!body.authorityId) {
+    return response({
+      statusCode: 400,
+      body: { message: "Authority Id is required" },
+    });
+  }
   try {
     const result = await querySubTypes(body.authorityId, body.typeIds);
 
