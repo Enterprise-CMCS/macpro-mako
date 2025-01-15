@@ -4,7 +4,6 @@ import { getUser, useGetUser } from "@/api";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
 import { UserRoles } from "shared-types";
-
 import {
   OsProvider,
   type OsTab,
