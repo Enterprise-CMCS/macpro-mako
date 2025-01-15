@@ -325,9 +325,8 @@ describe("zAmendmentOriginalWaiverNumberSchema", () => {
   });
 
   it("fails if the waiver number is not approved", async () => {
-    const result = await zAmendmentOriginalWaiverNumberSchema.safeParseAsync(
-      EXISTING_ITEM_PENDING_ID,
-    );
+    const result =
+      await zAmendmentOriginalWaiverNumberSchema.safeParseAsync(EXISTING_ITEM_PENDING_ID);
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "According to our records, this 1915(b) Waiver Number is not approved. You must supply an approved 1915(b) Initial or Renewal Waiver Number.",
@@ -378,9 +377,8 @@ describe("zRenewalOriginalWaiverNumberSchema", () => {
   });
 
   it("fails if the waiver number is not approved", async () => {
-    const result = await zRenewalOriginalWaiverNumberSchema.safeParseAsync(
-      EXISTING_ITEM_PENDING_ID,
-    );
+    const result =
+      await zRenewalOriginalWaiverNumberSchema.safeParseAsync(EXISTING_ITEM_PENDING_ID);
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "According to our records, this 1915(b) Waiver Number is not approved. You must supply an approved 1915(b) Initial or Renewal Waiver Number.",
@@ -475,9 +473,8 @@ describe("zExtensionOriginalWaiverNumberSchema", () => {
   });
 
   it("fails if the waiver number is not approved", async () => {
-    const result = await zExtensionOriginalWaiverNumberSchema.safeParseAsync(
-      EXISTING_ITEM_PENDING_ID,
-    );
+    const result =
+      await zExtensionOriginalWaiverNumberSchema.safeParseAsync(EXISTING_ITEM_PENDING_ID);
     expect(result.success).toBe(false);
     expect(result.error.errors[0].message).toBe(
       "According to our records, this Approved Initial or Renewal Waiver Number is not approved. You must supply an approved Initial or Renewal Waiver Number.",

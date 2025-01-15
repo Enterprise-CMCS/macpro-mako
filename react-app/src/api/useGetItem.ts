@@ -1,14 +1,8 @@
-import {
-  useQuery,
-  useQueryClient,
-  UseQueryOptions,
-} from "@tanstack/react-query";
+import { useQuery, useQueryClient, UseQueryOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { opensearch, ReactQueryApiError, SEATOOL_STATUS } from "shared-types";
 
-export const getItem = async (
-  id: string,
-): Promise<opensearch.main.ItemResult> =>
+export const getItem = async (id: string): Promise<opensearch.main.ItemResult> =>
   await API.post("os", "/item", { body: { id } });
 
 export const idIsApproved = async (id: string) => {

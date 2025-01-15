@@ -154,7 +154,10 @@ export function validateEmailTemplate(template: any) {
 }
 
 export async function processAndSendEmails(record: any, id: string, config: ProcessEmailConfig) {
-  const templates = await getEmailTemplates<typeof record>(record.event, record.authority);
+  const templates = await getEmailTemplates<typeof record>(
+    record.event,
+    record.authority.toLowerCase(),
+  );
 
   if (!templates) {
     console.log(

@@ -1,9 +1,7 @@
 import { CognitoUserAttribute } from "amazon-cognito-identity-js";
 import { isCmsUser } from "shared-utils";
 import { findUserByUsername, convertUserAttributes } from "../authUtils";
-import type {
-  TestUserData,
-} from "../..";
+import type { TestUserData } from "../..";
 
 // using `any` type here because the function that this is mocking uses any
 export const mockCurrentAuthenticatedUser = (): TestUserData | any => {

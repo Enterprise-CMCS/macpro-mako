@@ -26,11 +26,7 @@ const ageOptions = [
 
 const childStyle = " ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary ";
 
-const ageRangeGroup = (
-  nameMod: string,
-  fullMod: string,
-  wrapperDep = true,
-): RHFSlotProps[] => [
+const ageRangeGroup = (nameMod: string, fullMod: string, wrapperDep = true): RHFSlotProps[] => [
   {
     name: nameMod + "inc-age-standard",
     descriptionAbove: true,
@@ -372,16 +368,11 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
-                          ...ageRangeGroup(
-                            "county",
-                            "cs12_inc-exception",
-                            false,
-                          ),
+                          ...ageRangeGroup("county", "cs12_inc-exception", false),
                         ],
                       },
                     ],
@@ -412,8 +403,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -429,8 +419,7 @@ export const v202401: FormSchema = {
                       {
                         name: "geo-group",
                         rhf: "FieldArray",
-                        description:
-                          "Enter each geographic area with a unique income standard.",
+                        description: "Enter each geographic area with a unique income standard.",
                         descriptionAbove: true,
                         props: {
                           ...DefaultFieldGroupProps,
@@ -448,8 +437,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -462,8 +450,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                             props: {
