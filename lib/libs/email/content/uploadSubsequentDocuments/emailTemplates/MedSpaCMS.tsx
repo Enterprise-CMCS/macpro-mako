@@ -10,7 +10,7 @@ import { BaseEmailTemplate } from "../../email-templates";
 export const MedSpaCMSEmail = ({
   variables,
 }: {
-  variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables 
+  variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;
 }) => {
   return (
     <BaseEmailTemplate

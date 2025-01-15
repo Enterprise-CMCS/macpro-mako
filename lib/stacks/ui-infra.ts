@@ -1,10 +1,6 @@
 import * as cdk from "aws-cdk-lib";
 import { AnyPrincipal, Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
-import {
-  BlockPublicAccess,
-  Bucket,
-  BucketEncryption,
-} from "aws-cdk-lib/aws-s3";
+import { BlockPublicAccess, Bucket, BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
 import * as LC from "local-constructs";
 
@@ -49,8 +45,7 @@ export class UiInfra extends cdk.NestedStack {
           )
         : null;
 
-    const sanitizedDomainName =
-      domainName && domainName.trim() ? domainName.trim() : null;
+    const sanitizedDomainName = domainName && domainName.trim() ? domainName.trim() : null;
 
     // S3 Bucket for hosting static website
     const bucket = new cdk.aws_s3.Bucket(this, "S3Bucket", {
@@ -105,22 +100,16 @@ export class UiInfra extends cdk.NestedStack {
     loggingBucket.addToResourcePolicy(
       new cdk.aws_iam.PolicyStatement({
         effect: cdk.aws_iam.Effect.ALLOW,
-        principals: [
-          new cdk.aws_iam.ServicePrincipal("cloudfront.amazonaws.com"),
-        ],
+        principals: [new cdk.aws_iam.ServicePrincipal("cloudfront.amazonaws.com")],
         actions: ["s3:PutObject"],
         resources: [`${loggingBucket.bucketArn}/*`],
       }),
     );
 
     // CloudFront Origin Access Identity
-    const cloudFrontOAI = new cdk.aws_cloudfront.OriginAccessIdentity(
-      this,
-      "CloudFrontOAI",
-      {
-        comment: "OAI to prevent direct public access to the bucket",
-      },
-    );
+    const cloudFrontOAI = new cdk.aws_cloudfront.OriginAccessIdentity(this, "CloudFrontOAI", {
+      comment: "OAI to prevent direct public access to the bucket",
+    });
 
     // HSTS Function
     const hstsFunction = new cdk.aws_cloudfront.Function(this, "HstsFunction", {
@@ -141,15 +130,11 @@ export class UiInfra extends cdk.NestedStack {
 
     // CloudFront Distribution
     const viewerCertificate = domainCertificate
-      ? cdk.aws_cloudfront.ViewerCertificate.fromAcmCertificate(
-          domainCertificate,
-          {
-            aliases: sanitizedDomainName ? [sanitizedDomainName] : [],
-            securityPolicy:
-              cdk.aws_cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
-            sslMethod: cdk.aws_cloudfront.SSLMethod.SNI,
-          },
-        )
+      ? cdk.aws_cloudfront.ViewerCertificate.fromAcmCertificate(domainCertificate, {
+          aliases: sanitizedDomainName ? [sanitizedDomainName] : [],
+          securityPolicy: cdk.aws_cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
+          sslMethod: cdk.aws_cloudfront.SSLMethod.SNI,
+        })
       : cdk.aws_cloudfront.ViewerCertificate.fromCloudFrontDefaultCertificate();
 
     const distribution = new cdk.aws_cloudfront.CloudFrontWebDistribution(
@@ -165,15 +150,12 @@ export class UiInfra extends cdk.NestedStack {
             behaviors: [
               {
                 isDefaultBehavior: true,
-                allowedMethods:
-                  cdk.aws_cloudfront.CloudFrontAllowedMethods.GET_HEAD,
-                viewerProtocolPolicy:
-                  cdk.aws_cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+                allowedMethods: cdk.aws_cloudfront.CloudFrontAllowedMethods.GET_HEAD,
+                viewerProtocolPolicy: cdk.aws_cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
                 functionAssociations: [
                   {
                     function: hstsFunction,
-                    eventType:
-                      cdk.aws_cloudfront.FunctionEventType.VIEWER_RESPONSE,
+                    eventType: cdk.aws_cloudfront.FunctionEventType.VIEWER_RESPONSE,
                   },
                 ],
               },

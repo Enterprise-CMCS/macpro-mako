@@ -56,11 +56,7 @@ export function ConfirmationDialog({
           data-testid="dialog-footer"
         >
           {acceptButtonVisible && (
-            <Button
-              type="submit"
-              onClick={onAccept}
-              data-testid="dialog-accept"
-            >
+            <Button type="submit" onClick={onAccept} data-testid="dialog-accept">
               {acceptButtonText}
             </Button>
           )}

@@ -1,10 +1,10 @@
-import { removeUnderscoresAndCapitalize, LABELS } from "@/utils";
+import { useGetUser } from "@/api";
 import { OsTableColumn } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+import { LABELS, removeUnderscoresAndCapitalize } from "@/utils";
 import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
-import { useGetUser } from "@/api";
-import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 import { formatSeatoolDate } from "shared-utils";
+import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 
 export const useWaiverTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();

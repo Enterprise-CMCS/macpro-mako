@@ -1,8 +1,5 @@
 import { z } from "zod";
-import {
-  attachmentArraySchema,
-  attachmentArraySchemaOptional,
-} from "../attachments";
+import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
 
 export const baseSchema = z.object({
   event: z.literal("contracting-amendment").default("contracting-amendment"),
@@ -19,9 +16,7 @@ export const baseSchema = z.object({
     b4WaiverApplication: z.object({
       label: z
         .string()
-        .default(
-          "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
-        ),
+        .default("1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print"),
       files: attachmentArraySchema(),
     }),
     tribalConsultation: z.object({
@@ -33,12 +28,7 @@ export const baseSchema = z.object({
       files: attachmentArraySchemaOptional(),
     }),
   }),
-  additionalInformation: z
-    .string()
-    .max(4000)
-    .nullable()
-    .default(null)
-    .optional(),
+  additionalInformation: z.string().max(4000).nullable().default(null).optional(),
   waiverNumber: z
     .string()
     .min(1, { message: "Required" })

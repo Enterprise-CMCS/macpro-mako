@@ -1,10 +1,4 @@
-import {
-  Response as Res,
-  Hit,
-  Filterable as FIL,
-  QueryState,
-  AggQuery,
-} from "./../_";
+import { Response as Res, Hit, Filterable as FIL, QueryState, AggQuery } from "./../_";
 import { z } from "zod";
 import { Officers } from "./transforms";
 
