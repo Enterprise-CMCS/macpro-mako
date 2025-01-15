@@ -61,11 +61,7 @@ export async function startClamd() {
 
       if (timePassed >= MAX_WAIT_TIME) {
         clearInterval(checkClamdReady);
-        reject(
-          new Error(
-            "clamd did not become fully operational within 30 seconds.",
-          ),
-        );
+        reject(new Error("clamd did not become fully operational within 30 seconds."));
       }
     }, SLEEP_INTERVAL);
   });

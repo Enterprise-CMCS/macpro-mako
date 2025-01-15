@@ -60,9 +60,7 @@ describe("getUserStateCodes", () => {
   it("should return the state codes for a state user", () => {
     vi.mocked(isCmsUser).mockReturnValue(false);
     vi.mocked(isStateUser).mockReturnValue(true);
-    const result = getUserStateCodes(
-      stateSubmitterUser as CognitoUserAttributes,
-    );
+    const result = getUserStateCodes(stateSubmitterUser as CognitoUserAttributes);
     expect(result).toEqual(["CA"]);
   });
 });
@@ -84,17 +82,13 @@ describe("isAuthorizedState", () => {
   });
 
   it("should throw an error if no cognito attributes are found", async () => {
-    const consoleErrorSpy = vi
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     vi.mocked(getUser).mockResolvedValue({ user: null });
 
     const result = await isAuthorizedState("CA-1234.R00.00");
 
     expect(result).toBe(false);
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      new Error("No cognito attributes found."),
-    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith(new Error("No cognito attributes found."));
     consoleErrorSpy.mockRestore();
   });
 });

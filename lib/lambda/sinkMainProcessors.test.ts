@@ -71,7 +71,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     [
       "app-k",
       appkBase,
-      SEATOOL_STATUS.PENDING,
+      SEATOOL_STATUS.SUBMITTED,
       {
         title: appkBase.title,
         proposedDate: appkBase.proposedEffectiveDate,
@@ -83,7 +83,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     [
       "capitated-initial",
       capitatedInitial,
-      SEATOOL_STATUS.PENDING,
+      SEATOOL_STATUS.SUBMITTED,
       {
         proposedDate: capitatedInitial.proposedEffectiveDate,
         additionalInformation: capitatedInitial.additionalInformation,
@@ -94,7 +94,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     [
       "capitated-amendment",
       capitatedAmendmentBase,
-      SEATOOL_STATUS.PENDING,
+      SEATOOL_STATUS.SUBMITTED,
       {
         proposedDate: capitatedAmendmentBase.proposedEffectiveDate,
         additionalInformation: capitatedAmendmentBase.additionalInformation,
@@ -105,7 +105,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     [
       "capitated-renewal",
       capitatedRenewal,
-      SEATOOL_STATUS.PENDING,
+      SEATOOL_STATUS.SUBMITTED,
       {
         proposedDate: capitatedRenewal.proposedEffectiveDate,
         additionalInformation: capitatedRenewal.additionalInformation,
@@ -116,7 +116,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     [
       "contracting-initial",
       contractingInitial,
-      SEATOOL_STATUS.PENDING,
+      SEATOOL_STATUS.SUBMITTED,
       {
         proposedDate: contractingInitial.proposedEffectiveDate,
         additionalInformation: contractingInitial.additionalInformation,
@@ -127,7 +127,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     [
       "contracting-amendment",
       contractingAmendment,
-      SEATOOL_STATUS.PENDING,
+      SEATOOL_STATUS.SUBMITTED,
       {
         proposedDate: contractingAmendment.proposedEffectiveDate,
         additionalInformation: contractingAmendment.additionalInformation,
@@ -138,7 +138,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     [
       "contracting-renewal",
       contractingRenewal,
-      SEATOOL_STATUS.PENDING,
+      SEATOOL_STATUS.SUBMITTED,
       {
         proposedDate: contractingRenewal.proposedEffectiveDate,
         additionalInformation: contractingRenewal.additionalInformation,
@@ -149,7 +149,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     [
       "new-chip-submission",
       newChipSubmission,
-      SEATOOL_STATUS.PENDING,
+      SEATOOL_STATUS.SUBMITTED,
       {
         proposedDate: newChipSubmission.proposedEffectiveDate,
         additionalInformation: newChipSubmission.additionalInformation,
@@ -160,7 +160,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     [
       "new-medicaid-submission",
       newMedicaidSubmission,
-      SEATOOL_STATUS.PENDING,
+      SEATOOL_STATUS.SUBMITTED,
       {
         proposedDate: newMedicaidSubmission.proposedEffectiveDate,
         additionalInformation: newMedicaidSubmission.additionalInformation,
@@ -229,9 +229,10 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       {
         raiReceivedDate: ISO_DATETIME,
         raiWithdrawEnabled: false,
-        seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
-        cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING_RAI],
-        stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING_RAI],
+        seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+        cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.SUBMITTED],
+        stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.SUBMITTED],
+        initialIntakeNeeded: true,
         locked: true,
       },
     ],
@@ -239,9 +240,10 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       "withdraw-rai",
       withdrawRai,
       {
-        seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
-        cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING_RAI],
-        stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING_RAI],
+        seatoolStatus: SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED,
+        cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED],
+        stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED],
+        secondClock: false,
         raiWithdrawEnabled: false,
         locked: true,
       },
@@ -257,12 +259,12 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       "withdraw-package",
       withdrawPackage,
       {
-        seatoolStatus: SEATOOL_STATUS.WITHDRAWN,
-        cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.WITHDRAWN],
-        stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.WITHDRAWN],
+        seatoolStatus: SEATOOL_STATUS.WITHDRAW_REQUESTED,
+        cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.WITHDRAW_REQUESTED],
+        stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.WITHDRAW_REQUESTED],
         locked: true,
-        finalDispositionDate: ISO_DATETIME,
-        initialIntakeNeeded: false,
+        secondClock: false,
+        initialIntakeNeeded: true,
         raiWithdrawEnabled: false,
       },
     ],

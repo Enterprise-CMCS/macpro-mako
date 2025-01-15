@@ -13,11 +13,7 @@ export interface RenderProp {
   clearFilter: (filter: opensearch.main.Filterable, valIndex?: number) => void;
 }
 
-export const ChipBool: FC<RenderProp> = ({
-  filter,
-  openDrawer,
-  clearFilter,
-}) => {
+export const ChipBool: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) => {
   const value = filter.value as opensearch.RangeValue;
   return (
     <Chip
@@ -31,11 +27,7 @@ export const ChipBool: FC<RenderProp> = ({
   );
 };
 
-export const ChipDate: FC<RenderProp> = ({
-  filter,
-  openDrawer,
-  clearFilter,
-}) => {
+export const ChipDate: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) => {
   const value = filter.value as opensearch.RangeValue;
   return (
     <Chip
@@ -46,18 +38,12 @@ export const ChipDate: FC<RenderProp> = ({
     >
       {`${filter?.label}: ${offsetFromUtc(
         new Date(value.gte || ""),
-      ).toLocaleDateString()} - ${offsetFromUtc(
-        new Date(value.lte || ""),
-      ).toLocaleDateString()}`}
+      ).toLocaleDateString()} - ${offsetFromUtc(new Date(value.lte || "")).toLocaleDateString()}`}
     </Chip>
   );
 };
 
-export const ChipTerms: FC<RenderProp> = ({
-  filter,
-  clearFilter,
-  openDrawer,
-}) => {
+export const ChipTerms: FC<RenderProp> = ({ filter, clearFilter, openDrawer }) => {
   const labelMap = useLabelMapping();
 
   if (!Array.isArray(filter.value)) return null;
@@ -88,10 +74,7 @@ export const FilterChips: FC = () => {
 
   const openDrawer = useCallback(() => setDrawerState(true), [setDrawerState]);
   const twoOrMoreFiltersApplied = checkMultiFilter(url.state.filters, 2);
-  const clearFilter = (
-    filter: opensearch.main.Filterable,
-    valIndex?: number,
-  ) => {
+  const clearFilter = (filter: opensearch.main.Filterable, valIndex?: number) => {
     url.onSet((s) => {
       let filters = s.filters;
       const filterIndex = filters.findIndex((f) => f.field === filter.field);

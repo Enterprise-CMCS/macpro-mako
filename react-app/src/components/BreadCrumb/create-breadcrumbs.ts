@@ -2,10 +2,7 @@ import { dashboardCrumb } from "@/utils";
 import { BreadCrumbConfig } from "@/components";
 import { Authority } from "shared-types";
 
-const newSubmissionPageRouteMapper: Record<
-  string,
-  { to: string; displayText: string }
-> = {
+const newSubmissionPageRouteMapper: Record<string, { to: string; displayText: string }> = {
   "new-submission": {
     to: "/new-submission",
     displayText: "Submission Type",
@@ -20,8 +17,7 @@ const newSubmissionPageRouteMapper: Record<
   },
   "medicaid-eligibility": {
     to: "/new-submission/spa/medicaid/landing/medicaid-eligibility",
-    displayText:
-      "Medicaid Eligibility, Enrollment, Administration, and Health Homes",
+    displayText: "Medicaid Eligibility, Enrollment, Administration, and Health Homes",
   },
   chip: {
     to: "/new-submission/spa/chip",

@@ -1,18 +1,10 @@
 import { z } from "zod";
 
-import {
-  attachmentArraySchema,
-  attachmentArraySchemaOptional,
-} from "../attachments";
+import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
 
 export const baseSchema = z.object({
   event: z.literal("new-chip-submission").default("new-chip-submission"),
-  additionalInformation: z
-    .string()
-    .max(4000)
-    .nullable()
-    .default(null)
-    .optional(),
+  additionalInformation: z.string().max(4000).nullable().default(null).optional(),
   attachments: z.object({
     currentStatePlan: z.object({
       files: attachmentArraySchema(),
