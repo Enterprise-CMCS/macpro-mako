@@ -10,6 +10,9 @@ export const SEATOOL_STATUS = {
   PENDING_APPROVAL: "Pending-Approval",
   UNKNOWN: "Unknown",
   PENDING_OFF_THE_CLOCK: "Pending-Off the Clock",
+  SUBMITTED: "Submitted",
+  RAI_RESPONSE_WITHDRAW_REQUESTED: "Formal RAI Response - Withdrawal Requested",
+  WITHDRAW_REQUESTED: "Withdrawal Requested",
 };
 
 export const statusToDisplayToStateUser = {
@@ -23,6 +26,9 @@ export const statusToDisplayToStateUser = {
   [SEATOOL_STATUS.UNSUBMITTED]: "Unsubmitted",
   [SEATOOL_STATUS.PENDING_APPROVAL]: "Under Review",
   [SEATOOL_STATUS.PENDING_OFF_THE_CLOCK]: "Pending - Off the Clock",
+  [SEATOOL_STATUS.SUBMITTED]: "Submitted",
+  [SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED]: "Formal RAI Response - Withdrawal Requested",
+  [SEATOOL_STATUS.WITHDRAW_REQUESTED]: "Withdrawal Requested",
 };
 
 export const statusToDisplayToCmsUser = {
@@ -36,6 +42,9 @@ export const statusToDisplayToCmsUser = {
   [SEATOOL_STATUS.UNSUBMITTED]: "Unsubmitted",
   [SEATOOL_STATUS.PENDING_APPROVAL]: "Pending - Approval",
   [SEATOOL_STATUS.PENDING_OFF_THE_CLOCK]: "Pending - Off the Clock",
+  [SEATOOL_STATUS.SUBMITTED]: "Submitted - Intake Needed",
+  [SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED]: "Formal RAI Response - Withdrawal Requested",
+  [SEATOOL_STATUS.WITHDRAW_REQUESTED]: "Submitted - Intake Needed",
 };
 
 export const finalDispositionStatuses = [
