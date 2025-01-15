@@ -52,6 +52,12 @@ export const getTypes = async (event: APIGatewayEvent) => {
     });
   }
   const body = JSON.parse(event.body) as GetTypesBody;
+  if (!body.authorityId) {
+    return response({
+      statusCode: 400,
+      body: { message: "Authority Id is required" },
+    });
+  }
   try {
     const result = await queryTypes(body.authorityId);
     if (!result)
