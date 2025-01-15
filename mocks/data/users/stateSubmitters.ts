@@ -34,6 +34,39 @@ export const makoStateSubmitter: TestUserData = {
   ],
   Username: "cd400c39-9e7c-4341-b62f-234e2ecb339d",
 };
+export const superUser: TestUserData = {
+  UserAttributes: [
+    {
+      Name: "email",
+      Value: "mako.stateuser@gmail.com",
+    },
+    {
+      Name: "email_verified",
+      Value: "true",
+    },
+    {
+      Name: "given_name",
+      Value: "Stateuser",
+    },
+    {
+      Name: "family_name",
+      Value: "Tester",
+    },
+    {
+      Name: "custom:state",
+      Value: "ZZ",
+    },
+    {
+      Name: "custom:cms-roles",
+      Value: "onemac-micro-super",
+    },
+    {
+      Name: "sub",
+      Value: "cd400c39-9e7c-4341-b62f-234e2ecb339e",
+    },
+  ],
+  Username: "cd400c39-9e7c-4341-b62f-234e2ecb339e",
+};
 
 export const stateSubmitter: TestUserData = {
   UserAttributes: [
@@ -275,6 +308,7 @@ export const testNewStateSubmitter: TestUserData = {
 
 export const stateSubmitters: TestUserData[] = [
   makoStateSubmitter,
+  superUser,
   stateSubmitter,
   noDataStateSubmitter,
   coStateSubmitter,

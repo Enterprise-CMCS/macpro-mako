@@ -1,8 +1,15 @@
 import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/components";
 import { ReactNode } from "react";
-import { Attachment, AttachmentKey, AttachmentTitle } from "shared-types";
+import {
+  Attachment,
+  AttachmentKey,
+  AttachmentTitle,
+  CommonEmailVariables,
+  EmailAddresses,
+  Events,
+} from "shared-types";
 import { styles } from "./email-styles";
-
+import * as os from "shared-types/opensearch";
 export const EMAIL_CONFIG = {
   DEV_EMAIL: "mako.stateuser+dev-to@gmail.com",
   CHIP_EMAIL: "CHIPSPASubmissionMailBox@cms.hhs.gov",
@@ -147,7 +154,7 @@ const Attachments = ({
       {Object.entries(attachments).map(([key, group]) => {
         if (!group?.files?.length) return null;
 
-        return (
+        return group.files.map((file, index) => (
           <Row key={key} style={{ marginBottom: "2px", marginTop: "2px" }}>
             <Column
               align="left"
@@ -156,25 +163,18 @@ const Attachments = ({
                 verticalAlign: "top",
               }}
             >
-              {group.files.map((file, index) => (
-                <span key={file.filename + index}>
-                  <Text style={{ ...styles.text.title }}>{group.label}:</Text>{" "}
-                  {index < (group.files?.length ?? 0) - 1 && <br />}
-                </span>
-              ))}
+              {" "}
+              <span key={group.label + index}>
+                <Text style={{ ...styles.text.title }}>{group.label}:</Text>{" "}
+              </span>
             </Column>
             <Column style={{ verticalAlign: "top" }}>
               <Text style={styles.text.description}>
-                {group.files.map((file, index) => (
-                  <span key={file.filename + index}>
-                    {file.filename}
-                    {index < (group.files?.length ?? 0) - 1 && <br />}
-                  </span>
-                ))}
+                <span key={file.filename + index}>{file.filename}</span>
               </Text>
             </Column>
           </Row>
-        );
+        ));
       })}
     </>
   );
@@ -192,7 +192,13 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
                 Summary:
               </Heading>
             </Text>
-            <Text>{value ?? "No additional information submitted"}</Text>
+            <Text
+              style={{
+                whiteSpace: "pre-line",
+              }}
+            >
+              {value ?? "No additional information submitted"}
+            </Text>
           </Row>
         );
       }
@@ -272,40 +278,55 @@ const BasicFooter = () => (
   </EmailFooter>
 );
 
-const WithdrawRAI = ({
-  id,
-  submitterName,
-  submitterEmail,
-}: {
-  id: string;
-  submitterName: string;
-  submitterEmail: string;
-}) => (
-  <Section>
-    <Heading as="h2">
-      The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are
-      receiving this email notification as the Formal RAI for {id} was withdrawn by {submitterName}{" "}
-      {submitterEmail}.
-    </Heading>
-  </Section>
-);
+export interface WithdrawRAIProps {
+  variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses };
+  relatedEvent: Events["RespondToRai"];
+}
 
-const getCpocEmail = (item: any): string[] => {
+const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables, relatedEvent }) => {
+  if (!relatedEvent) {
+    return (
+      <Section>
+        <Heading as="h2">
+          {`The OneMAC Submission Portal received a request to withdraw a Formal RAI Response. You are receiving this email notification as the Formal RAI was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.`}
+        </Heading>
+        <Text style={styles.text.description}>
+          Note: The original RAI response details could not be retrieved.
+        </Text>
+      </Section>
+    );
+  }
+
+  return (
+    <Section>
+      <Heading as="h2">
+        {`The OneMAC Submission Portal received a request to withdraw the Formal RAI Response ${relatedEvent.id}. You are receiving this email notification as the Formal RAI for ${relatedEvent.id} was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.`}
+      </Heading>
+    </Section>
+  );
+};
+
+const getCpocEmail = (item?: os.main.ItemResult): string[] => {
   try {
-    const { leadAnalystName, leadAnalystEmail } = item._source;
-    return [`${leadAnalystName} <${leadAnalystEmail}>`];
+    if (item?._source?.leadAnalystEmail && item?._source?.leadAnalystName) {
+      const cpocEmail = `${item._source.leadAnalystName} <${item._source.leadAnalystEmail}>`;
+      return [cpocEmail];
+    }
+    return [];
   } catch (e) {
-    console.error("Error getting CPCO email", e);
+    console.error("Error getting CPOC email", e);
     return [];
   }
 };
 
-const getSrtEmails = (item: any): string[] => {
+const getSrtEmails = (item?: os.main.ItemResult): string[] => {
   try {
-    const reviewTeam = item._source.reviewTeam;
-    if (!reviewTeam) return [];
-
-    return reviewTeam.map((reviewer: any) => `${reviewer.name} <${reviewer.email}>`);
+    if (item?._source?.reviewTeam && item._source.reviewTeam.length > 0) {
+      return item._source.reviewTeam.map(
+        (reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`,
+      );
+    }
+    return [];
   } catch (e) {
     console.error("Error getting SRT emails", e);
     return [];
@@ -325,7 +346,7 @@ export {
   FollowUpNotice,
   BasicFooter,
   WithdrawRAI,
+  EmailFooter,
   getCpocEmail,
   getSrtEmails,
-  EmailFooter,
 };

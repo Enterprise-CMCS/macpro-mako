@@ -7,6 +7,7 @@ import {
   TestAppkItemResult,
   TestItemResult,
   TestMainDocument,
+  GetMultiItemBody,
 } from "../../index.d";
 import { getTermKeys, filterItemsByTerm, getTermValues } from "./util";
 
@@ -14,6 +15,7 @@ const defaultMainDocumentHandler = http.get(
   `https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_doc/:id`,
   async ({ params }) => {
     const { id } = params;
+
     if (id == GET_ERROR_ITEM_ID) {
       return new HttpResponse("Internal server error", { status: 500 });
     }
@@ -24,6 +26,19 @@ const defaultMainDocumentHandler = http.get(
       : HttpResponse.json({
           found: false,
         });
+  },
+);
+
+const defaultMainMultiDocumentHandler = http.post<PathParams, GetMultiItemBody>(
+  "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_mget",
+  async ({ request }) => {
+    const { ids } = await request.json();
+
+    const mItems = Object.values(items).filter((item) => ids.includes(item?._id || "")) || [];
+
+    return HttpResponse.json({
+      docs: mItems,
+    });
   },
 );
 
@@ -135,4 +150,8 @@ const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
   },
 );
 
-export const mainSearchHandlers = [defaultMainDocumentHandler, defaultMainSearchHandler];
+export const mainSearchHandlers = [
+  defaultMainDocumentHandler,
+  defaultMainMultiDocumentHandler,
+  defaultMainSearchHandler,
+];
