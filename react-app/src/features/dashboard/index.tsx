@@ -3,6 +3,8 @@ import { Plus as PlusIcon } from "lucide-react";
 import { getUser, useGetUser } from "@/api";
 import { WaiversList } from "./Lists/waivers";
 import { SpasList } from "./Lists/spas";
+import { UserRoles } from "shared-types";
+
 import {
   OsProvider,
   type OsTab,
@@ -40,7 +42,11 @@ export const Dashboard = () => {
   const { data: userObj } = useGetUser();
   const osData = useOsData();
 
-  if (userObj === undefined) {
+  if (
+    userObj === undefined ||
+    (userObj.user["custom:cms-roles"] &&
+      !Object.values(UserRoles).some((role) => userObj.user["custom:cms-roles"].includes(role)))
+  ) {
     return <Navigate to="/" />;
   }
 
