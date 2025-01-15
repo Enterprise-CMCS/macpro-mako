@@ -56,7 +56,9 @@ type LoaderData = {
   authority: Authority;
 };
 
-export const packageDetailsLoader = async ({ params }: LoaderFunctionArgs): Promise<LoaderData | Response> => {
+export const packageDetailsLoader = async ({
+  params,
+}: LoaderFunctionArgs): Promise<LoaderData | Response> => {
   const { id, authority } = params;
   if (id === undefined || authority === undefined) {
     return redirect("/dashboard");

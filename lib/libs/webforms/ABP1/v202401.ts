@@ -62,8 +62,7 @@ export const v202401: FormSchema = {
                         value: "extend_medicaid_earnings",
                       },
                       {
-                        label:
-                          "Extended Medicaid Due to Spousal Support Collections",
+                        label: "Extended Medicaid Due to Spousal Support Collections",
                         value: "extend_medicaid_spousal_support_collect",
                       },
                       {
@@ -81,8 +80,7 @@ export const v202401: FormSchema = {
                       {
                         label:
                           "Children with Title IV-E Adoption Assistance, Foster Care or Guardianship Care",
-                        value:
-                          "children_title_IV-E_adoption_assist_foster_guardianship_care",
+                        value: "children_title_IV-E_adoption_assist_foster_guardianship_care",
                       },
                       {
                         label: "Former Foster Care Children",
@@ -97,15 +95,12 @@ export const v202401: FormSchema = {
                         value: "ssi_beneficiaries",
                       },
                       {
-                        label:
-                          "Aged, Blind and Disabled Individuals in 209(b) States",
+                        label: "Aged, Blind and Disabled Individuals in 209(b) States",
                         value: "aged_blind_disabled_individuals_209b_states",
                       },
                       {
-                        label:
-                          "Individuals Receiving Mandatory State Supplements",
-                        value:
-                          "individuals_receiving_mandatory_state_supplements",
+                        label: "Individuals Receiving Mandatory State Supplements",
+                        value: "individuals_receiving_mandatory_state_supplements",
                       },
                       {
                         label: "Individuals Who Are Essential Spouses",
@@ -122,20 +117,17 @@ export const v202401: FormSchema = {
                       {
                         label:
                           "Individuals Who Lost Eligibility for SSI/SSP Due to an Increase in OASDI Benefits in 1972",
-                        value:
-                          "lost_eligibility_SSI_SSP_increase_in_OASDI_benefits_1972",
+                        value: "lost_eligibility_SSI_SSP_increase_in_OASDI_benefits_1972",
                       },
                       {
                         label:
                           "Individuals Eligible for SSI/SSP but for OASDI COLA increases since April, 1977",
-                        value:
-                          "eligible_SSI_SSP_but_for_OASDI_COLA_increases_April_1977",
+                        value: "eligible_SSI_SSP_but_for_OASDI_COLA_increases_April_1977",
                       },
                       {
                         label:
                           "Disabled Widows and Widowers Ineligible for SSI due to Increase in OASDI",
-                        value:
-                          "disabled_widows_ineligible_SSI_due_to_increase_OASDI",
+                        value: "disabled_widows_ineligible_SSI_due_to_increase_OASDI",
                       },
                       {
                         label:
@@ -168,13 +160,11 @@ export const v202401: FormSchema = {
                         value: "qualifying_individuals",
                       },
                       {
-                        label:
-                          "Optional Coverage of Parents and Other Caretaker Relatives",
+                        label: "Optional Coverage of Parents and Other Caretaker Relatives",
                         value: "opt_coverage_parents_other_caretaker_relatives",
                       },
                       {
-                        label:
-                          "Reasonable Classifications of Individuals under Age 21",
+                        label: "Reasonable Classifications of Individuals under Age 21",
                         value: "reasonable_class_under_21",
                       },
                       {
@@ -190,15 +180,13 @@ export const v202401: FormSchema = {
                         value: "opt_targeted_low_income_children",
                       },
                       {
-                        label:
-                          "Individuals Electing COBRA Continuation Coverage",
+                        label: "Individuals Electing COBRA Continuation Coverage",
                         value: "individuals_electing_COBRA_cont_converage",
                       },
                       {
                         label:
                           "Certain Individuals Needing Treatment for Breast or Cervical Cancer",
-                        value:
-                          "individuals_need_treatment_for_breasts_cervical_cancer",
+                        value: "individuals_need_treatment_for_breasts_cervical_cancer",
                       },
                       {
                         label: "Individuals with Tuberculosis",
@@ -207,25 +195,21 @@ export const v202401: FormSchema = {
                       {
                         label:
                           "Aged, Blind or Disabled Individuals Eligible for but Not Receiving Cash",
-                        value:
-                          "aged_blind_disabled_eligible_but_not_receiving_cash",
+                        value: "aged_blind_disabled_eligible_but_not_receiving_cash",
                       },
                       {
-                        label:
-                          "Individuals Eligible for Cash except for Institutionalization",
+                        label: "Individuals Eligible for Cash except for Institutionalization",
                         value: "eligible_cash_except_for_institutionalization",
                       },
                       {
                         label:
                           "Individuals Receiving Home and Community Based Services under Institutional Rules",
-                        value:
-                          "receiving_home_community_services_under_inst_rule",
+                        value: "receiving_home_community_services_under_inst_rule",
                       },
                       {
                         label:
                           "Optional State Supplement - 1634 States and SSI Criteria States with 1616 Agreements",
-                        value:
-                          "opt_state_supp_1634_states_SSI_criteria_states_1616_agreements",
+                        value: "opt_state_supp_1634_states_SSI_criteria_states_1616_agreements",
                       },
                       {
                         label:
@@ -263,8 +247,7 @@ export const v202401: FormSchema = {
                         value: "ticket_work_medical_imp_group",
                       },
                       {
-                        label:
-                          "Family Opportunity Act Children with Disabilities",
+                        label: "Family Opportunity Act Children with Disabilities",
                         value: "family_opportunity_act_children_disabilities",
                       },
                       {
@@ -288,8 +271,7 @@ export const v202401: FormSchema = {
                         value: "med_needy_aged_blind_disabled",
                       },
                       {
-                        label:
-                          "Medically Needy Blind or Disabled Individuals Eligible in 1973",
+                        label: "Medically Needy Blind or Disabled Individuals Eligible in 1973",
                         value: "med_needy_blind_disabled_eligible_1973",
                       },
                     ],
@@ -321,8 +303,7 @@ export const v202401: FormSchema = {
           ],
         },
         {
-          description:
-            "Is enrollment available for all individuals in these eligibility groups?",
+          description: "Is enrollment available for all individuals in these eligibility groups?",
           slots: [
             {
               rhf: "Select",
@@ -384,13 +365,11 @@ export const v202401: FormSchema = {
                             props: {
                               options: [
                                 {
-                                  label:
-                                    "Households with income at or below the standard",
+                                  label: "Households with income at or below the standard",
                                   value: "income_target_below",
                                 },
                                 {
-                                  label:
-                                    "Households with income above the standard",
+                                  label: "Households with income above the standard",
                                   value: "income_target_above",
                                 },
                               ],
@@ -433,14 +412,12 @@ export const v202401: FormSchema = {
                                                 rules: {
                                                   pattern: {
                                                     value: /^\d*\.?\d+$/,
-                                                    message:
-                                                      "Must be a positive percentage",
+                                                    message: "Must be a positive percentage",
                                                   },
                                                   required: "* Required",
                                                 },
                                                 name: "federal_poverty_level_percentage",
-                                                label:
-                                                  "Enter the federal poverty level percentage",
+                                                label: "Enter the federal poverty level percentage",
                                               },
                                             ],
                                           },
@@ -459,8 +436,7 @@ export const v202401: FormSchema = {
                                                 rules: {
                                                   pattern: {
                                                     value: /^\d*\.?\d+$/,
-                                                    message:
-                                                      "Must be a positive percentage",
+                                                    message: "Must be a positive percentage",
                                                   },
                                                   required: "* Required",
                                                 },
@@ -474,16 +450,14 @@ export const v202401: FormSchema = {
                                               {
                                                 rhf: "Input",
                                                 name: "other_percentage",
-                                                label:
-                                                  "Enter the other percentage",
+                                                label: "Enter the other percentage",
                                                 props: {
                                                   icon: "%",
                                                 },
                                                 rules: {
                                                   pattern: {
                                                     value: /^\d*\.?\d+$/,
-                                                    message:
-                                                      "Must be a positive percentage",
+                                                    message: "Must be a positive percentage",
                                                   },
                                                   required: "* Required",
                                                 },
@@ -495,8 +469,7 @@ export const v202401: FormSchema = {
                                                 rules: {
                                                   required: "* Required",
                                                   pattern: {
-                                                    value:
-                                                      noLeadingTrailingWhitespace,
+                                                    value: noLeadingTrailingWhitespace,
                                                     message:
                                                       "Must not have leading or trailing whitespace.",
                                                   },
@@ -536,10 +509,8 @@ export const v202401: FormSchema = {
                                                         label: "Household Size",
                                                         name: "household_size",
                                                         props: {
-                                                          placeholder:
-                                                            "enter size",
-                                                          className:
-                                                            "w-[300px]",
+                                                          placeholder: "enter size",
+                                                          className: "w-[300px]",
                                                         },
                                                         rules: {
                                                           pattern: {
@@ -547,8 +518,7 @@ export const v202401: FormSchema = {
                                                             message:
                                                               "Must be a positive integer value",
                                                           },
-                                                          required:
-                                                            "* Required",
+                                                          required: "* Required",
                                                         },
                                                       },
                                                       {
@@ -556,21 +526,17 @@ export const v202401: FormSchema = {
                                                         name: "standard",
                                                         label: "Standard ($)",
                                                         props: {
-                                                          className:
-                                                            "w-[200px]",
-                                                          placeholder:
-                                                            "enter amount",
+                                                          className: "w-[200px]",
+                                                          placeholder: "enter amount",
                                                           icon: "$",
                                                         },
                                                         rules: {
                                                           pattern: {
-                                                            value:
-                                                              /^\d*(?:\.\d{1,2})?$/,
+                                                            value: /^\d*(?:\.\d{1,2})?$/,
                                                             message:
                                                               "Must be a positive number, maximum of two decimals, no commas. e.g. 1234.56",
                                                           },
-                                                          required:
-                                                            "* Required",
+                                                          required: "* Required",
                                                         },
                                                       },
                                                     ],
@@ -593,21 +559,18 @@ export const v202401: FormSchema = {
                                                               slots: [
                                                                 {
                                                                   rhf: "Input",
-                                                                  label:
-                                                                    "Incremental amount ($)",
+                                                                  label: "Incremental amount ($)",
                                                                   name: "dollar_incremental_amount_statewide_std",
                                                                   props: {
                                                                     icon: "$",
                                                                   },
                                                                   rules: {
                                                                     pattern: {
-                                                                      value:
-                                                                        /^\d*(?:\.\d{1,2})?$/,
+                                                                      value: /^\d*(?:\.\d{1,2})?$/,
                                                                       message:
                                                                         "Must be all numbers, no commas. e.g. 1234.56",
                                                                     },
-                                                                    required:
-                                                                      "* Required",
+                                                                    required: "* Required",
                                                                   },
                                                                 },
                                                               ],
@@ -633,8 +596,7 @@ export const v202401: FormSchema = {
                                                     props: {
                                                       ...DefaultFieldGroupProps,
                                                       appendText: "Add Region",
-                                                      removeText:
-                                                        "Remove Region",
+                                                      removeText: "Remove Region",
                                                     },
                                                     fields: [
                                                       {
@@ -642,11 +604,9 @@ export const v202401: FormSchema = {
                                                         name: "name_of_region",
                                                         label: "Region Name",
                                                         rules: {
-                                                          required:
-                                                            "* Required",
+                                                          required: "* Required",
                                                           pattern: {
-                                                            value:
-                                                              /^\S(.*\S)?$/,
+                                                            value: /^\S(.*\S)?$/,
                                                             message:
                                                               "Must not have leading or trailing whitespace.",
                                                           },
@@ -657,11 +617,9 @@ export const v202401: FormSchema = {
                                                         name: "region_description",
                                                         label: "Description",
                                                         rules: {
-                                                          required:
-                                                            "* Required",
+                                                          required: "* Required",
                                                           pattern: {
-                                                            value:
-                                                              noLeadingTrailingWhitespace,
+                                                            value: noLeadingTrailingWhitespace,
                                                             message:
                                                               "Must not have leading or trailing whitespace.",
                                                           },
@@ -671,53 +629,42 @@ export const v202401: FormSchema = {
                                                         rhf: "FieldArray",
                                                         name: "income_definition_region_statewide_arr",
                                                         props: {
-                                                          appendText:
-                                                            "Add household size",
+                                                          appendText: "Add household size",
                                                         },
                                                         fields: [
                                                           {
                                                             rhf: "Input",
-                                                            label:
-                                                              "Household Size",
+                                                            label: "Household Size",
                                                             name: "household_size",
                                                             props: {
-                                                              placeholder:
-                                                                "enter size",
-                                                              className:
-                                                                "w-[300px]",
+                                                              placeholder: "enter size",
+                                                              className: "w-[300px]",
                                                             },
                                                             rules: {
                                                               pattern: {
-                                                                value:
-                                                                  /^[0-9]\d*$/,
+                                                                value: /^[0-9]\d*$/,
                                                                 message:
                                                                   "Must be a positive integer value",
                                                               },
-                                                              required:
-                                                                "* Required",
+                                                              required: "* Required",
                                                             },
                                                           },
                                                           {
                                                             rhf: "Input",
                                                             name: "standard",
-                                                            label:
-                                                              "Standard ($)",
+                                                            label: "Standard ($)",
                                                             props: {
-                                                              className:
-                                                                "w-[200px]",
-                                                              placeholder:
-                                                                "enter amount",
+                                                              className: "w-[200px]",
+                                                              placeholder: "enter amount",
                                                               icon: "$",
                                                             },
                                                             rules: {
                                                               pattern: {
-                                                                value:
-                                                                  /^\d*(?:\.\d{1,2})?$/,
+                                                                value: /^\d*(?:\.\d{1,2})?$/,
                                                                 message:
                                                                   "Must be all numbers, no commas. e.g. 1234.56",
                                                               },
-                                                              required:
-                                                                "* Required",
+                                                              required: "* Required",
                                                             },
                                                           },
                                                         ],
@@ -743,15 +690,13 @@ export const v202401: FormSchema = {
                                                                         icon: "$",
                                                                       },
                                                                       rules: {
-                                                                        pattern:
-                                                                          {
-                                                                            value:
-                                                                              /^\d*(?:\.\d{1,2})?$/,
-                                                                            message:
-                                                                              "Must be all numbers, no commas. e.g. 1234.56",
-                                                                          },
-                                                                        required:
-                                                                          "* Required",
+                                                                        pattern: {
+                                                                          value:
+                                                                            /^\d*(?:\.\d{1,2})?$/,
+                                                                          message:
+                                                                            "Must be all numbers, no commas. e.g. 1234.56",
+                                                                        },
+                                                                        required: "* Required",
                                                                       },
                                                                     },
                                                                   ],
@@ -768,8 +713,7 @@ export const v202401: FormSchema = {
                                             ],
                                           },
                                           {
-                                            label:
-                                              "Standard varies by living arrangement",
+                                            label: "Standard varies by living arrangement",
                                             value: "living_standard",
 
                                             form: [
@@ -780,23 +724,18 @@ export const v202401: FormSchema = {
                                                     name: "income_definition_specific_statewide_group_liv_arrange",
                                                     props: {
                                                       ...DefaultFieldGroupProps,
-                                                      appendText:
-                                                        "Add Living Arrangement",
-                                                      removeText:
-                                                        "Remove living arrangement",
+                                                      appendText: "Add Living Arrangement",
+                                                      removeText: "Remove living arrangement",
                                                     },
                                                     fields: [
                                                       {
                                                         rhf: "Input",
                                                         name: "name_of_living_arrangement",
-                                                        label:
-                                                          "Name of living arrangement",
+                                                        label: "Name of living arrangement",
                                                         rules: {
-                                                          required:
-                                                            "* Required",
+                                                          required: "* Required",
                                                           pattern: {
-                                                            value:
-                                                              /^\S(.*\S)?$/,
+                                                            value: /^\S(.*\S)?$/,
                                                             message:
                                                               "Must not have leading or trailing whitespace.",
                                                           },
@@ -807,11 +746,9 @@ export const v202401: FormSchema = {
                                                         name: "living_arrangement_description",
                                                         label: "Description",
                                                         rules: {
-                                                          required:
-                                                            "* Required",
+                                                          required: "* Required",
                                                           pattern: {
-                                                            value:
-                                                              noLeadingTrailingWhitespace,
+                                                            value: noLeadingTrailingWhitespace,
                                                             message:
                                                               "Must not have leading or trailing whitespace.",
                                                           },
@@ -821,53 +758,42 @@ export const v202401: FormSchema = {
                                                         rhf: "FieldArray",
                                                         name: "income_definition_specific_statewide_arr",
                                                         props: {
-                                                          appendText:
-                                                            "Add household size",
+                                                          appendText: "Add household size",
                                                         },
                                                         fields: [
                                                           {
                                                             rhf: "Input",
-                                                            label:
-                                                              "Household Size",
+                                                            label: "Household Size",
                                                             name: "household_size",
                                                             props: {
-                                                              placeholder:
-                                                                "enter size",
-                                                              className:
-                                                                "w-[300px]",
+                                                              placeholder: "enter size",
+                                                              className: "w-[300px]",
                                                             },
                                                             rules: {
                                                               pattern: {
-                                                                value:
-                                                                  /^[0-9]\d*$/,
+                                                                value: /^[0-9]\d*$/,
                                                                 message:
                                                                   "Must be a positive integer value",
                                                               },
-                                                              required:
-                                                                "* Required",
+                                                              required: "* Required",
                                                             },
                                                           },
                                                           {
                                                             rhf: "Input",
                                                             name: "standard",
-                                                            label:
-                                                              "Standard ($)",
+                                                            label: "Standard ($)",
                                                             props: {
-                                                              className:
-                                                                "w-[200px]",
-                                                              placeholder:
-                                                                "enter amount",
+                                                              className: "w-[200px]",
+                                                              placeholder: "enter amount",
                                                               icon: "$",
                                                             },
                                                             rules: {
                                                               pattern: {
-                                                                value:
-                                                                  /^\d*(?:\.\d{1,2})?$/,
+                                                                value: /^\d*(?:\.\d{1,2})?$/,
                                                                 message:
                                                                   "Must be all numbers, no commas. e.g. 1234.56",
                                                               },
-                                                              required:
-                                                                "* Required",
+                                                              required: "* Required",
                                                             },
                                                           },
                                                         ],
@@ -893,15 +819,13 @@ export const v202401: FormSchema = {
                                                                         icon: "$",
                                                                       },
                                                                       rules: {
-                                                                        pattern:
-                                                                          {
-                                                                            value:
-                                                                              /^\d*(?:\.\d{1,2})?$/,
-                                                                            message:
-                                                                              "Must be all numbers, no commas. e.g. 1234.56",
-                                                                          },
-                                                                        required:
-                                                                          "* Required",
+                                                                        pattern: {
+                                                                          value:
+                                                                            /^\d*(?:\.\d{1,2})?$/,
+                                                                          message:
+                                                                            "Must be all numbers, no commas. e.g. 1234.56",
+                                                                        },
+                                                                        required: "* Required",
                                                                       },
                                                                     },
                                                                   ],
@@ -918,8 +842,7 @@ export const v202401: FormSchema = {
                                             ],
                                           },
                                           {
-                                            label:
-                                              "Standard varies in some other way",
+                                            label: "Standard varies in some other way",
                                             value: "other_standard",
 
                                             form: [
@@ -930,10 +853,8 @@ export const v202401: FormSchema = {
                                                     name: "income_definition_specific_statewide_group_other",
                                                     props: {
                                                       ...DefaultFieldGroupProps,
-                                                      appendText:
-                                                        "Add some other way",
-                                                      removeText:
-                                                        "Remove some other way",
+                                                      appendText: "Add some other way",
+                                                      removeText: "Remove some other way",
                                                     },
                                                     fields: [
                                                       {
@@ -941,11 +862,9 @@ export const v202401: FormSchema = {
                                                         name: "name_of_group",
                                                         label: "Name",
                                                         rules: {
-                                                          required:
-                                                            "* Required",
+                                                          required: "* Required",
                                                           pattern: {
-                                                            value:
-                                                              /^\S(.*\S)?$/,
+                                                            value: /^\S(.*\S)?$/,
                                                             message:
                                                               "Must not have leading or trailing whitespace.",
                                                           },
@@ -956,11 +875,9 @@ export const v202401: FormSchema = {
                                                         name: "group_description",
                                                         label: "Description",
                                                         rules: {
-                                                          required:
-                                                            "* Required",
+                                                          required: "* Required",
                                                           pattern: {
-                                                            value:
-                                                              noLeadingTrailingWhitespace,
+                                                            value: noLeadingTrailingWhitespace,
                                                             message:
                                                               "Must not have leading or trailing whitespace.",
                                                           },
@@ -970,53 +887,42 @@ export const v202401: FormSchema = {
                                                         rhf: "FieldArray",
                                                         name: "income_definition_specific_statewide_arr",
                                                         props: {
-                                                          appendText:
-                                                            "Add household size",
+                                                          appendText: "Add household size",
                                                         },
                                                         fields: [
                                                           {
                                                             rhf: "Input",
-                                                            label:
-                                                              "Household Size",
+                                                            label: "Household Size",
                                                             name: "household_size",
                                                             props: {
-                                                              placeholder:
-                                                                "enter size",
-                                                              className:
-                                                                "w-[300px]",
+                                                              placeholder: "enter size",
+                                                              className: "w-[300px]",
                                                             },
                                                             rules: {
                                                               pattern: {
-                                                                value:
-                                                                  /^[0-9]\d*$/,
+                                                                value: /^[0-9]\d*$/,
                                                                 message:
                                                                   "Must be a positive integer value",
                                                               },
-                                                              required:
-                                                                "* Required",
+                                                              required: "* Required",
                                                             },
                                                           },
                                                           {
                                                             rhf: "Input",
                                                             name: "standard",
-                                                            label:
-                                                              "Standard ($)",
+                                                            label: "Standard ($)",
                                                             props: {
-                                                              className:
-                                                                "w-[200px]",
-                                                              placeholder:
-                                                                "enter amount",
+                                                              className: "w-[200px]",
+                                                              placeholder: "enter amount",
                                                               icon: "$",
                                                             },
                                                             rules: {
                                                               pattern: {
-                                                                value:
-                                                                  /^\d*(?:\.\d{1,2})?$/,
+                                                                value: /^\d*(?:\.\d{1,2})?$/,
                                                                 message:
                                                                   "Must be all numbers, no commas. e.g. 1234.56",
                                                               },
-                                                              required:
-                                                                "* Required",
+                                                              required: "* Required",
                                                             },
                                                           },
                                                         ],
@@ -1042,15 +948,13 @@ export const v202401: FormSchema = {
                                                                         icon: "$",
                                                                       },
                                                                       rules: {
-                                                                        pattern:
-                                                                          {
-                                                                            value:
-                                                                              /^\d*(?:\.\d{1,2})?$/,
-                                                                            message:
-                                                                              "Must be all numbers, no commas. e.g. 1234.56",
-                                                                          },
-                                                                        required:
-                                                                          "* Required",
+                                                                        pattern: {
+                                                                          value:
+                                                                            /^\d*(?:\.\d{1,2})?$/,
+                                                                          message:
+                                                                            "Must be all numbers, no commas. e.g. 1234.56",
+                                                                        },
+                                                                        required: "* Required",
                                                                       },
                                                                     },
                                                                   ],
@@ -1080,8 +984,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     value: "health",
-                    label:
-                      "Disease, condition, diagnosis, or disorder (check all that apply)",
+                    label: "Disease, condition, diagnosis, or disorder (check all that apply)",
                     slots: [
                       {
                         rhf: "Checkbox",
@@ -1133,8 +1036,7 @@ export const v202401: FormSchema = {
                             { label: "Asthma", value: "asthma" },
                             { label: "Obesity", value: "obesity" },
                             {
-                              label:
-                                "Other disease, condition, diagnosis, or disorder",
+                              label: "Other disease, condition, diagnosis, or disorder",
                               value: "other",
                               slots: [
                                 {
@@ -1145,8 +1047,7 @@ export const v202401: FormSchema = {
                                     required: "* Required",
                                     pattern: {
                                       value: noLeadingTrailingWhitespace,
-                                      message:
-                                        "Must not have leading or trailing whitespace.",
+                                      message: "Must not have leading or trailing whitespace.",
                                     },
                                   },
                                 },
@@ -1169,8 +1070,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -1242,8 +1142,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -1265,8 +1164,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -1288,8 +1186,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -1311,8 +1208,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },

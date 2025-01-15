@@ -17,12 +17,7 @@ describe("WafConstruct", () => {
     awsBadInputsExcludeRules: ["BadInputsRule1"],
   };
 
-  const wafConstruct = new WafConstruct(
-    stack,
-    "WafConstruct",
-    props,
-    "REGIONAL",
-  );
+  const wafConstruct = new WafConstruct(stack, "WafConstruct", props, "REGIONAL");
 
   it("should create a log group with appropriate properties", () => {
     const logGroup = wafConstruct.logGroup;
@@ -46,9 +41,7 @@ describe("WafConstruct", () => {
       .node.findChild("LoggingConfiguration") as wafv2.CfnLoggingConfiguration;
     expect(loggingConfiguration).toBeInstanceOf(wafv2.CfnLoggingConfiguration);
     expect(loggingConfiguration.resourceArn).toBe(wafConstruct.webAcl.attrArn);
-    expect(loggingConfiguration.logDestinationConfigs).toContain(
-      wafConstruct.logGroup.logGroupArn,
-    );
+    expect(loggingConfiguration.logDestinationConfigs).toContain(wafConstruct.logGroup.logGroupArn);
   });
 });
 
@@ -103,9 +96,7 @@ describe("RegionalWaf", () => {
       .findChild("RegionalWaf")
       .node.findChild("WebACLAssociation") as wafv2.CfnWebACLAssociation;
     expect(webAclAssociation).toBeInstanceOf(wafv2.CfnWebACLAssociation);
-    expect(webAclAssociation.resourceArn).toBe(
-      apiGateway.deploymentStage.stageArn,
-    );
+    expect(webAclAssociation.resourceArn).toBe(apiGateway.deploymentStage.stageArn);
     expect(webAclAssociation.webAclArn).toBe(regionalWaf.webAcl.attrArn);
   });
 });

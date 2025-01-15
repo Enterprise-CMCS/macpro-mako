@@ -2,8 +2,7 @@ import { FormSchema } from "shared-types";
 import { noLeadingTrailingWhitespace } from "shared-utils";
 
 export const v202401: FormSchema = {
-  header:
-    "CS 9: Separate CHIP eligibility—Coverage from conception to end of pregnancy",
+  header: "CS 9: Separate CHIP eligibility—Coverage from conception to end of pregnancy",
   subheader: "Section 2112 of the Social Security Act and 42 CFR 457.10",
   formId: "cs9",
   sections: [
@@ -86,8 +85,7 @@ export const v202401: FormSchema = {
               label: "Describe",
               labelClassName: "text-black font-bold",
               name: "age-standard-description",
-              formItemClassName:
-                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               rules: {
                 pattern: {
                   value: noLeadingTrailingWhitespace,
@@ -200,8 +198,7 @@ export const v202401: FormSchema = {
                 "Explain, including a description of the overlapping geographic area and the reason for having different income standards.",
               labelClassName: "text-black font-bold",
               name: "income-standard-exceptions-description",
-              formItemClassName:
-                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               rules: {
                 pattern: {
                   value: noLeadingTrailingWhitespace,
@@ -266,8 +263,7 @@ export const v202401: FormSchema = {
                                       required: "* Required",
                                       pattern: {
                                         value: /^\S(.*\S)?$/,
-                                        message:
-                                          "Must not have leading or trailing whitespace.",
+                                        message: "Must not have leading or trailing whitespace.",
                                       },
                                     },
                                     props: {
@@ -282,8 +278,7 @@ export const v202401: FormSchema = {
                                     rules: {
                                       pattern: {
                                         value: /^[0-9]\d*$/,
-                                        message:
-                                          "Must be a positive integer value",
+                                        message: "Must be a positive integer value",
                                       },
                                       required: "* Required",
                                     },
@@ -334,8 +329,7 @@ export const v202401: FormSchema = {
                                       required: "* Required",
                                       pattern: {
                                         value: /^\S(.*\S)?$/,
-                                        message:
-                                          "Must not have leading or trailing whitespace.",
+                                        message: "Must not have leading or trailing whitespace.",
                                       },
                                     },
                                     props: {
@@ -350,8 +344,7 @@ export const v202401: FormSchema = {
                                     rules: {
                                       pattern: {
                                         value: /^[0-9]\d*$/,
-                                        message:
-                                          "Must be a positive integer value",
+                                        message: "Must be a positive integer value",
                                       },
                                       required: "* Required",
                                     },
@@ -403,8 +396,7 @@ export const v202401: FormSchema = {
                                   required: "* Required",
                                   pattern: {
                                     value: /^\S(.*\S)?$/,
-                                    message:
-                                      "Must not have leading or trailing whitespace.",
+                                    message: "Must not have leading or trailing whitespace.",
                                   },
                                 },
                                 props: {
@@ -419,8 +411,7 @@ export const v202401: FormSchema = {
                                 rules: {
                                   pattern: {
                                     value: noLeadingTrailingWhitespace,
-                                    message:
-                                      "Must not have leading or trailing whitespace.",
+                                    message: "Must not have leading or trailing whitespace.",
                                   },
                                   required: "* Required",
                                 },
@@ -448,8 +439,7 @@ export const v202401: FormSchema = {
                                     rules: {
                                       pattern: {
                                         value: /^[0-9]\d*$/,
-                                        message:
-                                          "Must be a positive integer value",
+                                        message: "Must be a positive integer value",
                                       },
                                       required: "* Required",
                                     },
@@ -467,8 +457,7 @@ export const v202401: FormSchema = {
                                     rules: {
                                       pattern: {
                                         value: /^[0-9]\d*$/,
-                                        message:
-                                          "Must be a positive integer value",
+                                        message: "Must be a positive integer value",
                                       },
                                       required: "* Required",
                                     },
@@ -528,8 +517,7 @@ export const v202401: FormSchema = {
                   props: {
                     options: [
                       {
-                        label:
-                          "Exempt from requirement of verifying citizenship status",
+                        label: "Exempt from requirement of verifying citizenship status",
                         value: "exempt-from-citizenship-status",
                       },
                     ],

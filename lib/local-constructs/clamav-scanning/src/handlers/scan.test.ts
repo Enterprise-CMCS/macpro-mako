@@ -85,11 +85,7 @@ test("should handle event and return scan results", async () => {
   expect(downloadFileFromS3).toHaveBeenCalledWith("test-key", "test-bucket");
   expect(checkFileExt).toHaveBeenCalledWith("file-location");
   expect(scanLocalFile).toHaveBeenCalledWith("file-location");
-  expect(tagWithScanStatus).toHaveBeenCalledWith(
-    "test-bucket",
-    "test-key",
-    STATUS_CLEAN_FILE,
-  );
+  expect(tagWithScanStatus).toHaveBeenCalledWith("test-bucket", "test-key", STATUS_CLEAN_FILE);
   expect(result).toEqual([STATUS_CLEAN_FILE, STATUS_CLEAN_FILE]);
 });
 

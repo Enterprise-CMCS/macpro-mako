@@ -2,11 +2,7 @@ import { removeUnderscoresAndCapitalize } from "@/utils";
 import { OsTableColumn } from "@/components";
 import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
 import { useGetUser } from "@/api";
-import {
-  CellDetailsLink,
-  renderCellActions,
-  renderCellDate,
-} from "../renderCells";
+import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 import { BLANK_VALUE } from "@/consts";
 import { formatSeatoolDate } from "shared-utils";
 
@@ -17,9 +13,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
 
   return [
     // hide actions column for: readonly,help desk
-    ...(!CMS_READ_ONLY_ROLES.some((UR) =>
-      props.user?.["custom:cms-roles"].includes(UR),
-    )
+    ...(!CMS_READ_ONLY_ROLES.some((UR) => props.user?.["custom:cms-roles"].includes(UR))
       ? [
           {
             locked: true,
@@ -35,9 +29,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       label: "SPA ID",
       locked: true,
       transform: (data) => data.id,
-      cell: ({ id, authority }) => (
-        <CellDetailsLink id={id} authority={authority} />
-      ),
+      cell: ({ id, authority }) => <CellDetailsLink id={id} authority={authority} />,
     },
     {
       field: "state.keyword",
@@ -50,9 +42,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       label: "Authority",
       transform: (data) => data.authority ?? BLANK_VALUE,
       cell: (data) =>
-        data?.authority
-          ? removeUnderscoresAndCapitalize(data.authority)
-          : BLANK_VALUE,
+        data?.authority ? removeUnderscoresAndCapitalize(data.authority) : BLANK_VALUE,
     },
     {
       field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
@@ -90,9 +80,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
           <>
             <p>{status}</p>
             {data.raiWithdrawEnabled && (
-              <p className="text-xs opacity-60">
-                · Withdraw Formal RAI Response - Enabled
-              </p>
+              <p className="text-xs opacity-60">· Withdraw Formal RAI Response - Enabled</p>
             )}
             {props?.isCms && data.initialIntakeNeeded && (
               <p className="text-xs opacity-60">· Initial Intake Needed</p>
@@ -105,9 +93,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       field: "submissionDate",
       label: "Initial Submission",
       transform: (data) =>
-        data?.submissionDate
-          ? formatSeatoolDate(data.submissionDate)
-          : BLANK_VALUE,
+        data?.submissionDate ? formatSeatoolDate(data.submissionDate) : BLANK_VALUE,
       cell: renderCellDate("submissionDate"),
     },
     {
@@ -115,9 +101,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       label: "Final Disposition",
       hidden: true,
       transform: (data) =>
-        data?.finalDispositionDate
-          ? formatSeatoolDate(data.finalDispositionDate)
-          : BLANK_VALUE,
+        data?.finalDispositionDate ? formatSeatoolDate(data.finalDispositionDate) : BLANK_VALUE,
       cell: renderCellDate("finalDispositionDate"),
     },
     {
@@ -131,9 +115,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       field: "makoChangedDate",
       label: "Latest Package Activity",
       transform: (data) =>
-        data.makoChangedDate
-          ? formatSeatoolDate(data.makoChangedDate)
-          : BLANK_VALUE,
+        data.makoChangedDate ? formatSeatoolDate(data.makoChangedDate) : BLANK_VALUE,
       cell: renderCellDate("makoChangedDate"),
     },
     {
@@ -141,9 +123,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       label: "Formal RAI Requested",
       hidden: true,
       transform: (data) => {
-        return data.raiRequestedDate
-          ? formatSeatoolDate(data.raiRequestedDate)
-          : BLANK_VALUE;
+        return data.raiRequestedDate ? formatSeatoolDate(data.raiRequestedDate) : BLANK_VALUE;
       },
       cell: renderCellDate("raiRequestedDate"),
     },
@@ -151,9 +131,7 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       field: "raiReceivedDate",
       label: "Formal RAI Response",
       transform: (data) => {
-        return data.raiReceivedDate
-          ? formatSeatoolDate(data.raiReceivedDate)
-          : BLANK_VALUE;
+        return data.raiReceivedDate ? formatSeatoolDate(data.raiReceivedDate) : BLANK_VALUE;
       },
       cell: renderCellDate("raiReceivedDate"),
     },

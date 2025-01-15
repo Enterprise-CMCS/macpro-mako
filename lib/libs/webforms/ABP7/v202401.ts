@@ -6,8 +6,7 @@ export const v202401: FormSchema = {
   formId: "abp7",
   sections: [
     {
-      title:
-        "Early and Periodic Screening, Diagnostic, and Treatment (EPSDT) assurances",
+      title: "Early and Periodic Screening, Diagnostic, and Treatment (EPSDT) assurances",
       sectionId: "epsdt-assurances",
       form: [
         {
@@ -18,8 +17,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Select",
               name: "does-abp-include-beneficiaries-under-21",
-              label:
-                "Does the Alternative Benefit Plan (ABP) include beneficiaries under age 21?",
+              label: "Does the Alternative Benefit Plan (ABP) include beneficiaries under age 21?",
               labelClassName: "font-bold",
               rules: { required: "* Required" },
               props: {
@@ -128,10 +126,8 @@ export const v202401: FormSchema = {
                                             value: "risk_based_capitation",
                                           },
                                           {
-                                            label:
-                                              "Administrative services contract",
-                                            value:
-                                              "administrative_services_contract",
+                                            label: "Administrative services contract",
+                                            value: "administrative_services_contract",
                                           },
                                           {
                                             label: "Other",
@@ -145,8 +141,7 @@ export const v202401: FormSchema = {
                                                 rules: {
                                                   required: "* Required",
                                                   pattern: {
-                                                    value:
-                                                      noLeadingTrailingWhitespace,
+                                                    value: noLeadingTrailingWhitespace,
                                                     message:
                                                       "Must not have leading or trailing whitespace.",
                                                   },
@@ -215,8 +210,7 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "The state/territory assures that it meets the minimum requirements for prescription drug coverage in Section 1937 of the Act and implementing regulations at 42 CFR 440.347. Coverage is at least the greater of one drug in each United States Pharmacopeia (USP) category and class or the same number of prescription drugs in each category and class as the base benchmark.",
-                    value:
-                      "assures_min_requirements_for_perscription_drug_coverage",
+                    value: "assures_min_requirements_for_perscription_drug_coverage",
                   },
                   {
                     label:
@@ -227,14 +221,12 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "The state/territory assures that when it pays for outpatient prescription drugs covered under an ABP, it meets the requirements of Section 1927 of the Act and implementing regulations at 42 CFR 440.345, except for those requirements that are directly contrary to amount, duration, and scope of coverage permitted under Section 1937 of the Act.",
-                    value:
-                      "assures_outpatient_prescription_drugs_coverage_under_abp",
+                    value: "assures_outpatient_prescription_drugs_coverage_under_abp",
                   },
                   {
                     label:
                       "The state/territory assures that when conducting prior authorization of prescription drugs under an ABP, it complies with prior authorization program requirements in Section 1927(d)(5) of the Act.",
-                    value:
-                      "assures_prior_authorization_of_drugs_under_abp_prior",
+                    value: "assures_prior_authorization_of_drugs_under_abp_prior",
                   },
                 ],
               },
@@ -258,8 +250,7 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "The state/territory assures that substituted benefits are actuarially equivalent to the benefits they replaced from the base benchmark plan and that the state/territory has actuarial certification for substituted benefits available for inspection if requested by CMS.",
-                    value:
-                      "assures_substituted_benefits_are_actuarially_equivalent",
+                    value: "assures_substituted_benefits_are_actuarially_equivalent",
                   },
                   {
                     label:
@@ -280,8 +271,7 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "The state/territory assures that it will comply with the mental health and substance use disorder parity requirements of Section 1937(b)(6) of the Act by ensuring that the financial requirements and treatment limitations applicable to mental health or substance use disorder benefits comply with Section 2705(a) of the Public Health Service Act in the same manner as such requirements apply to a group health plan.",
-                    value:
-                      "assures_compliy_with_mental_healthy_and_substance_use_disorder",
+                    value: "assures_compliy_with_mental_healthy_and_substance_use_disorder",
                   },
                   {
                     label:
@@ -296,8 +286,7 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "The state/territory assures, in accordance with 45 CFR 156.115(a)(4) and 45 CFR 147.130, that it will provide as essential health benefits a broad range of preventive services including: “A” and “B” services recommended by the United States Preventive Services Task Force; vaccines recommended by the Advisory Committee for Immunization Practices (ACIP); preventive care and screening for infants, children, and adults recommended by HRSA's Bright Futures program; and additional preventive services for women recommended by the Institute of Medicine (IOM).",
-                    value:
-                      "assures_accordance_with_CFR_it_will_provide_essential_health_benefits",
+                    value: "assures_accordance_with_CFR_it_will_provide_essential_health_benefits",
                   },
                 ],
               },

@@ -1,9 +1,4 @@
-import {
-  RHFComponentMap,
-  RHFOption,
-  RHFSlotProps,
-  MultiselectOption,
-} from "shared-types";
+import { RHFComponentMap, RHFOption, RHFSlotProps, MultiselectOption } from "shared-types";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/utils";
@@ -74,13 +69,7 @@ export const SlotField = ({
         </p>
       );
     case "Upload":
-      return (
-        <Upload
-          {...props}
-          files={field?.value ?? []}
-          setFiles={field.onChange}
-        />
-      );
+      return <Upload {...props} files={field?.value ?? []} setFiles={field.onChange} />;
     case "FieldArray":
       return (
         <RHFFieldArray
@@ -114,11 +103,7 @@ export const SlotField = ({
       }
 
       return (
-        <Select
-          {...props}
-          onValueChange={field.onChange}
-          defaultValue={field.value}
-        >
+        <Select {...props} onValueChange={field.onChange} defaultValue={field.value}>
           <SelectTrigger {...props} aria-label={field.name}>
             <SelectValue {...props} />
           </SelectTrigger>
@@ -194,15 +179,9 @@ export const SlotField = ({
                   label={OPT.label}
                   value={OPT.value}
                   checked={field.value?.includes(OPT.value)}
-                  styledLabel={
-                    <RHFTextDisplay
-                      text={(OPT.styledLabel || OPT.label) as string}
-                    />
-                  }
+                  styledLabel={<RHFTextDisplay text={(OPT.styledLabel || OPT.label) as string} />}
                   onCheckedChange={(c) => {
-                    const filtered =
-                      field.value?.filter((f: unknown) => f !== OPT.value) ||
-                      [];
+                    const filtered = field.value?.filter((f: unknown) => f !== OPT.value) || [];
                     if (!c) return field.onChange(filtered);
                     field.onChange([...filtered, OPT.value]);
                   }}
@@ -225,24 +204,16 @@ export const SlotField = ({
         <RadioGroup
           onValueChange={field.onChange}
           defaultValue={field.value}
-          className={`flex  ${
-            horizontalLayout ? "pl-5 gap-5" : "flex-col space-y-6"
-          }`}
+          className={`flex  ${horizontalLayout ? "pl-5 gap-5" : "flex-col space-y-6"}`}
         >
           {(props as RHFComponentMap["Radio"]).options.map((OPT) => {
             return (
               <div key={`OPT-${OPT.value}`} className="flex flex-col">
                 <div className="flex gap-2">
-                  <RadioGroupItem
-                    value={OPT.value}
-                    id={OPT.value}
-                    aria-label={OPT.value}
-                  />
+                  <RadioGroupItem value={OPT.value} id={OPT.value} aria-label={OPT.value} />
                   {
                     <FormLabel className="font-normal" htmlFor={OPT.value}>
-                      <RHFTextDisplay
-                        text={(OPT.styledLabel || OPT.label) as string}
-                      />
+                      <RHFTextDisplay text={(OPT.styledLabel || OPT.label) as string} />
                     </FormLabel>
                   }
                 </div>
@@ -273,25 +244,12 @@ export const SlotField = ({
         </div>
       );
     case "Divider":
-      return (
-        <div
-          className={cn(
-            "w-full border-slate-400 border-2",
-            props?.wrapperClassName,
-          )}
-        />
-      );
+      return <div className={cn("w-full border-slate-400 border-2", props?.wrapperClassName)} />;
   }
 };
 
-export const OptChildren = ({
-  form,
-  slots,
-  control,
-  parentId,
-}: SelectedSubsetProps) => {
-  const childClasses =
-    "ml-[0.6rem] mt-4 pl-6 px-4 space-y-6 border-l-4 border-l-primary";
+export const OptChildren = ({ form, slots, control, parentId }: SelectedSubsetProps) => {
+  const childClasses = "ml-[0.6rem] mt-4 pl-6 px-4 space-y-6 border-l-4 border-l-primary";
 
   return (
     <>
@@ -299,12 +257,7 @@ export const OptChildren = ({
         <div className={childClasses}>
           {form.map((FORM, index) => (
             <div key={`rhf-form-${index}-${FORM.description}`}>
-              <RHFFormGroup
-                form={FORM}
-                control={control}
-                parentId={parentId}
-                className="py-0"
-              />
+              <RHFFormGroup form={FORM} control={control} parentId={parentId} className="py-0" />
             </div>
           ))}
         </div>

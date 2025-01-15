@@ -5,9 +5,11 @@ const STATIC_ROUTES = routes.STATIC;
 
 test.describe("test performance on static routes", { tag: ["@perf"] }, () => {
   for (const route of STATIC_ROUTES) {
-    test(`Time to First Byte for ${route}`, { tag: ["@ttfb"] }, async({ page }) => {
+    test(`Time to First Byte for ${route}`, { tag: ["@ttfb"] }, async ({ page }) => {
       await page.goto(route);
-      const ttfb = await page.evaluate(() => performance.timing.responseStart - performance.timing.requestStart)
+      const ttfb = await page.evaluate(
+        () => performance.timing.responseStart - performance.timing.requestStart,
+      );
       console.log(`TTFB for ${route}: ${ttfb} ms`);
     });
 
@@ -18,7 +20,7 @@ test.describe("test performance on static routes", { tag: ["@perf"] }, () => {
           new PerformanceObserver((entryList) => {
             const entries = entryList.getEntries();
             resolve(entries[entries.length - 1]);
-          }).observe({ type: 'largest-contentful-paint', buffered: true });
+          }).observe({ type: "largest-contentful-paint", buffered: true });
         });
       });
 
@@ -32,7 +34,7 @@ test.describe("test performance on static routes", { tag: ["@perf"] }, () => {
           new PerformanceObserver((entryList) => {
             const entries = entryList.getEntries();
             resolve(entries[0]);
-          }).observe({ type: 'paint', buffered: true });
+          }).observe({ type: "paint", buffered: true });
         });
       });
 
