@@ -41,11 +41,14 @@ export const Dashboard = () => {
   const { data: userObj } = useGetUser();
   const osData = useOsData();
 
-  if (
-    userObj === undefined ||
-    (userObj.user["custom:cms-roles"] &&
-      !Object.values(UserRoles).some((role) => userObj.user["custom:cms-roles"].includes(role)))
-  ) {
+  const isAbleToAccessDashboard = () => {
+    return (
+      userObj.user["custom:cms-roles"] &&
+      Object.values(UserRoles).some((role) => userObj.user["custom:cms-roles"].includes(role))
+    );
+  };
+
+  if (userObj === undefined || !isAbleToAccessDashboard()) {
     return <Navigate to="/" />;
   }
 
