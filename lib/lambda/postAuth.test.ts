@@ -1,9 +1,13 @@
 import { describe, it, expect, vi, afterAll } from "vitest";
 import { Context } from "aws-lambda";
 import { handler } from "./postAuth";
-import { makoStateSubmitter, superUser, setMockUsername } from "mocks";
-import { USER_POOL_ID } from "mocks";
-import { TEST_IDM_USERS } from "mocks/data/users/idmUsers";
+import {
+  makoStateSubmitter,
+  setMockUsername,
+  superUser,
+  TEST_IDM_USERS,
+  USER_POOL_ID,
+} from "mocks";
 
 const callback = vi.fn();
 describe("process emails Handler", () => {
@@ -48,7 +52,7 @@ describe("process emails Handler", () => {
     });
   });
   it("should be unauthorized and return an error", async () => {
-    const x = vi.spyOn(console, "error");
+    const errorSpy = vi.spyOn(console, "error");
     const missingIdentity = await handler(
       {
         request: {
@@ -59,8 +63,8 @@ describe("process emails Handler", () => {
       callback,
     );
     const error = new Error("Network response was not ok. Response was 401: Unauthorized");
-    expect(x).toHaveBeenCalledWith("Error performing post auth:", error);
-    expect(x).toBeCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledWith("Error performing post auth:", error);
+    expect(errorSpy).toBeCalledTimes(1);
     expect(missingIdentity).toStrictEqual({
       request: {
         userAttributes: TEST_IDM_USERS.testStateIDMUser,
@@ -68,7 +72,6 @@ describe("process emails Handler", () => {
     });
   });
   it("A user gets updated properly", async () => {
-    // const x = vi.spyOn(console, "error");
     const consoleSpy = vi.spyOn(console, "log");
     const validUser = await handler(
       {
