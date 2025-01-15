@@ -20,7 +20,6 @@ export default tseslint.config(
   eslintConfigPrettier,
   {
     plugins: {
-      // @ts-expect-error Types mismatch for eslint-plugin-react
       react,
       // @ts-expect-error https://github.com/facebook/react/pull/28773#issuecomment-2147149016
       "react-hooks": fixupPluginRules(eslintReactHooks),
