@@ -212,10 +212,13 @@ describe("handler", () => {
     } as APIGatewayEvent;
 
     const result = await handler(noActionevent);
-    const expectedResult = "Cannot read properties of undefined (reading 'baseSchema')";
+
     expect(result?.statusCode).toStrictEqual(500);
-    expect(result?.body.message).toStrictEqual(expectedResult);
+    expect(result?.body).toStrictEqual({
+      message: "Cannot read properties of undefined (reading 'baseSchema')",
+    });
   });
+
   it("should fail to update a package - no topic name ", async () => {
     process.env.topicName = "";
     const noActionevent = {

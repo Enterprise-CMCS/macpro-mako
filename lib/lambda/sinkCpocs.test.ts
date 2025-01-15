@@ -9,8 +9,12 @@ import {
   createKafkaRecord,
   OPENSEARCH_DOMAIN,
   OPENSEARCH_INDEX_NAMESPACE,
+  rateLimitBulkUpdateDataHandler,
+  errorBulkUpdateDataHandler,
 } from "mocks";
+import { mockedServiceServer as mockedServer } from "mocks/server";
 import cpocs, { MUHAMMAD_BASHAR_ID } from "mocks/data/cpocs";
+import { Client } from "@opensearch-project/opensearch";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}cpocs`;
 const TOPIC = "--mako--branch-name--aws.seatool.debezium.cdc.SEA.dbo.Officers";
@@ -220,5 +224,69 @@ describe("test sync cpoc", () => {
         ...MUHAMMAD_BASHAR._source,
       },
     ]);
+  });
+
+  it("should succeed after receiving a rate limit exceeded error", async () => {
+    const osBulkSpy = vi.spyOn(Client.prototype, "bulk");
+    mockedServer.use(rateLimitBulkUpdateDataHandler);
+
+    await handler(
+      createKafkaEvent({
+        [`${TOPIC}-xyz`]: [
+          createKafkaRecord({
+            topic: `${TOPIC}-xyz`,
+            key: MUHAMMAD_BASHAR_KEY,
+            value: convertObjToBase64({
+              payload: {
+                after: {
+                  Officer_ID: MUHAMMAD_BASHAR_ID,
+                  First_Name: MUHAMMAD_BASHAR._source?.firstName,
+                  Last_Name: MUHAMMAD_BASHAR._source?.lastName,
+                  Email: MUHAMMAD_BASHAR._source?.email,
+                },
+              },
+            }),
+          }),
+        ],
+      }),
+      {} as Context,
+      vi.fn(),
+    );
+
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        ...MUHAMMAD_BASHAR._source,
+      },
+    ]);
+    expect(osBulkSpy).toHaveBeenCalledTimes(2);
+  });
+
+  it("should succeed after receiving a rate limit exceeded error", async () => {
+    mockedServer.use(errorBulkUpdateDataHandler);
+
+    await expect(() =>
+      handler(
+        createKafkaEvent({
+          [`${TOPIC}-xyz`]: [
+            createKafkaRecord({
+              topic: `${TOPIC}-xyz`,
+              key: MUHAMMAD_BASHAR_KEY,
+              value: convertObjToBase64({
+                payload: {
+                  after: {
+                    Officer_ID: MUHAMMAD_BASHAR_ID,
+                    First_Name: MUHAMMAD_BASHAR._source?.firstName,
+                    Last_Name: MUHAMMAD_BASHAR._source?.lastName,
+                    Email: MUHAMMAD_BASHAR._source?.email,
+                  },
+                },
+              }),
+            }),
+          ],
+        }),
+        {} as Context,
+        vi.fn(),
+      ),
+    ).rejects.toThrowError("Response Error");
   });
 });

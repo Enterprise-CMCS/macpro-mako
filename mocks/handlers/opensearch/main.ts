@@ -42,6 +42,11 @@ const defaultMainMultiDocumentHandler = http.post<PathParams, GetMultiItemBody>(
   },
 );
 
+export const errorMainMultiDocumentHandler = http.post<PathParams, GetMultiItemBody>(
+  "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_mget",
+  () => new HttpResponse("Internal server error", { status: 500 }),
+);
+
 const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_search",
   async ({ request }) => {
