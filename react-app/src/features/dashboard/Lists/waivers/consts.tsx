@@ -1,10 +1,10 @@
-import { removeUnderscoresAndCapitalize, LABELS } from "@/utils";
+import { useGetUser } from "@/api";
 import { OsTableColumn } from "@/components";
 import { BLANK_VALUE } from "@/consts";
-import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
-import { useGetUser } from "@/api";
-import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
+import { LABELS, removeUnderscoresAndCapitalize } from "@/utils";
+import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
 import { formatSeatoolDate } from "shared-utils";
+import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 
 export const useWaiverTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
@@ -72,13 +72,7 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
           ? " (Withdraw Formal RAI Response - Enabled)"
           : "";
 
-        const subStatusInitialIntake = (() => {
-          if (!props?.isCms) return "";
-          if (!data.initialIntakeNeeded) return "";
-          return " (Initial Intake Needed)";
-        })();
-
-        return `${status}${subStatusRAI}${subStatusInitialIntake}`;
+        return `${status}${subStatusRAI}`;
       },
       cell: (data) => {
         const status = (() => {
@@ -91,12 +85,11 @@ export const useWaiverTableColumns = (): OsTableColumn[] => {
         return (
           <>
             <p>{status}</p>
-            {data.raiWithdrawEnabled && (
-              <p className="text-xs opacity-60">· Withdraw Formal RAI Response - Enabled</p>
-            )}
-            {props?.isCms && data.initialIntakeNeeded && (
-              <p className="text-xs opacity-60">· Initial Intake Needed</p>
-            )}
+            {data.raiWithdrawEnabled &&
+              data.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
+              data.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE && (
+                <p className="text-xs opacity-60">· Withdraw Formal RAI Response - Enabled</p>
+              )}
           </>
         );
       },

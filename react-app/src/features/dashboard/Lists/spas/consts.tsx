@@ -1,10 +1,10 @@
-import { removeUnderscoresAndCapitalize } from "@/utils";
-import { OsTableColumn } from "@/components";
-import { CMS_READ_ONLY_ROLES, UserRoles } from "shared-types";
 import { useGetUser } from "@/api";
-import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
+import { OsTableColumn } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+import { removeUnderscoresAndCapitalize } from "@/utils";
+import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
 import { formatSeatoolDate } from "shared-utils";
+import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
@@ -56,17 +56,14 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
           return data.cmsStatus;
         })();
 
-        const subStatusRAI = data.raiWithdrawEnabled
-          ? " (Withdraw Formal RAI Response - Enabled)"
-          : "";
+        const subStatusRAI =
+          data.raiWithdrawEnabled &&
+          data.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
+          data.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE
+            ? " (Withdraw Formal RAI Response - Enabled)"
+            : "";
 
-        const subStatusInitialIntake = (() => {
-          if (!props?.isCms) return "";
-          if (!data.initialIntakeNeeded) return "";
-          return " (Initial Intake Needed)";
-        })();
-
-        return `${status}${subStatusRAI}${subStatusInitialIntake}`;
+        return `${status}${subStatusRAI}`;
       },
       cell: (data) => {
         const status = (() => {
@@ -79,12 +76,11 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
         return (
           <>
             <p>{status}</p>
-            {data.raiWithdrawEnabled && (
-              <p className="text-xs opacity-60">· Withdraw Formal RAI Response - Enabled</p>
-            )}
-            {props?.isCms && data.initialIntakeNeeded && (
-              <p className="text-xs opacity-60">· Initial Intake Needed</p>
-            )}
+            {data.raiWithdrawEnabled &&
+              data.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
+              data.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE && (
+                <p className="text-xs opacity-60">· Withdraw Formal RAI Response - Enabled</p>
+              )}
           </>
         );
       },
