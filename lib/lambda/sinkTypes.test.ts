@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, afterEach } from "vitest";
-import { handler } from "./sinkCpocs";
+import { handler } from "./sinkTypes";
 import { Context } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import * as sink from "../libs/sink-lib";
@@ -10,14 +10,15 @@ import {
   OPENSEARCH_DOMAIN,
   OPENSEARCH_INDEX_NAMESPACE,
 } from "mocks";
-import cpocs, { MUHAMMAD_BASHAR_ID } from "mocks/data/cpocs";
+import { types } from "mocks/data/types";
 
-const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}cpocs`;
-const TOPIC = "--mako--branch-name--aws.seatool.debezium.cdc.SEA.dbo.Officers";
-const MUHAMMAD_BASHAR_KEY = Buffer.from(`${MUHAMMAD_BASHAR_ID}`).toString("base64");
-const MUHAMMAD_BASHAR = cpocs[MUHAMMAD_BASHAR_ID];
+const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}types`;
+const TEST_TYPE = types[0];
+const TEST_TYPE_ID = TEST_TYPE._source.id;
+const TEST_TYPE_KEY = Buffer.from(`${TEST_TYPE_ID}`).toString("base64");
+const TOPIC = `--mako--branch-name--aws.seatool.debezium.cdc.SEA.dbo.SPA_Type-${TEST_TYPE_ID}`;
 
-describe("test sync cpoc", () => {
+describe("test sync types", () => {
   const bulkUpdateDataSpy = vi.spyOn(os, "bulkUpdateData");
   const logErrorSpy = vi.spyOn(sink, "logError");
 
@@ -63,17 +64,15 @@ describe("test sync cpoc", () => {
     );
   });
 
-  it("should skip if the key is invalid", async () => {
+  it("should skip if the record has no value", async () => {
     await handler(
       createKafkaEvent({
-        [`${TOPIC}-xyz`]: [
+        [TOPIC]: [
           createKafkaRecord({
-            topic: `${TOPIC}-xyz`,
-            // @ts-expect-error need key undefined for test
-            key: undefined,
-            value: convertObjToBase64({
-              id: MUHAMMAD_BASHAR_ID,
-            }),
+            topic: TOPIC,
+            key: TEST_TYPE_KEY,
+            // @ts-expect-error needs to be undefined for test
+            value: undefined,
           }),
         ],
       }),
@@ -89,35 +88,15 @@ describe("test sync cpoc", () => {
     );
   });
 
-  it("should skip if record has no value", async () => {
-    await handler(
-      createKafkaEvent({
-        [`${TOPIC}-xyz`]: [
-          createKafkaRecord({
-            topic: `${TOPIC}-xyz`,
-            key: MUHAMMAD_BASHAR_KEY,
-            // @ts-expect-error needs to be undefined for the test
-            value: undefined,
-          }),
-        ],
-      }),
-      {} as Context,
-      vi.fn(),
-    );
-
-    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
-    expect(logErrorSpy).not.toHaveBeenCalled();
-  });
-
   it("should skip if there is no payload", async () => {
     await handler(
       createKafkaEvent({
-        [`${TOPIC}-xyz`]: [
+        [TOPIC]: [
           createKafkaRecord({
-            topic: `${TOPIC}-xyz`,
-            key: MUHAMMAD_BASHAR_KEY,
+            topic: TOPIC,
+            key: TEST_TYPE_KEY,
             value: convertObjToBase64({
-              id: MUHAMMAD_BASHAR_KEY,
+              id: TEST_TYPE._source.id,
             }),
           }),
         ],
@@ -137,10 +116,10 @@ describe("test sync cpoc", () => {
   it("should skip if there is no record", async () => {
     await handler(
       createKafkaEvent({
-        [`${TOPIC}-xyz`]: [
+        [TOPIC]: [
           createKafkaRecord({
-            topic: `${TOPIC}-xyz`,
-            key: MUHAMMAD_BASHAR_KEY,
+            topic: TOPIC,
+            key: TEST_TYPE_KEY,
             value: convertObjToBase64({
               payload: {
                 after: undefined,
@@ -153,26 +132,21 @@ describe("test sync cpoc", () => {
       vi.fn(),
     );
 
-    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
-      {
-        id: `${MUHAMMAD_BASHAR_ID}`,
-        delete: true,
-      },
-    ]);
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
     expect(logErrorSpy).not.toHaveBeenCalled();
   });
 
   it("should handle an invalid record", async () => {
     await handler(
       createKafkaEvent({
-        [`${TOPIC}-xyz`]: [
+        [TOPIC]: [
           createKafkaRecord({
-            topic: `${TOPIC}-xyz`,
-            key: MUHAMMAD_BASHAR_KEY,
+            topic: TOPIC,
+            key: TEST_TYPE_KEY,
             value: convertObjToBase64({
               payload: {
                 after: {
-                  Officer_ID: MUHAMMAD_BASHAR_ID,
+                  SPA_Type_ID: TEST_TYPE._source.id,
                 },
               },
             }),
@@ -192,19 +166,19 @@ describe("test sync cpoc", () => {
   });
 
   it("should handle a valid record", async () => {
+    const { id, name, authorityId } = TEST_TYPE._source;
     await handler(
       createKafkaEvent({
-        [`${TOPIC}-xyz`]: [
+        [TOPIC]: [
           createKafkaRecord({
-            topic: `${TOPIC}-xyz`,
-            key: MUHAMMAD_BASHAR_KEY,
+            topic: TOPIC,
+            key: TEST_TYPE_KEY,
             value: convertObjToBase64({
               payload: {
                 after: {
-                  Officer_ID: MUHAMMAD_BASHAR_ID,
-                  First_Name: MUHAMMAD_BASHAR._source?.firstName,
-                  Last_Name: MUHAMMAD_BASHAR._source?.lastName,
-                  Email: MUHAMMAD_BASHAR._source?.email,
+                  SPA_Type_ID: id,
+                  SPA_Type_Name: name,
+                  Plan_Type_ID: authorityId,
                 },
               },
             }),
@@ -217,8 +191,9 @@ describe("test sync cpoc", () => {
 
     expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
       {
-        ...MUHAMMAD_BASHAR._source,
+        ...TEST_TYPE._source,
       },
     ]);
+    expect(logErrorSpy).not.toHaveBeenCalled();
   });
 });
