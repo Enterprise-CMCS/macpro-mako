@@ -14,7 +14,7 @@ export async function itemExists(params: {
       : getNamespace("main");
 
     const packageResult = await os.getItem(domain, index, params.id);
-    return !!packageResult?._source;
+    return packageResult?._source !== undefined && packageResult?._source !== null;
   } catch (error) {
     console.error(error);
     return false;

@@ -14,9 +14,12 @@ import {
   OPENSEARCH_INDEX_NAMESPACE,
   TEST_ITEM_ID,
   EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
+  NOT_FOUND_ITEM_ID,
   convertObjToBase64,
   createKafkaRecord,
+  errorMainMultiDocumentHandler,
 } from "mocks";
+import { mockedServiceServer as mockedServer } from "mocks/server";
 import {
   appkBase,
   capitatedInitial,
@@ -613,6 +616,119 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     ]);
   });
 
+  it("outputs kafka records into mako records if mako record is not found", async () => {
+    await insertNewSeatoolRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: Buffer.from(NOT_FOUND_ITEM_ID).toString("base64"),
+          value: convertObjToBase64({
+            id: NOT_FOUND_ITEM_ID,
+            ACTION_OFFICERS: [
+              {
+                FIRST_NAME: "John",
+                LAST_NAME: "Doe",
+                EMAIL: "john.doe@medicaid.gov",
+                OFFICER_ID: 12345,
+                DEPARTMENT: "State Plan Review",
+                PHONE: "202-555-1234",
+              },
+              {
+                FIRST_NAME: "Emily",
+                LAST_NAME: "Rodriguez",
+                EMAIL: "emily.rodriguez@medicaid.gov",
+                OFFICER_ID: 12346,
+                DEPARTMENT: "Compliance Division",
+                PHONE: "202-555-5678",
+              },
+            ],
+            LEAD_ANALYST: [
+              {
+                FIRST_NAME: "Michael",
+                LAST_NAME: "Chen",
+                EMAIL: "michael.chen@cms.hhs.gov",
+                OFFICER_ID: 67890,
+                DEPARTMENT: "Medicaid Innovation Center",
+                PHONE: "202-555-9012",
+              },
+            ],
+            STATE_PLAN: {
+              PLAN_TYPE: 123,
+              SPW_STATUS_ID: 4,
+              APPROVED_EFFECTIVE_DATE: TIMESTAMP,
+              CHANGED_DATE: EARLIER_TIMESTAMP,
+              SUMMARY_MEMO: "Sample summary",
+              TITLE_NAME: "Sample Title",
+              STATUS_DATE: EARLIER_TIMESTAMP,
+              SUBMISSION_DATE: TIMESTAMP,
+              LEAD_ANALYST_ID: 67890,
+              ACTUAL_EFFECTIVE_DATE: null,
+              PROPOSED_DATE: null,
+              STATE_CODE: "10",
+            },
+            RAI: [],
+            ACTIONTYPES: [{ ACTION_NAME: "Initial Review", ACTION_ID: 1, PLAN_TYPE_ID: 123 }],
+            STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
+            STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        actionType: "Initial Review",
+        approvedEffectiveDate: ISO_DATETIME,
+        authority: "1915(c)",
+        changed_date: EARLIER_TIMESTAMP,
+        cmsStatus: "Approved",
+        description: "Sample summary",
+        finalDispositionDate: EARLIER_ISO_DATETIME,
+        id: NOT_FOUND_ITEM_ID,
+        initialIntakeNeeded: false,
+        leadAnalystEmail: "michael.chen@cms.hhs.gov",
+        leadAnalystName: "Michael Chen",
+        leadAnalystOfficerId: 67890,
+        locked: false,
+        proposedDate: null,
+        raiReceivedDate: null,
+        raiRequestedDate: null,
+        raiWithdrawEnabled: false,
+        raiWithdrawnDate: null,
+        reviewTeam: [
+          {
+            email: "john.doe@medicaid.gov",
+            name: "John Doe",
+          },
+          {
+            email: "emily.rodriguez@medicaid.gov",
+            name: "Emily Rodriguez",
+          },
+        ],
+        seatoolStatus: "Approved",
+        secondClock: false,
+        state: "10",
+        stateStatus: "Approved",
+        statusDate: EARLIER_ISO_DATETIME,
+        subTypes: [
+          {
+            TYPE_ID: 1,
+            TYPE_NAME: "SubType X",
+          },
+        ],
+        subject: "Sample Title",
+        submissionDate: ISO_DATETIME,
+        types: [
+          {
+            SPA_TYPE_ID: 1,
+            SPA_TYPE_NAME: "Type A",
+          },
+        ],
+      },
+    ]);
+  });
+
   it("outputs kafka records into mako records without changedDates", async () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
@@ -683,6 +799,121 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         description: "Sample summary",
         finalDispositionDate: EARLIER_ISO_DATETIME,
         id: EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
+        initialIntakeNeeded: false,
+        leadAnalystEmail: "michael.chen@cms.hhs.gov",
+        leadAnalystName: "Michael Chen",
+        leadAnalystOfficerId: 67890,
+        locked: false,
+        proposedDate: null,
+        raiReceivedDate: null,
+        raiRequestedDate: null,
+        raiWithdrawEnabled: false,
+        raiWithdrawnDate: null,
+        reviewTeam: [
+          {
+            email: "john.doe@medicaid.gov",
+            name: "John Doe",
+          },
+          {
+            email: "emily.rodriguez@medicaid.gov",
+            name: "Emily Rodriguez",
+          },
+        ],
+        seatoolStatus: "Approved",
+        secondClock: false,
+        state: "10",
+        stateStatus: "Approved",
+        statusDate: EARLIER_ISO_DATETIME,
+        subTypes: [
+          {
+            TYPE_ID: 1,
+            TYPE_NAME: "SubType X",
+          },
+        ],
+        subject: "Sample Title",
+        submissionDate: ISO_DATETIME,
+        types: [
+          {
+            SPA_TYPE_ID: 1,
+            SPA_TYPE_NAME: "Type A",
+          },
+        ],
+      },
+    ]);
+  });
+
+  it("handles errors in getting mako timestamps", async () => {
+    mockedServer.use(errorMainMultiDocumentHandler);
+
+    await insertNewSeatoolRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: TEST_ITEM_KEY,
+          value: convertObjToBase64({
+            id: TEST_ITEM_ID,
+            ACTION_OFFICERS: [
+              {
+                FIRST_NAME: "John",
+                LAST_NAME: "Doe",
+                EMAIL: "john.doe@medicaid.gov",
+                OFFICER_ID: 12345,
+                DEPARTMENT: "State Plan Review",
+                PHONE: "202-555-1234",
+              },
+              {
+                FIRST_NAME: "Emily",
+                LAST_NAME: "Rodriguez",
+                EMAIL: "emily.rodriguez@medicaid.gov",
+                OFFICER_ID: 12346,
+                DEPARTMENT: "Compliance Division",
+                PHONE: "202-555-5678",
+              },
+            ],
+            LEAD_ANALYST: [
+              {
+                FIRST_NAME: "Michael",
+                LAST_NAME: "Chen",
+                EMAIL: "michael.chen@cms.hhs.gov",
+                OFFICER_ID: 67890,
+                DEPARTMENT: "Medicaid Innovation Center",
+                PHONE: "202-555-9012",
+              },
+            ],
+            STATE_PLAN: {
+              PLAN_TYPE: 123,
+              SPW_STATUS_ID: 4,
+              APPROVED_EFFECTIVE_DATE: TIMESTAMP,
+              CHANGED_DATE: EARLIER_TIMESTAMP,
+              SUMMARY_MEMO: "Sample summary",
+              TITLE_NAME: "Sample Title",
+              STATUS_DATE: EARLIER_TIMESTAMP,
+              SUBMISSION_DATE: TIMESTAMP,
+              LEAD_ANALYST_ID: 67890,
+              ACTUAL_EFFECTIVE_DATE: null,
+              PROPOSED_DATE: null,
+              STATE_CODE: "10",
+            },
+            RAI: [],
+            ACTIONTYPES: [{ ACTION_NAME: "Initial Review", ACTION_ID: 1, PLAN_TYPE_ID: 123 }],
+            STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
+            STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        actionType: "Initial Review",
+        approvedEffectiveDate: ISO_DATETIME,
+        authority: "1915(c)",
+        changed_date: EARLIER_TIMESTAMP,
+        cmsStatus: "Approved",
+        description: "Sample summary",
+        finalDispositionDate: EARLIER_ISO_DATETIME,
+        id: TEST_ITEM_ID,
         initialIntakeNeeded: false,
         leadAnalystEmail: "michael.chen@cms.hhs.gov",
         leadAnalystName: "Michael Chen",

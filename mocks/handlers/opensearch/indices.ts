@@ -30,6 +30,12 @@ const defaultBulkUpdateDataHandler = http.post(
   () => new HttpResponse(null, { status: 200 }),
 );
 
+export const rateLimitBulkUpdateDataHandler = http.post(
+  "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/_bulk",
+  () => new HttpResponse("Rate limit exceeded", { status: 429 }),
+  { once: true },
+);
+
 export const errorBulkUpdateDataHandler = http.post(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/_bulk",
   () => new HttpResponse("Internal server error", { status: 500 }),
