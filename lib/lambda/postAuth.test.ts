@@ -28,7 +28,7 @@ describe("process emails Handler", () => {
     );
   });
   it("should return 200 with a proper email", async () => {
-    process.env.idmAuthzApiKeyArn = "bad-ARN";
+    process.env.idmAuthzApiKeyArn = "bad-ARN"; // pragma: allowlist secret
     await expect(handler({ test: "test" }, {} as Context, callback)).rejects.toThrowError(
       "Failed to fetch secret bad-ARN: Secret bad-ARN has no SecretString field present in response",
     );
