@@ -3,40 +3,8 @@ import { Context } from "aws-lambda";
 import { handler } from "./postAuth";
 import { makoStateSubmitter, superUser, setMockUsername } from "mocks";
 import { USER_POOL_ID } from "mocks";
-const testStateIDMUserMissingIdentity = {
-  sub: "0000aaaa-0000-00aa-0a0a-aaaaaa000000",
-  "custom:cms-roles": "onemac-micro-statesubmitter",
-  "custom:state": "VA,OH,SC,CO,GA,MD",
-  email_verified: true,
-  given_name: "State",
-  family_name: "Person",
-  username: "abcd",
-  email: "stateperson@example.com",
-};
-const testStateIDMUser = {
-  sub: "0000aaaa-0000-00aa-0a0a-aaaaaa000000",
-  "custom:cms-roles": "onemac-micro-statesubmitter",
-  "custom:state": "VA,OH,SC,CO,GA,MD",
-  email_verified: true,
-  given_name: "State",
-  family_name: "Person",
-  "custom:username": "fail",
-  email: "stateperson@example.com",
-  identities:
-    '[{"dateCreated":"1709308952587","userId":"abc123","providerName":"IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
-};
-const testStateIDMUserGood = {
-  sub: "0000aaaa-0000-00aa-0a0a-aaaaaa000000",
-  "custom:cms-roles": "onemac-micro-super",
-  "custom:state": "VA,OH,SC,CO,GA,MD",
-  email_verified: true,
-  given_name: "State",
-  family_name: "Person",
-  "custom:username": "abcd",
-  email: "stateperson@example.com",
-  identities:
-    '[{"dateCreated":"1709308952587","userId":"abc123","providerName":"IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
-};
+import { TEST_IDM_USERS } from "mocks/data/users/idmUsers";
+
 const callback = vi.fn();
 describe("process emails Handler", () => {
   afterAll(() => {
@@ -66,7 +34,7 @@ describe("process emails Handler", () => {
     const missingIdentity = await handler(
       {
         request: {
-          userAttributes: testStateIDMUserMissingIdentity,
+          userAttributes: TEST_IDM_USERS.testStateIDMUserMissingIdentity,
         },
       },
       {} as Context,
@@ -75,16 +43,16 @@ describe("process emails Handler", () => {
 
     expect(missingIdentity).toStrictEqual({
       request: {
-        userAttributes: testStateIDMUserMissingIdentity,
+        userAttributes: TEST_IDM_USERS.testStateIDMUserMissingIdentity,
       },
     });
   });
-  it("should return the request if it is missing an identity", async () => {
+  it("should be unauthorized and return an error", async () => {
     const x = vi.spyOn(console, "error");
     const missingIdentity = await handler(
       {
         request: {
-          userAttributes: testStateIDMUser,
+          userAttributes: TEST_IDM_USERS.testStateIDMUser,
         },
       },
       {} as Context,
@@ -95,16 +63,17 @@ describe("process emails Handler", () => {
     expect(x).toBeCalledTimes(1);
     expect(missingIdentity).toStrictEqual({
       request: {
-        userAttributes: testStateIDMUser,
+        userAttributes: TEST_IDM_USERS.testStateIDMUser,
       },
     });
   });
-  it("should work", async () => {
+  it("A user gets updated properly", async () => {
     // const x = vi.spyOn(console, "error");
-    const missingIdentity = await handler(
+    const consoleSpy = vi.spyOn(console, "log");
+    const validUser = await handler(
       {
         request: {
-          userAttributes: testStateIDMUserGood,
+          userAttributes: TEST_IDM_USERS.testStateIDMUserGood,
         },
         userName: superUser.Username,
         userPoolId: USER_POOL_ID,
@@ -112,9 +81,12 @@ describe("process emails Handler", () => {
       {} as Context,
       callback,
     );
-    expect(missingIdentity).toStrictEqual({
+    expect(consoleSpy).toBeCalledWith(
+      `Attributes for user ${superUser.Username} updated successfully.`,
+    );
+    expect(validUser).toStrictEqual({
       request: {
-        userAttributes: testStateIDMUserGood,
+        userAttributes: TEST_IDM_USERS.testStateIDMUserGood,
       },
       userName: superUser.Username,
       userPoolId: USER_POOL_ID,

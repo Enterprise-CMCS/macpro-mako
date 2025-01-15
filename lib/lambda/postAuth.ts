@@ -86,7 +86,6 @@ export const handler: Handler = async (event) => {
       console.log(JSON.stringify(attributeData, null, 2));
       await updateUserAttributes(attributeData);
     } catch (error) {
-      console.log(error);
       console.error("Error performing post auth:", error);
     }
   }
