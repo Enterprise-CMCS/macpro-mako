@@ -1,9 +1,5 @@
 import { OptionData } from "@/features/selection-flow/plan-types";
-import {
-  ORIGIN,
-  SPA_SUBMISSION_ORIGIN,
-  WAIVER_SUBMISSION_ORIGIN,
-} from "@/utils";
+import { ORIGIN, SPA_SUBMISSION_ORIGIN, WAIVER_SUBMISSION_ORIGIN } from "@/utils";
 
 export const AUTHORITY_OPTIONS: OptionData[] = [
   {
@@ -13,8 +9,7 @@ export const AUTHORITY_OPTIONS: OptionData[] = [
   },
   {
     title: "Waiver Action",
-    description:
-      "Submit Waivers, Amendments, Renewals, and Temporary Extensions",
+    description: "Submit Waivers, Amendments, Renewals, and Temporary Extensions",
     to: "/new-submission/waiver",
   },
 ];
@@ -94,21 +89,16 @@ export const WAIVER_OPTIONS: OptionData[] = [
 export const B_WAIVER_OPTIONS: OptionData[] = [
   {
     title: "1915(b)(4) FFS Selective Contracting Waivers",
-    description:
-      "Submit 1915(b)(4) FFS Selective Contracting Waivers, Amendments, and Renewals",
+    description: "Submit 1915(b)(4) FFS Selective Contracting Waivers, Amendments, and Renewals",
     to: "/new-submission/waiver/b/b4",
   },
   {
     title: "1915(b) Comprehensive (Capitated) Waiver Authority",
     description: (
       <>
-        Submit 1915(b) Comprehensive (Capitated) Waivers, Amendments and
-        Renewals <br />
+        Submit 1915(b) Comprehensive (Capitated) Waivers, Amendments and Renewals <br />
         <b>
-          <em>
-            Not applicable for 1915(b)(4) FFS Selective Contracting Waiver
-            actions
-          </em>
+          <em>Not applicable for 1915(b)(4) FFS Selective Contracting Waiver actions</em>
         </b>
       </>
     ),
@@ -119,8 +109,7 @@ export const B_WAIVER_OPTIONS: OptionData[] = [
 export const B4_WAIVER_OPTIONS: OptionData[] = [
   {
     title: "1915(b)(4) FFS Selective Contracting New Initial Waiver",
-    description:
-      "Create a new 1915(b)(4) FFS Selective Contracting Initial Waiver",
+    description: "Create a new 1915(b)(4) FFS Selective Contracting Initial Waiver",
     to: {
       pathname: "/new-submission/waiver/b/b4/initial/create",
       search: new URLSearchParams({
@@ -130,8 +119,7 @@ export const B4_WAIVER_OPTIONS: OptionData[] = [
   },
   {
     title: "1915(b)(4) FFS Selective Contracting Renewal Waiver",
-    description:
-      "Renew an existing 1915(b)(4) FFS Selective Contracting Waiver",
+    description: "Renew an existing 1915(b)(4) FFS Selective Contracting Waiver",
     to: {
       pathname: "/new-submission/waiver/b/b4/renewal/create",
       search: new URLSearchParams({
@@ -141,8 +129,7 @@ export const B4_WAIVER_OPTIONS: OptionData[] = [
   },
   {
     title: "1915(b)(4) FFS Selective Contracting Waiver Amendment",
-    description:
-      "Amend an existing 1915(b)(4) FFS Selective Contracting Waiver",
+    description: "Amend an existing 1915(b)(4) FFS Selective Contracting Waiver",
     to: {
       pathname: "/new-submission/waiver/b/b4/amendment/create",
       search: new URLSearchParams({
@@ -154,8 +141,7 @@ export const B4_WAIVER_OPTIONS: OptionData[] = [
 export const BCAP_WAIVER_OPTIONS: OptionData[] = [
   {
     title: "1915(b) Comprehensive (Capitated) New Initial Waiver",
-    description:
-      "Create a new 1915(b) Comprehensive (Capitated) Initial Waiver",
+    description: "Create a new 1915(b) Comprehensive (Capitated) Initial Waiver",
     to: {
       pathname: "/new-submission/waiver/b/capitated/initial/create",
       search: new URLSearchParams({

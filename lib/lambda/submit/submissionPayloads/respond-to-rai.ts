@@ -31,7 +31,7 @@ export const respondToRai = async (event: APIGatewayEvent) => {
 
   const transformedData = events["respond-to-rai"].schema.parse({
     ...parsedResult.data,
-    authority: item?._source.authority,
+    authority: item?._source?.authority,
     submitterName,
     submitterEmail,
     timestamp: Date.now(),

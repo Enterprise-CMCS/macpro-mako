@@ -3,8 +3,7 @@ import { FormSchema } from "shared-types";
 export const v202401: FormSchema = {
   formId: "cs15",
   header: "CS 15: Separate CHIP MAGI-based income methodologies",
-  subheader:
-    "2102(b)(1)(B)(v) of the Social Security Act (SSA) and 42 CFR 457.315",
+  subheader: "2102(b)(1)(B)(v) of the Social Security Act (SSA) and 42 CFR 457.315",
   sections: [
     {
       title: "Overview",
@@ -212,8 +211,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Upload",
               name: "upload-approval-documentation",
-              label:
-                "Upload approval documentation of converted MAGI-equivalent income standards.",
+              label: "Upload approval documentation of converted MAGI-equivalent income standards.",
               labelClassName: "text-black font-bold",
               rules: { required: "* Required" },
               formItemClassName: "pb-16",

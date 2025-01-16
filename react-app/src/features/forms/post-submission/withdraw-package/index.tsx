@@ -2,7 +2,6 @@ import { useGetItem } from "@/api";
 import { ActionForm, LoadingSpinner, PackageSection } from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { useParams } from "react-router";
-import { SEATOOL_STATUS } from "shared-types";
 
 export const WithdrawPackageActionWaiver = () => {
   const { authority, id } = useParams();
@@ -44,12 +43,14 @@ export const WithdrawPackageActionWaiver = () => {
         documentChecker: (check) => check.recordExists,
       }}
       bannerPostSubmission={{
-        header: "Package withdrawn",
-        body: `The package ${id} has been withdrawn.`,
+        header: "Withdraw package request has been submitted",
+        body: "If CMS needs any additional information, they will follow up by email.",
         variant: "success",
       }}
       breadcrumbText="Withdraw Package"
-      formDescription={`Complete this form to withdraw ${authority === "1915(c)" ? "this 1915(c) Appendix K" : "a"} package. Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.`}
+      formDescription={`Complete this form to withdraw ${
+        authority === "1915(c)" ? "this 1915(c) Appendix K" : "a"
+      } package. Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.`}
       preSubmissionMessage="Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email."
       additionalInformation={{
         required: false,
@@ -96,8 +97,8 @@ export const WithdrawPackageAction = () => {
         documentChecker: (check) => check.recordExists,
       }}
       bannerPostSubmission={{
-        header: "Package withdrawn",
-        body: `The package ${id} has been withdrawn.`,
+        header: "Withdraw package request has been submitted",
+        body: "If CMS needs any additional information, they will follow up by email.",
         variant: "success",
       }}
       breadcrumbText="Withdraw Package"
@@ -135,13 +136,13 @@ export const WithdrawPackageActionChip = () => {
           "Official withdrawal letters are required and must be on state letterhead signed by the State Medicaid Director or CHIP Director.",
       }}
       bannerPostSubmission={{
-        header: "Package withdrawn",
-        body: `The package ${id} has been withdrawn.`,
+        header: "Withdraw package request has been submitted",
+        body: "If CMS needs any additional information, they will follow up by email.",
         variant: "success",
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.hasStatus(SEATOOL_STATUS.WITHDRAWN),
+        documentChecker: (check) => check.recordExists,
       }}
       breadcrumbText="Withdraw Package"
       additionalInformation={{

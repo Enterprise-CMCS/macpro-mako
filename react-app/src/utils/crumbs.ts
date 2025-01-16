@@ -9,9 +9,7 @@ type DetailsAndActionsBreadCrumbsArgs = {
   actionType?: Action;
 };
 
-export const getDashboardTabForAuthority = (
-  authority: Authority,
-): "spas" | "waivers" => {
+export const getDashboardTabForAuthority = (authority: Authority): "spas" | "waivers" => {
   switch (authority) {
     case "CHIP SPA" as Authority:
     case "Medicaid SPA" as Authority:
@@ -29,29 +27,19 @@ export const detailsAndActionsCrumbs = ({
   authority,
   actionType,
 }: DetailsAndActionsBreadCrumbsArgs): BreadCrumbConfig[] => {
-  const defaultBreadCrumbs = [
-    dashboardCrumb(authority),
-    detailsCrumb(id, authority),
-  ];
+  const defaultBreadCrumbs = [dashboardCrumb(authority), detailsCrumb(id, authority)];
 
-  return actionType
-    ? [...defaultBreadCrumbs, actionCrumb(actionType, id)]
-    : defaultBreadCrumbs;
+  return actionType ? [...defaultBreadCrumbs, actionCrumb(actionType, id)] : defaultBreadCrumbs;
 };
 
 export const dashboardCrumb = (authority?: Authority): BreadCrumbConfig => ({
   displayText: "Dashboard",
   order: 1,
   default: true,
-  to: authority
-    ? `/dashboard?tab=${getDashboardTabForAuthority(authority)}`
-    : "/dashboard",
+  to: authority ? `/dashboard?tab=${getDashboardTabForAuthority(authority)}` : "/dashboard",
 });
 
-export const detailsCrumb = (
-  id: string,
-  authority: Authority,
-): BreadCrumbConfig => ({
+export const detailsCrumb = (id: string, authority: Authority): BreadCrumbConfig => ({
   displayText: id,
   order: 2,
   to: `/details/${authority}/${id}`,

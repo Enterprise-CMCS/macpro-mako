@@ -46,8 +46,7 @@ export const v202401: FormSchema = {
               rhf: "WrappedGroup",
               name: "wrapped",
               props: {
-                wrapperClassName:
-                  "ml-[0.6rem] px-4 border-l-4 border-l-primary pb-6",
+                wrapperClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary pb-6",
               },
               dependency: {
                 conditions: [
@@ -67,8 +66,7 @@ export const v202401: FormSchema = {
                   props: {
                     options: [
                       {
-                        label:
-                          "See approved Attachment 4.18-F or G for description.",
+                        label: "See approved Attachment 4.18-F or G for description.",
                         value: "true",
                       },
                     ],
@@ -86,8 +84,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               name: "other-info-about-requirements",
-              label:
-                "Other information about cost-sharing requirements (optional)",
+              label: "Other information about cost-sharing requirements (optional)",
               labelClassName: "font-bold",
               rules: {
                 pattern: {

@@ -16,7 +16,6 @@ export const emailTemplateValue: Omit<Events["WithdrawRai"], "id" | "authority">
       ],
       label: "CMS Form 179",
     },
-    
   },
   additionalInformation:
     "This some additional information about the request to withdraw and what makes it important.",

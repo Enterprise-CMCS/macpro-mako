@@ -9,12 +9,12 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     for (const topicPartition of Object.keys(event.records)) {
       const topic = getTopic(topicPartition);
       switch (topic) {
-        case undefined:
-          logError({ type: ErrorType.BADTOPIC });
-          throw new Error();
         case "aws.seatool.ksql.onemac.three.agg.State_Plan":
           await ksql(event.records[topicPartition], topicPartition);
           break;
+        default:
+          logError({ type: ErrorType.BADTOPIC });
+          throw new Error(`topic (${topicPartition}) is invalid`);
       }
     }
   } catch (error) {
@@ -30,7 +30,7 @@ const ksql = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
     try {
       if (!value) continue;
 
-      const id: string = JSON.parse(decodeBase64WithUtf8(key));
+      const id: string = decodeBase64WithUtf8(key);
       const record = JSON.parse(decodeBase64WithUtf8(value));
       docs.push({ ...record, id });
     } catch (error) {

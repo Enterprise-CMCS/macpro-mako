@@ -9,9 +9,7 @@ describe("Chip", () => {
 
     const { container } = render(<Chip onChipClick={mockedOnChipClick} />);
 
-    const chipButton = container.getElementsByClassName(
-      "h-8 py-2 cursor-pointer",
-    )[0];
+    const chipButton = container.getElementsByClassName("h-8 py-2 cursor-pointer")[0];
 
     await userEvent.click(chipButton);
 

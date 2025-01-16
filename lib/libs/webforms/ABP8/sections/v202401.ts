@@ -52,11 +52,7 @@ export function generateDependency({
 
 // Section generators ---------------------------------------------------------
 
-export function managedCare({
-  conditionalInfo,
-  programLabel,
-  title,
-}: SectionParams): Section {
+export function managedCare({ conditionalInfo, programLabel, title }: SectionParams): Section {
   return {
     title: title || `${programLabel}`,
     sectionId: createSectionId(programLabel),
@@ -149,8 +145,7 @@ export function managedCare({
                   ],
                 },
                 {
-                  label:
-                    "Section 1932(a) mandatory managed care state plan amendment",
+                  label: "Section 1932(a) mandatory managed care state plan amendment",
                   value: "1932a",
                   slots: [
                     {
@@ -205,8 +200,7 @@ export function managedCare({
                 },
                 {
                   label: `${
-                    programLabel === SectionName.HIO ||
-                    programLabel === SectionName.MCO
+                    programLabel === SectionName.HIO || programLabel === SectionName.MCO
                       ? "An"
                       : "A"
                   } ${programLabel} consistent with applicable managed care requirements (42 CFR Part 438, 42 CFR Part 440, and Sections 1903(m), 1932, and 1937 of the Social Security Act)`,
@@ -222,10 +216,7 @@ export function managedCare({
 }
 
 // "[Program] procurement or selection"
-export function procurementOrSelection({
-  conditionalInfo,
-  programLabel,
-}: SectionParams): Section {
+export function procurementOrSelection({ conditionalInfo, programLabel }: SectionParams): Section {
   return {
     title: `${programLabel} procurement or selection`,
     sectionId: `${createSectionId(programLabel)}-procurement`,
@@ -301,8 +292,7 @@ export function deliverySystemCharactaristics({
                 rhf: "WrappedGroup",
                 name: "benefit-service-group",
                 props: {
-                  wrapperClassName:
-                    "ml-[0.6rem] pl-4 border-l-4 border-l-primary my-2 space-y-6",
+                  wrapperClassName: "ml-[0.6rem] pl-4 border-l-4 border-l-primary my-2 space-y-6",
                 },
                 fields: [
                   {
@@ -326,8 +316,7 @@ export function deliverySystemCharactaristics({
                       required: "* Required",
                       pattern: {
                         value: noLeadingTrailingWhitespace,
-                        message:
-                          "Must not have leading or trailing whitespace.",
+                        message: "Must not have leading or trailing whitespace.",
                       },
                     },
                     props: {
@@ -370,13 +359,11 @@ export function deliverySystemCharactaristics({
                   value: "ffs-provider-contracts",
                 },
                 {
-                  label:
-                    "Provision of payments to FFS providers on behalf of the state",
+                  label: "Provision of payments to FFS providers on behalf of the state",
                   value: "ffs-provider-payments",
                 },
                 {
-                  label:
-                    "Provision of enrollee outreach and education activities",
+                  label: "Provision of enrollee outreach and education activities",
                   value: "enrollee-outreach",
                 },
                 {
@@ -394,13 +381,11 @@ export function deliverySystemCharactaristics({
                   value: "quality-improvement",
                 },
                 {
-                  label:
-                    "Coordination with behavioral health systems/providers",
+                  label: "Coordination with behavioral health systems/providers",
                   value: "behavioral-health-coordination",
                 },
                 {
-                  label:
-                    "Coordination with long-term services and support systems/providers",
+                  label: "Coordination with long-term services and support systems/providers",
                   value: "ltss-coordination",
                 },
                 {
@@ -416,8 +401,7 @@ export function deliverySystemCharactaristics({
                         required: "* Required",
                         pattern: {
                           value: noLeadingTrailingWhitespace,
-                          message:
-                            "Must not have leading or trailing whitespace.",
+                          message: "Must not have leading or trailing whitespace.",
                         },
                       },
                     },
@@ -523,8 +507,7 @@ export function deliverySystemCharactaristics({
                   ],
                 },
                 {
-                  label:
-                    "In some other geographic area (must not be smaller than a zip code)",
+                  label: "In some other geographic area (must not be smaller than a zip code)",
                   value: "other-geographic-area",
                   slots: [
                     {
@@ -551,10 +534,7 @@ export function deliverySystemCharactaristics({
 }
 
 // "[Program] participation exclusions"
-export function participationExclusions({
-  conditionalInfo,
-  programLabel,
-}: SectionParams): Section {
+export function participationExclusions({ conditionalInfo, programLabel }: SectionParams): Section {
   const sectionId = `${createSectionId(programLabel)}_participation-exclusions`;
 
   return {
@@ -603,8 +583,7 @@ export function participationExclusions({
                   value: "less-than-three-months",
                 },
                 {
-                  label:
-                    "Individuals in a retroactive period of Medicaid eligibility",
+                  label: "Individuals in a retroactive period of Medicaid eligibility",
                   value: "retroactive-period",
                 },
                 {
@@ -620,8 +599,7 @@ export function participationExclusions({
                         required: "* Required",
                         pattern: {
                           value: noLeadingTrailingWhitespace,
-                          message:
-                            "Must not have leading or trailing whitespace.",
+                          message: "Must not have leading or trailing whitespace.",
                         },
                       },
                       props: {
@@ -678,8 +656,7 @@ export function participationRequirements({
                         required: "* Required",
                         pattern: {
                           value: noLeadingTrailingWhitespace,
-                          message:
-                            "Must not have leading or trailing whitespace.",
+                          message: "Must not have leading or trailing whitespace.",
                         },
                       },
                       props: {
@@ -689,8 +666,7 @@ export function participationRequirements({
                   ],
                 },
                 {
-                  label:
-                    "Voluntary, using the below method for effectuating enrollment",
+                  label: "Voluntary, using the below method for effectuating enrollment",
                   value: "voluntary",
                   slots: [
                     {
@@ -740,10 +716,7 @@ export function participationRequirements({
 }
 
 // "Disenrollment"
-export function disenrollment({
-  conditionalInfo,
-  programLabel,
-}: SectionParams): Section {
+export function disenrollment({ conditionalInfo, programLabel }: SectionParams): Section {
   const sectionId = `${createSectionId(programLabel)}_disenrollment`;
   return {
     title: "Disenrollment",
@@ -777,8 +750,7 @@ export function disenrollment({
           },
           {
             rhf: "Input",
-            label:
-              "Length of time the disenrollment limitation will apply (up to 12 months)",
+            label: "Length of time the disenrollment limitation will apply (up to 12 months)",
             labelClassName: "font-bold",
             name: "disenrollment-limit-length",
             props: {
@@ -827,8 +799,7 @@ export function disenrollment({
           },
           {
             rhf: "Textarea",
-            label:
-              "Additional circumstances of cause for disenrollment (optional)",
+            label: "Additional circumstances of cause for disenrollment (optional)",
             labelClassName: "font-bold",
             name: "additional-disenrollment-cause",
             props: {
@@ -879,8 +850,7 @@ export function disenrollment({
                   ],
                 },
                 {
-                  label:
-                    "Enrollees submit disenrollment requests to the state or its agent.",
+                  label: "Enrollees submit disenrollment requests to the state or its agent.",
                   value: "submit-requests",
                 },
                 {
@@ -893,8 +863,7 @@ export function disenrollment({
                     "The MCO/HIO/PIHP/PAHP/PCCM/PCCM entity may not approve or disapprove requests and must refer all disenrollment requests received to the state.",
                   value: `${createSectionId(programLabel)}-refers-requests`,
                 },
-                ...(programLabel === SectionName.PCCM ||
-                programLabel === SectionName.PCCMEntity
+                ...(programLabel === SectionName.PCCM || programLabel === SectionName.PCCMEntity
                   ? []
                   : [
                       {
@@ -982,8 +951,7 @@ export function disenrollment({
                                   required: "* Required",
                                   pattern: {
                                     value: noLeadingTrailingWhitespace,
-                                    message:
-                                      "Must not have leading or trailing whitespace.",
+                                    message: "Must not have leading or trailing whitespace.",
                                   },
                                 },
                               },
@@ -1019,10 +987,7 @@ export function disenrollment({
 }
 
 // "Additional information: [program]"
-export function additionalInfo({
-  conditionalInfo,
-  programLabel,
-}: SectionParams): Section {
+export function additionalInfo({ conditionalInfo, programLabel }: SectionParams): Section {
   return {
     title: `Additional information: ${programLabel}`,
     sectionId: `additional-info-${createSectionId(programLabel)}`,
@@ -1036,8 +1001,7 @@ export function additionalInfo({
         slots: [
           {
             rhf: "Textarea",
-            label:
-              "Additional details about this service delivery system (optional)",
+            label: "Additional details about this service delivery system (optional)",
             labelClassName: "font-bold",
             name: "additional-details",
             props: {
@@ -1057,10 +1021,7 @@ export function additionalInfo({
 }
 
 // "[Program] payments"
-export function payments({
-  conditionalInfo,
-  programLabel,
-}: SectionParams): Section {
+export function payments({ conditionalInfo, programLabel }: SectionParams): Section {
   const pccmEntityPayment: RHFOption[] =
     programLabel === SectionName.PCCMEntity
       ? [
@@ -1111,8 +1072,7 @@ export function payments({
                         required: "* Required",
                         pattern: {
                           value: noLeadingTrailingWhitespace,
-                          message:
-                            "Must not have leading or trailing whitespace.",
+                          message: "Must not have leading or trailing whitespace.",
                         },
                       },
                     },

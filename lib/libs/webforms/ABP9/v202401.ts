@@ -36,8 +36,7 @@ export const v202401: FormSchema = {
                   message: "Must not have leading or trailing whitespace.",
                 },
               },
-              formItemClassName:
-                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               label:
                 "Describe the employer-sponsored insurance, including the population covered, amount of premium assistance by population, and employer-sponsored insurance activities, including required contribution, cost-effectiveness test requirements, and benefit information.",
               labelClassName: "font-bold",
@@ -59,8 +58,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Select",
               name: "does-provide-pay-of-premiums",
-              label:
-                "Does the state/territory otherwise provide for payment of premiums?",
+              label: "Does the state/territory otherwise provide for payment of premiums?",
               labelClassName: "font-bold",
               rules: { required: "* Required" },
               props: {
@@ -81,8 +79,7 @@ export const v202401: FormSchema = {
                   message: "Must not have leading or trailing whitespace.",
                 },
               },
-              formItemClassName:
-                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               label:
                 "Describe, including the population covered, amount of premium assistance by population, required contributions, cost-effectiveness test requirements, and benefit information.",
               labelClassName: "font-bold",
