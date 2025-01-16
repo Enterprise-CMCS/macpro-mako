@@ -182,7 +182,9 @@ export async function getItem(
 ): Promise<ItemResult | undefined> {
   client = client || (await getClient(host));
   const response = await client.get({ id, index });
+  console.log(response, "RESPONSE FROM OS");
   const item = decodeUtf8(response).body;
+  console.log(item, "ITEM FROM OS");
   if (item.found === false || !item._source) {
     return undefined;
   }
