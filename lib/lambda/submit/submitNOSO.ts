@@ -10,7 +10,8 @@ import { ItemResult } from "shared-types/opensearch/main";
 export const submitNOSOAdminSchema = z
   .object({
     packageId: z.string(),
-    action: z.literal("NOSO"),
+    event: z.literal("NOSO"),
+    adminChangeType: z.literal("NOSO"),
     copyAttachmentsFrom: z.string().optional(),
   })
   .and(z.record(z.string(), z.any()));
