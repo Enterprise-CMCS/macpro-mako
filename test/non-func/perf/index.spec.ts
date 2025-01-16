@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import * as routes from "../fixtures/routes";
+import * as routes from "../../fixtures/routes";
 
 const STATIC_ROUTES = routes.STATIC;
 
