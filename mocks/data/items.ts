@@ -17,7 +17,7 @@ export const HI_TEST_ITEM_ID = "HI-0000.R00.00";
 export const CAPITATED_INITIAL_ITEM_ID = "SS-2234.R00.00";
 export const CAPITATED_INITIAL_NEW_ITEM_ID = "SS-1235.R00.00";
 export const CAPITATED_AMEND_ITEM_ID = "VA-2234.R11.01";
-export const WEIRD_ID = "VA";
+export const SIMPLE_ID = "VA";
 export const CONTRACTING_INITIAL_ITEM_ID = "MD-007.R00.00";
 export const CONTRACTING_AMEND_ITEM_ID = "MD-007.R00.01";
 export const MISSING_CHANGELOG_ITEM_ID = "MD-008.R00.00";
@@ -26,6 +26,8 @@ export const INITIAL_RELEASE_APPK_ITEM_ID = "MD-010.R00.01";
 export const EXISTING_ITEM_APPROVED_APPK_ITEM_ID = "MD-012.R00.01";
 export const SUBMISSION_ERROR_ITEM_ID = "Throw Submission Error";
 export const GET_ERROR_ITEM_ID = "Throw Get Item Error";
+export const WITHDRAW_RAI_ITEM_B = "VA-2234.R11.02";
+export const WITHDRAW_RAI_ITEM_C = "VA-2234.R11.03";
 
 const items: Record<string, TestItemResult> = {
   [EXISTING_ITEM_ID]: {
@@ -37,7 +39,7 @@ const items: Record<string, TestItemResult> = {
       actionType: "New",
     },
   },
-  [WEIRD_ID]: {
+  [SIMPLE_ID]: {
     _id: EXISTING_ITEM_ID,
     found: true,
     _source: {
@@ -394,6 +396,72 @@ const items: Record<string, TestItemResult> = {
             title: "Initial release",
             cmsStatus: "Pending",
             stateStatus: "Under Review",
+          },
+        },
+      ],
+    },
+  },
+  [WITHDRAW_RAI_ITEM_B]: {
+    _id: WITHDRAW_RAI_ITEM_B,
+    found: true,
+    _source: {
+      id: WITHDRAW_RAI_ITEM_B,
+      seatoolStatus: SEATOOL_STATUS.PENDING,
+      actionType: "respond-to-rai",
+      authority: "1915(b)",
+      state: "MD",
+      origin: "OneMAC",
+      changelog: [
+        {
+          _id: `${WITHDRAW_RAI_ITEM_B}-001`,
+          _source: {
+            id: `${WITHDRAW_RAI_ITEM_B}-0001`,
+            actionType: "respond-to-rai",
+            packageId: WITHDRAW_RAI_ITEM_B,
+          },
+        },
+      ],
+    },
+  },
+  [WITHDRAW_RAI_ITEM_C]: {
+    _id: WITHDRAW_RAI_ITEM_C,
+    found: true,
+    _source: {
+      id: WITHDRAW_RAI_ITEM_C,
+      seatoolStatus: SEATOOL_STATUS.PENDING,
+      actionType: "respond-to-rai",
+      authority: "1915(c)",
+      state: "MD",
+      leadAnalystName: "lead test",
+      additionalInformation: "kdjfkaj",
+      leadAnalystEmail: "Lead test email",
+      reviewTeam: [
+        {
+          name: "Test",
+          email: "testemail",
+        },
+      ],
+      origin: "OneMAC",
+      changelog: [
+        {
+          _id: `${WITHDRAW_RAI_ITEM_C}-001`,
+          _source: {
+            id: `${WITHDRAW_RAI_ITEM_C}-0001`,
+            submitterName: "Testmctex",
+            submitterEmail: "dkjfdkljl;",
+            actionType: "respond-to-rai",
+            packageId: WITHDRAW_RAI_ITEM_C,
+          },
+        },
+
+        {
+          _id: `${WITHDRAW_RAI_ITEM_C}-002`,
+          _source: {
+            id: `${WITHDRAW_RAI_ITEM_C}-0002`,
+            submitterName: "Testmctex",
+            submitterEmail: "dkjfdkljl;",
+            actionType: "WithdrawRai",
+            packageId: WITHDRAW_RAI_ITEM_C,
           },
         },
       ],

@@ -18,7 +18,7 @@ export default defineConfig({
         "docs/**",
         "**/vitest.setup.ts",
         "lib/libs/webforms/**",
-        "lib/libs/email/mock-data/**",
+        "lib/libs/email/mock-data/attachments",
         "react-app/src/features/webforms/**",
         "TestWrapper.tsx",
         "lib/stacks/**",
