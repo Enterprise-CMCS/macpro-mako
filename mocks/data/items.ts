@@ -430,8 +430,9 @@ const items: Record<string, TestItemResult> = {
     found: true,
     _source: {
       id: WITHDRAW_RAI_ITEM_C,
-      seatoolStatus: SEATOOL_STATUS.PENDING,
+      seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
       actionType: "respond-to-rai",
+      raiRequestedDate: "2024-01-01T00:00:00.000Z",
       authority: "1915(c)",
       state: "MD",
       leadAnalystName: "lead test",
