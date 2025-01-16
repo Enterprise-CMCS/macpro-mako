@@ -66,17 +66,13 @@ describe("useIdle", () => {
   });
 
   test("Returns correct initial value from initialState argument", () => {
-    const { result } = renderHook(() =>
-      useIdle(IDLE_TIME, { initialState: false }),
-    );
+    const { result } = renderHook(() => useIdle(IDLE_TIME, { initialState: false }));
 
     expect(result.current).toBe(false);
   });
 
   test("Returns correct value when timeout has elapsed", () => {
-    const { result } = renderHook(() =>
-      useIdle(IDLE_TIME, { initialState: false }),
-    );
+    const { result } = renderHook(() => useIdle(IDLE_TIME, { initialState: false }));
 
     act(() => {
       vi.advanceTimersByTime(IDLE_TIME);

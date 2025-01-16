@@ -13,12 +13,12 @@ describe("checkEnvVars", () => {
   test("should throw an error when a required environment variable is missing", () => {
     process.env.FOO = "bar";
     expect(() => checkEnvVars(["FOO", "BAZ"])).toThrowError(
-      "Missing required environment variables: BAZ"
+      "Missing required environment variables: BAZ",
     );
   });
   test("should throw an error when multiple required environment variables are missing", () => {
     expect(() => checkEnvVars(["FOO", "BAZ"])).toThrowError(
-      "Missing required environment variables: FOO, BAZ"
+      "Missing required environment variables: FOO, BAZ",
     );
   });
 });

@@ -16,10 +16,7 @@ import { Readable } from "stream";
 
 const s3Client: S3Client = new S3Client();
 
-export async function checkFileSize(
-  key: string,
-  bucket: string,
-): Promise<string> {
+export async function checkFileSize(key: string, bucket: string): Promise<string> {
   try {
     const res: HeadObjectCommandOutput = await s3Client.send(
       new HeadObjectCommand({ Key: key, Bucket: bucket }),
@@ -29,9 +26,7 @@ export async function checkFileSize(
       res.ContentLength === null ||
       typeof res.ContentLength !== "number"
     ) {
-      logger.info(
-        `ContentLength is invalid for S3 Object: s3://${bucket}/${key}`,
-      );
+      logger.info(`ContentLength is invalid for S3 Object: s3://${bucket}/${key}`);
       return constants.STATUS_ERROR_PROCESSING_FILE;
     }
     return res.ContentLength > parseInt(constants.MAX_FILE_SIZE)
@@ -51,9 +46,7 @@ export async function downloadFileFromS3(
     fs.mkdirSync(constants.TMP_DOWNLOAD_PATH);
   }
 
-  const localPath: string = `${
-    constants.TMP_DOWNLOAD_PATH
-  }${randomUUID()}--${s3ObjectKey}`;
+  const localPath: string = `${constants.TMP_DOWNLOAD_PATH}${randomUUID()}--${s3ObjectKey}`;
   fs.createWriteStream(localPath);
 
   logger.info(`Downloading file s3://${s3ObjectBucket}/${s3ObjectKey}`);
@@ -109,9 +102,7 @@ export async function tagWithScanStatus(
 
 export async function listBucketFiles(bucketName: string): Promise<string[]> {
   try {
-    const listFilesResult = await s3Client.send(
-      new ListObjectsV2Command({ Bucket: bucketName }),
-    );
+    const listFilesResult = await s3Client.send(new ListObjectsV2Command({ Bucket: bucketName }));
     if (listFilesResult.Contents) {
       const keys = listFilesResult.Contents.map((c) => c.Key) as string[];
       return keys;

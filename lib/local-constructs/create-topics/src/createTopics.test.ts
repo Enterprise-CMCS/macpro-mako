@@ -11,9 +11,7 @@ describe("handler", () => {
     { topic: "validTopic", numPartitions: 3, replicationFactor: 3 },
     { topic: "anotherValidTopic", numPartitions: 1, replicationFactor: 3 },
   ];
-  const invalidTopicsToCreateNoName = [
-    { topic: "", numPartitions: 3, replicationFactor: 3 },
-  ];
+  const invalidTopicsToCreateNoName = [{ topic: "", numPartitions: 3, replicationFactor: 3 }];
   const invalidTopicsToCreateLowReplication = [
     { topic: "validTopic", numPartitions: 3, replicationFactor: 2 },
   ];
@@ -41,10 +39,7 @@ describe("handler", () => {
 
     await handler(event, context);
 
-    expect(topics.createTopics).toHaveBeenCalledWith(
-      brokerString,
-      validTopicsToCreate,
-    );
+    expect(topics.createTopics).toHaveBeenCalledWith(brokerString, validTopicsToCreate);
     expect(topics.createTopics).toHaveBeenCalledTimes(1);
   });
 

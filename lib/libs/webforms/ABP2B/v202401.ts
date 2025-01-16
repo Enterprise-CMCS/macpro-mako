@@ -61,8 +61,7 @@ export const v202401: FormSchema = {
                         classname: "block pt-1",
                       },
                     ],
-                    value:
-                      "effectively_inform_voluntarily_enroll_and_may_disenroll",
+                    value: "effectively_inform_voluntarily_enroll_and_may_disenroll",
                   },
                   {
                     styledLabel: [
@@ -82,8 +81,7 @@ export const v202401: FormSchema = {
                         classname: "block pt-1",
                       },
                     ],
-                    value:
-                      "inform_individuals_of_abp_benefits_and_costs_of_different_packages",
+                    value: "inform_individuals_of_abp_benefits_and_costs_of_different_packages",
                   },
                 ],
               },
@@ -127,8 +125,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -140,8 +137,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Upload",
               name: "provide-copy",
-              description:
-                "Provide a copy of the letter, email, or other communication.",
+              description: "Provide a copy of the letter, email, or other communication.",
               descriptionAbove: true,
               descriptionClassName: "font-bold text-black",
               rules: {
@@ -153,8 +149,7 @@ export const v202401: FormSchema = {
               rhf: "Input",
               name: "when-to-inform",
               descriptionAbove: true,
-              description:
-                "When did/will the state/territory inform the individuals?",
+              description: "When did/will the state/territory inform the individuals?",
               rules: {
                 required: "* Required",
                 pattern: {
@@ -209,8 +204,7 @@ export const v202401: FormSchema = {
                         text: " C. Chose to enroll in ABP coverage subject to Section 1937 requirements or defined as the state/territory's approved Medicaid state plan not subject to Section 1937 requirements",
                       },
                     ],
-                    value:
-                      "state_territory_will_document_exempt_individuals_eligibility",
+                    value: "state_territory_will_document_exempt_individuals_eligibility",
                   },
                 ],
               },
@@ -247,8 +241,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -262,8 +255,7 @@ export const v202401: FormSchema = {
               name: "what-docu-will-be-maintained",
               descriptionAbove: true,
               descriptionClassName: "font-bold text-black",
-              description:
-                "What documentation will be maintained in the eligibility file?",
+              description: "What documentation will be maintained in the eligibility file?",
               formItemClassName: "pb-6 border-b-[1px] border-[#AEB0B5]",
               rules: {
                 required: "* Required",
@@ -277,13 +269,11 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "Signed documentation from the individual consenting to enrollment in the ABP",
-                    value:
-                      "signed_documentation_from_individual_consenting_enrollment_ABP",
+                    value: "signed_documentation_from_individual_consenting_enrollment_ABP",
                   },
                   {
                     label: "Other",
-                    value:
-                      "what_documentation_will_be_maintained_in_the_eligibility_file_other",
+                    value: "what_documentation_will_be_maintained_in_the_eligibility_file_other",
                     slots: [
                       {
                         rhf: "Textarea",
@@ -294,8 +284,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },

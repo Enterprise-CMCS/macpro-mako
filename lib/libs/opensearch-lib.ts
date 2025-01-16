@@ -180,20 +180,13 @@ export async function getItem(
   index: opensearch.Index,
   id: string,
 ): Promise<ItemResult | undefined> {
-  try {
-    client = client || (await getClient(host));
-    const response = await client.get({ id, index });
-    return decodeUtf8(response).body;
-  } catch (error) {
-    if (
-      (error instanceof OpensearchErrors.ResponseError && error.statusCode === 404) ||
-      error.meta?.statusCode === 404
-    ) {
-      console.log("Error (404) retrieving in OpenSearch:", error);
-      return undefined;
-    }
-    throw error;
+  client = client || (await getClient(host));
+  const response = await client.get({ id, index });
+  const item = decodeUtf8(response).body;
+  if (item.found === false || !item._source) {
+    return undefined;
   }
+  return item;
 }
 
 export async function getItems(ids: string[]): Promise<OSDocument[]> {
@@ -210,18 +203,12 @@ export async function getItems(ids: string[]): Promise<OSDocument[]> {
     });
 
     return response.body.docs.reduce<OSDocument[]>((acc, doc) => {
-      if (doc.found && doc._source) {
-        try {
-          return acc.concat(doc._source);
-        } catch (e) {
-          console.error(`Failed to parse JSON for document with ID ${doc._id}:`, e);
-          return acc;
-        }
+      if (doc && doc.found && doc._source) {
+        return acc.concat(doc._source);
       } else {
         console.error(`Document with ID ${doc._id} not found.`);
+        return acc;
       }
-
-      return acc;
     }, []);
   } catch (e) {
     console.log({ e });
@@ -264,7 +251,7 @@ export async function updateFieldMapping(
   }
 }
 
-function decodeUtf8(data: any): any {
+export function decodeUtf8(data: any): any {
   if (typeof data === "string") {
     try {
       return decodeURIComponent(escape(data));

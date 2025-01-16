@@ -3,7 +3,7 @@ import { seaToolFriendlyTimestamp } from "../../../../shared-utils/seatool-date-
 
 export const transform = () => {
   return events["app-k"].schema.transform((data) => {
-    const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.PENDING);
+    const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.SUBMITTED);
     const timestampDate = new Date(data.timestamp);
     const todayEpoch = seaToolFriendlyTimestamp(timestampDate);
 
@@ -18,7 +18,7 @@ export const transform = () => {
       makoChangedDate: timestampDate.toISOString(),
       origin: "OneMAC",
       raiWithdrawEnabled: false, // Set to false for new submissions
-      seatoolStatus: SEATOOL_STATUS.PENDING,
+      seatoolStatus: SEATOOL_STATUS.SUBMITTED,
       state: data.id?.split("-")?.[0],
       stateStatus,
       statusDate: new Date(todayEpoch).toISOString(),

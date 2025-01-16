@@ -46,7 +46,7 @@ export class FAQPage {
   readonly withdrawWaiverRai: Locator;
   readonly withdrawPackageWaiver: Locator;
 
-  constructor(page:Page) {
+  constructor(page: Page) {
     this.page = page;
 
     this.header = page.getByTestId("sub-nav-header");
@@ -94,6 +94,6 @@ export class FAQPage {
     // HREFs of PDFs
     this.pdfs = {
       statePlans: page.locator('a[href*="state-plan-macpro"]'),
-    }
+    };
   }
 }

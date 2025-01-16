@@ -10,12 +10,7 @@ import * as kms from "aws-cdk-lib/aws-kms";
 import * as lambdaEventSources from "aws-cdk-lib/aws-lambda-event-sources";
 import * as destinations from "aws-cdk-lib/aws-lambda-destinations";
 import * as cr from "aws-cdk-lib/custom-resources";
-import {
-  ManagedPolicy,
-  PolicyDocument,
-  Role,
-  ServicePrincipal,
-} from "aws-cdk-lib/aws-iam";
+import { ManagedPolicy, PolicyDocument, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
 import { LambdaFunction } from "aws-cdk-lib/aws-events-targets";
 import { Rule, RuleTargetInput, Schedule } from "aws-cdk-lib/aws-events";
 
@@ -113,9 +108,7 @@ export class ClamScanScanner extends Construct {
     this.lambdaRole = new Role(this, "LambdaExecutionRole", {
       assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
       managedPolicies: [
-        ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaBasicExecutionRole",
-        ),
+        ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole"),
       ],
       inlinePolicies: {
         LambdaPolicy: new PolicyDocument({
@@ -149,11 +142,7 @@ export class ClamScanScanner extends Construct {
               resources: ["*"],
             }),
             new iam.PolicyStatement({
-              actions: [
-                "sqs:ReceiveMessage",
-                "sqs:DeleteMessage",
-                "sqs:GetQueueAttributes",
-              ],
+              actions: ["sqs:ReceiveMessage", "sqs:DeleteMessage", "sqs:GetQueueAttributes"],
               resources: [notificationQueue.queueArn],
             }),
           ],
@@ -161,13 +150,9 @@ export class ClamScanScanner extends Construct {
       },
     });
 
-    const clamscanDefsLogGroup = new logs.LogGroup(
-      this,
-      `${id}ClamDefsLogGroup`,
-      {
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    );
+    const clamscanDefsLogGroup = new logs.LogGroup(this, `${id}ClamDefsLogGroup`, {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
 
     const clamDefsLambda = new DockerImageFunction(this, "ServerlessClamDefs", {
       code: DockerImageCode.fromImageAsset(__dirname, {
@@ -185,13 +170,9 @@ export class ClamScanScanner extends Construct {
       },
     });
 
-    const clamscanLambdaLogGroup = new logs.LogGroup(
-      this,
-      `${id}ClamscanLambdaLogGroup`,
-      {
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    );
+    const clamscanLambdaLogGroup = new logs.LogGroup(this, `${id}ClamscanLambdaLogGroup`, {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
 
     const clamscanLambda = new DockerImageFunction(this, "ServerlessClamscan", {
       code: DockerImageCode.fromImageAsset(__dirname),
@@ -209,9 +190,7 @@ export class ClamScanScanner extends Construct {
     });
 
     // Add the SQS queue as an event source to the Lambda function
-    clamscanLambda.addEventSource(
-      new lambdaEventSources.SqsEventSource(notificationQueue),
-    );
+    clamscanLambda.addEventSource(new lambdaEventSources.SqsEventSource(notificationQueue));
 
     const rule = new Rule(this, "ClamscanScheduleRule", {
       schedule: Schedule.expression("cron(0/2 0-6,8-23 * * ? *)"),
@@ -263,9 +242,7 @@ export class ClamScanScanner extends Construct {
         ]),
       },
     );
-    const policy = invokeClamDefsCustomResource.node.findChild(
-      "CustomResourcePolicy",
-    );
+    const policy = invokeClamDefsCustomResource.node.findChild("CustomResourcePolicy");
     invokeClamDefsCustomResource.node.addDependency(policy);
     invokeClamDefsCustomResourceLogGroup.node.addDependency(policy);
   }
