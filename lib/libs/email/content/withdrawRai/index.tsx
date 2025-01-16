@@ -5,7 +5,7 @@ import { render } from "@react-email/render";
 import { EmailProcessingError } from "libs/email/errors";
 
 const getWithdrawRaiEvent = async (id: string) => {
-  const event = await getLatestMatchingEvent(id, "WithdrawRai");
+  const event = await getLatestMatchingEvent(id, "withdraw-rai");
 
   if (!event) {
     return null;
