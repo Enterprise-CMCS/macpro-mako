@@ -12,10 +12,11 @@ const withdrawPackage = "withdraw-package";
 const contractingInitial = "contracting-initial";
 const capitatedInitial = "capitated-initial";
 const withdrawRai = "withdraw-rai";
-const respondToRai = "respond-to-rai"
+const respondToRai = "respond-to-rai";
+
 describe("process emails  Handler", () => {
   it.each([
-        [
+    [
       `should send an email for ${respondToRai} with ${Authority.MED_SPA}`,
       Authority.MED_SPA,
       respondToRai,
