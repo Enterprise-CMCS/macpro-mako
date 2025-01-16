@@ -30,10 +30,7 @@ describe("handler", () => {
 
     await handler(event, context);
 
-    expect(topics.deleteTopics).toHaveBeenCalledWith(
-      BrokerString,
-      TopicPatternsToDelete,
-    );
+    expect(topics.deleteTopics).toHaveBeenCalledWith(BrokerString, TopicPatternsToDelete);
     expect(topics.deleteTopics).toHaveBeenCalledTimes(1);
   });
 

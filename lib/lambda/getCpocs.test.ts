@@ -3,7 +3,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import { handler } from "./getCpocs";
 import { mockedServiceServer } from "mocks/server";
 import { emptyCpocSearchHandler, errorCpocSearchHandler } from "mocks";
-import { cpocs } from "mocks/data/cpocs";
+import { cpocsList } from "mocks/data/cpocs";
 
 describe("getCpocs Handler", () => {
   it("should return 400 if event body is missing", async () => {
@@ -35,7 +35,7 @@ describe("getCpocs Handler", () => {
     const body = JSON.parse(res.body);
 
     expect(res.statusCode).toEqual(200);
-    expect(body.hits.hits).toEqual(cpocs);
+    expect(body.hits.hits).toEqual(cpocsList);
   });
 
   it("should return 500 if an error occurs during processing", async () => {

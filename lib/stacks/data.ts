@@ -461,27 +461,30 @@ export class Data extends cdk.NestedStack {
 
     const functionConfigs = {
       sinkChangelog: { provisionedConcurrency: 2 },
+      sinkCpocs: { provisionedConcurrency: 0 },
       sinkInsights: { provisionedConcurrency: 0 },
       sinkLegacyInsights: { provisionedConcurrency: 0 },
       sinkMain: { provisionedConcurrency: 2 },
       sinkSubtypes: { provisionedConcurrency: 0 },
       sinkTypes: { provisionedConcurrency: 0 },
-      sinkCpocs: { provisionedConcurrency: 0 },
     };
 
-    const lambdaFunctions = Object.entries(functionConfigs).reduce((acc, [name, config]) => {
-      acc[name] = createLambda({
-        id: name,
-        role: sharedLambdaRole,
-        useVpc: true,
-        environment: {
-          osDomain: `https://${openSearchDomainEndpoint}`,
-          indexNamespace,
-        },
-        provisionedConcurrency: !props.isDev ? config.provisionedConcurrency : 0,
-      });
-      return acc;
-    }, {} as { [key: string]: NodejsFunction });
+    const lambdaFunctions = Object.entries(functionConfigs).reduce(
+      (acc, [name, config]) => {
+        acc[name] = createLambda({
+          id: name,
+          role: sharedLambdaRole,
+          useVpc: true,
+          environment: {
+            osDomain: `https://${openSearchDomainEndpoint}`,
+            indexNamespace,
+          },
+          provisionedConcurrency: !props.isDev ? config.provisionedConcurrency : 0,
+        });
+        return acc;
+      },
+      {} as { [key: string]: NodejsFunction },
+    );
 
     const stateMachineRole = new cdk.aws_iam.Role(this, "StateMachineRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("states.amazonaws.com"),

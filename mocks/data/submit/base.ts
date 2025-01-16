@@ -1,20 +1,6 @@
 import { attachments } from "./attachments";
-const capitatedAmendmentBase = {
-  id: "VA-1234.R11.01",
-  event: "capitated-amendment",
-  authority: "1915(c)",
-  proposedEffectiveDate: 1700000000,
-  title: "Sample Title for Appendix K",
-  attachments: {
-    ...attachments.bCapWaiverApplication,
-    ...attachments.bCapCostSpreadsheets,
-    ...attachments.tribalConsultation,
-    ...attachments.other,
-  },
-  additionalInformation: "Some additional information about this submission.",
-  waiverNumber: "VA-1111.R11.11",
-};
-const appkBase = {
+
+export const appkBase = {
   id: "VA-1234.R11.01",
   event: "app-k",
   authority: "1915(c)",
@@ -26,7 +12,8 @@ const appkBase = {
   },
   additionalInformation: "Some additional information about this submission.",
 };
-const capitatedInitial = {
+
+export const capitatedInitial = {
   id: "VA-1234.R00.00",
   event: "capitated-initial",
   authority: "1915(c)",
@@ -41,7 +28,24 @@ const capitatedInitial = {
   additionalInformation: "Some additional information about this submission.",
   waiverNumber: "VA-1111.R11.11",
 };
-const capitatedRenewal = {
+
+export const capitatedAmendmentBase = {
+  id: "VA-1234.R11.01",
+  event: "capitated-amendment",
+  authority: "1915(c)",
+  proposedEffectiveDate: 1700000000,
+  title: "Sample Title for Appendix K",
+  attachments: {
+    ...attachments.bCapWaiverApplication,
+    ...attachments.bCapCostSpreadsheets,
+    ...attachments.tribalConsultation,
+    ...attachments.other,
+  },
+  additionalInformation: "Some additional information about this submission.",
+  waiverNumber: "VA-1111.R11.11",
+};
+
+export const capitatedRenewal = {
   id: "VA-1234.R01.00",
   event: "capitated-renewal",
   authority: "1915(c)",
@@ -57,21 +61,8 @@ const capitatedRenewal = {
   additionalInformation: "Some additional information about this submission.",
   waiverNumber: "VA-1111.R11.11",
 };
-const contractingAmendment = {
-  id: "VA-1234.R11.01",
-  event: "contracting-amendment",
-  authority: "1915(b)",
-  proposedEffectiveDate: 1700000000,
-  title: "Sample Title for Appendix K",
-  attachments: {
-    ...attachments.b4Waiver,
-    ...attachments.tribalConsultation,
-    ...attachments.other,
-  },
-  additionalInformation: "Some additional information about this submission.",
-  waiverNumber: "VA-1111.R11.11",
-};
-const contractingInitial = {
+
+export const contractingInitial = {
   id: "VA-1234.R00.00",
   event: "contracting-initial",
   authority: "1915(b)",
@@ -85,7 +76,23 @@ const contractingInitial = {
   additionalInformation: "Some additional information about this submission.",
   waiverNumber: "VA-1111.R11.11",
 };
-const contractingRenewal = {
+
+export const contractingAmendment = {
+  id: "VA-1234.R11.01",
+  event: "contracting-amendment",
+  authority: "1915(b)",
+  proposedEffectiveDate: 1700000000,
+  title: "Sample Title for Appendix K",
+  attachments: {
+    ...attachments.b4Waiver,
+    ...attachments.tribalConsultation,
+    ...attachments.other,
+  },
+  additionalInformation: "Some additional information about this submission.",
+  waiverNumber: "VA-1111.R11.11",
+};
+
+export const contractingRenewal = {
   id: "VA-1234.R01.00",
   event: "contracting-renewal",
   authority: "1915(b)",
@@ -100,7 +107,8 @@ const contractingRenewal = {
   additionalInformation: "Some additional information about this submission.",
   waiverNumber: "VA-1111.R01.00",
 };
-const newChipSubmission = {
+
+export const newChipSubmission = {
   id: "VA-11-2021",
   event: "new-chip-submission",
   authority: "1915(b)",
@@ -118,7 +126,8 @@ const newChipSubmission = {
   additionalInformation: "Some additional information about this submission.",
   waiverNumber: "VA-1111.R11.11",
 };
-const newMedicaidSubmission = {
+
+export const newMedicaidSubmission = {
   id: "VA-11-2021",
   event: "new-medicaid-submission",
   authority: "1915(b)",
@@ -138,20 +147,19 @@ const newMedicaidSubmission = {
   additionalInformation: "Some additional information about this submission.",
   waiverNumber: "VA-1111.R11.11",
 };
-const respondToRai = {
-  id: "VA-11-2020",
-  event: "respond-to-rai",
+
+export const uploadSubsequentDocuments = {
+  id: "VA-1111.R11.00",
+  event: "upload-subsequent-documents",
   authority: "1915(b)",
   proposedEffectiveDate: 1700000000,
   title: "Sample Title for Appendix K",
-  attachments: {
-    ...attachments.raiResponseLetter,
-    ...attachments.other,
-  },
+  attachments: {},
   additionalInformation: "Some additional information about this submission.",
-  waiverNumber: "VA-1111.R11.11",
+  waiverNumber: "VA-1111.R11.00",
 };
-const temporaryExtension = {
+
+export const temporaryExtension = {
   id: "VA-1234.R11.TE12",
   event: "temporary-extension",
   authority: "1915(b)",
@@ -164,14 +172,30 @@ const temporaryExtension = {
   additionalInformation: "Some additional information about this submission.",
   waiverNumber: "VA-1111.R11.00",
 };
-const toggleWithdrawRai = {
+
+export const respondToRai = {
+  id: "VA-11-2020",
+  event: "respond-to-rai",
+  authority: "1915(b)",
+  proposedEffectiveDate: 1700000000,
+  title: "Sample Title for Appendix K",
+  attachments: {
+    ...attachments.raiResponseLetter,
+    ...attachments.other,
+  },
+  additionalInformation: "Some additional information about this submission.",
+  waiverNumber: "VA-1111.R11.11",
+};
+
+export const toggleWithdrawRai = {
   id: "VA-11-2020",
   event: "toggle-withdraw-rai",
   authority: "1915(b)",
   raiWithdrawEnabled: true,
   proposedEffectiveDate: 1700000000,
 };
-const withdrawPackage = {
+
+export const withdrawPackage = {
   id: "VA-11-2020",
   event: "withdraw-package",
   authority: "1915(b)",
@@ -183,7 +207,8 @@ const withdrawPackage = {
   additionalInformation: "Some additional information about this submission.",
   waiverNumber: "VA-1111.R11.00",
 };
-const withdrawRai = {
+
+export const withdrawRai = {
   id: "VA-11-2020",
   event: "withdraw-rai",
   authority: "1915(b)",
@@ -192,16 +217,6 @@ const withdrawRai = {
   attachments: {
     ...attachments.supportingDocumentation,
   },
-  additionalInformation: "Some additional information about this submission.",
-  waiverNumber: "VA-1111.R11.00",
-};
-const uploadSubsequentDocuments = {
-  id: "VA-1111.R11.00",
-  event: "upload-subsequent-documents",
-  authority: "1915(b)",
-  proposedEffectiveDate: 1700000000,
-  title: "Sample Title for Appendix K",
-  attachments: {},
   additionalInformation: "Some additional information about this submission.",
   waiverNumber: "VA-1111.R11.00",
 };

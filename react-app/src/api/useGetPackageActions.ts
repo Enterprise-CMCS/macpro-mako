@@ -9,11 +9,11 @@ const getPackageActions = async (id: string): Promise<PackageActionsResponse> =>
 
 export const useGetPackageActions = (
   id: string,
-  options?: UseQueryOptions<PackageActionsResponse, ReactQueryApiError>
+  options?: UseQueryOptions<PackageActionsResponse, ReactQueryApiError>,
 ) => {
   return useQuery<PackageActionsResponse, ReactQueryApiError>(
     ["actions", id],
     () => getPackageActions(id),
-    options
+    options,
   );
 };

@@ -21,6 +21,10 @@ export {
   errorCreateIndexHandler,
   errorUpdateFieldMappingHandler,
   errorBulkUpdateDataHandler,
+  rateLimitBulkUpdateDataHandler,
   errorDeleteIndexHandler,
 } from "./indices";
+export { errorMainMultiDocumentHandler } from "./main";
 export { errorSecurityRolesMappingHandler } from "./security";
+export { errorSubtypeSearchHandler } from "./subtypes";
+export { errorTypeSearchHandler } from "./types";

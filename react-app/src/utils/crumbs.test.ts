@@ -1,15 +1,15 @@
-import { describe, it, expect} from 'vitest';
+import { describe, it, expect } from "vitest";
 import {
   getDashboardTabForAuthority,
   detailsAndActionsCrumbs,
   dashboardCrumb,
   detailsCrumb,
   actionCrumb,
-} from './crumbs';
-import { Action } from 'shared-types/actions';
+} from "./crumbs";
+import { Action } from "shared-types/actions";
 
-describe('getDashboardTabForAuthority', () => {
-   //test for authority  
+describe("getDashboardTabForAuthority", () => {
+  //test for authority
   it('should return "spas" for "CHIP SPA"', () => {
     const result = getDashboardTabForAuthority("CHIP SPA" as any);
     expect(result).toBe("spas");
@@ -30,25 +30,24 @@ describe('getDashboardTabForAuthority', () => {
     expect(result).toBe("waivers");
   });
 
-  it('should throw an error for an invalid authority', () => {
-    expect(() => getDashboardTabForAuthority("Invalid Authority" as any)).toThrow("Invalid authority");
+  it("should throw an error for an invalid authority", () => {
+    expect(() => getDashboardTabForAuthority("Invalid Authority" as any)).toThrow(
+      "Invalid authority",
+    );
   });
 });
 
-describe('detailsAndActionsCrumbs', () => {
+describe("detailsAndActionsCrumbs", () => {
   const id = "12345";
   const authority = "CHIP SPA" as any;
 
-  it('should return default breadcrumbs without actionType', () => {
-    const expectedBreadcrumbs = [
-      dashboardCrumb(authority),
-      detailsCrumb(id, authority),
-    ];
+  it("should return default breadcrumbs without actionType", () => {
+    const expectedBreadcrumbs = [dashboardCrumb(authority), detailsCrumb(id, authority)];
     const result = detailsAndActionsCrumbs({ id, authority });
     expect(result).toEqual(expectedBreadcrumbs);
   });
 
-  it('should return breadcrumbs including action crumb when actionType is provided', () => {
+  it("should return breadcrumbs including action crumb when actionType is provided", () => {
     const actionType = Action.RESPOND_TO_RAI;
     const expectedBreadcrumbs = [
       dashboardCrumb(authority),
@@ -60,8 +59,8 @@ describe('detailsAndActionsCrumbs', () => {
   });
 });
 
-describe('dashboardCrumb', () => {
-  it('should return correct breadcrumb with authority', () => {
+describe("dashboardCrumb", () => {
+  it("should return correct breadcrumb with authority", () => {
     const result = dashboardCrumb("CHIP SPA" as any);
     const expected = {
       displayText: "Dashboard",
@@ -72,7 +71,7 @@ describe('dashboardCrumb', () => {
     expect(result).toEqual(expected);
   });
 
-  it('should return correct breadcrumb without authority', () => {
+  it("should return correct breadcrumb without authority", () => {
     const result = dashboardCrumb();
     const expected = {
       displayText: "Dashboard",
@@ -84,8 +83,8 @@ describe('dashboardCrumb', () => {
   });
 });
 
-describe('detailsCrumb', () => {
-  it('should return the correct details breadcrumb', () => {
+describe("detailsCrumb", () => {
+  it("should return the correct details breadcrumb", () => {
     const id = "12345";
     const authority = "CHIP SPA" as any;
     const result = detailsCrumb(id, authority);
@@ -98,8 +97,8 @@ describe('detailsCrumb', () => {
   });
 });
 
-describe('actionCrumb', () => {
-  it('should return the correct action breadcrumb', () => {
+describe("actionCrumb", () => {
+  it("should return the correct action breadcrumb", () => {
     const actionType = Action.RESPOND_TO_RAI;
     const id = "12345";
     const result = actionCrumb(actionType, id);

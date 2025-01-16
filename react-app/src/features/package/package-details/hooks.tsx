@@ -98,7 +98,7 @@ export const recordDetails = (data: opensearch.main.Document): DetailSectionItem
   },
   {
     label: "Proposed effective date",
-    value: data.proposedDate ? formatSeatoolDate(data.proposedDate) : BLANK_VALUE,
+    value: data.proposedDate ? formatSeatoolDate(data.proposedDate) : "Pending",
     canView: () => {
       return !(data.actionType === "Extend");
     },

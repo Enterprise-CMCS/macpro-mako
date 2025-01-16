@@ -43,9 +43,7 @@ export class Uploads extends cdk.NestedStack {
           maxAge: 3000,
         },
       ],
-      removalPolicy: isDev
-        ? cdk.RemovalPolicy.DESTROY
-        : cdk.RemovalPolicy.RETAIN,
+      removalPolicy: isDev ? cdk.RemovalPolicy.DESTROY : cdk.RemovalPolicy.RETAIN,
       autoDeleteObjects: isDev,
     });
 
@@ -54,10 +52,7 @@ export class Uploads extends cdk.NestedStack {
         effect: cdk.aws_iam.Effect.DENY,
         principals: [new cdk.aws_iam.AnyPrincipal()],
         actions: ["s3:*"],
-        resources: [
-          attachmentsBucket.bucketArn,
-          `${attachmentsBucket.bucketArn}/*`,
-        ],
+        resources: [attachmentsBucket.bucketArn, `${attachmentsBucket.bucketArn}/*`],
         conditions: {
           Bool: { "aws:SecureTransport": "false" },
         },

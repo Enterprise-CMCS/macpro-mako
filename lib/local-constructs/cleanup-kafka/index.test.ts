@@ -19,9 +19,7 @@ describe("CleanupKafka", () => {
       availabilityZone: "us-west-2a",
     }),
   ];
-  const securityGroups = [
-    new ec2.SecurityGroup(stack, "SecurityGroup", { vpc }),
-  ];
+  const securityGroups = [new ec2.SecurityGroup(stack, "SecurityGroup", { vpc })];
   const brokerString = "mockBrokerString";
   const topicPatternsToDelete = ["mockTopicPattern"];
 
@@ -34,9 +32,7 @@ describe("CleanupKafka", () => {
   });
 
   it("should create a log group for the Lambda function", () => {
-    const logGroup = cleanupKafka.node.findChild(
-      "cleanupKafkaLogGroup",
-    ) as logs.LogGroup;
+    const logGroup = cleanupKafka.node.findChild("cleanupKafkaLogGroup") as logs.LogGroup;
     expect(logGroup).toBeInstanceOf(logs.LogGroup);
   });
 

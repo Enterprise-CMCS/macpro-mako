@@ -151,8 +151,7 @@ function subsectionFormFields({
     },
     {
       rhf: "Input",
-      label:
-        "Other information about this benefit source, including the name of the source plan",
+      label: "Other information about this benefit source, including the name of the source plan",
       labelClassName: "font-bold",
       name: "source-other-info_input",
       formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
@@ -176,8 +175,7 @@ function subsectionFormFields({
     },
     {
       rhf: "Input",
-      label:
-        "Other information about this benefit source, including the name of the source plan",
+      label: "Other information about this benefit source, including the name of the source plan",
       labelClassName: "font-bold",
       name: "secretary-other-info_input",
       formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
@@ -357,8 +355,7 @@ function subsection({
                 ? ([
                     {
                       rhf: "Radio",
-                      label:
-                        "Is there an EHB-benchmark benefit duplicated or substituted?",
+                      label: "Is there an EHB-benchmark benefit duplicated or substituted?",
                       labelClassName: "font-bold",
                       name: "benefit-dupe-or-sub",
                       rules: { required: "* Required" },
@@ -379,8 +376,7 @@ function subsection({
                                       required: "* Required",
                                       pattern: {
                                         value: /^\S(.*\S)?$/,
-                                        message:
-                                          "Must not have leading or trailing whitespace.",
+                                        message: "Must not have leading or trailing whitespace.",
                                       },
                                     },
                                   },
@@ -403,8 +399,7 @@ function subsection({
                                       required: "* Required",
                                       pattern: {
                                         value: /^\S(.*\S)?$/,
-                                        message:
-                                          "Must not have leading or trailing whitespace.",
+                                        message: "Must not have leading or trailing whitespace.",
                                       },
                                     },
                                   },
@@ -449,8 +444,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Select",
-              label:
-                "Does this description of benefits align with the traditional state plan?",
+              label: "Does this description of benefits align with the traditional state plan?",
               labelClassName: "font-bold",
               name: "benefits-align",
               rules: { required: "* Required" },
@@ -475,8 +469,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Select",
-              label:
-                "Does the state/territory propose a benchmark-equivalent benefit package?",
+              label: "Does the state/territory propose a benchmark-equivalent benefit package?",
               labelClassName: "font-bold",
               name: "benchmark-equivalent-pkg",
               rules: { required: "* Required" },
@@ -676,8 +669,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Input",
-              label:
-                "Coverage that exceeds the minimum requirements or other information",
+              label: "Coverage that exceeds the minimum requirements or other information",
               labelClassName: "font-bold",
               name: "other-info",
               rules: {
@@ -690,8 +682,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Radio",
-              label:
-                "Is there an EHB-benchmark benefit duplicated or substituted?",
+              label: "Is there an EHB-benchmark benefit duplicated or substituted?",
               labelClassName: "font-bold",
               name: "benefit-dup-or-sub",
               rules: { required: "* Required" },
@@ -712,8 +703,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: /^\S(.*\S)?$/,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -736,8 +726,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: /^\S(.*\S)?$/,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -754,8 +743,7 @@ export const v202401: FormSchema = {
       ],
     },
     subsection({
-      title:
-        "7. Essential health benefit: Rehabilitative and habilitative services and devices",
+      title: "7. Essential health benefit: Rehabilitative and habilitative services and devices",
       sectionName: "rehabilitative-and-habilitative",
       dependency: initialDependency,
       headerSlots: [
@@ -789,8 +777,7 @@ export const v202401: FormSchema = {
         "The state/territory must provide, at a minimum, a broad range of preventive services, including “A” and “B” services recommended by the United States Preventive Services Task Force; vaccines recommended by the Advisory Committee for Immunization Practices (ACIP); preventive care and screening for infants, children, and adults recommended by the Health Resources and Services Administration (HRSA) Bright Futures program; and additional preventive services for women recommended by the Institute of Medicine (IOM).",
     }),
     subsection({
-      title:
-        "10. Essential health benefit: Pediatric services including oral and vision care",
+      title: "10. Essential health benefit: Pediatric services including oral and vision care",
       sectionName: "pediatric",
       dependency: initialDependency,
       benefitProvided: "Medicaid State Plan EPSDT Benefits",
@@ -808,8 +795,7 @@ export const v202401: FormSchema = {
               props: {
                 options: [
                   {
-                    label:
-                      "11. Other covered benefits that are not essential health benefits",
+                    label: "11. Other covered benefits that are not essential health benefits",
                     optionlabelClassName:
                       "text-2xl font-bold p-4 bg-gray-300 py-4 px-8 w-full leading-9 text-primary",
                     value: "other_covered_benefits_benefit",
@@ -854,15 +840,13 @@ export const v202401: FormSchema = {
                             fields: [
                               {
                                 rhf: "Input",
-                                label:
-                                  "Base benchmark benefit that was substituted",
+                                label: "Base benchmark benefit that was substituted",
                                 labelClassName: "font-bold",
                                 rules: {
                                   required: "* Required",
                                   pattern: {
                                     value: /^\S(.*\S)?$/,
-                                    message:
-                                      "Must not have leading or trailing whitespace.",
+                                    message: "Must not have leading or trailing whitespace.",
                                   },
                                 },
                                 name: "benchmark-subbed",
@@ -884,8 +868,7 @@ export const v202401: FormSchema = {
                                   required: "* Required",
                                   pattern: {
                                     value: noLeadingTrailingWhitespace,
-                                    message:
-                                      "Must not have leading or trailing whitespace.",
+                                    message: "Must not have leading or trailing whitespace.",
                                   },
                                 },
 
