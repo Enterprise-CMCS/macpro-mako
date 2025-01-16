@@ -31,7 +31,7 @@ import {
 } from "mocks/data/submit/changelog";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}changelog`;
-const TOPIC = "aws.onemac.migration.cdc";
+const TOPIC = "--mako--branch-name--aws.onemac.migration.cdc";
 const TEST_ITEM = items[TEST_ITEM_ID];
 const TEST_ITEM_KEY = Buffer.from(TEST_ITEM_ID).toString("base64");
 const TEST_ITEM_UPDATE_ID = "MD-0005.R01.01";
@@ -160,9 +160,9 @@ describe("syncing Changelog events", () => {
 
   it("should handle a valid admin id update", async () => {
     const event = createKafkaEvent({
-      [`${TOPIC}-02`]: [
+      [`${TOPIC}-03`]: [
         createKafkaRecord({
-          topic: `${TOPIC}-01`,
+          topic: `${TOPIC}-03`,
           key: TEST_ITEM_UPDATE_KEY,
           value: convertObjToBase64({
             id: TEST_ITEM_UPDATE_ID,
@@ -196,9 +196,9 @@ describe("syncing Changelog events", () => {
 
   it("should handle a valid admin value update", async () => {
     const event = createKafkaEvent({
-      [`${TOPIC}-02`]: [
+      [`${TOPIC}-03`]: [
         createKafkaRecord({
-          topic: `${TOPIC}-02`,
+          topic: `${TOPIC}-03`,
           key: TEST_ITEM_KEY,
           value: convertObjToBase64({
             id: TEST_ITEM_ID,
@@ -237,9 +237,9 @@ describe("syncing Changelog events", () => {
 
   it("should handle a valid admin value and id update", async () => {
     const event = createKafkaEvent({
-      [`${TOPIC}-02`]: [
+      [`${TOPIC}-03`]: [
         createKafkaRecord({
-          topic: `${TOPIC}-02`,
+          topic: `${TOPIC}-03`,
           key: TEST_ITEM_KEY,
           value: convertObjToBase64({
             id: TEST_ITEM_ID,
@@ -254,7 +254,7 @@ describe("syncing Changelog events", () => {
           offset: 3,
         }),
         createKafkaRecord({
-          topic: `${TOPIC}-02`,
+          topic: `${TOPIC}-03`,
           key: TEST_ITEM_UPDATE_KEY,
           value: convertObjToBase64({
             id: TEST_ITEM_UPDATE_ID,
@@ -348,9 +348,9 @@ describe("syncing Changelog events", () => {
 
   it("should handle a valid admin delete", async () => {
     const event = createKafkaEvent({
-      [`${TOPIC}-02`]: [
+      [`${TOPIC}-03`]: [
         createKafkaRecord({
-          topic: `${TOPIC}-02`,
+          topic: `${TOPIC}-03`,
           key: TEST_ITEM_KEY,
           value: convertObjToBase64({
             id: TEST_ITEM_ID,
@@ -484,9 +484,9 @@ describe("syncing Changelog events", () => {
 
   it("should skip invalid admin id update", async () => {
     const event = createKafkaEvent({
-      [`${TOPIC}-02`]: [
+      [`${TOPIC}-03`]: [
         createKafkaRecord({
-          topic: `${TOPIC}-02`,
+          topic: `${TOPIC}-03`,
           key: TEST_ITEM_UPDATE_KEY,
           value: convertObjToBase64({
             id: TEST_ITEM_UPDATE_ID,

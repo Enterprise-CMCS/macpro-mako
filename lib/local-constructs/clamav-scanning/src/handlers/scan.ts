@@ -37,13 +37,7 @@ export async function handler(event: any): Promise<string[]> {
       s3ObjectKey = extractKeyFromS3Event(sqsMessageBody);
       s3ObjectBucket = extractBucketFromS3Event(sqsMessageBody);
     } catch (error) {
-      logger.error(
-        `Error extracting data from record: ${JSON.stringify(
-          record,
-          null,
-          2,
-        )}` + error,
-      );
+      logger.error(`Error extracting data from record: ${JSON.stringify(record, null, 2)}` + error);
       results.push(STATUS_ERROR_PROCESSING_FILE);
       continue;
     }
@@ -57,10 +51,7 @@ export async function handler(event: any): Promise<string[]> {
         results.push(virusScanStatus);
         continue;
       }
-      const fileLoc: string = await downloadFileFromS3(
-        s3ObjectKey,
-        s3ObjectBucket,
-      );
+      const fileLoc: string = await downloadFileFromS3(s3ObjectKey, s3ObjectBucket);
       virusScanStatus = await checkFileExt(fileLoc);
       if (virusScanStatus !== STATUS_CLEAN_FILE) {
         await tagWithScanStatus(s3ObjectBucket, s3ObjectKey, virusScanStatus);

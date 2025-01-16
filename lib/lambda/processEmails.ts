@@ -154,7 +154,10 @@ export function validateEmailTemplate(template: any) {
 }
 
 export async function processAndSendEmails(record: any, id: string, config: ProcessEmailConfig) {
-  const templates = await getEmailTemplates<typeof record>(record.event, record.authority);
+  const templates = await getEmailTemplates<typeof record>(
+    record.event,
+    record.authority.toLowerCase(),
+  );
 
   if (!templates) {
     console.log(
@@ -172,6 +175,11 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
   const sec = await getSecret(config.emailAddressLookupSecretName);
 
   const item = await os.getItem(config.osDomain, getNamespace("main"), id);
+  if (!item?.found || !item?._source) {
+    console.log(`The package was not found for id: ${id}. Doing nothing.`);
+    return;
+  }
+
   const cpocEmail = [...getCpocEmail(item)];
   const srtEmails = [...getSrtEmails(item)];
 

@@ -78,8 +78,7 @@ export const v202401: FormSchema = {
                     value: "mco",
                   },
                   {
-                    label:
-                      "Health insuring organization (HIO) (California only)",
+                    label: "Health insuring organization (HIO) (California only)",
                     value: "hio",
                   },
                   {
@@ -206,8 +205,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Checkbox",
-              label:
-                "Which of the following will apply to the managed care program?",
+              label: "Which of the following will apply to the managed care program?",
               labelClassName: "font-bold",
               name: "voluntary-enrollment-options",
               rules: {
@@ -249,8 +247,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                         props: {
@@ -340,8 +337,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                         props: {
@@ -365,8 +361,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                         props: {

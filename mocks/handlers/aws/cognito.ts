@@ -286,7 +286,9 @@ export const identityProviderServiceHandler = http.post<
       );
       return passthrough();
     }
-
+    if (target == "AWSCognitoIdentityProviderService.AdminUpdateUserAttributes") {
+      return new HttpResponse(null, { status: 200 });
+    }
     if (target == "AWSCognitoIdentityProviderService.GetUser") {
       const { AccessToken } = (await request.json()) as IdpRequestSessionBody;
       const username = getUsernameFromAccessToken(AccessToken) || process.env.MOCK_USER_USERNAME;

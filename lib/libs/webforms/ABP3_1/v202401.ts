@@ -2,8 +2,7 @@ import { FormSchema } from "shared-types";
 import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 export const v202401: FormSchema = {
-  header:
-    "ABP 3.1 Selection of benchmark or benchmark-equivalent benefit package",
+  header: "ABP 3.1 Selection of benchmark or benchmark-equivalent benefit package",
   formId: "abp3-1",
   sections: [
     {
@@ -11,8 +10,7 @@ export const v202401: FormSchema = {
       sectionId: "benefit-package-details",
       form: [
         {
-          description:
-            "For the population defined in Section 1, the state/territory wants to:",
+          description: "For the population defined in Section 1, the state/territory wants to:",
           slots: [
             {
               rhf: "Radio",
@@ -108,8 +106,7 @@ export const v202401: FormSchema = {
                                         required: "* Required",
                                         pattern: {
                                           value: /^\S(.*\S)?$/,
-                                          message:
-                                            "Must not have leading or trailing whitespace.",
+                                          message: "Must not have leading or trailing whitespace.",
                                         },
                                       },
                                     },
@@ -132,8 +129,7 @@ export const v202401: FormSchema = {
                                         required: "* Required",
                                         pattern: {
                                           value: /^\S(.*\S)?$/,
-                                          message:
-                                            "Must not have leading or trailing whitespace.",
+                                          message: "Must not have leading or trailing whitespace.",
                                         },
                                       },
                                     },
@@ -174,8 +170,7 @@ export const v202401: FormSchema = {
                                                             {
                                                               label:
                                                                 "Benefits provided in the approved state plan plus additional benefits",
-                                                              value:
-                                                                "additional_benefits",
+                                                              value: "additional_benefits",
                                                             },
                                                             {
                                                               label:
@@ -186,8 +181,7 @@ export const v202401: FormSchema = {
                                                             {
                                                               label:
                                                                 "A partial list of benefits provided in the approved state plan",
-                                                              value:
-                                                                "partial_list",
+                                                              value: "partial_list",
                                                             },
                                                             {
                                                               label:
@@ -198,8 +192,7 @@ export const v202401: FormSchema = {
                                                           ],
                                                         },
                                                         rules: {
-                                                          required:
-                                                            "* Required",
+                                                          required: "* Required",
                                                         },
                                                       },
                                                     ],
@@ -226,8 +219,7 @@ export const v202401: FormSchema = {
                                           rules: {
                                             required: "* Required",
                                             pattern: {
-                                              value:
-                                                noLeadingTrailingWhitespace,
+                                              value: noLeadingTrailingWhitespace,
                                               message:
                                                 "Must not have leading or trailing whitespace.",
                                             },
@@ -280,8 +272,7 @@ export const v202401: FormSchema = {
                                         required: "* Required",
                                         pattern: {
                                           value: /^\S(.*\S)?$/,
-                                          message:
-                                            "Must not have leading or trailing whitespace.",
+                                          message: "Must not have leading or trailing whitespace.",
                                         },
                                       },
                                     },
@@ -304,8 +295,7 @@ export const v202401: FormSchema = {
                                         required: "* Required",
                                         pattern: {
                                           value: /^\S(.*\S)?$/,
-                                          message:
-                                            "Must not have leading or trailing whitespace.",
+                                          message: "Must not have leading or trailing whitespace.",
                                         },
                                       },
                                     },
@@ -360,8 +350,7 @@ export const v202401: FormSchema = {
             {
               name: "is-ehb-bench-plan-same-section-1937",
               rhf: "Select",
-              label:
-                "Is the EHB-benchmark plan the same as the Section 1937 coverage option?",
+              label: "Is the EHB-benchmark plan the same as the Section 1937 coverage option?",
               labelClassName: "font-bold",
               rules: {
                 required: "* Required",
@@ -541,8 +530,7 @@ export const v202401: FormSchema = {
                               value: "largest_three_state_FEHBP_plans",
                             },
                             {
-                              label:
-                                "The largest insured commercial, non-Medicaid HMO",
+                              label: "The largest insured commercial, non-Medicaid HMO",
                               value: "larged_insured_commercial",
                             },
                           ],
@@ -585,8 +573,7 @@ export const v202401: FormSchema = {
                                   value: "largest_three_state_FEHBP_plans",
                                 },
                                 {
-                                  label:
-                                    "The largest insured commercial, non-Medicaid HMO",
+                                  label: "The largest insured commercial, non-Medicaid HMO",
                                   value: "larged_insured_commercial",
                                 },
                               ],
@@ -1063,10 +1050,8 @@ export const v202401: FormSchema = {
                                   ],
                                 },
                                 {
-                                  label:
-                                    "Mental health and substance use disorders",
-                                  value:
-                                    "mental_health_and_substance_use_disorders",
+                                  label: "Mental health and substance use disorders",
+                                  value: "mental_health_and_substance_use_disorders",
                                   slots: [
                                     {
                                       rhf: "Select",
@@ -1297,10 +1282,8 @@ export const v202401: FormSchema = {
                                   ],
                                 },
                                 {
-                                  label:
-                                    "Rehabilitative and habilitative services and devices",
-                                  value:
-                                    "rehabilitative_and_habilitative_services_and_devices",
+                                  label: "Rehabilitative and habilitative services and devices",
+                                  value: "rehabilitative_and_habilitative_services_and_devices",
                                   slots: [
                                     {
                                       rhf: "Select",
@@ -1649,10 +1632,8 @@ export const v202401: FormSchema = {
                                   ],
                                 },
                                 {
-                                  label:
-                                    "Pediatric services, including oral and vision care",
-                                  value:
-                                    "pediatric_services_including_oral_and_vision_care",
+                                  label: "Pediatric services, including oral and vision care",
+                                  value: "pediatric_services_including_oral_and_vision_care",
                                   slots: [
                                     {
                                       rhf: "Select",

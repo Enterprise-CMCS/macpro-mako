@@ -1,5 +1,5 @@
 import { Waiver1915bCMSEmail } from "libs/email/content/newSubmission/emailTemplates";
-import { emailTemplateValue } from "libs/email/mock-data/new-submission" ;
+import { emailTemplateValue } from "libs/email/mock-data/new-submission";
 
 export const Waiver1915bCMSCapitatedInitialEmailPreview = () => {
   return (

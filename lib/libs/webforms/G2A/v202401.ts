@@ -2,8 +2,7 @@ import { FormSchema, DefaultFieldGroupProps } from "shared-types";
 import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 export const v202401: FormSchema = {
-  header:
-    "Premiums and cost sharing G2a: Cost-sharing amounts—Categorically needy individuals",
+  header: "Premiums and cost sharing G2a: Cost-sharing amounts—Categorically needy individuals",
   subheader: "1916 | 1916A | 42 CFR 447.52 through 447.54",
   formId: "g2a",
   sections: [
@@ -39,8 +38,7 @@ export const v202401: FormSchema = {
       ],
     },
     {
-      title:
-        "Services or items with the same cost-sharing amounts for all incomes",
+      title: "Services or items with the same cost-sharing amounts for all incomes",
       subsection: true,
       sectionId: "services-same-all-income",
       form: [
@@ -53,8 +51,7 @@ export const v202401: FormSchema = {
                 ...DefaultFieldGroupProps,
                 appendText: "Add service or item",
                 removeText: "Remove",
-                fieldArrayClassName:
-                  DefaultFieldGroupProps.fieldArrayClassName + "space-y-6",
+                fieldArrayClassName: DefaultFieldGroupProps.fieldArrayClassName + "space-y-6",
               },
               fields: [
                 {
@@ -167,8 +164,7 @@ export const v202401: FormSchema = {
                 ...DefaultFieldGroupProps,
                 appendText: "Add service or item",
                 removeText: "Remove",
-                fieldArrayClassName:
-                  DefaultFieldGroupProps.fieldArrayClassName + "space-y-6",
+                fieldArrayClassName: DefaultFieldGroupProps.fieldArrayClassName + "space-y-6",
               },
               fields: [
                 {
@@ -201,8 +197,7 @@ export const v202401: FormSchema = {
                       rhf: "WrappedGroup",
                       name: "wrapped",
                       props: {
-                        wrapperClassName:
-                          "space-between flex-row flex w-full gap-5",
+                        wrapperClassName: "space-between flex-row flex w-full gap-5",
                       },
                       fields: [
                         {
@@ -240,8 +235,7 @@ export const v202401: FormSchema = {
                       rhf: "WrappedGroup",
                       name: "wrapped",
                       props: {
-                        wrapperClassName:
-                          "space-between flex-row flex w-full gap-5",
+                        wrapperClassName: "space-between flex-row flex w-full gap-5",
                       },
                       fields: [
                         {
@@ -315,8 +309,7 @@ export const v202401: FormSchema = {
                       rules: {
                         pattern: {
                           value: noLeadingTrailingWhitespace,
-                          message:
-                            "Must not have leading or trailing whitespace.",
+                          message: "Must not have leading or trailing whitespace.",
                         },
                       },
                     },
@@ -329,8 +322,7 @@ export const v202401: FormSchema = {
       ],
     },
     {
-      title:
-        "Cost sharing for non-preferred drugs charged to otherwise exempt individuals",
+      title: "Cost sharing for non-preferred drugs charged to otherwise exempt individuals",
       subsection: true,
       sectionId: "cost-share-charge-otherwise-exempt",
       form: [
@@ -402,8 +394,7 @@ export const v202401: FormSchema = {
                   rhf: "WrappedGroup",
                   name: "rateWrapper",
                   props: {
-                    wrapperClassName:
-                      "space-between flex-row flex w-full gap-5",
+                    wrapperClassName: "space-between flex-row flex w-full gap-5",
                   },
                   fields: [
                     {
@@ -562,8 +553,7 @@ export const v202401: FormSchema = {
                   rhf: "WrappedGroup",
                   name: "rateWrapper",
                   props: {
-                    wrapperClassName:
-                      "space-between flex-row flex w-full gap-5",
+                    wrapperClassName: "space-between flex-row flex w-full gap-5",
                   },
                   fields: [
                     {
