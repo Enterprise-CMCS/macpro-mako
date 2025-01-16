@@ -10,64 +10,42 @@ import { ItemResult } from "shared-types/opensearch/main";
 export const submitNOSOAdminSchema = z
   .object({
     packageId: z.string(),
-    adminChangeType: z.literal("NOSO"),
+    action: z.literal("NOSO"),
     copyAttachmentsFrom: z.string().optional(),
-    changeIdTo: z.string().optional(),
   })
   .and(z.record(z.string(), z.any()));
 
 export const transformSubmitValuesSchema = submitNOSOAdminSchema.transform((data) => ({
   ...data,
+  adminChangeType: "NOSO",
   event: "NOSO",
+  id: data.packageId,
   packageId: data.packageId,
   timestamp: Date.now(),
+  copyAttachmentsFromId: z.string().optional(),
 }));
 
-const sendSubmitMessage = async ({
-  packageId,
-  currentPackage,
-}: {
-  packageId: string;
-  currentPackage: ItemResult;
-}) => {
-  const topicName = process.env.topicName as string;
-  if (!topicName) {
-    throw new Error("Topic name is not defined");
-  }
-  await produceMessage(
-    topicName,
-    packageId,
-    JSON.stringify({
-      ...currentPackage._source,
-      event: "legacy-admin-change", // this is added to ensure the frontend looks as it should
-      origin: "SEATool",
-      isAdminChange: true,
-      adminChangeType: "NOSO",
-      changeMade: `${packageId} added to OneMAC. Package not originally submitted in OneMAC. At this time, the attachments for this package are unavailable in this system. Contact your CPOC to verify the initial submission documents.`,
-      changeReason: `This is a Not Originally Submitted in OneMAC (NOSO) that users need to see in OneMAC.`,
-    }),
-  );
+export const copyAttachments = async (data: any) => {
+  //ANDIE: change type not any
+  // change any
+  if (!data.copyAttachmentsFromId) return data;
+  const copyAttachmentsFromId = data.copyAttachments;
 
-  return response({
-    statusCode: 200,
-    body: { message: `${packageId} has been submitted.` },
-  });
-};
-
-const copyAttachments = async ({
-  currentPackage,
-  copyAttachmentsFromId,
-}: {
-  currentPackage: ItemResult;
-  copyAttachmentsFromId: string;
-}) => {
   // get the attachementPackage
   const attachPackage = await getPackage(copyAttachmentsFromId);
   const attachPackageChangelog = await getPackageChangelog(copyAttachmentsFromId);
 
+  const currentPackage = await getPackage(data.id);
+  const currentPackageChangelog = await getPackageChangelog(data.id);
+
   if (!attachPackage || attachPackage.found == false) {
     console.error(`Copy Attachment Package of id: ${copyAttachmentsFromId} not found`);
-    return;
+    return data;
+  }
+
+  if (!currentPackage || currentPackage.found == false) {
+    console.error(`Current package id: ${currentPackage} not found`);
+    return data;
   }
 
   // check if the authorities match
@@ -75,7 +53,7 @@ const copyAttachments = async ({
     console.error(
       `Copy Attachment Package of id: ${copyAttachmentsFromId} does not have the same authority as ${currentPackage._id}.`,
     );
-    return;
+    return data;
   }
 
   if (attachPackage) {
@@ -93,10 +71,46 @@ const copyAttachments = async ({
     console.log("actual attachments:? ", JSON.stringify(attachments));
     console.log("Current package: ", currentPackage);
 
-    // currentPackage.attachments = attachments;
-  }
+    // add the attachments to the last index of the currentPackage Change Log
+    const length = currentPackageChangelog.hits.hits.length;
+    currentPackageChangelog.hits.hits[length]._source.attachments = attachments;
+    console.log("Did I change it??", currentPackageChangelog.hits.hits[length]);
 
-  return currentPackage;
+    return currentPackageChangelog.hits.hits[length];
+  }
+};
+
+const sendSubmitMessage = async ({
+  packageId,
+  currentPackage,
+  copyAttachmentsFromId,
+}: {
+  packageId: string;
+  currentPackage: ItemResult;
+  copyAttachmentsFromId?: string;
+}) => {
+  const topicName = process.env.topicName as string;
+  if (!topicName) {
+    throw new Error("Topic name is not defined");
+  }
+  await produceMessage(
+    topicName,
+    packageId,
+    JSON.stringify({
+      ...currentPackage._source,
+      copyAttachmentsFromId: copyAttachmentsFromId,
+      origin: "SEATool",
+      isAdminChange: true,
+      adminChangeType: "NOSO",
+      changeMade: `${packageId} added to OneMAC. Package not originally submitted in OneMAC. At this time, the attachments for this package are unavailable in this system. Contact your CPOC to verify the initial submission documents.`,
+      changeReason: `This is a Not Originally Submitted in OneMAC (NOSO) that users need to see in OneMAC.`,
+    }),
+  );
+
+  return response({
+    statusCode: 200,
+    body: { message: `${packageId} has been submitted.` },
+  });
 };
 
 export const handler = async (event: APIGatewayEvent) => {
@@ -108,10 +122,9 @@ export const handler = async (event: APIGatewayEvent) => {
   }
   try {
     // add a property for new ID
-    const { packageId, action, copyAttachmentsFromId, changeIdTo } = submitNOSOAdminSchema.parse(
+    const { packageId, action, copyAttachmentsFromId } = submitNOSOAdminSchema.parse(
       event.body === "string" ? JSON.parse(event.body) : event.body,
     );
-    console.log("ID:", packageId);
     let currentPackage: ItemResult | undefined = await getPackage(packageId);
 
     // currentpackage should have been entered in seaTool
@@ -122,22 +135,9 @@ export const handler = async (event: APIGatewayEvent) => {
       });
     }
 
-    // if there was a PackageId to copy attachments for perform that action
-    if (copyAttachmentsFromId) {
-      const tempCopy = await copyAttachments({ currentPackage, copyAttachmentsFromId });
-      // we don't want to rewrite over the package unless a valid currentPackage is returned.
-      if (tempCopy) currentPackage = tempCopy;
-    }
-
-    // if split spa & packageID to be changed
-    if (changeIdTo) {
-      currentPackage._id = changeIdTo;
-      currentPackage._source.id = changeIdTo;
-      console.log("CHANGE PACKAGE: ", currentPackage);
-    }
-
     if (action === "NOSO" && currentPackage !== undefined) {
-      return await sendSubmitMessage({ packageId, currentPackage });
+      // copying over attachments is handled in sinkChangeLog
+      return await sendSubmitMessage({ packageId, currentPackage, copyAttachmentsFromId });
     }
 
     return response({

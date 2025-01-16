@@ -9,6 +9,7 @@ import {
 } from "./update/adminChangeSchemas";
 import { transformSubmitValuesSchema } from "./submit/submitNOSO";
 import { getPackageChangelog } from "lib/libs/api/package";
+import { copyAttachments } from "./submit/submitNOSO";
 
 // One notable difference between this handler and sinkMain's...
 // The order in which records are processed for the changelog doesn't matter.
@@ -75,6 +76,8 @@ const processAndIndex = async ({
 
         const result = schema.safeParse(record);
 
+        // attachments function
+
         if (result.success) {
           if (result.data.adminChangeType === "update-id") {
             docs.forEach((log) => {
@@ -97,6 +100,9 @@ const processAndIndex = async ({
                 packageId: result.data.id,
               });
             });
+          } else if (result.data.adminChangeType === "NOSO") {
+            const data = copyAttachments(result.data);
+            docs.push(data);
           } else {
             docs.push(result.data);
           }

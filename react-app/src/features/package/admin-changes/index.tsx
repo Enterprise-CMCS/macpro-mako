@@ -60,9 +60,6 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
         }
         return ["Disable Formal RAI Response Withdraw", AC_WithdrawDisabled];
       }
-      case "delete":
-      case "update-values":
-      case "update-id":
       case "NOSO":
       case "legacy-admin-change":
         return [props.changeType || "Manual Update", AC_LegacyAdminChange];
