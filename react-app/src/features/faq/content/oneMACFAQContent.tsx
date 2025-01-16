@@ -884,7 +884,8 @@ export const oneMACFAQContent: FAQContent[] = [
                     rel="noopener noreferrer"
                     className="text-blue-600"
                   >
-                    {pdf.title}{pdf.text && `: ${pdf.text}`}
+                    {pdf.title}
+                    {pdf.text && `: ${pdf.text}`}
                   </a>
                 </li>
               ))}
@@ -938,7 +939,8 @@ export const oneMACFAQContent: FAQContent[] = [
                     rel="noopener noreferrer"
                     className="text-blue-600"
                   >
-                    {pdf.title}{pdf.text && `: ${pdf.text}`}
+                    {pdf.title}
+                    {pdf.text && `: ${pdf.text}`}
                   </a>
                 </li>
               ))}
@@ -1018,7 +1020,16 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <section className="space-y-2 ">
             <p>CHIP eligibility SPA implementation guides can be downloaded at the links below.</p>
-            <p><a href="/chp/IG_ChipEligibilityIntroduction_Final_20241205.pdf" target="_blank" rel="noopener noreferrer" className="text-blue-600">CHIP Eligibility Introduction</a></p>
+            <p>
+              <a
+                href="/chp/IG_ChipEligibilityIntroduction_Final_20241205.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600"
+              >
+                CHIP Eligibility Introduction
+              </a>
+            </p>
             <ul className="list-disc pl-6 space-y-2">
               {renderSection(
                 "MAGI Eligibility & Methods",
