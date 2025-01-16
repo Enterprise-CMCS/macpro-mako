@@ -9,7 +9,7 @@ import { ItemResult } from "shared-types/opensearch/main";
 // create admin schemas
 export const submitNOSOAdminSchema = z
   .object({
-    id: z.string(),
+    packageId: z.string(),
     adminChangeType: z.literal("NOSO"),
   })
   .and(z.record(z.string(), z.any()));
@@ -17,7 +17,7 @@ export const submitNOSOAdminSchema = z
 export const transformSubmitValuesSchema = submitNOSOAdminSchema.transform((data) => ({
   ...data,
   event: "NOSO",
-  packageId: data.id,
+  packageId: data.packageId,
   timestamp: Date.now(),
 }));
 
@@ -83,6 +83,8 @@ const copyAttachments = async ({
     console.log(" change log: ", attachPackageChangelog.hits.hits[0]._source);
 
     const attachments = attachPackageChangelog.hits.hits.reduce((prev, current) => {
+      // check that attachments exsists
+      if (!current._source.attachments) return [...prev];
       return [...prev, ...current._source.attachments];
     }, []);
 

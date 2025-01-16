@@ -60,12 +60,16 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
         }
         return ["Disable formal RAI response withdraw", AC_WithdrawDisabled];
       }
+      case "delete":
+      case "update-values":
+      case "update-id":
+      case "NOSO":
       case "legacy-admin-change":
         return [props.changeType || "Manual Update", AC_LegacyAdminChange];
       default:
         return [BLANK_VALUE, AC_Update];
     }
-  }, [props.actionType, props.changeType]);
+  }, [props.changeType, props.event, props.raiWithdrawEnabled]);
 
   return (
     <AccordionItem key={props.id} value={props.id}>
