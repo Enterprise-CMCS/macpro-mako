@@ -19,9 +19,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     for (const topicPartition of Object.keys(event.records)) {
       const topic = getTopic(topicPartition);
       switch (topic) {
-        case undefined:
-          logError({ type: ErrorType.BADTOPIC });
-          throw new Error();
         case "aws.onemac.migration.cdc":
           // await legacyAdminChanges(
           //   event.records[topicPartition],
@@ -34,6 +31,9 @@ export const handler: Handler<KafkaEvent> = async (event) => {
             topicPartition: topicPartition,
           });
           break;
+        default:
+          logError({ type: ErrorType.BADTOPIC });
+          throw new Error(`topic (${topicPartition}) is invalid`);
       }
     }
   } catch (error) {
@@ -86,6 +86,7 @@ const processAndIndex = async ({
                 packageId: result.data.id,
               });
             });
+
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
 
             packageChangelogs.hits.hits.forEach((log) => {
@@ -127,7 +128,6 @@ const processAndIndex = async ({
           });
           continue;
         }
-        console.log(JSON.stringify(result.data, null, 2));
         docs.push(result.data);
       } else {
         console.log(`No transform found for event: ${record.event}`);

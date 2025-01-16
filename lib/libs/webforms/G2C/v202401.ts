@@ -134,8 +134,7 @@ export const v202401: FormSchema = {
                   props: {
                     appendText: "Add service",
                     fieldArrayClassName:
-                      DefaultFieldGroupProps.fieldArrayClassName +
-                      "divider-parent-element",
+                      DefaultFieldGroupProps.fieldArrayClassName + "divider-parent-element",
                   },
                   fields: [
                     {
@@ -237,8 +236,7 @@ export const v202401: FormSchema = {
                           rules: {
                             pattern: {
                               value: noLeadingTrailingWhitespace,
-                              message:
-                                "Must not have leading or trailing whitespace.",
+                              message: "Must not have leading or trailing whitespace.",
                             },
                           },
                         },

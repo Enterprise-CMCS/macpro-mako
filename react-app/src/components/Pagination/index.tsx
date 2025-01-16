@@ -87,9 +87,7 @@ export const Pagination: FC<Props> = (props) => {
                   >
                     ...
                     <select
-                      onChange={(v) =>
-                        props.onPageChange(Number(v.currentTarget.value) - 1)
-                      }
+                      onChange={(v) => props.onPageChange(Number(v.currentTarget.value) - 1)}
                       className="absolute w-auto h-auto opacity-0 cursor-pointer"
                       aria-labelledby="morePagesButton"
                       data-testid="morePagesButton"

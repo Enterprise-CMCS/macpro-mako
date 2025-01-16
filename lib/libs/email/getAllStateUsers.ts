@@ -37,10 +37,13 @@ export const getAllStateUsers = async ({
       const stateAttribute = user.Attributes?.find((attr) => attr.Name === "custom:state");
       return stateAttribute?.Value?.split(",").includes(state);
     }).map((user) => {
-      const attributes = user.Attributes?.reduce((acc, attr) => {
-        acc[attr.Name as any] = attr.Value;
-        return acc;
-      }, {} as Record<string, string | undefined>);
+      const attributes = user.Attributes?.reduce(
+        (acc, attr) => {
+          acc[attr.Name as any] = attr.Value;
+          return acc;
+        },
+        {} as Record<string, string | undefined>,
+      );
       return {
         firstName: attributes?.["given_name"],
         lastName: attributes?.["family_name"],

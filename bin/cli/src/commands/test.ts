@@ -16,9 +16,7 @@ export const test = {
       })
       .check((argv) => {
         if (argv.coverage && argv.ui) {
-          throw new Error(
-            "You cannot use both --watch and --ui at the same time.",
-          );
+          throw new Error("You cannot use both --watch and --ui at the same time.");
         }
         return true;
       });

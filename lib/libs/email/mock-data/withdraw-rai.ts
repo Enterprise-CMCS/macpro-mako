@@ -1,16 +1,10 @@
-export const emailTemplateValue = {
-  territory: "CO",
-  applicationEndpointUrl: "https://mako-dev.cms.gov/",
-  actionType: "Withdrawal",
-  origin: "mako",
-  get requestedDate() {
-    return Date.now() - 5 * 24 * 60 * 60;
-  },
-  get withdrawnDate() {
-    return Date.now();
-  },
+import { Events } from "lib/packages/shared-types/events";
+
+export const emailTemplateValue: Omit<Events["WithdrawRai"], "id" | "authority"> = {
+  event: "withdraw-rai" as const,
+  origin: "mako" as const,
   attachments: {
-    cmsForm179: {
+    supportingDocumentation: {
       files: [
         {
           filename: "withdraw-documentation.pdf",
@@ -21,18 +15,6 @@ export const emailTemplateValue = {
         },
       ],
       label: "CMS Form 179",
-    },
-    spaPages: {
-      files: [
-        {
-          filename: "Addditional Information.pdf",
-          title: "Addditional Information",
-          bucket: "mako-outbox-attachments-635052997545",
-          key: "f581c0ec-cbb2-4875-a384-86c06136f4c4.pdf",
-          uploadDate: 1728493784252,
-        },
-      ],
-      label: "SPA Pages",
     },
   },
   additionalInformation:

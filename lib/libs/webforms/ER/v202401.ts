@@ -22,8 +22,7 @@ const a1DropdownOptions = [
   },
   {
     value: "cfr-435-226",
-    label:
-      "Independent foster care adolescents (1902(a)(10)(A)(ii)(XVII)/42 CFR §435.226)",
+    label: "Independent foster care adolescents (1902(a)(10)(A)(ii)(XVII)/42 CFR §435.226)",
   },
   {
     value: "cfr-435-229",
@@ -47,8 +46,7 @@ const a1DropdownOptions = [
   },
   {
     value: "cfr-435-215",
-    label:
-      "Individuals with tuberculosis (1902(a)(10)(A)(ii)(XII) and 1902(z)/42 CFR §435.215)",
+    label: "Individuals with tuberculosis (1902(a)(10)(A)(ii)(XII) and 1902(z)/42 CFR §435.215)",
   },
   {
     value: "cobra-1902",
@@ -77,18 +75,15 @@ const a1DropdownOptions = [
   },
   {
     value: "hospice-1905",
-    label:
-      "Individuals receiving hospice (1902(a)(10)(A)(ii)(VII) and 1905(o))",
+    label: "Individuals receiving hospice (1902(a)(10)(A)(ii)(VII) and 1905(o))",
   },
   {
     value: "cfr-435-225",
-    label:
-      "Children under age 19 with a disability (1902(e)(3)/42 CFR §435.225)",
+    label: "Children under age 19 with a disability (1902(e)(3)/42 CFR §435.225)",
   },
   {
     value: "age-disability-1902",
-    label:
-      "Age and disability-related poverty level (1902(a)(10)(A)(ii)(X) and 1902(m)(1)) ",
+    label: "Age and disability-related poverty level (1902(a)(10)(A)(ii)(X) and 1902(m)(1)) ",
   },
   { value: "work-1902", label: "Work incentives (1902(a)(10)(A)(ii)(XIII))" },
   {
@@ -119,8 +114,7 @@ const a1DropdownOptions = [
 const a2DroppdownOptionsIncome = [
   {
     value: "65-plus-blind-disability",
-    label:
-      "Individuals who are age 65 or older or who have blindness or a disability",
+    label: "Individuals who are age 65 or older or who have blindness or a disability",
   },
   { value: "qual-med-ben", label: "Qualified medicare beneficiaries " },
   {
@@ -164,8 +158,7 @@ const a2DroppdownOptionsIncome = [
   },
   {
     value: "med-needy-under-21",
-    label:
-      "Medically needy reasonable classifications of individuals under age 21",
+    label: "Medically needy reasonable classifications of individuals under age 21",
   },
   {
     value: "med-needy-parents",
@@ -179,8 +172,7 @@ const a2DroppdownOptionsIncome = [
 const a2DroppdownOptionsResource = [
   {
     value: "65-plus-blind-disability",
-    label:
-      "Individuals who are age 65 or older or who have blindness or a disability",
+    label: "Individuals who are age 65 or older or who have blindness or a disability",
   },
   { value: "qual-med-ben", label: "Qualified medicare beneficiaries " },
   {
@@ -228,8 +220,7 @@ const a2DroppdownOptionsResource = [
   },
   {
     value: "med-needy-under-21",
-    label:
-      "Medically needy reasonable classifications of individuals under age 21",
+    label: "Medically needy reasonable classifications of individuals under age 21",
   },
   {
     value: "med-needy-parents",
@@ -294,8 +285,7 @@ const b1DropdownOptions = [
   },
   {
     value: "med-needy-under-21",
-    label:
-      "Medically needy reasonable classifications of individuals under age 21",
+    label: "Medically needy reasonable classifications of individuals under age 21",
   },
   {
     value: "med-needy-parents",
@@ -318,13 +308,11 @@ const b2DropdownOptions = [
   },
   {
     value: "family-planning",
-    label:
-      "Individuals eligible for family planning services (if covered by state)",
+    label: "Individuals eligible for family planning services (if covered by state)",
   },
   {
     value: "breat-cervical-cancer",
-    label:
-      "Individuals needing treatment for breast or cervical cancer (if covered by state)",
+    label: "Individuals needing treatment for breast or cervical cancer (if covered by state)",
   },
 ];
 
@@ -437,8 +425,7 @@ const effectivePeriodSectionChildren = (letter: string): FormGroup[] => {
                       required: "* Required",
                       pattern: {
                         value: noLeadingTrailingWhitespace,
-                        message:
-                          "Must not have leading or trailing whitespace.",
+                        message: "Must not have leading or trailing whitespace.",
                       },
                     },
                   },
@@ -483,8 +470,7 @@ export const v202401: FormSchema = {
             {
               name: "add-prev-spa",
               rhf: "Radio",
-              label:
-                "Does this SPA add to a previously approved emergency relief SPA in effect?",
+              label: "Does this SPA add to a previously approved emergency relief SPA in effect?",
               labelClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
@@ -505,8 +491,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -519,8 +504,7 @@ export const v202401: FormSchema = {
             {
               name: "supersede-prev-spa",
               rhf: "Radio",
-              label:
-                "Does this SPA supersede a previously approved emergency relief SPA?",
+              label: "Does this SPA supersede a previously approved emergency relief SPA?",
               labelClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
@@ -541,8 +525,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -622,8 +605,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -635,8 +617,7 @@ export const v202401: FormSchema = {
             {
               name: "sections-modified",
               rhf: "Checkbox",
-              label:
-                "Sections modified during the period of the public health emergency",
+              label: "Sections modified during the period of the public health emergency",
               labelClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
@@ -731,9 +712,7 @@ export const v202401: FormSchema = {
       subsection: true,
       title: "A - Eligibility options elected",
       dependency: {
-        conditions: [
-          { type: "valueExists", name: "ers_a-eligible_options-elected" },
-        ],
+        conditions: [{ type: "valueExists", name: "ers_a-eligible_options-elected" }],
         effect: { type: "show" },
       },
       form: [
@@ -847,8 +826,7 @@ export const v202401: FormSchema = {
                           },
                           {
                             value: "parents-caretakers",
-                            label:
-                              "Medically needy parents and other caretaker relatives",
+                            label: "Medically needy parents and other caretaker relatives",
                           },
                           {
                             value: "age-blind-disability",
@@ -909,8 +887,7 @@ export const v202401: FormSchema = {
                           },
                           {
                             value: "parents-caretakers",
-                            label:
-                              "Medically needy parents and other caretaker relatives",
+                            label: "Medically needy parents and other caretaker relatives",
                           },
                           {
                             value: "age-blind-disability",
@@ -1130,8 +1107,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                         labelClassName: "text-black font-bold",
@@ -1178,8 +1154,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                         labelClassName: "text-black font-bold",
@@ -1355,8 +1330,7 @@ export const v202401: FormSchema = {
       },
       form: [
         {
-          description:
-            "1. Modify the agency’s approved hospital presumptive eligibility program.",
+          description: "1. Modify the agency’s approved hospital presumptive eligibility program.",
           dependency: {
             conditions: [
               {
@@ -1426,8 +1400,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     value: "performance-standards",
-                    label:
-                      "Modify the performance standards for participating hospitals.",
+                    label: "Modify the performance standards for participating hospitals.",
                     slots: [
                       {
                         rhf: "Textarea",
@@ -1488,8 +1461,7 @@ export const v202401: FormSchema = {
               rhf: "Multiselect",
               name: "b2-magi-groups",
               rules: { required: "* Required" },
-              label:
-                "State plan MAGI groups to which presumptive eligibility may be applied",
+              label: "State plan MAGI groups to which presumptive eligibility may be applied",
               labelClassName: "font-bold text-black",
               props: {
                 options: b2DropdownOptions,
@@ -1560,8 +1532,7 @@ export const v202401: FormSchema = {
           ],
         },
         {
-          description:
-            "3. Designate additional qualified entities for presumptive eligibility.",
+          description: "3. Designate additional qualified entities for presumptive eligibility.",
           dependency: {
             conditions: [
               {
@@ -1593,8 +1564,7 @@ export const v202401: FormSchema = {
               rhf: "Multiselect",
               name: "b3-magi-groups",
               rules: { required: "* Required" },
-              label:
-                "State plan MAGI groups to which presumptive eligibility may be applied",
+              label: "State plan MAGI groups to which presumptive eligibility may be applied",
               labelClassName: "font-bold text-black",
               props: {
                 options: b2DropdownOptions,
@@ -1714,13 +1684,11 @@ export const v202401: FormSchema = {
                   },
                   {
                     value: "3-suspend_enrollment_fees",
-                    label:
-                      "3. Suspend enrollment fees, premiums, and similar charges.",
+                    label: "3. Suspend enrollment fees, premiums, and similar charges.",
                   },
                   {
                     value: "4-reduce_enrollment_fees",
-                    label:
-                      "4. Reduce enrollment fees, premiums, and similar charges.",
+                    label: "4. Reduce enrollment fees, premiums, and similar charges.",
                   },
                   {
                     value: "5-hardship_waiver",
@@ -1739,9 +1707,7 @@ export const v202401: FormSchema = {
       subsection: true,
       title: "C - Cost sharing and premiums options elected",
       dependency: {
-        conditions: [
-          { type: "valueExists", name: "ers_c-costshare_options-elected" },
-        ],
+        conditions: [{ type: "valueExists", name: "ers_c-costshare_options-elected" }],
         effect: { type: "show" },
       },
       form: [
@@ -1819,8 +1785,7 @@ export const v202401: FormSchema = {
           ],
         },
         {
-          description:
-            "3. Suspend enrollment fees, premiums, and similar charges.",
+          description: "3. Suspend enrollment fees, premiums, and similar charges.",
           dependency: {
             conditions: [
               {
@@ -1835,8 +1800,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Radio",
               name: "suspension-beneficiaries",
-              label:
-                "The agency suspends enrollment fees, premiums, and similar charges for:",
+              label: "The agency suspends enrollment fees, premiums, and similar charges for:",
               labelClassName: "font-bold text-black",
               rules: { required: "* Required" },
               props: {
@@ -1867,8 +1831,7 @@ export const v202401: FormSchema = {
           ],
         },
         {
-          description:
-            "4. Reduce enrollment fees, premiums, and similar charges. ",
+          description: "4. Reduce enrollment fees, premiums, and similar charges. ",
           dependency: {
             conditions: [
               {
@@ -1884,8 +1847,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               rules: { required: "* Required" },
               name: "how-reduce-fess-premiums-sc",
-              label:
-                "How does the agency reduce enrollment fees, premiums, and similar charges?",
+              label: "How does the agency reduce enrollment fees, premiums, and similar charges?",
               labelClassName: "text-black font-bold",
               props: {
                 className: "h-[76px]",
@@ -1916,8 +1878,7 @@ export const v202401: FormSchema = {
               rhf: "Textarea",
               rules: { required: "* Required" },
               name: "unique-hardship-standards",
-              label:
-                "What are the standards and/or criteria for determining undue hardship?",
+              label: "What are the standards and/or criteria for determining undue hardship?",
               labelClassName: "text-black font-bold",
               props: {
                 className: "h-[76px]",
@@ -1986,8 +1947,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     value: "3-temp_adj_1915",
-                    label:
-                      "3. Benefits - temporarily adjust the 1915(i) benefit",
+                    label: "3. Benefits - temporarily adjust the 1915(i) benefit",
                   },
                   {
                     value: "4-compliance_reqs",
@@ -2018,8 +1978,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     value: "7-pharm_adj_supplies",
-                    label:
-                      "7. Pharmacy - adjust days’ supply or quantity limits",
+                    label: "7. Pharmacy - adjust days’ supply or quantity limits",
                   },
                   {
                     value: "8-pharm_mod_auth",
@@ -2027,13 +1986,11 @@ export const v202401: FormSchema = {
                   },
                   {
                     value: "9-pharm_add_payment",
-                    label:
-                      "9. Pharmacy - add supplement payment to professional dispensing fee",
+                    label: "9. Pharmacy - add supplement payment to professional dispensing fee",
                   },
                   {
                     value: "10-pharm_establish",
-                    label:
-                      "10. Pharmacy - establish preferred drug list (PDL) exceptions",
+                    label: "10. Pharmacy - establish preferred drug list (PDL) exceptions",
                   },
                   {
                     value: "11-pharm_waive_sig",
@@ -2083,8 +2040,7 @@ export const v202401: FormSchema = {
       title: "D - Benefits options elected",
       form: [
         {
-          description:
-            "1. Benefits—temporarily add optional 1905(a) benefit(s)",
+          description: "1. Benefits—temporarily add optional 1905(a) benefit(s)",
           dependency: {
             conditions: [
               {
@@ -2239,8 +2195,7 @@ export const v202401: FormSchema = {
                 {
                   rhf: "Textarea",
                   name: "service-scope",
-                  label:
-                    "Service description and/or amount, duration, and scope changes",
+                  label: "Service description and/or amount, duration, and scope changes",
                   labelClassName: "text-black font-bold",
                   props: { className: "h-[76px]" },
                   rules: {
@@ -2268,8 +2223,7 @@ export const v202401: FormSchema = {
                 {
                   rhf: "Textarea",
                   name: "assessment-consent-plan-policies",
-                  label:
-                    "Changes to assessment, consent, and service plan policies",
+                  label: "Changes to assessment, consent, and service plan policies",
                   labelClassName: "text-black font-bold",
                   props: { className: "h-[76px]" },
                   rules: {
@@ -2308,13 +2262,11 @@ export const v202401: FormSchema = {
                 options: [
                   {
                     value: "suspend-all-services",
-                    label:
-                      "Suspend prior authorization for all covered services.",
+                    label: "Suspend prior authorization for all covered services.",
                   },
                   {
                     value: "suspend-some-services",
-                    label:
-                      "Suspend prior authorization for certain covered services.",
+                    label: "Suspend prior authorization for certain covered services.",
                     slots: [
                       {
                         rhf: "Textarea",
@@ -2326,8 +2278,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -2353,8 +2304,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -2463,16 +2413,12 @@ export const v202401: FormSchema = {
                       {
                         value: "limits-cat-needy",
                         label: "Limits for categorically needy recipients",
-                        slots: [
-                          { rhf: "Textarea", name: "limits-cat-needy-desc" },
-                        ],
+                        slots: [{ rhf: "Textarea", name: "limits-cat-needy-desc" }],
                       },
                       {
                         value: "limits-med-needy",
                         label: "Limits for medically needy recipients",
-                        slots: [
-                          { rhf: "Textarea", name: "limits-med-needy-desc" },
-                        ],
+                        slots: [{ rhf: "Textarea", name: "limits-med-needy-desc" }],
                       },
                     ],
                   },
@@ -2499,8 +2445,7 @@ export const v202401: FormSchema = {
                     appendText: "Add provider type",
                     divider: true,
                     appendVariant: "default",
-                    fieldArrayClassName:
-                      DefaultFieldGroupProps.fieldArrayClassName,
+                    fieldArrayClassName: DefaultFieldGroupProps.fieldArrayClassName,
                   },
                   formItemClassName: childStyle,
                   fields: [
@@ -2513,8 +2458,7 @@ export const v202401: FormSchema = {
                         required: "* Required",
                         pattern: {
                           value: noLeadingTrailingWhitespace,
-                          message:
-                            "Must not have leading or trailing whitespace.",
+                          message: "Must not have leading or trailing whitespace.",
                         },
                       },
                     },
@@ -2535,8 +2479,7 @@ export const v202401: FormSchema = {
                             required: "* Required",
                             pattern: {
                               value: noLeadingTrailingWhitespace,
-                              message:
-                                "Must not have leading or trailing whitespace.",
+                              message: "Must not have leading or trailing whitespace.",
                             },
                           },
                         },
@@ -2550,8 +2493,7 @@ export const v202401: FormSchema = {
                             required: "* Required",
                             pattern: {
                               value: noLeadingTrailingWhitespace,
-                              message:
-                                "Must not have leading or trailing whitespace.",
+                              message: "Must not have leading or trailing whitespace.",
                             },
                           },
                         },
@@ -2584,8 +2526,7 @@ export const v202401: FormSchema = {
                         required: "* Required",
                         pattern: {
                           value: noLeadingTrailingWhitespace,
-                          message:
-                            "Must not have leading or trailing whitespace.",
+                          message: "Must not have leading or trailing whitespace.",
                         },
                       },
                     },
@@ -2599,8 +2540,7 @@ export const v202401: FormSchema = {
                         required: "* Required",
                         pattern: {
                           value: noLeadingTrailingWhitespace,
-                          message:
-                            "Must not have leading or trailing whitespace.",
+                          message: "Must not have leading or trailing whitespace.",
                         },
                       },
                     },
@@ -2701,8 +2641,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                         props: { className: "h-[76px]" },
@@ -2711,8 +2650,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     value: "service-scope",
-                    label:
-                      "Changes to limits on amount, duration, and scope of service",
+                    label: "Changes to limits on amount, duration, and scope of service",
                     slots: [
                       {
                         rhf: "Textarea",
@@ -2723,8 +2661,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                         props: { className: "h-[76px]" },
@@ -2744,8 +2681,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                         props: { className: "h-[76px]" },
@@ -2765,8 +2701,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                         props: { className: "h-[76px]" },
@@ -2837,8 +2772,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                             props: { className: "h-[76px]" },
@@ -2872,8 +2806,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                             props: { className: "h-[76px]" },
@@ -2906,8 +2839,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                             props: { className: "h-[76px]" },
@@ -2940,8 +2872,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                             props: { className: "h-[76px]" },
@@ -2974,8 +2905,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                             props: { className: "h-[76px]" },
@@ -2996,8 +2926,7 @@ export const v202401: FormSchema = {
                     options: [
                       {
                         value: "assured",
-                        label:
-                          "The telehealth will ensure the health and safety of an individual.",
+                        label: "The telehealth will ensure the health and safety of an individual.",
                         slots: [
                           {
                             rhf: "Textarea",
@@ -3008,8 +2937,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                             props: { className: "h-[76px]" },
@@ -3024,8 +2952,7 @@ export const v202401: FormSchema = {
             {
               rhf: "Textarea",
               name: "changes-made-to-1915-elig-proc",
-              label:
-                "Changes made to the 1915(i) eligibility evaluation process",
+              label: "Changes made to the 1915(i) eligibility evaluation process",
               labelClassName: "font-bold text-black",
               rules: {
                 required: "* Required",
@@ -3138,8 +3065,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     value: "not-applicable",
-                    label:
-                      "Not applicable: The state does not currently have an approved ABP.",
+                    label: "Not applicable: The state does not currently have an approved ABP.",
                   },
                 ],
               },
@@ -3164,8 +3090,7 @@ export const v202401: FormSchema = {
       title: "D - Benefits options elected - telehealth",
       form: [
         {
-          description:
-            "6. Telehealth - extend coverage of services provided via telehealth",
+          description: "6. Telehealth - extend coverage of services provided via telehealth",
           dependency: {
             conditions: [
               {
@@ -3281,8 +3206,7 @@ export const v202401: FormSchema = {
           ],
         },
         {
-          description:
-            "9. Pharmacy - add supplement payment to professional dispensing fee",
+          description: "9. Pharmacy - add supplement payment to professional dispensing fee",
           dependency: {
             conditions: [
               {
@@ -3301,15 +3225,13 @@ export const v202401: FormSchema = {
               label: "Payment adjustments made to professional dispensing fee",
               labelClassName: "font-bold text-black",
               descriptionAbove: true,
-              description:
-                "Agencies must supply documentation to justify the additional fees.",
+              description: "Agencies must supply documentation to justify the additional fees.",
               props: { className: "h-[76px]" },
             },
           ],
         },
         {
-          description:
-            "10. Pharmacy - establish preferred drug list (PDL) exceptions",
+          description: "10. Pharmacy - establish preferred drug list (PDL) exceptions",
           dependency: {
             conditions: [
               {
@@ -3423,8 +3345,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     value: "5-bed_hold_nf",
-                    label:
-                      "5. Changes to bed hold policies for nursing facilities (NFs)",
+                    label: "5. Changes to bed hold policies for nursing facilities (NFs)",
                   },
                   {
                     value: "6-bed_hols_icf_iid",
@@ -3451,9 +3372,7 @@ export const v202401: FormSchema = {
       sectionId: "e-options-elected",
       subsection: true,
       dependency: {
-        conditions: [
-          { type: "valueExists", name: "ers_e-payments_options-elected" },
-        ],
+        conditions: [{ type: "valueExists", name: "ers_e-payments_options-elected" }],
         effect: { type: "show" },
       },
       title: "E - Payments options elected",
@@ -3562,8 +3481,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -3723,8 +3641,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -3771,8 +3688,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -3863,8 +3779,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -3899,8 +3814,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -3908,8 +3822,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     value: "differ-face-to-face",
-                    label:
-                      "Differ from payments for the same services when provided face to face",
+                    label: "Differ from payments for the same services when provided face to face",
                     slots: [
                       {
                         name: "e3-face-desc",
@@ -3923,8 +3836,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -3947,8 +3859,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -4064,8 +3975,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -4093,8 +4003,7 @@ export const v202401: FormSchema = {
           ],
         },
         {
-          description:
-            "5. Changes to bed hold policies for nursing facilities (NFs)",
+          description: "5. Changes to bed hold policies for nursing facilities (NFs)",
           dependency: {
             conditions: [
               {
@@ -4162,8 +4071,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -4253,8 +4161,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -4345,8 +4252,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -4437,8 +4343,7 @@ export const v202401: FormSchema = {
                           required: "* Required",
                           pattern: {
                             value: noLeadingTrailingWhitespace,
-                            message:
-                              "Must not have leading or trailing whitespace.",
+                            message: "Must not have leading or trailing whitespace.",
                           },
                         },
                       },
@@ -4481,8 +4386,7 @@ export const v202401: FormSchema = {
                   },
                   {
                     value: "2-elect_variance",
-                    label:
-                      "2. Elect a variance to the basic personal needs allowance.",
+                    label: "2. Elect a variance to the basic personal needs allowance.",
                   },
                 ],
               },
@@ -4602,8 +4506,7 @@ export const v202401: FormSchema = {
           ],
         },
         {
-          description:
-            "2. Elect a variance to the basic personal needs allowance.",
+          description: "2. Elect a variance to the basic personal needs allowance.",
           dependency: {
             conditions: [
               {
@@ -4635,20 +4538,17 @@ export const v202401: FormSchema = {
     },
     {
       sectionId: "g-other-policies",
-      title:
-        "G  -  Other policies and procedures differing from approved Medicaid state plan",
+      title: "G  -  Other policies and procedures differing from approved Medicaid state plan",
       form: [
         {
           slots: [
             {
               rhf: "Textarea",
               name: "pol-and-procedures",
-              label:
-                "Other policies and procedures differing from approved Medicaid state plan",
+              label: "Other policies and procedures differing from approved Medicaid state plan",
               labelClassName: "text-black font-bold",
               descriptionAbove: true,
-              description:
-                "This includes legal reference for provision being temporarily amended.",
+              description: "This includes legal reference for provision being temporarily amended.",
             },
           ],
         },

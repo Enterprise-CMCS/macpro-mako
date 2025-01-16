@@ -56,9 +56,9 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
     switch (props.event) {
       case "toggle-withdraw-rai": {
         if (props.raiWithdrawEnabled) {
-          return ["Enable formal RAI response withdraw", AC_WithdrawEnabled];
+          return ["Enable Formal RAI Response Withdraw", AC_WithdrawEnabled];
         }
-        return ["Disable formal RAI response withdraw", AC_WithdrawDisabled];
+        return ["Disable Formal RAI Response Withdraw", AC_WithdrawDisabled];
       }
       case "delete":
       case "update-values":

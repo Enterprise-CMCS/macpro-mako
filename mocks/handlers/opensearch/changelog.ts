@@ -11,7 +11,8 @@ const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
     const must = query?.bool?.must;
     const mustTerms = must ? getTermKeys(must) : [];
 
-    const packageIdValue = getTermValues(must, "packageId.keyword") || getTermValues(must, "packageId");
+    const packageIdValue =
+      getTermValues(must, "packageId.keyword") || getTermValues(must, "packageId");
 
     if (!packageIdValue) {
       return new HttpResponse("No packageId provided", { status: 400 });
@@ -39,7 +40,11 @@ const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
             "",
           ) as keyof TestChangelogDocument;
           if (filterValue) {
-            changelog = filterItemsByTerm<TestChangelogDocument>(changelog, filterTerm, filterValue);
+            changelog = filterItemsByTerm<TestChangelogDocument>(
+              changelog,
+              filterTerm,
+              filterValue,
+            );
           }
         });
       }

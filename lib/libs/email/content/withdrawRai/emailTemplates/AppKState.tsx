@@ -1,35 +1,39 @@
-import { CommonEmailVariables, Events, RelatedEventType } from "shared-types";
 import {
   PackageDetails,
   BasicFooter,
   MailboxNotice,
-  Divider,
   FollowUpNotice,
+  WithdrawRAI,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
+import { CommonEmailVariables, EmailAddresses, Events } from "shared-types";
 
-export const AppKStateEmail = (props: {
-  variables: Events["RespondToRai"] & CommonEmailVariables;
-  relatedEvent: RelatedEventType;
+export const AppKStateEmail = ({
+  variables,
+  relatedEvent,
+}: {
+  variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses };
+  relatedEvent: Events["RespondToRai"];
 }) => {
-  const { variables, relatedEvent } = { ...props };
+  const previewText = `Withdraw Formal RAI Response for Waiver Package ${relatedEvent.id}`;
+  const heading = `The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are receiving this email notification as the Formal RAI for ${relatedEvent.id} was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.`;
   return (
     <BaseEmailTemplate
-      previewText="Withdraw Formal RAI Response for Waiver Package"
-      heading={`The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are receiving this email notification as the Formal RAI for ${variables.id} was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.`}
+      previewText={previewText}
+      heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
+      <WithdrawRAI relatedEvent={relatedEvent} variables={variables} />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,
           Name: relatedEvent.submitterName,
           "Email Address": relatedEvent.submitterEmail,
           "Waiver Number": variables.id,
-          Summary: variables.additionalInformation,
+          Summary: relatedEvent.additionalInformation,
         }}
       />
-      <Divider />
       <MailboxNotice type="Waiver" />
       <FollowUpNotice />
     </BaseEmailTemplate>

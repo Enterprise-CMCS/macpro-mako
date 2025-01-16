@@ -62,7 +62,7 @@ export const TimeoutModal = () => {
   return (
     <Dialog open={isModalOpen} onOpenChange={onExtendSession}>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogDescription>Session expiring soon</DialogDescription>
+        <DialogDescription className="sr-only">Session expiring soon</DialogDescription>
         <DialogHeader>
           <DialogTitle>Session expiring soon</DialogTitle>
         </DialogHeader>
