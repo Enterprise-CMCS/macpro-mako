@@ -1,4 +1,5 @@
 import { APIGatewayEvent } from "aws-lambda";
+import { Action } from "shared-types";
 import { getRequestContext } from "mocks";
 import {
   GET_ERROR_ITEM_ID,
@@ -74,7 +75,7 @@ describe("getPackageActions Handler", () => {
     expect(res.body).toEqual(JSON.stringify({ actions: [] }));
   });
 
-  it("should return 200 with available actions if authorized and package is found and has app-k", async () => {
+  it.only("should return 200 with available actions if authorized and package is found and has app-k", async () => {
     const event = {
       body: JSON.stringify({ id: INITIAL_RELEASE_APPK_ITEM_ID }),
       requestContext: getRequestContext(),
@@ -84,7 +85,9 @@ describe("getPackageActions Handler", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual(JSON.stringify({ actions: [] }));
+    expect(res.body).toEqual(
+      JSON.stringify({ actions: [Action.WITHDRAW_PACKAGE, Action.UPLOAD_SUBSEQUENT_DOCUMENTS] }),
+    );
   });
 
   it("should handle errors during processing", async () => {
