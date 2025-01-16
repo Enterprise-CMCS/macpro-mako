@@ -109,10 +109,10 @@ const sendUpdateIdMessage = async ({
       body: { message: "New ID required to update package" },
     });
   }
-
+console.log("BEFORE");
   // check if a package with this new ID already exists
   const packageExists = await getPackage(updatedId);
-  // console.log(packageExists, "WHAT IS THIS");
+  console.log(packageExists, "WHAT IS THIS");
   if (packageExists?.found) {
     return response({
       statusCode: 400,
