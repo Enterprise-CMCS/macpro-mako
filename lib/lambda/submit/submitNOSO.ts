@@ -11,6 +11,8 @@ export const submitNOSOAdminSchema = z
   .object({
     packageId: z.string(),
     adminChangeType: z.literal("NOSO"),
+    copyAttachmentsFrom: z.string().optional(),
+    changeIdTo: z.string().optional(),
   })
   .and(z.record(z.string(), z.any()));
 
@@ -106,11 +108,11 @@ export const handler = async (event: APIGatewayEvent) => {
   }
   try {
     // add a property for new ID
-    const { packageId, action, copyAttachmentsFromId } = submitNOSOAdminSchema.parse(
+    const { packageId, action, copyAttachmentsFromId, changeIdTo } = submitNOSOAdminSchema.parse(
       event.body === "string" ? JSON.parse(event.body) : event.body,
     );
     console.log("ID:", packageId);
-    let currentPackage = await getPackage(packageId);
+    let currentPackage: ItemResult | undefined = await getPackage(packageId);
 
     // currentpackage should have been entered in seaTool
     if (!currentPackage || currentPackage.found == false) {
@@ -125,6 +127,13 @@ export const handler = async (event: APIGatewayEvent) => {
       const tempCopy = await copyAttachments({ currentPackage, copyAttachmentsFromId });
       // we don't want to rewrite over the package unless a valid currentPackage is returned.
       if (tempCopy) currentPackage = tempCopy;
+    }
+
+    // if split spa & packageID to be changed
+    if (changeIdTo) {
+      currentPackage._id = changeIdTo;
+      currentPackage._source.id = changeIdTo;
+      console.log("CHANGE PACKAGE: ", currentPackage);
     }
 
     if (action === "NOSO" && currentPackage !== undefined) {
