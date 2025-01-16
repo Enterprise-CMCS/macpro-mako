@@ -433,7 +433,6 @@ const items: Record<string, TestItemResult> = {
       authority: "1915(c)",
       state: "MD",
       leadAnalystName: "lead test",
-      additionalInformation: "kdjfkaj",
       leadAnalystEmail: "Lead test email",
       reviewTeam: [
         {
@@ -448,7 +447,7 @@ const items: Record<string, TestItemResult> = {
           _source: {
             id: `${WITHDRAW_RAI_ITEM_C}-0001`,
             submitterName: "Testmctex",
-            submitterEmail: "dkjfdkljl;",
+            submitterEmail: "fakeemail;",
             event: "respond-to-rai",
             packageId: WITHDRAW_RAI_ITEM_C,
           },
@@ -459,7 +458,7 @@ const items: Record<string, TestItemResult> = {
           _source: {
             id: `${WITHDRAW_RAI_ITEM_C}-0002`,
             submitterName: "Testmctex",
-            submitterEmail: "dkjfdkljl;",
+            submitterEmail: "fakeemail;",
             event: "withdraw-rai",
             packageId: WITHDRAW_RAI_ITEM_C,
           },
