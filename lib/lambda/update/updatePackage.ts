@@ -102,7 +102,7 @@ const sendUpdateIdMessage = async ({
     origin: _origin,
     ...remainingFields
   } = currentPackage._source;
-
+  console.log(currentPackage, "CURRENT PACKAGE??");
   if (updatedId === currentPackage._id) {
     return response({
       statusCode: 400,
@@ -118,6 +118,7 @@ const sendUpdateIdMessage = async ({
       body: { message: "This ID already exists" },
     });
   }
+  console.log("AFTER HERE");
   // use event of current package to determine how ID should be formatted
   const packageEvent = await getPackageType(currentPackage._id);
   console.log(packageEvent, "PACKAGE EVENT?");
