@@ -5,6 +5,7 @@ import {
   HI_TEST_ITEM_ID,
   NOT_FOUND_ITEM_ID,
   WITHDRAWN_CHANGELOG_ITEM_ID,
+  INITIAL_RELEASE_APPK_ITEM_ID,
 } from "mocks/data/items";
 import { describe, expect, it } from "vitest";
 import { handler } from "./getPackageActions";
@@ -60,9 +61,22 @@ describe("getPackageActions Handler", () => {
     expect(res.body).toEqual(JSON.stringify({ message: "No record found for the given id" }));
   });
 
-  it("should return 200 with available actions if authorized and package is found", async () => {
+  it("should return 200 with available actions if authorized and package is found and has no app-k", async () => {
     const event = {
       body: JSON.stringify({ id: WITHDRAWN_CHANGELOG_ITEM_ID }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ actions: [] }));
+  });
+
+  it("should return 200 with available actions if authorized and package is found and has app-k", async () => {
+    const event = {
+      body: JSON.stringify({ id: INITIAL_RELEASE_APPK_ITEM_ID }),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 

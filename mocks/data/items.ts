@@ -1,4 +1,4 @@
-import { SEATOOL_STATUS } from "shared-types";
+import { SEATOOL_STATUS, opensearch } from "shared-types";
 import type { TestItemResult } from "../index.d";
 import { ATTACHMENT_BUCKET_NAME } from "../consts";
 
@@ -161,7 +161,7 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
-      actionType: "Amend",
+      actionType: "Extend",
       authority: "Medicaid SPA",
       changedDate: undefined,
       origin: "OneMAC",
@@ -390,8 +390,10 @@ const items: Record<string, TestItemResult> = {
       appkChildren: [
         {
           _source: {
+            authority: "1915(c)",
             changedDate: "2024-01-01T00:00:00Z",
             title: "Initial release",
+            seatoolStatus: SEATOOL_STATUS.PENDING,
             cmsStatus: "Pending",
             stateStatus: "Under Review",
           },
@@ -430,5 +432,19 @@ const items: Record<string, TestItemResult> = {
     },
   },
 };
+
+export const TEST_MED_SPA_ITEM = items[TEST_ITEM_ID] as opensearch.main.ItemResult;
+export const TEST_CHIP_SPA_ITEM = items[WITHDRAWN_CHANGELOG_ITEM_ID] as opensearch.main.ItemResult;
+export const TEST_1915B_ITEM = items[EXISTING_ITEM_APPROVED_NEW_ID] as opensearch.main.ItemResult;
+export const TEST_1915C_ITEM = items[INITIAL_RELEASE_APPK_ITEM_ID] as opensearch.main.ItemResult;
+export const TEST_ITEM_WITH_APPK = items[
+  EXISTING_ITEM_APPROVED_APPK_ITEM_ID
+] as opensearch.main.ItemResult;
+export const TEST_ITEM_WITH_CHANGELOG = items[
+  WITHDRAWN_CHANGELOG_ITEM_ID
+] as opensearch.main.ItemResult;
+export const TEST_TEMP_EXT_ITEM = items[
+  EXISTING_ITEM_TEMPORARY_EXTENSION_ID
+] as opensearch.main.ItemResult;
 
 export default items;
