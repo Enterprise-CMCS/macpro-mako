@@ -460,7 +460,7 @@ const items: Record<string, TestItemResult> = {
             id: `${WITHDRAW_RAI_ITEM_C}-0002`,
             submitterName: "Testmctex",
             submitterEmail: "dkjfdkljl;",
-            event: "WithdrawRai",
+            event: "withdraw-rai",
             packageId: WITHDRAW_RAI_ITEM_C,
           },
         },
