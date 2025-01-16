@@ -110,6 +110,7 @@ const sendUpdateIdMessage = async ({
     });
   }
 console.log("BEFORE");
+console.log(updatedId, "UPDATED ID IN FUNC??");
   // check if a package with this new ID already exists
   const packageExists = await getPackage(updatedId);
   console.log(packageExists, "WHAT IS THIS");
