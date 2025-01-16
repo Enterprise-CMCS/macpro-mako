@@ -119,10 +119,14 @@ const sendUpdateIdMessage = async ({
   }
   // use event of current package to determine how ID should be formatted
   const packageEvent = await getPackageType(currentPackage._id);
+  console.log(packageEvent, "PACKAGE EVENT?");
   const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
+  console.log(packageSubmissionTypeSchema, "SCHEMA???");
 
   const idSchema = packageSubmissionTypeSchema.shape.id;
+  console.log(idSchema, "ID SCHEMA???");
   const parsedId = idSchema.safeParse(updatedId);
+  console.log(parsedId, "PARSED IDDD");
 
   if (!parsedId.success) {
     return response({
@@ -132,6 +136,7 @@ const sendUpdateIdMessage = async ({
   }
 
   await sendDeleteMessage(currentPackage._id);
+  console.log("JUST DELETED");
   await produceMessage(
     topicName,
     updatedId,
