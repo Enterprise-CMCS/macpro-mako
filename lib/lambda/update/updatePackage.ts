@@ -120,39 +120,41 @@ const sendUpdateIdMessage = async ({
     });
   }
   console.log("AFTER HERE");
-  // use event of current package to determine how ID should be formatted
-  const packageEvent = await getPackageType(currentPackage._id);
-  console.log(packageEvent, "PACKAGE EVENT?");
-  const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
-  console.log(packageSubmissionTypeSchema, "SCHEMA???");
+  if (packageExists === undefined || !packageExists.found) {
+    // use event of current package to determine how ID should be formatted
+    const packageEvent = await getPackageType(currentPackage._id);
+    console.log(packageEvent, "PACKAGE EVENT?");
+    const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
+    console.log(packageSubmissionTypeSchema, "SCHEMA???");
 
-  const idSchema = packageSubmissionTypeSchema.shape.id;
-  console.log(idSchema, "ID SCHEMA???");
-  const parsedId = idSchema.safeParse(updatedId);
-  console.log(parsedId, "PARSED IDDD");
+    const idSchema = packageSubmissionTypeSchema.shape.id;
+    console.log(idSchema, "ID SCHEMA???");
+    const parsedId = idSchema.safeParse(updatedId);
+    console.log(parsedId, "PARSED IDDD");
 
-  if (!parsedId.success) {
-    return response({
-      statusCode: 400,
-      body: parsedId.error.message,
-    });
+    if (!parsedId.success) {
+      return response({
+        statusCode: 400,
+        body: parsedId.error.message,
+      });
+    }
+
+    await sendDeleteMessage(currentPackage._id);
+    console.log("JUST DELETED");
+    await produceMessage(
+      topicName,
+      updatedId,
+      JSON.stringify({
+        id: updatedId,
+        idToBeUpdated: currentPackage._id,
+        ...remainingFields,
+        origin: "OneMAC",
+        changeMade: "ID has been updated.",
+        isAdminChange: true,
+        adminChangeType: "update-id",
+      }),
+    );
   }
-
-  await sendDeleteMessage(currentPackage._id);
-  console.log("JUST DELETED");
-  await produceMessage(
-    topicName,
-    updatedId,
-    JSON.stringify({
-      id: updatedId,
-      idToBeUpdated: currentPackage._id,
-      ...remainingFields,
-      origin: "OneMAC",
-      changeMade: "ID has been updated.",
-      isAdminChange: true,
-      adminChangeType: "update-id",
-    }),
-  );
 
   return response({
     statusCode: 200,
