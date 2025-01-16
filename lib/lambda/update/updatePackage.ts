@@ -94,6 +94,7 @@ const sendUpdateIdMessage = async ({
   if (!topicName) {
     throw new Error("Topic name is not defined");
   }
+  console.log("AM I IN HERE");
   // ID and changeMade are excluded; the rest of the object has to be spread into the new package
   const {
     id: _id,
