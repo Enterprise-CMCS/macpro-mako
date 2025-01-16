@@ -109,53 +109,51 @@ const sendUpdateIdMessage = async ({
       body: { message: "New ID required to update package" },
     });
   }
-console.log("BEFORE");
-console.log(updatedId, "UPDATED ID IN FUNC??");
+  console.log("BEFORE");
+  console.log(updatedId, "UPDATED ID IN FUNC??");
   // check if a package with this new ID already exists
   const packageExists = await getPackage(updatedId);
   console.log(packageExists, "WHAT IS THIS");
-  if (packageExists?.found) {
+  if (packageExists) {
     return response({
       statusCode: 400,
       body: { message: "This ID already exists" },
     });
   }
   console.log("AFTER HERE");
-  if (packageExists === undefined || !packageExists.found) {
-    // use event of current package to determine how ID should be formatted
-    const packageEvent = await getPackageType(currentPackage._id);
-    console.log(packageEvent, "PACKAGE EVENT?");
-    const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
-    console.log(packageSubmissionTypeSchema, "SCHEMA???");
+  // use event of current package to determine how ID should be formatted
+  const packageEvent = await getPackageType(currentPackage._id);
+  console.log(packageEvent, "PACKAGE EVENT?");
+  const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
+  console.log(packageSubmissionTypeSchema, "SCHEMA???");
 
-    const idSchema = packageSubmissionTypeSchema.shape.id;
-    console.log(idSchema, "ID SCHEMA???");
-    const parsedId = idSchema.safeParse(updatedId);
-    console.log(parsedId, "PARSED IDDD");
+  const idSchema = packageSubmissionTypeSchema.shape.id;
+  console.log(idSchema, "ID SCHEMA???");
+  const parsedId = idSchema.safeParse(updatedId);
+  console.log(parsedId, "PARSED IDDD");
 
-    if (!parsedId.success) {
-      return response({
-        statusCode: 400,
-        body: parsedId.error.message,
-      });
-    }
-
-    await sendDeleteMessage(currentPackage._id);
-    console.log("JUST DELETED");
-    await produceMessage(
-      topicName,
-      updatedId,
-      JSON.stringify({
-        id: updatedId,
-        idToBeUpdated: currentPackage._id,
-        ...remainingFields,
-        origin: "OneMAC",
-        changeMade: "ID has been updated.",
-        isAdminChange: true,
-        adminChangeType: "update-id",
-      }),
-    );
+  if (!parsedId.success) {
+    return response({
+      statusCode: 400,
+      body: parsedId.error.message,
+    });
   }
+
+  await sendDeleteMessage(currentPackage._id);
+  console.log("JUST DELETED");
+  await produceMessage(
+    topicName,
+    updatedId,
+    JSON.stringify({
+      id: updatedId,
+      idToBeUpdated: currentPackage._id,
+      ...remainingFields,
+      origin: "OneMAC",
+      changeMade: "ID has been updated.",
+      isAdminChange: true,
+      adminChangeType: "update-id",
+    }),
+  );
 
   return response({
     statusCode: 200,
