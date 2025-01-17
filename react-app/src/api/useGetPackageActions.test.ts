@@ -2,7 +2,7 @@ import { describe, expect, it, afterEach } from "vitest";
 import { getPackageActions } from "./useGetPackageActions";
 import { Action } from "shared-types";
 import {
-  errorPackageActionsHandler,
+  errorApiPackageActionsHandler,
   WITHDRAW_RAI_ITEM_C,
   TEST_ITEM_ID,
   NOT_FOUND_ITEM_ID,
@@ -64,7 +64,7 @@ describe("getPackageActions test", () => {
   });
 
   it("should return 500 if there is a server error", async () => {
-    mockedServer.use(errorPackageActionsHandler);
+    mockedServer.use(errorApiPackageActionsHandler);
 
     await expect(() => getPackageActions(WITHDRAW_RAI_ITEM_C)).rejects.toThrowError(
       "Request failed with status code 500",

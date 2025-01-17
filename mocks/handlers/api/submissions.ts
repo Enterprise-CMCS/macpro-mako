@@ -3,24 +3,26 @@ import { SUBMISSION_ERROR_ITEM_ID } from "../../data/items";
 import { SubmitRequestBody, AttachmentUrlRequestBody } from "../../index.d";
 import { REGION } from "../../consts";
 
-const defaultUploadHandler = http.put(
-  /\/upload/,
+const defaultApiUploadHandler = http.put(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/upload",
   async () => new HttpResponse(null, { status: 200 }),
 );
 
-const defaultUploadUrlHandler = http.post(/\/getUploadUrl/, () =>
-  HttpResponse.json(
-    {
-      url: "/upload",
-      key: "test-key",
-      bucket: "test-bucket",
-    },
-    { status: 200 },
-  ),
+const defaultApiUploadUrlHandler = http.post(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUploadUrl",
+  () =>
+    HttpResponse.json(
+      {
+        url: "/upload",
+        key: "test-key",
+        bucket: "test-bucket",
+      },
+      { status: 200 },
+    ),
 );
 
-const defaultAttachmentUrlHandler = http.post<PathParams, AttachmentUrlRequestBody>(
-  /\/getAttachmentUrl$/,
+const defaultApiAttachmentUrlHandler = http.post<PathParams, AttachmentUrlRequestBody>(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getAttachmentUrl",
   async ({ request }) => {
     const { id, bucket, key, filename } = await request.json();
     return HttpResponse.json({
@@ -29,13 +31,13 @@ const defaultAttachmentUrlHandler = http.post<PathParams, AttachmentUrlRequestBo
   },
 );
 
-export const errorAttachmentUrlHandler = http.post<PathParams, AttachmentUrlRequestBody>(
-  /\/getAttachmentUrl$/,
+export const errorApiAttachmentUrlHandler = http.post<PathParams, AttachmentUrlRequestBody>(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getAttachmentUrl",
   async () => new HttpResponse(null, { status: 500 }),
 );
 
-const defaultSubmitHandler = http.post<PathParams, SubmitRequestBody>(
-  /\/submit$/,
+const defaultApiSubmitHandler = http.post<PathParams, SubmitRequestBody>(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/submit",
   async ({ request }) => {
     const { id } = await request.json();
 
@@ -48,8 +50,8 @@ const defaultSubmitHandler = http.post<PathParams, SubmitRequestBody>(
 );
 
 export const submissionHandlers = [
-  defaultUploadHandler,
-  defaultUploadUrlHandler,
-  defaultAttachmentUrlHandler,
-  defaultSubmitHandler,
+  defaultApiUploadHandler,
+  defaultApiUploadUrlHandler,
+  defaultApiAttachmentUrlHandler,
+  defaultApiSubmitHandler,
 ];

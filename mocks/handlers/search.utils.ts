@@ -1,4 +1,4 @@
-import { QueryContainer, TermQuery, TermsQuery, TestHit } from "../../index.d";
+import { QueryContainer, TermQuery, TermsQuery, TestHit } from "..";
 
 export const getFilterValue = (
   query: QueryContainer | QueryContainer[] | undefined,
