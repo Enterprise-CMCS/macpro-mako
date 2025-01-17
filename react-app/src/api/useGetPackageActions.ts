@@ -4,7 +4,7 @@ import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 type PackageActionsResponse = {
   actions: Action[];
 };
-const getPackageActions = async (id: string): Promise<PackageActionsResponse> =>
+export const getPackageActions = async (id: string): Promise<PackageActionsResponse> =>
   await API.post("os", "/getPackageActions", { body: { id } });
 
 export const useGetPackageActions = (

@@ -1,7 +1,7 @@
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse, PathParams } from "msw";
 import { SUBMISSION_ERROR_ITEM_ID } from "../../data/items";
-
-export type SubmitRequestBody = { id: string };
+import { SubmitRequestBody, AttachmentUrlRequestBody } from "../../index.d";
+import { REGION } from "../../consts";
 
 const defaultUploadHandler = http.put(
   /\/upload/,
@@ -19,7 +19,22 @@ const defaultUploadUrlHandler = http.post(/\/getUploadUrl/, () =>
   ),
 );
 
-const defaultSubmitHandler = http.post<SubmitRequestBody, SubmitRequestBody>(
+const defaultAttachmentUrlHandler = http.post<PathParams, AttachmentUrlRequestBody>(
+  /\/getAttachmentUrl$/,
+  async ({ request }) => {
+    const { id, bucket, key, filename } = await request.json();
+    return HttpResponse.json({
+      url: `https://s3.${REGION}.amazonaws.com/${bucket}/${id}-${key}-${filename}`,
+    });
+  },
+);
+
+export const errorAttachmentUrlHandler = http.post<PathParams, AttachmentUrlRequestBody>(
+  /\/getAttachmentUrl$/,
+  async () => new HttpResponse(null, { status: 500 }),
+);
+
+const defaultSubmitHandler = http.post<PathParams, SubmitRequestBody>(
   /\/submit$/,
   async ({ request }) => {
     const { id } = await request.json();
@@ -35,5 +50,6 @@ const defaultSubmitHandler = http.post<SubmitRequestBody, SubmitRequestBody>(
 export const submissionHandlers = [
   defaultUploadHandler,
   defaultUploadUrlHandler,
+  defaultAttachmentUrlHandler,
   defaultSubmitHandler,
 ];

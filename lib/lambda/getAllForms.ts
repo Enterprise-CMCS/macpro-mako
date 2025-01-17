@@ -18,12 +18,13 @@ export const getAllForms = async () => {
   try {
     const formsWithVersions = mapWebformsKeys(webformVersions);
 
-    if (formsWithVersions) {
-      return response({
-        statusCode: 200,
-        body: formsWithVersions,
-      });
+    if (Object.keys(formsWithVersions).length === 0) {
+      throw new Error("No form Versions available");
     }
+    return response({
+      statusCode: 200,
+      body: formsWithVersions,
+    });
   } catch (error: any) {
     console.error("Error:", error);
     return response({
