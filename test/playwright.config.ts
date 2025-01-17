@@ -1,5 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -30,7 +31,8 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  // workers: process.env.CI ? 1 : undefined,
+  workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   // reporter: [["dot"], ["html"]],
   reporter: "dot",
@@ -38,7 +40,7 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL,
-
+    // video: "on",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
   },
@@ -55,7 +57,7 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"],
         // Use prepared auth state for state submitter.
-        storageState: "playwright/.auth/state-user.json",
+        // storageState: "./playwright/.auth/state-user.json",
       },
       // Tests start already authenticated because we specified storageState in the config.
       dependencies: ["setup"],

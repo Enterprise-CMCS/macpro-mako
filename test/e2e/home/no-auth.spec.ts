@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
-import { HomePage } from 'pages/home.page';
+import { HomePage } from 'pages';
 let homePage;
 
-test.describe('home page - no auth', {tag: ['@e2e', '@smoke']}, () => {
+test.describe('home page - no auth', {tag: ["@home", "@e2e", "@smoke"]}, () => {
   test.use({ storageState: { cookies: [], origins: [] } });
 
   test.beforeEach(async ({ page }) => {

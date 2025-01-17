@@ -61,7 +61,7 @@ export const Dashboard = () => {
                 to="/new-submission"
                 className="flex items-center text-white font-bold bg-primary border-none px-10 py-2 rounded cursor-pointer"
               >
-                <span className="mr-2">New Submission</span>
+                <span data-testid="new-sub-button" className="mr-2">New Submission</span>
                 <PlusIcon className="w-4 h-4" />
               </Link>
             )}
