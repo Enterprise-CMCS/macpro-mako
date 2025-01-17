@@ -14,6 +14,8 @@ const defaultItemHandler = http.post<GetItemBody, GetItemBody>(/\/item$/, async 
   return item ? HttpResponse.json(item) : new HttpResponse(null, { status: 404 });
 });
 
+export const errorItemHandler = http.post(/\/item$/, () => new HttpResponse(null, { status: 500 }));
+
 const defaultItemExistsHandler = http.post<GetItemBody, GetItemBody>(
   /\/itemExists$/,
   async ({ request }) => {
@@ -23,6 +25,11 @@ const defaultItemExistsHandler = http.post<GetItemBody, GetItemBody>(
     }
     return HttpResponse.json({ exists: !!items[id]?._source });
   },
+);
+
+export const errorItemExistsHandler = http.post(
+  /\/itemExists$/,
+  () => new HttpResponse(null, { status: 500 }),
 );
 
 export const itemHandlers = [defaultItemHandler, defaultItemExistsHandler];

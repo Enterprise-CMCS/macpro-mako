@@ -33,8 +33,10 @@ describe("getAppkChildren", () => {
           hits: [
             {
               _source: {
+                authority: "1915(c)",
                 changedDate: "2024-01-01T00:00:00Z",
                 title: "Initial release",
+                seatoolStatus: "Pending",
                 cmsStatus: "Pending",
                 stateStatus: "Under Review",
               },

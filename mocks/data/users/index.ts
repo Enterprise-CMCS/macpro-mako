@@ -1,8 +1,9 @@
 import type { TestUserData } from "../../index.d";
-import { reviewers } from "./cmsReviewer";
-import { helpDeskUsers } from "./helpDeskUsers";
-import { readOnlyUsers } from "./readOnlyCMSUsers";
-import { stateSubmitters } from "./stateSubmitters";
+import { reviewers, makoReviewer, superReviewer } from "./cmsReviewer";
+import { helpDeskUsers, helpDeskUser } from "./helpDeskUsers";
+import { readOnlyUsers, readOnlyUser } from "./readOnlyCMSUsers";
+import { stateSubmitters, makoStateSubmitter, coStateSubmitter } from "./stateSubmitters";
+import { convertUserAttributes } from "mocks/handlers/authUtils";
 
 export const noRoleUser: TestUserData = {
   UserAttributes: [
@@ -41,6 +42,13 @@ export const userResponses: TestUserData[] = [
 
 // return an array of all usernames
 export default userResponses.map((response) => ({ username: response.Username }));
+
+export const TEST_STATE_SUBMITTER_USER = convertUserAttributes(makoStateSubmitter);
+export const TEST_CO_STATE_SUBMITTER_USER = convertUserAttributes(coStateSubmitter);
+export const TEST_CMS_REVIEWER_USER = convertUserAttributes(makoReviewer);
+export const TEST_HELP_DESK_USER = convertUserAttributes(helpDeskUser);
+export const TEST_READ_ONLY_USER = convertUserAttributes(readOnlyUser);
+export const TEST_SUPER_USER = convertUserAttributes(superReviewer);
 
 export * from "./cmsReviewer";
 export * from "./helpDeskUsers";
