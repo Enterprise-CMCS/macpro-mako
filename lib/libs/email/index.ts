@@ -57,7 +57,10 @@ const emailTemplates: EmailTemplates = {
   "contracting-renewal-state": EmailContent.newSubmission,
   "capitated-renewal-state": EmailContent.newSubmission,
   "respond-to-rai": EmailContent.respondToRai,
+  "seatool-withdraw": EmailContent.respondToRai,
 };
+
+// cmsStatus = withdrawn
 
 // Create a type-safe lookup function
 export function getEmailTemplate(

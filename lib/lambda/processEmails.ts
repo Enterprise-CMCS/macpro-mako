@@ -1,5 +1,5 @@
 import { SESClient, SendEmailCommand, SendEmailCommandInput } from "@aws-sdk/client-ses";
-import { EmailAddresses, KafkaEvent, KafkaRecord } from "shared-types";
+import { EmailAddresses, KafkaEvent, KafkaRecord, opensearch, SEATOOL_STATUS } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
 import { getEmailTemplates, getAllStateUsers } from "libs/email";
@@ -111,6 +111,25 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 };
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
+  if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
+    const record = JSON.parse(decodeBase64WithUtf8(kafkaRecord.value))
+    const safeSeatoolRecord = opensearch.main.seatool.transform(record.id).safeParse(record);
+    if(safeSeatoolRecord.data?.cmsStatus === SEATOOL_STATUS.WITHDRAWN) {
+      //send email
+    }
+
+  }
+  // then handle it with a different function that handleSeatoolEvents
+  // hanldeSeatoolEvents
+  // in this function we will need to extract the value from the kafka record
+  // with the value we can grab the id and the STATE_PLAN.SPW_STATUS_ID
+  // if this is 6 (package withdrawn) is true
+  // os.getItem(id)
+    // this item we can check if it has a value of withdrawn_sent != true
+    // then set the value to true in opensearch
+  // then we can get the email template and send it
+
+
   console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
   if (typeof key !== "string") {
@@ -154,6 +173,7 @@ export function validateEmailTemplate(template: any) {
 }
 
 export async function processAndSendEmails(record: any, id: string, config: ProcessEmailConfig) {
+  // if its a seatool thing convert withdraw to an event in the templates
   const templates = await getEmailTemplates<typeof record>(
     record.event,
     record.authority.toLowerCase(),
@@ -167,6 +187,7 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
   }
 
   const territory = id.slice(0, 2);
+
   const allStateUsers = await getAllStateUsers({
     userPoolId: config.userPoolId,
     state: territory,
@@ -179,7 +200,9 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
     console.log(`The package was not found for id: ${id}. Doing nothing.`);
     return;
   }
-
+  // if status is withdrawn send it
+  // seatool trx has multiple kafka event (cross that bridge if it does happen)
+ 
   const cpocEmail = [...getCpocEmail(item)];
   const srtEmails = [...getSrtEmails(item)];
 
