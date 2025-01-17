@@ -1,23 +1,12 @@
-import { http, HttpResponse, PathParams } from "msw";
-import { getFilteredItemList } from "../../data/items";
-import { getFilterValueAsStringArray } from "../search.utils";
-import { SearchQueryBody } from "../../index.d";
+import { http, HttpResponse } from "msw";
+import { cpocsList } from "../../data/cpocs";
 
-const defaultApiSearchHandler = http.post<PathParams, SearchQueryBody>(
+const defaultApiSearchHandler = http.post(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/search/:index",
-  async ({ params, request }) => {
+  ({ params }) => {
     const { index } = params;
-    const { query } = await request.json();
 
-    const must = query?.bool?.must;
-
-    if (index === "main") {
-      const authorityValues =
-        getFilterValueAsStringArray(must, "terms", "authority.keyword") ||
-        getFilterValueAsStringArray(must, "terms", "authority") ||
-        [];
-      const itemList = getFilteredItemList(authorityValues);
-
+    if (index === "cpocs") {
       return HttpResponse.json({
         took: 3,
         timed_out: false,
@@ -33,7 +22,7 @@ const defaultApiSearchHandler = http.post<PathParams, SearchQueryBody>(
             relation: "eq",
           },
           max_score: 1,
-          hits: itemList,
+          hits: cpocsList,
         },
       });
     }

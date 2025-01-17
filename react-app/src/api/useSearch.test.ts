@@ -1,21 +1,21 @@
 import { describe, expect, it } from "vitest";
-import { getMainExportData } from "./useSearch";
-import { DEFAULT_FILTERS } from "@/components/Opensearch/main/useOpensearch";
-import { getFilteredDocList } from "mocks/data/items";
+import { getOsData } from "./useSearch";
+import { cpocsList } from "mocks/data/cpocs";
 
-describe("getMainExportData tests", () => {
-  it("should return spa items", async () => {
-    const results = await getMainExportData(DEFAULT_FILTERS.spas.filters);
-    expect(results).toEqual(getFilteredDocList(["Medicaid SPA", "CHIP SPA"]));
-  });
-
-  it("should return waiver items", async () => {
-    const results = await getMainExportData(DEFAULT_FILTERS.waivers.filters);
-    expect(results).toEqual(getFilteredDocList(["1915(b)", "1915(c)"]));
-  });
-
-  it("should return an empty array if there are no filters", async () => {
-    const results = await getMainExportData();
-    expect(results).toEqual([]);
+describe("getOsData tests", () => {
+  it("should return cpocs", async () => {
+    const results = await getOsData({
+      index: "cpocs",
+      sort: {
+        field: "lastName",
+        order: "asc",
+      },
+      pagination: {
+        number: 0,
+        size: 20,
+      },
+      filters: [],
+    });
+    expect(results.hits.hits).toEqual(cpocsList);
   });
 });
