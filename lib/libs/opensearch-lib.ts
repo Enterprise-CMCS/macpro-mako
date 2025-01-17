@@ -196,7 +196,7 @@ export async function getItem(
   } catch (error) {
     console.error("ERRRORORR", error);
     if (error instanceof Error) {
-      console.error("ERR MSG:", error.message);
+      console.error("ERR BODY:", error);
     }
     throw error;
   }
