@@ -40,14 +40,12 @@ export const getForm = async (event: APIGatewayEvent) => {
       version += getMaxVersion(id);
     }
 
-    if (id && version) {
-      const formObj = webformVersions[id][version];
-      const cleanedForm = convertRegexToString(formObj);
-      return response({
-        statusCode: 200,
-        body: cleanedForm,
-      });
-    }
+    const formObj = webformVersions[id][version];
+    const cleanedForm = convertRegexToString(formObj);
+    return response({
+      statusCode: 200,
+      body: cleanedForm,
+    });
   } catch (error: any) {
     console.error("Error:", error);
     return response({
@@ -57,12 +55,6 @@ export const getForm = async (event: APIGatewayEvent) => {
       },
     });
   }
-  return response({
-    statusCode: 500,
-    body: {
-      error: "Internal server error",
-    },
-  });
 };
 
 function getMaxVersion(id: string): string {
