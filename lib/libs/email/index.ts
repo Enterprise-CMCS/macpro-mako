@@ -80,6 +80,7 @@ export async function getEmailTemplates<T>(
   action: keyof EmailTemplates,
   authority: Authority,
 ): Promise<EmailTemplateFunction<T>[] | null> {
+  console.log("action and authority", action, authority);
   const template = getEmailTemplate(action || "new-medicaid-submission");
   if (!template) {
     console.log("No template found");
