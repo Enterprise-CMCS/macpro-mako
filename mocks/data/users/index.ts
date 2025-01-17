@@ -3,7 +3,7 @@ import { reviewers, makoReviewer, superReviewer } from "./cmsReviewer";
 import { helpDeskUsers, helpDeskUser } from "./helpDeskUsers";
 import { readOnlyUsers, readOnlyUser } from "./readOnlyCMSUsers";
 import { stateSubmitters, makoStateSubmitter, coStateSubmitter } from "./stateSubmitters";
-import { convertUserAttributes } from "mocks/handlers/authUtils";
+import { convertUserAttributes } from "mocks/handlers/auth.utils";
 
 export const noRoleUser: TestUserData = {
   UserAttributes: [

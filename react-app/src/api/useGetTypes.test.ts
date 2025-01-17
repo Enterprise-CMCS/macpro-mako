@@ -14,7 +14,7 @@ import {
   chipTypes,
   chipSubtypes,
 } from "mocks/data/types";
-import { errorSubTypesHandler, errorTypeHandler } from "mocks";
+import { errorApiSubTypesHandler, errorApiTypeHandler } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 
 describe("fetchData", () => {
@@ -35,7 +35,7 @@ describe("fetchData", () => {
     });
 
     it("throws an error when fetch fails", async () => {
-      mockedServer.use(errorTypeHandler);
+      mockedServer.use(errorApiTypeHandler);
 
       await expect(fetchData({ authorityId: ERROR_AUTHORITY_ID })).rejects.toThrow(
         "Failed to fetch types",
@@ -69,7 +69,7 @@ describe("fetchData", () => {
     });
 
     it("throws an error when fetch fails", async () => {
-      mockedServer.use(errorSubTypesHandler);
+      mockedServer.use(errorApiSubTypesHandler);
 
       await expect(fetchData({ authorityId: ERROR_AUTHORITY_ID, typeIds: [] })).rejects.toThrow(
         "Failed to fetch subtypes",
