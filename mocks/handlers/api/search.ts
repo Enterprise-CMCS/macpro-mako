@@ -1,12 +1,12 @@
 import { http, HttpResponse } from "msw";
-import { cpocsList } from "../../data/cpocs";
+import { itemList } from "../../data/items";
 
 const defaultApiSearchHandler = http.post(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/search/:index",
   ({ params }) => {
     const { index } = params;
 
-    if (index === "cpocs") {
+    if (index === "main") {
       return HttpResponse.json({
         took: 3,
         timed_out: false,
@@ -22,7 +22,7 @@ const defaultApiSearchHandler = http.post(
             relation: "eq",
           },
           max_score: 1,
-          hits: cpocsList,
+          hits: itemList,
         },
       });
     }

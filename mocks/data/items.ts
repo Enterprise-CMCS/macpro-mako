@@ -515,4 +515,10 @@ export const TEST_TEMP_EXT_ITEM = items[
   EXISTING_ITEM_TEMPORARY_EXTENSION_ID
 ] as opensearch.main.ItemResult;
 
+export const itemList = Object.values(items);
+
+export const docList = Object.values(items).map(
+  (item) => (item?._source || {}) as opensearch.main.Document,
+);
+
 export default items;
