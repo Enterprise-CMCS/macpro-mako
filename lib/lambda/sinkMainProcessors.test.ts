@@ -17,7 +17,7 @@ import {
   NOT_FOUND_ITEM_ID,
   convertObjToBase64,
   createKafkaRecord,
-  errorMainMultiDocumentHandler,
+  errorOSMainMultiDocumentHandler,
 } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import {
@@ -845,7 +845,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
   });
 
   it("handles errors in getting mako timestamps", async () => {
-    mockedServer.use(errorMainMultiDocumentHandler);
+    mockedServer.use(errorOSMainMultiDocumentHandler);
 
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
