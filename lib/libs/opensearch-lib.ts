@@ -183,15 +183,23 @@ export async function getItem(
   client = client || (await getClient(host));
   console.log(client, "CLIENT???");
   console.log(id, index, "ID AND INDEX???");
-  console.log("CLIENT STUCK", await client.get({ id, index }));
-  const response = await client.get({ id, index });
-  console.log(response, "RESPONSE FROM OS");
-  const item = decodeUtf8(response).body;
-  console.log(item, "ITEM FROM OS");
-  if (item.found === false || !item._source) {
-    return undefined;
+  try {
+    console.log("CLIENT STUCK", await client.get({ id, index }));
+    const response = await client.get({ id, index });
+    console.log(response, "RESPONSE FROM OS");
+    const item = decodeUtf8(response).body;
+    console.log(item, "ITEM FROM OS");
+    if (item.found === false || !item._source) {
+      return undefined;
+    }
+    return item;
+  } catch (error) {
+    console.error("ERRRORORR", error);
+    if (error instanceof Error) {
+      console.error("ERR MSG:", error.message);
+    }
+    throw error;
   }
-  return item;
 }
 
 export async function getItems(ids: string[]): Promise<OSDocument[]> {
