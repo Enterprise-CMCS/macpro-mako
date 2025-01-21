@@ -430,8 +430,9 @@ const items: Record<string, TestItemResult> = {
     found: true,
     _source: {
       id: WITHDRAW_RAI_ITEM_C,
-      seatoolStatus: SEATOOL_STATUS.PENDING,
+      seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
       actionType: "respond-to-rai",
+      raiRequestedDate: "2024-01-01T00:00:00.000Z",
       authority: "1915(c)",
       state: "MD",
       leadAnalystName: "lead test",
@@ -513,5 +514,19 @@ export const TEST_ITEM_WITH_CHANGELOG = items[
 export const TEST_TEMP_EXT_ITEM = items[
   EXISTING_ITEM_TEMPORARY_EXTENSION_ID
 ] as opensearch.main.ItemResult;
+
+export const itemList = Object.values(items);
+
+export const getFilteredItemList = (filters: string[]) => {
+  return itemList.filter((item) => filters.includes(item?._source?.authority || ""));
+};
+
+export const docList = Object.values(items).map(
+  (item) => (item?._source || {}) as opensearch.main.Document,
+);
+
+export const getFilteredDocList = (filters: string[]) => {
+  return docList.filter((item) => filters.includes(item?.authority || ""));
+};
 
 export default items;

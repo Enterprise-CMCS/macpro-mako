@@ -2,9 +2,9 @@ import { http, HttpResponse, PathParams } from "msw";
 import { GET_ERROR_ITEM_ID } from "../../data";
 import items from "../../data/items";
 import { SearchQueryBody, TestChangelogDocument, TestChangelogItemResult } from "../../index.d";
-import { getTermKeys, getTermValues, filterItemsByTerm } from "./util";
+import { getTermKeys, getTermValues, filterItemsByTerm } from "../search.utils";
 
-const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
+const defaultOSChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-changelog/_search",
   async ({ request }) => {
     const { query } = await request.json();
@@ -73,4 +73,4 @@ const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
   },
 );
 
-export const changelogSearchHandlers = [defaultChangelogSearchHandler];
+export const changelogSearchHandlers = [defaultOSChangelogSearchHandler];

@@ -168,3 +168,7 @@ export type AttachmentUrlRequestBody = {
   key: string;
   filename: string;
 };
+
+export type PackageActionsRequestBody = {
+  id: string;
+};
