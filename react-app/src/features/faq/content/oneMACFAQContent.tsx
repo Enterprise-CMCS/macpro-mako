@@ -304,19 +304,22 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "spa-id-format",
         question: "What format is used to enter a SPA ID?",
         answerJSX: (
-          <>
-            Enter the State Plan Amendment transmittal number. Assign consecutive numbers on a
-            calendar year basis (e.g., 20-0001-XXXX, 20-0002-XXXX, etc.).
-            <br />
-            The Official Submission package SPA ID must follow the format SS-YY-#### OR
-            SS-YY-####-XXXX to include:
-            <ul>
+          <div className="space-y-2">
+            <p>
+              Enter the State Plan Amendment transmittal number. Assign consecutive numbers on a
+              calendar year basis (e.g., 20-0001-XXXX, 20-0002-XXXX, etc.).
+            </p>
+            <p>
+              The Official Submission package SPA ID must follow the format SS-YY-#### OR
+              SS-YY-####-XXXX to include:
+            </p>
+            <ul className="list-disc ml-8 space-y-2">
               <li>SS = 2 alpha character (State Abbreviation)</li>
               <li>YY = 2 numeric digits (Year)</li>
               <li>#### = 4 numeric digits (Serial number)</li>
               <li>XXXX = OPTIONAL, 4 characters alpha/numeric modifier (Suffix)</li>
             </ul>
-          </>
+          </div>
         ),
       },
       {
@@ -1084,12 +1087,12 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "initial-waiver-id-format",
         question: "What format is used to enter a 1915(b) Initial Waiver number?",
         answerJSX: (
-          <>
+          <div className="space-y-2">
             <p>
               1915(b) Initial Waiver numbers must follow the format SS-####.R00.00 or
               SS-#####.R00.00 to include:
             </p>
-            <ul>
+            <ul className="list-disc pl-6 space-y-2">
               <li>SS = 2 character state abbreviation</li>
               <li>##### = 4 or 5 digit initial waiver number</li>
               <li>R00 = initial number</li>
@@ -1101,19 +1104,19 @@ export const oneMACFAQContent: FAQContent[] = [
               of Kentucky, with an initial waiver number of 0003, no renewal number (R00), and no
               amendment number (00).
             </p>
-          </>
+          </div>
         ),
       },
       {
         anchorText: "waiver-renewal-id-format",
         question: "What format is used to enter a 1915(b) Waiver Renewal number?",
         answerJSX: (
-          <>
+          <div className="space-y-2">
             <p>
               1915(b) Waiver Renewal must follow the format SS-####.R##.00 or SS-#####.R##.00 to
               include:
             </p>
-            <ul>
+            <ul className="list-disc pl-6 space-y-2">
               <li>SS = 2 character state abbreviation</li>
               <li>####(#)= 4 or 5 digit initial waiver number</li>
               <li>R## = renewal number (R01, R02, ...)</li>
@@ -1125,19 +1128,19 @@ export const oneMACFAQContent: FAQContent[] = [
               of Kentucky, with a initial waiver number of 0003, a second renewal (R02), and no
               amendment number (00).
             </p>
-          </>
+          </div>
         ),
       },
       {
         anchorText: "waiver-amendment-id-format",
         question: "What format is used to enter a 1915(b) Waiver Amendment number?",
         answerJSX: (
-          <>
+          <div className="space-y-2">
             <p>
               1915(b) Waiver Amendment must follow the format SS-####.R##.## or SS-#####.R##.## to
               include:
             </p>
-            <ul>
+            <ul className="list-disc pl-6 space-y-2">
               <li>SS = 2 character state abbreviation</li>
               <li>####(#)= 4 or 5 digit initial waiver number</li>
               <li>R## = renewal number (R01, R02, ...)</li>
@@ -1150,7 +1153,7 @@ export const oneMACFAQContent: FAQContent[] = [
               second amendment (02). Amendments for initial waivers without renewals should use
               “R00” as their renewal number.
             </p>
-          </>
+          </div>
         ),
       },
       {
@@ -1170,11 +1173,11 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "waiver-c-id",
         question: "What format is used to enter a 1915(c) waiver number?",
         answerJSX: (
-          <>
+          <div className="space-y-2">
             <p>
               Waiver number must follow the format SS-####.R##.## or SS-#####.R##.## to include:
             </p>
-            <ul>
+            <ul className="list-disc pl-6 space-y-2">
               <li>SS = 2 character state abbreviation</li>
               <li>##### = 4 or 5 digit waiver initial number</li>
               <li>R## = renewal number (R01, R02, ...) (Use R00 for waivers without renewals)</li>
@@ -1187,7 +1190,7 @@ export const oneMACFAQContent: FAQContent[] = [
               second appendix K amendment (02). Initial waivers without renewals should use “R00” as
               their renewal number.
             </p>
-          </>
+          </div>
         ),
       },
       {
@@ -1307,12 +1310,12 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "waiver-extension-id-format",
         question: "What format is used to enter a 1915(b) or 1915(c) Temporary Extension number?",
         answerJSX: (
-          <>
+          <div className="space-y-2">
             <p>
               Temporary extension numbers must follow the format SS-####.R##.TE## or
               SS-#####.R##.TE## to include:
             </p>
-            <ul>
+            <ul className="list-disc pl-6 space-y-2">
               <li>SS = 2 character state abbreviation</li>
               <li>####(#)= 4 or 5 digit initial waiver number</li>
               <li>R## = renewal number (R01, R02, ...) (Use R00 for waivers without renewals)</li>
@@ -1325,7 +1328,7 @@ export const oneMACFAQContent: FAQContent[] = [
               second temporary extension (02). Initial waivers without renewals should use “R00” as
               their renewal number.
             </p>
-          </>
+          </div>
         ),
       },
       {
