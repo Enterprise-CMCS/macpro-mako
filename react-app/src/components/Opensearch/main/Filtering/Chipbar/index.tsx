@@ -14,7 +14,7 @@ export interface RenderProp {
 }
 
 export const ChipBool: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) => {
-  const value = filter.value as opensearch.RangeValue;
+  const value = filter.value as opensearch.FilterValue;
   return (
     <Chip
       onChipClick={openDrawer}
@@ -22,7 +22,8 @@ export const ChipBool: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) =>
         clearFilter(filter);
       }}
     >
-      {filter?.label}: <strong>{value ? "Yes" : "No"}</strong>
+      {filter?.label ? `${filter.label}: ` : ""}
+      <strong>{value ? "Yes" : "No"}</strong>
     </Chip>
   );
 };
@@ -36,7 +37,7 @@ export const ChipDate: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) =>
         clearFilter(filter);
       }}
     >
-      {`${filter?.label}: ${offsetFromUtc(
+      {`${filter?.label ? `${filter.label}: ` : ""}${offsetFromUtc(
         new Date(value.gte || ""),
       ).toLocaleDateString()} - ${offsetFromUtc(new Date(value.lte || "")).toLocaleDateString()}`}
     </Chip>

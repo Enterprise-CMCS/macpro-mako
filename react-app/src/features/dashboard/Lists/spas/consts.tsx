@@ -8,6 +8,7 @@ import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCel
 
 export const useSpaTableColumns = (): OsTableColumn[] => {
   const { data: props } = useGetUser();
+  console.log({ props });
 
   if (!props?.user) return [];
 

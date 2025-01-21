@@ -3,6 +3,7 @@ import type { TestUserData } from "../index.d";
 import { CognitoUserAttributes } from "shared-types";
 
 export const setMockUsername = (user?: TestUserData | string | null): void => {
+  console.log({ user });
   if (user && typeof user === "string") {
     process.env.MOCK_USER_USERNAME = user;
   } else if (user && (user as TestUserData).Username !== undefined) {
