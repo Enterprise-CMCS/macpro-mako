@@ -175,6 +175,11 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
   const sec = await getSecret(config.emailAddressLookupSecretName);
 
   const item = await os.getItem(config.osDomain, getNamespace("main"), id);
+  if (!item?.found || !item?._source) {
+    console.log(`The package was not found for id: ${id}. Doing nothing.`);
+    return;
+  }
+
   const cpocEmail = [...getCpocEmail(item)];
   const srtEmails = [...getSrtEmails(item)];
 

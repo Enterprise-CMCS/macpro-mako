@@ -16,6 +16,7 @@ export default defineConfig({
         "build_run",
         ".cdk",
         "docs/**",
+        "**/vitest.setup.ts",
         "lib/libs/webforms/**",
         "lib/libs/email/mock-data/**",
         "react-app/src/features/webforms/**",

@@ -149,7 +149,7 @@ jobs:
           role-duration-seconds: 10800
       - name: Run e2e tests
         run: run e2e
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
@@ -220,7 +220,7 @@ jobs:
           join_by() { local IFS="$1"; shift; echo "$*"; }
           echo "["$(join_by "," "${resourceData[@]}")"]" > "resources/aws-resources.json"
       - name: Archive stage resources
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: aws-resources-${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
           path: resources/aws-resources.json
