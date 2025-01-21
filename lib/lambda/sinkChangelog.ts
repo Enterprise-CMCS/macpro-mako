@@ -6,10 +6,10 @@ import {
   transformUpdateValuesSchema,
   transformDeleteSchema,
   transformedUpdateIdSchema,
-} from "./update/adminChangeSchemas";
-import { transformSubmitValuesSchema } from "./submit/submitNOSO";
-import { getPackageChangelog } from "lib/libs/api/package";
-import { copyAttachments } from "./submit/submitNOSO";
+} from "./adminActions/adminSchemas";
+import { transformSubmitValuesSchema } from "./adminActions/adminSchemas";
+import { copyAttachments } from "./adminActions/submitNOSO";
+import { getPackageChangelog } from "libs/api/package";
 
 // One notable difference between this handler and sinkMain's...
 // The order in which records are processed for the changelog doesn't matter.
@@ -90,6 +90,7 @@ const processAndIndex = async ({
               });
             });
 
+            //@ts-ignore
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
 
             packageChangelogs.hits.hits.forEach((log) => {

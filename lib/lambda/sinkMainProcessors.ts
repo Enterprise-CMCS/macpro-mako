@@ -7,8 +7,8 @@ import {
   deleteAdminChangeSchema,
   updateValuesAdminChangeSchema,
   updateIdAdminChangeSchema,
-} from "./update/adminChangeSchemas";
-import { submitNOSOAdminSchema } from "./submit/submitNOSO";
+} from "./adminActions/adminSchemas";
+import { submitNOSOAdminSchema } from "./adminActions/submitNOSO";
 
 const removeDoubleQuotesSurroundingString = (str: string) => str.replace(/^"|"$/g, "");
 const adminRecordSchema = deleteAdminChangeSchema

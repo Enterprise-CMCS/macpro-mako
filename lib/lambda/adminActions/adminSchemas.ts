@@ -48,3 +48,22 @@ export const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((da
   id: `${data.id}`,
   timestamp: Date.now(),
 }));
+
+export const submitNOSOAdminSchema = z
+  .object({
+    packageId: z.string(),
+    event: z.literal("NOSO"),
+    adminChangeType: z.literal("NOSO"),
+    copyAttachmentsFrom: z.string().optional(),
+  })
+  .and(z.record(z.string(), z.any()));
+
+export const transformSubmitValuesSchema = submitNOSOAdminSchema.transform((data) => ({
+  ...data,
+  adminChangeType: "NOSO",
+  event: "NOSO",
+  id: data.packageId,
+  packageId: data.packageId,
+  timestamp: Date.now(),
+  copyAttachmentsFromId: z.string().optional(),
+}));

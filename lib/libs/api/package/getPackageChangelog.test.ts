@@ -2,7 +2,7 @@
 import { TEST_ITEM_ID, WITHDRAWN_CHANGELOG_ITEM_ID } from "mocks";
 import items from "mocks/data/items";
 import { describe, expect, it } from "vitest";
-import { getPackageChangelog } from "./changelog";
+import { getPackageChangelog } from "./getPackageChangelog";
 
 describe("getPackageChangelog", () => {
   it("should throw an error if osDomain is not defined", async () => {

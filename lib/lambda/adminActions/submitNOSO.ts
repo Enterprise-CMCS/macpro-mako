@@ -3,28 +3,8 @@ import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
 import { getPackage } from "libs/api/package";
 import { getPackageChangelog } from "libs/api/package";
-import { z } from "zod";
 import { ItemResult } from "shared-types/opensearch/main";
-
-// create admin schemas
-export const submitNOSOAdminSchema = z
-  .object({
-    packageId: z.string(),
-    event: z.literal("NOSO"),
-    adminChangeType: z.literal("NOSO"),
-    copyAttachmentsFrom: z.string().optional(),
-  })
-  .and(z.record(z.string(), z.any()));
-
-export const transformSubmitValuesSchema = submitNOSOAdminSchema.transform((data) => ({
-  ...data,
-  adminChangeType: "NOSO",
-  event: "NOSO",
-  id: data.packageId,
-  packageId: data.packageId,
-  timestamp: Date.now(),
-  copyAttachmentsFromId: z.string().optional(),
-}));
+import { submitNOSOAdminSchema } from "./adminSchemas";
 
 export const copyAttachments = async (data: any) => {
   //ANDIE: change type not any
@@ -126,7 +106,7 @@ export const handler = async (event: APIGatewayEvent) => {
     const { packageId, action, copyAttachmentsFromId } = submitNOSOAdminSchema.parse(
       event.body === "string" ? JSON.parse(event.body) : event.body,
     );
-    let currentPackage: ItemResult | undefined = await getPackage(packageId);
+    const currentPackage: ItemResult | undefined = await getPackage(packageId);
 
     // currentpackage should have been entered in seaTool
     if (!currentPackage || currentPackage.found == false) {
