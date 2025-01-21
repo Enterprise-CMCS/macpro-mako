@@ -61,7 +61,10 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       variables:
         | (Events["CapitatedInitial"] & CommonEmailVariables & { emails: EmailAddresses })
         | (Events["ContractingInitial"] & CommonEmailVariables & { emails: EmailAddresses })
-        | (Events["CapitatedRenewal"] & CommonEmailVariables & { emails: EmailAddresses }),
+        | (Events["CapitatedRenewal"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["ContractingRenewal"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["CapitatedAmendment"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["ContractingAmendment"] & CommonEmailVariables & { emails: EmailAddresses }),
     ) => {
       return {
         to: variables.emails.osgEmail,
@@ -73,7 +76,10 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       variables:
         | (Events["CapitatedInitial"] & CommonEmailVariables & { emails: EmailAddresses })
         | (Events["ContractingInitial"] & CommonEmailVariables & { emails: EmailAddresses })
-        | (Events["CapitatedRenewal"] & CommonEmailVariables & { emails: EmailAddresses }),
+        | (Events["CapitatedRenewal"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["ContractingRenewal"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["CapitatedAmendment"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["ContractingAmendment"] & CommonEmailVariables & { emails: EmailAddresses }),
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
@@ -82,10 +88,9 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       };
     },
   },
-
   [Authority["1915c"]]: {
     cms: async (
-      variables: Events["NewAppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
+      variables: Events["AppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: variables.emails.osgEmail,
@@ -94,7 +99,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       };
     },
     state: async (
-      variables: Events["NewAppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
+      variables: Events["AppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
