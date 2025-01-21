@@ -8,6 +8,6 @@ export const getNextSplitSPAId = async (spaId: string) => {
       id: `${spaId}-[a-zA-Z]`,
     },
   };
-  const matchingPackages = search(domain, index, query);
+  const matchingPackages = await search(domain, index, query);
   console.log(matchingPackages, "HELLOOO");
 };
