@@ -36,7 +36,12 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
 };
 
 const splitSPAEventBodySchema = z.object({
-  packageId: z.string(),
+  packageId: z
+    .string()
+    .regex(
+      /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/,
+      "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-XXXX",
+    ),
 });
 
 export const handler = async (event: APIGatewayEvent) => {
