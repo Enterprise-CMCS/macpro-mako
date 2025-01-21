@@ -63,7 +63,9 @@ beforeAll(() => {
   mockedServer.listen({
     onUnhandledRequest: "warn",
   });
-
+  vi.mock("uuid", () => ({
+    v4: vi.fn(() => "mocked-uuid-1234"),
+  }));
   if (process.env.MOCK_API_REFINES) {
     vi.mock("@/components/Inputs/upload.utilities", () => ({
       getPresignedUrl: vi.fn(async () => "hello world"),
