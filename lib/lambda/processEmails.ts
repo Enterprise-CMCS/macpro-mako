@@ -111,12 +111,17 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 };
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
+  console.log('before process record')
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const record = JSON.parse(decodeBase64WithUtf8(kafkaRecord.value))
+    console.log('inside process record', record)
     const safeSeatoolRecord = opensearch.main.seatool.transform(record.id).safeParse(record);
     if(safeSeatoolRecord.data?.cmsStatus === SEATOOL_STATUS.WITHDRAWN) {
       //send email
-    }
+      console.log(safeSeatoolRecord.data?.cmsStatus, "seatool status is withdrawn")
+      
+      // await processAndSendEmails(record, id, config);
+        }
 
   }
   // then handle it with a different function that handleSeatoolEvents
@@ -187,7 +192,6 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
   }
 
   const territory = id.slice(0, 2);
-
   const allStateUsers = await getAllStateUsers({
     userPoolId: config.userPoolId,
     state: territory,
