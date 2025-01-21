@@ -115,7 +115,7 @@ export async function getLatestMatchingEvent(
     }
 
     // Filter matching events
-    const events = item.hits.hits.filter((event) => event._source.actionType === actionType);
+    const events = item.hits.hits.filter((event) => event._source.event === actionType);
 
     // Check if any matching events were found
     if (!events.length) {
