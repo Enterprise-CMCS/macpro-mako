@@ -7,6 +7,7 @@ export interface ExtendedItemResult extends ItemResult {
 }
 export const getPackage = async (id: string): Promise<ItemResult | undefined> => {
   const { domain, index } = getDomainAndNamespace("main");
+
   const packageResult = await os.getItem(domain, index, id);
 
   return packageResult;

@@ -282,6 +282,17 @@ export class Api extends cdk.NestedStack {
           indexNamespace,
         },
       },
+      {
+        id: "submitSplitSPA",
+        entry: join(__dirname, "../lambda/submit/submitSplitSPA.ts"),
+        environment: {
+          topicName,
+          brokerString,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
     ];
 
     const lambdas = lambdaDefinitions.reduce(
