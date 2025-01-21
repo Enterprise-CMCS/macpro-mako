@@ -1,13 +1,25 @@
-import { emailTemplateValue } from "../../../mock-data/temp-extension";
 import { TempExtStateEmail } from "../../../content/tempExtension/emailTemplates/TempExtState";
+import { Events, CommonEmailVariables } from "node_modules/shared-types";
 
-const TempExtStatePreview = () => {
+type TempExtStateEmailProps = Events["TemporaryExtension"] & CommonEmailVariables;
+
+const TempExtStatePreview = (variables: TempExtStateEmailProps) => {
   return (
     <TempExtStateEmail
       variables={{
-        ...emailTemplateValue,
-        authority: "1915(b)",
+        ...variables,
         actionType: "Extend",
+        authority: "1915(c)",
+        attachments: {
+          waiverExtensionRequest: {
+            label: "Waiver Extension Request",
+            files: [],
+          },
+          other: {
+            label: "Other",
+            files: [],
+          },
+        },
       }}
     />
   );
