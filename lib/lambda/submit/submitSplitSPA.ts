@@ -75,6 +75,12 @@ export const handler = async (event: APIGatewayEvent) => {
     return await sendSubmitSplitSPAMessage(currentPackage);
   } catch (err) {
     console.error("Error has occured modifying package:", err);
+    if (err instanceof z.ZodError) {
+      return response({
+        statusCode: 400,
+        body: { message: err.errors },
+      });
+    }
     return response({
       statusCode: 500,
       body: { message: err.message || "Internal Server Error" },
