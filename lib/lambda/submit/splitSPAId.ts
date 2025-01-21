@@ -5,10 +5,7 @@ export const getNextSplitSPAId = async (spaId: string) => {
   const { domain, index } = getDomainAndNamespace("main");
   const query = {
     regexp: {
-      id: {
-        value: `${spaId}-[a-zA-Z]`,
-        flags: "ALL",
-      },
+      id: `${spaId}-[a-zA-Z]`,
     },
   };
   const matchingPackages = await search(domain, index, query);
