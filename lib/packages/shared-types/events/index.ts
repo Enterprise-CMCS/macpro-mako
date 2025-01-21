@@ -54,7 +54,7 @@ export type Events = {
   ContractingAmendment: z.infer<typeof contractingAmendment.schema>;
   NewChipSubmission: z.infer<typeof newChipSubmission.schema>;
   NewMedicaidSubmission: z.infer<typeof newMedicaidSubmission.schema>;
-  TempExtension: z.infer<typeof temporaryExtension.schema>;
+  TemporaryExtension: z.infer<typeof temporaryExtension.schema>;
   RespondToRai: z.infer<typeof respondToRai.schema>;
   UploadSubsequentDocuments: z.infer<typeof uploadSubsequentDocuments.schema>;
   WithdrawPackage: z.infer<typeof withdrawPackage.schema>;

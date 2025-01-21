@@ -9,7 +9,7 @@ import { BaseEmailTemplate } from "../../email-templates";
 import { formatNinetyDaysDate } from "shared-utils";
 
 export const TempExtCMSEmail = (props: {
-  variables: Events["TempExtension"] & CommonEmailVariables & { emails: EmailAddresses };
+  variables: Events["TemporaryExtension"] & CommonEmailVariables & { emails: EmailAddresses };
 }) => {
   const variables = props.variables;
   const previewText = `Temporary Extension ${variables.id} Submitted`;

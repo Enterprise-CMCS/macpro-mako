@@ -5,7 +5,7 @@ import { PackageDetails, MailboxNotice, FollowUpNotice, Attachments } from "../.
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const TempExtStateEmail = (props: {
-  variables: Events["TempExtension"] & CommonEmailVariables & { emails: EmailAddresses };
+  variables: Events["TemporaryExtension"] & CommonEmailVariables & { emails: EmailAddresses };
 }) => {
   const variables = props.variables;
   const previewText = `Temporary Extension ${variables.id} Submitted`;

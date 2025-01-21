@@ -7,7 +7,7 @@ import { Authority } from "shared-types";
 import { SIMPLE_ID, WITHDRAW_RAI_ITEM_B, WITHDRAW_RAI_ITEM_C } from "mocks";
 const nms = "new-medicaid-submission";
 const ncs = "new-chip-submission";
-const tempExtension = "temp-extension";
+const tempExtension = "temporary-extension";
 const withdrawPackage = "withdraw-package";
 const contractingInitial = "contracting-initial";
 const capitatedInitial = "capitated-initial";
