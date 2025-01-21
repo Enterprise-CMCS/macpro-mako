@@ -20,6 +20,8 @@ export default defineConfig({
         "lib/libs/webforms/**",
         "lib/libs/email/mock-data/**",
         "react-app/src/features/webforms/**",
+        "**/*.test.ts",
+        "**/*.test.tsx",
         "TestWrapper.tsx",
         "lib/stacks/**",
         "lib/packages/eslint-config-custom/**",
