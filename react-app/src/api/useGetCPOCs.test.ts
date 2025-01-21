@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { fetchCpocData } from "./useGetCPOCs";
-import { errorCpocHandler } from "mocks";
+import { errorApiCpocHandler } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { cpocsList } from "mocks/data/cpocs";
 
@@ -12,7 +12,7 @@ describe("useGetCPOCs test", () => {
     });
 
     it("should handle an error when fetching CPOCs", async () => {
-      mockedServer.use(errorCpocHandler);
+      mockedServer.use(errorApiCpocHandler);
 
       const result = await fetchCpocData();
       expect(result).toBeUndefined();
