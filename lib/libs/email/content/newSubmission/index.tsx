@@ -64,12 +64,19 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
         | (Events["CapitatedRenewal"] & CommonEmailVariables & { emails: EmailAddresses })
         | (Events["ContractingRenewal"] & CommonEmailVariables & { emails: EmailAddresses })
         | (Events["CapitatedAmendment"] & CommonEmailVariables & { emails: EmailAddresses })
-        | (Events["ContractingAmendment"] & CommonEmailVariables & { emails: EmailAddresses }),
+        | (Events["ContractingAmendment"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["AppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses }),
     ) => {
       return {
         to: variables.emails.osgEmail,
         subject: `${variables.authority} ${variables.id} Submitted`,
-        body: await render(<Waiver1915bCMSEmail variables={variables} />),
+        body: await render(
+          variables.event === "app-k" ? (
+            <AppKCMSEmail variables={variables} />
+          ) : (
+            <Waiver1915bCMSEmail variables={variables} />
+          ),
+        ),
       };
     },
     state: async (
@@ -79,12 +86,19 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
         | (Events["CapitatedRenewal"] & CommonEmailVariables & { emails: EmailAddresses })
         | (Events["ContractingRenewal"] & CommonEmailVariables & { emails: EmailAddresses })
         | (Events["CapitatedAmendment"] & CommonEmailVariables & { emails: EmailAddresses })
-        | (Events["ContractingAmendment"] & CommonEmailVariables & { emails: EmailAddresses }),
+        | (Events["ContractingAmendment"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["AppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses }),
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Your ${variables.authority} ${variables.id} has been submitted to CMS`,
-        body: await render(<Waiver1915bStateEmail variables={variables} />),
+        body: await render(
+          variables.event === "app-k" ? (
+            <AppKCMSEmail variables={variables} />
+          ) : (
+            <Waiver1915bStateEmail variables={variables} />
+          ),
+        ),
       };
     },
   },

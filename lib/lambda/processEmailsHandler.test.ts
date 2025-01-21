@@ -13,6 +13,7 @@ const contractingInitial = "contracting-initial";
 const capitatedInitial = "capitated-initial";
 const withdrawRai = "withdraw-rai";
 const respondToRai = "respond-to-rai";
+const appk = "app-k";
 
 describe("process emails  Handler", () => {
   it.each([
@@ -131,9 +132,9 @@ describe("process emails  Handler", () => {
       SIMPLE_ID,
     ],
     [
-      `should send an email for ${withdrawPackage} with ${Authority["1915c"]}`,
+      `should send an email for ${appk} with ${Authority["1915c"]}`,
       Authority["1915c"],
-      withdrawPackage,
+      appk,
       SIMPLE_ID,
     ],
     [
@@ -179,9 +180,15 @@ describe("process emails  Handler", () => {
       SIMPLE_ID,
     ],
     [
-      `should send an email for ${capitatedInitial} with ${Authority["1915c"]}`,
+      `should send an email for ${appk} with ${Authority["1915c"]}`,
       Authority["1915c"],
-      capitatedInitial,
+      appk,
+      SIMPLE_ID,
+    ],
+    [
+      `should send an email for ${appk} with ${Authority["1915b"]}`,
+      Authority["1915b"],
+      appk,
       SIMPLE_ID,
     ],
     [
