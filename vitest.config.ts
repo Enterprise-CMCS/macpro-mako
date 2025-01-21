@@ -20,6 +20,7 @@ export default defineConfig({
         "lib/libs/webforms/**",
         "lib/libs/email/mock-data/**",
         "react-app/src/features/webforms/**",
+        "react-app/src/components/ScrollToTop/**",
         "**/*.test.ts",
         "**/*.test.tsx",
         "TestWrapper.tsx",
