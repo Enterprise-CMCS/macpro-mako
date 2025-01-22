@@ -35,7 +35,7 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
         origin: "OneMAC",
         changeMade: "ID has been updated.",
         isAdminChange: true,
-        adminChangeType: "update-id",
+        adminChangeType: "split-spa",
       }),
     );
   } catch (err) {
@@ -83,7 +83,7 @@ export const handler = async (event: APIGatewayEvent) => {
     if (currentPackage._source.authority !== "Medicaid SPA") {
       return response({
         statusCode: 400,
-        body: { message: "Record can only be a Medicaid SPA" },
+        body: { message: "Record must be a Medicaid SPA" },
       });
     }
 
