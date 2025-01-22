@@ -122,7 +122,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       
       // await processAndSendEmails(record, id, config);
         }
-
+        return
   }
   // then handle it with a different function that handleSeatoolEvents
   // hanldeSeatoolEvents
