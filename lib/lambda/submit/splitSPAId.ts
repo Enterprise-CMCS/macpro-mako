@@ -22,15 +22,17 @@ export const getNextSplitSPAId = async (spaId: string) => {
       newSplitSPAId = `${spaId}-A`;
       return newSplitSPAId;
     }
+    // } else {
+    //   newSplitSPAId = "";
+    //   console.log(matchingSplitSPAs, "HELLOOO");
+    //   return newSplitSPAId;
+    // }
   } else {
     newSplitSPAId = "";
-    console.log(matchingSplitSPAs, "HELLOOO");
+    const ids = matchingSplitSPAs.hits.hits.map((hit: any) => hit._source.id);
+    console.log(ids);
+    const suffixes = ids.map((id: string) => id.split("-")[1]);
+    console.log(suffixes, "LETTERS");
     return newSplitSPAId;
   }
-  // } else {
-  //   const ids = matchingSplitSPAs.hits.hits.map((hit: any) => hit._source.id);
-  //   console.log(ids);
-  //   const suffixes = ids.map((id: string) => id.split("-")[1]);
-  //   console.log(suffixes, "LETTERS");
-  // }
 };
