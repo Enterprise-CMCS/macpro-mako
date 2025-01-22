@@ -101,7 +101,8 @@ const processAndIndex = async ({
                 packageId: result.data.id,
               });
             });
-          } else if (result.data.adminChangeType === "NOSO" && result.data.copyAttachmentsFrom) {
+          } else if (result.data.adminChangeType === "NOSO" && result.data.copyAttachmentsFromId) {
+            console.log("attempting to copy attachments...");
             try {
               const data = await copyAttachments(result.data);
               docs.push(data);

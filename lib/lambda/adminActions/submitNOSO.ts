@@ -7,7 +7,7 @@ import { ItemResult } from "shared-types/opensearch/main";
 import { submitNOSOAdminSchema } from "./adminSchemas";
 
 export const copyAttachments = async (data: any) => {
-  console.log("ANDIE******:", data);
+  console.log("ANDIE******:", data, data.copyAttachmentsFromId);
   //ANDIE: change type not any
   // change any
   if (!data.copyAttachmentsFromId) return data;

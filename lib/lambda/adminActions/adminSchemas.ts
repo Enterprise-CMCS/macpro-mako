@@ -53,7 +53,7 @@ export const submitNOSOAdminSchema = z
   .object({
     id: z.string(),
     adminChangeType: z.literal("NOSO"),
-    copyAttachmentsFrom: z.string().optional(),
+    copyAttachmentsFromId: z.string().optional(),
   })
   .and(z.record(z.string(), z.any()));
 
