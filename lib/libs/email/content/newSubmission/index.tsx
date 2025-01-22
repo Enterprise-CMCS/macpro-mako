@@ -61,31 +61,50 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       variables:
         | (Events["CapitatedInitial"] & CommonEmailVariables & { emails: EmailAddresses })
         | (Events["ContractingInitial"] & CommonEmailVariables & { emails: EmailAddresses })
-        | (Events["CapitatedRenewal"] & CommonEmailVariables & { emails: EmailAddresses }),
+        | (Events["CapitatedRenewal"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["ContractingRenewal"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["CapitatedAmendment"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["ContractingAmendment"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["AppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses }),
     ) => {
       return {
         to: variables.emails.osgEmail,
         subject: `${variables.authority} ${variables.id} Submitted`,
-        body: await render(<Waiver1915bCMSEmail variables={variables} />),
+        body: await render(
+          variables.event === "app-k" ? (
+            <AppKCMSEmail variables={variables} />
+          ) : (
+            <Waiver1915bCMSEmail variables={variables} />
+          ),
+        ),
       };
     },
     state: async (
       variables:
         | (Events["CapitatedInitial"] & CommonEmailVariables & { emails: EmailAddresses })
         | (Events["ContractingInitial"] & CommonEmailVariables & { emails: EmailAddresses })
-        | (Events["CapitatedRenewal"] & CommonEmailVariables & { emails: EmailAddresses }),
+        | (Events["CapitatedRenewal"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["ContractingRenewal"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["CapitatedAmendment"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["ContractingAmendment"] & CommonEmailVariables & { emails: EmailAddresses })
+        | (Events["AppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses }),
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Your ${variables.authority} ${variables.id} has been submitted to CMS`,
-        body: await render(<Waiver1915bStateEmail variables={variables} />),
+        body: await render(
+          variables.event === "app-k" ? (
+            <AppKCMSEmail variables={variables} />
+          ) : (
+            <Waiver1915bStateEmail variables={variables} />
+          ),
+        ),
       };
     },
   },
-
   [Authority["1915c"]]: {
     cms: async (
-      variables: Events["NewAppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
+      variables: Events["AppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: variables.emails.osgEmail,
@@ -94,7 +113,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       };
     },
     state: async (
-      variables: Events["NewAppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
+      variables: Events["AppKSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],

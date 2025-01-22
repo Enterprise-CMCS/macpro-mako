@@ -12,7 +12,7 @@ import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
 export const AppKStateEmail = (props: {
-  variables: Events["NewAppKSubmission"] & CommonEmailVariables;
+  variables: Events["AppKSubmission"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   const previewText = `Appendix K Amendment Submitted`;
