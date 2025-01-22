@@ -6,6 +6,8 @@ const TempExtCMSPreview = () => {
     <TempExtCMSEmail
       variables={{
         ...emailTemplateValue,
+        authority: "1915(b)",
+        actionType: "Extend",
       }}
     />
   );
