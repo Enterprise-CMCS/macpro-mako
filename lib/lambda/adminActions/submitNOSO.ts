@@ -62,11 +62,11 @@ export const copyAttachments = async (data: any) => {
 };
 
 const sendSubmitMessage = async ({
-  packageId,
+  id,
   currentPackage,
   copyAttachmentsFromId,
 }: {
-  packageId: string;
+  id: string;
   currentPackage: ItemResult;
   copyAttachmentsFromId?: string;
 }) => {
@@ -76,21 +76,22 @@ const sendSubmitMessage = async ({
   }
   await produceMessage(
     topicName,
-    packageId,
+    id,
     JSON.stringify({
       ...currentPackage._source,
       copyAttachmentsFromId: copyAttachmentsFromId,
       origin: "SEATool",
       isAdminChange: true,
       adminChangeType: "NOSO",
-      changeMade: `${packageId} added to OneMAC. Package not originally submitted in OneMAC. At this time, the attachments for this package are unavailable in this system. Contact your CPOC to verify the initial submission documents.`,
+      event: "NOSO",
+      changeMade: `${id} added to OneMAC. Package not originally submitted in OneMAC. At this time, the attachments for this package are unavailable in this system. Contact your CPOC to verify the initial submission documents.`,
       changeReason: `This is a Not Originally Submitted in OneMAC (NOSO) that users need to see in OneMAC.`,
     }),
   );
 
   return response({
     statusCode: 200,
-    body: { message: `${packageId} has been submitted.` },
+    body: { message: `${id} has been submitted.` },
   });
 };
 
@@ -103,22 +104,22 @@ export const handler = async (event: APIGatewayEvent) => {
   }
   try {
     // add a property for new ID
-    const { packageId, action, copyAttachmentsFromId } = submitNOSOAdminSchema.parse(
+    const { id, adminChangeType, copyAttachmentsFromId } = submitNOSOAdminSchema.parse(
       event.body === "string" ? JSON.parse(event.body) : event.body,
     );
-    const currentPackage: ItemResult | undefined = await getPackage(packageId);
+    const currentPackage: ItemResult | undefined = await getPackage(id);
 
     // currentpackage should have been entered in seaTool
     if (!currentPackage || currentPackage.found == false) {
       return response({
         statusCode: 404,
-        body: { message: `Package with id: ${packageId} is not in SEATool` },
+        body: { message: `Package with id: ${id} is not in SEATool` },
       });
     }
 
-    if (action === "NOSO" && currentPackage !== undefined) {
+    if (adminChangeType === "NOSO" && currentPackage !== undefined) {
       // copying over attachments is handled in sinkChangeLog
-      return await sendSubmitMessage({ packageId, currentPackage, copyAttachmentsFromId });
+      return await sendSubmitMessage({ id, currentPackage, copyAttachmentsFromId });
     }
 
     return response({

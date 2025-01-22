@@ -51,8 +51,7 @@ export const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((da
 
 export const submitNOSOAdminSchema = z
   .object({
-    packageId: z.string(),
-    event: z.literal("NOSO"),
+    id: z.string(),
     adminChangeType: z.literal("NOSO"),
     copyAttachmentsFrom: z.string().optional(),
   })
