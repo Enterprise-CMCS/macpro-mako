@@ -222,7 +222,7 @@ export class Email extends cdk.NestedStack {
 
     alarm.addAlarmAction(new cdk.aws_cloudwatch_actions.SnsAction(alarmTopic));
 
-    new CfnEventSourceMapping(this, "SinkSESTrigger", {
+    new CfnEventSourceMapping(this, "SinkSESTrigger1", {
       batchSize: 1,
       enabled: true,
       selfManagedEventSource: {
@@ -242,13 +242,42 @@ export class Email extends cdk.NestedStack {
         },
       ],
       startingPosition: "LATEST",
-      topics: [`${topicNamespace}aws.onemac.migration.cdc`, `${topicNamespace}aws.seatool.ksql.onemac.three.agg.State_Planc`,],
+      topics: [`${topicNamespace}aws.onemac.migration.cdc`],
       destinationConfig: {
         onFailure: {
           destination: dlq.queueArn,
         },
       },
     });
+    
+    new CfnEventSourceMapping(this, "SinkSESTrigger2", {
+      batchSize: 1,
+      enabled: true,
+      selfManagedEventSource: {
+        endpoints: {
+          kafkaBootstrapServers: brokerString.split(","),
+        },
+      },
+      functionName: processEmailsLambda.functionName,
+      sourceAccessConfigurations: [
+        ...privateSubnets.map((subnet) => ({
+          type: "VPC_SUBNET",
+          uri: subnet.subnetId,
+        })),
+        {
+          type: "VPC_SECURITY_GROUP",
+          uri: `security_group:${lambdaSecurityGroup.securityGroupId}`,
+        },
+      ],
+      startingPosition: "LATEST",
+      topics: [`${topicNamespace}aws.seatool.ksql.onemac.three.agg.State_Planc`],
+      destinationConfig: {
+        onFailure: {
+          destination: dlq.queueArn,
+        },
+      },
+    });
+    
 
     // Add CloudWatch alarms
     new cdk.aws_cloudwatch.Alarm(this, "EmailProcessingErrors", {
