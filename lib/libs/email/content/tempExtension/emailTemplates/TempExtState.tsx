@@ -1,10 +1,12 @@
 import { formatNinetyDaysDate } from "shared-utils";
-import { CommonEmailVariables } from "shared-types";
+import { CommonEmailVariables, Events } from "shared-types";
 import { PackageDetails, MailboxNotice, FollowUpNotice, Attachments } from "../../email-components";
 
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const TempExtStateEmail = (props: { variables: any & CommonEmailVariables }) => {
+type TempExtStateEmailProps = Events["TemporaryExtension"] & CommonEmailVariables;
+
+export const TempExtStateEmail = (props: { variables: TempExtStateEmailProps }) => {
   const variables = props.variables;
   const previewText = `Temporary Extension ${variables.id} Submitted`;
   const heading =
