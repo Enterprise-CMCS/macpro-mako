@@ -102,8 +102,12 @@ const processAndIndex = async ({
               });
             });
           } else if (result.data.adminChangeType === "NOSO") {
-            const data = copyAttachments(result.data);
-            docs.push(data);
+            try {
+              const data = await copyAttachments(result.data);
+              docs.push(data);
+            } catch (error) {
+              console.error("There was an error with copying attachements:", error);
+            }
           } else {
             docs.push(result.data);
           }
