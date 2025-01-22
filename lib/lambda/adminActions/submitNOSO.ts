@@ -8,28 +8,26 @@ import { submitNOSOAdminSchema } from "./adminSchemas";
 
 export const copyAttachments = async (data: any) => {
   console.log("ANDIE******:", data, data.copyAttachmentsFromId);
-  //ANDIE: change type not any
-  // change any
-  if (!data.copyAttachmentsFromId) return data;
-  const copyAttachmentsFromId = data.copyAttachmentsFromId;
 
-  console.log("copyAttachmentsFromId", copyAttachmentsFromId);
-  console.log("id:", data.id);
+  const currentPackage = await getPackage(data.id);
+  const currentPackageChangelog = await getPackageChangelog(data.id);
+
+  console.log("andie", currentPackage);
+  if (!currentPackage || currentPackage.found == false) {
+    console.error(`Current package id: ${currentPackage} not found`);
+    return data;
+  }
+
+  //@ts-ignore
+  const copyAttachmentsFromId = currentPackage?._source.copyAttachmentsFromId;
+  console.log(`atempting to copy attachments from ${copyAttachmentsFromId}...`);
 
   // get the attachementPackage
   const attachPackage = await getPackage(copyAttachmentsFromId);
   const attachPackageChangelog = await getPackageChangelog(copyAttachmentsFromId);
 
-  const currentPackage = await getPackage(data.id);
-  const currentPackageChangelog = await getPackageChangelog(data.id);
-
   if (!attachPackage || attachPackage.found == false) {
     console.error(`Copy Attachment Package of id: ${copyAttachmentsFromId} not found`);
-    return data;
-  }
-
-  if (!currentPackage || currentPackage.found == false) {
-    console.error(`Current package id: ${currentPackage} not found`);
     return data;
   }
 
