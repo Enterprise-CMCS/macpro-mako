@@ -1,4 +1,4 @@
-import { CommonEmailVariables, EmailAddresses, Events } from "shared-types";
+import { CommonEmailVariables, Events } from "shared-types";
 import {
   PackageDetails,
   LoginInstructions,
@@ -8,9 +8,9 @@ import {
 import { BaseEmailTemplate } from "../../email-templates";
 import { formatNinetyDaysDate } from "shared-utils";
 
-export const TempExtCMSEmail = (props: {
-  variables: Events["TemporaryExtension"] & CommonEmailVariables & { emails: EmailAddresses };
-}) => {
+type TempExtCMSEmailProps = Events["TemporaryExtension"] & CommonEmailVariables;
+
+export const TempExtCMSEmail = (props: { variables: TempExtCMSEmailProps }) => {
   const variables = props.variables;
   const previewText = `Temporary Extension ${variables.id} Submitted`;
   const heading = `The Submission Portal received a ${variables.authority} Temporary Extension Submission:`;

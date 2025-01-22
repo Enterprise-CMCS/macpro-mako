@@ -4,13 +4,11 @@ import { TempExtStateEmail } from "../../../content/tempExtension/emailTemplates
 const TempExtStatePreview = () => {
   return (
     <TempExtStateEmail
-      variables={
-        {
-          ...emailTemplateValue,
-          authority: "1915(b)",
-          actionType: "Extend",
-        } as any
-      }
+      variables={{
+        ...emailTemplateValue,
+        authority: "1915(b)",
+        actionType: "Extend",
+      }}
     />
   );
 };
