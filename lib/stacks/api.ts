@@ -232,7 +232,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "submitNOSO",
-        entry: join(__dirname, "../lambda/submit/submitNOSO.ts"),
+        entry: join(__dirname, "../lambda/adminActions/submitNOSO.ts"),
         environment: {
           dbInfoSecretName,
           topicName,
@@ -286,7 +286,7 @@ export class Api extends cdk.NestedStack {
       },
       {
         id: "updatePackage",
-        entry: join(__dirname, "../lambda/update/updatePackage.ts"),
+        entry: join(__dirname, "../lambda/adminActions/updatePackage.ts"),
         environment: {
           topicName,
           brokerString,
