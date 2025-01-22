@@ -30,10 +30,9 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
       newId,
       JSON.stringify({
         id: newId,
-        idToBeUpdated: currentPackage._id,
         ...remainingFields,
         origin: "OneMAC",
-        changeMade: "ID has been updated.",
+        changeMade: "Medicaid split SPA package has been created.",
         isAdminChange: true,
         adminChangeType: "split-spa",
       }),

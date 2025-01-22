@@ -26,13 +26,14 @@ export const getNextSplitSPAId = async (spaId: string) => {
     // convert to ASCII to find latest letter
     const suffixCharCodes = suffixes.map((letter: string, idx: number) => letter.charCodeAt(idx));
     const latestLetterCharCode = Math.max(suffixCharCodes);
-
+    console.log(latestLetterCharCode, "LATEST");
     // increment letter but not past "Z"
     if (latestLetterCharCode >= 90) {
       // edit message
       throw new Error("This package can't be further split.");
     }
     const nextLetter = String.fromCharCode(latestLetterCharCode + 1);
+    console.log(nextLetter, "LETTER?");
     newSplitSPAId = `${spaId}-${nextLetter}`;
   }
   return newSplitSPAId;
