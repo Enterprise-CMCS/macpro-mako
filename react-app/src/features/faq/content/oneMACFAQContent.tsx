@@ -1018,73 +1018,79 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "chip-spa-implentation-guides",
         question: "Where can I download CHIP eligibility SPA implementation guides?",
         answerJSX: (
-          <section className="space-y-2 ">
-            <p>CHIP eligibility SPA implementation guides can be downloaded at the links below.</p>
-            <p>
-              <a
-                href="/chp/IG_ChipEligibilityIntroduction_Final_20241205.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600"
-              >
-                CHIP Eligibility Introduction
-              </a>
-            </p>
-            <ul className="list-disc pl-6 space-y-2">
-              {renderSection(
-                "MAGI Eligibility & Methods",
-                CHP_GUIDES,
-                (guide) =>
-                  [
-                    "CS 7",
-                    "CS 8",
-                    "CS 9",
-                    "CS 10",
-                    "CS 11",
-                    "CS 12",
-                    "CS 13",
-                    "CS 15",
-                    "CS 16",
-                  ].includes(guide.title),
-                "list-disc pl-6 space-y-2 text-blue-600",
-              )}
-              {renderSection(
-                "XXI Medicaid Expansion",
-                CHP_GUIDES,
-                (guide) => guide.title === "CS 3",
-                "list-disc pl-6 space-y-2 text-blue-600",
-              )}
-              {renderSection(
-                "Establish 2101(f) Group",
-                CHP_GUIDES,
-                (guide) => guide.title === "CS 14",
-                "list-disc pl-6 space-y-2 text-blue-600",
-              )}
-              {renderSection(
-                "Eligibility Processing",
-                CHP_GUIDES,
-                (guide) => guide.title === "CS 24",
-                "list-disc pl-6 space-y-2 text-blue-600",
-              )}
-              {renderSection(
-                "Non-Financial Eligibility",
-                CHP_GUIDES,
-                (guide) =>
-                  [
-                    "CS 17",
-                    "CS 18",
-                    "CS 19",
-                    "CS 20",
-                    "CS 21",
-                    "CS 23",
-                    "CS 27",
-                    "CS 28",
-                    "CS 29",
-                  ].includes(guide.title),
-                "list-disc pl-6 space-y-2 text-blue-600",
-              )}
+          <div>
+            <ul className="list-disc pl-6 pb-2">
+              <li>
+                <a
+                  href="/chp/IG_ChipEligibilityIntroduction_Final_20241205.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600"
+                >
+                  CHIP Eligibility Introduction
+                </a>
+              </li>
             </ul>
-          </section>
+            <section className="space-y-2">
+              <p>
+                CHIP eligibility SPA implementation guides can be downloaded at the links below.
+              </p>
+              <ul className="list-disc pl-6 space-y-2">
+                {renderSection(
+                  "MAGI Eligibility & Methods",
+                  CHP_GUIDES,
+                  (guide) =>
+                    [
+                      "CS 7",
+                      "CS 8",
+                      "CS 9",
+                      "CS 10",
+                      "CS 11",
+                      "CS 12",
+                      "CS 13",
+                      "CS 15",
+                      "CS 16",
+                    ].includes(guide.title),
+                  "list-disc pl-6 space-y-2 text-blue-600",
+                )}
+                {renderSection(
+                  "XXI Medicaid Expansion",
+                  CHP_GUIDES,
+                  (guide) => guide.title === "CS 3",
+                  "list-disc pl-6 space-y-2 text-blue-600",
+                )}
+                {renderSection(
+                  "Establish 2101(f) Group",
+                  CHP_GUIDES,
+                  (guide) => guide.title === "CS 14",
+                  "list-disc pl-6 space-y-2 text-blue-600",
+                )}
+                {renderSection(
+                  "Eligibility Processing",
+                  CHP_GUIDES,
+                  (guide) => guide.title === "CS 24",
+                  "list-disc pl-6 space-y-2 text-blue-600",
+                )}
+                {renderSection(
+                  "Non-Financial Eligibility",
+                  CHP_GUIDES,
+                  (guide) =>
+                    [
+                      "CS 17",
+                      "CS 18",
+                      "CS 19",
+                      "CS 20",
+                      "CS 21",
+                      "CS 23",
+                      "CS 27",
+                      "CS 28",
+                      "CS 29",
+                    ].includes(guide.title),
+                  "list-disc pl-6 space-y-2 text-blue-600",
+                )}
+              </ul>
+            </section>
+          </div>
         ),
       },
     ],
