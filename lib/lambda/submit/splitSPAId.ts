@@ -22,7 +22,7 @@ export const getNextSplitSPAId = async (spaId: string) => {
     // get list of split SPAs for this package id and extract suffixes (letters)
     const ids = existingSplitSPAs.hits.hits.map((hit: any) => hit._source.id);
     const suffixes = ids.map((id: string) => id.split("-").at(-1));
-
+    console.log(suffixes, "SUFFIXESSS");
     // convert to ASCII to find latest letter
     const suffixCharCodes = suffixes.map((letter: string, idx: number) => letter.charCodeAt(idx));
     const latestLetterCharCode = Math.max(...suffixCharCodes);
