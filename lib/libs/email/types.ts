@@ -37,5 +37,5 @@ export interface NewSubmissionTemplateProps<T extends keyof Events> {
 }
 
 export interface TempExtensionTemplateProps {
-  variables: Events["TempExtension"] & CommonEmailVariables;
+  variables: Events["TemporaryExtension"] & CommonEmailVariables;
 }
