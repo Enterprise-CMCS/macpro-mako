@@ -20,12 +20,18 @@ import { FAQ_TAB } from "@/router";
 import { useGetItem } from "@/api";
 import { getFAQLinkForAttachments } from "../../faqLinks";
 
+const actionTypeMap = {
+  New: "Initial Waiver",
+  Renew: "Waiver Renewal",
+};
+
 export const TemporaryExtensionForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
   const { data: submission } = useGetItem(waiverId, { enabled: waiverId !== undefined });
+
   const type =
     submission && submission._source
-      ? `${submission._source.authority} Waiver ${submission._source.actionType}`
+      ? `${submission._source.authority} ${actionTypeMap[submission._source.actionType]}`
       : null;
 
   return (
@@ -144,17 +150,17 @@ export const TemporaryExtensionForm = () => {
                     onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                   />
                 </FormControl>
-                {type && (
-                  <div>
-                    <br />
-                    <p>Type</p>
-                    <p className="text-xl">{type}</p>
-                  </div>
-                )}
+
                 <FormMessage />
               </FormItem>
             )}
           />
+          {type && (
+            <div>
+              <p>Type</p>
+              <p className="text-xl">{type}</p>
+            </div>
+          )}
         </>
       )}
       defaultValues={{
