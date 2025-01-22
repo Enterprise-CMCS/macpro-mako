@@ -79,9 +79,9 @@ const compileSrtList = (
 ): { name: string; email: string }[] =>
   officers?.length
     ? officers.map((o) => ({
-        name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
-        email: o.EMAIL || "",
-      }))
+      name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
+      email: o.EMAIL || "",
+    }))
     : [];
 
 const getFinalDispositionDate = (status: string, record: SeaTool) => {
@@ -158,7 +158,6 @@ export const transform = (id: string) => {
           };
         }) || [],
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
-      raiReceivedDate,
       raiRequestedDate,
       raiWithdrawnDate,
       reviewTeam: compileSrtList(data.ACTION_OFFICERS),
