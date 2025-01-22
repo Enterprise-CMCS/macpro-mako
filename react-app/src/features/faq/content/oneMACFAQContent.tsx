@@ -313,7 +313,7 @@ export const oneMACFAQContent: FAQContent[] = [
               The Official Submission package SPA ID must follow the format SS-YY-#### OR
               SS-YY-####-XXXX to include:
             </p>
-            <ul className="list-disc ml-8 space-y-2">
+            <ul className="list-disc ml-7 space-y-2">
               <li>SS = 2 alpha character (State Abbreviation)</li>
               <li>YY = 2 numeric digits (Year)</li>
               <li>#### = 4 numeric digits (Serial number)</li>
@@ -601,7 +601,7 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <div className="w-full space-y-3">
             <p>When necessary, states will receive an RAI via email from CMS.</p>
-            <ul className="list-disc ml-8 space-y-2">
+            <ul className="list-disc ml-7 space-y-2">
               <li>The state will respond to the RAI through OneMAC.</li>
               <li>
                 A Request for Additional Information (RAI) stops the 90-day clock, is a formal
@@ -615,7 +615,7 @@ export const oneMACFAQContent: FAQContent[] = [
             <p>
               To respond to a Medicaid SPA RAI, select the SPA Tab view from the Package Dashboard.
             </p>
-            <ul className="list-disc ml-8 space-y-2">
+            <ul className="list-disc ml-7 space-y-2">
               <li>
                 Select the link to the SPA ID. Packages which are in need of an RAI response from
                 the state will have a Status of <b>RAI Issued.</b>
@@ -641,7 +641,7 @@ export const oneMACFAQContent: FAQContent[] = [
               If a state wishes to withdraw a Formal RAI Response, the state must first contact
               their CMS Point of Contact so the action can be enabled.
             </p>
-            <ul className="list-disc ml-8">
+            <ul className="list-disc ml-7">
               <li>
                 As a CMS user, log in to OneMAC and select the link to the SPA ID from the dashboard
               </li>
@@ -666,7 +666,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 taken.
               </b>
             </p>
-            <ul className="list-disc ml-8 space-y-2">
+            <ul className="list-disc ml-7 space-y-2">
               <li>
                 On the Formal RAI Response Withdraw form, upload any supporting documentation and
                 fill out the Additional Information section explaining your need to withdraw the
@@ -759,7 +759,7 @@ export const oneMACFAQContent: FAQContent[] = [
               If a state wishes to withdraw a Formal RAI Response, the state must first contact
               their CMS Point of Contact so the action can be enabled.
             </p>
-            <ul className="list-disc ml-8">
+            <ul className="list-disc ml-7">
               <li>
                 As a CMS user, log in to OneMAC and select the link to the SPA ID from the dashboard
               </li>
@@ -784,7 +784,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 taken.
               </b>
             </p>
-            <ul className="list-disc ml-8 space-y-2">
+            <ul className="list-disc ml-7 space-y-2">
               <li>
                 On the Formal RAI Response Withdraw form, upload any supporting documentation and
                 fill out the Additional Information section explaining your need to withdraw the
@@ -836,13 +836,13 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "abp-spa-templates",
         question: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
         answerJSX: (
-          <section id="abp-spa-templates" className="space-y-2 p-2">
+          <section id="abp-spa-templates" className="space-y-2">
             <p>
               Medicaid Alternative Benefit Plan (ABP) SPA templates can be downloaded at the links
               below. After downloading and completing the templates you need, upload them as part of
               the SPA submission.
             </p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-7 space-y-2">
               {ABP_TEMPLATES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
@@ -854,7 +854,7 @@ export const oneMACFAQContent: FAQContent[] = [
                     {pdf.title}: {pdf.text}
                   </a>
                   {pdf.subtext && (
-                    <ul className="list-disc pl-6 space-y-1">
+                    <ul className="list-disc pl-7 space-y-1">
                       {pdf.subtext.map((sub, index) => (
                         <li key={index} className="text-sm text-gray-600">
                           {sub}
@@ -873,12 +873,12 @@ export const oneMACFAQContent: FAQContent[] = [
         question:
           "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
         answerJSX: (
-          <section className="space-y-2 p-2">
+          <section className="space-y-2">
             <p>
               Medicaid Alternative Benefit Plan (ABP) SPA implementation guides can be downloaded at
               the links below.
             </p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-7 space-y-2">
               {ABP_GUIDES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
@@ -899,13 +899,13 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "mpc-spa-templates",
         question: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?",
         answerJSX: (
-          <section className="space-y-2 p-2">
+          <section className="space-y-2">
             <p>
               Medicaid Premiums and Cost Sharing (MPC) SPA templates can be downloaded at the links
               below. After downloading and completing the templates you need, upload them as part of
               the SPA submission.
             </p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-7 space-y-2">
               {MPC_TEMPLATES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
@@ -927,12 +927,12 @@ export const oneMACFAQContent: FAQContent[] = [
         question:
           "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?",
         answerJSX: (
-          <section className="space-y-2 p-2">
+          <section className="space-y-2">
             <p>
               Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides can be downloaded
               at the links below.
             </p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-7 space-y-2">
               {MPC_GUIDES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
@@ -958,7 +958,7 @@ export const oneMACFAQContent: FAQContent[] = [
               CHIP eligibility SPA templates can be downloaded at the links below. After downloading
               and completing the templates you need, upload them as part of the SPA submission.
             </p>
-            <ul className="list-disc pl-6 space-y-2 p-2">
+            <ul className="list-disc pl-7 space-y-2">
               {renderSection(
                 "MAGI Eligibility & Methods",
                 CHP_TEMPLATES,
@@ -974,25 +974,25 @@ export const oneMACFAQContent: FAQContent[] = [
                     "CS 15",
                     "CS 16",
                   ].includes(template.title),
-                "list-disc pl-6 space-y-2",
+                "list-disc pl-7 space-y-2",
               )}
               {renderSection(
                 "XXI Medicaid Expansion",
                 CHP_TEMPLATES,
                 (template) => template.title === "CS 3",
-                "list-disc pl-6 space-y-2",
+                "list-disc pl-7 space-y-2",
               )}
               {renderSection(
                 "Establish 2101(f) Group",
                 CHP_TEMPLATES,
                 (template) => template.title === "CS 14",
-                "list-disc pl-6 space-y-2",
+                "list-disc pl-7 space-y-2",
               )}
               {renderSection(
                 "Eligibility Processing",
                 CHP_TEMPLATES,
                 (template) => template.title === "CS 24",
-                "list-disc pl-6 space-y-2",
+                "list-disc pl-7 space-y-2",
               )}
               {renderSection(
                 "Non-Financial Eligibility",
@@ -1009,7 +1009,7 @@ export const oneMACFAQContent: FAQContent[] = [
                     "CS 28",
                     "CS 29",
                   ].includes(template.title),
-                "list-disc pl-6 space-y-2",
+                "list-disc pl-7 space-y-2",
               )}
             </ul>
           </section>
@@ -1021,7 +1021,7 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <section className="space-y-2 ">
             <p>CHIP eligibility SPA implementation guides can be downloaded at the links below.</p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-7 space-y-2">
               {renderSection(
                 "MAGI Eligibility & Methods",
                 CHP_GUIDES,
@@ -1037,25 +1037,25 @@ export const oneMACFAQContent: FAQContent[] = [
                     "CS 15",
                     "CS 16",
                   ].includes(guide.title),
-                "list-disc pl-6 space-y-2 text-blue-600",
+                "list-disc pl-7 space-y-2 text-blue-600",
               )}
               {renderSection(
                 "XXI Medicaid Expansion",
                 CHP_GUIDES,
                 (guide) => guide.title === "CS 3",
-                "list-disc pl-6 space-y-2 text-blue-600",
+                "list-disc pl-7 space-y-2 text-blue-600",
               )}
               {renderSection(
                 "Establish 2101(f) Group",
                 CHP_GUIDES,
                 (guide) => guide.title === "CS 14",
-                "list-disc pl-6 space-y-2 text-blue-600",
+                "list-disc pl-7 space-y-2 text-blue-600",
               )}
               {renderSection(
                 "Eligibility Processing",
                 CHP_GUIDES,
                 (guide) => guide.title === "CS 24",
-                "list-disc pl-6 space-y-2 text-blue-600",
+                "list-disc pl-7 space-y-2 text-blue-600",
               )}
               {renderSection(
                 "Non-Financial Eligibility",
@@ -1072,7 +1072,7 @@ export const oneMACFAQContent: FAQContent[] = [
                     "CS 28",
                     "CS 29",
                   ].includes(guide.title),
-                "list-disc pl-6 space-y-2 text-blue-600",
+                "list-disc pl-7 space-y-2 text-blue-600",
               )}
             </ul>
           </section>
@@ -1092,7 +1092,7 @@ export const oneMACFAQContent: FAQContent[] = [
               1915(b) Initial Waiver numbers must follow the format SS-####.R00.00 or
               SS-#####.R00.00 to include:
             </p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-7 space-y-2">
               <li>SS = 2 character state abbreviation</li>
               <li>##### = 4 or 5 digit initial waiver number</li>
               <li>R00 = initial number</li>
@@ -1116,7 +1116,7 @@ export const oneMACFAQContent: FAQContent[] = [
               1915(b) Waiver Renewal must follow the format SS-####.R##.00 or SS-#####.R##.00 to
               include:
             </p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-7 space-y-2">
               <li>SS = 2 character state abbreviation</li>
               <li>####(#)= 4 or 5 digit initial waiver number</li>
               <li>R## = renewal number (R01, R02, ...)</li>
@@ -1140,7 +1140,7 @@ export const oneMACFAQContent: FAQContent[] = [
               1915(b) Waiver Amendment must follow the format SS-####.R##.## or SS-#####.R##.## to
               include:
             </p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-7 space-y-2">
               <li>SS = 2 character state abbreviation</li>
               <li>####(#)= 4 or 5 digit initial waiver number</li>
               <li>R## = renewal number (R01, R02, ...)</li>
@@ -1177,7 +1177,7 @@ export const oneMACFAQContent: FAQContent[] = [
             <p>
               Waiver number must follow the format SS-####.R##.## or SS-#####.R##.## to include:
             </p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-7 space-y-2">
               <li>SS = 2 character state abbreviation</li>
               <li>##### = 4 or 5 digit waiver initial number</li>
               <li>R## = renewal number (R01, R02, ...) (Use R00 for waivers without renewals)</li>
@@ -1315,7 +1315,7 @@ export const oneMACFAQContent: FAQContent[] = [
               Temporary extension numbers must follow the format SS-####.R##.TE## or
               SS-#####.R##.TE## to include:
             </p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-7 space-y-2">
               <li>SS = 2 character state abbreviation</li>
               <li>####(#)= 4 or 5 digit initial waiver number</li>
               <li>R## = renewal number (R01, R02, ...) (Use R00 for waivers without renewals)</li>
@@ -1501,7 +1501,7 @@ export const oneMACFAQContent: FAQContent[] = [
               If a state wishes to withdraw a Formal RAI Response, the state must first contact
               their CMS Point of Contact so the action can be enabled.
             </p>
-            <ul className="list-disc ml-8">
+            <ul className="list-disc ml-7">
               <li>
                 As a CMS user, log in to OneMAC and select the link to the Waiver number from the
                 dashboard
@@ -1527,7 +1527,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 taken.
               </b>
             </p>
-            <ul className="list-disc ml-8 space-y-2">
+            <ul className="list-disc ml-7 space-y-2">
               <li>
                 On the Formal RAI Response Withdraw form, upload any supporting documentation and
                 fill out the Additional Information section explaining your need to withdraw the
@@ -1556,7 +1556,7 @@ export const oneMACFAQContent: FAQContent[] = [
               <b>Completing this action will conclude the review of this SPA package.</b>
             </p>
             <p>There are two methods you can use to withdraw a submission package:</p>
-            <ul className="list-disc ml-8 space-y-2">
+            <ul className="list-disc ml-7 space-y-2">
               <li>
                 In OneMAC, Locate and select the link to the Waiver ID. Then, under Package Actions,
                 select the Withdraw Package link.
