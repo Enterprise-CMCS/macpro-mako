@@ -6,7 +6,7 @@ import { Auth } from "aws-amplify";
 import * as hooks from "@/hooks";
 import * as api from "@/api";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers/renderForm";
-import { setMockUsername, makoStateSubmitter, AUTH_CONFIG } from "mocks";
+import { setMockUsername, makoStateSubmitter, noRoleUser, AUTH_CONFIG } from "mocks";
 
 /**
  * Mock Configurations
@@ -17,6 +17,9 @@ import { setMockUsername, makoStateSubmitter, AUTH_CONFIG } from "mocks";
 vi.mock("../UsaBanner", () => ({ UsaBanner: () => null }));
 vi.mock("../Footer", () => ({ Footer: () => null }));
 vi.mock("@/components", () => ({
+  Layout: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="mocked-layout">{children}</div>
+  ),
   SimplePageContainer: ({ children }: { children: React.ReactNode }) => children,
   UserPrompt: () => null,
   Banner: () => null,
@@ -181,6 +184,34 @@ describe("Layout", () => {
 
       await user.click(screen.getByText("Sign Out"));
       expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe("Navigation for logged-in users", () => {
+    it("navigates to dashboard if user has appropriate roles", async () => {
+      const setupLayoutTest = async (
+        viewMode: ViewMode = VIEW_MODES.DESKTOP,
+        userData = makoStateSubmitter,
+      ) => {
+        setMockUsername(userData);
+        mockMediaQuery(viewMode);
+        await renderLayout();
+      };
+      await setupLayoutTest(VIEW_MODES.DESKTOP);
+      expect(screen.getByText("Dashboard")).toBeInTheDocument();
+    });
+
+    it("navigates to home page if user doesn't have appropriate roles", async () => {
+      const setupLayoutTest = async (
+        viewMode: ViewMode = VIEW_MODES.DESKTOP,
+        userData = noRoleUser,
+      ) => {
+        setMockUsername(userData);
+        mockMediaQuery(viewMode);
+        await renderLayout();
+      };
+      await setupLayoutTest(VIEW_MODES.DESKTOP);
+      expect(screen.queryByText("Dashboard")).not.toBeInTheDocument();
     });
   });
 

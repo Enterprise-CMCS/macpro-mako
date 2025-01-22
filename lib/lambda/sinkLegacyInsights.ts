@@ -9,12 +9,12 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     for (const topicPartition of Object.keys(event.records)) {
       const topic = getTopic(topicPartition);
       switch (topic) {
-        case undefined:
-          logError({ type: ErrorType.BADTOPIC });
-          throw new Error();
         case "aws.onemac.migration.cdc":
           await onemac(event.records[topicPartition], topicPartition);
           break;
+        default:
+          logError({ type: ErrorType.BADTOPIC });
+          throw new Error(`topic (${topicPartition}) is invalid`);
       }
     }
   } catch (error) {

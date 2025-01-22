@@ -1,5 +1,6 @@
 import { TestUserData } from "../../index.d";
 
+export const automatedStateSubmitterUsername = "f3a1b6d6-3bc9-498d-ac22-41a6d46982c9";
 export const makoStateSubmitter: TestUserData = {
   UserAttributes: [
     {
@@ -33,6 +34,39 @@ export const makoStateSubmitter: TestUserData = {
   ],
   Username: "cd400c39-9e7c-4341-b62f-234e2ecb339d",
 };
+export const superUser: TestUserData = {
+  UserAttributes: [
+    {
+      Name: "email",
+      Value: "mako.stateuser@gmail.com",
+    },
+    {
+      Name: "email_verified",
+      Value: "true",
+    },
+    {
+      Name: "given_name",
+      Value: "Stateuser",
+    },
+    {
+      Name: "family_name",
+      Value: "Tester",
+    },
+    {
+      Name: "custom:state",
+      Value: "ZZ",
+    },
+    {
+      Name: "custom:cms-roles",
+      Value: "onemac-micro-super",
+    },
+    {
+      Name: "sub",
+      Value: "cd400c39-9e7c-4341-b62f-234e2ecb339e",
+    },
+  ],
+  Username: "cd400c39-9e7c-4341-b62f-234e2ecb339e",
+};
 
 export const stateSubmitter: TestUserData = {
   UserAttributes: [
@@ -54,7 +88,7 @@ export const stateSubmitter: TestUserData = {
     },
     {
       Name: "custom:state",
-      Value: "VA,OH,SC,CO,GA,MD",
+      Value: "VA,OH,SC,CO,CA,MD",
     },
     {
       Name: "custom:cms-roles",
@@ -232,18 +266,54 @@ export const automatedStateSubmitter: TestUserData = {
     },
     {
       Name: "sub",
-      Value: "f3a1b6d6-3bc9-498d-ac22-41a6d46982c9",
+      Value: automatedStateSubmitterUsername,
     },
   ],
-  Username: "f3a1b6d6-3bc9-498d-ac22-41a6d46982c9",
+  Username: automatedStateSubmitterUsername,
+};
+
+export const testNewStateSubmitter: TestUserData = {
+  UserAttributes: [
+    {
+      Name: "email",
+      Value: "new-state-submitter@example.com",
+    },
+    {
+      Name: "email_verified",
+      Value: "true",
+    },
+    {
+      Name: "given_name",
+      Value: "Test",
+    },
+    {
+      Name: "family_name",
+      Value: "Submitter",
+    },
+    {
+      Name: "custom:state",
+      Value: "VA",
+    },
+    {
+      Name: "custom:cms-roles",
+      Value: "onemac-micro-statesubmitter",
+    },
+    {
+      Name: "sub",
+      Value: "f8e64f73-d121-4252-b9e3-1f4df902a1c1",
+    },
+  ],
+  Username: "f8e64f73-d121-4252-b9e3-1f4df902a1c1",
 };
 
 export const stateSubmitters: TestUserData[] = [
   makoStateSubmitter,
+  superUser,
   stateSubmitter,
   noDataStateSubmitter,
   coStateSubmitter,
   multiStateSubmitter,
   noStateSubmitter,
   automatedStateSubmitter,
+  testNewStateSubmitter,
 ];

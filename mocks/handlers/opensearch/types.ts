@@ -1,21 +1,25 @@
 import { http, HttpResponse, PathParams } from "msw";
-import { types, ERROR_AUTHORITY_ID } from "../../data/types"
+import { types } from "../../data/types";
 import { SearchQueryBody } from "../../index.d";
-import { getFilterValue } from "./util";
+import { getFilterValueAsNumber } from "../search.utils";
 
-const defaultTypeSearchHandler = http.post<PathParams, SearchQueryBody>(
+const defaultOSTypeSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-types/_search",
   async ({ request }) => {
     const { query } = await request.json();
     const must = query?.bool?.must;
-    
-    const authorityId = getFilterValue(must, 'match', 'authorityId');
 
-    if (authorityId === ERROR_AUTHORITY_ID) {
-      return new HttpResponse("Internal server error", { status: 500 });
+    const authorityId = getFilterValueAsNumber(must, "match", "authorityId");
+
+    if (authorityId === undefined) {
+      return new HttpResponse("Invalid authority Id", { status: 400 });
     }
 
-    const hits = types.filter(type => type?._source?.authorityId == authorityId && !type?._source?.name.match(/Do Not Use/)) || []
+    const hits =
+      types.filter(
+        (type) =>
+          type?._source?.authorityId == authorityId && !type?._source?.name.match(/Do Not Use/),
+      ) || [];
 
     return HttpResponse.json({
       took: 5,
@@ -38,4 +42,9 @@ const defaultTypeSearchHandler = http.post<PathParams, SearchQueryBody>(
   },
 );
 
-export const typeSearchHandlers = [defaultTypeSearchHandler];
+export const errorOSTypeSearchHandler = http.post<PathParams, SearchQueryBody>(
+  "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-types/_search",
+  () => new HttpResponse("Internal server error", { status: 500 }),
+);
+
+export const typeSearchHandlers = [defaultOSTypeSearchHandler];

@@ -5,8 +5,9 @@ import {
   AdminUpdateUserAttributesCommand,
   AdminGetUserCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
+
 const client = new CognitoIdentityProviderClient({
-  region: process.env.region,
+  region: process.env.region || process.env.REGION_A || "us-east-1",
 });
 
 export async function createUser(params: any): Promise<void> {
@@ -41,22 +42,14 @@ export async function updateUserAttributes(params: any): Promise<void> {
     const user = await client.send(getUserCommand);
 
     // Check for existing "custom:cms-roles"
-    const cmsRolesAttribute = user.UserAttributes?.find(
-      (attr) => attr.Name === "custom:cms-roles",
-    );
+    const cmsRolesAttribute = user.UserAttributes?.find((attr) => attr.Name === "custom:cms-roles");
     const existingRoles =
-      cmsRolesAttribute && cmsRolesAttribute.Value
-        ? cmsRolesAttribute.Value.split(",")
-        : [];
+      cmsRolesAttribute && cmsRolesAttribute.Value ? cmsRolesAttribute.Value.split(",") : [];
 
     // Check for existing "custom:state"
-    const stateAttribute = user.UserAttributes?.find(
-      (attr) => attr.Name === "custom:state",
-    );
+    const stateAttribute = user.UserAttributes?.find((attr) => attr.Name === "custom:state");
     const existingStates =
-      stateAttribute && stateAttribute.Value
-        ? stateAttribute.Value.split(",")
-        : [];
+      stateAttribute && stateAttribute.Value ? stateAttribute.Value.split(",") : [];
 
     // Prepare for updating user attributes
     const attributeData: any = {
@@ -79,8 +72,7 @@ export async function updateUserAttributes(params: any): Promise<void> {
               ),
             )
           : new Set(["onemac-micro-super"]); // Ensure "onemac-micro-super" is always included
-        attributeData.UserAttributes[rolesIndex].Value =
-          Array.from(newRoles).join(",");
+        attributeData.UserAttributes[rolesIndex].Value = Array.from(newRoles).join(",");
       } else {
         // Add "custom:cms-roles" with "onemac-micro-super"
         attributeData.UserAttributes.push({
@@ -98,14 +90,9 @@ export async function updateUserAttributes(params: any): Promise<void> {
       if (stateIndex !== -1) {
         // Only merge if new states are not empty
         const newStates = attributeData.UserAttributes[stateIndex].Value
-          ? new Set(
-              attributeData.UserAttributes[stateIndex].Value.split(",").concat(
-                "ZZ",
-              ),
-            )
+          ? new Set(attributeData.UserAttributes[stateIndex].Value.split(",").concat("ZZ"))
           : new Set(["ZZ"]); // Ensure "ZZ" is always included
-        attributeData.UserAttributes[stateIndex].Value =
-          Array.from(newStates).join(",");
+        attributeData.UserAttributes[stateIndex].Value = Array.from(newStates).join(",");
       } else {
         // Add "custom:state" with "ZZ"
         attributeData.UserAttributes.push({

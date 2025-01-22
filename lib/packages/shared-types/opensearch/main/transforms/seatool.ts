@@ -8,7 +8,7 @@ import {
   seatoolSchema,
 } from "../../..";
 
-import { Authority, SEATOOL_AUTHORITIES } from "shared-types";
+import { SEATOOL_AUTHORITIES } from "shared-types";
 
 function getLeadAnalyst(eventData: SeaTool) {
   let leadAnalystOfficerId: null | number = null;
@@ -97,7 +97,7 @@ const isInSecondClock = (
   authority: any,
 ) => {
   if (
-    authority != Authority.CHIP_SPA && // if it's not a chip
+    authority !== "CHIP SPA" && // if it's not a chip
     [
       SEATOOL_STATUS.PENDING,
       SEATOOL_STATUS.PENDING_CONCURRENCE,
@@ -124,8 +124,9 @@ export const transform = (id: string) => {
         : null;
 
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
+
     const resp = {
-      id,
+      id: id.toUpperCase(),
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
       approvedEffectiveDate: getDateStringOrNullFromEpoc(
         data.STATE_PLAN.APPROVED_EFFECTIVE_DATE || data.STATE_PLAN.ACTUAL_EFFECTIVE_DATE,
@@ -146,7 +147,7 @@ export const transform = (id: string) => {
             SPA_TYPE_ID: type.SPA_TYPE_ID,
             SPA_TYPE_NAME: type.SPA_TYPE_NAME.replace(/â|â/g, "-"),
           };
-        }) || null,
+        }) || [],
       subTypes:
         data.STATE_PLAN_SERVICE_SUBTYPES?.filter(
           (subType): subType is NonNullable<typeof subType> => subType != null,
@@ -155,7 +156,7 @@ export const transform = (id: string) => {
             TYPE_ID: subType.TYPE_ID,
             TYPE_NAME: subType.TYPE_NAME.replace(/â|â/g, "-"),
           };
-        }) || null,
+        }) || [],
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,

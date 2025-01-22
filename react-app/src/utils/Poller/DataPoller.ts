@@ -39,8 +39,7 @@ export class DataPoller<TFetcherReturn> {
               }
             }
           } catch (error) {
-            const message =
-              error instanceof Error ? (error as Error).message : error;
+            const message = error instanceof Error ? (error as Error).message : error;
             errorMessage = `Error fetching data: ${message}`;
           }
         } else {

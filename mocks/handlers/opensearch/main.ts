@@ -7,39 +7,60 @@ import {
   TestAppkItemResult,
   TestItemResult,
   TestMainDocument,
+  GetMultiItemBody,
 } from "../../index.d";
-import { getTermKeys, filterItemsByTerm, getTermValues } from "./util";
+import { getTermKeys, filterItemsByTerm, getTermValues } from "../search.utils";
 
-const defaultMainDocumentHandler = http.get(
+const defaultOSMainDocumentHandler = http.get(
   `https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_doc/:id`,
   async ({ params }) => {
     const { id } = params;
+
     if (id == GET_ERROR_ITEM_ID) {
       return new HttpResponse("Internal server error", { status: 500 });
     }
     const itemId = id && Array.isArray(id) ? id[0] : id;
     const item = items[itemId] || null;
-
-    return item ? HttpResponse.json(item) : new HttpResponse(null, { status: 404 });
+    return item
+      ? HttpResponse.json(item)
+      : HttpResponse.json({
+          found: false,
+        });
   },
 );
 
-const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
+const defaultOSMainMultiDocumentHandler = http.post<PathParams, GetMultiItemBody>(
+  "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_mget",
+  async ({ request }) => {
+    const { ids } = await request.json();
+
+    const mItems = Object.values(items).filter((item) => ids.includes(item?._id || "")) || [];
+
+    return HttpResponse.json({
+      docs: mItems,
+    });
+  },
+);
+
+export const errorOSMainMultiDocumentHandler = http.post<PathParams, GetMultiItemBody>(
+  "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_mget",
+  () => new HttpResponse("Internal server error", { status: 500 }),
+);
+
+const defaultOSMainSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_search",
   async ({ request }) => {
     const { query } = await request.json();
-    console.log({ query })
 
     if (query?.match_all?.id == "throw-error") {
       return new HttpResponse("Internal server error", { status: 500 });
     }
 
     const must = query?.bool?.must;
-    console.log("must: ", JSON.stringify(must))
     const mustTerms = getTermKeys(must);
-    console.log({ mustTerms })
 
-    const appkParentIdValue = getTermValues(must, "appkParentId.keyword") || getTermValues(must, "appkParentId");
+    const appkParentIdValue =
+      getTermValues(must, "appkParentId.keyword") || getTermValues(must, "appkParentId");
 
     if (appkParentIdValue) {
       const appkParentId =
@@ -57,14 +78,22 @@ const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
         let appkChildren: TestAppkItemResult[] =
           (item._source?.appkChildren as TestAppkItemResult[]) || [];
         if (appkChildren.length > 0) {
-          mustTerms.forEach((term) => {
+          // TODO We don't have this field in the TypeScript, not sure what the parent field actually is
+          const filteredTerms = mustTerms.filter(
+            (term) => term !== "appkParentId.keyword" && term !== "appkParentId",
+          );
+          filteredTerms.forEach((term) => {
             const filterValue = getTermValues(must, term);
             const filterTerm: keyof TestAppkDocument = term.replace(
               ".keyword",
               "",
             ) as keyof TestAppkDocument;
             if (filterValue) {
-              appkChildren = filterItemsByTerm<TestAppkDocument>(appkChildren, filterTerm, filterValue);
+              appkChildren = filterItemsByTerm<TestAppkDocument>(
+                appkChildren,
+                filterTerm,
+                filterValue,
+              );
             }
           });
         }
@@ -95,12 +124,10 @@ const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
     if (itemHits.length > 0) {
       mustTerms.forEach((term) => {
         const filterValue = getTermValues(must, term);
-        console.log({ filterValue })
         const filterTerm: keyof TestMainDocument = term.replace(
           ".keyword",
           "",
         ) as keyof TestMainDocument;
-        console.log({ filterTerm })
         if (filterValue) {
           itemHits = filterItemsByTerm<TestMainDocument>(itemHits, filterTerm, filterValue);
         }
@@ -128,4 +155,8 @@ const defaultMainSearchHandler = http.post<PathParams, SearchQueryBody>(
   },
 );
 
-export const mainSearchHandlers = [defaultMainDocumentHandler, defaultMainSearchHandler];
+export const mainSearchHandlers = [
+  defaultOSMainDocumentHandler,
+  defaultOSMainMultiDocumentHandler,
+  defaultOSMainSearchHandler,
+];

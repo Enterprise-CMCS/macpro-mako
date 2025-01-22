@@ -4,9 +4,9 @@ import { Client, Connection, errors as OpensearchErrors } from "@opensearch-proj
 import * as aws4 from "aws4";
 import { aws4Interceptor } from "aws4-axios";
 import axios from "axios";
-import { ItemResult, Document as OSDocument } from "lib/packages/shared-types/opensearch/main";
+import { ItemResult, Document as OSDocument } from "shared-types/opensearch/main";
 import { opensearch } from "shared-types";
-import { getDomainAndNamespace } from "./sink-lib";
+import { getDomainAndNamespace } from "./utils";
 
 let client: Client;
 
@@ -183,11 +183,18 @@ export async function getItem(
   try {
     client = client || (await getClient(host));
     const response = await client.get({ id, index });
-    return decodeUtf8(response).body;
+    const item = decodeUtf8(response).body;
+    if (item.found === false || !item._source) {
+      return undefined;
+    }
+    return item;
   } catch (error) {
-    if (error instanceof OpensearchErrors.ResponseError && error.statusCode === 404 || error.meta?.statusCode === 404) {
+    if (
+      (error instanceof OpensearchErrors.ResponseError && error.statusCode === 404) ||
+      error.meta?.statusCode === 404
+    ) {
       console.log("Error (404) retrieving in OpenSearch:", error);
-      return undefined
+      return undefined;
     }
     throw error;
   }
@@ -207,18 +214,12 @@ export async function getItems(ids: string[]): Promise<OSDocument[]> {
     });
 
     return response.body.docs.reduce<OSDocument[]>((acc, doc) => {
-      if (doc.found && doc._source) {
-        try {
-          return acc.concat(doc._source);
-        } catch (e) {
-          console.error(`Failed to parse JSON for document with ID ${doc._id}:`, e);
-          return acc;
-        }
+      if (doc && doc.found && doc._source) {
+        return acc.concat(doc._source);
       } else {
         console.error(`Document with ID ${doc._id} not found.`);
+        return acc;
       }
-
-      return acc;
     }, []);
   } catch (e) {
     console.log({ e });
@@ -261,7 +262,7 @@ export async function updateFieldMapping(
   }
 }
 
-function decodeUtf8(data: any): any {
+export function decodeUtf8(data: any): any {
   if (typeof data === "string") {
     try {
       return decodeURIComponent(escape(data));

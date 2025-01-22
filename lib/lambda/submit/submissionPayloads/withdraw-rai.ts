@@ -1,18 +1,12 @@
 import { events } from "shared-types/events";
-import {
-  isAuthorized,
-  getAuthDetails,
-  lookupUserAttributes,
-} from "../../../libs/api/auth/user";
+import { isAuthorized, getAuthDetails, lookupUserAttributes } from "../../../libs/api/auth/user";
 import { type APIGatewayEvent } from "aws-lambda";
 import { itemExists } from "libs/api/package";
 
 export const withdrawRai = async (event: APIGatewayEvent) => {
   if (!event.body) return;
 
-  const parsedResult = events["withdraw-rai"].baseSchema.safeParse(
-    JSON.parse(event.body),
-  );
+  const parsedResult = events["withdraw-rai"].baseSchema.safeParse(JSON.parse(event.body));
 
   if (!parsedResult.success) {
     throw parsedResult.error;
@@ -28,10 +22,7 @@ export const withdrawRai = async (event: APIGatewayEvent) => {
   }
 
   const authDetails = getAuthDetails(event);
-  const userAttr = await lookupUserAttributes(
-    authDetails.userId,
-    authDetails.poolId,
-  );
+  const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
   const submitterEmail = userAttr.email;
   const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
 

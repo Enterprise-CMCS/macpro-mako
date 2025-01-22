@@ -7,7 +7,7 @@ import {
 } from "shared-types";
 import { isStateUser, isCmsWriteUser, isCmsSuperUser } from "../user-helper";
 
-const arRespondToRai: ActionRule = {
+export const arRespondToRai: ActionRule = {
   action: Action.RESPOND_TO_RAI,
   check: (checker, user) =>
     !checker.isTempExtension &&
@@ -19,7 +19,7 @@ const arRespondToRai: ActionRule = {
     !checker.isLocked,
 };
 
-const arTempExtension: ActionRule = {
+export const arTempExtension: ActionRule = {
   action: Action.TEMP_EXTENSION,
   check: (checker, user) =>
     checker.hasStatus(SEATOOL_STATUS.APPROVED) &&
@@ -28,7 +28,7 @@ const arTempExtension: ActionRule = {
     isStateUser(user),
 };
 
-const arAmend: ActionRule = {
+export const arAmend: ActionRule = {
   action: Action.AMEND_WAIVER,
   check: (checker, user) =>
     checker.hasStatus(SEATOOL_STATUS.APPROVED) &&
@@ -37,7 +37,7 @@ const arAmend: ActionRule = {
     isStateUser(user),
 };
 
-const arEnableWithdrawRaiResponse: ActionRule = {
+export const arEnableWithdrawRaiResponse: ActionRule = {
   action: Action.ENABLE_RAI_WITHDRAW,
   check: (checker, user) => {
     if (checker.authorityIs([Authority["CHIP_SPA"]])) {
@@ -47,7 +47,9 @@ const arEnableWithdrawRaiResponse: ActionRule = {
         checker.hasRaiResponse &&
         !checker.hasEnabledRaiWithdraw &&
         isCmsWriteUser(user) &&
-        !checker.hasStatus(finalDispositionStatuses)
+        !checker.hasStatus(finalDispositionStatuses) &&
+        !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]) &&
+        !checker.isPlaceholderStatus
       );
     }
 
@@ -58,12 +60,13 @@ const arEnableWithdrawRaiResponse: ActionRule = {
       !checker.hasEnabledRaiWithdraw &&
       checker.isInSecondClock &&
       isCmsWriteUser(user) &&
-      !checker.hasStatus(finalDispositionStatuses)
+      !checker.hasStatus(finalDispositionStatuses) &&
+      !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL])
     );
   },
 };
 
-const arDisableWithdrawRaiResponse: ActionRule = {
+export const arDisableWithdrawRaiResponse: ActionRule = {
   action: Action.DISABLE_RAI_WITHDRAW,
   check: (checker, user) =>
     !checker.isTempExtension &&
@@ -71,10 +74,11 @@ const arDisableWithdrawRaiResponse: ActionRule = {
     checker.hasRaiResponse &&
     checker.hasEnabledRaiWithdraw &&
     isCmsWriteUser(user) &&
-    !checker.hasStatus(finalDispositionStatuses),
+    !checker.hasStatus(finalDispositionStatuses) &&
+    !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]),
 };
 
-const arWithdrawRaiResponse: ActionRule = {
+export const arWithdrawRaiResponse: ActionRule = {
   action: Action.WITHDRAW_RAI,
   check: (checker, user) =>
     !checker.isTempExtension &&
@@ -82,15 +86,19 @@ const arWithdrawRaiResponse: ActionRule = {
     checker.hasRaiResponse &&
     // safety; prevent bad status from causing overwrite
     !checker.hasRaiWithdrawal &&
+    !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]) &&
     checker.hasEnabledRaiWithdraw &&
     isStateUser(user) &&
     !checker.isLocked,
 };
 
-const arWithdrawPackage: ActionRule = {
+export const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
-    !checker.isTempExtension && !checker.hasStatus(finalDispositionStatuses) && isStateUser(user),
+    !checker.isTempExtension &&
+    !checker.hasStatus(finalDispositionStatuses) &&
+    isStateUser(user) &&
+    !checker.isPlaceholderStatus,
 };
 
 const arUpdateId: ActionRule = {
@@ -104,7 +112,7 @@ const arRemoveAppkChild: ActionRule = {
   check: (checker, user) => isStateUser(user) && !!checker.isAppkChild && false,
 };
 
-const arUploadSubsequentDocuments: ActionRule = {
+export const arUploadSubsequentDocuments: ActionRule = {
   action: Action.UPLOAD_SUBSEQUENT_DOCUMENTS,
   check: (checker, user) => {
     if (isStateUser(user) === false) {
@@ -119,7 +127,11 @@ const arUploadSubsequentDocuments: ActionRule = {
       return false;
     }
 
-    if (checker.hasStatus([SEATOOL_STATUS.PENDING, SEATOOL_STATUS.PENDING_RAI])) {
+    if (checker.hasStatus([SEATOOL_STATUS.PENDING_RAI])) {
+      return false;
+    }
+
+    if (checker.hasStatus([SEATOOL_STATUS.PENDING])) {
       if (checker.hasRequestedRai) {
         return false;
       }

@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { getAllForms } from "./getAllForms";
+import * as wfv from "libs/webforms";
 
 vi.mock("../libs/webforms", () => ({
   webformVersions: {
@@ -12,7 +13,6 @@ vi.mock("../libs/webforms", () => ({
     },
   },
 }));
-
 describe("getAllForms", () => {
   it("should return a response with status code 200 and the mapped webforms", async () => {
     const expectedResponse = {
@@ -26,5 +26,12 @@ describe("getAllForms", () => {
     const result = await getAllForms();
     expect(result?.statusCode).toEqual(200);
     expect(result?.body).toEqual(JSON.stringify(expectedResponse.body));
+  });
+  it("should return a response with status code 200 and the mapped webforms", async () => {
+    const mockconstant = wfv as { webformVersions: object };
+    mockconstant.webformVersions = {};
+
+    const result = await getAllForms();
+    expect(result?.statusCode).toEqual(502);
   });
 });

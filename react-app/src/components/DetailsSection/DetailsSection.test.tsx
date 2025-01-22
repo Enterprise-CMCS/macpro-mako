@@ -6,11 +6,7 @@ import { DetailsSection } from "./index";
 describe("DetailsSection", () => {
   it("renders with description", () => {
     render(
-      <DetailsSection
-        id="test"
-        title="test title"
-        description="test description"
-      >
+      <DetailsSection id="test" title="test title" description="test description">
         <p>test child</p>
       </DetailsSection>,
     );

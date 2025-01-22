@@ -4,7 +4,7 @@ import { getPackage } from "libs/api/package";
 import { produceMessage } from "libs/api/kafka";
 import { ItemResult } from "shared-types/opensearch/main";
 import { getPackageType } from "./getPackageType";
-import { events } from "lib/packages/shared-types";
+import { events } from "shared-types";
 import { z } from "zod";
 
 const sendDeleteMessage = async (packageId: string) => {
@@ -102,7 +102,7 @@ const sendUpdateIdMessage = async ({
     ...remainingFields
   } = currentPackage._source;
 
-  if (!updatedId) {
+  if (updatedId === currentPackage._id) {
     return response({
       statusCode: 400,
       body: { message: "New ID required to update package" },
@@ -111,7 +111,7 @@ const sendUpdateIdMessage = async ({
 
   // check if a package with this new ID already exists
   const packageExists = await getPackage(updatedId);
-  if (packageExists) {
+  if (packageExists?.found) {
     return response({
       statusCode: 400,
       body: { message: "This ID already exists" },
@@ -120,13 +120,6 @@ const sendUpdateIdMessage = async ({
   // use event of current package to determine how ID should be formatted
   const packageEvent = await getPackageType(currentPackage._id);
   const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
-
-  if (!packageSubmissionTypeSchema) {
-    return response({
-      statusCode: 500,
-      body: { message: "Could not validate the ID of this type of package." },
-    });
-  }
 
   const idSchema = packageSubmissionTypeSchema.shape.id;
   const parsedId = idSchema.safeParse(updatedId);
@@ -178,7 +171,21 @@ export const handler = async (event: APIGatewayEvent) => {
     const parseEventBody = (body: unknown) => {
       return updatePackageEventBodySchema.parse(typeof body === "string" ? JSON.parse(body) : body);
     };
-
+    let body = {
+      packageId: "",
+      action: "",
+    };
+    if (typeof event.body === "string") {
+      body = JSON.parse(event.body);
+    } else {
+      body = event.body;
+    }
+    if (!body.packageId || !body.action) {
+      return response({
+        statusCode: 400,
+        body: { message: "Package ID and action are required" },
+      });
+    }
     const {
       packageId,
       action,
@@ -187,16 +194,8 @@ export const handler = async (event: APIGatewayEvent) => {
       changeReason,
     } = parseEventBody(event.body);
 
-    if (!packageId || !action) {
-      return response({
-        statusCode: 400,
-        body: { message: "Package ID and action are required" },
-      });
-    }
-
     const currentPackage = await getPackage(packageId);
-
-    if (!currentPackage) {
+    if (!currentPackage || currentPackage.found == false) {
       return response({
         statusCode: 404,
         body: { message: "No record found for the given id" },
@@ -218,10 +217,6 @@ export const handler = async (event: APIGatewayEvent) => {
         changeReason,
       });
     }
-    return response({
-      statusCode: 400,
-      body: { message: "Could not update package." },
-    });
   } catch (err) {
     console.error("Error has occured modifying package:", err);
     return response({

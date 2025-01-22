@@ -2,15 +2,14 @@ import { handleOpensearchError } from "./utils";
 import { APIGatewayEvent } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import { response } from "libs/handler-lib";
+import { getDomainAndNamespace } from "libs/utils";
 
 type GetTypesBody = {
   authorityId: string;
 };
 
 export const queryTypes = async (authorityId: string) => {
-  if (!process.env.osDomain) {
-    throw new Error("process.env.osDomain must be defined");
-  }
+  const { index, domain } = getDomainAndNamespace("types");
 
   const query = {
     size: 200,
@@ -42,11 +41,7 @@ export const queryTypes = async (authorityId: string) => {
       },
     ],
   };
-  return await os.search(
-    process.env.osDomain,
-    `${process.env.indexNamespace}types`,
-    query,
-  );
+  return await os.search(domain, index, query);
 };
 
 export const getTypes = async (event: APIGatewayEvent) => {
@@ -57,6 +52,12 @@ export const getTypes = async (event: APIGatewayEvent) => {
     });
   }
   const body = JSON.parse(event.body) as GetTypesBody;
+  if (!body.authorityId) {
+    return response({
+      statusCode: 400,
+      body: { message: "Authority Id is required" },
+    });
+  }
   try {
     const result = await queryTypes(body.authorityId);
     if (!result)

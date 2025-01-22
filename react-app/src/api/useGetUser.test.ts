@@ -13,9 +13,7 @@ const mockCurrentAuthenticatedUser = vi.fn((options = {}) => {
     // If you want to simulate an error, you could set a flag on `options` and check it here.
     if (options.error) {
       reject(
-        new Error(
-          "useGetUser > mockCurrentAuthenticatedUser: Expected error thrown by test.",
-        ),
+        new Error("useGetUser > mockCurrentAuthenticatedUser: Expected error thrown by test."),
       );
     } else {
       resolve({ username: "0000aaaa-0000-00aa-0a0a-aaaaaa000000" });
@@ -31,34 +29,29 @@ const mockUserAttr = ({
   options?: { error?: boolean; noRoles?: boolean };
 }) =>
   vi.fn(async () => {
-    return await new Promise<Array<{ Name: string; Value: string }>>(
-      (resolve) => {
-        if (options?.error)
-          throw Error(
-            "useGetUser > mockUserAttr: Expected error thrown by test.",
-          );
-        /* This array of attributes is where we make changes to our test
-         * user for test-related assertions. */
-        return resolve([
-          { Name: "sub", Value: "0000aaaa-0000-00aa-0a0a-aaaaaa000000" },
-          { Name: "email_verified", Value: "true" },
-          { Name: "given_name", Value: "George" },
-          { Name: "family_name", Value: "Harrison" },
-          {
-            Name: "custom:state",
-            Value: "VA,OH,SC,CO,GA,MD",
-          },
-          {
-            Name: "email",
-            Value: "george@example.com",
-          },
-          !options?.noRoles && {
-            Name: "custom:cms-roles",
-            Value: isCms ? "onemac-micro-reviewer" : "onemac-micro-cmsreview",
-          },
-        ] as Array<{ Name: string; Value: string }>);
-      },
-    );
+    return await new Promise<Array<{ Name: string; Value: string }>>((resolve) => {
+      if (options?.error) throw Error("useGetUser > mockUserAttr: Expected error thrown by test.");
+      /* This array of attributes is where we make changes to our test
+       * user for test-related assertions. */
+      return resolve([
+        { Name: "sub", Value: "0000aaaa-0000-00aa-0a0a-aaaaaa000000" },
+        { Name: "email_verified", Value: "true" },
+        { Name: "given_name", Value: "George" },
+        { Name: "family_name", Value: "Harrison" },
+        {
+          Name: "custom:state",
+          Value: "VA,OH,SC,CO,GA,MD",
+        },
+        {
+          Name: "email",
+          Value: "george@example.com",
+        },
+        !options?.noRoles && {
+          Name: "custom:cms-roles",
+          Value: isCms ? "onemac-micro-reviewer" : "onemac-micro-cmsreview",
+        },
+      ] as Array<{ Name: string; Value: string }>);
+    });
   });
 
 describe("getUser", () => {

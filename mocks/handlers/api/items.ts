@@ -2,20 +2,28 @@ import { http, HttpResponse } from "msw";
 import items, { GET_ERROR_ITEM_ID } from "../../data/items";
 import type { GetItemBody } from "../../index.d";
 
-const defaultItemHandler = http.post<GetItemBody, GetItemBody>(/\/item$/, async ({ request }) => {
-  const { id } = await request.json();
+const defaultApiItemHandler = http.post<GetItemBody, GetItemBody>(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/item",
+  async ({ request }) => {
+    const { id } = await request.json();
 
-  if (id == GET_ERROR_ITEM_ID) {
-    return new HttpResponse("Internal server error", { status: 500 });
-  }
+    if (id == GET_ERROR_ITEM_ID) {
+      return new HttpResponse("Internal server error", { status: 500 });
+    }
 
-  const item = items[id] || null;
+    const item = items[id] || null;
 
-  return item ? HttpResponse.json(item) : new HttpResponse(null, { status: 404 });
-});
+    return item ? HttpResponse.json(item) : new HttpResponse(null, { status: 404 });
+  },
+);
 
-const defaultItemExistsHandler = http.post<GetItemBody, GetItemBody>(
-  /\/itemExists$/,
+export const errorApiItemHandler = http.post(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/item",
+  () => new HttpResponse(null, { status: 500 }),
+);
+
+const defaultApiItemExistsHandler = http.post<GetItemBody, GetItemBody>(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/itemExists",
   async ({ request }) => {
     const { id } = await request.json();
     if (id == GET_ERROR_ITEM_ID) {
@@ -25,4 +33,9 @@ const defaultItemExistsHandler = http.post<GetItemBody, GetItemBody>(
   },
 );
 
-export const itemHandlers = [defaultItemHandler, defaultItemExistsHandler];
+export const errorApiItemExistsHandler = http.post(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/itemExists",
+  () => new HttpResponse(null, { status: 500 }),
+);
+
+export const itemHandlers = [defaultApiItemHandler, defaultApiItemExistsHandler];

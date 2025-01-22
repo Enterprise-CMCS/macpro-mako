@@ -80,9 +80,7 @@ export class Auth extends cdk.NestedStack {
         email: true,
       },
       selfSignUpEnabled: false, // This corresponds to allowAdminCreateUserOnly: true
-      email: cdk.aws_cognito.UserPoolEmail.withCognito(
-        "no-reply@yourdomain.com",
-      ),
+      email: cdk.aws_cognito.UserPoolEmail.withCognito("no-reply@yourdomain.com"),
       standardAttributes: {
         givenName: {
           required: true,
@@ -99,95 +97,79 @@ export class Auth extends cdk.NestedStack {
         username: new cdk.aws_cognito.StringAttribute({ mutable: true }),
       },
     });
-    let userPoolIdentityProviderOidc:
-      | cdk.aws_cognito.UserPoolIdentityProviderOidc
-      | undefined = undefined;
+    let userPoolIdentityProviderOidc: cdk.aws_cognito.UserPoolIdentityProviderOidc | undefined =
+      undefined;
     if (idmEnable) {
-      userPoolIdentityProviderOidc =
-        new cdk.aws_cognito.UserPoolIdentityProviderOidc(
-          this,
-          "UserPoolIdentityProviderIDM",
-          {
-            userPool,
-            name: "IDM",
-            clientId: idmClientId,
-            clientSecret: idmClientSecret.secretValue.unsafeUnwrap(),
-            issuerUrl: idmClientIssuer,
-            attributeMapping: {
-              email: cdk.aws_cognito.ProviderAttribute.other("email"),
-              givenName: cdk.aws_cognito.ProviderAttribute.other("given_name"),
-              familyName:
-                cdk.aws_cognito.ProviderAttribute.other("family_name"),
-              custom: {
-                "custom:username":
-                  cdk.aws_cognito.ProviderAttribute.other("preferred_username"),
-              },
+      userPoolIdentityProviderOidc = new cdk.aws_cognito.UserPoolIdentityProviderOidc(
+        this,
+        "UserPoolIdentityProviderIDM",
+        {
+          userPool,
+          name: "IDM",
+          clientId: idmClientId,
+          clientSecret: idmClientSecret.secretValue.unsafeUnwrap(),
+          issuerUrl: idmClientIssuer,
+          attributeMapping: {
+            email: cdk.aws_cognito.ProviderAttribute.other("email"),
+            givenName: cdk.aws_cognito.ProviderAttribute.other("given_name"),
+            familyName: cdk.aws_cognito.ProviderAttribute.other("family_name"),
+            custom: {
+              "custom:username": cdk.aws_cognito.ProviderAttribute.other("preferred_username"),
             },
-            attributeRequestMethod:
-              cdk.aws_cognito.OidcAttributeRequestMethod.GET,
-            scopes: ["email", "openid", "profile", "phone"],
-            identifiers: ["IDM"],
           },
-        );
+          attributeRequestMethod: cdk.aws_cognito.OidcAttributeRequestMethod.GET,
+          scopes: ["email", "openid", "profile", "phone"],
+          identifiers: ["IDM"],
+        },
+      );
     }
 
     // Cognito User Pool Client
-    const userPoolClient = new cdk.aws_cognito.CfnUserPoolClient(
-      this,
-      "CognitoUserPoolClient",
-      {
-        clientName: `${project}-${stage}-${stack}`,
-        userPoolId: userPool.userPoolId,
-        explicitAuthFlows: ["ADMIN_NO_SRP_AUTH"],
-        generateSecret: false,
-        allowedOAuthFlows: ["code"],
-        allowedOAuthFlowsUserPoolClient: true,
-        allowedOAuthScopes: [
-          "email",
-          "openid",
-          "aws.cognito.signin.user.admin",
-        ],
-        callbackUrLs: [applicationEndpointUrl, "http://localhost:5000/"],
-        defaultRedirectUri: applicationEndpointUrl,
-        logoutUrLs: [applicationEndpointUrl, "http://localhost:5000/"],
-        supportedIdentityProviders: userPoolIdentityProviderOidc
-          ? ["COGNITO", userPoolIdentityProviderOidc.providerName]
-          : ["COGNITO"],
-        accessTokenValidity: 30,
-        idTokenValidity: 30,
-        refreshTokenValidity: 12,
-        tokenValidityUnits: {
-          accessToken: "minutes",
-          idToken: "minutes",
-          refreshToken: "hours",
-        },
+    const userPoolClient = new cdk.aws_cognito.CfnUserPoolClient(this, "CognitoUserPoolClient", {
+      clientName: `${project}-${stage}-${stack}`,
+      userPoolId: userPool.userPoolId,
+      explicitAuthFlows: ["ADMIN_NO_SRP_AUTH"],
+      generateSecret: false,
+      allowedOAuthFlows: ["code"],
+      allowedOAuthFlowsUserPoolClient: true,
+      allowedOAuthScopes: ["email", "openid", "aws.cognito.signin.user.admin"],
+      callbackUrLs: [
+        applicationEndpointUrl,
+        `${applicationEndpointUrl}dashboard`,
+        "http://localhost:5000/",
+        "http://localhost:5000/dashboard",
+      ],
+      defaultRedirectUri: applicationEndpointUrl,
+      logoutUrLs: [applicationEndpointUrl, "http://localhost:5000/"],
+      supportedIdentityProviders: userPoolIdentityProviderOidc
+        ? ["COGNITO", userPoolIdentityProviderOidc.providerName]
+        : ["COGNITO"],
+      accessTokenValidity: 30,
+      idTokenValidity: 30,
+      refreshTokenValidity: 12,
+      tokenValidityUnits: {
+        accessToken: "minutes",
+        idToken: "minutes",
+        refreshToken: "hours",
       },
-    );
+    });
 
-    const userPoolDomain = new cdk.aws_cognito.CfnUserPoolDomain(
-      this,
-      "UserPoolDomain",
-      {
-        domain: `${stage}-login-${userPoolClient.ref}`,
-        userPoolId: userPool.userPoolId,
-      },
-    );
+    const userPoolDomain = new cdk.aws_cognito.CfnUserPoolDomain(this, "UserPoolDomain", {
+      domain: `${stage}-login-${userPoolClient.ref}`,
+      userPoolId: userPool.userPoolId,
+    });
 
     // Cognito Identity Pool
-    const identityPool = new cdk.aws_cognito.CfnIdentityPool(
-      this,
-      "CognitoIdentityPool",
-      {
-        identityPoolName: `${project}-${stage}-${stack}`,
-        allowUnauthenticatedIdentities: false,
-        cognitoIdentityProviders: [
-          {
-            clientId: userPoolClient.ref,
-            providerName: userPool.userPoolProviderName,
-          },
-        ],
-      },
-    );
+    const identityPool = new cdk.aws_cognito.CfnIdentityPool(this, "CognitoIdentityPool", {
+      identityPoolName: `${project}-${stage}-${stack}`,
+      allowUnauthenticatedIdentities: false,
+      cognitoIdentityProviders: [
+        {
+          clientId: userPoolClient.ref,
+          providerName: userPool.userPoolProviderName,
+        },
+      ],
+    });
 
     // IAM Role for Cognito Authenticated Users
     const authRole = new cdk.aws_iam.Role(this, "CognitoAuthRole", {
@@ -218,79 +200,59 @@ export class Auth extends cdk.NestedStack {
       },
     });
 
-    new cdk.aws_cognito.CfnIdentityPoolRoleAttachment(
-      this,
-      "CognitoIdentityPoolRoles",
-      {
-        identityPoolId: identityPool.ref,
-        roles: { authenticated: authRole.roleArn },
-      },
-    );
+    new cdk.aws_cognito.CfnIdentityPoolRoleAttachment(this, "CognitoIdentityPoolRoles", {
+      identityPoolId: identityPool.ref,
+      roles: { authenticated: authRole.roleArn },
+    });
 
     new ManageUsers(
       this,
       "ManageUsers",
       userPool,
-      JSON.parse(
-        readFileSync(
-          join(__dirname, "../../test/users/app-users.json"),
-          "utf8",
-        ),
-      ),
+      JSON.parse(readFileSync(join(__dirname, "../../test/users/app-users.json"), "utf8")),
       devPasswordArn,
     );
 
     if (idmEnable) {
-      const postAuthLambdaLogGroup = new cdk.aws_logs.LogGroup(
-        this,
-        "PostAuthLambdaLogGroup",
-        {
-          logGroupName: `/aws/lambda/${project}-${stage}-${stack}-postAuth`,
-          removalPolicy: cdk.RemovalPolicy.DESTROY,
-        },
-      );
+      const postAuthLambdaLogGroup = new cdk.aws_logs.LogGroup(this, "PostAuthLambdaLogGroup", {
+        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-postAuth`,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+      });
 
-      const postAuthLambdaRole = new cdk.aws_iam.Role(
-        this,
-        "PostAuthLambdaRole",
-        {
-          assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
-          managedPolicies: [
-            cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaBasicExecutionRole",
-            ),
-            cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaVPCAccessExecutionRole",
-            ),
-          ],
-          inlinePolicies: {
-            DataStackLambdarole: new cdk.aws_iam.PolicyDocument({
-              statements: [
-                new cdk.aws_iam.PolicyStatement({
-                  effect: cdk.aws_iam.Effect.ALLOW,
-                  actions: [
-                    "cognito-idp:AdminGetUser",
-                    "cognito-idp:AdminCreateUser",
-                    "cognito-idp:AdminSetUserPassword",
-                    "cognito-idp:AdminUpdateUserAttributes",
-                  ],
-                  resources: [
-                    `arn:aws:cognito-idp:${this.region}:${this.account}:userpool/us-east-*`,
-                  ],
-                }),
-                new cdk.aws_iam.PolicyStatement({
-                  effect: cdk.aws_iam.Effect.ALLOW,
-                  actions: [
-                    "secretsmanager:DescribeSecret",
-                    "secretsmanager:GetSecretValue",
-                  ],
-                  resources: [idmAuthzApiKeyArn],
-                }),
-              ],
-            }),
-          },
+      const postAuthLambdaRole = new cdk.aws_iam.Role(this, "PostAuthLambdaRole", {
+        assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+        managedPolicies: [
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaVPCAccessExecutionRole",
+          ),
+        ],
+        inlinePolicies: {
+          DataStackLambdarole: new cdk.aws_iam.PolicyDocument({
+            statements: [
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: [
+                  "cognito-idp:AdminGetUser",
+                  "cognito-idp:AdminCreateUser",
+                  "cognito-idp:AdminSetUserPassword",
+                  "cognito-idp:AdminUpdateUserAttributes",
+                ],
+                resources: [
+                  `arn:aws:cognito-idp:${this.region}:${this.account}:userpool/us-east-*`,
+                ],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
+                resources: [idmAuthzApiKeyArn],
+              }),
+            ],
+          }),
         },
-      );
+      });
       const postAuthLambda = new NodejsFunction(this, "PostAuthLambda", {
         runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
         entry: join(__dirname, "../lambda/postAuth.ts"),
@@ -311,10 +273,7 @@ export class Auth extends cdk.NestedStack {
         bundling: commonBundlingOptions,
       });
 
-      userPool.addTrigger(
-        cdk.aws_cognito.UserPoolOperation.PRE_TOKEN_GENERATION,
-        postAuthLambda,
-      );
+      userPool.addTrigger(cdk.aws_cognito.UserPoolOperation.PRE_TOKEN_GENERATION, postAuthLambda);
     }
 
     return { userPool, userPoolClient, userPoolDomain, identityPool };

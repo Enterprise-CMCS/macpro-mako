@@ -1,17 +1,14 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { handler } from "./cfnNotify";
-import { send, SUCCESS, FAILED } from "cfn-response-async";
-
-vi.mock("cfn-response-async", () => ({
-  send: vi.fn(),
-  SUCCESS: "SUCCESS",
-  FAILED: "FAILED",
-}));
+import { Context } from "aws-lambda";
+import { CLOUDFORMATION_NOTIFICATION_DOMAIN } from "mocks";
+import * as cfn from "cfn-response-async";
 
 describe("Lambda Handler", () => {
+  const cfnSpy = vi.spyOn(cfn, "send");
   const callback = vi.fn();
 
-  beforeEach(() => {
+  afterEach(() => {
     vi.clearAllMocks();
   });
 
@@ -21,19 +18,21 @@ describe("Lambda Handler", () => {
       Context: {
         Execution: {
           Input: {
-            cfnEvent: {},
+            cfnEvent: {
+              ResponseURL: CLOUDFORMATION_NOTIFICATION_DOMAIN,
+            },
             cfnContext: {},
           },
         },
       },
     };
 
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
-    expect(send).toHaveBeenCalledWith(
+    expect(cfnSpy).toHaveBeenCalledWith(
       event.Context.Execution.Input.cfnEvent,
       event.Context.Execution.Input.cfnContext,
-      SUCCESS,
+      cfn.SUCCESS,
       {},
       "static",
     );
@@ -46,19 +45,21 @@ describe("Lambda Handler", () => {
       Context: {
         Execution: {
           Input: {
-            cfnEvent: {},
+            cfnEvent: {
+              ResponseURL: CLOUDFORMATION_NOTIFICATION_DOMAIN,
+            },
             cfnContext: {},
           },
         },
       },
     };
 
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
-    expect(send).toHaveBeenCalledWith(
+    expect(cfnSpy).toHaveBeenCalledWith(
       event.Context.Execution.Input.cfnEvent,
       event.Context.Execution.Input.cfnContext,
-      FAILED,
+      cfn.FAILED,
       {},
       "static",
     );
@@ -78,29 +79,19 @@ describe("Lambda Handler", () => {
       },
     };
 
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
-    expect(send).not.toHaveBeenCalled();
+    expect(cfnSpy).not.toHaveBeenCalled();
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
   it("should handle errors and return statusCode 500", async () => {
     const event = {
       Success: true,
-      Context: {
-        Execution: {
-          Input: {
-            cfnEvent: {},
-            cfnContext: {},
-          },
-        },
-      },
+      Context: {},
     };
 
-    // Simulate an error in send function
-    (send as vi.Mock).mockRejectedValue(new Error("Test error"));
-
-    await handler(event, null, callback);
+    await handler(event, {} as Context, callback);
 
     expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,
