@@ -11,7 +11,10 @@ export const copyAttachments = async (data: any) => {
   //ANDIE: change type not any
   // change any
   if (!data.copyAttachmentsFromId) return data;
-  const copyAttachmentsFromId = data.copyAttachments;
+  const copyAttachmentsFromId = data.copyAttachmentsFromId;
+
+  console.log("copyAttachmentsFromId", copyAttachmentsFromId);
+  console.log("id:", data.id);
 
   // get the attachementPackage
   const attachPackage = await getPackage(copyAttachmentsFromId);
@@ -82,7 +85,7 @@ const sendSubmitMessage = async ({
       ...currentPackage._source,
       id: id,
       packageId: id,
-      copyAttachmentsFromId: copyAttachmentsFromId ?? null,
+      copyAttachmentsFromId: copyAttachmentsFromId,
       origin: "SEATool",
       isAdminChange: true,
       adminChangeType: "NOSO",
