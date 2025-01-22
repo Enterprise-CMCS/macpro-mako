@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { validateInput, validateOption } from "../utils";
+import { dependencyCheck, documentValidator, validateInput, validateOption } from "../utils";
+import { FormSchema } from "shared-types";
 
 describe("Test for RHF validator", () => {
   const rules = { required: true, min: "10", max: "test" };
@@ -72,5 +73,61 @@ describe("Test for RHF validator", () => {
     expect(match).toStrictEqual({ value: "1" });
     const misMatch = validateOption("3", options);
     expect(misMatch).toBeUndefined();
+  });
+  it("checks the document validator", () => {
+    const exampleForm: FormSchema = {
+      header: "User Registration",
+      formId: "userRegForm",
+      sections: [
+        {
+          title: "Personal Information",
+          sectionId: "personalInfo",
+          form: [
+            {
+              description: "Please provide your basic details.",
+              slots: [
+                {
+                  name: "firstName",
+                  label: "First Name",
+                  rhf: "Input",
+                  rules: { required: "First Name is required" },
+                },
+                {
+                  name: "lastName",
+                  label: "Last Name",
+                  rhf: "Input",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          title: "Preferences",
+          sectionId: "preferences",
+          dependency: {
+            conditions: [{ name: "acceptTerms", type: "valueExists" }],
+            effect: { type: "show" },
+          },
+          form: [
+            {
+              description: "Set your preferences.",
+              slots: [
+                {
+                  name: "notifications",
+                  label: "Enable Notifications",
+                  rhf: "Switch",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const validator = documentValidator(exampleForm);
+
+    const goodData = { firstName: "Thomas", lastName: "Walker" };
+    expect(validator(goodData)).toStrictEqual({ firstName: "", lastName: "" });
+    const badData = { firstame: "Thomas" };
+    expect(validator(badData)).toStrictEqual({ firstName: "First Name is required", lastName: "" });
   });
 });
