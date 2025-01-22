@@ -242,7 +242,7 @@ export class Email extends cdk.NestedStack {
         },
       ],
       startingPosition: "LATEST",
-      topics: [`${topicNamespace}aws.onemac.migration.cdc`],
+      topics: [`${topicNamespace}aws.onemac.migration.cdc`, `${topicNamespace}aws.seatool.ksql.onemac.three.agg.State_Planc`,],
       destinationConfig: {
         onFailure: {
           destination: dlq.queueArn,
