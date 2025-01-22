@@ -97,6 +97,20 @@ describe("Test for RHF validator", () => {
                   label: "Last Name",
                   rhf: "Input",
                 },
+                {
+                  rhf: "Checkbox",
+                  name: "assurance-method-in-plan",
+                  rules: { required: "* Required" },
+                  props: {
+                    options: [
+                      {
+                        label:
+                          "The state or territory provides assurance that, for each benefit provided under an Alternative Benefit Plan that is not provided through managed care, it will use the payment methodology in its approved state plan or hereby submits state plan amendment Attachment 4.19a, 4.19b, or 4.19d, as appropriate, describing the payment methodology for the benefit.",
+                        value: "assures_alternative_benefit_plan_in_accordance",
+                      },
+                    ],
+                  },
+                },
               ],
             },
           ],
@@ -121,13 +135,52 @@ describe("Test for RHF validator", () => {
             },
           ],
         },
+        {
+          title: "other",
+          sectionId: "other",
+          dependency: {
+            conditions: [{ name: "acceptTerms", type: "valueExists" }],
+            effect: { type: "hide" },
+          },
+          form: [
+            {
+              description: "Set your preferences.",
+              slots: [
+                {
+                  name: "notifications",
+                  label: "Enable Notifications",
+                  rhf: "Textarea",
+                },
+              ],
+            },
+          ],
+        },
       ],
     };
     const validator = documentValidator(exampleForm);
 
-    const goodData = { firstName: "Thomas", lastName: "Walker" };
-    expect(validator(goodData)).toStrictEqual({ firstName: "", lastName: "" });
-    const badData = { firstame: "Thomas" };
-    expect(validator(badData)).toStrictEqual({ firstName: "First Name is required", lastName: "" });
+    const goodData = {
+      firstName: "Thomas",
+      lastName: "Walker",
+      "assurance-method-in-plan": ["assures_alternative_benefit_plan_in_accordance"],
+    };
+    expect(validator(goodData)).toStrictEqual({ firstName: "", lastName: "", notifications: "" });
+    let badDataName = { firstame: "Thomas" };
+    expect(validator(badDataName)).toStrictEqual({
+      firstName: "First Name is required",
+      lastName: "",
+      notifications: "",
+    });
+    const badDataCheck = {
+      firstName: "Thomas",
+      lastName: "Walker",
+      "assurance-method-in-plan": ["bad value"],
+    };
+    expect(validator(badDataCheck)).toStrictEqual({
+      "assurance-method-in-plan": "invalid option - 'bad value'",
+      firstName: "",
+      lastName: "",
+      notifications: "",
+    });
   });
 });
