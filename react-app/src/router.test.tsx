@@ -25,7 +25,7 @@ describe("Router tests", () => {
       <MemoryRouter initialEntries={["/dashboard"]}>
         <Routes>
           {router.routes[0].children.map((route) => (
-            <Route key={route.path} path={route.path} element={route.element} />
+            <Route key={route.path} path={route.path} />
           ))}
         </Routes>
       </MemoryRouter>,
@@ -39,7 +39,7 @@ describe("Router tests", () => {
       <MemoryRouter initialEntries={["/"]}>
         <Routes>
           {router.routes[0].children.map((route) => (
-            <Route key={route.path} path={route.path} element={route.element} />
+            <Route key={route.path} path={route.path} />
           ))}
         </Routes>
       </MemoryRouter>,
