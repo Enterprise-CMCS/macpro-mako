@@ -1,7 +1,7 @@
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 import { getPackage } from "libs/api/package";
-// import { produceMessage } from "libs/api/kafka";
+import { produceMessage } from "libs/api/kafka";
 import { ItemResult } from "shared-types/opensearch/main";
 import { getNextSplitSPAId } from "./splitSPAId";
 import { z } from "zod";
@@ -11,28 +11,36 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
   if (!topicName) {
     throw new Error("Topic name is not defined");
   }
-  getNextSplitSPAId(currentPackage._id);
-  // ID and changeMade are excluded; the rest of the object has to be spread into the new package
-  // const {
-  //   id: _id,
-  //   changeMade: _changeMade,
-  //   origin: _origin,
-  //   ...remainingFields
-  // } = currentPackage._source;
+  try {
+    const newId = await getNextSplitSPAId(currentPackage._id);
+    if (!newId) {
+      throw new Error("Error getting next Split SPA Id");
+    }
 
-  // await produceMessage(
-  //   topicName,
-  //   updatedId, // CHANGE TO ADD ALPHABET
-  //   JSON.stringify({
-  //     id: updatedId, // CHANGE TO ADD ALPHABET
-  //     idToBeUpdated: currentPackage._id,
-  //     ...remainingFields,
-  //     origin: "OneMAC",
-  //     changeMade: "ID has been updated.",
-  //     isAdminChange: true,
-  //     adminChangeType: "update-id",
-  //   }),
-  // );
+    // ID and changeMade are excluded; the rest of the object has to be spread into the new package
+    const {
+      id: _id,
+      changeMade: _changeMade,
+      origin: _origin,
+      ...remainingFields
+    } = currentPackage._source;
+
+    await produceMessage(
+      topicName,
+      newId,
+      JSON.stringify({
+        id: newId,
+        idToBeUpdated: currentPackage._id,
+        ...remainingFields,
+        origin: "OneMAC",
+        changeMade: "ID has been updated.",
+        isAdminChange: true,
+        adminChangeType: "update-id",
+      }),
+    );
+  } catch (err) {
+    console.log("Error creating Split SPA: ", err);
+  }
 };
 
 const splitSPAEventBodySchema = z.object({
