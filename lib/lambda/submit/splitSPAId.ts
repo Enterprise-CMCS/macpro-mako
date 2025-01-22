@@ -31,7 +31,7 @@ export const getNextSplitSPAId = async (spaId: string) => {
     newSplitSPAId = "";
     const ids = matchingSplitSPAs.hits.hits.map((hit: any) => hit._source.id);
     console.log(ids);
-    const suffixes = ids.map((id: string) => id.split("-")[1]);
+    const suffixes = ids.map((id: string) => id.split("-").at(-1));
     console.log(suffixes, "LETTERS");
     return newSplitSPAId;
   }
