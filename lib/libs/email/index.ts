@@ -37,6 +37,7 @@ export type EmailTemplates = {
   "contracting-renewal-state": AuthoritiesWithUserTypesTemplate;
   "capitated-renewal-state": AuthoritiesWithUserTypesTemplate;
   "respond-to-rai": AuthoritiesWithUserTypesTemplate;
+  "seatool-withdraw":  AuthoritiesWithUserTypesTemplate;
 };
 
 // Create a type-safe mapping of email templates
@@ -57,7 +58,7 @@ const emailTemplates: EmailTemplates = {
   "contracting-renewal-state": EmailContent.newSubmission,
   "capitated-renewal-state": EmailContent.newSubmission,
   "respond-to-rai": EmailContent.respondToRai,
-  "seatool-withdraw": EmailContent.respondToRai,
+  "seatool-withdraw": EmailContent.withdrawPackage,
 };
 
 // cmsStatus = withdrawn
