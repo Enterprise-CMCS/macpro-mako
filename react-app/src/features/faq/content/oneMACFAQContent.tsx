@@ -224,7 +224,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "spa-admendments",
         question: "Which state plan amendments (SPAs) can I submit in OneMAC?",
         answerJSX: (
-          <div className="w-full space-y-3">
+          <div className="w-full space-y-2">
             <p>
               All Medicaid and CHIP state plan amendments (SPAs), <b>except </b>
               Medicaid SPA submissions processed in the Medicaid & CHIP Program System portal
@@ -492,7 +492,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <tr>
                   <td className="border border-gray-300 px-4 py-2">Budget Docs</td>
                   <td className="border border-gray-300 px-4 py-2">
-                    Updated 1-year budget if applicable of the State’s planned expenditures if the
+                    Updated 1-year budget if applicable of the State's planned expenditures if the
                     CHIP SPA submission has a significant impact on the approved budget
                   </td>
                 </tr>
@@ -599,7 +599,7 @@ export const oneMACFAQContent: FAQContent[] = [
         question:
           "How do I submit a Formal Request for Additional Information (RAI) Response for a Medicaid SPA?",
         answerJSX: (
-          <div className="w-full space-y-3">
+          <div className="w-full space-y-2">
             <p>When necessary, states will receive an RAI via email from CMS.</p>
             <ul className="list-disc ml-7 space-y-2">
               <li>The state will respond to the RAI through OneMAC.</li>
@@ -636,7 +636,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "withdraw-spa-rai-response",
         question: "How do I Withdraw a Formal RAI Response for a Medicaid SPA?",
         answerJSX: (
-          <div className="w-full space-y-3">
+          <div className="w-full space-y-2">
             <p>
               If a state wishes to withdraw a Formal RAI Response, the state must first contact
               their CMS Point of Contact so the action can be enabled.
@@ -687,7 +687,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "withdraw-package-spa",
         question: "How do I Withdraw a Package for a Medicaid SPA?",
         answerJSX: (
-          <div className="w-full space-y-3">
+          <div className="w-full space-y-2">
             <p>
               A state can withdraw a submission package if it is in the Under Review or RAI Issued
               status. However, please note that once withdrawn, a submission package cannot be
@@ -719,7 +719,7 @@ export const oneMACFAQContent: FAQContent[] = [
         question:
           "How do I submit a Formal Request for Additional Information (RAI) Response for a CHIP SPA?",
         answerJSX: (
-          <div className="w-full space-y-3">
+          <div className="w-full space-y-2">
             <p>When necessary, states will receive an RAI via email from CMS.</p>
             <ul className="ml-8 list-disc space-y-2">
               <li>The state will respond to the RAI through OneMAC.</li>
@@ -754,7 +754,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "withdraw-chip-spa-rai-response",
         question: "How do I Withdraw a Formal RAI Response for a CHIP SPA?",
         answerJSX: (
-          <div className="w-full space-y-3">
+          <div className="w-full space-y-2">
             <p>
               If a state wishes to withdraw a Formal RAI Response, the state must first contact
               their CMS Point of Contact so the action can be enabled.
@@ -805,7 +805,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "withdraw-package-chip-spa",
         question: "How do I Withdraw a Package for a CHIP SPA?",
         answerJSX: (
-          <div className="w-full space-y-3">
+          <div className="w-full space-y-2">
             <p>
               A state can withdraw a submission package if it is in the Under Review or RAI Issued
               status. However, please note that once withdrawn, a submission package cannot be
@@ -1459,7 +1459,7 @@ export const oneMACFAQContent: FAQContent[] = [
         question:
           "How do I submit a Formal Request for Additional Information (RAI) Response for a Waiver?",
         answerJSX: (
-          <div className="w-full space-y-3">
+          <div className="w-full space-y-2">
             <p>When necessary, states will receive an RAI via email from CMS.</p>
             <ul className="ml-8 list-disc space-y-2">
               <li>The state will respond to the RAI through OneMAC.</li>
@@ -1496,7 +1496,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "withdraw-waiver-rai-response",
         question: "How do I Withdraw a Formal RAI Response for a Medicaid Waiver?",
         answerJSX: (
-          <div className="w-full space-y-3">
+          <div className="w-full space-y-2">
             <p>
               If a state wishes to withdraw a Formal RAI Response, the state must first contact
               their CMS Point of Contact so the action can be enabled.
@@ -1548,7 +1548,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "withdraw-package-waiver",
         question: "How do I Withdraw a Package for a Waiver?",
         answerJSX: (
-          <div className="w-full space-y-3">
+          <div className="w-full space-y-2">
             <p>
               A state can withdraw a submission package if it is in the Under Review or RAI Issued
               status. However, please note that once withdrawn, a submission package cannot be
