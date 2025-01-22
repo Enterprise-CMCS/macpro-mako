@@ -101,7 +101,7 @@ const processAndIndex = async ({
                 packageId: result.data.id,
               });
             });
-          } else if (result.data.adminChangeType === "NOSO") {
+          } else if (result.data.adminChangeType === "NOSO" && result.data.copyAttachmentsFrom) {
             try {
               const data = await copyAttachments(result.data);
               docs.push(data);

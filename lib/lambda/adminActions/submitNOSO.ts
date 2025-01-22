@@ -80,7 +80,9 @@ const sendSubmitMessage = async ({
     id,
     JSON.stringify({
       ...currentPackage._source,
-      copyAttachmentsFromId: copyAttachmentsFromId,
+      id: id,
+      packageId: id,
+      copyAttachmentsFromId: copyAttachmentsFromId ?? null,
       origin: "SEATool",
       isAdminChange: true,
       adminChangeType: "NOSO",
