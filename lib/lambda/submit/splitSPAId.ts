@@ -25,7 +25,7 @@ export const getNextSplitSPAId = async (spaId: string) => {
 
     // convert to ASCII to find latest letter
     const suffixCharCodes = suffixes.map((letter: string, idx: number) => letter.charCodeAt(idx));
-    const latestLetterCharCode = Math.max(...suffixCharCodes);
+    const latestLetterCharCode = Math.max(suffixCharCodes);
 
     // increment letter but not past "Z"
     if (latestLetterCharCode >= 90) {
