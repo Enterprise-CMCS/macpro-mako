@@ -6,7 +6,7 @@ import { TempExtCMSEmail, TempExtStateEmail } from "./emailTemplates";
 
 export const tempExtention: UserTypeOnlyTemplate = {
   cms: async (
-    variables: Events["TempExtension"] & CommonEmailVariables & { emails: EmailAddresses },
+    variables: Events["TemporaryExtension"] & CommonEmailVariables & { emails: EmailAddresses },
   ) => {
     return {
       to: variables.emails.osgEmail,
@@ -15,7 +15,7 @@ export const tempExtention: UserTypeOnlyTemplate = {
     };
   },
   state: async (
-    variables: Events["TempExtension"] & CommonEmailVariables & { emails: EmailAddresses },
+    variables: Events["TemporaryExtension"] & CommonEmailVariables & { emails: EmailAddresses },
   ) => {
     return {
       to: [`${variables.submitterName} <${variables.submitterEmail}>`],
