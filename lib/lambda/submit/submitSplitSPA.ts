@@ -80,6 +80,13 @@ export const handler = async (event: APIGatewayEvent) => {
       });
     }
 
+    if (currentPackage._source.authority !== "Medicaid SPA") {
+      return response({
+        statusCode: 400,
+        body: { message: "Record can only be a Medicaid SPA" },
+      });
+    }
+
     return await sendSubmitSplitSPAMessage(currentPackage);
   } catch (err) {
     console.error("Error has occured modifying package:", err);
