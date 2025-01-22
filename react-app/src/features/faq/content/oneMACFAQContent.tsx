@@ -1019,22 +1019,22 @@ export const oneMACFAQContent: FAQContent[] = [
         question: "Where can I download CHIP eligibility SPA implementation guides?",
         answerJSX: (
           <div>
-            <ul className="list-disc pl-6 pb-2">
-              <li>
-                <a
-                  href="/chp/IG_ChipEligibilityIntroduction_Final_20241205.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600"
-                >
-                  CHIP Eligibility Introduction
-                </a>
-              </li>
-            </ul>
             <section className="space-y-2">
               <p>
                 CHIP eligibility SPA implementation guides can be downloaded at the links below.
               </p>
+              <ul className="list-disc pl-12">
+                <li>
+                  <a
+                    href="/chp/IG_ChipEligibilityIntroduction_Final_20241205.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600"
+                  >
+                    CHIP Eligibility Introduction
+                  </a>
+                </li>
+              </ul>
               <ul className="list-disc pl-6 space-y-2">
                 {renderSection(
                   "MAGI Eligibility & Methods",
@@ -1051,25 +1051,25 @@ export const oneMACFAQContent: FAQContent[] = [
                       "CS 15",
                       "CS 16",
                     ].includes(guide.title),
-                  "list-disc pl-6 space-y-2 text-blue-600",
+                  "list-disc pl-6 space-y-2",
                 )}
                 {renderSection(
                   "XXI Medicaid Expansion",
                   CHP_GUIDES,
                   (guide) => guide.title === "CS 3",
-                  "list-disc pl-6 space-y-2 text-blue-600",
+                  "list-disc pl-6 space-y-2",
                 )}
                 {renderSection(
                   "Establish 2101(f) Group",
                   CHP_GUIDES,
                   (guide) => guide.title === "CS 14",
-                  "list-disc pl-6 space-y-2 text-blue-600",
+                  "list-disc pl-6 space-y-2",
                 )}
                 {renderSection(
                   "Eligibility Processing",
                   CHP_GUIDES,
                   (guide) => guide.title === "CS 24",
-                  "list-disc pl-6 space-y-2 text-blue-600",
+                  "list-disc pl-6 space-y-2",
                 )}
                 {renderSection(
                   "Non-Financial Eligibility",
@@ -1086,7 +1086,7 @@ export const oneMACFAQContent: FAQContent[] = [
                       "CS 28",
                       "CS 29",
                     ].includes(guide.title),
-                  "list-disc pl-6 space-y-2 text-blue-600",
+                  "list-disc pl-6 space-y-2",
                 )}
               </ul>
             </section>
