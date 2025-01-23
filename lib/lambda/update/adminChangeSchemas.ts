@@ -23,7 +23,6 @@ export const updateIdAdminChangeSchema = z
   })
   .and(z.record(z.string(), z.any()));
 
-// TODO
 export const splitSPAAdminChangeSchema = z.object({
   id: z.string(),
   adminChangeType: z.literal("split-spa"),
@@ -50,6 +49,14 @@ export const transformUpdateValuesSchema = (offset: number) =>
 export const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((data) => ({
   ...data,
   event: "update-id",
+  packageId: data.id,
+  id: `${data.id}`,
+  timestamp: Date.now(),
+}));
+
+export const transformedSplitSPASchema = updateIdAdminChangeSchema.transform((data) => ({
+  ...data,
+  event: "split-spa",
   packageId: data.id,
   id: `${data.id}`,
   timestamp: Date.now(),
