@@ -20,9 +20,19 @@ import { FAQ_TAB } from "@/router";
 import { useGetItem } from "@/api";
 import { getFAQLinkForAttachments } from "../../faqLinks";
 
+const actionTypeMap = {
+  New: "Initial Waiver",
+  Renew: "Waiver Renewal",
+};
+
 export const TemporaryExtensionForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
   const { data: submission } = useGetItem(waiverId, { enabled: waiverId !== undefined });
+
+  const type =
+    submission && submission._source
+      ? `${submission._source.authority} ${actionTypeMap[submission._source.actionType]}`
+      : null;
 
   return (
     <ActionForm
@@ -33,10 +43,10 @@ export const TemporaryExtensionForm = () => {
       } Temporary Extension`}
       fields={(form) => (
         <>
-          {submission ? (
+          {waiverId && submission ? (
             <div>
-              <p>Approved Initial or Renewal Waiver Number</p>
-              <p className="text-xl">{waiverId}</p>
+              <p>Temporary Extension Type</p>
+              <p className="text-xl">{submission._source.authority}</p>
             </div>
           ) : (
             <FormField
@@ -64,10 +74,10 @@ export const TemporaryExtensionForm = () => {
               )}
             />
           )}
-          {waiverId && submission ? (
+          {submission ? (
             <div>
-              <p>Temporary Extension Type</p>
-              <p className="text-xl">{submission._source.authority}</p>
+              <p>Approved Initial or Renewal Waiver Number</p>
+              <p className="text-xl">{waiverId}</p>
             </div>
           ) : (
             <FormField
@@ -140,10 +150,17 @@ export const TemporaryExtensionForm = () => {
                     onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                   />
                 </FormControl>
+
                 <FormMessage />
               </FormItem>
             )}
           />
+          {type && (
+            <div>
+              <p>Type</p>
+              <p className="text-xl">{type}</p>
+            </div>
+          )}
         </>
       )}
       defaultValues={{
