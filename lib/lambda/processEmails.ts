@@ -117,22 +117,23 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   const id: string = decodeBase64WithUtf8(key);
   console.log("start id", id)
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
+    const safeID = id.replace(/^"|"$/g, "")
         const seatoolRecord: Document = {
-          id,
+          safeID,
           ...JSON.parse(decodeBase64WithUtf8(value)),
         };
         console.log("beforeww")
-        const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
+        const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
     console.log('inside process record', seatoolRecord)
     console.log('seatool safe record', safeSeatoolRecord)
     if(safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       //send email
       console.log(safeSeatoolRecord.data?.cmsStatus, "seatool status is withdrawn")
       
-      console.log(safeSeatoolRecord, id.replace(/^"|"$/g, ""), config)
+      console.log(safeSeatoolRecord, safeID, config)
 
       try {
-      await processAndSendEmails(safeSeatoolRecord, id.replace(/^"|"$/g, ""), config);
+      await processAndSendEmails(safeSeatoolRecord, safeID, config);
       } catch (error) {
         console.error("Error processing record:", JSON.stringify(error, null, 2));
         throw error;
