@@ -22,19 +22,16 @@ export const getNextSplitSPAId = async (spaId: string) => {
     // get list of split SPAs for this package id and extract suffixes (letters)
     const ids = existingSplitSPAs.hits.hits.map((hit: any) => hit._source.id);
     const suffixes = ids.map((id: string) => id.split("-").at(-1));
-    console.log(suffixes, "SUFFIXESSS");
+
     // convert to ASCII to find latest letter
-    const suffixCharCodes = suffixes.map((letter: string, idx: number) => letter.charCodeAt(idx));
-    console.log(suffixCharCodes, "SUFFIX CHAR CODE");
+    const suffixCharCodes = suffixes.map((letter: string) => letter.charCodeAt(0));
     const latestLetterCharCode = Math.max(...suffixCharCodes);
-    console.log(latestLetterCharCode, "LATEST");
     // increment letter but not past "Z"
     if (latestLetterCharCode >= 90) {
       // edit message
       throw new Error("This package can't be further split.");
     }
     const nextLetter = String.fromCharCode(latestLetterCharCode + 1);
-    console.log(nextLetter, "LETTER?");
     newSplitSPAId = `${spaId}-${nextLetter}`;
   }
   return newSplitSPAId;
