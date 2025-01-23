@@ -3,9 +3,10 @@ import { type FC, useCallback } from "react";
 import { Chip, useOsUrl, checkMultiFilter } from "@/components";
 import { opensearch } from "shared-types";
 import { useFilterDrawerContext } from "../FilterProvider";
-import { offsetFromUtc } from "shared-utils";
 import { useLabelMapping } from "@/hooks";
+import { UTCDate } from "@date-fns/utc";
 
+export const DATE_FORMAT = "M/d/yyyy";
 export interface RenderProp {
   filter: opensearch.main.Filterable;
   index: number;
@@ -30,6 +31,9 @@ export const ChipBool: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) =>
 
 export const ChipDate: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) => {
   const value = filter.value as opensearch.RangeValue;
+  if (!value?.gte && !value?.lte) return null;
+  const label = filter?.label ? `${filter.label}: ` : "";
+  const range = `${new UTCDate(value?.gte || value?.lte).toLocaleDateString()} - ${new Date(value?.lte || value?.gte).toLocaleDateString()}`;
   return (
     <Chip
       onChipClick={openDrawer}
@@ -37,9 +41,7 @@ export const ChipDate: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) =>
         clearFilter(filter);
       }}
     >
-      {`${filter?.label ? `${filter.label}: ` : ""}${offsetFromUtc(
-        new Date(value.gte || ""),
-      ).toLocaleDateString()} - ${offsetFromUtc(new Date(value.lte || "")).toLocaleDateString()}`}
+      {`${label}${range}`}
     </Chip>
   );
 };

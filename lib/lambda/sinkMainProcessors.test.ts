@@ -1,11 +1,12 @@
 import { describe, expect, it, vi, afterEach } from "vitest";
+import { startOfDay } from "date-fns";
+import { UTCDate } from "@date-fns/utc";
 import {
   insertNewSeatoolRecordsFromKafkaIntoMako,
   insertOneMacRecordsFromKafkaIntoMako,
   syncSeatoolRecordDatesFromKafkaWithMako,
 } from "./sinkMainProcessors";
 import { seatool } from "shared-types/opensearch/main";
-import { offsetToUtc } from "shared-utils";
 import { SEATOOL_STATUS, statusToDisplayToCmsUser, statusToDisplayToStateUser } from "shared-types";
 import * as sink from "libs/sink-lib";
 import * as os from "libs/opensearch-lib";
@@ -208,7 +209,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         stateStatus: expectation.stateStatus || statusToDisplayToStateUser[seatoolStatus],
         changedDate: ISO_DATETIME,
         makoChangedDate: ISO_DATETIME,
-        statusDate: offsetToUtc(new Date(TIMESTAMP)).toISOString(),
+        statusDate: startOfDay(new UTCDate(TIMESTAMP)).toISOString(),
         submissionDate: ISO_DATETIME,
         state: "VA",
         origin: "OneMAC",

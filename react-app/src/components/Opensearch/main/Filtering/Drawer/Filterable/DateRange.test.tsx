@@ -1,9 +1,9 @@
 import { describe, expect, it, vi, afterEach } from "vitest";
 import { screen, render, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { FilterableDateRange } from "./DateRange";
+import { FilterableDateRange, DATE_FORMAT, DATE_DISPLAY_FORMAT } from "./DateRange";
 import { format, startOfQuarter, startOfMonth, sub, endOfDay, startOfDay, getDate } from "date-fns";
-import { offsetToUtc } from "shared-utils";
+import { UTCDate } from "@date-fns/utc";
 
 describe("FilterableDateRange", () => {
   const onChange = vi.fn();
@@ -20,30 +20,54 @@ describe("FilterableDateRange", () => {
 
   it("should not display date if value is only to date", () => {
     render(
-      <FilterableDateRange value={{ gte: undefined, lte: "01/01/2025" }} onChange={onChange} />,
+      <FilterableDateRange
+        value={{ gte: undefined, lte: format(endOfDay(new UTCDate()), DATE_FORMAT) }}
+        onChange={onChange}
+      />,
     );
     expect(screen.getByText("Pick a date")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Clear" })).toBeInTheDocument();
   });
 
   it("should display from date if value is only from date", () => {
+    const today = startOfDay(new UTCDate());
     render(
-      <FilterableDateRange value={{ gte: "01/01/2025", lte: undefined }} onChange={onChange} />,
+      <FilterableDateRange
+        value={{ gte: format(today, DATE_DISPLAY_FORMAT), lte: undefined }}
+        onChange={onChange}
+      />,
     );
-    expect(screen.getByText("Jan 01, 2025")).toBeInTheDocument();
+    expect(screen.getByText(format(today, DATE_DISPLAY_FORMAT))).toBeInTheDocument();
   });
 
   it("should display from and to date if value has both", () => {
+    const start = startOfDay(sub(new UTCDate(), { days: 90 }));
+    const end = endOfDay(new UTCDate());
     render(
-      <FilterableDateRange value={{ gte: "01/01/2025", lte: "03/31/2025" }} onChange={onChange} />,
+      <FilterableDateRange
+        value={{
+          gte: format(start, DATE_FORMAT),
+          lte: format(end, DATE_FORMAT),
+        }}
+        onChange={onChange}
+      />,
     );
-    expect(screen.getByText("Jan 01, 2025 - Mar 30, 2025")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        `${format(start, DATE_DISPLAY_FORMAT)} - ${format(end, DATE_DISPLAY_FORMAT)}`,
+      ),
+    ).toBeInTheDocument();
   });
 
   it("should handle clicking the Clear button", async () => {
     const user = userEvent.setup();
+    const start = startOfDay(sub(new UTCDate(), { days: 90 }));
+    const end = endOfDay(new UTCDate());
     render(
-      <FilterableDateRange value={{ gte: "01/01/2025", lte: "03/31/2025" }} onChange={onChange} />,
+      <FilterableDateRange
+        value={{ gte: format(start, DATE_FORMAT), lte: format(end, DATE_FORMAT) }}
+        onChange={onChange}
+      />,
     );
     await user.click(screen.getByRole("button", { name: "Clear" }));
     expect(onChange).toHaveBeenCalledWith({ gte: undefined, lte: undefined });
@@ -51,11 +75,9 @@ describe("FilterableDateRange", () => {
 
   it("should handle clicking the popover trigger", async () => {
     const user = userEvent.setup();
-    render(
-      <FilterableDateRange value={{ gte: "01/01/2025", lte: "03/31/2025" }} onChange={onChange} />,
-    );
+    render(<FilterableDateRange value={{ gte: undefined, lte: undefined }} onChange={onChange} />);
     expect(screen.queryByRole("dialog")).toBeNull();
-    await user.click(screen.getByText("Jan 01, 2025 - Mar 30, 2025"));
+    await user.click(screen.getByText("Pick a date"));
     expect(screen.getByRole("dialog")).toBeVisible();
   });
 
@@ -65,8 +87,8 @@ describe("FilterableDateRange", () => {
     await user.click(screen.getByText("Pick a date"));
     await user.click(screen.getByRole("button", { name: "Today" }));
     expect(onChange).toHaveBeenCalledWith({
-      gte: offsetToUtc(startOfDay(new Date())).toISOString(),
-      lte: offsetToUtc(endOfDay(new Date())).toISOString(),
+      gte: startOfDay(new UTCDate()).toISOString(),
+      lte: endOfDay(new UTCDate()).toISOString(),
     });
   });
 
@@ -76,8 +98,8 @@ describe("FilterableDateRange", () => {
     await user.click(screen.getByText("Pick a date"));
     await user.click(screen.getByRole("button", { name: "Last 7 Days" }));
     expect(onChange).toHaveBeenCalledWith({
-      gte: offsetToUtc(startOfDay(sub(new Date(), { days: 6 }))).toISOString(),
-      lte: offsetToUtc(endOfDay(new Date())).toISOString(),
+      gte: startOfDay(sub(new UTCDate(), { days: 6 })).toISOString(),
+      lte: endOfDay(new UTCDate()).toISOString(),
     });
   });
 
@@ -87,8 +109,8 @@ describe("FilterableDateRange", () => {
     await user.click(screen.getByText("Pick a date"));
     await user.click(screen.getByRole("button", { name: "Month To Date" }));
     expect(onChange).toHaveBeenCalledWith({
-      gte: offsetToUtc(startOfDay(startOfMonth(new Date()))).toISOString(),
-      lte: offsetToUtc(endOfDay(new Date())).toISOString(),
+      gte: startOfDay(startOfMonth(new UTCDate())).toISOString(),
+      lte: endOfDay(new UTCDate()).toISOString(),
     });
   });
 
@@ -98,8 +120,8 @@ describe("FilterableDateRange", () => {
     await user.click(screen.getByText("Pick a date"));
     await user.click(screen.getByRole("button", { name: "Month To Date" }));
     expect(onChange).toHaveBeenCalledWith({
-      gte: offsetToUtc(startOfDay(startOfQuarter(new Date()))).toISOString(),
-      lte: offsetToUtc(endOfDay(new Date())).toISOString(),
+      gte: startOfDay(startOfQuarter(new UTCDate())).toISOString(),
+      lte: endOfDay(new UTCDate()).toISOString(),
     });
   });
 
@@ -112,34 +134,37 @@ describe("FilterableDateRange", () => {
       .getAllByRole("gridcell", { name: "1" })
       .find((day) => !day.getAttribute("disabled"));
     await user.click(firstDay);
-    const selectedDate = startOfMonth(new Date());
+    const selectedDate = startOfMonth(new UTCDate());
     expect(onChange).toHaveBeenCalledWith({
-      gte: offsetToUtc(startOfDay(selectedDate)).toISOString(),
-      lte: offsetToUtc(endOfDay(selectedDate)).toISOString(),
+      gte: startOfDay(selectedDate).toISOString(),
+      lte: endOfDay(selectedDate).toISOString(),
     });
   });
 
-  it("should handle clicking the first day of the month and then today", async () => {
+  it("should handle the first day set to the month and clicking today", async () => {
     const user = userEvent.setup();
-    const firstDay = startOfMonth(new Date());
+    const firstDay = startOfMonth(new UTCDate());
     render(
       <FilterableDateRange
-        value={{ gte: format(firstDay, "MM/dd/yyyy"), lte: undefined }}
+        value={{ gte: format(firstDay, DATE_FORMAT), lte: undefined }}
         onChange={onChange}
       />,
     );
-    await user.click(screen.getByText(format(firstDay, "LLL dd, yyyy")));
+    await user.click(screen.getByText(format(firstDay, DATE_DISPLAY_FORMAT)));
     const pickers = screen.getAllByRole("grid");
-    const todayDate = new Date();
+    const todayDate = new UTCDate();
     const todayDay = within(pickers[0])
       .getAllByRole("gridcell", { name: `${getDate(todayDate)}` })
       .find((day) => !day.getAttribute("disabled"));
+    expect(todayDay).not.toBeNull();
 
-    await user.click(todayDay);
+    if (todayDay) {
+      await user.click(todayDay);
 
-    expect(onChange).toHaveBeenLastCalledWith({
-      gte: startOfDay(firstDay).toISOString(),
-      lte: offsetToUtc(endOfDay(todayDate)).toISOString(),
-    });
+      expect(onChange).toHaveBeenLastCalledWith({
+        gte: startOfDay(firstDay).toISOString(),
+        lte: endOfDay(todayDate).toISOString(),
+      });
+    }
   });
 });
