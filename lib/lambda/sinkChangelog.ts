@@ -74,23 +74,30 @@ const processAndIndex = async ({
         const result = schema.safeParse(record);
 
         if (result.success) {
-          console.log("IN SUCCESS?");
-          if (
-            result.data.adminChangeType === "update-id" ||
-            result.data.adminChangeType === "split-spa"
-          ) {
-            console.log("IN THIS IF???");
-            console.log(docs, "WHAT IS DOCS");
+          if (result.data.adminChangeType === "update-id") {
+            // push doc with package to soft delete
             docs.forEach((log) => {
-              console.log(log, "WHAT IS LOG");
               const recordOffset = log.id.split("-").at(-1);
-              console.log(recordOffset, "WHAT RECORD OFFSET");
               docs.push({
                 ...log,
                 id: `${result.data.id}-${recordOffset}`,
                 packageId: result.data.id,
               });
             });
+            // query all changelog entries for this ID and create copies of all entries with new ID
+            const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
+
+            packageChangelogs.hits.hits.forEach((log) => {
+              const recordOffset = log._id.split("-").at(-1);
+              docs.push({
+                ...log._source,
+                id: `${result.data.id}-${recordOffset}`,
+                packageId: result.data.id,
+              });
+            });
+          } else if (result.data.adminChangeType === "split-spa") {
+            // push doc with new split package
+            docs.push(result.data);
             // query all changelog entries for this ID and create copies of all entries with new ID
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
 
