@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { RouterProvider } from "react-router";
-import { createMemoryRouter } from "react-router-dom";
+import { createMemoryRouter, RouterProvider } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import { router } from "./router";
 
