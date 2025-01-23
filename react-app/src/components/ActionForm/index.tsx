@@ -39,7 +39,7 @@ type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
     attachments?: z.ZodObject<{
       [Key in keyof Shape]: z.ZodObject<{
         label: z.ZodDefault<z.ZodString>;
-        files: z.ZodTypeAny;
+        files: z.ZodArray<z.ZodTypeAny, "many"> | z.ZodOptional<z.ZodArray<z.ZodTypeAny, "many">>;
       }>;
     }>;
   },

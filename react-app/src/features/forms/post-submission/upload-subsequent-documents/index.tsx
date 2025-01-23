@@ -26,13 +26,18 @@ const pickAttachmentsAndAdditionalInfo = (
     const shape = schema._def.shape();
 
     const optionalAttachmentsShape = Object.fromEntries(
-      Object.entries(shape.attachments.shape).map(([key, value]) => [
-        key,
-        z.object({
-          files: value._def.shape().files.optional(),
-          label: value._def.shape().label,
-        }),
-      ]),
+      Object.entries(shape.attachments.shape).map(([key, value]) => {
+        const files = value._def.shape().files;
+        const filesArray = files instanceof z.ZodArray ? files : files.unwrap();
+
+        return [
+          key,
+          z.object({
+            files: z.array(filesArray.element).optional(),
+            label: value._def.shape().label,
+          }),
+        ];
+      }),
     );
 
     return z
