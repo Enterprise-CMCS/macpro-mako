@@ -24,7 +24,6 @@ vi.mock(import("@/features"), async (importOriginal) => {
   };
 });
 
-// Test suite
 describe("RoutesWithTimeout", () => {
   it("should not render <TimeoutModal> on `/faq` route", async () => {
     const testRouter = createMemoryRouter(router.routes[0].children, {
