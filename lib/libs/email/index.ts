@@ -99,6 +99,7 @@ export async function getEmailTemplates<T>(
   if (isAuthorityTemplate(template, authority)) {
     console.log(1)
     console.log(Object.values(template[authority] as EmailTemplateFunction<T>));
+    console.log([...Object.values(template[authority] as EmailTemplateFunction<T>)])
     emailTemplatesToSend.push(...Object.values(template[authority] as EmailTemplateFunction<T>));
   } else {
     console.log(2)
