@@ -92,12 +92,16 @@ export async function getEmailTemplates<T>(
     console.log("No template found");
     return null;
   }
-
+  console.log("template after non found", template)
   const emailTemplatesToSend: EmailTemplateFunction<T>[] = [];
 
+  console.log(template, authority)
   if (isAuthorityTemplate(template, authority)) {
+    console.log(1)
+    console.log(Object.values(template[authority] as EmailTemplateFunction<T>));
     emailTemplatesToSend.push(...Object.values(template[authority] as EmailTemplateFunction<T>));
   } else {
+    console.log(2)
     emailTemplatesToSend.push(
       ...Object.values(template as Record<UserType, EmailTemplateFunction<T>>),
     );

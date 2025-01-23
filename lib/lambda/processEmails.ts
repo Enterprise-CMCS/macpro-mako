@@ -215,6 +215,8 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
     return;
   }
 
+  console.log('templates', templates)
+
   const territory = id.slice(0, 2);
   const allStateUsers = await getAllStateUsers({
     userPoolId: config.userPoolId,
