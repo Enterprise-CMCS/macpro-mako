@@ -116,6 +116,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     const record = JSON.parse(decodeBase64WithUtf8(kafkaRecord.value))
     console.log('inside process record', record)
     const safeSeatoolRecord = opensearch.main.seatool.transform(record.id).safeParse(record);
+    console.log('seatool safe record', safeSeatoolRecord)
     if(safeSeatoolRecord.data?.cmsStatus === SEATOOL_STATUS.WITHDRAWN) {
       //send email
       console.log(safeSeatoolRecord.data?.cmsStatus, "seatool status is withdrawn")
