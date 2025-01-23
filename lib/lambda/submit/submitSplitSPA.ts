@@ -65,19 +65,26 @@ export const handler = async (event: APIGatewayEvent) => {
       body: { message: "Event body required" },
     });
   }
-
   try {
-    const { packageId } = splitSPAEventBodySchema.parse(
-      event.body === "string" ? JSON.parse(event.body) : event.body,
-    );
-
-    if (!packageId) {
+    const parseEventBody = (body: unknown) => {
+      return splitSPAEventBodySchema.parse(typeof body === "string" ? JSON.parse(body) : body);
+    };
+    // const { packageId } = splitSPAEventBodySchema.parse(
+    //   event.body === "string" ? JSON.parse(event.body) : event.body,
+    // );
+    let body = { packageId: "" };
+    if (typeof event.body === "string") {
+      body = JSON.parse(event.body);
+    } else {
+      body = event.body;
+    }
+    if (!body.packageId) {
       return response({
         statusCode: 400,
         body: { message: "Package ID to split is required" },
       });
     }
-
+    const { packageId } = parseEventBody(event.body);
     const currentPackage = await getPackage(packageId);
     if (!currentPackage || currentPackage.found == false) {
       return response({
