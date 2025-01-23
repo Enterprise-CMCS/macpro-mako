@@ -27,6 +27,7 @@ export const splitSPAAdminChangeSchema = z
   .object({
     id: z.string(),
     adminChangeType: z.literal("split-spa"),
+    idToBeUpdated: z.string(),
   })
   .and(z.record(z.string(), z.any()));
 
