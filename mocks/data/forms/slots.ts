@@ -80,8 +80,45 @@ const switchField: RHFSlotProps = {
   label: "Enable Notifications",
   rhf: "Switch",
 };
+const fieldArray: RHFSlotProps = {
+  rhf: "FieldArray",
+  name: "field-array",
+  label: `field_label`,
+  labelClassName: "font-bold",
+  props: {
+    appendText: "Add benefit or service",
+    removeText: "Remove",
+  },
+  fields: [
+    {
+      rhf: "WrappedGroup",
+      name: "wrapped_fields",
+
+      fields: [textForm, inputBox],
+    },
+  ],
+};
+const fieldArrayParent: RHFSlotProps = {
+  rhf: "FieldArray",
+  name: "field-array-parent",
+  label: `field_label`,
+  labelClassName: "font-bold",
+  props: {
+    appendText: "Add benefit or service",
+    removeText: "Remove",
+  },
+  fields: [
+    {
+      rhf: "FieldArray",
+      name: "wrapped_fields",
+      fields: [fieldArray],
+    },
+  ],
+};
 export const slots = {
   checkbox,
+  fieldArray,
+  fieldArrayParent,
   inputBox,
   radio,
   selectField,

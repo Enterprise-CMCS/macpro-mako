@@ -153,4 +153,24 @@ describe("Test for RHF validator", () => {
     };
     expect(validator(goodData)).toStrictEqual({ notifications: "" });
   });
+  it("checks the document validator for a text box", () => {
+    const validator = documentValidator(mockForms.textFromExpected);
+    const badData = {
+      firstName: "no",
+    };
+    expect(validator(badData)).toStrictEqual({});
+    const goodData = {
+      firstName: "yes",
+    };
+    expect(validator(goodData)).toStrictEqual({
+      firstName: "",
+    });
+  });
+  it("checks the document validator for a field array", () => {
+    const validator = documentValidator(mockForms.fieldArrayForm);
+    const data = {
+      "field-array-parent": [{ wrapped_fields: [{ "field-array": [{ first_name: "no" }] }] }],
+    };
+    expect(validator(data)).toStrictEqual({});
+  });
 });

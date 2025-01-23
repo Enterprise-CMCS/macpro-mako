@@ -34,6 +34,52 @@ export const textForm: FormSchema = {
         },
       ],
     },
+    {
+      title: "dependency2",
+      sectionId: "dependencySection",
+      dependency: {
+        conditions: [{ name: "acceptTerms", type: "valueNotExist" }],
+        effect: { type: "hide" },
+      },
+      form: [
+        {
+          description: "Set your preferences.",
+          slots: [
+            {
+              name: "notifications",
+              label: "Enable Notifications",
+              rhf: "Switch",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+export const textFromExpected: FormSchema = {
+  header: "Test header2",
+  formId: "testID2",
+  sections: [
+    {
+      title: "dependency",
+      sectionId: "dependencySection",
+      dependency: {
+        conditions: [
+          {
+            name: "firstName",
+            type: "expectedValue",
+            expectedValue: "yes",
+          },
+        ],
+        effect: { type: "show" },
+      },
+      form: [
+        {
+          description: "Set your preferences.",
+          slots: [slots.textForm],
+        },
+      ],
+    },
   ],
 };
 export const uploadForm: FormSchema = {
@@ -126,13 +172,30 @@ export const inputForm: FormSchema = {
     },
   ],
 };
+export const fieldArrayForm: FormSchema = {
+  header: "Test header",
+  formId: "testID",
+  sections: [
+    {
+      title: "testForm",
+      sectionId: "testSection",
+      form: [
+        {
+          slots: [slots.fieldArrayParent],
+        },
+      ],
+    },
+  ],
+};
 
 export const mockForms = {
   checkboxForm,
+  fieldArrayForm,
   inputForm,
   radioForm,
   selectForm,
   switchForm,
   textForm,
+  textFromExpected,
   uploadForm,
 };
