@@ -3,8 +3,10 @@ import { MemoryRouter, Route, Routes } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import { router } from "./router";
 
+import type { RouteObject } from "react-router";
+
 vi.mock("@/components", () => ({
-  TimeoutModal: () => <div data-testid="timeout-modal">TimeoutModal</div>,
+  TimeoutModal: () => <div data-testid="timeout-modal">Mocked TimeoutModal</div>,
   Layout: ({ children }) => <div>{children}</div>,
 }));
 
@@ -20,31 +22,31 @@ vi.mock(import("@/features"), async (importOriginal) => {
 });
 
 describe("Router tests", () => {
-  it("should include <TimeoutModal /> in private routes", () => {
-    const { getByTestId } = render(
-      <MemoryRouter initialEntries={["/dashboard"]}>
-        <Routes>
-          {router.routes[0].children.map((route) => (
-            <Route key={route.path} path={route.path} />
-          ))}
-        </Routes>
-      </MemoryRouter>,
-    );
-
-    expect(getByTestId("timeout-modal")).toBeDefined();
-  });
-
-  it("should not include <TimeoutModal /> in public routes", () => {
+  it("should not include <TimeoutModal /> by default", () => {
     const { queryByTestId } = render(
       <MemoryRouter initialEntries={["/"]}>
         <Routes>
-          {router.routes[0].children.map((route) => (
-            <Route key={route.path} path={route.path} />
+          {(router.routes[0].children as RouteObject[]).map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
           ))}
         </Routes>
       </MemoryRouter>,
     );
 
     expect(queryByTestId("timeout-modal")).toBeNull();
+  });
+
+  it("should include <TimeoutModal /> in RoutesWithTimeout", () => {
+    const { getByTestId } = render(
+      <MemoryRouter initialEntries={["/dashboard"]}>
+        <Routes>
+          {(router.routes[0].children as RouteObject[]).map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(getByTestId("timeout-modal")).toBeDefined();
   });
 });
