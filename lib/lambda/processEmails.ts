@@ -195,7 +195,7 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
   // if its a seatool thing convert withdraw to an event in the templates
   let templates; 
   if (record?.data?.seatoolStatus) {
-    console.log('seatoollstatus in process emails')
+    console.log('seatoollstatus in process emails', record.data.authority.toLowerCase())
     templates = await getEmailTemplates<typeof record>(
       "seatool-withdraw",
       record.data.authority.toLowerCase(),
