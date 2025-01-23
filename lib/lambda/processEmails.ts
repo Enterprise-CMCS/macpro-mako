@@ -197,7 +197,7 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
   if (record?.data?.seatoolStatus) {
     console.log('seatoollstatus in process emails')
     templates = await getEmailTemplates<typeof record>(
-      record.event,
+      "seatool-withdraw",
       record.authority.toLowerCase(),
     );
   } else {
