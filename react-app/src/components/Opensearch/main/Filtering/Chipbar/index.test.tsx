@@ -420,7 +420,7 @@ describe("FilterChips", () => {
       ],
     };
 
-    it.only("should display multiple chips", () => {
+    it("should display multiple chips", () => {
       renderWithQueryClientAndMemoryRouter(<FilterChips />, routes, routeOptions);
       expect(screen.getByText("State: Maryland, MD")).toBeInTheDocument();
       expect(screen.getByText("Authority: CHIP SPA")).toBeInTheDocument();
