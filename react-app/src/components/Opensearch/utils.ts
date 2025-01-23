@@ -2,8 +2,16 @@ import { opensearch } from "shared-types";
 
 const filterMapQueryReducer = (
   state: Record<opensearch.Filterable<any>["prefix"], any[]>,
-  filter: opensearch.Filterable<any>
+  filter: opensearch.Filterable<any>,
 ) => {
+  if (filter.type === "exists") {
+    state[filter.prefix].push({
+      exists: { field: filter.field },
+    });
+  }
+
+  if (filter.value === undefined || filter.value == null) return state;
+
   // this was hoisted up since false is a valid "match" value
   if (filter.type === "match") {
     state[filter.prefix].push({
@@ -25,12 +33,6 @@ const filterMapQueryReducer = (
     });
   }
 
-  if (filter.type === "exists") {
-    state[filter.prefix].push({
-      exists: { field: filter.field },
-    });
-  }
-
   if (filter.type === "range") {
     state[filter.prefix].push({
       range: { [filter.field]: filter.value },
@@ -38,7 +40,6 @@ const filterMapQueryReducer = (
   }
 
   if (filter.type === "global_search") {
-    if (!filter.value) return state;
     state[filter.prefix].push({
       dis_max: {
         tie_breaker: 0.7,
@@ -73,34 +74,46 @@ export const filterQueryBuilder = (filters: opensearch.Filterable<any>[]) => {
   };
 };
 
-export const paginationQueryBuilder = (
-  pagination: opensearch.QueryState<any>["pagination"]
-) => {
+export const paginationQueryBuilder = (pagination: opensearch.QueryState<any>["pagination"]) => {
+  if (!pagination) return {};
+
   const from = (() => {
-    if (!pagination.number) return 0;
+    if (
+      !pagination?.number ||
+      !pagination?.size ||
+      pagination?.number < 1 ||
+      pagination?.size < 1
+    ) {
+      return 0;
+    }
     return pagination.number * pagination.size;
   })();
 
   return {
-    size: pagination.size,
+    size: pagination?.size && pagination?.size > 0 ? pagination?.size : 25,
     from,
   };
 };
 
 export const sortQueryBuilder = (sort: opensearch.QueryState<any>["sort"]) => {
-  return { sort: [{ [sort.field]: sort.order }] };
+  if (!sort?.field) return {};
+  return { sort: [{ [sort.field]: sort.order || "asc" }] };
 };
 
 export const aggQueryBuilder = (aggs: opensearch.AggQuery<any>[]) => {
+  if (!aggs?.length) return {};
+
   return {
     aggs: aggs.reduce((STATE, AGG) => {
-      STATE[AGG.name] = {
-        [AGG.type]: {
-          field: AGG.field,
-          order: { _term: "asc" },
-          ...(AGG.size && { size: AGG.size }),
-        },
-      };
+      if (AGG?.name && AGG?.type && AGG?.field) {
+        STATE[AGG.name] = {
+          [AGG.type]: {
+            field: AGG.field,
+            order: { _term: "asc" },
+            ...(AGG.size && { size: AGG.size }),
+          },
+        };
+      }
       return STATE;
     }, {} as any),
   };
@@ -118,14 +131,9 @@ export const createSearchFilterable = (value?: string) => {
   ];
 };
 
-export const checkMultiFilter = (
-  filters: opensearch.Filterable<any>[],
-  val: number
-) => {
+export const checkMultiFilter = (filters: opensearch.Filterable<any>[] = [], val: number = 0) => {
   return (
     filters.length >= val ||
-    filters.some(
-      (filter) => Array.isArray(filter.value) && filter.value.length >= val
-    )
+    filters.some((filter) => Array.isArray(filter.value) && filter.value.length >= val)
   );
 };

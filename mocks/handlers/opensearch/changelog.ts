@@ -2,16 +2,17 @@ import { http, HttpResponse, PathParams } from "msw";
 import { GET_ERROR_ITEM_ID } from "../../data";
 import items from "../../data/items";
 import { SearchQueryBody, TestChangelogDocument, TestChangelogItemResult } from "../../index.d";
-import { getTermKeys, getTermValues, filterItemsByTerm } from "./util";
+import { getTermKeys, getTermValues, filterItemsByTerm } from "../search.utils";
 
-const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
+const defaultOSChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-changelog/_search",
   async ({ request }) => {
     const { query } = await request.json();
     const must = query?.bool?.must;
     const mustTerms = must ? getTermKeys(must) : [];
 
-    const packageIdValue = getTermValues(must, "packageId.keyword") || getTermValues(must, "packageId");
+    const packageIdValue =
+      getTermValues(must, "packageId.keyword") || getTermValues(must, "packageId");
 
     if (!packageIdValue) {
       return new HttpResponse("No packageId provided", { status: 400 });
@@ -39,7 +40,11 @@ const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
             "",
           ) as keyof TestChangelogDocument;
           if (filterValue) {
-            changelog = filterItemsByTerm<TestChangelogDocument>(changelog, filterTerm, filterValue);
+            changelog = filterItemsByTerm<TestChangelogDocument>(
+              changelog,
+              filterTerm,
+              filterValue,
+            );
           }
         });
       }
@@ -68,4 +73,4 @@ const defaultChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
   },
 );
 
-export const changelogSearchHandlers = [defaultChangelogSearchHandler];
+export const changelogSearchHandlers = [defaultOSChangelogSearchHandler];

@@ -1,10 +1,6 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
-import {
-  CfnWebACL,
-  CfnLoggingConfiguration,
-  CfnWebACLAssociation,
-} from "aws-cdk-lib/aws-wafv2";
+import { CfnWebACL, CfnLoggingConfiguration, CfnWebACLAssociation } from "aws-cdk-lib/aws-wafv2";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { RestApi } from "aws-cdk-lib/aws-apigateway";
 
@@ -20,12 +16,7 @@ export class WafConstruct extends Construct {
   public readonly webAcl: CfnWebACL;
   public readonly logGroup: LogGroup;
 
-  constructor(
-    scope: Construct,
-    id: string,
-    props: WafProps,
-    scopeType: string,
-  ) {
+  constructor(scope: Construct, id: string, props: WafProps, scopeType: string) {
     super(scope, id);
 
     const {
@@ -150,18 +141,7 @@ export class WafConstruct extends Construct {
         action: { allow: {} },
         statement: {
           geoMatchStatement: {
-            countryCodes: [
-              "AS",
-              "FM",
-              "GU",
-              "MH",
-              "MP",
-              "PR",
-              "PW",
-              "UM",
-              "US",
-              "VI",
-            ],
+            countryCodes: ["AS", "FM", "GU", "MH", "MP", "PR", "PW", "UM", "US", "VI"],
           },
         },
         visibilityConfig: {

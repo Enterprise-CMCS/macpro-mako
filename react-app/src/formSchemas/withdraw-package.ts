@@ -8,8 +8,7 @@ export const formSchema = events["withdraw-package"].baseSchema
   .superRefine((data, ctx) => {
     if (
       !data.attachments.supportingDocumentation?.files.length &&
-      (data.additionalInformation === undefined ||
-        data.additionalInformation === "")
+      (data.additionalInformation === undefined || data.additionalInformation === "")
     ) {
       ctx.addIssue({
         message: "An Attachment or Additional Information is required.",

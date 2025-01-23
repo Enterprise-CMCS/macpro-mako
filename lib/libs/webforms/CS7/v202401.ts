@@ -9,8 +9,7 @@ const ageOptions = Array.from({ length: 20 }, (_, i) => ({
 
 export const v202401: FormSchema = {
   header: "CS 7: Separate CHIP eligibility—Targeted low-income children",
-  subheader:
-    "2102(b)(1)(B)(v) of the Social Security Act and 42 CFR 457.310, 457.315, and 457.320",
+  subheader: "2102(b)(1)(B)(v) of the Social Security Act and 42 CFR 457.310, 457.315, and 457.320",
   formId: "cs7",
   sections: [
     {
@@ -230,8 +229,7 @@ export const v202401: FormSchema = {
                   message: "Must not have leading or trailing whitespace.",
                 },
               },
-              formItemClassName:
-                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               dependency: {
                 conditions: [
                   {
@@ -358,8 +356,7 @@ export const v202401: FormSchema = {
                             rules: {
                               pattern: {
                                 value: /^\S(.*\S)?$/,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                               required: "* Required",
                             },
@@ -395,8 +392,7 @@ export const v202401: FormSchema = {
                                     fieldName: "county-field-ranges",
                                     fromField: "from-age",
                                     toField: "to-age",
-                                    message:
-                                      "To age must be greater than From age",
+                                    message: "To age must be greater than From age",
                                   },
                                 ],
                               },
@@ -487,12 +483,10 @@ export const v202401: FormSchema = {
                                   required: "* Required",
                                   pattern: {
                                     value: noLeadingTrailingWhitespace,
-                                    message:
-                                      "Must not have leading or trailing whitespace.",
+                                    message: "Must not have leading or trailing whitespace.",
                                   },
                                 },
-                                formItemClassName:
-                                  "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+                                formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
                                 dependency: {
                                   conditions: [
                                     {
@@ -546,8 +540,7 @@ export const v202401: FormSchema = {
                             rules: {
                               pattern: {
                                 value: /^\S(.*\S)?$/,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                               required: "* Required",
                             },
@@ -583,8 +576,7 @@ export const v202401: FormSchema = {
                                     fieldName: "city-field-ranges",
                                     fromField: "from-age",
                                     toField: "to-age",
-                                    message:
-                                      "To age must be greater than From age",
+                                    message: "To age must be greater than From age",
                                   },
                                 ],
                               },
@@ -675,12 +667,10 @@ export const v202401: FormSchema = {
                                   required: "* Required",
                                   pattern: {
                                     value: noLeadingTrailingWhitespace,
-                                    message:
-                                      "Must not have leading or trailing whitespace.",
+                                    message: "Must not have leading or trailing whitespace.",
                                   },
                                 },
-                                formItemClassName:
-                                  "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+                                formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
                                 dependency: {
                                   conditions: [
                                     {
@@ -734,8 +724,7 @@ export const v202401: FormSchema = {
                             rules: {
                               pattern: {
                                 value: /^\S(.*\S)?$/,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                               required: "* Required",
                             },
@@ -752,8 +741,7 @@ export const v202401: FormSchema = {
                               required: "* Required",
                               pattern: {
                                 value: noLeadingTrailingWhitespace,
-                                message:
-                                  "Must not have leading or trailing whitespace.",
+                                message: "Must not have leading or trailing whitespace.",
                               },
                             },
                           },
@@ -788,8 +776,7 @@ export const v202401: FormSchema = {
                                     fieldName: "other-field-ranges",
                                     fromField: "from-age",
                                     toField: "to-age",
-                                    message:
-                                      "To age must be greater than From age",
+                                    message: "To age must be greater than From age",
                                   },
                                 ],
                               },
@@ -880,12 +867,10 @@ export const v202401: FormSchema = {
                                   required: "* Required",
                                   pattern: {
                                     value: noLeadingTrailingWhitespace,
-                                    message:
-                                      "Must not have leading or trailing whitespace.",
+                                    message: "Must not have leading or trailing whitespace.",
                                   },
                                 },
-                                formItemClassName:
-                                  "ml-[0.6rem] px-4 border-l-4 border-l-primary",
+                                formItemClassName: "ml-[0.6rem] px-4 border-l-4 border-l-primary",
                                 dependency: {
                                   conditions: [
                                     {
@@ -921,8 +906,7 @@ export const v202401: FormSchema = {
           slots: [
             {
               rhf: "Select",
-              label:
-                "Does the state have a special program for children with disabilities?",
+              label: "Does the state have a special program for children with disabilities?",
               labelClassName: "text-black font-bold",
               name: "does-state-have-special-program",
               rules: {
@@ -938,8 +922,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Select",
-              label:
-                "Is the program available to all eligible targeted low-income children?",
+              label: "Is the program available to all eligible targeted low-income children?",
               labelClassName: "text-black font-bold",
               name: "program-available-to-all-eligible-targeted-low-income-children",
               rules: {
@@ -961,8 +944,7 @@ export const v202401: FormSchema = {
               rules: {
                 required: "* Required",
               },
-              formItemClassName:
-                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
 
               dependency: {
                 conditions: [
@@ -1020,8 +1002,7 @@ export const v202401: FormSchema = {
                                 strictGreater: true,
                                 fieldName:
                                   "cs7_special-program-for-children-with-disabilities_lower-age-limit",
-                                message:
-                                  "Upper age limit must be greater than lower age limit",
+                                message: "Upper age limit must be greater than lower age limit",
                               },
                             ],
                           },
@@ -1032,8 +1013,7 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "The program is limited to targeted low-income children under a certain income level.",
-                    value:
-                      "limited-to-targeted-low-income-children-under-certain-income-level",
+                    value: "limited-to-targeted-low-income-children-under-certain-income-level",
                     slots: [
                       {
                         rhf: "Input",
@@ -1076,8 +1056,7 @@ export const v202401: FormSchema = {
             },
             {
               rhf: "Textarea",
-              label:
-                "Describe the program, including additional benefits offered.",
+              label: "Describe the program, including additional benefits offered.",
               labelClassName: "text-black font-bold",
               name: "describe-the-program",
               props: {

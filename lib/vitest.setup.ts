@@ -1,8 +1,6 @@
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
 import {
-  API_CONFIG,
   API_ENDPOINT,
-  AUTH_CONFIG,
   IDENTITY_POOL_ID,
   OPENSEARCH_DOMAIN,
   OPENSEARCH_INDEX_NAMESPACE,
@@ -22,12 +20,7 @@ import {
 } from "mocks";
 import { ConfigResourceTypes } from "kafkajs";
 import { mockedServiceServer as mockedServer } from "mocks/server";
-import { Amplify } from "aws-amplify";
 type CreateType<T> = T & { default: T };
-Amplify.configure({
-  API: API_CONFIG,
-  Auth: AUTH_CONFIG,
-});
 
 vi.mock("kafkajs", async (importOriginal) => ({
   ...(await importOriginal<typeof import("kafkajs")>()),
@@ -69,6 +62,8 @@ beforeEach(() => {
   process.env.DLQ_URL = "https://sqs.us-east-1.amazonaws.com/123/test";
   process.env.configurationSetName = "SES";
   process.env.brokerString = KAFKA_BROKERS;
+  process.env.idmAuthzApiKeyArn = "test-secret"; // pragma: allowlist secret
+  process.env.idmAuthzApiEndpoint = "https://dimAuthzEndpoint.com";
 });
 
 afterEach(() => {

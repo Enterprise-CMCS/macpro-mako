@@ -159,3 +159,16 @@ export type TestStepFunctionRequestBody = {
 };
 
 export type TestCounty = [string, string, string];
+
+export type SubmitRequestBody = { id: string };
+
+export type AttachmentUrlRequestBody = {
+  id: string;
+  bucket: string;
+  key: string;
+  filename: string;
+};
+
+export type PackageActionsRequestBody = {
+  id: string;
+};

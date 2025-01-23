@@ -23,7 +23,7 @@ export type AuthoritiesWithUserTypesTemplate = {
 export type EmailTemplates = {
   "new-medicaid-submission": AuthoritiesWithUserTypesTemplate;
   "new-chip-submission": AuthoritiesWithUserTypesTemplate;
-  "temp-extension": UserTypeOnlyTemplate;
+  "temporary-extension": UserTypeOnlyTemplate;
   "withdraw-package": AuthoritiesWithUserTypesTemplate;
   "withdraw-rai": AuthoritiesWithUserTypesTemplate;
   "contracting-initial": AuthoritiesWithUserTypesTemplate;
@@ -37,13 +37,14 @@ export type EmailTemplates = {
   "contracting-renewal-state": AuthoritiesWithUserTypesTemplate;
   "capitated-renewal-state": AuthoritiesWithUserTypesTemplate;
   "respond-to-rai": AuthoritiesWithUserTypesTemplate;
+  "app-k": AuthoritiesWithUserTypesTemplate;
 };
 
 // Create a type-safe mapping of email templates
 const emailTemplates: EmailTemplates = {
   "new-medicaid-submission": EmailContent.newSubmission,
   "new-chip-submission": EmailContent.newSubmission,
-  "temp-extension": EmailContent.tempExtention,
+  "temporary-extension": EmailContent.tempExtention,
   "withdraw-package": EmailContent.withdrawPackage,
   "withdraw-rai": EmailContent.withdrawRai,
   "contracting-initial": EmailContent.newSubmission,
@@ -57,6 +58,7 @@ const emailTemplates: EmailTemplates = {
   "contracting-renewal-state": EmailContent.newSubmission,
   "capitated-renewal-state": EmailContent.newSubmission,
   "respond-to-rai": EmailContent.respondToRai,
+  "app-k": EmailContent.newSubmission,
 };
 
 // Create a type-safe lookup function
@@ -101,7 +103,10 @@ export async function getEmailTemplates<T>(
 }
 
 // I think this needs to be written to handle not finding any matching events and so forth
-export async function getLatestMatchingEvent(id: string, actionType: string): Promise<changelog.Document | null> {
+export async function getLatestMatchingEvent(
+  id: string,
+  actionType: string,
+): Promise<changelog.Document | null> {
   try {
     const item = await getPackageChangelog(id);
 
@@ -112,7 +117,7 @@ export async function getLatestMatchingEvent(id: string, actionType: string): Pr
     }
 
     // Filter matching events
-    const events = item.hits.hits.filter((event) => event._source.actionType === actionType);
+    const events = item.hits.hits.filter((event) => event._source.event === actionType);
 
     // Check if any matching events were found
     if (!events.length) {

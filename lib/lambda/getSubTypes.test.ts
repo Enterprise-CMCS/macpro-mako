@@ -12,7 +12,7 @@ import {
   medicaidSubtypes,
   chipSubtypes,
 } from "mocks/data/types";
-import { TestSubtypeItemResult, errorSubtypeSearchHandler } from "mocks";
+import { TestSubtypeItemResult, errorOSSubtypeSearchHandler } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
 
 describe("getSubTypes Handler", () => {
@@ -40,7 +40,7 @@ describe("getSubTypes Handler", () => {
   });
 
   it("should return 500 if there is a server error", async () => {
-    mockedServer.use(errorSubtypeSearchHandler);
+    mockedServer.use(errorOSSubtypeSearchHandler);
 
     const event = {
       body: JSON.stringify({

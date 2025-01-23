@@ -1,6 +1,6 @@
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
-import { mockedServiceServer as mockedServer } from "mocks/server";
 import { REGION, setDefaultStateSubmitter } from "mocks";
+import { mockedServiceServer as mockedServer } from "mocks/server";
 
 beforeAll(() => {
   setDefaultStateSubmitter();

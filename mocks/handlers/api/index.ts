@@ -1,14 +1,25 @@
+import { cpocHandlers } from "./cpocs";
 import { itemHandlers } from "./items";
+import { packageActionHandlers } from "./packageActions";
+import { searchHandlers } from "./search";
 import { submissionHandlers } from "./submissions";
 import { notificationHandlers } from "./notifications";
 import { typeHandlers } from "./types";
 
 export const apiHandlers = [
+  ...notificationHandlers,
+  ...cpocHandlers,
   ...itemHandlers,
+  ...packageActionHandlers,
+  ...searchHandlers,
   ...submissionHandlers,
   ...typeHandlers,
-  ...notificationHandlers,
 ];
 
+export { errorApiCpocHandler } from "./cpocs";
+export { errorApiItemHandler, errorApiItemExistsHandler } from "./items";
+export { errorApiPackageActionsHandler } from "./packageActions";
+export { errorApiSearchHandler } from "./search";
+export { errorApiAttachmentUrlHandler } from "./submissions";
+export { errorApiSubTypesHandler, errorApiTypeHandler } from "./types";
 export { mockCurrentAuthenticatedUser, mockUseGetUser, mockUserAttributes } from "./user";
-export { errorSubTypesHandler, errorTypeHandler } from "./types";

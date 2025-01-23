@@ -5,12 +5,7 @@ import { InputProps } from "shared-types";
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, icon, iconRight, ...props }, ref) => {
     return (
-      <div
-        className={cn(
-          "relative",
-          icon && !className?.includes("w-full") && "w-fit",
-        )}
-      >
+      <div className={cn("relative", icon && !className?.includes("w-full") && "w-fit")}>
         {icon && (
           <span
             className={`absolute inset-y-0 border-[#212121] border flex items-center px-3 bg-[#f0f0f0] ${

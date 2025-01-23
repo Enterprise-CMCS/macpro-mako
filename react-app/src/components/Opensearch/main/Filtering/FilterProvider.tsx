@@ -16,7 +16,5 @@ const useFilterDrawerCTX = () => {
 type UseFilterDrawerCTX = ReturnType<typeof useFilterDrawerCTX>;
 
 export const FilterDrawerProvider = (props: { children: ReactNode }) => {
-  return (
-    <FilterDrawerContextProvider {...props} value={useFilterDrawerCTX()} />
-  );
+  return <FilterDrawerContextProvider {...props} value={useFilterDrawerCTX()} />;
 };

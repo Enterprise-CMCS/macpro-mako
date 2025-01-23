@@ -47,12 +47,8 @@ export class CreateTopics extends Construct {
       role: new Role(this, "CreateTopicsLambdaExecutionRole", {
         assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
         managedPolicies: [
-          ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole",
-          ),
-          ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaVPCAccessExecutionRole",
-          ),
+          ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole"),
+          ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaVPCAccessExecutionRole"),
         ],
         inlinePolicies: {
           InvokeLambdaPolicy: new PolicyDocument({
@@ -75,13 +71,9 @@ export class CreateTopics extends Construct {
       bundling: commonBundlingOptions,
     });
 
-    const customResourceLogGroup = new LogGroup(
-      this,
-      `createTopicsCustomResourceLogGroup`,
-      {
-        removalPolicy: RemovalPolicy.DESTROY,
-      },
-    );
+    const customResourceLogGroup = new LogGroup(this, `createTopicsCustomResourceLogGroup`, {
+      removalPolicy: RemovalPolicy.DESTROY,
+    });
 
     const customResource = new AwsCustomResource(this, "CustomResource", {
       onCreate: {

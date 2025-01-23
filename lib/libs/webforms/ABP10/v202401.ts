@@ -48,8 +48,7 @@ export const v202401: FormSchema = {
               label: "Describe the approach",
               labelClassName: "font-bold",
               name: "approach-description",
-              formItemClassName:
-                "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
+              formItemClassName: "ml-[0.6rem] px-4 my-2 border-l-4 border-l-primary",
               rules: {
                 required: "* Required",
                 pattern: {
@@ -97,8 +96,7 @@ export const v202401: FormSchema = {
                   {
                     label:
                       "The state or territory assures that all providers of Alternative Benefit Plan benefits shall meet the provider qualification requirements of the base benchmark plan and/or the Medicaid state plan.",
-                    value:
-                      "providers_of_alternative_benefit_plan_meets_provider_qualifications",
+                    value: "providers_of_alternative_benefit_plan_meets_provider_qualifications",
                   },
                 ],
               },

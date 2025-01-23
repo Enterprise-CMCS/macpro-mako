@@ -1,4 +1,4 @@
-import { QueryContainer, TermQuery, TermsQuery, TestHit } from "../../index.d";
+import { QueryContainer, TermQuery, TermsQuery, TestHit } from "..";
 
 export const getFilterValue = (
   query: QueryContainer | QueryContainer[] | undefined,
@@ -107,6 +107,38 @@ const parseValueAsNumberArray = (value: string | string[] | undefined): number[]
   return (
     value.filter((val) => val && typeof val === "string").map((val) => Number.parseInt(val)) || []
   );
+};
+
+export const getFilterValueAsString = (
+  query: QueryContainer | QueryContainer[] | undefined,
+  queryKey: keyof QueryContainer,
+  filterName: string,
+): string | undefined => {
+  const value = getFilterValue(query, queryKey, filterName);
+
+  return parseValueAsStringArray(value).join(",");
+};
+
+export const getFilterValueAsStringArray = (
+  query: QueryContainer | QueryContainer[] | undefined,
+  queryKey: keyof QueryContainer,
+  filterName: string,
+): string[] => {
+  const value = getFilterValue(query, queryKey, filterName);
+
+  return parseValueAsStringArray(value);
+};
+
+const parseValueAsStringArray = (value: string | string[] | undefined): string[] => {
+  if (value == undefined) {
+    return [];
+  }
+
+  if (typeof value === "string") {
+    return value.split(",").map((val) => val.trim());
+  }
+
+  return value.filter((val) => val && typeof val === "string").map((val) => val.trim()) || [];
 };
 
 export const getTermValues = (

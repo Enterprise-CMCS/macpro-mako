@@ -16,13 +16,15 @@ export const opensearchHandlers = [
   ...typeSearchHandlers,
 ];
 
-export { emptyCpocSearchHandler, errorCpocSearchHandler } from "./cpocs";
+export { emptyOSCpocSearchHandler, errorOSCpocSearchHandler } from "./cpocs";
 export {
   errorCreateIndexHandler,
   errorUpdateFieldMappingHandler,
   errorBulkUpdateDataHandler,
+  rateLimitBulkUpdateDataHandler,
   errorDeleteIndexHandler,
 } from "./indices";
+export { errorOSMainMultiDocumentHandler } from "./main";
 export { errorSecurityRolesMappingHandler } from "./security";
-export { errorSubtypeSearchHandler } from "./subtypes";
-export { errorTypeSearchHandler } from "./types";
+export { errorOSSubtypeSearchHandler } from "./subtypes";
+export { errorOSTypeSearchHandler } from "./types";
