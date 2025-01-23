@@ -9,8 +9,8 @@ import { submitNOSOAdminSchema } from "./adminSchemas";
 export const copyAttachments = async (data: any) => {
   console.log("ANDIE******:", data, data.copyAttachmentsFromId);
 
-  const currentPackage = await getPackage(data.id);
-  const currentPackageChangelog = await getPackageChangelog(data.id);
+  const currentPackage = await getPackage(data._id);
+  const currentPackageChangelog = await getPackageChangelog(data._id);
 
   console.log("andie", currentPackage);
   if (!currentPackage || currentPackage.found == false) {
