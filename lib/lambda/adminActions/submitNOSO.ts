@@ -75,7 +75,7 @@ export const copyAttachments = async (data: any) => {
     console.log("Current package: ", currentPackage);
 
     // add the attachments to the last index of the currentPackage Change Log
-    const last = currentPackageChangelog.hits.hits.length - 1;
+    const last = currentPackageChangelog.hits.total.value - 1;
     currentPackageChangelog.hits.hits[last]._source.attachments = attachments;
     console.log("Did I change it??", currentPackageChangelog.hits.hits[last]);
 
