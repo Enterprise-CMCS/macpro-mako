@@ -23,10 +23,12 @@ export const updateIdAdminChangeSchema = z
   })
   .and(z.record(z.string(), z.any()));
 
-export const splitSPAAdminChangeSchema = z.object({
-  id: z.string(),
-  adminChangeType: z.literal("split-spa"),
-});
+export const splitSPAAdminChangeSchema = z
+  .object({
+    id: z.string(),
+    adminChangeType: z.literal("split-spa"),
+  })
+  .and(z.record(z.string(), z.any()));
 
 export const transformDeleteSchema = (offset: number) =>
   deleteAdminChangeSchema.transform((data) => ({

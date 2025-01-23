@@ -6,6 +6,7 @@ import {
   transformUpdateValuesSchema,
   transformDeleteSchema,
   transformedUpdateIdSchema,
+  transformedSplitSPASchema,
 } from "./update/adminChangeSchemas";
 import { getPackageChangelog } from "libs/api/package";
 
@@ -67,7 +68,9 @@ const processAndIndex = async ({
       // query all changelog entries for this ID and create copies of all entries with new ID
       if (record.isAdminChange) {
         const schema = transformDeleteSchema(offset).or(
-          transformUpdateValuesSchema(offset).or(transformedUpdateIdSchema),
+          transformUpdateValuesSchema(offset)
+            .or(transformedUpdateIdSchema)
+            .or(transformedSplitSPASchema),
         );
 
         const result = schema.safeParse(record);
