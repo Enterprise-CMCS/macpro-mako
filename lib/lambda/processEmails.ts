@@ -123,7 +123,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
         };
         console.log("beforeww")
         const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
-    console.log('inside process record', seatoolRecord.)
+    console.log('inside process record', seatoolRecord)
     console.log('seatool safe record', safeSeatoolRecord)
     if(safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       //send email
