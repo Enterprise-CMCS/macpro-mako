@@ -117,6 +117,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   const id: string = decodeBase64WithUtf8(key);
   console.log("start id", id)
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
+    console.log(value)
     const safeID = id.replace(/^"|"$/g, "")
         const seatoolRecord: Document = {
           safeID,
@@ -291,7 +292,7 @@ export function createEmailParams(
   console.log('filled template', filledTemplate)
   const params = {
     Destination: {
-      ToAddresses:  [ "state <jdinh@fearless.tech>"],
+      ToAddresses: filledTemplate.to.length ? filledTemplate.to : [ "state <jdinh@fearless.tech>"],
       CcAddresses: filledTemplate.cc,
       BccAddresses: isDev ? [`State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`] : [], // this is so emails can be tested in dev as they should have the correct recipients but be blind copied on all emails on dev
     },
