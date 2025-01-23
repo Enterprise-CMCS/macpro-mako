@@ -193,10 +193,20 @@ export function validateEmailTemplate(template: any) {
 
 export async function processAndSendEmails(record: any, id: string, config: ProcessEmailConfig) {
   // if its a seatool thing convert withdraw to an event in the templates
-  const templates = await getEmailTemplates<typeof record>(
-    record.event,
-    record.authority.toLowerCase(),
-  );
+  let templates; 
+  if (record?.data?.seatoolStatus) {
+    console.log('seatoollstatus in process emails')
+    templates = await getEmailTemplates<typeof record>(
+      record.event,
+      record.authority.toLowerCase(),
+    );
+  } else {
+    templates = await getEmailTemplates<typeof record>(
+      record.event,
+      record.authority.toLowerCase(),
+    );
+  }
+
 
   if (!templates) {
     console.log(
