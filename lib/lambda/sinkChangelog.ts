@@ -74,10 +74,12 @@ const processAndIndex = async ({
         const result = schema.safeParse(record);
 
         if (result.success) {
+          console.log("IN SUCCESS?");
           if (
             result.data.adminChangeType === "update-id" ||
             result.data.adminChangeType === "split-spa"
           ) {
+            console.log("IN THIS IF???");
             docs.forEach((log) => {
               console.log(log, "WHAT IS LOG");
               const recordOffset = log.id.split("-").at(-1);
