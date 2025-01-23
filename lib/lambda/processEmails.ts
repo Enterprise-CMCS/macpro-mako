@@ -112,6 +112,10 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
   console.log('before process record')
+  console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
+  const { key, value, timestamp } = kafkaRecord;
+  const id: string = decodeBase64WithUtf8(key);
+
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const record = JSON.parse(decodeBase64WithUtf8(kafkaRecord.value))
     console.log('inside process record', record)
@@ -121,7 +125,14 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       //send email
       console.log(safeSeatoolRecord.data?.cmsStatus, "seatool status is withdrawn")
       
-      // await processAndSendEmails(record, id, config);
+      console.log(record,id, config)
+
+      try {
+      await processAndSendEmails(record, id, config);
+      } catch (error) {
+        console.error("Error processing record:", JSON.stringify(error, null, 2));
+        throw error;
+      }
         }
         return
   }
@@ -136,13 +147,11 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   // then we can get the email template and send it
 
 
-  console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
-  const { key, value, timestamp } = kafkaRecord;
+
   if (typeof key !== "string") {
     console.log("key is not a string ", JSON.stringify(key, null, 2));
     throw new Error("Key is not a string");
   }
-  const id: string = decodeBase64WithUtf8(key);
 
   if (!value) {
     console.log("Tombstone detected. Doing nothing for this event");
