@@ -115,7 +115,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
-
+  console.log("start id", id)
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
         const seatoolRecord: Document = {
           id,
@@ -129,10 +129,10 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       //send email
       console.log(safeSeatoolRecord.data?.cmsStatus, "seatool status is withdrawn")
       
-      console.log(safeSeatoolRecord, id, config)
+      console.log(safeSeatoolRecord, id.replace(/^"|"$/g, ""), config)
 
       try {
-      await processAndSendEmails(safeSeatoolRecord, id, config);
+      await processAndSendEmails(safeSeatoolRecord, id.replace(/^"|"$/g, ""), config);
       } catch (error) {
         console.error("Error processing record:", JSON.stringify(error, null, 2));
         throw error;
@@ -217,7 +217,7 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
 
   console.log('templates', templates)
   console.log("id:", id);
-  const territory = id.trim().slice(0, 2);
+  const territory = id.slice(0, 2);
   console.log("territory", territory)
   const allStateUsers = await getAllStateUsers({
     userPoolId: config.userPoolId,
