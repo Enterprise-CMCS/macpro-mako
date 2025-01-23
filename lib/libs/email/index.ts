@@ -68,9 +68,7 @@ export function getEmailTemplate(
   action: keyof EmailTemplates,
 ): AuthoritiesWithUserTypesTemplate | UserTypeOnlyTemplate {
   // Handle -state suffix variants
-  console.log("inside get email templ",action)
   const baseAction = action.replace(/-state$/, "") as keyof EmailTemplates;
-  console.log("base", baseAction, emailTemplates[baseAction])
   return emailTemplates[baseAction];
 }
 
@@ -86,23 +84,16 @@ export async function getEmailTemplates<T>(
   action: keyof EmailTemplates,
   authority: Authority,
 ): Promise<EmailTemplateFunction<T>[] | null> {
-  console.log('before get template')
   const template = getEmailTemplate(action || "new-medicaid-submission");
   if (!template) {
-    console.log("No template found");
     return null;
   }
-  console.log("template after non found", template)
   const emailTemplatesToSend: EmailTemplateFunction<T>[] = [];
 
   console.log(template, authority)
   if (isAuthorityTemplate(template, authority)) {
-    console.log(1)
-    console.log(Object.values(template[authority] as EmailTemplateFunction<T>));
-    console.log([...Object.values(template[authority] as EmailTemplateFunction<T>)])
     emailTemplatesToSend.push(...Object.values(template[authority] as EmailTemplateFunction<T>));
   } else {
-    console.log(2)
     emailTemplatesToSend.push(
       ...Object.values(template as Record<UserType, EmailTemplateFunction<T>>),
     );
