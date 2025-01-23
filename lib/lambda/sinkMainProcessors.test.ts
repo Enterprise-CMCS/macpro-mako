@@ -807,7 +807,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         leadAnalystOfficerId: 67890,
         locked: false,
         proposedDate: null,
-        raiReceivedDate: null,
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
