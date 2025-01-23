@@ -80,6 +80,7 @@ const processAndIndex = async ({
             result.data.adminChangeType === "split-spa"
           ) {
             console.log("IN THIS IF???");
+            console.log(docs, "WHAT IS DOCS");
             docs.forEach((log) => {
               console.log(log, "WHAT IS LOG");
               const recordOffset = log.id.split("-").at(-1);
