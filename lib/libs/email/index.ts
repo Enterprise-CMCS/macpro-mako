@@ -68,6 +68,7 @@ export function getEmailTemplate(
   action: keyof EmailTemplates,
 ): AuthoritiesWithUserTypesTemplate | UserTypeOnlyTemplate {
   // Handle -state suffix variants
+  console.log("inside get email templ",action)
   const baseAction = action.replace(/-state$/, "") as keyof EmailTemplates;
   return emailTemplates[baseAction];
 }
@@ -84,6 +85,7 @@ export async function getEmailTemplates<T>(
   action: keyof EmailTemplates,
   authority: Authority,
 ): Promise<EmailTemplateFunction<T>[] | null> {
+  console.log('before get template')
   const template = getEmailTemplate(action || "new-medicaid-submission");
   if (!template) {
     console.log("No template found");
