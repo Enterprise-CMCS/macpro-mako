@@ -242,7 +242,7 @@ export class Email extends cdk.NestedStack {
         },
       ],
       startingPosition: "LATEST",
-      topics: [`${topicNamespace}aws.seatool.ksql.onemac.three.agg.State_Plan`],
+      topics: [`${topicNamespace}aws.onemac.migration.cdc`],
       destinationConfig: {
         onFailure: {
           destination: dlq.queueArn,
@@ -270,7 +270,7 @@ export class Email extends cdk.NestedStack {
         },
       ],
       startingPosition: "LATEST",
-      topics: [`${topicNamespace}aws.seatool.ksql.onemac.three.agg.State_Plan`],
+      topics: [`aws.seatool.ksql.onemac.three.agg.State_Plan`],
       destinationConfig: {
         onFailure: {
           destination: dlq.queueArn,
