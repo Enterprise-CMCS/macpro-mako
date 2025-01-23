@@ -17,22 +17,20 @@ export function getDomain(): string {
 }
 
 /**
- * Returns the `indexNamespace` env variables. Passing `baseIndex` appends the arg to the `index` variable
- * @throws if env variables are not defined, `getNamespace` throws error indicating if variable is missing and
- * the environment the application is running on `isDev`
- * @returns the value of `indexNamespace` or empty string if not in development
+ * Returns the `indexNamespace` and `baseIndex` combined
+ * process.env.indexNamespace (THIS SHOULD BE THE BRANCH NAME & SHOULD ALWAYS BE DEFINED)
+ * @throws if process.env.indexNamespace not defined.
+ * @returns the value of `indexNamespace` and `baseIndex` combined
  */
-export function getNamespace<T extends BaseIndex>(baseIndex?: T): Index;
-export function getNamespace(baseIndex?: BaseIndex) {
-  const indexNamespace = process.env.indexNamespace ?? "";
+export function getOsNamespace<T extends BaseIndex>(baseIndex: T): Index;
+export function getOsNamespace(baseIndex: BaseIndex) {
+  const indexNamespace = process.env.indexNamespace;
 
-  if (indexNamespace == "" && process.env.isDev == "true") {
+  if (!indexNamespace) {
     throw new Error("process.env.indexNamespace must be defined");
   }
 
-  const index = `${indexNamespace}${baseIndex}`;
-
-  return index;
+  return `${indexNamespace}${baseIndex}`;
 }
 
 /**
@@ -46,7 +44,7 @@ export function getDomainAndNamespace<T extends BaseIndex>(
 
 export function getDomainAndNamespace(baseIndex: BaseIndex) {
   const domain = getDomain();
-  const index = getNamespace(baseIndex);
+  const index = getOsNamespace(baseIndex);
 
   return { index, domain };
 }
