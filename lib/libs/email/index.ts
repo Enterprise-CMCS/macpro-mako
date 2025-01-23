@@ -70,6 +70,7 @@ export function getEmailTemplate(
   // Handle -state suffix variants
   console.log("inside get email templ",action)
   const baseAction = action.replace(/-state$/, "") as keyof EmailTemplates;
+  console.log("base", baseAction, emailTemplates[baseAction])
   return emailTemplates[baseAction];
 }
 
