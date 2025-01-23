@@ -66,11 +66,10 @@ const processAndIndex = async ({
       const record = JSON.parse(decodeBase64WithUtf8(value));
 
       if (record.isAdminChange) {
-        const schema = transformDeleteSchema(offset).or(
-          transformUpdateValuesSchema(offset)
-            .or(transformedUpdateIdSchema)
-            .or(transformedSplitSPASchema),
-        );
+        const schema = transformDeleteSchema(offset)
+          .or(transformUpdateValuesSchema(offset))
+          .or(transformedUpdateIdSchema)
+          .or(transformedSplitSPASchema);
 
         const result = schema.safeParse(record);
 
