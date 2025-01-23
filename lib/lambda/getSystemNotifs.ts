@@ -1,4 +1,4 @@
-import { getSecret } from "lib/packages/shared-utils";
+import { getSecret } from "shared-utils";
 import { response } from "libs/handler-lib";
 
 export const getSystemNotifs = async () => {
@@ -7,15 +7,15 @@ export const getSystemNotifs = async () => {
 
     return response({
       statusCode: 200,
-      body: JSON.parse(notifs) || "[]",
+      body: JSON.parse(notifs) || [],
     });
   } catch (error: any) {
     console.error("Error:", error);
     return response({
       statusCode: 502,
-      body: JSON.stringify({
+      body: {
         error: error.message ? error.message : "Internal server error",
-      }),
+      },
     });
   }
 };
