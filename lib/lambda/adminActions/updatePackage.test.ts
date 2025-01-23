@@ -34,7 +34,7 @@ describe("handler", () => {
 
     const resultPackage = await handler(noActionevent);
 
-    expect(resultPackage.statusCode).toBe(400);
+    expect(resultPackage?.statusCode).toBe(400);
   });
   it("should return 400 if action is not found", async () => {
     const noApackageEvent = {
@@ -43,7 +43,7 @@ describe("handler", () => {
 
     const resultAction = await handler(noApackageEvent);
 
-    expect(resultAction.statusCode).toBe(400);
+    expect(resultAction?.statusCode).toBe(400);
   });
   it("should get a package", async () => {
     const noActionevent = {

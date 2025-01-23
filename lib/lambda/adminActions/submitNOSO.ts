@@ -43,8 +43,8 @@ export const copyAttachments = async (data: any) => {
   const attachPackage = await getPackage(copyAttachmentsFromId);
   const attachPackageChangelog = await getPackageChangelog(copyAttachmentsFromId);
 
-  console.log("Attach Package", attachPackage);
-  console.log("Attach package changelog", attachPackageChangelog);
+  console.log("Attach Package", JSON.stringify(attachPackage));
+  console.log("Attach package changelog", JSON.stringify(attachPackageChangelog));
 
   if (!attachPackage || attachPackage.found == false) {
     console.error(`Copy Attachment Package of id: ${copyAttachmentsFromId} not found`);
@@ -62,8 +62,8 @@ export const copyAttachments = async (data: any) => {
   if (attachPackage && attachPackage) {
     // const attachments = structuredClone(attachPackage._source.changelog);
     console.log("ANDIEEEEEEE ***********");
-    console.log("attachment package: ", attachPackage);
-    console.log(" change log: ", attachPackageChangelog.hits.hits[0]._source);
+    console.log("attachment package: ", JSON.stringify(attachPackage));
+    console.log(" change log: ", JSON.stringify(attachPackageChangelog.hits.hits[0]._source));
 
     const attachments = attachPackageChangelog.hits.hits.reduce((prev, current) => {
       // check that attachments exsists
@@ -72,12 +72,12 @@ export const copyAttachments = async (data: any) => {
     }, []);
 
     console.log("actual attachments:? ", JSON.stringify(attachments));
-    console.log("Current package: ", currentPackage);
+    console.log("Current package: ", JSON.stringify(currentPackage));
 
     // add the attachments to the last index of the currentPackage Change Log
     const last = currentPackageChangelog.hits.total.value - 1;
     currentPackageChangelog.hits.hits[last]._source.attachments = attachments;
-    console.log("Did I change it??", currentPackageChangelog.hits.hits[last]);
+    console.log("Did I change it??", JSON.stringify(currentPackageChangelog.hits.hits[last]));
 
     return currentPackageChangelog.hits.hits[last];
   }
