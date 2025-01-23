@@ -16,7 +16,7 @@ export const useGetSystemNotifs = () => {
     const dismissedNotifs = localStorage.getItem(`notifs.${userQuery?.data?.user?.username}`);
     const parsed: string[] = JSON.parse(dismissedNotifs) ?? [];
     setDismissed(parsed);
-  }, [userQuery]);
+  }, [userQuery?.data?.user?.username]);
 
   const result = useQuery<BannerNotification[], ReactQueryApiError>(["systemBannerNotifs"], () =>
     getSystemNotifs(),
