@@ -49,7 +49,6 @@ export const AC_LegacyAdminChange: FC<opensearch.changelog.Document> = (props) =
 export const AC_Update: FC<opensearch.changelog.Document> = () => {
   return <p>Coming Soon</p>;
 };
-
 export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
   const [label, Content] = useMemo(() => {
     switch (props.event) {

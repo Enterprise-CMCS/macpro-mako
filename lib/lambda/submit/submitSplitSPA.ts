@@ -39,6 +39,11 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
         adminChangeType: "split-spa",
       }),
     );
+
+    return response({
+      statusCode: 200,
+      body: { message: `New Medicaid Split SPA ${newId} has been created.` },
+    });
   } catch (err) {
     console.log("Error creating Split SPA: ", err);
   }
