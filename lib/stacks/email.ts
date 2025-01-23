@@ -222,7 +222,7 @@ export class Email extends cdk.NestedStack {
 
     alarm.addAlarmAction(new cdk.aws_cloudwatch_actions.SnsAction(alarmTopic));
 
-    new CfnEventSourceMapping(this, "SinkSESTrigger7", {
+    new CfnEventSourceMapping(this, "SinkSESTrigger9", {
       batchSize: 1,
       enabled: true,
       selfManagedEventSource: {
@@ -250,7 +250,7 @@ export class Email extends cdk.NestedStack {
       },
     });
     
-    new CfnEventSourceMapping(this, "SinkSESTrigger8", {
+    new CfnEventSourceMapping(this, "SinkSESTrigger10", {
       batchSize: 1,
       enabled: true,
       selfManagedEventSource: {
