@@ -232,14 +232,14 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
   }
   // if status is withdrawn send it
   // seatool trx has multiple kafka event (cross that bridge if it does happen)
- 
+  console.log('before emails' )
   const cpocEmail = [...getCpocEmail(item)];
   const srtEmails = [...getSrtEmails(item)];
 
   const emails: EmailAddresses = JSON.parse(sec);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
-
+  console.log('before template vars', )
   const templateVariables = {
     ...record,
     id,
