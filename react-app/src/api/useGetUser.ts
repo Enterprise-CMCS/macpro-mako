@@ -12,7 +12,6 @@ export type OneMacUser = {
 export const getUser = async (): Promise<OneMacUser> => {
   try {
     const currentAuthenticatedUser = await Auth.currentAuthenticatedUser();
-    console.log({ currentAuthenticatedUser });
     if (!currentAuthenticatedUser) {
       return { user: null } satisfies OneMacUser;
     }
