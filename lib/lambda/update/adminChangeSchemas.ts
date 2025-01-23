@@ -57,7 +57,7 @@ export const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((da
   timestamp: Date.now(),
 }));
 
-export const transformedSplitSPASchema = updateIdAdminChangeSchema.transform((data) => ({
+export const transformedSplitSPASchema = splitSPAAdminChangeSchema.transform((data) => ({
   ...data,
   event: "split-spa",
   packageId: data.id,

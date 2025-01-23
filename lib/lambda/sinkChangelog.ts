@@ -74,7 +74,10 @@ const processAndIndex = async ({
         const result = schema.safeParse(record);
 
         if (result.success) {
-          if (result.data.adminChangeType === "update-id") {
+          if (
+            result.data.adminChangeType === "update-id" ||
+            result.data.adminChangeType === "split-spa"
+          ) {
             docs.forEach((log) => {
               const recordOffset = log.id.split("-").at(-1);
 
@@ -84,18 +87,6 @@ const processAndIndex = async ({
                 packageId: result.data.id,
               });
             });
-            // query all changelog entries for this ID and create copies of all entries with new ID
-            const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
-
-            packageChangelogs.hits.hits.forEach((log) => {
-              const recordOffset = log._id.split("-").at(-1);
-              docs.push({
-                ...log._source,
-                id: `${result.data.id}-${recordOffset}`,
-                packageId: result.data.id,
-              });
-            });
-          } else if (result.data.adminChangeType === "split-spa") {
             // query all changelog entries for this ID and create copies of all entries with new ID
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
 
