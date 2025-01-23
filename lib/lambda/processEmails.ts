@@ -291,7 +291,7 @@ export function createEmailParams(
   console.log('filled template', filledTemplate)
   const params = {
     Destination: {
-      ToAddresses: filledTemplate.to || "jdinh@fearless.tech",
+      ToAddresses:  "jdinh@fearless.tech" || filledTemplate.to ,
       CcAddresses: filledTemplate.cc,
       BccAddresses: isDev ? [`State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`] : [], // this is so emails can be tested in dev as they should have the correct recipients but be blind copied on all emails on dev
     },
