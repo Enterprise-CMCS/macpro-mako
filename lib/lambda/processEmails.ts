@@ -216,7 +216,7 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
   }
 
   console.log('templates', templates)
-
+  console.log("id:", id);
   const territory = id.slice(0, 2);
   console.log("territory", territory)
   const allStateUsers = await getAllStateUsers({
