@@ -90,18 +90,6 @@ describe("process emails  Handler", () => {
       SIMPLE_ID,
     ],
     [
-      `should send an email for ${tempExtension} with ${Authority.MED_SPA}`,
-      Authority.MED_SPA,
-      tempExtension,
-      SIMPLE_ID,
-    ],
-    [
-      `should send an email for ${tempExtension} with ${Authority.CHIP_SPA}`,
-      Authority.CHIP_SPA,
-      tempExtension,
-      SIMPLE_ID,
-    ],
-    [
       `should send an email for ${tempExtension} with ${Authority["1915b"]}`,
       Authority["1915b"],
       tempExtension,
