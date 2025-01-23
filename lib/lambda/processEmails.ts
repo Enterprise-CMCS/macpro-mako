@@ -218,14 +218,17 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
   console.log('templates', templates)
 
   const territory = id.slice(0, 2);
+  console.log("territory", territory)
   const allStateUsers = await getAllStateUsers({
     userPoolId: config.userPoolId,
     state: territory,
   });
+  console.log("all state",allStateUsers)
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
-
+  console.log('sec', sec)
   const item = await os.getItem(config.osDomain, getNamespace("main"), id);
+  console.log("item", item);
   if (!item?.found || !item?._source) {
     console.log(`The package was not found for id: ${id}. Doing nothing.`);
     return;
