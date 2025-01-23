@@ -7,14 +7,27 @@ import { ItemResult } from "shared-types/opensearch/main";
 import { submitNOSOAdminSchema } from "./adminSchemas";
 
 export const copyAttachments = async (data: any) => {
-  console.log("ANDIE******:", data, data.copyAttachmentsFromId);
+  console.log("ANDIE******:", data);
 
-  const currentPackage = await getPackage(data._id);
-  const currentPackageChangelog = await getPackageChangelog(data._id);
+  // check for id
+  if (!data.id) {
+    console.log("Error with data.id");
+    return data;
+  }
 
-  console.log("andie", currentPackage);
+  const currentPackage = await getPackage(data.id);
+  const currentPackageChangelog = await getPackageChangelog(data.id);
+
+  console.log("current Package", currentPackage);
+  console.log("current package changelog", currentPackageChangelog);
+
   if (!currentPackage || currentPackage.found == false) {
     console.error(`Current package id: ${currentPackage} not found`);
+    return data;
+  }
+
+  if (!currentPackageChangelog) {
+    console.error(`Current package change log id: ${currentPackage} not found`);
     return data;
   }
 
@@ -22,9 +35,16 @@ export const copyAttachments = async (data: any) => {
   const copyAttachmentsFromId = currentPackage?._source.copyAttachmentsFromId;
   console.log(`atempting to copy attachments from ${copyAttachmentsFromId}...`);
 
+  if (!copyAttachmentsFromId) {
+    console.log("Copy Attachment Id not found.");
+    return data;
+  }
   // get the attachementPackage
   const attachPackage = await getPackage(copyAttachmentsFromId);
   const attachPackageChangelog = await getPackageChangelog(copyAttachmentsFromId);
+
+  console.log("Attach Package", attachPackage);
+  console.log("Attach package changelog", attachPackageChangelog);
 
   if (!attachPackage || attachPackage.found == false) {
     console.error(`Copy Attachment Package of id: ${copyAttachmentsFromId} not found`);
@@ -39,7 +59,7 @@ export const copyAttachments = async (data: any) => {
     return data;
   }
 
-  if (attachPackage) {
+  if (attachPackage && attachPackage) {
     // const attachments = structuredClone(attachPackage._source.changelog);
     console.log("ANDIEEEEEEE ***********");
     console.log("attachment package: ", attachPackage);
@@ -61,6 +81,9 @@ export const copyAttachments = async (data: any) => {
 
     return currentPackageChangelog.hits.hits[length];
   }
+
+  console.log("did not copy over attachements");
+  return data;
 };
 
 const sendSubmitMessage = async ({
