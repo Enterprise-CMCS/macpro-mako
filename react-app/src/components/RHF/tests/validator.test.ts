@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { dependencyCheck, documentValidator, validateInput, validateOption } from "../utils";
-import { FormSchema } from "shared-types";
+import { documentValidator, validateInput, validateOption } from "../utils";
+import { mockForms } from "mocks/data/forms/main";
 
 describe("Test for RHF validator", () => {
-  const rules = { required: true, min: "10", max: "test" };
   it("checks to see if a field is missing while required", () => {
+    const rules = { required: true, min: "10", max: "test" };
     let missingRequired = validateInput(undefined, rules);
     expect(missingRequired).toBe("*Required");
     missingRequired = validateInput("", rules);
@@ -74,113 +74,83 @@ describe("Test for RHF validator", () => {
     const misMatch = validateOption("3", options);
     expect(misMatch).toBeUndefined();
   });
-  it("checks the document validator", () => {
-    const exampleForm: FormSchema = {
-      header: "User Registration",
-      formId: "userRegForm",
-      sections: [
-        {
-          title: "Personal Information",
-          sectionId: "personalInfo",
-          form: [
-            {
-              description: "Please provide your basic details.",
-              slots: [
-                {
-                  name: "firstName",
-                  label: "First Name",
-                  rhf: "Input",
-                  rules: { required: "First Name is required" },
-                },
-                {
-                  name: "lastName",
-                  label: "Last Name",
-                  rhf: "Input",
-                },
-                {
-                  rhf: "Checkbox",
-                  name: "assurance-method-in-plan",
-                  rules: { required: "* Required" },
-                  props: {
-                    options: [
-                      {
-                        label:
-                          "The state or territory provides assurance that, for each benefit provided under an Alternative Benefit Plan that is not provided through managed care, it will use the payment methodology in its approved state plan or hereby submits state plan amendment Attachment 4.19a, 4.19b, or 4.19d, as appropriate, describing the payment methodology for the benefit.",
-                        value: "assures_alternative_benefit_plan_in_accordance",
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          ],
-        },
-        {
-          title: "Preferences",
-          sectionId: "preferences",
-          dependency: {
-            conditions: [{ name: "acceptTerms", type: "valueExists" }],
-            effect: { type: "show" },
-          },
-          form: [
-            {
-              description: "Set your preferences.",
-              slots: [
-                {
-                  name: "notifications",
-                  label: "Enable Notifications",
-                  rhf: "Switch",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          title: "other",
-          sectionId: "other",
-          dependency: {
-            conditions: [{ name: "acceptTerms", type: "valueExists" }],
-            effect: { type: "hide" },
-          },
-          form: [
-            {
-              description: "Set your preferences.",
-              slots: [
-                {
-                  name: "notifications",
-                  label: "Enable Notifications",
-                  rhf: "Textarea",
-                },
-              ],
-            },
-          ],
-        },
-      ],
+  it("checks the document validator for a text slot", () => {
+    const validator = documentValidator(mockForms.textForm);
+    const badData = {
+      firstName: "",
     };
-    const validator = documentValidator(exampleForm);
-
+    expect(validator(badData)).toStrictEqual({
+      firstName: "First Name is required",
+    });
     const goodData = {
       firstName: "Thomas",
-      lastName: "Walker",
-      "assurance-method-in-plan": ["assures_alternative_benefit_plan_in_accordance"],
     };
-    expect(validator(goodData)).toStrictEqual({ firstName: "", lastName: "", notifications: "" });
-    let badDataName = { firstame: "Thomas" };
-    expect(validator(badDataName)).toStrictEqual({
-      firstName: "First Name is required",
-      lastName: "",
-      notifications: "",
-    });
-    const badDataCheck = {
-      firstName: "Thomas",
-      lastName: "Walker",
-      "assurance-method-in-plan": ["bad value"],
-    };
-    expect(validator(badDataCheck)).toStrictEqual({
-      "assurance-method-in-plan": "invalid option - 'bad value'",
+    expect(validator(goodData)).toStrictEqual({
       firstName: "",
-      lastName: "",
-      notifications: "",
     });
+  });
+  it("checks the document validator for a input box", () => {
+    const validator = documentValidator(mockForms.inputForm);
+    const goodData = {
+      testNameInput: "",
+    };
+    expect(validator(goodData)).toStrictEqual({
+      testNameInput: "",
+    });
+  });
+  it("checks the document validator for a select box", () => {
+    const validator = documentValidator(mockForms.selectForm);
+    const goodData = {
+      test_select: "yes",
+    };
+    expect(validator(goodData)).toStrictEqual({});
+    const bad = {
+      not_a_field: "not a answer",
+    };
+    expect(validator(bad)).toStrictEqual({ test_select: "invalid option - 'undefined'" });
+  });
+  it("checks the document validator for a check box", () => {
+    const validator = documentValidator(mockForms.checkboxForm);
+    const badData = {
+      test_checkbox: ["yes", "no"],
+    };
+    expect(validator(badData)).toStrictEqual({ test_checkbox: "invalid option - 'yes,no'" });
+
+    const goodData = {
+      test_checkbox: ["test-value"],
+    };
+    expect(validator(goodData)).toStrictEqual({});
+  });
+  it("checks the document validator for a check box", () => {
+    const validator = documentValidator(mockForms.radioForm);
+    const badData = {
+      test_radio: 3,
+    };
+    expect(validator(badData)).toStrictEqual({ test_radio: "invalid option - '3'" });
+
+    const goodData = {
+      test_radio: "1",
+    };
+    expect(validator(goodData)).toStrictEqual({});
+  });
+  it("checks the document validator for a select box", () => {
+    const validator = documentValidator(mockForms.selectForm);
+    const badData = {
+      test_select: 3,
+    };
+    expect(validator(badData)).toStrictEqual({ test_select: "invalid option - '3'" });
+
+    const goodData = {
+      test_select: "yes",
+    };
+    expect(validator(goodData)).toStrictEqual({});
+  });
+  it("checks the document validator for a switch box", () => {
+    const validator = documentValidator(mockForms.switchForm);
+
+    const goodData = {
+      notifications: "yes",
+    };
+    expect(validator(goodData)).toStrictEqual({ notifications: "" });
   });
 });
