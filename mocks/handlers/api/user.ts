@@ -5,7 +5,6 @@ import type { TestUserData } from "../..";
 
 // using `any` type here because the function that this is mocking uses any
 export const mockCurrentAuthenticatedUser = (): TestUserData | any => {
-  console.log("username", process.env.MOCK_USER_USERNAME);
   if (process.env.MOCK_USER_USERNAME) {
     return findUserByUsername(process.env.MOCK_USER_USERNAME);
   }
