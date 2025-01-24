@@ -1026,7 +1026,7 @@ export const oneMACFAQContent: FAQContent[] = [
               <p>
                 CHIP eligibility SPA implementation guides can be downloaded at the links below.
               </p>
-              <ul className="list-disc pl-12">
+              <ul className="list-disc pl-6">
                 <li>
                   <a
                     href="/chp/IG_ChipEligibilityIntroduction.pdf"
