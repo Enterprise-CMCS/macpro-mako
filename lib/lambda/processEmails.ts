@@ -130,18 +130,18 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     console.log('seatool safe record', safeSeatoolRecord)
 
     if(safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
-      //send email
       console.log(safeSeatoolRecord.data?.cmsStatus, "seatool status is withdrawn")
       
       console.log(safeSeatoolRecord, safeID, config)
 
       try {
       const item = await os.getItem(config.osDomain, getNamespace("main"), safeID);
-      console.log(item)
+
       if (!item?.found || !item?._source) {
-        console.log(`The package was not found for id: ${id}. Doing nothing.`);
+        console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
         return;
       }
+
       const recordToPass = {
         timestamp,
         ...safeSeatoolRecord,
@@ -156,15 +156,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
         }
         return
   }
-  // then handle it with a different function that handleSeatoolEvents
-  // hanldeSeatoolEvents
-  // in this function we will need to extract the value from the kafka record
-  // with the value we can grab the id and the STATE_PLAN.SPW_STATUS_ID
-  // if this is 6 (package withdrawn) is true
-  // os.getItem(id)
-    // this item we can check if it has a value of withdrawn_sent != true
-    // then set the value to true in opensearch
-  // then we can get the email template and send it
 
 
 
@@ -208,7 +199,6 @@ export function validateEmailTemplate(template: any) {
 }
 
 export async function processAndSendEmails(record: any, id: string, config: ProcessEmailConfig) {
-  // if its a seatool thing convert withdraw to an event in the templates
   let templates; 
   if (record?.data?.seatoolStatus) {
     console.log('seatoollstatus in process emails', record.data.authority.toLowerCase())
