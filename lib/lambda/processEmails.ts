@@ -212,6 +212,8 @@ export async function processAndSendEmails(
         config.applicationEndpointUrl,
         config.isDev,
       );
+
+      console.log("what is the info with the email being sent: ", JSON.stringify(params))
       try {
         await sendEmail(params, config.region);
       } catch (error) {
