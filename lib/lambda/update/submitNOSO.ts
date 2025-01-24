@@ -1,34 +1,10 @@
-// JSON
-// {
-//   "_source": {
-//     "additionalInformation": "hello",
-//     "authority": "Medicaid SPA",
-//     "changedDate": "2025-01-23T20:08:06.742Z",
-//     "cmsStatus": "Submitted - Intake Needed",
-//     "description": null,
-//     "id": "OH-96-1234-ANDI",
-//     "makoChangedDate": "2025-01-23T20:08:06.742Z",
-//     "origin": "OneMAC",
-//     "raiWithdrawEnabled": false,
-//     "seatoolStatus": "Submitted",
-//     "state": "OH",
-//     "stateStatus": "Submitted",
-//     "statusDate": "2025-01-23T20:08:06.742Z",
-//     "proposedDate": 1738303200000,
-//     "subject": null,
-//     "submissionDate": "2025-01-23T20:08:06.742Z",
-//     "submitterEmail": "george@example.com",
-//     "submitterName": "George Harrison",
-//     "initialIntakeNeeded": true
-//   },
-//
-
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
 import { getPackage } from "libs/api/package";
 import { ItemResult } from "shared-types/opensearch/main";
 import { submitNOSOAdminSchema } from "./adminChangeSchemas";
+import { z } from "zod";
 
 import { getStatus } from "shared-types";
 
@@ -84,11 +60,12 @@ export const handler = async (event: APIGatewayEvent) => {
       body: { message: "Event body required" },
     });
   }
+
   try {
     console.log("trying to submit a NOSO...");
     // add a property for new ID
     const item = submitNOSOAdminSchema.parse(
-      event.body === "string" ? JSON.parse(event.body) : event.body,
+      typeof event.body === "string" ? JSON.parse(event.body) : event.body,
     );
 
     const { stateStatus, cmsStatus } = getStatus(item.status);
@@ -117,6 +94,13 @@ export const handler = async (event: APIGatewayEvent) => {
     });
   } catch (err) {
     console.error("Error has occured submitting package:", err);
+    if (err instanceof z.ZodError) {
+      return response({
+        statusCode: 400,
+        body: { message: JSON.stringify(err.errors) },
+      });
+    }
+
     return response({
       statusCode: 500,
       body: { message: err.message || "Internal Server Error" },
