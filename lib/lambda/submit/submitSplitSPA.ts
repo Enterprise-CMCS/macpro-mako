@@ -3,7 +3,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import { getPackage } from "libs/api/package";
 import { produceMessage } from "libs/api/kafka";
 import { ItemResult } from "shared-types/opensearch/main";
-import { getNextSplitSPAId } from "./splitSPAId";
+import { getNextSplitSPAId } from "./getNextSplitSPAId";
 import { z } from "zod";
 
 const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
@@ -11,42 +11,38 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
   if (!topicName) {
     throw new Error("Topic name is not defined");
   }
-  try {
-    const newId = await getNextSplitSPAId(currentPackage._id);
-    if (!newId) {
-      throw new Error("Error getting next Split SPA Id");
-    }
-
-    // ID and changeMade are excluded; the rest of the object has to be spread into the new package
-    const {
-      id: _id,
-      changeMade: _changeMade,
-      origin: _origin,
-      ...remainingFields
-    } = currentPackage._source;
-
-    await produceMessage(
-      topicName,
-      newId,
-      JSON.stringify({
-        id: newId,
-        idToBeUpdated: currentPackage._id,
-        ...remainingFields,
-        origin: "OneMAC",
-        changeMade: "OneMAC Admin has added a package to OneMAC.",
-        changeReason: "Per request from CMS, this package was added to OneMAC.",
-        isAdminChange: true,
-        adminChangeType: "split-spa",
-      }),
-    );
-
-    return response({
-      statusCode: 200,
-      body: { message: `New Medicaid Split SPA ${newId} has been created.` },
-    });
-  } catch (err) {
-    console.log("Error creating Split SPA: ", err);
+  const newId = await getNextSplitSPAId(currentPackage._id);
+  if (!newId) {
+    throw new Error("Error getting next Split SPA Id");
   }
+
+  // ID and changeMade are excluded; the rest of the object has to be spread into the new package
+  const {
+    id: _id,
+    changeMade: _changeMade,
+    origin: _origin,
+    ...remainingFields
+  } = currentPackage._source;
+
+  await produceMessage(
+    topicName,
+    newId,
+    JSON.stringify({
+      id: newId,
+      idToBeUpdated: currentPackage._id,
+      ...remainingFields,
+      origin: "OneMAC",
+      changeMade: "OneMAC Admin has added a package to OneMAC.",
+      changeReason: "Per request from CMS, this package was added to OneMAC.",
+      isAdminChange: true,
+      adminChangeType: "split-spa",
+    }),
+  );
+
+  return response({
+    statusCode: 200,
+    body: { message: `New Medicaid Split SPA ${newId} has been created.` },
+  });
 };
 
 const splitSPAEventBodySchema = z.object({
@@ -69,22 +65,15 @@ export const handler = async (event: APIGatewayEvent) => {
     const parseEventBody = (body: unknown) => {
       return splitSPAEventBodySchema.parse(typeof body === "string" ? JSON.parse(body) : body);
     };
-    // const { packageId } = splitSPAEventBodySchema.parse(
-    //   event.body === "string" ? JSON.parse(event.body) : event.body,
-    // );
-    let body = { packageId: "" };
-    if (typeof event.body === "string") {
-      body = JSON.parse(event.body);
-    } else {
-      body = event.body;
-    }
-    if (!body.packageId) {
+
+    const { packageId } = parseEventBody(event.body);
+    if (!packageId) {
       return response({
         statusCode: 400,
         body: { message: "Package ID to split is required" },
       });
     }
-    const { packageId } = parseEventBody(event.body);
+
     const currentPackage = await getPackage(packageId);
     if (!currentPackage || currentPackage.found == false) {
       return response({
@@ -100,7 +89,7 @@ export const handler = async (event: APIGatewayEvent) => {
       });
     }
 
-    return await sendSubmitSplitSPAMessage(currentPackage);
+    return sendSubmitSplitSPAMessage(currentPackage);
   } catch (err) {
     console.error("Error has occured modifying package:", err);
     if (err instanceof z.ZodError) {
