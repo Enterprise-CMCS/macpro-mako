@@ -152,7 +152,7 @@ describe("FilterableDateRange", () => {
     );
     await user.click(screen.getByText(format(firstDay, DATE_DISPLAY_FORMAT)));
     const pickers = screen.getAllByRole("grid");
-    const todayDate = new UTCDate();
+    const todayDate = startOfDay(new UTCDate());
     const todayDay = within(pickers[0])
       .getAllByRole("gridcell", { name: `${getDate(todayDate)}` })
       .find((day) => !day.getAttribute("disabled"));
