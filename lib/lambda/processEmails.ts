@@ -128,6 +128,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
         const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
     console.log('inside process record', seatoolRecord)
     console.log('seatool safe record', safeSeatoolRecord)
+
     if(safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       //send email
       console.log(safeSeatoolRecord.data?.cmsStatus, "seatool status is withdrawn")
@@ -135,7 +136,15 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       console.log(safeSeatoolRecord, safeID, config)
 
       try {
-      await processAndSendEmails(safeSeatoolRecord, safeID, config);
+      const item = await os.getItem(config.osDomain, getNamespace("main"), safeID);
+      console.log(item)
+      const recordToPass = {
+        timestamp,
+        ...safeSeatoolRecord,
+        "submitterName": "George Harrison",
+        "submitterEmail": "george@example.com"
+      }
+      await processAndSendEmails(recordToPass, safeID, config);
       } catch (error) {
         console.error("Error processing record:", JSON.stringify(error, null, 2));
         throw error;
@@ -293,7 +302,7 @@ export function createEmailParams(
   console.log('filled template', filledTemplate)
   const params = {
     Destination: {
-      ToAddresses: filledTemplate.to.length ? filledTemplate.to : [ "state <jdinh@fearless.tech>"],
+      ToAddresses: filledTemplate.to,
       CcAddresses: filledTemplate.cc,
       BccAddresses: isDev ? [`State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`] : [], // this is so emails can be tested in dev as they should have the correct recipients but be blind copied on all emails on dev
     },
