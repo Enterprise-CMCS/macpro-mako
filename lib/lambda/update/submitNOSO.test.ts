@@ -49,6 +49,8 @@ describe("handler", () => {
         submitterEmail: "test@email.com",
         submitterName: "Name",
         status: "submitted",
+        changeMade: "change",
+        changeReason: "reason",
       }),
     } as APIGatewayEvent;
 
@@ -70,6 +72,8 @@ describe("handler", () => {
         submitterEmail: "test@email.com",
         submitterName: "Name",
         adminChangeType: "NOSO",
+        changeMade: "change",
+        changeReason: "reason",
       }),
     } as APIGatewayEvent;
 
@@ -92,6 +96,8 @@ describe("handler", () => {
         submitterEmail: "test@email.com",
         submitterName: "Name",
         adminChangeType: "NOSO",
+        changeMade: "change",
+        changeReason: "reason",
       }),
     } as APIGatewayEvent;
 

@@ -24,8 +24,8 @@ const sendSubmitMessage = async (item: submitMessageType) => {
   if (!topicName) {
     throw new Error("Topic name is not defined");
   }
-  console.log("sending the follwing message...");
-  console.log("package data: ", JSON.stringify(item));
+
+  const currentTime = Date.now();
 
   await produceMessage(
     topicName,
@@ -39,11 +39,9 @@ const sendSubmitMessage = async (item: submitMessageType) => {
       description: null,
       event: "NOSO",
       state: item.id.substring(0, 2),
-      makoChangedDate: Date.now(),
-      changedDate: Date.now(),
-      statusDate: Date.now(),
-      changeMade: `${item.id} added to OneMAC. Package not originally submitted in OneMAC. At this time, the attachments for this package are unavailable in this system. Contact your CPOC to verify the initial submission documents.`,
-      changeReason: `This is a Not Originally Submitted in OneMAC (NOSO) that users need to see in OneMAC.`,
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
+      statusDate: currentTime,
     }),
   );
 
@@ -62,19 +60,12 @@ export const handler = async (event: APIGatewayEvent) => {
   }
 
   try {
-    console.log("trying to submit a NOSO...");
-    // add a property for new ID
-    const item = submitNOSOAdminSchema.parse(
-      typeof event.body === "string" ? JSON.parse(event.body) : event.body,
-    );
+    const item = submitNOSOAdminSchema.parse(JSON.parse(event.body));
 
     const { stateStatus, cmsStatus } = getStatus(item.status);
     // check if it already exsists
     const currentPackage: ItemResult | undefined = await getPackage(item.id);
 
-    console.log("checking package already exists...");
-
-    // currentpackage should have been entered in seaTool
     if (currentPackage && currentPackage.found == true) {
       return response({
         statusCode: 400,
@@ -82,22 +73,13 @@ export const handler = async (event: APIGatewayEvent) => {
       });
     }
 
-    if (item.adminChangeType === "NOSO") {
-      console.log("attempting to send submit message...");
-      // copying over attachments is handled in sinkChangeLog
-      return await sendSubmitMessage({ ...item, stateStatus, cmsStatus });
-    }
-
-    return response({
-      statusCode: 400,
-      body: { message: "Could not create OneMAC package." },
-    });
+    return await sendSubmitMessage({ ...item, stateStatus, cmsStatus });
   } catch (err) {
     console.error("Error has occured submitting package:", err);
     if (err instanceof z.ZodError) {
       return response({
         statusCode: 400,
-        body: { message: JSON.stringify(err.errors) },
+        body: { message: err.errors },
       });
     }
 
