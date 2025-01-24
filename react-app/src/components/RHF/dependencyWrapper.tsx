@@ -2,7 +2,7 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Condition, DependencyRule, DependencyWrapperProps } from "shared-types";
 
-const checkTriggeringValue = (dependentValue: unknown[], dependency?: DependencyRule) => {
+export const checkTriggeringValue = (dependentValue: unknown[], dependency?: DependencyRule) => {
   if (dependency?.looseConditions) {
     return !!dependency?.conditions?.some((d, i) => triggerCheckSwitch(dependentValue, d, i));
   }
@@ -114,7 +114,17 @@ const DependencyWrapperHandler = ({
       });
       changeMethod(filteredArray);
     }
-  }, [dependentValues, parentValue, changeMethod, dependency]);
+  }, [
+    dependentValues,
+    parentValue,
+    changeMethod,
+    dependency,
+    wasSetLast,
+    isTriggered,
+    name,
+    getValues,
+    setValue,
+  ]);
 
   switch (dependency?.effect.type) {
     case "hide":
