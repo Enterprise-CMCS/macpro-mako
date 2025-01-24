@@ -19,7 +19,7 @@ export const ABP_GUIDES: Template[] = [
   {
     title: "ABP 2c",
     text: "Enrollment Assurances - Mandatory Participants",
-    href: "/abp/IG_ABP2c_EnrollmentAssurancesMandatoryParticipants",
+    href: "/abp/IG_ABP2c_EnrollmentAssurancesMandatoryParticipants.pdf",
   },
   {
     title: "ABP 3",
