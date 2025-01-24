@@ -1,5 +1,5 @@
 import { SESClient, SendEmailCommand, SendEmailCommandInput } from "@aws-sdk/client-ses";
-import { EmailAddresses, KafkaEvent, KafkaRecord } from "shared-types";
+import { EmailAddresses, KafkaEvent, KafkaRecord, Events } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
 import { getEmailTemplates, getAllStateUsers } from "libs/email";
@@ -8,7 +8,7 @@ import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/ema
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
 import pLimit from "p-limit";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
-import { getNamespace } from "libs/utils";
+import { getOsNamespace } from "libs/utils";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -139,7 +139,10 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     console.log("Config:", JSON.stringify(config, null, 2));
     await processAndSendEmails(record, id, config);
   } catch (error) {
-    console.error("Error processing record:", JSON.stringify(error, null, 2));
+    console.error(
+      "Error processing record: { record, id, config }",
+      JSON.stringify({ record, id, config }, null, 2),
+    );
     throw error;
   }
 }
@@ -153,12 +156,12 @@ export function validateEmailTemplate(template: any) {
   }
 }
 
-export async function processAndSendEmails(record: any, id: string, config: ProcessEmailConfig) {
-  const templates = await getEmailTemplates<typeof record>(
-    record.event,
-    record.authority.toLowerCase(),
-  );
-  console.log(`we are here`);
+export async function processAndSendEmails(
+  record: Events[keyof Events],
+  id: string,
+  config: ProcessEmailConfig,
+) {
+  const templates = await getEmailTemplates(record);
 
   if (!templates) {
     console.log(
@@ -177,9 +180,7 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
 
-  console.log(`we are here 2`);
-
-  const item = await os.getItem(config.osDomain, getNamespace("main"), id);
+  const item = await os.getItem(config.osDomain, getOsNamespace("main"), id);
   if (!item?.found || !item?._source) {
     console.log(`The package was not found for id: ${id}. Doing nothing.`);
     return;

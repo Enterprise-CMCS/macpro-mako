@@ -35,7 +35,7 @@ export class CloudWatchToS3 extends Construct {
 
     firehoseRole.addToPolicy(
       new PolicyStatement({
-        actions: ["logs:PutLogEvents"],
+        actions: ["logs:PutLogEvents", "logs:CreateLogGroup"],
         resources: [
           `arn:aws:logs:${cdk.Stack.of(this).region}:${
             cdk.Stack.of(this).account
