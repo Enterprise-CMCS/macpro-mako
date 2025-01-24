@@ -56,7 +56,6 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   const onFromInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const minValidYear = 1960;
     const input = e.target.value;
-    console.log({ input });
 
     if (/^[0-9/]*$/.test(input)) {
       const fromDate = parse(e.target.value, DATE_FORMAT, new UTCDate());
