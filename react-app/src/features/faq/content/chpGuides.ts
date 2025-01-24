@@ -40,19 +40,19 @@ export const CHP_GUIDES: Template[] = [
   {
     title: "CS 15",
     text: "MAGI-Based Income Methodologies Implementation Guide",
-    href: "/chp/IG_CS15_MAGI-BasedIncomeMethodologies_Final_20241017.pdf",
+    href: "/chp/IG_CS15_MAGI-BasedIncomeMethodologies.pdf",
   },
   {
     title: "CS 16",
     text: "Other Eligibility Criteria - Spenddowns Implementation Guide",
-    href: "/chp/IG_CS16_Spenddown_Final_20241105.pdf",
+    href: "/chp/IG_CS16_Spenddown.pdf",
   },
 
   // XXI Medicaid Expansion
   {
     title: "CS 3",
     text: "Eligibility for Medicaid Expansion Program Implementation Guide",
-    href: "/chip/IG_CS3_MedicaidExpansion_Final_20241017.pdf",
+    href: "/chip/IG_CS3_MedicaidExpansion.pdf",
   },
 
   // Establish 2101(f) Group
@@ -66,53 +66,53 @@ export const CHP_GUIDES: Template[] = [
   {
     title: "CS 24",
     text: "General Eligibility - Eligibility Processing Implementation Guide",
-    href: "/chp/IG_CS24_EligibilityProcessing_Final_20241017.pdf",
+    href: "/chp/IG_CS24_EligibilityProcessing.pdf",
   },
 
   // Non-Financial Eligibility
   {
     title: "CS 17",
     text: "Non-Financial Eligibility - Residency Implementation Guide",
-    href: "/chp/IG_CS17_Non-Financial-Residency_Final_20241106.pdf",
+    href: "/chp/IG_CS17_Non-Financial-Residency.pdf",
   },
   {
     title: "CS 18",
     text: "Non-Financial Eligibility - Citizenship Implementation Guide",
-    href: "/chp/IG_CS18_Non-Financial-Citizenship_Final_20241106.pdf",
+    href: "/chp/IG_CS18_Non-Financial-Citizenship.pdf",
   },
   {
     title: "CS 19",
     text: "Non-Financial Eligibility - Social Security Number Implementation Guide",
-    href: "/chp/IG_CS19_Non-Financial-SocialSecurityNumber_Final_20241017.pdf",
+    href: "/chp/IG_CS19_Non-Financial-SocialSecurityNumber.pdf",
   },
   {
     title: "CS 20",
     text: "Non-Financial Eligibility - Substitution of Coverage Implementation Guide",
-    href: "/chp/IG_CS20_Non-Financial-SubstitutionOfCoverage_Final_20241106.pdf",
+    href: "/chp/IG_CS20_Non-Financial-SubstitutionOfCoverage.pdf",
   },
   {
     title: "CS 21",
     text: "Non-Financial Eligibility - Non-Payment of Premiums Implementation Guide",
-    href: "/chp/IG_CS21_NonFinancialNonPaymentOfPremiums_Final_20241017.pdf",
+    href: "/chp/IG_CS21_NonFinancialNonPaymentOfPremiums.pdf",
   },
   {
     title: "CS 23",
     text: "Non-Financial Requirements - Other Eligibility Standards Implementation Guide",
-    href: "/chp/IG_CS23_NonFinancialRequirementOtherEligibilityStandards_Final_20241017.pdf",
+    href: "/chp/IG_CS23_NonFinancialRequirementOtherEligibilityStandards.pdf",
   },
   {
     title: "CS 27",
     text: "General Eligibility - Continuous Eligibility Implementation Guide",
-    href: "/chp/IG_CS27_ContinuousEligibility (2)Final_20241106.pdf",
+    href: "/chp/IG_CS27_ContinuousEligibility.pdf",
   },
   {
     title: "CS 28",
     text: "General Eligibility - Presumptive Eligibility for Children Implementation Guide",
-    href: "/chp/IG_CS28_PresumptiveEligibilityForChildren_Final_20241106.pdf",
+    href: "/chp/IG_CS28_PresumptiveEligibilityForChildren.pdf",
   },
   {
     title: "CS 29",
     text: "General Eligibility - Presumptive Eligibility for Pregnant Women Implementation Guide",
-    href: "/chp/IG_CS29_PresumptiveEligibilityForPregnantWomen_Final_20241017.pdf",
+    href: "/chp/IG_CS29_PresumptiveEligibilityForPregnantWomen.pdf",
   },
 ];
