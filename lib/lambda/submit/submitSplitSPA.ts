@@ -3,6 +3,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import { getPackage } from "libs/api/package";
 import { produceMessage } from "libs/api/kafka";
 import { ItemResult } from "shared-types/opensearch/main";
+import { baseSchema } from "lib/packages/shared-types/events/new-medicaid-submission";
 import { getNextSplitSPAId } from "./getNextSplitSPAId";
 import { z } from "zod";
 
@@ -46,12 +47,7 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
 };
 
 const splitSPAEventBodySchema = z.object({
-  packageId: z
-    .string()
-    .regex(
-      /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/,
-      "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-XXXX",
-    ),
+  packageId: baseSchema.shape.id,
 });
 
 export const handler = async (event: APIGatewayEvent) => {
