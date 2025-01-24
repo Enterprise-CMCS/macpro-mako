@@ -1,4 +1,4 @@
-import { describe, test, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import { useForm, FormProvider } from "react-hook-form";
 import { DependencyWrapper } from "../dependencyWrapper";
@@ -40,7 +40,7 @@ const TestComp = ({
 };
 
 describe("DependencyWrapper Tests", () => {
-  test("test show effect", () => {
+  it("test show effect", () => {
     const dependency: DependencyRule = {
       conditions: [{ type: "expectedValue", expectedValue: "test", name: "field1" }],
       effect: { type: "show" },
@@ -50,9 +50,7 @@ describe("DependencyWrapper Tests", () => {
         name="testField"
         dependency={dependency}
         parentValue={["testField"]}
-        changeMethod={(value) => {
-          console.log(value);
-        }}
+        changeMethod={() => {}}
       >
         <div>Child Component</div>
       </TestComp>,
@@ -61,7 +59,7 @@ describe("DependencyWrapper Tests", () => {
     expect(getByText("Child Component")).toBeTruthy();
   });
 
-  test("test hide effect", () => {
+  it("test hide effect", () => {
     const dependency: DependencyRule = {
       conditions: [{ type: "expectedValue", expectedValue: "test", name: "field1" }],
       effect: { type: "hide" },
@@ -71,9 +69,7 @@ describe("DependencyWrapper Tests", () => {
         name="testField"
         dependency={dependency}
         parentValue={["testField"]}
-        changeMethod={(value) => {
-          console.log(value);
-        }}
+        changeMethod={() => {}}
       >
         <div>Child Component</div>
       </TestComp>,
@@ -82,7 +78,7 @@ describe("DependencyWrapper Tests", () => {
     expect(queryByText("Child Component")).toBeNull();
   });
 
-  test("test set value effect", () => {
+  it("test set value effect", () => {
     const dependency: DependencyRule = {
       conditions: [{ type: "expectedValue", expectedValue: "test", name: "field1" }],
       effect: { type: "setValue", fieldName: "field2", newValue: "newValue" },
@@ -118,14 +114,110 @@ describe("DependencyWrapper Tests", () => {
         name="testField"
         dependency={dependency}
         parentValue={["testField"]}
-        changeMethod={(value) => {
-          console.log(value);
-        }}
+        changeMethod={() => {}}
       >
         <div>Child Component</div>
       </TestCompWithMethods>,
     );
 
     expect(methods.getValues("field2")).toBe("newValue");
+  });
+  it("test set value effect of an array existing values", () => {
+    const dependency: DependencyRule = {
+      conditions: [{ type: "expectedValue", expectedValue: "test", name: "field1" }],
+      effect: {
+        type: "setValue",
+        fieldName: "field2",
+        newValue: ["newValue", "newValue2"],
+        checkUnique: true,
+      },
+    };
+
+    let methods: any;
+
+    const TestCompWithMethods = (
+      props: PropsWithChildren<{
+        name: string;
+        dependency: DependencyRule;
+        parentValue: string[];
+        changeMethod: (values: string[]) => void;
+      }>,
+    ) => {
+      methods = useForm({
+        defaultValues: {
+          [props.name]: props.parentValue,
+          field1: "test",
+          field2: ["test1", "test2"],
+        },
+      });
+
+      return (
+        <FormProvider {...methods}>
+          <DependencyWrapper {...props}>{props.children}</DependencyWrapper>
+        </FormProvider>
+      );
+    };
+
+    render(
+      <TestCompWithMethods
+        name="testField"
+        dependency={dependency}
+        parentValue={["testField"]}
+        changeMethod={() => {}}
+      >
+        <div>Child Component</div>
+      </TestCompWithMethods>,
+    );
+
+    expect(methods.getValues("field2")).toStrictEqual(["test1", "test2", "newValue", "newValue2"]);
+  });
+  it("test to add a value to an existing array", () => {
+    const dependency: DependencyRule = {
+      conditions: [{ type: "expectedValue", expectedValue: "test", name: "field1" }],
+      effect: {
+        type: "setValue",
+        fieldName: "field2",
+        newValue: "newValue2",
+        checkUnique: true,
+      },
+    };
+
+    let methods: any;
+
+    const TestCompWithMethods = (
+      props: PropsWithChildren<{
+        name: string;
+        dependency: DependencyRule;
+        parentValue: string[];
+        changeMethod: (values: string[]) => void;
+      }>,
+    ) => {
+      methods = useForm({
+        defaultValues: {
+          [props.name]: props.parentValue,
+          field1: "test",
+          field2: ["newValue"],
+        },
+      });
+
+      return (
+        <FormProvider {...methods}>
+          <DependencyWrapper {...props}>{props.children}</DependencyWrapper>
+        </FormProvider>
+      );
+    };
+
+    render(
+      <TestCompWithMethods
+        name="testField"
+        dependency={dependency}
+        parentValue={["testField"]}
+        changeMethod={() => {}}
+      >
+        <div>Child Component</div>
+      </TestCompWithMethods>,
+    );
+
+    expect(methods.getValues("field2")).toStrictEqual(["newValue", "newValue2"]);
   });
 });
