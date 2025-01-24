@@ -114,17 +114,8 @@ const DependencyWrapperHandler = ({
       });
       changeMethod(filteredArray);
     }
-  }, [
-    dependentValues,
-    parentValue,
-    changeMethod,
-    dependency,
-    wasSetLast,
-    isTriggered,
-    name,
-    getValues,
-    setValue,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dependentValues, parentValue, changeMethod, dependency]);
 
   switch (dependency?.effect.type) {
     case "hide":
