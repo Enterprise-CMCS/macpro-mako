@@ -25,6 +25,8 @@ interface ApiStackProps extends cdk.NestedStackProps {
   brokerString: DeploymentConfigProperties["brokerString"];
   dbInfoSecretName: DeploymentConfigProperties["dbInfoSecretName"];
   legacyS3AccessRoleArn: DeploymentConfigProperties["legacyS3AccessRoleArn"];
+  notificationSecretName: DeploymentConfigProperties["notificationSecretName"];
+  notificationSecretArn: DeploymentConfigProperties["notificationSecretArn"];
 }
 
 export class Api extends cdk.NestedStack {
@@ -55,6 +57,8 @@ export class Api extends cdk.NestedStack {
       alertsTopic,
       attachmentsBucket,
       dbInfoSecretName,
+      notificationSecretName,
+      notificationSecretArn,
     } = props;
 
     const topicName = `${topicNamespace}aws.onemac.migration.cdc`;
@@ -111,6 +115,13 @@ export class Api extends cdk.NestedStack {
               actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
               resources: [
                 `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${dbInfoSecretName}-*`,
+              ],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
+              resources: [
+                `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${notificationSecretName}-*`,
               ],
             }),
           ],
@@ -292,7 +303,14 @@ export class Api extends cdk.NestedStack {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
         },
-        provisionedConcurrency: 2,
+      },
+      {
+        id: "getSystemNotifs",
+        entry: join(__dirname, "../lambda/getSystemNotifs.ts"),
+        environment: {
+          notificationSecretName,
+          notificationSecretArn,
+        },
       },
     ];
 
@@ -451,6 +469,7 @@ export class Api extends cdk.NestedStack {
         lambda: lambdas.getAllForms,
         method: "GET",
       },
+      getSystemNotifs: { path: "systemNotifs", lambda: lambdas.getSystemNotifs, method: "GET" },
     };
 
     const addApiResource = (
