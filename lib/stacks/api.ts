@@ -282,6 +282,18 @@ export class Api extends cdk.NestedStack {
           indexNamespace,
         },
       },
+      {
+        id: "submitNOSO",
+        entry: join(__dirname, "../lambda/update/submitNOSO.ts"),
+        environment: {
+          dbInfoSecretName,
+          topicName,
+          brokerString,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
     ];
 
     const lambdas = lambdaDefinitions.reduce(
