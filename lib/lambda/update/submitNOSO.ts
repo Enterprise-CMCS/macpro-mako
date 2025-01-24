@@ -60,7 +60,9 @@ export const handler = async (event: APIGatewayEvent) => {
   }
 
   try {
-    const item = submitNOSOAdminSchema.parse(JSON.parse(event.body));
+    const item = submitNOSOAdminSchema.parse(
+      typeof event.body === "string" ? JSON.parse(event.body) : event.body,
+    );
 
     const { stateStatus, cmsStatus } = getStatus(item.status);
     // check if it already exsists
