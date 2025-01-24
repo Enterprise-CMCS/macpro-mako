@@ -33,3 +33,5 @@ export const schema = baseSchema.extend({
   submitterEmail: z.string().email(),
   timestamp: z.number(),
 });
+
+export type AppKSubmission = z.infer<typeof schema>;
