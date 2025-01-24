@@ -1029,7 +1029,7 @@ export const oneMACFAQContent: FAQContent[] = [
               <ul className="list-disc pl-12">
                 <li>
                   <a
-                    href="/chp/IG_ChipEligibilityIntroduction_Final_20241205.pdf"
+                    href="/chp/IG_ChipEligibilityIntroduction.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"

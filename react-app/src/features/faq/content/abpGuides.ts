@@ -3,7 +3,7 @@ import { Template } from "./chpRenderSection";
 export const ABP_GUIDES: Template[] = [
   {
     title: "ABP Introduction",
-    href: "/abp/IG_AbpIntroduction_Final_20241205.pdf",
+    href: "/abp/IG_AbpIntroduction.pdf",
   },
   {
     title: "ABP 1",
