@@ -14,7 +14,6 @@
     "@date-fns/tz": "1.2.0",
     "@date-fns/utc": "2.1.0",
     "date-fns": "4.1.0",
-    "moment-timezone": "^0.5.45",
     "shared-types": "*",
     "eslint-config-custom-server": "*",
     "eslint-config-custom": "*"
