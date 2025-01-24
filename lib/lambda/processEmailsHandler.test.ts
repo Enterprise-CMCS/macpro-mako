@@ -14,6 +14,7 @@ const capitatedInitial = "capitated-initial";
 const withdrawRai = "withdraw-rai";
 const respondToRai = "respond-to-rai";
 const appk = "app-k";
+const uploadSubsequentDocuments = "upload-subsequent-documents";
 
 describe("process emails  Handler", () => {
   it.each([
@@ -189,6 +190,18 @@ describe("process emails  Handler", () => {
       `should send an email for ${withdrawRai} with ${Authority["1915c"]}`,
       Authority["1915c"],
       withdrawRai,
+      WITHDRAW_RAI_ITEM_C,
+    ],
+    [
+      `should send an email for ${uploadSubsequentDocuments} with ${Authority.CHIP_SPA}`,
+      Authority.CHIP_SPA,
+      uploadSubsequentDocuments,
+      WITHDRAW_RAI_ITEM_B,
+    ],
+    [
+      `should send an email for ${uploadSubsequentDocuments} with ${Authority["1915c"]}`,
+      Authority["1915c"],
+      uploadSubsequentDocuments,
       WITHDRAW_RAI_ITEM_C,
     ],
   ])("%s", async (_, auth, eventType, id) => {

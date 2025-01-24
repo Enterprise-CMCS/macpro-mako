@@ -60,7 +60,7 @@ const emailTemplates: EmailTemplates = {
   "capitated-renewal-state": EmailContent.newSubmission,
   "respond-to-rai": EmailContent.respondToRai,
   "app-k": EmailContent.newSubmission,
-  "upload-subsequent-documents": EmailContent.newSubmission,
+  "upload-subsequent-documents": EmailContent.uploadSubsequentDocuments,
 };
 
 // Create a type-safe lookup function
