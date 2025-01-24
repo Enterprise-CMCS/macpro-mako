@@ -138,11 +138,15 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       try {
       const item = await os.getItem(config.osDomain, getNamespace("main"), safeID);
       console.log(item)
+      if (!item?.found || !item?._source) {
+        console.log(`The package was not found for id: ${id}. Doing nothing.`);
+        return;
+      }
       const recordToPass = {
         timestamp,
         ...safeSeatoolRecord,
-        "submitterName": "George Harrison",
-        "submitterEmail": "george@example.com"
+        submitterName: item._source.submitterName,
+        submitterEmail: item._source.submitterEmail
       }
       await processAndSendEmails(recordToPass, safeID, config);
       } catch (error) {
