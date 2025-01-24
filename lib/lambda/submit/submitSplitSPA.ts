@@ -3,7 +3,8 @@ import { APIGatewayEvent } from "aws-lambda";
 import { getPackage } from "libs/api/package";
 import { produceMessage } from "libs/api/kafka";
 import { ItemResult } from "shared-types/opensearch/main";
-import { baseSchema } from "lib/packages/shared-types/events/new-medicaid-submission";
+// import { baseSchema } from "lib/packages/shared-types/events/new-medicaid-submission";
+import { events } from "shared-types/events";
 import { getNextSplitSPAId } from "./getNextSplitSPAId";
 import { z } from "zod";
 
@@ -47,7 +48,7 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
 };
 
 const splitSPAEventBodySchema = z.object({
-  packageId: baseSchema.shape.id,
+  packageId: events["new-medicaid-submission"].baseSchema.shape.id,
 });
 
 export const handler = async (event: APIGatewayEvent) => {

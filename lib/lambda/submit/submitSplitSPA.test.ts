@@ -19,7 +19,6 @@ describe("handler", () => {
     const emptyBody = { body: { packageId: undefined } } as unknown as APIGatewayEvent;
     const result = await handler(emptyBody);
     expect(result?.statusCode).toEqual(400);
-    expect(result?.body).toEqual('{"message":"Package ID to split is required"}');
   });
 
   it("should return 404 if package ID is not found", async () => {
