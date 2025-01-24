@@ -1,22 +1,66 @@
-import { describe, test, expect } from "vitest";
-import { sortFunctions, ruleGenerator } from "../utils/additionalRules";
+import { describe, expect, it } from "vitest";
+import {
+  ruleGenerator,
+  sortFunctions,
+  sortOptionsLowestToHighest,
+  stringCompare,
+} from "../utils/additionalRules";
 
 type VO = Record<string, any>;
 
 describe("Additional Rules Tests", () => {
   describe("Sort Function Tests", () => {
     const dataArray = ["Florida, Ohio, Washington, Maine"];
-    test("no sort", () => {
+    it("no sort", () => {
       const testArr = [...dataArray].sort(sortFunctions.noSort);
       expect(testArr.toString()).toBe(dataArray.toString());
+      const result = sortFunctions.noSort("a", "b");
+      expect(result).toBe(0);
     });
-    test("reverse sort", () => {
+    it("reverse sort", () => {
       const testArr = [...dataArray].sort(sortFunctions.reverseSort);
       const compareArr = [...dataArray].sort().reverse();
       expect(compareArr.toString()).toBe(testArr.toString());
+      const result = sortFunctions.reverseSort("b", "a");
+      expect(result).toBe(-1);
     });
   });
-
+  describe("Test items lowest to highest", () => {
+    it("Sort from lowest to highest", () => {
+      const testData = [{ value: 3 }, { value: 1 }, { value: 2 }];
+      const result = sortOptionsLowestToHighest(testData);
+      const expected = [
+        {
+          value: 1,
+        },
+        {
+          value: 2,
+        },
+        {
+          value: 3,
+        },
+      ];
+      expect(result).toStrictEqual(expected);
+    });
+  });
+  describe("String compare tests", () => {
+    it("Compares two strings to eachother", () => {
+      const match = stringCompare({ label: "A" }, { label: "A" });
+      expect(match).toBe(0);
+      const misMatchOrder = stringCompare({ label: "A" }, { label: "B" });
+      expect(misMatchOrder).toBe(-1);
+      const misMatchReverseORder = stringCompare({ label: "B" }, { label: "A" });
+      expect(misMatchReverseORder).toBe(1);
+    });
+    it("Compares two number strings to eachother", () => {
+      const match = stringCompare({ label: "1" }, { label: "1" });
+      expect(match).toBe(0);
+      const misMatchOrder = stringCompare({ label: "1" }, { label: "2" });
+      expect(misMatchOrder).toBe(-1);
+      const misMatchReverseORder = stringCompare({ label: "3" }, { label: "2" });
+      expect(misMatchReverseORder).toBe(1);
+    });
+  });
   describe("Custom Validation Tests", () => {
     const testData = {
       testCompField1: "0",
@@ -24,7 +68,7 @@ describe("Additional Rules Tests", () => {
       testCompField3: undefined,
     };
 
-    test("Less than field", () => {
+    it("Less than field", () => {
       const rules = ruleGenerator(undefined, [
         {
           fieldName: "testCompField1",
@@ -54,7 +98,7 @@ describe("Additional Rules Tests", () => {
       expect(valFunc2(100, testData)).toBe("Validation Failed 2");
     });
 
-    test("Greater than field", () => {
+    it("Greater than field", () => {
       const rules = ruleGenerator(undefined, [
         {
           fieldName: "testCompField2",
@@ -86,7 +130,7 @@ describe("Additional Rules Tests", () => {
       expect(valFunc2(-1, testData)).toBe("Validation Failed 2");
     });
 
-    test("Cannot coexist", () => {
+    it("Cannot coexist", () => {
       const rules = ruleGenerator(undefined, [
         {
           fieldName: "testCompField1",
@@ -113,7 +157,7 @@ describe("Additional Rules Tests", () => {
       expect(valFunc2("test", testData)).toBeTruthy();
     });
 
-    test("No gaps or overlaps", () => {
+    it("No gaps or overlaps", () => {
       const rules = ruleGenerator(undefined, [
         {
           type: "noGapsOrOverlaps",
@@ -140,8 +184,8 @@ describe("Additional Rules Tests", () => {
           { from: 5, to: 7 },
         ],
       };
-      expect(valFunc(undefined, noGapsOrOverlapsData.testField)).toBeTruthy();
-
+      expect(valFunc("test", noGapsOrOverlapsData.testField)).toBe(true);
+      expect(valFunc("test", noGapsOrOverlapsData)).toBe(true);
       // Test case: gap between 3 and 5
       const gapData = {
         testField: [
@@ -160,5 +204,38 @@ describe("Additional Rules Tests", () => {
       };
       expect(valFunc("test", overlapData)).toBe("No age overlaps allowed");
     });
+  });
+  it("to Greater than from", () => {
+    const rules = ruleGenerator(undefined, [
+      {
+        type: "toGreaterThanFrom",
+        fieldName: "testField",
+        fromField: "from",
+        toField: "to",
+        message: "failure",
+      },
+    ]);
+    const valFunc = (rules.validate as VO)["toGreaterThanFrom_0"];
+    // Empty Field
+    const missingData = { testField: [] };
+    expect(valFunc(1, missingData)).toBe(true);
+    // Not an array for field
+    const notArray = { testField: "not array" };
+    expect(valFunc(1, notArray)).toBe(true);
+
+    const notCurrentIndex = { testField: [{ from: 6, to: 30 }] };
+    expect(valFunc(1, notCurrentIndex)).toBe(true);
+    const toNotANumber = {
+      testField: [{ from: 1, to: "blah" }],
+    };
+    expect(valFunc(1, toNotANumber)).toBe(true);
+    const goodScenario = {
+      testField: [{ from: 1, to: 4 }],
+    };
+    expect(valFunc(1, goodScenario)).toBe(true);
+    const badScenario = {
+      testField: [{ from: 1, to: 1 }],
+    };
+    expect(valFunc(1, badScenario)).toBe("failure");
   });
 });

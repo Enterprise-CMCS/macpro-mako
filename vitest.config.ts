@@ -19,6 +19,7 @@ export default defineConfig({
         "**/vitest.setup.ts",
         "lib/libs/webforms/**",
         "lib/libs/email/mock-data/**",
+        "react-app/src/main.tsx",
         "react-app/src/features/webforms/**",
         "react-app/src/components/ScrollToTop/**",
         "**/*.test.ts",
