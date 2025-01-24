@@ -2,7 +2,7 @@ import { events } from "shared-types/events";
 import { isAuthorized, getAuthDetails, lookupUserAttributes } from "../../../libs/api/auth/user";
 import { type APIGatewayEvent } from "aws-lambda";
 import { itemExists } from "libs/api/package";
-import { getDomain, getNamespace } from "libs/utils";
+import { getDomain, getOsNamespace } from "libs/utils";
 import * as os from "libs/opensearch-lib";
 
 export const respondToRai = async (event: APIGatewayEvent) => {
@@ -23,7 +23,7 @@ export const respondToRai = async (event: APIGatewayEvent) => {
     throw "Item Doesn't Exist";
   }
 
-  const item = await os.getItem(getDomain(), getNamespace("main"), parsedResult.data.id);
+  const item = await os.getItem(getDomain(), getOsNamespace("main"), parsedResult.data.id);
   const authDetails = getAuthDetails(event);
   const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
   const submitterEmail = userAttr.email;
