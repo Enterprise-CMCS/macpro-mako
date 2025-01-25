@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { handler } from "./submitNOSO";
 import { APIGatewayEvent } from "node_modules/shared-types";
 
-import { EXISTING_ITEM_ID, NOT_EXISTING_ITEM_ID } from "mocks";
+import { NOT_EXISTING_ITEM_ID, TEST_ITEM_ID } from "mocks";
 
 vi.mock("libs/handler-lib", () => ({
   response: vi.fn((data) => data),
@@ -43,7 +43,7 @@ describe("handler", () => {
   it("should return 400 if existing item is entered", async () => {
     const noActionevent = {
       body: JSON.stringify({
-        id: EXISTING_ITEM_ID,
+        id: TEST_ITEM_ID,
         adminChangeType: "NOSO",
         authority: "SPA",
         submitterEmail: "test@email.com",
@@ -58,7 +58,7 @@ describe("handler", () => {
 
     const expectedResult = {
       statusCode: 400,
-      body: { message: `Package with id: ${EXISTING_ITEM_ID} already exists.` },
+      body: { message: `Package with id: ${TEST_ITEM_ID} already exists.` },
     };
     expect(result).toStrictEqual(expectedResult);
   });
