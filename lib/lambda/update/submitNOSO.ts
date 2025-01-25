@@ -77,7 +77,7 @@ export const handler = async (event: APIGatewayEvent) => {
         });
       }
       //otherwise we need to add the property origin so it shows up on our dashboard
-      item["origin"] = "SEATools";
+      item["origin"] = "SEATool";
     }
 
     return await sendSubmitMessage({ ...item, stateStatus, cmsStatus });
