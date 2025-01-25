@@ -69,10 +69,15 @@ export const handler = async (event: APIGatewayEvent) => {
     const currentPackage: ItemResult | undefined = await getPackage(item.id);
 
     if (currentPackage && currentPackage.found == true) {
-      return response({
-        statusCode: 400,
-        body: { message: `Package with id: ${item.id} already exists.` },
-      });
+      // if it exists and has origin OneMAC we shouldn't override it
+      if (currentPackage._source.origin === "OneMAC") {
+        return response({
+          statusCode: 400,
+          body: { message: `Package with id: ${item.id} already exists.` },
+        });
+      }
+      //otherwise we need to add the property origin so it shows up on our dashboard
+      item["origin"] = "SEATools";
     }
 
     return await sendSubmitMessage({ ...item, stateStatus, cmsStatus });
