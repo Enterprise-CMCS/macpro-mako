@@ -19,8 +19,6 @@ export const getNextSplitSPAId = async (spaId: string) => {
   // Convert to ASCII char codes to get latest suffix
   const latestSuffixCharCode = hits.hits.reduce((maxCharCode: number, hit: cpocs.ItemResult) => {
     const suffix = hit._source.id.toString().split("-").at(-1) ?? "@";
-    console.log(suffix, "SUFFIX RN");
-    console.log(maxCharCode, "MAXCHARCODE RN");
     return Math.max(maxCharCode, suffix.charCodeAt(0));
   }, "@".charCodeAt(0));
 

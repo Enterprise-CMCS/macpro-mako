@@ -75,7 +75,7 @@ const processAndIndex = async ({
 
         if (result.success) {
           if (result.data.adminChangeType === "update-id") {
-            // push doc with package to soft delete
+            // Push doc with package being soft deleted
             docs.forEach((log) => {
               const recordOffset = log.id.split("-").at(-1);
               docs.push({
@@ -84,7 +84,7 @@ const processAndIndex = async ({
                 packageId: result.data.id,
               });
             });
-            // query all changelog entries for this ID and create copies of all entries with new ID
+            // Get all changelog entries for this ID and create copies of all entries with new ID
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
 
             packageChangelogs.hits.hits.forEach((log) => {
@@ -96,9 +96,9 @@ const processAndIndex = async ({
               });
             });
           } else if (result.data.adminChangeType === "split-spa") {
-            // push doc with new split package
+            // Push doc with new split package
             docs.push(result.data);
-            // query all changelog entries for this ID and create copies of all entries with new ID
+            // Get all changelog entries for this ID and create copies of all entries with new ID
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
 
             packageChangelogs.hits.hits.forEach((log) => {
