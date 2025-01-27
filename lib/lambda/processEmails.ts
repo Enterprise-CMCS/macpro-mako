@@ -63,18 +63,22 @@ export const handler: Handler<KafkaEvent | SQSEvent> = async (event) => {
     console.log("right inside if in event check");
     const sqsClient = new SQSClient({ region: process.env.region! });
 
-    await Promise.all(
-      Object.values(event.records)
-        .flat()
-        .map((record) =>
-          sqsClient.send(
-            new SendMessageCommand({
-              QueueUrl: process.env.DELAY_QUEUE_URL!,
-              MessageBody: JSON.stringify(record),
-            }),
+    try {
+      await Promise.all(
+        Object.values(event.records)
+          .flat()
+          .map((record) =>
+            sqsClient.send(
+              new SendMessageCommand({
+                QueueUrl: process.env.DELAY_QUEUE_URL!,
+                MessageBody: JSON.stringify(record),
+              }),
+            ),
           ),
-        ),
-    );
+      );
+    } catch (err: unknown) {
+      console.log("one of the event records failed, here is why: ", err);
+    }
 
     return;
   }
