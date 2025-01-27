@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { events } from "/shared-types";
+import { events } from "shared-types/events";
 
 export const deleteAdminChangeSchema = z
   .object({
