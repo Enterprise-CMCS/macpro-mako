@@ -65,6 +65,12 @@ describe("Package Activity", () => {
         bucket: ATTACHMENT_BUCKET_NAME,
       },
       {
+        filename: "contract_amendment_2024.pdf",
+        key: "doc002",
+        title: "Contract Amendment2",
+        bucket: ATTACHMENT_BUCKET_NAME,
+      },
+      {
         filename: "rai_response.docx",
         key: "rai002",
         title: "Response to RAI",
@@ -115,7 +121,7 @@ describe("Package Activity", () => {
     const user = userEvent.setup();
     await renderFormWithPackageSectionAsync(<PackageActivities />, WITHDRAWN_CHANGELOG_ITEM_ID);
 
-    const downloadDocumentsBtn = screen.getByText("Download All Documents");
+    const downloadDocumentsBtn = screen.getByText("Download documents");
     await user.click(downloadDocumentsBtn);
 
     expect(spiedOnZip).toBeCalledWith([
@@ -123,6 +129,12 @@ describe("Package Activity", () => {
         filename: "contract_amendment_2024.pdf",
         key: "doc001",
         title: "Contract Amendment",
+        bucket: ATTACHMENT_BUCKET_NAME,
+      },
+      {
+        filename: "contract_amendment_2024.pdf",
+        key: "doc002",
+        title: "Contract Amendment2",
         bucket: ATTACHMENT_BUCKET_NAME,
       },
     ]);
@@ -150,6 +162,12 @@ describe("Package Activity", () => {
       filename: "contract_amendment_2024.pdf",
       key: "doc001",
       title: "Contract Amendment",
+      bucket: ATTACHMENT_BUCKET_NAME,
+    },
+    {
+      filename: "contract_amendment_2024.pdf",
+      key: "doc002",
+      title: "Contract Amendment2",
       bucket: ATTACHMENT_BUCKET_NAME,
     });
     expect(spiedWindowOpen).toBeCalledWith("hello world!");
