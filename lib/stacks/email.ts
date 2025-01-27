@@ -6,6 +6,11 @@ import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
 import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "lib/config/deployment-config";
 
+/**
+ * Interface defining the required properties for the Email Service Stack
+ * @interface EmailServiceStackProps
+ * @extends cdk.StackProps
+ */
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;
   stage: string;
@@ -24,6 +29,10 @@ interface EmailServiceStackProps extends cdk.StackProps {
   userPool: cdk.aws_cognito.UserPool;
 }
 
+/**
+ * Configuration interface for environment-specific settings
+ * @interface EnvironmentConfig
+ */
 interface EnvironmentConfig {
   memorySize: number;
   timeout: number;
@@ -49,6 +58,19 @@ const envConfig: Record<string, EnvironmentConfig> = {
   },
 };
 
+/**
+ * Email Service Stack
+ * This stack creates and manages AWS resources for email processing including:
+ * - SES Configuration Set for email sending
+ * - Dead Letter Queue (DLQ) for failed messages
+ * - Delay Queue for message processing delays
+ * - Lambda functions for processing emails
+ * - CloudWatch alarms for monitoring
+ * - Required IAM roles and permissions
+ *
+ * The stack supports both development and production environments with different configurations
+ * for each environment (memory, timeout, log retention, etc.)
+ */
 export class Email extends cdk.NestedStack {
   constructor(scope: Construct, id: string, props: EmailServiceStackProps) {
     super(scope, id, props);
@@ -256,23 +278,13 @@ export class Email extends cdk.NestedStack {
         DLQ_URL: dlq.queueUrl,
         VPC_ID: vpc.vpcId,
         SECURITY_GROUP_ID: lambdaSecurityGroup.securityGroupId,
+        DELAY_QUEUE_URL: delayQueue.queueUrl,
       },
       bundling: commonBundlingOptions,
       tracing: cdk.aws_lambda.Tracing.ACTIVE,
     });
 
     const alarmTopic = new cdk.aws_sns.Topic(this, "EmailErrorAlarmTopic");
-
-    const alarm = new cdk.aws_cloudwatch.Alarm(this, "EmailErrorAlarm", {
-      actionsEnabled: true,
-      metric: processEmailsLambda.metricErrors(),
-      threshold: 1,
-      evaluationPeriods: 1,
-      alarmDescription: "Email processing lambda errors",
-      treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
-    });
-
-    alarm.addAlarmAction(new cdk.aws_cloudwatch_actions.SnsAction(alarmTopic));
 
     new CfnEventSourceMapping(this, "SinkSESTrigger", {
       batchSize: 1,
@@ -294,7 +306,7 @@ export class Email extends cdk.NestedStack {
         },
       ],
       startingPosition: "LATEST",
-      topics: [`${topicNamespace}aws.onemac.migration.cdc`],
+      topics: [`${topicNamespace}aws.onemac.migration.cdc`, `aws.onemac.migration.cdc`],
       destinationConfig: {
         onFailure: {
           destination: dlq.queueArn,
@@ -303,7 +315,7 @@ export class Email extends cdk.NestedStack {
     });
 
     // Add CloudWatch alarms
-    new cdk.aws_cloudwatch.Alarm(this, "EmailProcessingErrors", {
+    const emailProcessingErrors = new cdk.aws_cloudwatch.Alarm(this, "EmailProcessingErrors", {
       metric: processEmailsLambda.metricErrors(),
       threshold: 1,
       evaluationPeriods: 1,
@@ -312,7 +324,7 @@ export class Email extends cdk.NestedStack {
       treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
     });
 
-    new cdk.aws_cloudwatch.Alarm(this, "EmailLambdaThrottling", {
+    const throttlingAlarm = new cdk.aws_cloudwatch.Alarm(this, "EmailLambdaThrottling", {
       metric: processEmailsLambda.metricThrottles(),
       threshold: 1,
       evaluationPeriods: 1,
@@ -321,7 +333,7 @@ export class Email extends cdk.NestedStack {
       treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
     });
 
-    new cdk.aws_cloudwatch.Alarm(this, "EmailDLQMessages", {
+    const dlqAlarm = new cdk.aws_cloudwatch.Alarm(this, "EmailDLQMessages", {
       metric: dlq.metricNumberOfMessagesReceived(),
       threshold: 1,
       evaluationPeriods: 1,
@@ -332,7 +344,7 @@ export class Email extends cdk.NestedStack {
 
     processEmailsLambda.node.addDependency(lambdaSecurityGroup);
 
-    new cdk.aws_cloudwatch.Alarm(this, "SESSendQuotaAlarm", {
+    const sesQuotaAlarm = new cdk.aws_cloudwatch.Alarm(this, "SESSendQuotaAlarm", {
       metric: new cdk.aws_cloudwatch.Metric({
         namespace: "AWS/SES",
         metricName: "Daily24HourSend",
@@ -361,16 +373,25 @@ export class Email extends cdk.NestedStack {
       treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
     });
 
-    delayedEmailsAlarm.addAlarmAction(new cdk.aws_cloudwatch_actions.SnsAction(alarmTopic));
+    const delayedEmailsThrottlingAlarm = new cdk.aws_cloudwatch.Alarm(
+      this,
+      "DelayedEmailLambdaThrottling",
+      {
+        metric: processDelayedEmailsLambda.metricThrottles(),
+        threshold: 1,
+        evaluationPeriods: 1,
+        alarmDescription: "Delayed email processing lambda is being throttled",
+        actionsEnabled: true,
+        treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
+      },
+    );
 
-    // Add throttling alarm for delayed emails lambda
-    new cdk.aws_cloudwatch.Alarm(this, "DelayedEmailLambdaThrottling", {
-      metric: processDelayedEmailsLambda.metricThrottles(),
-      threshold: 1,
-      evaluationPeriods: 1,
-      alarmDescription: "Delayed email processing lambda is being throttled",
-      actionsEnabled: true,
-      treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
-    });
+    const snsAction = new cdk.aws_cloudwatch_actions.SnsAction(alarmTopic);
+    emailProcessingErrors.addAlarmAction(snsAction);
+    throttlingAlarm.addAlarmAction(snsAction);
+    dlqAlarm.addAlarmAction(snsAction);
+    sesQuotaAlarm.addAlarmAction(snsAction);
+    delayedEmailsAlarm.addAlarmAction(snsAction);
+    delayedEmailsThrottlingAlarm.addAlarmAction(snsAction);
   }
 }

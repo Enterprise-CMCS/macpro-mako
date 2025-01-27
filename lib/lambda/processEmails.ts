@@ -10,6 +10,9 @@ import pLimit from "p-limit";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 import { getOsNamespace } from "libs/utils";
 
+/**
+ * Custom error class for handling temporary failures that should trigger retries
+ */
 export class TemporaryError extends Error {
   constructor(message: string) {
     super(message);
@@ -17,6 +20,10 @@ export class TemporaryError extends Error {
   }
 }
 
+/**
+ * Configuration interface for email processing
+ * @interface ProcessEmailConfig
+ */
 interface ProcessEmailConfig {
   emailAddressLookupSecretName: string;
   applicationEndpointUrl: string;
@@ -29,6 +36,15 @@ interface ProcessEmailConfig {
   isDev: boolean;
 }
 
+/**
+ * Main Lambda handler that processes both Kafka and SQS events
+ * The function implements a two-stage processing approach:
+ * 1. For Kafka events: Forwards messages to a delay queue for processing
+ * 2. For SQS events: Processes the delayed messages and sends emails
+ *
+ * @param event - Either a KafkaEvent or SQSEvent
+ * @throws Error if required environment variables are missing
+ */
 export const handler: Handler<KafkaEvent | SQSEvent> = async (event) => {
   const requiredEnvVars = [
     "emailAddressLookupSecretName",
@@ -57,11 +73,15 @@ export const handler: Handler<KafkaEvent | SQSEvent> = async (event) => {
     configurationSetName: process.env.configurationSetName!,
     isDev: process.env.isDev === "true",
   };
-
+  console.log("I made it to the function,thank you jesus");
+  console.log("event: ", JSON.stringify(event, null, 2));
   // 1) they're kafka "records" the first time they come around. ------>
   if ("records" in event) {
     const sqsClient = new SQSClient({ region: process.env.region! });
-
+    console.log(
+      "I made it to the first if statement, i must be a kafa record cause they sending me away",
+      JSON.stringify(event, null, 2),
+    );
     try {
       await Promise.all(
         Object.values(event.records)
@@ -76,6 +96,7 @@ export const handler: Handler<KafkaEvent | SQSEvent> = async (event) => {
           ),
       );
     } catch (err: unknown) {
+      console.debug("one of the event records failed, here is why: ", JSON.stringify(err, null, 2));
       console.log("one of the event records failed, here is why: ", err);
     }
 
@@ -83,12 +104,22 @@ export const handler: Handler<KafkaEvent | SQSEvent> = async (event) => {
   }
 
   // 2) But the second time they are SQS events with a single record.
+  console.log(
+    "I made it to the second if statement, i must be an SQS event cause they love me now and i will fly with the angels soon ",
+  );
   for (const record of event.Records) {
     const kafkaRecord = JSON.parse(record.body) as KafkaRecord;
+    console.log("kafkaRecord processed: ", JSON.stringify(kafkaRecord, null, 2));
     await processRecord(kafkaRecord, emailConfig);
   }
 };
 
+/**
+ * Processes individual Kafka records for email generation
+ * @param kafkaRecord - The Kafka record to process
+ * @param config - Email processing configuration
+ * @throws Error if the record cannot be processed
+ */
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
   console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
@@ -126,6 +157,11 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   }
 }
 
+/**
+ * Validates that an email template contains all required fields
+ * @param template - The email template to validate
+ * @throws Error if required fields are missing
+ */
 export function validateEmailTemplate(template: any) {
   const requiredFields = ["to", "subject", "body"];
   const missingFields = requiredFields.filter((field) => !template[field]);
@@ -135,6 +171,14 @@ export function validateEmailTemplate(template: any) {
   }
 }
 
+/**
+ * Creates SES email parameters from a filled template
+ * @param filledTemplate - The template with populated values
+ * @param sourceEmail - The sender's email address
+ * @param baseUrl - Base URL for link generation
+ * @param isDev - Whether running in development environment
+ * @returns SendEmailCommandInput for SES
+ */
 export function createEmailParams(
   filledTemplate: any,
   sourceEmail: string,
@@ -164,6 +208,13 @@ export function createEmailParams(
   return params;
 }
 
+/**
+ * Sends an email using AWS SES
+ * @param params - SES email parameters
+ * @param region - AWS region
+ * @returns Object containing the status of the email send operation
+ * @throws Error if email sending fails
+ */
 export async function sendEmail(params: SendEmailCommandInput, region: string): Promise<any> {
   const sesClient = new SESClient({ region: region });
   console.log("sendEmail called with params:", JSON.stringify(params, null, 2));
@@ -171,6 +222,7 @@ export async function sendEmail(params: SendEmailCommandInput, region: string): 
   const command = new SendEmailCommand(params);
   try {
     const result = await sesClient.send(command);
+    console.log("Successfully sent email. SES result:", result);
     return { status: result.$metadata.httpStatusCode };
   } catch (error) {
     console.error("Error sending email:", error);
@@ -178,6 +230,11 @@ export async function sendEmail(params: SendEmailCommandInput, region: string): 
   }
 }
 
+/**
+ * Configures HTML to text conversion options
+ * @param baseUrl - Base URL for link generation
+ * @returns HtmlToTextOptions configuration
+ */
 const htmlToTextOptions = (baseUrl: string): HtmlToTextOptions => ({
   wordwrap: 80,
   preserveNewlines: true,
@@ -224,6 +281,20 @@ const htmlToTextOptions = (baseUrl: string): HtmlToTextOptions => ({
   },
 });
 
+/**
+ * Main email processing and sending function
+ * This function:
+ * 1. Retrieves email templates
+ * 2. Gets state users and email addresses
+ * 3. Fetches package data from OpenSearch
+ * 4. Processes templates with variables
+ * 5. Sends emails with rate limiting
+ *
+ * @param record - Event record to process
+ * @param id - Package ID
+ * @param config - Email processing configuration
+ * @throws Error if any step in the process fails
+ */
 export async function processAndSendEmails(
   record: Events[keyof Events],
   id: string,
