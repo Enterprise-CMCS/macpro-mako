@@ -87,7 +87,7 @@ export async function getEmailTemplates<T>(
     console.log("No template found");
     return null;
   }
-  
+
   const emailTemplatesToSend: EmailTemplateFunction<T>[] = [];
 
   if (isAuthorityTemplate(template, authority)) {
