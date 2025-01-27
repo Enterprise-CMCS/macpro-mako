@@ -155,7 +155,7 @@ const items: Record<string, TestItemResult> = {
           },
         },
       ],
-      authority: "Medicaid SPA",
+      authority: "1915(c)",
     },
   },
   [TEST_SPA_ITEM_ID]: {
@@ -525,7 +525,7 @@ const items: Record<string, TestItemResult> = {
   },
 };
 
-export const TEST_MED_SPA_ITEM = items[TEST_ITEM_ID] as opensearch.main.ItemResult;
+export const TEST_MED_SPA_ITEM = items[TEST_SPA_ITEM_ID] as opensearch.main.ItemResult;
 export const TEST_CHIP_SPA_ITEM = items[WITHDRAWN_CHANGELOG_ITEM_ID] as opensearch.main.ItemResult;
 export const TEST_1915B_ITEM = items[EXISTING_ITEM_APPROVED_NEW_ID] as opensearch.main.ItemResult;
 export const TEST_1915C_ITEM = items[INITIAL_RELEASE_APPK_ITEM_ID] as opensearch.main.ItemResult;
