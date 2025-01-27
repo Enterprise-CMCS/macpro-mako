@@ -29,6 +29,7 @@ export const getNextSplitSPAId = async (spaId: string) => {
     throw new Error("This package can't be further split.");
   }
   const nextSuffix = String.fromCharCode(latestSuffixCharCode + 1);
+  console.log(latestSuffixCharCode + 1, "WHAT DOES THIS ADD TO");
   console.log(nextSuffix, "NEXT SUFFIX???");
 
   return `${spaId}-${nextSuffix}`;
