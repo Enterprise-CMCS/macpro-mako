@@ -6,7 +6,7 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/utils";
 import { Popover, PopoverContent, PopoverTrigger, Button, Calendar, Input } from "@/components";
 import { opensearch } from "shared-types";
-import { getNextBusinessDayTimestamp } from "shared-utils";
+import { getBusinessDayTimestamp } from "shared-utils";
 
 type Props = Omit<React.HTMLAttributes<HTMLDivElement>, "onChange" | "value" | "onSelect"> & {
   value: opensearch.RangeValue;
@@ -66,7 +66,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   };
 
   // Calendar props
-  const disableDates = [{ after: getNextBusinessDayTimestamp() }];
+  const disableDates = [{ after: new Date(getBusinessDayTimestamp()) }];
 
   const onSelect = (d: any) => {
     if (!!d?.from && !!d.to) {

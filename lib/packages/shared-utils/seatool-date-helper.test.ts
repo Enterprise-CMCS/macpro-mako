@@ -1,5 +1,5 @@
 import { it, describe, expect } from "vitest";
-import { formatSeatoolDate, getNextBusinessDayTimestamp, seaToolFriendlyTimestamp } from ".";
+import { formatSeatoolDate, getBusinessDayTimestamp, seaToolFriendlyTimestamp } from ".";
 import { format } from "date-fns";
 
 describe("seaToolFriendlyTimestamp", () => {
@@ -28,41 +28,41 @@ describe("formatSeatoolDate", () => {
   });
 });
 
-describe("getNextBusinessDayTimestamp", () => {
+describe("getBusinessDayTimestamp", () => {
   it("identifies weekends", () => {
     const testDate = new Date(Date.UTC(2024, 0, 27, 12, 0, 0)); // Saturday, noon, utc
-    const nextDate = getNextBusinessDayTimestamp(testDate);
-    expect(nextDate).toEqual(Date.UTC(2024, 0, 30)); // Tuesday, midnight, utc
+    const nextDate = getBusinessDayTimestamp(testDate);
+    expect(nextDate).toEqual(Date.UTC(2024, 0, 29, 23, 59, 59, 999)); // Monday, midnight, utc
   });
 
   it("identifies holidays", () => {
     const testDate = new Date(Date.UTC(2024, 0, 15, 12, 0, 0)); // MLK Day, a Monday
-    const nextDate = getNextBusinessDayTimestamp(testDate);
-    expect(nextDate).toEqual(Date.UTC(2024, 0, 17)); // Wednesday, midnight, utc
+    const nextDate = getBusinessDayTimestamp(testDate);
+    expect(nextDate).toEqual(Date.UTC(2024, 0, 16, 23, 59, 59, 999)); // Tuesday, midnight, utc
   });
 
   it("identifies submissions after 5pm eastern", () => {
     const testDate = new Date(Date.UTC(2024, 0, 17, 23, 0, 0)); // Wednesday 11pm utc, Wednesday 6pm eastern
-    const nextDate = getNextBusinessDayTimestamp(testDate);
-    expect(nextDate).toEqual(Date.UTC(2024, 0, 19)); // Friday, midnight, utc
+    const nextDate = getBusinessDayTimestamp(testDate);
+    expect(nextDate).toEqual(Date.UTC(2024, 0, 18, 23, 59, 59, 999)); // Thursday, midnight, utc
   });
 
   it("identifies submissions before 5pm eastern", () => {
     const testDate = new Date(Date.UTC(2024, 0, 17, 10, 0, 0)); // Wednesday 10am utc, Wednesday 5am eastern
-    const nextDate = getNextBusinessDayTimestamp(testDate);
-    expect(nextDate).toEqual(Date.UTC(2024, 0, 18)); // Thursday, midnight, utc
+    const nextDate = getBusinessDayTimestamp(testDate);
+    expect(nextDate).toEqual(Date.UTC(2024, 0, 17, 23, 59, 59, 999)); // Thursday, midnight, utc
   });
 
   it("handles combinations of rule violations", () => {
     const testDate = new Date(Date.UTC(2024, 0, 12, 23, 0, 0)); // Friday 11pm utc, Friday 6pm eastern
-    const nextDate = getNextBusinessDayTimestamp(testDate);
+    const nextDate = getBusinessDayTimestamp(testDate);
     // Submission is after 5pm, Saturday is a weekend, Sunday is a weekend, and Monday is MLK Day
-    expect(nextDate).toEqual(Date.UTC(2024, 0, 17)); // Wednesday, midnight, utc
+    expect(nextDate).toEqual(Date.UTC(2024, 0, 16, 23, 59, 59, 999)); // Tuesday, midnight utc
   });
 
   it("identifies valid business days", () => {
     const testDate = new Date(Date.UTC(2024, 0, 9, 15, 0, 0)); // Tuesday 3pm utc, Tuesday 8am eastern
-    const nextDate = getNextBusinessDayTimestamp(testDate);
-    expect(nextDate).toEqual(Date.UTC(2024, 0, 10)); // Wednesday, midnight, utc
+    const nextDate = getBusinessDayTimestamp(testDate);
+    expect(nextDate).toEqual(Date.UTC(2024, 0, 9, 23, 59, 59, 999)); // Tuesday, midnight utc
   });
 });
