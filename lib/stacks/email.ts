@@ -306,7 +306,7 @@ export class Email extends cdk.NestedStack {
         },
       ],
       startingPosition: "LATEST",
-      topics: [`${topicNamespace}aws.onemac.migration.cdc`, `aws.onemac.migration.cdc`],
+      topics: [`${topicNamespace}aws.onemac.migration.cdc`],
       destinationConfig: {
         onFailure: {
           destination: dlq.queueArn,
