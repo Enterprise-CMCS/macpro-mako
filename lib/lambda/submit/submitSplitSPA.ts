@@ -3,7 +3,6 @@ import { APIGatewayEvent } from "aws-lambda";
 import { getPackage } from "libs/api/package";
 import { produceMessage } from "libs/api/kafka";
 import { ItemResult } from "shared-types/opensearch/main";
-// import { baseSchema } from "lib/packages/shared-types/events/new-medicaid-submission";
 import { events } from "shared-types/events";
 import { getNextSplitSPAId } from "./getNextSplitSPAId";
 import { z } from "zod";
@@ -33,6 +32,8 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
       id: newId,
       idToBeUpdated: currentPackage._id,
       ...remainingFields,
+      makoChangedDate: Date.now(),
+      changedDate: Date.now(),
       origin: "OneMAC",
       changeMade: "OneMAC Admin has added a package to OneMAC.",
       changeReason: "Per request from CMS, this package was added to OneMAC.",
@@ -59,11 +60,9 @@ export const handler = async (event: APIGatewayEvent) => {
     });
   }
   try {
-    const parseEventBody = (body: unknown) => {
-      return splitSPAEventBodySchema.parse(typeof body === "string" ? JSON.parse(body) : body);
-    };
+    const body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+    const { packageId } = splitSPAEventBodySchema.parse(body);
 
-    const { packageId } = parseEventBody(event.body);
     if (!packageId) {
       return response({
         statusCode: 400,

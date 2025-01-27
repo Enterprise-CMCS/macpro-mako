@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { events } from "lib/packages/shared-types";
 
 export const deleteAdminChangeSchema = z
   .object({
@@ -29,7 +30,7 @@ export const splitSPAAdminChangeSchema = z
     adminChangeType: z.literal("split-spa"),
     idToBeUpdated: z.string(),
   })
-  .and(z.record(z.string(), z.any()));
+  .and(events["new-medicaid-submission"].baseSchema);
 
 export const transformDeleteSchema = (offset: number) =>
   deleteAdminChangeSchema.transform((data) => ({
