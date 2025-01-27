@@ -249,7 +249,7 @@ export class Email extends cdk.NestedStack {
         },
       },
     });
-    
+
     new CfnEventSourceMapping(this, "SinkSESTriggerSEATool", {
       batchSize: 1,
       enabled: true,
@@ -277,7 +277,6 @@ export class Email extends cdk.NestedStack {
         },
       },
     });
-    
 
     // Add CloudWatch alarms
     new cdk.aws_cloudwatch.Alarm(this, "EmailProcessingErrors", {

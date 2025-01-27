@@ -1,5 +1,12 @@
 import { SESClient, SendEmailCommand, SendEmailCommandInput } from "@aws-sdk/client-ses";
-import { EmailAddresses, KafkaEvent, KafkaRecord, opensearch, SEATOOL_STATUS , Events } from "shared-types";
+import {
+  EmailAddresses,
+  KafkaEvent,
+  KafkaRecord,
+  opensearch,
+  SEATOOL_STATUS,
+  Events,
+} from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { Handler } from "aws-lambda";
 import { getEmailTemplates, getAllStateUsers } from "libs/email";
@@ -116,14 +123,14 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   const id: string = decodeBase64WithUtf8(key);
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
-    const safeID = id.replace(/^"|"$/g, "")
-        const seatoolRecord: Document = {
-          safeID,
-          ...JSON.parse(decodeBase64WithUtf8(value)),
-        };
+    const safeID = id.replace(/^"|"$/g, "");
+    const seatoolRecord: Document = {
+      safeID,
+      ...JSON.parse(decodeBase64WithUtf8(value)),
+    };
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
 
-    if(safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
+    if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       try {
         const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
 
@@ -136,8 +143,8 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           timestamp,
           ...safeSeatoolRecord,
           submitterName: item._source.submitterName,
-          submitterEmail: item._source.submitterEmail
-        }
+          submitterEmail: item._source.submitterEmail,
+        };
 
         await processAndSendEmails(recordToPass, safeID, config);
       } catch (error) {
@@ -145,10 +152,8 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
         throw error;
       }
     }
-      return
+    return;
   }
-
-
 
   if (typeof key !== "string") {
     console.log("key is not a string ", JSON.stringify(key, null, 2));
@@ -197,7 +202,7 @@ export async function processAndSendEmails(
   id: string,
   config: ProcessEmailConfig,
 ) {
-  let templates; 
+  let templates;
 
   if (record?.data?.seatoolStatus) {
     templates = await getEmailTemplates<typeof record>(
