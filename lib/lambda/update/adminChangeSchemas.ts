@@ -63,9 +63,9 @@ export const submitNOSOAdminSchema = z.object({
 export const extendSubmitNOSOAdminSchema = submitNOSOAdminSchema.extend({
   packageId: z.string(),
   origin: z.string(),
-  makoChangeDate: z.number(),
-  changeDate: z.number(),
-  statsDate: z.number(),
+  makoChangedDate: z.number(),
+  changedDate: z.number(),
+  statusDate: z.number(),
   isAdminChange: z.boolean(),
   state: z.string(),
   event: z.string(),
