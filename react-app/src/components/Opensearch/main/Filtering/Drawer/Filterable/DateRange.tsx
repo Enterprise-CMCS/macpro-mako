@@ -1,24 +1,12 @@
 import { useState, useMemo } from "react";
-import {
-  format,
-  isAfter,
-  isBefore,
-  isValid,
-  parse,
-  startOfQuarter,
-  startOfMonth,
-  sub,
-  getYear,
-  endOfDay,
-  startOfDay,
-} from "date-fns";
+import { format, startOfQuarter, startOfMonth, sub, endOfDay, startOfDay } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/utils";
 import { Popover, PopoverContent, PopoverTrigger, Button, Calendar, Input } from "@/components";
 import { opensearch } from "shared-types";
-import { getNextBusinessDayTimestamp } from "shared-utils";
+import { getBusinessDayTimestamp } from "shared-utils";
 
 type Props = Omit<React.HTMLAttributes<HTMLDivElement>, "onChange" | "value" | "onSelect"> & {
   value: opensearch.RangeValue;
@@ -31,86 +19,40 @@ export const DATE_DISPLAY_FORMAT = "LLL dd, y";
 
 export function FilterableDateRange({ value, onChange, ...props }: Props) {
   const [open, setOpen] = useState(false);
-  const selectedDate = useMemo(() => {
-    return {
-      from: value?.gte ? new UTCDate(value?.gte) : undefined,
-      to: value?.lte ? new UTCDate(value?.lte) : undefined,
-    };
-  }, [value.gte, value.lte]);
   const fromValue = useMemo(() => {
     return value?.gte ? format(new UTCDate(value?.gte), DATE_FORMAT) : "";
   }, [value.gte]);
   const toValue = useMemo(() => {
     return value?.lte ? format(new UTCDate(value?.lte), DATE_FORMAT) : "";
   }, [value.lte]);
+  const selectedDate = useMemo(() => {
+    return {
+      from: fromValue !== "" ? startOfDay(new Date(fromValue)) : undefined,
+      to: toValue !== "" ? endOfDay(new Date(toValue)) : undefined,
+    };
+  }, [fromValue, toValue]);
 
   const handleClose = (updateOpen: boolean) => {
     setOpen(updateOpen);
   };
 
-  const offsetRangeToUtc = (val: opensearch.RangeValue) => ({
-    gte: val.gte ? new UTCDate(val.gte).toISOString() : undefined,
-    lte: val.lte ? new UTCDate(val.lte).toISOString() : undefined,
-  });
+  const getDateRange = (
+    startDate: Date | undefined,
+    endDate: Date | undefined,
+  ): opensearch.RangeValue => {
+    const gte = startDate
+      ? (startOfDay(new UTCDate(startDate)) as UTCDate).toISOString()
+      : undefined;
+    const lte = endDate ? (endOfDay(new UTCDate(endDate)) as UTCDate).toISOString() : undefined;
 
-  const onFromInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const minValidYear = 1960;
-    const input = e.target.value;
-
-    if (/^[0-9/]*$/.test(input)) {
-      const fromDate = parse(e.target.value, DATE_FORMAT, new UTCDate());
-      const toDate = value?.lte ? new UTCDate(value?.lte) : "";
-
-      const date: { gte: undefined | string; lte: undefined | string } = {
-        gte: fromDate.toISOString(),
-        lte: value?.lte,
-      };
-
-      if (
-        !isValid(fromDate) ||
-        getYear(fromDate) < minValidYear ||
-        isAfter(fromDate, new UTCDate())
-      ) {
-        date.gte = undefined;
-      }
-      if (toDate && isAfter(fromDate, toDate)) {
-        date.lte = undefined;
-      }
-      onChange(offsetRangeToUtc({ ...date }));
-    }
-  };
-
-  const onToInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const minValidYear = 1960;
-    const inputValue = e.target.value;
-
-    if (/^[0-9/]*$/.test(inputValue)) {
-      const fromDate = value?.gte ? new UTCDate(value?.gte) : "";
-      const toDate = parse(inputValue, DATE_FORMAT, new UTCDate());
-
-      const date: { gte: undefined | string; lte: undefined | string } = {
-        gte: value?.gte,
-        lte: toDate.toISOString(),
-      };
-
-      if (!isValid(toDate) || getYear(toDate) < minValidYear || isAfter(toDate, new UTCDate())) {
-        date.lte = undefined;
-      }
-      if (fromDate && isBefore(toDate, fromDate)) date.gte = undefined;
-
-      onChange(offsetRangeToUtc({ ...date }));
-    }
-  };
-
-  const getDateRange = (startDate: Date, endDate: Date): opensearch.RangeValue => {
     return {
-      gte: startDate.toISOString(),
-      lte: endDate.toISOString(),
+      gte,
+      lte,
     };
   };
 
   const setPresetRange = (range: string) => {
-    const today = startOfDay(new UTCDate());
+    const today = new Date();
     let startDate = today;
     if (range === "quarter") {
       startDate = startOfQuarter(today);
@@ -120,30 +62,19 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
       startDate = sub(today, { days: 6 });
     }
 
-    const rangeObject = getDateRange(startDate, endOfDay(today));
-    onChange(offsetRangeToUtc(rangeObject));
+    onChange(getDateRange(startDate, today));
   };
 
   // Calendar props
-  const disableDates = [{ after: new UTCDate(getNextBusinessDayTimestamp()) }];
+  const disableDates = [{ after: new Date(getBusinessDayTimestamp()) }];
 
   const onSelect = (d: any) => {
     if (!!d?.from && !!d.to) {
-      onChange(
-        offsetRangeToUtc({
-          gte: d.from.toISOString(),
-          lte: endOfDay(d.to).toISOString(),
-        }),
-      );
+      onChange(getDateRange(d.from, d.to));
     } else if (!d?.from && !d?.to) {
-      onChange(
-        offsetRangeToUtc({
-          gte: "",
-          lte: "",
-        }),
-      );
+      onChange({ gte: undefined, lte: undefined });
     } else if (d?.from && !d?.to) {
-      onChange(offsetRangeToUtc(getDateRange(d.from, endOfDay(d.from))));
+      onChange(getDateRange(d.from, d.from));
     }
   };
 
@@ -202,19 +133,9 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
             />
           </div>
           <div className="flex flex-row gap-2 lg:gap-4 w-min-[300px] lg:w-[320px] p-2 m-auto">
-            <Input
-              onChange={onFromInput}
-              value={fromValue}
-              placeholder="mm/dd/yyyy"
-              className="text-md"
-            />
+            <Input value={fromValue} placeholder="mm/dd/yyyy" className="text-md" />
             <p>-</p>
-            <Input
-              onChange={onToInput}
-              value={toValue}
-              placeholder="mm/dd/yyyy"
-              className="text-md"
-            />
+            <Input value={toValue} placeholder="mm/dd/yyyy" className="text-md" />
           </div>
           <div className="flex w-full flex-wrap lg:flex-row p-1">
             <div className="w-1/2 lg:w-1/4 p-1">
@@ -240,10 +161,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
           </div>
         </PopoverContent>
       </Popover>
-      <Button
-        className="text-white"
-        onClick={() => onChange(offsetRangeToUtc({ gte: undefined, lte: undefined }))}
-      >
+      <Button className="text-white" onClick={() => onChange({ gte: undefined, lte: undefined })}>
         Clear
       </Button>
     </div>
