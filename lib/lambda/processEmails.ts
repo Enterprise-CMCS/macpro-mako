@@ -141,12 +141,15 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
 
         const recordToPass = {
           timestamp,
-          ...safeSeatoolRecord,
+          ...safeSeatoolRecord.data,
           submitterName: item._source.submitterName,
           submitterEmail: item._source.submitterEmail,
+          event: "seatool-withdraw",
+          proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
+          origin: "seatool",
         };
 
-        await processAndSendEmails(recordToPass, safeID, config);
+        await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
       } catch (error) {
         console.error("Error processing record:", JSON.stringify(error, null, 2));
         throw error;
@@ -198,22 +201,18 @@ export function validateEmailTemplate(template: any) {
 }
 
 export async function processAndSendEmails(
-  record: Events[keyof Events],
+  record: Events[keyof Events] & {
+    data?: Record<string, any>;
+  },
   id: string,
   config: ProcessEmailConfig,
 ) {
   let templates;
 
   if (record?.data?.seatoolStatus) {
-    templates = await getEmailTemplates<typeof record>(
-      "seatool-withdraw",
-      record.data.authority.toLowerCase(),
-    );
+    templates = await getEmailTemplates(record);
   } else {
-    templates = await getEmailTemplates<typeof record>(
-      record.event,
-      record.authority.toLowerCase(),
-    );
+    templates = await getEmailTemplates(record);
   }
 
   if (!templates) {
