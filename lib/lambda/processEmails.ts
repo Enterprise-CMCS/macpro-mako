@@ -111,29 +111,19 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 };
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
-  console.log('before process record')
   console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
-  console.log("start id", id)
+
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
-    console.log("1",decodeBase64WithUtf8(value))
-    console.log("2",JSON.parse(decodeBase64WithUtf8(value)))
     const safeID = id.replace(/^"|"$/g, "")
         const seatoolRecord: Document = {
           safeID,
           ...JSON.parse(decodeBase64WithUtf8(value)),
         };
-        console.log("beforeww")
-        const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
-    console.log('inside process record', seatoolRecord)
-    console.log('seatool safe record', safeSeatoolRecord)
+    const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
 
     if(safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
-      console.log(safeSeatoolRecord.data?.cmsStatus, "seatool status is withdrawn")
-      
-      console.log(safeSeatoolRecord, safeID, config)
-
       try {
       const item = await os.getItem(config.osDomain, getNamespace("main"), safeID);
 
@@ -148,6 +138,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
         submitterName: item._source.submitterName,
         submitterEmail: item._source.submitterEmail
       }
+
       await processAndSendEmails(recordToPass, safeID, config);
       } catch (error) {
         console.error("Error processing record:", JSON.stringify(error, null, 2));
@@ -221,34 +212,25 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
     return;
   }
 
-  console.log('templates', templates)
-  console.log("id:", id);
   const territory = id.slice(0, 2);
-  console.log("territory", territory)
   const allStateUsers = await getAllStateUsers({
     userPoolId: config.userPoolId,
     state: territory,
   });
-  console.log("all state",allStateUsers)
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
-  console.log('sec', sec)
   const item = await os.getItem(config.osDomain, getNamespace("main"), id);
-  console.log("item", item);
   if (!item?.found || !item?._source) {
     console.log(`The package was not found for id: ${id}. Doing nothing.`);
     return;
   }
-  // if status is withdrawn send it
-  // seatool trx has multiple kafka event (cross that bridge if it does happen)
-  console.log('before emails' )
+
   const cpocEmail = [...getCpocEmail(item)];
   const srtEmails = [...getSrtEmails(item)];
 
   const emails: EmailAddresses = JSON.parse(sec);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
-  console.log('before template vars', )
   const templateVariables = {
     ...record,
     id,
@@ -293,7 +275,6 @@ export function createEmailParams(
   baseUrl: string,
   isDev: boolean,
 ): SendEmailCommandInput {
-  console.log('filled template', filledTemplate)
   const params = {
     Destination: {
       ToAddresses: filledTemplate.to,
