@@ -76,8 +76,6 @@ export const handler = async (event: APIGatewayEvent) => {
           body: { message: `Package with id: ${item.id} already exists.` },
         });
       }
-      //otherwise we need to add the property origin so it shows up on our dashboard
-      item["origin"] = "SEATool";
     }
 
     return await sendSubmitMessage({ ...item, stateStatus, cmsStatus });
