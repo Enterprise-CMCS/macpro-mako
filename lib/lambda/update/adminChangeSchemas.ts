@@ -30,8 +30,8 @@ export const splitSPAAdminChangeSchema = z
     adminChangeType: z.literal("split-spa"),
     idToBeUpdated: z.string(),
   })
-  .and(z.record(z.string(), z.any()));
-// .and(events["new-medicaid-submission"].baseSchema);
+  // .and(z.record(z.string(), z.any()));
+  .and(events["new-medicaid-submission"].baseSchema);
 
 export const transformDeleteSchema = (offset: number) =>
   deleteAdminChangeSchema.transform((data) => ({
