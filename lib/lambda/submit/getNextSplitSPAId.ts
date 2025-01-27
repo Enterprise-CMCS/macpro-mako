@@ -5,8 +5,8 @@ import { cpocs } from "lib/packages/shared-types/opensearch";
 export const getNextSplitSPAId = async (spaId: string) => {
   const { domain, index } = getDomainAndNamespace("main");
   const query = {
+    size: 200,
     query: {
-      size: 200,
       regexp: {
         "id.keyword": `${spaId}-[A-Z]`,
       },
