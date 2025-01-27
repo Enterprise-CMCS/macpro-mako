@@ -87,8 +87,8 @@ describe("FilterableDateRange", () => {
     await user.click(screen.getByText("Pick a date"));
     await user.click(screen.getByRole("button", { name: "Today" }));
     expect(onChange).toHaveBeenCalledWith({
-      gte: startOfDay(new UTCDate()).toISOString(),
-      lte: endOfDay(new UTCDate()).toISOString(),
+      gte: (startOfDay(new UTCDate()) as UTCDate).toISOString(),
+      lte: (endOfDay(new UTCDate()) as UTCDate).toISOString(),
     });
   });
 
@@ -98,8 +98,8 @@ describe("FilterableDateRange", () => {
     await user.click(screen.getByText("Pick a date"));
     await user.click(screen.getByRole("button", { name: "Last 7 Days" }));
     expect(onChange).toHaveBeenCalledWith({
-      gte: startOfDay(sub(new UTCDate(), { days: 6 })).toISOString(),
-      lte: endOfDay(new UTCDate()).toISOString(),
+      gte: (startOfDay(sub(new UTCDate(), { days: 6 })) as UTCDate).toISOString(),
+      lte: (endOfDay(new UTCDate()) as UTCDate).toISOString(),
     });
   });
 
@@ -108,9 +108,10 @@ describe("FilterableDateRange", () => {
     render(<FilterableDateRange value={{ gte: undefined, lte: undefined }} onChange={onChange} />);
     await user.click(screen.getByText("Pick a date"));
     await user.click(screen.getByRole("button", { name: "Month To Date" }));
+
     expect(onChange).toHaveBeenCalledWith({
-      gte: startOfDay(startOfMonth(new UTCDate())).toISOString(),
-      lte: endOfDay(new UTCDate()).toISOString(),
+      gte: (startOfDay(startOfMonth(new UTCDate())) as UTCDate).toISOString(),
+      lte: (endOfDay(new UTCDate()) as UTCDate).toISOString(),
     });
   });
 
@@ -120,8 +121,8 @@ describe("FilterableDateRange", () => {
     await user.click(screen.getByText("Pick a date"));
     await user.click(screen.getByRole("button", { name: "Month To Date" }));
     expect(onChange).toHaveBeenCalledWith({
-      gte: startOfDay(startOfQuarter(new UTCDate())).toISOString(),
-      lte: endOfDay(new UTCDate()).toISOString(),
+      gte: (startOfDay(startOfQuarter(new UTCDate())) as UTCDate).toISOString(),
+      lte: (endOfDay(new UTCDate()) as UTCDate).toISOString(),
     });
   });
 
@@ -136,14 +137,15 @@ describe("FilterableDateRange", () => {
     await user.click(firstDay);
     const selectedDate = startOfMonth(new UTCDate());
     expect(onChange).toHaveBeenCalledWith({
-      gte: startOfDay(selectedDate).toISOString(),
-      lte: endOfDay(selectedDate).toISOString(),
+      gte: (startOfDay(selectedDate) as UTCDate).toISOString(),
+      lte: (endOfDay(selectedDate) as UTCDate).toISOString(),
     });
   });
 
   it("should handle the first day set to the month and clicking today", async () => {
     const user = userEvent.setup();
-    const firstDay = startOfMonth(new UTCDate());
+    const firstDay = startOfMonth(new UTCDate()) as UTCDate;
+    console.log({ firstDay, formatted: format(firstDay, DATE_FORMAT) });
     render(
       <FilterableDateRange
         value={{ gte: format(firstDay, DATE_FORMAT), lte: undefined }}
@@ -162,8 +164,8 @@ describe("FilterableDateRange", () => {
       await user.click(todayDay);
 
       expect(onChange).toHaveBeenLastCalledWith({
-        gte: startOfDay(firstDay).toISOString(),
-        lte: endOfDay(todayDate).toISOString(),
+        gte: (startOfDay(firstDay) as UTCDate).toISOString(),
+        lte: (endOfDay(todayDate) as UTCDate).toISOString(),
       });
     }
   });
