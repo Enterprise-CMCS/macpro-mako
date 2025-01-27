@@ -230,7 +230,7 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
   const emails: EmailAddresses = JSON.parse(sec);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
-  
+
   const templateVariables = {
     ...record,
     id,
