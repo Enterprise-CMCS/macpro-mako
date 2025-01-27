@@ -1,6 +1,6 @@
 import { TZDate } from "@date-fns/tz";
 import { UTCDate } from "@date-fns/utc";
-import { format, startOfDay, endOfDay, isWeekend, addDays } from "date-fns";
+import { format, startOfDay, isWeekend, addDays } from "date-fns";
 import { isAHoliday } from "@18f/us-federal-holidays";
 
 /**
@@ -29,10 +29,10 @@ export const formatSeatoolDate = (date?: Date | string): string => {
 };
 
 /**
- * Returns the epoch timestamp for the end of the day UTC time for the date provided.
- * If no date is provided, it returns the timestamp of the end of the day UTC time today.
- * If the date is after 5pm Eastern time, it returns the end of the day UTC the next day.
- * If the date is on a federal holiday or weekend, it returns the end of the day UTC of the
+ * Returns the epoch timestamp for midnight UTC time for the date provided.
+ * If no date is provided, it returns the timestamp of midnight UTC time today.
+ * If the date is after 5pm Eastern time, it returns midnight UTC the next day.
+ * If the date is on a federal holiday or weekend, it returns midnight UTC of the
  * next business day.
  *
  * @param date the date object to return the timestamp for
@@ -48,5 +48,5 @@ export const getNextBusinessDayTimestamp = (date: Date = new Date()): number => 
     return getNextBusinessDayTimestamp(startOfDay(addDays(nyDateTime, 1)));
   }
 
-  return (endOfDay(new UTCDate(date)) as UTCDate).getTime();
+  return (startOfDay(addDays(new UTCDate(date), 1) as UTCDate) as UTCDate).getTime();
 };

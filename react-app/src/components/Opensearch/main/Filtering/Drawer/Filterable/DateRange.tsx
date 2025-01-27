@@ -1,17 +1,5 @@
 import { useState, useMemo } from "react";
-import {
-  format,
-  isAfter,
-  isBefore,
-  isValid,
-  parse,
-  startOfQuarter,
-  startOfMonth,
-  sub,
-  getYear,
-  endOfDay,
-  startOfDay,
-} from "date-fns";
+import { format, startOfQuarter, startOfMonth, sub, endOfDay, startOfDay } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
 import { Calendar as CalendarIcon } from "lucide-react";
 
@@ -31,63 +19,30 @@ export const DATE_DISPLAY_FORMAT = "LLL dd, y";
 
 export function FilterableDateRange({ value, onChange, ...props }: Props) {
   const [open, setOpen] = useState(false);
-  const selectedDate = useMemo(() => {
-    return {
-      from: value?.gte ? new UTCDate(value?.gte) : undefined,
-      to: value?.lte ? new UTCDate(value?.lte) : undefined,
-    };
-  }, [value.gte, value.lte]);
   const fromValue = useMemo(() => {
     return value?.gte ? format(new UTCDate(value?.gte), DATE_FORMAT) : "";
   }, [value.gte]);
   const toValue = useMemo(() => {
     return value?.lte ? format(new UTCDate(value?.lte), DATE_FORMAT) : "";
   }, [value.lte]);
+  const selectedDate = useMemo(() => {
+    return {
+      from: fromValue !== "" ? startOfDay(new Date(fromValue)) : undefined,
+      to: toValue !== "" ? endOfDay(new Date(toValue)) : undefined,
+    };
+  }, [fromValue, toValue]);
 
   const handleClose = (updateOpen: boolean) => {
     setOpen(updateOpen);
   };
 
-  const parseInputDate = (value: string): UTCDate | undefined => {
-    console.log({ value });
-    const minValidYear = 1960;
-    const parsed = parse(value, DATE_FORMAT, new UTCDate()) as UTCDate;
-    if (!isValid(parsed) || getYear(parsed) < minValidYear || isAfter(parsed, new UTCDate())) {
-      return undefined;
-    }
-    return parsed;
-  };
-
-  const onFromInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fromDate = parseInputDate(e.target.value);
-    let toDate = value?.lte ? new UTCDate(value?.lte) : undefined;
-
-    if (fromDate && toDate && isAfter(fromDate, toDate)) {
-      toDate = undefined;
-    }
-
-    onChange(getDateRange(fromDate, toDate));
-  };
-
-  const onToInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const toDate = parseInputDate(e.target.value);
-    let fromDate = value?.gte ? new UTCDate(value?.gte) : undefined;
-
-    if (fromDate && toDate && isBefore(toDate, fromDate)) {
-      fromDate = undefined;
-    }
-
-    onChange(getDateRange(fromDate, toDate));
-  };
-
   const getDateRange = (
-    startDate: UTCDate | undefined,
-    endDate: UTCDate | undefined,
+    startDate: Date | undefined,
+    endDate: Date | undefined,
   ): opensearch.RangeValue => {
     const gte = startDate
       ? (startOfDay(new UTCDate(startDate)) as UTCDate).toISOString()
       : undefined;
-    console.log({ gte });
     const lte = endDate ? (endOfDay(new UTCDate(endDate)) as UTCDate).toISOString() : undefined;
 
     return {
@@ -97,17 +52,17 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   };
 
   const setPresetRange = (range: string) => {
-    const today = new UTCDate();
+    const today = new Date();
     let startDate = today;
     if (range === "quarter") {
-      startDate = startOfQuarter(today) as UTCDate;
+      startDate = startOfQuarter(today);
     } else if (range === "month") {
-      startDate = startOfMonth(today) as UTCDate;
+      startDate = startOfMonth(today);
     } else if (range === "week") {
-      startDate = sub(today, { days: 6 }) as UTCDate;
+      startDate = sub(today, { days: 6 });
     }
 
-    onChange(getDateRange(startDate, today as UTCDate));
+    onChange(getDateRange(startDate, today));
   };
 
   // Calendar props
@@ -115,11 +70,11 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
 
   const onSelect = (d: any) => {
     if (!!d?.from && !!d.to) {
-      onChange(getDateRange(d.from as UTCDate, d.to as UTCDate));
+      onChange(getDateRange(d.from, d.to));
     } else if (!d?.from && !d?.to) {
       onChange({ gte: undefined, lte: undefined });
     } else if (d?.from && !d?.to) {
-      onChange(getDateRange(d.from as UTCDate, d.from as UTCDate));
+      onChange(getDateRange(d.from, d.from));
     }
   };
 
@@ -178,19 +133,9 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
             />
           </div>
           <div className="flex flex-row gap-2 lg:gap-4 w-min-[300px] lg:w-[320px] p-2 m-auto">
-            <Input
-              onChange={onFromInput}
-              value={fromValue}
-              placeholder="mm/dd/yyyy"
-              className="text-md"
-            />
+            <Input value={fromValue} placeholder="mm/dd/yyyy" className="text-md" />
             <p>-</p>
-            <Input
-              onChange={onToInput}
-              value={toValue}
-              placeholder="mm/dd/yyyy"
-              className="text-md"
-            />
+            <Input value={toValue} placeholder="mm/dd/yyyy" className="text-md" />
           </div>
           <div className="flex w-full flex-wrap lg:flex-row p-1">
             <div className="w-1/2 lg:w-1/4 p-1">
