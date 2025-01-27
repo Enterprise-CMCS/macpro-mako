@@ -58,9 +58,8 @@ export const handler: Handler<KafkaEvent | SQSEvent> = async (event) => {
     isDev: process.env.isDev === "true",
   };
 
-  console.log("right before if in event check");
+  // 1) they're kafka "records" the first time they come around. ------>
   if ("records" in event) {
-    console.log("right inside if in event check");
     const sqsClient = new SQSClient({ region: process.env.region! });
 
     try {
@@ -83,7 +82,7 @@ export const handler: Handler<KafkaEvent | SQSEvent> = async (event) => {
     return;
   }
 
-  // Process SQS messages
+  // 2) But the second time they are SQS events with a single record.
   for (const record of event.Records) {
     const kafkaRecord = JSON.parse(record.body) as KafkaRecord;
     await processRecord(kafkaRecord, emailConfig);
