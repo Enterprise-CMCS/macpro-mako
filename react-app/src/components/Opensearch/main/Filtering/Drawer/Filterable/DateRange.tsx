@@ -116,7 +116,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   };
 
   // Calendar props
-  const disableDates = [{ after: new UTCDate(getNextBusinessDayTimestamp()) }];
+  const disableDates = [{ after: endOfDay(new UTCDate(getNextBusinessDayTimestamp())) }];
 
   const onSelect = (d: any) => {
     if (!!d?.from && !!d.to) {
