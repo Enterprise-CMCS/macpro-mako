@@ -25,10 +25,10 @@ describe("Package Activity", () => {
     expect(toBeEmptyDOMElement);
   });
 
-  it("displays the correct title and description if changelog length is 1", async () => {
+  it("displays the correct title and description if changelog length is 0", async () => {
     await renderFormWithPackageSectionAsync(<PackageActivities />, MISSING_CHANGELOG_ITEM_ID);
 
-    expect(screen.getByText("Package Activity (1)"));
+    expect(screen.getByText("Package Activity (0)"));
     expect(screen.getByText("No package activity recorded"));
     expect(screen.queryByText("Download all documents")).not.toBeInTheDocument();
   });
@@ -115,7 +115,7 @@ describe("Package Activity", () => {
     const user = userEvent.setup();
     await renderFormWithPackageSectionAsync(<PackageActivities />, WITHDRAWN_CHANGELOG_ITEM_ID);
 
-    const downloadDocumentsBtn = screen.getByText("Download documents");
+    const downloadDocumentsBtn = screen.getByText("Download All Documents");
     await user.click(downloadDocumentsBtn);
 
     expect(spiedOnZip).toBeCalledWith([
