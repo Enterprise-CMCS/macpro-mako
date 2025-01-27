@@ -11,8 +11,17 @@ export const getNextSplitSPAId = async (spaId: string) => {
       },
     },
   };
+  const testQuery = {
+    query: {
+      regexp: {
+        "id.keyword": `${spaId}`,
+      },
+    },
+  };
+  const testHits = await search(domain, index, testQuery);
   // Get existing split SPAs for this package id
   const { hits } = await search(domain, index, query);
+  console.log(testHits.hits.hits, "TEST HITS???");
   console.log(hits.hits, "WHAT IS HITS");
   // Extract suffixes from existing split SPA IDs
   // If there are no split SPAs yet, start at the ASCII character before "A" ("@")
