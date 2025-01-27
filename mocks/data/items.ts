@@ -12,6 +12,7 @@ export const EXISTING_ITEM_ID = "MD-00-0000";
 export const NOT_FOUND_ITEM_ID = "MD-0004.R00.00";
 export const NOT_EXISTING_ITEM_ID = "MD-11-0000";
 export const TEST_ITEM_ID = "MD-0005.R01.00";
+export const TEST_SPA_ITEM_ID = "MD-11-2020";
 export const EXISTING_ITEM_TEMPORARY_EXTENSION_ID = "MD-0005.R01.TE00";
 export const HI_TEST_ITEM_ID = "HI-0000.R00.00";
 export const CAPITATED_INITIAL_ITEM_ID = "SS-2234.R00.00";
@@ -151,6 +152,29 @@ const items: Record<string, TestItemResult> = {
             id: `${TEST_ITEM_ID}-0001`,
             event: "new-medicaid-submission",
             packageId: TEST_ITEM_ID,
+          },
+        },
+      ],
+      authority: "Medicaid SPA",
+    },
+  },
+  [TEST_SPA_ITEM_ID]: {
+    _id: TEST_SPA_ITEM_ID,
+    found: true,
+    _source: {
+      id: TEST_SPA_ITEM_ID,
+      seatoolStatus: SEATOOL_STATUS.APPROVED,
+      actionType: "New",
+      state: "MD",
+      origin: "OneMAC",
+      changedDate: "2024-11-26T18:17:21.557Z",
+      changelog: [
+        {
+          _id: `${TEST_SPA_ITEM_ID}-001`,
+          _source: {
+            id: `${TEST_SPA_ITEM_ID}-0001`,
+            event: "new-medicaid-submission",
+            packageId: TEST_SPA_ITEM_ID,
           },
         },
       ],
