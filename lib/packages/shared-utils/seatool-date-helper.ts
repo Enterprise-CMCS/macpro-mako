@@ -48,5 +48,10 @@ export const getNextBusinessDayTimestamp = (date: Date = new Date()): number => 
     return getNextBusinessDayTimestamp(startOfDay(addDays(nyDateTime, 1)));
   }
 
-  return (startOfDay(addDays(new UTCDate(date), 1) as UTCDate) as UTCDate).getTime();
+  const nextBusinessDay = startOfDay(addDays(new UTCDate(date), 1) as UTCDate) as UTCDate;
+  if (isAHoliday(nextBusinessDay) || isWeekend(nextBusinessDay)) {
+    return getNextBusinessDayTimestamp(nextBusinessDay);
+  }
+
+  return nextBusinessDay.getTime();
 };
