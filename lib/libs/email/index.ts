@@ -1,4 +1,4 @@
-import { Authority } from "shared-types";
+import { Authority, Events } from "shared-types";
 import { getPackageChangelog } from "../api/package";
 import * as EmailContent from "./content";
 import { changelog } from "shared-types/opensearch";
@@ -23,7 +23,7 @@ export type AuthoritiesWithUserTypesTemplate = {
 export type EmailTemplates = {
   "new-medicaid-submission": AuthoritiesWithUserTypesTemplate;
   "new-chip-submission": AuthoritiesWithUserTypesTemplate;
-  "temp-extension": UserTypeOnlyTemplate;
+  "temporary-extension": AuthoritiesWithUserTypesTemplate;
   "withdraw-package": AuthoritiesWithUserTypesTemplate;
   "withdraw-rai": AuthoritiesWithUserTypesTemplate;
   "contracting-initial": AuthoritiesWithUserTypesTemplate;
@@ -37,13 +37,15 @@ export type EmailTemplates = {
   "contracting-renewal-state": AuthoritiesWithUserTypesTemplate;
   "capitated-renewal-state": AuthoritiesWithUserTypesTemplate;
   "respond-to-rai": AuthoritiesWithUserTypesTemplate;
+  "app-k": AuthoritiesWithUserTypesTemplate;
+  "upload-subsequent-documents": AuthoritiesWithUserTypesTemplate;
 };
 
 // Create a type-safe mapping of email templates
 const emailTemplates: EmailTemplates = {
   "new-medicaid-submission": EmailContent.newSubmission,
   "new-chip-submission": EmailContent.newSubmission,
-  "temp-extension": EmailContent.tempExtention,
+  "temporary-extension": EmailContent.tempExtension,
   "withdraw-package": EmailContent.withdrawPackage,
   "withdraw-rai": EmailContent.withdrawRai,
   "contracting-initial": EmailContent.newSubmission,
@@ -57,6 +59,8 @@ const emailTemplates: EmailTemplates = {
   "contracting-renewal-state": EmailContent.newSubmission,
   "capitated-renewal-state": EmailContent.newSubmission,
   "respond-to-rai": EmailContent.respondToRai,
+  "app-k": EmailContent.newSubmission,
+  "upload-subsequent-documents": EmailContent.uploadSubsequentDocuments,
 };
 
 // Create a type-safe lookup function
@@ -68,36 +72,31 @@ export function getEmailTemplate(
   return emailTemplates[baseAction];
 }
 
-function isAuthorityTemplate(
-  obj: any,
-  authority: Authority,
-): obj is AuthoritiesWithUserTypesTemplate {
-  return authority in obj;
+function hasAuthority(
+  obj: Events[keyof Events],
+): obj is Extract<Events[keyof Events], { authority: string }> {
+  return "authority" in obj;
 }
 
 // Update the getEmailTemplates function to use the new lookup
-export async function getEmailTemplates<T>(
-  action: keyof EmailTemplates,
-  authority: Authority,
-): Promise<EmailTemplateFunction<T>[] | null> {
-  const template = getEmailTemplate(action || "new-medicaid-submission");
-  if (!template) {
+export async function getEmailTemplates(
+  record: Events[keyof Events],
+): Promise<EmailTemplateFunction<typeof record>[]> {
+  const event = record.event;
+  if (!event || !(event in emailTemplates)) {
     console.log("No template found");
-    return null;
+    return [];
   }
 
-  const emailTemplatesToSend: EmailTemplateFunction<T>[] = [];
-
-  if (isAuthorityTemplate(template, authority)) {
-    emailTemplatesToSend.push(...Object.values(template[authority] as EmailTemplateFunction<T>));
+  const template = emailTemplates[event as keyof EmailTemplates];
+  if (hasAuthority(record)) {
+    const authorityTemplates = (template as AuthoritiesWithUserTypesTemplate)[
+      record.authority.toLowerCase() as Authority
+    ];
+    return authorityTemplates ? Object.values(authorityTemplates) : [];
   } else {
-    emailTemplatesToSend.push(
-      ...Object.values(template as Record<UserType, EmailTemplateFunction<T>>),
-    );
+    return Object.values(template as UserTypeOnlyTemplate);
   }
-
-  console.log("Email templates to send:", JSON.stringify(emailTemplatesToSend, null, 2));
-  return emailTemplatesToSend;
 }
 
 // I think this needs to be written to handle not finding any matching events and so forth

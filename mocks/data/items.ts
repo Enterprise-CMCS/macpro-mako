@@ -515,4 +515,18 @@ export const TEST_TEMP_EXT_ITEM = items[
   EXISTING_ITEM_TEMPORARY_EXTENSION_ID
 ] as opensearch.main.ItemResult;
 
+export const itemList = Object.values(items);
+
+export const getFilteredItemList = (filters: string[]) => {
+  return itemList.filter((item) => filters.includes(item?._source?.authority || ""));
+};
+
+export const docList = Object.values(items).map(
+  (item) => (item?._source || {}) as opensearch.main.Document,
+);
+
+export const getFilteredDocList = (filters: string[]) => {
+  return docList.filter((item) => filters.includes(item?.authority || ""));
+};
+
 export default items;

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@aws-amplify/auth": "^5.4.0",
+    "@date-fns/utc": "2.1.0",
     "@fontsource/open-sans": "^5.0.17",
     "@heroicons/react": "^2.0.17",
     "@hookform/resolvers": "^3.3.2",
