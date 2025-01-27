@@ -24,14 +24,19 @@ export const updateIdAdminChangeSchema = z
   })
   .and(z.record(z.string(), z.any()));
 
-export const splitSPAAdminChangeSchema = z
-  .object({
-    id: z.string(),
-    adminChangeType: z.literal("split-spa"),
-    idToBeUpdated: z.string(),
-  })
-  // .and(z.record(z.string(), z.any()));
-  .and(events["new-medicaid-submission"].baseSchema);
+// export const splitSPAAdminChangeSchema = z
+//   .object({
+//     id: z.string(),
+//     adminChangeType: z.literal("split-spa"),
+//     idToBeUpdated: z.string(),
+//   })
+//   .and(z.record(z.string(), z.any()));
+
+export const splitSPAAdminChangeSchema = events["new-medicaid-submission"].baseSchema.extend({
+  id: z.string(),
+  adminChangeType: z.literal("split-spa"),
+  idToBeUpdated: z.string(),
+});
 
 export const transformDeleteSchema = (offset: number) =>
   deleteAdminChangeSchema.transform((data) => ({
