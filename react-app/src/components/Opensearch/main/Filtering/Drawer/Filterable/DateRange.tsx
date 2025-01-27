@@ -48,9 +48,10 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     setOpen(updateOpen);
   };
 
-  const parseInputDate = (value: string): Date | undefined => {
+  const parseInputDate = (value: string): UTCDate | undefined => {
+    console.log({ value });
     const minValidYear = 1960;
-    const parsed = parse(value, DATE_FORMAT, new UTCDate());
+    const parsed = parse(value, DATE_FORMAT, new UTCDate()) as UTCDate;
     if (!isValid(parsed) || getYear(parsed) < minValidYear || isAfter(parsed, new UTCDate())) {
       return undefined;
     }
@@ -80,20 +81,14 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   };
 
   const getDateRange = (
-    startDate: Date | undefined,
-    endDate: Date | undefined,
+    startDate: UTCDate | undefined,
+    endDate: UTCDate | undefined,
   ): opensearch.RangeValue => {
     const gte = startDate
-      ? startOfDay(
-          new UTCDate(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()),
-        ).toISOString()
+      ? (startOfDay(new UTCDate(startDate)) as UTCDate).toISOString()
       : undefined;
-
-    const lte = endDate
-      ? endOfDay(
-          new UTCDate(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()),
-        ).toISOString()
-      : undefined;
+    console.log({ gte });
+    const lte = endDate ? (endOfDay(new UTCDate(endDate)) as UTCDate).toISOString() : undefined;
 
     return {
       gte,
@@ -102,29 +97,29 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   };
 
   const setPresetRange = (range: string) => {
-    const today = startOfDay(new UTCDate());
+    const today = new UTCDate();
     let startDate = today;
     if (range === "quarter") {
-      startDate = startOfQuarter(today);
+      startDate = startOfQuarter(today) as UTCDate;
     } else if (range === "month") {
-      startDate = startOfMonth(today);
+      startDate = startOfMonth(today) as UTCDate;
     } else if (range === "week") {
-      startDate = sub(today, { days: 6 });
+      startDate = sub(today, { days: 6 }) as UTCDate;
     }
 
-    onChange(getDateRange(startDate, endOfDay(today)));
+    onChange(getDateRange(startDate, today as UTCDate));
   };
 
   // Calendar props
-  const disableDates = [{ after: new UTCDate(getNextBusinessDayTimestamp()) }];
+  const disableDates = [{ after: new Date(getNextBusinessDayTimestamp()) }];
 
   const onSelect = (d: any) => {
     if (!!d?.from && !!d.to) {
-      onChange(getDateRange(d.from, endOfDay(d.to)));
+      onChange(getDateRange(d.from as UTCDate, d.to as UTCDate));
     } else if (!d?.from && !d?.to) {
       onChange({ gte: undefined, lte: undefined });
     } else if (d?.from && !d?.to) {
-      onChange(getDateRange(d.from, endOfDay(d.from)));
+      onChange(getDateRange(d.from as UTCDate, d.from as UTCDate));
     }
   };
 
