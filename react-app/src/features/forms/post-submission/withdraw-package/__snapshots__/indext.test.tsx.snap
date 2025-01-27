@@ -1,0 +1,876 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver correctly 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="max-w-screen-xl mx-auto px-4 lg:px-8"
+      >
+        <nav
+          aria-label="breadcrumbs for spa or waiver choices"
+          class="my-4"
+          role="navigation"
+        >
+          <ul
+            class="flex flex-wrap gap-1"
+          >
+            <li
+              class="flex items-center text-sm"
+            >
+              <a
+                class="underline text-sky-700 hover:text-sky-800"
+                data-discover="true"
+                href="/dashboard?tab=waivers"
+              >
+                Dashboard
+              </a>
+            </li>
+            <li
+              class="flex items-center text-sm"
+            >
+              <span>
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m9 18 6-6-6-6"
+                  />
+                </svg>
+              </span>
+              <a
+                class="underline text-sky-700 hover:text-sky-800"
+                data-discover="true"
+                href="/details/1915(c)/VA-2234.R11.01"
+              >
+                VA-2234.R11.01
+              </a>
+            </li>
+            <li
+              class="flex items-center text-sm"
+            >
+              <span>
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m9 18 6-6-6-6"
+                  />
+                </svg>
+              </span>
+              <span
+                aria-disabled="true"
+                class="whitespace-nowrap"
+              >
+                Withdraw Package
+              </span>
+            </li>
+          </ul>
+        </nav>
+        <form
+          class="my-6 space-y-8 mx-auto justify-center flex flex-col"
+        >
+          <section
+            class="p-4 border rounded-sm border-cardBorder"
+            data-testid="detail-section"
+          >
+            <h1
+              class="text-3xl font-semibold mb-2"
+              data-testid="detail-section-title"
+            >
+              Withdraw 1915(c) Appendix K
+            </h1>
+            <hr
+              class="my-6 bg-slate-200"
+            />
+            <div
+              class="gap-8 flex flex-col"
+              data-testid="detail-section-child"
+            >
+              <div>
+                <span
+                  class="text-red-600"
+                >
+                  *
+                </span>
+                 
+                <em
+                  class="text-neutral-500"
+                >
+                  Indicates a required field.
+                </em>
+                <div
+                  class="mt-4"
+                >
+                  Complete this form to withdraw this 1915(c) Appendix K package. Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.
+                  <p
+                    class="font-bold"
+                  >
+                    If you leave this page, you will lose your progress on this form.
+                  </p>
+                </div>
+              </div>
+              <section
+                class="flex flex-col mb-8 space-y-8"
+              >
+                <div>
+                  <p
+                    class="font-bold"
+                  >
+                    Waiver Number
+                  </p>
+                  <p
+                    class="text-xl"
+                  >
+                    VA-2234.R11.01
+                  </p>
+                </div>
+                <div>
+                  <p
+                    class="font-bold"
+                  >
+                    Authority
+                  </p>
+                  <p
+                    class="text-xl"
+                  >
+                    1915(c) Waiver
+                  </p>
+                </div>
+              </section>
+            </div>
+          </section>
+          <section
+            class="p-4 border rounded-sm border-cardBorder"
+            data-testid="attachment-section"
+          >
+            <h1
+              class="text-3xl font-semibold mb-2"
+              data-testid="attachment-section-title"
+            >
+              Attachments
+               
+            </h1>
+            <hr
+              class="my-6 bg-slate-200"
+            />
+            <div
+              class="gap-8 flex flex-col"
+              data-testid="attachment-section-child"
+            >
+              <div>
+                <p
+                  class="font-medium"
+                >
+                  Upload your supporting documentation for withdrawal or explain your need for withdrawal in the Additional Information section.
+                </p>
+                <br />
+                <p
+                  data-testid="attachments-instructions"
+                >
+                  Maximum file size of 80 MB per attachment.
+                   
+                  <span
+                    class="font-bold"
+                  >
+                    You can add multiple files per attachment type.
+                  </span>
+                   Read the description for each of the attachment types on the
+                   
+                  <a
+                    class="text-blue-900 underline"
+                    data-discover="true"
+                    href="/faq/withdraw-package-waiver"
+                    rel="noopener noreferrer"
+                    target="faq-tab"
+                  >
+                    FAQ Page
+                  </a>
+                  .
+                </p>
+                <br />
+                <p
+                  data-testid="accepted-files"
+                >
+                  We accept the following file formats:
+                   
+                  <span
+                    class="font-bold"
+                  >
+                    .doc, .docx, .pdf, .jpg, .xlsx, and more. 
+                  </span>
+                   
+                  <a
+                    class="text-blue-900 underline"
+                    data-discover="true"
+                    href="/faq/acceptable-file-formats"
+                    rel="noopener noreferrer"
+                    target="faq-tab"
+                  >
+                    See the full list
+                  </a>
+                  .
+                </p>
+              </div>
+              <section
+                class="space-y-8"
+                data-testid="attachments-section"
+              >
+                <div>
+                  <label
+                    class="text-base leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold"
+                    data-testid="supportingDocumentation-label"
+                    for="attachments.supportingDocumentation.files"
+                  >
+                    Supporting Documentation
+                     
+                  </label>
+                  <div
+                    class="w-full flex items-center justify-center border border-dashed border-[#71767a] py-6 rounded-sm"
+                    role="presentation"
+                    tabindex="0"
+                  >
+                    <p>
+                      Drag file here or
+                       
+                      <span
+                        class="text-sky-700 underline hover:cursor-pointer"
+                      >
+                        choose from folder
+                      </span>
+                    </p>
+                    <label
+                      class="sr-only"
+                      for="upload-mocked-uuid-1234"
+                    >
+                      Drag file here or choose from folder
+                    </label>
+                    <input
+                      accept="image/bmp,.bmp,text/csv,.csv,application/msword,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx,image/gif,.gif,image/jpeg,.jpeg,application/vnd.oasis.opendocument.presentation,.odp,application/vnd.oasis.opendocument.spreadsheet,.ods,application/vnd.oasis.opendocument.text,.odt,image/png,.png,application/pdf,.pdf,application/vnd.ms-powerpoint,.ppt,application/vnd.openxmlformats-officedocument.presentationml.presentation,.pptx,application/rtf,.rtf,image/tiff,.tif,text/plain,.txt,application/vnd.ms-excel,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.xlsx"
+                      data-testid="supportingDocumentation-upload"
+                      id="upload-mocked-uuid-1234"
+                      multiple=""
+                      style="display: none;"
+                      tabindex="-1"
+                      type="file"
+                    />
+                  </div>
+                </div>
+              </section>
+            </div>
+          </section>
+          <section
+            class="p-4 border rounded-sm border-cardBorder"
+            data-testid="additional-info"
+          >
+            <h1
+              class="text-3xl font-semibold mb-2"
+              data-testid="additional-info-title"
+            >
+              Additional Information
+               
+            </h1>
+            <hr
+              class="my-6 bg-slate-200"
+            />
+            <div
+              class="gap-8 flex flex-col"
+              data-testid="additional-info-child"
+            >
+              <div>
+                <label
+                  class="text-base leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-normal"
+                  data-testid="addl-info-label"
+                  for="additional-info"
+                >
+                  Explain your need for withdrawal, or upload supporting documentation.
+                </label>
+                <textarea
+                  aria-describedby="character-count"
+                  aria-live="off"
+                  aria-multiline="true"
+                  class="flex min-h-[76px] w-full rounded-sm border border-black bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 h-[200px] resize-none"
+                  id="additional-info"
+                  maxlength="4000"
+                  name="additionalInformation"
+                />
+                <p
+                  id=":r1:-form-item-description"
+                >
+                  <span
+                    aria-label="character-count"
+                    aria-live="polite"
+                    class="text-neutral-500"
+                    id="character-count"
+                    tabindex="0"
+                  >
+                    4000 characters remaining
+                  </span>
+                </p>
+              </div>
+            </div>
+          </section>
+          <div
+            class="relative w-full border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground border-l-[6px] border-y-0 border-r-0 border-cyan-500 bg-cyan-300/10 rounded-none my-2 flex-row text-sm"
+            role="alert"
+          >
+            <svg
+              class="lucide lucide-info"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+              />
+              <path
+                d="M12 16v-4"
+              />
+              <path
+                d="M12 8h.01"
+              />
+            </svg>
+            <p
+              class="ml-2"
+            >
+              Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.
+            </p>
+            <p
+              class="font-bold ml-2"
+            >
+              If you leave this page, you will lose your progress on this form.
+            </p>
+          </div>
+          <section
+            class="flex justify-end gap-2 p-4 ml-auto"
+          >
+            <button
+              class="inline-flex items-center justify-center rounded-md text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-10 py-2 px-12"
+              data-testid="submit-action-form"
+              disabled=""
+              type="button"
+            >
+              Submit
+            </button>
+            <button
+              class="inline-flex items-center justify-center rounded-md text-[16px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary text-primary font-bold hover:bg-primary/10 h-10 py-2 px-12"
+              data-testid="cancel-action-form"
+              type="reset"
+            >
+              Cancel
+            </button>
+          </section>
+        </form>
+        <div
+          class="relative w-full border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground border-l-[6px] border-y-0 border-r-0 border-cyan-500 bg-cyan-300/10 rounded-none mb-8 items-center flex py-8 px-14 flex-row text-sm justify-center gap-24"
+          role="alert"
+        >
+          <p
+            class="text-lg"
+          >
+            Do you have questions or need support?
+          </p>
+          <a
+            data-discover="true"
+            href="/faq"
+            target="_blank"
+          >
+            <button
+              class="inline-flex items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-11 rounded-md px-8 mx-4"
+            >
+              View FAQ
+            </button>
+          </a>
+        </div>
+      </div>
+      ,
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="max-w-screen-xl mx-auto px-4 lg:px-8"
+    >
+      <nav
+        aria-label="breadcrumbs for spa or waiver choices"
+        class="my-4"
+        role="navigation"
+      >
+        <ul
+          class="flex flex-wrap gap-1"
+        >
+          <li
+            class="flex items-center text-sm"
+          >
+            <a
+              class="underline text-sky-700 hover:text-sky-800"
+              data-discover="true"
+              href="/dashboard?tab=waivers"
+            >
+              Dashboard
+            </a>
+          </li>
+          <li
+            class="flex items-center text-sm"
+          >
+            <span>
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m9 18 6-6-6-6"
+                />
+              </svg>
+            </span>
+            <a
+              class="underline text-sky-700 hover:text-sky-800"
+              data-discover="true"
+              href="/details/1915(c)/VA-2234.R11.01"
+            >
+              VA-2234.R11.01
+            </a>
+          </li>
+          <li
+            class="flex items-center text-sm"
+          >
+            <span>
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m9 18 6-6-6-6"
+                />
+              </svg>
+            </span>
+            <span
+              aria-disabled="true"
+              class="whitespace-nowrap"
+            >
+              Withdraw Package
+            </span>
+          </li>
+        </ul>
+      </nav>
+      <form
+        class="my-6 space-y-8 mx-auto justify-center flex flex-col"
+      >
+        <section
+          class="p-4 border rounded-sm border-cardBorder"
+          data-testid="detail-section"
+        >
+          <h1
+            class="text-3xl font-semibold mb-2"
+            data-testid="detail-section-title"
+          >
+            Withdraw 1915(c) Appendix K
+          </h1>
+          <hr
+            class="my-6 bg-slate-200"
+          />
+          <div
+            class="gap-8 flex flex-col"
+            data-testid="detail-section-child"
+          >
+            <div>
+              <span
+                class="text-red-600"
+              >
+                *
+              </span>
+               
+              <em
+                class="text-neutral-500"
+              >
+                Indicates a required field.
+              </em>
+              <div
+                class="mt-4"
+              >
+                Complete this form to withdraw this 1915(c) Appendix K package. Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.
+                <p
+                  class="font-bold"
+                >
+                  If you leave this page, you will lose your progress on this form.
+                </p>
+              </div>
+            </div>
+            <section
+              class="flex flex-col mb-8 space-y-8"
+            >
+              <div>
+                <p
+                  class="font-bold"
+                >
+                  Waiver Number
+                </p>
+                <p
+                  class="text-xl"
+                >
+                  VA-2234.R11.01
+                </p>
+              </div>
+              <div>
+                <p
+                  class="font-bold"
+                >
+                  Authority
+                </p>
+                <p
+                  class="text-xl"
+                >
+                  1915(c) Waiver
+                </p>
+              </div>
+            </section>
+          </div>
+        </section>
+        <section
+          class="p-4 border rounded-sm border-cardBorder"
+          data-testid="attachment-section"
+        >
+          <h1
+            class="text-3xl font-semibold mb-2"
+            data-testid="attachment-section-title"
+          >
+            Attachments
+             
+          </h1>
+          <hr
+            class="my-6 bg-slate-200"
+          />
+          <div
+            class="gap-8 flex flex-col"
+            data-testid="attachment-section-child"
+          >
+            <div>
+              <p
+                class="font-medium"
+              >
+                Upload your supporting documentation for withdrawal or explain your need for withdrawal in the Additional Information section.
+              </p>
+              <br />
+              <p
+                data-testid="attachments-instructions"
+              >
+                Maximum file size of 80 MB per attachment.
+                 
+                <span
+                  class="font-bold"
+                >
+                  You can add multiple files per attachment type.
+                </span>
+                 Read the description for each of the attachment types on the
+                 
+                <a
+                  class="text-blue-900 underline"
+                  data-discover="true"
+                  href="/faq/withdraw-package-waiver"
+                  rel="noopener noreferrer"
+                  target="faq-tab"
+                >
+                  FAQ Page
+                </a>
+                .
+              </p>
+              <br />
+              <p
+                data-testid="accepted-files"
+              >
+                We accept the following file formats:
+                 
+                <span
+                  class="font-bold"
+                >
+                  .doc, .docx, .pdf, .jpg, .xlsx, and more. 
+                </span>
+                 
+                <a
+                  class="text-blue-900 underline"
+                  data-discover="true"
+                  href="/faq/acceptable-file-formats"
+                  rel="noopener noreferrer"
+                  target="faq-tab"
+                >
+                  See the full list
+                </a>
+                .
+              </p>
+            </div>
+            <section
+              class="space-y-8"
+              data-testid="attachments-section"
+            >
+              <div>
+                <label
+                  class="text-base leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-bold"
+                  data-testid="supportingDocumentation-label"
+                  for="attachments.supportingDocumentation.files"
+                >
+                  Supporting Documentation
+                   
+                </label>
+                <div
+                  class="w-full flex items-center justify-center border border-dashed border-[#71767a] py-6 rounded-sm"
+                  role="presentation"
+                  tabindex="0"
+                >
+                  <p>
+                    Drag file here or
+                     
+                    <span
+                      class="text-sky-700 underline hover:cursor-pointer"
+                    >
+                      choose from folder
+                    </span>
+                  </p>
+                  <label
+                    class="sr-only"
+                    for="upload-mocked-uuid-1234"
+                  >
+                    Drag file here or choose from folder
+                  </label>
+                  <input
+                    accept="image/bmp,.bmp,text/csv,.csv,application/msword,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx,image/gif,.gif,image/jpeg,.jpeg,application/vnd.oasis.opendocument.presentation,.odp,application/vnd.oasis.opendocument.spreadsheet,.ods,application/vnd.oasis.opendocument.text,.odt,image/png,.png,application/pdf,.pdf,application/vnd.ms-powerpoint,.ppt,application/vnd.openxmlformats-officedocument.presentationml.presentation,.pptx,application/rtf,.rtf,image/tiff,.tif,text/plain,.txt,application/vnd.ms-excel,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.xlsx"
+                    data-testid="supportingDocumentation-upload"
+                    id="upload-mocked-uuid-1234"
+                    multiple=""
+                    style="display: none;"
+                    tabindex="-1"
+                    type="file"
+                  />
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+        <section
+          class="p-4 border rounded-sm border-cardBorder"
+          data-testid="additional-info"
+        >
+          <h1
+            class="text-3xl font-semibold mb-2"
+            data-testid="additional-info-title"
+          >
+            Additional Information
+             
+          </h1>
+          <hr
+            class="my-6 bg-slate-200"
+          />
+          <div
+            class="gap-8 flex flex-col"
+            data-testid="additional-info-child"
+          >
+            <div>
+              <label
+                class="text-base leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-normal"
+                data-testid="addl-info-label"
+                for="additional-info"
+              >
+                Explain your need for withdrawal, or upload supporting documentation.
+              </label>
+              <textarea
+                aria-describedby="character-count"
+                aria-live="off"
+                aria-multiline="true"
+                class="flex min-h-[76px] w-full rounded-sm border border-black bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 h-[200px] resize-none"
+                id="additional-info"
+                maxlength="4000"
+                name="additionalInformation"
+              />
+              <p
+                id=":r1:-form-item-description"
+              >
+                <span
+                  aria-label="character-count"
+                  aria-live="polite"
+                  class="text-neutral-500"
+                  id="character-count"
+                  tabindex="0"
+                >
+                  4000 characters remaining
+                </span>
+              </p>
+            </div>
+          </div>
+        </section>
+        <div
+          class="relative w-full border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground border-l-[6px] border-y-0 border-r-0 border-cyan-500 bg-cyan-300/10 rounded-none my-2 flex-row text-sm"
+          role="alert"
+        >
+          <svg
+            class="lucide lucide-info"
+            fill="none"
+            height="24"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+            />
+            <path
+              d="M12 16v-4"
+            />
+            <path
+              d="M12 8h.01"
+            />
+          </svg>
+          <p
+            class="ml-2"
+          >
+            Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.
+          </p>
+          <p
+            class="font-bold ml-2"
+          >
+            If you leave this page, you will lose your progress on this form.
+          </p>
+        </div>
+        <section
+          class="flex justify-end gap-2 p-4 ml-auto"
+        >
+          <button
+            class="inline-flex items-center justify-center rounded-md text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-10 py-2 px-12"
+            data-testid="submit-action-form"
+            disabled=""
+            type="button"
+          >
+            Submit
+          </button>
+          <button
+            class="inline-flex items-center justify-center rounded-md text-[16px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary text-primary font-bold hover:bg-primary/10 h-10 py-2 px-12"
+            data-testid="cancel-action-form"
+            type="reset"
+          >
+            Cancel
+          </button>
+        </section>
+      </form>
+      <div
+        class="relative w-full border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground border-l-[6px] border-y-0 border-r-0 border-cyan-500 bg-cyan-300/10 rounded-none mb-8 items-center flex py-8 px-14 flex-row text-sm justify-center gap-24"
+        role="alert"
+      >
+        <p
+          class="text-lg"
+        >
+          Do you have questions or need support?
+        </p>
+        <a
+          data-discover="true"
+          href="/faq"
+          target="_blank"
+        >
+          <button
+            class="inline-flex items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-11 rounded-md px-8 mx-4"
+          >
+            View FAQ
+          </button>
+        </a>
+      </div>
+    </div>
+    ,
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

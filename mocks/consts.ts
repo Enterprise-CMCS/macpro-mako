@@ -37,8 +37,8 @@ export const AUTH_CONFIG = {
   userPoolWebClientId: USER_POOL_CLIENT_ID,
   oauth: {
     domain: USER_POOL_CLIENT_DOMAIN,
-    redirectSignIn: "http://localhost",
-    redirectSignOut: "http://localhost",
+    redirectSignIn: "http://localhost:5000/",
+    redirectSignOut: "http://localhost:5000/",
     scope: ["email", "openid"],
     responseType: "code",
   },

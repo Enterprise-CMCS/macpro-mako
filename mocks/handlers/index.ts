@@ -36,7 +36,7 @@ export {
   setDefaultReviewer,
   setDefaultStateSubmitter,
   setMockUsername,
-} from "./authUtils.js";
+} from "./auth.utils";
 
 export * from "./api";
 export * from "./aws";

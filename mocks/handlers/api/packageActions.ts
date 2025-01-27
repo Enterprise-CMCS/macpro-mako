@@ -4,8 +4,9 @@ import items from "mocks/data/items";
 import { opensearch, UserRoles } from "shared-types";
 import { getAvailableActions } from "shared-utils";
 
-const defaultPackageActionsHandler = http.post<PathParams, PackageActionsRequestBody>(
-  /\/getPackageActions$/,
+const defaultApiPackageActionsHandler = http.post<PathParams, PackageActionsRequestBody>(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getPackageActions",
+
   async ({ request }) => {
     const { id } = await request.json();
 
@@ -38,9 +39,9 @@ const defaultPackageActionsHandler = http.post<PathParams, PackageActionsRequest
   },
 );
 
-export const errorPackageActionsHandler = http.post<PathParams, PackageActionsRequestBody>(
-  /\/getPackageActions$/,
+export const errorApiPackageActionsHandler = http.post<PathParams, PackageActionsRequestBody>(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getPackageActions",
   () => new HttpResponse(null, { status: 500 }),
 );
 
-export const packageActionHandlers = [defaultPackageActionsHandler];
+export const packageActionHandlers = [defaultApiPackageActionsHandler];

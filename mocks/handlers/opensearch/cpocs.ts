@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
 import { cpocsList } from "../../data/cpocs";
 
-const defaultCpocSearchHandler = http.post(
+const defaultOSCpocSearchHandler = http.post(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-cpocs/_search",
   () =>
     HttpResponse.json({
@@ -24,14 +24,14 @@ const defaultCpocSearchHandler = http.post(
     }),
 );
 
-export const emptyCpocSearchHandler = http.post(
+export const emptyOSCpocSearchHandler = http.post(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-cpocs/_search",
   () => new HttpResponse(),
 );
 
-export const errorCpocSearchHandler = http.post(
+export const errorOSCpocSearchHandler = http.post(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-cpocs/_search",
   () => new HttpResponse("Internal server error", { status: 500 }),
 );
 
-export const cpocSearchHandlers = [defaultCpocSearchHandler];
+export const cpocSearchHandlers = [defaultOSCpocSearchHandler];

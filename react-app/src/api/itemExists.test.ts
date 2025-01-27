@@ -4,7 +4,7 @@ import {
   TEST_ITEM_ID,
   NOT_FOUND_ITEM_ID,
   NOT_EXISTING_ITEM_ID,
-  errorItemExistsHandler,
+  errorApiItemExistsHandler,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 
@@ -25,7 +25,7 @@ describe("itemExists test", () => {
   });
 
   it("should return false if there is an error getting the item", async () => {
-    mockedServer.use(errorItemExistsHandler);
+    mockedServer.use(errorApiItemExistsHandler);
 
     const found = await itemExists(TEST_ITEM_ID);
     expect(found).toBeFalsy();

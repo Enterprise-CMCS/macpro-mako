@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { getAttachmentUrl } from "./getAttachmentUrl";
-import { ATTACHMENT_BUCKET_NAME, ATTACHMENT_BUCKET_REGION, errorAttachmentUrlHandler } from "mocks";
+import {
+  ATTACHMENT_BUCKET_NAME,
+  ATTACHMENT_BUCKET_REGION,
+  errorApiAttachmentUrlHandler,
+} from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 
 describe("getAttachmentUrl tests", () => {
@@ -16,7 +20,7 @@ describe("getAttachmentUrl tests", () => {
   });
 
   it("should throw an error if the response is 500", async () => {
-    mockedServer.use(errorAttachmentUrlHandler);
+    mockedServer.use(errorApiAttachmentUrlHandler);
 
     await expect(() =>
       getAttachmentUrl(id, ATTACHMENT_BUCKET_NAME, key, filename),
