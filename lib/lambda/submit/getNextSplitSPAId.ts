@@ -13,7 +13,7 @@ export const getNextSplitSPAId = async (spaId: string) => {
   };
   // Get existing split SPAs for this package id
   const { hits } = await search(domain, index, query);
-
+  console.log(hits.hits, "WHAT IS HITS");
   // Extract suffixes from existing split SPA IDs
   // If there are no split SPAs yet, start at the ASCII character before "A" ("@")
   // Convert to ASCII char codes to get latest suffix
