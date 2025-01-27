@@ -48,64 +48,56 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     setOpen(updateOpen);
   };
 
-  const offsetRangeToUtc = (val: opensearch.RangeValue) => ({
-    gte: val.gte ? new UTCDate(val.gte).toISOString() : undefined,
-    lte: val.lte ? new UTCDate(val.lte).toISOString() : undefined,
-  });
+  const parseInputDate = (value: string): Date | undefined => {
+    const minValidYear = 1960;
+    const parsed = parse(value, DATE_FORMAT, new UTCDate());
+    if (!isValid(parsed) || getYear(parsed) < minValidYear || isAfter(parsed, new UTCDate())) {
+      return undefined;
+    }
+    return parsed;
+  };
 
   const onFromInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const minValidYear = 1960;
-    const input = e.target.value;
+    const fromDate = parseInputDate(e.target.value);
+    let toDate = value?.lte ? new UTCDate(value?.lte) : undefined;
 
-    if (/^[0-9/]*$/.test(input)) {
-      const fromDate = parse(e.target.value, DATE_FORMAT, new UTCDate());
-      const toDate = value?.lte ? new UTCDate(value?.lte) : "";
-
-      const date: { gte: undefined | string; lte: undefined | string } = {
-        gte: fromDate.toISOString(),
-        lte: value?.lte,
-      };
-
-      if (
-        !isValid(fromDate) ||
-        getYear(fromDate) < minValidYear ||
-        isAfter(fromDate, new UTCDate())
-      ) {
-        date.gte = undefined;
-      }
-      if (toDate && isAfter(fromDate, toDate)) {
-        date.lte = undefined;
-      }
-      onChange(offsetRangeToUtc({ ...date }));
+    if (fromDate && toDate && isAfter(fromDate, toDate)) {
+      toDate = undefined;
     }
+
+    onChange(getDateRange(fromDate, toDate));
   };
 
   const onToInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const minValidYear = 1960;
-    const inputValue = e.target.value;
+    const toDate = parseInputDate(e.target.value);
+    let fromDate = value?.gte ? new UTCDate(value?.gte) : undefined;
 
-    if (/^[0-9/]*$/.test(inputValue)) {
-      const fromDate = value?.gte ? new UTCDate(value?.gte) : "";
-      const toDate = parse(inputValue, DATE_FORMAT, new UTCDate());
-
-      const date: { gte: undefined | string; lte: undefined | string } = {
-        gte: value?.gte,
-        lte: toDate.toISOString(),
-      };
-
-      if (!isValid(toDate) || getYear(toDate) < minValidYear || isAfter(toDate, new UTCDate())) {
-        date.lte = undefined;
-      }
-      if (fromDate && isBefore(toDate, fromDate)) date.gte = undefined;
-
-      onChange(offsetRangeToUtc({ ...date }));
+    if (fromDate && toDate && isBefore(toDate, fromDate)) {
+      fromDate = undefined;
     }
+
+    onChange(getDateRange(fromDate, toDate));
   };
 
-  const getDateRange = (startDate: Date, endDate: Date): opensearch.RangeValue => {
+  const getDateRange = (
+    startDate: Date | undefined,
+    endDate: Date | undefined,
+  ): opensearch.RangeValue => {
+    const gte = startDate
+      ? startOfDay(
+          new UTCDate(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()),
+        ).toISOString()
+      : undefined;
+
+    const lte = endDate
+      ? endOfDay(
+          new UTCDate(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()),
+        ).toISOString()
+      : undefined;
+
     return {
-      gte: startDate.toISOString(),
-      lte: endDate.toISOString(),
+      gte,
+      lte,
     };
   };
 
@@ -120,8 +112,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
       startDate = sub(today, { days: 6 });
     }
 
-    const rangeObject = getDateRange(startDate, endOfDay(today));
-    onChange(offsetRangeToUtc(rangeObject));
+    onChange(getDateRange(startDate, endOfDay(today)));
   };
 
   // Calendar props
@@ -129,21 +120,11 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
 
   const onSelect = (d: any) => {
     if (!!d?.from && !!d.to) {
-      onChange(
-        offsetRangeToUtc({
-          gte: d.from.toISOString(),
-          lte: endOfDay(d.to).toISOString(),
-        }),
-      );
+      onChange(getDateRange(d.from, endOfDay(d.to)));
     } else if (!d?.from && !d?.to) {
-      onChange(
-        offsetRangeToUtc({
-          gte: "",
-          lte: "",
-        }),
-      );
+      onChange({ gte: undefined, lte: undefined });
     } else if (d?.from && !d?.to) {
-      onChange(offsetRangeToUtc(getDateRange(d.from, endOfDay(d.from))));
+      onChange(getDateRange(d.from, endOfDay(d.from)));
     }
   };
 
@@ -240,10 +221,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
           </div>
         </PopoverContent>
       </Popover>
-      <Button
-        className="text-white"
-        onClick={() => onChange(offsetRangeToUtc({ gte: undefined, lte: undefined }))}
-      >
+      <Button className="text-white" onClick={() => onChange({ gte: undefined, lte: undefined })}>
         Clear
       </Button>
     </div>

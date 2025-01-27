@@ -36,7 +36,7 @@
     "aws-amplify": "^5.3.12",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
-    "date-fns": "^2.30.0",
+    "date-fns": "^4.1.0",
     "export-to-csv": "^0.2.1",
     "file-saver": "^2.0.5",
     "framer-motion": "^10.16.1",
