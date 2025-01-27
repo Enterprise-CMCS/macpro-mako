@@ -1,9 +1,9 @@
 import { http, HttpResponse, PathParams } from "msw";
 import { subtypes } from "../../data/types";
 import { SearchQueryBody } from "../../index.d";
-import { getFilterValueAsNumber, getFilterValueAsNumberArray } from "./util";
+import { getFilterValueAsNumber, getFilterValueAsNumberArray } from "../search.utils";
 
-const defaultSubtypeSearchHandler = http.post<PathParams, SearchQueryBody>(
+const defaultOSSubtypeSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-subtypes/_search",
   async ({ request }) => {
     const { query } = await request.json();
@@ -45,9 +45,9 @@ const defaultSubtypeSearchHandler = http.post<PathParams, SearchQueryBody>(
   },
 );
 
-export const errorSubtypeSearchHandler = http.post<PathParams, SearchQueryBody>(
+export const errorOSSubtypeSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-subtypes/_search",
   () => new HttpResponse("Internal server error", { status: 500 }),
 );
 
-export const subtypeSearchHandlers = [defaultSubtypeSearchHandler];
+export const subtypeSearchHandlers = [defaultOSSubtypeSearchHandler];

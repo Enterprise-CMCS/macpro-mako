@@ -3,8 +3,6 @@ export const emailTemplateValue = {
   territory: "MD",
   id: "MD-2343.R00.TE09",
   waiverNumber: "MD-2343.R00.TE00",
-  authority: "1915(b)",
-  actionType: "Extend",
   applicationEndpointUrl: "https://mako-dev.cms.gov/",
   get timestamp() {
     return Date.now() + 5184000000;

@@ -15,7 +15,7 @@ import type {
   AdminGetUserRequestBody,
   TestUserData,
 } from "../../index.d";
-import { findUserByUsername } from "../authUtils";
+import { findUserByUsername } from "../auth.utils";
 import { APIGatewayEventRequestContext } from "shared-types";
 import { userResponses } from "../../data/users";
 
