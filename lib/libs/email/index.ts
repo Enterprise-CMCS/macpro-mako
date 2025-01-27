@@ -61,8 +61,6 @@ const emailTemplates: EmailTemplates = {
   "seatool-withdraw": EmailContent.withdrawPackage,
 };
 
-// cmsStatus = withdrawn
-
 // Create a type-safe lookup function
 export function getEmailTemplate(
   action: keyof EmailTemplates,
@@ -90,7 +88,6 @@ export async function getEmailTemplates<T>(
   }
   const emailTemplatesToSend: EmailTemplateFunction<T>[] = [];
 
-  console.log(template, authority)
   if (isAuthorityTemplate(template, authority)) {
     emailTemplatesToSend.push(...Object.values(template[authority] as EmailTemplateFunction<T>));
   } else {
