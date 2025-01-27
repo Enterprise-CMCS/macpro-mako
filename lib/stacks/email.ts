@@ -350,5 +350,27 @@ export class Email extends cdk.NestedStack {
       batchSize: 1,
       maxBatchingWindow: cdk.Duration.seconds(0),
     });
+
+    // Add alarm for processDelayedEmailsLambda
+    const delayedEmailsAlarm = new cdk.aws_cloudwatch.Alarm(this, "DelayedEmailErrorAlarm", {
+      actionsEnabled: true,
+      metric: processDelayedEmailsLambda.metricErrors(),
+      threshold: 1,
+      evaluationPeriods: 1,
+      alarmDescription: "Delayed email processing lambda errors",
+      treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
+
+    delayedEmailsAlarm.addAlarmAction(new cdk.aws_cloudwatch_actions.SnsAction(alarmTopic));
+
+    // Add throttling alarm for delayed emails lambda
+    new cdk.aws_cloudwatch.Alarm(this, "DelayedEmailLambdaThrottling", {
+      metric: processDelayedEmailsLambda.metricThrottles(),
+      threshold: 1,
+      evaluationPeriods: 1,
+      alarmDescription: "Delayed email processing lambda is being throttled",
+      actionsEnabled: true,
+      treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
   }
 }
