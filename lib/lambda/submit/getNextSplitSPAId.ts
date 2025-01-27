@@ -14,7 +14,7 @@ export const getNextSplitSPAId = async (spaId: string) => {
   const testQuery = {
     query: {
       regexp: {
-        "id.keyword": `${spaId}`,
+        "id.keyword": `${spaId}-M`,
       },
     },
   };
