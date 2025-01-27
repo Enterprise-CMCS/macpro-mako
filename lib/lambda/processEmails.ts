@@ -58,7 +58,9 @@ export const handler: Handler<KafkaEvent | SQSEvent> = async (event) => {
     isDev: process.env.isDev === "true",
   };
 
+  console.log("right before if in event check");
   if ("records" in event) {
+    console.log("right inside if in event check");
     const sqsClient = new SQSClient({ region: process.env.region! });
 
     await Promise.all(
