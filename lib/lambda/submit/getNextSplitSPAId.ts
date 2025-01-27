@@ -14,7 +14,6 @@ export const getNextSplitSPAId = async (spaId: string) => {
   };
   // Get existing split SPAs for this package id
   const { hits } = await search(domain, index, query);
-  console.log(hits.hits, "WHAT IS HITS");
   // Extract suffixes from existing split SPA IDs
   // If there are no split SPAs yet, start at the ASCII character before "A" ("@")
   // Convert to ASCII char codes to get latest suffix
@@ -22,7 +21,6 @@ export const getNextSplitSPAId = async (spaId: string) => {
     const suffix = hit._source.id.toString().split("-").at(-1) ?? "@";
     return Math.max(maxCharCode, suffix.charCodeAt(0));
   }, "@".charCodeAt(0));
-  console.log(latestSuffixCharCode, "WHAT is the latest");
 
   // Increment letter but not past "Z"
   // "A-Z" is 65-90 in ASCII
@@ -30,8 +28,6 @@ export const getNextSplitSPAId = async (spaId: string) => {
     throw new Error("This package can't be further split.");
   }
   const nextSuffix = String.fromCharCode(latestSuffixCharCode + 1);
-  console.log(latestSuffixCharCode + 1, "WHAT DOES THIS ADD TO");
-  console.log(nextSuffix, "NEXT SUFFIX???");
 
   return `${spaId}-${nextSuffix}`;
 };
