@@ -96,6 +96,13 @@ export class Email extends cdk.NestedStack {
       visibilityTimeout: cdk.Duration.seconds(300),
     });
 
+    const delayQueue = new cdk.aws_sqs.Queue(this, "DelayQueue", {
+      queueName: `${project}-${stage}-${stack}-email-delay-queue`,
+      encryption: cdk.aws_sqs.QueueEncryption.KMS_MANAGED,
+      visibilityTimeout: cdk.Duration.minutes(5), // Should be greater than lambda timeout
+      deliveryDelay: cdk.Duration.minutes(2), // 2 minute delay before messages can be processed
+    });
+
     // IAM Role for Lambda
     const lambdaRole = new cdk.aws_iam.Role(this, "LambdaExecutionRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
@@ -170,6 +177,16 @@ export class Email extends cdk.NestedStack {
               ],
               resources: ["*"],
             }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: [
+                "sqs:SendMessage",
+                "sqs:ReceiveMessage",
+                "sqs:DeleteMessage",
+                "sqs:GetQueueAttributes",
+              ],
+              resources: [delayQueue.queueArn],
+            }),
           ],
         }),
       },
@@ -177,6 +194,41 @@ export class Email extends cdk.NestedStack {
 
     const processEmailsLambda = new NodejsFunction(this, "ProcessEmailsLambda", {
       functionName: `${project}-${stage}-${stack}-processEmails`,
+      deadLetterQueue: dlq,
+      depsLockFilePath: join(__dirname, "../../bun.lockb"),
+      entry: join(__dirname, "../lambda/processEmails.ts"),
+      handler: "handler",
+      runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+      memorySize: envConfig[props.isDev ? "dev" : "prod"].memorySize,
+      timeout: cdk.Duration.minutes(envConfig[props.isDev ? "dev" : "prod"].timeout),
+      role: lambdaRole,
+      vpc: vpc,
+      vpcSubnets: {
+        subnets: privateSubnets,
+      },
+      logRetention: envConfig[isDev ? "dev" : "prod"].logRetention,
+      securityGroups: [lambdaSecurityGroup],
+      environment: {
+        region: cdk.Stack.of(this).region,
+        configurationSetName: `${project}-${stage}-${stack}-email-configuration-set`,
+        stage,
+        isDev: isDev.toString(),
+        indexNamespace,
+        osDomain: openSearchDomainEndpoint,
+        applicationEndpointUrl,
+        emailAddressLookupSecretName,
+        userPoolId: userPool.userPoolId,
+        DLQ_URL: dlq.queueUrl,
+        VPC_ID: vpc.vpcId,
+        SECURITY_GROUP_ID: lambdaSecurityGroup.securityGroupId,
+        DELAY_QUEUE_URL: delayQueue.queueUrl,
+      },
+      bundling: commonBundlingOptions,
+      tracing: cdk.aws_lambda.Tracing.ACTIVE,
+    });
+
+    const processDelayedEmailsLambda = new NodejsFunction(this, "ProcessDelayedEmailsLambda", {
+      functionName: `${project}-${stage}-${stack}-processDelayedEmails`,
       deadLetterQueue: dlq,
       depsLockFilePath: join(__dirname, "../../bun.lockb"),
       entry: join(__dirname, "../lambda/processEmails.ts"),
@@ -290,6 +342,13 @@ export class Email extends cdk.NestedStack {
       threshold: envConfig[props.isDev ? "dev" : "prod"].dailySendQuota * 0.8, // 80% of quota
       evaluationPeriods: 1,
       comparisonOperator: cdk.aws_cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+    });
+
+    delayQueue.grantConsumeMessages(processDelayedEmailsLambda);
+
+    new cdk.aws_lambda_event_sources.SqsEventSource(delayQueue, {
+      batchSize: 1,
+      maxBatchingWindow: cdk.Duration.seconds(0),
     });
   }
 }

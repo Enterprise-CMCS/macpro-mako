@@ -1,7 +1,7 @@
 import { SESClient, SendEmailCommand, SendEmailCommandInput } from "@aws-sdk/client-ses";
 import { EmailAddresses, KafkaEvent, KafkaRecord, Events } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
-import { Handler } from "aws-lambda";
+import { Handler, SQSEvent } from "aws-lambda";
 import { getEmailTemplates, getAllStateUsers } from "libs/email";
 import * as os from "libs/opensearch-lib";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
@@ -10,7 +10,7 @@ import pLimit from "p-limit";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 import { getOsNamespace } from "libs/utils";
 
-class TemporaryError extends Error {
+export class TemporaryError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "TemporaryError";
@@ -29,7 +29,7 @@ interface ProcessEmailConfig {
   isDev: boolean;
 }
 
-export const handler: Handler<KafkaEvent> = async (event) => {
+export const handler: Handler<KafkaEvent | SQSEvent> = async (event) => {
   const requiredEnvVars = [
     "emailAddressLookupSecretName",
     "applicationEndpointUrl",
@@ -46,67 +46,41 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     throw new Error(`Missing required environment variables: ${missingVars.join(", ")}`);
   }
 
-  const emailAddressLookupSecretName = process.env.emailAddressLookupSecretName!;
-  const applicationEndpointUrl = process.env.applicationEndpointUrl!;
-  const osDomain = process.env.osDomain!;
-  const indexNamespace = process.env.indexNamespace;
-  const region = process.env.region!;
-  const DLQ_URL = process.env.DLQ_URL!;
-  const userPoolId = process.env.userPoolId!;
-  const configurationSetName = process.env.configurationSetName!;
-  const isDev = process.env.isDev!;
-  const config: ProcessEmailConfig = {
-    emailAddressLookupSecretName,
-    applicationEndpointUrl,
-    osDomain: `https://${osDomain}`,
-    indexNamespace,
-    region,
-    DLQ_URL,
-    userPoolId,
-    configurationSetName,
-    isDev: isDev === "true",
+  const emailConfig: ProcessEmailConfig = {
+    emailAddressLookupSecretName: process.env.emailAddressLookupSecretName!,
+    applicationEndpointUrl: process.env.applicationEndpointUrl!,
+    osDomain: `https://${process.env.osDomain!}`,
+    indexNamespace: process.env.indexNamespace,
+    region: process.env.region!,
+    DLQ_URL: process.env.DLQ_URL!,
+    userPoolId: process.env.userPoolId!,
+    configurationSetName: process.env.configurationSetName!,
+    isDev: process.env.isDev === "true",
   };
 
-  console.log("config: ", JSON.stringify(config, null, 2));
+  if ("records" in event) {
+    const sqsClient = new SQSClient({ region: process.env.region! });
 
-  try {
-    const results = await Promise.allSettled(
+    await Promise.all(
       Object.values(event.records)
         .flat()
-        .map((rec) => processRecord(rec, config)),
+        .map((record) =>
+          sqsClient.send(
+            new SendMessageCommand({
+              QueueUrl: process.env.DELAY_QUEUE_URL!,
+              MessageBody: JSON.stringify(record),
+            }),
+          ),
+        ),
     );
 
-    console.log("results: ", JSON.stringify(results, null, 2));
+    return;
+  }
 
-    const failures = results.filter((r) => r.status === "rejected");
-    if (failures.length > 0) {
-      console.error("Some records failed:", JSON.stringify(failures, null, 2));
-      throw new TemporaryError("Some records failed processing");
-    }
-    console.log("All records processed successfully", JSON.stringify(failures, null, 2));
-  } catch (error) {
-    console.error("Permanent failure:", error);
-
-    if (config.DLQ_URL) {
-      const sqsClient = new SQSClient({ region: config.region });
-      try {
-        await sqsClient.send(
-          new SendMessageCommand({
-            QueueUrl: config.DLQ_URL,
-            MessageBody: JSON.stringify({
-              error: error.message,
-              originalEvent: event,
-              timestamp: new Date().toISOString(),
-            }),
-          }),
-        );
-        console.log("Failed message sent to DLQ");
-      } catch (dlqError) {
-        console.error("Failed to send to DLQ:", dlqError);
-        throw dlqError;
-      }
-    }
-    throw error;
+  // Process SQS messages
+  for (const record of event.Records) {
+    const kafkaRecord = JSON.parse(record.body) as KafkaRecord;
+    await processRecord(kafkaRecord, emailConfig);
   }
 };
 
@@ -156,79 +130,6 @@ export function validateEmailTemplate(template: any) {
   }
 }
 
-export async function processAndSendEmails(
-  record: Events[keyof Events],
-  id: string,
-  config: ProcessEmailConfig,
-) {
-  const templates = await getEmailTemplates(record);
-
-  if (!templates) {
-    console.log(
-      `The kafka record has an event type that does not have email support.  event: ${record.event}.  Doing nothing.`,
-    );
-    return;
-  }
-
-  const territory = id.slice(0, 2);
-  const allStateUsers = await getAllStateUsers({
-    userPoolId: config.userPoolId,
-    state: territory,
-  });
-
-  const sec = await getSecret(config.emailAddressLookupSecretName);
-
-  const item = await os.getItem(config.osDomain, getOsNamespace("main"), id);
-  if (!item?.found || !item?._source) {
-    console.log(`The package was not found for id: ${id}. Doing nothing.`);
-    return;
-  }
-
-  const cpocEmail = [...getCpocEmail(item)];
-  const srtEmails = [...getSrtEmails(item)];
-
-  const emails: EmailAddresses = JSON.parse(sec);
-
-  const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
-
-  const templateVariables = {
-    ...record,
-    id,
-    applicationEndpointUrl: config.applicationEndpointUrl,
-    territory,
-    emails: { ...emails, cpocEmail, srtEmails },
-    allStateUsersEmails,
-  };
-
-  console.log("Template variables:", JSON.stringify(templateVariables, null, 2));
-  const limit = pLimit(5); // Limit concurrent emails
-  const sendEmailPromises = templates.map((template) =>
-    limit(async () => {
-      const filledTemplate = await template(templateVariables);
-      validateEmailTemplate(filledTemplate);
-      const params = createEmailParams(
-        filledTemplate,
-        emails.sourceEmail,
-        config.applicationEndpointUrl,
-        config.isDev,
-      );
-      try {
-        await sendEmail(params, config.region);
-      } catch (error) {
-        console.error("Error sending email:", error);
-        throw error;
-      }
-    }),
-  );
-
-  try {
-    await Promise.all(sendEmailPromises);
-  } catch (error) {
-    console.error("Error sending emails:", error);
-    throw error;
-  }
-}
-
 export function createEmailParams(
   filledTemplate: any,
   sourceEmail: string,
@@ -239,7 +140,7 @@ export function createEmailParams(
     Destination: {
       ToAddresses: filledTemplate.to,
       CcAddresses: filledTemplate.cc,
-      BccAddresses: isDev ? [`State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`] : [], // this is so emails can be tested in dev as they should have the correct recipients but be blind copied on all emails on dev
+      BccAddresses: isDev ? [`State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`] : [], // this is so emails can be tested in dev as they should have the correct recipients
     },
     Message: {
       Body: {
@@ -317,3 +218,76 @@ const htmlToTextOptions = (baseUrl: string): HtmlToTextOptions => ({
     wrapCharacters: ["-", "/"],
   },
 });
+
+export async function processAndSendEmails(
+  record: Events[keyof Events],
+  id: string,
+  config: ProcessEmailConfig,
+) {
+  const templates = await getEmailTemplates(record);
+
+  if (!templates) {
+    console.log(
+      `The kafka record has an event type that does not have email support. event: ${record.event}. Doing nothing.`,
+    );
+    return;
+  }
+
+  const territory = id.slice(0, 2);
+  const allStateUsers = await getAllStateUsers({
+    userPoolId: config.userPoolId,
+    state: territory,
+  });
+
+  const sec = await getSecret(config.emailAddressLookupSecretName);
+
+  const item = await os.getItem(config.osDomain, getOsNamespace("main"), id);
+  if (!item?.found || !item?._source) {
+    console.log(`The package was not found for id: ${id}. Doing nothing.`);
+    return;
+  }
+
+  const cpocEmail = [...getCpocEmail(item)];
+  const srtEmails = [...getSrtEmails(item)];
+
+  const emails: EmailAddresses = JSON.parse(sec);
+
+  const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
+
+  const templateVariables = {
+    ...record,
+    id,
+    applicationEndpointUrl: config.applicationEndpointUrl,
+    territory,
+    emails: { ...emails, cpocEmail, srtEmails },
+    allStateUsersEmails,
+  };
+
+  console.log("Template variables:", JSON.stringify(templateVariables, null, 2));
+  const limit = pLimit(5); // Limit concurrent emails
+  const sendEmailPromises = templates.map((template) =>
+    limit(async () => {
+      const filledTemplate = await template(templateVariables);
+      validateEmailTemplate(filledTemplate);
+      const params = createEmailParams(
+        filledTemplate,
+        emails.sourceEmail,
+        config.applicationEndpointUrl,
+        config.isDev,
+      );
+      try {
+        await sendEmail(params, config.region);
+      } catch (error) {
+        console.error("Error sending email:", error);
+        throw error;
+      }
+    }),
+  );
+
+  try {
+    await Promise.all(sendEmailPromises);
+  } catch (error) {
+    console.error("Error sending emails:", error);
+    throw error;
+  }
+}
