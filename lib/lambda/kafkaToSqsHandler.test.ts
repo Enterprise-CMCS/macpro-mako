@@ -1,8 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
 import { Context } from "aws-lambda";
 import { SESClient } from "@aws-sdk/client-ses";
-import { sendEmail, validateEmailTemplate, handler } from "./processEmails";
+import { handler } from "./kafkaToSqs.ts";
 import { KafkaRecord, KafkaEvent } from "shared-types";
+import { sendEmail, validateEmailTemplate } from "./delayedEmailProcessor.ts";
 
 describe("process emails Handler", () => {
   it("should return 200 with a proper email", async () => {
@@ -16,7 +17,7 @@ describe("process emails Handler", () => {
       ConfigurationSetName: "test-config",
     };
     const test = await sendEmail(params, "us-east-1");
-    expect(test.status).toStrictEqual(200);
+    expect(test.$metadata.httpStatusCode).toStrictEqual(200);
   });
 
   it("should throw an error", async () => {
@@ -34,20 +35,18 @@ describe("process emails Handler", () => {
 
   it("should validate the email template and throw an error for missing fields", async () => {
     const template = {
-      to: "Person",
-      from: "Other Guy",
+      to: ["Person"],
       body: "body",
       // missing required 'subject' field
     };
-    expect(() => validateEmailTemplate(template)).toThrowError(
+    expect(() => validateEmailTemplate(template as any)).toThrowError(
       "Email template missing required fields: subject",
     );
   });
 
   it("should validate a complete email template without throwing", () => {
     const template = {
-      to: "Person",
-      from: "Other Guy",
+      to: ["Person"],
       body: "body",
       subject: "Test Subject",
     };
