@@ -49,6 +49,8 @@ export const transformUpdateValuesSchema = (offset: number) =>
     timestamp: Date.now(),
   }));
 
+const currentTime = Date.now();
+
 export const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((data) => ({
   ...data,
   event: "update-id",
@@ -62,7 +64,7 @@ export const transformedSplitSPASchema = splitSPAAdminChangeSchema.transform((da
   event: "split-spa",
   packageId: data.id,
   id: `${data.id}`,
-  timestamp: Date.now(),
-  makoChangedDate: Date.now(),
-  changedDate: Date.now(),
+  timestamp: currentTime,
+  makoChangedDate: currentTime,
+  changedDate: currentTime,
 }));
