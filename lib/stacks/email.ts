@@ -208,6 +208,39 @@ export class Email extends cdk.NestedStack {
       bundling: commonBundlingOptions,
       tracing: cdk.aws_lambda.Tracing.ACTIVE,
     });
+    const processSeatoolEmailsLambda = new NodejsFunction(this, "ProcessSeatoolEmailsLambda", {
+      functionName: `${project}-${stage}-${stack}-processSeatoolEmails`,
+      deadLetterQueue: dlq,
+      depsLockFilePath: join(__dirname, "../../bun.lockb"),
+      entry: join(__dirname, "../lambda/processEmails.ts"),
+      handler: "handler",
+      runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+      memorySize: envConfig[props.isDev ? "dev" : "prod"].memorySize,
+      timeout: cdk.Duration.minutes(envConfig[props.isDev ? "dev" : "prod"].timeout),
+      role: lambdaRole,
+      vpc: vpc,
+      vpcSubnets: {
+        subnets: privateSubnets,
+      },
+      logRetention: envConfig[isDev ? "dev" : "prod"].logRetention,
+      securityGroups: [lambdaSecurityGroup],
+      environment: {
+        region: cdk.Stack.of(this).region,
+        configurationSetName: `${project}-${stage}-${stack}-email-configuration-set`,
+        stage,
+        isDev: isDev.toString(),
+        indexNamespace,
+        osDomain: openSearchDomainEndpoint,
+        applicationEndpointUrl,
+        emailAddressLookupSecretName,
+        userPoolId: userPool.userPoolId,
+        DLQ_URL: dlq.queueUrl,
+        VPC_ID: vpc.vpcId,
+        SECURITY_GROUP_ID: lambdaSecurityGroup.securityGroupId,
+      },
+      bundling: commonBundlingOptions,
+      tracing: cdk.aws_lambda.Tracing.ACTIVE,
+    });
 
     const alarmTopic = new cdk.aws_sns.Topic(this, "EmailErrorAlarmTopic");
 
@@ -258,7 +291,7 @@ export class Email extends cdk.NestedStack {
           kafkaBootstrapServers: brokerString.split(","),
         },
       },
-      functionName: processEmailsLambda.functionName,
+      functionName: processSeatoolEmailsLambda.functionName,
       sourceAccessConfigurations: [
         ...privateSubnets.map((subnet) => ({
           type: "VPC_SUBNET",
