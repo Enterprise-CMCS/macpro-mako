@@ -4,7 +4,7 @@ import { Action } from "shared-types";
 import {
   errorApiPackageActionsHandler,
   WITHDRAW_RAI_ITEM_C,
-  TEST_ITEM_ID,
+  TEST_SPA_ITEM_ID,
   NOT_FOUND_ITEM_ID,
   NOT_EXISTING_ITEM_ID,
   setMockUsername,
@@ -25,7 +25,7 @@ describe("getPackageActions test", () => {
   });
 
   it("should return empty actions for package without actions", async () => {
-    const actions = await getPackageActions(TEST_ITEM_ID);
+    const actions = await getPackageActions(TEST_SPA_ITEM_ID);
     expect(actions).toEqual([]);
   });
 
