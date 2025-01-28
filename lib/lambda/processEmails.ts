@@ -8,6 +8,7 @@ import {
   Events,
 } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
+import { retry } from "shared-utils/retry";
 import { Handler } from "aws-lambda";
 import { getEmailTemplates, getAllStateUsers } from "libs/email";
 import * as os from "libs/opensearch-lib";
@@ -221,7 +222,12 @@ export async function processAndSendEmails(
   });
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
-  const item = await os.getItem(config.osDomain, getOsNamespace("main"), id);
+
+  const item = await retry(
+    () => os.getItemAndThrowAllErrors(config.osDomain, getOsNamespace("main"), id),
+    10,
+    10 * 1000,
+  );
 
   if (!item?.found || !item?._source) {
     console.log(`The package was not found for id: ${id}. Doing nothing.`);
