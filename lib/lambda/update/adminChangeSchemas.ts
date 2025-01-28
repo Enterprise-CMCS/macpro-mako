@@ -71,7 +71,7 @@ export const extendSubmitNOSOAdminSchema = submitNOSOAdminSchema.extend({
   event: z.string(),
 });
 
-export const transformSubmitValuesSchema = submitNOSOAdminSchema.transform((data) => ({
+export const transformSubmitValuesSchema = extendSubmitNOSOAdminSchema.transform((data) => ({
   ...data,
   adminChangeType: "NOSO",
   event: "NOSO",
