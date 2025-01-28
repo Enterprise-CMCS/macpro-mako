@@ -280,27 +280,10 @@ export class Email extends cdk.NestedStack {
       tracing: cdk.aws_lambda.Tracing.ACTIVE,
     });
 
-<<<<<<< HEAD
     // -------------------------------------------------------------------------
     // Event Source Mapping: Kafka -> kafkaToSqsLambda
     // -------------------------------------------------------------------------
     new CfnEventSourceMapping(this, "KafkaToSqsEventSourceMapping", {
-=======
-    const alarmTopic = new cdk.aws_sns.Topic(this, "EmailErrorAlarmTopic");
-
-    const alarm = new cdk.aws_cloudwatch.Alarm(this, "EmailErrorAlarm", {
-      actionsEnabled: true,
-      metric: processEmailsLambda.metricErrors(),
-      threshold: 1,
-      evaluationPeriods: 1,
-      alarmDescription: "Email processing lambda errors",
-      treatMissingData: cdk.aws_cloudwatch.TreatMissingData.NOT_BREACHING,
-    });
-
-    alarm.addAlarmAction(new cdk.aws_cloudwatch_actions.SnsAction(alarmTopic));
-
-    new CfnEventSourceMapping(this, "SinkSESTriggerOnemac", {
->>>>>>> origin
       batchSize: 1,
       enabled: true,
       selfManagedEventSource: {
@@ -328,7 +311,6 @@ export class Email extends cdk.NestedStack {
       },
     });
 
-<<<<<<< HEAD
     // -------------------------------------------------------------------------
     // SQS Event Source: emailQueue -> delayedEmailLambda
     // -------------------------------------------------------------------------
@@ -347,39 +329,6 @@ export class Email extends cdk.NestedStack {
     // KafkaToSqs Lambda alarms
     const kafkaErrorsAlarm = new cdk.aws_cloudwatch.Alarm(this, "KafkaToSqsErrors", {
       metric: kafkaToSqsLambda.metricErrors(),
-=======
-    new CfnEventSourceMapping(this, "SinkSESTriggerSEATool", {
-      batchSize: 1,
-      enabled: true,
-      selfManagedEventSource: {
-        endpoints: {
-          kafkaBootstrapServers: brokerString.split(","),
-        },
-      },
-      functionName: processEmailsLambda.functionName,
-      sourceAccessConfigurations: [
-        ...privateSubnets.map((subnet) => ({
-          type: "VPC_SUBNET",
-          uri: subnet.subnetId,
-        })),
-        {
-          type: "VPC_SECURITY_GROUP",
-          uri: `security_group:${lambdaSecurityGroup.securityGroupId}`,
-        },
-      ],
-      startingPosition: "LATEST",
-      topics: [`aws.seatool.ksql.onemac.three.agg.State_Plan`],
-      destinationConfig: {
-        onFailure: {
-          destination: dlq.queueArn,
-        },
-      },
-    });
-
-    // Add CloudWatch alarms
-    new cdk.aws_cloudwatch.Alarm(this, "EmailProcessingErrors", {
-      metric: processEmailsLambda.metricErrors(),
->>>>>>> origin
       threshold: 1,
       evaluationPeriods: 1,
       alarmDescription: "KafkaToSqs lambda errors",
