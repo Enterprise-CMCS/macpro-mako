@@ -8,24 +8,35 @@ import { UseQueryResult } from "@tanstack/react-query";
 import { OneMacUser } from "@/api/useGetUser";
 import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
 import { getItem } from "@/api";
+import { AppK } from "./appk";
 describe("package details", () => {
   vi.spyOn(gi, "useGetItemCache").mockReturnValue({
     data: WITHDRAW_APPK_ITEM._source,
     refetch: vi.fn(),
   });
-  const renderComponent = async () => {
-    const item = await getItem(WITHDRAW_APPK_ITEM_ID);
-    console.log(item);
-    return renderWithQueryClient(<PackageDetails itemResult={item} />);
-  };
 
   it("makes a package", async () => {
     vi.spyOn(api, "useGetUser").mockImplementation(() => {
       const response = mockUseGetUser();
-      response.data.isCms = true;
+      response.data.isCms = false;
       return response as UseQueryResult<OneMacUser, unknown>;
     });
-
+    const renderComponent = async () => {
+      const item = await getItem(WITHDRAW_APPK_ITEM_ID);
+      return renderWithQueryClient(<PackageDetails itemResult={item} />);
+    };
+    const compo = await renderComponent();
+    expect(compo).toMatchSnapshot();
+  });
+  it("makes a an appk element", async () => {
+    vi.spyOn(api, "useGetUser").mockImplementation(() => {
+      const response = mockUseGetUser();
+      response.data.isCms = false;
+      return response as UseQueryResult<OneMacUser, unknown>;
+    });
+    const renderComponent = async () => {
+      return renderWithQueryClient(<AppK />);
+    };
     const compo = await renderComponent();
     expect(compo).toMatchSnapshot();
   });
