@@ -21,14 +21,19 @@ export const ABP_GUIDES: Template[] = [
     href: "/abp/IG_ABP2b_VoluntaryEnrollmentAssurances.pdf",
   },
   {
+    title: "ABP 2c",
+    text: "Enrollment Assurances - Mandatory Participants",
+    href: "/abp/IG_ABP2c_EnrollmentAssurancesMandatoryParticipants.pdf",
+  },
+  {
     title: "ABP 3",
     text: "Selection of Benchmark Benefit Package or Benchmark-Equivalent Benefit Package Implementation Guide",
-    href: "/abp/IG_ABP3_SelectionOfBenchmark20190819-Final.pdf",
+    href: "/abp/IG_ABP3_SelectionOfBenchmark.pdf",
   },
   {
     title: "ABP 3.1",
     text: "Selection of Benchmark Benefit or Benchmark-Equivalent Benefit Package Implementation Guide",
-    href: "/abp/IG_ABP3.1_SelectionOfBenchmarkAfter2020.pdf",
+    href: "/abp/IG_ABP3.1_SelectionOfBenchmark.pdf",
   },
   {
     title: "ABP 4",
@@ -38,7 +43,7 @@ export const ABP_GUIDES: Template[] = [
   {
     title: "ABP 5",
     text: "Benefits Description Implementation Guide",
-    href: "/abp/IG_ABP5_BenefitsDescription-Final.pdf",
+    href: "/abp/IG_ABP5_BenefitsDescription.pdf",
   },
   {
     title: "ABP 6",
