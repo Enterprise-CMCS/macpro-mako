@@ -34,10 +34,3 @@ export const formSchemas = {
   "app-k": appK.formSchema,
   "upload-subsequent-documents": uploadSubsequentDocuments.formSchema,
 };
-
-export const authorityToEvent = {
-  "CHIP SPA": "new-chip-submission",
-  "Medicaid SPA": "new-medicaid-submission",
-  "1915(b)": "capitated-initial",
-  "1915(c)": "app-k",
-};
