@@ -189,13 +189,6 @@ export async function getItem(
     }
     return item;
   } catch (error) {
-    if (
-      (error instanceof OpensearchErrors.ResponseError && error.statusCode === 404) ||
-      error.meta?.statusCode === 404
-    ) {
-      console.log("Error (404) retrieving in OpenSearch:", error);
-      return undefined;
-    }
     throw error;
   }
 }
