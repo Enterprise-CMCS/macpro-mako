@@ -9,7 +9,7 @@ import {
   AttachmentFAQInstructions,
   AttachmentFileFormatInstructions,
 } from "@/components/ActionForm/actionForm.components";
-import { formSchemas } from "@/formSchemas";
+import { formSchemas, authorityToEvent } from "@/formSchemas";
 import { Navigate, useParams } from "react-router";
 import { z } from "zod";
 import { getFAQLinkForAttachments } from "../../faqLinks";
@@ -98,13 +98,17 @@ export const UploadSubsequentDocuments = () => {
   }
 
   if (!submission?._source) {
+    console.log("ANDIE: no source");
     return <Navigate to="/dashboard" />;
   }
 
-  const originalSubmissionEvent = (submission._source.changelog ?? []).reduce<string | null>(
+  let originalSubmissionEvent = (submission._source.changelog ?? []).reduce<string | null>(
     (acc, { _source }) => (_source?.event ? _source?.event : acc),
     null,
   );
+  if (originalSubmissionEvent === "NOSO") {
+    originalSubmissionEvent = authorityToEvent[submission._source.mockEvent];
+  }
 
   const schema: SchemaWithEnforcableProps | undefined = formSchemas[originalSubmissionEvent];
 

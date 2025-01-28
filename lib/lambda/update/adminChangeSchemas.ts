@@ -56,6 +56,7 @@ export const submitNOSOAdminSchema = z.object({
   submitterEmail: z.string(),
   submitterName: z.string(),
   adminChangeType: z.literal("NOSO"),
+  mockEvent: z.string(),
   changeMade: z.string(),
   changeReason: z.string(),
 });
