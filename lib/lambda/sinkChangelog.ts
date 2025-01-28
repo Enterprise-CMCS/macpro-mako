@@ -96,6 +96,9 @@ const processAndIndex = async ({
               });
             });
           } else if (result.data.adminChangeType === "split-spa") {
+            // Push doc with new split package
+            docs.push(result.data);
+
             // Get all changelog entries for this ID and create copies of all entries with new ID
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
 
@@ -107,8 +110,6 @@ const processAndIndex = async ({
                 packageId: result.data.id,
               });
             });
-            // Push doc with new split package
-            docs.push(result.data);
           } else {
             docs.push(result.data);
           }
