@@ -65,7 +65,7 @@ describe("Package Activity", () => {
         bucket: ATTACHMENT_BUCKET_NAME,
       },
       {
-        filename: "contract_amendment_2024.pdf",
+        filename: "contract_amendment_2024_2.pdf",
         key: "doc002",
         title: "Contract Amendment2",
         bucket: ATTACHMENT_BUCKET_NAME,
@@ -132,7 +132,7 @@ describe("Package Activity", () => {
         bucket: ATTACHMENT_BUCKET_NAME,
       },
       {
-        filename: "contract_amendment_2024.pdf",
+        filename: "contract_amendment_2024_2.pdf",
         key: "doc002",
         title: "Contract Amendment2",
         bucket: ATTACHMENT_BUCKET_NAME,
@@ -162,12 +162,6 @@ describe("Package Activity", () => {
       filename: "contract_amendment_2024.pdf",
       key: "doc001",
       title: "Contract Amendment",
-      bucket: ATTACHMENT_BUCKET_NAME,
-    },
-    {
-      filename: "contract_amendment_2024.pdf",
-      key: "doc002",
-      title: "Contract Amendment2",
       bucket: ATTACHMENT_BUCKET_NAME,
     });
     expect(spiedWindowOpen).toBeCalledWith("hello world!");
