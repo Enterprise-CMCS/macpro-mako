@@ -1,4 +1,4 @@
-import { SEATOOL_STATUS, opensearch, seaOfficersSchema } from "shared-types";
+import { SEATOOL_STATUS, opensearch } from "shared-types";
 import type { TestItemResult } from "../index.d";
 import { ATTACHMENT_BUCKET_NAME } from "../consts";
 
