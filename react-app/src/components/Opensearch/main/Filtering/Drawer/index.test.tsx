@@ -85,6 +85,50 @@ describe("OsFilterDrawer", () => {
         expect(heading.nextElementSibling.getAttribute("data-state")).toEqual("closed");
       });
     });
+    describe("State filter", () => {
+      it("should handle clicking the State filter", async () => {
+        const { user } = setup([], "spas");
+        await user.click(screen.getByRole("button", { name: "Filters" }));
+
+        const state = screen.getByRole("heading", {
+          name: "State",
+          level: 3,
+        }).parentElement;
+        expect(state.getAttribute("data-state")).toEqual("closed");
+        await user.click(screen.getByRole("button", { name: "State" }));
+        expect(state.getAttribute("data-state")).toEqual("open");
+        screen.debug(state);
+        const combo = screen.getByRole("combobox");
+        expect(combo).toBeInTheDocument();
+      });
+      it("should display a state filter if one is selected", async () => {
+        const { user } = setup(
+          [
+            {
+              label: "State",
+              field: "state.keyword",
+              component: "multiSelect",
+              prefix: "must",
+              type: "terms",
+              value: ["MD"],
+            },
+          ],
+          "spas",
+        );
+        await user.click(screen.getByRole("button", { name: "Filters" }));
+
+        const state = screen.getByRole("heading", {
+          name: "State",
+          level: 3,
+        }).parentElement;
+        expect(state.getAttribute("data-state")).toEqual("open");
+        screen.debug(state);
+
+        const combo = screen.getByRole("combobox");
+        expect(combo).toBeInTheDocument();
+        expect(screen.queryByLabelText("Remove MD")).toBeInTheDocument();
+      });
+    });
     describe("Authority filter", () => {
       it("should handle clicking the Authority filter", async () => {
         const { user } = setup([], "spas");
@@ -175,5 +219,71 @@ describe("OsFilterDrawer", () => {
         expect(heading.nextElementSibling.getAttribute("data-state")).toEqual("closed");
       });
     });
+    describe("Authority filter", () => {
+      it("should handle clicking the Authority filter", async () => {
+        const { user } = setup([], "waivers");
+        await user.click(screen.getByRole("button", { name: "Filters" }));
+
+        const authority = screen.getByRole("heading", {
+          name: "Authority",
+          level: 3,
+        }).parentElement;
+        expect(authority.getAttribute("data-state")).toEqual("closed");
+        await user.click(screen.getByRole("button", { name: "Authority" }));
+        expect(authority.getAttribute("data-state")).toEqual("open");
+        expect(screen.queryByRole("button", { name: "Select All" })).toBeVisible();
+        expect(screen.queryByRole("button", { name: "Clear" }));
+
+        const chip = screen.queryByLabelText("1915(b)");
+        expect(chip).toBeInTheDocument();
+        expect(chip.getAttribute("data-state")).toEqual("unchecked");
+
+        const med = screen.queryByLabelText("1915(c)");
+        expect(med).toBeInTheDocument();
+        expect(med.getAttribute("data-state")).toEqual("unchecked");
+      });
+      it("should display waivers filter authorities if one filter is selected", async () => {
+        const { user } = setup(
+          [
+            {
+              label: "Authority",
+              field: "authority.keyword",
+              component: "multiCheck",
+              prefix: "must",
+              type: "terms",
+              value: ["1915(b)"],
+            },
+          ],
+          "waivers",
+        );
+        await user.click(screen.getByRole("button", { name: "Filters" }));
+
+        // it should already be expanded if there is a filter already set
+        expect(
+          screen
+            .getByRole("heading", {
+              name: "Authority",
+              level: 3,
+            })
+            .parentElement.getAttribute("data-state"),
+        ).toEqual("open");
+
+        const chip = screen.queryByLabelText("1915(b)");
+        expect(chip).toBeInTheDocument();
+        expect(chip.getAttribute("data-state")).toEqual("checked");
+
+        const med = screen.queryByLabelText("1915(c)");
+        expect(med).toBeInTheDocument();
+        expect(med.getAttribute("data-state")).toEqual("unchecked");
+      });
+    });
+  });
+  it("should show for filters for an invalid tab", async () => {
+    // @ts-expect-error
+    const { user } = setup([], "invalid");
+    await user.click(screen.getByRole("button", { name: "Filters" }));
+    expect(screen.getAllByRole("button").length).toEqual(2);
+    expect(screen.getByRole("button", { name: "Reset" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
   });
 });
