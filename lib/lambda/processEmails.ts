@@ -225,7 +225,7 @@ export async function processAndSendEmails(
 
   console.log("calling retry");
   const item = await retry(
-    () => os.getItem(config.osDomain, getOsNamespace("main"), id),
+    () => os.getItemAndThrowAllErrors(config.osDomain, getOsNamespace("main"), id),
     10,
     10 * 1000,
   );
