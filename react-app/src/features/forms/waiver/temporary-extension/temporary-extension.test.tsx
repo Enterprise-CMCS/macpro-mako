@@ -14,7 +14,7 @@ import {
   EXISTING_ITEM_APPROVED_NEW_ID,
   NOT_FOUND_ITEM_ID,
   VALID_ITEM_TEMPORARY_EXTENSION_ID,
-  TEST_ITEM_ID,
+  TEST_SPA_ITEM_ID,
 } from "mocks";
 
 const upload = uploadFiles<(typeof formSchemas)["temporary-extension"]>();
@@ -34,7 +34,7 @@ describe("Temporary Extension", () => {
     // set the Item Id to TEST_ITEM_ID
     await renderFormWithPackageSectionAsync(
       <TemporaryExtensionForm />,
-      TEST_ITEM_ID,
+      TEST_SPA_ITEM_ID,
       "Medicaid SPA",
     );
 
@@ -50,7 +50,7 @@ describe("Temporary Extension", () => {
       "Approved Initial or Renewal Waiver Number",
     );
     // grab second TEST_ITEM_ID (first one is in the breadcrumbs)
-    const approvedInitialAndRenewalValue = screen.getAllByText(TEST_ITEM_ID)[1];
+    const approvedInitialAndRenewalValue = screen.getAllByText(TEST_SPA_ITEM_ID)[1];
 
     // ensure Approved Initial and Renewal label and value exist and are in correct order
     expect(
