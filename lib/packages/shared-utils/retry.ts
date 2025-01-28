@@ -1,6 +1,6 @@
 export async function retry<T>(fn: () => Promise<T>, retries: number, delay: number): Promise<T> {
   try {
-    return await fn();
+    return fn();
   } catch (error) {
     if (retries <= 1) {
       throw error;
