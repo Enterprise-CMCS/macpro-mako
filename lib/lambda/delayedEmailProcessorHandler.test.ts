@@ -1,8 +1,8 @@
-import { describe, it, expect, vi } from "vitest";
-import { Context } from "aws-lambda";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { SQSEvent } from "aws-lambda";
 import { SESClient } from "@aws-sdk/client-ses";
-import { handler } from "./processEmails";
-import { KafkaRecord, KafkaEvent } from "shared-types";
+import { handler } from "./delayedEmailProcessor";
+import { KafkaRecord } from "shared-types";
 import { Authority } from "shared-types";
 import { SIMPLE_ID, WITHDRAW_RAI_ITEM_B, WITHDRAW_RAI_ITEM_C } from "mocks";
 const nms = "new-medicaid-submission";
@@ -14,8 +14,19 @@ const capitatedInitial = "capitated-initial";
 const withdrawRai = "withdraw-rai";
 const respondToRai = "respond-to-rai";
 const appk = "app-k";
+const uploadSubsequentDocuments = "upload-subsequent-documents";
 
-describe("process emails  Handler", () => {
+describe("process emails Handler", () => {
+  let secSPY: any;
+
+  beforeEach(() => {
+    secSPY = vi.spyOn(SESClient.prototype, "send");
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it.each([
     [
       `should send an email for ${respondToRai} with ${Authority.MED_SPA}`,
@@ -191,13 +202,25 @@ describe("process emails  Handler", () => {
       withdrawRai,
       WITHDRAW_RAI_ITEM_C,
     ],
+    [
+      `should send an email for ${uploadSubsequentDocuments} with ${Authority.CHIP_SPA}`,
+      Authority.CHIP_SPA,
+      uploadSubsequentDocuments,
+      WITHDRAW_RAI_ITEM_B,
+    ],
+    [
+      `should send an email for ${uploadSubsequentDocuments} with ${Authority["1915c"]}`,
+      Authority["1915c"],
+      uploadSubsequentDocuments,
+      WITHDRAW_RAI_ITEM_C,
+    ],
   ])("%s", async (_, auth, eventType, id) => {
-    const callback = vi.fn();
-    const secSPY = vi.spyOn(SESClient.prototype, "send");
-    const mockEvent: KafkaEvent = {
-      records: {
-        "mock-topic": [
-          {
+    const mockEvent: SQSEvent = {
+      Records: [
+        {
+          messageId: "test-message-id",
+          receiptHandle: "test-receipt-handle",
+          body: JSON.stringify({
             key: Buffer.from(id).toString("base64"),
             value: Buffer.from(
               JSON.stringify({
@@ -211,13 +234,22 @@ describe("process emails  Handler", () => {
             offset: "0",
             partition: 0,
             topic: "mock-topic",
-          } as unknown as KafkaRecord,
-        ],
-      },
-      eventSource: "",
-      bootstrapServers: "",
+          }),
+          attributes: {
+            ApproximateReceiveCount: "1",
+            SentTimestamp: "1732645041557",
+            SenderId: "test-sender",
+            ApproximateFirstReceiveTimestamp: "1732645041557",
+          },
+          messageAttributes: {},
+          md5OfBody: "test-md5",
+          eventSource: "aws:sqs",
+          eventSourceARN: "test:arn",
+          awsRegion: "us-east-1",
+        },
+      ],
     };
-    await handler(mockEvent, {} as Context, callback);
+    await handler(mockEvent);
     expect(secSPY).toHaveBeenCalledTimes(2);
   });
 });
@@ -236,11 +268,12 @@ describe("process emails  Handler failures", () => {
       SIMPLE_ID,
     ],
   ])("%s", async (_, auth, eventType, id = SIMPLE_ID) => {
-    const callback = vi.fn();
-    const mockEvent: KafkaEvent = {
-      records: {
-        "mock-topic": [
-          {
+    const mockEvent: SQSEvent = {
+      Records: [
+        {
+          messageId: "test-message-id",
+          receiptHandle: "test-receipt-handle",
+          body: JSON.stringify({
             key: Buffer.from(id).toString("base64"),
             value: Buffer.from(
               JSON.stringify({
@@ -254,12 +287,21 @@ describe("process emails  Handler failures", () => {
             offset: "0",
             partition: 0,
             topic: "mock-topic",
-          } as unknown as KafkaRecord,
-        ],
-      },
-      eventSource: "",
-      bootstrapServers: "",
+          } as unknown as KafkaRecord),
+          attributes: {
+            ApproximateReceiveCount: "1",
+            SentTimestamp: "1732645041557",
+            SenderId: "test-sender",
+            ApproximateFirstReceiveTimestamp: "1732645041557",
+          },
+          messageAttributes: {},
+          md5OfBody: "test-md5",
+          eventSource: "aws:sqs",
+          eventSourceARN: "test:arn",
+          awsRegion: "us-east-1",
+        },
+      ],
     };
-    await expect(() => handler(mockEvent, {} as Context, callback)).rejects.toThrow();
+    await expect(() => handler(mockEvent)).rejects.toThrow();
   });
 });

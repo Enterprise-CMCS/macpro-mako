@@ -9,6 +9,7 @@ export * from "./guides";
 export * from "./inputs";
 export * from "./issue";
 export * from "./lambda-events";
+export * from "./notification";
 export * as opensearch from "./opensearch";
 export * from "./states";
 export * from "./statusHelper";
