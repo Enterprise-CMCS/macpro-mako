@@ -9,7 +9,7 @@ import {
   AttachmentFAQInstructions,
   AttachmentFileFormatInstructions,
 } from "@/components/ActionForm/actionForm.components";
-import { formSchemas, authorityToEvent } from "@/formSchemas";
+import { formSchemas } from "@/formSchemas";
 import { Navigate, useParams } from "react-router";
 import { z } from "zod";
 import { getFAQLinkForAttachments } from "../../faqLinks";
