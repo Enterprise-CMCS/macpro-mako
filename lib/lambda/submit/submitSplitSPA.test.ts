@@ -2,14 +2,10 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { handler } from "./submitSplitSPA";
 import { APIGatewayEvent } from "node_modules/shared-types";
 import { TEST_CHIP_SPA_ITEM, TEST_MED_SPA_ITEM } from "mocks";
-
+// import * as os from "../../libs/opensearch-lib";
 vi.mock("libs/handler-lib", () => ({
   response: vi.fn((data) => data),
 }));
-
-// vi.mock("./getNextSplitSPAId", () => ({
-//   getNextSplitSPAId: vi.fn(),
-// }));
 
 describe("handler", () => {
   beforeEach(() => {
@@ -60,19 +56,14 @@ describe("handler", () => {
   });
 
   it("should fail to split a package with no topic name", async () => {
-    process.env.topicName = "";
+    delete process.env.topicName;
     const noActionevent = {
       body: JSON.stringify({
         packageId: TEST_MED_SPA_ITEM._id,
       }),
     } as APIGatewayEvent;
 
-    const result = await handler(noActionevent);
-    const expectedResult = {
-      statusCode: 500,
-      body: { message: "Topic name is not defined" },
-    };
-    expect(result).toStrictEqual(expectedResult);
+    await expect(handler(noActionevent)).rejects.toThrow("Topic name is not defined");
   });
 
   // it("should create a split SPA", async () => {
