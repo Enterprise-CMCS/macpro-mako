@@ -5,7 +5,7 @@ export const CHP_GUIDES: Template[] = [
   {
     title: "CS 7",
     text: "Eligibility - Targeted Low-Income Children Implementation Guide",
-    href: "/chip/IG_CS7_TargetedLow-IncomeChildren.pdf",
+    href: "/chp/IG_CS7_TargetedLow-IncomeChildren.pdf",
   },
   {
     title: "CS 8",
