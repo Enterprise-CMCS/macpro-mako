@@ -55,13 +55,6 @@ export const CHP_TEMPLATES: Template[] = [
     href: "/CS3.pdf",
   },
 
-  // Establish 2101(f) Group
-  {
-    title: "CS 14",
-    text: "Eligibility - Children Ineligible for Medicaid as a Result of the Elimination of Income Disregards",
-    href: "/CS14.pdf",
-  },
-
   // Eligibility Processing
   {
     title: "CS 24",

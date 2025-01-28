@@ -287,6 +287,12 @@ const items: Record<string, TestItemResult> = {
                 filename: "contract_amendment_2024.pdf",
                 bucket: ATTACHMENT_BUCKET_NAME,
               },
+              {
+                key: "doc002",
+                title: "Contract Amendment2",
+                filename: "contract_amendment_2024_2.pdf",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
             ],
             additionalInformation: "Amendment to the capitated contract terms for 2024.",
             timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
