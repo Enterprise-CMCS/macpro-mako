@@ -37,6 +37,7 @@ export type EmailTemplates = {
   "contracting-renewal-state": AuthoritiesWithUserTypesTemplate;
   "capitated-renewal-state": AuthoritiesWithUserTypesTemplate;
   "respond-to-rai": AuthoritiesWithUserTypesTemplate;
+  "seatool-withdraw": AuthoritiesWithUserTypesTemplate;
   "app-k": AuthoritiesWithUserTypesTemplate;
   "upload-subsequent-documents": AuthoritiesWithUserTypesTemplate;
 };
@@ -59,6 +60,7 @@ const emailTemplates: EmailTemplates = {
   "contracting-renewal-state": EmailContent.newSubmission,
   "capitated-renewal-state": EmailContent.newSubmission,
   "respond-to-rai": EmailContent.respondToRai,
+  "seatool-withdraw": EmailContent.withdrawPackage,
   "app-k": EmailContent.newSubmission,
   "upload-subsequent-documents": EmailContent.uploadSubsequentDocuments,
 };

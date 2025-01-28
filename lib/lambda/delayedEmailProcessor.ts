@@ -1,6 +1,6 @@
 import { SQSEvent } from "aws-lambda";
 import { SESClient, SendEmailCommand, SendEmailCommandInput } from "@aws-sdk/client-ses";
-import { EmailAddresses, KafkaRecord, Events } from "shared-types";
+import { EmailAddresses, KafkaRecord, Events, SEATOOL_STATUS, opensearch } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { getEmailTemplates, getAllStateUsers } from "libs/email";
 import * as os from "libs/opensearch-lib";
@@ -81,6 +81,44 @@ async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfi
 
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key); // decode the key
+
+  if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
+    const safeID = id.replace(/^"|"$/g, "");
+    const seatoolRecord: Document = {
+      safeID,
+      ...JSON.parse(decodeBase64WithUtf8(value)),
+    };
+    const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
+
+    if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
+      try {
+        const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
+
+        if (!item?.found || !item?._source) {
+          console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
+          return;
+        }
+
+        const recordToPass = {
+          timestamp,
+          ...safeSeatoolRecord.data,
+          submitterName: item._source.submitterName,
+          submitterEmail: item._source.submitterEmail,
+          event: "seatool-withdraw" as const,
+          proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
+          origin: "seatool",
+          attachments: {},
+          authority: item._source.authority,
+        } as unknown as Events[keyof Events];
+
+        await processAndSendEmails(recordToPass, safeID, config);
+      } catch (error) {
+        console.error("Error processing record:", JSON.stringify(error, null, 2));
+        throw error;
+      }
+    }
+    return;
+  }
 
   if (!value) {
     console.log("Tombstone detected, nothing to do.");
