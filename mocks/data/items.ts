@@ -269,7 +269,7 @@ const items: Record<string, TestItemResult> = {
     found: true,
     _source: {
       id: WITHDRAWN_CHANGELOG_ITEM_ID,
-      seatoolStatus: SEATOOL_STATUS.PENDING,
+      seatoolStatus: SEATOOL_STATUS.WITHDRAWN,
       actionType: "Withdrawal",
       authority: "CHIP SPA",
       state: "MD",
@@ -440,10 +440,10 @@ const items: Record<string, TestItemResult> = {
       origin: "OneMAC",
       changelog: [
         {
-          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0001`,
+          _id: `${WITHDRAW_APPK_ITEM_ID}-0001`,
           _source: {
-            packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
-            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0001`,
+            packageId: WITHDRAW_APPK_ITEM_ID,
+            id: `${WITHDRAW_APPK_ITEM_ID}-0001`,
             event: "capitated-amendment",
             attachments: [
               {
@@ -458,10 +458,10 @@ const items: Record<string, TestItemResult> = {
           },
         },
         {
-          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0002`,
+          _id: `${WITHDRAW_APPK_ITEM_ID}-0002`,
           _source: {
-            packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
-            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0002`,
+            packageId: WITHDRAW_APPK_ITEM_ID,
+            id: `${WITHDRAW_APPK_ITEM_ID}-0002`,
             event: "respond-to-rai",
             attachments: [
               {
@@ -476,10 +476,10 @@ const items: Record<string, TestItemResult> = {
           },
         },
         {
-          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0003`,
+          _id: `${WITHDRAW_APPK_ITEM_ID}-0003`,
           _source: {
-            packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
-            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0003`,
+            packageId: WITHDRAW_APPK_ITEM_ID,
+            id: `${WITHDRAW_APPK_ITEM_ID}-0003`,
             event: "upload-subsequent-documents",
             attachments: [
               {
@@ -494,10 +494,10 @@ const items: Record<string, TestItemResult> = {
           },
         },
         {
-          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0004`,
+          _id: `${WITHDRAW_APPK_ITEM_ID}-0004`,
           _source: {
-            packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
-            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0004`,
+            packageId: WITHDRAW_APPK_ITEM_ID,
+            id: `${WITHDRAW_APPK_ITEM_ID}-0004`,
             event: "upload-subsequent-documents",
             attachments: [
               {
@@ -512,10 +512,10 @@ const items: Record<string, TestItemResult> = {
           },
         },
         {
-          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0005`,
+          _id: `${WITHDRAW_APPK_ITEM_ID}-0005`,
           _source: {
-            packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
-            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0005`,
+            packageId: WITHDRAW_APPK_ITEM_ID,
+            id: `${WITHDRAW_APPK_ITEM_ID}-0005`,
             event: "withdraw-rai",
             attachments: [
               {
@@ -530,10 +530,10 @@ const items: Record<string, TestItemResult> = {
           },
         },
         {
-          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0006`,
+          _id: `${WITHDRAW_APPK_ITEM_ID}-0006`,
           _source: {
-            packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
-            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0006`,
+            packageId: WITHDRAW_APPK_ITEM_ID,
+            id: `${WITHDRAW_APPK_ITEM_ID}-0006`,
             event: "withdraw-package",
             attachments: [
               {
@@ -548,10 +548,10 @@ const items: Record<string, TestItemResult> = {
           },
         },
         {
-          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0007`,
+          _id: `${WITHDRAW_APPK_ITEM_ID}-0007`,
           _source: {
-            packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
-            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0007`,
+            packageId: WITHDRAW_APPK_ITEM_ID,
+            id: `${WITHDRAW_APPK_ITEM_ID}-0007`,
             event: undefined,
             attachments: [
               {
