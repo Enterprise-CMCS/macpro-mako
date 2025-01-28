@@ -201,19 +201,11 @@ export function validateEmailTemplate(template: any) {
 }
 
 export async function processAndSendEmails(
-  record: Events[keyof Events] & {
-    data?: Record<string, any>;
-  },
+  record: Events[keyof Events],
   id: string,
   config: ProcessEmailConfig,
 ) {
-  let templates;
-
-  if (record?.data?.seatoolStatus) {
-    templates = await getEmailTemplates(record);
-  } else {
-    templates = await getEmailTemplates(record);
-  }
+  const templates = await getEmailTemplates(record);
 
   if (!templates) {
     console.log(
