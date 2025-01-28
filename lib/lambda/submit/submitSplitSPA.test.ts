@@ -7,9 +7,9 @@ vi.mock("libs/handler-lib", () => ({
   response: vi.fn((data) => data),
 }));
 
-vi.mock("./getNextSplitSPAId", () => ({
-  getNextSplitSPAId: vi.fn(),
-}));
+// vi.mock("./getNextSplitSPAId", () => ({
+//   getNextSplitSPAId: vi.fn(),
+// }));
 
 describe("handler", () => {
   beforeEach(() => {
@@ -33,7 +33,7 @@ describe("handler", () => {
 
   it("should return 404 if package ID is not found", async () => {
     const invalidPackage = {
-      body: { packageId: "MD-25-9999" },
+      body: JSON.stringify({ packageId: "MD-25-9999" }),
     } as unknown as APIGatewayEvent;
     const result = await handler(invalidPackage);
     expect(result?.statusCode).toEqual(404);
@@ -62,10 +62,10 @@ describe("handler", () => {
   it("should fail to split a package with no topic name", async () => {
     process.env.topicName = "";
     const noActionevent = {
-      body: {
+      body: JSON.stringify({
         packageId: TEST_MED_SPA_ITEM._id,
-      },
-    } as unknown as APIGatewayEvent;
+      }),
+    } as APIGatewayEvent;
 
     const result = await handler(noActionevent);
     const expectedResult = {

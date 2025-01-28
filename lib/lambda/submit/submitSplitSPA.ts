@@ -63,13 +63,6 @@ export const handler = async (event: APIGatewayEvent) => {
     const body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
     const { packageId } = splitSPAEventBodySchema.parse(body);
 
-    if (!packageId) {
-      return response({
-        statusCode: 400,
-        body: { message: "Package ID to split is required" },
-      });
-    }
-
     const currentPackage = await getPackage(packageId);
     if (!currentPackage || currentPackage.found == false) {
       return response({
