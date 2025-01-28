@@ -164,7 +164,27 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
 
-  const item = await os.getItem(config.osDomain, `${config.indexNamespace}main`, id);
+  async function retry<T>(fn: () => Promise<T>, retries: number, delay: number): Promise<T> {
+    for (let attempt = 0; attempt < retries; attempt++) {
+      try {
+        return await fn(); // Try to execute the function
+      } catch (error) {
+        if (attempt < retries - 1) {
+          console.warn(`Attempt ${attempt + 1} failed. Retrying in ${delay}ms...`);
+          await new Promise((res) => setTimeout(res, delay)); // Wait before retrying
+        } else {
+          throw error; // Re-throw error after exhausting retries
+        }
+      }
+    }
+    throw new Error("Retry mechanism failed unexpectedly."); // Safety guard
+  }
+
+  const item = await retry(
+    () => os.getItem(config.osDomain, `${config.indexNamespace}main`, id),
+    10,
+    10 * 1000,
+  );
 
   const cpocEmail = getCpocEmail(item);
   const srtEmails = getSrtEmails(item);
