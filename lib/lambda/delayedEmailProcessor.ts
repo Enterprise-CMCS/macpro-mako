@@ -1,6 +1,6 @@
 import { SQSEvent } from "aws-lambda";
 import { SESClient, SendEmailCommand, SendEmailCommandInput } from "@aws-sdk/client-ses";
-import { EmailAddresses, KafkaRecord, Events } from "shared-types";
+import { EmailAddresses, KafkaRecord, Events, opensearch, SEATOOL_STATUS } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
 import { getEmailTemplates, getAllStateUsers } from "libs/email";
 import * as os from "libs/opensearch-lib";
@@ -88,6 +88,42 @@ async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfi
   }
 
   const recordBody = JSON.parse(decodeBase64WithUtf8(value));
+
+  if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
+    const safeID = id.replace(/^"|"$/g, "");
+    const seatoolRecord: Document = {
+      safeID,
+      ...recordBody,
+    };
+    const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
+
+    if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
+      try {
+        const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
+
+        if (!item?.found || !item?._source) {
+          console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
+          return;
+        }
+
+        const recordToPass = {
+          timestamp,
+          ...safeSeatoolRecord.data,
+          submitterName: item._source.submitterName,
+          submitterEmail: item._source.submitterEmail,
+          event: "seatool-withdraw",
+          proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
+          origin: "seatool",
+        };
+
+        await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+      } catch (error) {
+        console.error("Error processing record:", JSON.stringify(error, null, 2));
+        throw error;
+      }
+    }
+    return;
+  }
 
   // Example check: only process if origin is "mako"
   if (recordBody.origin !== "mako") {
