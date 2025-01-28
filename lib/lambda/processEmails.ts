@@ -8,6 +8,7 @@ import {
   Events,
 } from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
+import { retry } from "shared-utils/retry";
 import { Handler } from "aws-lambda";
 import { getEmailTemplates, getAllStateUsers } from "libs/email";
 import * as os from "libs/opensearch-lib";
@@ -221,21 +222,6 @@ export async function processAndSendEmails(
   });
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
-  async function retry<T>(fn: () => Promise<T>, retries: number, delay: number): Promise<T> {
-    for (let attempt = 0; attempt < retries; attempt++) {
-      try {
-        return await fn(); // Try to execute the function
-      } catch (error) {
-        if (attempt < retries - 1) {
-          console.warn(`Attempt ${attempt + 1} failed. Retrying in ${delay}ms...`);
-          await new Promise((res) => setTimeout(res, delay)); // Wait before retrying
-        } else {
-          throw error; // Re-throw error after exhausting retries
-        }
-      }
-    }
-    throw new Error("Retry mechanism failed unexpectedly."); // Safety guard
-  }
 
   const item = await retry(
     () => os.getItem(config.osDomain, getOsNamespace("main"), id),
