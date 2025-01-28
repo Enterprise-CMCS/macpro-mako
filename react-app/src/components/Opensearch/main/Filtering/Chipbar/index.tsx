@@ -5,6 +5,7 @@ import { opensearch } from "shared-types";
 import { useFilterDrawerContext } from "../FilterProvider";
 import { useLabelMapping } from "@/hooks";
 import { UTCDate } from "@date-fns/utc";
+import { format } from "date-fns";
 
 export const DATE_FORMAT = "M/d/yyyy";
 export interface RenderProp {
@@ -33,7 +34,9 @@ export const ChipDate: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) =>
   const value = filter.value as opensearch.RangeValue;
   if (!value?.gte && !value?.lte) return null;
   const label = filter?.label ? `${filter.label}: ` : "";
-  const range = `${new UTCDate(value?.gte || value?.lte).toLocaleDateString()} - ${new Date(value?.lte || value?.gte).toLocaleDateString()}`;
+  const gte = format(new UTCDate(value?.gte || value?.lte), DATE_FORMAT);
+  const lte = format(new UTCDate(value?.lte || value?.gte), DATE_FORMAT);
+  const range = `${gte} - ${lte}`;
   return (
     <Chip
       onChipClick={openDrawer}
