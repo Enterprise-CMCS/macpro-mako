@@ -223,13 +223,11 @@ export async function processAndSendEmails(
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
 
-  console.log("calling retry");
   const item = await retry(
     () => os.getItemAndThrowAllErrors(config.osDomain, getOsNamespace("main"), id),
     10,
     10 * 1000,
   );
-  console.log("after retry");
 
   if (!item?.found || !item?._source) {
     console.log(`The package was not found for id: ${id}. Doing nothing.`);
