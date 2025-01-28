@@ -107,7 +107,8 @@ export const UploadSubsequentDocuments = () => {
     null,
   );
   if (originalSubmissionEvent === "NOSO") {
-    originalSubmissionEvent = authorityToEvent[submission._source.mockEvent];
+    console.log("ANDIE", submission._source.mockEvent);
+    originalSubmissionEvent = submission._source.mockEvent;
   }
 
   const schema: SchemaWithEnforcableProps | undefined = formSchemas[originalSubmissionEvent];
