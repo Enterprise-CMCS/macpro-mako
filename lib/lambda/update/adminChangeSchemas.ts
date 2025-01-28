@@ -69,6 +69,8 @@ export const extendSubmitNOSOAdminSchema = submitNOSOAdminSchema.extend({
   isAdminChange: z.boolean(),
   state: z.string(),
   event: z.string(),
+  stateStatus: z.string(),
+  cmsStatus: z.string(),
 });
 
 export const transformSubmitValuesSchema = extendSubmitNOSOAdminSchema.transform((data) => ({
