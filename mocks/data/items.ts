@@ -1,4 +1,4 @@
-import { SEATOOL_STATUS, opensearch } from "shared-types";
+import { SEATOOL_STATUS, opensearch, seaOfficersSchema } from "shared-types";
 import type { TestItemResult } from "../index.d";
 import { ATTACHMENT_BUCKET_NAME } from "../consts";
 
@@ -23,6 +23,7 @@ export const CONTRACTING_AMEND_ITEM_ID = "MD-007.R00.01";
 export const MISSING_CHANGELOG_ITEM_ID = "MD-008.R00.00";
 export const WITHDRAWN_CHANGELOG_ITEM_ID = "VA-11-2020";
 export const INITIAL_RELEASE_APPK_ITEM_ID = "MD-010.R00.01";
+export const WITHDRAW_APPK_ITEM_ID = "MD-010.R00.02";
 export const EXISTING_ITEM_APPROVED_APPK_ITEM_ID = "MD-012.R00.01";
 export const SUBMISSION_ERROR_ITEM_ID = "Throw Submission Error";
 export const GET_ERROR_ITEM_ID = "Throw Get Item Error";
@@ -244,7 +245,7 @@ const items: Record<string, TestItemResult> = {
     found: true,
     _source: {
       id: WITHDRAWN_CHANGELOG_ITEM_ID,
-      seatoolStatus: SEATOOL_STATUS.WITHDRAWN,
+      seatoolStatus: SEATOOL_STATUS.PENDING,
       actionType: "Withdrawal",
       authority: "CHIP SPA",
       state: "MD",
@@ -403,6 +404,159 @@ const items: Record<string, TestItemResult> = {
       ],
     },
   },
+  [WITHDRAW_APPK_ITEM_ID]: {
+    _id: WITHDRAW_APPK_ITEM_ID,
+    found: true,
+    _source: {
+      id: WITHDRAW_APPK_ITEM_ID,
+      seatoolStatus: SEATOOL_STATUS.PENDING,
+      actionType: "New",
+      authority: "1915(c)",
+      state: "MD",
+      origin: "OneMAC",
+      changelog: [
+        {
+          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0001`,
+          _source: {
+            packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
+            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0001`,
+            event: "capitated-amendment",
+            attachments: [
+              {
+                key: "doc001",
+                title: "Contract Amendment",
+                filename: "contract_amendment_2024.pdf",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Amendment to the capitated contract terms for 2024.",
+            timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+          },
+        },
+        {
+          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0002`,
+          _source: {
+            packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
+            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0002`,
+            event: "respond-to-rai",
+            attachments: [
+              {
+                key: "rai002",
+                title: "Response to RAI",
+                filename: "rai_response.docx",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Detailed response to the request for additional information.",
+            timestamp: 1675123200000, // Feb 1, 2023
+          },
+        },
+        {
+          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0003`,
+          _source: {
+            packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
+            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0003`,
+            event: "upload-subsequent-documents",
+            attachments: [
+              {
+                key: "subdoc003",
+                title: "Follow-Up Documents",
+                filename: "followup_docs.zip",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Supporting documents uploaded as follow-up.",
+            timestamp: 1677715200000, // Mar 1, 2023
+          },
+        },
+        {
+          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0004`,
+          _source: {
+            packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
+            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0004`,
+            event: "upload-subsequent-documents",
+            attachments: [
+              {
+                key: "subdoc004",
+                title: "Compliance Files",
+                filename: "compliance_documents.xlsx",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Compliance review files uploaded.",
+            timestamp: 1680307200000, // Apr 1, 2023
+          },
+        },
+        {
+          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0005`,
+          _source: {
+            packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
+            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0005`,
+            event: "withdraw-rai",
+            attachments: [
+              {
+                key: "withdraw005",
+                title: "Withdrawal Notice",
+                filename: "rai_withdrawal_notice.pdf",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Official notice of RAI withdrawal submitted.",
+            timestamp: 1682899200000, // May 1, 2023
+          },
+        },
+        {
+          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0006`,
+          _source: {
+            packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
+            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0006`,
+            event: "withdraw-package",
+            attachments: [
+              {
+                key: "withdraw006",
+                title: "Package Withdrawal",
+                filename: "package_withdrawal_request.docx",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Package has been withdrawn from submission pipeline.",
+            timestamp: 1685491200000, // Jun 1, 2023
+          },
+        },
+        {
+          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0007`,
+          _source: {
+            packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
+            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0007`,
+            event: undefined,
+            attachments: [
+              {
+                key: "misc007",
+                title: "Miscellaneous File",
+                filename: "miscellaneous_info.txt",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Uncategorized file upload.",
+            isAdminChange: false,
+          },
+        },
+      ],
+      appkChildren: [
+        {
+          _id: "withdrawn",
+          _source: {
+            authority: "1915(c)",
+            changedDate: "2024-01-01T00:00:00Z",
+            title: "Initial release",
+            seatoolStatus: SEATOOL_STATUS.WITHDRAWN,
+            cmsStatus: "Pending",
+            stateStatus: "Under Review",
+          },
+        },
+      ],
+    },
+  },
   [WITHDRAW_RAI_ITEM_B]: {
     _id: WITHDRAW_RAI_ITEM_B,
     found: true,
@@ -505,6 +659,7 @@ export const TEST_MED_SPA_ITEM = items[TEST_ITEM_ID] as opensearch.main.ItemResu
 export const TEST_CHIP_SPA_ITEM = items[WITHDRAWN_CHANGELOG_ITEM_ID] as opensearch.main.ItemResult;
 export const TEST_1915B_ITEM = items[EXISTING_ITEM_APPROVED_NEW_ID] as opensearch.main.ItemResult;
 export const TEST_1915C_ITEM = items[INITIAL_RELEASE_APPK_ITEM_ID] as opensearch.main.ItemResult;
+export const WITHDRAW_APPK_ITEM = items[WITHDRAW_APPK_ITEM_ID] as opensearch.main.ItemResult;
 export const TEST_ITEM_WITH_APPK = items[
   EXISTING_ITEM_APPROVED_APPK_ITEM_ID
 ] as opensearch.main.ItemResult;

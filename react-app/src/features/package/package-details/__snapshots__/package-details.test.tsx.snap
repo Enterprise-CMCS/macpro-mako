@@ -1,0 +1,704 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`package details > makes a package 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <section
+        class="p-4 border rounded-sm border-cardBorder"
+        id="package_details"
+      >
+        <h1
+          class="text-3xl font-semibold mb-2"
+          data-testid="undefined-title"
+        >
+          1915(c) Package Details
+        </h1>
+        <hr
+          class="my-6 bg-slate-200"
+        />
+        <div
+          class="gap-8 flex flex-col"
+          data-testid="undefined-child"
+        >
+          <div
+            class="flex-col gap-4 max-w-2xl"
+          >
+            <div
+              class="grid grid-cols-2 gap-6 py-4"
+            >
+              <div>
+                <h3
+                  style="font-weight: 700;"
+                >
+                  Submission ID
+                </h3>
+                <div
+                  class="py-2"
+                  style="font-weight: 400;"
+                >
+                  MD-010.R00.02
+                </div>
+              </div>
+              <div>
+                <h3
+                  style="font-weight: 700;"
+                >
+                  Authority
+                </h3>
+                <div
+                  class="py-2"
+                  style="font-weight: 400;"
+                >
+                  1915(c)
+                </div>
+              </div>
+              <div>
+                <h3
+                  style="font-weight: 700;"
+                >
+                  Action Type
+                </h3>
+                <div
+                  class="py-2"
+                  style="font-weight: 400;"
+                >
+                  Initial
+                </div>
+              </div>
+              <div>
+                <h3
+                  style="font-weight: 700;"
+                >
+                  State
+                </h3>
+                <div
+                  class="py-2"
+                  style="font-weight: 400;"
+                >
+                  Maryland
+                </div>
+              </div>
+              <div>
+                <h3
+                  style="font-weight: 700;"
+                >
+                  Proposed effective date
+                </h3>
+                <div
+                  class="py-2"
+                  style="font-weight: 400;"
+                >
+                  Pending
+                </div>
+              </div>
+              <div>
+                <h3
+                  style="font-weight: 700;"
+                >
+                  Initial submission date
+                </h3>
+                <div
+                  class="py-2"
+                  style="font-weight: 400;"
+                >
+                  -- --
+                </div>
+              </div>
+              <div>
+                <h3
+                  style="font-weight: 700;"
+                >
+                  Latest package activity
+                </h3>
+                <div
+                  class="py-2"
+                  style="font-weight: 400;"
+                >
+                  -- --
+                </div>
+              </div>
+              <div>
+                <h3
+                  style="font-weight: 700;"
+                >
+                  Formal RAI response date
+                </h3>
+                <div
+                  class="py-2"
+                  style="font-weight: 400;"
+                >
+                  -- --
+                </div>
+              </div>
+              <div>
+                <h3
+                  style="font-weight: 700;"
+                >
+                  Final disposition date
+                </h3>
+                <div
+                  class="py-2"
+                  style="font-weight: 400;"
+                >
+                  -- --
+                </div>
+              </div>
+              <div>
+                <h3
+                  style="font-weight: 700;"
+                >
+                  Approved effective date
+                </h3>
+                <div
+                  class="py-2"
+                  style="font-weight: 400;"
+                >
+                  -- --
+                </div>
+              </div>
+            </div>
+            <hr
+              class="my-4"
+            />
+            <div
+              class="grid grid-cols-2 gap-6"
+            >
+              <div>
+                <h3
+                  style="font-weight: 700;"
+                >
+                  Submitted by
+                </h3>
+                <div
+                  class="py-2"
+                  style="font-weight: 400;"
+                >
+                  <p
+                    class="text-lg"
+                  >
+                    -- --
+                  </p>
+                </div>
+              </div>
+              <div>
+                <h3
+                  style="font-weight: 700;"
+                >
+                  CPOC
+                </h3>
+                <div
+                  class="py-2"
+                  style="font-weight: 400;"
+                >
+                  <p
+                    class="text-lg"
+                  >
+                    -- --
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="my-2"
+              id="appendix_k"
+            >
+              <div
+                class="w-full border-[1px] overflow-auto"
+              >
+                <table
+                  class="w-full caption-bottom text-sm"
+                >
+                  <thead
+                    class="[&_tr]:border-b"
+                  >
+                    <tr
+                      class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted text-sm"
+                    >
+                      <th
+                        class="px-4 pl-2 text-left font-semibold text-muted-foreground [&:has([role=checkbox])]:pr-0 leading-5 w-[300px]"
+                      >
+                        <div
+                          class="flex items-center gap-1"
+                        >
+                          Package ID
+                          <svg
+                            class=".1em w-5 h-5 opacity-0"
+                            fill="none"
+                            height="24"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="m5 12 7-7 7 7"
+                            />
+                            <path
+                              d="M12 19V5"
+                            />
+                          </svg>
+                        </div>
+                      </th>
+                      <th
+                        class="px-4 pl-2 text-left font-semibold text-muted-foreground [&:has([role=checkbox])]:pr-0 leading-5"
+                      >
+                        <div
+                          class="flex items-center gap-1"
+                        >
+                          Actions
+                          <svg
+                            class=".1em w-5 h-5 opacity-0"
+                            fill="none"
+                            height="24"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="m5 12 7-7 7 7"
+                            />
+                            <path
+                              d="M12 19V5"
+                            />
+                          </svg>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="[&_tr:last-child]:border-0"
+                  >
+                    <tr
+                      class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted text-sm"
+                    >
+                      <td
+                        class="px-2 py-3 text-left align-middle text-sm [&:has([role=checkbox])]:pr-0 font-medium"
+                      >
+                        <p>
+                          withdrawn
+                        </p>
+                      </td>
+                      <td
+                        class="px-2 py-3 text-left align-middle text-sm [&:has([role=checkbox])]:pr-0"
+                      >
+                        <button
+                          class="items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-9 rounded-md px-3 flex gap-1"
+                          disabled=""
+                        >
+                          <svg
+                            class="lucide lucide-undo2"
+                            fill="none"
+                            height="20"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                            width="20"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M9 14 4 9l5-5"
+                            />
+                            <path
+                              d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"
+                            />
+                          </svg>
+                          Withdraw
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      ,
+    </div>
+  </body>,
+  "container": <div>
+    <section
+      class="p-4 border rounded-sm border-cardBorder"
+      id="package_details"
+    >
+      <h1
+        class="text-3xl font-semibold mb-2"
+        data-testid="undefined-title"
+      >
+        1915(c) Package Details
+      </h1>
+      <hr
+        class="my-6 bg-slate-200"
+      />
+      <div
+        class="gap-8 flex flex-col"
+        data-testid="undefined-child"
+      >
+        <div
+          class="flex-col gap-4 max-w-2xl"
+        >
+          <div
+            class="grid grid-cols-2 gap-6 py-4"
+          >
+            <div>
+              <h3
+                style="font-weight: 700;"
+              >
+                Submission ID
+              </h3>
+              <div
+                class="py-2"
+                style="font-weight: 400;"
+              >
+                MD-010.R00.02
+              </div>
+            </div>
+            <div>
+              <h3
+                style="font-weight: 700;"
+              >
+                Authority
+              </h3>
+              <div
+                class="py-2"
+                style="font-weight: 400;"
+              >
+                1915(c)
+              </div>
+            </div>
+            <div>
+              <h3
+                style="font-weight: 700;"
+              >
+                Action Type
+              </h3>
+              <div
+                class="py-2"
+                style="font-weight: 400;"
+              >
+                Initial
+              </div>
+            </div>
+            <div>
+              <h3
+                style="font-weight: 700;"
+              >
+                State
+              </h3>
+              <div
+                class="py-2"
+                style="font-weight: 400;"
+              >
+                Maryland
+              </div>
+            </div>
+            <div>
+              <h3
+                style="font-weight: 700;"
+              >
+                Proposed effective date
+              </h3>
+              <div
+                class="py-2"
+                style="font-weight: 400;"
+              >
+                Pending
+              </div>
+            </div>
+            <div>
+              <h3
+                style="font-weight: 700;"
+              >
+                Initial submission date
+              </h3>
+              <div
+                class="py-2"
+                style="font-weight: 400;"
+              >
+                -- --
+              </div>
+            </div>
+            <div>
+              <h3
+                style="font-weight: 700;"
+              >
+                Latest package activity
+              </h3>
+              <div
+                class="py-2"
+                style="font-weight: 400;"
+              >
+                -- --
+              </div>
+            </div>
+            <div>
+              <h3
+                style="font-weight: 700;"
+              >
+                Formal RAI response date
+              </h3>
+              <div
+                class="py-2"
+                style="font-weight: 400;"
+              >
+                -- --
+              </div>
+            </div>
+            <div>
+              <h3
+                style="font-weight: 700;"
+              >
+                Final disposition date
+              </h3>
+              <div
+                class="py-2"
+                style="font-weight: 400;"
+              >
+                -- --
+              </div>
+            </div>
+            <div>
+              <h3
+                style="font-weight: 700;"
+              >
+                Approved effective date
+              </h3>
+              <div
+                class="py-2"
+                style="font-weight: 400;"
+              >
+                -- --
+              </div>
+            </div>
+          </div>
+          <hr
+            class="my-4"
+          />
+          <div
+            class="grid grid-cols-2 gap-6"
+          >
+            <div>
+              <h3
+                style="font-weight: 700;"
+              >
+                Submitted by
+              </h3>
+              <div
+                class="py-2"
+                style="font-weight: 400;"
+              >
+                <p
+                  class="text-lg"
+                >
+                  -- --
+                </p>
+              </div>
+            </div>
+            <div>
+              <h3
+                style="font-weight: 700;"
+              >
+                CPOC
+              </h3>
+              <div
+                class="py-2"
+                style="font-weight: 400;"
+              >
+                <p
+                  class="text-lg"
+                >
+                  -- --
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="my-2"
+            id="appendix_k"
+          >
+            <div
+              class="w-full border-[1px] overflow-auto"
+            >
+              <table
+                class="w-full caption-bottom text-sm"
+              >
+                <thead
+                  class="[&_tr]:border-b"
+                >
+                  <tr
+                    class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted text-sm"
+                  >
+                    <th
+                      class="px-4 pl-2 text-left font-semibold text-muted-foreground [&:has([role=checkbox])]:pr-0 leading-5 w-[300px]"
+                    >
+                      <div
+                        class="flex items-center gap-1"
+                      >
+                        Package ID
+                        <svg
+                          class=".1em w-5 h-5 opacity-0"
+                          fill="none"
+                          height="24"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          viewBox="0 0 24 24"
+                          width="24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="m5 12 7-7 7 7"
+                          />
+                          <path
+                            d="M12 19V5"
+                          />
+                        </svg>
+                      </div>
+                    </th>
+                    <th
+                      class="px-4 pl-2 text-left font-semibold text-muted-foreground [&:has([role=checkbox])]:pr-0 leading-5"
+                    >
+                      <div
+                        class="flex items-center gap-1"
+                      >
+                        Actions
+                        <svg
+                          class=".1em w-5 h-5 opacity-0"
+                          fill="none"
+                          height="24"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          viewBox="0 0 24 24"
+                          width="24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="m5 12 7-7 7 7"
+                          />
+                          <path
+                            d="M12 19V5"
+                          />
+                        </svg>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  class="[&_tr:last-child]:border-0"
+                >
+                  <tr
+                    class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted text-sm"
+                  >
+                    <td
+                      class="px-2 py-3 text-left align-middle text-sm [&:has([role=checkbox])]:pr-0 font-medium"
+                    >
+                      <p>
+                        withdrawn
+                      </p>
+                    </td>
+                    <td
+                      class="px-2 py-3 text-left align-middle text-sm [&:has([role=checkbox])]:pr-0"
+                    >
+                      <button
+                        class="items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-9 rounded-md px-3 flex gap-1"
+                        disabled=""
+                      >
+                        <svg
+                          class="lucide lucide-undo2"
+                          fill="none"
+                          height="20"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          viewBox="0 0 24 24"
+                          width="20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M9 14 4 9l5-5"
+                          />
+                          <path
+                            d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"
+                          />
+                        </svg>
+                        Withdraw
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    ,
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
