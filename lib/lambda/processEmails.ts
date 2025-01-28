@@ -30,7 +30,7 @@ interface ProcessEmailConfig {
   osDomain: string;
   indexNamespace?: string;
   region: string;
-  DLQ_URL: string;
+  DELAY_QUEUE_URL: string;
   userPoolId: string;
   configurationSetName: string;
   isDev: boolean;
@@ -42,7 +42,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     "applicationEndpointUrl",
     "osDomain",
     "region",
-    "DLQ_URL",
+    "DELAY_QUEUE_URL",
     "userPoolId",
     "configurationSetName",
     "isDev",
@@ -58,7 +58,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   const osDomain = process.env.osDomain!;
   const indexNamespace = process.env.indexNamespace;
   const region = process.env.region!;
-  const DLQ_URL = process.env.DLQ_URL!;
+  const DELAY_QUEUE_URL = process.env.DELAY_QUEUE_URL!;
   const userPoolId = process.env.userPoolId!;
   const configurationSetName = process.env.configurationSetName!;
   const isDev = process.env.isDev!;
@@ -68,7 +68,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     osDomain: `https://${osDomain}`,
     indexNamespace,
     region,
-    DLQ_URL,
+    DELAY_QUEUE_URL,
     userPoolId,
     configurationSetName,
     isDev: isDev === "true",
@@ -94,12 +94,12 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   } catch (error) {
     console.error("Permanent failure:", error);
 
-    if (config.DLQ_URL) {
+    if (config.DELAY_QUEUE_URL) {
       const sqsClient = new SQSClient({ region: config.region });
       try {
         await sqsClient.send(
           new SendMessageCommand({
-            QueueUrl: config.DLQ_URL,
+            QueueUrl: config.DELAY_QUEUE_URL,
             MessageBody: JSON.stringify({
               error: error.message,
               originalEvent: event,

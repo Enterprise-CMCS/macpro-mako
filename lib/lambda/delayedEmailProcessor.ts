@@ -15,7 +15,7 @@ interface ProcessEmailConfig {
   osDomain: string;
   indexNamespace?: string;
   region: string;
-  DLQ_URL: string;
+  DELAY_QUEUE_URL: string;
   userPoolId: string;
   configurationSetName: string;
   isDev: boolean;
@@ -31,7 +31,7 @@ export const handler = async (event: SQSEvent) => {
     "applicationEndpointUrl",
     "osDomain",
     "region",
-    "DLQ_URL",
+    "DELAY_QUEUE_URL",
     "userPoolId",
     "isDev",
     "configurationSetName",
@@ -48,7 +48,7 @@ export const handler = async (event: SQSEvent) => {
     osDomain: `https://${process.env.osDomain!}`,
     indexNamespace: process.env.indexNamespace,
     region: process.env.region!,
-    DLQ_URL: process.env.DLQ_URL!,
+    DELAY_QUEUE_URL: process.env.DELAY_QUEUE_URL!,
     userPoolId: process.env.userPoolId!,
     configurationSetName: process.env.configurationSetName!,
     isDev: process.env.isDev === "true",

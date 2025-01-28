@@ -274,7 +274,7 @@ export class Email extends cdk.NestedStack {
         applicationEndpointUrl,
         emailAddressLookupSecretName,
         userPoolId: userPool.userPoolId,
-        DLQ_URL: dlq.queueUrl,
+        DELAY_QUEUE_URL: emailQueue.queueUrl,
       },
       bundling: commonBundlingOptions,
       tracing: cdk.aws_lambda.Tracing.ACTIVE,
@@ -304,6 +304,35 @@ export class Email extends cdk.NestedStack {
       ],
       startingPosition: "LATEST",
       topics: [`${topicNamespace}aws.onemac.migration.cdc`],
+      destinationConfig: {
+        onFailure: {
+          destination: dlq.queueArn,
+        },
+      },
+    });
+
+    // SEATool Event Source Mapping
+    new CfnEventSourceMapping(this, "SinkSESTriggerSEATool", {
+      batchSize: 1,
+      enabled: true,
+      selfManagedEventSource: {
+        endpoints: {
+          kafkaBootstrapServers: brokerString.split(","),
+        },
+      },
+      functionName: kafkaToSqsLambda.functionName,
+      sourceAccessConfigurations: [
+        ...privateSubnets.map((subnet) => ({
+          type: "VPC_SUBNET",
+          uri: subnet.subnetId,
+        })),
+        {
+          type: "VPC_SECURITY_GROUP",
+          uri: `security_group:${lambdaSecurityGroup.securityGroupId}`,
+        },
+      ],
+      startingPosition: "LATEST",
+      topics: ["aws.seatool.ksql.onemac.three.agg.State_Plan"],
       destinationConfig: {
         onFailure: {
           destination: dlq.queueArn,
