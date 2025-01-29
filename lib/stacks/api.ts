@@ -294,6 +294,28 @@ export class Api extends cdk.NestedStack {
         },
       },
       {
+        id: "submitSplitSPA",
+        entry: join(__dirname, "../lambda/submit/submitSplitSPA.ts"),
+        environment: {
+          topicName,
+          brokerString,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
+      {
+        id: "submitNOSO",
+        entry: join(__dirname, "../lambda/update/submitNOSO.ts"),
+        environment: {
+          dbInfoSecretName,
+          topicName,
+          brokerString,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+      },
+      {
         id: "getSystemNotifs",
         entry: join(__dirname, "../lambda/getSystemNotifs.ts"),
         environment: {

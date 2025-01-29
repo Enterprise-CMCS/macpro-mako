@@ -101,10 +101,17 @@ export const UploadSubsequentDocuments = () => {
     return <Navigate to="/dashboard" />;
   }
 
-  const originalSubmissionEvent = (submission._source.changelog ?? []).reduce<string | null>(
+  let originalSubmissionEvent = (submission._source.changelog ?? []).reduce<string | null>(
     (acc, { _source }) => (_source?.event ? _source?.event : acc),
     null,
   );
+  if (originalSubmissionEvent === "NOSO") {
+    originalSubmissionEvent = submission._source.mockEvent;
+  }
+
+  if (originalSubmissionEvent === "split-spa") {
+    originalSubmissionEvent = submission._source.mockEvent;
+  }
 
   const schema: SchemaWithEnforcableProps | undefined = formSchemas[originalSubmissionEvent];
 

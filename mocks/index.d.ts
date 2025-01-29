@@ -16,6 +16,8 @@ export type TestItemResult = DeepPartial<opensearch.main.ItemResult>;
 
 export type TestMainDocument = TestItemResult["_source"];
 
+export type TestAggResult = opensearch.AggResult;
+
 export type TestAppkItemResult = Omit<TestItemResult, "found">;
 
 export type TestAppkDocument = TestAppkItemResult["_source"];
@@ -124,13 +126,17 @@ type BoolQuery = QueryBase & {
   should?: QueryContainer | QueryContainer[];
 };
 
+export type QueryAggs = opensearch.main.Aggs;
+
 export type SearchQueryBody = {
   from?: number;
   search?: string;
   query?: {
     bool: BoolQuery;
     match_all?: MatchAllQuery;
+    regexp?: Record<string, string>;
   };
+  aggs?: Record<QueryAggs>;
   size?: number;
   sortDirection?: string;
   sortField?: string;
