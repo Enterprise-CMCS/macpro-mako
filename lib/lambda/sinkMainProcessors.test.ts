@@ -66,6 +66,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     originalWaiverNumber?: string;
     cmsStatus?: string;
     stateStatus?: string;
+    withdrawEmailSent: boolean;
   };
 
   it.each([
@@ -79,6 +80,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: appkBase.additionalInformation,
         actionType: "Amend",
         initialIntakeNeeded: true,
+        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -90,6 +92,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: capitatedInitial.additionalInformation,
         actionType: "Initial",
         initialIntakeNeeded: true,
+        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -101,6 +104,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: capitatedAmendmentBase.additionalInformation,
         actionType: "Amend",
         initialIntakeNeeded: true,
+        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -112,6 +116,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: capitatedRenewal.additionalInformation,
         actionType: "Renew",
         initialIntakeNeeded: true,
+        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -123,6 +128,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: contractingInitial.additionalInformation,
         actionType: "Initial",
         initialIntakeNeeded: true,
+        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -134,6 +140,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: contractingAmendment.additionalInformation,
         actionType: "Amend",
         initialIntakeNeeded: true,
+        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -145,6 +152,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: contractingRenewal.additionalInformation,
         actionType: "Renew",
         initialIntakeNeeded: true,
+        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -156,6 +164,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: newChipSubmission.additionalInformation,
         actionType: "Amend",
         initialIntakeNeeded: true,
+        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -166,6 +175,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         proposedDate: newMedicaidSubmission.proposedEffectiveDate,
         additionalInformation: newMedicaidSubmission.additionalInformation,
         initialIntakeNeeded: true,
+        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
