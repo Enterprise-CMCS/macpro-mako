@@ -83,7 +83,6 @@ export type Document = Omit<AppkDocument, "event"> &
       | "update-values"
       | "update-id"
       | "delete"
-      | "split-spa"
       | "NOSO";
   };
 

@@ -109,10 +109,6 @@ export const UploadSubsequentDocuments = () => {
     originalSubmissionEvent = submission._source.mockEvent;
   }
 
-  if (originalSubmissionEvent === "split-spa") {
-    originalSubmissionEvent = submission._source.mockEvent;
-  }
-
   const schema: SchemaWithEnforcableProps | undefined = formSchemas[originalSubmissionEvent];
 
   if (schema === undefined) {

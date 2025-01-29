@@ -101,12 +101,14 @@ const sendUpdateIdMessage = async ({
     origin: _origin,
     ...remainingFields
   } = currentPackage._source;
+
   if (updatedId === currentPackage._id) {
     return response({
       statusCode: 400,
       body: { message: "New ID required to update package" },
     });
   }
+
   // check if a package with this new ID already exists
   const packageExists = await getPackage(updatedId);
   if (packageExists?.found) {
@@ -130,7 +132,6 @@ const sendUpdateIdMessage = async ({
   }
 
   await sendDeleteMessage(currentPackage._id);
-
   await produceMessage(
     topicName,
     updatedId,
