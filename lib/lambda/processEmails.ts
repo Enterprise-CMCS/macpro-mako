@@ -140,6 +140,11 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           return;
         }
 
+        if (item._source.withdrawEmailSent) {
+          console.log("Withdraw email previously sent");
+          return;
+        }
+
         const recordToPass = {
           timestamp,
           ...safeSeatoolRecord.data,
@@ -151,6 +156,18 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
         };
 
         await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+
+        const indexObject = {
+          index: getOsNamespace("main"),
+          id: safeID,
+          body: {
+            doc: {
+              withdrawEmailSent: true,
+            },
+          },
+        };
+
+        await os.updateData(config.osDomain, indexObject);
       } catch (error) {
         console.error("Error processing record:", JSON.stringify(error, null, 2));
         throw error;
