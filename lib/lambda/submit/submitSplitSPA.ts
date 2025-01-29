@@ -11,8 +11,7 @@ import { z } from "zod";
 EXAMPLE EVENT JSON:
 {
   "body": {
-    "id": "MD-25-9999", 
-    "mockEvent": "new-medicaid-submission", // needed for future actions
+    "id": "MD-25-9999",
   }
 }
 */
