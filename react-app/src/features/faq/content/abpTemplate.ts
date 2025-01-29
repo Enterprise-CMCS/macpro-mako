@@ -17,6 +17,11 @@ export const ABP_TEMPLATES: Template[] = [
     href: "/abp/ABP2b.pdf",
   },
   {
+    title: "ABP 2c",
+    text: "Enrollment Assurances - Mandatory Participants",
+    href: "/abp/ABP2c.pdf",
+  },
+  {
     title: "ABP 3",
     text: "Selection of Benchmark Benefit Package or Benchmark-Equivalent Benefit Package",
     href: "/abp/ABP3.pdf",
