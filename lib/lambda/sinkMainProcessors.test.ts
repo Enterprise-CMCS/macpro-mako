@@ -242,6 +242,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       {
         raiReceivedDate: ISO_DATETIME,
         raiWithdrawEnabled: false,
+        withdrawEmailSent: false,
         seatoolStatus: SEATOOL_STATUS.SUBMITTED,
         cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.SUBMITTED],
         stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.SUBMITTED],
@@ -258,6 +259,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED],
         secondClock: false,
         raiWithdrawEnabled: false,
+        withdrawEmailSent: false,
         locked: true,
       },
     ],
@@ -266,6 +268,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       toggleWithdrawRai,
       {
         raiWithdrawEnabled: true,
+        withdrawEmailSent: false,
       },
     ],
     [
