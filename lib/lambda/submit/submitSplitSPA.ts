@@ -7,6 +7,16 @@ import { events } from "shared-types/events";
 import { getNextSplitSPAId } from "./getNextSplitSPAId";
 import { z } from "zod";
 
+/*
+EXAMPLE EVENT JSON:
+{
+  "body": {
+    "id": "MD-25-9999", 
+    "mockEvent": "new-medicaid-submission", // needed for future actions
+  }
+}
+*/
+
 const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
@@ -37,6 +47,7 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
       origin: "OneMAC",
       changeMade: "OneMAC Admin has added a package to OneMAC.",
       changeReason: "Per request from CMS, this package was added to OneMAC.",
+      mockEvent: "new-medicaid-submission",
       isAdminChange: true,
       adminChangeType: "split-spa",
     }),
