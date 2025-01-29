@@ -189,6 +189,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         initialIntakeNeeded: false,
         cmsStatus: "Requested",
         stateStatus: "Submitted",
+        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
   ])("should handle valid kafka records for %s", async (_, event, seatoolStatus, expectation) => {
