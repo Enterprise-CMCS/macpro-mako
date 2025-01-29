@@ -11,7 +11,7 @@ import { z } from "zod";
 EXAMPLE EVENT JSON:
 {
   "body": {
-    "id": "MD-25-9999",
+    "packageId": "MD-25-9999",
   }
 }
 */
