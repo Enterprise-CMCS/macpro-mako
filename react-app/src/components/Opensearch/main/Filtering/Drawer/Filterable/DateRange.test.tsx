@@ -119,7 +119,7 @@ describe("FilterableDateRange", () => {
     const user = userEvent.setup();
     render(<FilterableDateRange value={{ gte: undefined, lte: undefined }} onChange={onChange} />);
     await user.click(screen.getByText("Pick a date"));
-    await user.click(screen.getByRole("button", { name: "Month To Date" }));
+    await user.click(screen.getByRole("button", { name: "Quarter To Date" }));
     expect(onChange).toHaveBeenCalledWith({
       gte: (startOfDay(startOfQuarter(new UTCDate())) as UTCDate).toISOString(),
       lte: (endOfDay(new UTCDate()) as UTCDate).toISOString(),
@@ -168,5 +168,28 @@ describe("FilterableDateRange", () => {
         lte: (endOfDay(todayDate) as UTCDate).toISOString(),
       });
     }
+  });
+  it("should handle deselecting", async () => {
+    const user = userEvent.setup();
+    const firstDay = startOfMonth(new UTCDate()) as UTCDate;
+    render(
+      <FilterableDateRange
+        value={{ gte: format(firstDay, DATE_FORMAT), lte: format(firstDay, DATE_FORMAT) }}
+        onChange={onChange}
+      />,
+    );
+    await user.click(
+      screen.getByText(
+        `${format(firstDay, DATE_DISPLAY_FORMAT)} - ${format(firstDay, DATE_DISPLAY_FORMAT)}`,
+      ),
+    );
+
+    const pickers = screen.getAllByRole("grid");
+    const firstDayBtn = within(pickers[0])
+      .getAllByRole("gridcell", { name: "1" })
+      .find((day) => !day.getAttribute("disabled"));
+    await user.click(firstDayBtn);
+
+    expect(onChange).toHaveBeenCalledWith({ gte: undefined, lte: undefined });
   });
 });
