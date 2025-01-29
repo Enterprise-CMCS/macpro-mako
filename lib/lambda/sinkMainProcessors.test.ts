@@ -66,7 +66,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     originalWaiverNumber?: string;
     cmsStatus?: string;
     stateStatus?: string;
-    withdrawEmailSent: boolean;
+    withdrawEmailSent?: boolean;
   };
 
   it.each([
