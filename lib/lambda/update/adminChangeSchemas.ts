@@ -23,6 +23,14 @@ export const updateIdAdminChangeSchema = z
   })
   .and(z.record(z.string(), z.any()));
 
+export const splitSPAAdminChangeSchema = z
+  .object({
+    id: z.string(),
+    adminChangeType: z.literal("split-spa"),
+    idToBeUpdated: z.string(),
+  })
+  .and(z.record(z.string(), z.any()));
+
 export const transformDeleteSchema = (offset: number) =>
   deleteAdminChangeSchema.transform((data) => ({
     ...data,
@@ -41,12 +49,24 @@ export const transformUpdateValuesSchema = (offset: number) =>
     timestamp: Date.now(),
   }));
 
+const currentTime = Date.now();
+
 export const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((data) => ({
   ...data,
   event: "update-id",
   packageId: data.id,
   id: `${data.id}`,
   timestamp: Date.now(),
+}));
+
+export const transformedSplitSPASchema = splitSPAAdminChangeSchema.transform((data) => ({
+  ...data,
+  event: "split-spa",
+  packageId: data.id,
+  id: `${data.id}`,
+  timestamp: currentTime,
+  makoChangedDate: currentTime,
+  changedDate: currentTime,
 }));
 
 export const submitNOSOAdminSchema = z.object({
