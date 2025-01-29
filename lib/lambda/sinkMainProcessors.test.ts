@@ -588,6 +588,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         finalDispositionDate: EARLIER_ISO_DATETIME,
         id: TEST_ITEM_ID,
         initialIntakeNeeded: false,
+        withdrawEmailSent: false,
         leadAnalystEmail: "michael.chen@cms.hhs.gov",
         leadAnalystName: "Michael Chen",
         leadAnalystOfficerId: 67890,
