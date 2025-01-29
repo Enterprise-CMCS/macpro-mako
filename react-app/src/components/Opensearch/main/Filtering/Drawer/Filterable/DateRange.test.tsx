@@ -130,6 +130,7 @@ describe("FilterableDateRange", () => {
     const user = userEvent.setup();
     render(<FilterableDateRange value={{ gte: undefined, lte: undefined }} onChange={onChange} />);
     await user.click(screen.getByText("Pick a date"));
+
     const picker = screen.getAllByRole("grid", {
       name: format(new Date(), "MMMM yyyy"),
     })[0];
@@ -146,7 +147,7 @@ describe("FilterableDateRange", () => {
     });
   });
 
-  it("should handle the first day set to the month and clicking the 15th day", async () => {
+  it("should handle the first day set to the month and clicking the 15th", async () => {
     const user = userEvent.setup();
     const today = new UTCDate();
     const firstDay = startOfMonth(today) as UTCDate;
