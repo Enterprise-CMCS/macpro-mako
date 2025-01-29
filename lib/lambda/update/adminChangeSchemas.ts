@@ -68,3 +68,37 @@ export const transformedSplitSPASchema = splitSPAAdminChangeSchema.transform((da
   makoChangedDate: currentTime,
   changedDate: currentTime,
 }));
+
+export const submitNOSOAdminSchema = z.object({
+  id: z.string(),
+  authority: z.string(),
+  status: z.string(),
+  submitterEmail: z.string(),
+  submitterName: z.string(),
+  adminChangeType: z.literal("NOSO"),
+  mockEvent: z.string(),
+  changeMade: z.string(),
+  changeReason: z.string(),
+});
+
+export const extendSubmitNOSOAdminSchema = submitNOSOAdminSchema.extend({
+  packageId: z.string(),
+  origin: z.string(),
+  makoChangedDate: z.number(),
+  changedDate: z.number(),
+  statusDate: z.number(),
+  isAdminChange: z.boolean(),
+  state: z.string(),
+  event: z.string(),
+  stateStatus: z.string(),
+  cmsStatus: z.string(),
+});
+
+export const transformSubmitValuesSchema = extendSubmitNOSOAdminSchema.transform((data) => ({
+  ...data,
+  adminChangeType: "NOSO",
+  event: "NOSO",
+  id: data.id,
+  packageId: data.id,
+  timestamp: Date.now(),
+}));

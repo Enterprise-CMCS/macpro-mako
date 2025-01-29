@@ -105,6 +105,9 @@ export const UploadSubsequentDocuments = () => {
     (acc, { _source }) => (_source?.event ? _source?.event : acc),
     null,
   );
+  if (originalSubmissionEvent === "NOSO") {
+    originalSubmissionEvent = submission._source.mockEvent;
+  }
 
   if (originalSubmissionEvent === "split-spa") {
     originalSubmissionEvent = submission._source.mockEvent;

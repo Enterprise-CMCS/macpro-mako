@@ -7,6 +7,7 @@ import {
   transformDeleteSchema,
   transformedUpdateIdSchema,
   transformedSplitSPASchema,
+  transformSubmitValuesSchema,
 } from "./update/adminChangeSchemas";
 import { getPackageChangelog } from "libs/api/package";
 
@@ -69,7 +70,8 @@ const processAndIndex = async ({
         const schema = transformDeleteSchema(offset)
           .or(transformUpdateValuesSchema(offset))
           .or(transformedUpdateIdSchema)
-          .or(transformedSplitSPASchema);
+          .or(transformedSplitSPASchema)
+          .or(transformSubmitValuesSchema);
 
         const result = schema.safeParse(record);
 
