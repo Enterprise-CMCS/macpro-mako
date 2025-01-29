@@ -7,6 +7,7 @@ export const transform = () => {
       id: data.id,
       raiWithdrawEnabled: false,
       makoChangedDate: data.timestamp ? new Date(data.timestamp).toISOString() : null,
+      raiReceivedDate: undefined,
       cmsStatus,
       stateStatus,
       seatoolStatus: SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED,
