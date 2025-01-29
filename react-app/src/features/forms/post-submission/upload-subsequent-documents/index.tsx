@@ -98,7 +98,6 @@ export const UploadSubsequentDocuments = () => {
   }
 
   if (!submission?._source) {
-    console.log("ANDIE: no source");
     return <Navigate to="/dashboard" />;
   }
 
@@ -107,7 +106,6 @@ export const UploadSubsequentDocuments = () => {
     null,
   );
   if (originalSubmissionEvent === "NOSO") {
-    console.log("ANDIE", submission._source.mockEvent);
     originalSubmissionEvent = submission._source.mockEvent;
   }
 
