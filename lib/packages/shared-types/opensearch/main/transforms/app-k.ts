@@ -29,6 +29,7 @@ export const transform = () => {
       submitterName: data.submitterName,
       actionType: data.actionType,
       initialIntakeNeeded: true,
+      withdrawEmailSent: false,
     };
   });
 };
