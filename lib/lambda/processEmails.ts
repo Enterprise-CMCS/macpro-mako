@@ -14,7 +14,6 @@ import { getEmailTemplates, getAllStateUsers } from "libs/email";
 import * as os from "libs/opensearch-lib";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
-import pLimit from "p-limit";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 import { getOsNamespace } from "libs/utils";
 
@@ -234,7 +233,7 @@ export async function processAndSendEmails(
 
   if (!templates) {
     console.log(
-      `The kafka record has an event type that does not have email support.  event: ${record.event}.  Doing nothing.`,
+      `The kafka record has an event type that does not have email support. event: ${record.event}. Doing nothing.`,
     );
     return;
   }
@@ -275,9 +274,12 @@ export async function processAndSendEmails(
   };
 
   console.log("Template variables:", JSON.stringify(templateVariables, null, 2));
-  const limit = pLimit(5); // Limit concurrent emails
-  const sendEmailPromises = templates.map((template) =>
-    limit(async () => {
+
+  const results = [];
+
+  // Process templates sequentially
+  for (const template of templates) {
+    try {
       const filledTemplate = await template(templateVariables);
       validateEmailTemplate(filledTemplate);
       const params = createEmailParams(
@@ -286,21 +288,29 @@ export async function processAndSendEmails(
         config.applicationEndpointUrl,
         config.isDev,
       );
-      try {
-        await sendEmail(params, config.region);
-      } catch (error) {
-        console.error("Error sending email:", error);
-        throw error;
-      }
-    }),
-  );
 
-  try {
-    await Promise.all(sendEmailPromises);
-  } catch (error) {
-    console.error("Error sending emails:", error);
-    throw error;
+      const result = await sendEmail(params, config.region);
+      results.push({ success: true, result });
+      console.log(`Successfully sent email for template: ${JSON.stringify(result)}`);
+    } catch (error) {
+      console.error("Error processing template:", error);
+      results.push({ success: false, error });
+      // Continue with next template instead of throwing
+    }
   }
+
+  // Log final results
+  const successCount = results.filter((r) => r.success).length;
+  const failureCount = results.filter((r) => !r.success).length;
+
+  console.log(`Email sending complete. Success: ${successCount}, Failures: ${failureCount}`);
+
+  // If all emails failed, throw an error to trigger retry/DLQ logic
+  if (failureCount === templates.length) {
+    throw new Error(`All ${failureCount} email(s) failed to send`);
+  }
+
+  return results;
 }
 
 export function createEmailParams(
