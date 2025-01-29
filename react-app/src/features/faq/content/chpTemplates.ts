@@ -54,14 +54,6 @@ export const CHP_TEMPLATES: Template[] = [
     text: "Eligibility for Medicaid Expansion Program",
     href: "/chp/CS3.pdf",
   },
-
-  // Establish 2101(f) Group
-  {
-    title: "CS 14",
-    text: "Eligibility - Children Ineligible for Medicaid as a Result of the Elimination of Income Disregards",
-    href: "/chp/CS14.pdf",
-  },
-
   // Eligibility Processing
   {
     title: "CS 24",

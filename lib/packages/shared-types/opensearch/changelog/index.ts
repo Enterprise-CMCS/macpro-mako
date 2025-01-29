@@ -82,7 +82,8 @@ export type Document = Omit<AppkDocument, "event"> &
       | "withdraw-rai"
       | "update-values"
       | "update-id"
-      | "delete";
+      | "delete"
+      | "NOSO";
   };
 
 export type Response = Res<Document>;

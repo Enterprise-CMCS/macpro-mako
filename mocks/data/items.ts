@@ -287,6 +287,12 @@ const items: Record<string, TestItemResult> = {
                 filename: "contract_amendment_2024.pdf",
                 bucket: ATTACHMENT_BUCKET_NAME,
               },
+              {
+                key: "doc002",
+                title: "Contract Amendment2",
+                filename: "contract_amendment_2024_2.pdf",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
             ],
             additionalInformation: "Amendment to the capitated contract terms for 2024.",
             timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
@@ -541,16 +547,16 @@ export const TEST_TEMP_EXT_ITEM = items[
 
 export const itemList = Object.values(items);
 
-export const getFilteredItemList = (filters: string[]) => {
-  return itemList.filter((item) => filters.includes(item?._source?.authority || ""));
-};
+export const getFilteredItemList = (filters: string[]): opensearch.main.ItemResult[] =>
+  itemList
+    .filter((item) => filters.includes(item?._source?.authority || ""))
+    .map((item) => item as opensearch.main.ItemResult);
 
 export const docList = Object.values(items).map(
   (item) => (item?._source || {}) as opensearch.main.Document,
 );
 
-export const getFilteredDocList = (filters: string[]) => {
-  return docList.filter((item) => filters.includes(item?.authority || ""));
-};
+export const getFilteredDocList = (filters: string[]): opensearch.main.Document[] =>
+  docList.filter((item) => filters.includes(item?.authority || ""));
 
 export default items;
