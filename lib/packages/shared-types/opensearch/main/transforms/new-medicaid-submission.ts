@@ -27,7 +27,6 @@ export const transform = () => {
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
       initialIntakeNeeded: true,
-      withdrawEmailSent: false,
     };
   });
 };

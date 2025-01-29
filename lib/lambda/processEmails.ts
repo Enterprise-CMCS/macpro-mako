@@ -146,7 +146,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           return;
         }
 
-        if (item._source.withdrawEmailSent) {
+        if ((item._source as any).withdrawEmailSent) {
           console.log("Withdraw email previously sent");
           return;
         }

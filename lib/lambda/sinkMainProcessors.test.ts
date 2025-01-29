@@ -66,7 +66,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     originalWaiverNumber?: string;
     cmsStatus?: string;
     stateStatus?: string;
-    withdrawEmailSent?: boolean;
+    [key: string]: any;
   };
 
   it.each([
@@ -80,7 +80,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: appkBase.additionalInformation,
         actionType: "Amend",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -92,7 +91,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: capitatedInitial.additionalInformation,
         actionType: "Initial",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -104,7 +102,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: capitatedAmendmentBase.additionalInformation,
         actionType: "Amend",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -116,7 +113,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: capitatedRenewal.additionalInformation,
         actionType: "Renew",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -128,7 +124,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: contractingInitial.additionalInformation,
         actionType: "Initial",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -140,7 +135,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: contractingAmendment.additionalInformation,
         actionType: "Amend",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -152,7 +146,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: contractingRenewal.additionalInformation,
         actionType: "Renew",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -164,7 +157,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: newChipSubmission.additionalInformation,
         actionType: "Amend",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -175,7 +167,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         proposedDate: newMedicaidSubmission.proposedEffectiveDate,
         additionalInformation: newMedicaidSubmission.additionalInformation,
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -229,7 +220,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         subject: null,
         submitterEmail: "george@example.com",
         submitterName: "George Harrison",
-        withdrawEmailSent: false,
       },
     ]);
   });
@@ -281,7 +271,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         locked: true,
         secondClock: false,
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
+
         raiWithdrawEnabled: false,
       },
     ],
@@ -593,7 +583,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         finalDispositionDate: EARLIER_ISO_DATETIME,
         id: TEST_ITEM_ID,
         initialIntakeNeeded: false,
-        withdrawEmailSent: false,
+
         leadAnalystEmail: "michael.chen@cms.hhs.gov",
         leadAnalystName: "Michael Chen",
         leadAnalystOfficerId: 67890,
@@ -707,7 +697,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         finalDispositionDate: EARLIER_ISO_DATETIME,
         id: NOT_FOUND_ITEM_ID,
         initialIntakeNeeded: false,
-        withdrawEmailSent: false,
+
         leadAnalystEmail: "michael.chen@cms.hhs.gov",
         leadAnalystName: "Michael Chen",
         leadAnalystOfficerId: 67890,
@@ -821,7 +811,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         finalDispositionDate: EARLIER_ISO_DATETIME,
         id: EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
         initialIntakeNeeded: false,
-        withdrawEmailSent: false,
+
         leadAnalystEmail: "michael.chen@cms.hhs.gov",
         leadAnalystName: "Michael Chen",
         leadAnalystOfficerId: 67890,
@@ -937,7 +927,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         finalDispositionDate: EARLIER_ISO_DATETIME,
         id: TEST_ITEM_ID,
         initialIntakeNeeded: false,
-        withdrawEmailSent: false,
+
         leadAnalystEmail: "michael.chen@cms.hhs.gov",
         leadAnalystName: "Michael Chen",
         leadAnalystOfficerId: 67890,
