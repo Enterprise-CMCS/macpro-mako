@@ -37,6 +37,13 @@ interface ProcessEmailConfig {
   isDev: boolean;
 }
 
+interface EmailTemplate {
+  to: string[];
+  cc?: string[];
+  subject: string;
+  body: string;
+}
+
 export const handler: Handler<KafkaEvent> = async (event) => {
   const requiredEnvVars = [
     "emailAddressLookupSecretName",
@@ -297,16 +304,17 @@ export async function processAndSendEmails(
 }
 
 export function createEmailParams(
-  filledTemplate: any,
+  filledTemplate: EmailTemplate,
   sourceEmail: string,
   baseUrl: string,
   isDev: boolean,
 ): SendEmailCommandInput {
-  const params = {
+  const params: SendEmailCommandInput = {
     Destination: {
       ToAddresses: filledTemplate.to,
-      CcAddresses: filledTemplate.cc,
-      BccAddresses: isDev ? [`State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`] : [], // this is so emails can be tested in dev as they should have the correct recipients but be blind copied on all emails on dev
+      CcAddresses: isDev
+        ? [...(filledTemplate.cc || []), `State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`]
+        : filledTemplate.cc,
     },
     Message: {
       Body: {
