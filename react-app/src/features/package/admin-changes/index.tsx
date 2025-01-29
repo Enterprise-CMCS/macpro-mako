@@ -49,7 +49,6 @@ export const AC_LegacyAdminChange: FC<opensearch.changelog.Document> = (props) =
 export const AC_Update: FC<opensearch.changelog.Document> = () => {
   return <p>Coming Soon</p>;
 };
-
 export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
   const [label, Content] = useMemo(() => {
     switch (props.event) {
@@ -59,12 +58,16 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
         }
         return ["Disable Formal RAI Response Withdraw", AC_WithdrawDisabled];
       }
+      case "NOSO":
+        return [props.changeType || "Package Added", AC_LegacyAdminChange];
       case "legacy-admin-change":
         return [props.changeType || "Manual Update", AC_LegacyAdminChange];
+      case "split-spa":
+        return ["Package Added", AC_LegacyAdminChange];
       default:
         return [BLANK_VALUE, AC_Update];
     }
-  }, [props.actionType, props.changeType]);
+  }, [props.event, props.changeType, props.raiWithdrawEnabled]);
 
   return (
     <AccordionItem key={props.id} value={props.id}>
