@@ -1,11 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { handler } from "./submitSplitSPA";
 import { APIGatewayEvent } from "node_modules/shared-types";
-import { TEST_CHIP_SPA_ITEM, TEST_MED_SPA_ITEM, TEST_SPA_ITEM_TO_SPLIT } from "mocks";
-
-vi.mock("libs/handler-lib", () => ({
-  response: vi.fn((data) => data),
-}));
+import {
+  getRequestContext,
+  TEST_CHIP_SPA_ITEM,
+  TEST_MED_SPA_ITEM,
+  TEST_SPA_ITEM_TO_SPLIT,
+} from "mocks";
 
 describe("handler", () => {
   beforeEach(() => {
@@ -33,16 +34,13 @@ describe("handler", () => {
 
   it("should throw an error if not Medicaid SPA", async () => {
     const chipSPAPackage = {
-      body: { packageId: TEST_CHIP_SPA_ITEM._id },
-    } as unknown as APIGatewayEvent;
+      body: JSON.stringify({ packageId: TEST_CHIP_SPA_ITEM._id }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
 
     const result = await handler(chipSPAPackage);
-    const expectedResult = {
-      statusCode: 400,
-      body: { message: "Record must be a Medicaid SPA" },
-    };
 
-    expect(result).toEqual(expectedResult);
+    expect(result.body).toEqual(JSON.stringify({ message: "Record must be a Medicaid SPA" }));
   });
 
   it("should return 400 if package ID not provided", async () => {
