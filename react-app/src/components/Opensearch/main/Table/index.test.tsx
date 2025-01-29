@@ -1,57 +1,17 @@
 import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
-import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers/renderForm";
 import userEvent from "@testing-library/user-event";
-import { BLANK_VALUE } from "@/consts";
-import LZ from "lz-string";
+import { OsTable, OsTableColumn } from "@/components";
 import { opensearch } from "shared-types";
-import { OsTable, OsTableColumn, OsProvider, FilterDrawerProvider } from "@/components";
-import { getFilteredItemList } from "mocks";
+import {
+  renderDashboard,
+  getDashboardQueryString,
+  getFilteredHits,
+  DEFAULT_COLUMNS,
+  EMPTY_HITS,
+} from "@/utils/test-helpers";
 
-const code = "094230fe-a02f-45d7-a675-05876ab5d76a";
-const items: opensearch.Hit<opensearch.main.Document>[] = getFilteredItemList([
-  "CHIP SPA",
-  "Medicaid SPA",
-]).map((item) => ({ ...item, found: undefined }) as opensearch.Hit<opensearch.main.Document>);
-const defaultHits: opensearch.Hits<opensearch.main.Document> = {
-  hits: items,
-  max_score: 5,
-  total: { value: items.length, relation: "eq" },
-};
-const defaultColumns: OsTableColumn[] = [
-  {
-    props: { className: "w-[150px]" },
-    field: "id.keyword",
-    label: "SPA ID",
-    locked: true,
-    transform: (data) => data.id ?? BLANK_VALUE,
-    cell: (data) => data.id ?? BLANK_VALUE,
-  },
-  {
-    field: "state.keyword",
-    label: "State",
-    transform: (data) => data.state ?? BLANK_VALUE,
-    cell: (data) => data.state ?? BLANK_VALUE,
-  },
-  {
-    field: "authority.keyword",
-    label: "Authority",
-    transform: (data) => data.authority ?? BLANK_VALUE,
-    cell: (data) => data.authority ?? BLANK_VALUE,
-  },
-  {
-    field: "raiReceivedDate",
-    label: "Formal RAI Response",
-    cell: (data) => data.raiReceivedDate ?? BLANK_VALUE,
-  },
-  {
-    field: "origin.keyword",
-    label: "Submission Source",
-    hidden: true,
-    transform: (data) => data.origin ?? BLANK_VALUE,
-    cell: (data) => data.origin ?? BLANK_VALUE,
-  },
-];
+const defaultHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
 
 const setup = (
   columns: OsTableColumn[],
@@ -59,50 +19,14 @@ const setup = (
   hits: opensearch.Hits<opensearch.main.Document>,
 ) => {
   const user = userEvent.setup();
-  const queryString = LZ.compressToEncodedURIComponent(
-    JSON.stringify({
-      filters: [],
-      search: "",
-      tab: "spas",
-      pagination: {
-        number: 0,
-        size: 25,
-      },
-      sort: {
-        field: "submissionDate",
-        order: "desc",
-      },
-      code,
-    }),
-  );
-  const rendered = renderWithQueryClientAndMemoryRouter(
+  const rendered = renderDashboard(
     <OsTable columns={columns} onToggle={onToggle} />,
-    [
-      {
-        path: "/dashboard",
-        element: (
-          <OsProvider
-            value={{
-              data: hits,
-              error: null,
-              isLoading: false,
-            }}
-          >
-            <FilterDrawerProvider>
-              <OsTable columns={columns} onToggle={onToggle} />
-            </FilterDrawerProvider>
-          </OsProvider>
-        ),
-      },
-    ],
     {
-      initialEntries: [
-        {
-          pathname: "/dashboard",
-          search: `code=${code}&os=${queryString}`,
-        },
-      ],
+      data: hits,
+      isLoading: false,
+      error: null,
     },
+    getDashboardQueryString(),
   );
   return {
     user,
@@ -113,33 +37,27 @@ const setup = (
 describe("", () => {
   it("should display the table with values", () => {
     const onToggle = vi.fn();
-    setup(defaultColumns, onToggle, defaultHits);
+    setup(DEFAULT_COLUMNS, onToggle, defaultHits);
 
     // Check that the correct column headers appear
-    expect(screen.getAllByRole("columnheader").length).toEqual(4);
+    expect(screen.getAllByRole("columnheader").length).toEqual(3);
     expect(screen.getByText("SPA ID", { selector: "th>div" }));
     expect(screen.getByText("State", { selector: "th>div" }));
     expect(screen.getByText("Authority", { selector: "th>div" }));
-    expect(screen.getByText("Formal RAI Response", { selector: "th>div" }));
 
     // Check that the correct amount rows appear
-    expect(screen.getAllByRole("row").length).toEqual(items.length + 1); // add 1 for header
+    expect(screen.getAllByRole("row").length).toEqual(defaultHits.hits.length + 1); // add 1 for header
   });
 
   it("should display the table with no values", () => {
     const onToggle = vi.fn();
-    setup(defaultColumns, onToggle, {
-      hits: [],
-      max_score: 5,
-      total: { value: 0, relation: "eq" },
-    });
+    setup(DEFAULT_COLUMNS, onToggle, EMPTY_HITS);
 
     // Check that the correct column headers appear
-    expect(screen.getAllByRole("columnheader").length).toEqual(4);
+    expect(screen.getAllByRole("columnheader").length).toEqual(3);
     expect(screen.getByText("SPA ID", { selector: "th>div" }));
     expect(screen.getByText("State", { selector: "th>div" }));
     expect(screen.getByText("Authority", { selector: "th>div" }));
-    expect(screen.getByText("Formal RAI Response", { selector: "th>div" }));
 
     expect(screen.getByText("No Results Found")).toBeInTheDocument();
     expect(

@@ -1,7 +1,7 @@
 import { describe, it, expect, afterAll } from "vitest";
 import { renderHook, waitFor } from "@testing-library/react";
 import { useReadOnlyUser } from "./useReadOnlyUser";
-import { queryClientWrapper } from "@/utils/test-helpers/renderForm";
+import { queryClientWrapper } from "@/utils/test-helpers";
 import { setMockUsername, setDefaultReviewer, setDefaultStateSubmitter } from "mocks";
 
 const setup = async () => {
