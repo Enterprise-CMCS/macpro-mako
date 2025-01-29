@@ -147,7 +147,7 @@ describe("FilterableDateRange", () => {
     });
   });
 
-  it.only("should handle the first day set to the month and clicking the 15th", async () => {
+  it("should handle the first day set to the month and clicking the 15th", async () => {
     const user = userEvent.setup();
     const today = new UTCDate();
     const firstDay = startOfMonth(today) as UTCDate;
@@ -169,7 +169,6 @@ describe("FilterableDateRange", () => {
     const fifteenthDayButton = within(picker)
       .getAllByRole("gridcell", { name: "15" })
       .find((day) => !day.getAttribute("disabled"));
-    await user.click(fifteenthDayButton);
     expect(fifteenthDayButton).not.toBeNull();
 
     if (fifteenthDayButton) {
