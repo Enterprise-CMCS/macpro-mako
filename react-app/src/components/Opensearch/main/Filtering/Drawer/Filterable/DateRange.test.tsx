@@ -2,7 +2,7 @@ import { describe, expect, it, vi, afterEach } from "vitest";
 import { screen, render, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FilterableDateRange, DATE_FORMAT, DATE_DISPLAY_FORMAT } from "./DateRange";
-import { format, startOfQuarter, startOfMonth, sub, endOfDay, startOfDay, getDate } from "date-fns";
+import { format, startOfQuarter, startOfMonth, sub, endOfDay, startOfDay, setDate } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
 
 describe("FilterableDateRange", () => {
@@ -87,8 +87,8 @@ describe("FilterableDateRange", () => {
     await user.click(screen.getByText("Pick a date"));
     await user.click(screen.getByRole("button", { name: "Today" }));
     expect(onChange).toHaveBeenCalledWith({
-      gte: startOfDay(new UTCDate()).toISOString(),
-      lte: endOfDay(new UTCDate()).toISOString(),
+      gte: (startOfDay(new UTCDate()) as UTCDate).toISOString(),
+      lte: (endOfDay(new UTCDate()) as UTCDate).toISOString(),
     });
   });
 
@@ -98,8 +98,8 @@ describe("FilterableDateRange", () => {
     await user.click(screen.getByText("Pick a date"));
     await user.click(screen.getByRole("button", { name: "Last 7 Days" }));
     expect(onChange).toHaveBeenCalledWith({
-      gte: startOfDay(sub(new UTCDate(), { days: 6 })).toISOString(),
-      lte: endOfDay(new UTCDate()).toISOString(),
+      gte: (startOfDay(sub(new UTCDate(), { days: 6 })) as UTCDate).toISOString(),
+      lte: (endOfDay(new UTCDate()) as UTCDate).toISOString(),
     });
   });
 
@@ -108,9 +108,10 @@ describe("FilterableDateRange", () => {
     render(<FilterableDateRange value={{ gte: undefined, lte: undefined }} onChange={onChange} />);
     await user.click(screen.getByText("Pick a date"));
     await user.click(screen.getByRole("button", { name: "Month To Date" }));
+
     expect(onChange).toHaveBeenCalledWith({
-      gte: startOfDay(startOfMonth(new UTCDate())).toISOString(),
-      lte: endOfDay(new UTCDate()).toISOString(),
+      gte: (startOfDay(startOfMonth(new UTCDate())) as UTCDate).toISOString(),
+      lte: (endOfDay(new UTCDate()) as UTCDate).toISOString(),
     });
   });
 
@@ -118,10 +119,10 @@ describe("FilterableDateRange", () => {
     const user = userEvent.setup();
     render(<FilterableDateRange value={{ gte: undefined, lte: undefined }} onChange={onChange} />);
     await user.click(screen.getByText("Pick a date"));
-    await user.click(screen.getByRole("button", { name: "Month To Date" }));
+    await user.click(screen.getByRole("button", { name: "Quarter To Date" }));
     expect(onChange).toHaveBeenCalledWith({
-      gte: startOfDay(startOfQuarter(new UTCDate())).toISOString(),
-      lte: endOfDay(new UTCDate()).toISOString(),
+      gte: (startOfDay(startOfQuarter(new UTCDate())) as UTCDate).toISOString(),
+      lte: (endOfDay(new UTCDate()) as UTCDate).toISOString(),
     });
   });
 
@@ -129,21 +130,29 @@ describe("FilterableDateRange", () => {
     const user = userEvent.setup();
     render(<FilterableDateRange value={{ gte: undefined, lte: undefined }} onChange={onChange} />);
     await user.click(screen.getByText("Pick a date"));
-    const pickers = screen.getAllByRole("grid");
-    const firstDay = within(pickers[0])
+
+    const picker = screen.getAllByRole("grid", {
+      name: format(new Date(), "MMMM yyyy"),
+    })[0];
+    // there will be two date pickers for the month but we only
+    // want the first one because we want the beginning of the month
+    const firstDay = within(picker)
       .getAllByRole("gridcell", { name: "1" })
       .find((day) => !day.getAttribute("disabled"));
     await user.click(firstDay);
     const selectedDate = startOfMonth(new UTCDate());
     expect(onChange).toHaveBeenCalledWith({
-      gte: startOfDay(selectedDate).toISOString(),
-      lte: endOfDay(selectedDate).toISOString(),
+      gte: (startOfDay(selectedDate) as UTCDate).toISOString(),
+      lte: (endOfDay(selectedDate) as UTCDate).toISOString(),
     });
   });
 
-  it("should handle the first day set to the month and clicking today", async () => {
+  it("should handle the first day set to the month and clicking the 15th", async () => {
     const user = userEvent.setup();
-    const firstDay = startOfMonth(new UTCDate());
+    const today = new UTCDate();
+    const firstDay = startOfMonth(today) as UTCDate;
+    const fifteenthDay = setDate(today, 15) as UTCDate;
+
     render(
       <FilterableDateRange
         value={{ gte: format(firstDay, DATE_FORMAT), lte: undefined }}
@@ -151,20 +160,47 @@ describe("FilterableDateRange", () => {
       />,
     );
     await user.click(screen.getByText(format(firstDay, DATE_DISPLAY_FORMAT)));
-    const pickers = screen.getAllByRole("grid");
-    const todayDate = new UTCDate();
-    const todayDay = within(pickers[0])
-      .getAllByRole("gridcell", { name: `${getDate(todayDate)}` })
-      .find((day) => !day.getAttribute("disabled"));
-    expect(todayDay).not.toBeNull();
 
-    if (todayDay) {
-      await user.click(todayDay);
+    const picker = screen.getAllByRole("grid", {
+      name: format(new Date(), "MMMM yyyy"),
+    })[0];
+    // there will be two date pickers for the month but we only
+    // want the first one because we want the middle of the month
+    const fifteenthDayButton = within(picker)
+      .getAllByRole("gridcell", { name: "15" })
+      .find((day) => !day.getAttribute("disabled"));
+    expect(fifteenthDayButton).not.toBeNull();
+
+    if (fifteenthDayButton) {
+      await user.click(fifteenthDayButton);
 
       expect(onChange).toHaveBeenLastCalledWith({
-        gte: startOfDay(firstDay).toISOString(),
-        lte: endOfDay(todayDate).toISOString(),
+        gte: (startOfDay(firstDay) as UTCDate).toISOString(),
+        lte: (endOfDay(fifteenthDay) as UTCDate).toISOString(),
       });
     }
+  });
+  it("should handle deselecting", async () => {
+    const user = userEvent.setup();
+    const firstDay = startOfMonth(new UTCDate()) as UTCDate;
+    render(
+      <FilterableDateRange
+        value={{ gte: format(firstDay, DATE_FORMAT), lte: format(firstDay, DATE_FORMAT) }}
+        onChange={onChange}
+      />,
+    );
+    await user.click(
+      screen.getByText(
+        `${format(firstDay, DATE_DISPLAY_FORMAT)} - ${format(firstDay, DATE_DISPLAY_FORMAT)}`,
+      ),
+    );
+
+    const pickers = screen.getAllByRole("grid");
+    const firstDayBtn = within(pickers[0])
+      .getAllByRole("gridcell", { name: "1" })
+      .find((day) => !day.getAttribute("disabled"));
+    await user.click(firstDayBtn);
+
+    expect(onChange).toHaveBeenCalledWith({ gte: undefined, lte: undefined });
   });
 });
