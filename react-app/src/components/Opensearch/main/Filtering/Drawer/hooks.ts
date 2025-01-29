@@ -122,15 +122,17 @@ export const useFilterDrawer = () => {
 
   const filtersApplied = checkMultiFilter(url.state.filters, 1);
 
-  // update initial filter state + accordion default open items
+  // update filter state + accordion default open items
   useEffect(() => {
     if (!drawer.drawerOpen) return;
-    const updateAccordions = [...accordionValues] as any[];
 
-    setFilters((s) => {
-      return Object.entries(s).reduce((STATE, [KEY, VAL]) => {
+    const updateAccordions = [...accordionValues] as any[];
+    setFilters((currentFilters) => {
+      // Set the new filters state based on the current filter data
+      return Object.entries(currentFilters).reduce((STATE, [KEY, VAL]) => {
         const updateFilter = url.state.filters.find((FIL) => FIL.field === KEY);
 
+        // Determine the new value for the filter based on the URL state
         const value = (() => {
           if (updateFilter) {
             updateAccordions.push(KEY);
@@ -141,12 +143,14 @@ export const useFilterDrawer = () => {
           return { gte: undefined, lte: undefined } as opensearch.RangeValue;
         })();
 
+        // Update the state with the new value for this filter
         STATE[KEY] = { ...VAL, value };
+
         return STATE;
       }, {} as any);
     });
     setAccordionValues(updateAccordions);
-  }, [url.state.filters, drawer.drawerOpen]);
+  }, [url.state.filters, drawer.drawerOpen, setFilters]);
 
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce(
@@ -164,6 +168,14 @@ export const useFilterDrawer = () => {
       {} as Record<opensearch.main.Field, { label: string; value: string }[]>,
     );
   }, [_aggs]);
+
+  useEffect(() => {
+    console.log("aggs?: ", _aggs);
+  }, [_aggs]);
+
+  useEffect(() => {
+    console.log("accordion values", accordionValues);
+  }, [accordionValues]);
 
   return {
     aggs,
