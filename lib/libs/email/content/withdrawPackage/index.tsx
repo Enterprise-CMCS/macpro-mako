@@ -72,8 +72,9 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        cc: variables.allStateUsersEmails,
+        to: variables.allStateUsersEmails || [
+          `${variables.submitterName} <${variables.submitterEmail}>`,
+        ],
         subject: `Waiver Package ${variables.id} Withdraw Request`,
         body: await render(<WaiverStateEmail variables={variables} />),
       };
@@ -98,8 +99,9 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        cc: variables.allStateUsersEmails,
+        to: variables.allStateUsersEmails || [
+          `${variables.submitterName} <${variables.submitterEmail}>`,
+        ],
         subject: `Waiver Package ${variables.id} Withdraw Request`,
         body: await render(<WaiverStateEmail variables={variables} />),
       };
