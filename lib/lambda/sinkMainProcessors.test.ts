@@ -66,7 +66,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     originalWaiverNumber?: string;
     cmsStatus?: string;
     stateStatus?: string;
-    withdrawEmailSent?: boolean;
   };
 
   it.each([
@@ -80,7 +79,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: appkBase.additionalInformation,
         actionType: "Amend",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -92,7 +90,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: capitatedInitial.additionalInformation,
         actionType: "Initial",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -104,7 +101,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: capitatedAmendmentBase.additionalInformation,
         actionType: "Amend",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -116,7 +112,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: capitatedRenewal.additionalInformation,
         actionType: "Renew",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -128,7 +123,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: contractingInitial.additionalInformation,
         actionType: "Initial",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -140,7 +134,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: contractingAmendment.additionalInformation,
         actionType: "Amend",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -152,7 +145,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: contractingRenewal.additionalInformation,
         actionType: "Renew",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -164,7 +156,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: newChipSubmission.additionalInformation,
         actionType: "Amend",
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -175,7 +166,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         proposedDate: newMedicaidSubmission.proposedEffectiveDate,
         additionalInformation: newMedicaidSubmission.additionalInformation,
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
     [
@@ -189,7 +179,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         initialIntakeNeeded: false,
         cmsStatus: "Requested",
         stateStatus: "Submitted",
-        withdrawEmailSent: false,
       } as BulkUpdateRequestBody,
     ],
   ])("should handle valid kafka records for %s", async (_, event, seatoolStatus, expectation) => {
@@ -229,7 +218,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         subject: null,
         submitterEmail: "george@example.com",
         submitterName: "George Harrison",
-        withdrawEmailSent: false,
       },
     ]);
   });
@@ -242,7 +230,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       {
         raiReceivedDate: ISO_DATETIME,
         raiWithdrawEnabled: false,
-        withdrawEmailSent: false,
         seatoolStatus: SEATOOL_STATUS.SUBMITTED,
         cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.SUBMITTED],
         stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.SUBMITTED],
@@ -259,7 +246,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED],
         secondClock: false,
         raiWithdrawEnabled: false,
-        withdrawEmailSent: false,
         locked: true,
       },
     ],
@@ -268,7 +254,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       toggleWithdrawRai,
       {
         raiWithdrawEnabled: true,
-        withdrawEmailSent: false,
       },
     ],
     [
@@ -281,7 +266,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         locked: true,
         secondClock: false,
         initialIntakeNeeded: true,
-        withdrawEmailSent: false,
         raiWithdrawEnabled: false,
       },
     ],
@@ -631,7 +615,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
             SPA_TYPE_NAME: "Type A",
           },
         ],
-        withdrawEmailSent: false,
       },
     ]);
   });
@@ -745,7 +728,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
             SPA_TYPE_NAME: "Type A",
           },
         ],
-        withdrawEmailSent: false,
       },
     ]);
   });
@@ -859,7 +841,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
             SPA_TYPE_NAME: "Type A",
           },
         ],
-        withdrawEmailSent: false,
       },
     ]);
   });
@@ -975,7 +956,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
             SPA_TYPE_NAME: "Type A",
           },
         ],
-        withdrawEmailSent: false,
       },
     ]);
   });
