@@ -228,6 +228,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         subject: null,
         submitterEmail: "george@example.com",
         submitterName: "George Harrison",
+        withdrawEmailSent: false,
       },
     ]);
   });
