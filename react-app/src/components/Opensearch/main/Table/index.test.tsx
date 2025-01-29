@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { screen, within } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers/renderForm";
 import userEvent from "@testing-library/user-event";
 import { BLANK_VALUE } from "@/consts";
@@ -111,9 +111,43 @@ const setup = (
 };
 
 describe("", () => {
-  it("should", () => {
+  it("should display the table with values", () => {
     const onToggle = vi.fn();
     setup(defaultColumns, onToggle, defaultHits);
-    screen.debug();
+
+    // Check that the correct column headers appear
+    expect(screen.getAllByRole("columnheader").length).toEqual(4);
+    expect(screen.getByText("SPA ID", { selector: "th>div" }));
+    expect(screen.getByText("State", { selector: "th>div" }));
+    expect(screen.getByText("Authority", { selector: "th>div" }));
+    expect(screen.getByText("Formal RAI Response", { selector: "th>div" }));
+
+    // Check that the correct amount rows appear
+    expect(screen.getAllByRole("row").length).toEqual(items.length + 1); // add 1 for header
+  });
+
+  it("should display the table with no values", () => {
+    const onToggle = vi.fn();
+    setup(defaultColumns, onToggle, {
+      hits: [],
+      max_score: 5,
+      total: { value: 0, relation: "eq" },
+    });
+
+    // Check that the correct column headers appear
+    expect(screen.getAllByRole("columnheader").length).toEqual(4);
+    expect(screen.getByText("SPA ID", { selector: "th>div" }));
+    expect(screen.getByText("State", { selector: "th>div" }));
+    expect(screen.getByText("Authority", { selector: "th>div" }));
+    expect(screen.getByText("Formal RAI Response", { selector: "th>div" }));
+
+    expect(screen.getByText("No Results Found")).toBeInTheDocument();
+    expect(
+      screen.getByText("Adjust your search and filter to find what you are looking for."),
+    ).toBeInTheDocument();
+
+    // Check that the correct amount rows appear
+    expect(screen.getAllByRole("row").length).toEqual(2);
+    // one row for the header and one for the no results text
   });
 });
