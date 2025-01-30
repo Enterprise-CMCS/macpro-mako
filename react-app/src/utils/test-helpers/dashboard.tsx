@@ -43,10 +43,16 @@ export const HIDDEN_COLUMN: OsTableColumn = {
   cell: (data) => data.origin ?? BLANK_VALUE,
 };
 
-export const NO_FIELD_COLUMN: OsTableColumn = {
+export const NO_TRANSFORM_COLUMN: OsTableColumn = {
   field: "raiReceivedDate",
   label: "Formal RAI Response",
   cell: (data) => data.raiReceivedDate ?? BLANK_VALUE,
+};
+
+export const NO_FIELD_COLUMN: OsTableColumn = {
+  label: "Latest Package Activity",
+  transform: (data) => data.makoChangedDate ?? BLANK_VALUE,
+  cell: (data) => data.makoChangedDate ?? BLANK_VALUE,
 };
 
 export const DEFAULT_FILTERS: opensearch.Filterable<opensearch.main.Field>[] = [
