@@ -1,53 +1,19 @@
 import { describe, expect, it } from "vitest";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers/renderForm";
-import LZ from "lz-string";
 import { OsFilterDrawer } from "./index";
-import { FilterDrawerProvider } from "../FilterProvider";
 import { opensearch } from "shared-types";
-
-const routes = [
-  {
-    path: "/dashboard",
-    element: (
-      <FilterDrawerProvider>
-        <OsFilterDrawer />
-      </FilterDrawerProvider>
-    ),
-  },
-];
-const code = "094230fe-a02f-45d7-a675-05876ab5d76a";
+import { renderFilterDrawer, getDashboardQueryString } from "@/utils/test-helpers";
 
 const setup = (
   filters: opensearch.Filterable<opensearch.main.Field>[],
   tab: "spas" | "waivers",
 ) => {
   const user = userEvent.setup();
-  const queryString = LZ.compressToEncodedURIComponent(
-    JSON.stringify({
-      filters,
-      search: "",
-      tab,
-      pagination: {
-        number: 0,
-        size: 25,
-      },
-      sort: {
-        field: "submissionDate",
-        order: "desc",
-      },
-      code,
-    }),
+  const rendered = renderFilterDrawer(
+    <OsFilterDrawer />,
+    getDashboardQueryString({ filters, tab }),
   );
-  const rendered = renderWithQueryClientAndMemoryRouter(<OsFilterDrawer />, routes, {
-    initialEntries: [
-      {
-        pathname: "/dashboard",
-        search: `code=${code}&os=${queryString}`,
-      },
-    ],
-  });
   return {
     user,
     ...rendered,
