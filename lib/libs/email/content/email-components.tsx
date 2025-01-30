@@ -349,7 +349,7 @@ const getSrtEmails = (item?: os.main.ItemResult): string[] => {
 
         return `${name} <${email}>`;
       })
-      .filter((email): email is string => email !== null); // Filter out invalid emails
+      .filter((email): email is string => email !== null);
   } catch (e) {
     console.error("Error getting SRT emails", e);
     return [];
