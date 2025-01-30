@@ -1,46 +1,19 @@
 import { describe, expect, it, vi } from "vitest";
 import { screen, within } from "@testing-library/react";
-import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers/renderForm";
 import userEvent from "@testing-library/user-event";
-import { BLANK_VALUE } from "@/consts";
-import LZ from "lz-string";
-import { OsFiltering, OsTableColumn, OsProvider, FilterDrawerProvider } from "@/components";
-import { getFilteredItemList, getFilteredDocList } from "mocks";
+import { OsFiltering, OsTableColumn } from "@/components";
+import { getFilteredDocList } from "mocks";
 import { opensearch } from "shared-types";
 import { ExportToCsv } from "export-to-csv";
+import {
+  renderDashboard,
+  DEFAULT_COLUMNS,
+  HIDDEN_COLUMN,
+  getFilteredHits,
+  getDashboardQueryString,
+} from "@/utils/test-helpers";
 
-const code = "094230fe-a02f-45d7-a675-05876ab5d76a";
-const items: opensearch.Hit<opensearch.main.Document>[] = getFilteredItemList([
-  "CHIP SPA",
-  "Medicaid SPA",
-]).map((item) => ({ ...item, found: undefined }) as opensearch.Hit<opensearch.main.Document>);
-const defaultHits: opensearch.Hits<opensearch.main.Document> = {
-  hits: items,
-  max_score: 5,
-  total: { value: items.length, relation: "eq" },
-};
-const defaultColumns: OsTableColumn[] = [
-  {
-    props: { className: "w-[150px]" },
-    field: "id.keyword",
-    label: "SPA ID",
-    locked: true,
-    transform: (data) => data.id ?? BLANK_VALUE,
-    cell: (data) => data.id ?? BLANK_VALUE,
-  },
-  {
-    field: "state.keyword",
-    label: "State",
-    transform: (data) => data.state ?? BLANK_VALUE,
-    cell: (data) => data.state ?? BLANK_VALUE,
-  },
-  {
-    field: "authority.keyword",
-    label: "Authority",
-    transform: (data) => data.authority ?? BLANK_VALUE,
-    cell: (data) => data.authority ?? BLANK_VALUE,
-  },
-];
+const defaultHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
 
 const setup = (
   columns: OsTableColumn[],
@@ -49,50 +22,14 @@ const setup = (
   hits: opensearch.Hits<opensearch.main.Document> = defaultHits,
 ) => {
   const user = userEvent.setup();
-  const queryString = LZ.compressToEncodedURIComponent(
-    JSON.stringify({
-      filters: [],
-      search: "",
-      tab: "spas",
-      pagination: {
-        number: 0,
-        size: 25,
-      },
-      sort: {
-        field: "submissionDate",
-        order: "desc",
-      },
-      code,
-    }),
-  );
-  const rendered = renderWithQueryClientAndMemoryRouter(
+  const rendered = renderDashboard(
     <OsFiltering columns={columns} onToggle={onToggle} disabled={disabled} />,
-    [
-      {
-        path: "/dashboard",
-        element: (
-          <OsProvider
-            value={{
-              data: hits,
-              error: null,
-              isLoading: false,
-            }}
-          >
-            <FilterDrawerProvider>
-              <OsFiltering columns={columns} onToggle={onToggle} disabled={disabled} />
-            </FilterDrawerProvider>
-          </OsProvider>
-        ),
-      },
-    ],
     {
-      initialEntries: [
-        {
-          pathname: "/dashboard",
-          search: `code=${code}&os=${queryString}`,
-        },
-      ],
+      data: hits,
+      error: null,
+      isLoading: false,
     },
+    getDashboardQueryString(),
   );
   return {
     user,
@@ -103,7 +40,7 @@ const setup = (
 describe("Visibility button", () => {
   it("should display the filtering buttons", async () => {
     const onToggle = vi.fn();
-    setup(defaultColumns, onToggle, false);
+    setup(DEFAULT_COLUMNS, onToggle, false);
 
     const search = screen.queryByLabelText("Search by Package ID, CPOC Name, or Submitter Name");
     expect(search).toBeInTheDocument();
@@ -119,26 +56,7 @@ describe("Visibility button", () => {
 
   it("should display filtering button with hidden columns", async () => {
     const onToggle = vi.fn();
-    setup(
-      [
-        ...defaultColumns,
-        {
-          field: "authority.keyword",
-          label: "Authority",
-          transform: (data) => data.authority ?? BLANK_VALUE,
-          cell: (data) => data.authority ?? BLANK_VALUE,
-        },
-        {
-          field: "origin.keyword",
-          label: "Submission Source",
-          hidden: true,
-          transform: (data) => data.origin ?? BLANK_VALUE,
-          cell: (data) => data.origin ?? BLANK_VALUE,
-        },
-      ],
-      onToggle,
-      false,
-    );
+    setup([...DEFAULT_COLUMNS, HIDDEN_COLUMN], onToggle, false);
 
     const search = screen.queryByLabelText("Search by Package ID, CPOC Name, or Submitter Name");
     expect(search).toBeInTheDocument();
@@ -151,7 +69,7 @@ describe("Visibility button", () => {
 
   it("should display the filtering buttons with disabled search", async () => {
     const onToggle = vi.fn();
-    setup(defaultColumns, onToggle, true);
+    setup(DEFAULT_COLUMNS, onToggle, true);
 
     const search = screen.queryByLabelText("Search by Package ID, CPOC Name, or Submitter Name");
     expect(search).toBeInTheDocument();
@@ -164,7 +82,7 @@ describe("Visibility button", () => {
 
   it("should display the filtering buttons with Export disabled", async () => {
     const onToggle = vi.fn();
-    setup(defaultColumns, onToggle, false, {
+    setup(DEFAULT_COLUMNS, onToggle, false, {
       hits: [],
       max_score: 5,
       total: { value: 0, relation: "eq" },
@@ -184,7 +102,7 @@ describe("Visibility button", () => {
   it("should handle searching", async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
-    setup(defaultColumns, onToggle, false);
+    setup(DEFAULT_COLUMNS, onToggle, false);
 
     const search = screen.queryByLabelText("Search by Package ID, CPOC Name, or Submitter Name");
     await user.type(search, "testing[Enter]");
@@ -194,7 +112,7 @@ describe("Visibility button", () => {
   it("should handle clicking the Columns button", async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
-    setup(defaultColumns, onToggle, false);
+    setup(DEFAULT_COLUMNS, onToggle, false);
 
     expect(screen.queryByRole("dialog")).toBeNull();
     await user.click(screen.queryByRole("button", { name: "Columns" }));
@@ -208,7 +126,7 @@ describe("Visibility button", () => {
   it("should handle clicking the Filters button", async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
-    setup(defaultColumns, onToggle, false);
+    setup(DEFAULT_COLUMNS, onToggle, false);
 
     const filters = screen.getByRole("button", { name: "Filters" });
     expect(filters.getAttribute("data-state")).toEqual("closed");
@@ -225,7 +143,7 @@ describe("Visibility button", () => {
     }));
     const user = userEvent.setup();
     const onToggle = vi.fn();
-    setup(defaultColumns, onToggle, false);
+    setup(DEFAULT_COLUMNS, onToggle, false);
 
     await user.click(screen.getByRole("button", { name: "Export" }));
     expect(spy).toHaveBeenCalledWith(expected);
