@@ -308,11 +308,17 @@ const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables, relatedEvent }) =>
 
 const getCpocEmail = (item?: os.main.ItemResult): string[] => {
   try {
-    if (item?._source?.leadAnalystEmail && item?._source?.leadAnalystName) {
-      const cpocEmail = `${item._source.leadAnalystName} <${item._source.leadAnalystEmail}>`;
-      return [cpocEmail];
+    const email = item?._source?.leadAnalystEmail;
+    const name = item?._source?.leadAnalystName;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email || !emailRegex.test(email)) {
+      console.error(`Invalid or missing email for item: ${JSON.stringify(item?._source, null, 2)}`);
+      return [];
     }
-    return [];
+
+    return [`${name} <${email}>`];
   } catch (e) {
     console.error("Error getting CPOC email", e);
     return [];
@@ -321,12 +327,29 @@ const getCpocEmail = (item?: os.main.ItemResult): string[] => {
 
 const getSrtEmails = (item?: os.main.ItemResult): string[] => {
   try {
-    if (item?._source?.reviewTeam && item._source.reviewTeam.length > 0) {
-      return item._source.reviewTeam.map(
-        (reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`,
-      );
+    const reviewTeam = item?._source?.reviewTeam;
+
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!reviewTeam || reviewTeam.length === 0) {
+      return [];
     }
-    return [];
+
+    return reviewTeam
+      .map((reviewer: { name: string; email: string }) => {
+        const { name, email } = reviewer;
+
+        if (!email || !emailRegex.test(email)) {
+          console.error(
+            `Invalid or missing email for reviewer: ${JSON.stringify(reviewer, null, 2)}`,
+          );
+          return null;
+        }
+
+        return `${name} <${email}>`;
+      })
+      .filter((email): email is string => email !== null); // Filter out invalid emails
   } catch (e) {
     console.error("Error getting SRT emails", e);
     return [];
