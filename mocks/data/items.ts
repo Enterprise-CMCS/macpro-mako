@@ -19,6 +19,7 @@ export const EXISTING_ITEM_TEMPORARY_EXTENSION_ID = "MD-0005.R01.TE00";
 export const HI_TEST_ITEM_ID = "HI-0000.R00.00";
 export const CAPITATED_INITIAL_ITEM_ID = "SS-2234.R00.00";
 export const CAPITATED_INITIAL_NEW_ITEM_ID = "SS-1235.R00.00";
+export const ADMIN_ITEM_ID = "SS-1235.R00.01";
 export const CAPITATED_AMEND_ITEM_ID = "VA-2234.R11.01";
 export const SIMPLE_ID = "VA";
 export const CONTRACTING_INITIAL_ITEM_ID = "MD-007.R00.00";
@@ -132,6 +133,148 @@ const items: Record<string, TestItemResult> = {
       actionType: "New",
       origin: "SEATool",
       state: "MD",
+    },
+  },
+  [ADMIN_ITEM_ID]: {
+    _id: ADMIN_ITEM_ID,
+    found: true,
+    _source: {
+      id: ADMIN_ITEM_ID,
+      seatoolStatus: SEATOOL_STATUS.PENDING,
+      actionType: "New",
+      origin: "SEATool",
+      state: "MD",
+      changelog: [
+        {
+          _id: `${ADMIN_ITEM_ID}-0001`,
+          _source: {
+            timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            packageId: ADMIN_ITEM_ID,
+            id: `${ADMIN_ITEM_ID}-0001`,
+            event: "split-spa",
+            changeMade: "add file",
+            changeReason: "missing file",
+            attachments: [
+              {
+                key: "misc007",
+                title: "Miscellaneous File",
+                filename: "miscellaneous_info.txt",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Uncategorized file upload.",
+            isAdminChange: true,
+          },
+        },
+        {
+          _id: `${ADMIN_ITEM_ID}-0002`,
+          _source: {
+            timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            packageId: ADMIN_ITEM_ID,
+            id: `${ADMIN_ITEM_ID}-0002`,
+            event: "NOSO",
+            changeMade: "add file",
+            changeReason: "missing file",
+            attachments: [
+              {
+                key: "misc007",
+                title: "Miscellaneous File",
+                filename: "miscellaneous_info.txt",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Uncategorized file upload.",
+            isAdminChange: true,
+          },
+        },
+        {
+          _id: `${ADMIN_ITEM_ID}-0003`,
+          _source: {
+            timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            packageId: ADMIN_ITEM_ID,
+            id: `${ADMIN_ITEM_ID}-0003`,
+            event: "legacy-admin-change",
+            changeMade: "add file",
+            changeReason: "missing file",
+            attachments: [
+              {
+                key: "misc007",
+                title: "Miscellaneous File",
+                filename: "miscellaneous_info.txt",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Uncategorized file upload.",
+            isAdminChange: true,
+          },
+        },
+        {
+          _id: `${ADMIN_ITEM_ID}-0004`,
+          _source: {
+            timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            packageId: ADMIN_ITEM_ID,
+            id: `${ADMIN_ITEM_ID}-0004`,
+            changeMade: "add file",
+            changeReason: "missing file",
+            attachments: [
+              {
+                key: "misc007",
+                title: "Miscellaneous File",
+                filename: "miscellaneous_info.txt",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Uncategorized file upload.",
+            isAdminChange: true,
+          },
+        },
+        {
+          _id: `${ADMIN_ITEM_ID}-0005`,
+          _source: {
+            timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            packageId: ADMIN_ITEM_ID,
+            id: `${ADMIN_ITEM_ID}-0005`,
+            submitterName: "Test person",
+            event: "toggle-withdraw-rai",
+            changeMade: "add file",
+            changeReason: "missing file",
+            raiWithdrawEnabled: true,
+            attachments: [
+              {
+                key: "misc007",
+                title: "Miscellaneous File",
+                filename: "miscellaneous_info.txt",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Uncategorized file upload.",
+            isAdminChange: true,
+          },
+        },
+        {
+          _id: `${ADMIN_ITEM_ID}-0006`,
+          _source: {
+            timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            packageId: ADMIN_ITEM_ID,
+            id: `${ADMIN_ITEM_ID}-0006`,
+            submitterName: "Test person",
+            event: "toggle-withdraw-rai",
+            changeMade: "add file",
+            changeReason: "missing file",
+            raiWithdrawEnabled: false,
+            attachments: [
+              {
+                key: "misc007",
+                title: "Miscellaneous File",
+                filename: "miscellaneous_info.txt",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Uncategorized file upload.",
+            isAdminChange: true,
+          },
+        },
+      ],
     },
   },
   [NOT_FOUND_ITEM_ID]: {
@@ -738,6 +881,7 @@ export const TEST_CHIP_SPA_ITEM = items[WITHDRAWN_CHANGELOG_ITEM_ID] as opensear
 export const TEST_1915B_ITEM = items[EXISTING_ITEM_APPROVED_NEW_ID] as opensearch.main.ItemResult;
 export const TEST_1915C_ITEM = items[INITIAL_RELEASE_APPK_ITEM_ID] as opensearch.main.ItemResult;
 export const WITHDRAW_APPK_ITEM = items[WITHDRAW_APPK_ITEM_ID] as opensearch.main.ItemResult;
+export const ADMIN_CHANGE_ITEM = items[ADMIN_ITEM_ID] as opensearch.main.ItemResult;
 export const TEST_ITEM_WITH_APPK = items[
   EXISTING_ITEM_APPROVED_APPK_ITEM_ID
 ] as opensearch.main.ItemResult;
