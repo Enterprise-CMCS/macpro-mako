@@ -2,7 +2,7 @@ import { AdminChanges } from ".";
 import * as api from "@/api/useGetUser";
 import { WITHDRAW_APPK_ITEM, ADMIN_CHANGE_ITEM, mockUseGetUser } from "mocks";
 import { OneMacUser } from "@/api/useGetUser";
-import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
+import { renderWithQueryClient } from "@/utils/test-helpers";
 import { UseQueryResult } from "@tanstack/react-query";
 import { describe, it, expect, vi } from "vitest";
 import * as gi from "@/api/useGetItem";

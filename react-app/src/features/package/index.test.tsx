@@ -4,7 +4,7 @@ import { INITIAL_RELEASE_APPK_ITEM_ID, mockUseGetUser } from "mocks";
 import * as api from "@/api/useGetUser";
 import { UseQueryResult } from "@tanstack/react-query";
 import { OneMacUser } from "@/api/useGetUser";
-import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
+import { renderWithQueryClient } from "@/utils/test-helpers";
 
 describe("package details", () => {
   const renderComponent = () => {

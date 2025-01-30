@@ -6,7 +6,7 @@ import * as gi from "@/api/useGetItem";
 import { WITHDRAW_APPK_ITEM } from "mocks";
 import { UseQueryResult } from "@tanstack/react-query";
 import { OneMacUser } from "@/api/useGetUser";
-import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
+import { renderWithQueryClient } from "@/utils/test-helpers";
 import { getItem } from "@/api";
 import { AppK } from "./appk";
 describe("package details", () => {
