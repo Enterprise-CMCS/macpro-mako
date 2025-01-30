@@ -134,6 +134,7 @@ export type SearchQueryBody = {
   query?: {
     bool: BoolQuery;
     match_all?: MatchAllQuery;
+    regexp?: Record<string, string>;
   };
   aggs?: Record<QueryAggs>;
   size?: number;

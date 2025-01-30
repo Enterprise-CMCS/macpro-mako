@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 import { Auth } from "aws-amplify";
 import * as hooks from "@/hooks";
 import * as api from "@/api";
-import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers/renderForm";
+import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 import { setMockUsername, makoStateSubmitter, noRoleUser, AUTH_CONFIG } from "mocks";
 
 /**

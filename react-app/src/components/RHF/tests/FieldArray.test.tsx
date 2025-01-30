@@ -4,7 +4,7 @@ import { RHFSlot } from "..";
 import { Form, FormField } from "../../Inputs";
 import { Control, useForm } from "react-hook-form";
 import { DefaultFieldGroupProps, RHFSlotProps } from "shared-types";
-import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
+import { renderWithQueryClient } from "@/utils/test-helpers";
 import userEvent from "@testing-library/user-event";
 
 const TestWrapper = (props: RHFSlotProps & { defaultValues?: any }) => {
