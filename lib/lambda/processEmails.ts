@@ -261,10 +261,8 @@ export async function processAndSendEmails(
   const srtEmails = [...getSrtEmails(item)];
 
   const emails: EmailAddresses = JSON.parse(sec);
-  console.log("all state users", allStateUsers);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
-  console.log(allStateUsersEmails);
 
   const templateVariables = {
     ...record,

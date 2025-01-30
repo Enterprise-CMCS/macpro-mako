@@ -44,13 +44,11 @@ export const getAllStateUsers = async ({
     }
 
     const filteredStateUsers = response.Users.filter((user) => {
-      console.log("filter", user);
       const stateAttribute = user.Attributes?.find(
         (attr): attr is AttributeType => attr.Name === "custom:state" && attr.Value !== undefined,
       );
       return stateAttribute?.Value?.split(",").includes(state);
     }).map((user) => {
-      console.log("user", user);
       const attributes = user.Attributes?.reduce<CognitoUserAttributes>((acc, attr) => {
         if (attr.Name && attr.Value) {
           acc[attr.Name] = attr.Value;
