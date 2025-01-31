@@ -230,6 +230,7 @@ export async function processAndSendEmails(
   config: ProcessEmailConfig,
 ) {
   const templates = await getEmailTemplates(record);
+  console.log(templates, "TEMPLATES?");
 
   if (!templates) {
     console.log(
@@ -239,18 +240,22 @@ export async function processAndSendEmails(
   }
 
   const territory = id.slice(0, 2);
+  console.log(territory, "TERRITORY");
   const allStateUsers = await getAllStateUsers({
     userPoolId: config.userPoolId,
     state: territory,
   });
+  console.log(allStateUsers, "ALL STATE USERS");
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
+  console.log(sec, "SECRET?");
 
   const item = await retry(
     () => os.getItemAndThrowAllErrors(config.osDomain, getOsNamespace("main"), id),
     10,
     10 * 1000,
   );
+  console.log(item, "ITEMMMM");
 
   if (!item?.found || !item?._source) {
     console.log(`The package was not found for id: ${id}. Doing nothing.`);
@@ -258,12 +263,15 @@ export async function processAndSendEmails(
   }
 
   const cpocEmail = [...getCpocEmail(item)];
+  console.log(cpocEmail, "CPOCCC");
   const srtEmails = [...getSrtEmails(item)];
+  console.log(srtEmails, "SRT EMAILS");
 
   const emails: EmailAddresses = JSON.parse(sec);
+  console.log(emails, "EMAILSSSS");
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
-
+  console.log(allStateUsersEmails, " ALL STATE USER EMAILS");
   const templateVariables = {
     ...record,
     id,
@@ -279,18 +287,24 @@ export async function processAndSendEmails(
 
   // Process templates sequentially
   for (const template of templates) {
+    console.log(template, "ONE TEMPLATE");
     try {
       const filledTemplate = await template(templateVariables);
+      console.log(filledTemplate, "FILLEDDDD TEMPLATE");
       validateEmailTemplate(filledTemplate);
+      console.log("AFTER THIS VALIDATE");
       const params = createEmailParams(
         filledTemplate,
         emails.sourceEmail,
         config.applicationEndpointUrl,
         config.isDev,
       );
+      console.log(params, "PARAMSSSSSSS");
 
       const result = await sendEmail(params, config.region);
+      console.log(result, "BEFORE PUSH");
       results.push({ success: true, result });
+      console.log("AFTER PUSH");
       console.log(`Successfully sent email for template: ${JSON.stringify(result)}`);
     } catch (error) {
       console.error("Error processing template:", error);
