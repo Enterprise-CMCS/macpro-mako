@@ -134,6 +134,26 @@ describe("Lambda Handler", () => {
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(JSON.stringify({ url: mockUrl }));
   });
+  it("should return 500 because response is missing credentials", async () => {
+    const mockUrl = `https://${ATTACHMENT_BUCKET_NAME}.s3.${ATTACHMENT_BUCKET_REGION}.amazonaws.com/123e4567-e89b-12d3-a456-426614174000`;
+    vi.mocked(getSignedUrl).mockResolvedValueOnce(mockUrl);
+    process.env.region = "us-fail-1";
+    const event = {
+      body: JSON.stringify({
+        id: WITHDRAWN_CHANGELOG_ITEM_ID,
+        bucket: ATTACHMENT_BUCKET_NAME,
+        key: "doc001",
+        filename: "contract_amendment_2024.pdf",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
+  });
 
   it("should handle errors during processing", async () => {
     const event = {
