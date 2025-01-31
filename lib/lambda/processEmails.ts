@@ -263,7 +263,7 @@ export async function processAndSendEmails(
   const emails: EmailAddresses = JSON.parse(sec);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
-
+  console.log("all state user emails", allStateUsersEmails);
   const templateVariables = {
     ...record,
     id,
@@ -319,6 +319,8 @@ export function createEmailParams(
   baseUrl: string,
   isDev: boolean,
 ): SendEmailCommandInput {
+  console.log(filledTemplate.to);
+
   const params: SendEmailCommandInput = {
     Destination: {
       ToAddresses: filledTemplate.to,
