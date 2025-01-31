@@ -272,6 +272,7 @@ export async function processAndSendEmails(
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
   console.log(allStateUsersEmails, " ALL STATE USER EMAILS");
+  console.log(record, "WHATS TEH RECORD");
   const templateVariables = {
     ...record,
     id,
