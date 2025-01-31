@@ -263,7 +263,6 @@ export async function processAndSendEmails(
   const emails: EmailAddresses = JSON.parse(sec);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
-  console.log("all state user emails", allStateUsersEmails);
   const templateVariables = {
     ...record,
     id,
@@ -278,11 +277,9 @@ export async function processAndSendEmails(
   const results = [];
 
   // Process templates sequentially
-  console.log(templates);
   for (const template of templates) {
     try {
       const filledTemplate = await template(templateVariables);
-      console.log("fileldTempalte:", filledTemplate);
       validateEmailTemplate(filledTemplate);
       const params = createEmailParams(
         filledTemplate,
@@ -321,8 +318,6 @@ export function createEmailParams(
   baseUrl: string,
   isDev: boolean,
 ): SendEmailCommandInput {
-  console.log(filledTemplate.to);
-
   const params: SendEmailCommandInput = {
     Destination: {
       ToAddresses: filledTemplate.to,
