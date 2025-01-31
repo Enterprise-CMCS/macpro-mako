@@ -33,6 +33,7 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
   const { data, isLoading, error } = useGetItem(id);
 
   if (isLoading) return <LoadingSpinner />;
+
   if (!data?._source) return <LoadingSpinner />;
   if (error) return <ErrorAlert error={error} />;
 

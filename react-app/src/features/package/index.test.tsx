@@ -4,22 +4,28 @@ import { UseQueryResult } from "@tanstack/react-query";
 import * as api from "@/api/useGetUser";
 
 import { DetailsContent } from ".";
-import { INITIAL_RELEASE_APPK_ITEM_ID, mockUseGetUser } from "mocks";
+import {
+  INITIAL_RELEASE_APPK_ITEM_ID,
+  mockUseGetUser,
+  WITHDRAW_APPK_ITEM_ID,
+  ADMIN_CHANGE_ITEM,
+  ADMIN_ITEM_ID,
+} from "mocks";
 import { OneMacUser } from "@/api/useGetUser";
-import { renderWithQueryClient } from "@/utils/test-helpers";
-
+import { renderWithQueryClient, renderFormAsync } from "@/utils/test-helpers";
+import * as gi from "@/api/useGetItem";
 describe("package details", () => {
-  const renderComponent = () => {
-    return renderWithQueryClient(<DetailsContent id={INITIAL_RELEASE_APPK_ITEM_ID} />);
-  };
-
+  vi.spyOn(gi, "useGetItemCache").mockReturnValue({
+    data: ADMIN_CHANGE_ITEM._source,
+    refetch: vi.fn(),
+  });
   it("makes a package", async () => {
     vi.spyOn(api, "useGetUser").mockImplementation(() => {
       const response = mockUseGetUser();
       return response as UseQueryResult<OneMacUser, unknown>;
     });
-
-    const compo = await renderComponent();
-    expect(compo).toMatchSnapshot();
+    const { asFragment } = await renderFormAsync(<DetailsContent id={ADMIN_ITEM_ID} />);
+    // const compo = await renderComponent();
+    expect(asFragment()).toMatchSnapshot();
   });
 });
