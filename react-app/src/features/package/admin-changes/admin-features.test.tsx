@@ -1,4 +1,3 @@
-import { UTCDate } from "@date-fns/utc";
 import { UseQueryResult } from "@tanstack/react-query";
 import { describe, it, expect, vi } from "vitest";
 
@@ -16,9 +15,7 @@ describe("Admin Features test", () => {
     data: WITHDRAW_APPK_ITEM._source,
     refetch: vi.fn(),
   });
-  //we need to mock the date here because GITHUB likes to switch date to UTC and our form does not use it
-  const mockDate = new UTCDate(1672531200000);
-  vi.spyOn(global, "Date").mockImplementation(() => mockDate);
+
   vi.spyOn(api, "useGetUser").mockImplementation(() => {
     const response = mockUseGetUser();
     response.data.isCms = false;
