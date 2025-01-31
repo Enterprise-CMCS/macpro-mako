@@ -4,15 +4,9 @@ import { UseQueryResult } from "@tanstack/react-query";
 import * as api from "@/api/useGetUser";
 
 import { DetailsContent } from ".";
-import {
-  INITIAL_RELEASE_APPK_ITEM_ID,
-  mockUseGetUser,
-  WITHDRAW_APPK_ITEM_ID,
-  ADMIN_CHANGE_ITEM,
-  ADMIN_ITEM_ID,
-} from "mocks";
+import { mockUseGetUser, ADMIN_CHANGE_ITEM, ADMIN_ITEM_ID } from "mocks";
 import { OneMacUser } from "@/api/useGetUser";
-import { renderWithQueryClient, renderFormAsync } from "@/utils/test-helpers";
+import { renderFormAsync } from "@/utils/test-helpers";
 import * as gi from "@/api/useGetItem";
 describe("package details", () => {
   vi.spyOn(gi, "useGetItemCache").mockReturnValue({
