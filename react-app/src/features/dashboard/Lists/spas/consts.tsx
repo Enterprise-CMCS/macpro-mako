@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useGetUser } from "@/api";
 import { OsTableColumn } from "@/components";
 import { BLANK_VALUE } from "@/consts";
@@ -6,11 +7,10 @@ import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
 import { formatSeatoolDate } from "shared-utils";
 import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 
-export const useSpaTableColumns = (): OsTableColumn[] => {
-  const { data: props } = useGetUser();
-
-  if (!props?.user) return [];
-
+const getColumnsForUser = (props) => {
+  if (props?.user || props.user === null) {
+    return [];
+  }
   return [
     // hide actions column for: readonly,help desk
     ...(!CMS_READ_ONLY_ROLES.some((UR) => props.user?.["custom:cms-roles"].includes(UR))
@@ -145,4 +145,22 @@ export const useSpaTableColumns = (): OsTableColumn[] => {
       cell: (data) => data.submitterName,
     },
   ];
+};
+
+export const useSpaTableColumns = (): { columns?: OsTableColumn[]; isLoading: boolean } => {
+  const [columns, setColumns] = useState(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { data: props, isLoading: isUserLoading } = useGetUser();
+
+  useEffect(() => {
+    if (isUserLoading === true) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+      setColumns(getColumnsForUser(props?.user));
+    }
+  }, [props, isUserLoading]);
+
+  return { columns, isLoading };
 };

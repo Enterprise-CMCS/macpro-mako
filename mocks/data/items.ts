@@ -147,6 +147,7 @@ const items: Record<string, TestItemResult> = {
       state: "MD",
       origin: "OneMAC",
       changedDate: "2024-11-26T18:17:21.557Z",
+      makoChangedDate: "2024-11-26T18:17:21.557Z",
       changelog: [
         {
           _id: `${TEST_ITEM_ID}-001`,
@@ -170,6 +171,7 @@ const items: Record<string, TestItemResult> = {
       state: "MD",
       origin: "OneMAC",
       changedDate: "2024-11-26T18:17:21.557Z",
+      makoChangedDate: "2024-11-26T18:17:21.557Z",
       changelog: [
         {
           _id: `${TEST_SPA_ITEM_ID}-001`,
@@ -193,6 +195,7 @@ const items: Record<string, TestItemResult> = {
       state: "MD",
       origin: "OneMAC",
       changedDate: "2024-11-26T18:17:21.557Z",
+      makoChangedDate: "2024-11-26T18:17:21.557Z",
       changelog: [
         {
           _id: `${TEST_SPA_ITEM_TO_SPLIT}-001`,
@@ -216,6 +219,7 @@ const items: Record<string, TestItemResult> = {
       state: "MD",
       origin: "OneMAC",
       changedDate: "2024-11-26T18:17:21.557Z",
+      makoChangedDate: "2024-11-26T18:17:21.557Z",
       changelog: [
         {
           _id: `${TEST_SPLIT_SPA_ITEM_ID}-001`,
@@ -472,6 +476,7 @@ const items: Record<string, TestItemResult> = {
           _source: {
             authority: "1915(c)",
             changedDate: "2024-01-01T00:00:00Z",
+            makoChangedDate: "2024-01-01T00:00:00Z",
             title: "Initial release",
             seatoolStatus: SEATOOL_STATUS.PENDING,
             cmsStatus: "Pending",
@@ -561,6 +566,7 @@ const items: Record<string, TestItemResult> = {
         {
           _source: {
             changedDate: "2024-01-01T00:00:00Z",
+            makoChangedDate: "2024-01-01T00:00:00Z",
             title: "Initial release",
             cmsStatus: "Pending",
             stateStatus: "Under Review",
@@ -569,6 +575,7 @@ const items: Record<string, TestItemResult> = {
         {
           _source: {
             changedDate: "2025-01-08T00:00:00Z",
+            makoChangedDate: "2025-01-08T00:00:00Z",
             title: "Approved release",
             cmsStatus: "Approved",
             stateStatus: "Approved",

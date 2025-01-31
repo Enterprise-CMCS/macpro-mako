@@ -11,7 +11,7 @@ export const renderCellDate = (key: keyof opensearch.main.Document) =>
     return formatSeatoolDate(data[key] as string);
   };
 
-type CellIdLinkProps = {
+export type CellIdLinkProps = {
   id: string;
   authority: Authority | string;
 };

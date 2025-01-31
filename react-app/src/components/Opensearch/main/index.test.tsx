@@ -10,35 +10,11 @@ import {
   DEFAULT_COLUMNS,
   HIDDEN_COLUMN,
   DEFAULT_FILTERS,
+  verifyFiltering,
+  verifyChips,
+  verifyPagination,
 } from "@/utils/test-helpers";
 import { OsMainView, OsTableColumn } from "@/components";
-
-const verifyFiltering = () => {
-  const filtering = screen.getByTestId("filtering");
-  const search = within(filtering).queryByLabelText(
-    "Search by Package ID, CPOC Name, or Submitter Name",
-  );
-  expect(search).toBeInTheDocument();
-  expect(search).toBeEnabled();
-
-  expect(within(filtering).queryByRole("button", { name: "Columns" })).toBeInTheDocument();
-  expect(within(filtering).queryByRole("button", { name: "Filters" })).toBeInTheDocument();
-
-  const exportBtn = within(filtering).queryByRole("button", { name: "Export" });
-  expect(exportBtn).toBeInTheDocument();
-  expect(exportBtn).toBeEnabled();
-};
-
-const verifyChips = (labels: string[]) => {
-  if (labels.length === 0) {
-    expect(screen.getByTestId("chips").childElementCount).toEqual(0);
-  } else {
-    const chips = screen.getByTestId("chips");
-    labels.forEach((label) => {
-      expect(within(chips).getByText(label)).toBeInTheDocument();
-    });
-  }
-};
 
 const verifyTable = (recordCount: number) => {
   const table = screen.getByRole("table");
@@ -47,17 +23,6 @@ const verifyTable = (recordCount: number) => {
   expect(within(table).getByText("State", { selector: "th>div" })).toBeInTheDocument();
   expect(within(table).getByText("Authority", { selector: "th>div" })).toBeInTheDocument();
   expect(within(table).getAllByRole("row").length).toEqual(recordCount + 1); // add 1 for header
-};
-
-const verifyPagination = (recordCount: number) => {
-  const pagination = screen.getByTestId("pagination");
-  expect(within(screen.getByTestId("pagination")).getByLabelText("Records per page:")).toHaveValue(
-    "25",
-  );
-  expect(within(pagination).getByTestId("page-location").textContent).toEqual(
-    `1-${recordCount < 25 ? recordCount : 25}of${recordCount}records`,
-  );
-  expect(within(pagination).getByLabelText("Pagination")).toBeInTheDocument();
 };
 
 describe("OsMainView", () => {

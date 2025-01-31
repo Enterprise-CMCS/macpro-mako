@@ -1,3 +1,5 @@
+import { expect } from "vitest";
+import { screen, within } from "@testing-library/react";
 import { BLANK_VALUE } from "@/consts";
 import LZ from "lz-string";
 import React, { ReactElement } from "react";
@@ -182,4 +184,46 @@ export const renderFilterDrawer = (element: ReactElement, queryString: string) =
       ],
     },
   );
+};
+
+export const verifyFiltering = (hiddenCount: number = 0) => {
+  const filtering = screen.getByTestId("filtering");
+  const search = within(filtering).queryByLabelText(
+    "Search by Package ID, CPOC Name, or Submitter Name",
+  );
+  expect(search).toBeInTheDocument();
+  expect(search).toBeEnabled();
+
+  expect(
+    within(filtering).queryByRole("button", {
+      name: hiddenCount === 0 ? "Columns" : `Columns (${hiddenCount} hidden)`,
+    }),
+  ).toBeInTheDocument();
+  expect(within(filtering).queryByRole("button", { name: "Filters" })).toBeInTheDocument();
+
+  const exportBtn = within(filtering).queryByRole("button", { name: "Export" });
+  expect(exportBtn).toBeInTheDocument();
+  expect(exportBtn).toBeEnabled();
+};
+
+export const verifyChips = (labels: string[]) => {
+  if (labels.length === 0) {
+    expect(screen.getByTestId("chips").childElementCount).toEqual(0);
+  } else {
+    const chips = screen.getByTestId("chips");
+    labels.forEach((label) => {
+      expect(within(chips).getByText(label)).toBeInTheDocument();
+    });
+  }
+};
+
+export const verifyPagination = (recordCount: number) => {
+  const pagination = screen.getByTestId("pagination");
+  expect(within(screen.getByTestId("pagination")).getByLabelText("Records per page:")).toHaveValue(
+    "25",
+  );
+  expect(within(pagination).getByTestId("page-location").textContent).toEqual(
+    `1-${recordCount < 25 ? recordCount : 25}of${recordCount}records`,
+  );
+  expect(within(pagination).getByLabelText("Pagination")).toBeInTheDocument();
 };
