@@ -282,6 +282,7 @@ export async function processAndSendEmails(
   for (const template of templates) {
     try {
       const filledTemplate = await template(templateVariables);
+      console.log("fileldTempalte:", filledTemplate);
       validateEmailTemplate(filledTemplate);
       const params = createEmailParams(
         filledTemplate,
