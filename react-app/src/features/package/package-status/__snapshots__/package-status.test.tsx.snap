@@ -58,5 +58,6 @@ exports[`Package Status test > The package status component is called successful
       </div>
     </div>
   </div>
+  ,
 </DocumentFragment>
 `;
