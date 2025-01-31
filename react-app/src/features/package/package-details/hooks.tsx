@@ -71,7 +71,7 @@ export const recordDetails = (data: opensearch.main.Document): DetailSectionItem
     value: <p>{data?.subject || BLANK_VALUE}</p>,
     canView: (u) => (!u || !u.user ? false : isCmsUser(u.user) && !(data.actionType === "Extend")),
   },
-  {
+  /* {
     label: "Type",
     value: data.types
       ? data.types.map((T) => <p key={T?.SPA_TYPE_ID}>{T?.SPA_TYPE_NAME}</p>)
@@ -79,7 +79,7 @@ export const recordDetails = (data: opensearch.main.Document): DetailSectionItem
     canView: ({ user }) => {
       return !(data.actionType === "Extend") && isStateUser(user) === false;
     },
-  },
+  }, */
   {
     label: "Subtype",
     value: data.subTypes
