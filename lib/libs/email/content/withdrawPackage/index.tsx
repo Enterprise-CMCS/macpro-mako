@@ -56,7 +56,6 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
         to: variables.allStateUsersEmails?.length
           ? variables.allStateUsersEmails
           : [`${variables.submitterName} <${variables.submitterEmail}>`],
-        cc: variables.emails.chipCcList,
         subject: `CHIP SPA Package ${variables.id} Withdrawal Confirmation`,
         body: await render(<ChipSpaStateEmail variables={variables} />),
       };
@@ -110,7 +109,6 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
         to: variables.allStateUsersEmails?.length
           ? variables.allStateUsersEmails
           : [`${variables.submitterName} <${variables.submitterEmail}>`],
-
         subject: `Waiver Package ${variables.id} Withdraw Request`,
         body: await render(<WaiverStateEmail variables={variables} />),
       };
