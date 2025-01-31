@@ -263,6 +263,7 @@ export async function processAndSendEmails(
   const emails: EmailAddresses = JSON.parse(sec);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
+
   const templateVariables = {
     ...record,
     id,
@@ -343,7 +344,6 @@ export function createEmailParams(
 }
 
 export async function sendEmail(params: SendEmailCommandInput, region: string): Promise<any> {
-  console.log("attempting to send email to", params.Destination);
   const sesClient = new SESClient({ region: region });
   console.log("sendEmail called with params:", JSON.stringify(params, null, 2));
 
