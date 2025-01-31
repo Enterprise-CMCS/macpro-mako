@@ -1,48 +1,8 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, waitForElementToBeRemoved } from "@testing-library/react";
+import { waitForElementToBeRemoved } from "@testing-library/react";
 import React, { ReactElement } from "react";
-import { MemoryRouter, createMemoryRouter, RouterProvider } from "react-router";
 import items from "mocks/data/items";
 import { Authority } from "shared-types";
-
-const createTestQueryClient = () =>
-  new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-    logger: {
-      log: console.log,
-      warn: console.warn,
-      error: () => {},
-    },
-  });
-
-export const queryClientWrapper = ({ children }: { children: ReactElement }) => (
-  <QueryClientProvider client={createTestQueryClient()}>{children}</QueryClientProvider>
-);
-
-export const renderWithQueryClient = (element: ReactElement) =>
-  render(element, {
-    wrapper: ({ children }) => (
-      <QueryClientProvider client={createTestQueryClient()}>
-        <MemoryRouter>{children}</MemoryRouter>,
-      </QueryClientProvider>
-    ),
-  });
-
-export const renderWithQueryClientAndMemoryRouter = (
-  element: ReactElement,
-  ...routing: Parameters<typeof createMemoryRouter>
-) =>
-  render(element, {
-    wrapper: () => (
-      <QueryClientProvider client={createTestQueryClient()}>
-        <RouterProvider router={createMemoryRouter(...routing)} />
-      </QueryClientProvider>
-    ),
-  });
+import { renderWithQueryClient, renderWithQueryClientAndMemoryRouter } from "./render";
 
 export const renderFormAsync = async (form: ReactElement) => {
   const container = await renderWithQueryClient(form);

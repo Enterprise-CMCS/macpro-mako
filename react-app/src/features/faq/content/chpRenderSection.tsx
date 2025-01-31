@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 export interface Template {
   title: string;
-  text: string;
+  text?: string;
   href: string;
   subtext?: string[];
 }
