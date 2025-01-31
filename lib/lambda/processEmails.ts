@@ -278,6 +278,7 @@ export async function processAndSendEmails(
   const results = [];
 
   // Process templates sequentially
+  console.log(templates);
   for (const template of templates) {
     try {
       const filledTemplate = await template(templateVariables);
@@ -346,6 +347,7 @@ export function createEmailParams(
 }
 
 export async function sendEmail(params: SendEmailCommandInput, region: string): Promise<any> {
+  console.log("attempting to send email to", params.Destination);
   const sesClient = new SESClient({ region: region });
   console.log("sendEmail called with params:", JSON.stringify(params, null, 2));
 
