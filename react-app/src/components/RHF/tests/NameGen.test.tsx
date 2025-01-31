@@ -1,6 +1,6 @@
 import { describe, test, expect } from "vitest";
 import { screen } from "@testing-library/react";
-import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
+import { renderWithQueryClient } from "@/utils/test-helpers";
 import { RHFDocument } from "../.";
 import { Form } from "../../Inputs";
 import { useForm } from "react-hook-form";

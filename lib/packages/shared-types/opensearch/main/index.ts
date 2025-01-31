@@ -67,6 +67,7 @@ export type Document = AppkDocument &
     changeMade?: string;
     idToBeUpdated?: string;
     mockEvent?: string;
+    withdrawEmailSent?: boolean;
   };
 
 export type Response = Res<Document>;

@@ -29,7 +29,7 @@ describe("getSearchData Handler", () => {
     const body = JSON.parse(res.body);
     expect(body).toBeTruthy();
     expect(body?.hits?.hits).toBeTruthy();
-    expect(body?.hits?.hits?.length).toEqual(17);
+    expect(body?.hits?.hits?.length).toEqual(19);
   });
 
   it("should handle errors during processing", async () => {

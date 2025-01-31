@@ -1,7 +1,7 @@
 import { Upload } from "./upload";
 import { screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderWithQueryClient } from "@/utils/test-helpers/renderForm";
+import { renderWithQueryClient } from "@/utils/test-helpers";
 
 const defaultProps = {
   dataTestId: "upload-component",
