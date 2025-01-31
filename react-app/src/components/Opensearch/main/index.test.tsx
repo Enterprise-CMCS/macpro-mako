@@ -13,6 +13,7 @@ import {
   verifyFiltering,
   verifyChips,
   verifyPagination,
+  EMPTY_HITS,
 } from "@/utils/test-helpers";
 import { OsMainView, OsTableColumn } from "@/components";
 
@@ -210,6 +211,31 @@ describe("OsMainView", () => {
       await user.click(screen.queryByRole("button", { name: "Filters" }));
       const filters = screen.queryByRole("dialog");
       expect(filters).toBeInTheDocument();
+    });
+
+    it("should enable the Export button if there are hits", async () => {
+      const spaHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
+      setup(
+        [...DEFAULT_COLUMNS, HIDDEN_COLUMN],
+        spaHits,
+        getDashboardQueryString({
+          filters: DEFAULT_FILTERS,
+          tab: "spas",
+        }),
+      );
+      expect(screen.queryByRole("button", { name: "Export" })).toBeEnabled();
+    });
+
+    it("should disable the Export button if there are no hits", async () => {
+      setup(
+        [...DEFAULT_COLUMNS, HIDDEN_COLUMN],
+        EMPTY_HITS,
+        getDashboardQueryString({
+          filters: DEFAULT_FILTERS,
+          tab: "spas",
+        }),
+      );
+      expect(screen.queryByRole("button", { name: "Export" })).toBeDisabled();
     });
 
     it("should handle changing the page size", async () => {

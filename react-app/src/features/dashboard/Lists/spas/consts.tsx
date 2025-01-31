@@ -7,8 +7,8 @@ import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
 import { formatSeatoolDate } from "shared-utils";
 import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 
-const getColumnsForUser = (props) => {
-  if (props?.user || props.user === null) {
+const getColumns = (props) => {
+  if (!props?.user || props.user === null) {
     return [];
   }
   return [
@@ -157,8 +157,9 @@ export const useSpaTableColumns = (): { columns?: OsTableColumn[]; isLoading: bo
     if (isUserLoading === true) {
       setIsLoading(true);
     } else {
+      console.log({ props });
       setIsLoading(false);
-      setColumns(getColumnsForUser(props?.user));
+      setColumns(getColumns(props));
     }
   }, [props, isUserLoading]);
 
