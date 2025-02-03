@@ -4,7 +4,7 @@ import { LegacyEvent } from "../../../../events";
 
 
 export const transform = () => {
-  return events["legacy-event"].schema.transform((data) => {
+  return events["legacy-event"].legacyEventSchema.transform((data) => {
     const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.SUBMITTED);
     const timestampDate = new Date(data.eventTimestamp);
     const todayEpoch = seaToolFriendlyTimestamp(timestampDate);
