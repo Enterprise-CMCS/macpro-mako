@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { format, startOfQuarter, startOfMonth, sub, endOfDay, startOfDay } from "date-fns";
+import { format, startOfQuarter, startOfMonth, sub, endOfDay } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
 import { Calendar as CalendarIcon } from "lucide-react";
 
