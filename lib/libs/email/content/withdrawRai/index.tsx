@@ -20,7 +20,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Medicaid SPA Package ${variables.id} Withdrawal Confirmation`,
+        subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         body: await render(<MedSpaStateEmail variables={variables} />),
       };
     },
