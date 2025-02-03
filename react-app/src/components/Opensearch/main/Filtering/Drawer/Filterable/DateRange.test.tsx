@@ -149,7 +149,7 @@ describe("FilterableDateRange", () => {
 
   // Not sure of the best way to test this because it's to know which dates are going to be
   // available at this point
-  it("should handle the first day set to the month and clicking the 15th", async () => {
+  it("should handle the start date being set to last week and clicking today", async () => {
     const user = userEvent.setup();
     const endDate = new Date();
     const startDate = sub(endDate, { days: 6 });

@@ -1,3 +1,5 @@
+name: Code Climate Report
+
 on:
   push:
     branches:
@@ -22,10 +24,10 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-main
-          path: coverage-main
-          retention-days: 90
+          name: main-coverage-summary.json
+          path: coverage/coverage-summary.json
           overwrite: true
+          retention-days: 90
       - name: Report coverage to Code Climate
         if: always()
         uses: paambaati/codeclimate-action@v8.0.0
