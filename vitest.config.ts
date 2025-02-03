@@ -9,6 +9,12 @@ export default defineConfig({
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),
       reporter: ["html", "text", "json-summary", "json", "lcovonly"],
+      thresholds: {
+        lines: 89,
+        branches: 75,
+        functions: 81,
+        statements: 88,
+      },
       reportOnFailure: true,
       exclude: [
         ...configDefaults.exclude,
