@@ -131,16 +131,20 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const safeID = id.replace(/^"|"$/g, "");
+    // console.log(value);
     const seatoolRecord: Document = {
       safeID,
       ...JSON.parse(decodeBase64WithUtf8(value)),
     };
+    console.log("record");
+    console.log(seatoolRecord);
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
-
+    console.log(safeSeatoolRecord);
     if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       try {
         const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
-
+        console.log("item");
+        console.log(item);
         if (!item?.found || !item?._source) {
           console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
           return;
@@ -160,7 +164,8 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
           origin: "seatool",
         };
-
+        console.log("ham");
+        console.log(recordToPass);
         await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
 
         const indexObject = {
