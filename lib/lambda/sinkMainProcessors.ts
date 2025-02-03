@@ -34,7 +34,7 @@ type ParsedLegacyRecordFromKafka = Partial<{
 }>;
 
 const isRecordALegacyOneMacRecord = (
-record: ParsedLegacyRecordFromKafka, kafkaRecord: KafkaRecord,
+record: ParsedLegacyRecordFromKafka, kafkaSource: String,
 ): record is {
   componentType: keyof typeof legacyTransforms 
 } =>
@@ -43,7 +43,7 @@ record: ParsedLegacyRecordFromKafka, kafkaRecord: KafkaRecord,
   record.componentType in legacyTransforms &&
   // record.sk === "package" &&
   record.GSI1pk !== undefined && record.GSI1pk.startsWith("OneMAC#submit") &&
-  kafkaRecord.headers["source"] === "onemac";
+  kafkaSource === "onemac";
 
 const isRecordAOneMacRecord = (
   record: ParsedRecordFromKafka
@@ -67,9 +67,10 @@ const getOneMacRecordWithAllProperties = (
   kafkaRecord: KafkaRecord,
 ): OneMacRecord | undefined => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
-  const kafkaRecordDecoded = JSON.parse(decodeBase64WithUtf8(kafkaRecord));
-  console.log(`record: ${JSON.stringify(record, null, 2)}`);
-  console.log(`kafkaRecord: ${JSON.stringify(kafkaRecordDecoded, null, 2)}`);
+  console.log(`kafkaRecord: ${JSON.stringify(kafkaRecord, null, 2)}`);
+  // Decode the ASCII values to a string
+  const kafkaSource = String.fromCharCode(...kafkaRecord.headers[0].source);
+  console.log(kafkaSource);  // Output: "onemac"
   if (isRecordAnAdminOneMacRecord(record)) {
     const safeRecord = adminRecordSchema.safeParse(record);
 
@@ -110,7 +111,7 @@ const getOneMacRecordWithAllProperties = (
     console.log(`event after transformation: ${JSON.stringify(oneMacRecord, null, 2)}`);
 
     return oneMacRecord;
-  } else if (isRecordALegacyOneMacRecord(record, kafkaRecordDecoded)) {
+  } else if (isRecordALegacyOneMacRecord(record, kafkaSource)) {
     console.log(`legacy event: ${JSON.stringify(record, null, 2)}`);
     const transformForLegacyEvent = legacyTransforms[record.componentType];
 
@@ -150,7 +151,7 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const oneMacRecordsForMako = kafkaRecords.reduce<OneMacRecord[]>((collection, kafkaRecord) => {
-    console.log(`record: ${JSON.stringify(kafkaRecord, null, 2)}`);
+    console.log(`kafka record in insertOneMacRecordsFromKafkaIntoMako: ${JSON.stringify(kafkaRecord, null, 2)}`);
 
     try {
       const { value } = kafkaRecord;
