@@ -26,6 +26,8 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
     throw new Error("Error getting next Split SPA Id");
   }
 
+  const currentTime = Date.now();
+
   // ID and changeMade are excluded; the rest of the object has to be spread into the new package
   const {
     id: _id,
@@ -41,6 +43,8 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
       id: newId,
       idToBeUpdated: currentPackage._id,
       ...remainingFields,
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
       origin: "OneMAC",
       changeMade: "OneMAC Admin has added a package to OneMAC.",
       changeReason: "Per request from CMS, this package was added to OneMAC.",
