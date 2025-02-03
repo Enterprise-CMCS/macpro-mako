@@ -11,9 +11,9 @@ export default defineConfig({
       reporter: ["html", "text", "json-summary", "json", "lcovonly"],
       thresholds: {
         lines: 89,
-        branches: 88,
+        branches: 75,
         functions: 81,
-        statements: 75,
+        statements: 88,
       },
       reportOnFailure: true,
       exclude: [
