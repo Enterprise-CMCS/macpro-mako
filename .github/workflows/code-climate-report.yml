@@ -19,6 +19,7 @@ jobs:
       - name: Test
         run: run test --coverage
       - name: Upload Coverage
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage-main
@@ -26,6 +27,7 @@ jobs:
           retention-days: 90
           overwrite: true
       - name: Report coverage to Code Climate
+        if: always()
         uses: paambaati/codeclimate-action@v8.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
