@@ -41,9 +41,8 @@ record: ParsedLegacyRecordFromKafka, kafkaRecord: KafkaRecord,
   typeof record === "object" &&
   record?.componentType !== undefined &&
   record.componentType in legacyTransforms &&
-  record.sk === "package" &&
-  //id like to move the GSI1pk check to a type checked object but not important for now
-  record.GSI1pk !== undefined && ["OneMAC#spa", "OneMAC#waiver"].includes(record.GSI1pk) &&
+  // record.sk === "package" &&
+  record.GSI1pk !== undefined && record.GSI1pk.startsWith("OneMAC#submit") &&
   kafkaRecord.headers["source"] === "onemac";
 
 const isRecordAOneMacRecord = (
@@ -68,8 +67,9 @@ const getOneMacRecordWithAllProperties = (
   kafkaRecord: KafkaRecord,
 ): OneMacRecord | undefined => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
+  const kafkaRecordDecoded = JSON.parse(decodeBase64WithUtf8(kafkaRecord));
   console.log(`record: ${JSON.stringify(record, null, 2)}`);
-  console.log(`kafkaRecord: ${JSON.stringify(kafkaRecord, null, 2)}`);
+  console.log(`kafkaRecord: ${JSON.stringify(kafkaRecordDecoded, null, 2)}`);
   if (isRecordAnAdminOneMacRecord(record)) {
     const safeRecord = adminRecordSchema.safeParse(record);
 
@@ -110,7 +110,7 @@ const getOneMacRecordWithAllProperties = (
     console.log(`event after transformation: ${JSON.stringify(oneMacRecord, null, 2)}`);
 
     return oneMacRecord;
-  } else if (isRecordALegacyOneMacRecord(record, kafkaRecord)) {
+  } else if (isRecordALegacyOneMacRecord(record, kafkaRecordDecoded)) {
     console.log(`legacy event: ${JSON.stringify(record, null, 2)}`);
     const transformForLegacyEvent = legacyTransforms[record.componentType];
 
