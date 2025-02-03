@@ -11,6 +11,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+      actions: read
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
@@ -35,6 +36,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: main-coverage-summary.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Report Coverage
         uses: davelosert/vitest-coverage-report-action@v2
         with:
