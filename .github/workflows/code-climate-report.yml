@@ -1,0 +1,32 @@
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "30 01 * * *"
+  workflow_dispatch:
+
+jobs:
+  coverage-report:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: ./.github/actions/setup
+      - name: Test
+        run: run test --coverage
+      - name: Upload Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-main
+          path: coverage-main
+          retention-days: 90
+          overwrite: true
+      - name: Report coverage to Code Climate
+        uses: paambaati/codeclimate-action@v8.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageLocations: coverage/lcov.info:lcov
