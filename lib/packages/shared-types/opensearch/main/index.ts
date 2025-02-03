@@ -22,6 +22,12 @@ import {
   withdrawRai,
 } from "./transforms";
 
+import {
+  legacyMedicaidSpa,
+  legacyChipSpa
+} from "./transforms/legacy-transforms";
+
+
 export type AppkDocument = z.infer<appK.Schema>;
 export type CapitatedAmendmentDocument = z.infer<capitatedAmendment.Schema>;
 export type CapitatedInitialDocument = z.infer<capitatedInitial.Schema>;
@@ -40,6 +46,8 @@ export type ToggleWithdrawRaiDocument = z.infer<toggleWithdrawRai.Schema>;
 export type UploadSubsequentDocuments = z.infer<uploadSubsequentDocuments.Schema>;
 export type WithdrawPackageDocument = z.infer<withdrawPackage.Schema>;
 export type WithdrawRaiDocument = z.infer<withdrawRai.Schema>;
+
+export type LegacyMedicaidSpaDocument = z.infer<legacyMedicaidSpa.Schema>;
 
 export type Document = AppkDocument &
   CapitatedAmendmentDocument &
@@ -96,4 +104,8 @@ export const transforms = {
   "upload-subsequent-documents": uploadSubsequentDocuments,
   "withdraw-package": withdrawPackage,
   "withdraw-rai": withdrawRai,
+};
+
+export const legacyTransforms = {
+  "medicaidspa": legacyMedicaidSpa
 };
