@@ -12,7 +12,7 @@ export const OPENSEARCH_INDEX_NAMESPACE = "test-namespace-";
 export const CLOUDFORMATION_NOTIFICATION_DOMAIN = "https://test-cfn.amazonaws.com";
 export const BUCKET_NAME = "test-bucket";
 export const BUCKET_REGION = REGION;
-export const ATTACHMENT_BUCKET_NAME = "test-attachment-bucket";
+export const ATTACHMENT_BUCKET_NAME = "uploads-test-attachment-bucket";
 export const ATTACHMENT_BUCKET_REGION = REGION;
 export const KAFKA_BROKERS = "kafka1:9092,kafka2:9092";
 
