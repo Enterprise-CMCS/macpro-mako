@@ -1,6 +1,11 @@
 import { CommonEmailVariables, EmailAddresses, Events, Authority } from "shared-types";
 import { AuthoritiesWithUserTypesTemplate } from "../..";
-import { MedSpaCMSEmail, MedSpaStateEmail } from "./emailTemplates";
+import {
+  MedSpaCMSEmail,
+  MedSpaStateEmail,
+  ChipSpaCMSEmail,
+  ChipSpaStateEmail,
+} from "./emailTemplates";
 import { render } from "@react-email/render";
 //import { EmailProcessingError } from "libs/email/errors";
 export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
@@ -22,6 +27,32 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         body: await render(<MedSpaStateEmail variables={variables} />),
+      };
+    },
+  },
+  [Authority.CHIP_SPA]: {
+    cms: async (
+      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
+        cc: variables.emails.chipCcList,
+        subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
+        body: await render(<ChipSpaCMSEmail variables={variables} />),
+      };
+    },
+    state: async (
+      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: [
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+          `${variables.submitterName} <${variables.submitterEmail}>`,
+        ],
+        cc: variables.emails.chipCcList,
+        subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
+        body: await render(<ChipSpaStateEmail variables={variables} />),
       };
     },
   },
