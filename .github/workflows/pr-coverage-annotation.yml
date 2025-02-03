@@ -29,7 +29,6 @@ jobs:
           name: main-coverage
           path: main-coverage
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ steps.get-run-id.outputs.run-id }}
       - name: Test
         run: run test --coverage
       - name: Report Coverage
