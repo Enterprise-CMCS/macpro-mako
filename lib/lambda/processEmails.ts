@@ -140,6 +140,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       try {
         const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
+
         if (!item?.found || !item?._source) {
           console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
           return;
@@ -171,6 +172,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
             },
           },
         };
+
         await os.updateData(config.osDomain, indexObject);
       } catch (error) {
         console.error("Error processing record:", JSON.stringify(error, null, 2));
