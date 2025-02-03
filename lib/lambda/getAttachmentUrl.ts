@@ -83,7 +83,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
 async function getClient(bucket: string) {
   if (bucket.startsWith("uploads")) {
-    const stsClient = new STSClient({});
+    const stsClient = new STSClient({ region: process.env.region });
 
     // Assume the role
     const assumedRoleResponse = await stsClient.send(
