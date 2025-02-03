@@ -62,7 +62,6 @@ export const transformedSplitSPASchema = splitSPAAdminChangeSchema.transform((da
   event: "split-spa",
   packageId: data.id,
   id: `${data.id}`,
-  // timestamp: Date.now(),
 }));
 
 export const submitNOSOAdminSchema = z.object({
