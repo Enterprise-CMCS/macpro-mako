@@ -23,8 +23,7 @@ import {
 } from "./transforms";
 
 import {
-  legacyMedicaidSpa,
-  legacyChipSpa
+  legacyMedicaidSpa
 } from "./transforms/legacy-transforms";
 
 
