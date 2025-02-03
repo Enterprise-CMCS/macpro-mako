@@ -17,10 +17,11 @@ jobs:
       - uses: ./.github/actions/setup
       - name: Get run ID of Code Climate workflow
         id: get-run-id
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          REPO="${{ github.repository }}"
           WF_NAME="Code Climate Report"
-          RUN_ID=`gh run --repo ${REPO} list --workflow "${WF_NAME}" --json databaseId --jq .[0].databaseId`
+          RUN_ID=`gh run list --workflow "${WF_NAME}" --json databaseId --jq .[0].databaseId`
           echo "Detected latest run id of ${RUN_ID} for workflow ${WF_NAME}"
           echo "run-id=${RUN_ID}" >> "$GITHUB_OUTPUT"
       - uses: actions/download-artifact@v4
