@@ -28,7 +28,22 @@ const defaultOSMainDocumentHandler = http.get(
         });
   },
 );
-
+const deafaultUpdateHandler = http.post(
+  `https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_update/:id`,
+  async ({ params }) => {
+    const { id } = params;
+    if (id == GET_ERROR_ITEM_ID) {
+      return new HttpResponse("Internal server error", { status: 500 });
+    }
+    const itemId = id && Array.isArray(id) ? id[0] : id;
+    const item = items[itemId] || null;
+    return item
+      ? HttpResponse.json(item)
+      : HttpResponse.json({
+          found: false,
+        });
+  },
+);
 const defaultOSMainMultiDocumentHandler = http.post<PathParams, GetMultiItemBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_mget",
   async ({ request }) => {
@@ -175,4 +190,5 @@ export const mainSearchHandlers = [
   defaultOSMainDocumentHandler,
   defaultOSMainMultiDocumentHandler,
   defaultOSMainSearchHandler,
+  deafaultUpdateHandler,
 ];
