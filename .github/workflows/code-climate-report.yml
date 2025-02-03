@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - date-range-fix-2
   schedule:
     - cron: "30 01 * * *"
   workflow_dispatch:
