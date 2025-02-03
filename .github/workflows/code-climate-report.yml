@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - date-range-fix-2
   schedule:
     - cron: "30 01 * * *"
   workflow_dispatch:
@@ -23,7 +24,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: main-coverage-summary.json
+          name: main-coverage
           path: coverage/coverage-summary.json
           overwrite: true
           retention-days: 90
