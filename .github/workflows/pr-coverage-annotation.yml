@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  test:
+  coverage-report:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -25,14 +25,22 @@ jobs:
           echo "Detected latest run id of ${RUN_ID} for workflow ${WF_NAME}"
           echo "run-id=${RUN_ID}" >> "$GITHUB_OUTPUT"
       - uses: actions/download-artifact@v4
+        if: steps.get-run-id.conclusion == 'success'
+        id: get-main-coverage
         with:
           name: main-coverage
           path: main-coverage
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ steps.get-run-id.outputs.run-id }}
       - name: Test
+        if: always()
+        continue-on-error: true
         run: run test --coverage
       - name: Report Coverage
+        if: steps.get-main-coverage.conclusion == 'success'
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           json-summary-compare-path: main-coverage/coverage-summary.json
+      - name: Report Coverage
+        if: steps.get-main-coverage.conclusion == 'failure' || steps.get-main-coverage.conclusion == 'skipped'
+        uses: davelosert/vitest-coverage-report-action@v2
