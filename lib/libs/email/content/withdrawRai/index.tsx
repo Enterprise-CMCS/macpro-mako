@@ -1,6 +1,6 @@
 import { CommonEmailVariables, EmailAddresses, Events, Authority } from "shared-types";
 import { AuthoritiesWithUserTypesTemplate } from "../..";
-import { MedSpaCMSEmail } from "./emailTemplates";
+import { MedSpaCMSEmail, MedSpaStateEmail } from "./emailTemplates";
 import { render } from "@react-email/render";
 //import { EmailProcessingError } from "libs/email/errors";
 export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
@@ -13,6 +13,15 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         cc: variables.emails.dpoEmail,
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         body: await render(<MedSpaCMSEmail variables={variables} />),
+      };
+    },
+    state: async (
+      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
+        subject: `Medicaid SPA Package ${variables.id} Withdrawal Confirmation`,
+        body: await render(<MedSpaStateEmail variables={variables} />),
       };
     },
   },
