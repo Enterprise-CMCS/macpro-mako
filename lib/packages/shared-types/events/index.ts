@@ -11,6 +11,7 @@ import * as contractingRenewal from "./contracting-renewal";
 import * as temporaryExtension from "./temporary-extension";
 import * as withdrawPackage from "./withdraw-package";
 import * as appk from "./app-k";
+import * as legacyEvent from "./legacy-event";
 
 import * as withdrawRai from "./withdraw-rai";
 import * as toggleWithdrawRai from "./toggle-withdraw-rai";
@@ -40,6 +41,7 @@ export const events = {
   "respond-to-rai": respondToRai,
   "upload-subsequent-documents": uploadSubsequentDocuments,
   "app-k": appk,
+  "legacy-event": legacyEvent
 };
 
 export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;

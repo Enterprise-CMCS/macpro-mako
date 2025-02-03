@@ -68,9 +68,8 @@ const getOneMacRecordWithAllProperties = (
 ): OneMacRecord | undefined => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
   console.log(`kafkaRecord: ${JSON.stringify(kafkaRecord, null, 2)}`);
-  // Decode the ASCII values to a string
   const kafkaSource = String.fromCharCode(...kafkaRecord.headers[0].source);
-  console.log(kafkaSource);  // Output: "onemac"
+
   if (isRecordAnAdminOneMacRecord(record)) {
     const safeRecord = adminRecordSchema.safeParse(record);
 
@@ -116,7 +115,7 @@ const getOneMacRecordWithAllProperties = (
     const transformForLegacyEvent = legacyTransforms[record.componentType];
 
     const safeEvent = transformForLegacyEvent.transform().safeParse(record);
-
+    console.log(`safeEvent: ${JSON.stringify(safeEvent, null, 2)}`);
     if (safeEvent.success === false) {
       logError({
         type: ErrorType.VALIDATION,
