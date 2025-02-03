@@ -15,29 +15,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - name: Test
-        run: run test --coverage
-      - name: Upload Coverage
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: coverage
-          path: coverage
-
-  report-coverage:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Coverage Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage
-          path: coverage
+      - name: Get run ID of Code Climate workflow
+        id: get-run-id
+        run: |
+          REPO="${{ github.repository }}"
+          WF_NAME="Code Climate Report"
+          RUN_ID=`gh run --repo ${REPO} list --workflow ${WF_NAME} --json databaseId --jq .[0].databaseId`
+          echo "Detected latest run id of ${RUN_ID} for workflow ${WF_NAME}"
+          echo "run-id=${RUN_ID}" >> "$GITHUB_OUTPUT"
       - uses: actions/download-artifact@v4
         with:
           name: main-coverage-summary.json
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: 13119489288
+          run-id: ${{ steps.get-run-id.outputs.run-id }}
+      - name: Test
+        run: run test --coverage
       - name: Report Coverage
         uses: davelosert/vitest-coverage-report-action@v2
         with:
