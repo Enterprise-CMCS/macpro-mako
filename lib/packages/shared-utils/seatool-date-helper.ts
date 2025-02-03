@@ -1,6 +1,6 @@
 import { TZDate } from "@date-fns/tz";
 import { UTCDate } from "@date-fns/utc";
-import { format, startOfDay, endOfDay, isWeekend, addDays } from "date-fns";
+import { format, startOfDay, isWeekend, addDays } from "date-fns";
 import { isAHoliday } from "@18f/us-federal-holidays";
 
 /**
@@ -29,13 +29,13 @@ export const formatSeatoolDate = (date?: Date | string): string => {
 };
 
 /**
- * Returns the ISO date string of the current business day.
+ * Returns the timestamp for UTC midnight of the current business day.
  * If no date is provided, it returns the current business day relative to today.
- * If the date is after 5pm Eastern time, it returns the next day.
+ * If the date is after 5pm Eastern time, it returns the next business day.
  * If the date is on a federal holiday or weekend, it returns the next business day.
  *
  * @param date the date object to return the timestamp for
- * @returns the date string of the current business day relative to the date or today, if none provided
+ * @returns the timestamp of midnight UTC of the current business day relative to the date or today, if none provided
  */
 export const getBusinessDayTimestamp = (date: Date = new Date()): number => {
   // Get the date in Eastern time
@@ -47,7 +47,7 @@ export const getBusinessDayTimestamp = (date: Date = new Date()): number => {
     return getBusinessDayTimestamp(startOfDay(addDays(nyDateTime, 1)));
   }
 
-  return endOfDay(
+  return startOfDay(
     new UTCDate(nyDateTime.getFullYear(), nyDateTime.getMonth(), nyDateTime.getDate()),
   ).getTime();
 };
