@@ -25,7 +25,7 @@ export const transform = () => {
       statusDate: new Date(data.eventTimestamp).toISOString(),
       proposedDate: data.proposedEffectiveDate === "none" ? null : data.proposedEffectiveDate, // Handle "none" as null
       subject: null,
-      submissionDate: new Date(data.submissionTimestamp).toISOString(), // submissionTimestamp as ISO string
+      submissionDate: new Date(data.eventTimestamp).toISOString(),
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
       initialIntakeNeeded: true,
