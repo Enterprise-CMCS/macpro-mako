@@ -28,7 +28,7 @@ jobs:
       - name: Test
         run: run test --coverage
         continue-on-error: true
-      - name: "Upload Coverage"
+      - name: Upload Coverage
         uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -52,9 +52,3 @@ jobs:
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           json-summary-compare-path: coverage-main/coverage-summary.json
-      - name: Report coverage to Code Climate
-        uses: paambaati/codeclimate-action@v8.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageLocations: coverage/lcov.info:lcov
