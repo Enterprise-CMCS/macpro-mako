@@ -32,10 +32,11 @@ const defaultSecurityCredentialsHandler = http.get(
 );
 
 const defaultSecurityTokenServiceHandler = http.post(
-  "https://sts.us-east-1.amazonaws.com/",
+  /\/sts.us-....-1.amazonaws.com/,
   ({ request }) => {
     console.log("defaultSecurityTokenServiceHandler", { request, headers: request.headers });
-    const xmlResponse = `
+    if (request.url.includes("east")) {
+      const xmlResponse = `
   <AssumeRoleResponse xmlns="https://sts.amazonaws.com/doc/2011-06-15/">
     <AssumeRoleResult>
       <SourceIdentity>DevUser123</SourceIdentity>
@@ -56,8 +57,25 @@ const defaultSecurityTokenServiceHandler = http.post(
     </ResponseMetadata>
   </AssumeRoleResponse>
 `;
-
-    return HttpResponse.xml(xmlResponse);
+      return HttpResponse.xml(xmlResponse);
+    } else {
+      const xmlResponse = `
+  <AssumeRoleResponse xmlns="https://sts.amazonaws.com/doc/2011-06-15/">
+    <AssumeRoleResult>
+      <SourceIdentity>DevUser123</SourceIdentity>
+      <AssumedRoleUser>
+        <Arn>arn:aws:sts::123456789012:assumed-role/demo/John</Arn>
+        <AssumedRoleId>ARO123EXAMPLE123:John</AssumedRoleId>
+      </AssumedRoleUser>
+      <PackedPolicySize>8</PackedPolicySize>
+    </AssumeRoleResult>
+    <ResponseMetadata>
+      <RequestId>c6104cbe-af31-11e0-8154-cbc7ccf896c7</RequestId>
+    </ResponseMetadata>
+  </AssumeRoleResponse>
+`;
+      return HttpResponse.xml(xmlResponse);
+    }
   },
 );
 
