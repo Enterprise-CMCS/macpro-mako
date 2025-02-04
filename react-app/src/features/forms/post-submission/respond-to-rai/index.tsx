@@ -9,7 +9,7 @@ export const RespondToRaiMedicaid = () => {
       schema={formSchemas["respond-to-rai-medicaid"]}
       title={`${authority} Formal RAI Response Details`}
       fields={() => <PackageSection />}
-      defaultValues={{ id }}
+      defaultValues={{ id, authority }}
       attachments={{
         faqLink: "/faq/medicaid-spa-rai-attachments",
       }}
