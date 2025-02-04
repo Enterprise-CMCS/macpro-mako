@@ -1,4 +1,9 @@
-import { SEATOOL_STATUS, opensearch } from "shared-types";
+import {
+  opensearch,
+  statusToDisplayToStateUser,
+  statusToDisplayToCmsUser,
+  SEATOOL_STATUS,
+} from "shared-types";
 import type { TestItemResult } from "../index.d";
 import { ATTACHMENT_BUCKET_NAME } from "../consts";
 
@@ -43,6 +48,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: EXISTING_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "New",
     },
   },
@@ -90,6 +97,8 @@ const items: Record<string, TestItemResult> = {
       submitterEmail: "BOBSMITH@MEDICAIDFAKE.gov",
       id: EXISTING_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "New",
     },
   },
@@ -99,6 +108,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: EXISTING_ITEM_APPROVED_NEW_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "New",
       authority: "1915(b)",
       origin: "OneMAC",
@@ -111,6 +122,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: VALID_ITEM_EXTENSION_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "New",
       authority: "1915(b)",
       origin: "OneMAC",
@@ -123,6 +136,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: EXISTING_ITEM_APPROVED_AMEND_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "Amend",
       authority: "1915(b)",
       origin: "OneMAC",
@@ -135,6 +150,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: EXISTING_ITEM_APPROVED_RENEW_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "Renew",
       authority: "1915(b)",
       origin: "OneMAC",
@@ -147,6 +164,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: EXISTING_ITEM_PENDING_ID,
       seatoolStatus: SEATOOL_STATUS.PENDING,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
       actionType: "New",
       origin: "SEATool",
       state: "MD",
@@ -158,6 +177,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: CAPITATED_AMEND_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.PENDING,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
       actionType: "New",
       origin: "SEATool",
       state: "MD",
@@ -315,10 +336,13 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: TEST_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "New",
       state: "MD",
       origin: "OneMAC",
       changedDate: "2024-11-26T18:17:21.557Z",
+      makoChangedDate: "2024-11-26T18:17:21.557Z",
       changelog: [
         {
           _id: `${TEST_ITEM_ID}-001`,
@@ -338,10 +362,14 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: TEST_SPA_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "New",
       state: "MD",
       origin: "OneMAC",
+      submissionDate: "2024-10-27T18:17:21.557Z",
       changedDate: "2024-11-26T18:17:21.557Z",
+      makoChangedDate: "2024-11-26T18:17:21.557Z",
       changelog: [
         {
           _id: `${TEST_SPA_ITEM_ID}-001`,
@@ -386,10 +414,13 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: TEST_SPA_ITEM_TO_SPLIT,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "New",
       state: "MD",
       origin: "OneMAC",
       changedDate: "2024-11-26T18:17:21.557Z",
+      makoChangedDate: "2024-11-26T18:17:21.557Z",
       changelog: [
         {
           _id: `${TEST_SPA_ITEM_TO_SPLIT}-001`,
@@ -409,10 +440,13 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: TEST_SPLIT_SPA_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "New",
       state: "MD",
       origin: "OneMAC",
       changedDate: "2024-11-26T18:17:21.557Z",
+      makoChangedDate: "2024-11-26T18:17:21.557Z",
       changelog: [
         {
           _id: `${TEST_SPLIT_SPA_ITEM_ID}-001`,
@@ -432,6 +466,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "Extend",
       authority: "Medicaid SPA",
       changedDate: undefined,
@@ -445,6 +481,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: HI_TEST_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "New",
       authority: "Medicaid SPA",
       state: "HI",
@@ -457,6 +495,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: CAPITATED_INITIAL_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "Amend",
       authority: "1915(b)",
       origin: "OneMAC",
@@ -479,6 +519,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: CONTRACTING_INITIAL_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "Amend",
       authority: "1915(b)",
       origin: "OneMAC",
@@ -501,6 +543,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: MISSING_CHANGELOG_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "Amend",
       authority: "1915(b)",
       origin: "OneMAC",
@@ -514,6 +558,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: WITHDRAWN_CHANGELOG_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.WITHDRAWN,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.WITHDRAWN],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.WITHDRAWN],
       actionType: "Withdrawal",
       authority: "CHIP SPA",
       state: "MD",
@@ -660,6 +706,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: INITIAL_RELEASE_APPK_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.PENDING,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
       actionType: "New",
       authority: "1915(c)",
       state: "MD",
@@ -669,10 +717,11 @@ const items: Record<string, TestItemResult> = {
           _source: {
             authority: "1915(c)",
             changedDate: "2024-01-01T00:00:00Z",
+            makoChangedDate: "2024-01-01T00:00:00Z",
             title: "Initial release",
             seatoolStatus: SEATOOL_STATUS.PENDING,
-            cmsStatus: "Pending",
-            stateStatus: "Under Review",
+            stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
+            cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
           },
         },
       ],
@@ -837,6 +886,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: WITHDRAW_RAI_ITEM_B,
       seatoolStatus: SEATOOL_STATUS.PENDING,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
       actionType: "respond-to-rai",
       authority: "1915(b)",
       state: "MD",
@@ -859,6 +910,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: WITHDRAW_RAI_ITEM_C,
       seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING_RAI],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING_RAI],
       actionType: "respond-to-rai",
       raiRequestedDate: "2024-01-01T00:00:00.000Z",
       authority: "1915(c)",
@@ -903,6 +956,8 @@ const items: Record<string, TestItemResult> = {
     _source: {
       id: EXISTING_ITEM_APPROVED_APPK_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "New",
       authority: "1915(c)",
       state: "MD",
@@ -911,6 +966,7 @@ const items: Record<string, TestItemResult> = {
         {
           _source: {
             changedDate: "2024-01-01T00:00:00Z",
+            makoChangedDate: "2024-01-01T00:00:00Z",
             title: "Initial release",
             cmsStatus: "Pending",
             stateStatus: "Under Review",
@@ -919,6 +975,7 @@ const items: Record<string, TestItemResult> = {
         {
           _source: {
             changedDate: "2025-01-08T00:00:00Z",
+            makoChangedDate: "2025-01-08T00:00:00Z",
             title: "Approved release",
             cmsStatus: "Approved",
             stateStatus: "Approved",

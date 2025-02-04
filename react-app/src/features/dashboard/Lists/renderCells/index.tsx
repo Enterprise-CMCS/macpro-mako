@@ -11,7 +11,7 @@ export const renderCellDate = (key: keyof opensearch.main.Document) =>
     return formatSeatoolDate(data[key] as string);
   };
 
-type CellIdLinkProps = {
+export type CellIdLinkProps = {
   id: string;
   authority: Authority | string;
 };
@@ -30,6 +30,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) => {
     if (!user) return null;
 
     const actions = getAvailableActions(user, data);
+
     return (
       <POP.Popover>
         <POP.PopoverTrigger
