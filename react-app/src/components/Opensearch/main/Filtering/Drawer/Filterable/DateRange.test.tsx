@@ -2,7 +2,7 @@ import { describe, expect, it, vi, afterEach } from "vitest";
 import { screen, render, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FilterableDateRange, DATE_FORMAT, DATE_DISPLAY_FORMAT } from "./DateRange";
-import { format, startOfQuarter, startOfMonth, sub, endOfDay, startOfDay, setDate } from "date-fns";
+import { format, startOfQuarter, startOfMonth, sub, endOfDay, startOfDay } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
 
 describe("FilterableDateRange", () => {
@@ -147,36 +147,45 @@ describe("FilterableDateRange", () => {
     });
   });
 
+
   it.skip("should handle the first day set to the month and clicking the 15th", async () => {
+
+  // Not sure of the best way to test this because it's to know which dates are going to be
+  // available at this point
+  it("should handle the start date being set to last week and clicking today", async () => {
+
     const user = userEvent.setup();
-    const today = new UTCDate();
-    const firstDay = startOfMonth(today) as UTCDate;
-    const fifteenthDay = setDate(today, 15) as UTCDate;
+    const endDate = new Date();
+    const startDate = sub(endDate, { days: 6 });
 
     render(
       <FilterableDateRange
-        value={{ gte: format(firstDay, DATE_FORMAT), lte: undefined }}
+        value={{ gte: format(startDate, DATE_FORMAT), lte: undefined }}
         onChange={onChange}
       />,
     );
-    await user.click(screen.getByText(format(firstDay, DATE_DISPLAY_FORMAT)));
+    await user.click(screen.getByText(format(startDate, DATE_DISPLAY_FORMAT)));
 
     const picker = screen.getAllByRole("grid", {
       name: format(new Date(), "MMMM yyyy"),
     })[0];
-    // there will be two date pickers for the month but we only
-    // want the first one because we want the middle of the month
-    const fifteenthDayButton = within(picker)
-      .getAllByRole("gridcell", { name: "15" })
-      .find((day) => !day.getAttribute("disabled"));
-    expect(fifteenthDayButton).not.toBeNull();
 
-    if (fifteenthDayButton) {
-      await user.click(fifteenthDayButton);
+    const dateButtons = within(picker)
+      .getAllByRole("gridcell", { name: `${endDate.getDate()}` })
+      .filter((day) => !day.getAttribute("disabled"));
+    let todayButton = null;
+    if (dateButtons.length === 1) {
+      todayButton = dateButtons[0];
+    } else if (dateButtons.length > 1) {
+      todayButton = startDate.getMonth() < endDate.getMonth() ? dateButtons[0] : dateButtons[1];
+    }
+
+    if (todayButton) {
+      await user.click(todayButton);
 
       expect(onChange).toHaveBeenLastCalledWith({
-        gte: (startOfDay(firstDay) as UTCDate).toISOString(),
-        lte: (endOfDay(fifteenthDay) as UTCDate).toISOString(),
+        gte: (startOfDay(new UTCDate(startDate)) as UTCDate).toISOString(),
+        lte: (endOfDay(new UTCDate(endDate)) as UTCDate).toISOString(),
       });
     }
   });
