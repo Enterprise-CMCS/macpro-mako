@@ -179,8 +179,6 @@ export const useFilterDrawer = () => {
       }, {} as any);
     });
     setAccordionValues(updateAccordions);
-
-    // eslint-disable-next-line
   }, [url.state.filters, drawer.drawerOpen]);
 
   const aggs = useMemo(() => {
