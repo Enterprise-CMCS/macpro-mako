@@ -1,29 +1,28 @@
 import { describe, it, expect } from "vitest";
-import { render } from "@testing-library/react";
 import AppKCMSEmailPreview from "./AppK";
 import ChipSpaCMSEmailPreview from "./CHIP_SPA";
 import MedicaidSpaCMSEmailPreview from "./MED_SPA";
 import Waiver1915bCMSEmail from "./Waiver1915b";
+import { renderEmailTemplate } from "../../test-utils";
 
 describe("Upload Subsequent Document CMS Email Snapshot Test", () => {
   it("renders a AppKCMSEmailPreview Preview Template", () => {
-    const template = render(<AppKCMSEmailPreview />);
-
+    const template = renderEmailTemplate(<AppKCMSEmailPreview />);
     expect(template).toMatchSnapshot();
   });
+
   it("renders a ChipSPA Preview Template", () => {
-    const template = render(<ChipSpaCMSEmailPreview />);
-
+    const template = renderEmailTemplate(<ChipSpaCMSEmailPreview />);
     expect(template).toMatchSnapshot();
   });
+
   it("renders a Medicaid_SPA Preview Template", () => {
-    const template = render(<MedicaidSpaCMSEmailPreview />);
-
+    const template = renderEmailTemplate(<MedicaidSpaCMSEmailPreview />);
     expect(template).toMatchSnapshot();
   });
-  it("renders a Waiver Capitated Preview Template", () => {
-    const template = render(<Waiver1915bCMSEmail />);
 
+  it("renders a Waiver Capitated Preview Template", () => {
+    const template = renderEmailTemplate(<Waiver1915bCMSEmail />);
     expect(template).toMatchSnapshot();
   });
 });

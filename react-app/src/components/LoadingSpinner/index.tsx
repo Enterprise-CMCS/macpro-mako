@@ -2,7 +2,7 @@ import { ThreeDots } from "react-loader-spinner";
 
 export const LoadingSpinner = () => {
   return (
-    <div className="loader-wrapper">
+    <div className="loader-wrapper" data-testid="loading-spinner-wrapper">
       <ThreeDots
         height="80"
         width="80"

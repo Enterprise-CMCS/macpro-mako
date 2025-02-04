@@ -39,7 +39,11 @@ export function ConfirmationDialog({
 }: ConfirmationModalProps) {
   return (
     <Dialog open={open} onOpenChange={onCancel}>
-      <DialogContent className="sm:max-w-[425px]" data-testid="dialog-content">
+      <DialogContent
+        className="sm:max-w-[425px]"
+        data-testid="dialog-content"
+        aria-describedby={body ? "dialog-body" : undefined}
+      >
         <DialogHeader>
           <DialogTitle data-testid="dialog-title">{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}

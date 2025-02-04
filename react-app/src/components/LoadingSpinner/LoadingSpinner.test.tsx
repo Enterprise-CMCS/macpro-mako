@@ -7,6 +7,6 @@ describe("HowItWorks", () => {
   it("renders", () => {
     render(<LoadingSpinner />);
 
-    expect(screen.getByTestId("three-dots-loading")).toBeInTheDocument();
+    expect(screen.getByTestId("loading-spinner-wrapper")).toBeInTheDocument();
   });
 });

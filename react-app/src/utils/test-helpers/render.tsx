@@ -29,7 +29,7 @@ export const renderWithQueryClient = (element: ReactElement) =>
   render(element, {
     wrapper: ({ children }) => (
       <QueryClientProvider client={createTestQueryClient()}>
-        <MemoryRouter>{children}</MemoryRouter>,
+        <MemoryRouter>{children}</MemoryRouter>
       </QueryClientProvider>
     ),
   });

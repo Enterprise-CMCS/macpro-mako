@@ -1,7 +1,8 @@
-import { Body, Container, Head, Heading, Html, Preview, Text } from "@react-email/components";
+import { Heading, Section, Text } from "@react-email/components";
 import { EmailNav, EmailFooter } from "./email-components";
 import { styles } from "./email-styles";
 import { ReactNode } from "react";
+import { EmailWrapper } from "./email-wrapper";
 
 interface BaseEmailTemplateProps {
   previewText: string;
@@ -18,19 +19,13 @@ export const BaseEmailTemplate = ({
   footerContent,
   applicationEndpointUrl,
 }: BaseEmailTemplateProps) => (
-  <Html>
-    <Head />
-    <Preview>{previewText}</Preview>
-    <Body style={styles.main}>
-      <Container style={styles.container}>
-        <EmailNav appEndpointUrl={applicationEndpointUrl} />
-        <div style={styles.section.primary}>
-          <Heading style={styles.heading.h1}>{heading}</Heading>
-          {children}
-          <Text style={{ ...styles.text.base }}>Thank you.</Text>
-        </div>
-        <EmailFooter>{footerContent}</EmailFooter>
-      </Container>
-    </Body>
-  </Html>
+  <EmailWrapper previewText={previewText}>
+    <EmailNav appEndpointUrl={applicationEndpointUrl} />
+    <Section style={styles.section.primary}>
+      <Heading style={styles.heading.h1}>{heading}</Heading>
+      {children}
+      <Text style={{ ...styles.text.base }}>Thank you.</Text>
+    </Section>
+    <EmailFooter>{footerContent}</EmailFooter>
+  </EmailWrapper>
 );

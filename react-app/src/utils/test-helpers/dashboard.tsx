@@ -14,26 +14,36 @@ import { opensearch } from "shared-types";
 import { getFilteredItemList } from "mocks";
 import { renderWithQueryClientAndMemoryRouter } from "./render";
 
+// Common fields that exist across all document types
+type CommonDocument = {
+  id: string;
+  state?: string;
+  authority?: string;
+  origin?: string;
+  raiReceivedDate?: string;
+  makoChangedDate?: string;
+};
+
 export const DEFAULT_COLUMNS: OsTableColumn[] = [
   {
     props: { className: "w-[150px]" },
     field: "id.keyword",
     label: "SPA ID",
     locked: true,
-    transform: (data) => data.id ?? BLANK_VALUE,
-    cell: (data) => data.id ?? BLANK_VALUE,
+    transform: (data: CommonDocument) => data.id ?? BLANK_VALUE,
+    cell: (data: CommonDocument) => data.id ?? BLANK_VALUE,
   },
   {
     field: "state.keyword",
     label: "State",
-    transform: (data) => data.state ?? BLANK_VALUE,
-    cell: (data) => data.state ?? BLANK_VALUE,
+    transform: (data: CommonDocument) => data.state ?? BLANK_VALUE,
+    cell: (data: CommonDocument) => data.state ?? BLANK_VALUE,
   },
   {
     field: "authority.keyword",
     label: "Authority",
-    transform: (data) => data.authority ?? BLANK_VALUE,
-    cell: (data) => data.authority ?? BLANK_VALUE,
+    transform: (data: CommonDocument) => data.authority ?? BLANK_VALUE,
+    cell: (data: CommonDocument) => data.authority ?? BLANK_VALUE,
   },
 ];
 
@@ -41,20 +51,20 @@ export const HIDDEN_COLUMN: OsTableColumn = {
   field: "origin.keyword",
   label: "Submission Source",
   hidden: true,
-  transform: (data) => data.origin ?? BLANK_VALUE,
-  cell: (data) => data.origin ?? BLANK_VALUE,
+  transform: (data: CommonDocument) => data.origin ?? BLANK_VALUE,
+  cell: (data: CommonDocument) => data.origin ?? BLANK_VALUE,
 };
 
 export const NO_TRANSFORM_COLUMN: OsTableColumn = {
   field: "raiReceivedDate",
   label: "Formal RAI Response",
-  cell: (data) => data.raiReceivedDate ?? BLANK_VALUE,
+  cell: (data: CommonDocument) => data.raiReceivedDate ?? BLANK_VALUE,
 };
 
 export const NO_FIELD_COLUMN: OsTableColumn = {
   label: "Latest Package Activity",
-  transform: (data) => data.makoChangedDate ?? BLANK_VALUE,
-  cell: (data) => data.makoChangedDate ?? BLANK_VALUE,
+  transform: (data: CommonDocument) => data.makoChangedDate ?? BLANK_VALUE,
+  cell: (data: CommonDocument) => data.makoChangedDate ?? BLANK_VALUE,
 };
 
 export const DEFAULT_FILTERS: opensearch.Filterable<opensearch.main.Field>[] = [
@@ -144,7 +154,9 @@ export const getDashboardQueryString = ({
 
 export const renderDashboard = (element: ReactElement, value: ContextState, queryString: string) =>
   renderWithQueryClientAndMemoryRouter(
-    element,
+    <OsProvider value={value}>
+      <FilterDrawerProvider>{element}</FilterDrawerProvider>
+    </OsProvider>,
     [
       {
         path: "/dashboard",
@@ -168,7 +180,7 @@ export const renderDashboard = (element: ReactElement, value: ContextState, quer
 export const renderFilterDrawer = (element: ReactElement, queryString: string) => {
   console.log({ element, queryString });
   return renderWithQueryClientAndMemoryRouter(
-    element,
+    <FilterDrawerProvider>{element}</FilterDrawerProvider>,
     [
       {
         path: "/dashboard",

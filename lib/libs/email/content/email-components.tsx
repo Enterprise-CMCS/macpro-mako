@@ -1,4 +1,4 @@
-import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/components";
+import { Heading, Hr, Link, Section, Text } from "@react-email/components";
 import { ReactNode } from "react";
 import {
   Attachment,
@@ -10,12 +10,14 @@ import {
 } from "shared-types";
 import { styles } from "./email-styles";
 import * as os from "shared-types/opensearch";
+
 export const EMAIL_CONFIG = {
   DEV_EMAIL: "mako.stateuser+dev-to@gmail.com",
   CHIP_EMAIL: "CHIPSPASubmissionMailBox@cms.hhs.gov",
   SPA_EMAIL: "spa@cms.hhs.gov",
   SPAM_EMAIL: "SPAM@cms.hhs.gov",
 } as const;
+
 export interface EmailAddress {
   name: string;
   email: string;
@@ -112,11 +114,10 @@ const SubDocHowToAccess = ({
       </li>
       <li>
         <Text style={styles.text.description}>
-          If you are not already logged in, click “Login” at the top of the page and log in using
+          If you are not already logged in, click "Login" at the top of the page and log in using
           your Enterprise User Administration (EUA) credentials.
         </Text>
       </li>
-
       <li>
         <Text style={styles.text.description}>
           After you logged in, click the submission ID number on the dashboard page to view details.
@@ -150,70 +151,62 @@ const Attachments = ({
       <Heading as="h2" style={styles.heading.h2}>
         Files:
       </Heading>
+      <table>
+        <tbody>
+          {Object.entries(attachments).map(([key, group]) => {
+            if (!group?.files?.length) return null;
 
-      {Object.entries(attachments).map(([key, group]) => {
-        if (!group?.files?.length) return null;
-
-        return group.files.map((file, index) => (
-          <Row key={key} style={{ marginBottom: "2px", marginTop: "2px" }}>
-            <Column
-              align="left"
-              style={{
-                width: "50%",
-                verticalAlign: "top",
-              }}
-            >
-              {" "}
-              <span key={group.label + index}>
-                <Text style={{ ...styles.text.title }}>{group.label}:</Text>{" "}
-              </span>
-            </Column>
-            <Column style={{ verticalAlign: "top" }}>
-              <Text style={styles.text.description}>
-                <span key={file.filename + index}>{file.filename}</span>
-              </Text>
-            </Column>
-          </Row>
-        ));
-      })}
+            return group.files.map((file, index) => (
+              <tr key={`${key}-${file.filename}-${index}`}>
+                <td>
+                  <Text style={{ ...styles.text.title }}>{group.label}:</Text>
+                </td>
+                <td>
+                  <Text style={styles.text.description}>{file.filename}</Text>
+                </td>
+              </tr>
+            ));
+          })}
+        </tbody>
+      </table>
     </>
   );
 };
 
 const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => (
   <Section>
-    {Object.entries(details).map(([label, value], index) => {
-      if (label === "Summary") {
-        return (
-          <Row key={label + index}>
-            <Divider />
-            <Text style={{ margin: ".5em" }}>
-              <Heading as="h2" style={styles.heading.h2}>
-                Summary:
-              </Heading>
-            </Text>
-            <Text
-              style={{
-                whiteSpace: "pre-line",
-              }}
-            >
-              {value ?? "No additional information submitted"}
-            </Text>
-          </Row>
-        );
-      }
+    <table>
+      <tbody>
+        {Object.entries(details).map(([label, value], index) => {
+          if (label === "Summary") {
+            return (
+              <tr key={`summary-${index}`}>
+                <td colSpan={2}>
+                  <Divider />
+                  <Heading as="h2" style={styles.heading.h2}>
+                    Summary:
+                  </Heading>
+                  <Text style={{ whiteSpace: "pre-line" }}>
+                    {value ?? "No additional information submitted"}
+                  </Text>
+                </td>
+              </tr>
+            );
+          }
 
-      return (
-        <Row key={label + index}>
-          <Column align="left" style={{ width: "50%" }}>
-            <Text style={styles.text.title}>{label}:</Text>
-          </Column>
-          <Column>
-            <Text style={styles.text.description}>{value ?? "Not provided"}</Text>
-          </Column>
-        </Row>
-      );
-    })}
+          return (
+            <tr key={`${label}-${index}`}>
+              <td>
+                <Text style={styles.text.title}>{label}:</Text>
+              </td>
+              <td>
+                <Text style={styles.text.description}>{value ?? "Not provided"}</Text>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   </Section>
 );
 

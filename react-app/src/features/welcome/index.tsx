@@ -1,11 +1,9 @@
-import * as C from "@/components";
 import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
-import { getUser } from "@/api";
-import { Button } from "@/components";
+import { getUser } from "@/api/useGetUser";
+import { Button, CardWithTopBorder, HowItWorks, Step } from "@/components";
 import { Link } from "react-router";
 import { FAQ_TAB } from "@/router";
-import { CardWithTopBorder } from "@/components";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -22,7 +20,7 @@ export const loader = (queryClient: QueryClient) => {
     if (!queryClient.getQueryData(["user"])) {
       return await queryClient.fetchQuery({
         queryKey: ["user"],
-        queryFn: () => getUser(),
+        queryFn: getUser,
       });
     }
     return queryClient.getQueryData(["user"]);
@@ -64,23 +62,23 @@ export const Welcome = () => {
           <div>
             <h2 className="text-2xl font-bold mb-4">State Users</h2>
             <div className="flex flex-col md:flex-row gap-12">
-              <C.HowItWorks>
-                <C.Step
+              <HowItWorks>
+                <Step
                   icon={<Heroicons.ArrowRightOnRectangleIcon className="min-w-[32px] w-8 h-8" />}
                   title="Login with IDM"
                   content="Login with your IDM username and password to access your SPA and Waiver dashboard."
                 />
-                <C.Step
+                <Step
                   icon={<Heroicons.DocumentArrowUpIcon className="min-w-[32px] w-8 h-8" />}
                   title="Attach your documents"
                   content="Select a submission type and attach required documents relevant to your SPA and/or Waiver submission."
                 />
-                <C.Step
+                <Step
                   icon={<Heroicons.EnvelopeIcon className="min-w-[32px] w-8 h-8" />}
                   title="Receive an email confirmation"
                   content="After you submit, you will receive an email confirmation that your submission was successful, marking the start of the 90-day review process."
                 />
-              </C.HowItWorks>
+              </HowItWorks>
               <div className="flex-grow">
                 <h3 className="font-bold text-xl mb-4">Submission Types include:</h3>
                 <ul className="flex flex-col gap-4">
@@ -124,23 +122,23 @@ export const Welcome = () => {
           <div>
             <h2 className="text-2xl font-bold mb-4">CMS Users</h2>
             <div className="flex flex-col md:flex-row gap-8">
-              <C.HowItWorks>
-                <C.Step
+              <HowItWorks>
+                <Step
                   icon={<Heroicons.DocumentArrowUpIcon className="min-w-[32px] w-8 h-8" />}
                   title="Receive an email for submission notification"
                   content="After a state adds a submission to OneMAC, you will receive an email notification that a submission was made requiring your review and the submission is on the clock."
                 />
-                <C.Step
+                <Step
                   icon={<Heroicons.ArrowRightOnRectangleIcon className="min-w-[32px] w-8 h-8" />}
                   title="Login with EUA"
                   content="Login with your EUA username and password to access the SPA and Waiver dashboard."
                 />
-                <C.Step
+                <Step
                   icon={<Heroicons.EnvelopeIcon className="min-w-[32px] w-8 h-8" />}
                   title="Review your assigned submission"
                   content="Search the submission ID from the email and click on the submission to view and review details and attachments."
                 />
-              </C.HowItWorks>
+              </HowItWorks>
               <div>
                 <h3 className="font-bold text-xl mb-4">Submission Types include:</h3>
                 <ul className="flex flex-col gap-4">

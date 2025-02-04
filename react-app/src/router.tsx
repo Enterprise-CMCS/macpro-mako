@@ -1,5 +1,4 @@
-import * as C from "@/components";
-import { TimeoutModal } from "@/components";
+import { Layout, TimeoutModal } from "@/components";
 import * as F from "@/features";
 import {
   postSubmissionLoader,
@@ -20,7 +19,7 @@ const RoutesWithTimeout = () => (
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <C.Layout />,
+    element: <Layout />,
     children: [
       { path: "/", index: true, element: <F.Welcome /> },
       { path: "/faq", element: <F.Faq /> },
