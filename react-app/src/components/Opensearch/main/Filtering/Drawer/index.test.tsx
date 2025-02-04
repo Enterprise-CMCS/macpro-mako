@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { OsFilterDrawer } from "./index";
@@ -21,6 +21,21 @@ const setup = (
 };
 
 describe("OsFilterDrawer", () => {
+  beforeEach(() => {
+    global.localStorage = {
+      setItem: vi.fn(),
+      getItem: vi.fn(),
+      removeItem: vi.fn(),
+      key: vi.fn(),
+      clear: vi.fn(),
+      length: 0,
+    };
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   describe("SPA Filters", () => {
     it("should display the drawer closed initially", () => {
       setup([], "spas");
@@ -278,7 +293,8 @@ describe("OsFilterDrawer", () => {
         await user.click(screen.getByRole("button", { name: "Authority" }));
 
         const chip = screen.queryByLabelText("CHIP SPA");
-        expect(chip).toBeInTheDocument();
+        expect(chip).toBeInTheDocument(); // ERRORING HERE
+
         expect(chip.getAttribute("data-state")).toEqual("unchecked");
 
         const med = screen.queryByLabelText("Medicaid SPA");
@@ -311,7 +327,7 @@ describe("OsFilterDrawer", () => {
 
         const med = screen.queryByLabelText("Medicaid SPA");
         expect(med).toBeInTheDocument();
-        expect(med.getAttribute("data-state")).toEqual("checked");
+        expect(med.getAttribute("data-state")).toEqual("checked"); // ERRORING HERE
 
         await user.click(screen.queryByRole("button", { name: "Clear" }));
         expect(chip.getAttribute("data-state")).toEqual("unchecked");
