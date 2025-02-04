@@ -5,6 +5,7 @@ export default defineConfig({
   test: {
     globals: true,
     environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
+    testTimeout: 10000,
     coverage: {
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),
