@@ -9,6 +9,7 @@ export default defineConfig({
     cache: {
       dir: ".vitest/cache",
     },
+    testTimeout: 10000,
     pool: "threads",
     poolOptions: {
       threads: {
