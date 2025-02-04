@@ -60,7 +60,7 @@ const emailTemplates: EmailTemplates = {
   "contracting-renewal-state": EmailContent.newSubmission,
   "capitated-renewal-state": EmailContent.newSubmission,
   "respond-to-rai": EmailContent.respondToRai,
-  "seatool-withdraw": EmailContent.withdrawPackage,
+  "seatool-withdraw": EmailContent.withdrawConfirmation,
   "app-k": EmailContent.newSubmission,
   "upload-subsequent-documents": EmailContent.uploadSubsequentDocuments,
 };
