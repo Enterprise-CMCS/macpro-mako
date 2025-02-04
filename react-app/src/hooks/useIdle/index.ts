@@ -50,7 +50,7 @@ export function useIdle(
     return () => {
       events.forEach((event) => document.removeEventListener(event, handleEvents));
     };
-  }, [timeout]);
+  }, [timeout, events]);
 
   return idle;
 }

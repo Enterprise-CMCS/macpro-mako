@@ -140,7 +140,7 @@ export const useFilterDrawer = () => {
       }, {} as any);
     });
     setAccordionValues(updateAccordions);
-  }, [url.state.filters, drawer.drawerOpen]);
+  }, [url.state.filters, drawer.drawerOpen, url.onSet, setFilters, accordionValues]);
 
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce(
@@ -157,7 +157,7 @@ export const useFilterDrawer = () => {
       },
       {} as Record<opensearch.main.Field, { label: string; value: string }[]>,
     );
-  }, [_aggs]);
+  }, [_aggs, labelMap]);
 
   return {
     aggs,

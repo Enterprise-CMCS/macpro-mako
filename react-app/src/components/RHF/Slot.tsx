@@ -30,7 +30,7 @@ export const RHFSlot = <
       return () => {
         control.unregister(field.name);
       };
-    }, []);
+    }, [field.name]);
 
     return (
       <FormItem

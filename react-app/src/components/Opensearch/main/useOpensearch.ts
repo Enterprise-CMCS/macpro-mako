@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { UserRoles, opensearch } from "shared-types";
 import { getOsData, useOsSearch, useGetUser } from "@/api";
@@ -50,28 +50,34 @@ export const useOsData = () => {
     opensearch.main.Field,
     opensearch.main.Response
   >();
-  const onRequest = async (query: opensearch.main.State, options?: any) => {
-    try {
-      await mutateAsync(
-        {
-          index: "main",
-          pagination: query.pagination,
-          sort: query.sort,
-          filters: [
-            ...query.filters,
-            ...createSearchFilterable(query.search || ""),
-            ...(DEFAULT_FILTERS[params.state.tab].filters || []),
-          ],
-        },
-        { ...options, onSuccess: (res) => setData(res.hits) },
-      );
-    } catch (error) {
-      console.error("Error occurred during search:", error);
-    }
-  };
+
+  const onRequest = useCallback(
+    async (query: opensearch.main.State, options?: any) => {
+      try {
+        await mutateAsync(
+          {
+            index: "main",
+            pagination: query.pagination,
+            sort: query.sort,
+            filters: [
+              ...query.filters,
+              ...createSearchFilterable(query.search || ""),
+              ...(DEFAULT_FILTERS[params.state.tab].filters || []),
+            ],
+          },
+          { ...options, onSuccess: (res) => setData(res.hits) },
+        );
+      } catch (error) {
+        console.error("Error occurred during search:", error);
+      }
+    },
+    [mutateAsync, params.state.tab],
+  );
+
   useEffect(() => {
     onRequest(params.state);
-  }, [params.queryString]);
+  }, [params.queryString, params.state, onRequest]);
+
   return { data, isLoading, error, ...params };
 };
 export const useOsAggregate = () => {

@@ -22,7 +22,7 @@ export const useLzUrl = <T>(props: { key: string; initValue?: T }) => {
     } catch {
       return props.initValue;
     }
-  }, [queryString]);
+  }, [queryString, props.initValue]);
 
   const onSet = (arg: (arg: T) => T | T, shouldIsolate?: boolean) => {
     const val = (() => {
