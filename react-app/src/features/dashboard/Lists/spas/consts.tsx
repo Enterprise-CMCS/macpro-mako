@@ -157,7 +157,6 @@ export const useSpaTableColumns = (): { columns?: OsTableColumn[]; isLoading: bo
     if (isUserLoading === true) {
       setIsLoading(true);
     } else {
-      console.log({ props });
       setIsLoading(false);
       setColumns(getColumns(props));
     }

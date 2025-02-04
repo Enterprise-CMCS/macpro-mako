@@ -8,6 +8,7 @@ import {
   statusToDisplayToCmsUser,
   statusToDisplayToStateUser,
 } from "shared-types";
+import { LABELS } from "@/utils";
 import {
   renderDashboard,
   getDashboardQueryString,
@@ -22,12 +23,12 @@ import {
   TEST_HELP_DESK_USER,
   TEST_READ_ONLY_USER,
   setMockUsername,
-  TEST_MED_SPA_ITEM,
-  TEST_CHIP_SPA_ITEM,
+  TEST_1915B_ITEM,
+  TEST_1915C_ITEM,
 } from "mocks";
 import { BLANK_VALUE } from "@/consts";
 import * as api from "@/api";
-import { SpasList } from "./index";
+import { WaiversList } from "./index";
 
 const BASE_ITEM = {
   state: "MD",
@@ -40,7 +41,7 @@ const BASE_ITEM = {
 const PENDING_SUBMITTED_ITEM = {
   _id: "MD-01-2024",
   _source: {
-    ...TEST_MED_SPA_ITEM._source,
+    ...TEST_1915B_ITEM._source,
     ...BASE_ITEM,
     id: "MD-01-2024",
     seatoolStatus: SEATOOL_STATUS.PENDING,
@@ -55,7 +56,7 @@ const PENDING_SUBMITTED_ITEM = {
 const PENDING_RAI_REQUEST_ITEM = {
   _id: "MD-02-2024",
   _source: {
-    ...TEST_CHIP_SPA_ITEM._source,
+    ...TEST_1915C_ITEM._source,
     ...BASE_ITEM,
     id: "MD-02-2024",
     seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
@@ -70,7 +71,7 @@ const PENDING_RAI_REQUEST_ITEM = {
 const PENDING_RAI_RECEIVED_ITEM = {
   _id: "MD-03-2024",
   _source: {
-    ...TEST_MED_SPA_ITEM._source,
+    ...TEST_1915B_ITEM._source,
     ...BASE_ITEM,
     id: "MD-03-2024",
     seatoolStatus: SEATOOL_STATUS.PENDING,
@@ -87,7 +88,7 @@ const PENDING_RAI_RECEIVED_ITEM = {
 const RAI_WITHDRAW_ENABLED_ITEM = {
   _id: "MD-04-2024",
   _source: {
-    ...TEST_CHIP_SPA_ITEM._source,
+    ...TEST_1915C_ITEM._source,
     ...BASE_ITEM,
     id: "MD-04-2024",
     seatoolStatus: SEATOOL_STATUS.PENDING,
@@ -105,7 +106,7 @@ const RAI_WITHDRAW_ENABLED_ITEM = {
 const RAI_WITHDRAW_DISABLED_ITEM = {
   _id: "MD-05-2024",
   _source: {
-    ...TEST_MED_SPA_ITEM._source,
+    ...TEST_1915B_ITEM._source,
     ...BASE_ITEM,
     id: "MD-05-2024",
     seatoolStatus: SEATOOL_STATUS.PENDING,
@@ -123,12 +124,12 @@ const RAI_WITHDRAW_DISABLED_ITEM = {
 const APPROVED_ITEM = {
   _id: "MD-06-2024",
   _source: {
-    ...TEST_CHIP_SPA_ITEM._source,
+    ...TEST_1915B_ITEM._source,
     ...BASE_ITEM,
     id: "MD-06-2024",
-    seatoolStatus: SEATOOL_STATUS.PENDING,
-    cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
-    stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
+    seatoolStatus: SEATOOL_STATUS.APPROVED,
+    cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
+    stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
     finalDispositionDate: "05/01/2024",
     actionType: "New",
     submitterName: "Kevin Kline",
@@ -140,6 +141,7 @@ const BLANK_ITEM = {
   _id: "MD-07-2024",
   _source: {
     id: "MD-07-2024",
+    authority: "1915(b)",
     seatoolStatus: SEATOOL_STATUS.PENDING,
     cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
     stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
@@ -177,7 +179,7 @@ const getExpectedExportData = (useCmsStatus: boolean) => {
       "Formal RAI Response": "-- --",
       "Initial Submission": "01/01/2024",
       "Latest Package Activity": "02/01/2024",
-      "SPA ID": pendingDoc.id,
+      "Waiver Number": pendingDoc.id,
       State: pendingDoc.state,
       Status: useCmsStatus ? pendingDoc.cmsStatus : pendingDoc.stateStatus,
       "Submitted By": pendingDoc.submitterName,
@@ -185,13 +187,14 @@ const getExpectedExportData = (useCmsStatus: boolean) => {
       "Final Disposition": "-- --",
       "Formal RAI Requested": "-- --",
       "Submission Source": "OneMAC",
+      "Action Type": LABELS[pendingDoc.actionType] || pendingDoc.actionType,
     },
     {
       Authority: raiRequestDoc.authority,
       "Formal RAI Response": "-- --",
       "Initial Submission": "01/01/2024",
       "Latest Package Activity": "02/01/2024",
-      "SPA ID": raiRequestDoc.id,
+      "Waiver Number": raiRequestDoc.id,
       State: raiRequestDoc.state,
       Status: useCmsStatus ? raiRequestDoc.cmsStatus : raiRequestDoc.stateStatus,
       "Submitted By": raiRequestDoc.submitterName,
@@ -199,13 +202,14 @@ const getExpectedExportData = (useCmsStatus: boolean) => {
       "Final Disposition": "-- --",
       "Formal RAI Requested": "03/01/2024",
       "Submission Source": "OneMAC",
+      "Action Type": LABELS[raiRequestDoc.actionType] || raiRequestDoc.actionType,
     },
     {
       Authority: raiReceivedDoc.authority,
       "Formal RAI Response": "04/01/2024",
       "Initial Submission": "01/01/2024",
       "Latest Package Activity": "02/01/2024",
-      "SPA ID": raiReceivedDoc.id,
+      "Waiver Number": raiReceivedDoc.id,
       State: raiReceivedDoc.state,
       Status: useCmsStatus ? raiReceivedDoc.cmsStatus : raiReceivedDoc.stateStatus,
       "Submitted By": raiReceivedDoc.submitterName,
@@ -213,13 +217,14 @@ const getExpectedExportData = (useCmsStatus: boolean) => {
       "Final Disposition": "-- --",
       "Formal RAI Requested": "03/01/2024",
       "Submission Source": "OneMAC",
+      "Action Type": LABELS[raiReceivedDoc.actionType] || raiReceivedDoc.actionType,
     },
     {
       Authority: withdrawEnabledDoc.authority,
       "Formal RAI Response": "04/01/2024",
       "Initial Submission": "01/01/2024",
       "Latest Package Activity": "02/01/2024",
-      "SPA ID": withdrawEnabledDoc.id,
+      "Waiver Number": withdrawEnabledDoc.id,
       State: withdrawEnabledDoc.state,
       Status: `${useCmsStatus ? withdrawEnabledDoc.cmsStatus : withdrawEnabledDoc.stateStatus} (Withdraw Formal RAI Response - Enabled)`,
       "Submitted By": withdrawEnabledDoc.submitterName,
@@ -227,13 +232,14 @@ const getExpectedExportData = (useCmsStatus: boolean) => {
       "Final Disposition": "-- --",
       "Formal RAI Requested": "03/01/2024",
       "Submission Source": "OneMAC",
+      "Action Type": LABELS[withdrawEnabledDoc.actionType] || withdrawEnabledDoc.actionType,
     },
     {
       Authority: withdrawDisabledDoc.authority,
       "Formal RAI Response": "04/01/2024",
       "Initial Submission": "01/01/2024",
       "Latest Package Activity": "02/01/2024",
-      "SPA ID": withdrawDisabledDoc.id,
+      "Waiver Number": withdrawDisabledDoc.id,
       State: withdrawDisabledDoc.state,
       Status: useCmsStatus ? withdrawDisabledDoc.cmsStatus : withdrawDisabledDoc.stateStatus,
       "Submitted By": withdrawDisabledDoc.submitterName,
@@ -241,13 +247,14 @@ const getExpectedExportData = (useCmsStatus: boolean) => {
       "Final Disposition": "-- --",
       "Formal RAI Requested": "03/01/2024",
       "Submission Source": "OneMAC",
+      "Action Type": LABELS[withdrawDisabledDoc.actionType] || withdrawDisabledDoc.actionType,
     },
     {
       Authority: approvedDoc.authority,
       "Formal RAI Response": "-- --",
       "Initial Submission": "01/01/2024",
       "Latest Package Activity": "02/01/2024",
-      "SPA ID": approvedDoc.id,
+      "Waiver Number": approvedDoc.id,
       State: approvedDoc.state,
       Status: useCmsStatus ? approvedDoc.cmsStatus : approvedDoc.stateStatus,
       "Submitted By": approvedDoc.submitterName,
@@ -255,13 +262,14 @@ const getExpectedExportData = (useCmsStatus: boolean) => {
       "Final Disposition": "05/01/2024",
       "Formal RAI Requested": "-- --",
       "Submission Source": "OneMAC",
+      "Action Type": LABELS[approvedDoc.actionType] || approvedDoc.actionType,
     },
     {
-      Authority: "-- --",
+      Authority: blankDoc.authority,
       "Formal RAI Response": "-- --",
       "Initial Submission": "-- --",
       "Latest Package Activity": "-- --",
-      "SPA ID": blankDoc.id,
+      "Waiver Number": blankDoc.id,
       State: "-- --",
       Status: useCmsStatus ? blankDoc.cmsStatus : blankDoc.stateStatus,
       "Submitted By": "-- --",
@@ -269,6 +277,7 @@ const getExpectedExportData = (useCmsStatus: boolean) => {
       "Final Disposition": "-- --",
       "Formal RAI Requested": "-- --",
       "Submission Source": "OneMAC",
+      "Action Type": "-- --",
     },
   ];
 };
@@ -279,9 +288,10 @@ const verifyColumns = (hasActions: boolean) => {
   if (hasActions) {
     expect(within(table).getByText("Actions", { selector: "th>div" })).toBeInTheDocument();
   }
-  expect(within(table).getByText("SPA ID", { selector: "th>div" })).toBeInTheDocument();
+  expect(within(table).getByText("Waiver Number", { selector: "th>div" })).toBeInTheDocument();
   expect(within(table).getByText("State", { selector: "th>div" })).toBeInTheDocument();
   expect(within(table).getByText("Authority", { selector: "th>div" })).toBeInTheDocument();
+  expect(within(table).getByText("Action Type", { selector: "th>div" })).toBeInTheDocument();
   expect(within(table).getByText("Status", { selector: "th>div" })).toBeInTheDocument();
   expect(within(table).getByText("Initial Submission", { selector: "th>div" })).toBeInTheDocument();
   expect(
@@ -291,7 +301,7 @@ const verifyColumns = (hasActions: boolean) => {
     within(table).getByText("Formal RAI Response", { selector: "th>div" }),
   ).toBeInTheDocument();
   expect(within(table).getByText("Submitted By", { selector: "th>div" })).toBeInTheDocument();
-  expect(table.firstElementChild.firstElementChild.childElementCount).toEqual(hasActions ? 9 : 8);
+  expect(table.firstElementChild.firstElementChild.childElementCount).toEqual(hasActions ? 10 : 9);
 
   // Check that the correct amount rows appear
   expect(screen.getAllByRole("row").length).toEqual(hitCount + 1); // add 1 for header
@@ -332,7 +342,11 @@ const verifyRow = (
   cellIndex++;
   expect(cells[cellIndex].textContent).toEqual(doc.state || BLANK_VALUE); // State
   cellIndex++;
-  expect(cells[cellIndex].textContent).toEqual(doc.authority || BLANK_VALUE); // Authority
+  expect(cells[cellIndex].textContent).toEqual(doc.authority); // Authority
+  cellIndex++;
+  expect(cells[cellIndex].textContent).toEqual(
+    LABELS[doc.actionType] || doc.actionType || BLANK_VALUE,
+  ); // Authority
   cellIndex++;
   expect(cells[cellIndex].textContent).toEqual(status); // Status
   cellIndex++;
@@ -353,11 +367,11 @@ const verifyRow = (
   expect(cells[cellIndex].textContent).toEqual(doc.submitterName || BLANK_VALUE); // Submitted By
 };
 
-describe("SpasList", () => {
+describe("WaiversList", () => {
   const setup = async (hits: opensearch.Hits<opensearch.main.Document>, queryString: string) => {
     const user = userEvent.setup();
     const rendered = renderDashboard(
-      <SpasList />,
+      <WaiversList />,
       {
         data: hits,
         isLoading: false,
@@ -547,7 +561,7 @@ describe("SpasList", () => {
       ({ user } = await setup(
         defaultHits,
         getDashboardQueryString({
-          tab: "spas",
+          tab: "waivers",
         }),
       ));
     });
@@ -655,7 +669,7 @@ describe("SpasList", () => {
         },
       ],
       [
-        "a blank item",
+        "an blank item",
         BLANK_ITEM._source as opensearch.main.Document,
         {
           hasActions: true,
@@ -686,7 +700,7 @@ describe("SpasList", () => {
       ({ user } = await setup(
         defaultHits,
         getDashboardQueryString({
-          tab: "spas",
+          tab: "waivers",
         }),
       ));
     });
@@ -794,7 +808,7 @@ describe("SpasList", () => {
         },
       ],
       [
-        "a blank item",
+        "an blank item",
         BLANK_ITEM._source as opensearch.main.Document,
         {
           hasActions: false,
@@ -825,7 +839,7 @@ describe("SpasList", () => {
       ({ user } = await setup(
         defaultHits,
         getDashboardQueryString({
-          tab: "spas",
+          tab: "waivers",
         }),
       ));
     });
@@ -933,7 +947,7 @@ describe("SpasList", () => {
         },
       ],
       [
-        "a blank item",
+        "an blank item",
         BLANK_ITEM._source as opensearch.main.Document,
         {
           hasActions: false,
