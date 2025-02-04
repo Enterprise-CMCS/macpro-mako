@@ -1,3 +1,4 @@
+import { cpus } from "os";
 import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
 
@@ -5,7 +6,18 @@ export default defineConfig({
   test: {
     globals: true,
     environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
-    testTimeout: 10000,
+    cache: {
+      dir: ".vitest/cache",
+    },
+    pool: "threads",
+    poolOptions: {
+      threads: {
+        singleThread: false,
+        isolate: true,
+        maxThreads: Math.max(1, Math.floor(cpus().length * 0.75)),
+        minThreads: Math.max(1, Math.floor(cpus().length * 0.5)),
+      },
+    },
     coverage: {
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),
@@ -44,6 +56,7 @@ export default defineConfig({
         "**/*/.eslintrc.{ts,js,cjs}",
         "**/*.config.{ts,js,cjs}",
         "**/*.js",
+        "**/*.css",
         "**/*.test.ts",
         "**/*.test.tsx",
         "**/assets/**",
