@@ -57,7 +57,8 @@ const processAndIndex = async ({
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
     const { value, offset, headers } = kafkaRecord;
-    const kafkaSource = String.fromCharCode(headers[0].source);
+    const kafkaSource = String.fromCharCode(...headers[0]?.source || []);
+    console.log(kafkaSource);
 
     try {
       // If a legacy tombstone, continue
