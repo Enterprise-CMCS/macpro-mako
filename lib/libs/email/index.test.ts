@@ -1,5 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { getEmailTemplate, getEmailTemplates, getLatestMatchingEvent } from "./index";
+import {
+  AuthoritiesWithUserTypesTemplate,
+  getEmailTemplate,
+  getEmailTemplates,
+  getLatestMatchingEvent,
+} from "./index";
 import * as EmailContent from "./content";
 import * as packageApi from "../api/package";
 import { Authority, Action } from "shared-types";
@@ -11,11 +16,23 @@ vi.mock("../api/package", () => ({
   getPackageChangelog: vi.fn(),
 }));
 
-vi.mock("./content", () => ({
-  newSubmission: vi.fn(),
-  tempExtension: vi.fn(),
-  withdrawPackage: vi.fn(),
-}));
+vi.mock("./content", () => {
+  const stateFn = vi.fn();
+  const cmsFn = vi.fn();
+  return {
+    newSubmission: {
+      medicaid: {
+        state: stateFn,
+        cms: cmsFn,
+      },
+    },
+    tempExtension: vi.fn(),
+    withdrawPackage: vi.fn(),
+    withdrawRai: vi.fn(),
+    respondToRai: vi.fn(),
+    uploadSubsequentDocuments: vi.fn(),
+  };
+});
 
 describe("email", () => {
   describe("getEmailTemplate", () => {
@@ -83,7 +100,13 @@ describe("email", () => {
 
     it("should return authority-specific templates when authority present", async () => {
       const templates = await getEmailTemplates(mockEvent);
-      expect(templates).toEqual([EmailContent.newSubmission]);
+      const mockEmailContent = EmailContent as unknown as {
+        newSubmission: AuthoritiesWithUserTypesTemplate;
+      };
+      expect(templates).toEqual([
+        mockEmailContent.newSubmission[Authority.MED_SPA]?.state,
+        mockEmailContent.newSubmission[Authority.MED_SPA]?.cms,
+      ]);
     });
   });
 
