@@ -2,7 +2,7 @@ import { describe, expect, it, vi, afterEach } from "vitest";
 import { screen, render, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FilterableDateRange, DATE_FORMAT, DATE_DISPLAY_FORMAT } from "./DateRange";
-import { format, startOfQuarter, startOfMonth, sub, endOfDay, startOfDay } from "date-fns";
+import { format, startOfQuarter, startOfMonth, sub, endOfDay, startOfDay, setDate } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
 
 describe("FilterableDateRange", () => {
@@ -147,13 +147,42 @@ describe("FilterableDateRange", () => {
     });
   });
 
-
   it.skip("should handle the first day set to the month and clicking the 15th", async () => {
+    // This one is like... annoying.x
+    const user = userEvent.setup();
+    const today = new UTCDate();
+    const firstDay = startOfMonth(today) as UTCDate;
+    const fifteenthDay = setDate(today, 15) as UTCDate;
 
-  // Not sure of the best way to test this because it's to know which dates are going to be
-  // available at this point
+    render(
+      <FilterableDateRange
+        value={{ gte: format(firstDay, DATE_FORMAT), lte: undefined }}
+        onChange={onChange}
+      />,
+    );
+    await user.click(screen.getByText(format(firstDay, DATE_DISPLAY_FORMAT)));
+
+    const picker = screen.getAllByRole("grid", {
+      name: format(new Date(), "MMMM yyyy"),
+    })[0];
+    // there will be two date pickers for the month but we only
+    // want the first one because we want the middle of the month
+    const fifteenthDayButton = within(picker)
+      .getAllByRole("gridcell", { name: "15" })
+      .find((day) => !day.getAttribute("disabled"));
+    expect(fifteenthDayButton).not.toBeNull();
+
+    if (fifteenthDayButton) {
+      await user.click(fifteenthDayButton);
+
+      expect(onChange).toHaveBeenLastCalledWith({
+        gte: (startOfDay(firstDay) as UTCDate).toISOString(),
+        lte: (endOfDay(fifteenthDay) as UTCDate).toISOString(),
+      });
+    }
+  });
+
   it("should handle the start date being set to last week and clicking today", async () => {
-
     const user = userEvent.setup();
     const endDate = new Date();
     const startDate = sub(endDate, { days: 6 });
@@ -189,6 +218,7 @@ describe("FilterableDateRange", () => {
       });
     }
   });
+
   it("should handle deselecting", async () => {
     const user = userEvent.setup();
     const firstDay = startOfMonth(new UTCDate()) as UTCDate;
