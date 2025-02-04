@@ -34,6 +34,7 @@ jobs:
           run-id: ${{ steps.get-run-id.outputs.run-id }}
       - name: Test
         if: always()
+        id: test
         continue-on-error: true
         run: run test --coverage
       - name: Report Coverage (compared with Main)
@@ -44,3 +45,5 @@ jobs:
       - name: Report Coverage (only PR)
         if: steps.get-main-coverage.conclusion == 'failure' || steps.get-main-coverage.conclusion == 'skipped'
         uses: davelosert/vitest-coverage-report-action@v2
+    outputs:
+      actualResult: ${{ steps.test.conclusion }}
