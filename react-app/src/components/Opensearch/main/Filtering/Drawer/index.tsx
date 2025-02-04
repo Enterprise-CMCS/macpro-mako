@@ -15,14 +15,9 @@ import {
 
 import * as F from "./Filterable";
 import { useFilterDrawer } from "./hooks";
-import { console } from "inspector";
 
 export const OsFilterDrawer = () => {
   const hook = useFilterDrawer();
-
-  {
-    () => console.log(Object.values);
-  }
 
   return (
     <Sheet open={hook.drawer.drawerOpen} onOpenChange={hook.drawer.setDrawerState}>
