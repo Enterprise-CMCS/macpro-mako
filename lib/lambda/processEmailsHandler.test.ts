@@ -241,7 +241,6 @@ describe("process emails  Handler", () => {
     expect(secSPY).toHaveBeenCalledTimes(2);
   });
 });
-
 describe("process emails  Handler failures", () => {
   it.each([
     [
@@ -332,7 +331,6 @@ const seatoolData = (authority: string) => ({
   ],
   authority: authority,
 });
-
 describe("process emails  Handler for seatool", () => {
   vi.spyOn(os, "updateData").mockImplementation(vi.fn());
   it.each([
