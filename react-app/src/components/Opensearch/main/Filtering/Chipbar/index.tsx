@@ -118,7 +118,10 @@ export const FilterChips: FC = () => {
   };
 
   return (
-    <div className="justify-start items-center py-2 flex flex-wrap gap-y-2 gap-x-2">
+    <div
+      className="justify-start items-center py-2 flex flex-wrap gap-y-2 gap-x-2"
+      data-testid="chips"
+    >
       {url.state.filters.map((filter, index) => {
         const props: RenderProp = { clearFilter, openDrawer, filter, index };
         const key = `${filter.field}-${index}`;
