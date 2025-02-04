@@ -127,10 +127,10 @@ const processAndIndex = async ({
 
       // If the event is a supported event, transform and push to docs array for indexing
       let transformForEvent;
-      if (record.event in transforms) {
-        transformForEvent = transforms[record.event as keyof typeof transforms];
-      } else if (kafkaSource === "onemac") { // legacy onemac events
+      if (kafkaSource === "onemac") { // This is a onemac legacy event
         transformForEvent = transforms.legacyEvent;
+      } else if (record.event in transforms) {
+        transformForEvent = transforms[record.event as keyof typeof transforms];
       }
 
       if(transformForEvent) {
