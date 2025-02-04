@@ -1,12 +1,11 @@
 import { useState, useMemo } from "react";
-import { format, startOfQuarter, startOfMonth, sub, endOfDay, startOfDay } from "date-fns";
+import { format, startOfQuarter, startOfMonth, sub, endOfDay } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/utils";
 import { Popover, PopoverContent, PopoverTrigger, Button, Calendar, Input } from "@/components";
 import { opensearch } from "shared-types";
-import { getBusinessDayTimestamp } from "shared-utils";
 
 type Props = Omit<React.HTMLAttributes<HTMLDivElement>, "onChange" | "value" | "onSelect"> & {
   value: opensearch.RangeValue;
@@ -27,8 +26,8 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   }, [value.lte]);
   const selectedDate = useMemo(() => {
     return {
-      from: fromValue !== "" ? startOfDay(new Date(fromValue)) : undefined,
-      to: toValue !== "" ? endOfDay(new Date(toValue)) : undefined,
+      from: fromValue !== "" ? new Date(fromValue) : undefined,
+      to: toValue !== "" ? new Date(toValue) : undefined,
     };
   }, [fromValue, toValue]);
 
@@ -41,9 +40,27 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
     endDate: Date | undefined,
   ): opensearch.RangeValue => {
     const gte = startDate
-      ? (startOfDay(new UTCDate(startDate)) as UTCDate).toISOString()
+      ? new UTCDate(
+          startDate.getFullYear(),
+          startDate.getMonth(),
+          startDate.getDate(),
+          0,
+          0,
+          0,
+          0,
+        ).toISOString()
       : undefined;
-    const lte = endDate ? (endOfDay(new UTCDate(endDate)) as UTCDate).toISOString() : undefined;
+    const lte = endDate
+      ? new UTCDate(
+          endDate.getFullYear(),
+          endDate.getMonth(),
+          endDate.getDate(),
+          23,
+          59,
+          59,
+          999,
+        ).toISOString()
+      : undefined;
 
     return {
       gte,
@@ -66,7 +83,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   };
 
   // Calendar props
-  const disableDates = [{ after: new Date(getBusinessDayTimestamp()) }];
+  const disableDates = [{ after: endOfDay(new Date()) }];
 
   const onSelect = (d: any) => {
     if (!!d?.from && !!d.to) {
@@ -79,13 +96,13 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   };
 
   const label = useMemo(() => {
-    const from = value?.gte ? format(new UTCDate(value?.gte), DATE_DISPLAY_FORMAT) : "";
-    const to = value?.lte ? format(new UTCDate(value?.lte), DATE_DISPLAY_FORMAT) : "";
+    const from = fromValue ? format(new Date(fromValue), DATE_DISPLAY_FORMAT) : "";
+    const to = toValue ? format(new Date(toValue), DATE_DISPLAY_FORMAT) : "";
 
     if (from && to) return `${from} - ${to}`;
     if (from) return `${from}`;
     return "Pick a date";
-  }, [value.gte, value.lte]);
+  }, [fromValue, toValue]);
 
   return (
     <div className="flex items-center">

@@ -27,9 +27,6 @@ export const useFilterState = () => {
           if (isCms) return { [C.CHECK_CMSSTATUS.field]: C.CHECK_CMSSTATUS };
           return { [C.CHECK_STATESTATUS.field]: C.CHECK_STATESTATUS };
         })(),
-        ...(!!user?.isCms && {
-          [C.BOOL_INITIALINTAKENEEDED.field]: C.BOOL_INITIALINTAKENEEDED,
-        }),
         [C.BOOL_RAIWITHDRAWENABLED.field]: C.BOOL_RAIWITHDRAWENABLED,
         [C.DATE_INITIALSUBMISSION.field]: C.DATE_INITIALSUBMISSION,
         [C.DATE_FINALDISPOSITION.field]: C.DATE_FINALDISPOSITION,
@@ -50,9 +47,6 @@ export const useFilterState = () => {
           if (isCms) return { [C.CHECK_CMSSTATUS.field]: C.CHECK_CMSSTATUS };
           return { [C.CHECK_STATESTATUS.field]: C.CHECK_STATESTATUS };
         })(),
-        ...(!!user?.isCms && {
-          [C.BOOL_INITIALINTAKENEEDED.field]: C.BOOL_INITIALINTAKENEEDED,
-        }),
         [C.BOOL_RAIWITHDRAWENABLED.field]: C.BOOL_RAIWITHDRAWENABLED,
         [C.DATE_INITIALSUBMISSION.field]: C.DATE_INITIALSUBMISSION,
         [C.DATE_FINALDISPOSITION.field]: C.DATE_FINALDISPOSITION,
