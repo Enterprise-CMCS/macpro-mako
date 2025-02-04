@@ -230,13 +230,15 @@ const FollowUpNotice = ({
   isChip,
   includeStateLead = true,
   includeDidNotExpect = true,
+  withDivider = true,
 }: {
   isChip?: boolean;
   includeStateLead?: boolean;
   includeDidNotExpect?: boolean;
+  withDivider?: boolean;
 }) => (
   <>
-    <Divider />
+    {withDivider && <Divider />}
     {isChip ? (
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
@@ -288,8 +290,8 @@ const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables, relatedEvent }) =>
     return (
       <Section>
         <Heading as="h2">
-          The OneMAC Submission Portal received a request to withdraw a Formal RAI Response. You are
-          receiving this email notification as the Formal RAI was withdrawn by{" "}
+          The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You
+          are receiving this email notification as the Formal RAI was withdrawn by{" "}
           {variables.submitterName} {variables.submitterEmail}.
         </Heading>
         <Text style={styles.text.description}>

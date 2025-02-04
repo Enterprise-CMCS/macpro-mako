@@ -13,9 +13,8 @@ export const WaiverCMSEmail = ({
   variables: Events["RespondToRai"] & CommonEmailVariables;
 }) => (
   <BaseEmailTemplate
-    previewText="Appendix K Amendment Submitted"
-    heading={`The OneMAC Submission Portal received a ${variables.authority} Waiver RAI Response
-          Submission:`}
+    previewText={`Waiver RAI Response for ${variables.id} Submitted`}
+    heading={`The OneMAC Submission Portal received a ${variables.authority} Waiver RAI Response Submission:`}
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >

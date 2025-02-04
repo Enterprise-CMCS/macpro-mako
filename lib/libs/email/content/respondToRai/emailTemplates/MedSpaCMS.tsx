@@ -13,7 +13,7 @@ export const MedSpaCMSEmail = ({
   variables: Events["RespondToRai"] & CommonEmailVariables;
 }) => (
   <BaseEmailTemplate
-    previewText={`Medicaid SPA ${variables.id} RAI Response Submitted`}
+    previewText={`Medicaid SPA RAI Response for ${variables.id} Submitted`}
     heading="The OneMAC Submission Portal received a Medicaid SPA RAI Response Submission:"
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}

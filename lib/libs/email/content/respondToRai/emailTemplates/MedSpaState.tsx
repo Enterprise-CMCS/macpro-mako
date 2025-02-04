@@ -1,7 +1,7 @@
 import { formatNinetyDaysDate } from "shared-utils";
 import { CommonEmailVariables, Events } from "shared-types";
 import { Text } from "@react-email/components";
-import { PackageDetails, MailboxNotice, FollowUpNotice } from "../../email-components";
+import { PackageDetails, MailboxNotice, FollowUpNotice, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
@@ -14,7 +14,7 @@ export const MedSpaStateEmail = ({
     previewText={`Medicaid SPA ${variables.id} RAI Response Submitted`}
     heading="This response confirms you submitted a Medicaid SPA RAI Response to CMS for review"
     applicationEndpointUrl={variables.applicationEndpointUrl}
-    footerContent={<FollowUpNotice />}
+    footerContent={<BasicFooter />}
   >
     <PackageDetails
       details={{
@@ -32,5 +32,6 @@ export const MedSpaStateEmail = ({
         before ${formatNinetyDaysDate(variables.responseDate)}.`}
     </Text>
     <MailboxNotice type="SPA" />
+    <FollowUpNotice withDivider={false} includeDidNotExpect={false} />
   </BaseEmailTemplate>
 );
