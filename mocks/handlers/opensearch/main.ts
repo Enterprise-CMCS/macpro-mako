@@ -28,7 +28,7 @@ const defaultOSMainDocumentHandler = http.get(
         });
   },
 );
-const deafaultUpdateHandler = http.post(
+const defaultUpdateHandler = http.post(
   `https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_update/:id`,
   async ({ params }) => {
     const { id } = params;
@@ -190,5 +190,5 @@ export const mainSearchHandlers = [
   defaultOSMainDocumentHandler,
   defaultOSMainMultiDocumentHandler,
   defaultOSMainSearchHandler,
-  deafaultUpdateHandler,
+  defaultUpdateHandler,
 ];
