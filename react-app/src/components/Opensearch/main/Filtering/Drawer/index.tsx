@@ -17,7 +17,8 @@ import * as F from "./Filterable";
 import { useFilterDrawer } from "./hooks";
 
 export const OsFilterDrawer = () => {
-  // filterDrawerHook: {accordionValues: {}, aggs: {}, drawer: drawer state, fitlers: name of filters & status's, filtersApplied: boolean,
+  // how filterDrawerHook looks
+  // filterDrawerHook: {accordionValues: {}, aggs: filter opts, drawer: drawer state, fitlers: name of filters & status's, filtersApplied: boolean,
   //                    onFilterChange, onFilterReset}
   const filterDrawerHook = useFilterDrawer();
 

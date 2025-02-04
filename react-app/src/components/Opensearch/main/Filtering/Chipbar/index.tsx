@@ -6,6 +6,7 @@ import { useFilterDrawerContext } from "../FilterProvider";
 import { useLabelMapping } from "@/hooks";
 import { UTCDate } from "@date-fns/utc";
 import { format } from "date-fns";
+import { FILTER_STORAGE_KEY } from "../Drawer";
 
 export const DATE_FORMAT = "M/d/yyyy";
 export interface RenderProp {
@@ -94,6 +95,11 @@ export const FilterChips: FC = () => {
         filters = filters.filter((f) => f.field !== filter.field);
       }
 
+      localStorage.setItem(
+        FILTER_STORAGE_KEY,
+        JSON.stringify({ filters: filters, tab: url.state.tab }),
+      );
+
       return {
         ...s,
         filters: filters,
@@ -102,12 +108,14 @@ export const FilterChips: FC = () => {
     });
   };
 
-  const handleChipClick = () =>
+  const handleChipClick = () => {
+    localStorage.removeItem(FILTER_STORAGE_KEY);
     url.onSet((s) => ({
       ...s,
       filters: [],
       pagination: { ...s.pagination, number: 0 },
     }));
+  };
 
   return (
     <div className="justify-start items-center py-2 flex flex-wrap gap-y-2 gap-x-2">

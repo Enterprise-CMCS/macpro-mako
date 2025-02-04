@@ -108,17 +108,19 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
           side="left"
           sideOffset={1}
         >
-          <Calendar
-            disabled={disableDates}
-            initialFocus
-            mode="range"
-            defaultMonth={selectedDate?.from}
-            selected={selectedDate}
-            numberOfMonths={2}
-            className="bg-white"
-            onSelect={onSelect}
-            {...props}
-          />
+          <div className="hidden lg:block">
+            <Calendar
+              disabled={disableDates}
+              initialFocus
+              mode="range"
+              defaultMonth={selectedDate?.from}
+              selected={selectedDate}
+              numberOfMonths={2}
+              className="bg-white"
+              onSelect={onSelect}
+              {...props}
+            />
+          </div>
           <div className="lg:hidden flex align-center">
             <Calendar
               disabled={disableDates}

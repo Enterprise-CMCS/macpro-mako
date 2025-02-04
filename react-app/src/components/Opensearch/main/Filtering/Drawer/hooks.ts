@@ -9,6 +9,8 @@ import { checkMultiFilter, useOsAggregate, useOsUrl } from "@/components";
 
 type FilterGroup = Partial<Record<opensearch.main.Field, C.DrawerFilterableGroup>>;
 
+export const FILTER_STORAGE_KEY = "osFilter";
+
 export const useFilterState = () => {
   const { data: user } = useGetUser();
   const url = useOsUrl();
@@ -80,6 +82,7 @@ export const useFilterDrawer = () => {
     return (value: opensearch.FilterValue) => {
       setFilters((state) => {
         const updateState = { ...state, [field]: { ...state[field], value } };
+        // find all filter values to update
         const updateFilters = Object.values(updateState).filter((FIL) => {
           if (FIL.type === "terms") {
             const value = FIL.value as string[];
@@ -97,7 +100,12 @@ export const useFilterDrawer = () => {
 
           return true;
         });
+        localStorage.setItem(
+          FILTER_STORAGE_KEY,
+          JSON.stringify({ filters: updateFilters, tab: url.state.tab }),
+        );
 
+        // this changes the tanstack query; which is used to query the data
         url.onSet((state) => ({
           ...state,
           filters: updateFilters,
@@ -113,16 +121,43 @@ export const useFilterDrawer = () => {
     setAccordionValues(updateAccordion);
   };
 
-  const onFilterReset = () =>
+  const onFilterReset = () => {
     url.onSet((s) => ({
       ...s,
       filters: [],
       pagination: { ...s.pagination, number: 0 },
     }));
+    localStorage.removeItem(FILTER_STORAGE_KEY);
+  };
 
   const filtersApplied = checkMultiFilter(url.state.filters, 1);
 
-  // update filter state + accordion default open items
+  // on filter initialization
+  useEffect(() => {
+    // check if any filters where saved in storage
+    const filterState: { filters: C.DrawerFilterableGroup[]; tab: string } | null = JSON.parse(
+      localStorage.getItem(FILTER_STORAGE_KEY),
+    );
+
+    if (!filterState) return;
+
+    // we should delete the local storage if it doesn't match current tab
+    if (filterState.tab !== url.state.tab) {
+      localStorage.removeItem(FILTER_STORAGE_KEY);
+      return;
+    }
+
+    // this changes the tanstack query; which is used to query the data
+    url.onSet((state) => ({
+      ...state,
+      filters: filterState.filters,
+      pagination: { ...state.pagination, number: 0 },
+    }));
+
+    // eslint-disable-next-line
+  }, []);
+
+  // update filter display based on url query
   useEffect(() => {
     if (!drawer.drawerOpen) return;
 
@@ -150,7 +185,9 @@ export const useFilterDrawer = () => {
       }, {} as any);
     });
     setAccordionValues(updateAccordions);
-  }, [url.state.filters, drawer.drawerOpen, setFilters]);
+
+    // eslint-disable-next-line
+  }, [url.state.filters, drawer.drawerOpen]);
 
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce(
@@ -167,15 +204,7 @@ export const useFilterDrawer = () => {
       },
       {} as Record<opensearch.main.Field, { label: string; value: string }[]>,
     );
-  }, [_aggs]);
-
-  useEffect(() => {
-    console.log("aggs?: ", _aggs);
-  }, [_aggs]);
-
-  useEffect(() => {
-    console.log("accordion values", accordionValues);
-  }, [accordionValues]);
+  }, [_aggs, labelMap]);
 
   return {
     aggs,
