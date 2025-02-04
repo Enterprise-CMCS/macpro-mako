@@ -109,6 +109,7 @@ export const transforms = {
   "contracting-initial": contractingInitial,
   "contracting-renewal": contractingRenewal,
   "legacy-admin-change": legacyAdminChange,
+  "legacy-event": legacyEvent,
   "new-chip-submission": newChipSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
   "respond-to-rai": respondToRai,

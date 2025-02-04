@@ -10,6 +10,7 @@ import {
   transformSubmitValuesSchema,
 } from "./update/adminChangeSchemas";
 import { getPackageChangelog } from "libs/api/package";
+import { legacyEventSchema } from "lib/packages/shared-types";
 
 // One notable difference between this handler and sinkMain's...
 // The order in which records are processed for the changelog doesn't matter.
@@ -55,7 +56,8 @@ const processAndIndex = async ({
   const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
-    const { value, offset } = kafkaRecord;
+    const { value, offset, headers } = kafkaRecord;
+    const kafkaSource = String.fromCharCode(headers[0].source);
 
     try {
       // If a legacy tombstone, continue
@@ -122,16 +124,16 @@ const processAndIndex = async ({
           );
         }
       }
-      // If we're not a mako event, continue
-      // TODO:  handle legacy.  for now, just continue
-      if (!record.event || record?.origin !== "mako") {
-        continue;
-      }
 
       // If the event is a supported event, transform and push to docs array for indexing
+      let transformForEvent;
       if (record.event in transforms) {
-        const transformForEvent = transforms[record.event as keyof typeof transforms];
+        transformForEvent = transforms[record.event as keyof typeof transforms];
+      } else if (kafkaSource === "onemac") { // legacy onemac events
+        transformForEvent = transforms.legacyEvent;
+      }
 
+      if(transformForEvent) {
         const result = transformForEvent.transform(offset).safeParse(record);
 
         if (result.success && result.data === undefined) continue;

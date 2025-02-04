@@ -17,6 +17,6 @@ export type KafkaRecord = {
   timestamp: number;
   timestampType: string;
   key: string;
-  headers: Record<string, string>;
+  headers: Record<string, string>; //headers come as numerical char array and must be decoded with String.fromCharCode
   value: string; // Kafka records typically have values as base64-encoded strings
 };
