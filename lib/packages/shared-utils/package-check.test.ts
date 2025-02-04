@@ -132,6 +132,7 @@ describe("PackageCheck", () => {
       expect(packageChecker.hasEnabledRaiWithdraw).toBe(false);
       packageChecker = PackageCheck({
         ...TEST_MED_SPA_ITEM._source,
+        // @ts-expect-error - this is a test
         raiWithdrawEnabled: true,
       });
       expect(packageChecker.hasEnabledRaiWithdraw).toBe(true);

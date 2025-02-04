@@ -3,13 +3,13 @@ import { screen, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FilterableMultiCheck } from "./Multicheck";
 
+const options = [
+  { label: "Apple", value: "apple" },
+  { label: "Banana", value: "banana" },
+  { label: "Clementine", value: "clementine" },
+];
 describe("FilterableMultiCheck", () => {
   const onChange = vi.fn();
-  const options = [
-    { label: "Apple", value: "apple" },
-    { label: "Banana", value: "banana" },
-    { label: "Clementine", value: "clementine" },
-  ];
 
   afterEach(() => {
     vi.clearAllMocks();

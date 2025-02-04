@@ -148,7 +148,6 @@ describe("FilterableDateRange", () => {
   });
 
   it.skip("should handle the first day set to the month and clicking the 15th", async () => {
-    // This one is like... annoying.x
     const user = userEvent.setup();
     const today = new UTCDate();
     const firstDay = startOfMonth(today) as UTCDate;
@@ -213,8 +212,8 @@ describe("FilterableDateRange", () => {
       await user.click(todayButton);
 
       expect(onChange).toHaveBeenLastCalledWith({
-        gte: (startOfDay(new UTCDate(startDate)) as UTCDate).toISOString(),
-        lte: (endOfDay(new UTCDate(endDate)) as UTCDate).toISOString(),
+        gte: startOfDay(new UTCDate(startDate)).toISOString(),
+        lte: endOfDay(new UTCDate(endDate)).toISOString(),
       });
     }
   });
