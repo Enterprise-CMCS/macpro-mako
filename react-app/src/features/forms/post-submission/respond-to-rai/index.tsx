@@ -44,7 +44,7 @@ export const RespondToRaiWaiver = () => {
       schema={formSchemas["respond-to-rai-waiver"]}
       title={`${authorityText} Waiver Formal RAI Response Details`}
       fields={() => <PackageSection />}
-      defaultValues={{ id }}
+      defaultValues={{ id, authority }}
       attachments={{
         faqLink: "/faq/waiverb-rai-attachments",
       }}
@@ -77,7 +77,7 @@ export const RespondToRaiChip = () => {
       schema={formSchemas["respond-to-rai-chip"]}
       title={`${authority} Formal RAI Response Details`}
       fields={() => <PackageSection />}
-      defaultValues={{ id }}
+      defaultValues={{ id, authority }}
       attachments={{
         faqLink: "/faq/chip-spa-rai-attachments",
       }}
