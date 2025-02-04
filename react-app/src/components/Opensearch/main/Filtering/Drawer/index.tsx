@@ -59,7 +59,10 @@ export const OsFilterDrawer = () => {
                 {PK.component === "multiSelect" && (
                   <F.FilterableSelect
                     value={hook.filters[PK.field]?.value as string[]}
-                    onChange={hook.onFilterChange(PK.field)}
+                    onChange={(value) => {
+                      console.log(`Filter changed for ${PK.field}:`, value);
+                      hook.onFilterChange(PK.field)(value);
+                    }}
                     options={hook.aggs?.[PK.field]}
                   />
                 )}
