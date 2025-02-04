@@ -148,7 +148,7 @@ export const useFilterDrawer = () => {
       pagination: { ...state.pagination, number: 0 },
     }));
 
-    // eslint-disable-next-line
+    // the dependency array is intensionally left empty so that this useEffect only runs on first render
   }, []);
 
   // update filter display based on url query
@@ -179,7 +179,8 @@ export const useFilterDrawer = () => {
       }, {} as any);
     });
     setAccordionValues(updateAccordions);
-  }, [url.state.filters, drawer.drawerOpen]);
+    // accordionValues is intensionally left out of this dendency array because it could cause looping
+  }, [url.state.filters, drawer.drawerOpen, setFilters]);
 
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce(
