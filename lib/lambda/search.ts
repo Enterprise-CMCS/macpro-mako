@@ -57,22 +57,14 @@ export const getSearchData = async (event: APIGatewayEvent) => {
 
     const results = await os.search(domain, index, query);
 
-    // Fetch children for appkParent documents
-    const childrenPromises =
-      results?.hits?.hits
-        ?.filter(
-          (hit: { _source?: { appkParent?: boolean }; _id: string }) => hit._source?.appkParent,
-        )
-        ?.map(async (hit: { _source?: { appkChildren?: any[] }; _id: string }) => {
-          const children = await getAppkChildren(hit._id);
-          if (children?.hits?.hits?.length > 0) {
-            hit._source = hit._source || {};
-            hit._source.appkChildren = children.hits.hits;
-          }
-          return hit;
-        }) || [];
-
-    await Promise.all(childrenPromises);
+    for (let i = 0; i < results?.hits?.hits?.length; i++) {
+      if (results.hits.hits[i]._source?.appkParent) {
+        const children = await getAppkChildren(results.hits.hits[i]._id);
+        if (children?.hits?.hits?.length > 0) {
+          results.hits.hits[i]._source.appkChildren = children.hits.hits;
+        }
+      }
+    }
 
     return response<unknown>({
       statusCode: 200,

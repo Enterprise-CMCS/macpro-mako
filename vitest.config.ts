@@ -49,24 +49,6 @@ export default defineConfig({
         "**/assets/**",
         "**/coverage/**",
         "**/vitest.setup.ts",
-        "**/*.d.ts",
-        // Additional excludes for type definitions and interfaces
-        "**/*.types.ts",
-        "**/*.interface.ts",
-        "**/types/**",
-        "**/interfaces/**",
-        // Constants and enums
-        "**/constants/**",
-        "**/enums/**",
-        // React specific excludes
-        "**/components/**/props.ts",
-        "**/*.styles.ts",
-        "**/theme/**",
-        "**/contexts/**/*.provider.ts",
-        "**/contexts/**/*.provider.tsx",
-        // Development utilities
-        "**/dev-utils/**",
-        "**/utils/debug/**",
       ],
     },
   },
