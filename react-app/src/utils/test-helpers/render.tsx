@@ -21,6 +21,10 @@ export const queryClientWrapper = ({ children }: { children: ReactElement }) => 
   <QueryClientProvider client={createTestQueryClient()}>{children}</QueryClientProvider>
 );
 
+export const memoryRouterWrapper = ({ children }: { children: ReactElement }) => (
+  <MemoryRouter>{children}</MemoryRouter>
+);
+
 export const renderWithQueryClient = (element: ReactElement) =>
   render(element, {
     wrapper: ({ children }) => (
@@ -33,19 +37,31 @@ export const renderWithQueryClient = (element: ReactElement) =>
 export const renderWithMemoryRouter = (
   element: ReactElement,
   ...routing: Parameters<typeof createMemoryRouter>
-) =>
-  render(element, {
-    wrapper: () => <RouterProvider router={createMemoryRouter(...routing)} />,
+) => {
+  const router = createMemoryRouter(...routing);
+  const rendered = render(element, {
+    wrapper: () => <RouterProvider router={router} />,
   });
+  return {
+    router,
+    ...rendered,
+  };
+};
 
 export const renderWithQueryClientAndMemoryRouter = (
   element: ReactElement,
   ...routing: Parameters<typeof createMemoryRouter>
-) =>
-  render(element, {
+) => {
+  const router = createMemoryRouter(...routing);
+  const rendered = render(element, {
     wrapper: () => (
       <QueryClientProvider client={createTestQueryClient()}>
-        <RouterProvider router={createMemoryRouter(...routing)} />
+        <RouterProvider router={router} />
       </QueryClientProvider>
     ),
   });
+  return {
+    router,
+    ...rendered,
+  };
+};

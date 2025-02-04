@@ -8,11 +8,11 @@ import {
   renderFilterDrawer,
   DEFAULT_COLUMNS,
   HIDDEN_COLUMN,
-  NO_FIELD_COLUMN,
+  NO_TRANSFORM_COLUMN,
   getDashboardQueryString,
 } from "@/utils/test-helpers";
 
-const columns: OsTableColumn[] = [...DEFAULT_COLUMNS, NO_FIELD_COLUMN, HIDDEN_COLUMN];
+const columns: OsTableColumn[] = [...DEFAULT_COLUMNS, NO_TRANSFORM_COLUMN, HIDDEN_COLUMN];
 
 const setup = (disabled?: boolean) => {
   const user = userEvent.setup();
