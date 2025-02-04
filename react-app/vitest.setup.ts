@@ -53,7 +53,7 @@ vi.spyOn(Auth, "userAttributes").mockImplementation(mockUserAttributes);
 vi.spyOn(Auth, "signOut").mockImplementation(async () => {
   setMockUsername(null);
 });
-
+process.env.TZ = "UTC";
 // Add this to remove all the expected errors in console when running unit tests.
 beforeAll(() => {
   setDefaultStateSubmitter();
