@@ -30,7 +30,7 @@ export const SPA_OPTIONS: OptionData[] = [
 export const MEDICAID_SPA_OPTIONS: OptionData[] = [
   {
     title: "Medicaid Eligibility, Enrollment, Administration, and Health Homes",
-    description: "Redirects to the MACPro Appian submission system",
+    description: "Redirects to the MACPro System",
     to: "/new-submission/spa/medicaid/landing/medicaid-eligibility",
   },
   {

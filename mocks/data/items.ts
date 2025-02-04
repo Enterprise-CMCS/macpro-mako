@@ -28,6 +28,7 @@ export const CAPITATED_INITIAL_NEW_ITEM_ID = "SS-1235.R00.00";
 export const ADMIN_ITEM_ID = "SS-1235.R00.01";
 export const CAPITATED_AMEND_ITEM_ID = "VA-2234.R11.01";
 export const SIMPLE_ID = "VA";
+export const WITHDRAW_EMAIL_SENT = "VA-2234.R11.50";
 export const CONTRACTING_INITIAL_ITEM_ID = "MD-007.R00.00";
 export const CONTRACTING_AMEND_ITEM_ID = "MD-007.R00.01";
 export const MISSING_CHANGELOG_ITEM_ID = "MD-008.R00.00";
@@ -68,6 +69,32 @@ const items: Record<string, TestItemResult> = {
           name: "Emily Rodriguez",
         },
       ],
+      submitterName: "BOB SMITH",
+      submitterEmail: "BOBSMITH@MEDICAIDFAKE.gov",
+      id: EXISTING_ITEM_ID,
+      seatoolStatus: SEATOOL_STATUS.APPROVED,
+      actionType: "New",
+    },
+  },
+  [WITHDRAW_EMAIL_SENT]: {
+    _id: WITHDRAW_EMAIL_SENT,
+    found: true,
+    _source: {
+      leadAnalystEmail: "michael.chen@cms.hhs.gov",
+      leadAnalystName: "Michael Chen",
+      reviewTeam: [
+        {
+          email: "john.doe@medicaid.gov",
+          name: "John Doe",
+        },
+        {
+          email: "emily.rodriguez@medicaid.gov",
+          name: "Emily Rodriguez",
+        },
+      ],
+      withdrawEmailSent: true,
+      submitterName: "BOB SMITH",
+      submitterEmail: "BOBSMITH@MEDICAIDFAKE.gov",
       id: EXISTING_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
       stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
