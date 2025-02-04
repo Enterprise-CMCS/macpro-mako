@@ -10,6 +10,7 @@ import {
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
 import { usePackageDetailsCache } from "..";
+import { UTCDate } from "@date-fns/utc";
 
 export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (props) => {
   return (
@@ -49,7 +50,6 @@ export const AC_LegacyAdminChange: FC<opensearch.changelog.Document> = (props) =
 export const AC_Update: FC<opensearch.changelog.Document> = () => {
   return <p>Coming Soon</p>;
 };
-
 export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
   const [label, Content] = useMemo(() => {
     switch (props.event) {
@@ -59,12 +59,16 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
         }
         return ["Disable Formal RAI Response Withdraw", AC_WithdrawDisabled];
       }
+      case "NOSO":
+        return [props.changeType || "Package Added", AC_LegacyAdminChange];
       case "legacy-admin-change":
         return [props.changeType || "Manual Update", AC_LegacyAdminChange];
+      case "split-spa":
+        return ["Package Added", AC_LegacyAdminChange];
       default:
         return [BLANK_VALUE, AC_Update];
     }
-  }, [props.actionType, props.changeType]);
+  }, [props.event, props.changeType, props.raiWithdrawEnabled]);
 
   return (
     <AccordionItem key={props.id} value={props.id}>
@@ -72,7 +76,7 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
         <p className="flex flex-row gap-2 text-gray-600">
           <strong>{label as string}</strong>
           {" - "}
-          {format(new Date(props.timestamp), "eee, MMM d, yyyy hh:mm:ss a")}
+          {format(new UTCDate(props.timestamp), "eee, MMM d, yyyy hh:mm:ss a")}
         </p>
       </AccordionTrigger>
       <AccordionContent className="p-4">

@@ -33,13 +33,14 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
   const { data, isLoading, error } = useGetItem(id);
 
   if (isLoading) return <LoadingSpinner />;
+
   if (!data?._source) return <LoadingSpinner />;
   if (error) return <ErrorAlert error={error} />;
 
   return (
     <div className="w-full py-1 px-4 lg:px-8">
       <section id="package_overview" className="block md:flex space-x-0 md:space-x-8">
-        <PackageStatusCard id={id} />
+        <PackageStatusCard data={data} />
         <PackageActionsCard id={id} />
       </section>
       <div className="flex flex-col gap-3">

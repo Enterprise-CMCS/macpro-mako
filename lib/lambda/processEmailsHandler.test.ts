@@ -7,12 +7,14 @@ import { Authority } from "shared-types";
 import { SIMPLE_ID, WITHDRAW_RAI_ITEM_B, WITHDRAW_RAI_ITEM_C } from "mocks";
 const nms = "new-medicaid-submission";
 const ncs = "new-chip-submission";
-const tempExtension = "temp-extension";
+const tempExtension = "temporary-extension";
 const withdrawPackage = "withdraw-package";
 const contractingInitial = "contracting-initial";
 const capitatedInitial = "capitated-initial";
 const withdrawRai = "withdraw-rai";
 const respondToRai = "respond-to-rai";
+const appk = "app-k";
+const uploadSubsequentDocuments = "upload-subsequent-documents";
 
 describe("process emails  Handler", () => {
   it.each([
@@ -89,18 +91,6 @@ describe("process emails  Handler", () => {
       SIMPLE_ID,
     ],
     [
-      `should send an email for ${tempExtension} with ${Authority.MED_SPA}`,
-      Authority.MED_SPA,
-      tempExtension,
-      SIMPLE_ID,
-    ],
-    [
-      `should send an email for ${tempExtension} with ${Authority.CHIP_SPA}`,
-      Authority.CHIP_SPA,
-      tempExtension,
-      SIMPLE_ID,
-    ],
-    [
       `should send an email for ${tempExtension} with ${Authority["1915b"]}`,
       Authority["1915b"],
       tempExtension,
@@ -131,9 +121,9 @@ describe("process emails  Handler", () => {
       SIMPLE_ID,
     ],
     [
-      `should send an email for ${withdrawPackage} with ${Authority["1915c"]}`,
+      `should send an email for ${appk} with ${Authority["1915c"]}`,
       Authority["1915c"],
-      withdrawPackage,
+      appk,
       SIMPLE_ID,
     ],
     [
@@ -179,9 +169,15 @@ describe("process emails  Handler", () => {
       SIMPLE_ID,
     ],
     [
-      `should send an email for ${capitatedInitial} with ${Authority["1915c"]}`,
+      `should send an email for ${appk} with ${Authority["1915c"]}`,
       Authority["1915c"],
-      capitatedInitial,
+      appk,
+      SIMPLE_ID,
+    ],
+    [
+      `should send an email for ${appk} with ${Authority["1915b"]}`,
+      Authority["1915b"],
+      appk,
       SIMPLE_ID,
     ],
     [
@@ -194,6 +190,18 @@ describe("process emails  Handler", () => {
       `should send an email for ${withdrawRai} with ${Authority["1915c"]}`,
       Authority["1915c"],
       withdrawRai,
+      WITHDRAW_RAI_ITEM_C,
+    ],
+    [
+      `should send an email for ${uploadSubsequentDocuments} with ${Authority.CHIP_SPA}`,
+      Authority.CHIP_SPA,
+      uploadSubsequentDocuments,
+      WITHDRAW_RAI_ITEM_B,
+    ],
+    [
+      `should send an email for ${uploadSubsequentDocuments} with ${Authority["1915c"]}`,
+      Authority["1915c"],
+      uploadSubsequentDocuments,
       WITHDRAW_RAI_ITEM_C,
     ],
   ])("%s", async (_, auth, eventType, id) => {

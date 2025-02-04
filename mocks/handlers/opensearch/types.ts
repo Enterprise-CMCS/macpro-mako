@@ -1,9 +1,9 @@
 import { http, HttpResponse, PathParams } from "msw";
 import { types } from "../../data/types";
 import { SearchQueryBody } from "../../index.d";
-import { getFilterValueAsNumber } from "./util";
+import { getFilterValueAsNumber } from "../search.utils";
 
-const defaultTypeSearchHandler = http.post<PathParams, SearchQueryBody>(
+const defaultOSTypeSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-types/_search",
   async ({ request }) => {
     const { query } = await request.json();
@@ -42,9 +42,9 @@ const defaultTypeSearchHandler = http.post<PathParams, SearchQueryBody>(
   },
 );
 
-export const errorTypeSearchHandler = http.post<PathParams, SearchQueryBody>(
+export const errorOSTypeSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-types/_search",
   () => new HttpResponse("Internal server error", { status: 500 }),
 );
 
-export const typeSearchHandlers = [defaultTypeSearchHandler];
+export const typeSearchHandlers = [defaultOSTypeSearchHandler];

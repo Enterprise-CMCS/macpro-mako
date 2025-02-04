@@ -8,7 +8,7 @@ import {
   medicaidTypes,
   chipTypes,
 } from "mocks/data/types";
-import { TestTypeItemResult, errorTypeSearchHandler } from "mocks";
+import { TestTypeItemResult, errorOSTypeSearchHandler } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
 
 describe("getTypes Handler", () => {
@@ -33,7 +33,7 @@ describe("getTypes Handler", () => {
   });
 
   it("should return 500 if there is a server error", async () => {
-    mockedServer.use(errorTypeSearchHandler);
+    mockedServer.use(errorOSTypeSearchHandler);
 
     const event = {
       body: JSON.stringify({ authorityId: MEDICAID_SPA_AUTHORITY_ID }),

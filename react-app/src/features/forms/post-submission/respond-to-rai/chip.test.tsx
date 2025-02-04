@@ -1,11 +1,11 @@
-import { screen } from "@testing-library/react";
-import { describe, expect, beforeAll, test } from "vitest";
 import { RespondToRaiChip } from "@/features/forms/post-submission/respond-to-rai";
+import { formSchemas } from "@/formSchemas";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { formSchemas } from "@/formSchemas";
+import { screen } from "@testing-library/react";
 import { EXISTING_ITEM_PENDING_ID } from "mocks";
+import { beforeAll, describe, expect, test } from "vitest";
 
 const upload = uploadFiles<(typeof formSchemas)["respond-to-rai-chip"]>();
 
@@ -15,12 +15,12 @@ describe("Respond To RAI CHIP", () => {
     await renderFormWithPackageSectionAsync(<RespondToRaiChip />, EXISTING_ITEM_PENDING_ID);
   });
 
-  test("REVISED AMENDED STATE PLAN LANGUAGE", async () => {
+  test("revised amended state plan language", async () => {
     const revisedAmendedStatePlanLanguageLabel = await upload("revisedAmendedStatePlanLanguage");
     expect(revisedAmendedStatePlanLanguageLabel).not.toHaveClass("text-destructive");
   });
 
-  test("OFFICIAL RAI RESPONSE", async () => {
+  test("official RAI response", async () => {
     const officialRAIResponseLabel = await upload("officialRAIResponse");
     expect(officialRAIResponseLabel).not.toHaveClass("text-destructive");
   });

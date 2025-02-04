@@ -3,9 +3,11 @@ import { type FC, useCallback } from "react";
 import { Chip, useOsUrl, checkMultiFilter } from "@/components";
 import { opensearch } from "shared-types";
 import { useFilterDrawerContext } from "../FilterProvider";
-import { offsetFromUtc } from "shared-utils";
 import { useLabelMapping } from "@/hooks";
+import { UTCDate } from "@date-fns/utc";
+import { format } from "date-fns";
 
+export const DATE_FORMAT = "M/d/yyyy";
 export interface RenderProp {
   filter: opensearch.main.Filterable;
   index: number;
@@ -14,7 +16,7 @@ export interface RenderProp {
 }
 
 export const ChipBool: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) => {
-  const value = filter.value as opensearch.RangeValue;
+  const value = filter.value as opensearch.FilterValue;
   return (
     <Chip
       onChipClick={openDrawer}
@@ -22,13 +24,19 @@ export const ChipBool: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) =>
         clearFilter(filter);
       }}
     >
-      {filter?.label}: <strong>{value ? "Yes" : "No"}</strong>
+      {filter?.label ? `${filter.label}: ` : ""}
+      <strong>{value ? "Yes" : "No"}</strong>
     </Chip>
   );
 };
 
 export const ChipDate: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) => {
   const value = filter.value as opensearch.RangeValue;
+  if (!value?.gte && !value?.lte) return null;
+  const label = filter?.label ? `${filter.label}: ` : "";
+  const gte = format(new UTCDate(value?.gte || value?.lte), DATE_FORMAT);
+  const lte = format(new UTCDate(value?.lte || value?.gte), DATE_FORMAT);
+  const range = `${gte} - ${lte}`;
   return (
     <Chip
       onChipClick={openDrawer}
@@ -36,9 +44,7 @@ export const ChipDate: FC<RenderProp> = ({ filter, openDrawer, clearFilter }) =>
         clearFilter(filter);
       }}
     >
-      {`${filter?.label}: ${offsetFromUtc(
-        new Date(value.gte || ""),
-      ).toLocaleDateString()} - ${offsetFromUtc(new Date(value.lte || "")).toLocaleDateString()}`}
+      {`${label}${range}`}
     </Chip>
   );
 };
