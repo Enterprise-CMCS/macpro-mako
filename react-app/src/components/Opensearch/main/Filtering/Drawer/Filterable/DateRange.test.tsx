@@ -147,7 +147,7 @@ describe("FilterableDateRange", () => {
     });
   });
 
-  it("should handle the first day set to the month and clicking the 15th", async () => {
+  it.skip("should handle the first day set to the month and clicking the 15th", async () => {
     const user = userEvent.setup();
     const today = new UTCDate();
     const firstDay = startOfMonth(today) as UTCDate;

@@ -157,7 +157,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           submitterName: item._source.submitterName,
           submitterEmail: item._source.submitterEmail,
           event: "seatool-withdraw",
-          proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
+          proposedEffectiveDate: safeSeatoolRecord.data?.proposedEffectiveDate,
           origin: "seatool",
         };
 

@@ -15,7 +15,7 @@ export const handler: Handler = async (event, __, callback) => {
         approvedEffectiveDate: { type: "date" },
         changedDate: { type: "date" },
         finalDispositionDate: { type: "date" },
-        proposedDate: { type: "date" },
+        proposedEffectiveDate: { type: "date" },
         statusDate: { type: "date" },
         submissionDate: { type: "date" },
       },

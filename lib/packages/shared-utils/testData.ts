@@ -91,7 +91,7 @@ export const testItemResult: opensearch.main.ItemResult = {
     raiReceivedDate: null,
     raiRequestedDate: null,
     leadAnalystOfficerId: null,
-    // proposedDate: "2024-03-30T00:00:00.000Z", // TODO
+    // proposedEffectiveDate: "2024-03-30T00:00:00.000Z", // TODO
     state: "MD",
     raiWithdrawnDate: null,
     finalDispositionDate: null,

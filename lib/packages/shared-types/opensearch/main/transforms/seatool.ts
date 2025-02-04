@@ -157,7 +157,7 @@ export const transform = (id: string) => {
             TYPE_NAME: subType.TYPE_NAME.replace(/â|â/g, "-"),
           };
         }) || [],
-      proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
+      proposedEffectiveDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiReceivedDate,
       raiRequestedDate,
       raiWithdrawnDate,
@@ -188,7 +188,7 @@ export const tombstone = (id: string) => {
     leadAnalystName: null,
     leadAnalystOfficerId: null,
     authority: null,
-    proposedDate: null,
+    proposedEffectiveDate: null,
     raiReceivedDate: null,
     raiRequestedDate: null,
     raiWithdrawnDate: null,

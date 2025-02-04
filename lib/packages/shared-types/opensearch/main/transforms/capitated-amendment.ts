@@ -21,7 +21,7 @@ export const transform = () => {
       state: data.id?.split("-")?.[0],
       stateStatus,
       statusDate: new Date(todayEpoch).toISOString(),
-      proposedDate: data.proposedEffectiveDate, // wish this was proposedEffectiveDate
+      proposedEffectiveDate: new Date(data.proposedEffectiveDate).toISOString(),
       subject: null,
       submissionDate: timestampDate.toISOString(),
       submitterEmail: data.submitterEmail,

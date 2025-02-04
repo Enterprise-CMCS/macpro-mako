@@ -41,9 +41,16 @@ export const getBusinessDayTimestamp = (date: Date = new Date()): number => {
   // Get the date in Eastern time
   const nyDateTime = new TZDate(date.toISOString(), "America/New_York");
 
+  // Create a new Date object for holiday check (isAHoliday expects a regular Date)
+  const holidayCheckDate = new Date(
+    nyDateTime.getFullYear(),
+    nyDateTime.getMonth(),
+    nyDateTime.getDate(),
+  );
+
   // Check if the time is after 5pm Eastern time or if the day is not a business day.
   // If any of those are true, check again for the next day.
-  if (nyDateTime.getHours() >= 17 || isAHoliday(nyDateTime) || isWeekend(nyDateTime)) {
+  if (nyDateTime.getHours() >= 17 || isAHoliday(holidayCheckDate) || isWeekend(nyDateTime)) {
     return getBusinessDayTimestamp(startOfDay(addDays(nyDateTime, 1)));
   }
 

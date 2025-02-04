@@ -1,8 +1,15 @@
-import { it, describe, expect } from "vitest";
+import { it, describe, expect, vi, beforeEach, afterEach } from "vitest";
 import { formatSeatoolDate, getBusinessDayTimestamp, seaToolFriendlyTimestamp } from ".";
-import { format } from "date-fns";
 
 describe("seaToolFriendlyTimestamp", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("should convert date to a timestamp representing the date at midnight UTC time", () => {
     const localDate = new Date("2025-01-23T17:01:42.000Z");
     const expectedTimestamp = Date.parse("2025-01-23T00:00:00.000Z");
@@ -10,8 +17,9 @@ describe("seaToolFriendlyTimestamp", () => {
   });
 
   it("should return timestamp representing today at midnight UTC time", () => {
-    const todayDateStr = format(new Date(), "yyyy-MM-dd");
-    const expectedTimestamp = Date.parse(`${todayDateStr}T00:00:00.000Z`);
+    const mockDate = new Date("2025-02-03T12:00:00Z");
+    vi.setSystemTime(mockDate);
+    const expectedTimestamp = Date.parse("2025-02-03T00:00:00.000Z");
     expect(seaToolFriendlyTimestamp()).toEqual(expectedTimestamp);
   });
 });

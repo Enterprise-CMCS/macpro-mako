@@ -27,12 +27,32 @@ export const errorUpdateFieldMappingHandler = http.put(
 
 const defaultBulkUpdateDataHandler = http.post(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/_bulk",
-  () => new HttpResponse(null, { status: 200 }),
+  () =>
+    HttpResponse.json({
+      took: 30,
+      errors: false,
+      items: [],
+    }),
 );
 
 export const rateLimitBulkUpdateDataHandler = http.post(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/_bulk",
-  () => new HttpResponse("Rate limit exceeded", { status: 429 }),
+  () =>
+    HttpResponse.json({
+      took: 30,
+      errors: true,
+      items: [
+        {
+          update: {
+            status: 429,
+            error: {
+              type: "es_rejected_execution_exception",
+              reason: "Rate limit exceeded",
+            },
+          },
+        },
+      ],
+    }),
   { once: true },
 );
 

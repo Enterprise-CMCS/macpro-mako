@@ -30,12 +30,15 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     if (event.body) {
       query = JSON.parse(event.body);
     }
+
+    // Initialize query structure with defaults
     query.query = query?.query || {};
     query.query.bool = query.query?.bool || {};
     query.query.bool.must = query.query.bool?.must || [];
     query.query.bool.must_not = query.query.bool?.must_not || [];
     query.query.bool.must_not.push({ term: { deleted: true } });
 
+    // Add state filter if applicable
     const stateFilter = await getStateFilter(event);
     if (stateFilter) {
       query.query.bool.must.push(stateFilter);
@@ -48,25 +51,35 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       },
     });
 
+    // Pagination parameters with defaults
     query.from = query.from || 0;
     query.size = query.size || 100;
 
     const results = await os.search(domain, index, query);
 
-    for (let i = 0; i < results?.hits?.hits?.length; i++) {
-      if (results.hits.hits[i]._source?.appkParent) {
-        const children = await getAppkChildren(results.hits.hits[i]._id);
-        if (children?.hits?.hits?.length > 0) {
-          results.hits.hits[i]._source.appkChildren = children.hits.hits;
-        }
-      }
-    }
+    // Fetch children for appkParent documents
+    const childrenPromises =
+      results?.hits?.hits
+        ?.filter(
+          (hit: { _source?: { appkParent?: boolean }; _id: string }) => hit._source?.appkParent,
+        )
+        ?.map(async (hit: { _source?: { appkChildren?: any[] }; _id: string }) => {
+          const children = await getAppkChildren(hit._id);
+          if (children?.hits?.hits?.length > 0) {
+            hit._source = hit._source || {};
+            hit._source.appkChildren = children.hits.hits;
+          }
+          return hit;
+        }) || [];
+
+    await Promise.all(childrenPromises);
 
     return response<unknown>({
       statusCode: 200,
       body: results,
     });
   } catch (error) {
+    console.error("Search error:", error);
     return response(handleOpensearchError(error));
   }
 };

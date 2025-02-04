@@ -44,7 +44,6 @@ const onemac = async (kafkaRecords: KafkaRecord[], topicPartition: string) => {
         approvedEffectiveDate: null,
         changedDate: null,
         finalDispositionDate: null,
-        proposedDate: null,
         proposedEffectiveDate: null,
         statusDate: null,
         submissionDate: null,
