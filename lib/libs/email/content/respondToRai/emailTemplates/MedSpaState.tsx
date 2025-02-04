@@ -27,9 +27,9 @@ export const MedSpaStateEmail = ({
       }}
     />
     <Text style={styles.text.description}>
-      This response confirms receipt of your response to a SPA Request for Additional Information
-      (RAI). You can expect a formal response to your submittal to be issued within 90 days, before{" "}
-      {formatNinetyDaysDate(variables.responseDate)}.
+      {`This response confirms receipt of your response to a SPA Request for Additional Information
+        (RAI). You can expect a formal response to your submittal to be issued within 90 days,
+        before ${formatNinetyDaysDate(variables.responseDate)}.`}
     </Text>
     <MailboxNotice type="SPA" />
   </BaseEmailTemplate>
