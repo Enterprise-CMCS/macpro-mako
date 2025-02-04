@@ -70,7 +70,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
         )}
       </div>
 
-      {attachments.length > 0 && (
+      {attachments.length > 1 && (
         <Table.Button
           variant="outline"
           className="w-max"

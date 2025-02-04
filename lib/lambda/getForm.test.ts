@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { getForm } from "./getForm";
 import { webformVersions } from "libs/webforms";
+
 describe("forms handler", () => {
   beforeEach(() => {
     // Reset mocks before each test
@@ -47,5 +48,12 @@ describe("forms handler", () => {
     const result = await getForm(event as any);
     expect(result.statusCode).toBe(200);
     expect(result.body).toBe("{}");
+  });
+  it("returns 502 because the body is invalid json", async () => {
+    const event = {
+      body: "kdjfkldjj:[df",
+    };
+    const result = await getForm(event as any);
+    expect(result.statusCode).toBe(502);
   });
 });

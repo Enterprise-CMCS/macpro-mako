@@ -14,7 +14,7 @@ export const OsFiltering: FC<{
   const context = useOsContext();
 
   return (
-    <div className="my-2">
+    <div className="my-2" data-testid="filtering">
       <p className="mb-1 text-sm">{"Search by Package ID, CPOC Name, or Submitter Name"}</p>
       <div className="flex w-full lg:flex-row flex-col flex-grow content-between gap-2">
         <SearchForm

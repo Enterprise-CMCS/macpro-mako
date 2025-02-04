@@ -180,6 +180,30 @@ export async function getItem(
   index: opensearch.Index,
   id: string,
 ): Promise<ItemResult | undefined> {
+  try {
+    client = client || (await getClient(host));
+    const response = await client.get({ id, index });
+    const item = decodeUtf8(response).body;
+    if (item.found === false || !item._source) {
+      return undefined;
+    }
+    return item;
+  } catch (error) {
+    if (
+      (error instanceof OpensearchErrors.ResponseError && error.statusCode === 404) ||
+      error.meta?.statusCode === 404
+    ) {
+      console.log("Error (404) retrieving in OpenSearch:", error);
+      return undefined;
+    }
+    throw error;
+  }
+}
+export async function getItemAndThrowAllErrors(
+  host: string,
+  index: opensearch.Index,
+  id: string,
+): Promise<ItemResult | undefined> {
   client = client || (await getClient(host));
   const response = await client.get({ id, index });
   const item = decodeUtf8(response).body;

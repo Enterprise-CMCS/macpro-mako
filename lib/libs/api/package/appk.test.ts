@@ -24,6 +24,12 @@ describe("getAppkChildren", () => {
 
     expect(result).toEqual(
       expect.objectContaining({
+        _shards: {
+          failed: 0,
+          skipped: 0,
+          successful: 5,
+          total: 5,
+        },
         hits: {
           total: {
             value: 1,
@@ -33,14 +39,19 @@ describe("getAppkChildren", () => {
           hits: [
             {
               _source: {
+                authority: "1915(c)",
                 changedDate: "2024-01-01T00:00:00Z",
+                makoChangedDate: "2024-01-01T00:00:00Z",
                 title: "Initial release",
+                seatoolStatus: "Pending",
                 cmsStatus: "Pending",
                 stateStatus: "Under Review",
               },
             },
           ],
         },
+        timed_out: false,
+        took: 5,
       }),
     );
   });
@@ -52,6 +63,12 @@ describe("getAppkChildren", () => {
 
     expect(result).toEqual(
       expect.objectContaining({
+        _shards: {
+          failed: 0,
+          skipped: 0,
+          successful: 5,
+          total: 5,
+        },
         hits: {
           total: {
             value: 1,
@@ -62,6 +79,7 @@ describe("getAppkChildren", () => {
             {
               _source: {
                 changedDate: "2025-01-08T00:00:00Z",
+                makoChangedDate: "2025-01-08T00:00:00Z",
                 title: "Approved release",
                 cmsStatus: "Approved",
                 stateStatus: "Approved",

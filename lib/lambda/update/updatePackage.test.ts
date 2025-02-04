@@ -7,7 +7,7 @@ import {
   EXISTING_ITEM_PENDING_ID,
   CAPITATED_INITIAL_ITEM_ID,
   CAPITATED_INITIAL_NEW_ITEM_ID,
-  WEIRD_ID,
+  SIMPLE_ID,
 } from "mocks";
 vi.mock("libs/handler-lib", () => ({
   response: vi.fn((data) => data),
@@ -204,7 +204,7 @@ describe("handler", () => {
   it("should fail to update a package with bad existing id format", async () => {
     const noActionevent = {
       body: JSON.stringify({
-        packageId: WEIRD_ID,
+        packageId: SIMPLE_ID,
         action: "update-id",
         changeReason: "Nunya",
         updatedId: "SS-120",
@@ -223,7 +223,7 @@ describe("handler", () => {
     process.env.topicName = "";
     const noActionevent = {
       body: JSON.stringify({
-        packageId: WEIRD_ID,
+        packageId: SIMPLE_ID,
         action: "update-values",
         changeReason: "Nunya",
         updatedFields: {},
@@ -240,7 +240,7 @@ describe("handler", () => {
   it("should fail to update a package - No valid fields ", async () => {
     const noActionevent = {
       body: JSON.stringify({
-        packageId: WEIRD_ID,
+        packageId: SIMPLE_ID,
         action: "update-values",
         changeReason: "Nunya",
         updatedFields: { badfield: "nothing" },
@@ -257,7 +257,7 @@ describe("handler", () => {
   it("should fail to update a package - Id can not be updated ", async () => {
     const noActionevent = {
       body: JSON.stringify({
-        packageId: WEIRD_ID,
+        packageId: SIMPLE_ID,
         action: "update-values",
         changeReason: "Nunya",
         updatedFields: { id: "cant update ID here" },
