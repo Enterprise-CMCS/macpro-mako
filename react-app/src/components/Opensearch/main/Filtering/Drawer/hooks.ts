@@ -129,11 +129,11 @@ export const useFilterDrawer = () => {
   // on filter initialization
   useEffect(() => {
     // check if any filters where saved in storage
-    const filterState: { filters: C.DrawerFilterableGroup[]; tab: string } | null = JSON.parse(
-      localStorage.getItem(FILTER_STORAGE_KEY),
-    );
+    const filterStorage: string | null = localStorage.getItem(FILTER_STORAGE_KEY);
+    if (!filterStorage) return;
 
-    if (!filterState) return;
+    const filterState: { filters: C.DrawerFilterableGroup[]; tab: string } =
+      JSON.parse(filterStorage);
 
     // we should delete the local storage if it doesn't match current tab
     if (filterState.tab !== url.state.tab) {

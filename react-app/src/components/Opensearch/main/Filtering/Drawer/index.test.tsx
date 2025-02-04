@@ -293,7 +293,7 @@ describe("OsFilterDrawer", () => {
         await user.click(screen.getByRole("button", { name: "Authority" }));
 
         const chip = screen.queryByLabelText("CHIP SPA");
-        expect(chip).toBeInTheDocument(); // ERRORING HERE
+        expect(chip).toBeInTheDocument();
 
         expect(chip.getAttribute("data-state")).toEqual("unchecked");
 
@@ -327,7 +327,7 @@ describe("OsFilterDrawer", () => {
 
         const med = screen.queryByLabelText("Medicaid SPA");
         expect(med).toBeInTheDocument();
-        expect(med.getAttribute("data-state")).toEqual("checked"); // ERRORING HERE
+        expect(med.getAttribute("data-state")).toEqual("checked");
 
         await user.click(screen.queryByRole("button", { name: "Clear" }));
         expect(chip.getAttribute("data-state")).toEqual("unchecked");
