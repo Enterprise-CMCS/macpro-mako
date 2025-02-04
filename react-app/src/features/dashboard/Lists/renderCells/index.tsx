@@ -30,7 +30,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) => {
     if (!user) return null;
 
     const actions = getAvailableActions(user, data);
-    console.log({ actions });
+
     return (
       <POP.Popover>
         <POP.PopoverTrigger
