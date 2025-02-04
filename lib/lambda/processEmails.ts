@@ -277,8 +277,11 @@ export async function processAndSendEmails(
 
   const results = [];
 
+  console.log({ templates });
+
   // Process templates sequentially
   for (const template of templates) {
+    console.log({ template });
     try {
       const filledTemplate = await template(templateVariables);
       validateEmailTemplate(filledTemplate);
