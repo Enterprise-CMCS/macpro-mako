@@ -56,7 +56,6 @@ export default defineConfig({
         "**/*/.eslintrc.{ts,js,cjs}",
         "**/*.config.{ts,js,cjs}",
         "**/*.js",
-        "**/*.css",
         "**/*.test.ts",
         "**/*.test.tsx",
         "**/assets/**",
