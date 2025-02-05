@@ -19,6 +19,7 @@ import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
 import { useGetItem } from "@/api";
 import { getFAQLinkForAttachments } from "../../faqLinks";
+import { useState } from "react";
 
 const actionTypeMap = {
   New: "Initial Waiver",
@@ -28,6 +29,8 @@ const actionTypeMap = {
 export const TemporaryExtensionForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
   const { data: submission } = useGetItem(waiverId, { enabled: waiverId !== undefined });
+
+  const [temporaryExtensionType, setTemporaryExtensionType] = useState("");
 
   const type =
     submission && submission._source
@@ -58,7 +61,13 @@ export const TemporaryExtensionForm = () => {
                     <strong className="font-bold">Temporary Extension Type</strong>{" "}
                     <RequiredIndicator />
                   </FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={(value) => {
+                      setTemporaryExtensionType(value);
+                      field.onChange(value);
+                    }}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="-- select a temporary extension type --" />
@@ -172,7 +181,7 @@ export const TemporaryExtensionForm = () => {
         },
       }}
       attachments={{
-        faqLink: getFAQLinkForAttachments("temporary-extension"),
+        faqLink: getFAQLinkForAttachments(`temporary-extension-${temporaryExtensionType}`),
       }}
       documentPollerArgs={{
         property: (data) => data.id,
