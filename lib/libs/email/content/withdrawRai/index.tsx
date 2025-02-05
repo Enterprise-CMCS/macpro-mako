@@ -63,7 +63,11 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: variables.emails.osgEmail,
+        to: [
+          ...variables.emails.osgEmail,
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+        ],
         subject: `Waiver Package ${variables.id} Withdraw Request`,
         body: await render(<WaiverCMSEmail variables={variables} />),
       };
@@ -72,9 +76,9 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: variables.allStateUsersEmails || [
-          `${variables.submitterName} <${variables.submitterEmail}>`,
-        ],
+        to: variables.allStateUsersEmails?.length
+          ? variables.allStateUsersEmails
+          : [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Waiver Package ${variables.id} Withdraw Request`,
         body: await render(<WaiverStateEmail variables={variables} />),
       };
