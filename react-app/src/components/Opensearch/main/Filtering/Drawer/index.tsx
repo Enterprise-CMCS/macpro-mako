@@ -58,9 +58,7 @@ export const OsFilterDrawer = () => {
                       console.log(`Filter changed for ${PK.field}:`, value);
                       hook.onFilterChange(PK.field)(value);
                     }}
-                    options={(hook.aggs?.[PK.field] || []).filter(
-                      (option) => option.value !== "Initial",
-                    )}
+                    options={hook.aggs?.[PK.field]}
                   />
                 )}
                 {PK.component === "multiCheck" && (
@@ -70,7 +68,9 @@ export const OsFilterDrawer = () => {
                       console.log(`Filter changed for ${PK.field}:`, value);
                       hook.onFilterChange(PK.field)(value);
                     }}
-                    options={hook.aggs?.[PK.field]}
+                    options={(hook.aggs?.[PK.field] || []).filter(
+                      (option) => option.value !== "Initial",
+                    )}
                   />
                 )}
                 {PK.component === "dateRange" && (
