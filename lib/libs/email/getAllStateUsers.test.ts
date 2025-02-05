@@ -31,4 +31,14 @@ describe("getAllStateUsers", () => {
     const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "MA" });
     expect(result).toEqual([]);
   });
+
+  it("should ignore users with no email", async () => {
+    const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "AK" });
+    expect(result).toEqual([]);
+  });
+
+  it("should ignore users with invalid email formats", async () => {
+    const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "LA" });
+    expect(result).toEqual([]);
+  });
 });
