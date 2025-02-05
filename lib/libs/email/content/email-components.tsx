@@ -170,7 +170,9 @@ const Attachments = ({
             </Column>
             <Column style={{ verticalAlign: "top" }}>
               <Text style={styles.text.description}>
-                <span key={file.filename + index}>{file.filename}</span>
+                <ul>
+                  <li key={file.filename + index}>{file.filename}</li>
+                </ul>
               </Text>
             </Column>
           </Row>

@@ -68,7 +68,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.cpocEmail,
           ...variables.emails.srtEmails,
         ],
-        subject: `Waiver Package ${variables.id} Withdraw Request`,
+        subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
         body: await render(<WaiverCMSEmail variables={variables} />),
       };
     },
@@ -95,7 +95,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.cpocEmail,
           ...variables.emails.srtEmails,
         ],
-        subject: `Waiver Package ${variables.id} Withdraw Request`,
+        subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
         body: await render(<WaiverCMSEmail variables={variables} />),
       };
     },
