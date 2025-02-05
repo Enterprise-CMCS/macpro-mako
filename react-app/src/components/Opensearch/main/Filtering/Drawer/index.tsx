@@ -59,7 +59,7 @@ export const OsFilterDrawer = () => {
                       hook.onFilterChange(PK.field)(value);
                     }}
                     options={(hook.aggs?.[PK.field] || []).filter(
-                      (option) => option.value !== "initial",
+                      (option) => option.value !== "Initial",
                     )}
                   />
                 )}
