@@ -21,3 +21,4 @@ DS_Store
 
 # tests
 coverage
+.vitest
