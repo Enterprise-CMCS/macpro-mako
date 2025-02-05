@@ -8,7 +8,7 @@ export const ChipSpaCMSEmail = ({
   variables: Events["WithdrawRai"] & CommonEmailVariables;
 }) => (
   <BaseEmailTemplate
-    previewText={`Withdraw Formal RAI Response for SPA Package ${variables.id}`}
+    previewText={`Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`}
     heading={`The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are receiving this email notification as the Formal RAI for ${variables.id} was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.`}
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
