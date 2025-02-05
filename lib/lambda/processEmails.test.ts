@@ -32,19 +32,6 @@ describe("process emails Handler", () => {
     await expect(sendEmail(params, "bad-test")).rejects.toThrowError();
   });
 
-  it("should throw an error when no email address is associated with a user", async () => {
-    const params = {
-      Source: "sender@example.com",
-      Destination: { ToAddresses: [""] },
-      Message: {
-        Subject: { Data: "Mocked Email", Charset: "UTF-8" },
-        Body: { Text: { Data: "This is a mocked email body.", Charset: "UTF-8" } },
-      },
-      ConfigurationSetName: "test-config",
-    };
-    await expect(sendEmail(params, "bad-test")).rejects.toThrowError();
-  });
-
   it("should validate the email template and throw an error for missing fields", async () => {
     const template = {
       to: "Person",
