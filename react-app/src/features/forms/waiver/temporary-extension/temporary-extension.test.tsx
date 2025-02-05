@@ -15,6 +15,7 @@ import {
   NOT_FOUND_ITEM_ID,
   VALID_ITEM_TEMPORARY_EXTENSION_ID,
   TEST_SPA_ITEM_ID,
+  TEST_ITEM_ID,
 } from "mocks";
 
 const upload = uploadFiles<(typeof formSchemas)["temporary-extension"]>();
@@ -58,7 +59,24 @@ describe("Temporary Extension", () => {
     ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
 
-  test("TEMPORARY EXTENSION TYPE", async () => {
+  test("TEMPORARY EXTENSION TYPE 1915(c)", async () => {
+    // set the Item Id to TEST_ITEM_ID
+    await renderFormAsync(<TemporaryExtensionForm />);
+
+    const teTypeDropdown = screen.getByRole("combobox");
+
+    await user.click(teTypeDropdown);
+
+    const teOptionToClick = screen.getByRole("option", {
+      name: "1915(c)",
+    });
+
+    await user.click(teOptionToClick);
+
+    expect(teOptionToClick).toHaveTextContent("1915(c)");
+  });
+
+  test("TEMPORARY EXTENSION TYPE 1915(b)", async () => {
     await renderFormAsync(<TemporaryExtensionForm />);
 
     // enable render cleanup here
@@ -74,7 +92,7 @@ describe("Temporary Extension", () => {
 
     await user.click(teOptionToClick);
 
-    expect(teTypeDropdown).toHaveTextContent("1915(b)");
+    expect(teOptionToClick).toHaveTextContent("1915(b)");
   });
 
   test("APPROVED INITIAL OR RENEWAL WAIVER NUMBER", async () => {
