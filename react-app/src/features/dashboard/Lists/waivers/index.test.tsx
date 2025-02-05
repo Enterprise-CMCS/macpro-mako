@@ -222,7 +222,7 @@ const verifyRow = (
   cellIndex++;
   expect(cells[cellIndex].textContent).toEqual(doc.state || BLANK_VALUE); // State
   cellIndex++;
-  expect(cells[cellIndex].textContent).toEqual(doc.authority); // Authority
+  expect(cells[cellIndex].textContent).toEqual(doc.authority || BLANK_VALUE); // Authority
   cellIndex++;
   expect(cells[cellIndex].textContent).toEqual(
     LABELS[doc.actionType] || doc.actionType || BLANK_VALUE,

@@ -99,6 +99,8 @@ describe("Dashboard", () => {
 
     await setup();
 
+    await screen.findByTestId("home");
+
     expect(screen.queryByTestId("home")).toBeInTheDocument();
   });
 
