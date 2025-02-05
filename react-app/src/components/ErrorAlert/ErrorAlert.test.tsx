@@ -9,7 +9,7 @@ describe("ErrorAlert", () => {
     render(<ErrorAlert error={{} as ReactQueryApiError} />);
 
     expect(screen.queryByText("Error")).toBeInTheDocument();
-    expect(screen.queryByText("An error has occured")).toBeInTheDocument();
+    expect(screen.queryByText("An error has occurred")).toBeInTheDocument();
   });
 
   it("renders with error message", () => {
