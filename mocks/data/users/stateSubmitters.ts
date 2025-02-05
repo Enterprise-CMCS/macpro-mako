@@ -306,6 +306,70 @@ export const testNewStateSubmitter: TestUserData = {
   Username: "f8e64f73-d121-4252-b9e3-1f4df902a1c1",
 };
 
+export const noEmailStateSubmitter: TestUserData = {
+  UserAttributes: [
+    {
+      Name: "email",
+      Value: "bademail-",
+    },
+    {
+      Name: "email_verified",
+      Value: "true",
+    },
+    {
+      Name: "given_name",
+      Value: "Test",
+    },
+    {
+      Name: "family_name",
+      Value: "Submitter",
+    },
+    {
+      Name: "custom:state",
+      Value: "LA",
+    },
+    {
+      Name: "custom:cms-roles",
+      Value: "onemac-micro-statesubmitter",
+    },
+    {
+      Name: "sub",
+      Value: "f8e64f73-d121-4252-b9e3-1f4df902a1c2",
+    },
+  ],
+  Username: "f8e64f73-d121-4252-b9e3-1f4df902a1c2",
+};
+
+export const invalidEmailStateSubmitter: TestUserData = {
+  UserAttributes: [
+    {
+      Name: "email_verified",
+      Value: "true",
+    },
+    {
+      Name: "given_name",
+      Value: "Test",
+    },
+    {
+      Name: "family_name",
+      Value: "Submitter",
+    },
+    {
+      Name: "custom:state",
+      Value: "AK",
+    },
+    {
+      Name: "custom:cms-roles",
+      Value: "onemac-micro-statesubmitter",
+    },
+    {
+      Name: "sub",
+      Value: "f8e64f73-d121-4252-b9e3-1f4df902a1c2",
+    },
+  ],
+  Username: "f8e64f73-d121-4252-b9e3-1f4df902a1c2",
+};
+
 export const stateSubmitters: TestUserData[] = [
   makoStateSubmitter,
   superUser,
@@ -316,4 +380,5 @@ export const stateSubmitters: TestUserData[] = [
   noStateSubmitter,
   automatedStateSubmitter,
   testNewStateSubmitter,
+  noEmailStateSubmitter,
 ];
