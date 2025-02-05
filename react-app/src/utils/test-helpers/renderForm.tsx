@@ -36,7 +36,7 @@ export const renderFormWithPackageSectionAsync = async (
     ],
   };
 
-  const container = await renderWithQueryClientAndMemoryRouter(form, routes, routeOptions);
+  const container = renderWithQueryClientAndMemoryRouter(form, routes, routeOptions);
 
   // wait for loading
   if (container.queryAllByLabelText("three-dots-loading")?.length > 0) {

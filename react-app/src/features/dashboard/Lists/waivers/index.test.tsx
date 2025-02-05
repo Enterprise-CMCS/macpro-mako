@@ -1,13 +1,8 @@
-import { describe, expect, it, vi, beforeAll, afterAll, afterEach } from "vitest";
+import { describe, expect, it, vi, beforeAll, afterAll, beforeEach, afterEach } from "vitest";
 import { screen, within, waitForElementToBeRemoved, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ExportToCsv } from "export-to-csv";
-import {
-  opensearch,
-  SEATOOL_STATUS,
-  statusToDisplayToCmsUser,
-  statusToDisplayToStateUser,
-} from "shared-types";
+import { opensearch } from "shared-types";
 import { LABELS } from "@/utils";
 import {
   renderDashboard,
@@ -16,6 +11,20 @@ import {
   verifyChips,
   verifyPagination,
   skipCleanup,
+  PENDING_SUBMITTED_ITEM,
+  PENDING_SUBMITTED_ITEM_EXPORT,
+  PENDING_RAI_REQUEST_ITEM,
+  PENDING_RAI_REQUEST_ITEM_EXPORT,
+  PENDING_RAI_RECEIVED_ITEM,
+  PENDING_RAI_RECEIVED_ITEM_EXPORT,
+  RAI_WITHDRAW_ENABLED_ITEM,
+  RAI_WITHDRAW_ENABLED_ITEM_EXPORT,
+  RAI_WITHDRAW_DISABLED_ITEM,
+  RAI_WITHDRAW_DISABLED_ITEM_EXPORT,
+  APPROVED_ITEM,
+  APPROVED_ITEM_EXPORT,
+  BLANK_ITEM,
+  BLANK_ITEM_EXPORT,
 } from "@/utils/test-helpers";
 import {
   TEST_STATE_SUBMITTER_USER,
@@ -23,140 +32,74 @@ import {
   TEST_HELP_DESK_USER,
   TEST_READ_ONLY_USER,
   setMockUsername,
-  TEST_1915B_ITEM,
-  TEST_1915C_ITEM,
 } from "mocks";
 import { BLANK_VALUE } from "@/consts";
 import * as api from "@/api";
 import { WaiversList } from "./index";
 
-const BASE_ITEM = {
-  state: "MD",
-  origin: "OneMAC",
-  submissionDate: "2024-01-01T00:00:00.000Z",
-  makoChangedDate: "2024-02-01T00:00:00.000Z",
-  changedDate: "2024-03-01T00:00:00.000Z",
-};
-
-const PENDING_SUBMITTED_ITEM = {
-  _id: "MD-01-2024",
-  _source: {
-    ...TEST_1915B_ITEM._source,
-    ...BASE_ITEM,
-    id: "MD-01-2024",
-    seatoolStatus: SEATOOL_STATUS.PENDING,
-    cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
-    stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
-    actionType: "New",
-    submitterName: "Alice Anderson",
-    leadAnalystName: "Beth Bernard",
-  },
-};
-
-const PENDING_RAI_REQUEST_ITEM = {
-  _id: "MD-02-2024",
-  _source: {
-    ...TEST_1915C_ITEM._source,
-    ...BASE_ITEM,
-    id: "MD-02-2024",
-    seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
-    cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING_RAI],
-    stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING_RAI],
-    raiRequestedDate: "2024-03-01T00:00:00.000Z",
-    submitterName: "Carl Carson",
-    leadAnalystName: "Dan Davis",
-  },
-};
-
-const PENDING_RAI_RECEIVED_ITEM = {
-  _id: "MD-03-2024",
-  _source: {
-    ...TEST_1915B_ITEM._source,
-    ...BASE_ITEM,
-    id: "MD-03-2024",
-    seatoolStatus: SEATOOL_STATUS.PENDING,
-    cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
-    stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
-    actionType: "New",
-    raiRequestedDate: "2024-03-01T00:00:00.000Z",
-    raiReceivedDate: "2024-04-01T00:00:00.000Z",
-    submitterName: "Ethan Evans",
-    leadAnalystName: "Fran Foster",
-  },
-};
-
-const RAI_WITHDRAW_ENABLED_ITEM = {
-  _id: "MD-04-2024",
-  _source: {
-    ...TEST_1915C_ITEM._source,
-    ...BASE_ITEM,
-    id: "MD-04-2024",
-    seatoolStatus: SEATOOL_STATUS.PENDING,
-    cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
-    stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
-    actionType: "New",
-    raiRequestedDate: "2024-03-01T00:00:00.000Z",
-    raiReceivedDate: "2024-04-01T00:00:00.000Z",
-    submitterName: "Graham Greggs",
-    leadAnalystName: "Henry Harrison",
-    raiWithdrawEnabled: true,
-  },
-};
-
-const RAI_WITHDRAW_DISABLED_ITEM = {
-  _id: "MD-05-2024",
-  _source: {
-    ...TEST_1915B_ITEM._source,
-    ...BASE_ITEM,
-    id: "MD-05-2024",
-    seatoolStatus: SEATOOL_STATUS.PENDING,
-    cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
-    stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
-    actionType: "New",
-    raiRequestedDate: "2024-03-01T00:00:00.000Z",
-    raiReceivedDate: "2024-04-01T00:00:00.000Z",
-    submitterName: "Isaac Irwin",
-    leadAnalystName: "Jack Jefferson",
-    raiWithdrawEnabled: false,
-  },
-};
-
-const APPROVED_ITEM = {
-  _id: "MD-06-2024",
-  _source: {
-    ...TEST_1915B_ITEM._source,
-    ...BASE_ITEM,
-    id: "MD-06-2024",
-    seatoolStatus: SEATOOL_STATUS.APPROVED,
-    cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
-    stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
-    finalDispositionDate: "05/01/2024",
-    actionType: "New",
-    submitterName: "Kevin Kline",
-    leadAnalystName: "Liz Lemon",
-  },
-};
-
-const BLANK_ITEM = {
-  _id: "MD-07-2024",
-  _source: {
-    id: "MD-07-2024",
-    authority: "1915(b)",
-    seatoolStatus: SEATOOL_STATUS.PENDING,
-    cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
-    stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
-    origin: "OneMAC",
-  },
-};
+const pendingDoc = {
+  ...PENDING_SUBMITTED_ITEM._source,
+  authority: "1915(b)",
+  actionType: "New",
+} as opensearch.main.Document;
+const raiRequestDoc = {
+  ...PENDING_RAI_REQUEST_ITEM._source,
+  authority: "1915(c)",
+  actionType: "New",
+} as opensearch.main.Document;
+const raiReceivedDoc = {
+  ...PENDING_RAI_RECEIVED_ITEM._source,
+  authority: "1915(b)",
+  actionType: "New",
+} as opensearch.main.Document;
+const withdrawEnabledDoc = {
+  ...RAI_WITHDRAW_ENABLED_ITEM._source,
+  authority: "Chip SPA",
+  actionType: "New",
+} as opensearch.main.Document;
+const withdrawDisabledDoc = {
+  ...RAI_WITHDRAW_DISABLED_ITEM._source,
+  authority: "1915(b)",
+  actionType: "New",
+} as opensearch.main.Document;
+const approvedDoc = {
+  ...APPROVED_ITEM._source,
+  authority: "1915(c)",
+  actionType: "New",
+} as opensearch.main.Document;
+const blankDoc = {
+  ...BLANK_ITEM._source,
+} as opensearch.main.Document;
 
 const items = [
-  PENDING_SUBMITTED_ITEM,
-  PENDING_RAI_REQUEST_ITEM,
-  PENDING_RAI_RECEIVED_ITEM,
-  RAI_WITHDRAW_ENABLED_ITEM,
-  RAI_WITHDRAW_DISABLED_ITEM,
-  APPROVED_ITEM,
-  BLANK_ITEM,
+  {
+    _id: pendingDoc.id,
+    _source: pendingDoc,
+  },
+  {
+    _id: raiRequestDoc.id,
+    _source: raiRequestDoc,
+  },
+  {
+    _id: raiReceivedDoc.id,
+    _source: raiReceivedDoc,
+  },
+  {
+    _id: withdrawEnabledDoc.id,
+    _source: withdrawEnabledDoc,
+  },
+  {
+    _id: withdrawDisabledDoc.id,
+    _source: withdrawDisabledDoc,
+  },
+  {
+    _id: approvedDoc.id,
+    _source: approvedDoc,
+  },
+  {
+    _id: blankDoc.id,
+    _source: blankDoc,
+  },
 ] as opensearch.Hit<opensearch.main.Document>[];
 const hitCount = items.length;
 const defaultHits: opensearch.Hits<opensearch.main.Document> = {
@@ -166,117 +109,54 @@ const defaultHits: opensearch.Hits<opensearch.main.Document> = {
 };
 
 const getExpectedExportData = (useCmsStatus: boolean) => {
-  const pendingDoc = PENDING_SUBMITTED_ITEM._source;
-  const raiRequestDoc = PENDING_RAI_REQUEST_ITEM._source;
-  const raiReceivedDoc = PENDING_RAI_RECEIVED_ITEM._source;
-  const withdrawEnabledDoc = RAI_WITHDRAW_ENABLED_ITEM._source;
-  const withdrawDisabledDoc = RAI_WITHDRAW_DISABLED_ITEM._source;
-  const approvedDoc = APPROVED_ITEM._source;
-  const blankDoc = BLANK_ITEM._source;
   return [
     {
+      ...PENDING_SUBMITTED_ITEM_EXPORT,
       Authority: pendingDoc.authority,
-      "Formal RAI Response": "-- --",
-      "Initial Submission": "01/01/2024",
-      "Latest Package Activity": "02/01/2024",
       "Waiver Number": pendingDoc.id,
-      State: pendingDoc.state,
       Status: useCmsStatus ? pendingDoc.cmsStatus : pendingDoc.stateStatus,
-      "Submitted By": pendingDoc.submitterName,
-      "CPOC Name": pendingDoc.leadAnalystName,
-      "Final Disposition": "-- --",
-      "Formal RAI Requested": "-- --",
-      "Submission Source": "OneMAC",
       "Action Type": LABELS[pendingDoc.actionType] || pendingDoc.actionType,
     },
     {
+      ...PENDING_RAI_REQUEST_ITEM_EXPORT,
       Authority: raiRequestDoc.authority,
-      "Formal RAI Response": "-- --",
-      "Initial Submission": "01/01/2024",
-      "Latest Package Activity": "02/01/2024",
       "Waiver Number": raiRequestDoc.id,
-      State: raiRequestDoc.state,
       Status: useCmsStatus ? raiRequestDoc.cmsStatus : raiRequestDoc.stateStatus,
-      "Submitted By": raiRequestDoc.submitterName,
-      "CPOC Name": raiRequestDoc.leadAnalystName,
-      "Final Disposition": "-- --",
-      "Formal RAI Requested": "03/01/2024",
-      "Submission Source": "OneMAC",
       "Action Type": LABELS[raiRequestDoc.actionType] || raiRequestDoc.actionType,
     },
     {
+      ...PENDING_RAI_RECEIVED_ITEM_EXPORT,
       Authority: raiReceivedDoc.authority,
-      "Formal RAI Response": "04/01/2024",
-      "Initial Submission": "01/01/2024",
-      "Latest Package Activity": "02/01/2024",
       "Waiver Number": raiReceivedDoc.id,
-      State: raiReceivedDoc.state,
       Status: useCmsStatus ? raiReceivedDoc.cmsStatus : raiReceivedDoc.stateStatus,
-      "Submitted By": raiReceivedDoc.submitterName,
-      "CPOC Name": raiReceivedDoc.leadAnalystName,
-      "Final Disposition": "-- --",
-      "Formal RAI Requested": "03/01/2024",
-      "Submission Source": "OneMAC",
       "Action Type": LABELS[raiReceivedDoc.actionType] || raiReceivedDoc.actionType,
     },
     {
+      ...RAI_WITHDRAW_ENABLED_ITEM_EXPORT,
       Authority: withdrawEnabledDoc.authority,
-      "Formal RAI Response": "04/01/2024",
-      "Initial Submission": "01/01/2024",
-      "Latest Package Activity": "02/01/2024",
       "Waiver Number": withdrawEnabledDoc.id,
-      State: withdrawEnabledDoc.state,
       Status: `${useCmsStatus ? withdrawEnabledDoc.cmsStatus : withdrawEnabledDoc.stateStatus} (Withdraw Formal RAI Response - Enabled)`,
-      "Submitted By": withdrawEnabledDoc.submitterName,
-      "CPOC Name": withdrawEnabledDoc.leadAnalystName,
-      "Final Disposition": "-- --",
-      "Formal RAI Requested": "03/01/2024",
-      "Submission Source": "OneMAC",
       "Action Type": LABELS[withdrawEnabledDoc.actionType] || withdrawEnabledDoc.actionType,
     },
     {
+      ...RAI_WITHDRAW_DISABLED_ITEM_EXPORT,
       Authority: withdrawDisabledDoc.authority,
-      "Formal RAI Response": "04/01/2024",
-      "Initial Submission": "01/01/2024",
-      "Latest Package Activity": "02/01/2024",
       "Waiver Number": withdrawDisabledDoc.id,
-      State: withdrawDisabledDoc.state,
       Status: useCmsStatus ? withdrawDisabledDoc.cmsStatus : withdrawDisabledDoc.stateStatus,
-      "Submitted By": withdrawDisabledDoc.submitterName,
-      "CPOC Name": withdrawDisabledDoc.leadAnalystName,
-      "Final Disposition": "-- --",
-      "Formal RAI Requested": "03/01/2024",
-      "Submission Source": "OneMAC",
       "Action Type": LABELS[withdrawDisabledDoc.actionType] || withdrawDisabledDoc.actionType,
     },
     {
+      ...APPROVED_ITEM_EXPORT,
       Authority: approvedDoc.authority,
-      "Formal RAI Response": "-- --",
-      "Initial Submission": "01/01/2024",
-      "Latest Package Activity": "02/01/2024",
       "Waiver Number": approvedDoc.id,
-      State: approvedDoc.state,
       Status: useCmsStatus ? approvedDoc.cmsStatus : approvedDoc.stateStatus,
-      "Submitted By": approvedDoc.submitterName,
-      "CPOC Name": approvedDoc.leadAnalystName,
-      "Final Disposition": "05/01/2024",
-      "Formal RAI Requested": "-- --",
-      "Submission Source": "OneMAC",
       "Action Type": LABELS[approvedDoc.actionType] || approvedDoc.actionType,
     },
     {
-      Authority: blankDoc.authority,
-      "Formal RAI Response": "-- --",
-      "Initial Submission": "-- --",
-      "Latest Package Activity": "-- --",
+      ...BLANK_ITEM_EXPORT,
+      Authority: "-- --",
       "Waiver Number": blankDoc.id,
-      State: "-- --",
       Status: useCmsStatus ? blankDoc.cmsStatus : blankDoc.stateStatus,
-      "Submitted By": "-- --",
-      "CPOC Name": "-- --",
-      "Final Disposition": "-- --",
-      "Formal RAI Requested": "-- --",
-      "Submission Source": "OneMAC",
       "Action Type": "-- --",
     },
   ];
@@ -342,7 +222,7 @@ const verifyRow = (
   cellIndex++;
   expect(cells[cellIndex].textContent).toEqual(doc.state || BLANK_VALUE); // State
   cellIndex++;
-  expect(cells[cellIndex].textContent).toEqual(doc.authority); // Authority
+  expect(cells[cellIndex].textContent).toEqual(doc.authority || BLANK_VALUE); // Authority
   cellIndex++;
   expect(cells[cellIndex].textContent).toEqual(
     LABELS[doc.actionType] || doc.actionType || BLANK_VALUE,
@@ -412,12 +292,17 @@ describe("WaiversList", () => {
     expect(table.firstElementChild.firstElementChild.childElementCount).toEqual(0);
   });
 
-  describe("as a State Submitter", () => {
+  describe.each([
+    ["State Submitter", TEST_STATE_SUBMITTER_USER.username, true, false],
+    ["CMS Reviewer", TEST_CMS_REVIEWER_USER.username, true, true],
+    ["CMS Help Desk User", TEST_HELP_DESK_USER.username, false, false],
+    ["CMS Read-Only User", TEST_READ_ONLY_USER.username, false, true],
+  ])("as a %s", (title, username, hasActions, useCmsStatus) => {
     let user;
     beforeAll(async () => {
       skipCleanup();
 
-      setMockUsername(TEST_STATE_SUBMITTER_USER.username);
+      setMockUsername(username);
 
       ({ user } = await setup(
         defaultHits,
@@ -427,14 +312,18 @@ describe("WaiversList", () => {
       ));
     });
 
+    beforeEach(() => {
+      setMockUsername(username);
+    });
+
     afterAll(() => {
       cleanup();
     });
 
     it("should display the dashboard as expected", async () => {
-      verifyFiltering(4); // 4 hidden columns
-      verifyChips([]); // no filters
-      verifyColumns(true);
+      verifyFiltering(4); // 4 hidden columns by default
+      verifyChips([]); // no filters by default
+      verifyColumns(hasActions);
       verifyPagination(hitCount);
     });
 
@@ -463,20 +352,20 @@ describe("WaiversList", () => {
     it.each([
       [
         "a new item that is pending without RAI",
-        PENDING_SUBMITTED_ITEM._source,
+        pendingDoc,
         {
-          hasActions: true,
-          status: PENDING_SUBMITTED_ITEM._source.stateStatus,
+          hasActions,
+          status: useCmsStatus ? pendingDoc.cmsStatus : pendingDoc.stateStatus,
           submissionDate: "01/01/2024",
           makoChangedDate: "02/01/2024",
         },
       ],
       [
         "an item that has requested an RAI",
-        PENDING_RAI_REQUEST_ITEM._source,
+        raiRequestDoc,
         {
-          hasActions: true,
-          status: PENDING_RAI_REQUEST_ITEM._source.stateStatus,
+          hasActions,
+          status: useCmsStatus ? raiRequestDoc.cmsStatus : raiRequestDoc.stateStatus,
           submissionDate: "01/01/2024",
           makoChangedDate: "02/01/2024",
           raiRequestedDate: "03/01/2024",
@@ -484,10 +373,10 @@ describe("WaiversList", () => {
       ],
       [
         "an item that has received an RAI",
-        PENDING_RAI_RECEIVED_ITEM._source,
+        raiReceivedDoc,
         {
-          hasActions: true,
-          status: PENDING_RAI_RECEIVED_ITEM._source.stateStatus,
+          hasActions,
+          status: useCmsStatus ? raiReceivedDoc.cmsStatus : raiReceivedDoc.stateStatus,
           submissionDate: "01/01/2024",
           makoChangedDate: "02/01/2024",
           raiRequestedDate: "03/01/2024",
@@ -496,10 +385,10 @@ describe("WaiversList", () => {
       ],
       [
         "an item that has RAI Withdraw enabled",
-        RAI_WITHDRAW_ENABLED_ITEM._source,
+        withdrawEnabledDoc,
         {
-          hasActions: true,
-          status: `${RAI_WITHDRAW_ENABLED_ITEM._source.stateStatus}· Withdraw Formal RAI Response - Enabled`,
+          hasActions,
+          status: `${useCmsStatus ? withdrawEnabledDoc.cmsStatus : withdrawEnabledDoc.stateStatus}· Withdraw Formal RAI Response - Enabled`,
           submissionDate: "01/01/2024",
           makoChangedDate: "02/01/2024",
           raiRequestedDate: "03/01/2024",
@@ -508,10 +397,10 @@ describe("WaiversList", () => {
       ],
       [
         "an item with RAI Withdraw disabled",
-        RAI_WITHDRAW_DISABLED_ITEM._source,
+        withdrawDisabledDoc,
         {
-          hasActions: true,
-          status: RAI_WITHDRAW_DISABLED_ITEM._source.stateStatus,
+          hasActions,
+          status: useCmsStatus ? withdrawDisabledDoc.cmsStatus : withdrawDisabledDoc.stateStatus,
           submissionDate: "01/01/2024",
           makoChangedDate: "02/01/2024",
           raiRequestedDate: "03/01/2024",
@@ -520,10 +409,10 @@ describe("WaiversList", () => {
       ],
       [
         "an item that is approved",
-        APPROVED_ITEM._source,
+        approvedDoc,
         {
-          hasActions: true,
-          status: APPROVED_ITEM._source.stateStatus,
+          hasActions,
+          status: useCmsStatus ? approvedDoc.cmsStatus : approvedDoc.stateStatus,
           submissionDate: "01/01/2024",
           makoChangedDate: "02/01/2024",
           finalDispositionDate: "05/01/2024",
@@ -531,10 +420,10 @@ describe("WaiversList", () => {
       ],
       [
         "a blank item",
-        BLANK_ITEM._source as opensearch.main.Document,
+        blankDoc,
         {
-          hasActions: true,
-          status: BLANK_ITEM._source.stateStatus,
+          hasActions,
+          status: useCmsStatus ? blankDoc.cmsStatus : blankDoc.stateStatus,
         },
       ],
     ])("should display the correct values for a row with %s", (title, doc, expected) => {
@@ -546,424 +435,7 @@ describe("WaiversList", () => {
 
       await user.click(screen.queryByTestId("tooltip-trigger"));
 
-      const expectedData = getExpectedExportData(false);
-      expect(spy).toHaveBeenCalledWith(expectedData);
-    });
-  });
-
-  describe("as a CMS Reviewer", () => {
-    let user;
-    beforeAll(async () => {
-      skipCleanup();
-
-      setMockUsername(TEST_CMS_REVIEWER_USER.username);
-
-      ({ user } = await setup(
-        defaultHits,
-        getDashboardQueryString({
-          tab: "waivers",
-        }),
-      ));
-    });
-
-    afterAll(() => {
-      cleanup();
-    });
-
-    it("should display the filers, chips, and pagination as expected", () => {
-      verifyFiltering(4); // 4 hidden columns
-      verifyChips([]); // no filters
-      verifyColumns(true);
-      verifyPagination(hitCount);
-    });
-
-    it("should handle showing all of the columns", async () => {
-      // show all the hidden columns
-      await user.click(screen.queryByRole("button", { name: "Columns (4 hidden)" }));
-      const columns = screen.queryByRole("dialog");
-      await user.click(within(columns).getByText("Final Disposition"));
-      await user.click(within(columns).getByText("Submission Source"));
-      await user.click(within(columns).getByText("Formal RAI Requested"));
-      await user.click(within(columns).getByText("CPOC Name"));
-
-      const table = screen.getByRole("table");
-      expect(
-        within(table).getByText("Final Disposition", { selector: "th>div" }),
-      ).toBeInTheDocument();
-      expect(
-        within(table).getByText("Submission Source", { selector: "th>div" }),
-      ).toBeInTheDocument();
-      expect(
-        within(table).getByText("Formal RAI Requested", { selector: "th>div" }),
-      ).toBeInTheDocument();
-      expect(within(table).getByText("CPOC Name", { selector: "th>div" })).toBeInTheDocument();
-    });
-
-    it.each([
-      [
-        "a new item that is pending without RAI",
-        PENDING_SUBMITTED_ITEM._source,
-        {
-          hasActions: true,
-          status: PENDING_SUBMITTED_ITEM._source.cmsStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-        },
-      ],
-      [
-        "an item that has requested an RAI",
-        PENDING_RAI_REQUEST_ITEM._source,
-        {
-          hasActions: true,
-          status: PENDING_RAI_REQUEST_ITEM._source.cmsStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-        },
-      ],
-      [
-        "an item that has received an RAI",
-        PENDING_RAI_RECEIVED_ITEM._source,
-        {
-          hasActions: true,
-          status: PENDING_RAI_RECEIVED_ITEM._source.cmsStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
-        },
-      ],
-      [
-        "an item that has RAI Withdraw enabled",
-        RAI_WITHDRAW_ENABLED_ITEM._source,
-        {
-          hasActions: true,
-          status: `${RAI_WITHDRAW_ENABLED_ITEM._source.cmsStatus}· Withdraw Formal RAI Response - Enabled`,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
-        },
-      ],
-      [
-        "an item with RAI Withdraw disabled",
-        RAI_WITHDRAW_DISABLED_ITEM._source,
-        {
-          hasActions: true,
-          status: RAI_WITHDRAW_DISABLED_ITEM._source.cmsStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
-        },
-      ],
-      [
-        "an item that is approved",
-        APPROVED_ITEM._source,
-        {
-          hasActions: true,
-          status: APPROVED_ITEM._source.cmsStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          finalDispositionDate: "05/01/2024",
-        },
-      ],
-      [
-        "an blank item",
-        BLANK_ITEM._source as opensearch.main.Document,
-        {
-          hasActions: true,
-          status: BLANK_ITEM._source.cmsStatus,
-        },
-      ],
-    ])("should display the correct values for a row with %s", (title, doc, expected) => {
-      verifyRow(doc, expected);
-    });
-
-    it("should handle export", async () => {
-      const spy = vi.spyOn(ExportToCsv.prototype, "generateCsv").mockImplementation(() => {});
-
-      await userEvent.click(screen.queryByTestId("tooltip-trigger"));
-
-      const expectedData = getExpectedExportData(true);
-      expect(spy).toHaveBeenCalledWith(expectedData);
-    });
-  });
-
-  describe("as a CMS Helpdesk User", () => {
-    let user;
-    beforeAll(async () => {
-      skipCleanup();
-
-      setMockUsername(TEST_HELP_DESK_USER.username);
-
-      ({ user } = await setup(
-        defaultHits,
-        getDashboardQueryString({
-          tab: "waivers",
-        }),
-      ));
-    });
-
-    afterAll(() => {
-      cleanup();
-    });
-
-    it("should display the filers, chips, and pagination as expected", () => {
-      verifyFiltering(4); // 4 hidden columns
-      verifyChips([]); // no filters
-      verifyColumns(false);
-      verifyPagination(hitCount);
-    });
-
-    it("should handle showing all of the columns", async () => {
-      // show all the hidden columns
-      await user.click(screen.queryByRole("button", { name: "Columns (4 hidden)" }));
-      const columns = screen.queryByRole("dialog");
-      await user.click(within(columns).getByText("Final Disposition"));
-      await user.click(within(columns).getByText("Submission Source"));
-      await user.click(within(columns).getByText("Formal RAI Requested"));
-      await user.click(within(columns).getByText("CPOC Name"));
-
-      const table = screen.getByRole("table");
-      expect(
-        within(table).getByText("Final Disposition", { selector: "th>div" }),
-      ).toBeInTheDocument();
-      expect(
-        within(table).getByText("Submission Source", { selector: "th>div" }),
-      ).toBeInTheDocument();
-      expect(
-        within(table).getByText("Formal RAI Requested", { selector: "th>div" }),
-      ).toBeInTheDocument();
-      expect(within(table).getByText("CPOC Name", { selector: "th>div" })).toBeInTheDocument();
-    });
-
-    it.each([
-      [
-        "a new item that is pending without RAI",
-        PENDING_SUBMITTED_ITEM._source,
-        {
-          hasActions: false,
-          status: PENDING_SUBMITTED_ITEM._source.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-        },
-      ],
-      [
-        "an item that has requested an RAI",
-        PENDING_RAI_REQUEST_ITEM._source,
-        {
-          hasActions: false,
-          status: PENDING_RAI_REQUEST_ITEM._source.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-        },
-      ],
-      [
-        "an item that has received an RAI",
-        PENDING_RAI_RECEIVED_ITEM._source,
-        {
-          hasActions: false,
-          status: PENDING_RAI_RECEIVED_ITEM._source.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
-        },
-      ],
-      [
-        "an item that has RAI Withdraw enabled",
-        RAI_WITHDRAW_ENABLED_ITEM._source,
-        {
-          hasActions: false,
-          status: `${RAI_WITHDRAW_ENABLED_ITEM._source.stateStatus}· Withdraw Formal RAI Response - Enabled`,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
-        },
-      ],
-      [
-        "an item with RAI Withdraw disabled",
-        RAI_WITHDRAW_DISABLED_ITEM._source,
-        {
-          hasActions: false,
-          status: RAI_WITHDRAW_DISABLED_ITEM._source.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
-        },
-      ],
-      [
-        "an item that is approved",
-        APPROVED_ITEM._source,
-        {
-          hasActions: false,
-          status: APPROVED_ITEM._source.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          finalDispositionDate: "05/01/2024",
-        },
-      ],
-      [
-        "an blank item",
-        BLANK_ITEM._source as opensearch.main.Document,
-        {
-          hasActions: false,
-          status: BLANK_ITEM._source.stateStatus,
-        },
-      ],
-    ])("should display the correct values for a row with %s", (title, doc, expected) => {
-      verifyRow(doc, expected);
-    });
-
-    it("should handle export", async () => {
-      const spy = vi.spyOn(ExportToCsv.prototype, "generateCsv").mockImplementation(() => {});
-
-      await userEvent.click(screen.queryByTestId("tooltip-trigger"));
-
-      const expectedData = getExpectedExportData(false);
-      expect(spy).toHaveBeenCalledWith(expectedData);
-    });
-  });
-
-  describe("as a CMS Read-only User", () => {
-    let user;
-    beforeAll(async () => {
-      skipCleanup();
-
-      setMockUsername(TEST_READ_ONLY_USER.username);
-
-      ({ user } = await setup(
-        defaultHits,
-        getDashboardQueryString({
-          tab: "waivers",
-        }),
-      ));
-    });
-
-    afterAll(() => {
-      cleanup();
-    });
-
-    it("should display the filers, chips, and pagination as expected", () => {
-      verifyFiltering(4); // 4 hidden columns
-      verifyChips([]); // no filters
-      verifyColumns(false);
-      verifyPagination(hitCount);
-    });
-
-    it("should handle showing all of the columns", async () => {
-      // show all the hidden columns
-      await user.click(screen.queryByRole("button", { name: "Columns (4 hidden)" }));
-      const columns = screen.queryByRole("dialog");
-      await user.click(within(columns).getByText("Final Disposition"));
-      await user.click(within(columns).getByText("Submission Source"));
-      await user.click(within(columns).getByText("Formal RAI Requested"));
-      await user.click(within(columns).getByText("CPOC Name"));
-
-      const table = screen.getByRole("table");
-      expect(
-        within(table).getByText("Final Disposition", { selector: "th>div" }),
-      ).toBeInTheDocument();
-      expect(
-        within(table).getByText("Submission Source", { selector: "th>div" }),
-      ).toBeInTheDocument();
-      expect(
-        within(table).getByText("Formal RAI Requested", { selector: "th>div" }),
-      ).toBeInTheDocument();
-      expect(within(table).getByText("CPOC Name", { selector: "th>div" })).toBeInTheDocument();
-    });
-
-    it.each([
-      [
-        "a new item that is pending without RAI",
-        PENDING_SUBMITTED_ITEM._source,
-        {
-          hasActions: false,
-          status: PENDING_SUBMITTED_ITEM._source.cmsStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-        },
-      ],
-      [
-        "an item that has requested an RAI",
-        PENDING_RAI_REQUEST_ITEM._source,
-        {
-          hasActions: false,
-          status: PENDING_RAI_REQUEST_ITEM._source.cmsStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-        },
-      ],
-      [
-        "an item that has received an RAI",
-        PENDING_RAI_RECEIVED_ITEM._source,
-        {
-          hasActions: false,
-          status: PENDING_RAI_RECEIVED_ITEM._source.cmsStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
-        },
-      ],
-      [
-        "an item that has RAI Withdraw enabled",
-        RAI_WITHDRAW_ENABLED_ITEM._source,
-        {
-          hasActions: false,
-          status: `${RAI_WITHDRAW_ENABLED_ITEM._source.cmsStatus}· Withdraw Formal RAI Response - Enabled`,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
-        },
-      ],
-      [
-        "an item with RAI Withdraw disabled",
-        RAI_WITHDRAW_DISABLED_ITEM._source,
-        {
-          hasActions: false,
-          status: RAI_WITHDRAW_DISABLED_ITEM._source.cmsStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
-        },
-      ],
-      [
-        "an item that is approved",
-        APPROVED_ITEM._source,
-        {
-          hasActions: false,
-          status: APPROVED_ITEM._source.cmsStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          finalDispositionDate: "05/01/2024",
-        },
-      ],
-      [
-        "an blank item",
-        BLANK_ITEM._source as opensearch.main.Document,
-        {
-          hasActions: false,
-          status: BLANK_ITEM._source.cmsStatus,
-        },
-      ],
-    ])("should display the correct values for a row with %s", (title, doc, expected) => {
-      verifyRow(doc, expected);
-    });
-
-    it("should handle export", async () => {
-      const spy = vi.spyOn(ExportToCsv.prototype, "generateCsv").mockImplementation(() => {});
-
-      await userEvent.click(screen.queryByTestId("tooltip-trigger"));
-
-      const expectedData = getExpectedExportData(true);
+      const expectedData = getExpectedExportData(useCmsStatus);
       expect(spy).toHaveBeenCalledWith(expectedData);
     });
   });

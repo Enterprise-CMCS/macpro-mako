@@ -155,6 +155,7 @@ export const temporaryExtension = {
 };
 
 export const respondToRai = {
+  authority: "Medicaid SPA",
   id: "VA-11-2020",
   event: "respond-to-rai",
   attachments: {

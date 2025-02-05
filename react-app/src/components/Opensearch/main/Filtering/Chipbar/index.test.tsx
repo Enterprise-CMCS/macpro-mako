@@ -435,7 +435,7 @@ describe("FilterChips", () => {
 
     it("should handle clearing all", async () => {
       const { user } = setup(DEFAULT_FILTERS);
-      screen.debug();
+
       await user.click(screen.getByText("Clear All").parentElement);
       expect(screen.queryByText("State: Maryland, MD")).toBeNull();
       expect(screen.queryByText("Authority: CHIP SPA")).toBeNull();
