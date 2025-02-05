@@ -381,4 +381,5 @@ export const stateSubmitters: TestUserData[] = [
   automatedStateSubmitter,
   testNewStateSubmitter,
   noEmailStateSubmitter,
+  invalidEmailStateSubmitter,
 ];
