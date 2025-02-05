@@ -52,6 +52,7 @@ export const CHP_GUIDES: Template[] = [
   {
     title: "CS 3",
     text: "Eligibility for Medicaid Expansion Program Implementation Guide",
+    href: "/chp/IG_CS3_MedicaidExpansion.pdf",
   },
 
   // Eligibility Processing
