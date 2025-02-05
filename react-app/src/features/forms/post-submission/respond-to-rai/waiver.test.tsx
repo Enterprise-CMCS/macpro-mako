@@ -12,7 +12,11 @@ const upload = uploadFiles<(typeof formSchemas)["respond-to-rai-waiver"]>();
 describe("Respond To RAI Waiver", () => {
   beforeAll(async () => {
     skipCleanup();
-    await renderFormWithPackageSectionAsync(<RespondToRaiWaiver />, EXISTING_ITEM_PENDING_ID);
+    await renderFormWithPackageSectionAsync(
+      <RespondToRaiWaiver />,
+      EXISTING_ITEM_PENDING_ID,
+      "1915(c)",
+    );
   });
 
   test("RAI RESPONSE LETTER WAIVER", async () => {

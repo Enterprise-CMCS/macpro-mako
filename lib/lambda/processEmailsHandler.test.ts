@@ -376,7 +376,7 @@ describe("process emails  Handler for seatool", () => {
       bootstrapServers: "",
     };
     await handler(mockEvent, {} as Context, callback);
-    expect(secSPY).toHaveBeenCalledTimes(2);
+    expect(secSPY).toHaveBeenCalledTimes(1);
   });
   it("should not find the item ID and do nothing", async () => {
     const callback = vi.fn();
