@@ -1,15 +1,43 @@
 import { Authority, CommonEmailVariables, EmailAddresses, Events } from "shared-types";
 import { AuthoritiesWithUserTypesTemplate } from "../..";
-import { WaiverStateEmail } from "./emailTemplates";
+import { ChipSpaStateEmail, MedSpaStateEmail, WaiverStateEmail } from "./emailTemplates";
 import { render } from "@react-email/render";
 
 export const withdrawConfirmation: AuthoritiesWithUserTypesTemplate = {
+  [Authority.MED_SPA]: {
+    state: async (
+      variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: variables.allStateUsersEmails?.length
+          ? variables.allStateUsersEmails
+          : [`${variables.submitterName} <${variables.submitterEmail}>`],
+        subject: `Medicaid SPA Package ${variables.id} Withdrawal Confirmation`,
+        body: await render(<MedSpaStateEmail variables={variables} />),
+      };
+    },
+  },
+  [Authority.CHIP_SPA]: {
+    state: async (
+      variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: variables.allStateUsersEmails?.length
+          ? variables.allStateUsersEmails
+          : [`${variables.submitterName} <${variables.submitterEmail}>`],
+        subject: `CHIP SPA Package ${variables.id} Withdraw Confirmation`,
+        body: await render(<ChipSpaStateEmail variables={variables} />),
+      };
+    },
+  },
   [Authority["1915b"]]: {
     state: async (
       variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [`${variables.submitterName} <${variables.submitterEmail}>`], // TODO: change to all state users
+        to: variables.allStateUsersEmails?.length
+          ? variables.allStateUsersEmails
+          : [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `1915(b) ${variables.id} Withdrawal Confirmation`,
         body: await render(<WaiverStateEmail variables={variables} />),
       };
@@ -20,11 +48,12 @@ export const withdrawConfirmation: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [`${variables.submitterName} <${variables.submitterEmail}>`], // TODO: change to all state users
+        to: variables.allStateUsersEmails?.length
+          ? variables.allStateUsersEmails
+          : [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `1915(c) ${variables.id} Withdrawal Confirmation`,
         body: await render(<WaiverStateEmail variables={variables} />),
       };
     },
   },
-  //   TODO: add CHIP & SPA Withdraw Confirmation Here
 };
