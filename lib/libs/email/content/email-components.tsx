@@ -217,11 +217,17 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
   </Section>
 );
 
-const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
+const MailboxNotice = ({
+  type,
+  onWaivers = true,
+}: {
+  type: "SPA" | "Waiver";
+  onWaivers: boolean;
+}) => (
   <Text style={{ ...styles.text.description, marginTop: "16px", marginBottom: "16px" }}>
     {type === "SPA"
       ? "This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only."
-      : "This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only."}
+      : `This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI)${onWaivers ? " on Waivers" : ""}, and extension requests on Waivers only.`}
     {" Any other correspondence will be disregarded."}
   </Text>
 );
@@ -230,13 +236,15 @@ const FollowUpNotice = ({
   isChip,
   includeStateLead = true,
   includeDidNotExpect = true,
+  withDivider = true,
 }: {
   isChip?: boolean;
   includeStateLead?: boolean;
   includeDidNotExpect?: boolean;
+  withDivider?: boolean;
 }) => (
   <>
-    <Divider />
+    {withDivider && <Divider />}
     {isChip ? (
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
@@ -288,7 +296,9 @@ const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables, relatedEvent }) =>
     return (
       <Section>
         <Heading as="h2">
-          {`The OneMAC Submission Portal received a request to withdraw a Formal RAI Response. You are receiving this email notification as the Formal RAI was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.`}
+          The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You
+          are receiving this email notification as the Formal RAI was withdrawn by{" "}
+          {variables.submitterName} {variables.submitterEmail}.
         </Heading>
         <Text style={styles.text.description}>
           Note: The original RAI response details could not be retrieved.
@@ -300,7 +310,9 @@ const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables, relatedEvent }) =>
   return (
     <Section>
       <Heading as="h2">
-        {`The OneMAC Submission Portal received a request to withdraw the Formal RAI Response ${relatedEvent.id}. You are receiving this email notification as the Formal RAI for ${relatedEvent.id} was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.`}
+        The OneMAC Submission Portal received a request to withdraw the Formal RAI Response{" "}
+        {relatedEvent.id}. You are receiving this email notification as the Formal RAI for{" "}
+        {relatedEvent.id} was withdrawn by {variables.submitterName} {variables.submitterEmail}.
       </Heading>
     </Section>
   );

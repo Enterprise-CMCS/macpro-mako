@@ -15,7 +15,7 @@ export const WaiverStateEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <FollowUpNotice />
+      <FollowUpNotice includeDidNotExpect={false} />
     </BaseEmailTemplate>
   );
 };
