@@ -1,16 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
-import AppK from "./AppK";
 import CHIP_SPA from "./CHIP_SPA";
 import Medicaid_SPA from "./Medicaid_SPA";
-import Waiver_Capitated from "./Waiver_Capitated";
+import Waiver from "./Waiver";
 
 describe("Respond To RAI CMS Email Snapshot Test", () => {
-  it("renders a AppKCMSEmailPreview Preview Template", () => {
-    const template = render(<AppK />);
-
-    expect(template).toMatchSnapshot();
-  });
   it("renders a ChipSPA Preview Template", () => {
     const template = render(<CHIP_SPA />);
 
@@ -21,8 +15,8 @@ describe("Respond To RAI CMS Email Snapshot Test", () => {
 
     expect(template).toMatchSnapshot();
   });
-  it("renders a Waiver Capitated Preview Template", () => {
-    const template = render(<Waiver_Capitated />);
+  it("renders a Waiver Preview Template", () => {
+    const template = render(<Waiver />);
 
     expect(template).toMatchSnapshot();
   });

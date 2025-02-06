@@ -34,7 +34,7 @@ const defaultApiSearchHandler = http.post<PathParams, SearchQueryBody>(
         },
         hits: {
           total: {
-            value: 654,
+            value: itemList.length,
             relation: "eq",
           },
           max_score: 1,

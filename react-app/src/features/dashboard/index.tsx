@@ -13,6 +13,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
+  LoadingSpinner,
 } from "@/components";
 import { isStateUser } from "shared-utils";
 import { Link, Navigate, redirect } from "react-router";
@@ -38,7 +39,7 @@ const loader = (queryClient: QueryClient) => {
 export const dashboardLoader = loader;
 
 export const Dashboard = () => {
-  const { data: userObj } = useGetUser();
+  const { data: userObj, isLoading } = useGetUser();
   const osData = useOsData();
 
   const isAbleToAccessDashboard = () => {
@@ -48,7 +49,11 @@ export const Dashboard = () => {
     );
   };
 
-  if (userObj === undefined || !isAbleToAccessDashboard()) {
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (!userObj?.user || !isAbleToAccessDashboard()) {
     return <Navigate to="/" />;
   }
 
