@@ -9,7 +9,6 @@ import {
   WaiverStateEmail,
 } from "./emailTemplates";
 import { render } from "@react-email/render";
-import { EmailProcessingError } from "libs/email/errors";
 
 export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
