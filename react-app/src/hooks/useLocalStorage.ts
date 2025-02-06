@@ -4,9 +4,12 @@ export const clearLocalStorage = () => {
   window.localStorage.clear();
 };
 
+interface GenericInitialValue {
+  [index: number]: unknown;
+}
 type keyType = "osQuery" | "osColumns";
 
-export const useLocalStorage = (key: keyType, initialValue) => {
+export const useLocalStorage = (key: keyType, initialValue: GenericInitialValue) => {
   const [storedValue, setStoredValue] = useState(() => {
     if (typeof window === "undefined") return initialValue;
     try {

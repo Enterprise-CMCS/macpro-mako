@@ -8,8 +8,8 @@ import { OsTableColumn } from "./types";
 import { FilterChips } from "./Filtering";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
-const createLSColumns = (props) => {
-  const columnsVisalbe = props.columns.filter((col) => col.hidden);
+const createLSColumns = (columns: OsTableColumn[]): string[] => {
+  const columnsVisalbe = columns.filter((col) => col.hidden);
   const columnFields = columnsVisalbe.reduce((acc, curr) => {
     if (curr.field) acc.push(curr.field);
     return acc;
@@ -23,19 +23,22 @@ export const OsMainView: FC<{
   const context = useOsContext();
   const url = useOsUrl();
 
-  const [lsColumns, setlsColumns] = useLocalStorage("osColumns", createLSColumns(props));
+  const [localStorageCol, setLocalStorageCol] = useLocalStorage(
+    "osColumns",
+    createLSColumns(props.columns),
+  );
   const [osColumns, setOsColumns] = useState(
     props.columns.map((COL) => ({
       ...COL,
-      hidden: lsColumns.includes(COL.field),
+      hidden: setLocalStorageCol.includes(COL.field),
       locked: COL?.locked ?? false,
     })),
   );
 
   const onToggle = (field: string) => {
-    // set the local storage for columns
-    if (lsColumns.includes(field)) setlsColumns(() => lsColumns.filter((x) => x != field));
-    else setlsColumns([...lsColumns, field]);
+    if (localStorageCol.includes(field))
+      setLocalStorageCol(() => localStorageCol.filter((x) => x != field));
+    else setLocalStorageCol([...setLocalStorageCol, field]);
 
     setOsColumns((state) => {
       return state?.map((S) => {
