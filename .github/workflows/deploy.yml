@@ -145,12 +145,12 @@ jobs:
       - name: Set Report Path and Message
         id: variables
         run: |
-          if [[ ${{ github.head_ref }} == 'main' ]]; then
+          if [[ ${{ github.ref_name }} == 'main' ]]; then
             echo "deploy_to=playwright-report/main/" >> "$GITHUB_OUTPUT"
             echo "commit_msg=update Playwright report for main" >> "$GITHUB_OUTPUT"
           else
-            echo "deploy_to=playwright-report/${{ github.head_ref }}/${{ github.run_id }}/" >> "$GITHUB_OUTPUT"
-            echo "commit_msg=add Playwright report for branch ${{ github.head_ref }}, run-id ${{ github.run_id }}" >> "$GITHUB_OUTPUT"
+            echo "deploy_to=playwright-report/${{ github.ref_name }}/${{ github.run_id }}/" >> "$GITHUB_OUTPUT"
+            echo "commit_msg=add Playwright report for branch ${{ github.ref_name }}, run-id ${{ github.run_id }}" >> "$GITHUB_OUTPUT"
           fi
 
   publish-playwright:

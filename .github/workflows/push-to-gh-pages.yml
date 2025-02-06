@@ -41,7 +41,7 @@ jobs:
           git push
       - run: |
           if [[ ${{ inputs.DEPLOY_TO }} == '.' ]]; then
-            echo "Deployed to https://enterprise-cmcs.github.io/macpro-mako/" >> "$GITHUB_STEP_SUMMARY"
+            echo "Report URL: https://enterprise-cmcs.github.io/macpro-mako/" >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "Deployed to https://enterprise-cmcs.github.io/macpro-mako/${{ inputs.DEPLOY_TO }}" >> "$GITHUB_STEP_SUMMARY"
+            echo "Report URL: https://enterprise-cmcs.github.io/macpro-mako/${{ inputs.DEPLOY_TO }}" >> "$GITHUB_STEP_SUMMARY"
           fi
