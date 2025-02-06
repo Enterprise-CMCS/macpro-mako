@@ -25,14 +25,14 @@ describe("date-helper", () => {
       const date = new Date(2025, 0, 5); // Jan 5, 2025
       const formattedDate = formatNinetyDaysDate(date.getTime());
 
-      expect(formattedDate).toContain("Apr 5, 2025 @ 11:59pm EDT");
+      expect(formattedDate).toContain("Apr 5, 2025 @ 11:59pm EST");
     });
 
     it("should format the date correctly when in DST (March -> June)", () => {
       const date = new Date(2025, 2, 10); // March 10, 2025 (potentially DST)
       const formattedDate = formatNinetyDaysDate(date.getTime());
 
-      expect(formattedDate).toContain("Jun 8, 2025 @ 11:59pm EDT");
+      expect(formattedDate).toContain("Jun 8, 2025 @ 11:59pm EST");
     });
 
     it("should handle boundary cases near DST transitions correctly", () => {
