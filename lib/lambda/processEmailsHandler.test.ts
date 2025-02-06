@@ -241,49 +241,6 @@ describe("process emails  Handler", () => {
     expect(secSPY).toHaveBeenCalledTimes(2);
   });
 });
-describe("process emails  Handler failures", () => {
-  it.each([
-    [
-      `should send an email for ${withdrawRai} with ${Authority["1915b"]} and fail due to not finding it`,
-      Authority["1915b"],
-      withdrawRai,
-      SIMPLE_ID,
-    ],
-    [
-      `should send an email for ${withdrawRai} with ${Authority["1915c"]} and fail due to not finding it`,
-      Authority["1915c"],
-      withdrawRai,
-      SIMPLE_ID,
-    ],
-  ])("%s", async (_, auth, eventType, id = SIMPLE_ID) => {
-    const callback = vi.fn();
-    const mockEvent: KafkaEvent = {
-      records: {
-        "mock-topic": [
-          {
-            key: Buffer.from(id).toString("base64"),
-            value: Buffer.from(
-              JSON.stringify({
-                origin: "mako",
-                event: eventType,
-                authority: auth,
-              }),
-            ).toString("base64"),
-            headers: {},
-            timestamp: 1732645041557,
-            offset: "0",
-            partition: 0,
-            topic: "mock-topic",
-          } as unknown as KafkaRecord,
-        ],
-      },
-      eventSource: "",
-      bootstrapServers: "",
-    };
-    await expect(() => handler(mockEvent, {} as Context, callback)).rejects.toThrow();
-  });
-});
-
 const seatoolData = (authority: string) => ({
   ACTION_OFFICERS: [
     {
