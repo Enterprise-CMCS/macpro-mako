@@ -1,12 +1,12 @@
-import { CommonEmailVariables, Events } from "shared-types";
-import { Attachments, PackageDetails, BasicFooter } from "../../email-components";
+import { CommonEmailVariables, EmailAddresses, Events } from "shared-types";
+import { Attachments, PackageDetails, BasicFooter, WithdrawRAI } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const WaiverCMSEmail = ({
   variables,
   relatedEvent,
 }: {
-  variables: Events["WithdrawRai"] & CommonEmailVariables;
+  variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses };
   relatedEvent: Events["RespondToRai"];
 }) => (
   <BaseEmailTemplate
@@ -15,6 +15,7 @@ export const WaiverCMSEmail = ({
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >
+    <WithdrawRAI variables={variables} relatedEvent={relatedEvent} />
     <PackageDetails
       details={{
         "State or Territory": variables.territory,
