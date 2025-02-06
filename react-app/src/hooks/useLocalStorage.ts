@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 
-export const clearLocalStorage = () => {
-  window.localStorage.clear();
+export const removeItemLocalStorage = () => {
+  window.localStorage.removeItem("osQuery");
+  window.localStorage.removeItem("osColumns");
 };
 
 interface GenericInitialValue {
