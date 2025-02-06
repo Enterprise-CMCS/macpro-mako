@@ -145,7 +145,7 @@ jobs:
       - name: Set Report Path and Message
         id: variables
         run: |
-          if [[ ${{ github.event_name }} == 'push' ]]; then
+          if [[ ${{ github.head_ref }} == 'main' ]]; then
             echo "deploy_to=playwright-report/main/" >> "$GITHUB_OUTPUT"
             echo "commit_msg=update Playwright report for main" >> "$GITHUB_OUTPUT"
           else
