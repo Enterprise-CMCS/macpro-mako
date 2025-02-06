@@ -29,7 +29,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
         to: variables.allStateUsersEmails?.length
           ? variables.allStateUsersEmails
           : [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `SPA Package ${variables.id} Withdrawal Request`,
+        subject: `SPA Package ${variables.id} Withdraw Request`,
         body: await render(<MedSpaStateEmail variables={variables} />),
       };
     },
