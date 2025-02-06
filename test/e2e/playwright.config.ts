@@ -1,5 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -18,6 +19,9 @@ const baseURL = process.env.STAGE_NAME
 
 console.log(`Playwright configured to run against ${baseURL}`);
 export default defineConfig({
+  // Global setup
+  globalSetup: "./utils/auth.setup.ts",
+
   // need to find a reasonable timeout less than 30s
   // timeout: 10_000,
   testDir: "../../test",
@@ -31,7 +35,9 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   // reporter: [["dot"], ["html"]],
-  reporter: "dot",
+  reporter: process.env.CI
+    ? [["github"], ["html", { outputFolder: "playwright-report", open: "never" }]]
+    : [["list", { printSteps: true }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -44,9 +50,6 @@ export default defineConfig({
   /* Configure projects for major browsers */
   // Note: we can test on multiple browsers and resolutions defined here
   projects: [
-    // Setup project
-    { name: "setup", testMatch: /.*\.setup\.ts/, fullyParallel: true },
-
     {
       // we can have different projects for different users/use cases
       name: "state-user-chrome",
@@ -55,8 +58,6 @@ export default defineConfig({
         // Use prepared auth state for state submitter.
         storageState: "playwright/.auth/state-user.json",
       },
-      // Tests start already authenticated because we specified storageState in the config.
-      dependencies: ["setup"],
     },
   ],
 });
