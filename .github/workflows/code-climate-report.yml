@@ -34,3 +34,11 @@ jobs:
           path: coverage/coverage-summary.json
           overwrite: true
           retention-days: 90
+
+  publish-coverage:
+    needs: [coverage-report]
+    uses: ./.github/workflows/push-to-gh-pages.yml
+    with:
+      ARTIFACT_ID: main-coverage
+      DEPLOY_TO: .
+      COMMIT_MSG: "Updating coverage report"
