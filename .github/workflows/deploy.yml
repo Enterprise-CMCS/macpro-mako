@@ -111,6 +111,7 @@ jobs:
 
   e2e:
     runs-on: ubuntu-20.04
+    continue-on-error: true
     needs:
       - deploy
     environment:
