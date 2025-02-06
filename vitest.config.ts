@@ -62,6 +62,7 @@ export default defineConfig({
         "**/assets/**",
         "**/coverage/**",
         "**/vitest.setup.ts",
+        "test/**",
       ],
     },
   },
