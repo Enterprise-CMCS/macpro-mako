@@ -254,6 +254,7 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                        
                       <span
                         class="text-sky-700 underline hover:cursor-pointer"
+                        data-testid="supportingDocumentation-click"
                       >
                         choose from folder
                       </span>
@@ -663,6 +664,7 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                      
                     <span
                       class="text-sky-700 underline hover:cursor-pointer"
+                      data-testid="supportingDocumentation-click"
                     >
                       choose from folder
                     </span>

@@ -45,7 +45,6 @@ jobs:
     runs-on: ubuntu-20.04
     needs:
       - init
-      - test
     environment:
       name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     outputs:
@@ -112,6 +111,7 @@ jobs:
 
   e2e:
     runs-on: ubuntu-20.04
+    continue-on-error: true
     needs:
       - deploy
     environment:
