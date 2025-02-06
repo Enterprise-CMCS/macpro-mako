@@ -11,6 +11,8 @@ import {
   WITHDRAW_RAI_ITEM_C,
   NOT_FOUND_ITEM_ID,
   WITHDRAW_EMAIL_SENT,
+  WITHDRAW_RAI_ITEM_D,
+  WITHDRAW_RAI_ITEM_E,
 } from "mocks";
 const nms = "new-medicaid-submission";
 const ncs = "new-chip-submission";
@@ -198,6 +200,18 @@ describe("process emails  Handler", () => {
       Authority["1915c"],
       withdrawRai,
       WITHDRAW_RAI_ITEM_C,
+    ],
+    [
+      `should send an email for ${withdrawRai} with ${Authority["CHIP_SPA"]}`,
+      Authority["CHIP_SPA"],
+      withdrawRai,
+      WITHDRAW_RAI_ITEM_D,
+    ],
+    [
+      `should send an email for ${withdrawRai} with ${Authority["MED_SPA"]}`,
+      Authority["MED_SPA"],
+      withdrawRai,
+      WITHDRAW_RAI_ITEM_E,
     ],
     [
       `should send an email for ${uploadSubsequentDocuments} with ${Authority.CHIP_SPA}`,
