@@ -9,8 +9,6 @@ import { checkMultiFilter, useOsAggregate, useOsUrl } from "@/components";
 
 type FilterGroup = Partial<Record<opensearch.main.Field, C.DrawerFilterableGroup>>;
 
-export const FILTER_STORAGE_KEY = "osFilter";
-
 export const useFilterState = () => {
   const { data: user } = useGetUser();
   const url = useOsUrl();
@@ -94,10 +92,6 @@ export const useFilterDrawer = () => {
 
           return true;
         });
-        localStorage.setItem(
-          FILTER_STORAGE_KEY,
-          JSON.stringify({ filters: updateFilters, tab: url.state.tab }),
-        );
 
         // this changes the tanstack query; which is used to query the data
         url.onSet((state) => ({
@@ -121,35 +115,9 @@ export const useFilterDrawer = () => {
       filters: [],
       pagination: { ...s.pagination, number: 0 },
     }));
-    localStorage.removeItem(FILTER_STORAGE_KEY);
   };
 
   const filtersApplied = checkMultiFilter(url.state.filters, 1);
-
-  // on filter initialization
-  useEffect(() => {
-    // check if any filters where saved in storage
-    const filterStorage: string | null = localStorage.getItem(FILTER_STORAGE_KEY);
-    if (!filterStorage) return;
-
-    const filterState: { filters: C.DrawerFilterableGroup[]; tab: string } =
-      JSON.parse(filterStorage);
-
-    // we should delete the local storage if it doesn't match current tab
-    if (filterState.tab !== url.state.tab) {
-      localStorage.removeItem(FILTER_STORAGE_KEY);
-      return;
-    }
-
-    // this changes the tanstack query; which is used to query the data
-    url.onSet((state) => ({
-      ...state,
-      filters: filterState.filters,
-      pagination: { ...state.pagination, number: 0 },
-    }));
-
-    // the dependency array is intensionally left empty so that this useEffect only runs on first render
-  }, []);
 
   // update filter display based on url query
   useEffect(() => {

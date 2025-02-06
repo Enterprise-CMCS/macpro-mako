@@ -13,7 +13,7 @@ import { Auth } from "aws-amplify";
 import { intervalToDuration } from "date-fns";
 import pluralize from "pluralize";
 import { useEffect, useState } from "react";
-import { FILTER_STORAGE_KEY } from "../Opensearch/main/Filtering/Drawer";
+import { clearLocalStorage } from "@/hooks/useLocalStorage";
 
 const TWENTY_MINS_IN_MILS = 1000 * 60 * 20;
 const TEN_MINS_IN_MILS = 60 * 10;
@@ -30,8 +30,7 @@ export const TimeoutModal = () => {
 
   const onLogOut = () => {
     setIsModalOpen(false);
-    // removing any filtering user may have on the dashboard
-    localStorage.removeItem(FILTER_STORAGE_KEY);
+    clearLocalStorage();
     Auth.signOut();
   };
 

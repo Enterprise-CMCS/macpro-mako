@@ -1,10 +1,9 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { describe, expect, it } from "vitest";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { OsFilterDrawer } from "./index";
 import { opensearch } from "shared-types";
 import { renderFilterDrawer, getDashboardQueryString } from "@/utils/test-helpers";
-import { FILTER_STORAGE_KEY } from "./index";
 
 const setup = (
   filters: opensearch.Filterable<opensearch.main.Field>[],
@@ -22,23 +21,6 @@ const setup = (
 };
 
 describe("OsFilterDrawer", () => {
-  beforeEach(() => {
-    global.localStorage = {
-      setItem: vi.fn(),
-      getItem: vi.fn(),
-      removeItem: vi.fn(),
-      key: vi.fn(),
-      clear: vi.fn(),
-      length: 0,
-    };
-
-    vi.spyOn(global.localStorage, "getItem").mockReturnValue(null);
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
   describe("SPA Filters", () => {
     it("should display the drawer closed initially", () => {
       setup([], "spas");
@@ -435,70 +417,5 @@ describe("OsFilterDrawer", () => {
     expect(screen.getAllByRole("button").length).toEqual(2);
     expect(screen.getByRole("button", { name: "Reset" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
-  });
-  describe("localStorage", () => {
-    it("should load filters from localStorage", async () => {
-      const storedFilterState = [
-        {
-          label: "State",
-          field: "state.keyword",
-          component: "multiSelect",
-          prefix: "must",
-          type: "terms",
-          value: ["MD"],
-        },
-      ];
-      vi.spyOn(global.localStorage, "getItem").mockReturnValue(
-        JSON.stringify({
-          filters: storedFilterState,
-          tab: "spas",
-        }),
-      );
-      const { user } = setup([], "spas");
-
-      await user.click(screen.getByRole("button", { name: "Filters" }));
-
-      const state = screen.getByRole("heading", {
-        name: "State",
-        level: 3,
-      }).parentElement;
-      expect(state.getAttribute("data-state")).toEqual("open");
-
-      const combo = screen.getByRole("combobox");
-      expect(combo).toBeInTheDocument();
-      expect(screen.queryByLabelText("Remove MD")).toBeInTheDocument();
-    });
-
-    it("should not set filters if the tab does not match", async () => {
-      const storedFilterState = [
-        {
-          label: "State",
-          field: "state.keyword",
-          component: "multiSelect",
-          prefix: "must",
-          type: "terms",
-          value: ["MD"],
-        },
-      ];
-
-      vi.spyOn(global.localStorage, "getItem").mockReturnValue(
-        JSON.stringify({
-          filters: storedFilterState,
-          tab: "spas",
-        }),
-      );
-
-      const { user } = setup([], "waivers");
-      await user.click(screen.getByRole("button", { name: "Filters" }));
-
-      expect(global.localStorage.removeItem).toHaveBeenCalledWith(FILTER_STORAGE_KEY);
-    });
-
-    it("should do nothing if no filters are stored locally", async () => {
-      vi.spyOn(global.localStorage, "getItem").mockReturnValue(null);
-      const { user } = setup([], "spas");
-      await user.click(screen.getByRole("button", { name: "Filters" }));
-      expect(global.localStorage.getItem).toHaveBeenCalledWith(FILTER_STORAGE_KEY);
-    });
   });
 });
