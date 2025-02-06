@@ -28,10 +28,24 @@ jobs:
               echo "ERROR:  Your branch name, $STAGE_NAME, is not a valid Serverless Framework stage name." && exit 1
           fi
 
+  test:
+    runs-on: ubuntu-20.04
+    needs:
+      - init
+    environment:
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Test
+        run: run test
+
   deploy:
     runs-on: ubuntu-20.04
     needs:
       - init
+      - test
     environment:
       name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     outputs:
@@ -95,19 +109,6 @@ jobs:
       - name: Display Kibana URL
         run: |
           echo "Kibana URL: ${{ needs.deploy.outputs.kibana-url }}"
-
-  test:
-    runs-on: ubuntu-20.04
-    needs:
-      - init
-    environment:
-      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - uses: ./.github/actions/setup
-      - name: Test
-        run: run test
 
   e2e:
     runs-on: ubuntu-20.04

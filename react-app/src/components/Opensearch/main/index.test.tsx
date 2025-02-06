@@ -252,7 +252,7 @@ describe("OsMainView", () => {
       const recordsSelect = within(screen.getByTestId("pagination")).getByLabelText(
         "Records per page:",
       );
-      screen.debug(recordsSelect);
+
       await user.selectOptions(recordsSelect, ["50"]);
       expect(recordsSelect).toHaveValue("50");
       const expectedQueryString = getDashboardQueryString({
