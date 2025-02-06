@@ -14,6 +14,7 @@ import {
   verifyChips,
   verifyPagination,
   EMPTY_HITS,
+  Storage,
 } from "@/utils/test-helpers";
 import { OsMainView, OsTableColumn } from "@/components";
 
@@ -32,6 +33,7 @@ describe("OsMainView", () => {
     hits: opensearch.Hits<opensearch.main.Document>,
     queryString: string,
   ) => {
+    globalThis.localStorage = new Storage();
     const user = userEvent.setup();
     const rendered = renderDashboard(
       <OsMainView columns={columns} />,

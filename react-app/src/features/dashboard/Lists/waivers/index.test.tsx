@@ -25,6 +25,7 @@ import {
   APPROVED_ITEM_EXPORT,
   BLANK_ITEM,
   BLANK_ITEM_EXPORT,
+  Storage,
 } from "@/utils/test-helpers";
 import {
   TEST_STATE_SUBMITTER_USER,
@@ -249,6 +250,7 @@ const verifyRow = (
 
 describe("WaiversList", () => {
   const setup = async (hits: opensearch.Hits<opensearch.main.Document>, queryString: string) => {
+    globalThis.localStorage = new Storage();
     const user = userEvent.setup();
     const rendered = renderDashboard(
       <WaiversList />,

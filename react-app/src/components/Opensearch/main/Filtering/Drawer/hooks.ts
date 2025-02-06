@@ -122,7 +122,6 @@ export const useFilterDrawer = () => {
   // update filter display based on url query
   useEffect(() => {
     if (!drawer.drawerOpen) return;
-    console.log("hey");
     const updateAccordions = [...accordionValues] as any[];
     setFilters((currentFilters) => {
       // Set the new filters state based on the current filter data
