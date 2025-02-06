@@ -37,6 +37,11 @@ export const TemporaryExtensionForm = () => {
       ? `${submission._source.authority} ${actionTypeMap[submission._source.actionType]}`
       : null;
 
+  const updateLocalState = (value) => {
+    console.log("called updateLocalState with value:", value);
+    setTemporaryExtensionType(value);
+  };
+
   return (
     <ActionForm
       schema={formSchemas["temporary-extension"]}
@@ -64,7 +69,7 @@ export const TemporaryExtensionForm = () => {
                   <Select
                     onValueChange={(value) => {
                       field.onChange(value);
-                      setTemporaryExtensionType(value);
+                      updateLocalState(value);
                     }}
                     defaultValue={field.value}
                   >
