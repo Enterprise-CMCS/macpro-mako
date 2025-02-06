@@ -152,7 +152,7 @@ jobs:
             echo "commit_msg=add Playwright report for branch ${{ github.head_ref }}, run-id ${{ github.run_id }}" >> "$GITHUB_OUTPUT"
           fi
 
-  publish:
+  publish-playwright:
     needs: [e2e]
     uses: ./.github/workflows/push-to-gh-pages.yml
     with:
