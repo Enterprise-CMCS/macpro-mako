@@ -8,7 +8,7 @@ export function formatDate(date: number | null | undefined) {
   return format(date, "MMMM d, yyyy");
 }
 
-const isDST = (date: Date): boolean => {
+export const isDST = (date: Date): boolean => {
   const januaryOffset = new Date(date.getFullYear(), 0, 1).getTimezoneOffset();
   const julyOffset = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
   return date.getTimezoneOffset() !== Math.max(januaryOffset, julyOffset);
