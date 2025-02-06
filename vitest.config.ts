@@ -65,7 +65,7 @@ export default defineConfig({
         "**/legacy-package-view.ts",
         "**/legacy-admin-change.ts",
         "**/legacy-event.ts",
-        "**/legacy-shared",
+        "**/legacy-shared.ts",
       ],
     },
   },
