@@ -4,8 +4,10 @@ import { BaseEmailTemplate } from "../../email-templates";
 
 export const WaiverCMSEmail = ({
   variables,
+  relatedEvent,
 }: {
   variables: Events["WithdrawRai"] & CommonEmailVariables;
+  relatedEvent: Events["RespondToRai"];
 }) => (
   <BaseEmailTemplate
     previewText={`Withdraw Formal RAI Response for Waiver Package ${variables.id}`}
@@ -16,8 +18,8 @@ export const WaiverCMSEmail = ({
     <PackageDetails
       details={{
         "State or Territory": variables.territory,
-        Name: variables.submitterName,
-        "Email Address": variables.submitterEmail,
+        Name: relatedEvent.submitterName,
+        "Email Address": relatedEvent.submitterEmail,
         "Waiver Number": variables.id,
         Summary: variables.additionalInformation,
       }}
