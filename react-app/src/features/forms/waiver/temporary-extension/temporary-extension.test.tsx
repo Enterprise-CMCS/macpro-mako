@@ -59,23 +59,6 @@ describe("Temporary Extension", () => {
     ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
 
-  test("TEMPORARY EXTENSION TYPE 1915(c)", async () => {
-    // set the Item Id to TEST_ITEM_ID
-    await renderFormAsync(<TemporaryExtensionForm />);
-
-    const teTypeDropdown = screen.getByRole("combobox");
-
-    await user.click(teTypeDropdown);
-
-    const teOptionToClick = screen.getByRole("option", {
-      name: "1915(c)",
-    });
-
-    await user.click(teOptionToClick);
-
-    expect(teOptionToClick).toHaveTextContent("1915(c)");
-  });
-
   test("TEMPORARY EXTENSION TYPE 1915(b)", async () => {
     await renderFormAsync(<TemporaryExtensionForm />);
 
@@ -92,7 +75,21 @@ describe("Temporary Extension", () => {
 
     await user.click(teOptionToClick);
 
-    expect(teOptionToClick).toHaveTextContent("1915(b)");
+    expect(teTypeDropdown).toHaveTextContent("1915(b)");
+  });
+
+  test("TEMPORARY EXTENSION TYPE 1915(c)", async () => {
+    const teTypeDropdown = screen.getByRole("combobox");
+
+    await user.click(teTypeDropdown);
+
+    const teOptionToClick = screen.getByRole("option", {
+      name: "1915(c)",
+    });
+
+    await user.click(teOptionToClick);
+
+    expect(teTypeDropdown).toHaveTextContent("1915(c)");
   });
 
   test("APPROVED INITIAL OR RENEWAL WAIVER NUMBER", async () => {

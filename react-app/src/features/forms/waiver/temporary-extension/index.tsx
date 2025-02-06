@@ -63,8 +63,8 @@ export const TemporaryExtensionForm = () => {
                   </FormLabel>
                   <Select
                     onValueChange={(value) => {
-                      setTemporaryExtensionType(value);
                       field.onChange(value);
+                      setTemporaryExtensionType(value);
                     }}
                     defaultValue={field.value}
                   >
