@@ -1,7 +1,7 @@
 import { test as setup } from "@playwright/test";
 
 import { testUsers } from "./users";
-import { LoginPage } from "../pages";
+import { LoginPage } from "../../pages/login.page";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
 import { fromEnv } from "@aws-sdk/credential-providers";
