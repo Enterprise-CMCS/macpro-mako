@@ -228,6 +228,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       "respond-to-rai",
       respondToRai,
       {
+        authority: "Medicaid SPA",
         raiReceivedDate: ISO_DATETIME,
         raiWithdrawEnabled: false,
         seatoolStatus: SEATOOL_STATUS.SUBMITTED,

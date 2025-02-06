@@ -12,7 +12,11 @@ const upload = uploadFiles<(typeof formSchemas)["respond-to-rai-medicaid"]>();
 describe("Respond To RAI Medicaid", () => {
   beforeAll(async () => {
     skipCleanup();
-    await renderFormWithPackageSectionAsync(<RespondToRaiMedicaid />, EXISTING_ITEM_PENDING_ID);
+    await renderFormWithPackageSectionAsync(
+      <RespondToRaiMedicaid />,
+      EXISTING_ITEM_PENDING_ID,
+      "Medicaid SPA",
+    );
   });
 
   test("RAI RESPONSE LETTER", async () => {

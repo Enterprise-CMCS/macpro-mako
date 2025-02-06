@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>InvalidArgument</Code><Message>Header value cannot be represented using ISO-8859-1.</Message><ArgumentName>response-content-disposition</ArgumentName><ArgumentValue>filename ="Screenshot 2025-01-15 at 11.28.26 AM.png"</ArgumentValue><RequestId>W88VHQ322DCRN20Y</RequestId><HostId>Qfr5fFj3lNM2nKiNqxhNsMoOv3ZKcQHiRGQax5Z8cgx0Jo4eGawgnsuOAj5TzR6+GPqe0rgaabM=</HostId></Error>

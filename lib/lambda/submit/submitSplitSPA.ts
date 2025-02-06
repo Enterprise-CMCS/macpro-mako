@@ -11,7 +11,7 @@ import { z } from "zod";
 EXAMPLE EVENT JSON:
 {
   "body": {
-    "packageId": "MD-25-9999",
+    "packageId": "MD-25-9999"
   }
 }
 */
@@ -25,6 +25,8 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
   if (!newId) {
     throw new Error("Error getting next Split SPA Id");
   }
+
+  const currentTime = Date.now();
 
   // ID and changeMade are excluded; the rest of the object has to be spread into the new package
   const {
@@ -41,8 +43,9 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
       id: newId,
       idToBeUpdated: currentPackage._id,
       ...remainingFields,
-      makoChangedDate: Date.now(),
-      changedDate: Date.now(),
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
+      timestamp: currentTime,
       origin: "OneMAC",
       changeMade: "OneMAC Admin has added a package to OneMAC.",
       changeReason: "Per request from CMS, this package was added to OneMAC.",

@@ -76,7 +76,7 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
         <p className="flex flex-row gap-2 text-gray-600">
           <strong>{label as string}</strong>
           {" - "}
-          {format(new UTCDate(props.timestamp), "eee, MMM d, yyyy hh:mm:ss a")}
+          {format(new UTCDate(props.timestamp).getTime(), "eee, MMM d, yyyy hh:mm:ss a")}
         </p>
       </AccordionTrigger>
       <AccordionContent className="p-4">
