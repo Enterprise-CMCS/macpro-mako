@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="preload" href="/onemac-logo.png" as="image" />
-    <link rel="icon" href="public/favicon-light.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon-light.png" type="image/png" sizes="32x32" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -32,7 +32,7 @@
         const favicon =
           document.querySelector('link[rel="icon"]') || document.createElement("link");
         favicon.rel = "icon";
-        favicon.href = isDarkMode ? "public/favicon-dark.png" : "public/favicon-light.png";
+        favicon.href = isDarkMode ? "/favicon-dark.png" : "/favicon-light.png";
         document.head.appendChild(favicon);
       }
 
