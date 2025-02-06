@@ -82,8 +82,8 @@ const UserDropdownMenu = () => {
   };
 
   const handleLogout = async () => {
-    clearLocalStorage();
     await Auth.signOut();
+    clearLocalStorage();
   };
 
   if (isFaqPage) return null;

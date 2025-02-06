@@ -30,8 +30,8 @@ export const TimeoutModal = () => {
 
   const onLogOut = () => {
     setIsModalOpen(false);
-    clearLocalStorage();
     Auth.signOut();
+    clearLocalStorage();
   };
 
   const onExtendSession = () => {
