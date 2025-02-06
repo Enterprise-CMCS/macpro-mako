@@ -30,7 +30,7 @@ export const OsMainView: FC<{
   const [osColumns, setOsColumns] = useState(
     props.columns.map((COL) => ({
       ...COL,
-      hidden: setLocalStorageCol.includes(COL.field),
+      hidden: localStorageCol.includes(COL.field),
       locked: COL?.locked ?? false,
     })),
   );
@@ -38,7 +38,7 @@ export const OsMainView: FC<{
   const onToggle = (field: string) => {
     if (localStorageCol.includes(field))
       setLocalStorageCol(() => localStorageCol.filter((x) => x != field));
-    else setLocalStorageCol([...setLocalStorageCol, field]);
+    else setLocalStorageCol([...localStorageCol, field]);
 
     setOsColumns((state) => {
       return state?.map((S) => {
