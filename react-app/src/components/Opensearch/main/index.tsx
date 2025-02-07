@@ -27,6 +27,7 @@ export const OsMainView: FC<{
     "osColumns",
     createLSColumns(props.columns),
   );
+
   const [osColumns, setOsColumns] = useState(
     props.columns.map((COL) => ({
       ...COL,

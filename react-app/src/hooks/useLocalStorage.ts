@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
 
-export const removeItemLocalStorage = () => {
-  window.localStorage.removeItem("osQuery");
-  window.localStorage.removeItem("osColumns");
-};
-
 interface GenericInitialValue {
   [index: number]: unknown;
 }
 type keyType = "osQuery" | "osColumns";
+
+export const removeItemLocalStorage = (key?: keyType) => {
+  if (key) window.localStorage.removeItem(key);
+  else {
+    window.localStorage.removeItem("osQuery");
+    window.localStorage.removeItem("osColumns");
+  }
+};
 
 export const useLocalStorage = (key: keyType, initialValue: GenericInitialValue) => {
   const [storedValue, setStoredValue] = useState(() => {
