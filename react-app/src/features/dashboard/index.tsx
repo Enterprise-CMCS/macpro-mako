@@ -17,6 +17,7 @@ import {
 } from "@/components";
 import { isStateUser } from "shared-utils";
 import { Link, Navigate, redirect } from "react-router";
+import { removeItemLocalStorage } from "@/hooks/useLocalStorage";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -85,7 +86,8 @@ export const Dashboard = () => {
             <div className="flex flex-col">
               <Tabs
                 value={osData.state.tab}
-                onValueChange={(tab) =>
+                onValueChange={(tab) => {
+                  removeItemLocalStorage("osColumns");
                   osData.onSet(
                     (s) => ({
                       ...s,
@@ -94,8 +96,8 @@ export const Dashboard = () => {
                       search: "",
                     }),
                     true,
-                  )
-                }
+                  );
+                }}
               >
                 <div className="flex max-w-screen-xl mx-auto px-4 lg:px-8">
                   <TabsList>
