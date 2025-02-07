@@ -1,6 +1,5 @@
-import { describe, it, expect, vi } from "vitest";
-import { formatDate, formatNinetyDaysDate, isDST } from "./date-helper";
-import { beforeEach } from "node:test";
+import { describe, it, expect } from "vitest";
+import { formatDate, formatNinetyDaysDate } from "./date-helper";
 
 describe("date-helper", () => {
   describe("formatDate", () => {
@@ -17,12 +16,6 @@ describe("date-helper", () => {
   });
 
   describe("formatNinetyDaysDate", () => {
-    beforeEach(() => {
-      vi.spyOn(Date.prototype, "getTimezoneOffset").mockImplementation(function (this: Date) {
-        return isDST(this) ? -240 : -300; // EDT: -240, EST: -300
-      });
-    });
-
     it('should return "Pending" if date is null or undefined', () => {
       expect(formatNinetyDaysDate(null)).toBe("Pending");
       expect(formatNinetyDaysDate(undefined)).toBe("Pending");

@@ -38,6 +38,9 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
+  vi.useFakeTimers();
+  const now = new Date(2023, 0, 1);
+  vi.setSystemTime(now);
   process.env.PROJECT = PROJECT;
   process.env.REGION_A = REGION;
   process.env.STAGE = STAGE;
