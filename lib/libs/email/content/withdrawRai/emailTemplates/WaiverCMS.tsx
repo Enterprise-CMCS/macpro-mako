@@ -8,8 +8,8 @@ export const WaiverCMSEmail = ({
   variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses };
 }) => (
   <BaseEmailTemplate
-    previewText={`Waiver Package ${variables.id} withdrawn`}
-    heading={`Withdraw Formal RAI Response for Waiver Package ${variables.id}`}
+    previewText={`${variables.authority} ${variables.id} withdrawn`}
+    heading={`Withdraw Formal RAI Response for ${variables.authority} ${variables.id}`}
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >
