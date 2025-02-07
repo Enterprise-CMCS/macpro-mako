@@ -22,7 +22,6 @@ const contractingInitial = "contracting-initial";
 const capitatedInitial = "capitated-initial";
 const withdrawRai = "withdraw-rai";
 const respondToRai = "respond-to-rai";
-const appk = "app-k";
 const uploadSubsequentDocuments = "upload-subsequent-documents";
 
 describe("process emails  Handler", () => {
@@ -130,12 +129,6 @@ describe("process emails  Handler", () => {
       SIMPLE_ID,
     ],
     [
-      `should send an email for ${appk} with ${Authority["1915c"]}`,
-      Authority["1915c"],
-      appk,
-      SIMPLE_ID,
-    ],
-    [
       `should send an email for ${contractingInitial} with ${Authority.MED_SPA}`,
       Authority.MED_SPA,
       contractingInitial,
@@ -175,18 +168,6 @@ describe("process emails  Handler", () => {
       `should send an email for ${capitatedInitial} with ${Authority["1915b"]}`,
       Authority["1915b"],
       capitatedInitial,
-      SIMPLE_ID,
-    ],
-    [
-      `should send an email for ${appk} with ${Authority["1915c"]}`,
-      Authority["1915c"],
-      appk,
-      SIMPLE_ID,
-    ],
-    [
-      `should send an email for ${appk} with ${Authority["1915b"]}`,
-      Authority["1915b"],
-      appk,
       SIMPLE_ID,
     ],
     [

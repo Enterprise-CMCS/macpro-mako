@@ -3,7 +3,6 @@ import { ReactNode } from "react";
 import {
   Attachment,
   AttachmentKey,
-  AttachmentTitle,
   CommonEmailVariables,
   EmailAddresses,
   Events,
@@ -27,10 +26,9 @@ interface AttachmentGroup {
 }
 
 const areAllAttachmentsEmpty = (
-  attachments: Partial<Record<AttachmentTitle, AttachmentGroup | null>>,
+  attachments: Partial<Record<string, { label: string; files?: any[] }>>,
 ): boolean => {
-  if (!attachments) return true;
-  return Object.values(attachments).every((att) => !att || att.files?.length === 0);
+  return Object.values(attachments).every((att) => !att || !att.files || att.files.length === 0);
 };
 
 const Divider = () => <Hr style={styles.divider} />;
@@ -371,4 +369,5 @@ export {
   EmailFooter,
   getCpocEmail,
   getSrtEmails,
+  areAllAttachmentsEmpty,
 };
