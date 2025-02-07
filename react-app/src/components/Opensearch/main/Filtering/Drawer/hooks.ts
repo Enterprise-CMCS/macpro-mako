@@ -74,6 +74,7 @@ export const useFilterDrawer = () => {
     return (value: opensearch.FilterValue) => {
       setFilters((state) => {
         const updateState = { ...state, [field]: { ...state[field], value } };
+        // find all filter values to update
         const updateFilters = Object.values(updateState).filter((FIL) => {
           if (FIL.type === "terms") {
             const value = FIL.value as string[];
@@ -92,6 +93,7 @@ export const useFilterDrawer = () => {
           return true;
         });
 
+        // this changes the tanstack query; which is used to query the data
         url.onSet((state) => ({
           ...state,
           filters: updateFilters,
@@ -107,24 +109,26 @@ export const useFilterDrawer = () => {
     setAccordionValues(updateAccordion);
   };
 
-  const onFilterReset = () =>
+  const onFilterReset = () => {
     url.onSet((s) => ({
       ...s,
       filters: [],
       pagination: { ...s.pagination, number: 0 },
     }));
+  };
 
   const filtersApplied = checkMultiFilter(url.state.filters, 1);
 
-  // update initial filter state + accordion default open items
+  // update filter display based on url query
   useEffect(() => {
     if (!drawer.drawerOpen) return;
     const updateAccordions = [...accordionValues] as any[];
-
-    setFilters((s) => {
-      return Object.entries(s).reduce((STATE, [KEY, VAL]) => {
+    setFilters((currentFilters) => {
+      // Set the new filters state based on the current filter data
+      return Object.entries(currentFilters).reduce((STATE, [KEY, VAL]) => {
         const updateFilter = url.state.filters.find((FIL) => FIL.field === KEY);
 
+        // Determine the new value for the filter based on the URL state
         const value = (() => {
           if (updateFilter) {
             updateAccordions.push(KEY);
@@ -135,12 +139,15 @@ export const useFilterDrawer = () => {
           return { gte: undefined, lte: undefined } as opensearch.RangeValue;
         })();
 
+        // Update the state with the new value for this filter
         STATE[KEY] = { ...VAL, value };
+
         return STATE;
       }, {} as any);
     });
     setAccordionValues(updateAccordions);
-  }, [url.state.filters, drawer.drawerOpen]);
+    // accordionValues is intensionally left out of this dendency array because it could cause looping
+  }, [url.state.filters, drawer.drawerOpen, setFilters]);
 
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce(
@@ -157,7 +164,7 @@ export const useFilterDrawer = () => {
       },
       {} as Record<opensearch.main.Field, { label: string; value: string }[]>,
     );
-  }, [_aggs]);
+  }, [_aggs, labelMap]);
 
   return {
     aggs,
