@@ -103,9 +103,9 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: variables.allStateUsersEmails || [
-          `${variables.submitterName} <${variables.submitterEmail}>`,
-        ],
+        to: variables.allStateUsersEmails?.length
+          ? variables.allStateUsersEmails
+          : [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Waiver Package ${variables.id} Withdraw Request`,
         body: await render(<WaiverStateEmail variables={variables} />),
       };
