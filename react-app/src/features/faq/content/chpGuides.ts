@@ -52,14 +52,7 @@ export const CHP_GUIDES: Template[] = [
   {
     title: "CS 3",
     text: "Eligibility for Medicaid Expansion Program Implementation Guide",
-    href: "/chip/IG_CS3_MedicaidExpansion.pdf",
-  },
-
-  // Establish 2101(f) Group
-  {
-    title: "CS 14",
-    text: "Eligibility - Children Ineligible for Medicaid as a Result of the Elimination of Income Disregards Implementation Guide",
-    href: "/chp/IG_CS14_ChildrenIneligForMedicaid.pdf",
+    href: "/chp/IG_CS3_MedicaidExpansion.pdf",
   },
 
   // Eligibility Processing

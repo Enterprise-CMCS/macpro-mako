@@ -106,7 +106,6 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        cc: variables.allStateUsersEmails,
         subject: `Your 1915(c) RAI Response for ${variables.id} has been submitted to CMS`,
         body: await render(<WaiverStateEmail variables={variables} />),
       };

@@ -250,6 +250,7 @@ const verifyRow = (
 
 describe("WaiversList", () => {
   const setup = async (hits: opensearch.Hits<opensearch.main.Document>, queryString: string) => {
+    global.localStorage = new Storage();
     const user = userEvent.setup();
     const rendered = renderDashboard(
       <WaiversList />,
