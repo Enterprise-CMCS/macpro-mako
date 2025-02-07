@@ -275,7 +275,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a ChipSPA Preview Te
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -324,7 +324,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a ChipSPA Preview Te
                     >
                       This response confirms receipt of your CHIP State Plan Amendment (SPA) or your response to a
         SPA Request for Additional Information (RAI). You can expect a formal response to your
-        submittal to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+        submittal to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <table
                       align="center"
@@ -684,7 +684,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a ChipSPA Preview Te
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Apr 1, 2023 @ 11:59pm EDT
+                                    Apr 1, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -733,7 +733,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a ChipSPA Preview Te
                   >
                     This response confirms receipt of your CHIP State Plan Amendment (SPA) or your response to a
         SPA Request for Additional Information (RAI). You can expect a formal response to your
-        submittal to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+        submittal to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                   </p>
                   <table
                     align="center"
@@ -1150,7 +1150,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -1199,7 +1199,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
                     >
                       This response confirms receipt of your CHIP State Plan Amendment (SPA) or your response to a
         SPA Request for Additional Information (RAI). You can expect a formal response to your
-        submittal to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+        submittal to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <table
                       align="center"
@@ -1558,7 +1558,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -1605,7 +1605,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                     >
-                      This response confirms receipt of your Medicaid State Plan Amendment (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+                      This response confirms receipt of your Medicaid State Plan Amendment (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -1970,7 +1970,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Apr 1, 2023 @ 11:59pm EDT
+                                    Apr 1, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -2017,7 +2017,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
                   <p
                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                   >
-                    This response confirms receipt of your Medicaid State Plan Amendment (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+                    This response confirms receipt of your Medicaid State Plan Amendment (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                   </p>
                   <p
                     style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -2439,7 +2439,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -2488,7 +2488,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                     >
                       This response confirms receipt of your CHIP State Plan Amendment (SPA) or your response to a
         SPA Request for Additional Information (RAI). You can expect a formal response to your
-        submittal to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+        submittal to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <table
                       align="center"
@@ -2847,7 +2847,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -2894,7 +2894,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                     >
-                      This response confirms receipt of your Medicaid State Plan Amendment (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+                      This response confirms receipt of your Medicaid State Plan Amendment (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -3296,7 +3296,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -3345,7 +3345,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver
         Request for Additional Information (RAI). You can expect a formal response to your submittal
-        to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+        to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -3748,7 +3748,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Apr 1, 2023 @ 11:59pm EDT
+                                    Apr 1, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -3797,7 +3797,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                   >
                     This response confirms the receipt of your Waiver request or your response to a Waiver
         Request for Additional Information (RAI). You can expect a formal response to your submittal
-        to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+        to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                   </p>
                   <p
                     style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"

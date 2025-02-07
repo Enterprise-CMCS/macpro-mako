@@ -9,9 +9,9 @@ export function formatDate(date: number | null | undefined) {
 }
 
 export const isDST = (date: Date): boolean => {
-  const januaryOffset = new Date(date.getFullYear(), 0, 1).getTimezoneOffset();
-  const julyOffset = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
-  return date.getTimezoneOffset() !== Math.max(januaryOffset, julyOffset);
+  const jan = new Date(date).getTimezoneOffset();
+  const jul = new Date(new Date(date).setMonth(6)).getTimezoneOffset();
+  return new Date(date).getTimezoneOffset() < Math.max(jan, jul);
 };
 
 export function formatNinetyDaysDate(date: number | null | undefined): string {

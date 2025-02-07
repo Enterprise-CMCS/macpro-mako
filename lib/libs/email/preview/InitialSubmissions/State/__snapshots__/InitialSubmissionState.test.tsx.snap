@@ -354,7 +354,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -407,7 +407,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Apr 1, 2023 @ 11:59pm EDT.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -1136,7 +1136,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -1185,7 +1185,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+        within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -1561,7 +1561,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      May 31, 2023 @ 11:59pm EDT
+                                      May 31, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -2164,7 +2164,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -2214,7 +2214,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -2658,7 +2658,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -2708,7 +2708,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -3152,7 +3152,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -3202,7 +3202,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -3647,7 +3647,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Apr 1, 2023 @ 11:59pm EDT
+                                    Apr 1, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -3697,7 +3697,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                     This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                   </p>
                   <p
@@ -4202,7 +4202,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -4255,7 +4255,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Apr 1, 2023 @ 11:59pm EDT.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -4984,7 +4984,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -5033,7 +5033,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+        within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -5409,7 +5409,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      May 31, 2023 @ 11:59pm EDT
+                                      May 31, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -6012,7 +6012,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -6062,7 +6062,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -6506,7 +6506,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -6556,7 +6556,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -7000,7 +7000,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -7050,7 +7050,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -7494,7 +7494,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -7544,7 +7544,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -7988,7 +7988,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -8038,7 +8038,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -8482,7 +8482,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -8532,7 +8532,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -8977,7 +8977,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Apr 1, 2023 @ 11:59pm EDT
+                                    Apr 1, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -9027,7 +9027,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                     This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                   </p>
                   <p
@@ -9532,7 +9532,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -9585,7 +9585,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Apr 1, 2023 @ 11:59pm EDT.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -10032,7 +10032,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Apr 1, 2023 @ 11:59pm EDT
+                                    Apr 1, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -10085,7 +10085,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                     This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Apr 1, 2023 @ 11:59pm EDT.
+        before Apr 1, 2023 @ 11:59pm EST.
                   </p>
                   <hr
                     style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -10589,7 +10589,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -10642,7 +10642,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Apr 1, 2023 @ 11:59pm EDT.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -11795,7 +11795,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -11848,7 +11848,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Apr 1, 2023 @ 11:59pm EDT.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -12577,7 +12577,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -12626,7 +12626,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+        within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -13002,7 +13002,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      May 31, 2023 @ 11:59pm EDT
+                                      May 31, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -13605,7 +13605,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -13655,7 +13655,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -14100,7 +14100,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Apr 1, 2023 @ 11:59pm EDT
+                                    Apr 1, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -14150,7 +14150,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                     This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                   </p>
                   <p
@@ -14655,7 +14655,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -14708,7 +14708,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Apr 1, 2023 @ 11:59pm EDT.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -15437,7 +15437,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -15486,7 +15486,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+        within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -15862,7 +15862,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      May 31, 2023 @ 11:59pm EDT
+                                      May 31, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -16465,7 +16465,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -16515,7 +16515,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -16959,7 +16959,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -17009,7 +17009,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -17453,7 +17453,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -17503,7 +17503,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -17947,7 +17947,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -17997,7 +17997,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -18442,7 +18442,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Apr 1, 2023 @ 11:59pm EDT
+                                    Apr 1, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -18492,7 +18492,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                     This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                   </p>
                   <p
@@ -18997,7 +18997,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -19050,7 +19050,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Apr 1, 2023 @ 11:59pm EDT.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -19779,7 +19779,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -19828,7 +19828,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+        within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -20205,7 +20205,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Apr 1, 2023 @ 11:59pm EDT
+                                    Apr 1, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -20254,7 +20254,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                   >
                     This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+        within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                   </p>
                   <p
                     style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -20729,7 +20729,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -20782,7 +20782,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Apr 1, 2023 @ 11:59pm EDT.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -21511,7 +21511,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -21560,7 +21560,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+        within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -21936,7 +21936,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      May 31, 2023 @ 11:59pm EDT
+                                      May 31, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -22539,7 +22539,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -22589,7 +22589,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -23033,7 +23033,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -23083,7 +23083,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -23528,7 +23528,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Apr 1, 2023 @ 11:59pm EDT
+                                    Apr 1, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -23578,7 +23578,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                     This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                   </p>
                   <p
@@ -24083,7 +24083,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -24136,7 +24136,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Apr 1, 2023 @ 11:59pm EDT.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -24865,7 +24865,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -24914,7 +24914,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+        within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -25290,7 +25290,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      May 31, 2023 @ 11:59pm EDT
+                                      May 31, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -25893,7 +25893,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -25943,7 +25943,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -26387,7 +26387,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -26437,7 +26437,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -26881,7 +26881,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -26931,7 +26931,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -27375,7 +27375,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -27425,7 +27425,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -27869,7 +27869,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -27919,7 +27919,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                     </p>
                     <p
@@ -28364,7 +28364,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Apr 1, 2023 @ 11:59pm EDT
+                                    Apr 1, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
@@ -28414,7 +28414,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                     This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EDT
+              Apr 1, 2023 @ 11:59pm EST
               .
                   </p>
                   <p
@@ -28919,7 +28919,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -28972,7 +28972,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                       This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before Apr 1, 2023 @ 11:59pm EDT.
+        before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
@@ -29701,7 +29701,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Apr 1, 2023 @ 11:59pm EDT
+                                      Apr 1, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -29750,7 +29750,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                     >
                       This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before Apr 1, 2023 @ 11:59pm EDT.
+        within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -30126,7 +30126,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      May 31, 2023 @ 11:59pm EDT
+                                      May 31, 2023 @ 11:59pm EST
                                     </p>
                                   </td>
                                 </tr>
@@ -30692,7 +30692,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    May 31, 2023 @ 11:59pm EDT
+                                    May 31, 2023 @ 11:59pm EST
                                   </p>
                                 </td>
                               </tr>
