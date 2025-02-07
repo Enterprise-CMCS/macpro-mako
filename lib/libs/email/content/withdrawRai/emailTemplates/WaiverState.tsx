@@ -16,7 +16,7 @@ export const WaiverStateEmail = ({
   return (
     <BaseEmailTemplate
       previewText={`${variables.authority} ${variables.id} Withdrawn`}
-      heading={`This response confirms you have withdrawn a Waiver from CMS for review`}
+      heading={`Withdraw Formal RAI Response for Waiver Package ${variables.id}`}
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
