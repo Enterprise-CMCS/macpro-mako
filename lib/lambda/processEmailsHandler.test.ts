@@ -258,15 +258,13 @@ describe("process emails  Handler", () => {
 describe("process emails  Handler failures", () => {
   it.each([
     [
-      `should send an email for ${withdrawRai} with ${Authority["1915b"]} and fail due to not finding it`,
+      `should send an email for ${withdrawRai} with ${Authority["1915b"]}`,
       Authority["1915b"],
-      withdrawRai,
       SIMPLE_ID,
     ],
     [
-      `should send an email for ${withdrawRai} with ${Authority["1915c"]} and fail due to not finding it`,
+      `should send an email for ${withdrawRai} with ${Authority["1915c"]}`,
       Authority["1915c"],
-      withdrawRai,
       SIMPLE_ID,
     ],
   ])("%s", async (_, auth, eventType, id = SIMPLE_ID) => {
