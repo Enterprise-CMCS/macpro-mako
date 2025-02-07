@@ -291,13 +291,10 @@ export interface WithdrawRAIProps {
 const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables }) => {
   return (
     <Section>
-      <Heading as="h2">
+      <Text>
         The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are
-        are receiving this email notification as the Formal RAI was withdrawn by{" "}
+        are receiving this email notification as the Formal RAI for {variables.id} was withdrawn by{" "}
         {variables.submitterName} {variables.submitterEmail}.
-      </Heading>
-      <Text style={styles.text.description}>
-        Note: The original RAI response details could not be retrieved.
       </Text>
     </Section>
   );
