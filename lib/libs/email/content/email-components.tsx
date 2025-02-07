@@ -222,7 +222,7 @@ const MailboxNotice = ({
   onWaivers = true,
 }: {
   type: "SPA" | "Waiver";
-  onWaivers: boolean;
+  onWaivers?: boolean;
 }) => (
   <Text style={{ ...styles.text.description, marginTop: "16px", marginBottom: "16px" }}>
     {type === "SPA"
