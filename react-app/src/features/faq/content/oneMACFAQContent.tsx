@@ -985,12 +985,6 @@ export const oneMACFAQContent: FAQContent[] = [
                 "list-disc pl-7 space-y-2",
               )}
               {renderSection(
-                "Establish 2101(f) Group",
-                CHP_TEMPLATES,
-                (template) => template.title === "CS 14",
-                "list-disc pl-7 space-y-2",
-              )}
-              {renderSection(
                 "Eligibility Processing",
                 CHP_TEMPLATES,
                 (template) => template.title === "CS 24",
@@ -1060,12 +1054,6 @@ export const oneMACFAQContent: FAQContent[] = [
                   "XXI Medicaid Expansion",
                   CHP_GUIDES,
                   (guide) => guide.title === "CS 3",
-                  "list-disc pl-6 space-y-2",
-                )}
-                {renderSection(
-                  "Establish 2101(f) Group",
-                  CHP_GUIDES,
-                  (guide) => guide.title === "CS 14",
                   "list-disc pl-6 space-y-2",
                 )}
                 {renderSection(
