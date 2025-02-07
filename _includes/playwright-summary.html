@@ -1,0 +1,39 @@
+{% assign total = include.stats.expected + include.stats.skipped + include.stats.unexpected %}
+{% capture icon %}
+  {% if include.stats.unexpected > 0 %}
+      {% include /img/failed.svg %}
+    {% elsif include.errors.size == 0 %}
+      {% include /img/passed.svg %}
+    {% else %}
+      {% include /img/error.svg %}
+    {% endif %}
+{% endcapture %}
+<div class="test-report-container" onclick="location.href='{{ include.url }}'">
+  <div class="report-header">
+    {{ include.title }}
+    <span class="report-time">Last run: {{ include.stats.startTime | date: "%Y-%m-%d %H:%M %Z" }}</span>
+  </div>
+  <div class="report-body">
+    {{ icon }}
+    <div class="results">
+      <div class="report-stats">
+        <div class="stat-item">
+          All <span class="stat-count">{{ total }}</span>
+        </div>
+        <div class="stat-item">
+          Passed <span class="stat-count">{{ include.stats.expected }}</span>
+        </div>
+        <div class="stat-item">
+          Failed <span class="stat-count">{{ include.stats.unexpected }}</span>
+        </div>
+        <div class="stat-item">
+          Flaky <span class="stat-count">{{ include.stats.flaky }}</span>
+        </div>
+        <div class="stat-item">
+          Skipped <span class="stat-count">{{ include.stats.skipped }}</span>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
