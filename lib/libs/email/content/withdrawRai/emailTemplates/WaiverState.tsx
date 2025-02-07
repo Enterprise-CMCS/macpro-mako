@@ -10,10 +10,8 @@ import { BaseEmailTemplate } from "../../email-templates";
 
 export const WaiverStateEmail = ({
   variables,
-  relatedEvent,
 }: {
   variables: Events["WithdrawRai"] & CommonEmailVariables;
-  relatedEvent: Events["RespondToRai"];
 }) => {
   return (
     <BaseEmailTemplate
@@ -25,8 +23,8 @@ export const WaiverStateEmail = ({
       <PackageDetails
         details={{
           "State or Territory": variables.territory,
-          Name: relatedEvent.submitterName,
-          "Email Address": relatedEvent.submitterEmail,
+          Name: variables.submitterName,
+          "Email Address": variables.submitterEmail,
           "Waiver Number": variables.id,
           Summary: variables.additionalInformation,
         }}
