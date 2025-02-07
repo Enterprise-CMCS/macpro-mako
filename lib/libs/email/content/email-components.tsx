@@ -288,32 +288,19 @@ const BasicFooter = () => (
 
 export interface WithdrawRAIProps {
   variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses };
-  relatedEvent: Events["RespondToRai"];
 }
 
-const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables, relatedEvent }) => {
-  if (!relatedEvent) {
-    return (
-      <Section>
-        <Heading as="h2">
-          The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You
-          are receiving this email notification as the Formal RAI was withdrawn by{" "}
-          {variables.submitterName} {variables.submitterEmail}.
-        </Heading>
-        <Text style={styles.text.description}>
-          Note: The original RAI response details could not be retrieved.
-        </Text>
-      </Section>
-    );
-  }
-
+const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables }) => {
   return (
     <Section>
       <Heading as="h2">
-        The OneMAC Submission Portal received a request to withdraw the Formal RAI Response{" "}
-        {relatedEvent.id}. You are receiving this email notification as the Formal RAI for{" "}
-        {relatedEvent.id} was withdrawn by {variables.submitterName} {variables.submitterEmail}.
+        The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are
+        are receiving this email notification as the Formal RAI was withdrawn by{" "}
+        {variables.submitterName} {variables.submitterEmail}.
       </Heading>
+      <Text style={styles.text.description}>
+        Note: The original RAI response details could not be retrieved.
+      </Text>
     </Section>
   );
 };

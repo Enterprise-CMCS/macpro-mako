@@ -1,18 +1,19 @@
-import { CommonEmailVariables, Events } from "shared-types";
-import { Attachments, PackageDetails, BasicFooter } from "../../email-components";
+import { CommonEmailVariables, Events, EmailAddresses } from "shared-types";
+import { WithdrawRAI, Attachments, PackageDetails, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const WaiverCMSEmail = ({
   variables,
 }: {
-  variables: Events["WithdrawRai"] & CommonEmailVariables;
+  variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses };
 }) => (
   <BaseEmailTemplate
-    previewText={`Withdraw Formal RAI Response for Waiver Package ${variables.id}`}
-    heading={`The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are receiving this email notification as the Formal RAI for ${variables.id} was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.`}
+    previewText={`Waiver Package ${variables.id} withdrawn`}
+    heading={`Withdraw Formal RAI Response for Waiver Package ${variables.id}`}
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >
+    <WithdrawRAI variables={variables} />
     <PackageDetails
       details={{
         "State or Territory": variables.territory,
