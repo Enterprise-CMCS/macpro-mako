@@ -46,5 +46,7 @@ jobs:
       - name: Report Coverage (only PR)
         if: steps.get-main-coverage.conclusion == 'failure' || steps.get-main-coverage.conclusion == 'skipped'
         uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          file-coverage-mode: all
     outputs:
       actualResult: ${{ steps.test.conclusion }}
