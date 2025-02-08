@@ -23,7 +23,7 @@ export const transform = () => {
       state: data.pk?.split("-")?.[0], // Extract state from pk
       stateStatus,
       statusDate: new Date(data.eventTimestamp).toISOString(),
-      proposedDate: data.proposedEffectiveDate === "none" ? null : data.proposedEffectiveDate, // Handle "none" as null
+      proposedDate: isNaN(new Date(data.proposedEffectiveDate).getTime()) ? null : data.proposedEffectiveDate, // Handle non date convertible data as null
       subject: null,
       submissionDate: new Date(data.eventTimestamp).toISOString(),
       submitterEmail: data.submitterEmail,
