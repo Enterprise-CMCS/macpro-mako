@@ -126,17 +126,14 @@ const processAndIndex = async ({
       }
 
       // If the event is a supported event, transform and push to docs array for indexing
-      // let transformForEvent;
       if (kafkaSource === "onemac") { // This is a onemac legacy event
-        console.log("onemace changelog event");
-        // transformForEvent = transforms.legacyEvent;
-      // } else if (record.event in transforms) {
-      //   transformForEvent = transforms[record.event as keyof typeof transforms];
-      }
+        record.event = "legacy-event";
+        record.origin = "onemac";
+      } 
 
-      if (!record.event || record?.origin !== "mako") {
-      continue;
-      }
+      // if (!record.event || record?.origin !== "mako") {
+      // continue;
+      // }
       
       // If the event is a supported event, transform and push to docs array for indexing
       if (record.event in transforms) {
