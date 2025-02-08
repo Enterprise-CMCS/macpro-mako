@@ -57,8 +57,8 @@ const processAndIndex = async ({
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
     const { value, offset, headers } = kafkaRecord;
-    const kafkaSource = String.fromCharCode(...headers[0]?.source || []);
-    console.log(kafkaSource);
+    // const kafkaSource = String.fromCharCode(...headers[0]?.source || []);
+    console.log("kafkaheaders", headers);
 
     try {
       // If a legacy tombstone, continue
@@ -127,12 +127,21 @@ const processAndIndex = async ({
       }
 
       // If the event is a supported event, transform and push to docs array for indexing
-      let transformForEvent;
-      if (kafkaSource === "onemac") { // This is a onemac legacy event
-        transformForEvent = transforms.legacyEvent;
-      } else if (record.event in transforms) {
-        transformForEvent = transforms[record.event as keyof typeof transforms];
-      }
+      // let transformForEvent;
+      // if (kafkaSource === "onemac") { // This is a onemac legacy event
+      //   console.log("onemace changelog event");
+      //   // transformForEvent = transforms.legacyEvent;
+      // } else if (record.event in transforms) {
+      //   transformForEvent = transforms[record.event as keyof typeof transforms];
+      // }
+
+       if (!record.event || record?.origin !== "mako") {
+        continue;
+       }
+      
+      // If the event is a supported event, transform and push to docs array for indexing
+      if (record.event in transforms) {
+        const transformForEvent = transforms[record.event as keyof typeof transforms];
 
       if(transformForEvent) {
         const result = transformForEvent.transform(offset).safeParse(record);
