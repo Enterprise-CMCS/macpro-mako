@@ -143,7 +143,8 @@ const processAndIndex = async ({
       if (record.event in transforms) {
         const transformForEvent = transforms[record.event as keyof typeof transforms];
 
-      if(transformForEvent) {
+
+      // if(transformForEvent) {
         const result = transformForEvent.transform(offset).safeParse(record);
 
         if (result.success && result.data === undefined) continue;
