@@ -85,7 +85,7 @@ describe("postAuth Handler", () => {
 
   it("should return the user and update the user in the service", async () => {
     const consoleSpy = vi.spyOn(console, "log");
-    process.env.idmVpcEndpointHost = "api-test.example.com";
+    process.env.idmAuthzHostHeader = "api-test.example.com";
     process.env.idmApiEndpoint = "vpce-mock-12345.test.vpce.amazonaws.com";
 
     const validUser = await handler(

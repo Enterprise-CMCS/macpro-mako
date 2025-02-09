@@ -99,8 +99,7 @@ export class ParentStack extends cdk.Stack {
       idmAuthzApiEndpoint: props.idmAuthzApiEndpoint,
       idmAuthzApiKeyArn: props.idmAuthzApiKeyArn,
       idmClientSecretArn: props.idmClientSecretArn,
-      idmVpcEndpointDns: props.idmVpcEndpointDns,
-      idmVpcEndpointHost: props.idmVpcEndpointHost,
+      idmAuthzHostHeader: props.idmAuthzHostHeader,
       devPasswordArn: props.devPasswordArn,
     });
 
@@ -131,7 +130,7 @@ export class ParentStack extends cdk.Stack {
         applicationEndpointUrl: uiInfraStack.applicationEndpointUrl,
         s3BucketName: uiInfraStack.bucket.bucketName,
         cloudfrontDistributionId: uiInfraStack.distribution.distributionId,
-        idmHomeUrl: props.idmHomeUrl,
+        idmAuthzApiEndpoint: props.idmAuthzApiEndpoint,
         kibanaUrl: `https://${dataStack.openSearchDomainEndpoint}/_dashboards`,
       }),
       description: `Deployment output for the ${props.stage} environment.`,

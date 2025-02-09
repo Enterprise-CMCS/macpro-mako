@@ -25,9 +25,7 @@ export type InjectedConfigProperties = {
   idmClientIssuer: string;
   idmClientSecretArn: string;
   idmEnable: boolean;
-  idmHomeUrl: string;
-  idmVpcEndpointDns: string;
-  idmVpcEndpointHost: string;
+  idmAuthzHostHeader: string;
   legacyS3AccessRoleArn: string;
   useSharedOpenSearch: boolean;
   vpcName: string;
@@ -133,9 +131,9 @@ export class DeploymentConfig {
       typeof config.idmClientIssuer === "string" &&
       typeof config.idmClientSecretArn === "string" && // pragma: allowlist secret
       typeof config.idmEnable === "boolean" &&
-      typeof config.idmHomeUrl === "string" &&
-      typeof config.idmVpcEndpointDns === "string" &&
-      typeof config.idmVpcEndpointHost === "string" &&
+      typeof config.idmAuthzApiEndpoint === "string" &&
+      typeof config.idmAuthzApiEndpoint === "string" &&
+      typeof config.idmAuthzHostHeader === "string" &&
       typeof config.legacyS3AccessRoleArn === "string" &&
       typeof config.useSharedOpenSearch === "boolean" &&
       typeof config.vpcName === "string"

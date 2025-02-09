@@ -45,8 +45,8 @@ export const handler: Handler = async (event) => {
         "Content-Type": "application/json",
         "x-api-key": apiKey,
       };
-      if (process.env.idmVpcEndpointHost) {
-        headers.Host = process.env.idmVpcEndpointHost;
+      if (process.env.idmAuthzHostHeader) {
+        headers.Host = process.env.idmAuthzHostHeader;
       }
       const response = await fetch(`${apiEndpoint}/api/v1/authz/id/all?userId=${username}`, {
         method: "GET",
