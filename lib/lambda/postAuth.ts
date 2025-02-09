@@ -38,12 +38,16 @@ export const handler: Handler = async (event) => {
 
     try {
       const username = userAttributes["custom:username"]; // This is the four-letter IDM username
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+      };
+      if (process.env.idmApiHost) {
+        headers.Host = process.env.idmApiHost;
+      }
       const response = await fetch(`${apiEndpoint}/api/v1/authz/id/all?userId=${username}`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-        },
+        headers,
       });
       if (!response.ok) {
         throw new Error(

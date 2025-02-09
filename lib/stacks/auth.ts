@@ -24,6 +24,8 @@ interface AuthStackProps extends cdk.NestedStackProps {
   idmClientIssuer: DeploymentConfigProperties["idmClientIssuer"];
   idmAuthzApiEndpoint: DeploymentConfigProperties["idmAuthzApiEndpoint"];
   idmAuthzApiKeyArn: DeploymentConfigProperties["idmAuthzApiKeyArn"];
+  idmVpcEndpointDns: DeploymentConfigProperties["idmVpcEndpointDns"];
+  idmVpcEndpointHost: DeploymentConfigProperties["idmVpcEndpointHost"];
   devPasswordArn: DeploymentConfigProperties["devPasswordArn"];
 }
 
@@ -62,6 +64,8 @@ export class Auth extends cdk.NestedStack {
       devPasswordArn,
       idmClientSecretArn,
       idmAuthzApiKeyArn,
+      idmVpcEndpointDns,
+      idmVpcEndpointHost,
     } = props;
     const idmClientSecret = cdk.aws_secretsmanager.Secret.fromSecretCompleteArn(
       this,
@@ -264,6 +268,8 @@ export class Auth extends cdk.NestedStack {
         environment: {
           idmAuthzApiEndpoint,
           idmAuthzApiKeyArn,
+          idmApiHost: idmVpcEndpointHost,
+          idmApiEndpoint: idmVpcEndpointDns,
         },
         timeout: cdk.Duration.seconds(30),
         memorySize: 1024,

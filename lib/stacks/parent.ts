@@ -99,6 +99,8 @@ export class ParentStack extends cdk.Stack {
       idmAuthzApiEndpoint: props.idmAuthzApiEndpoint,
       idmAuthzApiKeyArn: props.idmAuthzApiKeyArn,
       idmClientSecretArn: props.idmClientSecretArn,
+      idmVpcEndpointDns: props.idmVpcEndpointDns,
+      idmVpcEndpointHost: props.idmVpcEndpointHost,
       devPasswordArn: props.devPasswordArn,
     });
 

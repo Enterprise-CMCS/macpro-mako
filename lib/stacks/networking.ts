@@ -23,7 +23,7 @@ export class Networking extends cdk.NestedStack {
     const lambdaSecurityGroup = new cdk.aws_ec2.SecurityGroup(this, `LambdaSecurityGroup`, {
       vpc,
       description: `Outbound permissive sg for lambdas in ${project}-${stage}.`,
-      allowAllOutbound: true, // Set to false to customize egress rules
+      allowAllOutbound: true,
       securityGroupName: `${project}-${stage}-lambda-sg`,
     });
 
