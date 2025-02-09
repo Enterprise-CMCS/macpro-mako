@@ -10,7 +10,7 @@ import {
 } from "mocks";
 
 const callback = vi.fn();
-describe("process emails Handler", () => {
+describe("postAuth Handler", () => {
   afterAll(() => {
     setMockUsername(makoStateSubmitter);
   });
@@ -21,12 +21,28 @@ describe("process emails Handler", () => {
       "ERROR: process.env.idmAuthzApiKeyArn is required",
     );
   });
+
   it("should return an error due to a missing endpoint", async () => {
     delete process.env.idmAuthzApiEndpoint;
     await expect(handler({ test: "test" }, {} as Context, callback)).rejects.toThrowError(
       "ERROR: process.env.idmAuthzApiEndpoint is required",
     );
   });
+
+  it("should return an error due to missing idmApiHost", async () => {
+    delete process.env.idmApiHost;
+    await expect(handler({ test: "test" }, {} as Context, callback)).rejects.toThrowError(
+      "ERROR: process.env.idmApiHost is required",
+    );
+  });
+
+  it("should return an error due to missing idmApiEndpoint", async () => {
+    delete process.env.idmApiEndpoint;
+    await expect(handler({ test: "test" }, {} as Context, callback)).rejects.toThrowError(
+      "ERROR: process.env.idmApiEndpoint is required",
+    );
+  });
+
   it("should return an error due to the arn being incorrect", async () => {
     process.env.idmAuthzApiKeyArn = "bad-ARN"; // pragma: allowlist secret
     await expect(handler({ test: "test" }, {} as Context, callback)).rejects.toThrowError(
@@ -52,6 +68,7 @@ describe("process emails Handler", () => {
       },
     });
   });
+
   it("should log an error since it cannot authorize the user", async () => {
     const errorSpy = vi.spyOn(console, "error");
     const missingIdentity = await handler(
@@ -72,8 +89,12 @@ describe("process emails Handler", () => {
       },
     });
   });
+
   it("should return the user and update the user in the service", async () => {
     const consoleSpy = vi.spyOn(console, "log");
+    process.env.idmApiHost = "api-test.example.com";
+    process.env.idmApiEndpoint = "vpce-mock-12345.test.vpce.amazonaws.com";
+
     const validUser = await handler(
       {
         request: {
