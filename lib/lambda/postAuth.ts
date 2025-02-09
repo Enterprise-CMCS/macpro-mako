@@ -12,12 +12,18 @@ const client = new CognitoIdentityProviderClient({
   region: process.env.region || process.env.REGION_A || "us-east-1",
 });
 export const handler: Handler = async (event) => {
-  // Check if idmInfoSecretArn is provided
+  // Check if required environment variables are provided
   if (!process.env.idmAuthzApiKeyArn) {
     throw "ERROR: process.env.idmAuthzApiKeyArn is required";
   }
   if (!process.env.idmAuthzApiEndpoint) {
     throw "ERROR: process.env.idmAuthzApiEndpoint is required";
+  }
+  if (!process.env.idmApiHost) {
+    throw "ERROR: process.env.idmApiHost is required";
+  }
+  if (!process.env.idmApiEndpoint) {
+    throw "ERROR: process.env.idmApiEndpoint is required";
   }
 
   const apiEndpoint: string = process.env.idmAuthzApiEndpoint;

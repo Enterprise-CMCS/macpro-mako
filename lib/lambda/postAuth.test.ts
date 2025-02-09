@@ -37,6 +37,11 @@ describe("postAuth Handler", () => {
   });
 
   it("should return an error due to missing idmApiEndpoint", async () => {
+    // Set up required environment variables first
+    process.env.idmAuthzApiKeyArn = "test-arn";
+    process.env.idmAuthzApiEndpoint = "test-endpoint";
+    process.env.idmApiHost = "test-host";
+    // Then delete the one we want to test
     delete process.env.idmApiEndpoint;
     await expect(handler({ test: "test" }, {} as Context, callback)).rejects.toThrowError(
       "ERROR: process.env.idmApiEndpoint is required",
