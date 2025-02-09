@@ -29,22 +29,10 @@ describe("postAuth Handler", () => {
     );
   });
 
-  it("should return an error due to missing idmApiHost", async () => {
-    delete process.env.idmApiHost;
+  it("should return an error due to a missing endpoint", async () => {
+    delete process.env.idmAuthzApiEndpoint;
     await expect(handler({ test: "test" }, {} as Context, callback)).rejects.toThrowError(
-      "ERROR: process.env.idmApiHost is required",
-    );
-  });
-
-  it("should return an error due to missing idmApiEndpoint", async () => {
-    // Set up required environment variables first
-    process.env.idmAuthzApiKeyArn = "test-arn";
-    process.env.idmAuthzApiEndpoint = "test-endpoint";
-    process.env.idmApiHost = "test-host";
-    // Then delete the one we want to test
-    delete process.env.idmApiEndpoint;
-    await expect(handler({ test: "test" }, {} as Context, callback)).rejects.toThrowError(
-      "ERROR: process.env.idmApiEndpoint is required",
+      "ERROR: process.env.idmAuthzApiEndpoint is required",
     );
   });
 
@@ -97,7 +85,7 @@ describe("postAuth Handler", () => {
 
   it("should return the user and update the user in the service", async () => {
     const consoleSpy = vi.spyOn(console, "log");
-    process.env.idmApiHost = "api-test.example.com";
+    process.env.idmVpcEndpointHost = "api-test.example.com";
     process.env.idmApiEndpoint = "vpce-mock-12345.test.vpce.amazonaws.com";
 
     const validUser = await handler(

@@ -64,7 +64,6 @@ export class Auth extends cdk.NestedStack {
       devPasswordArn,
       idmClientSecretArn,
       idmAuthzApiKeyArn,
-      idmVpcEndpointDns,
       idmVpcEndpointHost,
     } = props;
     const idmClientSecret = cdk.aws_secretsmanager.Secret.fromSecretCompleteArn(
@@ -268,8 +267,8 @@ export class Auth extends cdk.NestedStack {
         environment: {
           idmAuthzApiEndpoint,
           idmAuthzApiKeyArn,
-          idmApiHost: idmVpcEndpointHost,
-          idmApiEndpoint: idmVpcEndpointDns,
+          idmVpcEndpointHost: idmVpcEndpointHost,
+          idmApiEndpoint: idmAuthzApiEndpoint,
         },
         timeout: cdk.Duration.seconds(30),
         memorySize: 1024,

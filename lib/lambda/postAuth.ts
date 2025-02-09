@@ -19,11 +19,8 @@ export const handler: Handler = async (event) => {
   if (!process.env.idmAuthzApiEndpoint) {
     throw "ERROR: process.env.idmAuthzApiEndpoint is required";
   }
-  if (!process.env.idmApiHost) {
-    throw "ERROR: process.env.idmApiHost is required";
-  }
-  if (!process.env.idmApiEndpoint) {
-    throw "ERROR: process.env.idmApiEndpoint is required";
+  if (!process.env.idmAuthzApiEndpoint) {
+    throw "ERROR: process.env.idmAuthzApiEndpoint is required";
   }
 
   const apiEndpoint: string = process.env.idmAuthzApiEndpoint;
@@ -48,8 +45,8 @@ export const handler: Handler = async (event) => {
         "Content-Type": "application/json",
         "x-api-key": apiKey,
       };
-      if (process.env.idmApiHost) {
-        headers.Host = process.env.idmApiHost;
+      if (process.env.idmVpcEndpointHost) {
+        headers.Host = process.env.idmVpcEndpointHost;
       }
       const response = await fetch(`${apiEndpoint}/api/v1/authz/id/all?userId=${username}`, {
         method: "GET",
