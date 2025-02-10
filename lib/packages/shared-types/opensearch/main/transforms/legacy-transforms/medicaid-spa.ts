@@ -11,7 +11,7 @@ export const transform = () => {
 
     return {
       additionalInformation: data.additionalInformation, 
-      authority: "medicaid spa",
+      authority: "Medicaid SPA",
       changedDate: timestampDate.toISOString(), // eventTimestamp as ISO string
       cmsStatus, // Derived status
       description: null, // Not provided in legacy, set to null
