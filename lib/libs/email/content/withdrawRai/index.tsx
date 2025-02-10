@@ -94,6 +94,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.osgEmail,
           ...variables.emails.cpocEmail,
           ...variables.emails.srtEmails,
+          ...variables.emails.dhcbsooEmail,
         ],
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
         body: await render(<WaiverCMSEmail variables={variables} />),
