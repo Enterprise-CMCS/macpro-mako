@@ -28,6 +28,8 @@ import {
   legacyAmendmentWaiver,
   legacyIniitalWaiver,
   legacyRenewalWaiver,
+  legacyAppk,
+  legacyTemporaryExtension,
 } from "./transforms/legacy-transforms";
 
 
@@ -55,6 +57,8 @@ export type LegacyChipSpaDocument = z.infer<legacyChipSpa.Schema>;
 export type LegacyInitialWaiverDocument = z.infer<legacyIniitalWaiver.Schema>;
 export type LegacyRenewalWaiverDocument = z.infer<legacyRenewalWaiver.Schema>; 
 export type LegacyAmendmentWaiverDocument = z.infer<legacyAmendmentWaiver.Schema>;
+export type LegacyAppkDocument = z.infer<legacyAppk.Schema>;
+export type legacyTemporaryExtensionDocument = z.infer<legacyTemporaryExtension.Schema>;
 
 export type Document = AppkDocument &
   CapitatedAmendmentDocument &
@@ -70,6 +74,8 @@ export type Document = AppkDocument &
   LegacyInitialWaiverDocument &
   LegacyRenewalWaiverDocument &
   LegacyAmendmentWaiverDocument &
+  LegacyAppkDocument &
+  legacyTemporaryExtensionDocument &
   NewChipSubmissionDocument &
   NewMedicaidSubmissionDocument &
   RespondToRaiDocument &
@@ -126,4 +132,7 @@ export const legacyTransforms = {
   "waivernew": legacyIniitalWaiver,
   "waiverrenewal": legacyRenewalWaiver,
   "waiveramendment": legacyAmendmentWaiver,
+  "waiverappk": legacyAppk,
+  "waiverextensionb": legacyTemporaryExtension,
+  "waiverextensionc": legacyTemporaryExtension,
 };
