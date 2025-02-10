@@ -59,7 +59,6 @@ export type LegacyRenewalWaiverDocument = z.infer<legacyRenewalWaiver.Schema>;
 export type LegacyAmendmentWaiverDocument = z.infer<legacyAmendmentWaiver.Schema>;
 export type LegacyAppkDocument = z.infer<legacyAppk.Schema>;
 export type LegacyTemporaryExtensionDocument = z.infer<legacyTemporaryExtension.Schema>;
-export type LegacyEventDocument = z.infer<legacyEvent.Schema>;
 
 export type Document = AppkDocument &
   CapitatedAmendmentDocument &
@@ -72,13 +71,13 @@ export type Document = AppkDocument &
   NewChipSubmissionDocument &
   NewMedicaidSubmissionDocument &
   RespondToRaiDocument &
-  LegacyEventDocument &
   SeatoolDocument &
   TemporaryExtensionDocument &
   ToggleWithdrawRaiDocument &
   UploadSubsequentDocuments &
   WithdrawPackageDocument &
   WithdrawRaiDocument & {
+    event: string;
     makoChangedDate: string;
     changelog?: Changelog[];
     appkChildren?: Omit<ItemResult, "found">[];
