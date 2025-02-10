@@ -58,7 +58,7 @@ export type LegacyInitialWaiverDocument = z.infer<legacyIniitalWaiver.Schema>;
 export type LegacyRenewalWaiverDocument = z.infer<legacyRenewalWaiver.Schema>; 
 export type LegacyAmendmentWaiverDocument = z.infer<legacyAmendmentWaiver.Schema>;
 export type LegacyAppkDocument = z.infer<legacyAppk.Schema>;
-export type legacyTemporaryExtensionDocument = z.infer<legacyTemporaryExtension.Schema>;
+export type LegacyTemporaryExtensionDocument = z.infer<legacyTemporaryExtension.Schema>;
 
 export type Document = AppkDocument &
   CapitatedAmendmentDocument &
@@ -69,13 +69,6 @@ export type Document = AppkDocument &
   ContractingInitialDocument &
   ContractingRenewalDocument &
   LegacyPackageViewDocument &
-  LegacyMedicaidSpaDocument &
-  LegacyChipSpaDocument &
-  LegacyInitialWaiverDocument &
-  LegacyRenewalWaiverDocument &
-  LegacyAmendmentWaiverDocument &
-  LegacyAppkDocument &
-  legacyTemporaryExtensionDocument &
   NewChipSubmissionDocument &
   NewMedicaidSubmissionDocument &
   RespondToRaiDocument &
