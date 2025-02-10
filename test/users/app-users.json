@@ -24,7 +24,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-statesubmitter"
+        "Value": "onemac-state-user"
       }
     ]
   },
@@ -53,7 +53,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-statesubmitter"
+        "Value": "onemac-state-user"
       }
     ]
   },
@@ -82,7 +82,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-statesubmitter"
+        "Value": "onemac-state-user"
       }
     ]
   },
@@ -168,8 +168,8 @@
         "Value": ""
       },
       {
-        "Name": "custom:cms-roles",
-        "Value": "onemac-micro-reviewer"
+        "Name": "custom:ismemberof",
+        "Value": "ONEMAC_USER_D"
       }
     ]
   },
@@ -226,8 +226,8 @@
         "Value": ""
       },
       {
-        "Name": "custom:cms-roles",
-        "Value": "onemac-micro-reviewer"
+        "Name": "custom:ismemberof",
+        "Value": "ONEMAC_USER_D"
       }
     ]
   },
@@ -256,7 +256,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-helpdesk"
+        "Value": "onemac-helpdesk"
       }
     ]
   },
@@ -285,7 +285,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-helpdesk"
+        "Value": "onemac-helpdesk"
       }
     ]
   },
@@ -314,7 +314,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-statesubmitter"
+        "Value": "onemac-state-user"
       }
     ]
   },
@@ -343,7 +343,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-statesubmitter"
+        "Value": "onemac-state-user"
       }
     ]
   },
@@ -393,7 +393,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-statesubmitter"
+        "Value": "onemac-state-user"
       }
     ]
   },
@@ -421,8 +421,8 @@
         "Value": ""
       },
       {
-        "Name": "custom:cms-roles",
-        "Value": "onemac-micro-reviewer"
+        "Name": "custom:ismemberof",
+        "Value": "ONEMAC_USER_D"
       }
     ]
   }
