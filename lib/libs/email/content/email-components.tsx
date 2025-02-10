@@ -3,7 +3,6 @@ import { ReactNode } from "react";
 import {
   Attachment,
   AttachmentKey,
-  AttachmentTitle,
   CommonEmailVariables,
   EmailAddresses,
   Events,
@@ -27,10 +26,9 @@ interface AttachmentGroup {
 }
 
 const areAllAttachmentsEmpty = (
-  attachments: Partial<Record<AttachmentTitle, AttachmentGroup | null>>,
+  attachments: Partial<Record<string, { label: string; files?: any[] }>>,
 ): boolean => {
-  if (!attachments) return true;
-  return Object.values(attachments).every((att) => !att || att.files?.length === 0);
+  return Object.values(attachments).every((att) => !att || !att.files || att.files.length === 0);
 };
 
 const Divider = () => <Hr style={styles.divider} />;
@@ -222,7 +220,7 @@ const MailboxNotice = ({
   onWaivers = true,
 }: {
   type: "SPA" | "Waiver";
-  onWaivers: boolean;
+  onWaivers?: boolean;
 }) => (
   <Text style={{ ...styles.text.description, marginTop: "16px", marginBottom: "16px" }}>
     {type === "SPA"
@@ -288,32 +286,16 @@ const BasicFooter = () => (
 
 export interface WithdrawRAIProps {
   variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses };
-  relatedEvent: Events["RespondToRai"];
 }
 
-const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables, relatedEvent }) => {
-  if (!relatedEvent) {
-    return (
-      <Section>
-        <Heading as="h2">
-          The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You
-          are receiving this email notification as the Formal RAI was withdrawn by{" "}
-          {variables.submitterName} {variables.submitterEmail}.
-        </Heading>
-        <Text style={styles.text.description}>
-          Note: The original RAI response details could not be retrieved.
-        </Text>
-      </Section>
-    );
-  }
-
+const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables }) => {
   return (
     <Section>
-      <Heading as="h2">
-        The OneMAC Submission Portal received a request to withdraw the Formal RAI Response{" "}
-        {relatedEvent.id}. You are receiving this email notification as the Formal RAI for{" "}
-        {relatedEvent.id} was withdrawn by {variables.submitterName} {variables.submitterEmail}.
-      </Heading>
+      <Text>
+        The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are
+        are receiving this email notification as the Formal RAI for {variables.id} was withdrawn by{" "}
+        {variables.submitterName} {variables.submitterEmail}.
+      </Text>
     </Section>
   );
 };
@@ -384,4 +366,5 @@ export {
   EmailFooter,
   getCpocEmail,
   getSrtEmails,
+  areAllAttachmentsEmpty,
 };

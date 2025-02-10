@@ -13,6 +13,7 @@ import { ScrollToTop, SimplePageContainer, UserPrompt, Banner } from "@/componen
 import { isFaqPage, isProd } from "@/utils";
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 import { UserRoles } from "shared-types";
+import { removeItemLocalStorage } from "@/hooks/useLocalStorage";
 /**
  * Custom hook that generates a list of navigation links based on the user's status and whether the current page is the FAQ page.
  *
@@ -81,6 +82,7 @@ const UserDropdownMenu = () => {
   };
 
   const handleLogout = async () => {
+    removeItemLocalStorage();
     await Auth.signOut();
   };
 

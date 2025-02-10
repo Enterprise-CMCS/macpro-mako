@@ -11,7 +11,7 @@ export const WaiverStateEmail = ({
   variables: Events["RespondToRai"] & CommonEmailVariables;
 }) => (
   <BaseEmailTemplate
-    previewText={`Your ${variables.authority} RAI Response for [Waiver Number] has been submitted to CMS`}
+    previewText={`Your ${variables.authority} RAI Response for ${variables.id} has been submitted to CMS`}
     heading={`This response confirms the submission of your ${variables.actionType} RAI Response to CMS for review:`}
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
@@ -23,7 +23,7 @@ export const WaiverStateEmail = ({
         "Email Address": variables.submitterEmail,
         "Initial Waiver Number": variables.id,
         "Waiver Authority": variables.authority,
-        "90th Day Deadline": formatNinetyDaysDate(variables.responseDate),
+        "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
         Summary: variables.additionalInformation,
       }}
     />
@@ -32,7 +32,7 @@ export const WaiverStateEmail = ({
         Request for Additional Information (RAI). You can expect a formal response to your submittal
         to be issued within 90 days, before ${formatNinetyDaysDate(variables.timestamp)}.`}
     </Text>
-    <MailboxNotice type="Waiver" />
+    <MailboxNotice type="Waiver" onWaivers />
     <FollowUpNotice includeDidNotExpect={false} withDivider={false} />
   </BaseEmailTemplate>
 );

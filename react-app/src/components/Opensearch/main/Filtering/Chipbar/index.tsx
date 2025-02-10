@@ -102,12 +102,13 @@ export const FilterChips: FC = () => {
     });
   };
 
-  const handleChipClick = () =>
+  const handleChipClick = () => {
     url.onSet((s) => ({
       ...s,
       filters: [],
       pagination: { ...s.pagination, number: 0 },
     }));
+  };
 
   return (
     <div
