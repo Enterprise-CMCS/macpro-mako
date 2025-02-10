@@ -3,7 +3,7 @@ import { XCircleIcon } from "lucide-react";
 import { ReactQueryApiError } from "shared-types";
 
 export const ErrorAlert = ({ error }: { error: ReactQueryApiError }) => {
-  let message = "An error has occured";
+  let message = "An error has occurred";
 
   if (error?.response?.data?.message) {
     message = error.response.data.message;

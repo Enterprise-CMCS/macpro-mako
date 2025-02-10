@@ -78,7 +78,7 @@ const processAndIndex = async ({
         const result = schema.safeParse(record);
 
         if (result.success) {
-          if (result.data.adminChangeType === "update-id") {
+          if (result.data.adminChangeType === "update-id" && "idToBeUpdated" in result.data) {
             // Push doc with package being soft deleted
             docs.forEach((log) => {
               const recordOffset = log.id.split("-").at(-1);
@@ -99,7 +99,10 @@ const processAndIndex = async ({
                 packageId: result.data.id,
               });
             });
-          } else if (result.data.adminChangeType === "split-spa") {
+          } else if (
+            result.data.adminChangeType === "split-spa" &&
+            "idToBeUpdated" in result.data
+          ) {
             // Push doc with new split package
             docs.push(result.data);
 

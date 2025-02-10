@@ -60,7 +60,7 @@ const emailTemplates: EmailTemplates = {
   "contracting-renewal-state": EmailContent.newSubmission,
   "capitated-renewal-state": EmailContent.newSubmission,
   "respond-to-rai": EmailContent.respondToRai,
-  "seatool-withdraw": EmailContent.withdrawPackage,
+  "seatool-withdraw": EmailContent.withdrawConfirmation,
   "app-k": EmailContent.newSubmission,
   "upload-subsequent-documents": EmailContent.uploadSubsequentDocuments,
 };
@@ -84,21 +84,21 @@ function hasAuthority(
 export async function getEmailTemplates(
   record: Events[keyof Events],
 ): Promise<EmailTemplateFunction<typeof record>[]> {
-  const event = record.event;
-  if (!event || !(event in emailTemplates)) {
-    console.log("No template found");
-    return [];
+  const { event } = record;
+
+  const emailTemplate = emailTemplates[event as keyof EmailTemplates];
+
+  if (event in emailTemplates && hasAuthority(record)) {
+    const authorityTemplates = emailTemplate[record.authority.toLowerCase() as Authority];
+
+    if (authorityTemplates) {
+      return Object.values(authorityTemplates);
+    }
+
+    throw new Error("No email template found for authority");
   }
 
-  const template = emailTemplates[event as keyof EmailTemplates];
-  if (hasAuthority(record)) {
-    const authorityTemplates = (template as AuthoritiesWithUserTypesTemplate)[
-      record.authority.toLowerCase() as Authority
-    ];
-    return authorityTemplates ? Object.values(authorityTemplates) : [];
-  } else {
-    return Object.values(template as UserTypeOnlyTemplate);
-  }
+  throw new Error("Missing event authority or email template for event");
 }
 
 // I think this needs to be written to handle not finding any matching events and so forth

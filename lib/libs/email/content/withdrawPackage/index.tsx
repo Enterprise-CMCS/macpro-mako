@@ -29,7 +29,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
         to: variables.allStateUsersEmails?.length
           ? variables.allStateUsersEmails
           : [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Medicaid SPA Package ${variables.id} Withdrawal Confirmation`,
+        subject: `SPA Package ${variables.id} Withdraw Request`,
         body: await render(<MedSpaStateEmail variables={variables} />),
       };
     },
@@ -56,7 +56,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
         to: variables.allStateUsersEmails?.length
           ? variables.allStateUsersEmails
           : [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `CHIP SPA Package ${variables.id} Withdrawal Confirmation`,
+        subject: `CHIP SPA Package ${variables.id} Withdraw Request`,
         body: await render(<ChipSpaStateEmail variables={variables} />),
       };
     },

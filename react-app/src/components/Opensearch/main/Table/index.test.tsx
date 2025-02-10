@@ -9,6 +9,8 @@ import {
   getFilteredHits,
   DEFAULT_COLUMNS,
   EMPTY_HITS,
+  HIDDEN_COLUMN,
+  NO_FIELD_COLUMN,
 } from "@/utils/test-helpers";
 
 const defaultHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
@@ -41,9 +43,9 @@ describe("", () => {
 
     // Check that the correct column headers appear
     expect(screen.getAllByRole("columnheader").length).toEqual(3);
-    expect(screen.getByText("SPA ID", { selector: "th>div" }));
-    expect(screen.getByText("State", { selector: "th>div" }));
-    expect(screen.getByText("Authority", { selector: "th>div" }));
+    expect(screen.getByText("SPA ID", { selector: "th>div" })).toBeInTheDocument();
+    expect(screen.getByText("State", { selector: "th>div" })).toBeInTheDocument();
+    expect(screen.getByText("Authority", { selector: "th>div" })).toBeInTheDocument();
 
     // Check that the correct amount rows appear
     expect(screen.getAllByRole("row").length).toEqual(defaultHits.hits.length + 1); // add 1 for header
@@ -55,9 +57,9 @@ describe("", () => {
 
     // Check that the correct column headers appear
     expect(screen.getAllByRole("columnheader").length).toEqual(3);
-    expect(screen.getByText("SPA ID", { selector: "th>div" }));
-    expect(screen.getByText("State", { selector: "th>div" }));
-    expect(screen.getByText("Authority", { selector: "th>div" }));
+    expect(screen.getByText("SPA ID", { selector: "th>div" })).toBeInTheDocument();
+    expect(screen.getByText("State", { selector: "th>div" })).toBeInTheDocument();
+    expect(screen.getByText("Authority", { selector: "th>div" })).toBeInTheDocument();
 
     expect(screen.getByText("No Results Found")).toBeInTheDocument();
     expect(
@@ -67,5 +69,52 @@ describe("", () => {
     // Check that the correct amount rows appear
     expect(screen.getAllByRole("row").length).toEqual(2);
     // one row for the header and one for the no results text
+  });
+
+  it("should not display hidden columns", () => {
+    const onToggle = vi.fn();
+    setup([...DEFAULT_COLUMNS, HIDDEN_COLUMN], onToggle, defaultHits);
+
+    // Check that the correct column headers appear
+    expect(screen.getAllByRole("columnheader").length).toEqual(3);
+    expect(screen.getByText("SPA ID", { selector: "th>div" })).toBeInTheDocument();
+    expect(screen.getByText("State", { selector: "th>div" })).toBeInTheDocument();
+    expect(screen.getByText("Authority", { selector: "th>div" })).toBeInTheDocument();
+    expect(screen.queryByText("Submission Source", { selector: "th>div" })).toBeNull();
+  });
+
+  it("should handle clicking a column", async () => {
+    const onToggle = vi.fn();
+    const { user, router } = setup(DEFAULT_COLUMNS, onToggle, defaultHits);
+
+    await user.click(screen.getByText("State", { selector: "th>div" }));
+    let expectedQueryString = getDashboardQueryString({
+      sort: {
+        field: "state.keyword",
+        order: "asc",
+      },
+    });
+    let params = new URLSearchParams(router.state.location.search.substring(1));
+    expect(params.get("os")).toEqual(expectedQueryString);
+
+    await user.click(screen.getByText("State", { selector: "th>div" }));
+    params = new URLSearchParams(router.state.location.search.substring(1));
+    expectedQueryString = getDashboardQueryString({
+      sort: {
+        field: "state.keyword",
+        order: "desc",
+      },
+    });
+    expect(params.get("os")).toEqual(expectedQueryString);
+  });
+
+  it("should handle clicking a column without a field", async () => {
+    const onToggle = vi.fn();
+    const { user, router } = setup([...DEFAULT_COLUMNS, NO_FIELD_COLUMN], onToggle, defaultHits);
+
+    await user.click(screen.getByText("Latest Package Activity", { selector: "th>div" }));
+    const expectedQueryString = getDashboardQueryString();
+    const params = new URLSearchParams(router.state.location.search.substring(1));
+    expect(params.get("os")).toEqual(expectedQueryString);
   });
 });
