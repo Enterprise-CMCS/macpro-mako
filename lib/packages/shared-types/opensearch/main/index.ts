@@ -23,7 +23,8 @@ import {
 } from "./transforms";
 
 import {
-  legacyMedicaidSpa
+  legacyMedicaidSpa,
+  legacyChipSpa
 } from "./transforms/legacy-transforms";
 
 
@@ -47,6 +48,7 @@ export type WithdrawPackageDocument = z.infer<withdrawPackage.Schema>;
 export type WithdrawRaiDocument = z.infer<withdrawRai.Schema>;
 
 export type LegacyMedicaidSpaDocument = z.infer<legacyMedicaidSpa.Schema>;
+export type LegacyChipSpaDocument = z.infer<legacyChipSpa.Schema>;
 
 export type Document = AppkDocument &
   CapitatedAmendmentDocument &
@@ -57,6 +59,8 @@ export type Document = AppkDocument &
   ContractingInitialDocument &
   ContractingRenewalDocument &
   LegacyPackageViewDocument &
+  LegacyMedicaidSpaDocument &
+  LegacyChipSpaDocument &
   NewChipSubmissionDocument &
   NewMedicaidSubmissionDocument &
   RespondToRaiDocument &
@@ -108,5 +112,6 @@ export const transforms = {
 };
 
 export const legacyTransforms = {
-  "medicaidspa": legacyMedicaidSpa
+  "medicaidspa": legacyMedicaidSpa,
+  "chipspa": legacyChipSpa
 };
