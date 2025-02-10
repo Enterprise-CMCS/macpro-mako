@@ -122,5 +122,8 @@ export const transforms = {
 
 export const legacyTransforms = {
   "medicaidspa": legacyMedicaidSpa,
-  "chipspa": legacyChipSpa
+  "chipspa": legacyChipSpa,
+  "waivernew": legacyIniitalWaiver,
+  "waiverrenewal": legacyRenewalWaiver,
+  "waiveramendment": legacyAmendmentWaiver,
 };
