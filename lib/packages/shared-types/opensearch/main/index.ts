@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ItemResult as Changelog } from "../changelog";
+import { ItemResult as Changelog, legacyEvent } from "../changelog";
 import { AggQuery, Filterable as FIL, Hit, QueryState, Response as Res } from "./../_";
 import {
   appK,
@@ -59,6 +59,7 @@ export type LegacyRenewalWaiverDocument = z.infer<legacyRenewalWaiver.Schema>;
 export type LegacyAmendmentWaiverDocument = z.infer<legacyAmendmentWaiver.Schema>;
 export type LegacyAppkDocument = z.infer<legacyAppk.Schema>;
 export type LegacyTemporaryExtensionDocument = z.infer<legacyTemporaryExtension.Schema>;
+export type LegacyEventDocument = z.infer<legacyEvent.Schema>;
 
 export type Document = AppkDocument &
   CapitatedAmendmentDocument &
@@ -71,6 +72,7 @@ export type Document = AppkDocument &
   NewChipSubmissionDocument &
   NewMedicaidSubmissionDocument &
   RespondToRaiDocument &
+  LegacyEventDocument &
   SeatoolDocument &
   TemporaryExtensionDocument &
   ToggleWithdrawRaiDocument &
