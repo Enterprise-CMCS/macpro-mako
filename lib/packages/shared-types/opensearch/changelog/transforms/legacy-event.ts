@@ -55,7 +55,7 @@ export const transform = (id: string) => {
       id: `${data.componentId}-legacy-${data.eventTimestamp}`,
       packageId: data.componentId,
       timestamp: data.eventTimestamp,
-      event: event,
+      //event: event,
       attachments: data.attachments?.map(handleLegacyAttachment) ?? null,
       additionalInformation: data.additionalInformation,
       submitterEmail: data.submitterEmail,

@@ -77,7 +77,6 @@ export type Document = AppkDocument &
   UploadSubsequentDocuments &
   WithdrawPackageDocument &
   WithdrawRaiDocument & {
-    event: string;
     makoChangedDate: string;
     changelog?: Changelog[];
     appkChildren?: Omit<ItemResult, "found">[];
