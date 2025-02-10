@@ -106,7 +106,6 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
       case "new-medicaid-submission":
       case "temporary-extension":
       case "app-k":
-      case "new-legacy-submission":
         return "Initial Package Submitted";
 
       case "withdraw-package":
