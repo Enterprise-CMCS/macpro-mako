@@ -6,7 +6,6 @@ import { LegacyEvent } from "../../../../events";
 export const transform = () => {
   return events["legacy-event"].legacyEventSchema.transform((data) => {
       const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.SUBMITTED);
-      let actionType
 
       return {
         id: data.pk,

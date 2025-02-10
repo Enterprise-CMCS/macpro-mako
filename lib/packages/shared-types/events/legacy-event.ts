@@ -5,6 +5,7 @@ import { legacyAttachmentSchema } from "../attachments";
 // Event schema for legacy records
 export const legacyEventSchema = legacySharedSchema.merge(
   z.object({
+    event: z.literal("new-legacy-submission").default("new-legacy-submission"),
     eventTimestamp: z.number().nullish(),
     pk: z.string(),
     proposedEffectiveDate: z.string().nullish(),
