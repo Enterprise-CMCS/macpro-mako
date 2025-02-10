@@ -29,7 +29,7 @@ jobs:
           fi
 
   test:
-    runs-on: ubuntu-20.04
+    runs-on: mdp-arm-runner
     needs:
       - init
     environment:
@@ -42,7 +42,7 @@ jobs:
         run: run test
 
   deploy:
-    runs-on: ubuntu-20.04
+    runs-on: mdp-arm-runner
     needs:
       - init
     environment:
