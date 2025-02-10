@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, beforeEach } from "vitest";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { opensearch } from "shared-types";
@@ -14,6 +14,7 @@ import {
   verifyChips,
   verifyPagination,
   EMPTY_HITS,
+  Storage,
 } from "@/utils/test-helpers";
 import { OsMainView, OsTableColumn } from "@/components";
 
@@ -27,6 +28,8 @@ const verifyTable = (recordCount: number) => {
 };
 
 describe("OsMainView", () => {
+  global.localStorage = new Storage();
+
   const setup = (
     columns: OsTableColumn[],
     hits: opensearch.Hits<opensearch.main.Document>,
@@ -48,6 +51,9 @@ describe("OsMainView", () => {
     };
   };
 
+  beforeEach(() => {
+    global.localStorage.clear();
+  });
   describe("SPAs", () => {
     it("should display without filters", async () => {
       const spaHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
@@ -252,7 +258,7 @@ describe("OsMainView", () => {
       const recordsSelect = within(screen.getByTestId("pagination")).getByLabelText(
         "Records per page:",
       );
-      screen.debug(recordsSelect);
+
       await user.selectOptions(recordsSelect, ["50"]);
       expect(recordsSelect).toHaveValue("50");
       const expectedQueryString = getDashboardQueryString({
@@ -284,6 +290,44 @@ describe("OsMainView", () => {
       verifyChips([]);
       verifyTable(recordCount);
       verifyPagination(recordCount);
+    });
+  });
+
+  describe("Local Storage to display Columns", () => {
+    it("should store hidden column in local storage", async () => {
+      const spaHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
+      setup(
+        [...DEFAULT_COLUMNS, HIDDEN_COLUMN],
+        spaHits,
+        getDashboardQueryString({
+          filters: DEFAULT_FILTERS,
+          tab: "spas",
+        }),
+      );
+      expect(global.localStorage.getItem("osColumns")).toBe(JSON.stringify(["origin.keyword"]));
+    });
+
+    it("should load hidden columns based on local storage", async () => {
+      const spaHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
+      expect(global.localStorage.setItem("osColumns", JSON.stringify(["authority.keyword"])));
+      const { user } = setup(
+        [...DEFAULT_COLUMNS, HIDDEN_COLUMN],
+        spaHits,
+        getDashboardQueryString({
+          filters: DEFAULT_FILTERS,
+          tab: "spas",
+        }),
+      );
+
+      expect(screen.queryByRole("dialog")).toBeNull();
+      await user.click(screen.queryByRole("button", { name: "Columns (1 hidden)" }));
+      const columns = screen.queryByRole("dialog");
+      expect(within(columns).getByText("Submission Source")).toBeInTheDocument();
+      expect(within(columns).getByText("Submission Source").parentElement).toHaveClass(
+        "text-gray-800",
+      );
+      expect(within(columns).getByText("Authority")).toBeInTheDocument();
+      expect(within(columns).getByText("Authority").parentElement).toHaveClass("text-gray-400");
     });
   });
 });

@@ -1,6 +1,8 @@
 import LZ from "lz-string";
 import { useMemo } from "react";
 import { useSearchParams } from "react-router";
+import { useLocalStorage } from "./useLocalStorage";
+
 /**
  * useLzQuery syncs a url query parameter with a given state.
  * LZ is a library which can compresses JSON into a uri string
@@ -8,21 +10,27 @@ import { useSearchParams } from "react-router";
  */
 export const useLzUrl = <T>(props: { key: string; initValue?: T }) => {
   const [params, setParams] = useSearchParams();
+  const [query, setQuery] = useLocalStorage("osQuery", null);
 
   const queryString = params.get(props.key) || "";
 
   const state: T = useMemo(() => {
-    if (!queryString) return props.initValue;
+    if (!queryString) {
+      if (query) return JSON.parse(query);
+      return props.initValue;
+    }
 
     const decompress = LZ.decompressFromEncodedURIComponent(queryString);
     if (!decompress) return props.initValue;
 
     try {
+      setQuery(decompress);
       return JSON.parse(decompress);
     } catch {
       return props.initValue;
     }
-  }, [queryString]);
+    // adding props.initValue causes this to loop
+  }, [queryString, query, setQuery]);
 
   const onSet = (arg: (arg: T) => T | T, shouldIsolate?: boolean) => {
     const val = (() => {

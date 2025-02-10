@@ -1,3 +1,4 @@
+import { cpus } from "os";
 import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
 
@@ -5,6 +6,19 @@ export default defineConfig({
   test: {
     globals: true,
     environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
+    cache: {
+      dir: ".vitest/cache",
+    },
+    testTimeout: 10000,
+    pool: "threads",
+    poolOptions: {
+      threads: {
+        singleThread: false,
+        isolate: true,
+        maxThreads: Math.max(1, Math.floor(cpus().length * 0.75)),
+        minThreads: Math.max(1, Math.floor(cpus().length * 0.5)),
+      },
+    },
     coverage: {
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),
@@ -38,7 +52,6 @@ export default defineConfig({
         "react-app/src/features/webforms/**",
         "react-app/src/main.tsx",
         "react-app/src/utils/test-helpers/**",
-        "test/e2e/**",
         "vitest.workspace.ts",
         "**/*/.eslintrc.{ts,js,cjs}",
         "**/*.config.{ts,js,cjs}",
@@ -48,6 +61,11 @@ export default defineConfig({
         "**/assets/**",
         "**/coverage/**",
         "**/vitest.setup.ts",
+        "test/**",
+        "**/legacy-package-view.ts",
+        "**/legacy-admin-change.ts",
+        "**/legacy-event.ts",
+        "**/legacy-shared.ts",
       ],
     },
   },

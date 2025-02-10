@@ -32,8 +32,8 @@ export const WaiverStateEmail = ({
         }}
       />
       <Divider />
-      <MailboxNotice type="Waiver" />
-      <FollowUpNotice />
+      <MailboxNotice type="Waiver" onWaivers={false} />
+      <FollowUpNotice includeDidNotExpect={false} />
     </BaseEmailTemplate>
   );
 };

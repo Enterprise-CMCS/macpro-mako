@@ -1,6 +1,7 @@
-import { ActionForm, PackageSection } from "@/components";
+import { useGetItem } from "@/api";
+import { ActionForm, LoadingSpinner, PackageSection } from "@/components";
 import { formSchemas } from "@/formSchemas";
-import { useParams } from "react-router";
+import { Navigate, useParams } from "react-router";
 
 export const RespondToRaiMedicaid = () => {
   const { authority, id } = useParams();
@@ -9,7 +10,7 @@ export const RespondToRaiMedicaid = () => {
       schema={formSchemas["respond-to-rai-medicaid"]}
       title={`${authority} Formal RAI Response Details`}
       fields={() => <PackageSection />}
-      defaultValues={{ id }}
+      defaultValues={{ id, authority }}
       attachments={{
         faqLink: "/faq/medicaid-spa-rai-attachments",
       }}
@@ -39,12 +40,24 @@ export const RespondToRaiWaiver = () => {
   const { authority, id } = useParams();
   const authorityText = authority === "1915(c)" ? "1915(c) Appendix K" : authority;
 
+  const { data: record, isLoading } = useGetItem(id);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (!record) {
+    return <Navigate to="/dashboard" />;
+  }
+
+  const { actionType } = record._source;
+
   return (
     <ActionForm
       schema={formSchemas["respond-to-rai-waiver"]}
       title={`${authorityText} Waiver Formal RAI Response Details`}
       fields={() => <PackageSection />}
-      defaultValues={{ id }}
+      defaultValues={{ id, authority, actionType }}
       attachments={{
         faqLink: "/faq/waiverb-rai-attachments",
       }}
@@ -77,7 +90,7 @@ export const RespondToRaiChip = () => {
       schema={formSchemas["respond-to-rai-chip"]}
       title={`${authority} Formal RAI Response Details`}
       fields={() => <PackageSection />}
-      defaultValues={{ id }}
+      defaultValues={{ id, authority }}
       attachments={{
         faqLink: "/faq/chip-spa-rai-attachments",
       }}
