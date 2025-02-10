@@ -30,17 +30,14 @@ export const TemporaryExtensionForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
   const { data: submission } = useGetItem(waiverId, { enabled: waiverId !== undefined });
 
-  const [temporaryExtensionType, setTemporaryExtensionType] = useState("1915(b)");
+  const [temporaryExtensionType, setTemporaryExtensionType] = useState<"1915(b)" | "1915(c)">(
+    "1915(b)",
+  );
 
   const type =
     submission && submission._source
       ? `${submission._source.authority} ${actionTypeMap[submission._source.actionType]}`
       : null;
-
-  const updateLocalState = (value) => {
-    console.log("called updateLocalState with value:", value);
-    setTemporaryExtensionType(value);
-  };
 
   return (
     <ActionForm
@@ -69,7 +66,7 @@ export const TemporaryExtensionForm = () => {
                   <Select
                     onValueChange={(value) => {
                       field.onChange(value);
-                      updateLocalState(value);
+                      setTemporaryExtensionType(value);
                     }}
                     defaultValue={field.value}
                   >
