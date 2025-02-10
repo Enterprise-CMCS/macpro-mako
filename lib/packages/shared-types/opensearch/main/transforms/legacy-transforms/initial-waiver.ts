@@ -11,8 +11,8 @@ export const transform = () => {
 
     return {
       additionalInformation: data.additionalInformation, 
-      authority: data.authority,
-       actionType: "Initial",
+      authority: "1915(b)",
+      actionType: "Initial",
       changedDate: timestampDate.toISOString(), // eventTimestamp as ISO string
       cmsStatus, // Derived status
       description: null, // Not provided in legacy, set to null
