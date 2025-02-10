@@ -16,8 +16,12 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: variables.emails.osgEmail,
-        cc: variables.emails.dpoEmail,
+        to: [
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+          ...variables.emails.dpoEmail,
+          ...variables.emails.osgEmail,
+        ],
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         body: await render(<MedSpaCMSEmail variables={variables} />),
       };
@@ -26,7 +30,11 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
+        to: [
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+          `${variables.submitterName} <${variables.submitterEmail}>`,
+        ],
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         body: await render(<MedSpaStateEmail variables={variables} />),
       };
