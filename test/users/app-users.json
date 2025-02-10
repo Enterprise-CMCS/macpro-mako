@@ -1,5 +1,34 @@
 [
   {
+    "username": "reviewer@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "reviewer@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "CMS"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Reviewer"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "ONEMAC_USER_D"
+      }
+    ]
+  },
+  {
     "username": "george@example.com",
     "attributes": [
       {
@@ -141,35 +170,6 @@
       {
         "Name": "custom:cms-roles",
         "Value": "onemac-micro-readonly"
-      }
-    ]
-  },
-  {
-    "username": "reviewer@example.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "reviewer@example.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "CMS"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Reviewer"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:state",
-        "Value": ""
-      },
-      {
-        "Name": "custom:ismemberof",
-        "Value": "ONEMAC_USER_D"
       }
     ]
   },
