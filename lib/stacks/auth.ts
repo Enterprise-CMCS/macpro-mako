@@ -117,6 +117,7 @@ export class Auth extends cdk.NestedStack {
               "custom:username": cdk.aws_cognito.ProviderAttribute.other("preferred_username"),
               "custom:cms-roles": cdk.aws_cognito.ProviderAttribute.other("cmsRoles"),
               "custom:ismemberof": cdk.aws_cognito.ProviderAttribute.other("ismemberof"),
+              "custom:state": cdk.aws_cognito.ProviderAttribute.other("state"),
             },
           },
           attributeRequestMethod: cdk.aws_cognito.OidcAttributeRequestMethod.GET,
