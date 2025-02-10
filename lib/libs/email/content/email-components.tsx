@@ -246,7 +246,9 @@ const FollowUpNotice = ({
     {isChip ? (
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
-          If you have any questions, please contact{" "}
+          {`If you have any question${
+            includeDidNotExpect ? " or did not expect this email" : ""
+          }, please contact `}
           <Link href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`} style={{ textDecoration: "underline" }}>
             {EMAIL_CONFIG.CHIP_EMAIL}
           </Link>
@@ -256,9 +258,7 @@ const FollowUpNotice = ({
     ) : (
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
-          {`If you have any questions${
-            includeDidNotExpect ? " or did not expect this email" : ""
-          }, please contact `}
+          {`If you have any questions, please contact `}
           <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`} style={{ textDecoration: "underline" }}>
             {EMAIL_CONFIG.SPA_EMAIL}
           </Link>
