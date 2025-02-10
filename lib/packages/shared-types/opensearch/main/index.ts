@@ -68,7 +68,6 @@ export type Document = AppkDocument &
   ContractingAmendmentDocument &
   ContractingInitialDocument &
   ContractingRenewalDocument &
-  LegacyPackageViewDocument &
   NewChipSubmissionDocument &
   NewMedicaidSubmissionDocument &
   RespondToRaiDocument &
