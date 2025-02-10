@@ -10,6 +10,10 @@ export const legacyEventSchema = legacySharedSchema.merge(
     proposedEffectiveDate: z.string().nullish(),
     GSI1pk: z.string(),
     componentId: z.string(),
+    waiverAuthority: z.string(),
+    title: z.string().nullish(),
+    parentId: z.string().nullish(),
+    temporaryExtensionType: z.string().nullish(),
     attachments: z.array(legacyAttachmentSchema).nullish(),
   }),
 );
