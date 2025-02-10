@@ -11,7 +11,8 @@ export const transform = () => {
 
     return {
       additionalInformation: data.additionalInformation, 
-      authority: "Chip SPA",
+      authority: data.authority,
+      actionType: "Renewal",
       changedDate: timestampDate.toISOString(), // eventTimestamp as ISO string
       cmsStatus, // Derived status
       description: null, // Not provided in legacy, set to null
@@ -29,6 +30,7 @@ export const transform = () => {
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
       initialIntakeNeeded: true,
+      
     };
   });
 };

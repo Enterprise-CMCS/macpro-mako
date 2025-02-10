@@ -11,7 +11,8 @@ export const transform = () => {
 
     return {
       additionalInformation: data.additionalInformation, 
-      authority: "Chip SPA",
+      authority: data.authority,
+       actionType: "Initial",
       changedDate: timestampDate.toISOString(), // eventTimestamp as ISO string
       cmsStatus, // Derived status
       description: null, // Not provided in legacy, set to null

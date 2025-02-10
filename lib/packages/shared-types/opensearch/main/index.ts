@@ -24,7 +24,10 @@ import {
 
 import {
   legacyMedicaidSpa,
-  legacyChipSpa
+  legacyChipSpa,
+  legacyAmendmentWaiver,
+  legacyIniitalWaiver,
+  legacyRenewalWaiver,
 } from "./transforms/legacy-transforms";
 
 
@@ -49,6 +52,9 @@ export type WithdrawRaiDocument = z.infer<withdrawRai.Schema>;
 
 export type LegacyMedicaidSpaDocument = z.infer<legacyMedicaidSpa.Schema>;
 export type LegacyChipSpaDocument = z.infer<legacyChipSpa.Schema>;
+export type LegacyInitialWaiverDocument = z.infer<legacyIniitalWaiver.Schema>;
+export type LegacyRenewalWaiverDocument = z.infer<legacyRenewalWaiver.Schema>; 
+export type LegacyAmendmentWaiverDocument = z.infer<legacyAmendmentWaiver.Schema>;
 
 export type Document = AppkDocument &
   CapitatedAmendmentDocument &
@@ -61,6 +67,9 @@ export type Document = AppkDocument &
   LegacyPackageViewDocument &
   LegacyMedicaidSpaDocument &
   LegacyChipSpaDocument &
+  LegacyInitialWaiverDocument &
+  LegacyRenewalWaiverDocument &
+  LegacyAmendmentWaiverDocument &
   NewChipSubmissionDocument &
   NewMedicaidSubmissionDocument &
   RespondToRaiDocument &
