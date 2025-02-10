@@ -37,7 +37,11 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
+        to: [
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+          ...variables.emails.chipInbox,
+        ],
         cc: variables.emails.chipCcList,
         subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
         body: await render(<ChipSpaCMSEmail variables={variables} />),
@@ -47,12 +51,9 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [
-          ...variables.emails.cpocEmail,
-          ...variables.emails.srtEmails,
-          `${variables.submitterName} <${variables.submitterEmail}>`,
-        ],
-        cc: variables.emails.chipCcList,
+        to: variables.allStateUsersEmails?.length
+          ? variables.allStateUsersEmails
+          : [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
         body: await render(<ChipSpaStateEmail variables={variables} />),
       };
