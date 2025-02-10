@@ -81,7 +81,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
           ? variables.allStateUsersEmails
           : [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
-        body: await render(<WaiverStateEmail variables={variables} />),
+        body: await render(<WaiverStateEmail variables={variables} />, { pretty: false }),
       };
     },
   },
@@ -106,7 +106,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         to: variables.allStateUsersEmails?.length
           ? variables.allStateUsersEmails
           : [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Waiver Package ${variables.id} Withdraw Request`,
+        subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
         body: await render(<WaiverStateEmail variables={variables} />),
       };
     },

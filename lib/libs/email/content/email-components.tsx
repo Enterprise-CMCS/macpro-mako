@@ -288,18 +288,6 @@ export interface WithdrawRAIProps {
   variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses };
 }
 
-const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables }) => {
-  return (
-    <Section>
-      <Text>
-        The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are
-        are receiving this email notification as the Formal RAI for {variables.id} was withdrawn by{" "}
-        {variables.submitterName} {variables.submitterEmail}.
-      </Text>
-    </Section>
-  );
-};
-
 const getCpocEmail = (item?: os.main.ItemResult): string[] => {
   try {
     const email = item?._source?.leadAnalystEmail;
@@ -362,7 +350,6 @@ export {
   MailboxNotice,
   FollowUpNotice,
   BasicFooter,
-  WithdrawRAI,
   EmailFooter,
   getCpocEmail,
   getSrtEmails,
