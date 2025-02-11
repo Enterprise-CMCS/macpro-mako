@@ -53,7 +53,7 @@ export type Document = Omit<AppkDocument, "event"> &
   Omit<ContractingAmendmentDocument, "event"> &
   Omit<ContractingInitialDocument, "event"> &
   Omit<ContractingRenewalDocument, "event"> &
-  LegacyEventDocument &
+  Omit<LegacyEventDocument, "event"> &
   LegacyAdminChangeDocument &
   Omit<NewChipSubmissionDocument, "event"> &
   Omit<NewMedicaidSubmissionDocument, "event"> &
@@ -72,6 +72,7 @@ export type Document = Omit<AppkDocument, "event"> &
       | "contracting-initial"
       | "contracting-renewal"
       | "legacy-admin-change"
+      | "new-legacy-submission"
       | "new-chip-submission"
       | "new-medicaid-submission"
       | "respond-to-rai"
