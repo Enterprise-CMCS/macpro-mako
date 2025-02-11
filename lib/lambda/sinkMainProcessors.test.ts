@@ -88,7 +88,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       {
         proposedDate: capitatedInitial.proposedEffectiveDate,
         additionalInformation: capitatedInitial.additionalInformation,
-        actionType: "Initial",
+        actionType: "New",
         initialIntakeNeeded: true,
       } as BulkUpdateRequestBody,
     ],
@@ -121,7 +121,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       {
         proposedDate: contractingInitial.proposedEffectiveDate,
         additionalInformation: contractingInitial.additionalInformation,
-        actionType: "Initial",
+        actionType: "New",
         initialIntakeNeeded: true,
       } as BulkUpdateRequestBody,
     ],
