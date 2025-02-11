@@ -21,7 +21,7 @@ export const transform = () => {
       origin: "OneMAC",
       raiWithdrawEnabled: false,
       seatoolStatus: SEATOOL_STATUS.SUBMITTED,
-      state: data.pk?.split("-")?.[0], // Extract state from pk
+      state: data.pk?.slice(0, 2), // Extract state from pk
       stateStatus,
       statusDate: new Date(data.eventTimestamp).toISOString(),
       proposedDate: isNaN(new Date(data.proposedEffectiveDate).getTime()) ? null : data.proposedEffectiveDate, // Handle non date convertible data as null
