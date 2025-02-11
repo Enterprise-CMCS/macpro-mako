@@ -62,7 +62,9 @@ export const OsFilterDrawer = () => {
                   <F.FilterableMultiCheck
                     value={hook.filters[PK.field]?.value as string[]}
                     onChange={hook.onFilterChange(PK.field)}
-                    options={hook.aggs?.[PK.field]}
+                    options={(hook.aggs?.[PK.field] || []).filter(
+                      (option) => option.value !== "Initial",
+                    )}
                   />
                 )}
                 {PK.component === "dateRange" && (
