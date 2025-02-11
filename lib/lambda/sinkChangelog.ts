@@ -129,7 +129,7 @@ const processAndIndex = async ({
       }
 
       // If the event is a supported event, transform and push to docs array for indexing
-      if (kafkaSource === "onemac") { // This is a onemac legacy event
+      if (kafkaSource === "onemac" && record.GSI1pk) { // This is a onemac legacy event
         record.event = "legacy-event";
         record.origin = "onemac";
       } 
