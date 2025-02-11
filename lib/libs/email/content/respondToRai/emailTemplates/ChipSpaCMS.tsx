@@ -14,7 +14,7 @@ export const ChipSpaCMSEmail = ({
 }) => (
   <BaseEmailTemplate
     previewText={`RAI Response for ${variables.id} Submitted`}
-    heading="The OneMAC Submission Portal received a CHIP SPA RAI Response Submission"
+    heading="The OneMAC Submission Portal received a CHIP SPA RAI Response Submission:"
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >

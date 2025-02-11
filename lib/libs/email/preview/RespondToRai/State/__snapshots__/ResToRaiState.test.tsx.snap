@@ -78,7 +78,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a ChipSPA Preview Te
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a CHIP SPA RAI Response Submission
+                      This response confirms you submitted a CHIP SPA RAI Response to CMS for review:
                     </h1>
                     <table
                       align="center"
@@ -322,8 +322,8 @@ exports[`Respond To Rai State Email Snapshot Test > renders a ChipSPA Preview Te
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                     >
-                      This response confirms receipt of your CHIP State Plan Amendment (SPA) or your response to a
-        SPA Request for Additional Information (RAI). You can expect a formal response to your
+                      This response confirms receipt of your CHIP State Plan Amendment (SPA or your response to a
+        SPA Request for Additional Information (RAI)). You can expect a formal response to your
         submittal to be issued within 90 days, before Apr 1, 2023 @ 11:59pm EST.
                     </p>
                     <table
