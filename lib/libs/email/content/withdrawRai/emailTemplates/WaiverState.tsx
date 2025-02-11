@@ -1,11 +1,5 @@
 import { CommonEmailVariables, Events, EmailAddresses } from "shared-types";
-import {
-  WithdrawRAI,
-  FollowUpNotice,
-  BasicFooter,
-  PackageDetails,
-  MailboxNotice,
-} from "../../email-components";
+import { FollowUpNotice, BasicFooter, PackageDetails, MailboxNotice } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const WaiverStateEmail = ({
@@ -16,11 +10,11 @@ export const WaiverStateEmail = ({
   return (
     <BaseEmailTemplate
       previewText={`${variables.authority} ${variables.id} Withdrawn`}
-      heading={`Withdraw Formal RAI Response for Waiver Package ${variables.id}`}
+      heading={`The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are
+        are receiving this email notification as the Formal RAI for ${variables.id} was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.`}
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <WithdrawRAI variables={variables} />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,
@@ -31,7 +25,7 @@ export const WaiverStateEmail = ({
         }}
       />
       <MailboxNotice type="Waiver" onWaivers={false} />
-      <FollowUpNotice />
+      <FollowUpNotice includeDidNotExpect={false} />
     </BaseEmailTemplate>
   );
 };
