@@ -11,7 +11,7 @@ export const transform = () => {
 
     return {
       additionalInformation: data.additionalInformation, 
-      authority: data.waiverAuthority,
+      authority: "1915(b)",
       actionType: "Renewal",
       changedDate: timestampDate.toISOString(), // eventTimestamp as ISO string
       cmsStatus, // Derived status

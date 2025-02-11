@@ -9,7 +9,7 @@ export const transform = () => {
 
     return {
       additionalInformation: data.additionalInformation, 
-      authority: data.waiverAuthority,
+      authority: "1915(b)",
       actionType: "Amendment",
       changedDate: timestampDate.toISOString(), // eventTimestamp as ISO string
       cmsStatus, // Derived status
