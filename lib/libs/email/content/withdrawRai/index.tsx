@@ -16,31 +16,14 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: variables.emails.osgEmail,
-        cc: variables.emails.dpoEmail,
+        to: [
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+          ...variables.emails.dpoEmail,
+          ...variables.emails.osgEmail,
+        ],
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         body: await render(<MedSpaCMSEmail variables={variables} />),
-      };
-    },
-    state: async (
-      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
-    ) => {
-      return {
-        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
-        body: await render(<MedSpaStateEmail variables={variables} />),
-      };
-    },
-  },
-  [Authority.CHIP_SPA]: {
-    cms: async (
-      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
-    ) => {
-      return {
-        to: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
-        cc: variables.emails.chipCcList,
-        subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
-        body: await render(<ChipSpaCMSEmail variables={variables} />),
       };
     },
     state: async (
@@ -52,7 +35,33 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.srtEmails,
           `${variables.submitterName} <${variables.submitterEmail}>`,
         ],
+        subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
+        body: await render(<MedSpaStateEmail variables={variables} />),
+      };
+    },
+  },
+  [Authority.CHIP_SPA]: {
+    cms: async (
+      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: [
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+          ...variables.emails.chipInbox,
+        ],
         cc: variables.emails.chipCcList,
+        subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
+        body: await render(<ChipSpaCMSEmail variables={variables} />),
+      };
+    },
+    state: async (
+      variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: variables.allStateUsersEmails?.length
+          ? variables.allStateUsersEmails
+          : [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`,
         body: await render(<ChipSpaStateEmail variables={variables} />),
       };
@@ -94,6 +103,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.osgEmail,
           ...variables.emails.cpocEmail,
           ...variables.emails.srtEmails,
+          ...variables.emails.dhcbsooEmail,
         ],
         subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
         body: await render(<WaiverCMSEmail variables={variables} />),
@@ -106,7 +116,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
         to: variables.allStateUsersEmails?.length
           ? variables.allStateUsersEmails
           : [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Waiver Package ${variables.id} Withdraw Request`,
+        subject: `Withdraw Formal RAI Response for Waiver Package ${variables.id}`,
         body: await render(<WaiverStateEmail variables={variables} />),
       };
     },
