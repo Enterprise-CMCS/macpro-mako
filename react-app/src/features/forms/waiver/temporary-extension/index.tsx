@@ -1,3 +1,4 @@
+import { useGetItem } from "@/api";
 import {
   ActionForm,
   FormControl,
@@ -14,12 +15,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components";
-import { Link, useParams } from "react-router";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
-import { useGetItem } from "@/api";
-import { getFAQLinkForAttachments } from "../../faqLinks";
 import { useState } from "react";
+import { Link, useParams } from "react-router";
+import { getFAQLinkForAttachments } from "../../faqLinks";
 
 const actionTypeMap = {
   New: "Initial Waiver",
@@ -30,9 +30,7 @@ export const TemporaryExtensionForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
   const { data: submission } = useGetItem(waiverId, { enabled: waiverId !== undefined });
 
-  const [temporaryExtensionType, setTemporaryExtensionType] = useState<"1915(b)" | "1915(c)">(
-    "1915(b)",
-  );
+  const [temporaryExtensionType, setTemporaryExtensionType] = useState("1915(b)");
 
   const type =
     submission && submission._source
