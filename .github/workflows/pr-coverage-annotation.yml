@@ -8,6 +8,8 @@ on:
 jobs:
   coverage-report:
     runs-on: ubuntu-latest
+    environment:
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     permissions:
       contents: read
       pull-requests: write
