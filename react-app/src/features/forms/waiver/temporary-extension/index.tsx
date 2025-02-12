@@ -30,7 +30,7 @@ export const TemporaryExtensionForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
   const { data: submission } = useGetItem(waiverId, { enabled: waiverId !== undefined });
 
-  const [temporaryExtensionType, setTemporaryExtensionType] = useState("1915(b)");
+  const [temporaryExtensionType, setTemporaryExtensionType] = useState<string>("1915(b)");
 
   const type =
     submission && submission._source
