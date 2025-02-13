@@ -1,0 +1,48 @@
+.test-coverage-report-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.stat-container {
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 1.5rem;
+}
+
+.stat-header {
+  font-size: large;
+  font-weight: 500;
+}
+
+.stat-percent {
+  font-size: xx-large;
+  font-weight: bolder;
+  padding: 2rem 0;
+}
+
+.stat-fraction {
+  font-size: smaller;
+  font-weight: normal;
+}
+
+.coverage-links {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.coverage-success {
+  color: rgb(2, 119, 2);
+}
+
+.coverage-failure {
+  color: rgb(155, 0, 0);
+}
+
+.coverage-warning {
+  color: rgb(243, 186, 17);
+}

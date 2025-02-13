@@ -14,7 +14,8 @@ plugins:
 # If you want to link only specific pages in your header, use this and add the path to the pages
 # in order as they should show up.
 header_pages:
-  - playwright-reports/playwright-reports.markdown
+  - coverage.markdown
+  - playwright-reports.markdown
 
 defaults:
   -
@@ -25,10 +26,20 @@ defaults:
       layout: "page"
   -
     scope:
-      path: "playwright-reports/*"
+      path: "index.markdown"
+    values:
+      custom_css: [mako,playwright,coverage]
+  -
+    scope:
+      path: "coverage.markdown"
+    values:
+      custom_css: [mako,coverage]
+  -
+    scope:
+      path: "playwright-*.markdown"
       type: "pages"
     values:
-      custom_css: report
+      custom_css: [mako,playwright]
   -
     scope:
       path: "playwright-reports/branches/*"

@@ -1,37 +1,47 @@
-{% capture icon %}
-  {% if include.data.result == "passed" %}
-    {% include /img/passed.svg %}
-  {% elsif include.data.result == "failed" %}
-    {% include /img/failed.svg %}
-  {% else %}
-    {% include /img/error.svg %}
-  {% endif %}
-{% endcapture %}
-<div class="test-report-container">
-  <div class="report-header">
-    <span class="report-time">Run At: {{ include.data.stats.startTime | date: "%Y-%m-%d %H:%M %Z" }}</span>
-    <span class="report-link"><a href="{{ include.url }}" target="_blank">View Full Report</a></span>
-  </div>
-  <div class="report-body">
-    {{ icon }}
-    <div class="results">
-      <div class="report-stats">
-        <div class="stat-item">
-          All <span class="stat-count">{{ include.data.total }}</span>
+{% if include.data %}
+  {% capture icon %}
+    {% if include.data.stats.unexpected > 0 %}
+      {% include /img/failed.svg %}
+    {% elsif include.data.errors.size == 0 %}
+      {% include /img/passed.svg %}
+    {% else %}
+      {% include /img/error.svg %}
+    {% endif %}
+  {% endcapture %}
+  {% assign total = include.data.stats.expected | plus: include.data.stats.unexpected | plus: include.data.stats.skipped %}
+  <div class="test-report-container">
+    <div class="report-header">
+      {% if include.run_id %}
+        <span class="report-run">Run Id: {{ include.run_id }}</span>
+      {% else %}
+        <span class="report-run"></span>
+      {% endif %}
+      <span class="report-time">Run At: {{ include.data.stats.startTime | date: "%Y-%m-%d %H:%M %Z" }}</span>
+    </div>
+    <div class="report-body">
+      {{ icon }}
+      <div class="results">
+        <div class="report-stats">
+          <div class="stat-item">
+            All <span class="stat-count">{{ total }}</span>
+          </div>
+          <div class="stat-item">
+            Passed <span class="stat-count">{{ include.data.stats.expected }}</span>
+          </div>
+          <div class="stat-item">
+            Failed <span class="stat-count">{{ include.data.stats.unexpected }}</span>
+          </div>
+          <div class="stat-item">
+            Flaky <span class="stat-count">{{ include.data.stats.flaky }}</span>
+          </div>
+          <div class="stat-item">
+            Skipped <span class="stat-count">{{ include.data.stats.skipped }}</span>
+          </div>
         </div>
-        <div class="stat-item">
-          Passed <span class="stat-count">{{ include.data.stats.expected }}</span>
-        </div>
-        <div class="stat-item">
-          Failed <span class="stat-count">{{ include.data.stats.unexpected }}</span>
-        </div>
-        <div class="stat-item">
-          Flaky <span class="stat-count">{{ include.data.stats.flaky }}</span>
-        </div>
-        <div class="stat-item">
-          Skipped <span class="stat-count">{{ include.data.stats.skipped }}</span>
-        </div>
+        <span class="report-link"><a href="{{ include.url }}" target="_blank">View Full Report</a></span>
       </div>
     </div>
   </div>
-</div>
+{% else %}
+  <div>There is currently no report for {{ include.branch }}</div>
+{% endif %}

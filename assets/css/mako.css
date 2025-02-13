@@ -1,0 +1,14 @@
+.post-content h2 {
+  margin-top: 3rem;
+}
+
+.post-content h3 {
+  margin-bottom: 0;
+}
+
+.branch-header {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}

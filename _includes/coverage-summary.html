@@ -1,0 +1,35 @@
+{% if include.total %}
+  <div class="test-coverage-report-container">
+    {% for stat in include.total %}
+      {% assign name = stat[0] %}
+      {% if name != "branchesTrue" %}
+      <div class="stat-container">
+        <div class="stat-header">
+          {{ name | capitalize }}
+        </div>
+        {% capture coverage-class %}
+          {% if stat[1].pct >= site.data.coverage.thresholds.pass[name] %}
+            coverage-success
+          {% elsif stat[1].pct >= site.data.coverage.thresholds.fail[name] %}
+            coverage-warn
+          {% else %}
+            coverage-failure
+          {% endif %}  
+        {% endcapture %}
+        <div class="stat-percent {{ coverage-class }}">
+          {{ stat[1].pct }} %
+        </div>
+        <div class="stat-fraction">
+          {{ stat[1].covered }} / {{ stat[1].total }}
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div class="coverage-links">
+    <a href="/coverage" target="_blank">View Full Report</a>
+    <a rel="noopener" href="https://codeclimate.com/github/Enterprise-CMCS/macpro-mako" target="_blank">Code Climate</a>
+  </div>
+{% else %}
+  <div>There is currently no coverage report for {{ include.branch }}.</div>
+{% endif %}
