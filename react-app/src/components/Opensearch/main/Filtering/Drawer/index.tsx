@@ -17,10 +17,16 @@ import * as F from "./Filterable";
 import { useFilterDrawer } from "./hooks";
 
 export const OsFilterDrawer = () => {
-  const hook = useFilterDrawer();
+  // how filterDrawerHook looks
+  // filterDrawerHook: {accordionValues: {}, aggs: filter opts, drawer: drawer state, fitlers: name of filters & status's, filtersApplied: boolean,
+  //                    onFilterChange, onFilterReset}
+  const filterDrawerHook = useFilterDrawer();
 
   return (
-    <Sheet open={hook.drawer.drawerOpen} onOpenChange={hook.drawer.setDrawerState}>
+    <Sheet
+      open={filterDrawerHook.drawer.drawerOpen}
+      onOpenChange={filterDrawerHook.drawer.setDrawerState}
+    >
       <SheetTrigger asChild>
         <Button
           variant="outline"
@@ -37,44 +43,44 @@ export const OsFilterDrawer = () => {
         <Button
           className="w-full my-2"
           variant="outline"
-          disabled={!hook.filtersApplied}
-          onClick={hook.onFilterReset}
+          disabled={!filterDrawerHook.filtersApplied}
+          onClick={filterDrawerHook.onFilterReset}
         >
           Reset
         </Button>
         <Accordion
-          value={hook.accordionValues}
-          onValueChange={hook.onAccordionChange}
+          value={filterDrawerHook.accordionValues}
+          onValueChange={filterDrawerHook.onAccordionChange}
           type="multiple"
         >
-          {Object.values(hook.filters).map((PK) => (
-            <AccordionItem key={`filter-${PK.field}`} value={PK.field}>
-              <AccordionTrigger className="underline">{PK.label}</AccordionTrigger>
+          {Object.values(filterDrawerHook.filters).map((filter) => (
+            <AccordionItem key={`filter-${filter.field}`} value={filter.field}>
+              <AccordionTrigger className="underline">{filter.label}</AccordionTrigger>
               <AccordionContent className="px-0">
-                {PK.component === "multiSelect" && (
+                {filter.component === "multiSelect" && (
                   <F.FilterableSelect
-                    value={hook.filters[PK.field]?.value as string[]}
-                    onChange={hook.onFilterChange(PK.field)}
-                    options={hook.aggs?.[PK.field]}
+                    value={filterDrawerHook.filters[filter.field]?.value as string[]}
+                    onChange={filterDrawerHook.onFilterChange(filter.field)}
+                    options={filterDrawerHook.aggs?.[filter.field]}
                   />
                 )}
-                {PK.component === "multiCheck" && (
+                {filter.component === "multiCheck" && (
                   <F.FilterableMultiCheck
-                    value={hook.filters[PK.field]?.value as string[]}
-                    onChange={hook.onFilterChange(PK.field)}
-                    options={hook.aggs?.[PK.field]}
+                    value={filterDrawerHook.filters[filter.field]?.value as string[]}
+                    onChange={filterDrawerHook.onFilterChange(filter.field)}
+                    options={filterDrawerHook.aggs?.[filter.field]}
                   />
                 )}
-                {PK.component === "dateRange" && (
+                {filter.component === "dateRange" && (
                   <F.FilterableDateRange
-                    value={hook.filters[PK.field]?.value as opensearch.RangeValue}
-                    onChange={hook.onFilterChange(PK.field)}
+                    value={filterDrawerHook.filters[filter.field]?.value as opensearch.RangeValue}
+                    onChange={filterDrawerHook.onFilterChange(filter.field)}
                   />
                 )}
-                {PK.component === "boolean" && (
+                {filter.component === "boolean" && (
                   <F.FilterableBoolean
-                    value={hook.filters[PK.field]?.value as boolean}
-                    onChange={hook.onFilterChange(PK.field)}
+                    value={filterDrawerHook.filters[filter.field]?.value as boolean}
+                    onChange={filterDrawerHook.onFilterChange(filter.field)}
                   />
                 )}
               </AccordionContent>

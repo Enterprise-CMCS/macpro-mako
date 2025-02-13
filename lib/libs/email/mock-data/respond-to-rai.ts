@@ -9,11 +9,8 @@ export const emailTemplateValue = {
   get requestedDate() {
     return Date.now();
   },
-  get responseDate() {
-    return Date.now();
-  },
   additionalInformation:
-    "Octopuses are usually very antisocial but when they’re under the influence of ecstasy they are more willing to spend time around each other or even hug other octopuses",
+    "Octopuses are usually very antisocial but when they're under the influence of ecstasy they are more willing to spend time around each other or even hug other octopuses",
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",
   get submissionDate() {

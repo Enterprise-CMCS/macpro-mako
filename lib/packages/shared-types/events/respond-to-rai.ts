@@ -51,6 +51,7 @@ export const chipSpaAttachments = z.object({
 export const baseSchema = z.object({
   event: z.literal("respond-to-rai").default("respond-to-rai"),
   authority: z.string(),
+  actionType: z.string().optional(),
   additionalInformation: z.string().max(4000).nullable().default(null),
   attachments: chipSpaAttachments.or(waiverAttachments).or(medicaidSpaAttachments),
   id: z.string(),

@@ -47,9 +47,9 @@ export const capitatedRenewal = {
   authority: "1915(c)",
   proposedEffectiveDate: 1700000000,
   attachments: {
-    ...attachments.bCapIndependentAssessment,
     ...attachments.bCapWaiverApplication,
     ...attachments.bCapCostSpreadsheets,
+    ...attachments.bCapIndependentAssessment,
     ...attachments.tribalConsultation,
     ...attachments.other,
   },

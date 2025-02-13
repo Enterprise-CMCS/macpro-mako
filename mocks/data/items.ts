@@ -40,6 +40,8 @@ export const SUBMISSION_ERROR_ITEM_ID = "Throw Submission Error";
 export const GET_ERROR_ITEM_ID = "Throw Get Item Error";
 export const WITHDRAW_RAI_ITEM_B = "VA-2234.R11.02";
 export const WITHDRAW_RAI_ITEM_C = "VA-2234.R11.03";
+export const WITHDRAW_RAI_ITEM_D = "VA-12-2020";
+export const WITHDRAW_RAI_ITEM_E = "MD-13-2020";
 
 const items: Record<string, TestItemResult> = {
   [EXISTING_ITEM_ID]: {
@@ -944,6 +946,76 @@ const items: Record<string, TestItemResult> = {
             submitterName: "Testmctex",
             submitterEmail: "fakeemail;",
             event: "withdraw-rai",
+            packageId: WITHDRAW_RAI_ITEM_C,
+          },
+        },
+      ],
+    },
+  },
+  [WITHDRAW_RAI_ITEM_D]: {
+    _id: WITHDRAW_RAI_ITEM_D,
+    found: true,
+    _source: {
+      id: WITHDRAW_RAI_ITEM_D,
+      seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING_RAI],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING_RAI],
+      actionType: "respond-to-rai",
+      raiRequestedDate: "2024-01-01T00:00:00.000Z",
+      authority: "CHIP SPA",
+      state: "VA",
+      leadAnalystName: "lead test",
+      leadAnalystEmail: "Lead test email",
+      reviewTeam: [
+        {
+          name: "Test",
+          email: "testemail",
+        },
+      ],
+      origin: "OneMAC",
+      changelog: [
+        {
+          _id: `${WITHDRAW_RAI_ITEM_D}-001`,
+          _source: {
+            id: `${WITHDRAW_RAI_ITEM_D}-0001`,
+            submitterName: "Testmctex",
+            submitterEmail: "fakeemail;",
+            event: "respond-to-rai",
+            packageId: WITHDRAW_RAI_ITEM_C,
+          },
+        },
+      ],
+    },
+  },
+  [WITHDRAW_RAI_ITEM_E]: {
+    _id: WITHDRAW_RAI_ITEM_E,
+    found: true,
+    _source: {
+      id: WITHDRAW_RAI_ITEM_E,
+      seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING_RAI],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING_RAI],
+      actionType: "respond-to-rai",
+      raiRequestedDate: "2024-01-01T00:00:00.000Z",
+      authority: "Medicaid SPA",
+      state: "VA",
+      leadAnalystName: "lead test",
+      leadAnalystEmail: "Lead test email",
+      reviewTeam: [
+        {
+          name: "Test",
+          email: "testemail",
+        },
+      ],
+      origin: "OneMAC",
+      changelog: [
+        {
+          _id: `${WITHDRAW_RAI_ITEM_E}-001`,
+          _source: {
+            id: `${WITHDRAW_RAI_ITEM_E}-0001`,
+            submitterName: "Testmctex",
+            submitterEmail: "fakeemail;",
+            event: "respond-to-rai",
             packageId: WITHDRAW_RAI_ITEM_C,
           },
         },
