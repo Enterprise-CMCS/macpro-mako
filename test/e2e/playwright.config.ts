@@ -36,7 +36,11 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   // reporter: [["dot"], ["html"]],
   reporter: process.env.CI
-    ? [["github"], ["html", { outputFolder: "playwright-report", open: "never" }]]
+    ? [
+        ["github"],
+        ["html", { outputFolder: "playwright-reports/html-report", open: "never" }],
+        ["json", { outputFile: "playwright-reports/playwright-summary.json" }],
+      ]
     : [["list", { printSteps: true }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {

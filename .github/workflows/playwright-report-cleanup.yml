@@ -1,0 +1,53 @@
+# Copied from https://dev.to/ysfaran/how-to-use-playwright-with-github-actions-and-github-pages-4gdl
+name: Delete Playwright Report for Branch
+
+on:
+  delete:
+
+jobs:
+  delete_reports:
+    name: Delete Playwright Reports
+    runs-on: ubuntu-latest
+    env:
+      # Contains all reports for deleted branch
+      BRANCH_NAME: ${{ github.event.ref }}
+    steps:
+      - name: Checkout GitHub Pages Branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - name: Set Git User
+        # see: https://github.com/actions/checkout/issues/13#issuecomment-724415212
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Delete Data for Branch
+        if: ${{ github.event.ref_type == 'branch' }}
+        timeout-minutes: 3
+        working-directory: _data/playwright-reports/branches/
+        run: |
+          if [ ! -e "${{ env.BRANCH_NAME }}.yml" ]; then
+            rm ${{ env.BRANCH_NAME }}.yml
+            echo "Deleted Playwright Data for $BRANCH_NAME from GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
+          else 
+            echo "Could not find Playwright Data for $BRANCH_NAME to delete" >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Delete Reports for Branch
+        if: ${{ github.event.ref_type == 'branch' }}
+        timeout-minutes: 3
+        working-directory: playwright-reports/branches/
+        run: |
+          if [[ -d $BRANCH_NAME ]]; then
+            rm -rf $BRANCH_NAME
+            echo "Deleted Playwright Reports for $BRANCH_NAME from GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
+          else 
+            echo "Could not find Playwright Reports for $BRANCH_NAME to delete" >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Push Changes
+        if: ${{ github.event.ref_type == 'branch' }}
+        timeout-minutes: 3
+        run: |
+          git add .
+          git commit -m "workflow: remove all reports and data for branch $BRANCH_NAME"
+          git pull origin gh-pages --rebase -s recursive -X ours
+          git push

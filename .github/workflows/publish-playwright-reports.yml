@@ -1,0 +1,77 @@
+name: Publish Playwright Reports to GitHub Pages
+
+on:
+  workflow_call:
+    inputs:
+      HTML_ARTIFACT_ID:
+        type: string
+        required: true
+      JSON_ARTIFACT_ID:
+        type: string
+        required: true
+      BRANCH_NAME:
+        type: string
+        required: true
+      RUN_ID:
+        type: string
+        required: true
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+
+jobs:
+  create-pages:
+    name: Generate Playwright Pages
+    runs-on: ubuntu-latest
+    outputs:
+      deploy_to: ${{ steps.variables.outputs.deploy_to }}
+      commit_msg: ${{ steps.variables.outputs.commit_msg }}
+      artifact_id: playwright-report
+    steps:
+      - name: Checkout GitHub Pages Branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - name: Set Report Path and Name
+        id: variables
+        run: |
+          if [[ ${{ inputs.BRANCH_NAME }} == 'main' ]]; then
+            echo "report_path=playwright-reports/" >> "$GITHUB_OUTPUT"
+            echo "report_name=main" >> "$GITHUB_OUTPUT"
+            echo "commit_msg=update Playwright report for main" >> "$GITHUB_OUTPUT"
+          else
+            echo "report_path=playwright-reports/branches/${{ inputs.BRANCH_NAME }}/" >> "$GITHUB_OUTPUT"
+            echo "report_name=${{ inputs.RUN_ID }}" >> "$GITHUB_OUTPUT"
+            echo "commit_msg=add Playwright report for branch ${{ github.ref_name }}, run-id ${{ github.run_id }}" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Download JSON Report
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.JSON_ARTIFACT_ID }}
+          path: _data/${{ steps.variables.outputs.report_path }}/${{ inputs.RUN_ID }}.json
+      - name: Download HTML Report
+        id: download-html
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.HTML_ARTIFACT_ID }}
+          path: ${{ steps.variables.outputs.report_path }}/${{ steps.variables.outputs.report_name }}.html
+      - name: Create Branch Index
+        working-directory: ${{ steps.variables.outputs.report_path }}
+        run: |
+          if ${{ inputs.BRANCH_NAME }} != "main" then
+            if [ ! -e "index.markdown" ]; then
+              echo "---\n---" > index.markdown
+              yq --front-matter=process '.branch="${{ inputs.BRANCH_NAME }}"' -i index.markdown
+            fi
+          fi
+      - name: Push to GitHub Pages Branch
+        working-directory: repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "${{ steps.variables.outputs.commit_msg }}"
+          git pull origin gh-pages --rebase -s recursive -X ours
+          git push
+          echo "Report URL: https://enterprise-cmcs.github.io/macpro-mako/${{ steps.download-html.outputs.download-path }}" >> "$GITHUB_STEP_SUMMARY"

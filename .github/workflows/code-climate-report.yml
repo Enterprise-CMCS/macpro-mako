@@ -18,6 +18,7 @@ jobs:
           ref: main
       - uses: ./.github/actions/setup
       - name: Test
+        continue-on-error: true
         run: run test --coverage
       - name: Report coverage to Code Climate
         if: always()
@@ -26,19 +27,28 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageLocations: coverage/lcov.info:lcov
-      - name: Upload Coverage
-        if: always()
+      - name: Upload Coverage Summary
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
+        id: upload-json
         with:
-          name: main-coverage
+          name: json-main-coverage-report
           path: coverage/coverage-summary.json
           overwrite: true
           retention-days: 90
-
-  publish-coverage:
-    needs: [coverage-report]
-    uses: ./.github/workflows/push-to-gh-pages.yml
-    with:
-      ARTIFACT_ID: main-coverage
-      DEPLOY_TO: .
-      COMMIT_MSG: "Updating coverage report"
+      - name: Upload Coverage Report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        id: upload-html
+        with:
+          name: html-main-coverage-report
+          path: coverage/html-report/
+          overwrite: true
+          retention-days: 90
+      - name: Push to GitHub Pages
+        if: ${{ !cancelled() }}
+        uses: ./.github/workflows/push-to-gh-pages.yml
+        with:
+          ARTIFACT_ID: ${{ steps.upload-html.outputs.artifact-id }}
+          DEPLOY_TO: "coverage/"
+          COMMIT_MSG: "Updating the Code Coverage Report for Main"
