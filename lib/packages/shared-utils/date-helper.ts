@@ -1,26 +1,27 @@
-import * as dateFns from "date-fns";
+import { format, add } from "date-fns";
+
 export function formatDate(date: number | null | undefined) {
   if (!date || date === undefined) {
     return "Pending";
-  } else {
-    return dateFns.format(date, "MMMM d, yyyy");
   }
+
+  return format(date, "MMMM d, yyyy");
 }
 
+export const isDST = (date: Date): boolean => {
+  const jan = new Date(date).getTimezoneOffset();
+  const jul = new Date(new Date(date).setMonth(6)).getTimezoneOffset();
+  return new Date(date).getTimezoneOffset() < Math.max(jan, jul);
+};
+
 export function formatNinetyDaysDate(date: number | null | undefined): string {
-  if (!date || date === undefined) {
+  if (!date) {
     return "Pending";
   }
 
-  const isDST = (date: number): boolean => {
-    const jan = new Date(date).getTimezoneOffset();
-    const jul = new Date(new Date(date).setMonth(6)).getTimezoneOffset();
-    return new Date(date).getTimezoneOffset() < Math.max(jan, jul);
-  };
+  const baseDate = new Date(date);
+  const ninetyDaysLater = add(baseDate, { days: 90 });
 
-  const timezoneAbbreviation = isDST(date) ? "EDT" : "EST";
-  return dateFns.format(
-    dateFns.add(date, { days: 90 }),
-    `MMM d, yyyy '@ 11:59pm ${timezoneAbbreviation}'`,
-  );
+  const timezoneAbbreviation = isDST(ninetyDaysLater) ? "EDT" : "EST";
+  return format(ninetyDaysLater, `MMM d, yyyy '@ 11:59pm ${timezoneAbbreviation}'`);
 }
