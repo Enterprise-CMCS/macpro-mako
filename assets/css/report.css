@@ -1,40 +1,19 @@
-* {
-  box-sizing: border-box;
-}
-
-html {
-  /* 1 rem = 10px */
-  font-size: 75%;
-}
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1.4rem;
-  margin: 0 auto;
-  width: 100vw;
-}
-
-main {
-  margin: 0 auto;
-  max-width: 1024px;
+.post-content h2 {
   margin-top: 3rem;
 }
 
-.report-title {
-  font-size: x-large;
-  font-weight: bolder;
-  padding: 1rem 3rem 0 0;
+.post-content h3 {
+  margin-bottom: 0;
 }
 
-.report-list {
-  width: fit-content;
+.branch-header {
+  margin-top: 2rem;
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  justify-content: space-between;
+  align-items: end;
 }
 
 .test-report-container {
-  cursor: pointer;
   display: flex;
   flex-direction: column;
 }
@@ -44,14 +23,22 @@ main {
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   background-color: #f6f8fa;
-  padding: 0 1rem;
+  padding: 0.5rem 1rem;
   border-bottom: none;
   margin-top: 1rem;
-  font-weight: 600;
-  line-height: 3rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 300;
+  font-size: smaller;
+}
+
+.report-time {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: #6e7781;
 }
 
 .report-body {
@@ -60,7 +47,7 @@ main {
   border-bottom-right-radius: 6px;
   line-height: 1.5rem;
   font-size: smaller;
-  padding: 0.5rem 6rem 0.5rem 4rem;
+  padding: 0.5rem 3rem 0.5rem 2rem;
   overflow: hidden;
   text-overflow: ellipsis;
   display: flex;
@@ -71,7 +58,6 @@ main {
 .results {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   padding: 1rem 0;
 }
 
@@ -111,15 +97,6 @@ main {
   background-color: rgba(175, 184, 193, 0.2);
   border: 1px solid transparent;
   border-radius: 2em;
-}
-
-.report-time {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  color: #6e7781;
-  display: flex;
-  justify-content: end;
-  gap: 2rem;
 }
 
 .result-success {

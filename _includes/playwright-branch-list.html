@@ -1,0 +1,9 @@
+{% for branch in site.data.playwright-reports.branches %}
+  {% assign branch_name = branch[0] %}
+  <div class="branch-header">
+    <h3>{{branch_name}}</h3>
+    <a href="/playwright-reports/branches/{{branch_name}}">View Previous Runs</a>
+  </div>
+  {% assign data = site.data.playwright-reports.branches[branch_name] | first %}
+  {% include playwright-summary.html data=data url=data.url %}
+{% endfor %}

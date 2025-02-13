@@ -11,12 +11,28 @@ theme: minima
 plugins:
   - jekyll-feed
 
+# If you want to link only specific pages in your header, use this and add the path to the pages
+# in order as they should show up.
+header_pages:
+  - playwright-reports/playwright-reports.markdown
+
 defaults:
-  - scope:
-      path: "playwright-report/main"
+  -
+    scope:
+      path: ""
+      type: "pages"
     values:
-      main: true
-  - scope:
-      path: "playwright-report/branch"
+      layout: "page"
+  -
+    scope:
+      path: "playwright-reports/*"
+      type: "pages"
     values:
-      branch: true
+      custom_css: report
+  -
+    scope:
+      path: "playwright-reports/branches/*"
+      type: "pages"
+    values:
+      layout: "playwright-branch"
+

@@ -1,0 +1,8 @@
+---
+layout: default
+---
+
+<h2>{{page.branch}}</h2>
+{% for data in site.data.playwright-reports.branches[page.branch] %}
+  {% include playwright-summary.html data=data %}
+{% endfor %}
