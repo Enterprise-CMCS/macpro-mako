@@ -8,7 +8,7 @@ export const MedSpaStateEmail = ({
   variables: Events["WithdrawPackage"] & CommonEmailVariables;
 }) => (
   <BaseEmailTemplate
-    previewText={`SPA Package ${variables.id} Withdraw Request`}
+    previewText={`SPA Package ${variables.id} Withdraw Requested`}
     heading="This is confirmation that you have requested to withdraw the package below. The package will no longer be considered for CMS review:"
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
