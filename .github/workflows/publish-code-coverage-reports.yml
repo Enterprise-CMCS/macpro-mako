@@ -16,18 +16,18 @@ on:
         type: string
         required: true
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: write
-
 jobs:
-  push-to-branch:
+  push-to-pages:
+    permissions:
+      contents: write
+      actions: read
     runs-on: ubuntu-latest
     steps:
       - name: Checkout GitHub Pages Branch
         uses: actions/checkout@v4
         with:
           ref: gh-pages
+      - uses: ./.github/actions/setup
       - name: Download JSON Report
         uses: actions/download-artifact@v4
         with:

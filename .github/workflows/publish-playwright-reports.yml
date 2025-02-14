@@ -16,12 +16,11 @@ on:
         type: string
         required: true
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: write
-
 jobs:
-  create-pages:
+  push-to-pages:
+    permissions:
+      contents: write
+      actions: read
     name: Generate Playwright Pages
     runs-on: ubuntu-latest
     outputs:
@@ -33,6 +32,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: gh-pages
+      - uses: ./.github/actions/setup
       - name: Set Report Path and Name
         id: variables
         run: |
