@@ -32,7 +32,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: gh-pages
-      - uses: ./.github/actions/setup
       - name: Set Report Path and Name
         id: variables
         run: |

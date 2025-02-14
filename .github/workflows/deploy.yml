@@ -104,6 +104,8 @@ jobs:
       name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     if: ${{ github.ref != 'refs/heads/production' }}
     outputs:
+      json_artifact_id: ${{ steps.upload-json.outputs.artifact-id }}
+      html_artifact_id: ${{ steps.upload-html.outputs.artifact-id }}
       actualResult: ${{ steps.e2e-test.conclusion }}
     steps:
       - name: Checkout
@@ -136,14 +138,15 @@ jobs:
           name: html-playwright-report
           path: test/e2e/playwright-reports/html-report/index.html
           retention-days: 30
-      - name: Publish Playwright Reports
-        if: ${{ !cancelled() }}
-        uses: ./.github/workflows/publish-playwright-reports.yml
-        with:
-          JSON_ARTIFACT_ID: ${{ steps.upload-json.outputs.artifact-id }}
-          HTML_ARTIFACT_ID: ${{ steps.upload-html.outputs.artifact-id }}
-          BRANCH_NAME: ${{ github.ref_name }}
-          RUN_ID: ${{ github.run_id }}
+
+  publish:
+    needs: [e2e]
+    uses: ./.github/workflows/publish-playwright-reports.yml
+    with:
+      JSON_ARTIFACT_ID: ${{ needs.e2e.outputs.json_artifact_id }}
+      HTML_ARTIFACT_ID: ${{ needs.e2e.outputs.html_artifact_id }}
+      BRANCH_NAME: ${{ github.ref_name }}
+      RUN_ID: ${{ github.run_id }}
 
   cfn-nag:
     runs-on: ubuntu-20.04
