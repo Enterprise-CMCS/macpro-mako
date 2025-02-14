@@ -21,7 +21,7 @@ export type UserRolesString = `${UserRoles}${"," | ""}` | "";
 export type CognitoUserAttributes = {
   sub: string;
   "custom:cms-roles": UserRolesString; // comma-separated list of UserRoles ex. "onemac-micro-reviewer,onemac-micro-helpdesk" or "onemac-micro-statesubmitter"
-  "custom:ismemberof": UserRolesString;
+  "custom:ismemberof"?: UserRolesString;
   email_verified: boolean;
   "custom:state"?: string; // ex. "VA" or "VA,MD,CA" or undefined
   given_name: string;
