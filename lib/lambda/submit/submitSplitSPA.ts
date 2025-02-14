@@ -46,6 +46,7 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
       makoChangedDate: currentTime,
       changedDate: currentTime,
       timestamp: currentTime,
+      statusDate: currentTime,
       origin: "OneMAC",
       changeMade: "OneMAC Admin has added a package to OneMAC.",
       changeReason: "Per request from CMS, this package was added to OneMAC.",

@@ -5,6 +5,10 @@ export const deleteAdminChangeSchema = z
     id: z.string(),
     deleted: z.boolean(),
     adminChangeType: z.literal("delete"),
+    makoChangedDate: z.number(),
+    changedDate: z.number(),
+    statusDate: z.number(),
+    timestamp: z.number(),
   })
   .and(z.record(z.string(), z.any()));
 
@@ -12,6 +16,10 @@ export const updateValuesAdminChangeSchema = z
   .object({
     id: z.string(),
     adminChangeType: z.literal("update-values"),
+    makoChangedDate: z.number(),
+    changedDate: z.number(),
+    statusDate: z.number(),
+    timestamp: z.number(),
   })
   .and(z.record(z.string(), z.any()));
 
@@ -20,6 +28,10 @@ export const updateIdAdminChangeSchema = z
     id: z.string(),
     adminChangeType: z.literal("update-id"),
     idToBeUpdated: z.string(),
+    makoChangedDate: z.number(),
+    changedDate: z.number(),
+    statusDate: z.number(),
+    timestamp: z.number(),
   })
   .and(z.record(z.string(), z.any()));
 
@@ -28,6 +40,10 @@ export const splitSPAAdminChangeSchema = z
     id: z.string(),
     adminChangeType: z.literal("split-spa"),
     idToBeUpdated: z.string(),
+    makoChangedDate: z.number(),
+    changedDate: z.number(),
+    statusDate: z.number(),
+    timestamp: z.number(),
   })
   .and(z.record(z.string(), z.any()));
 
@@ -82,6 +98,7 @@ export const extendSubmitNOSOAdminSchema = submitNOSOAdminSchema.extend({
   makoChangedDate: z.number(),
   changedDate: z.number(),
   statusDate: z.number(),
+  timestamp: z.number(),
   isAdminChange: z.boolean(),
   state: z.string(),
   event: z.string(),
@@ -95,5 +112,4 @@ export const transformSubmitValuesSchema = extendSubmitNOSOAdminSchema.transform
   event: "NOSO",
   id: data.id,
   packageId: data.id,
-  timestamp: Date.now(),
 }));
