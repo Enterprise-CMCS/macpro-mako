@@ -12,7 +12,7 @@ import {
 const userHasAuthorizedRole = (user: CognitoUserAttributes | null, authorized: UserRoles[]) => {
   if (!user) return false;
   const euaRoles = user["custom:ismemberof"] as UserRoles;
-  const idmRoles = user["custom:cms-roles"].split(",") as UserRoles[];
+  const idmRoles = (user?.["custom:cms-roles"]?.split(",") ?? []) as UserRoles[];
   const userRoles = [euaRoles, ...idmRoles];
 
   return userRoles.filter((role) => authorized.includes(role)).length > 0;
