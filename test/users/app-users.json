@@ -197,8 +197,8 @@
         "Value": ""
       },
       {
-        "Name": "custom:cms-roles",
-        "Value": "onemac-micro-reviewer,onemac-micro-super"
+        "Name": "custom:ismemberof",
+        "Value": "ONEMAC_USER_D_SUPER"
       }
     ]
   },
