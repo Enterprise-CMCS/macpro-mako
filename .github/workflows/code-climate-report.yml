@@ -4,9 +4,13 @@ on:
   push:
     branches:
       - main
+      - publish-playwright-reports
   schedule:
     - cron: "30 01 * * *"
   workflow_dispatch:
+
+permissions:
+  actions: read
 
 jobs:
   coverage-report:
