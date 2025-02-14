@@ -61,7 +61,7 @@ const sendSubmitMessage = async (item: submitMessageType) => {
       makoChangedDate: currentTime,
       changedDate: currentTime,
       statusDate: currentTime,
-      timeStamp: currentTime,
+      timestamp: currentTime,
     }),
   );
 
