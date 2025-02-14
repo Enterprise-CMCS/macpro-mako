@@ -12,7 +12,7 @@ export const ChipSpaStateEmail = ({
 }) => (
   <BaseEmailTemplate
     previewText={`CHIP SPA ${variables.id} RAI Response Submitted`}
-    heading="The OneMAC Submission Portal received a CHIP SPA RAI Response Submission"
+    heading="This response confirms you submitted a CHIP SPA RAI Response to CMS for review:"
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >
@@ -27,8 +27,8 @@ export const ChipSpaStateEmail = ({
       }}
     />
     <Text style={styles.text.description}>
-      {`This response confirms receipt of your CHIP State Plan Amendment (SPA) or your response to a
-        SPA Request for Additional Information (RAI). You can expect a formal response to your
+      {`This response confirms receipt of your CHIP State Plan Amendment (SPA or your response to a
+        SPA Request for Additional Information (RAI)). You can expect a formal response to your
         submittal to be issued within 90 days, before ${formatNinetyDaysDate(variables.timestamp)}.`}
     </Text>
     <FollowUpNotice isChip withDivider={false} />

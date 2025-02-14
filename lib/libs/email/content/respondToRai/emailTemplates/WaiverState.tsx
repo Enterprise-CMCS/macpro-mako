@@ -1,4 +1,4 @@
-import { formatNinetyDaysDate } from "shared-utils";
+import { formatActionType, formatNinetyDaysDate } from "shared-utils";
 import { CommonEmailVariables, Events } from "shared-types";
 import { Text } from "@react-email/components";
 import { PackageDetails, MailboxNotice, BasicFooter, FollowUpNotice } from "../../email-components";
@@ -12,7 +12,7 @@ export const WaiverStateEmail = ({
 }) => (
   <BaseEmailTemplate
     previewText={`Your ${variables.authority} RAI Response for ${variables.id} has been submitted to CMS`}
-    heading={`This response confirms the submission of your ${variables.actionType} RAI Response to CMS for review:`}
+    heading={`This response confirms the submission of your ${formatActionType(variables.actionType)} RAI Response to CMS for review:`}
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >

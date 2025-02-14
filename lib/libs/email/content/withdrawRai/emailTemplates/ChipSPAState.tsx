@@ -23,6 +23,6 @@ export const ChipSpaStateEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
-    <FollowUpNotice isChip />
+    <FollowUpNotice isChip includeDidNotExpect={false} />
   </BaseEmailTemplate>
 );
