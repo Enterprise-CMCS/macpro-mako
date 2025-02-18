@@ -12,6 +12,9 @@ const sendDeleteMessage = async (packageId: string) => {
   if (!topicName) {
     throw new Error("Topic name is not defined");
   }
+
+  const currentTime = Date.now();
+
   await produceMessage(
     topicName,
     packageId,
@@ -20,6 +23,10 @@ const sendDeleteMessage = async (packageId: string) => {
       deleted: true,
       isAdminChange: true,
       adminChangeType: "delete",
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
+      statusDate: currentTime,
+      timestamp: currentTime,
     }),
   );
 
@@ -64,6 +71,8 @@ const sendUpdateValuesMessage = async ({
     Object.keys(updatedFields).length > 1 ? "have" : "has"
   } been updated`;
 
+  const currentTime = Date.now();
+
   await produceMessage(
     topicName,
     currentPackage._id,
@@ -74,6 +83,10 @@ const sendUpdateValuesMessage = async ({
       adminChangeType: "update-values",
       changeMade: changeMadeText,
       changeReason,
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
+      statusDate: currentTime,
+      timestamp: currentTime,
     }),
   );
 
@@ -131,6 +144,8 @@ const sendUpdateIdMessage = async ({
 
   await sendDeleteMessage(currentPackage._id);
 
+  const currentTime = Date.now();
+
   await produceMessage(
     topicName,
     updatedId,
@@ -142,6 +157,10 @@ const sendUpdateIdMessage = async ({
       changeMade: "ID has been updated.",
       isAdminChange: true,
       adminChangeType: "update-id",
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
+      statusDate: currentTime,
+      timestamp: currentTime,
     }),
   );
 

@@ -53,7 +53,7 @@ export const transformDeleteSchema = (offset: number) =>
     event: "delete",
     packageId: data.id,
     id: `${data.id}-${offset}`,
-    timestamp: Date.now(),
+    // timestamp: Date.now(),
   }));
 
 export const transformUpdateValuesSchema = (offset: number) =>
@@ -62,7 +62,6 @@ export const transformUpdateValuesSchema = (offset: number) =>
     event: "update-values",
     packageId: data.id,
     id: `${data.id}-${offset}`,
-    timestamp: Date.now(),
   }));
 
 export const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((data) => ({
@@ -70,7 +69,6 @@ export const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((da
   event: "update-id",
   packageId: data.id,
   id: `${data.id}`,
-  timestamp: Date.now(),
 }));
 
 export const transformedSplitSPASchema = splitSPAAdminChangeSchema.transform((data) => ({
