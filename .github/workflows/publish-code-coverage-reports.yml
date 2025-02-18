@@ -12,6 +12,7 @@ on:
       BRANCH_NAME:
         type: string
         required: true
+        default: main
       RUN_ID:
         type: string
         required: true
@@ -32,17 +33,21 @@ jobs:
         with:
           name: ${{ inputs.JSON_ARTIFACT_ID }}
           path: _data/coverage/
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.RUN_ID }}
       - name: Download HTML Report
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.HTML_ARTIFACT_ID }}
           path: coverage/
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.RUN_ID }}
       - name: Push to GitHub Pages Branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "update code coverage report for main"
+          git commit -m "update code coverage report for ${{ inputs.BRANCH_NAME }}"
           git pull origin gh-pages --rebase -s recursive -X ours
           git push
           echo "Report URL: https://enterprise-cmcs.github.io/macpro-mako/coverage/" >> "$GITHUB_STEP_SUMMARY"

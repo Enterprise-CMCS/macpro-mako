@@ -10,16 +10,16 @@ on:
   # workflow_dispatch:
 
 permissions:
-  contents: write
   actions: read
-
-env:
-  JSON_ARTIFACT_ID: json-main-coverage-report
-  HTML_ARTIFACT_ID: html-main-coverage-report
 
 jobs:
   coverage-report:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    env:
+      JSON_ARTIFACT_ID: json-main-coverage-report
+      HTML_ARTIFACT_ID: html-main-coverage-report
+    outputs:
+      json_artifact_id:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -57,30 +57,9 @@ jobs:
 
   publish:
     needs: [coverage-report]
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout GitHub Pages Branch
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-      - name: Download JSON Report
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ env.JSON_ARTIFACT_ID }}
-          path: _data/coverage/
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Download HTML Report
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ env.HTML_ARTIFACT_ID }}
-          path: coverage/
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Push to GitHub Pages Branch
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "update code coverage report for main"
-          git pull origin gh-pages --rebase -s recursive -X ours
-          git push
-          echo "Report URL: https://enterprise-cmcs.github.io/macpro-mako/coverage/" >> "$GITHUB_STEP_SUMMARY"
+    uses: ./.github/workflows/publish-code-coverage-reports.yml
+    with:
+      JSON_ARTIFACT_ID: ${{ needs.coverage-report.outputs.json_artifact_id }}
+      HTML_ARTIFACT_ID: ${{ needs.coverage-report.outputs.html_artifact_id }}
+      BRANCH_NAME: ${{ github.ref_name }}
+      RUN_ID: ${{ github.run_id }}
