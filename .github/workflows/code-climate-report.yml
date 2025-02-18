@@ -55,7 +55,7 @@ jobs:
 
   publish:
     needs: [coverage-report]
-    uses: ./.github/workflows/publish-playwright-reports.yml
+    uses: ./.github/workflows/publish-code-coverage-reports.yml
     with:
       JSON_ARTIFACT_ID: ${{ needs.coverage-report.outputs.json_artifact_id }}
       HTML_ARTIFACT_ID: ${{ needs.coverage-report.outputs.html_artifact_id }}

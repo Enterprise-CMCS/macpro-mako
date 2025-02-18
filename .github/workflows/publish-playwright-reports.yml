@@ -58,7 +58,7 @@ jobs:
       - name: Create Branch Index
         working-directory: ${{ steps.variables.outputs.report_path }}
         run: |
-          if ${{ inputs.BRANCH_NAME }} != "main" then
+          if [ "${{ inputs.BRANCH_NAME }}" != "main" ]; then
             if [ ! -e "index.markdown" ]; then
               echo "---\n---" > index.markdown
               yq --front-matter=process '.branch="${{ inputs.BRANCH_NAME }}"' -i index.markdown
