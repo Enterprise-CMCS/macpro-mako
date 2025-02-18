@@ -3,13 +3,16 @@ import { useState, useEffect } from "react";
 interface GenericInitialValue {
   [index: number]: unknown;
 }
-type keyType = "osQuery" | "osColumns";
+type keyType = "osQuery" | "spaOSColumns" | "waiversOSColumns" | "spaOSData" | "waiversOSData";
 
 export const removeItemLocalStorage = (key?: keyType) => {
   if (key) window.localStorage.removeItem(key);
   else {
     window.localStorage.removeItem("osQuery");
-    window.localStorage.removeItem("osColumns");
+    window.localStorage.removeItem("spaOSColumns");
+    window.localStorage.removeItem("waiversOSColumns");
+    window.localStorage.removeItem("spaOSData");
+    window.localStorage.removeItem("waiversOSData");
   }
 };
 

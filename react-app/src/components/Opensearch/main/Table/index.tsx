@@ -23,18 +23,22 @@ export const OsTable: FC<{
               <UI.TableHead
                 {...(!!TH.props && TH.props)}
                 key={`TH-${TH.field}`}
-                isActive={url.state.sort.field === TH.field}
-                desc={url.state.sort.order === "desc"}
+                isActive={url.state.sort?.field === TH.field}
+                desc={url.state.sort?.order === "desc"}
                 {...(TH.isSystem && { className: "pointer-events-none" })}
                 onClick={() => {
                   if (!TH.field) return;
-                  url.onSet((s) => ({
-                    ...s,
-                    sort: {
-                      field: TH.field as opensearch.main.Field,
-                      order: s.sort.order === "desc" ? "asc" : "desc",
-                    },
-                  }));
+                  url.onSet((s) => {
+                    const osState = {
+                      ...s,
+                      sort: {
+                        field: TH.field as opensearch.main.Field,
+                        order: s.sort?.order === "desc" ? "asc" : "desc",
+                      },
+                    } as UI.OsUrlState;
+                    // localStorage.setItem(, osState)
+                    return osState;
+                  });
                 }}
               >
                 {TH.label}
