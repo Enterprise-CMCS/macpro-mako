@@ -12,6 +12,7 @@ export const baseSchema = z.object({
     }),
   ),
   id: z.string(),
+  authority: z.string(),
 });
 
 export const schema = baseSchema.extend({

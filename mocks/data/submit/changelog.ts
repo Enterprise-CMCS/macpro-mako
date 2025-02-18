@@ -140,6 +140,7 @@ export const uploadSubsequentDocuments = {
   event: "upload-subsequent-documents",
   attachments: {},
   additionalInformation: "Some additional information about this submission.",
+  authority: "1915(b)",
 };
 
 export const temporaryExtension = {

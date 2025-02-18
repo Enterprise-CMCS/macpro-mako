@@ -52,6 +52,7 @@ const pickAttachmentsAndAdditionalInfo = (
           .refine((value) => value.trim().length > 0, {
             message: "Additional Information can not be only whitespace.",
           }),
+        authority: z.string(),
       })
       .refine(
         (data) =>
@@ -90,7 +91,7 @@ const getTitle = (originalSubmissionEvent: string) => {
 };
 
 export const UploadSubsequentDocuments = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id, authority } = useParams<{ id: string; authority: string }>();
   const { data: submission, isLoading: isSubmissionLoading } = useGetItem(id);
 
   if (isSubmissionLoading === true) {
@@ -157,6 +158,7 @@ export const UploadSubsequentDocuments = () => {
         property: "id",
         documentChecker: (check) => check.recordExists,
       }}
+      defaultValues={{ authority }}
       additionalInformation={{
         required: true,
         title: "Reason for subsequent documents",
