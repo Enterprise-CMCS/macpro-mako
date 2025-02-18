@@ -8,9 +8,19 @@ on:
     - cron: "30 01 * * *"
   workflow_dispatch:
 
+permissions:
+  actions: read
+  contents: write
+
 jobs:
   coverage-report:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    env:
+      JSON_ARTIFACT_ID: json-main-coverage-report
+      HTML_ARTIFACT_ID: html-main-coverage-report
+    outputs:
+      json_artifact_id: ${{ env.JSON_ARTIFACT_ID }}
+      html_artifact_id: ${{ env.HTML_ARTIFACT_ID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -18,6 +28,7 @@ jobs:
           ref: main
       - uses: ./.github/actions/setup
       - name: Test
+        continue-on-error: true
         run: run test --coverage
       - name: Report coverage to Code Climate
         if: always()
@@ -26,11 +37,30 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageLocations: coverage/lcov.info:lcov
-      - name: Upload Coverage
-        if: always()
+      - name: Upload Coverage Summary
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
+        id: upload-json
         with:
-          name: main-coverage
+          name: ${{ env.JSON_ARTIFACT_ID }}
           path: coverage/coverage-summary.json
           overwrite: true
           retention-days: 90
+      - name: Upload Coverage Report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        id: upload-html
+        with:
+          name: ${{ env.HTML_ARTIFACT_ID }}
+          path: coverage/html-report/
+          overwrite: true
+          retention-days: 90
+
+  publish:
+    needs: [coverage-report]
+    uses: ./.github/workflows/publish-code-coverage-reports.yml
+    with:
+      JSON_ARTIFACT_ID: ${{ needs.coverage-report.outputs.json_artifact_id }}
+      HTML_ARTIFACT_ID: ${{ needs.coverage-report.outputs.html_artifact_id }}
+      BRANCH_NAME: ${{ github.ref_name }}
+      RUN_ID: ${{ github.run_id }}

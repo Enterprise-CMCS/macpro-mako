@@ -1,4 +1,4 @@
-import { test as setup } from "@playwright/test";
+import { chromium, FullConfig } from "@playwright/test";
 import { testUsers } from "./users";
 import { LoginPage } from "../pages/loginPage";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
@@ -22,27 +22,27 @@ const password = (
 ).SecretString!;
 
 const stateSubmitterAuthFile = "playwright/.auth/state-user.json";
-
-/**
- * Rewrite without using a test. This throws off the report count
- */
-setup("authenticate state submitter", async ({ page, context }) => {
-  const loginPage = new LoginPage(page);
-  await loginPage.goto();
-
-  await loginPage.login(testUsers.state, password);
-  await context.storageState({ path: stateSubmitterAuthFile });
-});
-
 const reviewerAuthFile = "playwright/.auth/reviewer-user.json";
 
-/**
- * Rewrite without using a test. This throws off the report count
- */
-setup("authenticate cms reviewer", async ({ page, context }) => {
-  const loginPage = new LoginPage(page);
-  await loginPage.goto();
+async function globalSetup(config: FullConfig) {
+  const { baseURL } = config.projects[0].use;
+  const browser = await chromium.launch();
 
-  await loginPage.login(testUsers.reviewer, password);
-  await context.storageState({ path: reviewerAuthFile });
-});
+  const submitterContext = await browser.newContext({ baseURL });
+  const submitterPage = await submitterContext.newPage();
+  const submitterLoginPage = new LoginPage(submitterPage);
+  await submitterLoginPage.goto();
+  await submitterLoginPage.login(testUsers.state, password);
+  await submitterContext.storageState({ path: stateSubmitterAuthFile });
+
+  const reviewerContext = await browser.newContext({ baseURL });
+  const reviewerPage = await reviewerContext.newPage();
+  const reviewerLoginPage = new LoginPage(reviewerPage);
+  await reviewerLoginPage.goto();
+  await reviewerLoginPage.login(testUsers.reviewer, password);
+  await reviewerContext.storageState({ path: reviewerAuthFile });
+
+  await browser.close();
+}
+
+export default globalSetup;
