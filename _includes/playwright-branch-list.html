@@ -5,13 +5,19 @@
       <h3>{{branch_name}}</h3>
       <a href="/macpro-mako/playwright-reports/branches/{{branch_name}}">View Previous Runs</a>
     </div>
-    {% assign run = site.data.playwright-reports.branches[branch_name] | first %}
-    {% assign run_id = run[0] %}
-    {% assign data = run[1] %}
+
+    {% assign run_ids = "" | split: "," %}
+    {% for run in site.data.playwright-reports.branches[branch_name] %}
+      {% assign run_id = run[0] %}
+      {% assign run_ids = run_ids | push: run_id %}
+      {% endfor %}
+    {% assign latest_run_id = run_ids | last %}
+
+    {% assign data = site.data.playwright-reports.branches[branch_name][latest_run_id] %}
     {% capture url %}
-      /macpro-mako/playwright-reports/branches/{{branch_name}}/{{run_id}}.html
+      /macpro-mako/playwright-reports/branches/{{branch_name}}/{{latest_run_id}}.html
     {% endcapture %}
-    {% include playwright-summary.html branch=branch_name run_id=run_id data=data url=url %}
+    {% include playwright-summary.html branch=branch_name run_id=latest_run_id data=data url=url %}
   {% endfor %}
 {% else %}
   <div>There are currently no branch reports.</div>
