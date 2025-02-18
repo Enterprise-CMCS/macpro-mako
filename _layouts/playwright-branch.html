@@ -7,7 +7,7 @@ layout: default
   {% assign run_id = run[0] %}
   {% assign data = run[1] %}
   {% capture url %}
-    /playwright-reports/branches/{{page.branch}}/{{run_id}}.html
+    /macpro-mako/playwright-reports/branches/{{page.branch}}/{{run_id}}.html
   {% endcapture %}
   {% include playwright-summary.html data=data url=url %}
 {% endfor %}

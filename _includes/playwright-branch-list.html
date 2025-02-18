@@ -3,7 +3,7 @@
     {% assign branch_name = branch[0] %}
     <div class="branch-header">
       <h3>{{branch_name}}</h3>
-      <a href="/playwright-reports/branches/{{branch_name}}">View Previous Runs</a>
+      <a href="/macpro-mako/playwright-reports/branches/{{branch_name}}">View Previous Runs</a>
     </div>
     {% assign run = site.data.playwright-reports.branches[branch_name] | first %}
     {% assign run_id = run[0] %}
