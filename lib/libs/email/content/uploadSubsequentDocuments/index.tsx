@@ -1,6 +1,15 @@
 import { Events, Authority, EmailAddresses, CommonEmailVariables } from "shared-types";
 import { AuthoritiesWithUserTypesTemplate } from "../..";
-import { ChipSpaCMSEmail, ChipSpaStateEmail, AppKCMSEmail, AppKStateEmail } from "./emailTemplates";
+import {
+  ChipSpaCMSEmail,
+  ChipSpaStateEmail,
+  AppKCMSEmail,
+  AppKStateEmail,
+  MedSpaStateEmail,
+  MedSpaCMSEmail,
+  WaiversEmailCMS,
+  WaiversEmailState,
+} from "./emailTemplates";
 import { render } from "@react-email/render";
 
 export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
@@ -24,6 +33,55 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
         subject: `Additional documents submitted for ${variables.actionType + variables.id}`,
         body: await render(<ChipSpaStateEmail variables={variables} />),
+      };
+    },
+  },
+  [Authority.MED_SPA]: {
+    cms: async (
+      variables: Events["UploadSubsequentDocuments"] &
+        CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: variables.emails.chipInbox,
+        cc: variables.emails.chipCcList,
+        subject: `Action required: review new documents for ${variables.actionType + variables.id}`,
+        body: await render(<MedSpaCMSEmail variables={variables} />),
+      };
+    },
+    state: async (
+      variables: Events["UploadSubsequentDocuments"] &
+        CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
+        subject: `Additional documents submitted for ${variables.actionType + variables.id}`,
+        body: await render(<MedSpaStateEmail variables={variables} />),
+      };
+    },
+  },
+  [Authority["1915b"]]: {
+    cms: async (
+      variables: Events["UploadSubsequentDocuments"] &
+        CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: [
+          ...variables.emails.osgEmail,
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+        ],
+        subject: `Action required: review new documents for ${variables.actionType + variables.id}`,
+        body: await render(<WaiversEmailCMS variables={variables} />),
+      };
+    },
+    state: async (
+      variables: Events["UploadSubsequentDocuments"] &
+        CommonEmailVariables & { emails: EmailAddresses },
+    ) => {
+      return {
+        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
+        subject: `Additional documents submitted for ${variables.actionType + variables.id}`,
+        body: await render(<WaiversEmailState variables={variables} />),
       };
     },
   },
