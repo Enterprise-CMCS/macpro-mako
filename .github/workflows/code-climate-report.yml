@@ -3,11 +3,11 @@ name: Code Climate Report
 on:
   push:
     branches:
-      - main
+      # - main
       - publish-playwright-reports
-  schedule:
-    - cron: "30 01 * * *"
-  workflow_dispatch:
+  # schedule:
+  #   - cron: "30 01 * * *"
+  # workflow_dispatch:
 
 permissions:
   contents: write
@@ -23,8 +23,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: main
+        # with:
+        #   ref: main
       - uses: ./.github/actions/setup
       - name: Test
         continue-on-error: true
@@ -68,11 +68,13 @@ jobs:
         with:
           name: ${{ env.JSON_ARTIFACT_ID }}
           path: _data/coverage/
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Download HTML Report
         uses: actions/download-artifact@v4
         with:
           name: ${{ env.HTML_ARTIFACT_ID }}
           path: coverage/
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Push to GitHub Pages Branch
         run: |
           git config user.name "github-actions[bot]"
