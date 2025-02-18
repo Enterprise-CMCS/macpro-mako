@@ -18,7 +18,7 @@ import type { CognitoUserAttributes } from "shared-types";
 type User = CognitoUserAttributes;
 const cmsHelpDeskUser = {
   ...testCMSCognitoUser.user,
-  "custom:cms-roles": "onemac-micro-helpdesk",
+  "custom:cms-roles": "onemac-helpdesk",
 };
 const cmsReadOnlyUser = {
   ...testCMSCognitoUser.user,
@@ -26,11 +26,11 @@ const cmsReadOnlyUser = {
 };
 const cmsReviewerUser = {
   ...testCMSCognitoUser.user,
-  "custom:cms-roles": "onemac-micro-reviewer",
+  "custom:ismemberof": "ONEMAC_USER_D",
 };
 const cmsSuperUser = {
   ...testCMSCognitoUser.user,
-  "custom:cms-roles": "onemac-micro-super",
+  "custom:ismemberof": "ONEMAC_USER_D_SUPER",
   sub: testCMSCognitoUser?.user?.sub || "",
   // Add other required properties with default values if needed
 };

@@ -11,7 +11,10 @@ import {
  * and will confirm the user has one or more authorized UserRoles */
 const userHasAuthorizedRole = (user: CognitoUserAttributes | null, authorized: UserRoles[]) => {
   if (!user) return false;
-  const userRoles = user["custom:cms-roles"].split(",") as UserRoles[];
+  const euaRoles = user["custom:ismemberof"] as UserRoles;
+  const idmRoles = (user?.["custom:cms-roles"]?.split(",") ?? []) as UserRoles[];
+  const userRoles = [euaRoles, ...idmRoles];
+
   return userRoles.filter((role) => authorized.includes(role)).length > 0;
 };
 
