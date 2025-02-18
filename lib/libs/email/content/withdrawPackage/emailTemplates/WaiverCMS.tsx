@@ -8,7 +8,7 @@ export const WaiverCMSEmail = ({
   variables: Events["WithdrawPackage"] & CommonEmailVariables;
 }) => (
   <BaseEmailTemplate
-    previewText={`Waiver Package ${variables.id} Withdraw Request`}
+    previewText={`Waiver Package ${variables.id} Withdraw Requested`}
     heading="The OneMAC Submission Portal received a request to withdraw the package below. The package will no longer be considered for CMS review:"
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
