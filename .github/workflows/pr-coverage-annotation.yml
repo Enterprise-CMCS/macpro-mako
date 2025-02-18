@@ -8,7 +8,6 @@ on:
 jobs:
   coverage-report:
     runs-on: ubuntu-latest
-    continue-on-error: true
     permissions:
       contents: read
       pull-requests: write
@@ -17,10 +16,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       - name: Test
-        if: always()
+        continue-on-error: true
         id: test
         run: run test --coverage
       - name: Get run ID of Code Climate workflow
+        continue-on-error: true
         id: get-run-id
         env:
           GH_TOKEN: ${{ github.token }}
@@ -38,13 +38,13 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ steps.get-run-id.outputs.run-id }}
       - name: Report Coverage (compared with Main)
-        if: steps.get-main-coverage.conclusion == 'success'
+        if: ${{ steps.get-run-id.conclusion == 'success' && steps.get-main-coverage.conclusion == 'success' }}
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           json-summary-compare-path: main-coverage/coverage-summary.json
           file-coverage-mode: all
       - name: Report Coverage (only PR)
-        if: steps.get-main-coverage.conclusion == 'failure' || steps.get-main-coverage.conclusion == 'skipped'
+        if: ${{ steps.get-run-id.conclusion == 'failure' || steps.get-main-coverage.conclusion == 'failure' }}
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           file-coverage-mode: all
