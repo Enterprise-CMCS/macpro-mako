@@ -23,8 +23,8 @@ export const OsTable: FC<{
               <UI.TableHead
                 {...(!!TH.props && TH.props)}
                 key={`TH-${TH.field}`}
-                isActive={url.state.sort.field === TH.field}
-                desc={url.state.sort.order === "desc"}
+                isActive={url.state.sort?.field === TH.field}
+                desc={url.state.sort?.order === "desc"}
                 {...(TH.isSystem && { className: "pointer-events-none" })}
                 onClick={() => {
                   if (!TH.field) return;
