@@ -46,4 +46,5 @@ defaults:
       type: "pages"
     values:
       layout: "playwright-branch"
+      custom_css: [mako,playwright]
 
