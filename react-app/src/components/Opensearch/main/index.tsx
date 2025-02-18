@@ -8,7 +8,7 @@ import { OsTableColumn } from "./types";
 import { FilterChips } from "./Filtering";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
-export const createLSColumns = (columns: OsTableColumn[]): string[] => {
+const createLSColumns = (columns: OsTableColumn[]): string[] => {
   const columnsVisalbe = columns.filter((col) => col.hidden);
   const columnFields = columnsVisalbe.reduce((acc, curr) => {
     if (curr.field) acc.push(curr.field);
