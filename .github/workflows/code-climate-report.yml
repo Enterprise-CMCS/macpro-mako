@@ -16,8 +16,8 @@ jobs:
   coverage-report:
     runs-on: ubuntu-20.04
     outputs:
-      json_artifact_id: ${{ steps.upload-json.outputs.artifact-id }}
-      html_artifact_id: ${{ steps.upload-html.outputs.artifact-id }}
+      json_artifact_id: json-main-coverage-report
+      html_artifact_id: html-main-coverage-report
     steps:
       - name: Checkout
         uses: actions/checkout@v4

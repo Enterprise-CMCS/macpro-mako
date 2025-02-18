@@ -105,8 +105,8 @@ jobs:
       name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     if: ${{ github.ref != 'refs/heads/production' }}
     outputs:
-      json_artifact_id: ${{ steps.upload-json.outputs.artifact-id }}
-      html_artifact_id: ${{ steps.upload-html.outputs.artifact-id }}
+      json_artifact_id: json-playwright-report
+      html_artifact_id: html-playwright-report
       actualResult: ${{ steps.e2e-test.conclusion }}
     steps:
       - name: Checkout
