@@ -7,18 +7,11 @@ import { getPackageType } from "./getPackageType";
 import { events } from "shared-types";
 import { z } from "zod";
 
-/*
-EXAMPLE EVENT JSON:
-
-{
-  "body": {
-    "packageId": "MD-9276.R00.01",
-    "action": "delete"
-  }
-}
-
-*/
-
+/** @typedef {object} json
+ * @property {object} body
+ * @property {string} body.packageId
+ * @property {string} body.action
+ */
 const sendDeleteMessage = async (packageId: string) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
@@ -48,21 +41,13 @@ const sendDeleteMessage = async (packageId: string) => {
   });
 };
 
-/*
-EXAMPLE EVENT JSON:
-- key in updatedFields must exist in schema
-
-{
-  "body": {
-    "packageId": "OH-1234.R12.60",
-    "action": "update-values",
-    "updatedFields": {
-      "title": "new title"
-    }
-  }
-}
-
-*/
+/** @typedef {object} json
+ * @property {object} body
+ * @property {string} body.packageId
+ * @property {string} body.action
+ * @property {object} body.updatedFields
+ * @property {string} body.updatedFields.title
+ */
 
 const sendUpdateValuesMessage = async ({
   currentPackage,
@@ -124,19 +109,12 @@ const sendUpdateValuesMessage = async ({
   });
 };
 
-/*
-EXAMPLE EVENT JSON:
-
-{
-  "body": {
-    "packageId": "MD-25-6738",
-    "action": "update-id",
-    "updatedId": "MD-25-6739"
-  }
-}
-
-*/
-
+/** @typedef {object} json
+ * @property {object} body
+ * @property {string} body.packageId
+ * @property {string} body.action
+ * @property {string} body.updatedId
+ */
 const sendUpdateIdMessage = async ({
   currentPackage,
   updatedId,

@@ -8,25 +8,18 @@ import { z } from "zod";
 
 import { getStatus } from "shared-types";
 
-/*
-EXAMPLE EVENT JSON:
-
-{
-  "body": {
-    "id": "CO-34304.R00.01", 
-    "authority": "1915(c)",
-    "status": "Submitted",
-    "submitterEmail": "george@example.com",
-    "submitterName": "George Harrison",
-    "adminChangeType": "NOSO",
-    "mockEvent": "app-k", //needed for future actions
-    "changeMade": "CO-34304.R00.01 added to OneMAC.Package not originally submitted in OneMAC. Contact your CPOC to verify the initial submission documents.",
-    "changeReason": "Per request from CMS, this package was added to OneMAC."
-  }
-}
-
-*/
-
+/** @typedef {object} json
+ * @property {object} body
+ * @property {string} body.id
+ * @property {string} body.authority
+ * @property {string} body.status
+ * @property {string} body.submitterEmail
+ * @property {string} body.submitterName
+ * @property {string} body.adminChangeType
+ * @property {string} body.mockEvent
+ * @property {string} body.changeMade
+ * @property {string} body.changeReason
+ */
 interface submitMessageType {
   id: string;
   authority: string;
