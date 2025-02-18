@@ -21,7 +21,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
       return {
         to: variables.emails.chipInbox,
         cc: variables.emails.chipCcList,
-        subject: `Action required: review new documents for ${variables.actionType + variables.id}`,
+        subject: `Action required: review new documents for ${variables.authority} ${variables.id}`,
         body: await render(<ChipSpaCMSEmail variables={variables} />),
       };
     },
@@ -31,7 +31,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Additional documents submitted for ${variables.actionType + variables.id}`,
+        subject: `Additional documents submitted for ${variables.authority} ${variables.id}`,
         body: await render(<ChipSpaStateEmail variables={variables} />),
       };
     },
@@ -44,7 +44,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
       return {
         to: variables.emails.chipInbox,
         cc: variables.emails.chipCcList,
-        subject: `Action required: review new documents for ${variables.actionType + variables.id}`,
+        subject: `Action required: review new documents for ${variables.authority} ${variables.id}`,
         body: await render(<MedSpaCMSEmail variables={variables} />),
       };
     },
@@ -54,7 +54,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Additional documents submitted for ${variables.actionType + variables.id}`,
+        subject: `Additional documents submitted for ${variables.authority} ${variables.id}`,
         body: await render(<MedSpaStateEmail variables={variables} />),
       };
     },
@@ -70,7 +70,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.cpocEmail,
           ...variables.emails.srtEmails,
         ],
-        subject: `Action required: review new documents for ${variables.actionType + variables.id}`,
+        subject: `Action required: review new documents for ${variables.authority} ${variables.id}`,
         body: await render(<WaiversEmailCMS variables={variables} />),
       };
     },
@@ -80,7 +80,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Additional documents submitted for ${variables.actionType + variables.id}`,
+        subject: `Additional documents submitted for ${variables.authority} ${variables.id}`,
         body: await render(<WaiversEmailState variables={variables} />),
       };
     },
@@ -96,7 +96,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.cpocEmail,
           ...variables.emails.srtEmails,
         ],
-        subject: `Action required: review new documents for ${variables.actionType + variables.id}`,
+        subject: `Action required: review new documents for ${variables.authority} ${variables.id}`,
         body: await render(<AppKCMSEmail variables={variables} />),
       };
     },
@@ -106,7 +106,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Additional documents submitted for ${variables.actionType + variables.id}`,
+        subject: `Additional documents submitted for ${variables.authority} ${variables.id}`,
         body: await render(<AppKStateEmail variables={variables} />),
       };
     },
