@@ -19,8 +19,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
         CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: variables.emails.chipInbox,
-        cc: variables.emails.chipCcList,
+        to: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
         subject: `Action required: review new documents for ${variables.authority} ${variables.id}`,
         body: await render(<ChipSpaCMSEmail variables={variables} />),
       };
@@ -42,8 +41,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
         CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: variables.emails.chipInbox,
-        cc: variables.emails.chipCcList,
+        to: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
         subject: `Action required: review new documents for ${variables.authority} ${variables.id}`,
         body: await render(<MedSpaCMSEmail variables={variables} />),
       };
@@ -65,11 +63,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
         CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [
-          ...variables.emails.osgEmail,
-          ...variables.emails.cpocEmail,
-          ...variables.emails.srtEmails,
-        ],
+        to: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
         subject: `Action required: review new documents for ${variables.authority} ${variables.id}`,
         body: await render(<WaiversEmailCMS variables={variables} />),
       };
