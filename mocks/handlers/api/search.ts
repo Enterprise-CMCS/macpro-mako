@@ -1,13 +1,13 @@
 import { http, HttpResponse, PathParams } from "msw";
 import { getFilteredItemList } from "../../data/items";
-import { getFilterValueAsStringArray } from "../search.utils";
+import { getFilterValueAsStringArray, getAggregations } from "../search.utils";
 import { SearchQueryBody } from "../../index.d";
 
 const defaultApiSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/search/:index",
   async ({ params, request }) => {
     const { index } = params;
-    const { query } = await request.json();
+    const { query, aggs } = await request.json();
 
     const must = query?.bool?.must;
 
@@ -17,6 +17,11 @@ const defaultApiSearchHandler = http.post<PathParams, SearchQueryBody>(
         getFilterValueAsStringArray(must, "terms", "authority") ||
         [];
       const itemList = getFilteredItemList(authorityValues);
+
+      const isSpa =
+        authorityValues.includes("CHIP SPA") || authorityValues.includes("Medicaid SPA");
+
+      const aggregations = getAggregations(aggs, isSpa);
 
       return HttpResponse.json({
         took: 3,
@@ -29,12 +34,13 @@ const defaultApiSearchHandler = http.post<PathParams, SearchQueryBody>(
         },
         hits: {
           total: {
-            value: 654,
+            value: itemList.length,
             relation: "eq",
           },
           max_score: 1,
           hits: itemList,
         },
+        aggregations,
       });
     }
 

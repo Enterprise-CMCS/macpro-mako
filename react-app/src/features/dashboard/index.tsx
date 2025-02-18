@@ -13,9 +13,11 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
+  LoadingSpinner,
 } from "@/components";
 import { isStateUser } from "shared-utils";
 import { Link, Navigate, redirect } from "react-router";
+import { removeItemLocalStorage } from "@/hooks/useLocalStorage";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -38,7 +40,7 @@ const loader = (queryClient: QueryClient) => {
 export const dashboardLoader = loader;
 
 export const Dashboard = () => {
-  const { data: userObj } = useGetUser();
+  const { data: userObj, isLoading } = useGetUser();
   const osData = useOsData();
 
   const isAbleToAccessDashboard = () => {
@@ -48,7 +50,11 @@ export const Dashboard = () => {
     );
   };
 
-  if (userObj === undefined || !isAbleToAccessDashboard()) {
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (!userObj?.user || !isAbleToAccessDashboard()) {
     return <Navigate to="/" />;
   }
 
@@ -69,7 +75,9 @@ export const Dashboard = () => {
                 to="/new-submission"
                 className="flex items-center text-white font-bold bg-primary border-none px-10 py-2 rounded cursor-pointer"
               >
-                <span className="mr-2">New Submission</span>
+                <span data-testId="new-sub-button" className="mr-2">
+                  New Submission
+                </span>
                 <PlusIcon className="w-4 h-4" />
               </Link>
             )}
@@ -78,7 +86,8 @@ export const Dashboard = () => {
             <div className="flex flex-col">
               <Tabs
                 value={osData.state.tab}
-                onValueChange={(tab) =>
+                onValueChange={(tab) => {
+                  removeItemLocalStorage("osColumns");
                   osData.onSet(
                     (s) => ({
                       ...s,
@@ -87,8 +96,8 @@ export const Dashboard = () => {
                       search: "",
                     }),
                     true,
-                  )
-                }
+                  );
+                }}
               >
                 <div className="flex max-w-screen-xl mx-auto px-4 lg:px-8">
                   <TabsList>

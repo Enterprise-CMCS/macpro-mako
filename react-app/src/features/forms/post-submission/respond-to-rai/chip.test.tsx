@@ -12,7 +12,11 @@ const upload = uploadFiles<(typeof formSchemas)["respond-to-rai-chip"]>();
 describe("Respond To RAI CHIP", () => {
   beforeAll(async () => {
     skipCleanup();
-    await renderFormWithPackageSectionAsync(<RespondToRaiChip />, EXISTING_ITEM_PENDING_ID);
+    await renderFormWithPackageSectionAsync(
+      <RespondToRaiChip />,
+      EXISTING_ITEM_PENDING_ID,
+      "CHIP SPA",
+    );
   });
 
   test("revised amended state plan language", async () => {

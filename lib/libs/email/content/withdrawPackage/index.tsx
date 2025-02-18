@@ -18,7 +18,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       return {
         to: variables.emails.osgEmail,
         cc: variables.emails.dpoEmail,
-        subject: `SPA Package ${variables.id} Withdraw Request`,
+        subject: `SPA Package ${variables.id} Withdraw Requested`,
         body: await render(<MedSpaCMSEmail variables={variables} />),
       };
     },
@@ -26,8 +26,10 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Medicaid SPA Package ${variables.id} Withdrawal Confirmation`,
+        to: variables.allStateUsersEmails?.length
+          ? variables.allStateUsersEmails
+          : [`${variables.submitterName} <${variables.submitterEmail}>`],
+        subject: `SPA Package ${variables.id} Withdraw Requested`,
         body: await render(<MedSpaStateEmail variables={variables} />),
       };
     },
@@ -37,9 +39,13 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
+        to: [
+          ...variables.emails.chipInbox,
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+        ],
         cc: variables.emails.chipCcList,
-        subject: `CHIP SPA Package ${variables.id} Withdraw Request`,
+        subject: `CHIP SPA Package ${variables.id} Withdraw Requested`,
         body: await render(<ChipSpaCMSEmail variables={variables} />),
       };
     },
@@ -47,13 +53,10 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [
-          ...variables.emails.cpocEmail,
-          ...variables.emails.srtEmails,
-          `${variables.submitterName} <${variables.submitterEmail}>`,
-        ],
-        cc: variables.emails.chipCcList,
-        subject: `CHIP SPA Package ${variables.id} Withdrawal Confirmation`,
+        to: variables.allStateUsersEmails?.length
+          ? variables.allStateUsersEmails
+          : [`${variables.submitterName} <${variables.submitterEmail}>`],
+        subject: `CHIP SPA Package ${variables.id} Withdraw Requested`,
         body: await render(<ChipSpaStateEmail variables={variables} />),
       };
     },
@@ -63,8 +66,12 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: variables.emails.osgEmail,
-        subject: `Waiver Package ${variables.id} Withdraw Request`,
+        to: [
+          ...variables.emails.osgEmail,
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+        ],
+        subject: `Waiver Package ${variables.id} Withdraw Requested`,
         body: await render(<WaiverCMSEmail variables={variables} />),
       };
     },
@@ -72,8 +79,10 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [`${variables.submitterName} <${variables.submitterEmail}>`], // TODO: change to ALL state users
-        subject: `Waiver Package ${variables.id} Withdraw Request`,
+        to: variables.allStateUsersEmails?.length
+          ? variables.allStateUsersEmails
+          : [`${variables.submitterName} <${variables.submitterEmail}>`],
+        subject: `Waiver Package ${variables.id} Withdraw Requested`,
         body: await render(<WaiverStateEmail variables={variables} />),
       };
     },
@@ -89,7 +98,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.cpocEmail,
           ...variables.emails.srtEmails,
         ],
-        subject: `Waiver Package ${variables.id} Withdraw Request`,
+        subject: `Waiver Package ${variables.id} Withdraw Requested`,
         body: await render(<WaiverCMSEmail variables={variables} />),
       };
     },
@@ -97,8 +106,10 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: [`${variables.submitterName} <${variables.submitterEmail}>`], // TODO: change to ALL state users
-        subject: `Waiver Package ${variables.id} Withdraw Request`,
+        to: variables.allStateUsersEmails?.length
+          ? variables.allStateUsersEmails
+          : [`${variables.submitterName} <${variables.submitterEmail}>`],
+        subject: `Waiver Package ${variables.id} Withdraw Requested`,
         body: await render(<WaiverStateEmail variables={variables} />),
       };
     },

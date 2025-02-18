@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useGetUser } from "@/api";
 import {
   Button,
   Dialog,
@@ -7,12 +7,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components";
+import { useCountdown, useIdle } from "@/hooks";
+import { DialogDescription } from "@radix-ui/react-dialog";
 import { Auth } from "aws-amplify";
-import { useIdle, useCountdown } from "@/hooks";
-import { useGetUser } from "@/api";
 import { intervalToDuration } from "date-fns";
 import pluralize from "pluralize";
-import { DialogDescription } from "@radix-ui/react-dialog";
+import { useEffect, useState } from "react";
+import { removeItemLocalStorage } from "@/hooks/useLocalStorage";
 
 const TWENTY_MINS_IN_MILS = 1000 * 60 * 20;
 const TEN_MINS_IN_MILS = 60 * 10;
@@ -30,6 +31,7 @@ export const TimeoutModal = () => {
   const onLogOut = () => {
     setIsModalOpen(false);
     Auth.signOut();
+    removeItemLocalStorage();
   };
 
   const onExtendSession = () => {

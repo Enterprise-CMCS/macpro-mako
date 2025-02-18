@@ -176,7 +176,7 @@ export const temporaryExtension = {
 export const respondToRai = {
   id: "VA-11-2020",
   event: "respond-to-rai",
-  authority: "1915(b)",
+  authority: "Medicaid SPA",
   proposedEffectiveDate: 1700000000,
   title: "Sample Title for Appendix K",
   attachments: {

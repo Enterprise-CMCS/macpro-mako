@@ -82,7 +82,9 @@ export type Document = Omit<AppkDocument, "event"> &
       | "withdraw-rai"
       | "update-values"
       | "update-id"
-      | "delete";
+      | "delete"
+      | "split-spa"
+      | "NOSO";
   };
 
 export type Response = Res<Document>;

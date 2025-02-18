@@ -6,31 +6,29 @@ import {
   BasicFooter,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
+import { formatActionType } from "shared-utils";
 
-export const WaiverCMSEmail = (props: {
+export const WaiverCMSEmail = ({
+  variables,
+}: {
   variables: Events["RespondToRai"] & CommonEmailVariables;
-}) => {
-  const variables = props.variables;
-  return (
-    <BaseEmailTemplate
-      previewText="Appendix K Amendment Submitted"
-      heading={`The OneMAC Submission Portal received a ${variables.authority} Waiver RAI Response
-          Submission:`}
-      applicationEndpointUrl={variables.applicationEndpointUrl}
-      footerContent={<BasicFooter />}
-    >
-      <h3></h3>
-      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
-      <PackageDetails
-        details={{
-          "State or Territory": variables.territory,
-          Name: variables.submitterName,
-          "Email Address": variables.submitterEmail,
-          "Waiver Number": variables.id,
-          Summary: variables.additionalInformation,
-        }}
-      />
-      <Attachments attachments={variables.attachments} />
-    </BaseEmailTemplate>
-  );
-};
+}) => (
+  <BaseEmailTemplate
+    previewText={`Waiver RAI Response for ${variables.id} Submitted`}
+    heading={`The OneMAC Submission Portal received a(n) ${formatActionType(variables.actionType)} Waiver RAI Response Submission:`}
+    applicationEndpointUrl={variables.applicationEndpointUrl}
+    footerContent={<BasicFooter />}
+  >
+    <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+    <PackageDetails
+      details={{
+        "State or Territory": variables.territory,
+        Name: variables.submitterName,
+        "Email Address": variables.submitterEmail,
+        "Waiver Number": variables.id,
+        Summary: variables.additionalInformation,
+      }}
+    />
+    <Attachments attachments={variables.attachments} />
+  </BaseEmailTemplate>
+);

@@ -15,7 +15,10 @@ export const Pagination: FC<Props> = (props) => {
   });
 
   return (
-    <div className="flex items-center justify-between border-t border-gray-200 bg-white py-3">
+    <div
+      className="flex items-center justify-between border-t border-gray-200 bg-white py-3"
+      data-testid="pagination"
+    >
       <div className="flex flex-1 justify-between sm:hidden">
         <div className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
           Previous
@@ -27,8 +30,8 @@ export const Pagination: FC<Props> = (props) => {
       <div className="hidden sm:flex-col md:flex-row sm:flex sm:flex-1 items-center justify-between">
         {/* Records per page ... 1-25 of xxxx records */}
         <div className="flex gap-6 mb-5 md:mb-0">
-          <p className="flex gap-2 text-sm text-gray-700" id="recordsLabel">
-            Records per page:
+          <p className="flex gap-2 text-sm text-gray-700">
+            <span id="recordsLabel">Records per page:</span>
             <select
               aria-labelledby="recordsLabel"
               className="font-bold cursor-pointer border-[1px] mt-[-1px]"
@@ -40,7 +43,7 @@ export const Pagination: FC<Props> = (props) => {
               ))}
             </select>
           </p>
-          <p className="flex gap-1 text-sm text-gray-700">
+          <p className="flex gap-1 text-sm text-gray-700" data-testid="page-location">
             <span className="font-bold">{state.lowerBoundValue}</span>-
             <span className="font-bold">{state.upperBoundValue}</span>
             of

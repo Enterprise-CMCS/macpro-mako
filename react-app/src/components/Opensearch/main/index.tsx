@@ -6,6 +6,16 @@ import { useOsContext } from "./Provider";
 import { useOsUrl } from "./useOpensearch";
 import { OsTableColumn } from "./types";
 import { FilterChips } from "./Filtering";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+
+const createLSColumns = (columns: OsTableColumn[]): string[] => {
+  const columnsVisalbe = columns.filter((col) => col.hidden);
+  const columnFields = columnsVisalbe.reduce((acc, curr) => {
+    if (curr.field) acc.push(curr.field);
+    return acc;
+  }, []);
+  return columnFields;
+};
 
 export const OsMainView: FC<{
   columns: OsTableColumn[];
@@ -13,15 +23,24 @@ export const OsMainView: FC<{
   const context = useOsContext();
   const url = useOsUrl();
 
+  const [localStorageCol, setLocalStorageCol] = useLocalStorage(
+    "osColumns",
+    createLSColumns(props.columns),
+  );
+
   const [osColumns, setOsColumns] = useState(
     props.columns.map((COL) => ({
       ...COL,
-      hidden: !!COL?.hidden,
+      hidden: localStorageCol.includes(COL.field),
       locked: COL?.locked ?? false,
     })),
   );
 
   const onToggle = (field: string) => {
+    if (localStorageCol.includes(field))
+      setLocalStorageCol(() => localStorageCol.filter((x) => x != field));
+    else setLocalStorageCol([...localStorageCol, field]);
+
     setOsColumns((state) => {
       return state?.map((S) => {
         if (S.field !== field) return S;
