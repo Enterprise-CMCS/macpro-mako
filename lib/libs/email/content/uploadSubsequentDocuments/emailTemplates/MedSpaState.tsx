@@ -12,7 +12,7 @@ export const MedSpaStateEmail = ({
 }) => (
   <BaseEmailTemplate
     previewText={`Additional documents submitted for Medicaid SPA ${variables.id}`}
-    heading={`You’ve successfully submitted the following to CMS reviewers for Medicaid SPA ${variables.id}`}
+    heading={`You've successfully submitted the following to CMS reviewers for Medicaid SPA ${variables.id}`}
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >
