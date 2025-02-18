@@ -26,8 +26,8 @@ jobs:
         timeout-minutes: 3
         working-directory: _data/playwright-reports/branches/
         run: |
-          if [ ! -e "${{ env.BRANCH_NAME }}.yml" ]; then
-            rm ${{ env.BRANCH_NAME }}.yml
+          if [[ -d $BRANCH_NAME ]]; then
+            rm -rf $BRANCH_NAME
             echo "Deleted Playwright Data for $BRANCH_NAME from GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
           else 
             echo "Could not find Playwright Data for $BRANCH_NAME to delete" >> "$GITHUB_STEP_SUMMARY"
