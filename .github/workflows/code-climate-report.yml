@@ -3,11 +3,10 @@ name: Code Climate Report
 on:
   push:
     branches:
-      # - main
-      - publish-playwright-reports
-  # schedule:
-  #   - cron: "30 01 * * *"
-  # workflow_dispatch:
+      - main
+  schedule:
+    - cron: "30 01 * * *"
+  workflow_dispatch:
 
 permissions:
   actions: read
@@ -20,12 +19,13 @@ jobs:
       JSON_ARTIFACT_ID: json-main-coverage-report
       HTML_ARTIFACT_ID: html-main-coverage-report
     outputs:
-      json_artifact_id:
+      json_artifact_id: ${{ env.JSON_ARTIFACT_ID }}
+      html_artifact_id: ${{ env.HTML_ARTIFACT_ID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        # with:
-        #   ref: main
+        with:
+          ref: main
       - uses: ./.github/actions/setup
       - name: Test
         continue-on-error: true

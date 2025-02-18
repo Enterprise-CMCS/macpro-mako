@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   init:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Validate stage name
         run: |
@@ -30,7 +30,7 @@ jobs:
           fi
 
   deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs:
       - init
     environment:
@@ -74,7 +74,7 @@ jobs:
           echo "KIBANAURL=$kibana_url" >> $GITHUB_OUTPUT
 
   application-url:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs:
       - deploy
     environment:
@@ -86,7 +86,7 @@ jobs:
           echo "App URL: ${{ needs.deploy.outputs.app-url }}"
 
   kibana-url:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs:
       - deploy
     environment:
@@ -98,15 +98,18 @@ jobs:
           echo "Kibana URL: ${{ needs.deploy.outputs.kibana-url }}"
 
   e2e:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs:
       - deploy
     environment:
       name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     if: ${{ github.ref != 'refs/heads/production' }}
+    env:
+      JSON_ARTIFACT_ID: json-playwright-report
+      HTML_ARTIFACT_ID: html-playwright-report
     outputs:
-      json_artifact_id: json-playwright-report
-      html_artifact_id: html-playwright-report
+      json_artifact_id: ${{ env.JSON_ARTIFACT_ID }}
+      html_artifact_id: ${{ env.HTML_ARTIFACT_ID }}
       actualResult: ${{ steps.e2e-test.conclusion }}
     steps:
       - name: Checkout
@@ -128,7 +131,7 @@ jobs:
         id: upload-json
         if: ${{ !cancelled() }}
         with:
-          name: json-playwright-report
+          name: ${{ env.JSON_ARTIFACT_ID }}
           path: test/e2e/playwright-reports/playwright-summary.json
           retention-days: 30
       - name: Upload HTML Report
@@ -136,7 +139,7 @@ jobs:
         id: upload-html
         if: ${{ !cancelled() }}
         with:
-          name: html-playwright-report
+          name: ${{ env.HTML_ARTIFACT_ID }}
           path: test/e2e/playwright-reports/html-report/index.html
           retention-days: 30
 
@@ -150,7 +153,7 @@ jobs:
       RUN_ID: ${{ github.run_id }}
 
   cfn-nag:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs:
       - deploy
     environment:
@@ -182,7 +185,7 @@ jobs:
         with:
           input_path: cftemplates
   resources:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs:
       - deploy
     environment:
@@ -219,7 +222,7 @@ jobs:
           path: resources/aws-resources.json
 
   release:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs:
       - e2e
       - cfn-nag
