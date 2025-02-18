@@ -11,6 +11,7 @@ on:
 
 permissions:
   actions: read
+  contents: write
 
 jobs:
   coverage-report:
