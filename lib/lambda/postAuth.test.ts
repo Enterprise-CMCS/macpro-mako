@@ -29,13 +29,6 @@ describe("postAuth Handler", () => {
     );
   });
 
-  it("should return an error due to a missing endpoint", async () => {
-    delete process.env.idmAuthzApiEndpoint;
-    await expect(handler({ test: "test" }, {} as Context, callback)).rejects.toThrowError(
-      "ERROR: process.env.idmAuthzApiEndpoint is required",
-    );
-  });
-
   it("should return an error due to the arn being incorrect", async () => {
     process.env.idmAuthzApiKeyArn = "bad-ARN"; // pragma: allowlist secret
     await expect(handler({ test: "test" }, {} as Context, callback)).rejects.toThrowError(

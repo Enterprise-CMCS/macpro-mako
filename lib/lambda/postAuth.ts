@@ -19,9 +19,6 @@ export const handler: Handler = async (event) => {
   if (!process.env.idmAuthzApiEndpoint) {
     throw "ERROR: process.env.idmAuthzApiEndpoint is required";
   }
-  if (!process.env.idmAuthzApiEndpoint) {
-    throw "ERROR: process.env.idmAuthzApiEndpoint is required";
-  }
 
   const apiEndpoint: string = process.env.idmAuthzApiEndpoint;
   let apiKey: string;
