@@ -38,7 +38,6 @@ jobs:
           name: ${{ inputs.HTML_ARTIFACT_ID }}
           path: coverage/
       - name: Push to GitHub Pages Branch
-        working-directory: repo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
