@@ -7,11 +7,26 @@ import { getPackageType } from "./getPackageType";
 import { events } from "shared-types";
 import { z } from "zod";
 
+/*
+EXAMPLE EVENT JSON:
+
+{
+  "body": {
+    "packageId": "MD-9276.R00.01",
+    "action": "delete"
+  }
+}
+
+*/
+
 const sendDeleteMessage = async (packageId: string) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
     throw new Error("Topic name is not defined");
   }
+
+  const currentTime = Date.now();
+
   await produceMessage(
     topicName,
     packageId,
@@ -20,6 +35,10 @@ const sendDeleteMessage = async (packageId: string) => {
       deleted: true,
       isAdminChange: true,
       adminChangeType: "delete",
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
+      statusDate: currentTime,
+      timestamp: currentTime,
     }),
   );
 
@@ -28,6 +47,22 @@ const sendDeleteMessage = async (packageId: string) => {
     body: { message: `${packageId} has been deleted.` },
   });
 };
+
+/*
+EXAMPLE EVENT JSON:
+- key in updatedFields must exist in schema
+
+{
+  "body": {
+    "packageId": "OH-1234.R12.60",
+    "action": "update-values",
+    "updatedFields": {
+      "title": "new title"
+    }
+  }
+}
+
+*/
 
 const sendUpdateValuesMessage = async ({
   currentPackage,
@@ -64,6 +99,8 @@ const sendUpdateValuesMessage = async ({
     Object.keys(updatedFields).length > 1 ? "have" : "has"
   } been updated`;
 
+  const currentTime = Date.now();
+
   await produceMessage(
     topicName,
     currentPackage._id,
@@ -74,6 +111,10 @@ const sendUpdateValuesMessage = async ({
       adminChangeType: "update-values",
       changeMade: changeMadeText,
       changeReason,
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
+      statusDate: currentTime,
+      timestamp: currentTime,
     }),
   );
 
@@ -82,6 +123,19 @@ const sendUpdateValuesMessage = async ({
     body: { message: `${changeMadeText} in package ${currentPackage._id}.` },
   });
 };
+
+/*
+EXAMPLE EVENT JSON:
+
+{
+  "body": {
+    "packageId": "MD-25-6738",
+    "action": "update-id",
+    "updatedId": "MD-25-6739"
+  }
+}
+
+*/
 
 const sendUpdateIdMessage = async ({
   currentPackage,
@@ -131,6 +185,8 @@ const sendUpdateIdMessage = async ({
 
   await sendDeleteMessage(currentPackage._id);
 
+  const currentTime = Date.now();
+
   await produceMessage(
     topicName,
     updatedId,
@@ -142,6 +198,10 @@ const sendUpdateIdMessage = async ({
       changeMade: "ID has been updated.",
       isAdminChange: true,
       adminChangeType: "update-id",
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
+      statusDate: currentTime,
+      timestamp: currentTime,
     }),
   );
 
