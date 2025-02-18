@@ -180,7 +180,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             <button
               class="inline-flex items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-11 rounded-md px-8 mx-4"
             >
-              View FAQ
+              View FAQs
             </button>
           </a>
         </div>
@@ -364,8 +364,8 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           <button
             class="inline-flex items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-11 rounded-md px-8 mx-4"
           >
-            View FAQ
-          </button>
+            View FAQs
+s          </button>
         </a>
       </div>
     </div>
@@ -605,7 +605,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             <button
               class="inline-flex items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-11 rounded-md px-8 mx-4"
             >
-              View FAQ
+              View FAQs
             </button>
           </a>
         </div>
@@ -789,7 +789,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           <button
             class="inline-flex items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-11 rounded-md px-8 mx-4"
           >
-            View FAQ
+            View FAQs
           </button>
         </a>
       </div>
