@@ -15,7 +15,7 @@ export const WaiverStateEmail = ({
 }) => {
   return (
     <BaseEmailTemplate
-      previewText={`Waiver Package ${variables.id} Withdraw Request`}
+      previewText={`Waiver Package ${variables.id} Withdraw Requested`}
       heading={
         "This is confirmation that you have requested to withdraw the package below. The package will no longer be considered for CMS review:"
       }
@@ -32,8 +32,8 @@ export const WaiverStateEmail = ({
         }}
       />
       <Divider />
-      <MailboxNotice type="Waiver" />
-      <FollowUpNotice />
+      <MailboxNotice type="Waiver" onWaivers={false} />
+      <FollowUpNotice includeDidNotExpect={false} />
     </BaseEmailTemplate>
   );
 };

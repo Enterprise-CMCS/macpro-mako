@@ -1,14 +1,21 @@
 import { SESClient, SendEmailCommand, SendEmailCommandInput } from "@aws-sdk/client-ses";
-import { EmailAddresses, KafkaEvent, KafkaRecord } from "shared-types";
+import {
+  EmailAddresses,
+  KafkaEvent,
+  KafkaRecord,
+  opensearch,
+  SEATOOL_STATUS,
+  Events,
+} from "shared-types";
 import { decodeBase64WithUtf8, getSecret } from "shared-utils";
+import { retry } from "shared-utils/retry";
 import { Handler } from "aws-lambda";
 import { getEmailTemplates, getAllStateUsers } from "libs/email";
 import * as os from "libs/opensearch-lib";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
-import pLimit from "p-limit";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
-import { getNamespace } from "libs/utils";
+import { getOsNamespace } from "libs/utils";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -27,6 +34,13 @@ interface ProcessEmailConfig {
   userPoolId: string;
   configurationSetName: string;
   isDev: boolean;
+}
+
+interface EmailTemplate {
+  to: string[];
+  cc?: string[];
+  subject: string;
+  body: string;
 }
 
 export const handler: Handler<KafkaEvent> = async (event) => {
@@ -113,11 +127,65 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
   console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
+  const id: string = decodeBase64WithUtf8(key);
+
+  if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
+    const safeID = id.replace(/^"|"$/g, "");
+    const seatoolRecord: Document = {
+      safeID,
+      ...JSON.parse(decodeBase64WithUtf8(value)),
+    };
+    const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
+
+    if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
+      try {
+        const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
+
+        if (!item?.found || !item?._source) {
+          console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
+          return;
+        }
+
+        if (item._source.withdrawEmailSent) {
+          console.log("Withdraw email previously sent");
+          return;
+        }
+
+        const recordToPass = {
+          timestamp,
+          ...safeSeatoolRecord.data,
+          submitterName: item._source.submitterName,
+          submitterEmail: item._source.submitterEmail,
+          event: "seatool-withdraw",
+          proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
+          origin: "seatool",
+        };
+
+        await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+
+        const indexObject = {
+          index: getOsNamespace("main"),
+          id: safeID,
+          body: {
+            doc: {
+              withdrawEmailSent: true,
+            },
+          },
+        };
+
+        await os.updateData(config.osDomain, indexObject);
+      } catch (error) {
+        console.error("Error processing record:", JSON.stringify(error, null, 2));
+        throw error;
+      }
+    }
+    return;
+  }
+
   if (typeof key !== "string") {
     console.log("key is not a string ", JSON.stringify(key, null, 2));
     throw new Error("Key is not a string");
   }
-  const id: string = decodeBase64WithUtf8(key);
 
   if (!value) {
     console.log("Tombstone detected. Doing nothing for this event");
@@ -139,7 +207,10 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     console.log("Config:", JSON.stringify(config, null, 2));
     await processAndSendEmails(record, id, config);
   } catch (error) {
-    console.error("Error processing record:", JSON.stringify(error, null, 2));
+    console.error(
+      "Error processing record: { record, id, config }",
+      JSON.stringify({ record, id, config }, null, 2),
+    );
     throw error;
   }
 }
@@ -153,15 +224,16 @@ export function validateEmailTemplate(template: any) {
   }
 }
 
-export async function processAndSendEmails(record: any, id: string, config: ProcessEmailConfig) {
-  const templates = await getEmailTemplates<typeof record>(
-    record.event,
-    record.authority.toLowerCase(),
-  );
+export async function processAndSendEmails(
+  record: Events[keyof Events],
+  id: string,
+  config: ProcessEmailConfig,
+) {
+  const templates = await getEmailTemplates(record);
 
   if (!templates) {
     console.log(
-      `The kafka record has an event type that does not have email support.  event: ${record.event}.  Doing nothing.`,
+      `The kafka record has an event type that does not have email support. event: ${record.event}. Doing nothing.`,
     );
     return;
   }
@@ -174,7 +246,12 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
 
-  const item = await os.getItem(config.osDomain, getNamespace("main"), id);
+  const item = await retry(
+    () => os.getItemAndThrowAllErrors(config.osDomain, getOsNamespace("main"), id),
+    10,
+    10 * 1000,
+  );
+
   if (!item?.found || !item?._source) {
     console.log(`The package was not found for id: ${id}. Doing nothing.`);
     return;
@@ -197,9 +274,12 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
   };
 
   console.log("Template variables:", JSON.stringify(templateVariables, null, 2));
-  const limit = pLimit(5); // Limit concurrent emails
-  const sendEmailPromises = templates.map((template) =>
-    limit(async () => {
+
+  const results = [];
+
+  // Process templates sequentially
+  for (const template of templates) {
+    try {
       const filledTemplate = await template(templateVariables);
       validateEmailTemplate(filledTemplate);
       const params = createEmailParams(
@@ -208,34 +288,43 @@ export async function processAndSendEmails(record: any, id: string, config: Proc
         config.applicationEndpointUrl,
         config.isDev,
       );
-      try {
-        await sendEmail(params, config.region);
-      } catch (error) {
-        console.error("Error sending email:", error);
-        throw error;
-      }
-    }),
-  );
 
-  try {
-    await Promise.all(sendEmailPromises);
-  } catch (error) {
-    console.error("Error sending emails:", error);
-    throw error;
+      const result = await sendEmail(params, config.region);
+      results.push({ success: true, result });
+      console.log(`Successfully sent email for template: ${JSON.stringify(result)}`);
+    } catch (error) {
+      console.error("Error processing template:", error);
+      results.push({ success: false, error });
+      // Continue with next template instead of throwing
+    }
   }
+
+  // Log final results
+  const successCount = results.filter((r) => r.success).length;
+  const failureCount = results.filter((r) => !r.success).length;
+
+  console.log(`Email sending complete. Success: ${successCount}, Failures: ${failureCount}`);
+
+  // If all emails failed, throw an error to trigger retry/DLQ logic
+  if (failureCount === templates.length) {
+    throw new Error(`All ${failureCount} email(s) failed to send`);
+  }
+
+  return results;
 }
 
 export function createEmailParams(
-  filledTemplate: any,
+  filledTemplate: EmailTemplate,
   sourceEmail: string,
   baseUrl: string,
   isDev: boolean,
 ): SendEmailCommandInput {
-  const params = {
+  const params: SendEmailCommandInput = {
     Destination: {
       ToAddresses: filledTemplate.to,
-      CcAddresses: filledTemplate.cc,
-      BccAddresses: isDev ? [`State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`] : [], // this is so emails can be tested in dev as they should have the correct recipients but be blind copied on all emails on dev
+      CcAddresses: isDev
+        ? [...(filledTemplate.cc || []), `State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`]
+        : filledTemplate.cc,
     },
     Message: {
       Body: {

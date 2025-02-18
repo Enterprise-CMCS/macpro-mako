@@ -26,7 +26,7 @@ export const transform = () => {
       submissionDate: timestampDate.toISOString(),
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
-      actionType: data.actionType,
+      actionType: data.actionType === "Initial" ? "New" : data.actionType,
       initialIntakeNeeded: true,
     };
   });

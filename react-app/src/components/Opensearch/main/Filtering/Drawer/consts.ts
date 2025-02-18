@@ -51,15 +51,6 @@ export const CHECK_STATESTATUS: DrawerFilterableGroup = {
   value: [],
 };
 
-export const BOOL_INITIALINTAKENEEDED: DrawerFilterableGroup = {
-  label: "Intake Needed",
-  field: "initialIntakeNeeded",
-  component: "boolean",
-  prefix: "must",
-  type: "match",
-  value: null,
-};
-
 export const BOOL_RAIWITHDRAWENABLED: DrawerFilterableGroup = {
   label: "RAI Withdraw Enabled",
   field: "raiWithdrawEnabled",

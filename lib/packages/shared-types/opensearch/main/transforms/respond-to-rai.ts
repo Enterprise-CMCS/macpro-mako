@@ -4,6 +4,8 @@ export const transform = () => {
     const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.SUBMITTED);
     return {
       id: data.id,
+      authority: data.authority,
+      ...(data.actionType && { actionType: data.actionType }),
       raiWithdrawEnabled: false,
       makoChangedDate: data.timestamp ? new Date(data.timestamp).toISOString() : null,
       cmsStatus,

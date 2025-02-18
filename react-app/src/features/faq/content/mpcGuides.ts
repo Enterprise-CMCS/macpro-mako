@@ -2,6 +2,10 @@ import { Template } from "./chpRenderSection";
 
 export const MPC_GUIDES: Template[] = [
   {
+    title: "Medicaid Cost Sharing Background",
+    href: "/mpc/IG_CostSharingBackground.pdf",
+  },
+  {
     title: "G 1",
     text: "Cost-Sharing Requirements Implementation Guide",
     href: "/mpc/IG_G1_CostSharingRequirements.pdf",

@@ -47,9 +47,9 @@ export const capitatedRenewal = {
   authority: "1915(c)",
   proposedEffectiveDate: 1700000000,
   attachments: {
-    ...attachments.bCapIndependentAssessment,
     ...attachments.bCapWaiverApplication,
     ...attachments.bCapCostSpreadsheets,
+    ...attachments.bCapIndependentAssessment,
     ...attachments.tribalConsultation,
     ...attachments.other,
   },
@@ -155,6 +155,7 @@ export const temporaryExtension = {
 };
 
 export const respondToRai = {
+  authority: "Medicaid SPA",
   id: "VA-11-2020",
   event: "respond-to-rai",
   attachments: {

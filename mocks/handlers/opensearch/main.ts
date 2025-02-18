@@ -28,7 +28,22 @@ const defaultOSMainDocumentHandler = http.get(
         });
   },
 );
-
+const defaultUpdateHandler = http.post(
+  `https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_update/:id`,
+  async ({ params }) => {
+    const { id } = params;
+    if (id == GET_ERROR_ITEM_ID) {
+      return new HttpResponse("Internal server error", { status: 500 });
+    }
+    const itemId = id && Array.isArray(id) ? id[0] : id;
+    const item = items[itemId] || null;
+    return item
+      ? HttpResponse.json(item)
+      : HttpResponse.json({
+          found: false,
+        });
+  },
+);
 const defaultOSMainMultiDocumentHandler = http.post<PathParams, GetMultiItemBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_mget",
   async ({ request }) => {
@@ -58,6 +73,24 @@ const defaultOSMainSearchHandler = http.post<PathParams, SearchQueryBody>(
 
     const must = query?.bool?.must;
     const mustTerms = getTermKeys(must);
+    const regexpQueries = query?.regexp;
+
+    let itemHits: TestItemResult[] = Object.values(items) || [];
+
+    if (regexpQueries) {
+      for (const fieldName in regexpQueries) {
+        const filteredFieldName = fieldName.replace(".keyword", "") as keyof TestItemResult;
+        const regexPattern = String(regexpQueries[fieldName]);
+        const regex = new RegExp(regexPattern);
+
+        itemHits = itemHits.filter((item) => {
+          const fieldValue =
+            item[filteredFieldName] ??
+            item._source?.[filteredFieldName as keyof typeof item._source];
+          return fieldValue && regex.test(String(fieldValue));
+        });
+      }
+    }
 
     const appkParentIdValue =
       getTermValues(must, "appkParentId.keyword") || getTermValues(must, "appkParentId");
@@ -119,8 +152,6 @@ const defaultOSMainSearchHandler = http.post<PathParams, SearchQueryBody>(
       }
     }
 
-    let itemHits: TestItemResult[] = Object.values(items) || [];
-
     if (itemHits.length > 0) {
       mustTerms.forEach((term) => {
         const filterValue = getTermValues(must, term);
@@ -159,4 +190,5 @@ export const mainSearchHandlers = [
   defaultOSMainDocumentHandler,
   defaultOSMainMultiDocumentHandler,
   defaultOSMainSearchHandler,
+  defaultUpdateHandler,
 ];

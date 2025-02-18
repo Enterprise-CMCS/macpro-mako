@@ -1,4 +1,4 @@
-import { QueryContainer, TermQuery, TermsQuery, TestHit } from "..";
+import { QueryContainer, TermQuery, TermsQuery, TestHit, QueryAggs, TestAggResult } from "..";
 
 export const getFilterValue = (
   query: QueryContainer | QueryContainer[] | undefined,
@@ -209,4 +209,88 @@ export const filterItemsByTerm = <D>(
     (hit) =>
       (hit as TestHit<D>)?._source && matchFilter<D>(hit._source as D, filterTerm, filterValue),
   );
+};
+
+export const getAggregations = (
+  aggs: Record<string, QueryAggs>,
+  isSpa: boolean = true,
+): TestAggResult => {
+  const aggregations: TestAggResult = {};
+
+  if (aggs?.["stateStatus.keyword"]) {
+    aggregations["stateStatus.keyword"] = {
+      doc_count_error_upper_bound: 0,
+      sum_other_doc_count: 0,
+      buckets: [
+        { key: "Submitted", doc_count: 56 },
+        { key: "Withdrawal Requested", doc_count: 3 },
+      ],
+    };
+  }
+
+  if (aggs?.["origin.keyword"]) {
+    aggregations["origin.keyword"] = {
+      doc_count_error_upper_bound: 0,
+      sum_other_doc_count: 0,
+      buckets: [{ key: "OneMAC", doc_count: 59 }],
+    };
+  }
+
+  if (aggs?.["state.keyword"]) {
+    aggregations["state.keyword"] = {
+      doc_count_error_upper_bound: 0,
+      sum_other_doc_count: 0,
+      buckets: [
+        { key: "CO", doc_count: 5 },
+        { key: "MD", doc_count: 41 },
+        { key: "OH", doc_count: 12 },
+        { key: "VA", doc_count: 1 },
+      ],
+    };
+  }
+
+  if (aggs?.["leadAnalystName.keyword"]) {
+    aggregations["leadAnalystName.keyword"] = {
+      doc_count_error_upper_bound: 0,
+      sum_other_doc_count: 0,
+      buckets: [
+        { key: "George Harrison", doc_count: 1 },
+        { key: "Padma Boggarapu", doc_count: 19 },
+        { key: "Shante Abarabar", doc_count: 1 },
+      ],
+    };
+  }
+
+  if (aggs?.["actionType.keyword"]) {
+    aggregations["actionType.keyword"] = {
+      doc_count_error_upper_bound: 0,
+      sum_other_doc_count: 0,
+      buckets: isSpa
+        ? [{ key: "Amend", doc_count: 31 }]
+        : [
+            { key: "Amend", doc_count: 20 },
+            { key: "Extend", doc_count: 10 },
+            { key: "Initial", doc_count: 7 },
+            { key: "New", doc_count: 15 },
+            { key: "Renew", doc_count: 7 },
+          ],
+    };
+  }
+
+  if (aggs?.["authority.keyword"]) {
+    aggregations["authority.keyword"] = {
+      doc_count_error_upper_bound: 0,
+      sum_other_doc_count: 0,
+      buckets: isSpa
+        ? [
+            { key: "CHIP SPA", doc_count: 31 },
+            { key: "Medicaid SPA", doc_count: 90 },
+          ]
+        : [
+            { key: "1915(b)", doc_count: 48 },
+            { key: "1915(c)", doc_count: 11 },
+          ],
+    };
+  }
+  return aggregations;
 };

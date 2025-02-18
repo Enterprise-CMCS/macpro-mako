@@ -13,6 +13,10 @@ export const getSearchData = async (event: APIGatewayEvent) => {
   validateEnvVariable("osDomain");
 
   if (!event.pathParameters || !event.pathParameters.index) {
+    console.error(
+      "event.pathParameters.index path parameter required, Event: ",
+      JSON.stringify(event, null, 2),
+    );
     return response({
       statusCode: 400,
       body: { message: "Index path parameter required" },

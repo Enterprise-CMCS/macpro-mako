@@ -1,3 +1,10 @@
 export function formatActionType(actionType: string): string {
-  return actionType === "New" ? "Initial" : actionType;
+  switch (actionType) {
+    case "New":
+      return "Initial";
+    case "Amend":
+      return "Amendment";
+    default:
+      return actionType;
+  }
 }

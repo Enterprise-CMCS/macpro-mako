@@ -48,7 +48,7 @@ describe("CloudWatchToS3", () => {
           resources: [`${bucket.bucketArn}/*`],
         }),
         expect.objectContaining({
-          actions: ["logs:PutLogEvents"],
+          actions: ["logs:PutLogEvents", "logs:CreateLogGroup"],
           resources: [
             `arn:aws:logs:${cdk.Stack.of(cloudWatchToS3).region}:${
               cdk.Stack.of(cloudWatchToS3).account

@@ -199,6 +199,19 @@ export async function getItem(
     throw error;
   }
 }
+export async function getItemAndThrowAllErrors(
+  host: string,
+  index: opensearch.Index,
+  id: string,
+): Promise<ItemResult | undefined> {
+  client = client || (await getClient(host));
+  const response = await client.get({ id, index });
+  const item = decodeUtf8(response).body;
+  if (item.found === false || !item._source) {
+    return undefined;
+  }
+  return item;
+}
 
 export async function getItems(ids: string[]): Promise<OSDocument[]> {
   try {

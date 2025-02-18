@@ -3,7 +3,6 @@ import { ReactNode } from "react";
 import {
   Attachment,
   AttachmentKey,
-  AttachmentTitle,
   CommonEmailVariables,
   EmailAddresses,
   Events,
@@ -27,10 +26,9 @@ interface AttachmentGroup {
 }
 
 const areAllAttachmentsEmpty = (
-  attachments: Partial<Record<AttachmentTitle, AttachmentGroup | null>>,
+  attachments: Partial<Record<string, { label: string; files?: any[] }>>,
 ): boolean => {
-  if (!attachments) return true;
-  return Object.values(attachments).every((att) => !att || att.files?.length === 0);
+  return Object.values(attachments).every((att) => !att || !att.files || att.files.length === 0);
 };
 
 const Divider = () => <Hr style={styles.divider} />;
@@ -217,11 +215,17 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
   </Section>
 );
 
-const MailboxNotice = ({ type }: { type: "SPA" | "Waiver" }) => (
+const MailboxNotice = ({
+  type,
+  onWaivers = true,
+}: {
+  type: "SPA" | "Waiver";
+  onWaivers?: boolean;
+}) => (
   <Text style={{ ...styles.text.description, marginTop: "16px", marginBottom: "16px" }}>
     {type === "SPA"
       ? "This mailbox is for the submittal of State Plan Amendments and non-web based responses to Requests for Additional Information (RAI) on submitted SPAs only."
-      : "This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only."}
+      : `This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI)${onWaivers ? " on Waivers" : ""}, and extension requests on Waivers only.`}
     {" Any other correspondence will be disregarded."}
   </Text>
 );
@@ -230,17 +234,21 @@ const FollowUpNotice = ({
   isChip,
   includeStateLead = true,
   includeDidNotExpect = true,
+  withDivider = true,
 }: {
   isChip?: boolean;
   includeStateLead?: boolean;
   includeDidNotExpect?: boolean;
+  withDivider?: boolean;
 }) => (
   <>
-    <Divider />
+    {withDivider && <Divider />}
     {isChip ? (
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
-          If you have any questions, please contact{" "}
+          {`If you have any question${
+            includeDidNotExpect ? " or did not expect this email" : ""
+          }, please contact `}
           <Link href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`} style={{ textDecoration: "underline" }}>
             {EMAIL_CONFIG.CHIP_EMAIL}
           </Link>
@@ -250,9 +258,7 @@ const FollowUpNotice = ({
     ) : (
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
-          {`If you have any questions${
-            includeDidNotExpect ? " or did not expect this email" : ""
-          }, please contact `}
+          {`If you have any questions, please contact `}
           <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`} style={{ textDecoration: "underline" }}>
             {EMAIL_CONFIG.SPA_EMAIL}
           </Link>
@@ -280,39 +286,33 @@ const BasicFooter = () => (
 
 export interface WithdrawRAIProps {
   variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses };
-  relatedEvent: Events["RespondToRai"];
 }
 
-const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables, relatedEvent }) => {
-  if (!relatedEvent) {
-    return (
-      <Section>
-        <Heading as="h2">
-          {`The OneMAC Submission Portal received a request to withdraw a Formal RAI Response. You are receiving this email notification as the Formal RAI was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.`}
-        </Heading>
-        <Text style={styles.text.description}>
-          Note: The original RAI response details could not be retrieved.
-        </Text>
-      </Section>
-    );
-  }
-
+const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables }) => {
   return (
     <Section>
-      <Heading as="h2">
-        {`The OneMAC Submission Portal received a request to withdraw the Formal RAI Response ${relatedEvent.id}. You are receiving this email notification as the Formal RAI for ${relatedEvent.id} was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.`}
-      </Heading>
+      <Text>
+        The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are
+        are receiving this email notification as the Formal RAI for {variables.id} was withdrawn by{" "}
+        {variables.submitterName} {variables.submitterEmail}.
+      </Text>
     </Section>
   );
 };
 
 const getCpocEmail = (item?: os.main.ItemResult): string[] => {
   try {
-    if (item?._source?.leadAnalystEmail && item?._source?.leadAnalystName) {
-      const cpocEmail = `${item._source.leadAnalystName} <${item._source.leadAnalystEmail}>`;
-      return [cpocEmail];
+    const email = item?._source?.leadAnalystEmail;
+    const name = item?._source?.leadAnalystName;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email || !emailRegex.test(email)) {
+      console.error(`Invalid or missing email for item: ${JSON.stringify(item?._source, null, 2)}`);
+      return [];
     }
-    return [];
+
+    return [`${name} <${email}>`];
   } catch (e) {
     console.error("Error getting CPOC email", e);
     return [];
@@ -321,12 +321,29 @@ const getCpocEmail = (item?: os.main.ItemResult): string[] => {
 
 const getSrtEmails = (item?: os.main.ItemResult): string[] => {
   try {
-    if (item?._source?.reviewTeam && item._source.reviewTeam.length > 0) {
-      return item._source.reviewTeam.map(
-        (reviewer: { name: string; email: string }) => `${reviewer.name} <${reviewer.email}>`,
-      );
+    const reviewTeam = item?._source?.reviewTeam;
+
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!reviewTeam || reviewTeam.length === 0) {
+      return [];
     }
-    return [];
+
+    return reviewTeam
+      .map((reviewer: { name: string; email: string }) => {
+        const { name, email } = reviewer;
+
+        if (!email || !emailRegex.test(email)) {
+          console.error(
+            `Invalid or missing email for reviewer: ${JSON.stringify(reviewer, null, 2)}`,
+          );
+          return null;
+        }
+
+        return `${name} <${email}>`;
+      })
+      .filter((email): email is string => email !== null);
   } catch (e) {
     console.error("Error getting SRT emails", e);
     return [];
@@ -349,4 +366,5 @@ export {
   EmailFooter,
   getCpocEmail,
   getSrtEmails,
+  areAllAttachmentsEmpty,
 };

@@ -1,53 +1,53 @@
-import moment from "moment-timezone";
-import * as fedHolidays from "@18f/us-federal-holidays";
+import { TZDate } from "@date-fns/tz";
+import { UTCDate } from "@date-fns/utc";
+import { format, startOfDay, isWeekend, addDays } from "date-fns";
+import { isAHoliday } from "@18f/us-federal-holidays";
 
-// Takes a local epoch for a moment in time, and returns the UTC epoch for that same moment
-export const offsetToUtc = (date: Date): Date => {
-  return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+/**
+ * Returns the epoch timestamp for midnight UTC time for the date provided.
+ * If no date is provided, it returns the timestamp of midnight UTC time today.
+ *
+ * @param date the date object or date string to return the timestamp for
+ * @returns epoch timestamp for midnight UTC of the date or today, if none provided
+ */
+export const seaToolFriendlyTimestamp = (date?: Date | string): number => {
+  const utcDate = date ? new UTCDate(date) : new UTCDate();
+  return startOfDay(utcDate).getTime();
 };
 
-// Takes a UTC epoch for a moment in time, and returns the local epoch for that same moment
-export const offsetFromUtc = (date: Date): Date => {
-  return new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+/**
+ * Returns the formatted date string of the UTC timezone for the date provided.
+ * If no date is provided, it returns an empty string.
+ *
+ * @param date the date object or date string to return the formatted time of
+ * @returns the `MM/dd/yyyy` formatted date string for the UTC time of the date provided
+ * or an empty string if no date was provided
+ */
+export const formatSeatoolDate = (date?: Date | string): string => {
+  if (!date) return "";
+  return format(new UTCDate(date), "MM/dd/yyyy");
 };
 
-// This creates a Date for midnight today, then accounts for timezone offset.
-export const seaToolFriendlyTimestamp = (date?: Date): number => {
-  // If you don't pass a date, we assume you want today the timestamp for today, midnight, utc.
-  if (!date) {
-    date = new Date();
-    date.setHours(0, 0, 0, 0);
+/**
+ * Returns the timestamp for UTC midnight of the current business day.
+ * If no date is provided, it returns the current business day relative to today.
+ * If the date is after 5pm Eastern time, it returns the next business day.
+ * If the date is on a federal holiday or weekend, it returns the next business day.
+ *
+ * @param date the date object to return the timestamp for
+ * @returns the timestamp of midnight UTC of the current business day relative to the date or today, if none provided
+ */
+export const getBusinessDayTimestamp = (date: Date = new Date()): number => {
+  // Get the date in Eastern time
+  const nyDateTime = new TZDate(date.toISOString(), "America/New_York");
+
+  // Check if the time is after 5pm Eastern time or if the day is not a business day.
+  // If any of those are true, check again for the next day.
+  if (nyDateTime.getHours() >= 17 || isAHoliday(nyDateTime) || isWeekend(nyDateTime)) {
+    return getBusinessDayTimestamp(startOfDay(addDays(nyDateTime, 1)));
   }
-  return offsetToUtc(date).getTime();
-};
 
-// This takes an epoch string and converts it to a standard format for display
-export const formatSeatoolDate = (date: string): string => {
-  return moment(date).tz("UTC").format("MM/DD/yyyy");
-};
-
-export const getNextBusinessDayTimestamp = (date: Date = new Date()): number => {
-  const localeStringDate = date.toLocaleString("en-US", {
-    timeZone: "America/New_York",
-    dateStyle: "short",
-  });
-  const localeStringHours24 = date.toLocaleString("en-US", {
-    timeZone: "America/New_York",
-    hour: "numeric",
-    hour12: false,
-  });
-  const localeDate = new Date(localeStringDate);
-  const after5pmEST = parseInt(localeStringHours24, 10) >= 17;
-  const isHoliday = fedHolidays.isAHoliday(localeDate);
-  const isWeekend = !(localeDate.getDay() % 6);
-  if (after5pmEST || isHoliday || isWeekend) {
-    const nextDate = localeDate;
-    nextDate.setDate(nextDate.getDate() + 1);
-    nextDate.setHours(12, 0, 0, 0);
-    return getNextBusinessDayTimestamp(nextDate);
-  }
-
-  // Return the next business day's epoch for midnight UTC
-  const ret = offsetToUtc(localeDate).getTime();
-  return ret;
+  return startOfDay(
+    new UTCDate(nyDateTime.getFullYear(), nyDateTime.getMonth(), nyDateTime.getDate()),
+  ).getTime();
 };

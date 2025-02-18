@@ -111,6 +111,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
         <div className="my-2 flex flex-wrap gap-2">
           {files.map((file) => (
             <div
+              data-testid={`${file.filename}-chip`}
               className="flex border-2 rounded-md py-1 pl-2.5 pr-1 border-sky-500 items-center"
               key={file.filename}
             >
@@ -143,7 +144,12 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
         >
           <p>
             Drag file here or{" "}
-            <span className="text-sky-700 underline hover:cursor-pointer">choose from folder</span>
+            <span
+              data-testid={`${dataTestId}-click`}
+              className="text-sky-700 underline hover:cursor-pointer"
+            >
+              choose from folder
+            </span>
           </p>
           <label htmlFor={`upload-${uniqueId}`} className="sr-only">
             Drag file here or choose from folder
