@@ -7,7 +7,7 @@ import {
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 
-describe("getAttachmentUrl tests", () => {
+describe("gsetAttachmentUrl tests", () => {
   const id = "1234";
   const key = "test-key";
   const filename = "test-file.txt";
