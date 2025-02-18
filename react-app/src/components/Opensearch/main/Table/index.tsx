@@ -28,17 +28,13 @@ export const OsTable: FC<{
                 {...(TH.isSystem && { className: "pointer-events-none" })}
                 onClick={() => {
                   if (!TH.field) return;
-                  url.onSet((s) => {
-                    const osState = {
-                      ...s,
-                      sort: {
-                        field: TH.field as opensearch.main.Field,
-                        order: s.sort?.order === "desc" ? "asc" : "desc",
-                      },
-                    } as UI.OsUrlState;
-                    // localStorage.setItem(, osState)
-                    return osState;
-                  });
+                  url.onSet((s) => ({
+                    ...s,
+                    sort: {
+                      field: TH.field as opensearch.main.Field,
+                      order: s.sort.order === "desc" ? "asc" : "desc",
+                    },
+                  }));
                 }}
               >
                 {TH.label}
