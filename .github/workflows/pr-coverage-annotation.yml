@@ -8,6 +8,7 @@ on:
 jobs:
   coverage-report:
     runs-on: ubuntu-latest
+    continue-on-error: true
     permissions:
       contents: read
       pull-requests: write
@@ -15,6 +16,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
+      - name: Test
+        if: always()
+        id: test
+        run: run test --coverage
       - name: Get run ID of Code Climate workflow
         id: get-run-id
         env:
@@ -32,11 +37,6 @@ jobs:
           path: main-coverage
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ steps.get-run-id.outputs.run-id }}
-      - name: Test
-        if: always()
-        id: test
-        continue-on-error: true
-        run: run test --coverage
       - name: Report Coverage (compared with Main)
         if: steps.get-main-coverage.conclusion == 'success'
         uses: davelosert/vitest-coverage-report-action@v2
