@@ -53,7 +53,6 @@ export const transformDeleteSchema = (offset: number) =>
     event: "delete",
     packageId: data.id,
     id: `${data.id}-${offset}`,
-    // timestamp: Date.now(),
   }));
 
 export const transformUpdateValuesSchema = (offset: number) =>
