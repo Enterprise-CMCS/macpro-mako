@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import { TimeoutModal } from ".";
 import * as api from "@/api";
@@ -6,6 +6,7 @@ import { mockUseGetUser, setDefaultStateSubmitter } from "mocks";
 import { UseQueryResult } from "@tanstack/react-query";
 import { OneMacUser } from "@/api";
 import { Auth } from "aws-amplify";
+import * as hooks from "@/hooks";
 
 const ParentComponent = () => (
   <div>
@@ -23,6 +24,11 @@ describe("Timeout Modal", () => {
       const response = mockUseGetUser();
       return response as UseQueryResult<OneMacUser, unknown>;
     });
+
+    vi.spyOn(hooks, "useCountdown").mockReturnValue([
+      60,
+      { startCountdown: vi.fn(), stopCountdown: vi.fn(), resetCountdown: vi.fn() },
+    ]);
   });
 
   afterEach(() => {
@@ -47,7 +53,19 @@ describe("Timeout Modal", () => {
     expect(screen.queryByText(/Your session will expire in/i)).not.toBeInTheDocument();
   });
 
-  it("calls Auth.signOut when user clicks Sign Out", async () => {
+  it("calls Auth.signOut when countdown timer reaches 0", async () => {
+    vi.spyOn(hooks, "useCountdown").mockReturnValue([
+      0,
+      { startCountdown: vi.fn(), stopCountdown: vi.fn(), resetCountdown: vi.fn() },
+    ]);
+
+    render(<ParentComponent />);
+
+    const signOutSpy = vi.spyOn(Auth, "signOut");
+    expect(signOutSpy).toHaveBeenCalled();
+  });
+
+  it("calls Auth.signOut when user clicks sign out", async () => {
     render(<ParentComponent />);
 
     await vi.advanceTimersToNextTimerAsync();
