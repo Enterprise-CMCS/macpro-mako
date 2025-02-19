@@ -84,19 +84,19 @@ describe("getAvailableActions tests", () => {
       raiWithdrawEnabled: true,
     });
     expect(result).toEqual([
+      Action.UPLOAD_SUBSEQUENT_DOCUMENTS,
       Action.WITHDRAW_RAI,
       Action.WITHDRAW_PACKAGE,
-      Action.UPLOAD_SUBSEQUENT_DOCUMENTS,
     ]);
   });
 
-  it(`should return actions: [${Action.WITHDRAW_PACKAGE}, ${Action.UPLOAD_SUBSEQUENT_DOCUMENTS}]`, () => {
+  it(`should return actions: [${Action.UPLOAD_SUBSEQUENT_DOCUMENTS}, ${Action.WITHDRAW_PACKAGE}]`, () => {
     const result = getAvailableActions(TEST_STATE_SUBMITTER_USER, {
       ...TEST_MED_SPA_ITEM._source,
       seatoolStatus: SEATOOL_STATUS.PENDING,
       actionType: "New",
       raiWithdrawEnabled: true,
     });
-    expect(result).toEqual([Action.WITHDRAW_PACKAGE, Action.UPLOAD_SUBSEQUENT_DOCUMENTS]);
+    expect(result).toEqual([Action.UPLOAD_SUBSEQUENT_DOCUMENTS, Action.WITHDRAW_PACKAGE]);
   });
 });
