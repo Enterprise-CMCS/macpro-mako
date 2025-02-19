@@ -3,7 +3,7 @@ import { FollowUpNotice, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const ChipSpaStateEmail = (props: {
-  variables: Events["WithdrawPackage"] & CommonEmailVariables;
+  variables: Events["WithdrawConfirmation"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
   return (

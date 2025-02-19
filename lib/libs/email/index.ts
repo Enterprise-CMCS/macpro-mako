@@ -25,6 +25,7 @@ export type EmailTemplates = {
   "new-chip-submission": AuthoritiesWithUserTypesTemplate;
   "temporary-extension": AuthoritiesWithUserTypesTemplate;
   "withdraw-package": AuthoritiesWithUserTypesTemplate;
+  "withdraw-confirmation": AuthoritiesWithUserTypesTemplate;
   "withdraw-rai": AuthoritiesWithUserTypesTemplate;
   "contracting-initial": AuthoritiesWithUserTypesTemplate;
   "capitated-initial": AuthoritiesWithUserTypesTemplate;
@@ -48,6 +49,7 @@ const emailTemplates: EmailTemplates = {
   "new-chip-submission": EmailContent.newSubmission,
   "temporary-extension": EmailContent.tempExtension,
   "withdraw-package": EmailContent.withdrawPackage,
+  "withdraw-confirmation": EmailContent.withdrawPackage,
   "withdraw-rai": EmailContent.withdrawRai,
   "contracting-initial": EmailContent.newSubmission,
   "capitated-initial": EmailContent.newSubmission,
