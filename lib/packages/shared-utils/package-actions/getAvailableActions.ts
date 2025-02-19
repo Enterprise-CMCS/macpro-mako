@@ -27,14 +27,11 @@ export const getAvailableActions = (
     if (index === 0) return currentActions;
     return acc.filter((action: Action) => currentActions.includes(action));
   }, []);
-  console.log(allMembers);
   const allRaiRequestedDates = allMembers
     .filter((member) => (member as opensearch.main.SeatoolDocument)?.raiRequestedDate !== undefined)
     .map((member) => (member as opensearch.main.SeatoolDocument)?.raiRequestedDate);
-  console.log(allRaiRequestedDates);
   const isRaiRequestedDateIdentical = allRaiRequestedDates.every((date, _, arr) => date === arr[0]);
   if (!isRaiRequestedDateIdentical) {
-    console.log("hello");
     const actionsToRemove = [Action.RESPOND_TO_RAI, Action.WITHDRAW_RAI];
     commonActions = commonActions.filter((action: any) => !actionsToRemove.includes(action));
   }
