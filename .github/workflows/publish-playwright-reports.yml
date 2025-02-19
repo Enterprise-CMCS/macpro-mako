@@ -43,9 +43,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.JSON_ARTIFACT_ID }}
-          path: _data/${{ steps.variables.outputs.report_path }}/
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ inputs.RUN_ID }}
+          path: _data/${{ steps.variables.outputs.report_path }}
       - name: Rename JSON Report
         working-directory: _data/${{ steps.variables.outputs.report_path }}
         run: mv playwright-summary.json ${{ steps.variables.outputs.report_name }}.json
@@ -54,9 +52,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.HTML_ARTIFACT_ID }}
-          path: ${{ steps.variables.outputs.report_path }}/
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ inputs.RUN_ID }}
+          path: ${{ steps.variables.outputs.report_path }}
       - name: Rename HTML Report
         working-directory: ${{ steps.variables.outputs.report_path }}
         run: mv index.html ${{ steps.variables.outputs.report_name }}.html
