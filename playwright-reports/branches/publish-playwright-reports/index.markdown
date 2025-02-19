@@ -1,3 +1,0 @@
----
-branch: publish-playwright-reports
----

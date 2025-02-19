@@ -12,8 +12,7 @@ layout: default
 
 {% for run_id in run_ids %}
   {% assign data = site.data.playwright-reports.branches[page.branch][run_id] %}
-  {% capture url %}
-    /macpro-mako/playwright-reports/branches/{{page.branch}}/{{run_id}}.html
-  {% endcapture %}
-  {% include playwright-summary.html run_id=run_id data=data url=url %}
+  {% capture report_link %}/playwright-reports/branches/{{page.branch}}/{{run_id}}.html{% endcapture %}
+    {% assign relative_report_link = report_link | relative_url %}
+  {% include playwright-summary.html run_id=run_id data=data url=relative_report_link %}
 {% endfor %}

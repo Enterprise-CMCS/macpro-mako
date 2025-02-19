@@ -11,7 +11,8 @@
 
   {% if page.custom_css %}
     {% for stylesheet in page.custom_css %}
-    <link rel="stylesheet" href="/macpro-mako/assets/css/{{ stylesheet }}.css">
+    {% capture link %}/assets/css/{{ stylesheet }}.css{% endcapture %}
+    <link rel="stylesheet" href="{{ link | relative_url }}">
     {% endfor %}
   {% endif %}
   
