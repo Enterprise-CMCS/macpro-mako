@@ -13,7 +13,7 @@ export const MedSpaStateEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <FollowUpNotice includeStateLead={false} />
+      <FollowUpNotice includeStateLead={false} includeDidNotExpect={true} />
     </BaseEmailTemplate>
   );
 };
