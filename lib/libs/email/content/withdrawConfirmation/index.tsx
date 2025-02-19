@@ -4,7 +4,7 @@ import { ChipSpaStateEmail, MedSpaStateEmail, WaiverStateEmail } from "./emailTe
 import { render } from "@react-email/render";
 
 const generateWithdrawEmail = async (
-  variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
+  variables: Events["WithdrawConfirmation"] & CommonEmailVariables & { emails: EmailAddresses },
   subjectPrefix: string,
   EmailComponent: React.FC<{ variables: any }>,
 ) => {
