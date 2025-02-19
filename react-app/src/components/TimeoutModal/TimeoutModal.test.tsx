@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import { TimeoutModal } from ".";
 import * as api from "@/api";
@@ -7,6 +7,8 @@ import { UseQueryResult } from "@tanstack/react-query";
 import { OneMacUser } from "@/api";
 import { Auth } from "aws-amplify";
 import * as hooks from "@/hooks";
+
+const mockTimer = 60;
 
 const ParentComponent = () => (
   <div>
@@ -26,7 +28,7 @@ describe("Timeout Modal", () => {
     });
 
     vi.spyOn(hooks, "useCountdown").mockReturnValue([
-      60,
+      mockTimer,
       { startCountdown: vi.fn(), stopCountdown: vi.fn(), resetCountdown: vi.fn() },
     ]);
   });
