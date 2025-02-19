@@ -41,7 +41,7 @@ export default defineConfig({
         ["html", { outputFolder: "playwright-reports/html-report", open: "never" }],
         ["json", { outputFile: "playwright-reports/playwright-summary.json" }],
       ]
-    : [["list", { printSteps: true }]],
+    : [["dot"]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */

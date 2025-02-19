@@ -13,6 +13,8 @@ jobs:
       contents: read
       pull-requests: write
       actions: read
+    outputs:
+      actualResult: ${{ steps.test.conclusion }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
@@ -47,5 +49,3 @@ jobs:
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           file-coverage-mode: all
-    outputs:
-      actualResult: ${{ steps.test.conclusion }}
