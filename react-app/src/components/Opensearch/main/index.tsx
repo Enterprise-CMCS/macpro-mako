@@ -9,8 +9,8 @@ import { FilterChips } from "./Filtering";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const createLSColumns = (columns: OsTableColumn[]): string[] => {
-  const columnsVisalbe = columns.filter((col) => col.hidden);
-  const columnFields = columnsVisalbe.reduce((acc, curr) => {
+  const columnsVisible = columns.filter((col) => col.hidden);
+  const columnFields = columnsVisible.reduce((acc, curr) => {
     if (curr.field) acc.push(curr.field);
     return acc;
   }, []);
@@ -34,48 +34,33 @@ export const OsMainView: FC<{
     createLSColumns(props.columns),
   );
 
-  const [spaOSColumns, setSpaOSColumns] = useState(
-    props.columns.map((COL) => ({
+  const initializeColumns = (columns: OsTableColumn[], hiddenFields: string[]) =>
+    columns.map((COL) => ({
       ...COL,
-      hidden: localSPAStorageCol.includes(COL.field),
+      hidden: hiddenFields.includes(COL.field),
       locked: COL?.locked ?? false,
-    })),
-  );
+    }));
 
-  const [waiverOSColumns, setWaiverOSColumns] = useState(
-    props.columns.map((COL) => ({
-      ...COL,
-      hidden: localWaiverStorageCol.includes(COL.field),
-      locked: COL?.locked ?? false,
-    })),
+  const [spaOSColumns, setSpaOSColumns] = useState(() =>
+    initializeColumns(props.columns, localSPAStorageCol),
+  );
+  const [waiverOSColumns, setWaiverOSColumns] = useState(() =>
+    initializeColumns(props.columns, localWaiverStorageCol),
   );
 
   const onToggle = (field: string) => {
-    if (osData.state.tab === "spas") {
-      if (localSPAStorageCol.includes(field))
-        setLocalSPAStorageCol(() => localSPAStorageCol.filter((x) => x != field));
-      else setLocalSPAStorageCol([...localSPAStorageCol, field]);
+    const isSPA = osData.state.tab === "spas";
 
-      setSpaOSColumns((state) => {
-        return state?.map((S) => {
-          if (S.field !== field) return S;
-          return { ...S, hidden: !S.hidden };
-        });
-      });
-    } else {
-      if (localWaiverStorageCol.includes(field))
-        setLocalWaiverStorageCol(() => localWaiverStorageCol.filter((x) => x != field));
-      else setLocalWaiverStorageCol([...localWaiverStorageCol, field]);
+    const setLocalStorageCol = isSPA ? setLocalSPAStorageCol : setLocalWaiverStorageCol;
+    const setColumns = isSPA ? setSpaOSColumns : setWaiverOSColumns;
 
-      setWaiverOSColumns((state) => {
-        return state?.map((S) => {
-          if (S.field !== field) return S;
-          return { ...S, hidden: !S.hidden };
-        });
-      });
-    }
+    setLocalStorageCol((prev) =>
+      prev.includes(field) ? prev.filter((x) => x !== field) : [...prev, field],
+    );
 
-    console.log(osData.state.tab);
+    setColumns((prev) =>
+      prev.map((col) => (col.field === field ? { ...col, hidden: !col.hidden } : col)),
+    );
   };
 
   return (

@@ -43,10 +43,10 @@ export const Dashboard = () => {
 
   const osData = useOsData();
   const [localSPAStorageCol, setLocalSPAStorageCol] = useLocalStorage("spaOSData", osData.state);
-  const waivberObj = { ...osData.state, tab: "waivers" };
+  const waiverObj = { ...osData.state, tab: "waivers" };
   const [localWaiverStorageCol, setLocalWaiversStorageCol] = useLocalStorage(
     "waiversOSData",
-    waivberObj,
+    waiverObj,
   );
 
   const isAbleToAccessDashboard = () => {
@@ -93,15 +93,10 @@ export const Dashboard = () => {
               <Tabs
                 value={osData.state.tab}
                 onValueChange={(tab) => {
-                  if (tab === "spas") {
-                    setLocalWaiversStorageCol(osData.state);
-                  } else {
-                    setLocalSPAStorageCol(osData.state);
-                  }
-                  osData.onSet(
-                    () => (tab === "spas" ? localSPAStorageCol : localWaiverStorageCol),
-                    true,
-                  );
+                  if (tab === "spas") setLocalWaiversStorageCol(osData.state);
+                  else setLocalSPAStorageCol(osData.state);
+
+                  osData.onSet(tab === "spas" ? localSPAStorageCol : localWaiverStorageCol, true);
                 }}
               >
                 <div className="flex max-w-screen-xl mx-auto px-4 lg:px-8">
