@@ -17,7 +17,6 @@ export interface CommonEmailVariables {
   applicationEndpointUrl: string;
   actionType: string;
   allStateUsersEmails?: string[];
-  responseDate?: number;
   title?: string;
 }
 

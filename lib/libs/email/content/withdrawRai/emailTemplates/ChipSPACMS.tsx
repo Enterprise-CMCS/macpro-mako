@@ -1,15 +1,15 @@
 import { CommonEmailVariables, Events } from "shared-types";
-import { BasicFooter, FollowUpNotice, Divider, PackageDetails } from "../../email-components";
+import { Attachments, BasicFooter, Divider, PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const ChipSpaStateEmail = ({
+export const ChipSpaCMSEmail = ({
   variables,
 }: {
-  variables: Events["WithdrawPackage"] & CommonEmailVariables;
+  variables: Events["WithdrawRai"] & CommonEmailVariables;
 }) => (
   <BaseEmailTemplate
-    previewText={`CHIP SPA Package ${variables.id} Withdraw Requested`}
-    heading="This is confirmation that you have requested to withdraw the package below. The package will no longer be considered for CMS review:"
+    previewText={`Withdraw Formal RAI Response for CHIP SPA Package ${variables.id}`}
+    heading={`The OneMAC Submission Portal received a request to withdraw the Formal RAI Response. You are receiving this email notification as the Formal RAI for ${variables.id} was withdrawn by ${variables.submitterName} ${variables.submitterEmail}.`}
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >
@@ -23,6 +23,6 @@ export const ChipSpaStateEmail = ({
         Summary: variables.additionalInformation,
       }}
     />
-    <FollowUpNotice isChip />
+    <Attachments attachments={variables.attachments} />
   </BaseEmailTemplate>
 );

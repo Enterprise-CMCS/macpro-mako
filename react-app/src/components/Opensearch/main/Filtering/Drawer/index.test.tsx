@@ -279,6 +279,7 @@ describe("OsFilterDrawer", () => {
 
         const chip = screen.queryByLabelText("CHIP SPA");
         expect(chip).toBeInTheDocument();
+
         expect(chip.getAttribute("data-state")).toEqual("unchecked");
 
         const med = screen.queryByLabelText("Medicaid SPA");

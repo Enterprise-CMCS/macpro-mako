@@ -5,6 +5,7 @@ export const transform = () => {
     return {
       id: data.id,
       authority: data.authority,
+      ...(data.actionType && { actionType: data.actionType }),
       raiWithdrawEnabled: false,
       makoChangedDate: data.timestamp ? new Date(data.timestamp).toISOString() : null,
       cmsStatus,
