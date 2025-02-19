@@ -5,6 +5,7 @@ import * as api from "@/api";
 import { mockUseGetUser, setDefaultStateSubmitter } from "mocks";
 import { UseQueryResult } from "@tanstack/react-query";
 import { OneMacUser } from "@/api";
+import { Auth } from "aws-amplify";
 
 const ParentComponent = () => (
   <div>
@@ -46,7 +47,7 @@ describe("Timeout Modal", () => {
     expect(screen.queryByText(/Your session will expire in/i)).not.toBeInTheDocument();
   });
 
-  it("closes the modal if user clicks sign out", async () => {
+  it("calls Auth.signOut when user clicks Sign Out", async () => {
     render(<ParentComponent />);
 
     await vi.advanceTimersToNextTimerAsync();
@@ -58,9 +59,11 @@ describe("Timeout Modal", () => {
     const signOutBtn = screen.getByRole("button", { name: /No, sign out/i });
     expect(signOutBtn).toBeInTheDocument();
 
+    const signOutSpy = vi.spyOn(Auth, "signOut");
+
     fireEvent.click(signOutBtn);
 
-    expect(screen.queryByText(/Your session will expire in/i)).not.toBeInTheDocument();
+    expect(signOutSpy).toHaveBeenCalled();
 
     setDefaultStateSubmitter();
   });
