@@ -6,6 +6,7 @@ import {
   TEST_CHIP_SPA_ITEM,
   TEST_CMS_REVIEWER_USER,
   TEST_MED_SPA_ITEM,
+  TEST_MED_SPA_RAI_ITEM,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
 
@@ -18,7 +19,14 @@ describe("getAvailableActions tests", () => {
     });
     expect(result).toEqual([Action.RESPOND_TO_RAI, Action.WITHDRAW_PACKAGE]);
   });
-
+  it(`should return actions: [${Action.WITHDRAW_PACKAGE}] since it has a duplicate rai`, () => {
+    const result = getAvailableActions(TEST_STATE_SUBMITTER_USER, {
+      ...TEST_MED_SPA_RAI_ITEM._source,
+      seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
+      raiRequestedDate: "2024-01-01T00:00:00.000Z",
+    });
+    expect(result).toEqual([Action.WITHDRAW_PACKAGE]);
+  });
   it(`should return actions: [${Action.TEMP_EXTENSION}, ${Action.AMEND_WAIVER}]`, () => {
     const result = getAvailableActions(TEST_STATE_SUBMITTER_USER, {
       ...TEST_1915B_ITEM._source,
