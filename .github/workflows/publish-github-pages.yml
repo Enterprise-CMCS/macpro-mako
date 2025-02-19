@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - gh-pages
+      - publish-playwright-reports
 
 jobs:
   build:
