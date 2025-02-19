@@ -49,7 +49,7 @@ const emailTemplates: EmailTemplates = {
   "new-chip-submission": EmailContent.newSubmission,
   "temporary-extension": EmailContent.tempExtension,
   "withdraw-package": EmailContent.withdrawPackage,
-  "withdraw-confirmation": EmailContent.withdrawPackage,
+  "withdraw-confirmation": EmailContent.withdrawConfirmation,
   "withdraw-rai": EmailContent.withdrawRai,
   "contracting-initial": EmailContent.newSubmission,
   "capitated-initial": EmailContent.newSubmission,
