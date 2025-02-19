@@ -8,7 +8,7 @@ export const ChipSpaCMSEmail = ({
   variables: Events["WithdrawPackage"] & CommonEmailVariables;
 }) => (
   <BaseEmailTemplate
-    previewText={`CHIP SPA Package ${variables.id} Withdraw Request`}
+    previewText={`CHIP SPA Package ${variables.id} Withdraw Requested`}
     heading="The OneMAC Submission Portal received a request to withdraw the package below. The package will no longer be considered for CMS review:"
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
