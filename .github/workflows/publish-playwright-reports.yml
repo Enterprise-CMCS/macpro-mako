@@ -77,4 +77,4 @@ jobs:
           git commit -m "${{ steps.variables.outputs.commit_msg }}"
           git pull origin gh-pages --rebase -s recursive -X ours
           git push
-          echo "Report URL: https://enterprise-cmcs.github.io/macpro-mako/${{ steps.download-html.outputs.download-path }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Report URL: https://enterprise-cmcs.github.io/macpro-mako/${{ steps.variables.outputs.report_path }}/${{ steps.variables.outputs.report_name }}.html" >> "$GITHUB_STEP_SUMMARY"
