@@ -190,13 +190,7 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
                 Summary:
               </Heading>
             </Text>
-            <Text
-              style={{
-                whiteSpace: "pre-line",
-              }}
-            >
-              {value ?? "No additional information submitted"}
-            </Text>
+            <Text style={styles.text.base}>{value ?? "No additional information submitted"}</Text>
           </Row>
         );
       }
