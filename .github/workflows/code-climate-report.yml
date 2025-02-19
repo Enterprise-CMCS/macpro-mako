@@ -53,7 +53,7 @@ jobs:
         id: upload-html
         with:
           name: ${{ env.HTML_ARTIFACT_ID }}
-          path: coverage/html-report/
+          path: coverage/html-report/*
           overwrite: true
           retention-days: 90
 
