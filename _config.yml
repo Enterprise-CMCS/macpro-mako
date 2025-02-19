@@ -8,8 +8,7 @@ url: "https://enterprise-cmcs.github.io/" # the base hostname & protocol for you
 
 # Build settings
 theme: minima
-plugins:
-  - jekyll-feed
+
 
 # If you want to link only specific pages in your header, use this and add the path to the pages
 # in order as they should show up.
