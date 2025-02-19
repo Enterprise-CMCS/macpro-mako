@@ -1,19 +1,24 @@
-name: Publish Code Coverage Reports to GitHub Pages
+name: Push to GitHub Pages
 
 on:
   workflow_call:
     inputs:
-      HTML_ARTIFACT_ID:
+      FILE_1_ARTIFACT_ID:
         type: string
         required: true
-      JSON_ARTIFACT_ID:
+      FILE_1_DEPLOY_TO:
         type: string
         required: true
-      BRANCH_NAME:
+      FILE_2_ARTIFACT_ID:
+        type: string
+        required: false
+      FILE_2_DEPLOY_TO:
+        type: string
+        required: false
+      COMMIT_MSG:
         type: string
         required: true
-        default: main
-      RUN_ID:
+      URL_PATH:
         type: string
         required: true
 
@@ -28,26 +33,23 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: gh-pages
-      - name: Download JSON Report
+      - name: Download File 1
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.JSON_ARTIFACT_ID }}
-          path: _data/coverage/
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ inputs.RUN_ID }}
-      - name: Download HTML Report
+          name: ${{ inputs.FILE_1_ARTIFACT_ID }}
+          path: ${{ inputs.FILE_1_DEPLOY_TO }}
+      - name: Download File 2
         uses: actions/download-artifact@v4
+        if: inputs.FILE_2_ARTIFACT_ID && inputs.FILE_2_DEPLOY_TO
         with:
-          name: ${{ inputs.HTML_ARTIFACT_ID }}
-          path: coverage/
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ inputs.RUN_ID }}
+          name: ${{ inputs.FILE_2_ARTIFACT_ID }}
+          path: ${{ inputs.FILE_2_DEPLOY_TO }}
       - name: Push to GitHub Pages Branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "update code coverage report for ${{ inputs.BRANCH_NAME }}"
+          git commit -m "${{ inputs.COMMIT_MSG }}"
           git pull origin gh-pages --rebase -s recursive -X ours
           git push
-          echo "Report URL: https://enterprise-cmcs.github.io/macpro-mako/coverage/" >> "$GITHUB_STEP_SUMMARY"
+          echo "New URL: https://enterprise-cmcs.github.io/macpro-mako/${{ inputs.URL_PATH }}/" >> "$GITHUB_STEP_SUMMARY"

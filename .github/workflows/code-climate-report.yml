@@ -58,9 +58,11 @@ jobs:
 
   publish:
     needs: [coverage-report]
-    uses: ./.github/workflows/publish-code-coverage-reports.yml
+    uses: ./.github/workflows/push-to-gh-pages.yml
     with:
-      JSON_ARTIFACT_ID: ${{ needs.coverage-report.outputs.json_artifact_id }}
-      HTML_ARTIFACT_ID: ${{ needs.coverage-report.outputs.html_artifact_id }}
-      BRANCH_NAME: ${{ github.ref_name }}
-      RUN_ID: ${{ github.run_id }}
+      FILE_1_ARTIFACT_ID: ${{ needs.coverage-report.outputs.json_artifact_id }}
+      FILE_1_DEPLOY_TO: _data/coverage/
+      FILE_2_ARTIFACT_ID: ${{ needs.coverage-report.outputs.html_artifact_id }}
+      FILE_2_DEPLOY_TO: coverage/
+      COMMIT_MSG: update code coverage report for main
+      URL_PATH: coverage/
