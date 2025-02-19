@@ -88,7 +88,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       {
         proposedDate: capitatedInitial.proposedEffectiveDate,
         additionalInformation: capitatedInitial.additionalInformation,
-        actionType: "Initial",
+        actionType: "New",
         initialIntakeNeeded: true,
       } as BulkUpdateRequestBody,
     ],
@@ -121,7 +121,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       {
         proposedDate: contractingInitial.proposedEffectiveDate,
         additionalInformation: contractingInitial.additionalInformation,
-        actionType: "Initial",
+        actionType: "New",
         initialIntakeNeeded: true,
       } as BulkUpdateRequestBody,
     ],
@@ -242,6 +242,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       "withdraw-rai",
       withdrawRai,
       {
+        raiReceivedDate: null,
         seatoolStatus: SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED,
         cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED],
         stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED],
