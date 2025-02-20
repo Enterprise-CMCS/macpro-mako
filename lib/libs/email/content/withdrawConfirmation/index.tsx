@@ -1,10 +1,16 @@
-import { Authority, CommonEmailVariables, EmailAddresses, Events } from "shared-types";
-import { AuthoritiesWithUserTypesTemplate } from "../..";
+import {
+  Authority,
+  CommonEmailVariables,
+  EmailAddresses,
+  Events,
+  SEATOOL_STATUS,
+} from "shared-types";
+import { AuthoritiesWithUserTypesTemplate, EmailTemplate } from "../..";
 import { ChipSpaStateEmail, MedSpaStateEmail, WaiverStateEmail } from "./emailTemplates";
 import { render } from "@react-email/render";
 
 const generateWithdrawEmail = async (
-  variables: Events["WithdrawConfirmation"] & CommonEmailVariables & { emails: EmailAddresses },
+  variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
   subjectPrefix: string,
   EmailComponent: React.FC<{ variables: any }>,
 ) => {
@@ -20,15 +26,26 @@ const generateWithdrawEmail = async (
 export const withdrawConfirmation: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
     state: (variables) =>
-      generateWithdrawEmail(variables, "Medicaid SPA Package", MedSpaStateEmail),
+      variables.seatoolStatus === SEATOOL_STATUS.WITHDRAWN
+        ? generateWithdrawEmail(variables, "Medicaid SPA Package", MedSpaStateEmail)
+        : Promise.resolve(null as unknown as EmailTemplate),
   },
   [Authority.CHIP_SPA]: {
-    state: (variables) => generateWithdrawEmail(variables, "CHIP SPA Package", ChipSpaStateEmail),
+    state: (variables) =>
+      variables.seatoolStatus === SEATOOL_STATUS.WITHDRAWN
+        ? generateWithdrawEmail(variables, "CHIP SPA Package", ChipSpaStateEmail)
+        : Promise.resolve(null as unknown as EmailTemplate),
   },
   [Authority["1915b"]]: {
-    state: (variables) => generateWithdrawEmail(variables, "1915(b)", WaiverStateEmail),
+    state: (variables) =>
+      variables.seatoolStatus === SEATOOL_STATUS.WITHDRAWN
+        ? generateWithdrawEmail(variables, "1915(b)", WaiverStateEmail)
+        : Promise.resolve(null as unknown as EmailTemplate),
   },
   [Authority["1915c"]]: {
-    state: (variables) => generateWithdrawEmail(variables, "1915(c)", WaiverStateEmail),
+    state: (variables) =>
+      variables.seatoolStatus === SEATOOL_STATUS.WITHDRAWN
+        ? generateWithdrawEmail(variables, "1915(c)", WaiverStateEmail)
+        : Promise.resolve(null as unknown as EmailTemplate),
   },
 };

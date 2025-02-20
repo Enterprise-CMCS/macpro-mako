@@ -10,7 +10,6 @@ import * as contractingInitial from "./contracting-initial";
 import * as contractingRenewal from "./contracting-renewal";
 import * as temporaryExtension from "./temporary-extension";
 import * as withdrawPackage from "./withdraw-package";
-import * as withdrawConfirmation from "./withdraw-confirmation";
 import * as appk from "./app-k";
 
 import * as withdrawRai from "./withdraw-rai";
@@ -36,7 +35,6 @@ export const events = {
   "new-medicaid-submission": newMedicaidSubmission,
   "temporary-extension": temporaryExtension,
   "withdraw-package": withdrawPackage,
-  "withdraw-confirmation": withdrawConfirmation,
   "withdraw-rai": withdrawRai,
   "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
@@ -60,7 +58,6 @@ export type Events = {
   RespondToRai: z.infer<typeof respondToRai.schema>;
   UploadSubsequentDocuments: z.infer<typeof uploadSubsequentDocuments.schema>;
   WithdrawPackage: z.infer<typeof withdrawPackage.schema>;
-  WithdrawConfirmation: z.infer<typeof withdrawConfirmation.schema>;
   WithdrawRai: z.infer<typeof withdrawRai.schema>;
   ToggleWithdrawRai: z.infer<typeof toggleWithdrawRai.schema>;
 };
