@@ -181,7 +181,7 @@ export const Welcome = () => {
         <div className="flex justify-around items-center text-xl px-10 py-2 max-w-screen-xl mx-auto">
           <h4>Do you have questions or need support?</h4>
           <Link to="/faq" target={FAQ_TAB}>
-            <Button>View FAQ</Button>
+            <Button>View FAQs</Button>
           </Link>
         </div>
       </section>

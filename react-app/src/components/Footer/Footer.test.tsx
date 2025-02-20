@@ -31,7 +31,7 @@ describe("FAQFooter", () => {
       </BrowserRouter>,
     );
 
-    expect(screen.queryByText("View FAQ")).toBeInTheDocument();
+    expect(screen.queryByText("View FAQs")).toBeInTheDocument();
     expect(screen.queryByText("Do you have questions or need support?")).toBeInTheDocument();
   });
 });
