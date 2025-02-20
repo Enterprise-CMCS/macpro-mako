@@ -48,8 +48,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "${{ inputs.COMMIT_MSG }}"
+          git add -A
+          git commit -am "${{ inputs.COMMIT_MSG }}"
           git pull origin gh-pages --rebase -s recursive -X ours
           git push
           echo "New URL: https://enterprise-cmcs.github.io/macpro-mako/${{ inputs.URL_PATH }}" >> "$GITHUB_STEP_SUMMARY"
