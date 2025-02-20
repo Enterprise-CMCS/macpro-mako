@@ -86,7 +86,7 @@ describe("getPackageActions Handler", () => {
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(
-      JSON.stringify({ actions: [Action.WITHDRAW_PACKAGE, Action.UPLOAD_SUBSEQUENT_DOCUMENTS] }),
+      JSON.stringify({ actions: [Action.UPLOAD_SUBSEQUENT_DOCUMENTS, Action.WITHDRAW_PACKAGE] }),
     );
   });
 

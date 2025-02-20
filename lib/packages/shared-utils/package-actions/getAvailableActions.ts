@@ -36,5 +36,14 @@ export const getAvailableActions = (
     const actionsToRemove = [Action.RESPOND_TO_RAI, Action.WITHDRAW_RAI];
     commonActions = commonActions.filter((action: any) => !actionsToRemove.includes(action));
   }
-  return commonActions;
+
+  // We are sorting the actions based on the value they are in the order of the enum.
+  // If we want to update this order just move the values around.
+  const actionOrder = Object.values(Action);
+  const orderMap = new Map(actionOrder.map((action, index) => [action, index]));
+
+  const sortedActions = commonActions.sort(
+    (a, b) => (orderMap.get(a) ?? Infinity) - (orderMap.get(b) ?? Infinity),
+  );
+  return sortedActions;
 };
