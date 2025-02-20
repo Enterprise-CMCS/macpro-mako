@@ -13,7 +13,7 @@ export const ChipSpaStateEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <FollowUpNotice isChip />
+      <FollowUpNotice isChip includeDidNotExpect={false} />
     </BaseEmailTemplate>
   );
 };
