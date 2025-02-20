@@ -1,8 +1,8 @@
 # Site settings
 
-title: MACPRO MAKO
+title: OneMAC Upgrade
 description: >- # this means to ignore newlines until "baseurl:"
-  Testing reports for MACPRO MAKO
+  Testing reports for OneMAC Upgrade
 baseurl: "/macpro-mako" # the subpath of your site
 url: "https://enterprise-cmcs.github.io/" # the base hostname & protocol for your site
 
@@ -27,23 +27,23 @@ defaults:
     scope:
       path: "index.markdown"
     values:
-      custom_css: [mako,playwright,coverage]
+      custom_css: [onemac,playwright,coverage]
   -
     scope:
       path: "coverage.markdown"
     values:
-      custom_css: [mako,coverage]
+      custom_css: [onemac,coverage]
   -
     scope:
       path: "playwright-*.markdown"
       type: "pages"
     values:
-      custom_css: [mako,playwright]
+      custom_css: [onemac,playwright]
   -
     scope:
       path: "playwright-reports/branches/*"
       type: "pages"
     values:
       layout: "playwright-branch"
-      custom_css: [mako,playwright]
+      custom_css: [onemac,playwright]
 
