@@ -31,7 +31,7 @@ describe("DeploymentConfig", () => {
     idmClientIssuer: "idmClientIssuer",
     idmClientSecretArn: "idmClientSecretArn", // pragma: allowlist secret
     idmEnable: "true",
-    idmHomeUrl: "idmHomeUrl",
+    idmAuthzHostHeader: "api-test.example.com",
     legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
     useSharedOpenSearch: "true",
     vpcName: "vpcName",
@@ -93,7 +93,7 @@ describe("DeploymentConfig", () => {
       idmClientIssuer: "idmClientIssuer",
       idmClientSecretArn: "idmClientSecretArn", // pragma: allowlist secret
       idmEnable: true, // Converted to boolean
-      idmHomeUrl: "idmHomeUrl",
+      idmAuthzHostHeader: "api-test.example.com",
       legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
       useSharedOpenSearch: true, // Converted to boolean
       vpcName: "vpcName",
@@ -159,7 +159,7 @@ describe("DeploymentConfig", () => {
       idmClientIssuer: "idmClientIssuer",
       idmClientSecretArn: "idmClientSecretArn", // pragma: allowlist secret
       idmEnable: true,
-      idmHomeUrl: "idmHomeUrl",
+      idmAuthzHostHeader: "api-test.example.com",
       legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
       useSharedOpenSearch: true,
       vpcName: "vpcName",

@@ -39,7 +39,7 @@ export async function writeUiEnvFile(stage, local = false) {
     VITE_COGNITO_REDIRECT_SIGNOUT: local
       ? `"http://localhost:5000/"`
       : deploymentOutput.applicationEndpointUrl,
-    VITE_IDM_HOME_URL: deploymentOutput.idmHomeUrl,
+    VITE_IDM_HOME_URL: deploymentOutput.idmAuthzApiEndpoint,
     VITE_GOOGLE_ANALYTICS_GTAG: `"${deploymentConfig.googleAnalyticsGTag}"`,
     VITE_GOOGLE_ANALYTICS_DISABLE: `"${deploymentConfig.googleAnalyticsDisable}"`,
     VITE_LAUNCHDARKLY_CLIENT_ID: `"${deploymentConfig.launchDarklyClientId}"`,

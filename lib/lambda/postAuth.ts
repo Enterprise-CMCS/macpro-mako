@@ -12,7 +12,7 @@ const client = new CognitoIdentityProviderClient({
   region: process.env.region || process.env.REGION_A || "us-east-1",
 });
 export const handler: Handler = async (event) => {
-  // Check if idmInfoSecretArn is provided
+  // Check if required environment variables are provided
   if (!process.env.idmAuthzApiKeyArn) {
     throw "ERROR: process.env.idmAuthzApiKeyArn is required";
   }
@@ -38,12 +38,16 @@ export const handler: Handler = async (event) => {
 
     try {
       const username = userAttributes["custom:username"]; // This is the four-letter IDM username
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+      };
+      if (process.env.idmAuthzHostHeader) {
+        headers.Host = process.env.idmAuthzHostHeader;
+      }
       const response = await fetch(`${apiEndpoint}/api/v1/authz/id/all?userId=${username}`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-        },
+        headers,
       });
       if (!response.ok) {
         throw new Error(
