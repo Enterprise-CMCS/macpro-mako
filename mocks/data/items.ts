@@ -428,13 +428,22 @@ const items: Record<string, TestItemResult> = {
       appkChildren: [
         {
           _source: {
+            id: WITHDRAW_RAI_ITEM_C,
+            seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
+            stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING_RAI],
+            cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING_RAI],
+            actionType: "respond-to-rai",
+            raiRequestedDate: "2024-01-01T00:00:00.100Z",
             authority: "1915(c)",
-            changedDate: "2024-01-01T00:00:00Z",
-            makoChangedDate: "2024-01-01T00:00:00Z",
-            title: "Initial release",
-            seatoolStatus: SEATOOL_STATUS.PENDING,
-            stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
-            cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
+            state: "MD",
+            leadAnalystName: "lead test",
+            leadAnalystEmail: "Lead test email",
+            reviewTeam: [
+              {
+                name: "Test",
+                email: "testemail",
+              },
+            ],
           },
         },
       ],
