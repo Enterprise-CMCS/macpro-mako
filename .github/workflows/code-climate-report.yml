@@ -17,7 +17,7 @@ jobs:
   coverage-report:
     runs-on: ubuntu-latest
     env:
-      JSON_ARTIFACT_ID: json-main-coverage-report
+      JSON_ARTIFACT_ID: main-coverage
       HTML_ARTIFACT_ID: html-main-coverage-report
     outputs:
       json_artifact_id: ${{ env.JSON_ARTIFACT_ID }}

@@ -34,7 +34,7 @@ jobs:
         if: steps.get-run-id.conclusion == 'success'
         id: get-main-coverage
         with:
-          name: json-main-coverage-report
+          name: main-coverage
           path: main-coverage
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ steps.get-run-id.outputs.run-id }}
