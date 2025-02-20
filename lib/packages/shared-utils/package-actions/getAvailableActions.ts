@@ -42,7 +42,8 @@ export const getAvailableActions = (
   const actionOrder = Object.values(Action);
   const orderMap = new Map(actionOrder.map((action, index) => [action, index]));
 
-  const sortedActions = commonActions.sort((a, b) => orderMap.get(a) - orderMap.get(b));
-
+  const sortedActions = commonActions.sort(
+    (a, b) => (orderMap.get(a) ?? Infinity) - (orderMap.get(b) ?? Infinity),
+  );
   return sortedActions;
 };
