@@ -9,6 +9,8 @@ permalink: playwright-reports/
     {% assign url = "/playwright-reports/main.html" | relative_url %}
     {% include playwright-summary.html branch="main" data=data url=url %}
 
-    <h2>Latest Reports from Branches</h2>
-    {% include playwright-branch-list.html %}
+    <div class="branch-reports">
+        <h2>Latest Reports from Branches</h2>
+        {% include playwright-branch-list.html %}
+    </div>
 </div>
