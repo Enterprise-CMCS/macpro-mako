@@ -40,8 +40,9 @@ export const getAvailableActions = (
   // We are sorting the actions based on the value they are in the order of the enum.
   // If we want to update this order just move the values around.
   const actionOrder = Object.values(Action);
-  const sortedActions = commonActions.sort(
-    (a, b) => actionOrder.indexOf(a) - actionOrder.indexOf(b),
-  );
+  const orderMap = new Map(actionOrder.map((action, index) => [action, index]));
+
+  const sortedActions = commonActions.sort((a, b) => orderMap.get(a) - orderMap.get(b));
+
   return sortedActions;
 };
