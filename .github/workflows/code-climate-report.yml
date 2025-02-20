@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - publish-playwright-reports
   schedule:
     - cron: "30 01 * * *"
   workflow_dispatch:
@@ -25,8 +24,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        # with:
-        #   ref: main
+        with:
+          ref: main
       - uses: ./.github/actions/setup
       - name: Test
         continue-on-error: true

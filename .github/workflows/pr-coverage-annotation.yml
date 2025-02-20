@@ -8,7 +8,6 @@ on:
 jobs:
   coverage-report:
     runs-on: ubuntu-latest
-    continue-on-error: true
     permissions:
       contents: read
       pull-requests: write
@@ -20,9 +19,11 @@ jobs:
       - uses: ./.github/actions/setup
       - name: Test
         id: test
+        continue-on-error: true
         run: run test --coverage
       - name: Get run ID of Code Climate workflow
         id: get-run-id
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -33,6 +34,7 @@ jobs:
       - uses: actions/download-artifact@v4
         if: steps.get-run-id.conclusion == 'success'
         id: get-main-coverage
+        continue-on-error: true
         with:
           name: main-coverage
           path: main-coverage
