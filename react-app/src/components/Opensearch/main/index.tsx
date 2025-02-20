@@ -3,14 +3,14 @@ import { OsFiltering } from "./Filtering";
 import { OsTable } from "./Table";
 import { Pagination } from "@/components/Pagination";
 import { useOsContext } from "./Provider";
-import { useOsUrl } from "./useOpensearch";
+import { useOsData, useOsUrl } from "./useOpensearch";
 import { OsTableColumn } from "./types";
 import { FilterChips } from "./Filtering";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const createLSColumns = (columns: OsTableColumn[]): string[] => {
-  const columnsVisalbe = columns.filter((col) => col.hidden);
-  const columnFields = columnsVisalbe.reduce((acc, curr) => {
+  const columnsVisible = columns.filter((col) => col.hidden);
+  const columnFields = columnsVisible.reduce((acc, curr) => {
     if (curr.field) acc.push(curr.field);
     return acc;
   }, []);
@@ -22,41 +22,61 @@ export const OsMainView: FC<{
 }> = (props) => {
   const context = useOsContext();
   const url = useOsUrl();
+  const osData = useOsData();
 
-  const [localStorageCol, setLocalStorageCol] = useLocalStorage(
-    "osColumns",
+  const [localSPAStorageCol, setLocalSPAStorageCol] = useLocalStorage(
+    "spaOSColumns",
     createLSColumns(props.columns),
   );
 
-  const [osColumns, setOsColumns] = useState(
-    props.columns.map((COL) => ({
+  const [localWaiverStorageCol, setLocalWaiverStorageCol] = useLocalStorage(
+    "waiversOSColumns",
+    createLSColumns(props.columns),
+  );
+
+  const initializeColumns = (columns: OsTableColumn[], hiddenFields: string[]) =>
+    columns.map((COL) => ({
       ...COL,
-      hidden: localStorageCol.includes(COL.field),
+      hidden: hiddenFields.includes(COL.field),
       locked: COL?.locked ?? false,
-    })),
+    }));
+
+  const [spaOSColumns, setSpaOSColumns] = useState(() =>
+    initializeColumns(props.columns, localSPAStorageCol),
+  );
+  const [waiverOSColumns, setWaiverOSColumns] = useState(() =>
+    initializeColumns(props.columns, localWaiverStorageCol),
   );
 
   const onToggle = (field: string) => {
-    if (localStorageCol.includes(field))
-      setLocalStorageCol(() => localStorageCol.filter((x) => x != field));
-    else setLocalStorageCol([...localStorageCol, field]);
+    const isSPA = osData.state.tab === "spas";
 
-    setOsColumns((state) => {
-      return state?.map((S) => {
-        if (S.field !== field) return S;
-        return { ...S, hidden: !S.hidden };
-      });
-    });
+    const setLocalStorageCol = isSPA ? setLocalSPAStorageCol : setLocalWaiverStorageCol;
+    const setColumns = isSPA ? setSpaOSColumns : setWaiverOSColumns;
+
+    setLocalStorageCol((prev) =>
+      prev.includes(field) ? prev.filter((x) => x !== field) : [...prev, field],
+    );
+
+    setColumns((prev) =>
+      prev.map((col) => (col.field === field ? { ...col, hidden: !col.hidden } : col)),
+    );
   };
 
   return (
     <div className="flex flex-col">
       <div className="w-full my-2 max-w-screen-xl self-center px-4 lg:px-8">
-        <OsFiltering onToggle={onToggle} columns={osColumns} />
+        <OsFiltering
+          onToggle={onToggle}
+          columns={osData.state.tab === "spas" ? spaOSColumns : waiverOSColumns}
+        />
         <FilterChips />
       </div>
       <div className="px-4 lg:px-8">
-        <OsTable onToggle={onToggle} columns={osColumns} />
+        <OsTable
+          onToggle={onToggle}
+          columns={osData.state.tab === "spas" ? spaOSColumns : waiverOSColumns}
+        />
         <Pagination
           pageNumber={url.state.pagination.number}
           count={context.data?.total?.value || 0}

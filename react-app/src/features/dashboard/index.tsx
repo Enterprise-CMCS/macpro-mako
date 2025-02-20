@@ -6,7 +6,6 @@ import { SpasList } from "./Lists/spas";
 import { UserRoles } from "shared-types";
 import {
   OsProvider,
-  type OsTab,
   useOsData,
   FilterDrawerProvider,
   Tabs,
@@ -17,7 +16,7 @@ import {
 } from "@/components";
 import { isStateUser } from "shared-utils";
 import { Link, Navigate, redirect } from "react-router";
-import { removeItemLocalStorage } from "@/hooks/useLocalStorage";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -41,7 +40,14 @@ export const dashboardLoader = loader;
 
 export const Dashboard = () => {
   const { data: userObj, isLoading } = useGetUser();
+
   const osData = useOsData();
+  const [localSPAStorageCol, setLocalSPAStorageCol] = useLocalStorage("spaOSData", osData.state);
+  const waiverObj = { ...osData.state, tab: "waivers" };
+  const [localWaiverStorageCol, setLocalWaiversStorageCol] = useLocalStorage(
+    "waiversOSData",
+    waiverObj,
+  );
 
   const isAbleToAccessDashboard = () => {
     return (
@@ -87,16 +93,10 @@ export const Dashboard = () => {
               <Tabs
                 value={osData.state.tab}
                 onValueChange={(tab) => {
-                  removeItemLocalStorage("osColumns");
-                  osData.onSet(
-                    (s) => ({
-                      ...s,
-                      filters: [],
-                      tab: tab as OsTab,
-                      search: "",
-                    }),
-                    true,
-                  );
+                  if (tab === "spas") setLocalWaiversStorageCol(osData.state);
+                  else setLocalSPAStorageCol(osData.state);
+
+                  osData.onSet(tab === "spas" ? localSPAStorageCol : localWaiverStorageCol, true);
                 }}
               >
                 <div className="flex max-w-screen-xl mx-auto px-4 lg:px-8">
