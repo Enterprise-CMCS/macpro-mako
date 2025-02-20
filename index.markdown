@@ -5,17 +5,21 @@
 layout: home
 ---
 
-<div>
-  <div>
-    <h2>Playwright</h2>
+<div class="reports">
+  <div class="main-reports">
+    <h2>Main</h2>
+    
+    <h3>Code Coverage</h3>
+    {% assign total = site.data.coverage.coverage-summary.total %}
+    {% include coverage-summary.html branch="main" total=total %}
+
+    <h3>Playwright</h3>
     {% assign data = site.data.playwright-reports.main %}
     {% assign url = "/playwright-reports/main.html" | relative_url %}
     {% include playwright-summary.html branch="main" data=data url=url %}
   </div>
-
-  <div style="margin-top:2rem;">
-    <h2>Code Coverage</h2>
-    {% assign total = site.data.coverage.coverage-summary.total %}
-    {% include coverage-summary.html branch="main" total=total %}
+  <div class="branch-reports">
+    <h2>Latest Reports from Branches</h2>
+    {% include playwright-branch-list.html %}
   </div>
 </div>

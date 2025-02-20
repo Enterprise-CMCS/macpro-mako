@@ -12,3 +12,11 @@
   justify-content: space-between;
   align-items: end;
 }
+
+.main-reports h3 {
+  margin-top: 2.5rem;
+}
+
+.branch-reports {
+  margin-top: 3rem;
+}

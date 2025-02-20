@@ -17,7 +17,7 @@
           {% endif %}  
         {% endcapture %}
         <div class="stat-percent {{ coverage-class }}">
-          {{ stat[1].pct }} %
+          {{ stat[1].pct | round: 1 }} %
         </div>
         <div class="stat-fraction">
           {{ stat[1].covered }} / {{ stat[1].total }}

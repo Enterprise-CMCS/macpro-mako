@@ -1,16 +1,18 @@
 .test-coverage-report-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  gap: 1rem;
 }
 
 .stat-container {
   border: 1px solid #d0d7de;
   border-radius: 6px;
+  width: 100%;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem 1.5rem;
+  gap: 1.5rem;
 }
 
 .stat-header {
@@ -21,7 +23,7 @@
 .stat-percent {
   font-size: xx-large;
   font-weight: bolder;
-  padding: 2rem 0;
+  flex-grow: 1;
 }
 
 .stat-fraction {
