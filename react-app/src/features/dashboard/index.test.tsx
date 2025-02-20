@@ -8,6 +8,7 @@ import {
   verifyPagination,
   getFilteredHits,
   skipCleanup,
+  createTestQueryClient,
 } from "@/utils/test-helpers";
 import {
   TEST_STATE_SUBMITTER_USER,
@@ -18,7 +19,8 @@ import {
   errorApiSearchHandler,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
-import { Dashboard } from "./index";
+import { Dashboard, dashboardLoader } from "./index";
+import { redirect } from "react-router";
 
 const spaHits = getFilteredHits(["Medicaid SPA", "CHIP SPA"]);
 const waiverHits = getFilteredHits(["1915(b)", "1915(c)"]);
@@ -295,6 +297,36 @@ describe("Dashboard", () => {
       const table = screen.getByRole("table");
       verifyColumns(table, hasActions, isWaiver, spaHits.total.value);
       verifyPagination(spaHits.total.value);
+    });
+  });
+
+  describe("dashboardLoader", () => {
+    vi.mock("react-router", { spy: true });
+    it.each([
+      ["State Submitter", TEST_STATE_SUBMITTER_USER, false],
+      ["CMS Reviewer", TEST_CMS_REVIEWER_USER, true],
+      ["CMS Help Desk User", TEST_HELP_DESK_USER, true],
+      ["CMS Read-Only User", TEST_READ_ONLY_USER, true],
+    ])("should load a %s", async (title, user, isCms) => {
+      const queryClient = createTestQueryClient();
+      setMockUsername(user.username);
+
+      const result = await dashboardLoader(queryClient)();
+      expect(result).toEqual({
+        user,
+        isCms,
+      });
+
+      expect(redirect).not.toHaveBeenCalled();
+    });
+
+    it("should redirect if user is not logged in", async () => {
+      const queryClient = createTestQueryClient();
+      setMockUsername(null);
+
+      await dashboardLoader(queryClient)();
+
+      expect(redirect).toHaveBeenCalledWith("/");
     });
   });
 });

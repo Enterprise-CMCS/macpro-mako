@@ -32,7 +32,8 @@ export const getUser = async (): Promise<OneMacUser> => {
     // Manual additions and normalizations
     userAttributesObj["custom:cms-roles"] = userAttributesObj["custom:cms-roles"] || "";
 
-    userAttributesObj.username = currentAuthenticatedUser.username || "";
+    userAttributesObj.username =
+      currentAuthenticatedUser.username || currentAuthenticatedUser.Username || "";
 
     return {
       user: userAttributesObj,
