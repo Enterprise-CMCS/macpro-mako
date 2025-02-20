@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import { TimeoutModal } from ".";
 import * as api from "@/api";
@@ -56,14 +56,13 @@ describe("Timeout Modal", () => {
   });
 
   it("calls Auth.signOut when countdown timer reaches 0", async () => {
-    vi.spyOn(hooks, "useCountdown").mockReturnValue([
+    vi.spyOn(hooks, "useCountdown").mockReturnValueOnce([
       0,
       { startCountdown: vi.fn(), stopCountdown: vi.fn(), resetCountdown: vi.fn() },
     ]);
-
+    const signOutSpy = vi.spyOn(Auth, "signOut");
     render(<ParentComponent />);
 
-    const signOutSpy = vi.spyOn(Auth, "signOut");
     expect(signOutSpy).toHaveBeenCalled();
   });
 
