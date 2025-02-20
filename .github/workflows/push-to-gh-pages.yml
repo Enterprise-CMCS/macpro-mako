@@ -1,0 +1,55 @@
+name: Push to GitHub Pages
+
+on:
+  workflow_call:
+    inputs:
+      FILE_1_ARTIFACT_ID:
+        type: string
+        required: true
+      FILE_1_DEPLOY_TO:
+        type: string
+        required: true
+      FILE_2_ARTIFACT_ID:
+        type: string
+        required: false
+      FILE_2_DEPLOY_TO:
+        type: string
+        required: false
+      COMMIT_MSG:
+        type: string
+        required: true
+      URL_PATH:
+        type: string
+        required: true
+
+jobs:
+  push-to-pages:
+    permissions:
+      contents: write
+      actions: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout GitHub Pages Branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - name: Download File 1
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.FILE_1_ARTIFACT_ID }}
+          path: ${{ inputs.FILE_1_DEPLOY_TO }}
+      - name: Download File 2
+        uses: actions/download-artifact@v4
+        if: inputs.FILE_2_ARTIFACT_ID && inputs.FILE_2_DEPLOY_TO
+        with:
+          name: ${{ inputs.FILE_2_ARTIFACT_ID }}
+          path: ${{ inputs.FILE_2_DEPLOY_TO }}
+      - name: Push to GitHub Pages Branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "${{ inputs.COMMIT_MSG }}"
+          git pull origin gh-pages --rebase -s recursive -X ours
+          git push
+          echo "New URL: https://enterprise-cmcs.github.io/macpro-mako/${{ inputs.URL_PATH }}" >> "$GITHUB_STEP_SUMMARY"
