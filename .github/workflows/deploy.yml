@@ -113,7 +113,7 @@ jobs:
       html_artifact_id: ${{ env.HTML_ARTIFACT_ID }}
       html_deploy_to: ${{ steps.variables.outputs.report_path }}
       commit_msg: ${{ steps.variables.outputs.commit_msg }}
-      output_url: ${{ steps.variables.outputs.report_path }}/${{ steps.variables.outputs.report_name }}.html
+      output_url: ${{ steps.variables.outputs.report_path }}${{ steps.variables.outputs.report_name }}.html
       actualResult: ${{ steps.e2e-test.conclusion }}
     steps:
       - name: Checkout
