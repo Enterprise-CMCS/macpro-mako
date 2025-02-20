@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.81% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/11</span>
+                <span class='fraction'>12/14</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">77.77% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/8</span>
+                <span class='fraction'>7/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.81% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/11</span>
+                <span class='fraction'>12/14</span>
             </div>
         
             
@@ -251,7 +251,17 @@
 <a name='L186'></a><a href='#L186'>186</a>
 <a name='L187'></a><a href='#L187'>187</a>
 <a name='L188'></a><a href='#L188'>188</a>
-<a name='L189'></a><a href='#L189'>189</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L189'></a><a href='#L189'>189</a>
+<a name='L190'></a><a href='#L190'>190</a>
+<a name='L191'></a><a href='#L191'>191</a>
+<a name='L192'></a><a href='#L192'>192</a>
+<a name='L193'></a><a href='#L193'>193</a>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a>
+<a name='L198'></a><a href='#L198'>198</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -279,16 +289,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">72x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -309,6 +316,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -439,7 +457,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useGetItem } from "@/api";
+import {
   ActionForm,
   FormControl,
   FormDescription,
@@ -455,10 +474,10 @@
   SelectTrigger,
   SelectValue,
 } from "@/components";
-import { Link, useParams } from "react-router";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
-import { useGetItem } from "@/api";
+import { useState } from "react";
+import { Link, useParams } from "react-router";
 import { getFAQLinkForAttachments } from "../../faqLinks";
 &nbsp;
 const actionTypeMap = {
@@ -469,6 +488,8 @@ const actionTypeMap = {
 export const TemporaryExtensionForm = () =&gt; {
   const { id: waiverId } = useParams&lt;{ id: string }&gt;();
   const { data: submission } = useGetItem(waiverId, { enabled: waiverId !== undefined });
+&nbsp;
+  const [temporaryExtensionType, setTemporaryExtensionType] = useState&lt;string&gt;("1915(b)");
 &nbsp;
   const type =
     submission &amp;&amp; submission._source
@@ -499,7 +520,13 @@ export const TemporaryExtensionForm = () =&gt; {
                     &lt;strong className="font-bold"&gt;Temporary Extension Type&lt;/strong&gt;{" "}
                     &lt;RequiredIndicator /&gt;
                   &lt;/FormLabel&gt;
-                  &lt;Select onValueChange={field.onChange} defaultValue={field.value}&gt;
+                  &lt;Select
+                    onValueChange={(value) =&gt; {
+                      field.onChange(value);
+                      setTemporaryExtensionType(value);
+                    }}
+                    defaultValue={field.value}
+                  &gt;
                     &lt;FormControl&gt;
                       &lt;SelectTrigger&gt;
                         &lt;SelectValue placeholder="-- select a temporary extension type --" /&gt;
@@ -613,7 +640,7 @@ export const TemporaryExtensionForm = () =&gt; {
         },
       }}
       attachments={{
-        faqLink: getFAQLinkForAttachments("temporary-extension"),
+        faqLink: getFAQLinkForAttachments(`temporary-extension-${temporaryExtensionType}`),
       }}
       documentPollerArgs={{
         property: <span class="fstat-no" title="function not covered" >(d</span>ata) =&gt; <span class="cstat-no" title="statement not covered" >data.id,</span>
@@ -634,7 +661,7 @@ export const TemporaryExtensionForm = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-02-20T18:13:08.882Z
+                at 2025-02-20T20:01:27.078Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>
