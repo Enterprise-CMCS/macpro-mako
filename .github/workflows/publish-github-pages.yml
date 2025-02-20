@@ -16,6 +16,8 @@ jobs:
         with:
           ref: gh-pages
       - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
       - name: Build Site
         run: |
           rm -rf .bundle
