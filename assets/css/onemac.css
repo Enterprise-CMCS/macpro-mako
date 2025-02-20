@@ -13,6 +13,10 @@
   align-items: end;
 }
 
+.branch-header h3 {
+  margin: 0;
+}
+
 .main-reports h3 {
   margin-top: 2.5rem;
 }

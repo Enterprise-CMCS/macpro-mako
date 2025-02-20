@@ -12,7 +12,10 @@
   <div class="test-report-container">
     <div class="report-header">
       {% if include.run_id %}
-        <span class="report-run">Run Id: {{ include.run_id }}</span>
+      {% capture run_link %}
+        {{ site.github_url }}/actions/runs/{{ include.run_id }}
+      {% endcapture %}
+        <span class="report-run">Run Id: <a href="{{ run_link }}" target="_blank">{{ include.run_id }}</a></span>
       {% else %}
         <span class="report-run"></span>
       {% endif %}

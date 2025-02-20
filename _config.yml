@@ -6,6 +6,8 @@ description: >- # this means to ignore newlines until "baseurl:"
 baseurl: "/macpro-mako" # the subpath of your site
 url: "https://enterprise-cmcs.github.io/" # the base hostname & protocol for your site
 
+github_url: "https://github.com/Enterprise-CMCS/macpro-mako"
+
 # Build settings
 theme: minima
 
