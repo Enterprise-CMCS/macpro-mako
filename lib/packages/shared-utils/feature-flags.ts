@@ -19,4 +19,9 @@ export const featureFlags = {
     flag: "clear-data-button",
     defaultValue: false,
   },
+
+  TOGGLE_FAQ: {
+    flag: "toggleFaq",
+    defaultValue: true,
+  },
 } as const;
