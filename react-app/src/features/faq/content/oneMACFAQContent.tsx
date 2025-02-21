@@ -6,6 +6,7 @@ import { MPC_TEMPLATES } from "@/features/faq/content/mpcTemplates";
 import { MPC_GUIDES } from "@/features/faq/content/mpcGuides";
 import { CHP_TEMPLATES } from "@/features/faq/content/chpTemplates";
 import { CHP_GUIDES } from "@/features/faq/content/chpGuides";
+import { useState } from "react";
 
 type QuestionAnswer = {
   anchorText: string;
@@ -22,6 +23,9 @@ export const helpDeskContact = {
   email: "OneMAC_Helpdesk@cms.hhs.gov",
   phone: "(833) 228-2540",
 };
+
+// Toggle transcript for video
+const [showTranscript, setShowTranscript] = useState(false);
 
 export const oneMACFAQContent: FAQContent[] = [
   {
@@ -210,8 +214,10 @@ export const oneMACFAQContent: FAQContent[] = [
                 >
                   {label}
                 </a>
+
                 {label === "OneMAC CMS User Guide" && (
                   <div className="mt-2">
+                    {/* Video */}
                     <video width="600" controls>
                       <source
                         src="/assets/onboarding/OneMACPackageViewStateDemo.mp4"
@@ -219,6 +225,28 @@ export const oneMACFAQContent: FAQContent[] = [
                       />
                       Your browser does not support the video tag.
                     </video>
+
+                    {/* Show/Hide Transcript Button */}
+                    <button
+                      className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+                      onClick={() => setShowTranscript(!showTranscript)}
+                    >
+                      {showTranscript ? "Hide Transcript" : "Show Transcript"}
+                    </button>
+
+                    {/* Transcript Block */}
+                    {showTranscript && (
+                      <div className="mt-2 p-4 bg-gray-100 rounded">
+                        <p>
+                          <strong>Transcript:</strong>
+                        </p>
+                        <p>
+                          Welcome to the OneMAC CMS User Guide. In this video, we will walk you
+                          through the key features and functionalities of the OneMAC system...
+                        </p>
+                        {/* Add full transcript here */}
+                      </div>
+                    )}
                   </div>
                 )}
               </li>
