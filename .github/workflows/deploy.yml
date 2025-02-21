@@ -18,7 +18,6 @@ permissions:
   issues: write
   pull-requests: write
   actions: read
-  pages: write
 
 jobs:
   init:
