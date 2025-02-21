@@ -3,14 +3,23 @@ import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { useGetSystemNotifs } from "@/api";
 import { FAQ_TAB } from "@/router";
 import { Link } from "react-router";
-import { useFlags } from "launchdarkly-react-client-sdk";
+import { useLDClient } from "launchdarkly-react-client-sdk";
+import { featureFlags } from "shared-utils";
+import React from "react";
 
 const MMDLAlertBanner = () => {
+  const ldClient = useLDClient();
   const { clearNotif, notifications } = useGetSystemNotifs();
-  const { ["uat-hide-mmdl-banner"]: hideBanner } = useFlags();
-
   if (!notifications.length) return null;
-  if (!hideBanner || !notifications.length) return null;
+
+  const isHidden = ldClient?.variation(
+    featureFlags.UAT_HIDE_MMDL_BANNER.flag,
+    featureFlags.UAT_HIDE_MMDL_BANNER.defaultValue,
+  );
+
+  if (isHidden) {
+    return null;
+  }
 
   return (
     <section
