@@ -7,11 +7,19 @@ import { getPackageType } from "./getPackageType";
 import { events } from "shared-types";
 import { z } from "zod";
 
+/** @typedef {object} json
+ * @property {object} body
+ * @property {string} body.packageId
+ * @property {string} body.action
+ */
 const sendDeleteMessage = async (packageId: string) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
     throw new Error("Topic name is not defined");
   }
+
+  const currentTime = Date.now();
+
   await produceMessage(
     topicName,
     packageId,
@@ -20,6 +28,10 @@ const sendDeleteMessage = async (packageId: string) => {
       deleted: true,
       isAdminChange: true,
       adminChangeType: "delete",
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
+      statusDate: currentTime,
+      timestamp: currentTime,
     }),
   );
 
@@ -28,6 +40,14 @@ const sendDeleteMessage = async (packageId: string) => {
     body: { message: `${packageId} has been deleted.` },
   });
 };
+
+/** @typedef {object} json
+ * @property {object} body
+ * @property {string} body.packageId
+ * @property {string} body.action
+ * @property {object} body.updatedFields
+ * @property {string} body.updatedFields.title
+ */
 
 const sendUpdateValuesMessage = async ({
   currentPackage,
@@ -64,6 +84,8 @@ const sendUpdateValuesMessage = async ({
     Object.keys(updatedFields).length > 1 ? "have" : "has"
   } been updated`;
 
+  const currentTime = Date.now();
+
   await produceMessage(
     topicName,
     currentPackage._id,
@@ -74,6 +96,10 @@ const sendUpdateValuesMessage = async ({
       adminChangeType: "update-values",
       changeMade: changeMadeText,
       changeReason,
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
+      statusDate: currentTime,
+      timestamp: currentTime,
     }),
   );
 
@@ -83,6 +109,12 @@ const sendUpdateValuesMessage = async ({
   });
 };
 
+/** @typedef {object} json
+ * @property {object} body
+ * @property {string} body.packageId
+ * @property {string} body.action
+ * @property {string} body.updatedId
+ */
 const sendUpdateIdMessage = async ({
   currentPackage,
   updatedId,
@@ -131,6 +163,8 @@ const sendUpdateIdMessage = async ({
 
   await sendDeleteMessage(currentPackage._id);
 
+  const currentTime = Date.now();
+
   await produceMessage(
     topicName,
     updatedId,
@@ -142,6 +176,10 @@ const sendUpdateIdMessage = async ({
       changeMade: "ID has been updated.",
       isAdminChange: true,
       adminChangeType: "update-id",
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
+      statusDate: currentTime,
+      timestamp: currentTime,
     }),
   );
 

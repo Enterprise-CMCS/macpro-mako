@@ -7,6 +7,7 @@ import {
   TEST_CMS_REVIEWER_USER,
   TEST_MED_SPA_ITEM,
   TEST_STATE_SUBMITTER_USER,
+  TEST_MED_SPA_RAI_ITEM,
 } from "mocks";
 
 describe("getAvailableActions tests", () => {
@@ -18,7 +19,14 @@ describe("getAvailableActions tests", () => {
     });
     expect(result).toEqual([Action.RESPOND_TO_RAI, Action.WITHDRAW_PACKAGE]);
   });
-
+  it(`should return actions: [${Action.WITHDRAW_PACKAGE}] since it has a duplicate rai`, () => {
+    const result = getAvailableActions(TEST_STATE_SUBMITTER_USER, {
+      ...TEST_MED_SPA_RAI_ITEM._source,
+      seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
+      raiRequestedDate: "2024-01-01T00:00:00.000Z",
+    });
+    expect(result).toEqual([Action.WITHDRAW_PACKAGE]);
+  });
   it(`should return actions: [${Action.TEMP_EXTENSION}, ${Action.AMEND_WAIVER}]`, () => {
     const result = getAvailableActions(TEST_STATE_SUBMITTER_USER, {
       ...TEST_1915B_ITEM._source,
@@ -84,19 +92,19 @@ describe("getAvailableActions tests", () => {
       raiWithdrawEnabled: true,
     });
     expect(result).toEqual([
+      Action.UPLOAD_SUBSEQUENT_DOCUMENTS,
       Action.WITHDRAW_RAI,
       Action.WITHDRAW_PACKAGE,
-      Action.UPLOAD_SUBSEQUENT_DOCUMENTS,
     ]);
   });
 
-  it(`should return actions: [${Action.WITHDRAW_PACKAGE}, ${Action.UPLOAD_SUBSEQUENT_DOCUMENTS}]`, () => {
+  it(`should return actions: [${Action.UPLOAD_SUBSEQUENT_DOCUMENTS}, ${Action.WITHDRAW_PACKAGE}]`, () => {
     const result = getAvailableActions(TEST_STATE_SUBMITTER_USER, {
       ...TEST_MED_SPA_ITEM._source,
       seatoolStatus: SEATOOL_STATUS.PENDING,
       actionType: "New",
       raiWithdrawEnabled: true,
     });
-    expect(result).toEqual([Action.WITHDRAW_PACKAGE, Action.UPLOAD_SUBSEQUENT_DOCUMENTS]);
+    expect(result).toEqual([Action.UPLOAD_SUBSEQUENT_DOCUMENTS, Action.WITHDRAW_PACKAGE]);
   });
 });
