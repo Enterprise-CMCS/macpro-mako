@@ -55,7 +55,3 @@ jobs:
           git pull origin gh-pages --rebase -s recursive -X ours
           git push
           echo "New URL: https://enterprise-cmcs.github.io/macpro-mako/${{ inputs.URL_PATH }}" >> "$GITHUB_STEP_SUMMARY"
-
-  publish:
-    needs: [push-to-pages]
-    uses: ./.github/workflows/publish-github-pages.yml

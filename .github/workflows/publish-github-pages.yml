@@ -1,8 +1,11 @@
 name: GitHub Pages Build and Deploy
 
 on:
-  workflow_call:
   workflow_dispatch:
+  workflow_run:
+    workflows: [Deploy]
+    types:
+      - completed
 
 jobs:
   build:
