@@ -32,15 +32,17 @@ export const Faq = () => {
     <SubNavHeader>
       <h1 className="text-xl font-medium">Frequently Asked Questions</h1>
     </SubNavHeader>
-    <section className="flex max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
+    
+    {/* Main Layout Wrapper */}
+    <section className="flex max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-8">
       
-      {/* Left Navigation */}
-      <div className="w-64 sticky top-0 self-start">
+      {/* Left Navigation - Sticks below the header */}
+      <div className="w-60 shrink-0 h-screen sticky top-[80px] overflow-y-auto">
         <LeftNavigation />
       </div>
 
-      {/* Main FAQ Content */}
-      <div className="flex-1 pl-64">
+      {/* FAQ Content - Positioned next to the Left Nav */}
+      <div className="flex-1 pl-8">
         <article className="mb-8">
           <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
             {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
@@ -59,7 +61,7 @@ export const Faq = () => {
       </div>
 
       {/* Help Desk Section */}
-      <div>
+      <div className="w-64">
         <CardWithTopBorder>
           <div className="p-4">
             <h3 className="text-lg text-bold mb-4">OneMAC Help Desk Contact Info</h3>
@@ -83,5 +85,6 @@ export const Faq = () => {
 
     </section>
   </>
+
   );
 };
