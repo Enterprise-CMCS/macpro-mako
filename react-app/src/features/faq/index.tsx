@@ -9,6 +9,7 @@ import {
   SubNavHeader,
 } from "@/components";
 import { useParams } from "react-router";
+import LeftNavigation from "./content/navigationBar";
 
 export const Faq = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,8 +32,9 @@ export const Faq = () => {
       <SubNavHeader>
         <h1 className="text-xl font-medium">Frequently Asked Questions</h1>
       </SubNavHeader>
-      <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
-        <div className="flex-1">
+      <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10 relative">
+        <LeftNavigation />
+        <div className="flex-1 md:ml-64">
           <article className="mb-8">
             <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
               {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
