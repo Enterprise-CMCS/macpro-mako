@@ -22,7 +22,13 @@ export default defineConfig({
     coverage: {
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),
-      reporter: ["html", "text", "json-summary", "json", "lcovonly"],
+      reporter: [
+        ["html", { subdir: "html-report" }],
+        ["text"],
+        ["json-summary"],
+        ["json"],
+        ["lcovonly"],
+      ],
       thresholds: {
         lines: 90,
         branches: 80,
