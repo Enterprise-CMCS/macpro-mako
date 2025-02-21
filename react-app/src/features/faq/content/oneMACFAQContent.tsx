@@ -195,6 +195,7 @@ export const oneMACFAQContent: FAQContent[] = [
         question: "Onboarding Materials",
         answerJSX: (
           <ul>
+            const [showTranscript, setShowTranscript] = useState(false);
             {[
               ["/onboarding/WelcometoOneMAC.pdf", "Welcome to OneMAC"],
               [
