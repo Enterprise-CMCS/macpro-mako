@@ -5,22 +5,24 @@ import { FAQ_TAB } from "@/router";
 import { Link } from "react-router";
 import { useLDClient } from "launchdarkly-react-client-sdk";
 import { featureFlags } from "shared-utils";
-import React from "react";
 
 const MMDLAlertBanner = () => {
   const ldClient = useLDClient();
   const { clearNotif, notifications } = useGetSystemNotifs();
   if (!notifications.length) return null;
 
-  const isHidden = ldClient?.variation(
+  // Retrieve the flag value (on/off)
+  const isBannerHidden = ldClient?.variation(
     featureFlags.UAT_HIDE_MMDL_BANNER.flag,
     featureFlags.UAT_HIDE_MMDL_BANNER.defaultValue,
   );
 
-  if (isHidden) {
-    return null;
-  }
+  console.log("LaunchDarkly Flag Value:", isBannerHidden); // Debugging log
 
+  // If the flag is "on", hide the banner
+  if (isBannerHidden === "on") return null;
+
+  // If the flag is "off", show the banner
   return (
     <section
       className="bg-[#E1F3F8] grid md:grid-cols-[min-content_auto_min-content] md:grid-rows-[auto_auto] grid-cols-[auto_auto] gap-4 md:gap-x-4 border-l-[8px] border-[#00A6D2] p-3"

@@ -9,9 +9,12 @@ import {
   SubNavHeader,
 } from "@/components";
 import { useParams } from "react-router";
+import { useLDClient } from "launchdarkly-react-client-sdk";
+import { featureFlags } from "shared-utils";
 
 export const Faq = () => {
   const { id } = useParams<{ id: string }>();
+  const ldClient = useLDClient();
 
   const [openItems, setOpenItems] = useState<string[]>([]);
   useEffect(() => {
@@ -26,6 +29,23 @@ export const Faq = () => {
       }
     }
   }, [id]);
+
+  // Get the flag value for hiding the MMDL banner.
+  const isBannerHidden = ldClient?.variation(
+    featureFlags.UAT_HIDE_MMDL_BANNER.flag,
+    featureFlags.UAT_HIDE_MMDL_BANNER.defaultValue,
+  );
+
+  // Filter the FAQ content: if the flag is "on", remove the Q&A with anchorText "spa-admendments"
+  const filteredFAQContent = oneMACFAQContent.map((section) => {
+    if (section.sectionTitle === "State Plan Amendments (SPAs)" && isBannerHidden === "on") {
+      return {
+        ...section,
+        qanda: section.qanda.filter((qa) => qa.anchorText !== "spa-admendments"),
+      };
+    }
+    return section;
+  });
   return (
     <>
       <SubNavHeader>
@@ -35,7 +55,7 @@ export const Faq = () => {
         <div className="flex-1">
           <article className="mb-8">
             <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
-              {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
+              {filteredFAQContent.map(({ sectionTitle, qanda }) => (
                 <article key={sectionTitle} className="mb-8">
                   <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
                   {qanda.map(({ anchorText, answerJSX, question }) => (
