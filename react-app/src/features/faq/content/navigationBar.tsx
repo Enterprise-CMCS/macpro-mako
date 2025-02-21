@@ -3,7 +3,8 @@ import ContactHelpDesk from "./contactHelpDesk";
 
 const LeftNavigation: React.FC = () => {
   return (
-    <div className="fixed left-0 top-0 h-full w-64 bg-white shadow-lg p-4 overflow-y-auto">
+    // Removed fixed positioning, letting parent container handle positioning
+    <div className="h-full w-64 bg-white shadow-lg p-4 overflow-y-auto">
       <h2 className="text-xl font-bold mb-4">Topics</h2>
       <ul className="space-y-2">
         <li className="font-semibold">Frequently asked questions (FAQs)</li>

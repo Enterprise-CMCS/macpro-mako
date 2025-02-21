@@ -28,63 +28,61 @@ export const Faq = () => {
     }
   }, [id]);
   return (
-   <>
-  <SubNavHeader>
-    <h1 className="text-xl font-medium">Frequently Asked Questions</h1>
-  </SubNavHeader>
+   <div className="min-h-screen flex flex-col">
+    <SubNavHeader>
+      <h1 className="text-xl font-medium">Frequently Asked Questions</h1>
+    </SubNavHeader>
 
-  {/* Main Layout Wrapper - Contains FAQ and Left Navigation */}
-  <section className="relative flex max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-6">
-    
-    {/* Left Navigation */}
-    <div className="w-60 shrink-0 sticky top-0 self-start">
-      <LeftNavigation />
-    </div>
+    {/* Main Layout Wrapper - Contains FAQ and Left Navigation */}
+    <section className="relative flex max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-6 flex-grow">
+      {/* Left Navigation */}
+      <div className="w-60 shrink-0 sticky top-0 max-h-screen pt-4">
+        <LeftNavigation />
+      </div>
 
-    {/* FAQ Content */}
-    <div className="flex-1">
-      <article className="mb-8">
-        <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
-          {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
-            <article key={sectionTitle} className="mb-8">
-              <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
-              {qanda.map(({ anchorText, answerJSX, question }) => (
-                <AccordionItem value={anchorText} id={anchorText} key={anchorText}>
-                  <AccordionTrigger className="text-left">{question}</AccordionTrigger>
-                  <AccordionContent>{answerJSX}</AccordionContent>
-                </AccordionItem>
-              ))}
-            </article>
-          ))}
-        </Accordion>
-      </article>
-    </div>
+      {/* FAQ Content */}
+      <div className="flex-1">
+        <article className="mb-8">
+          <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
+            {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
+              <article key={sectionTitle} className="mb-8">
+                <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
+                {qanda.map(({ anchorText, answerJSX, question }) => (
+                  <AccordionItem value={anchorText} id={anchorText} key={anchorText}>
+                    <AccordionTrigger className="text-left">{question}</AccordionTrigger>
+                    <AccordionContent>{answerJSX}</AccordionContent>
+                  </AccordionItem>
+                ))}
+              </article>
+            ))}
+          </Accordion>
+        </article>
+      </div>
 
-    {/* Help Desk Section */}
-    <div className="w-64">
-      <CardWithTopBorder>
-        <div className="p-4">
-          <h3 className="text-lg text-bold mb-4">OneMAC Help Desk Contact Info</h3>
-          <div>
-            <b>Phone Number</b>
-            <p className="mb-4 text-primary">
-              <a className="underline" href={`tel:${helpDeskContact.phone}`}>
-                {helpDeskContact.phone}
-              </a>
-            </p>
-            <b>Email</b>
-            <p className="text-primary">
-              <a className="underline" href={`mailto:${helpDeskContact.email}`}>
-                {helpDeskContact.email}
-              </a>
-            </p>
+      {/* Help Desk Section */}
+      <div className="w-64 sticky top-0 h-fit pt-4">
+        <CardWithTopBorder>
+          <div className="p-4">
+            <h3 className="text-lg text-bold mb-4">OneMAC Help Desk Contact Info</h3>
+            <div>
+              <b>Phone Number</b>
+              <p className="mb-4 text-primary">
+                <a className="underline" href={`tel:${helpDeskContact.phone}`}>
+                  {helpDeskContact.phone}
+                </a>
+              </p>
+              <b>Email</b>
+              <p className="text-primary">
+                <a className="underline" href={`mailto:${helpDeskContact.email}`}>
+                  {helpDeskContact.email}
+                </a>
+              </p>
+            </div>
           </div>
-        </div>
-      </CardWithTopBorder>
-    </div>
-
-  </section>
-</>
+        </CardWithTopBorder>
+      </div>
+    </section>
+  </div>
 
   );
 };
