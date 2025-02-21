@@ -2,9 +2,9 @@ import React from 'react';
 import {
   Accordion,
   AccordionItem,
+  AccordionContent,
   AccordionTrigger,
-  AccordionContent
-} from '@/components/ui/accordion';
+} from "@/components";
 
 const LeftNavigation: React.FC = () => {
   return (
