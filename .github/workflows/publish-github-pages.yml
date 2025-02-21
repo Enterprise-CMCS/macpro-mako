@@ -1,11 +1,13 @@
 name: GitHub Pages Build and Deploy
 
 on:
-  push:
-    branches:
-      - gh-pages
-      - publish-playwright-reports
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Deploy
+      - Code Climate Report
+    types:
+      - completed
 
 jobs:
   build:
