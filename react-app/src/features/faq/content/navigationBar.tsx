@@ -3,18 +3,29 @@ import ContactHelpDesk from "./contactHelpDesk";
 
 const LeftNavigation: React.FC = () => {
   return (
-    // Removed fixed positioning, letting parent container handle positioning
-    <div className="h-full w-64 bg-white shadow-lg p-4 overflow-y-auto">
-      <h2 className="text-xl font-bold mb-4">Topics</h2>
-      <ul className="space-y-2">
-        <li className="font-semibold">Frequently asked questions (FAQs)</li>
-        <li className="font-semibold">General</li>
-        <li className="font-semibold">Package actions</li>
-        <li className="font-semibold">Templates & implementation guides</li>
-        <li className="font-semibold">Access & roles</li>
-        <li className="font-semibold">User profile</li>
-        <li className="font-semibold">Glossary</li>
-      </ul>
+    <div className="h-full w-64 bg-white p-4 overflow-y-auto">
+      <h2 className="text-3xl font-bold mb-6">Topics</h2>
+      <nav>
+        <ul className="space-y-3">
+          {[
+            'Frequently asked questions (FAQs)',
+            'General',
+            'Package actions',
+            'Templates & implementation guides',
+            'Access & roles',
+            'User profile',
+            'Glossary'
+          ].map((item) => (
+            <li key={item}>
+              <a href="#" className="flex items-center justify-between text-gray-700 hover:text-gray-900">
+                <span>{item}</span>
+                <ChevronDown className="h-4 w-4" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      
       <ContactHelpDesk />
     </div>
   );
