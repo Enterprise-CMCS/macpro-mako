@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLDClient } from "launchdarkly-react-client-sdk";
-import {LegacyFaq} from "./legacyFaq"
+import {LegacyFaq} from "./LegacyFaq"
 import {NewFaq} from "./NewFaq"
 
 export const Faq = () => {
