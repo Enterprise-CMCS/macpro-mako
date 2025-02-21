@@ -27,8 +27,6 @@ jobs:
     permissions:
       contents: write
       actions: read
-      pages: write # to deploy to Pages
-      id-token: write # to verify the deployment originates from an appropriate source
     runs-on: ubuntu-latest
     steps:
       - name: Checkout GitHub Pages Branch
