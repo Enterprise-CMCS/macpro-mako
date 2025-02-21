@@ -33,15 +33,15 @@ export const Faq = () => {
     <h1 className="text-xl font-medium">Frequently Asked Questions</h1>
   </SubNavHeader>
 
-  {/* Main Layout Wrapper */}
-  <section className="flex max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-6">
+  {/* Main Layout Wrapper - Contains FAQ and Left Navigation */}
+  <section className="relative flex max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-6">
     
-    {/* Left Navigation - Stays visible while scrolling, does not overlay header */}
-    <div className="w-60 shrink-0 sticky top-[80px] self-start">
+    {/* Left Navigation */}
+    <div className="w-60 shrink-0 sticky top-0 self-start">
       <LeftNavigation />
     </div>
 
-    {/* FAQ Content - Now positioned correctly without excessive padding */}
+    {/* FAQ Content */}
     <div className="flex-1">
       <article className="mb-8">
         <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
@@ -60,7 +60,7 @@ export const Faq = () => {
       </article>
     </div>
 
-    {/* Help Desk Section - Properly aligned */}
+    {/* Help Desk Section */}
     <div className="w-64">
       <CardWithTopBorder>
         <div className="p-4">
