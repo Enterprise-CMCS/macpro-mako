@@ -13,8 +13,8 @@ export const ChipSpaCMSEmail = ({
   variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;
 }) => (
   <BaseEmailTemplate
-    previewText={`Action required: review new documents for CHIP SPA ${variables.id} in OneMAC.`}
-    heading={`New documents have been submitted for CHIP SPA ${variables.id} in OneMAC.`}
+    previewText={`Action required: review new documents for CHIP SPA ${variables.id} in OneMAC`}
+    heading={`New documents have been submitted for CHIP SPA ${variables.id} in OneMAC:`}
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >
