@@ -10,7 +10,7 @@ export default () => {
         event: "respond-to-rai",
         id: "CO-1234.R21.00",
         authority: "1915(c)",
-        actionType: "Amend",
+        actionType: "Amendment",
         territory: "CO",
         attachments: {
           revisedAmendedStatePlanLanguage: attachments.other,
