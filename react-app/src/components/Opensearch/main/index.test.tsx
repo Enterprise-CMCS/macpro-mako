@@ -328,7 +328,9 @@ describe("OsMainView", () => {
       expect(within(columns).getByText("Authority")).toBeInTheDocument();
       expect(within(columns).getByText("Authority").parentElement).toHaveClass("text-gray-400");
     });
+  });
 
+  describe("Local Storage to display Columns for waivers", () => {
     it("should store hidden column in local storage for waivers", async () => {
       const spaHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
       setup(
