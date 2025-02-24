@@ -4,7 +4,12 @@ on:
   push:
     branches:
       - gh-pages
-      - publish-playwright-reports
+  workflow_run:
+    workflows:
+      - Deploy
+      - Code Climate Report
+    types:
+      - completed
   workflow_dispatch:
 
 jobs:
