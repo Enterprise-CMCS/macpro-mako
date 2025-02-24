@@ -38,7 +38,7 @@ export const Waiver1915bStateEmail = (props: {
           Summary: variables.additionalInformation,
         }}
       />
-      <Text style={{ ...styles.text, marginTop: "16px" }}>
+      <Text style={{ ...styles.text.base, marginTop: "16px" }}>
         {`This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
