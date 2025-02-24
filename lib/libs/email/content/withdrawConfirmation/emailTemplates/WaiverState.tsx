@@ -7,7 +7,7 @@ export const WaiverStateEmail = (props: {
 }) => {
   const variables = props.variables;
   const previewText = `Withdrawal of ${variables.authority} ${variables.id}`;
-  const heading = `This email is to confirm ${variables.authority} ${variables.id} was withdrawn by ${variables.submitterName}. The review of ${variables.authority} ${variables.id} has concluded.`;
+  const heading = `This email is to confirm ${variables.actionType} ${variables.id} was withdrawn by ${variables.submitterName}. The review of ${variables.actionType} ${variables.id} has concluded.`;
   return (
     <BaseEmailTemplate
       previewText={previewText}

@@ -270,7 +270,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -713,7 +713,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -1213,7 +1213,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -1655,7 +1655,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This some additional information about the request to upload additional documents.
                                   </p>
@@ -2558,7 +2558,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This some additional information about the request to upload additional documents.
                                 </p>
@@ -3518,7 +3518,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -3960,7 +3960,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This some additional information about the request to upload additional documents.
                                   </p>
@@ -4862,7 +4862,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This some additional information about the request to upload additional documents.
                                   </p>
@@ -5762,7 +5762,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This some additional information about the request to upload additional documents.
                                 </p>
@@ -6719,7 +6719,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -7161,7 +7161,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This some additional information about the request to upload additional documents.
                                   </p>
@@ -8063,7 +8063,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This some additional information about the request to upload additional documents.
                                   </p>
@@ -8962,7 +8962,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This some additional information about the request to upload additional documents.
                                   </p>
@@ -9865,7 +9865,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This some additional information about the request to upload additional documents.
                                 </p>
