@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">55.55% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/9</span>
+                <span class='fraction'>9/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/4</span>
+                <span class='fraction'>4/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">55.55% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/9</span>
+                <span class='fraction'>9/15</span>
             </div>
         
             
@@ -139,7 +139,22 @@
 <a name='L74'></a><a href='#L74'>74</a>
 <a name='L75'></a><a href='#L75'>75</a>
 <a name='L76'></a><a href='#L76'>76</a>
-<a name='L77'></a><a href='#L77'>77</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -166,6 +181,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -226,6 +254,7 @@ import {
   SubNavHeader,
 } from "@/components";
 import { useParams } from "react-router";
+import { useHideBanner } from "@/hooks/useHideBanner";
 &nbsp;
 export const Faq = () =&gt; {
   const { id } = useParams&lt;{ id: string }&gt;();
@@ -243,6 +272,19 @@ export const Faq = () =&gt; {
       }
     }
   }, [id]);
+&nbsp;
+  // Get the flag value for hiding the MMDL banner.
+  const isBannerHidden = useHideBanner();
+&nbsp;
+  const filteredFAQContent = oneMACFAQContent.map((section) =&gt; {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (section.sectionTitle === "State Plan Amendments (SPAs)" &amp;&amp; isBannerHidden) {
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        ...section,
+        qanda: section.qanda.filter(<span class="fstat-no" title="function not covered" >(q</span>a) =&gt; <span class="cstat-no" title="statement not covered" >qa.anchorText !== "spa-admendments"),</span>
+      };
+    }
+    return section;
+  });
   return (
     &lt;&gt;
       &lt;SubNavHeader&gt;
@@ -252,7 +294,7 @@ export const Faq = () =&gt; {
         &lt;div className="flex-1"&gt;
           &lt;article className="mb-8"&gt;
             &lt;Accordion type="multiple" value={openItems} onValueChange={setOpenItems}&gt;
-              {oneMACFAQContent.map(({ sectionTitle, qanda }) =&gt; (
+              {filteredFAQContent.map(({ sectionTitle, qanda }) =&gt; (
                 &lt;article key={sectionTitle} className="mb-8"&gt;
                   &lt;h2 className="text-2xl mb-4 text-primary"&gt;{sectionTitle}&lt;/h2&gt;
                   {qanda.map(({ anchorText, answerJSX, question }) =&gt; (
@@ -298,7 +340,7 @@ export const Faq = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-02-24T20:48:57.569Z
+                at 2025-02-24T21:57:16.566Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
