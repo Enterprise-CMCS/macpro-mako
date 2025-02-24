@@ -23,6 +23,17 @@ export const helpDeskContact = {
   phone: "(833) 228-2540",
 };
 
+const detailElem = document.getElementById("detailElem");
+const summary = detailElem.querySelector("summary");
+
+detailElem.addEventListener("toggle", () => {
+  if (detailElem.hasAttribute("open")) {
+    summary.textContent = "Hide details";
+  } else {
+    summary.textContent = "Show details";
+  }
+});
+
 export const oneMACFAQContent: FAQContent[] = [
   {
     sectionTitle: "General",
@@ -221,7 +232,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <source src="/onboarding/OneMACPackageViewStateDemo.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-              <details>
+              <details id="detailElem">
                 <summary className="cursor-pointer">Show/Hide Transcript</summary>
                 <div className="space-y-2">
                   <p>
