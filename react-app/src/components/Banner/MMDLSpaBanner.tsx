@@ -3,10 +3,12 @@ import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { useGetSystemNotifs } from "@/api";
 import { FAQ_TAB } from "@/router";
 import { Link } from "react-router";
+import { useHideBanner } from "@/hooks/useHideBanner";
+
 const MMDLAlertBanner = () => {
   const { clearNotif, notifications } = useGetSystemNotifs();
-
-  if (!notifications.length) return null;
+  const isBannerHidden = useHideBanner();
+  if (!notifications.length || isBannerHidden) return null;
 
   return (
     <section
