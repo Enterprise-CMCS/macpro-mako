@@ -215,15 +215,15 @@ export const oneMACFAQContent: FAQContent[] = [
               ))}
             </ul>
             <div class="onboarding-videos">
-              <h4>OneMAC State System Overview</h4>
-              <p>Watch this video for an overview on Package View.</p>
-              <video width="600" controls>
+              <h4 class="text-lg font-bold py-2">OneMAC State System Overview</h4>
+              <p class="pb-3">Watch this video for an overview on Package View.</p>
+              <video controls>
                 <source src="/onboarding/OneMACPackageViewStateDemo.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               <details>
-                <summary>Show Transcript</summary>
-                <div>
+                <summary class="cursor-pointer">Show/Hide Transcript</summary>
+                <div class="space-y-2">
                   <p>
                     The purpose of this video is to provide state users with an overview of OneMAC's
                     new and improved submission package dashboard. We will demonstrate the new view
@@ -343,22 +343,24 @@ export const oneMACFAQContent: FAQContent[] = [
                   <p>
                     Thank you for watching this overview of the latest OneMAC updates. If you have
                     any questions, please free to contact the OneMAC Help Desk at{" "}
-                    <a href="mailto: OneMAC_Helpdesk@cms.hhs.gov">OneMAC_Helpdesk@cms.hhs.gov</a>
+                    <a class="text-primary" href="mailto: OneMAC_Helpdesk@cms.hhs.gov">
+                      OneMAC_Helpdesk@cms.hhs.gov
+                    </a>
                   </p>
                 </div>
               </details>
-              <h4>Upload Subsequent Documentation Overview</h4>
-              <p>
+              <h4 class="text-lg font-bold py-2">Upload Subsequent Documentation Overview</h4>
+              <p class="pb-3">
                 Watch this video for an overview on how to upload subsequent documentation to a
                 package under review.
               </p>
-              <video width="600" controls>
+              <video controls>
                 <source src="/onboarding/UploadSubsequentDocumentationDemo.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               <details>
-                <summary>Show Transcript</summary>
-                <div>
+                <summary class="cursor-pointer">Show/Hide Transcript</summary>
+                <div class="space-y-2">
                   <p>
                     OneMac has been updated with a new package action called upload subsequent
                     documentation that allows states to submit revised or additional documentation
@@ -397,7 +399,9 @@ export const oneMACFAQContent: FAQContent[] = [
                   <p>
                     Thank you for watching this overview of the latest OneMAC updates. If you have
                     any questions, please free to contact the OneMAC Help Desk at{" "}
-                    <a href="mailto: OneMAC_Helpdesk@cms.hhs.gov">OneMAC_Helpdesk@cms.hhs.gov</a>
+                    <a class="text-primary" href="mailto: OneMAC_Helpdesk@cms.hhs.gov">
+                      OneMAC_Helpdesk@cms.hhs.gov
+                    </a>
                   </p>
                 </div>
               </details>
