@@ -304,6 +304,7 @@ describe("OsMainView", () => {
           tab: "spas",
         }),
       );
+      global.localStorage.setItem("spaOSColumns", JSON.stringify(["authority.keyword"]));
       expect(global.localStorage.getItem("spaOSColumns")).toBe(JSON.stringify(["origin.keyword"]));
     });
 
@@ -341,6 +342,7 @@ describe("OsMainView", () => {
           tab: "waivers",
         }),
       );
+      global.localStorage.setItem("waiversOSColumns", JSON.stringify(["authority.keyword"]));
       expect(global.localStorage.getItem("waiversOSColumns")).toBe(
         JSON.stringify(["origin.keyword"]),
       );
