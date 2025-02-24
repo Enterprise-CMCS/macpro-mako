@@ -1,47 +1,54 @@
 import { useState, useEffect } from "react";
 
-interface GenericInitialValue {
-  [index: number]: unknown;
+interface LocalStorageData {
+  osQuery?: string;
+  spaOSColumns?: string[];
+  waiversOSColumns?: string[];
+  spaOSData?: object;
+  waiversOSData?: object;
+  [key: string]: any;
 }
-type keyType = "osQuery" | "spaOSColumns" | "waiversOSColumns" | "spaOSData" | "waiversOSData";
 
-export const removeItemLocalStorage = (key?: keyType) => {
-  if (key) window.localStorage.removeItem(key);
-  else {
-    window.localStorage.removeItem("osQuery");
-    window.localStorage.removeItem("spaOSColumns");
-    window.localStorage.removeItem("waiversOSColumns");
-    window.localStorage.removeItem("spaOSData");
-    window.localStorage.removeItem("waiversOSData");
+type LocalStorageKeys = Extract<keyof LocalStorageData, string>;
+
+export const removeItemLocalStorage = (key?: LocalStorageKeys) => {
+  if (key) {
+    window.localStorage.removeItem(key);
+  } else {
+    window.localStorage.removeItem("osData");
   }
 };
 
-export const useLocalStorage = (key: keyType, initialValue: GenericInitialValue) => {
+export const useLocalStorage = (key: LocalStorageKeys, initialValue: any) => {
   const [storedValue, setStoredValue] = useState(() => {
     if (typeof window === "undefined") return initialValue;
     try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      const item = window.localStorage.getItem("osData");
+      const data = item ? JSON.parse(item) : {};
+      return data[key] ?? initialValue;
     } catch (e) {
       console.log("Error while getting local storage: ", e);
+      return initialValue;
     }
   });
 
   useEffect(() => {
     const updateLocalStorage = () => {
       if (typeof window !== "undefined") {
-        if (storedValue === null) {
-          localStorage.removeItem(key);
-        } else {
-          localStorage.setItem(key, JSON.stringify(storedValue));
+        try {
+          const item = window.localStorage.getItem("osData");
+          const data = item ? JSON.parse(item) : {};
+
+          data[key] = storedValue;
+
+          localStorage.setItem("osData", JSON.stringify(data));
+        } catch (e) {
+          console.log("Error setting local storage", e);
         }
       }
     };
-    try {
-      updateLocalStorage();
-    } catch (e) {
-      console.log("Error setting local storage", e);
-    }
+
+    updateLocalStorage();
   }, [key, storedValue]);
 
   return [storedValue, setStoredValue];

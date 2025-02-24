@@ -13,6 +13,7 @@ import {
   TabsList,
   TabsTrigger,
   LoadingSpinner,
+  OsTab,
 } from "@/components";
 import { isStateUser } from "shared-utils";
 import { Link, Navigate, redirect } from "react-router";
@@ -42,12 +43,14 @@ export const Dashboard = () => {
   const { data: userObj, isLoading } = useGetUser();
 
   const osData = useOsData();
-  const [localSPAStorageCol, setLocalSPAStorageCol] = useLocalStorage("spaOSData", osData.state);
-  const waiverObj = { ...osData.state, tab: "waivers" };
-  const [localWaiverStorageCol, setLocalWaiversStorageCol] = useLocalStorage(
-    "waiversOSData",
-    waiverObj,
-  );
+  const [localSPAStorageCol, setLocalSPAStorageCol] = useLocalStorage("spaOSData", {
+    ...osData.state,
+    tab: "spas" as OsTab,
+  });
+  const [localWaiverStorageCol, setLocalWaiversStorageCol] = useLocalStorage("waiversOSData", {
+    ...osData.state,
+    tab: "waivers" as OsTab,
+  });
 
   const isAbleToAccessDashboard = () => {
     return (
@@ -96,7 +99,13 @@ export const Dashboard = () => {
                   if (tab === "spas") setLocalWaiversStorageCol(osData.state);
                   else setLocalSPAStorageCol(osData.state);
 
-                  osData.onSet(tab === "spas" ? localSPAStorageCol : localWaiverStorageCol, true);
+                  osData.onSet(
+                    (prev) => ({
+                      ...prev,
+                      ...(tab === "spas" ? localSPAStorageCol : localWaiverStorageCol),
+                    }),
+                    true,
+                  );
                 }}
               >
                 <div className="flex max-w-screen-xl mx-auto px-4 lg:px-8">
