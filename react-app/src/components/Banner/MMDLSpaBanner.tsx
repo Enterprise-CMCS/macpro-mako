@@ -11,18 +11,13 @@ const MMDLAlertBanner = () => {
   const { clearNotif, notifications } = useGetSystemNotifs();
   if (!notifications.length) return null;
 
-  // Retrieve the flag value (on/off)
   const isBannerHidden = ldClient?.variation(
     featureFlags.UAT_HIDE_MMDL_BANNER.flag,
     featureFlags.UAT_HIDE_MMDL_BANNER.defaultValue,
   );
 
-  console.log("LaunchDarkly Flag Value:", isBannerHidden); // Debugging log
-
-  // If the flag is "on", hide the banner
   if (isBannerHidden === "on") return null;
 
-  // If the flag is "off", show the banner
   return (
     <section
       className="bg-[#E1F3F8] grid md:grid-cols-[min-content_auto_min-content] md:grid-rows-[auto_auto] grid-cols-[auto_auto] gap-4 md:gap-x-4 border-l-[8px] border-[#00A6D2] p-3"

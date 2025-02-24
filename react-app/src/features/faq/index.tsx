@@ -9,12 +9,10 @@ import {
   SubNavHeader,
 } from "@/components";
 import { useParams } from "react-router";
-import { useLDClient } from "launchdarkly-react-client-sdk";
-import { featureFlags } from "shared-utils";
+import { useHideBanner } from "@/hooks/useHideBanner";
 
 export const Faq = () => {
   const { id } = useParams<{ id: string }>();
-  const ldClient = useLDClient();
 
   const [openItems, setOpenItems] = useState<string[]>([]);
   useEffect(() => {
@@ -31,14 +29,10 @@ export const Faq = () => {
   }, [id]);
 
   // Get the flag value for hiding the MMDL banner.
-  const isBannerHidden = ldClient?.variation(
-    featureFlags.UAT_HIDE_MMDL_BANNER.flag,
-    featureFlags.UAT_HIDE_MMDL_BANNER.defaultValue,
-  );
+  const isBannerHidden = useHideBanner();
 
-  // Filter the FAQ content: if the flag is "on", remove the Q&A with anchorText "spa-admendments"
   const filteredFAQContent = oneMACFAQContent.map((section) => {
-    if (section.sectionTitle === "State Plan Amendments (SPAs)" && isBannerHidden === "on") {
+    if (section.sectionTitle === "State Plan Amendments (SPAs)" && isBannerHidden) {
       return {
         ...section,
         qanda: section.qanda.filter((qa) => qa.anchorText !== "spa-admendments"),
