@@ -9,6 +9,7 @@ import {
   SubNavHeader,
 } from "@/components";
 import { useParams } from "react-router";
+import { useHideBanner } from "@/hooks/useHideBanner";
 
 export const Faq = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,6 +27,19 @@ export const Faq = () => {
       }
     }
   }, [id]);
+
+  // Get the flag value for hiding the MMDL banner.
+  const isBannerHidden = useHideBanner();
+
+  const filteredFAQContent = oneMACFAQContent.map((section) => {
+    if (section.sectionTitle === "State Plan Amendments (SPAs)" && isBannerHidden) {
+      return {
+        ...section,
+        qanda: section.qanda.filter((qa) => qa.anchorText !== "spa-admendments"),
+      };
+    }
+    return section;
+  });
   return (
     <>
       <SubNavHeader>
@@ -35,7 +49,7 @@ export const Faq = () => {
         <div className="flex-1">
           <article className="mb-8">
             <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
-              {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
+              {filteredFAQContent.map(({ sectionTitle, qanda }) => (
                 <article key={sectionTitle} className="mb-8">
                   <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
                   {qanda.map(({ anchorText, answerJSX, question }) => (
