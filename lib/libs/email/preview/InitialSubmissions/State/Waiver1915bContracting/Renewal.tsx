@@ -7,6 +7,7 @@ export default () => {
       variables={{
         ...emailTemplateValue,
         waiverNumber: "CO-1234.R21.00",
+        additionalInformation: "Testing with an emoji 😄",
         attachments: {
           b4IndependentAssessment: {
             label: "1915(b) Comprehensive (Contracting) Waiver Independent Assessment",
