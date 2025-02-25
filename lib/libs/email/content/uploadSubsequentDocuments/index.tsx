@@ -47,6 +47,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
       };
     },
     // example comment
+    // new commit comment
     state: async (
       variables: Events["UploadSubsequentDocuments"] &
         CommonEmailVariables & { emails: EmailAddresses },
