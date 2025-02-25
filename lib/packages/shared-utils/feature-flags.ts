@@ -19,4 +19,12 @@ export const featureFlags = {
     flag: "clear-data-button",
     defaultValue: false,
   },
+
+  /**
+   * Toggles the visibility of the MMDL Alert Banner
+   */
+  UAT_HIDE_MMDL_BANNER: {
+    flag: "uat-hide-mmdl-banner",
+    defaultValue: false, //Default to visible
+  },
 } as const;
