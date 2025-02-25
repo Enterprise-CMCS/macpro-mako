@@ -6,9 +6,9 @@ const ContactHelpDesk: React.FC = () => {
         <h3 className="text-lg font-bold mb-2">Not finding the information you need?</h3>
         <div className="space-y-2">
           <p className="font-medium">Contact the Help Desk</p>
-          <div className="break-words">
+          <div>
             <p>Email: </p>
-            <a href="mailto:OneMAC_Helpdesk@CMS.hhs.gov" className="text-blue-600 hover:underline break-all">
+            <a href="mailto:OneMAC_Helpdesk@CMS.hhs.gov" className="text-blue-600 hover:underline text-sm">
               OneMAC_Helpdesk@CMS.hhs.gov
             </a>
           </div>
