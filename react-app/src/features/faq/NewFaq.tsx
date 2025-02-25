@@ -14,7 +14,7 @@ export const  NewFaq = (props : any) => {
       <div className="max-w-screen-xl m-auto px-4 lg:px-8 pt-8 w-full">
         <div className="flex">
           {/* Left Navigation - Fixed width with explicit max-width */}       
-          <div className="w-64 max-w-64 sticky top-0 h-[calc(100vh-4rem)] pt-4">         
+          <div className="w-64 sticky top-0 h-[calc(100vh-4rem)]">         
             <LeftNavigation />       
           </div>        
           
