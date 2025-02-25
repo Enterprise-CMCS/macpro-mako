@@ -1,11 +1,11 @@
-import { formatSeatoolDate, isCmsUser, isStateUser } from "shared-utils";
+import { formatActionType, formatSeatoolDate, isCmsUser, isStateUser } from "shared-utils";
 
 import { OneMacUser } from "@/api/useGetUser";
 import { BLANK_VALUE } from "@/consts";
 import { FC, ReactNode } from "react";
 import { Authority, opensearch } from "shared-types";
 
-import { convertStateAbbrToFullName, LABELS } from "@/utils";
+import { convertStateAbbrToFullName } from "@/utils";
 import { format } from "date-fns";
 import { useMemo, useState } from "react";
 
@@ -51,7 +51,7 @@ export const recordDetails = (data: opensearch.main.Document): DetailSectionItem
   },
   {
     label: "Action Type",
-    value: LABELS[data.actionType as keyof typeof LABELS] || data.actionType,
+    value: formatActionType(data.actionType),
     canView: () => {
       return ([Authority["1915b"], Authority["1915c"]] as string[]).includes(data.authority);
     },

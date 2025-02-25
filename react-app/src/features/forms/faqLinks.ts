@@ -12,7 +12,8 @@ export const getFAQLinkForAttachments = (eventName: string) => {
     ["contracting-amendment", "/faq/waiverb-attachments"],
     ["contracting-initial", "/faq/waiverb-attachments"],
     ["contracting-renewal", "/faq/waiverb-attachments"],
-    ["temporary-extension", "/faq/temporary-extensions-b-attachments"],
+    ["temporary-extension-1915(b)", "/faq/temporary-extensions-b-attachments"],
+    ["temporary-extension-1915(c)", "/faq/temporary-extensions-c-attachments"],
   ]);
 
   return faqLinks.get(eventName) ?? "/faq";
