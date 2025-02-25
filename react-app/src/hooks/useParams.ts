@@ -8,7 +8,7 @@ import { useLocalStorage } from "./useLocalStorage";
  * LZ is a library which can compresses JSON into a uri string
  * and can decompresses JSON strings into state objects
  */
-export const useLzUrl = <T>(props: { key: string; initValue?: T }) => {
+export const useLzUrl = <T>(props: { key: string; initValue?: T; redirectTab?: string }) => {
   const [params, setParams] = useSearchParams();
   const [query, setQuery] = useLocalStorage("osQuery", null);
 
@@ -25,7 +25,8 @@ export const useLzUrl = <T>(props: { key: string; initValue?: T }) => {
 
     try {
       setQuery(decompress);
-      return JSON.parse(decompress);
+      const parsed = JSON.parse(decompress);
+      return { ...parsed, tab: props.redirectTab ?? parsed.tab };
     } catch {
       return props.initValue;
     }

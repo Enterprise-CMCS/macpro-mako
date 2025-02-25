@@ -150,5 +150,6 @@ export const useOsUrl = () => {
       sort: { field: "submissionDate", order: "desc" },
       ...queryObject,
     },
+    redirectTab: queryObject?.tab,
   });
 };
