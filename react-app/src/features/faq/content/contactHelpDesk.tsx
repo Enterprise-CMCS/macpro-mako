@@ -8,11 +8,11 @@ const ContactHelpDesk: React.FC = () => {
             <p className="font-medium">Contact the Help Desk</p>
             <div>
                 <p>Email: </p>
-                <a href="mailto:OneMAC_Helpdesk@CMS.hhs.gov" className="text-blue-600 hover:underline text-sm">
+                <a href="mailto:OneMAC_Helpdesk@CMS.hhs.gov" className="text-blue-600 hover:underline text-xs break-words whitespace-normal">
                     OneMAC_Helpdesk@CMS.hhs.gov
                 </a>
             </div>
-            <p>Leave a message at <a href="tel:(883) 228-2540" className="hover:underline">(883) 228-2540</a></p>
+            <p>Leave a message at <a href="tel:(883) 228-2540" className="hover:underline text-xs">(883) 228-2540</a></p>
         </div>
     </div>
   );

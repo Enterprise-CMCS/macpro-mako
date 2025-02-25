@@ -14,10 +14,9 @@ const LeftNavigation: React.FC = () => {
       <h2 className="text-3xl font-bold mb-6">Topics</h2>
       <Accordion type="multiple">
         {[
-          'Frequently asked questions (FAQs)',
           'General',
           'Package actions',
-          'Templates & implementation guides',
+          'Implementation guides',
           'Access & roles',
           'User profile',
           'Glossary'
