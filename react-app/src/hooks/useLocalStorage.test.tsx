@@ -16,18 +16,25 @@ describe("UseLocalStorage", () => {
   });
 
   it("sets local storage with key osColumns to hidden columns", () => {
+    const initialOsData = { osColumns: { spas: ["test"], waivers: ["test"] } };
+    global.localStorage.setItem("osData", JSON.stringify(initialOsData));
+
     const { result } = renderHook(() =>
       useLocalStorage("osColumns", { spas: ["test"], waivers: ["test"] }),
     );
 
-    expect(global.localStorage.getItem("osColumns")).toBe(
-      JSON.stringify({ spas: ["test"], waivers: ["test"] }),
+    expect(global.localStorage.getItem("osData")).toBe(
+      JSON.stringify({ osColumns: { spas: ["test"], waivers: ["test"] } }),
     );
+
+    // Verify the hook's returned value
     expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
   });
 
   it("holds values on rerender", () => {
-    const { result, rerender } = renderHook(() => useLocalStorage("osColumns", ["test"]));
+    const { result, rerender } = renderHook(() =>
+      useLocalStorage("osColumns", { spas: ["test"], waivers: ["test"] }),
+    );
     expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
     rerender();
     expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
@@ -37,11 +44,11 @@ describe("UseLocalStorage", () => {
     const { result } = renderHook(() =>
       useLocalStorage("osColumns", { spas: ["test"], waivers: ["test"] }),
     );
-    expect(global.localStorage.getItem("osColumns")).toBe(
-      JSON.stringify({ spas: ["test"], waivers: ["test"] }),
+    expect(global.localStorage.getItem("osData")).toBe(
+      JSON.stringify({ osColumns: { spas: ["test"], waivers: ["test"] } }),
     );
     expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
     removeItemLocalStorage();
-    expect(global.localStorage.getItem("osColumns")).toBe(null);
+    expect(global.localStorage.getItem("osData")).toBe(null);
   });
 });

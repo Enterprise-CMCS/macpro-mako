@@ -304,12 +304,23 @@ describe("OsMainView", () => {
           tab: "spas",
         }),
       );
-      expect(global.localStorage.getItem("osColumns")).toBe(JSON.stringify(["origin.keyword"]));
+
+      const storedData = JSON.parse(global.localStorage.getItem("osData") || "{}");
+      expect(storedData.osColumns).toEqual({
+        spas: ["origin.keyword"],
+        waivers: ["origin.keyword"],
+      });
     });
 
     it("should load hidden columns based on local storage spas", async () => {
       const spaHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
-      expect(global.localStorage.setItem("osColumns", JSON.stringify(["authority.keyword"])));
+      const hiddenColumns = {
+        spas: ["authority.keyword"],
+        waivers: [],
+      };
+
+      global.localStorage.setItem("osData", JSON.stringify({ osColumns: hiddenColumns }));
+
       const { user } = setup(
         [...DEFAULT_COLUMNS, HIDDEN_COLUMN],
         spaHits,
@@ -318,57 +329,20 @@ describe("OsMainView", () => {
           tab: "spas",
         }),
       );
+
       expect(screen.queryByRole("dialog")).toBeNull();
+
       await user.click(screen.queryByRole("button", { name: "Columns (1 hidden)" }));
+
       const columns = screen.queryByRole("dialog");
+
       expect(within(columns).getByText("Submission Source")).toBeInTheDocument();
       expect(within(columns).getByText("Submission Source").parentElement).toHaveClass(
         "text-gray-800",
       );
+
       expect(within(columns).getByText("Authority")).toBeInTheDocument();
       expect(within(columns).getByText("Authority").parentElement).toHaveClass("text-gray-400");
     });
   });
-
-  // describe("Local Storage to display Columns for waivers", () => {
-  //   it("should store hidden column in local storage for waivers", async () => {
-  //     const spaHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
-  //     setup(
-  //       [...DEFAULT_COLUMNS, HIDDEN_COLUMN],
-  //       spaHits,
-  //       getDashboardQueryString({
-  //         filters: DEFAULT_FILTERS,
-  //         tab: "waivers",
-  //       }),
-  //     );
-  //     expect(global.localStorage.getItem("waiversOSColumns")).toBe(
-  //       JSON.stringify(["origin.keyword"]),
-  //     );
-  //   });
-
-  //   it("should load hidden columns based on local storage for waivers", async () => {
-  //     const spaHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
-  //     expect(
-  //       global.localStorage.setItem("waiversOSColumns", JSON.stringify(["authority.keyword"])),
-  //     );
-  //     const { user } = setup(
-  //       [...DEFAULT_COLUMNS, HIDDEN_COLUMN],
-  //       spaHits,
-  //       getDashboardQueryString({
-  //         filters: DEFAULT_FILTERS,
-  //         tab: "waivers",
-  //       }),
-  //     );
-
-  //     expect(screen.queryByRole("dialog")).toBeNull();
-  //     await user.click(screen.queryByRole("button", { name: "Columns (1 hidden)" }));
-  //     const columns = screen.queryByRole("dialog");
-  //     expect(within(columns).getByText("Submission Source")).toBeInTheDocument();
-  //     expect(within(columns).getByText("Submission Source").parentElement).toHaveClass(
-  //       "text-gray-800",
-  //     );
-  //     expect(within(columns).getByText("Authority")).toBeInTheDocument();
-  //     expect(within(columns).getByText("Authority").parentElement).toHaveClass("text-gray-400");
-  //   });
-  // });
 });
