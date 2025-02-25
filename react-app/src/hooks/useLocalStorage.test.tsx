@@ -37,7 +37,9 @@ describe("UseLocalStorage", () => {
     const { result } = renderHook(() =>
       useLocalStorage("osColumns", { spas: ["test"], waivers: ["test"] }),
     );
-    expect(global.localStorage.getItem("osColumns")).toBe(JSON.stringify({ spas: ["test"], waivers: ["test"] });
+    expect(global.localStorage.getItem("osColumns")).toBe(
+      JSON.stringify({ spas: ["test"], waivers: ["test"] }),
+    );
     expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
     removeItemLocalStorage();
     expect(global.localStorage.getItem("osColumns")).toBe(null);
