@@ -24,9 +24,15 @@ export const useLzUrl = <T>(props: { key: string; initValue?: T; redirectTab?: s
     if (!decompress) return props.initValue;
 
     try {
-      setQuery(decompress);
       const parsed = JSON.parse(decompress);
-      return { ...parsed, tab: props.redirectTab ?? parsed.tab };
+
+      if (props.redirectTab && parsed.tab !== props.redirectTab) {
+        setQuery(JSON.stringify(props.initValue));
+        return props.initValue;
+      }
+
+      setQuery(decompress);
+      return parsed;
     } catch {
       return props.initValue;
     }
