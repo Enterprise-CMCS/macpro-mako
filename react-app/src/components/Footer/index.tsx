@@ -63,7 +63,7 @@ export const FAQFooter = () => {
       <p className="text-lg">Do you have questions or need support?</p>
       <Link to="/faq" target="_blank">
         <Button className="mx-4" size="lg">
-          View FAQ
+          View FAQs
         </Button>
       </Link>
     </Alert>
