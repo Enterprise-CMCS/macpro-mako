@@ -41,6 +41,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
         CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
+        // example change for demonstration purposes only
         to: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
         subject: `Action required: review new documents for 1915(c) ${variables.actionType} Waiver ${variables.id}`,
         body: await render(<MedSpaCMSEmail variables={variables} />),
