@@ -6,7 +6,6 @@ import { SpasList } from "./Lists/spas";
 import { UserRoles } from "shared-types";
 import {
   OsProvider,
-  type OsTab,
   useOsData,
   FilterDrawerProvider,
   Tabs,
@@ -14,10 +13,11 @@ import {
   TabsList,
   TabsTrigger,
   LoadingSpinner,
+  OsTab,
 } from "@/components";
 import { isStateUser } from "shared-utils";
 import { Link, Navigate, redirect } from "react-router";
-import { removeItemLocalStorage } from "@/hooks/useLocalStorage";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -42,6 +42,11 @@ export const dashboardLoader = loader;
 export const Dashboard = () => {
   const { data: userObj, isLoading } = useGetUser();
   const osData = useOsData();
+
+  const [localStorageCol, setLocalStorageCol] = useLocalStorage("osDashboardData", {
+    spas: { ...osData.state, tab: "spas" as OsTab },
+    waivers: { ...osData.state, tab: "waivers" as OsTab },
+  });
 
   const isAbleToAccessDashboard = () => {
     return (
@@ -87,13 +92,15 @@ export const Dashboard = () => {
               <Tabs
                 value={osData.state.tab}
                 onValueChange={(tab) => {
-                  removeItemLocalStorage("osColumns");
+                  setLocalStorageCol((prev) => ({
+                    ...prev,
+                    [osData.state.tab]: osData.state,
+                  }));
+
                   osData.onSet(
-                    (s) => ({
-                      ...s,
-                      filters: [],
-                      tab: tab as OsTab,
-                      search: "",
+                    (prev) => ({
+                      ...prev,
+                      ...localStorageCol[tab],
                     }),
                     true,
                   );

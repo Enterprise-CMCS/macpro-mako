@@ -181,6 +181,7 @@ jobs:
   publish:
     needs: [e2e]
     uses: ./.github/workflows/push-to-gh-pages.yml
+    if: ${{ github.ref != 'refs/heads/production' }} && ${{ github.ref != 'refs/heads/val' }}
     with:
       FILE_1_ARTIFACT_ID: ${{ needs.e2e.outputs.json_artifact_id }}
       FILE_1_DEPLOY_TO: ${{ needs.e2e.outputs.json_deploy_to }}

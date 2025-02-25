@@ -8,6 +8,7 @@ on:
     workflows:
       - Deploy
       - Code Climate Report
+      - Delete Playwright Report for Branch
     types:
       - completed
   workflow_dispatch:
