@@ -41,15 +41,11 @@ export const dashboardLoader = loader;
 
 export const Dashboard = () => {
   const { data: userObj, isLoading } = useGetUser();
-
   const osData = useOsData();
-  const [localSPAStorageCol, setLocalSPAStorageCol] = useLocalStorage("spaOSData", {
-    ...osData.state,
-    tab: "spas" as OsTab,
-  });
-  const [localWaiverStorageCol, setLocalWaiversStorageCol] = useLocalStorage("waiversOSData", {
-    ...osData.state,
-    tab: "waivers" as OsTab,
+
+  const [localStorageCol, setLocalStorageCol] = useLocalStorage("osData", {
+    spas: { ...osData.state, tab: "spas" as OsTab },
+    waivers: { ...osData.state, tab: "waivers" as OsTab },
   });
 
   const isAbleToAccessDashboard = () => {
@@ -96,13 +92,15 @@ export const Dashboard = () => {
               <Tabs
                 value={osData.state.tab}
                 onValueChange={(tab) => {
-                  if (tab === "spas") setLocalWaiversStorageCol(osData.state);
-                  else setLocalSPAStorageCol(osData.state);
+                  setLocalStorageCol((prev) => ({
+                    ...prev,
+                    [osData.state.tab]: osData.state,
+                  }));
 
                   osData.onSet(
                     (prev) => ({
                       ...prev,
-                      ...(tab === "spas" ? localSPAStorageCol : localWaiverStorageCol),
+                      ...localStorageCol[tab],
                     }),
                     true,
                   );

@@ -15,30 +15,31 @@ describe("UseLocalStorage", () => {
     expect(result.current[0]).toEqual(null);
   });
 
-  it("sets local storage with key spaOSColumns to hidden columns", () => {
-    const { result } = renderHook(() => useLocalStorage("spaOSColumns", ["test"]));
-    expect(global.localStorage.getItem("spaOSColumns")).toBe(JSON.stringify(["test"]));
-    expect(result.current[0]).toEqual(["test"]);
-  });
+  it("sets local storage with key osColumns to hidden columns", () => {
+    const { result } = renderHook(() =>
+      useLocalStorage("osColumns", { spas: ["test"], waivers: ["test"] }),
+    );
 
-  it("sets local storage with key waiverOSColumns to hidden columns", () => {
-    const { result } = renderHook(() => useLocalStorage("waiversOSColumns", ["test"]));
-    expect(global.localStorage.getItem("spaOSColumns")).toBe(JSON.stringify(["test"]));
-    expect(result.current[0]).toEqual(["test"]);
+    expect(global.localStorage.getItem("osColumns")).toBe(
+      JSON.stringify({ spas: ["test"], waivers: ["test"] }),
+    );
+    expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
   });
 
   it("holds values on rerender", () => {
-    const { result, rerender } = renderHook(() => useLocalStorage("spaOSColumns", ["test"]));
-    expect(result.current[0]).toEqual(["test"]);
+    const { result, rerender } = renderHook(() => useLocalStorage("osColumns", ["test"]));
+    expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
     rerender();
-    expect(result.current[0]).toEqual(["test"]);
+    expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
   });
 
   it("clears storage after removeItemLocalStorage is called", () => {
-    const { result } = renderHook(() => useLocalStorage("spaOSColumns", ["test"]));
-    expect(global.localStorage.getItem("spaOSColumns")).toBe(JSON.stringify(["test"]));
-    expect(result.current[0]).toEqual(["test"]);
+    const { result } = renderHook(() =>
+      useLocalStorage("osColumns", { spas: ["test"], waivers: ["test"] }),
+    );
+    expect(global.localStorage.getItem("osColumns")).toBe(JSON.stringify({ spas: ["test"], waivers: ["test"] });
+    expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
     removeItemLocalStorage();
-    expect(global.localStorage.getItem("spaOSColumns")).toBe(null);
+    expect(global.localStorage.getItem("osColumns")).toBe(null);
   });
 });

@@ -2,10 +2,8 @@ import { useState, useEffect } from "react";
 
 interface LocalStorageData {
   osQuery?: string;
-  spaOSColumns?: string[];
-  waiversOSColumns?: string[];
-  spaOSData?: object;
-  waiversOSData?: object;
+  osColumns?: string[];
+  osDashboardData?: object;
   [key: string]: any;
 }
 
