@@ -34,6 +34,7 @@ const LeftNavigation: React.FC = () => {
       </Accordion>
       
       <ContactHelpDesk />
+    </div>
   );
 };
 
