@@ -46,6 +46,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
         body: await render(<MedSpaCMSEmail variables={variables} />),
       };
     },
+    // example comment
     state: async (
       variables: Events["UploadSubsequentDocuments"] &
         CommonEmailVariables & { emails: EmailAddresses },
