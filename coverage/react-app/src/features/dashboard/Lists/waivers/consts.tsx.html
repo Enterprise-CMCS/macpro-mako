@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>49/49</span>
+                <span class='fraction'>47/47</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">98.03% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>50/51</span>
+                <span class='fraction'>43/43</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>46/46</span>
+                <span class='fraction'>45/45</span>
             </div>
         
             
@@ -234,13 +234,7 @@
 <a name='L169'></a><a href='#L169'>169</a>
 <a name='L170'></a><a href='#L170'>170</a>
 <a name='L171'></a><a href='#L171'>171</a>
-<a name='L172'></a><a href='#L172'>172</a>
-<a name='L173'></a><a href='#L173'>173</a>
-<a name='L174'></a><a href='#L174'>174</a>
-<a name='L175'></a><a href='#L175'>175</a>
-<a name='L176'></a><a href='#L176'>176</a>
-<a name='L177'></a><a href='#L177'>177</a>
-<a name='L178'></a><a href='#L178'>178</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L172'></a><a href='#L172'>172</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -277,26 +271,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-yes">697x</span>
+<span class="cline-any cline-yes">703x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">697x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">703x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">697x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">703x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -317,11 +305,11 @@
 <span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">697x</span>
-<span class="cline-any cline-yes">697x</span>
-<span class="cline-any cline-yes">523x</span>
-<span class="cline-any cline-yes">181x</span>
-<span class="cline-any cline-yes">342x</span>
+<span class="cline-any cline-yes">703x</span>
+<span class="cline-any cline-yes">703x</span>
+<span class="cline-any cline-yes">529x</span>
+<span class="cline-any cline-yes">174x</span>
+<span class="cline-any cline-yes">355x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -395,7 +383,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-yes">697x</span>
+<span class="cline-any cline-yes">703x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -421,9 +409,9 @@
 import { useGetUser } from "@/api";
 import { OsTableColumn } from "@/components";
 import { BLANK_VALUE } from "@/consts";
-import { LABELS, removeUnderscoresAndCapitalize } from "@/utils";
+import { removeUnderscoresAndCapitalize } from "@/utils";
 import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
-import { formatSeatoolDate } from "shared-utils";
+import { formatActionType, formatSeatoolDate } from "shared-utils";
 import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 &nbsp;
 const getColumns = (props) =&gt; {
@@ -466,14 +454,8 @@ const getColumns = (props) =&gt; {
     {
       field: "actionType.keyword",
       label: "Action Type",
-      transform: (data) =&gt; {
-        if (data.actionType === undefined) return BLANK_VALUE;
-        return LABELS[data.actionType as keyof typeof LABELS] || <span class="branch-1 cbranch-no" title="branch not covered" >data.actionType;</span>
-      },
-      cell: (data) =&gt;
-        data.actionType
-          ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
-          : BLANK_VALUE,
+      transform: (data) =&gt; formatActionType(data.actionType),
+      cell: (data) =&gt; formatActionType(data.actionType),
     },
     {
       field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
@@ -601,7 +583,7 @@ export const useWaiverTableColumns = (): { columns?: OsTableColumn[]; isLoading:
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-02-25T02:04:56.065Z
+                at 2025-02-25T15:31:07.016Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>
