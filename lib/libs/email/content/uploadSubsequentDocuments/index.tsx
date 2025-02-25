@@ -42,7 +42,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
     ) => {
       return {
         to: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
-        subject: `Action required: review new documents for 1915(c) ${variables.actionType} Waiver ${variables.id}`,
+        subject: `Action required: review new documents for ${variables.authority} ${variables.id}`,
         body: await render(<MedSpaCMSEmail variables={variables} />),
       };
     },
@@ -52,7 +52,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Additional documents submitted for 1915(c) ${variables.actionType} Waiver ${variables.id}`,
+        subject: `Additional documents submitted for ${variables.authority} ${variables.id}`,
         body: await render(<MedSpaStateEmail variables={variables} />),
       };
     },
@@ -90,7 +90,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.cpocEmail,
           ...variables.emails.srtEmails,
         ],
-        subject: `Action required: review new documents for ${variables.authority} ${variables.id}`,
+        subject: `Action required: review new documents for 1915(c) ${variables.actionType} Waiver ${variables.id}`,
         body: await render(<AppKCMSEmail variables={variables} />),
       };
     },
@@ -100,7 +100,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Additional documents submitted for ${variables.authority} ${variables.id}`,
+        subject: `Additional documents submitted for 1915(c) ${variables.actionType} Waiver ${variables.id}`,
         body: await render(<AppKStateEmail variables={variables} />),
       };
     },
