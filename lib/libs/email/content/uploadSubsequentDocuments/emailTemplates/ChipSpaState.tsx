@@ -12,7 +12,7 @@ export const ChipSpaStateEmail = ({
 }) => (
   <BaseEmailTemplate
     previewText={`Additional documents submitted for CHIP SPA ${variables.id}`}
-    heading={`You've successfully submitted the following to CMS reviewers for CHIP SPA ${variables.id}`}
+    heading={`You've successfully submitted the following to CMS reviewers for CHIP SPA ${variables.id}:`}
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >

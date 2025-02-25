@@ -3,7 +3,6 @@ import { screen, within, waitForElementToBeRemoved, cleanup } from "@testing-lib
 import userEvent from "@testing-library/user-event";
 import { ExportToCsv } from "export-to-csv";
 import { opensearch } from "shared-types";
-import { LABELS } from "@/utils";
 import {
   renderDashboard,
   getDashboardQueryString,
@@ -37,6 +36,7 @@ import {
 import { BLANK_VALUE } from "@/consts";
 import * as api from "@/api";
 import { WaiversList } from "./index";
+import { formatActionType } from "shared-utils";
 
 const pendingDoc = {
   ...PENDING_SUBMITTED_ITEM._source,
@@ -116,42 +116,42 @@ const getExpectedExportData = (useCmsStatus: boolean) => {
       Authority: pendingDoc.authority,
       "Waiver Number": pendingDoc.id,
       Status: useCmsStatus ? pendingDoc.cmsStatus : pendingDoc.stateStatus,
-      "Action Type": LABELS[pendingDoc.actionType] || pendingDoc.actionType,
+      "Action Type": formatActionType(pendingDoc.actionType),
     },
     {
       ...PENDING_RAI_REQUEST_ITEM_EXPORT,
       Authority: raiRequestDoc.authority,
       "Waiver Number": raiRequestDoc.id,
       Status: useCmsStatus ? raiRequestDoc.cmsStatus : raiRequestDoc.stateStatus,
-      "Action Type": LABELS[raiRequestDoc.actionType] || raiRequestDoc.actionType,
+      "Action Type": formatActionType(raiRequestDoc.actionType),
     },
     {
       ...PENDING_RAI_RECEIVED_ITEM_EXPORT,
       Authority: raiReceivedDoc.authority,
       "Waiver Number": raiReceivedDoc.id,
       Status: useCmsStatus ? raiReceivedDoc.cmsStatus : raiReceivedDoc.stateStatus,
-      "Action Type": LABELS[raiReceivedDoc.actionType] || raiReceivedDoc.actionType,
+      "Action Type": formatActionType(raiReceivedDoc.actionType),
     },
     {
       ...RAI_WITHDRAW_ENABLED_ITEM_EXPORT,
       Authority: withdrawEnabledDoc.authority,
       "Waiver Number": withdrawEnabledDoc.id,
       Status: `${useCmsStatus ? withdrawEnabledDoc.cmsStatus : withdrawEnabledDoc.stateStatus} (Withdraw Formal RAI Response - Enabled)`,
-      "Action Type": LABELS[withdrawEnabledDoc.actionType] || withdrawEnabledDoc.actionType,
+      "Action Type": formatActionType(withdrawEnabledDoc.actionType),
     },
     {
       ...RAI_WITHDRAW_DISABLED_ITEM_EXPORT,
       Authority: withdrawDisabledDoc.authority,
       "Waiver Number": withdrawDisabledDoc.id,
       Status: useCmsStatus ? withdrawDisabledDoc.cmsStatus : withdrawDisabledDoc.stateStatus,
-      "Action Type": LABELS[withdrawDisabledDoc.actionType] || withdrawDisabledDoc.actionType,
+      "Action Type": formatActionType(withdrawDisabledDoc.actionType),
     },
     {
       ...APPROVED_ITEM_EXPORT,
       Authority: approvedDoc.authority,
       "Waiver Number": approvedDoc.id,
       Status: useCmsStatus ? approvedDoc.cmsStatus : approvedDoc.stateStatus,
-      "Action Type": LABELS[approvedDoc.actionType] || approvedDoc.actionType,
+      "Action Type": formatActionType(approvedDoc.actionType),
     },
     {
       ...BLANK_ITEM_EXPORT,
@@ -225,9 +225,7 @@ const verifyRow = (
   cellIndex++;
   expect(cells[cellIndex].textContent).toEqual(doc.authority || BLANK_VALUE); // Authority
   cellIndex++;
-  expect(cells[cellIndex].textContent).toEqual(
-    LABELS[doc.actionType] || doc.actionType || BLANK_VALUE,
-  ); // Authority
+  expect(cells[cellIndex].textContent).toEqual(formatActionType(doc.actionType)); // Authority
   cellIndex++;
   expect(cells[cellIndex].textContent).toEqual(status); // Status
   cellIndex++;
