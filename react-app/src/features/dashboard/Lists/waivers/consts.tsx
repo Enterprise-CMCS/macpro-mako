@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useGetUser } from "@/api";
 import { OsTableColumn } from "@/components";
 import { BLANK_VALUE } from "@/consts";
-import { LABELS, removeUnderscoresAndCapitalize } from "@/utils";
+import { removeUnderscoresAndCapitalize } from "@/utils";
 import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
-import { formatSeatoolDate } from "shared-utils";
+import { formatActionType, formatSeatoolDate } from "shared-utils";
 import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 
 const getColumns = (props) => {
@@ -47,14 +47,8 @@ const getColumns = (props) => {
     {
       field: "actionType.keyword",
       label: "Action Type",
-      transform: (data) => {
-        if (data.actionType === undefined) return BLANK_VALUE;
-        return LABELS[data.actionType as keyof typeof LABELS] || data.actionType;
-      },
-      cell: (data) =>
-        data.actionType
-          ? LABELS[data.actionType as keyof typeof LABELS] || data.actionType
-          : BLANK_VALUE,
+      transform: (data) => formatActionType(data.actionType),
+      cell: (data) => formatActionType(data.actionType),
     },
     {
       field: props?.isCms ? "cmsStatus.keyword" : "stateStatus.keyword",
