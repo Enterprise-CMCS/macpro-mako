@@ -25,6 +25,6 @@ export const featureFlags = {
    */
   UAT_HIDE_MMDL_BANNER: {
     flag: "uat-hide-mmdl-banner",
-    defaultValue: false, //Default to visible
+    defaultValue: "OFF", //Default to visible
   },
 } as const;
