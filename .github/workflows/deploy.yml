@@ -5,9 +5,6 @@ on:
     branches:
       - "*"
       - "!skipci*"
-    paths-ignore:
-      - ".github/**"
-      - ".vscode/**"
 
 concurrency:
   group: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}-group
