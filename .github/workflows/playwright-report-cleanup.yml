@@ -11,7 +11,7 @@ jobs:
   delete_reports:
     name: Delete Playwright Reports
     runs-on: ubuntu-latest
-    if: ${{ github.event.ref_type == 'branch' }}
+    # if: ${{ github.event.ref_type == 'branch' }}
     env:
       # Contains all reports for deleted branch
       BRANCH_NAME: publish-fixes-3
