@@ -55,7 +55,7 @@ export const Dashboard = () => {
     );
   };
 
-  if (isLoading) {
+  if (isLoading || osData.tabLoading) {
     return <LoadingSpinner />;
   }
 
@@ -116,18 +116,12 @@ export const Dashboard = () => {
                     </TabsTrigger>
                   </TabsList>
                 </div>
-                {osData.tabLoading ? (
-                  <LoadingSpinner />
-                ) : (
-                  <>
-                    <TabsContent value="spas">
-                      <SpasList />
-                    </TabsContent>
-                    <TabsContent value="waivers">
-                      <WaiversList />
-                    </TabsContent>
-                  </>
-                )}
+                <TabsContent value="spas">
+                  <SpasList />
+                </TabsContent>
+                <TabsContent value="waivers">
+                  <WaiversList />
+                </TabsContent>
               </Tabs>
             </div>
           </div>
