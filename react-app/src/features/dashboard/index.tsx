@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { QueryClient } from "@tanstack/react-query";
 import { Plus as PlusIcon } from "lucide-react";
 import { getUser, useGetUser } from "@/api";
@@ -42,6 +43,12 @@ export const dashboardLoader = loader;
 export const Dashboard = () => {
   const { data: userObj, isLoading } = useGetUser();
   const osData = useOsData();
+  const [delayedTab, setDelayedTab] = useState(osData.state.tab);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDelayedTab(osData.state.tab), 700);
+    return () => clearTimeout(timer);
+  }, [osData.state.tab]);
 
   const isAbleToAccessDashboard = () => {
     return (
@@ -109,12 +116,16 @@ export const Dashboard = () => {
                     </TabsTrigger>
                   </TabsList>
                 </div>
-                <TabsContent value="spas">
-                  <SpasList />
-                </TabsContent>
-                <TabsContent value="waivers">
-                  <WaiversList />
-                </TabsContent>
+                {delayedTab === "spas" && (
+                  <TabsContent value="spas">
+                    <SpasList />
+                  </TabsContent>
+                )}
+                {delayedTab === "waivers" && (
+                  <TabsContent value="waivers">
+                    <WaiversList />
+                  </TabsContent>
+                )}
               </Tabs>
             </div>
           </div>
