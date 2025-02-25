@@ -252,7 +252,7 @@ describe("Layout", () => {
       await setupLayoutTest(VIEW_MODES.DESKTOP);
       expect(screen.getByText("Home")).toBeInTheDocument();
       expect(screen.getByText("Dashboard")).toBeInTheDocument();
-      expect(screen.getByText("FAQ")).toBeInTheDocument();
+      expect(screen.getByText("View FAQs")).toBeInTheDocument();
       expect(screen.getByText("Webforms")).toBeInTheDocument();
       expect(screen.queryByText("Sign In")).not.toBeInTheDocument();
       expect(screen.queryByText("Register")).not.toBeInTheDocument();
@@ -261,7 +261,7 @@ describe("Layout", () => {
     it("renders nav links for unauthenticated user in desktop view", async () => {
       await setupLayoutTest(VIEW_MODES.DESKTOP, null);
       expect(screen.getByText("Home")).toBeInTheDocument();
-      expect(screen.getByText("FAQ")).toBeInTheDocument();
+      expect(screen.getByText("View FAQs")).toBeInTheDocument();
       expect(screen.queryByText("Dashboard")).not.toBeInTheDocument();
       expect(screen.queryByText("Webforms")).not.toBeInTheDocument();
     });
@@ -278,7 +278,7 @@ describe("Layout", () => {
 
       expect(screen.getByText("Home")).toBeInTheDocument();
       expect(screen.getByText("Dashboard")).toBeInTheDocument();
-      expect(screen.getByText("FAQ")).toBeInTheDocument();
+      expect(screen.getByText("View FAQs")).toBeInTheDocument();
       expect(screen.getByText("Webforms")).toBeInTheDocument();
 
       // Close the menu

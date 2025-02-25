@@ -7529,7 +7529,20 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                    This is text
+                                    <br />
+                                    <br />
+                                    <br />
+                                    with a bunch of b/n linebreaks
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                     to test that linebreaks get converted to &lt;br&gt; elements
                                   </p>
                                 </tr>
                               </tbody>
@@ -8023,7 +8036,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                    Testing with an emoji 😄
                                   </p>
                                 </tr>
                               </tbody>
@@ -8517,7 +8530,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                    No additional information submitted
                                   </p>
                                 </tr>
                               </tbody>
@@ -9012,7 +9025,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                 <p
                                   style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
-                                  This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                  No additional information submitted
                                 </p>
                               </tr>
                             </tbody>
@@ -17982,7 +17995,20 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                    This is text
+                                    <br />
+                                    <br />
+                                    <br />
+                                    with a bunch of b/n linebreaks
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                     to test that linebreaks get converted to &lt;br&gt; elements
                                   </p>
                                 </tr>
                               </tbody>
@@ -18477,7 +18503,20 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                 <p
                                   style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
-                                  This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                  This is text
+                                  <br />
+                                  <br />
+                                  <br />
+                                  with a bunch of b/n linebreaks
+                                  <br />
+                                  <br />
+                                  <br />
+                                  <br />
+                                  <br />
+                                  <br />
+                                  <br />
+                                  <br />
+                                   to test that linebreaks get converted to &lt;br&gt; elements
                                 </p>
                               </tr>
                             </tbody>
@@ -27410,7 +27449,20 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                    This is text
+                                    <br />
+                                    <br />
+                                    <br />
+                                    with a bunch of b/n linebreaks
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                     to test that linebreaks get converted to &lt;br&gt; elements
                                   </p>
                                 </tr>
                               </tbody>
@@ -27904,7 +27956,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                    Testing with an emoji 😄
                                   </p>
                                 </tr>
                               </tbody>
@@ -28399,7 +28451,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                 <p
                                   style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
-                                  This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                  Testing with an emoji 😄
                                 </p>
                               </tr>
                             </tbody>

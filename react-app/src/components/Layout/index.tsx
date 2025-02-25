@@ -44,7 +44,7 @@ const useGetLinks = () => {
               ),
           },
           {
-            name: "FAQ",
+            name: "View FAQs",
             link: "/faq",
             condition: true,
           },
