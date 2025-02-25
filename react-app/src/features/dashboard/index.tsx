@@ -43,7 +43,7 @@ export const Dashboard = () => {
   const { data: userObj, isLoading } = useGetUser();
   const osData = useOsData();
 
-  const [localStorageCol, setLocalStorageCol] = useLocalStorage("osData", {
+  const [localStorageCol, setLocalStorageCol] = useLocalStorage("osDashboardData", {
     spas: { ...osData.state, tab: "spas" as OsTab },
     waivers: { ...osData.state, tab: "waivers" as OsTab },
   });
