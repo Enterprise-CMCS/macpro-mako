@@ -116,23 +116,18 @@ export const Dashboard = () => {
                     </TabsTrigger>
                   </TabsList>
                 </div>
-                <p>{osData.tabLoading}</p>
-                {osData.state.tab === "spas" &&
-                  (osData.tabLoading ? (
-                    <LoadingSpinner />
-                  ) : (
+                {osData.tabLoading ? (
+                  <LoadingSpinner />
+                ) : (
+                  <>
                     <TabsContent value="spas">
                       <SpasList />
                     </TabsContent>
-                  ))}
-                {osData.state.tab === "waivers" &&
-                  (osData.tabLoading ? (
-                    <LoadingSpinner />
-                  ) : (
                     <TabsContent value="waivers">
                       <WaiversList />
                     </TabsContent>
-                  ))}
+                  </>
+                )}
               </Tabs>
             </div>
           </div>

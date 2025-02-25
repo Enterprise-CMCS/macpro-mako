@@ -58,6 +58,7 @@ export const useOsData = () => {
     try {
       if (params.state.tab !== previousTab.current) {
         setTabLoading(true);
+        previousTab.current = params.state.tab;
       }
 
       await mutateAsync(
@@ -87,9 +88,6 @@ export const useOsData = () => {
   useEffect(() => {
     onRequest(params.state);
   }, [params.queryString]);
-  useEffect(() => {
-    previousTab.current = params.state.tab;
-  }, [params.state.tab]);
   return { data, isLoading, error, ...params, tabLoading };
 };
 export const useOsAggregate = () => {
