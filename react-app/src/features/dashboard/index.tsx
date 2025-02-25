@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { QueryClient } from "@tanstack/react-query";
 import { Plus as PlusIcon } from "lucide-react";
 import { getUser, useGetUser } from "@/api";
@@ -43,11 +42,6 @@ export const dashboardLoader = loader;
 export const Dashboard = () => {
   const { data: userObj, isLoading } = useGetUser();
   const osData = useOsData();
-  const [tabChanged, setTabChanged] = useState(false);
-
-  useEffect(() => {
-    setTabChanged((t) => !t);
-  }, [osData.state.tab]);
 
   const isAbleToAccessDashboard = () => {
     return (
@@ -103,7 +97,6 @@ export const Dashboard = () => {
                     }),
                     true,
                   );
-                  setTabChanged(false);
                 }}
               >
                 <div className="flex max-w-screen-xl mx-auto px-4 lg:px-8">
@@ -116,20 +109,23 @@ export const Dashboard = () => {
                     </TabsTrigger>
                   </TabsList>
                 </div>
-                {osData.isLoading && tabChanged ? (
-                  <LoadingSpinner />
-                ) : (
-                  <TabsContent value="spas">
-                    <SpasList />
-                  </TabsContent>
-                )}
-                {osData.isLoading && tabChanged ? (
-                  <LoadingSpinner />
-                ) : (
-                  <TabsContent value="waivers">
-                    <WaiversList />
-                  </TabsContent>
-                )}
+                <p>{osData.tabLoading}</p>
+                {osData.state.tab === "spas" &&
+                  (osData.tabLoading ? (
+                    <LoadingSpinner />
+                  ) : (
+                    <TabsContent value="spas">
+                      <SpasList />
+                    </TabsContent>
+                  ))}
+                {osData.state.tab === "waivers" &&
+                  (osData.tabLoading ? (
+                    <LoadingSpinner />
+                  ) : (
+                    <TabsContent value="waivers">
+                      <WaiversList />
+                    </TabsContent>
+                  ))}
               </Tabs>
             </div>
           </div>
