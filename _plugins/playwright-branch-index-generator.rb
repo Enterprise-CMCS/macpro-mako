@@ -6,7 +6,6 @@ module Jekyll
       @base = base
       @dir = dir
       @name = 'index.html'
-      puts "adding to directory #{@dir}"
 
       self.process(@name)
       self.read_yaml(File.join(base, '_layouts'), 'playwright-branch.html')
