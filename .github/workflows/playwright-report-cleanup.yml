@@ -52,4 +52,7 @@ jobs:
             git commit -am "workflow: remove all reports and data for branch $BRANCH_NAME"
             git pull origin gh-pages --rebase -s recursive -X ours
             git push
+            echo "Deleted Playwright Data or Reports for $BRANCH_NAME from GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Did not have Playwright Data or Reports to delete" >> "$GITHUB_STEP_SUMMARY"
           fi
