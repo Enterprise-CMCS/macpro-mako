@@ -12,7 +12,7 @@ export default () => {
         territory: "CO",
         authority: "Medicaid SPA",
         event: "new-medicaid-submission",
-        actionType: "New",
+        actionType: "Initial",
         attachments: {
           tribalConsultation: attachments.tribalConsultation,
           cmsForm179: attachments.cmsForm179,

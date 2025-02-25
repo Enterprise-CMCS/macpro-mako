@@ -1,13 +1,16 @@
 name: GitHub Pages Build and Deploy
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - gh-pages
   workflow_run:
     workflows:
       - Deploy
       - Code Climate Report
     types:
       - completed
+  workflow_dispatch:
 
 jobs:
   build:

@@ -6,6 +6,7 @@ import { Button } from "@/components";
 import { Link } from "react-router";
 import { FAQ_TAB } from "@/router";
 import { CardWithTopBorder } from "@/components";
+import { useHideBanner } from "@/hooks/useHideBanner";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -30,6 +31,8 @@ export const loader = (queryClient: QueryClient) => {
 };
 
 export const Welcome = () => {
+  const isSectionHidden = useHideBanner();
+
   return (
     <>
       <div className="w-full bg-primary p-2 md:p-4">
@@ -46,7 +49,10 @@ export const Welcome = () => {
       {/* End Hero Section */}
       {/* Two Column Main Layout */}
       <div className="max-w-screen-xl mx-auto p-4 lg:px-8">
-        <div className="m-auto max-w-[767px]">
+        <div
+          className="m-auto max-w-[767px]"
+          style={{ display: isSectionHidden ? "none" : "block" }}
+        >
           <h2 className="text-2xl font-bold">New and Notable</h2>
           <CardWithTopBorder className="">
             <p className="py-5 pl-6 pr-20">
