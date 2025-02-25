@@ -30,12 +30,21 @@ export const Faq = () => {
 
   // Get the flag value for hiding the MMDL banner.
   const isBannerHidden = useHideBanner();
+  const anchorsToHide = [
+    "spa-admendments",
+    "abp-spa-templates",
+    "abp-implementation-guides-spa",
+    "mpc-spa-templates",
+    "mpc-spa-implementation-guides",
+    "chip-spa-templates",
+    "chip-spa-implentation-guides",
+  ];
 
   const filteredFAQContent = oneMACFAQContent.map((section) => {
     if (section.sectionTitle === "State Plan Amendments (SPAs)" && isBannerHidden) {
       return {
         ...section,
-        qanda: section.qanda.filter((qa) => qa.anchorText !== "spa-admendments"),
+        qanda: section.qanda.filter((qa) => !anchorsToHide.includes(qa.anchorText)),
       };
     }
     return section;

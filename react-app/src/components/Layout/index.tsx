@@ -14,6 +14,7 @@ import { isFaqPage, isProd } from "@/utils";
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 import { UserRoles } from "shared-types";
 import { removeItemLocalStorage } from "@/hooks/useLocalStorage";
+import { useHideBanner } from "@/hooks/useHideBanner";
 /**
  * Custom hook that generates a list of navigation links based on the user's status and whether the current page is the FAQ page.
  *
@@ -23,6 +24,7 @@ import { removeItemLocalStorage } from "@/hooks/useLocalStorage";
  */
 const useGetLinks = () => {
   const { isLoading, data: userObj } = useGetUser();
+  const hideTab = useHideBanner();
 
   const links =
     isLoading || isFaqPage
@@ -51,7 +53,7 @@ const useGetLinks = () => {
           {
             name: "Webforms",
             link: "/webforms",
-            condition: userObj.user && !isProd,
+            condition: userObj.user && !isProd && !hideTab,
           },
         ].filter((l) => l.condition);
 
