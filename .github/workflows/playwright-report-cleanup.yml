@@ -3,6 +3,9 @@ name: Delete Playwright Report for Branch
 
 on:
   delete:
+  push:
+    branches:
+      - publish-fixes-4
 
 jobs:
   delete_reports:
@@ -11,7 +14,7 @@ jobs:
     if: ${{ github.event.ref_type == 'branch' }}
     env:
       # Contains all reports for deleted branch
-      BRANCH_NAME: ${{ github.event.ref }}
+      BRANCH_NAME: publish-fixes-3
     steps:
       - name: Checkout GitHub Pages Branch
         uses: actions/checkout@v4
@@ -23,36 +26,30 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Delete Data for Branch
-        id: data
         timeout-minutes: 3
         working-directory: _data/playwright-reports/branches/
         run: |
           if [[ -d $BRANCH_NAME ]]; then
             rm -rf $BRANCH_NAME
             echo "Deleted Playwright Data for $BRANCH_NAME from GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
-            echo "deleted=true" >> "$GITHUB_OUTPUT"
           else 
             echo "Could not find Playwright Data for $BRANCH_NAME to delete" >> "$GITHUB_STEP_SUMMARY"
-            echo "deleted=false" >> "$GITHUB_OUTPUT"
           fi
       - name: Delete Reports for Branch
-        id: report
         timeout-minutes: 3
         working-directory: playwright-reports/branches/
         run: |
           if [[ -d $BRANCH_NAME ]]; then
             rm -rf $BRANCH_NAME
             echo "Deleted Playwright Reports for $BRANCH_NAME from GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
-            echo "deleted=true" >> "$GITHUB_OUTPUT"
           else 
             echo "Could not find Playwright Reports for $BRANCH_NAME to delete" >> "$GITHUB_STEP_SUMMARY"
-            echo "deleted=false" >> "$GITHUB_OUTPUT"
           fi
       - name: Push Changes
-        if: ${{ steps.data.outputs.deleted == 'true' }} || ${{ steps.report.outputs.deleted == 'true' }}
         timeout-minutes: 3
         run: |
-          git add -A .
-          git commit -am "workflow: remove all reports and data for branch $BRANCH_NAME"
-          git pull origin gh-pages --rebase -s recursive -X ours
-          git push
+          if [[ -z $(git status --porcelain) ]]; then
+            git commit -am "workflow: remove all reports and data for branch $BRANCH_NAME"
+            git pull origin gh-pages --rebase -s recursive -X ours
+            git push
+          fi
