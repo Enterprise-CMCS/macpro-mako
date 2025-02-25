@@ -44,6 +44,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
         // example change for demonstration purposes only
         to: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
         subject: `Action required: review new documents for 1915(c) ${variables.actionType} Waiver ${variables.id}`,
+        // new comment
         body: await render(<MedSpaCMSEmail variables={variables} />),
       };
     },
