@@ -1,0 +1,18 @@
+{
+  "[jekyll]": {
+      "editor.formatOnSave": false,
+      "editor.wordWrap": "on",
+      "editor.renderWhitespace": "all",
+      "editor.acceptSuggestionOnEnter": "off"
+  },
+  "[liquid]": {
+    "editor.defaultFormatter": "sissel.shopify-liquid",
+    "editor.formatOnSave": false
+  },
+  "files.associations": {
+      "*.md": "liquid",
+      "*.markdown": "liquid",
+      "*.html": "liquid",
+      "*.liquid": "liquid",
+  },
+}

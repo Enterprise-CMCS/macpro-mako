@@ -37,14 +37,14 @@
   justify-content: space-between;
 }
 
-.coverage-success {
+.coverage-pass {
   color: rgb(2, 119, 2);
 }
 
-.coverage-failure {
+.coverage-fail {
   color: rgb(155, 0, 0);
 }
 
-.coverage-warning {
+.coverage-warn {
   color: rgb(243, 186, 17);
 }

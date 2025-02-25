@@ -1,24 +1,28 @@
 {% if site.data.playwright-reports.branches.size > 0 %}
+  <!-- if there are branches in the data, display the summaries for the branches -->
   {% for branch in site.data.playwright-reports.branches %}
+    <!-- loop through the branches and assign the key as the branch_name -->
     {% assign branch_name = branch[0] %}
+    <!-- capture creates a link using the branch_name -->
     {% capture branch_link %}/playwright-reports/branches/{{branch_name}}{% endcapture %}
     <div class="branch-header">
-      <h3>{{branch_name}}</h3>
+      <h3>{{ branch_name }}</h3>
+      <!-- Liquid provides a helper method that will create the link relative to the baseurl set in _config.yml -->
       <a href="{{ branch_link | relative_url }}">View Previous Runs</a>
     </div>
 
-    {% assign run_ids = "" | split: "," %}
-    {% for run in site.data.playwright-reports.branches[branch_name] %}
-      {% assign run_id = run[0] %}
-      {% assign run_ids = run_ids | push: run_id %}
-      {% endfor %}
-    {% assign latest_run_id = run_ids | last %}
-
+    <!-- use the custom key_list filter to get all of the run_ids in the branch, then reverse the list and get the first one -->
+    {% assign latest_run_id = site.data.playwright-reports.branches[branch_name] | key_list | reverse | first %}
     {% assign data = site.data.playwright-reports.branches[branch_name][latest_run_id] %}
+    <!-- capture creates a link to the actual report file-->
     {% capture report_link %}/playwright-reports/branches/{{branch_name}}/{{latest_run_id}}.html{% endcapture %}
-    {% assign relative_report_link = report_link | relative_url %}
-    {% include playwright-summary.html branch=branch_name run_id=latest_run_id data=data url=relative_report_link %}
+    <!--
+      Include the html snippet in `_includes/playwright-summary.html` with the parameters the `branch_name` variable as `branch`,
+      the `latest_run_id` variable as `run_id`, the `data` variable as `data`, and the `report_link` variable as `url`.
+    -->
+    {% include playwright-summary.html branch=branch_name run_id=latest_run_id data=data url=report_link %}
   {% endfor %}
 {% else %}
+  <!-- if there are no branches in the data, display a message that there is nothing to display -->
   <div>There are currently no branch reports.</div>
 {% endif %}

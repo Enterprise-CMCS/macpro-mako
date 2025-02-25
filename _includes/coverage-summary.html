@@ -1,35 +1,42 @@
 {% if include.total %}
+  <!-- if total was included, display the summary -->
   <div class="test-coverage-report-container">
+    <!-- loop through the keys in total -->
     {% for stat in include.total %}
+      <!-- assign the key to name -->
       {% assign name = stat[0] %}
+      <!--
+        the coverage summary includes a field called "branchesTrue", but we want to skip it because it's a duplicate of "branches"
+      -->
       {% if name != "branchesTrue" %}
-      <div class="stat-container">
-        <div class="stat-header">
-          {{ name | capitalize }}
+        <!-- assign the value to values -->
+        {% assign values = stat[1] %}
+        <div class="stat-container">
+          <div class="stat-header">
+            <!-- Liquid provides a helper method to capitalize text -->
+            {{ name | capitalize }}
+          </div>
+          <!-- use the custom coverage_status filter with the stat name to get the correct styling for the percent -->
+          <div class="stat-percent coverage-{{ values.pct | coverage_status: name }}">
+            <!-- Liquid provides a helper method for rounding floats to a number -->
+            {{ values.pct | round: 1 }} %
+          </div>
+          <div class="stat-fraction">
+            {{ values.covered }} / {{ values.total }}
+          </div>
         </div>
-        {% capture coverage-class %}
-          {% if stat[1].pct >= site.data.coverage.thresholds.pass[name] %}
-            coverage-success
-          {% elsif stat[1].pct >= site.data.coverage.thresholds.fail[name] %}
-            coverage-warn
-          {% else %}
-            coverage-failure
-          {% endif %}  
-        {% endcapture %}
-        <div class="stat-percent {{ coverage-class }}">
-          {{ stat[1].pct | round: 1 }} %
-        </div>
-        <div class="stat-fraction">
-          {{ stat[1].covered }} / {{ stat[1].total }}
-        </div>
-      </div>
       {% endif %}
     {% endfor %}
   </div>
   <div class="coverage-links">
-    <a href="{{ "/coverage" | relative_url }}" target="_blank">View Full Report</a>
-    <a rel="noopener" href="https://codeclimate.com/github/Enterprise-CMCS/macpro-mako" target="_blank">Code Climate</a>
+    <!-- Liquid provides a helper method that will create the link relative to the baseurl set in _config.yml -->
+    <a href="{{ '/coverage' | relative_url }}" target="_blank">View Full Report</a>
+    <a
+      rel="noopener"
+      href="https://codeclimate.com/github/Enterprise-CMCS/macpro-mako"
+      target="_blank">Code Climate</a>
   </div>
 {% else %}
+  <!-- if the total was not included, display a message that there is nothing to display -->
   <div>There is currently no coverage report for {{ include.branch }}.</div>
 {% endif %}
