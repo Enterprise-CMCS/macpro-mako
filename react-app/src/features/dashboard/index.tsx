@@ -43,11 +43,10 @@ export const dashboardLoader = loader;
 export const Dashboard = () => {
   const { data: userObj, isLoading } = useGetUser();
   const osData = useOsData();
-  const [delayedTab, setDelayedTab] = useState(osData.state.tab);
+  const [tabChanged, setTabChanged] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setDelayedTab(osData.state.tab), 700);
-    return () => clearTimeout(timer);
+    setTabChanged((t) => !t);
   }, [osData.state.tab]);
 
   const isAbleToAccessDashboard = () => {
@@ -104,6 +103,7 @@ export const Dashboard = () => {
                     }),
                     true,
                   );
+                  setTabChanged(false);
                 }}
               >
                 <div className="flex max-w-screen-xl mx-auto px-4 lg:px-8">
@@ -116,12 +116,16 @@ export const Dashboard = () => {
                     </TabsTrigger>
                   </TabsList>
                 </div>
-                {delayedTab === "spas" && (
+                {osData.isLoading && tabChanged ? (
+                  <LoadingSpinner />
+                ) : (
                   <TabsContent value="spas">
                     <SpasList />
                   </TabsContent>
                 )}
-                {delayedTab === "waivers" && (
+                {osData.isLoading && tabChanged ? (
+                  <LoadingSpinner />
+                ) : (
                   <TabsContent value="waivers">
                     <WaiversList />
                   </TabsContent>
