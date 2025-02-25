@@ -1,3 +1,4 @@
+import { useGetItem } from "@/api";
 import {
   ActionForm,
   FormControl,
@@ -14,10 +15,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components";
-import { Link, useParams } from "react-router";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
-import { useGetItem } from "@/api";
+import { useState } from "react";
+import { Link, useParams } from "react-router";
 import { getFAQLinkForAttachments } from "../../faqLinks";
 
 const actionTypeMap = {
@@ -28,6 +29,8 @@ const actionTypeMap = {
 export const TemporaryExtensionForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
   const { data: submission } = useGetItem(waiverId, { enabled: waiverId !== undefined });
+
+  const [temporaryExtensionType, setTemporaryExtensionType] = useState<string>("1915(b)");
 
   const type =
     submission && submission._source
@@ -58,7 +61,13 @@ export const TemporaryExtensionForm = () => {
                     <strong className="font-bold">Temporary Extension Type</strong>{" "}
                     <RequiredIndicator />
                   </FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      setTemporaryExtensionType(value);
+                    }}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="-- select a temporary extension type --" />
@@ -172,7 +181,7 @@ export const TemporaryExtensionForm = () => {
         },
       }}
       attachments={{
-        faqLink: getFAQLinkForAttachments("temporary-extension"),
+        faqLink: getFAQLinkForAttachments(`temporary-extension-${temporaryExtensionType}`),
       }}
       documentPollerArgs={{
         property: (data) => data.id,
