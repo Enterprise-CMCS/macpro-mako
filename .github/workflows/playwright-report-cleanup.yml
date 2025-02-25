@@ -3,27 +3,20 @@ name: Delete Playwright Report for Branch
 
 on:
   delete:
-  push:
-    branches:
-      - publish-fixes-4
 
 jobs:
   delete_reports:
     name: Delete Playwright Reports
     runs-on: ubuntu-latest
-    # if: ${{ github.event.ref_type == 'branch' }}
+    if: ${{ github.event.ref_type == 'branch' }}
     env:
       # Contains all reports for deleted branch
-      BRANCH_NAME: publish-fixes-3
+      BRANCH_NAME: ${{ github.event.ref }}
     steps:
       - name: Checkout GitHub Pages Branch
         uses: actions/checkout@v4
         with:
           ref: gh-pages
-      - name: Set Git User
-        # see: https://github.com/actions/checkout/issues/13#issuecomment-724415212
-        run: |
-
       - name: Delete Data for Branch
         timeout-minutes: 3
         working-directory: _data/playwright-reports/branches/
