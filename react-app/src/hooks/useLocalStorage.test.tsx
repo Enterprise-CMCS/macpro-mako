@@ -26,8 +26,6 @@ describe("UseLocalStorage", () => {
     expect(global.localStorage.getItem("osData")).toBe(
       JSON.stringify({ osColumns: { spas: ["test"], waivers: ["test"] } }),
     );
-
-    // Verify the hook's returned value
     expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
   });
 

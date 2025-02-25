@@ -331,16 +331,12 @@ describe("OsMainView", () => {
       );
 
       expect(screen.queryByRole("dialog")).toBeNull();
-
       await user.click(screen.queryByRole("button", { name: "Columns (1 hidden)" }));
-
       const columns = screen.queryByRole("dialog");
-
       expect(within(columns).getByText("Submission Source")).toBeInTheDocument();
       expect(within(columns).getByText("Submission Source").parentElement).toHaveClass(
         "text-gray-800",
       );
-
       expect(within(columns).getByText("Authority")).toBeInTheDocument();
       expect(within(columns).getByText("Authority").parentElement).toHaveClass("text-gray-400");
     });
