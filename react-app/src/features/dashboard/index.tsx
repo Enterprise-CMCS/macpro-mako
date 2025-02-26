@@ -55,7 +55,7 @@ export const Dashboard = () => {
     );
   };
 
-  if (isLoading) {
+  if (isLoading || osData.tabLoading) {
     return <LoadingSpinner />;
   }
 
