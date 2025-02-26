@@ -32,7 +32,6 @@ export const LegacyFaq = (props : any) => {
     <>
 
       <SubNavHeader>
-      <h1>{props.flagValue.toString()}</h1>
         <h1 className="text-xl font-medium">Frequently Asked Questions</h1> 
       </SubNavHeader>
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">

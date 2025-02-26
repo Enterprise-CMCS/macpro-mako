@@ -27,7 +27,7 @@ export const Faq = () => {
 
   return (
     <>
-      {flagValue ? <LegacyFaq flagValue={flagValue} /> : <NewFaq />}
+      {flagValue ? <NewFaq />: <LegacyFaq flagValue={flagValue} /> }
     </>
   );
 };
