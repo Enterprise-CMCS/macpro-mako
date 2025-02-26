@@ -187,7 +187,7 @@ describe("Dashboard", () => {
         expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("true");
       });
 
-      const spaTab = await screen.findByRole("heading", { level: 2, name: "SPAs" });
+      const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
       expect(spaTab).toBeInTheDocument();
       expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("false");
 
