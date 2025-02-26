@@ -6,6 +6,8 @@ export default () => {
     <Waiver1915bStateEmail
       variables={{
         ...emailTemplateValue,
+        additionalInformation:
+          "This is text\n\n\nwith a bunch of b/n linebreaks\n\n\n\n\n\n\n\n to test that linebreaks get converted to <br> elements",
         attachments: {
           b4WaiverApplication: {
             label: "1915(b) Comprehensive (Contracting) Waiver Application Pre-print",
@@ -33,7 +35,7 @@ export default () => {
         event: "contracting-initial",
         id: "CO-9987.R21.00",
         authority: "1915(b)",
-        actionType: "New",
+        actionType: "Initial",
       }}
     />
   );

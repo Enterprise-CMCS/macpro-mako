@@ -6,7 +6,6 @@ import {
   BasicFooter,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
-import { formatActionType } from "shared-utils";
 
 export const WaiverCMSEmail = ({
   variables,
@@ -15,7 +14,7 @@ export const WaiverCMSEmail = ({
 }) => (
   <BaseEmailTemplate
     previewText={`Waiver RAI Response for ${variables.id} Submitted`}
-    heading={`The OneMAC Submission Portal received a(n) ${formatActionType(variables.actionType)} Waiver RAI Response Submission:`}
+    heading={`The OneMAC Submission Portal received a(n) ${variables.actionType} Waiver RAI Response Submission:`}
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >
