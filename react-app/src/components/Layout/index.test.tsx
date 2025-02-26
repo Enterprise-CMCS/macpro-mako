@@ -24,6 +24,10 @@ vi.mock("@/components", () => ({
   UserPrompt: () => null,
   Banner: () => null,
   ScrollToTop: () => null,
+  Accordion: () => null,
+  AccordionItem: () => null,
+  AccordionTrigger: () => null,
+  AccordionContent: () => null,
 }));
 
 // Navigation mock
