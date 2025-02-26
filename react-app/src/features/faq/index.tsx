@@ -9,7 +9,6 @@ export const Faq = () => {
 
   useEffect(() => {
     const isFlagOn = ldClient?.variation("toggleFaq");
-    console.log("isFlagOn:  " + isFlagOn);
     setFlagValue(isFlagOn)
   }, [ldClient.allFlags()]);
 
