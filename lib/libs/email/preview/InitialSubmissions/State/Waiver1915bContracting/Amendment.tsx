@@ -6,6 +6,7 @@ export default () => {
     <Waiver1915bStateEmail
       variables={{
         ...emailTemplateValue,
+        additionalInformation: "",
         waiverNumber: "CO-1234.R21.00",
         attachments: {
           b4WaiverApplication: {
