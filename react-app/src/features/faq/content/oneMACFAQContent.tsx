@@ -222,7 +222,9 @@ export const oneMACFAQContent: FAQContent[] = [
                 Your browser does not support the video tag.
               </video>
               <details>
-                <summary className="cursor-pointer">Show/Hide Transcript</summary>
+                <summary className="cursor-pointer text-lg text-center text-primary py-2">
+                  Show/Hide Transcript
+                </summary>
                 <div className="space-y-2">
                   <p>
                     The purpose of this video is to provide state users with an overview of OneMAC's
@@ -359,7 +361,9 @@ export const oneMACFAQContent: FAQContent[] = [
                 Your browser does not support the video tag.
               </video>
               <details>
-                <summary className="cursor-pointer">Show/Hide Transcript</summary>
+                <summary className="cursor-pointer text-lg text-center text-primary py-2">
+                  Show/Hide Transcript
+                </summary>
                 <div className="space-y-2">
                   <p>
                     OneMac has been updated with a new package action called upload subsequent
