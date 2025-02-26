@@ -33,5 +33,5 @@ test('should render new faq when flag is true', () => {
 
   render(<Faq />);
 
-  expect(screen.getByText('New FAQ')).toBeInTheDocument();
+  expect(screen.getByText('FAQ Content Goes Here')).toBeInTheDocument();
 });
