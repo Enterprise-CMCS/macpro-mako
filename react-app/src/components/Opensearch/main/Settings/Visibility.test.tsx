@@ -33,8 +33,8 @@ describe("VisibilityPopover", () => {
             field: "finalDispositionDate",
             label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
         onItemClick={vi.fn()}
@@ -43,8 +43,8 @@ describe("VisibilityPopover", () => {
             field: "finalDispositionDate",
             label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
       />,
@@ -113,8 +113,8 @@ describe("VisibilityPopover", () => {
             field: "finalDispositionDate",
             label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
         onItemClick={onItemClick}
@@ -123,8 +123,8 @@ describe("VisibilityPopover", () => {
             field: "finalDispositionDate",
             label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
       />,
@@ -164,8 +164,8 @@ describe("VisibilityPopover", () => {
             field: "finalDispositionDate",
             label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
         onItemClick={onItemClick}
@@ -174,8 +174,8 @@ describe("VisibilityPopover", () => {
             field: "finalDispositionDate",
             label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
       />,
@@ -218,8 +218,8 @@ describe("VisibilityPopover", () => {
             field: "finalDispositionDate",
             label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
         onItemClick={onItemClick}
@@ -228,8 +228,8 @@ describe("VisibilityPopover", () => {
             field: "finalDispositionDate",
             label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
       />,

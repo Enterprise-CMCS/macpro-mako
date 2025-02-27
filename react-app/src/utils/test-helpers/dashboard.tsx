@@ -46,8 +46,8 @@ export const HIDDEN_COLUMN: OsTableColumn = {
   field: "finalDispositionDate",
   label: "Final Disposition",
   hidden: true,
-  transform: (data) => data.origin ?? BLANK_VALUE,
-  cell: (data) => data.origin ?? BLANK_VALUE,
+  transform: (data) => finalDispositionDate ?? BLANK_VALUE,
+  cell: (data) => finalDispositionDate ?? BLANK_VALUE,
 };
 
 export const NO_TRANSFORM_COLUMN: OsTableColumn = {
