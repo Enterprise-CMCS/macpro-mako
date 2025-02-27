@@ -17,13 +17,13 @@ class BannerObserver extends Observer<Banner> {
   create = (data: Banner) => {
     this.publish(data);
     this.observed = { ...data };
-    Cookies.set("alert", JSON.stringify(data), { expires: 1 });
+    Cookies.set("banner", JSON.stringify(data), { expires: 1 });
   };
 
   dismiss = () => {
     this.publish(null);
     this.observed = null;
-    Cookies.remove("alert");
+    Cookies.remove("banner");
   };
 }
 
@@ -58,10 +58,10 @@ export const Banner = () => {
   }, []);
 
   useEffect(() => {
-    const storedBanner = Cookies.get("alert");
+    const storedBanner = Cookies.get("banner");
     if (storedBanner) {
       const parsedBanner: Banner = JSON.parse(storedBanner);
-      bannerState.create(parsedBanner); // Restore the banner state
+      bannerState.create(parsedBanner);
     }
   }, []);
 
