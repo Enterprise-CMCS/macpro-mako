@@ -3423,7 +3423,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Initial waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Initial submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -3606,7 +3606,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      1915(b) Waiver Initial Number
                                       :
                                     </p>
                                   </td>
@@ -3967,7 +3967,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Renewal waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Renewal submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -4150,7 +4150,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Renewal Waiver Number
+                                      1915(b) Waiver Renewal Number
                                       :
                                     </p>
                                   </td>
@@ -4557,7 +4557,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Amendment waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Amendment submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -4740,7 +4740,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Amendment Waiver Number
+                                      1915(b) Waiver Amendment Number
                                       :
                                     </p>
                                   </td>
@@ -5102,7 +5102,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                   <h1
                     style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                   >
-                    The OneMAC Submission Portal received a 1915(b) Amendment waiver submission:
+                    The OneMAC Submission Portal received a 1915(b) Waiver Amendment submission:
                   </h1>
                   <ul
                     style="margin-left: -20px;"
@@ -5285,7 +5285,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                   >
-                                    Amendment Waiver Number
+                                    1915(b) Waiver Amendment Number
                                     :
                                   </p>
                                 </td>
@@ -9049,7 +9049,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Initial waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Initial submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -9232,7 +9232,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      1915(b) Waiver Initial Number
                                       :
                                     </p>
                                   </td>
@@ -9593,7 +9593,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Renewal waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Renewal submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -9776,7 +9776,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Renewal Waiver Number
+                                      1915(b) Waiver Renewal Number
                                       :
                                     </p>
                                   </td>
@@ -10183,7 +10183,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Amendment waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Amendment submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -10366,7 +10366,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Amendment Waiver Number
+                                      1915(b) Waiver Amendment Number
                                       :
                                     </p>
                                   </td>
@@ -10727,7 +10727,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Initial waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Initial submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -10910,7 +10910,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      1915(b) Waiver Initial Number
                                       :
                                     </p>
                                   </td>
@@ -11271,7 +11271,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Renewal waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Renewal submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -11454,7 +11454,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Renewal Waiver Number
+                                      1915(b) Waiver Renewal Number
                                       :
                                     </p>
                                   </td>
@@ -11815,7 +11815,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Amendment waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Amendment submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -11998,7 +11998,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Amendment Waiver Number
+                                      1915(b) Waiver Amendment Number
                                       :
                                     </p>
                                   </td>
@@ -12360,7 +12360,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                   <h1
                     style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                   >
-                    The OneMAC Submission Portal received a 1915(b) Amendment waiver submission:
+                    The OneMAC Submission Portal received a 1915(b) Waiver Amendment submission:
                   </h1>
                   <ul
                     style="margin-left: -20px;"
@@ -12543,7 +12543,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                   >
-                                    Amendment Waiver Number
+                                    1915(b) Waiver Amendment Number
                                     :
                                   </p>
                                 </td>
@@ -20036,7 +20036,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Initial waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Initial submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -20219,7 +20219,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      1915(b) Waiver Initial Number
                                       :
                                     </p>
                                   </td>
@@ -20581,7 +20581,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                   <h1
                     style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                   >
-                    The OneMAC Submission Portal received a 1915(b) Initial waiver submission:
+                    The OneMAC Submission Portal received a 1915(b) Waiver Initial submission:
                   </h1>
                   <ul
                     style="margin-left: -20px;"
@@ -20764,7 +20764,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                   >
-                                    Initial Waiver Number
+                                    1915(b) Waiver Initial Number
                                     :
                                   </p>
                                 </td>
@@ -24528,7 +24528,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Initial waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Initial submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -24711,7 +24711,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      1915(b) Waiver Initial Number
                                       :
                                     </p>
                                   </td>
@@ -25072,7 +25072,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Renewal waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Renewal submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -25255,7 +25255,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Renewal Waiver Number
+                                      1915(b) Waiver Renewal Number
                                       :
                                     </p>
                                   </td>
@@ -25662,7 +25662,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Amendment waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Amendment submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -25845,7 +25845,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Amendment Waiver Number
+                                      1915(b) Waiver Amendment Number
                                       :
                                     </p>
                                   </td>
@@ -26206,7 +26206,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Initial waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Initial submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -26389,7 +26389,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      1915(b) Waiver Initial Number
                                       :
                                     </p>
                                   </td>
@@ -26751,7 +26751,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                   <h1
                     style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                   >
-                    The OneMAC Submission Portal received a 1915(b) Initial waiver submission:
+                    The OneMAC Submission Portal received a 1915(b) Waiver Initial submission:
                   </h1>
                   <ul
                     style="margin-left: -20px;"
@@ -26934,7 +26934,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                   >
-                                    Initial Waiver Number
+                                    1915(b) Waiver Initial Number
                                     :
                                   </p>
                                 </td>
@@ -34754,7 +34754,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Initial waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Initial submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -34937,7 +34937,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      1915(b) Waiver Initial Number
                                       :
                                     </p>
                                   </td>
@@ -35298,7 +35298,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Renewal waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Renewal submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -35481,7 +35481,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Renewal Waiver Number
+                                      1915(b) Waiver Renewal Number
                                       :
                                     </p>
                                   </td>
@@ -35889,7 +35889,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                   <h1
                     style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                   >
-                    The OneMAC Submission Portal received a 1915(b) Renewal waiver submission:
+                    The OneMAC Submission Portal received a 1915(b) Waiver Renewal submission:
                   </h1>
                   <ul
                     style="margin-left: -20px;"
@@ -36072,7 +36072,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                   >
-                                    Renewal Waiver Number
+                                    1915(b) Waiver Renewal Number
                                     :
                                   </p>
                                 </td>
@@ -39882,7 +39882,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Initial waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Initial submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -40065,7 +40065,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      1915(b) Waiver Initial Number
                                       :
                                     </p>
                                   </td>
@@ -40426,7 +40426,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Renewal waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Renewal submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -40609,7 +40609,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Renewal Waiver Number
+                                      1915(b) Waiver Renewal Number
                                       :
                                     </p>
                                   </td>
@@ -41016,7 +41016,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Amendment waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Amendment submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -41199,7 +41199,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Amendment Waiver Number
+                                      1915(b) Waiver Amendment Number
                                       :
                                     </p>
                                   </td>
@@ -41560,7 +41560,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Initial waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Initial submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -41743,7 +41743,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      1915(b) Waiver Initial Number
                                       :
                                     </p>
                                   </td>
@@ -42104,7 +42104,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Renewal waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Waiver Renewal submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -42287,7 +42287,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Renewal Waiver Number
+                                      1915(b) Waiver Renewal Number
                                       :
                                     </p>
                                   </td>
@@ -42649,7 +42649,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                   <h1
                     style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                   >
-                    The OneMAC Submission Portal received a 1915(b) Renewal waiver submission:
+                    The OneMAC Submission Portal received a 1915(b) Waiver Renewal submission:
                   </h1>
                   <ul
                     style="margin-left: -20px;"
@@ -42832,7 +42832,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                   >
-                                    Renewal Waiver Number
+                                    1915(b) Waiver Renewal Number
                                     :
                                   </p>
                                 </td>
