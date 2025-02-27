@@ -239,6 +239,6 @@ describe("VisibilityPopover", () => {
     const stateColumnMenuItem = within(screen.getByRole("dialog")).getByText("Final Disposition");
     await user.click(stateColumnMenuItem.parentElement);
 
-    expect(onItemClick).toHaveBeenCalledWith("origin.keyword");
+    expect(onItemClick).toHaveBeenCalledWith("finalDispositionDate");
   });
 });

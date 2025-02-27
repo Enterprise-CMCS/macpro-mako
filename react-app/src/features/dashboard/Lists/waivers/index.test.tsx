@@ -319,7 +319,7 @@ describe("WaiversList", () => {
     });
 
     it("should display the dashboard as expected", async () => {
-      verifyFiltering(4); // 4 hidden columns by default
+      verifyFiltering(3); // 3 hidden columns by default
       verifyChips([]); // no filters by default
       verifyColumns(hasActions);
       verifyPagination(hitCount);
