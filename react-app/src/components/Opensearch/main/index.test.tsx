@@ -304,8 +304,8 @@ describe("OsMainView", () => {
 
       const storedData = JSON.parse(global.localStorage.getItem("osData") || "{}");
       expect(storedData.osColumns).toEqual({
-        spas: ["origin.keyword"],
-        waivers: ["origin.keyword"],
+        spas: ["finalDispositionDate"],
+        waivers: ["finalDispositionDate"],
       });
     });
 
