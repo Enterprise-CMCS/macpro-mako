@@ -1,5 +1,11 @@
 import { describe, expect, it, vi, beforeAll, afterAll, beforeEach, afterEach } from "vitest";
-import { screen, within, waitForElementToBeRemoved, cleanup } from "@testing-library/react";
+import {
+  screen,
+  within,
+  waitForElementToBeRemoved,
+  cleanup,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   renderWithQueryClientAndMemoryRouter,
@@ -173,12 +179,13 @@ describe("Dashboard", () => {
     it("should handle switching to the Waiver tab", async () => {
       const isWaiver = true;
 
-      const waiverTab = screen.queryByRole("heading", { level: 2, name: "Waivers" });
+      await waitFor(async () => {
+        const waiverTab = await screen.findByRole("heading", { level: 2, name: "Waivers" });
+        await user.click(waiverTab.parentElement);
 
-      await user.click(waiverTab.parentElement);
-
-      expect(waiverTab).toBeInTheDocument();
-      expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+        expect(waiverTab).toBeInTheDocument();
+        expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+      });
 
       const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
       expect(spaTab).toBeInTheDocument();
@@ -192,12 +199,13 @@ describe("Dashboard", () => {
     it("should handle switching back to the SPA tab", async () => {
       const isWaiver = false;
 
-      const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
+      await waitFor(async () => {
+        const spaTab = await screen.findByRole("heading", { level: 2, name: "SPAs" });
+        await user.click(spaTab.parentElement);
 
-      await user.click(spaTab.parentElement);
-
-      expect(spaTab).toBeInTheDocument();
-      expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+        expect(spaTab).toBeInTheDocument();
+        expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+      });
 
       const waiverTab = screen.queryByRole("heading", { level: 2, name: "Waivers" });
       expect(waiverTab).toBeInTheDocument();
@@ -266,11 +274,13 @@ describe("Dashboard", () => {
     it("should handle switching to the Waiver tab", async () => {
       const isWaiver = true;
 
-      const waiverTab = screen.queryByRole("heading", { level: 2, name: "Waivers" });
-      await user.click(waiverTab.parentElement);
+      await waitFor(async () => {
+        const waiverTab = await screen.findByRole("heading", { level: 2, name: "Waivers" });
+        await user.click(waiverTab.parentElement);
 
-      expect(waiverTab).toBeInTheDocument();
-      expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+        expect(waiverTab).toBeInTheDocument();
+        expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+      });
 
       const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
       expect(spaTab).toBeInTheDocument();
@@ -284,11 +294,13 @@ describe("Dashboard", () => {
     it("should handle switching back to the SPA tab", async () => {
       const isWaiver = false;
 
-      const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
-      await user.click(spaTab.parentElement);
+      await waitFor(async () => {
+        const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
+        await user.click(spaTab.parentElement);
 
-      expect(spaTab).toBeInTheDocument();
-      expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+        expect(spaTab).toBeInTheDocument();
+        expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+      });
 
       const waiverTab = screen.queryByRole("heading", { level: 2, name: "Waivers" });
       expect(waiverTab).toBeInTheDocument();
