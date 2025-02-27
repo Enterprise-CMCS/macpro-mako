@@ -24,6 +24,7 @@ export const baseSchema = z.object({
     }),
   }),
   additionalInformation: z.string().max(4000).nullable().default(null).optional(),
+  submissionStatus: z.enum(["draft", "submitted", "deleted"]).default("submitted"),
 });
 
 export const schema = baseSchema.extend({

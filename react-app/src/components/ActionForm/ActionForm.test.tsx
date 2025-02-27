@@ -687,4 +687,82 @@ describe("ActionForm", () => {
 
     expect(screen.queryByText(PROGRESS_REMINDER)).not.toBeInTheDocument();
   });
+
+  test("handles draft submission", async () => {
+    await renderFormAsync(
+      <ActionForm
+        title="Action Form Title"
+        schema={z.object({})}
+        fields={() => null}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        promptOnLeavingForm={{
+          header: "Hello World Header",
+          body: "Hello World Body",
+        }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    // Find and click draft button
+    const draftButton = await screen.findByTestId("save-as-draft-button");
+    await userEvent.click(draftButton);
+
+    // Should show success message
+    expect(screen.getByText(/Draft Saved/)).toBeInTheDocument();
+  });
+
+  test("draft submission bypasses validation", async () => {
+    await renderFormAsync(
+      <ActionForm
+        title="Action Form Title"
+        schema={z.object({})}
+        fields={() => null}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        promptOnLeavingForm={{
+          header: "Hello World Header",
+          body: "Hello World Body",
+        }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    // Click draft without filling required fields
+    const draftButton = await screen.findByTestId("save-as-draft-button");
+    await userEvent.click(draftButton);
+
+    // Should not show validation errors
+    expect(screen.queryByText(/Required:/)).not.toBeInTheDocument();
+  });
+
+  test("regular submission still requires validation", async () => {
+    await renderFormAsync(
+      <ActionForm
+        title="Action Form Title"
+        schema={z.object({})}
+        fields={() => null}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        promptOnLeavingForm={{
+          header: "Hello World Header",
+          body: "Hello World Body",
+        }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    // Try to submit without required fields
+    const submitButton = await screen.findByTestId("submit-action-form");
+    await userEvent.click(submitButton);
+
+    // Should show validation errors
+    expect(screen.getByText(/Required:/)).toBeInTheDocument();
+  });
 });

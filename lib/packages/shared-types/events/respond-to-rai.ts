@@ -55,6 +55,7 @@ export const baseSchema = z.object({
   additionalInformation: z.string().max(4000).nullable().default(null),
   attachments: chipSpaAttachments.or(waiverAttachments).or(medicaidSpaAttachments),
   id: z.string(),
+  submissionStatus: z.enum(["draft", "submitted", "deleted"]).default("submitted"),
 });
 export const schema = baseSchema.extend({
   origin: z.literal("mako").default("mako"),

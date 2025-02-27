@@ -23,6 +23,7 @@ export const baseSchema = z.object({
         message: "Additional Information can not be only whitespace.",
       }),
   ),
+  submissionStatus: z.enum(["draft", "submitted", "deleted"]).default("submitted"),
 });
 
 export const schema = baseSchema.extend({

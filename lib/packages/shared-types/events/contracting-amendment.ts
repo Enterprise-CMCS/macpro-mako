@@ -36,6 +36,7 @@ export const baseSchema = z.object({
       message:
         "The approved 1915(b) Initial or Renewal Number must be in the format of SS-####.R##.## or SS-#####.R##.##.",
     }),
+  submissionStatus: z.enum(["draft", "submitted", "deleted"]).default("submitted"),
 });
 
 export const schema = baseSchema.extend({
