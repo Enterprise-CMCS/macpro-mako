@@ -30,8 +30,8 @@ describe("VisibilityPopover", () => {
             cell: (data) => data.authority ?? BLANK_VALUE,
           },
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate",
+            label: "Final Disposition",
             hidden: true,
             transform: (data) => data.origin ?? BLANK_VALUE,
             cell: (data) => data.origin ?? BLANK_VALUE,
@@ -40,8 +40,8 @@ describe("VisibilityPopover", () => {
         onItemClick={vi.fn()}
         hiddenColumns={[
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate",
+            label: "Final Disposition",
             hidden: true,
             transform: (data) => data.origin ?? BLANK_VALUE,
             cell: (data) => data.origin ?? BLANK_VALUE,
@@ -110,8 +110,8 @@ describe("VisibilityPopover", () => {
             cell: (data) => data.authority ?? BLANK_VALUE,
           },
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate",
+            label: "Final Disposition",
             hidden: true,
             transform: (data) => data.origin ?? BLANK_VALUE,
             cell: (data) => data.origin ?? BLANK_VALUE,
@@ -120,8 +120,8 @@ describe("VisibilityPopover", () => {
         onItemClick={onItemClick}
         hiddenColumns={[
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate",
+            label: "Final Disposition",
             hidden: true,
             transform: (data) => data.origin ?? BLANK_VALUE,
             cell: (data) => data.origin ?? BLANK_VALUE,
@@ -161,8 +161,8 @@ describe("VisibilityPopover", () => {
             cell: (data) => data.authority ?? BLANK_VALUE,
           },
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate",
+            label: "Final Disposition",
             hidden: true,
             transform: (data) => data.origin ?? BLANK_VALUE,
             cell: (data) => data.origin ?? BLANK_VALUE,
@@ -171,8 +171,8 @@ describe("VisibilityPopover", () => {
         onItemClick={onItemClick}
         hiddenColumns={[
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate",
+            label: "Final Disposition",
             hidden: true,
             transform: (data) => data.origin ?? BLANK_VALUE,
             cell: (data) => data.origin ?? BLANK_VALUE,
@@ -215,8 +215,8 @@ describe("VisibilityPopover", () => {
             cell: (data) => data.authority ?? BLANK_VALUE,
           },
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate",
+            label: "Final Disposition",
             hidden: true,
             transform: (data) => data.origin ?? BLANK_VALUE,
             cell: (data) => data.origin ?? BLANK_VALUE,
@@ -225,8 +225,8 @@ describe("VisibilityPopover", () => {
         onItemClick={onItemClick}
         hiddenColumns={[
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate",
+            label: "Final Disposition",
             hidden: true,
             transform: (data) => data.origin ?? BLANK_VALUE,
             cell: (data) => data.origin ?? BLANK_VALUE,
@@ -236,7 +236,7 @@ describe("VisibilityPopover", () => {
     );
     await user.click(screen.getByRole("button", { name: "Columns (1 hidden)" }));
 
-    const stateColumnMenuItem = within(screen.getByRole("dialog")).getByText("Submission Source");
+    const stateColumnMenuItem = within(screen.getByRole("dialog")).getByText("Final Disposition");
     await user.click(stateColumnMenuItem.parentElement);
 
     expect(onItemClick).toHaveBeenCalledWith("origin.keyword");

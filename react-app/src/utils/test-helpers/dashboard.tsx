@@ -43,8 +43,8 @@ export const DEFAULT_COLUMNS: OsTableColumn[] = [
 ];
 
 export const HIDDEN_COLUMN: OsTableColumn = {
-  field: "origin.keyword",
-  label: "Submission Source",
+  field: "finalDispositionDate",
+  label: "Final Disposition",
   hidden: true,
   transform: (data) => data.origin ?? BLANK_VALUE,
   cell: (data) => data.origin ?? BLANK_VALUE,
@@ -262,7 +262,6 @@ export const PENDING_SUBMITTED_ITEM_EXPORT = {
   "CPOC Name": PENDING_SUBMITTED_ITEM._source.leadAnalystName,
   "Final Disposition": "-- --",
   "Formal RAI Requested": "-- --",
-  "Submission Source": "OneMAC",
 };
 
 export const PENDING_RAI_REQUEST_ITEM = {
@@ -288,7 +287,6 @@ export const PENDING_RAI_REQUEST_ITEM_EXPORT = {
   "CPOC Name": PENDING_RAI_REQUEST_ITEM._source.leadAnalystName,
   "Final Disposition": "-- --",
   "Formal RAI Requested": "03/01/2024",
-  "Submission Source": "OneMAC",
 };
 
 export const PENDING_RAI_RECEIVED_ITEM = {
@@ -315,7 +313,6 @@ export const PENDING_RAI_RECEIVED_ITEM_EXPORT = {
   "CPOC Name": PENDING_RAI_RECEIVED_ITEM._source.leadAnalystName,
   "Final Disposition": "-- --",
   "Formal RAI Requested": "03/01/2024",
-  "Submission Source": "OneMAC",
 };
 
 export const RAI_WITHDRAW_ENABLED_ITEM = {
@@ -343,7 +340,6 @@ export const RAI_WITHDRAW_ENABLED_ITEM_EXPORT = {
   "CPOC Name": RAI_WITHDRAW_ENABLED_ITEM._source.leadAnalystName,
   "Final Disposition": "-- --",
   "Formal RAI Requested": "03/01/2024",
-  "Submission Source": "OneMAC",
 };
 
 export const RAI_WITHDRAW_DISABLED_ITEM = {
@@ -371,7 +367,6 @@ export const RAI_WITHDRAW_DISABLED_ITEM_EXPORT = {
   "CPOC Name": RAI_WITHDRAW_DISABLED_ITEM._source.leadAnalystName,
   "Final Disposition": "-- --",
   "Formal RAI Requested": "03/01/2024",
-  "Submission Source": "OneMAC",
 };
 
 export const APPROVED_ITEM = {
@@ -397,7 +392,6 @@ export const APPROVED_ITEM_EXPORT = {
   "CPOC Name": APPROVED_ITEM._source.leadAnalystName,
   "Final Disposition": "05/01/2024",
   "Formal RAI Requested": "-- --",
-  "Submission Source": "OneMAC",
 };
 
 export const BLANK_ITEM = {
@@ -421,5 +415,4 @@ export const BLANK_ITEM_EXPORT = {
   "CPOC Name": "-- --",
   "Final Disposition": "-- --",
   "Formal RAI Requested": "-- --",
-  "Submission Source": "OneMAC",
 };
