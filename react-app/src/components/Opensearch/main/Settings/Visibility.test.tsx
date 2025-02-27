@@ -30,7 +30,7 @@ describe("VisibilityPopover", () => {
             cell: (data) => data.authority ?? BLANK_VALUE,
           },
           {
-            field: "finalDispositionDate",
+            field: "finalDispositionDate.keyword",
             label: "Final Disposition",
             hidden: true,
             transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
@@ -40,7 +40,7 @@ describe("VisibilityPopover", () => {
         onItemClick={vi.fn()}
         hiddenColumns={[
           {
-            field: "finalDispositionDate",
+            field: "finalDispositionDate.keyword",
             label: "Final Disposition",
             hidden: true,
             transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
@@ -110,7 +110,7 @@ describe("VisibilityPopover", () => {
             cell: (data) => data.authority ?? BLANK_VALUE,
           },
           {
-            field: "finalDispositionDate",
+            field: "finalDispositionDate.keyword",
             label: "Final Disposition",
             hidden: true,
             transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
@@ -120,7 +120,7 @@ describe("VisibilityPopover", () => {
         onItemClick={onItemClick}
         hiddenColumns={[
           {
-            field: "finalDispositionDate",
+            field: "finalDispositionDate.keyword",
             label: "Final Disposition",
             hidden: true,
             transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
@@ -161,7 +161,7 @@ describe("VisibilityPopover", () => {
             cell: (data) => data.authority ?? BLANK_VALUE,
           },
           {
-            field: "finalDispositionDate",
+            field: "finalDispositionDate.keyword",
             label: "Final Disposition",
             hidden: true,
             transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
@@ -171,7 +171,7 @@ describe("VisibilityPopover", () => {
         onItemClick={onItemClick}
         hiddenColumns={[
           {
-            field: "finalDispositionDate",
+            field: "finalDispositionDate.keyword",
             label: "Final Disposition",
             hidden: true,
             transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
@@ -215,7 +215,7 @@ describe("VisibilityPopover", () => {
             cell: (data) => data.authority ?? BLANK_VALUE,
           },
           {
-            field: "finalDispositionDate",
+            field: "finalDispositionDate.keyword",
             label: "Final Disposition",
             hidden: true,
             transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
@@ -225,7 +225,7 @@ describe("VisibilityPopover", () => {
         onItemClick={onItemClick}
         hiddenColumns={[
           {
-            field: "finalDispositionDate",
+            field: "finalDispositionDate.keyword",
             label: "Final Disposition",
             hidden: true,
             transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
