@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { UserRoles, opensearch } from "shared-types";
 import { getOsData, useOsSearch, useGetUser } from "@/api";
@@ -50,8 +50,17 @@ export const useOsData = () => {
     opensearch.main.Field,
     opensearch.main.Response
   >();
+
+  const [tabLoading, setTabLoading] = useState(false);
+  const previousTab = useRef(params.state.tab);
+
   const onRequest = async (query: opensearch.main.State, options?: any) => {
     try {
+      if (params.state.tab !== previousTab.current) {
+        setTabLoading(true);
+        previousTab.current = params.state.tab;
+      }
+
       await mutateAsync(
         {
           index: "main",
@@ -63,16 +72,23 @@ export const useOsData = () => {
             ...(DEFAULT_FILTERS[params.state.tab].filters || []),
           ],
         },
-        { ...options, onSuccess: (res) => setData(res.hits) },
+        {
+          ...options,
+          onSuccess: (res) => {
+            setData(res.hits);
+            setTabLoading(false);
+          },
+        },
       );
     } catch (error) {
       console.error("Error occurred during search:", error);
+      setTabLoading(false);
     }
   };
   useEffect(() => {
     onRequest(params.state);
   }, [params.queryString]);
-  return { data, isLoading, error, ...params };
+  return { data, isLoading, error, ...params, tabLoading };
 };
 export const useOsAggregate = () => {
   const { data: user } = useGetUser();
