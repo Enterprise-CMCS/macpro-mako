@@ -43,7 +43,7 @@ export const DEFAULT_COLUMNS: OsTableColumn[] = [
 ];
 
 export const HIDDEN_COLUMN: OsTableColumn = {
-  field: "finalDispositionDate",
+  field: "finalDispositionDate.keyword",
   label: "Final Disposition",
   hidden: true,
   cell: (data) => data.finalDispositionDate ?? BLANK_VALUE,
@@ -88,7 +88,7 @@ export const DEFAULT_FILTERS: opensearch.Filterable<opensearch.main.Field>[] = [
   },
   {
     label: "Final Disposition",
-    field: "finalDispositionDate",
+    field: "finalDispositionDate.keyword",
     component: "dateRange",
     prefix: "must",
     type: "range",
