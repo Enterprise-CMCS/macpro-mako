@@ -387,7 +387,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -769,7 +769,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -816,7 +816,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -1169,7 +1198,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -1241,7 +1270,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -1594,7 +1652,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -2197,7 +2255,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -2209,7 +2267,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -2691,7 +2749,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -2703,7 +2761,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -3185,7 +3243,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -3197,7 +3255,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -3680,7 +3738,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -3692,7 +3750,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                     </tbody>
                   </table>
                   <p
-                    style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                    style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                   >
                     This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -4235,7 +4293,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -4617,7 +4675,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -4664,7 +4722,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -5017,7 +5104,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -5089,7 +5176,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -5442,7 +5558,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -6045,7 +6161,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -6057,7 +6173,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -6539,7 +6655,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -6551,7 +6667,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -7033,7 +7149,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -7045,7 +7161,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -7527,9 +7643,22 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                    This is text
+                                    <br />
+                                    <br />
+                                    <br />
+                                    with a bunch of b/n linebreaks
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                     to test that linebreaks get converted to &lt;br&gt; elements
                                   </p>
                                 </tr>
                               </tbody>
@@ -7539,7 +7668,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -8021,9 +8150,9 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                    Testing with an emoji 😄
                                   </p>
                                 </tr>
                               </tbody>
@@ -8033,7 +8162,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -8515,9 +8644,9 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                    No additional information submitted
                                   </p>
                                 </tr>
                               </tbody>
@@ -8527,7 +8656,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -9010,9 +9139,9 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
-                                  This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                  No additional information submitted
                                 </p>
                               </tr>
                             </tbody>
@@ -9022,7 +9151,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                     </tbody>
                   </table>
                   <p
-                    style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                    style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                   >
                     This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -9565,7 +9694,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -10065,7 +10194,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -10622,7 +10751,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -11004,7 +11133,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -11051,7 +11180,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -11329,7 +11487,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -11376,7 +11534,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                 >
                   <tbody>
                     <tr>
-                      <td />
+                      <td>
+                        <table
+                          align="center"
+                          border="0"
+                          cellpadding="0"
+                          cellspacing="0"
+                          role="presentation"
+                          style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                          width="100%"
+                        >
+                          <tbody>
+                            <tr>
+                              <td>
+                                <p
+                                  style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                >
+                                  U.S. Centers for Medicare & Medicaid Services
+                                </p>
+                                <p
+                                  style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                >
+                                  © 
+                                  2023
+                                   | 7500 Security Boulevard, Baltimore, MD 21244
+                                </p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -11828,7 +12015,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -12210,7 +12397,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -12257,7 +12444,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -12610,7 +12826,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -12682,7 +12898,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -13035,7 +13280,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -13638,7 +13883,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -13650,7 +13895,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -14133,7 +14378,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -14145,7 +14390,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                     </tbody>
                   </table>
                   <p
-                    style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                    style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                   >
                     This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -14688,7 +14933,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -15070,7 +15315,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -15117,7 +15362,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -15470,7 +15744,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -15542,7 +15816,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -15895,7 +16198,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -16498,7 +16801,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -16510,7 +16813,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -16992,7 +17295,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -17004,7 +17307,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -17486,7 +17789,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -17498,7 +17801,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -17980,9 +18283,22 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                    This is text
+                                    <br />
+                                    <br />
+                                    <br />
+                                    with a bunch of b/n linebreaks
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                     to test that linebreaks get converted to &lt;br&gt; elements
                                   </p>
                                 </tr>
                               </tbody>
@@ -17992,7 +18308,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -18475,9 +18791,22 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
-                                  This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                  This is text
+                                  <br />
+                                  <br />
+                                  <br />
+                                  with a bunch of b/n linebreaks
+                                  <br />
+                                  <br />
+                                  <br />
+                                  <br />
+                                  <br />
+                                  <br />
+                                  <br />
+                                  <br />
+                                   to test that linebreaks get converted to &lt;br&gt; elements
                                 </p>
                               </tr>
                             </tbody>
@@ -18487,7 +18816,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                     </tbody>
                   </table>
                   <p
-                    style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                    style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                   >
                     This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -19030,7 +19359,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -19412,7 +19741,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -19459,7 +19788,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -19812,7 +20170,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -19884,7 +20242,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -20238,7 +20625,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -20310,7 +20697,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                 >
                   <tbody>
                     <tr>
-                      <td />
+                      <td>
+                        <table
+                          align="center"
+                          border="0"
+                          cellpadding="0"
+                          cellspacing="0"
+                          role="presentation"
+                          style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                          width="100%"
+                        >
+                          <tbody>
+                            <tr>
+                              <td>
+                                <p
+                                  style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                >
+                                  U.S. Centers for Medicare & Medicaid Services
+                                </p>
+                                <p
+                                  style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                >
+                                  © 
+                                  2023
+                                   | 7500 Security Boulevard, Baltimore, MD 21244
+                                </p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -20762,7 +21178,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -21144,7 +21560,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -21191,7 +21607,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -21544,7 +21989,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -21616,7 +22061,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -21969,7 +22443,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -22572,7 +23046,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -22584,7 +23058,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -23066,7 +23540,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -23078,7 +23552,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -23561,7 +24035,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -23573,7 +24047,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                     </tbody>
                   </table>
                   <p
-                    style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                    style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                   >
                     This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -24116,7 +24590,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -24498,7 +24972,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -24545,7 +25019,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -24898,7 +25401,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -24970,7 +25473,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -25323,7 +25855,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -25926,7 +26458,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -25938,7 +26470,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -26420,7 +26952,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -26432,7 +26964,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -26914,7 +27446,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -26926,7 +27458,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -27408,9 +27940,22 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                    This is text
+                                    <br />
+                                    <br />
+                                    <br />
+                                    with a bunch of b/n linebreaks
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                     to test that linebreaks get converted to &lt;br&gt; elements
                                   </p>
                                 </tr>
                               </tbody>
@@ -27420,7 +27965,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -27902,9 +28447,9 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                    Testing with an emoji 😄
                                   </p>
                                 </tr>
                               </tbody>
@@ -27914,7 +28459,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                     >
                       This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -28397,9 +28942,9 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
-                                  This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                  Testing with an emoji 😄
                                 </p>
                               </tr>
                             </tbody>
@@ -28409,7 +28954,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                     </tbody>
                   </table>
                   <p
-                    style="font-size: 14px; line-height: 24px; margin: 16px 0px 16px 0px;"
+                    style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
                   >
                     This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
@@ -28952,7 +29497,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -29334,7 +29879,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -29381,7 +29926,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -29734,7 +30308,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -29806,7 +30380,36 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                   >
                     <tbody>
                       <tr>
-                        <td />
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -30159,7 +30762,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -30725,7 +31328,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                 </p>

@@ -1,0 +1,53 @@
+# Copied from https://dev.to/ysfaran/how-to-use-playwright-with-github-actions-and-github-pages-4gdl
+name: Delete Playwright Report for Branch
+
+on:
+  delete:
+
+jobs:
+  delete_reports:
+    name: Delete Playwright Reports
+    runs-on: ubuntu-latest
+    if: ${{ github.event.ref_type == 'branch' }}
+    env:
+      # Contains all reports for deleted branch
+      BRANCH_NAME: ${{ github.event.ref }}
+    steps:
+      - name: Checkout GitHub Pages Branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - name: Delete Data for Branch
+        timeout-minutes: 3
+        working-directory: _data/playwright-reports/branches/
+        run: |
+          if [[ -d $BRANCH_NAME ]]; then
+            rm -rf $BRANCH_NAME
+            echo "Deleted Playwright Data for $BRANCH_NAME from GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
+          else 
+            echo "Could not find Playwright Data for $BRANCH_NAME to delete" >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Delete Reports for Branch
+        timeout-minutes: 3
+        working-directory: playwright-reports/branches/
+        run: |
+          if [[ -d $BRANCH_NAME ]]; then
+            rm -rf $BRANCH_NAME
+            echo "Deleted Playwright Reports for $BRANCH_NAME from GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
+          else 
+            echo "Could not find Playwright Reports for $BRANCH_NAME to delete" >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Push Changes
+        timeout-minutes: 3
+        run: |
+          if [[ -z $(git status --porcelain) ]]; then
+            echo "Did not have Playwright Data or Reports to delete" >> "$GITHUB_STEP_SUMMARY"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -am "workflow: remove all reports and data for branch $BRANCH_NAME"
+            git pull origin gh-pages --rebase -s recursive -X ours
+            git push
+            echo "Deleted Playwright Data or Reports for $BRANCH_NAME from GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
+          fi
