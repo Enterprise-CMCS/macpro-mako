@@ -12,7 +12,6 @@ export const ChipSpaStateEmail = (props: {
   const previewText = `CHIP SPA ${variables.id} Submitted`;
   const heading =
     "This is confirmation that you submitted a CHIP State Plan Amendment to CMS for review:";
-
   return (
     <BaseEmailTemplate
       previewText={previewText}
