@@ -71,4 +71,4 @@ jobs:
       FILE_2_DEPLOY_TO: coverage/
       COMMIT_MSG: update code coverage report for main
       URL_PATH: coverage/
-    secrets: inherit
+    secrets: inherit # pragma: allowlist secret
