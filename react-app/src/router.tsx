@@ -120,6 +120,10 @@ export const router = createBrowserRouter([
             path: "/new-submission/spa/medicaid/landing/medicaid-eligibility",
             element: <F.MedicaidEligibilityLandingPage />,
           },
+          {
+            path: "/new-submission/spa/chip/landing/chip-eligibility",
+            element: <F.CHIPEligibilityLandingPage />,
+          },
           { path: "/profile", element: <F.Profile /> },
           { path: "/guides/abp", element: <F.ABPGuide /> },
           {

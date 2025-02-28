@@ -18,6 +18,7 @@ export interface ExternalAppLandingPageConfig {
 }
 
 const MACProLogo = () => <img src="/macpro.png" alt="MACPro system logo" />;
+const MMDLLogo = () => <img src={"/images/logos/mmdl.png"} alt={"MMDL system logo"} />;
 
 const FAQHelperText = () => (
   <span className="max-w-xl">
@@ -71,7 +72,7 @@ const ExternalAppLandingPage = ({
 export const MedicaidABPLandingPage = () => (
   <ExternalAppLandingPage
     pageTitle={"Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing"}
-    image={<MACProLogo />}
+    image={<MMDLLogo />}
     description={
       <LandingPageDescription>
         <p className="mb-4">
@@ -129,5 +130,35 @@ export const MedicaidEligibilityLandingPage = () => (
     }
     buttonLabel={"Enter the MACPro system"}
     buttonLink={EXTERNAL_APP.MAC_PRO}
+  />
+);
+export const CHIPEligibilityLandingPage = () => (
+  <ExternalAppLandingPage
+    pageTitle={"CHIP Eligibility SPAs"}
+    image={<MMDLLogo />}
+    description={
+      <LandingPageDescription>
+        <p className="mb-4">
+          <b>
+            CHIP Eligibility SPAs are managed within the{" "}
+            <a
+              className="text-sky-700 hover:text-sky-800 underline"
+              href={EXTERNAL_APP.MMDL}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Medicaid Model Data Lab (MMDL)
+            </a>
+            .
+          </b>
+        </p>
+        <p>
+          The MMDL system allows states to apply for changes to their State plan, and access report
+          on Medicaid program administration/implementation.
+        </p>
+      </LandingPageDescription>
+    }
+    buttonLabel={"Enter the MMDL system"}
+    buttonLink={EXTERNAL_APP.MMDL}
   />
 );
