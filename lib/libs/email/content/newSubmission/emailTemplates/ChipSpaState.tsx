@@ -1,7 +1,7 @@
 import { Events } from "shared-types";
 import { CommonEmailVariables } from "shared-types";
 import { Link, Text } from "@react-email/components";
-import { PackageDetails } from "../../email-components";
+import { PackageDetails, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
 
@@ -18,6 +18,7 @@ export const ChipSpaStateEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<BasicFooter />}
     >
       <PackageDetails
         details={{
