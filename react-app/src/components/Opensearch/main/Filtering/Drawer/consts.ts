@@ -80,7 +80,7 @@ export const DATE_INITIALSUBMISSION: DrawerFilterableGroup = {
 
 export const DATE_FINALDISPOSITION: DrawerFilterableGroup = {
   label: "Final Disposition",
-  field: "finalDispositionDate.keyword",
+  field: "finalDispositionDate",
   component: "dateRange",
   prefix: "must",
   type: "range",

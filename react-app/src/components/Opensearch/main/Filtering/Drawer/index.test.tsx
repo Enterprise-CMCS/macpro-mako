@@ -80,7 +80,7 @@ describe("OsFilterDrawer", () => {
           },
           {
             label: "Final Disposition",
-            field: "finalDispositionDate.keyword",
+            field: "finalDispositionDate",
             component: "dateRange",
             prefix: "must",
             type: "range",
