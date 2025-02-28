@@ -7,7 +7,7 @@ import {
   SEATOOL_STATUS,
   Events,
 } from "shared-types";
-import { decodeBase64WithUtf8, getSecret } from "shared-utils";
+import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils";
 import { retry } from "shared-utils/retry";
 import { Handler } from "aws-lambda";
 import { getEmailTemplates, getAllStateUsers } from "libs/email";
@@ -271,6 +271,7 @@ export async function processAndSendEmails(
     territory,
     emails: { ...emails, cpocEmail, srtEmails },
     allStateUsersEmails,
+    ...(item._source.actionType && { actionType: formatActionType(item._source.actionType) }),
   };
 
   console.log("Template variables:", JSON.stringify(templateVariables, null, 2));

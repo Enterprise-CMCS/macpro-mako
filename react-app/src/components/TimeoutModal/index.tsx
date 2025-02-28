@@ -29,7 +29,6 @@ export const TimeoutModal = () => {
   const { data: user, isLoading: isUserLoading } = useGetUser();
 
   const onLogOut = () => {
-    setIsModalOpen(false);
     Auth.signOut();
     removeItemLocalStorage();
   };

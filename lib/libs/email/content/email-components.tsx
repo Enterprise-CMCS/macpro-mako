@@ -1,5 +1,5 @@
 import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/components";
-import { ReactNode } from "react";
+import { ReactNode, Fragment } from "react";
 import {
   Attachment,
   AttachmentKey,
@@ -190,12 +190,15 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
                 Summary:
               </Heading>
             </Text>
-            <Text
-              style={{
-                whiteSpace: "pre-line",
-              }}
-            >
-              {value ?? "No additional information submitted"}
+            <Text style={styles.text.base}>
+              {value
+                ? value.split("\n").map((line, index, array) => (
+                    <Fragment key={index}>
+                      {line}
+                      {index !== array.length - 1 && <br />}
+                    </Fragment>
+                  ))
+                : "No additional information submitted"}
             </Text>
           </Row>
         );

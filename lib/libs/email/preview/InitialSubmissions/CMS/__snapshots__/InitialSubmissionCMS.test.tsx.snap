@@ -421,7 +421,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -889,7 +889,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -1461,6 +1461,20 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                       </tbody>
                     </table>
                     <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
+                    >
+                       
+                      If the contents of this email seem suspicious, do not open them, and instead forward this email to
+                       
+                      <a
+                        href="mailto:SPAM@CMS.HHS.gov"
+                        style="color: rgb(6, 125, 247); text-decoration: underline;"
+                        target="_blank"
+                      >
+                        CHIPSPASubmissionMailBox@CMS.HHS.gov
+                      </a>
+                    </p>
+                    <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
                       Thank you.
@@ -1855,7 +1869,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -3135,7 +3149,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -3725,7 +3739,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -4269,7 +4283,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -4859,7 +4873,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -5404,7 +5418,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -6047,7 +6061,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -6515,7 +6529,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -7087,6 +7101,20 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                       </tbody>
                     </table>
                     <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
+                    >
+                       
+                      If the contents of this email seem suspicious, do not open them, and instead forward this email to
+                       
+                      <a
+                        href="mailto:SPAM@CMS.HHS.gov"
+                        style="color: rgb(6, 125, 247); text-decoration: underline;"
+                        target="_blank"
+                      >
+                        CHIPSPASubmissionMailBox@CMS.HHS.gov
+                      </a>
+                    </p>
+                    <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
                       Thank you.
@@ -7481,7 +7509,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -8761,7 +8789,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -9351,7 +9379,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -9895,7 +9923,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -10485,7 +10513,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -10590,6 +10618,1094 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                             >
                               <span>
                                 capitated-waiver-application.pdf
+                              </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p
+                      style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                    >
+                      Thank you.
+                    </p>
+                  </div>
+                  <table
+                    align="center"
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    role="presentation"
+                    style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                    width="100%"
+                  >
+                    <tbody>
+                      <tr>
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </body>
+      </html>
+    </div>
+    <div>
+      <html
+        dir="ltr"
+        lang="en"
+      >
+        <head>
+          <meta
+            content="text/html; charset=UTF-8"
+            http-equiv="Content-Type"
+          />
+          <meta
+            name="x-apple-disable-message-reformatting"
+          />
+        </head>
+        <div
+          style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+        >
+          1915(b) Initial Submitted
+          <div>
+             ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿
+          </div>
+        </div>
+        <body
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        >
+          <table
+            align="center"
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            role="presentation"
+            style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
+            width="100%"
+          >
+            <tbody>
+              <tr
+                style="width: 100%;"
+              >
+                <td>
+                  <table
+                    align="center"
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    role="presentation"
+                    style="background-color: rgb(0, 113, 189); padding: 16px;"
+                    width="100%"
+                  >
+                    <tbody>
+                      <tr>
+                        <td>
+                          <a
+                            href="https://mako-dev.cms.gov/"
+                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                            target="_blank"
+                          >
+                            <img
+                              alt="OneMAC Logo"
+                              height="40"
+                              src="https://mako-dev.cms.gov/onemac-logo.png"
+                              style="max-width: 112px;"
+                              width="112"
+                            />
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div
+                    style="margin: 0px 8px 8px 8px; padding: 8px;"
+                  >
+                    <h1
+                      style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                    >
+                      The OneMAC Submission Portal received a 1915(b) Initial waiver submission:
+                    </h1>
+                    <ul
+                      style="margin-left: -20px;"
+                    >
+                      <li>
+                        <p
+                          style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                        >
+                          The submission can be accessed in the OneMAC application, which you can find at
+                           
+                          <a
+                            href="https://mako-dev.cms.gov/"
+                            style="color: rgb(6, 125, 247); text-decoration: none;"
+                            target="_blank"
+                          >
+                            this link
+                          </a>
+                          .
+                        </p>
+                      </li>
+                      <li>
+                        <p
+                          style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                        >
+                          If you are not already logged in, please click the "Login" link at the top of the page and log in using your Enterprise User Administration (EUA) credentials.
+                        </p>
+                      </li>
+                      <li>
+                        <p
+                          style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                        >
+                          After you have logged in, you will be taken to the OneMAC application. The submission will be listed on the dashboard page, and you can view its details by clicking on its ID number.
+                        </p>
+                      </li>
+                    </ul>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      width="100%"
+                    >
+                      <tbody>
+                        <tr>
+                          <td>
+                            <table
+                              align="center"
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tbody
+                                style="width: 100%;"
+                              >
+                                <tr
+                                  style="width: 100%;"
+                                >
+                                  <td
+                                    align="left"
+                                    data-id="__react-email-column"
+                                    style="width: 50%;"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                                    >
+                                      State or Territory
+                                      :
+                                    </p>
+                                  </td>
+                                  <td
+                                    data-id="__react-email-column"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                                    >
+                                      CO
+                                    </p>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <table
+                              align="center"
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tbody
+                                style="width: 100%;"
+                              >
+                                <tr
+                                  style="width: 100%;"
+                                >
+                                  <td
+                                    align="left"
+                                    data-id="__react-email-column"
+                                    style="width: 50%;"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                                    >
+                                      Name
+                                      :
+                                    </p>
+                                  </td>
+                                  <td
+                                    data-id="__react-email-column"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                                    >
+                                      George Harrison
+                                    </p>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <table
+                              align="center"
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tbody
+                                style="width: 100%;"
+                              >
+                                <tr
+                                  style="width: 100%;"
+                                >
+                                  <td
+                                    align="left"
+                                    data-id="__react-email-column"
+                                    style="width: 50%;"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                                    >
+                                      Email Address
+                                      :
+                                    </p>
+                                  </td>
+                                  <td
+                                    data-id="__react-email-column"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                                    >
+                                      george@example.com
+                                    </p>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <table
+                              align="center"
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tbody
+                                style="width: 100%;"
+                              >
+                                <tr
+                                  style="width: 100%;"
+                                >
+                                  <td
+                                    align="left"
+                                    data-id="__react-email-column"
+                                    style="width: 50%;"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                                    >
+                                      Initial Waiver Number
+                                      :
+                                    </p>
+                                  </td>
+                                  <td
+                                    data-id="__react-email-column"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                                    >
+                                      CO-1234.R21.00
+                                    </p>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <table
+                              align="center"
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tbody
+                                style="width: 100%;"
+                              >
+                                <tr
+                                  style="width: 100%;"
+                                >
+                                  <td
+                                    align="left"
+                                    data-id="__react-email-column"
+                                    style="width: 50%;"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                                    >
+                                      Waiver Authority
+                                      :
+                                    </p>
+                                  </td>
+                                  <td
+                                    data-id="__react-email-column"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                                    >
+                                      1915(b)
+                                    </p>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <table
+                              align="center"
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tbody
+                                style="width: 100%;"
+                              >
+                                <tr
+                                  style="width: 100%;"
+                                >
+                                  <td
+                                    align="left"
+                                    data-id="__react-email-column"
+                                    style="width: 50%;"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                                    >
+                                      Proposed Effective Date
+                                      :
+                                    </p>
+                                  </td>
+                                  <td
+                                    data-id="__react-email-column"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                                    >
+                                      March 2, 2023
+                                    </p>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <table
+                              align="center"
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tbody
+                                style="width: 100%;"
+                              >
+                                <tr
+                                  style="width: 100%;"
+                                >
+                                  <hr
+                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                  />
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                  >
+                                    <h2
+                                      style="font-size: 16px;"
+                                    >
+                                      Summary:
+                                    </h2>
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                                  >
+                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                  </p>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <hr
+                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    />
+                    <h2
+                      style="font-size: 16px;"
+                    >
+                      Files:
+                    </h2>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                1915(b) Comprehensive (Contracting) Waiver Application Pre-print
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
+                              <span>
+                                contracting-waiver-application.pdf
+                              </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                Tribal Consultation
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
+                              <span>
+                                contracting-waiver-tribal-consultation.pdf
+                              </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p
+                      style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                    >
+                      Thank you.
+                    </p>
+                  </div>
+                  <table
+                    align="center"
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    role="presentation"
+                    style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                    width="100%"
+                  >
+                    <tbody>
+                      <tr>
+                        <td>
+                          <table
+                            align="center"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                            role="presentation"
+                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
+                            width="100%"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    U.S. Centers for Medicare & Medicaid Services
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  >
+                                    © 
+                                    2023
+                                     | 7500 Security Boulevard, Baltimore, MD 21244
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </body>
+      </html>
+    </div>
+    <div>
+      <html
+        dir="ltr"
+        lang="en"
+      >
+        <head>
+          <meta
+            content="text/html; charset=UTF-8"
+            http-equiv="Content-Type"
+          />
+          <meta
+            name="x-apple-disable-message-reformatting"
+          />
+        </head>
+        <div
+          style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+        >
+          1915(b) Renewal Submitted
+          <div>
+             ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿
+          </div>
+        </div>
+        <body
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        >
+          <table
+            align="center"
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            role="presentation"
+            style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
+            width="100%"
+          >
+            <tbody>
+              <tr
+                style="width: 100%;"
+              >
+                <td>
+                  <table
+                    align="center"
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                    role="presentation"
+                    style="background-color: rgb(0, 113, 189); padding: 16px;"
+                    width="100%"
+                  >
+                    <tbody>
+                      <tr>
+                        <td>
+                          <a
+                            href="https://mako-dev.cms.gov/"
+                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
+                            target="_blank"
+                          >
+                            <img
+                              alt="OneMAC Logo"
+                              height="40"
+                              src="https://mako-dev.cms.gov/onemac-logo.png"
+                              style="max-width: 112px;"
+                              width="112"
+                            />
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div
+                    style="margin: 0px 8px 8px 8px; padding: 8px;"
+                  >
+                    <h1
+                      style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                    >
+                      The OneMAC Submission Portal received a 1915(b) Renewal waiver submission:
+                    </h1>
+                    <ul
+                      style="margin-left: -20px;"
+                    >
+                      <li>
+                        <p
+                          style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                        >
+                          The submission can be accessed in the OneMAC application, which you can find at
+                           
+                          <a
+                            href="https://mako-dev.cms.gov/"
+                            style="color: rgb(6, 125, 247); text-decoration: none;"
+                            target="_blank"
+                          >
+                            this link
+                          </a>
+                          .
+                        </p>
+                      </li>
+                      <li>
+                        <p
+                          style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                        >
+                          If you are not already logged in, please click the "Login" link at the top of the page and log in using your Enterprise User Administration (EUA) credentials.
+                        </p>
+                      </li>
+                      <li>
+                        <p
+                          style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                        >
+                          After you have logged in, you will be taken to the OneMAC application. The submission will be listed on the dashboard page, and you can view its details by clicking on its ID number.
+                        </p>
+                      </li>
+                    </ul>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      width="100%"
+                    >
+                      <tbody>
+                        <tr>
+                          <td>
+                            <table
+                              align="center"
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tbody
+                                style="width: 100%;"
+                              >
+                                <tr
+                                  style="width: 100%;"
+                                >
+                                  <td
+                                    align="left"
+                                    data-id="__react-email-column"
+                                    style="width: 50%;"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                                    >
+                                      State or Territory
+                                      :
+                                    </p>
+                                  </td>
+                                  <td
+                                    data-id="__react-email-column"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                                    >
+                                      CO
+                                    </p>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <table
+                              align="center"
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tbody
+                                style="width: 100%;"
+                              >
+                                <tr
+                                  style="width: 100%;"
+                                >
+                                  <td
+                                    align="left"
+                                    data-id="__react-email-column"
+                                    style="width: 50%;"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                                    >
+                                      Name
+                                      :
+                                    </p>
+                                  </td>
+                                  <td
+                                    data-id="__react-email-column"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                                    >
+                                      George Harrison
+                                    </p>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <table
+                              align="center"
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tbody
+                                style="width: 100%;"
+                              >
+                                <tr
+                                  style="width: 100%;"
+                                >
+                                  <td
+                                    align="left"
+                                    data-id="__react-email-column"
+                                    style="width: 50%;"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                                    >
+                                      Email Address
+                                      :
+                                    </p>
+                                  </td>
+                                  <td
+                                    data-id="__react-email-column"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                                    >
+                                      george@example.com
+                                    </p>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <table
+                              align="center"
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tbody
+                                style="width: 100%;"
+                              >
+                                <tr
+                                  style="width: 100%;"
+                                >
+                                  <td
+                                    align="left"
+                                    data-id="__react-email-column"
+                                    style="width: 50%;"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                                    >
+                                      Renewal Waiver Number
+                                      :
+                                    </p>
+                                  </td>
+                                  <td
+                                    data-id="__react-email-column"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                                    >
+                                      CO-1234.R21.00
+                                    </p>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <table
+                              align="center"
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tbody
+                                style="width: 100%;"
+                              >
+                                <tr
+                                  style="width: 100%;"
+                                >
+                                  <td
+                                    align="left"
+                                    data-id="__react-email-column"
+                                    style="width: 50%;"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                                    >
+                                      Waiver Authority
+                                      :
+                                    </p>
+                                  </td>
+                                  <td
+                                    data-id="__react-email-column"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                                    >
+                                      1915(b)
+                                    </p>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <table
+                              align="center"
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tbody
+                                style="width: 100%;"
+                              >
+                                <tr
+                                  style="width: 100%;"
+                                >
+                                  <td
+                                    align="left"
+                                    data-id="__react-email-column"
+                                    style="width: 50%;"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                                    >
+                                      Proposed Effective Date
+                                      :
+                                    </p>
+                                  </td>
+                                  <td
+                                    data-id="__react-email-column"
+                                  >
+                                    <p
+                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                                    >
+                                      March 2, 2023
+                                    </p>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <table
+                              align="center"
+                              border="0"
+                              cellpadding="0"
+                              cellspacing="0"
+                              role="presentation"
+                              width="100%"
+                            >
+                              <tbody
+                                style="width: 100%;"
+                              >
+                                <tr
+                                  style="width: 100%;"
+                                >
+                                  <hr
+                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                  />
+                                  <p
+                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                  >
+                                    <h2
+                                      style="font-size: 16px;"
+                                    >
+                                      Summary:
+                                    </h2>
+                                  </p>
+                                  <p
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                                  >
+                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
+                                  </p>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <hr
+                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    />
+                    <h2
+                      style="font-size: 16px;"
+                    >
+                      Files:
+                    </h2>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                1915(b) Comprehensive (Contracting) Waiver Application Pre-print
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
+                              <span>
+                                contracting-waiver-application.pdf
+                              </span>
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      align="center"
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      role="presentation"
+                      style="margin-bottom: 2px; margin-top: 2px;"
+                      width="100%"
+                    >
+                      <tbody
+                        style="width: 100%;"
+                      >
+                        <tr
+                          style="width: 100%;"
+                        >
+                          <td
+                            align="left"
+                            data-id="__react-email-column"
+                            style="width: 50%; vertical-align: top;"
+                          >
+                             
+                            <span>
+                              <p
+                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
+                              >
+                                1915(b) Comprehensive (Contracting) Independent Assessment
+                                :
+                              </p>
+                               
+                            </span>
+                          </td>
+                          <td
+                            data-id="__react-email-column"
+                            style="vertical-align: top;"
+                          >
+                            <p
+                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
+                            >
+                              <span>
+                                contracting-waiver-independent-assessment.pdf
                               </span>
                             </p>
                           </td>
@@ -11029,7 +12145,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -11574,7 +12690,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Amendment Waiver
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -12217,7 +13333,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a AppkCMSEmail Pre
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -12803,7 +13919,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a AppkCMSEmail Pre
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -13446,7 +14562,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Chipspa Preview 
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -13914,7 +15030,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Chipspa Preview 
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -14486,6 +15602,20 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Chipspa Preview 
                       </tbody>
                     </table>
                     <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
+                    >
+                       
+                      If the contents of this email seem suspicious, do not open them, and instead forward this email to
+                       
+                      <a
+                        href="mailto:SPAM@CMS.HHS.gov"
+                        style="color: rgb(6, 125, 247); text-decoration: underline;"
+                        target="_blank"
+                      >
+                        CHIPSPASubmissionMailBox@CMS.HHS.gov
+                      </a>
+                    </p>
+                    <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
                       Thank you.
@@ -14843,7 +15973,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Chipspa Preview 
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -15415,6 +16545,20 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Chipspa Preview 
                     </tbody>
                   </table>
                   <p
+                    style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
+                  >
+                     
+                    If the contents of this email seem suspicious, do not open them, and instead forward this email to
+                     
+                    <a
+                      href="mailto:SPAM@CMS.HHS.gov"
+                      style="color: rgb(6, 125, 247); text-decoration: underline;"
+                      target="_blank"
+                    >
+                      CHIPSPASubmissionMailBox@CMS.HHS.gov
+                    </a>
+                  </p>
+                  <p
                     style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                   >
                     Thank you.
@@ -15946,7 +17090,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -16414,7 +17558,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -16986,6 +18130,20 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                       </tbody>
                     </table>
                     <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
+                    >
+                       
+                      If the contents of this email seem suspicious, do not open them, and instead forward this email to
+                       
+                      <a
+                        href="mailto:SPAM@CMS.HHS.gov"
+                        style="color: rgb(6, 125, 247); text-decoration: underline;"
+                        target="_blank"
+                      >
+                        CHIPSPASubmissionMailBox@CMS.HHS.gov
+                      </a>
+                    </p>
+                    <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
                       Thank you.
@@ -17380,7 +18538,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -18660,7 +19818,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -19250,7 +20408,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -19795,7 +20953,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -20438,7 +21596,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -20906,7 +22064,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -21478,6 +22636,20 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                       </tbody>
                     </table>
                     <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
+                    >
+                       
+                      If the contents of this email seem suspicious, do not open them, and instead forward this email to
+                       
+                      <a
+                        href="mailto:SPAM@CMS.HHS.gov"
+                        style="color: rgb(6, 125, 247); text-decoration: underline;"
+                        target="_blank"
+                      >
+                        CHIPSPASubmissionMailBox@CMS.HHS.gov
+                      </a>
+                    </p>
+                    <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
                       Thank you.
@@ -21872,7 +23044,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -23152,7 +24324,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -23742,7 +24914,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -24286,7 +25458,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -24876,7 +26048,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -24981,1094 +26153,6 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                             >
                               <span>
                                 capitated-waiver-application.pdf
-                              </span>
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p
-                      style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
-                    >
-                      Thank you.
-                    </p>
-                  </div>
-                  <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                    width="100%"
-                  >
-                    <tbody>
-                      <tr>
-                        <td>
-                          <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                            width="100%"
-                          >
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
-                                  >
-                                    U.S. Centers for Medicare & Medicaid Services
-                                  </p>
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
-                                  >
-                                    © 
-                                    2023
-                                     | 7500 Security Boulevard, Baltimore, MD 21244
-                                  </p>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </body>
-      </html>
-    </div>
-    <div>
-      <html
-        dir="ltr"
-        lang="en"
-      >
-        <head>
-          <meta
-            content="text/html; charset=UTF-8"
-            http-equiv="Content-Type"
-          />
-          <meta
-            name="x-apple-disable-message-reformatting"
-          />
-        </head>
-        <div
-          style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
-        >
-          1915(b) Amendment Submitted
-          <div>
-             ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿
-          </div>
-        </div>
-        <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
-        >
-          <table
-            align="center"
-            border="0"
-            cellpadding="0"
-            cellspacing="0"
-            role="presentation"
-            style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-            width="100%"
-          >
-            <tbody>
-              <tr
-                style="width: 100%;"
-              >
-                <td>
-                  <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="background-color: rgb(0, 113, 189); padding: 16px;"
-                    width="100%"
-                  >
-                    <tbody>
-                      <tr>
-                        <td>
-                          <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
-                          >
-                            <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
-                            />
-                          </a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div
-                    style="margin: 0px 8px 8px 8px; padding: 8px;"
-                  >
-                    <h1
-                      style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
-                    >
-                      The OneMAC Submission Portal received a 1915(b) Amendment waiver submission:
-                    </h1>
-                    <ul
-                      style="margin-left: -20px;"
-                    >
-                      <li>
-                        <p
-                          style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                        >
-                          The submission can be accessed in the OneMAC application, which you can find at
-                           
-                          <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none;"
-                            target="_blank"
-                          >
-                            this link
-                          </a>
-                          .
-                        </p>
-                      </li>
-                      <li>
-                        <p
-                          style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                        >
-                          If you are not already logged in, please click the "Login" link at the top of the page and log in using your Enterprise User Administration (EUA) credentials.
-                        </p>
-                      </li>
-                      <li>
-                        <p
-                          style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                        >
-                          After you have logged in, you will be taken to the OneMAC application. The submission will be listed on the dashboard page, and you can view its details by clicking on its ID number.
-                        </p>
-                      </li>
-                    </ul>
-                    <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      width="100%"
-                    >
-                      <tbody>
-                        <tr>
-                          <td>
-                            <table
-                              align="center"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              width="100%"
-                            >
-                              <tbody
-                                style="width: 100%;"
-                              >
-                                <tr
-                                  style="width: 100%;"
-                                >
-                                  <td
-                                    align="left"
-                                    data-id="__react-email-column"
-                                    style="width: 50%;"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                                    >
-                                      State or Territory
-                                      :
-                                    </p>
-                                  </td>
-                                  <td
-                                    data-id="__react-email-column"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                                    >
-                                      CO
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <table
-                              align="center"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              width="100%"
-                            >
-                              <tbody
-                                style="width: 100%;"
-                              >
-                                <tr
-                                  style="width: 100%;"
-                                >
-                                  <td
-                                    align="left"
-                                    data-id="__react-email-column"
-                                    style="width: 50%;"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                                    >
-                                      Name
-                                      :
-                                    </p>
-                                  </td>
-                                  <td
-                                    data-id="__react-email-column"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                                    >
-                                      George Harrison
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <table
-                              align="center"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              width="100%"
-                            >
-                              <tbody
-                                style="width: 100%;"
-                              >
-                                <tr
-                                  style="width: 100%;"
-                                >
-                                  <td
-                                    align="left"
-                                    data-id="__react-email-column"
-                                    style="width: 50%;"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                                    >
-                                      Email Address
-                                      :
-                                    </p>
-                                  </td>
-                                  <td
-                                    data-id="__react-email-column"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                                    >
-                                      george@example.com
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <table
-                              align="center"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              width="100%"
-                            >
-                              <tbody
-                                style="width: 100%;"
-                              >
-                                <tr
-                                  style="width: 100%;"
-                                >
-                                  <td
-                                    align="left"
-                                    data-id="__react-email-column"
-                                    style="width: 50%;"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                                    >
-                                      Amendment Waiver Number
-                                      :
-                                    </p>
-                                  </td>
-                                  <td
-                                    data-id="__react-email-column"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                                    >
-                                      CO-1234.R21.01
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <table
-                              align="center"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              width="100%"
-                            >
-                              <tbody
-                                style="width: 100%;"
-                              >
-                                <tr
-                                  style="width: 100%;"
-                                >
-                                  <td
-                                    align="left"
-                                    data-id="__react-email-column"
-                                    style="width: 50%;"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                                    >
-                                      Waiver Authority
-                                      :
-                                    </p>
-                                  </td>
-                                  <td
-                                    data-id="__react-email-column"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                                    >
-                                      1915(b)
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <table
-                              align="center"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              width="100%"
-                            >
-                              <tbody
-                                style="width: 100%;"
-                              >
-                                <tr
-                                  style="width: 100%;"
-                                >
-                                  <td
-                                    align="left"
-                                    data-id="__react-email-column"
-                                    style="width: 50%;"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                                    >
-                                      Proposed Effective Date
-                                      :
-                                    </p>
-                                  </td>
-                                  <td
-                                    data-id="__react-email-column"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                                    >
-                                      March 2, 2023
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <table
-                              align="center"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              width="100%"
-                            >
-                              <tbody
-                                style="width: 100%;"
-                              >
-                                <tr
-                                  style="width: 100%;"
-                                >
-                                  <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                                  />
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
-                                  >
-                                    <h2
-                                      style="font-size: 16px;"
-                                    >
-                                      Summary:
-                                    </h2>
-                                  </p>
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
-                                  >
-                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
-                                  </p>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
-                    <h2
-                      style="font-size: 16px;"
-                    >
-                      Files:
-                    </h2>
-                    <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      style="margin-bottom: 2px; margin-top: 2px;"
-                      width="100%"
-                    >
-                      <tbody
-                        style="width: 100%;"
-                      >
-                        <tr
-                          style="width: 100%;"
-                        >
-                          <td
-                            align="left"
-                            data-id="__react-email-column"
-                            style="width: 50%; vertical-align: top;"
-                          >
-                             
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                1915(b) Comprehensive (Contracting) Waiver Application Pre-print
-                                :
-                              </p>
-                               
-                            </span>
-                          </td>
-                          <td
-                            data-id="__react-email-column"
-                            style="vertical-align: top;"
-                          >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                            >
-                              <span>
-                                contracting-waiver-application.pdf
-                              </span>
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      style="margin-bottom: 2px; margin-top: 2px;"
-                      width="100%"
-                    >
-                      <tbody
-                        style="width: 100%;"
-                      >
-                        <tr
-                          style="width: 100%;"
-                        >
-                          <td
-                            align="left"
-                            data-id="__react-email-column"
-                            style="width: 50%; vertical-align: top;"
-                          >
-                             
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                Tribal Consultation
-                                :
-                              </p>
-                               
-                            </span>
-                          </td>
-                          <td
-                            data-id="__react-email-column"
-                            style="vertical-align: top;"
-                          >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                            >
-                              <span>
-                                contracting-waiver-tribal-consultation.pdf
-                              </span>
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p
-                      style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
-                    >
-                      Thank you.
-                    </p>
-                  </div>
-                  <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                    width="100%"
-                  >
-                    <tbody>
-                      <tr>
-                        <td>
-                          <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                            width="100%"
-                          >
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
-                                  >
-                                    U.S. Centers for Medicare & Medicaid Services
-                                  </p>
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
-                                  >
-                                    © 
-                                    2023
-                                     | 7500 Security Boulevard, Baltimore, MD 21244
-                                  </p>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </body>
-      </html>
-    </div>
-    <div>
-      <html
-        dir="ltr"
-        lang="en"
-      >
-        <head>
-          <meta
-            content="text/html; charset=UTF-8"
-            http-equiv="Content-Type"
-          />
-          <meta
-            name="x-apple-disable-message-reformatting"
-          />
-        </head>
-        <div
-          style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
-        >
-          1915(b) Renewal Submitted
-          <div>
-             ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿
-          </div>
-        </div>
-        <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
-        >
-          <table
-            align="center"
-            border="0"
-            cellpadding="0"
-            cellspacing="0"
-            role="presentation"
-            style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-            width="100%"
-          >
-            <tbody>
-              <tr
-                style="width: 100%;"
-              >
-                <td>
-                  <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="background-color: rgb(0, 113, 189); padding: 16px;"
-                    width="100%"
-                  >
-                    <tbody>
-                      <tr>
-                        <td>
-                          <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
-                          >
-                            <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
-                            />
-                          </a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div
-                    style="margin: 0px 8px 8px 8px; padding: 8px;"
-                  >
-                    <h1
-                      style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
-                    >
-                      The OneMAC Submission Portal received a 1915(b) Renewal waiver submission:
-                    </h1>
-                    <ul
-                      style="margin-left: -20px;"
-                    >
-                      <li>
-                        <p
-                          style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                        >
-                          The submission can be accessed in the OneMAC application, which you can find at
-                           
-                          <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none;"
-                            target="_blank"
-                          >
-                            this link
-                          </a>
-                          .
-                        </p>
-                      </li>
-                      <li>
-                        <p
-                          style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                        >
-                          If you are not already logged in, please click the "Login" link at the top of the page and log in using your Enterprise User Administration (EUA) credentials.
-                        </p>
-                      </li>
-                      <li>
-                        <p
-                          style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                        >
-                          After you have logged in, you will be taken to the OneMAC application. The submission will be listed on the dashboard page, and you can view its details by clicking on its ID number.
-                        </p>
-                      </li>
-                    </ul>
-                    <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      width="100%"
-                    >
-                      <tbody>
-                        <tr>
-                          <td>
-                            <table
-                              align="center"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              width="100%"
-                            >
-                              <tbody
-                                style="width: 100%;"
-                              >
-                                <tr
-                                  style="width: 100%;"
-                                >
-                                  <td
-                                    align="left"
-                                    data-id="__react-email-column"
-                                    style="width: 50%;"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                                    >
-                                      State or Territory
-                                      :
-                                    </p>
-                                  </td>
-                                  <td
-                                    data-id="__react-email-column"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                                    >
-                                      CO
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <table
-                              align="center"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              width="100%"
-                            >
-                              <tbody
-                                style="width: 100%;"
-                              >
-                                <tr
-                                  style="width: 100%;"
-                                >
-                                  <td
-                                    align="left"
-                                    data-id="__react-email-column"
-                                    style="width: 50%;"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                                    >
-                                      Name
-                                      :
-                                    </p>
-                                  </td>
-                                  <td
-                                    data-id="__react-email-column"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                                    >
-                                      George Harrison
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <table
-                              align="center"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              width="100%"
-                            >
-                              <tbody
-                                style="width: 100%;"
-                              >
-                                <tr
-                                  style="width: 100%;"
-                                >
-                                  <td
-                                    align="left"
-                                    data-id="__react-email-column"
-                                    style="width: 50%;"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                                    >
-                                      Email Address
-                                      :
-                                    </p>
-                                  </td>
-                                  <td
-                                    data-id="__react-email-column"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                                    >
-                                      george@example.com
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <table
-                              align="center"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              width="100%"
-                            >
-                              <tbody
-                                style="width: 100%;"
-                              >
-                                <tr
-                                  style="width: 100%;"
-                                >
-                                  <td
-                                    align="left"
-                                    data-id="__react-email-column"
-                                    style="width: 50%;"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                                    >
-                                      Renewal Waiver Number
-                                      :
-                                    </p>
-                                  </td>
-                                  <td
-                                    data-id="__react-email-column"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                                    >
-                                      CO-1234.R21.00
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <table
-                              align="center"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              width="100%"
-                            >
-                              <tbody
-                                style="width: 100%;"
-                              >
-                                <tr
-                                  style="width: 100%;"
-                                >
-                                  <td
-                                    align="left"
-                                    data-id="__react-email-column"
-                                    style="width: 50%;"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                                    >
-                                      Waiver Authority
-                                      :
-                                    </p>
-                                  </td>
-                                  <td
-                                    data-id="__react-email-column"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                                    >
-                                      1915(b)
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <table
-                              align="center"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              width="100%"
-                            >
-                              <tbody
-                                style="width: 100%;"
-                              >
-                                <tr
-                                  style="width: 100%;"
-                                >
-                                  <td
-                                    align="left"
-                                    data-id="__react-email-column"
-                                    style="width: 50%;"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                                    >
-                                      Proposed Effective Date
-                                      :
-                                    </p>
-                                  </td>
-                                  <td
-                                    data-id="__react-email-column"
-                                  >
-                                    <p
-                                      style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                                    >
-                                      March 2, 2023
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <table
-                              align="center"
-                              border="0"
-                              cellpadding="0"
-                              cellspacing="0"
-                              role="presentation"
-                              width="100%"
-                            >
-                              <tbody
-                                style="width: 100%;"
-                              >
-                                <tr
-                                  style="width: 100%;"
-                                >
-                                  <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                                  />
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
-                                  >
-                                    <h2
-                                      style="font-size: 16px;"
-                                    >
-                                      Summary:
-                                    </h2>
-                                  </p>
-                                  <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
-                                  >
-                                    This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
-                                  </p>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
-                    />
-                    <h2
-                      style="font-size: 16px;"
-                    >
-                      Files:
-                    </h2>
-                    <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      style="margin-bottom: 2px; margin-top: 2px;"
-                      width="100%"
-                    >
-                      <tbody
-                        style="width: 100%;"
-                      >
-                        <tr
-                          style="width: 100%;"
-                        >
-                          <td
-                            align="left"
-                            data-id="__react-email-column"
-                            style="width: 50%; vertical-align: top;"
-                          >
-                             
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                1915(b) Comprehensive (Contracting) Waiver Application Pre-print
-                                :
-                              </p>
-                               
-                            </span>
-                          </td>
-                          <td
-                            data-id="__react-email-column"
-                            style="vertical-align: top;"
-                          >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                            >
-                              <span>
-                                contracting-waiver-application.pdf
-                              </span>
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      style="margin-bottom: 2px; margin-top: 2px;"
-                      width="100%"
-                    >
-                      <tbody
-                        style="width: 100%;"
-                      >
-                        <tr
-                          style="width: 100%;"
-                        >
-                          <td
-                            align="left"
-                            data-id="__react-email-column"
-                            style="width: 50%; vertical-align: top;"
-                          >
-                             
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
-                              >
-                                1915(b) Comprehensive (Contracting) Independent Assessment
-                                :
-                              </p>
-                               
-                            </span>
-                          </td>
-                          <td
-                            data-id="__react-email-column"
-                            style="vertical-align: top;"
-                          >
-                            <p
-                              style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
-                            >
-                              <span>
-                                contracting-waiver-independent-assessment.pdf
                               </span>
                             </p>
                           </td>
@@ -26508,7 +26592,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -27053,7 +27137,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -27696,7 +27780,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Medicaid Spa Pre
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -28164,7 +28248,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Medicaid Spa Pre
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -28736,6 +28820,20 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Medicaid Spa Pre
                       </tbody>
                     </table>
                     <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
+                    >
+                       
+                      If the contents of this email seem suspicious, do not open them, and instead forward this email to
+                       
+                      <a
+                        href="mailto:SPAM@CMS.HHS.gov"
+                        style="color: rgb(6, 125, 247); text-decoration: underline;"
+                        target="_blank"
+                      >
+                        CHIPSPASubmissionMailBox@CMS.HHS.gov
+                      </a>
+                    </p>
+                    <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
                       Thank you.
@@ -29130,7 +29228,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Medicaid Spa Pre
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -30373,7 +30471,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Medicaid Spa Pre
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -31752,7 +31850,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -32220,7 +32318,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -32792,6 +32890,20 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                       </tbody>
                     </table>
                     <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
+                    >
+                       
+                      If the contents of this email seem suspicious, do not open them, and instead forward this email to
+                       
+                      <a
+                        href="mailto:SPAM@CMS.HHS.gov"
+                        style="color: rgb(6, 125, 247); text-decoration: underline;"
+                        target="_blank"
+                      >
+                        CHIPSPASubmissionMailBox@CMS.HHS.gov
+                      </a>
+                    </p>
+                    <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
                       Thank you.
@@ -33186,7 +33298,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -34466,7 +34578,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -35056,7 +35168,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -35600,7 +35712,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -36191,7 +36303,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -36880,7 +36992,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -37348,7 +37460,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -37920,6 +38032,20 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                       </tbody>
                     </table>
                     <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
+                    >
+                       
+                      If the contents of this email seem suspicious, do not open them, and instead forward this email to
+                       
+                      <a
+                        href="mailto:SPAM@CMS.HHS.gov"
+                        style="color: rgb(6, 125, 247); text-decoration: underline;"
+                        target="_blank"
+                      >
+                        CHIPSPASubmissionMailBox@CMS.HHS.gov
+                      </a>
+                    </p>
+                    <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
                       Thank you.
@@ -38314,7 +38440,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -39594,7 +39720,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -40184,7 +40310,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -40728,7 +40854,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -41318,7 +41444,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -41503,9 +41629,9 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
         <div
           style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
         >
-          1915(b) Amendment Submitted
+          1915(b) Initial Submitted
           <div>
-             ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿
+             ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿
           </div>
         </div>
         <body
@@ -41560,7 +41686,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      The OneMAC Submission Portal received a 1915(b) Amendment waiver submission:
+                      The OneMAC Submission Portal received a 1915(b) Initial waiver submission:
                     </h1>
                     <ul
                       style="margin-left: -20px;"
@@ -41743,7 +41869,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Amendment Waiver Number
+                                      Initial Waiver Number
                                       :
                                     </p>
                                   </td>
@@ -41753,7 +41879,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      CO-1234.R21.01
+                                      CO-1234.R21.00
                                     </p>
                                   </td>
                                 </tr>
@@ -41862,7 +41988,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -42406,7 +42532,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -42951,7 +43077,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                 </p>
@@ -43594,7 +43720,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a TempExt Preview 
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -44062,7 +44188,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a TempExt Preview 
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -44634,6 +44760,20 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a TempExt Preview 
                       </tbody>
                     </table>
                     <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
+                    >
+                       
+                      If the contents of this email seem suspicious, do not open them, and instead forward this email to
+                       
+                      <a
+                        href="mailto:SPAM@CMS.HHS.gov"
+                        style="color: rgb(6, 125, 247); text-decoration: underline;"
+                        target="_blank"
+                      >
+                        CHIPSPASubmissionMailBox@CMS.HHS.gov
+                      </a>
+                    </p>
+                    <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
                       Thank you.
@@ -45028,7 +45168,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a TempExt Preview 
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.
                                   </p>
@@ -46308,7 +46448,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a TempExt Preview 
                                     </h2>
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                   >
                                     Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                   </p>
@@ -46899,7 +47039,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a TempExt Preview 
                                   </h2>
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 16px 0px; white-space: pre-line;"
+                                  style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                                 >
                                   Whoever fights monsters should see to it that in the process he does not become a monster. And if you gaze long enough into an abyss, the abyss will gaze back into you.
                                 </p>

@@ -5,6 +5,10 @@ import * as api from "@/api";
 import { mockUseGetUser, setDefaultStateSubmitter } from "mocks";
 import { UseQueryResult } from "@tanstack/react-query";
 import { OneMacUser } from "@/api";
+import { Auth } from "aws-amplify";
+import * as hooks from "@/hooks";
+
+const mockTimer = 60;
 
 const ParentComponent = () => (
   <div>
@@ -22,6 +26,11 @@ describe("Timeout Modal", () => {
       const response = mockUseGetUser();
       return response as UseQueryResult<OneMacUser, unknown>;
     });
+
+    vi.spyOn(hooks, "useCountdown").mockReturnValue([
+      mockTimer,
+      { startCountdown: vi.fn(), stopCountdown: vi.fn(), resetCountdown: vi.fn() },
+    ]);
   });
 
   afterEach(() => {
@@ -46,7 +55,18 @@ describe("Timeout Modal", () => {
     expect(screen.queryByText(/Your session will expire in/i)).not.toBeInTheDocument();
   });
 
-  it("closes the modal if user clicks sign out", async () => {
+  it("calls Auth.signOut when countdown timer reaches 0", async () => {
+    vi.spyOn(hooks, "useCountdown").mockReturnValueOnce([
+      0,
+      { startCountdown: vi.fn(), stopCountdown: vi.fn(), resetCountdown: vi.fn() },
+    ]);
+    const signOutSpy = vi.spyOn(Auth, "signOut");
+    render(<ParentComponent />);
+
+    expect(signOutSpy).toHaveBeenCalled();
+  });
+
+  it("calls Auth.signOut when user clicks sign out", async () => {
     render(<ParentComponent />);
 
     await vi.advanceTimersToNextTimerAsync();
@@ -58,9 +78,11 @@ describe("Timeout Modal", () => {
     const signOutBtn = screen.getByRole("button", { name: /No, sign out/i });
     expect(signOutBtn).toBeInTheDocument();
 
+    const signOutSpy = vi.spyOn(Auth, "signOut");
+
     fireEvent.click(signOutBtn);
 
-    expect(screen.queryByText(/Your session will expire in/i)).not.toBeInTheDocument();
+    expect(signOutSpy).toHaveBeenCalled();
 
     setDefaultStateSubmitter();
   });
