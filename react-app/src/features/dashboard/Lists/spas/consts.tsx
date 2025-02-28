@@ -93,7 +93,7 @@ const getColumns = (props) => {
       cell: renderCellDate("submissionDate"),
     },
     {
-      field: "finalDispositionDate",
+      field: "finalDispositionDate.keyword",
       label: "Final Disposition",
       hidden: true,
       transform: (data) =>
