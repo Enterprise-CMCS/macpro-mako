@@ -41,6 +41,8 @@ export type UploadSubsequentDocuments = z.infer<uploadSubsequentDocuments.Schema
 export type WithdrawPackageDocument = z.infer<withdrawPackage.Schema>;
 export type WithdrawRaiDocument = z.infer<withdrawRai.Schema>;
 
+export type SubmissionStatus = "draft" | "submitted" | "deleted";
+
 export type Document = AppkDocument &
   CapitatedAmendmentDocument &
   CapitatedInitialDocument &
@@ -60,6 +62,7 @@ export type Document = AppkDocument &
   WithdrawPackageDocument &
   WithdrawRaiDocument & {
     makoChangedDate: string;
+    submissionStatus: SubmissionStatus;
     changelog?: Changelog[];
     appkChildren?: Omit<ItemResult, "found">[];
     deleted?: boolean;

@@ -23,4 +23,24 @@ test.describe("Medicaid SPA Details page", { tag: ["@SPA", "@FCexample"] }, () =
     await page.getByTestId("cmsForm179-upload").setInputFiles(filePath);
     await expect(page.getByTestId(`${fileName}-chip`)).toBeVisible();
   });
+
+  test("draft functionality", async ({ page }) => {
+    // Fill in SPA ID
+    await page.getByLabelText(/SPA ID/).fill("MD-00-0001");
+
+    // Upload a file
+    const fileName = "upload-sample.png";
+    const filePath = `../fixtures/${fileName}`;
+    await page.getByTestId("cmsForm179-upload").setInputFiles(filePath);
+
+    // Save as draft
+    await page.getByTestId("save-as-draft-button").click();
+
+    // Verify success message
+    await expect(page.getByText(/Draft saved successfully/)).toBeVisible();
+
+    // Verify draft status in listing
+    await page.goto("/dashboard");
+    await expect(page.getByText("Draft")).toBeVisible();
+  });
 });

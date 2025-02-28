@@ -13,6 +13,7 @@ import { OsFilterComponentType } from "../../types";
 export type DrawerFilterableGroup = {
   label: string;
   component: OsFilterComponentType;
+  options?: { label: string; value: string }[];
 } & opensearch.main.Filterable;
 
 export const SELECT_STATE: DrawerFilterableGroup = {
@@ -122,3 +123,33 @@ export const SELECT_ORIGIN: DrawerFilterableGroup = {
   type: "terms",
   value: [],
 };
+
+export const SELECT_SUBMISSION_STATUS: DrawerFilterableGroup = {
+  label: "Submission Status",
+  field: "submissionStatus.keyword",
+  component: "multiSelect",
+  prefix: "must",
+  type: "terms",
+  value: [],
+  options: [
+    { label: "Draft", value: "draft" },
+    { label: "Submitted", value: "submitted" },
+    { label: "Deleted", value: "deleted" },
+  ],
+};
+
+export const dashboardFilters = [
+  SELECT_STATE,
+  CHECK_AUTHORITY,
+  CHECK_CMSSTATUS,
+  CHECK_STATESTATUS,
+  BOOL_RAIWITHDRAWENABLED,
+  CHECK_ACTIONTYPE,
+  DATE_INITIALSUBMISSION,
+  DATE_FINALDISPOSITION,
+  DATE_LATESTPACKAGEACTIVITY,
+  DATE_RAIRECEIVED,
+  SELECT_CPOC,
+  SELECT_ORIGIN,
+  SELECT_SUBMISSION_STATUS,
+];

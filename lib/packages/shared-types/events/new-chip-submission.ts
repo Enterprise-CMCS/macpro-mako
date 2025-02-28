@@ -44,6 +44,7 @@ export const baseSchema = z.object({
     .refine((id) => /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/.test(id), {
       message: "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-XXXX",
     }),
+  submissionStatus: z.enum(["draft", "submitted", "deleted"]).default("submitted"),
 });
 
 export const schema = baseSchema.extend({

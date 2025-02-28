@@ -8,8 +8,7 @@ export const baseSchema = z.object({
     .string()
     .min(1, { message: "Required" })
     .refine((id) => /^[A-Z]{2}-\d{4,5}\.R(?!00)\d{2}\.[0]{2}$/.test(id), {
-      message:
-        "The 1915(b) Waiver Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00. For renewals, the “R##” starts with ‘01’ and ascends.",
+      message: `The 1915(b) Waiver Renewal Number must be in the format of SS-####.R##.00 or SS-#####.R##.00. For renewals, the "R##" starts with '01' and ascends.`,
     }),
   proposedEffectiveDate: z.number(),
   attachments: z.object({
@@ -44,6 +43,7 @@ export const baseSchema = z.object({
       message:
         "The approved 1915(b) Initial or Renewal Number must be in the format of SS-####.R##.## or SS-#####.R##.##.",
     }),
+  submissionStatus: z.enum(["draft", "submitted", "deleted"]).default("submitted"),
 });
 
 export const schema = baseSchema.extend({

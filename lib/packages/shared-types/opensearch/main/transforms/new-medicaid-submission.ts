@@ -3,7 +3,9 @@ import { seaToolFriendlyTimestamp } from "../../../../shared-utils/seatool-date-
 
 export const transform = () => {
   return events["new-medicaid-submission"].schema.transform((data) => {
-    const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.SUBMITTED);
+    const { stateStatus, cmsStatus } = getStatus(
+      data.submissionStatus === "draft" ? "DRAFT" : SEATOOL_STATUS.SUBMITTED,
+    );
     const timestampDate = new Date(data.timestamp);
     const todayEpoch = seaToolFriendlyTimestamp(timestampDate);
 
@@ -17,7 +19,7 @@ export const transform = () => {
       makoChangedDate: timestampDate.toISOString(),
       origin: "OneMAC",
       raiWithdrawEnabled: false, // Set to false for new submissions
-      seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+      seatoolStatus: data.submissionStatus === "draft" ? "DRAFT" : SEATOOL_STATUS.SUBMITTED,
       state: data.id?.split("-")?.[0],
       stateStatus,
       statusDate: new Date(todayEpoch).toISOString(),
@@ -27,6 +29,7 @@ export const transform = () => {
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
       initialIntakeNeeded: true,
+      submissionStatus: data.submissionStatus || "submitted",
     };
   });
 };

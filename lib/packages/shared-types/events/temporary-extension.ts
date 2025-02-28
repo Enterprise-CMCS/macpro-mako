@@ -29,6 +29,7 @@ export const baseSchema = z.object({
       files: attachmentArraySchemaOptional(),
     }),
   }),
+  submissionStatus: z.enum(["draft", "submitted", "deleted"]).default("submitted"),
 });
 
 export type TemporaryExtensionSchema = z.infer<typeof baseSchema>;

@@ -186,6 +186,37 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     }
   });
 
+  // Add draft submission handler
+  const handleDraftSubmit = async () => {
+    try {
+      const formData = form.getValues();
+      const draftData = {
+        ...formData,
+        submissionStatus: "draft" as const,
+      };
+
+      await mutateAsync(draftData);
+
+      banner({
+        header: "Draft Saved",
+        body: "Your submission has been saved as a draft.",
+        variant: "success",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+
+      const formOrigins = getFormOrigin({ authority, id });
+      navigate(formOrigins);
+    } catch (error) {
+      console.error(error);
+      banner({
+        header: "Error Saving Draft",
+        body: error instanceof Error ? error.message : String(error),
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+    }
+  };
+
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
 
   if (isUserLoading === true) {
@@ -253,6 +284,17 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             />
           )}
           <section className="flex justify-end gap-2 p-4 ml-auto">
+            {/* Add Save as Draft button */}
+            <Button
+              className="px-12"
+              type="button"
+              onClick={handleDraftSubmit}
+              data-testid="save-as-draft-button"
+            >
+              Save as Draft
+            </Button>
+
+            {/* Existing Submit button */}
             <Button
               className="px-12"
               type={promptPreSubmission ? "button" : "submit"}
@@ -266,6 +308,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             >
               Submit
             </Button>
+
+            {/* Existing Cancel button */}
             <Button
               className="px-12"
               onClick={() =>

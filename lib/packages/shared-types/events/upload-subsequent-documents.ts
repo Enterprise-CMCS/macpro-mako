@@ -13,6 +13,7 @@ export const baseSchema = z.object({
   ),
   id: z.string(),
   authority: z.string(),
+  submissionStatus: z.enum(["draft", "submitted", "deleted"]).default("submitted"),
 });
 
 export const schema = baseSchema.extend({

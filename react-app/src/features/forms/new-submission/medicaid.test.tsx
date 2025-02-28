@@ -69,4 +69,35 @@ describe("Medicaid SPA", () => {
   test("submit button is enabled", async () => {
     expect(screen.getByTestId("submit-action-form")).toBeEnabled();
   });
+
+  test("draft submission", async () => {
+    // Test that the draft button is visible
+    const draftButton = screen.getByTestId("save-as-draft-button");
+    expect(draftButton).toBeVisible();
+    expect(draftButton).toBeEnabled();
+
+    // Fill in minimal data
+    await userEvent.type(screen.getByLabelText(/SPA ID/), "MD-00-0001");
+
+    // Click draft button
+    await userEvent.click(draftButton);
+
+    // Should not see validation errors
+    expect(screen.queryByText(/Required:/)).not.toBeInTheDocument();
+  });
+
+  test("regular submission validation", async () => {
+    const submitButton = screen.getByTestId("submit-action-form");
+    
+    // Clear any existing data
+    const spaIdInput = screen.getByLabelText(/SPA ID/);
+    await userEvent.clear(spaIdInput);
+    
+    // Try to submit without required fields
+    await userEvent.click(submitButton);
+    
+    // Should see validation errors for required fields
+    expect(screen.getByText(/Required:/)).toBeInTheDocument();
+    expect(screen.getByText(/You must submit exactly one file for CMS Form 179/)).toBeInTheDocument();
+  });
 });

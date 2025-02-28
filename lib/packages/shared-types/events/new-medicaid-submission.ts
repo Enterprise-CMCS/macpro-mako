@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
 
-export const baseSchema = z.object({
+// Create a base object schema without superRefine
+const baseObjectSchema = z.object({
   event: z.literal("new-medicaid-submission").default("new-medicaid-submission"),
   additionalInformation: z.string().max(4000).nullable().default(null).optional(),
   attachments: z.object({
@@ -53,11 +54,33 @@ export const baseSchema = z.object({
     .refine((id) => /^[A-Z]{2}-\d{2}-\d{4}(-[A-Z0-9]{1,4})?$/.test(id), {
       message: "ID doesn't match format SS-YY-NNNN or SS-YY-NNNN-XXXX",
     }),
+  submissionStatus: z.enum(["draft", "submitted", "deleted"]).default("submitted"),
 });
 
-export const schema = baseSchema.extend({
+// Create the extended schema first
+export const schema = baseObjectSchema.extend({
   origin: z.literal("mako").default("mako"),
   submitterName: z.string(),
   submitterEmail: z.string().email(),
   timestamp: z.number(),
+});
+
+// Then apply superRefine to create baseSchema
+export const baseSchema = schema.superRefine((data, ctx) => {
+  if (data.submissionStatus !== "draft") {
+    if (!data.id) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Required",
+        path: ["id"],
+      });
+    }
+    if (!data.proposedEffectiveDate) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Required",
+        path: ["proposedEffectiveDate"],
+      });
+    }
+  }
 });

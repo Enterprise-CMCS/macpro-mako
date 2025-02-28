@@ -14,6 +14,7 @@ export const transform = () => {
       seatoolStatus: SEATOOL_STATUS.SUBMITTED,
       initialIntakeNeeded: true,
       locked: true,
+      submissionStatus: "submitted",
     };
   });
 };

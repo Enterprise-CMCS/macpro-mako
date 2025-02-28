@@ -20,6 +20,7 @@ export const baseSchema = z.object({
   authority: z.string(),
   additionalInformation: z.string().trim().max(4000).optional(),
   attachments: attachmentsDefault.or(attachmentsChip),
+  submissionStatus: z.enum(["draft", "submitted", "deleted"]).default("submitted"),
 });
 
 export const schema = baseSchema.extend({
