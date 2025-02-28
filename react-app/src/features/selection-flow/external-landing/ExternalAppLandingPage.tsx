@@ -18,7 +18,6 @@ export interface ExternalAppLandingPageConfig {
 }
 
 const MACProLogo = () => <img src="/macpro.png" alt="MACPro system logo" />;
-const MMDLLogo = () => <img src={"/images/logos/mmdl.png"} alt={"MMDL system logo"} />;
 
 const FAQHelperText = () => (
   <span className="max-w-xl">
@@ -72,7 +71,7 @@ const ExternalAppLandingPage = ({
 export const MedicaidABPLandingPage = () => (
   <ExternalAppLandingPage
     pageTitle={"Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing"}
-    image={<MMDLLogo />}
+    image={<MACProLogo />}
     description={
       <LandingPageDescription>
         <p className="mb-4">
