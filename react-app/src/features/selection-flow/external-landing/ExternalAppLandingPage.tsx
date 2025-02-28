@@ -18,7 +18,7 @@ export interface ExternalAppLandingPageConfig {
 }
 
 const MACProLogo = () => <img src="/macpro.png" alt="MACPro system logo" />;
-const MMDLLogo = () => <img src={"/images/logos/mmdl.png"} alt={"MMDL system logo"} />;
+const MMDLLogo = () => <img src={"/mmdl.png"} alt={"MMDL system logo"} />;
 
 const FAQHelperText = () => (
   <span className="max-w-xl">
