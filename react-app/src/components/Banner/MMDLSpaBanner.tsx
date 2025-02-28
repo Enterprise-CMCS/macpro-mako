@@ -59,13 +59,13 @@ const MMDLAlertBanner = () => {
       aria-label="mmdl-alert-banner"
     >
       <InfoCircledIcon className="w-10 h-10 text-white" aria-hidden="true" />
-      <div className="flex gap-x-4 flex-grow">
+      <div className="flex gap-x-4 flex-grow col-start-2 col-span-2 md:col-span-1">
         <div className="flex flex-col flex-grow">
           <h3 className="font-bold text-white text-lg break-words">{notifications[0].header}</h3>
           <p className="text-white leading-normal break-words">{notifications[0].body}</p>
         </div>
       </div>
-      <div className="flex space-x-4 col-start-2 md:col-start-auto">
+      <div className="flex space-x-4 col-start-3 row-start-2 md:row-start-1">
         {notifications[0].buttonText && (
           <Link
             to={notifications[0].buttonLink}
@@ -77,6 +77,8 @@ const MMDLAlertBanner = () => {
             {notifications[0].buttonText}
           </Link>
         )}
+      </div>
+      <div className="flex space-x-4 col-start-4 md:row-start-1">
         <button
           onClick={() => clearNotif(notifications[0].notifId)}
           aria-label="Dismiss"
