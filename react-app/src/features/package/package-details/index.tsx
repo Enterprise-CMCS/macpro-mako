@@ -5,20 +5,20 @@ import {
   getDescriptionDetails,
   getSubmissionDetails,
   getSubmittedByDetails,
-} from "./hooks";
+} from "./details";
 
-import { DetailSectionItem } from "./hooks";
+import { LabelAndValue } from "./details";
 import { useGetUser } from "@/api/useGetUser";
 import { Authority } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/main";
 
 type SubmissionDetailsGridProps = {
-  displayItems: DetailSectionItem[];
+  details: LabelAndValue[];
 };
 
-const SubmissionDetailsGrid = ({ displayItems }: SubmissionDetailsGridProps) => (
+const SubmissionDetailsGrid = ({ details }: SubmissionDetailsGridProps) => (
   <div className="grid grid-cols-2 gap-6">
-    {displayItems.map(({ label, value, canView = true }) => {
+    {details.map(({ label, value, canView = true }) => {
       return canView ? (
         <div key={label}>
           <h3 className="font-bold">{label}</h3>
@@ -54,14 +54,14 @@ export const SubmissionDetails = ({ itemResult }: SubmissionDetailsProps) => {
     <DetailsSection id="package_details" title={title}>
       <div className="flex-col gap-4 max-w-2xl">
         <SubmissionDetailsGrid
-          displayItems={[
+          details={[
             ...getSubmissionDetails(submission, user),
             ...getApprovedAndEffectiveDetails(submission, user),
             ...getDescriptionDetails(submission, user),
           ]}
         />
         <hr className="my-4" />
-        <SubmissionDetailsGrid displayItems={getSubmittedByDetails(submission, user)} />
+        <SubmissionDetailsGrid details={getSubmittedByDetails(submission, user)} />
       </div>
     </DetailsSection>
   );

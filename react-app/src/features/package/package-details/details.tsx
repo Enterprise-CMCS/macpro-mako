@@ -37,7 +37,7 @@ const ReviewTeamList = ({ reviewTeam = [] }: ReviewTeamListProps) => {
   );
 };
 
-export type DetailSectionItem = {
+export type LabelAndValue = {
   label: string;
   value: ReactNode;
   canView?: boolean;
@@ -46,7 +46,7 @@ export type DetailSectionItem = {
 type GetLabelAndValueFromSubmission = (
   submission: opensearch.main.Document,
   user: OneMacUser,
-) => DetailSectionItem[];
+) => LabelAndValue[];
 
 export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission, { user }) => [
   {
@@ -68,12 +68,12 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
   },
   {
     label: "Amendment Title",
-    value: <p>{submission.title || BLANK_VALUE}</p>,
+    value: submission.title || BLANK_VALUE,
     canView: submission.title !== undefined,
   },
   {
     label: "Subject",
-    value: <p>{submission.subject || BLANK_VALUE}</p>,
+    value: submission.subject || BLANK_VALUE,
     canView: isCmsUser(user) && submission.actionType !== "Extend",
   },
   {
