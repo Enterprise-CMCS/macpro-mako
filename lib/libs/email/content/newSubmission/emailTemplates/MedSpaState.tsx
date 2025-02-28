@@ -1,7 +1,7 @@
 import { Events } from "shared-types";
 import { formatNinetyDaysDate, formatDate } from "shared-utils";
 import { CommonEmailVariables } from "shared-types";
-import { PackageDetails, FollowUpNotice, MailboxNotice } from "../../email-components";
+import { PackageDetails, FollowUpNotice, MailboxNotice, BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { Text } from "@react-email/components";
 import { styles } from "../../email-styles";
@@ -17,6 +17,7 @@ export const MedSpaStateEmail = (props: {
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<BasicFooter />}
     >
       <PackageDetails
         details={{
