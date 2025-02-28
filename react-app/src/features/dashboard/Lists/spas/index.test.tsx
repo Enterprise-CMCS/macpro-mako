@@ -299,7 +299,7 @@ describe("SpasList", () => {
     });
 
     it("should display the dashboard as expected", async () => {
-      verifyFiltering(4); // 4 hidden columns
+      verifyFiltering(3); // 4 hidden columns
       verifyChips([]); // no filters
       verifyColumns(hasActions);
       verifyPagination(hitCount);

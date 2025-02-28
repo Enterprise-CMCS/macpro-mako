@@ -88,7 +88,7 @@ export const DEFAULT_FILTERS: opensearch.Filterable<opensearch.main.Field>[] = [
   },
   {
     label: "Final Disposition",
-    field: "finalDispositionDate.keyword",
+    field: "finalDispositionDate",
     component: "dateRange",
     prefix: "must",
     type: "range",
