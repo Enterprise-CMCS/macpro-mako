@@ -3,17 +3,17 @@
 import { SubNavHeader } from "@/components";
 import LeftNavigation from "./content/navigationBar";
 
-export const  NewFaq = (props : any) => {
+export const  NewFaq = () => {
   return (
     <div className="min-h-screen flex flex-col">     
       <SubNavHeader>       
         <h1 className="text-xl font-medium">Frequently Asked Questions</h1>     
       </SubNavHeader>      
       
-      {/* Main Layout Wrapper with explicit widths */}     
+      { /* Main Layout Wrapper with explicit widths */ }     
       <div className="max-w-screen-xl m-auto px-4 lg:px-8 pt-8 w-full">
         <div className="flex">
-          {/* Left Navigation - Fixed width with explicit max-width */}       
+          { /* Left Navigation - Fixed width with explicit max-width */ }       
           <div className="w-64 sticky top-0 h-[calc(100vh-4rem)]">         
             <LeftNavigation />       
           </div>        

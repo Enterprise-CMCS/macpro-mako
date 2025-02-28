@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLDClient } from "launchdarkly-react-client-sdk";
-import {LegacyFaq} from "./LegacyFaq"
-import {NewFaq} from "./NewFaq"
+import { LegacyFaq } from "./LegacyFaq"
+import { NewFaq } from "./NewFaq"
 
 export const Faq = () => {
   const ldClient = useLDClient();
