@@ -1,83 +1,67 @@
+import { useMemo } from "react";
 import { DetailsSection } from "@/components";
 import {
-  approvedAndAEffectiveDetails,
-  descriptionDetails,
-  recordDetails,
-  submissionDetails,
+  getApprovedAndEffectiveDetails,
+  getDescriptionDetails,
+  getSubmissionDetails,
+  getSubmittedByDetails,
 } from "./hooks";
-
-import { FC, useMemo } from "react";
 
 import { DetailSectionItem } from "./hooks";
 import { useGetUser } from "@/api/useGetUser";
-import { AppK } from "./appk";
-import { cn } from "@/utils";
 import { Authority } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/main";
 
-export const DetailItemsGrid: FC<{
+type SubmissionDetailsGridProps = {
   displayItems: DetailSectionItem[];
-  fullWidth?: boolean;
-  containerStyle?: string;
-}> = (props) => {
-  const { data: user } = useGetUser();
-
-  return (
-    <div
-      className={cn(
-        `${props.fullWidth ? "max-w-xl" : "grid grid-cols-2 gap-6"}`,
-        props.containerStyle,
-      )}
-    >
-      {props.displayItems.map(({ label, value, canView }) => {
-        return canView(user) ? (
-          <div key={label}>
-            <h3 style={{ fontWeight: 700 }}>{label}</h3>
-            <div style={{ fontWeight: 400 }} className="py-2">
-              {value}
-            </div>
-          </div>
-        ) : null;
-      })}
-    </div>
-  );
 };
 
-type PackageDetailsProps = {
+const SubmissionDetailsGrid = ({ displayItems }: SubmissionDetailsGridProps) => (
+  <div className="grid grid-cols-2 gap-6">
+    {displayItems.map(({ label, value, canView = true }) => {
+      return canView ? (
+        <div key={label}>
+          <h3 className="font-bold">{label}</h3>
+          <div className="py-2">{value}</div>
+        </div>
+      ) : null;
+    })}
+  </div>
+);
+
+type SubmissionDetailsProps = {
   itemResult: ItemResult;
 };
 
-export const PackageDetails = ({ itemResult }: PackageDetailsProps) => {
-  const title = useMemo(() => {
-    const { _source: source } = itemResult;
+export const SubmissionDetails = ({ itemResult }: SubmissionDetailsProps) => {
+  const { data: user } = useGetUser();
+  const { _source: submission } = itemResult;
 
-    switch (source.authority) {
+  const title = useMemo(() => {
+    switch (submission.authority) {
       case Authority["1915b"]:
       case Authority["1915c"]:
       case undefined: // Some TEs have no authority
-        if (source.id === "NOASDFASDFASDF") return "1915(c) Appendix K Package Details";
-        if (source.actionType == "Amend" && source.authority === Authority["1915c"])
+        if (submission.actionType == "Amend" && submission.authority === Authority["1915c"])
           return "1915(c) Appendix K Amendment Package Details";
-        if (source.actionType == "Extend") return "Temporary Extension Request Details";
+        if (submission.actionType == "Extend") return "Temporary Extension Request Details";
     }
 
-    return `${source.authority} Package Details`;
-  }, [itemResult]);
+    return `${submission.authority} Package Details`;
+  }, [submission]);
 
   return (
     <DetailsSection id="package_details" title={title}>
       <div className="flex-col gap-4 max-w-2xl">
-        <DetailItemsGrid
+        <SubmissionDetailsGrid
           displayItems={[
-            ...recordDetails(itemResult._source),
-            ...approvedAndAEffectiveDetails(itemResult._source),
-            ...descriptionDetails(itemResult._source),
+            ...getSubmissionDetails(submission, user),
+            ...getApprovedAndEffectiveDetails(submission, user),
+            ...getDescriptionDetails(submission, user),
           ]}
-          containerStyle="py-4"
         />
         <hr className="my-4" />
-        <DetailItemsGrid displayItems={submissionDetails(itemResult._source)} />
-        <AppK />
+        <SubmissionDetailsGrid displayItems={getSubmittedByDetails(submission, user)} />
       </div>
     </DetailsSection>
   );
