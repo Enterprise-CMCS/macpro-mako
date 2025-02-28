@@ -9,14 +9,15 @@ import {
   SubNavHeader,
 } from "@/components";
 import { useParams } from "react-router";
+interface LegacyFaqProps {
+  flagValue: boolean;
+}
 
-export const LegacyFaq = (props : any) => {
-
+export const LegacyFaq: React.FC<LegacyFaqProps> = () => {
   const { id } = useParams<{ id: string }>();
 
   const [openItems, setOpenItems] = useState<string[]>([]);
   useEffect(() => {
-
     if (id) {
       const element = document.getElementById(id);
       if (element) {
@@ -30,9 +31,8 @@ export const LegacyFaq = (props : any) => {
   }, [id]);
   return (
     <>
-
       <SubNavHeader>
-        <h1 className="text-xl font-medium">Frequently Asked Questions</h1> 
+        <h1 className="text-xl font-medium">Frequently Asked Questions</h1>
       </SubNavHeader>
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <div className="flex-1">

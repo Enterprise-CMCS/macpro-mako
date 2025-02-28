@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionContent,
-  AccordionTrigger,
-} from "@/components";
+import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from "@/components";
 import ContactHelpDesk from "./contactHelpDesk";
 
 const LeftNavigation: React.FC = () => {
@@ -15,22 +10,20 @@ const LeftNavigation: React.FC = () => {
         {[
           "General",
           "Package actions",
-          'Implementation guides',
+          "Implementation guides",
           "Access & roles",
           "User profile",
-          "Glossary"
+          "Glossary",
         ].map((item) => (
           <AccordionItem value={item} key={item}>
             <AccordionTrigger className="text-gray-700 hover:text-gray-900 py-2">
               {item}
             </AccordionTrigger>
-            <AccordionContent>
-              { /* Content for each section can be added here */ }
-            </AccordionContent>
+            <AccordionContent>{/* Content for each section can be added here */}</AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
-      
+
       <ContactHelpDesk />
     </div>
   );
