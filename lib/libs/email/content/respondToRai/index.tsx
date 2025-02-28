@@ -31,7 +31,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       return {
         to: [
           `${variables.submitterName} <${variables.submitterEmail}>`,
-          // Remove submitter from cc list:
+          // Prevent submitter from being added twice:
           ...(variables.allStateUsersEmails ?? []).filter(
             (email) => email !== variables.submitterEmail,
           ),
@@ -62,7 +62,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       return {
         to: [
           `${variables.submitterName} <${variables.submitterEmail}>`,
-          // Remove submitter from cc list:
+          // Prevent submitter from being added twice:
           ...(variables.allStateUsersEmails ?? []).filter(
             (email) => email !== variables.submitterEmail,
           ),
@@ -93,7 +93,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       return {
         to: [
           `${variables.submitterName} <${variables.submitterEmail}>`,
-          // Remove submitter from cc list:
+          // Prevent submitter from being added twice:
           ...(variables.allStateUsersEmails ?? []).filter(
             (email) => email !== variables.submitterEmail,
           ),
@@ -124,7 +124,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
       return {
         to: [
           `${variables.submitterName} <${variables.submitterEmail}>`,
-          // Remove submitter from cc list:
+          // Prevent submitter from being added twice:
           ...(variables.allStateUsersEmails ?? []).filter(
             (email) => email !== variables.submitterEmail,
           ),
