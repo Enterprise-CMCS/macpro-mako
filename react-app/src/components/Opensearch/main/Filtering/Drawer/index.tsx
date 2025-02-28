@@ -64,18 +64,13 @@ export const OsFilterDrawer = () => {
                     options={filterDrawerHook.aggs?.[filter.field]}
                   />
                 )}
-                {filter.component === "multiCheck" &&
-                  (["extend", "new"].includes(filter.field) ||
-                    ["extend", "new"].includes(filter.label)) && (
-                    <>
-                      {console.log(`Selected field: ${filter.field}`)}
-                      <F.FilterableMultiCheck
-                        value={filterDrawerHook.filters[filter.field]?.value as string[]}
-                        onChange={filterDrawerHook.onFilterChange(filter.field)}
-                        options={filterDrawerHook.aggs?.[filter.field]}
-                      />
-                    </>
-                  )}
+                {filter.component === "multiCheck" && (
+                  <F.FilterableMultiCheck
+                    value={filterDrawerHook.filters[filter.field]?.value as string[]}
+                    onChange={filterDrawerHook.onFilterChange(filter.field)}
+                    options={filterDrawerHook.aggs?.[filter.field]}
+                  />
+                )}
                 {filter.component === "dateRange" && (
                   <F.FilterableDateRange
                     value={filterDrawerHook.filters[filter.field]?.value as opensearch.RangeValue}
