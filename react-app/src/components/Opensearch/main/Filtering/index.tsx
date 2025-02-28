@@ -30,7 +30,7 @@ export const OsFiltering: FC<{
         />
         <div className="flex flex-wrap justify-center gap-2 max-w-full">
           <VisibilityPopover
-            list={columns.filter((COL) => COL.locked === false || COL.field)}
+            list={columns.filter((COL) => COL.locked === false && COL.field)}
             onItemClick={onToggle}
             hiddenColumns={columns.filter((COL) => COL.hidden === true)}
           />

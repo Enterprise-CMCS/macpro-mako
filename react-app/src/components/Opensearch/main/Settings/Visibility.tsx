@@ -29,11 +29,7 @@ export const VisibilityPopover = ({
       </UI.PopoverTrigger>
       <UI.PopoverContent className="bg-white">
         <div className="flex flex-col gap-2">
-          <VisibilityMenu
-            list={list.filter((v) => v.field !== "id.keyword")}
-            onItemClick={onItemClick}
-            hiddenColumns={hiddenColumns}
-          />
+          <VisibilityMenu list={list} onItemClick={onItemClick} hiddenColumns={hiddenColumns} />
         </div>
       </UI.PopoverContent>
     </UI.Popover>
