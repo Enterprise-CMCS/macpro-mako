@@ -19,6 +19,11 @@ const newSubmissionPageRouteMapper: Record<string, { to: string; displayText: st
     to: "/new-submission/spa/medicaid/landing/medicaid-eligibility",
     displayText: "Medicaid Eligibility, Enrollment, Administration, and Health Homes",
   },
+  "medicaid-abp": {
+    to: "/new-submission/spa/medicaid/landing/medicaid-abp",
+    displayText:
+      "Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing",
+  },
   chip: {
     to: "/new-submission/spa/chip",
     displayText: "CHIP SPA Type",
