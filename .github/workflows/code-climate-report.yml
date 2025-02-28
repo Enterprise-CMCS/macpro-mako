@@ -8,6 +8,11 @@ on:
     - cron: "30 01 * * *"
   workflow_dispatch:
 
+# ensures that currently running Code Coverage Report workflow is canceled if another job starts
+concurrency:
+  group: ${{ github.workflow }}-main
+  cancel-in-progress: true
+
 permissions:
   actions: read
   contents: write
@@ -66,3 +71,4 @@ jobs:
       FILE_2_DEPLOY_TO: coverage/
       COMMIT_MSG: update code coverage report for main
       URL_PATH: coverage/
+    secrets: inherit

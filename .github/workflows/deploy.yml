@@ -189,6 +189,7 @@ jobs:
       FILE_2_DEPLOY_TO: ${{ needs.e2e.outputs.html_deploy_to }}
       COMMIT_MSG: ${{ needs.e2e.outputs.commit_msg }}
       URL_PATH: ${{ needs.e2e.outputs.output_url }}
+    secrets: inherit
 
   cfn-nag:
     runs-on: ubuntu-latest
