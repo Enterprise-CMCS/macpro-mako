@@ -5,13 +5,19 @@ on:
     branches:
       - main
 
+# ensures that currently running PR Coverage Annotation workflow is canceled if another one starts
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  actions: read
+
 jobs:
   coverage-report:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-      actions: read
     outputs:
       actualResult: ${{ steps.test.conclusion }}
     steps:
