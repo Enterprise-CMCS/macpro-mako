@@ -16,7 +16,7 @@ export const transform = () => {
       description: null, // Not provided in legacy, set to null
       id: data.pk, // pk becomes id
       makoChangedDate: timestampDate.toISOString(),
-      origin: "OneMAC",
+      origin: "OneMACLegacy",
       raiWithdrawEnabled: false,
       seatoolStatus: SEATOOL_STATUS.SUBMITTED,
       state: data.pk?.slice(0, 2), // Extract state from pk

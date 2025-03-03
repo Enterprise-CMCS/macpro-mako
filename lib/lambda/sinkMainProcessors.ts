@@ -187,15 +187,18 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   await bulkUpdateDataWrapper(oneMacRecordsForMako, "main");
 };
 
-const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
+const getMakoDocProperties = async (kafkaRecords: KafkaRecord[]) => {
   const kafkaIds = kafkaRecords.map((record) =>
     removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(record.key)),
   );
   const openSearchRecords = await getItems(kafkaIds);
 
-  return openSearchRecords.reduce<Map<string, number>>((map, item) => {
+  return openSearchRecords.reduce<Map<string, { timestamp: number; origin?: string }>>((map, item) => {
     if (item?.changedDate) {
-      map.set(item.id, new Date(item.changedDate).getTime());
+      map.set(item.id, {
+        timestamp: new Date(item.changedDate).getTime(),
+        origin: item.origin, // Include the origin property
+      });
     }
 
     return map;
@@ -211,7 +214,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   kafkaRecords: KafkaRecord[],
   topicPartition: string,
 ) => {
-  const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
+  const makoDocs = await getMakoDocProperties(kafkaRecords);
 
   const seatoolRecordsForMako = kafkaRecords.reduce<{ id: string; [key: string]: unknown }[]>(
     (collection, kafkaRecord) => {
@@ -252,7 +255,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         }
 
         const { data: seatoolDocument } = safeSeatoolRecord;
-        const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
+        const makoDocumentTimestamp = makoDocs.get(seatoolDocument.id)?.timestamp;
 
         console.log("--------------------");
         console.log(`id: ${seatoolDocument.id}`);
@@ -264,7 +267,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
           makoDocumentTimestamp &&
           isBefore(makoDocumentTimestamp, seatoolDocument.changed_date);
 
-        if (isNewerOrUndefined) {
+        if (isNewerOrUndefined && (makoDocs.get(seatoolDocument.id)?.origin !== "OneMACLegacy")) {
           console.log("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
           return collection;
         }
