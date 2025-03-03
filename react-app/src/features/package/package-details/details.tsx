@@ -1,12 +1,10 @@
-import { formatActionType, formatSeatoolDate, isCmsUser, isStateUser } from "shared-utils";
+import { formatActionType, formatDateToEST, isCmsUser, isStateUser } from "shared-utils";
 
 import { OneMacUser } from "@/api/useGetUser";
 import { BLANK_VALUE } from "@/consts";
 import { useState, ReactNode } from "react";
 import { Authority, opensearch } from "shared-types";
-
 import { convertStateAbbrToFullName } from "@/utils";
-import { format } from "date-fns";
 
 type ReviewTeamListProps = {
   reviewTeam: opensearch.main.Document["reviewTeam"];
@@ -97,22 +95,20 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
   },
   {
     label: "Proposed effective date",
-    value: submission.proposedDate ? formatSeatoolDate(submission.proposedDate) : "Pending",
+    value: submission.proposedDate ? formatDateToEST(submission.proposedDate) : "Pending",
     canView: submission.actionType !== "Extend",
   },
   {
     label: "Initial submission date",
-    value: submission.submissionDate ? formatSeatoolDate(submission.submissionDate) : BLANK_VALUE,
+    value: submission.submissionDate ? formatDateToEST(submission.submissionDate) : BLANK_VALUE,
   },
   {
     label: "Latest package activity",
-    value: submission.makoChangedDate
-      ? format(new Date(submission.makoChangedDate).getTime(), "eee, MMM d yyyy, hh:mm:ss a")
-      : BLANK_VALUE,
+    value: submission.makoChangedDate ? formatDateToEST(submission.makoChangedDate) : BLANK_VALUE,
   },
   {
     label: "Formal RAI response date",
-    value: submission.raiReceivedDate ? formatSeatoolDate(submission.raiReceivedDate) : BLANK_VALUE,
+    value: submission.raiReceivedDate ? formatDateToEST(submission.raiReceivedDate) : BLANK_VALUE,
     canView: submission.actionType !== "Extend",
   },
 ];
@@ -121,14 +117,14 @@ export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (s
   {
     label: "Final disposition date",
     value: submission.finalDispositionDate
-      ? formatSeatoolDate(submission.finalDispositionDate)
+      ? formatDateToEST(submission.finalDispositionDate)
       : BLANK_VALUE,
     canView: submission.actionType !== "Extend",
   },
   {
     label: "Approved effective date",
     value: submission.approvedEffectiveDate
-      ? formatSeatoolDate(submission.approvedEffectiveDate)
+      ? formatDateToEST(submission.approvedEffectiveDate)
       : BLANK_VALUE,
     canView: submission.actionType !== "Extend",
   },
