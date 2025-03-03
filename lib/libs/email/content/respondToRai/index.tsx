@@ -33,7 +33,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
           `${variables.submitterName} <${variables.submitterEmail}>`,
           // Prevent submitter from being added twice:
           ...(variables.allStateUsersEmails ?? []).filter(
-            (email) => !email.includes("variables.submitterEmail"),
+            (email) => !email.includes(variables.submitterEmail),
           ),
         ],
         subject: `Your Medicaid SPA RAI Response for ${variables.id} has been submitted to CMS`,
@@ -64,7 +64,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
           `${variables.submitterName} <${variables.submitterEmail}>`,
           // Prevent submitter from being added twice:
           ...(variables.allStateUsersEmails ?? []).filter(
-            (email) => !email.includes("variables.submitterEmail"),
+            (email) => !email.includes(variables.submitterEmail),
           ),
         ],
         subject: `Your CHIP SPA RAI Response for ${variables.id} has been submitted to CMS`,
@@ -95,7 +95,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
           `${variables.submitterName} <${variables.submitterEmail}>`,
           // Prevent submitter from being added twice:
           ...(variables.allStateUsersEmails ?? []).filter(
-            (email) => !email.includes("variables.submitterEmail"),
+            (email) => !email.includes(variables.submitterEmail),
           ),
         ],
         subject: `Your 1915(b) RAI Response for ${variables.id} has been submitted to CMS`,
@@ -126,7 +126,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
           `${variables.submitterName} <${variables.submitterEmail}>`,
           // Prevent submitter from being added twice:
           ...(variables.allStateUsersEmails ?? []).filter(
-            (email) => !email.includes("variables.submitterEmail"),
+            (email) => !email.includes(variables.submitterEmail),
           ),
         ],
         subject: `Your 1915(c) RAI Response for ${variables.id} has been submitted to CMS`,
