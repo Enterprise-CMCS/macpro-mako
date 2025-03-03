@@ -1,6 +1,6 @@
 export function formatActionType(
   actionType: string | undefined,
-  waiverInString: boolean = true,
+  waiverInString: boolean = false,
 ): string {
   const waiverWord = waiverInString ? "Waiver" : "";
   const space = waiverInString ? " " : "";
