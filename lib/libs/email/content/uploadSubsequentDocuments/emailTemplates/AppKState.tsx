@@ -11,8 +11,8 @@ export const AppKStateEmail = ({
   variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;
 }) => (
   <BaseEmailTemplate
-    previewText={`Additional documents submitted for 1915(c) ${variables.actionType} Waiver ${variables.id}`}
-    heading={`You've successfully submitted the following to CMS reviewers for 1915(c) ${variables.actionType} Waiver ${variables.id}:`}
+    previewText={`Additional documents submitted for 1915(c) ${variables.actionType} ${variables.id}`}
+    heading={`You've successfully submitted the following to CMS reviewers for 1915(c) ${variables.actionType} ${variables.id}:`}
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >

@@ -10,8 +10,8 @@ export const WaiversEmailState = ({
   variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;
 }) => (
   <BaseEmailTemplate
-    previewText={`Action required: review new documents for 1915(b) ${variables.actionType} Waiver ${variables.id}`}
-    heading={`You've successfully submitted the following to CMS reviewers for 1915(b) ${variables.actionType} Waiver ${variables.id}:`}
+    previewText={`Action required: review new documents for 1915(b) ${variables.actionType} ${variables.id}`}
+    heading={`You've successfully submitted the following to CMS reviewers for 1915(b) ${variables.actionType} ${variables.id}:`}
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >

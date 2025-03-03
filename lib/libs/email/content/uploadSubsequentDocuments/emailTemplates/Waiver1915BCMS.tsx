@@ -13,8 +13,8 @@ export const WaiversEmailCMS = ({
   variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;
 }) => (
   <BaseEmailTemplate
-    previewText={`Action required: review new documents for 1915(b) ${variables.actionType} Waiver in OneMAC`}
-    heading={`New documents have been submitted for 1915(b) ${variables.actionType} Waiver in OneMAC.`}
+    previewText={`Action required: review new documents for 1915(b) ${variables.actionType} in OneMAC`}
+    heading={`New documents have been submitted for 1915(b) ${variables.actionType} in OneMAC.`}
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >
