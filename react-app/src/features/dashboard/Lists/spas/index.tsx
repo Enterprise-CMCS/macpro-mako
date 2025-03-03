@@ -7,7 +7,7 @@ export const SpasList = () => {
 
   if (context.error) return <ErrorAlert error={context.error} />;
 
-  if (context.isLoading || isLoading === true) {
+  if (isLoading === true) {
     return <LoadingSpinner />;
   }
 

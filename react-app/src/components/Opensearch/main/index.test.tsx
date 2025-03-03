@@ -304,12 +304,23 @@ describe("OsMainView", () => {
           tab: "spas",
         }),
       );
-      expect(global.localStorage.getItem("osColumns")).toBe(JSON.stringify(["origin.keyword"]));
+
+      const storedData = JSON.parse(global.localStorage.getItem("osData") || "{}");
+      expect(storedData.osColumns).toEqual({
+        spas: ["origin.keyword"],
+        waivers: ["origin.keyword"],
+      });
     });
 
-    it("should load hidden columns based on local storage", async () => {
+    it("should load hidden columns based on local storage spas", async () => {
       const spaHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
-      expect(global.localStorage.setItem("osColumns", JSON.stringify(["authority.keyword"])));
+      const hiddenColumns = {
+        spas: ["authority.keyword"],
+        waivers: [],
+      };
+
+      global.localStorage.setItem("osData", JSON.stringify({ osColumns: hiddenColumns }));
+
       const { user } = setup(
         [...DEFAULT_COLUMNS, HIDDEN_COLUMN],
         spaHits,
