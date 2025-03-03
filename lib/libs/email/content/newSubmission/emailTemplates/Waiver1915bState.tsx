@@ -4,7 +4,6 @@ import { Text } from "@react-email/components";
 import { PackageDetails, FollowUpNotice, MailboxNotice, BasicFooter } from "../../email-components";
 import { styles } from "../../email-styles";
 import { BaseEmailTemplate } from "../../email-templates";
-import { formatWaiverAction } from "libs/email";
 
 export const Waiver1915bStateEmail = (props: {
   variables:
@@ -19,7 +18,7 @@ export const Waiver1915bStateEmail = (props: {
   const previewText = `${variables.authority} ${variables.actionType} Submitted`;
   const heading = `This response confirms the submission of your ${
     variables.authority
-  } ${formatWaiverAction(variables.actionType)} to CMS for review:`;
+  } ${variables.actionType} to CMS for review:`;
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -32,8 +31,7 @@ export const Waiver1915bStateEmail = (props: {
           "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
-          [`${variables.authority} ${formatWaiverAction(variables.actionType)} Number`]:
-            variables.id,
+          [`${variables.authority} ${variables.actionType} Number`]: variables.id,
           "Waiver Authority": variables.authority,
           "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),

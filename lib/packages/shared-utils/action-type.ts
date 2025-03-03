@@ -1,13 +1,15 @@
-export function formatActionType(actionType: string | undefined): string {
+export function formatActionType(actionType: string | undefined, waiverText?: boolean): string {
+  const waiverInitial = waiverText ? " Waiver" : "";
+  const waiverAmend = waiverText ? "Waiver " : "";
   switch (actionType) {
     case undefined:
       return "-- --";
     case "New":
-      return "Initial";
+      return `Initial${waiverInitial}`;
     case "Amend":
-      return "Amendment";
+      return `${waiverAmend}Amendment`;
     case "Renew":
-      return "Renewal";
+      return `${waiverAmend}Renewal`;
     default:
       return actionType;
   }
