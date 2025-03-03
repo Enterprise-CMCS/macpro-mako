@@ -24,7 +24,7 @@ const ReviewTeamList = ({ reviewTeam = [] }: ReviewTeamListProps) => {
       {displayTeam.map((reviewer, idx) => (
         <li key={`reviewteam-ul-${reviewer.name}-${idx}`}>{reviewer.name}</li>
       ))}
-      {reviewTeam && reviewTeam?.length > 3 && (
+      {reviewTeam.length > 3 && (
         <li className={"text-xs text-sky-700 hover:cursor-pointer"}>
           <button onClick={() => setIsExpanded(!isExpanded)}>
             {isExpanded ? "Show less" : "Show more"}
