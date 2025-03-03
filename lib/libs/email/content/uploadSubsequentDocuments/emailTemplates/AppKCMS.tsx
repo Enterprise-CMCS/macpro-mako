@@ -13,8 +13,8 @@ export const AppKCMSEmail = ({
   variables: Events["UploadSubsequentDocuments"] & CommonEmailVariables;
 }) => (
   <BaseEmailTemplate
-    previewText={`Action required: review new documents for 1915(c) ${variables.actionType} Waiver ${variables.id} in OneMAC`}
-    heading={`New documents have been submitted for 1915(c) ${variables.actionType} Waiver in OneMAC.`}
+    previewText={`Action required: review new documents for 1915(c) ${variables.actionType} ${variables.id} in OneMAC`}
+    heading={`New documents have been submitted for 1915(c) ${variables.actionType} in OneMAC.`}
     applicationEndpointUrl={variables.applicationEndpointUrl}
     footerContent={<BasicFooter />}
   >

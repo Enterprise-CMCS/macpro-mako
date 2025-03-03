@@ -271,7 +271,7 @@ export async function processAndSendEmails(
     territory,
     emails: { ...emails, cpocEmail, srtEmails },
     allStateUsersEmails,
-    ...(item._source.actionType && { actionType: formatActionType(item._source.actionType) }),
+    ...(item._source.actionType && { actionType: formatActionType(item._source.actionType, true) }),
   };
 
   console.log("Template variables:", JSON.stringify(templateVariables, null, 2));
