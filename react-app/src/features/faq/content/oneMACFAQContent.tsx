@@ -731,7 +731,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   </td>
                 </tr>
                 <tr>
-                  <td className="border border-gray-300 px-4 py-2">Budget Docs</td>
+                  <td className="border border-gray-300 px-4 py-2">Budget Documents</td>
                   <td className="border border-gray-300 px-4 py-2">
                     Updated 1-year budget if applicable of the State's planned expenditures if the
                     CHIP SPA submission has a significant impact on the approved budget
@@ -794,7 +794,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   </td>
                 </tr>
                 <tr>
-                  <td className="border border-gray-300 px-4 py-2">Budget Docs</td>
+                  <td className="border border-gray-300 px-4 py-2">Budget Documents</td>
                   <td className="border border-gray-300 px-4 py-2">
                     Updated 1-year budget if applicable of the State’s planned expenditures if the
                     CHIP SPA submission has a significant impact on the approved budget
