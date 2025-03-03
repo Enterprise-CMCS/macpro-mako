@@ -230,7 +230,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      Amendment Waiver Number
                                       :
                                     </p>
                                   </td>
@@ -278,7 +278,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Amend
+                                      1915(c)
                                     </p>
                                   </td>
                                 </tr>
@@ -409,6 +409,12 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
         expect a formal response to your submittal to be issued within 90 days,
         before Apr 1, 2023 @ 11:59pm EST.
                     </p>
+                    <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                    >
+                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
+                       Any other correspondence will be disregarded.
+                    </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                     />
@@ -440,12 +446,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Capi
                         </tr>
                       </tbody>
                     </table>
-                    <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
-                    >
-                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
-                       Any other correspondence will be disregarded.
-                    </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
@@ -4136,7 +4136,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      Amendment Waiver Number
                                       :
                                     </p>
                                   </td>
@@ -4184,7 +4184,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Amend
+                                      1915(c)
                                     </p>
                                   </td>
                                 </tr>
@@ -4315,6 +4315,12 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
         expect a formal response to your submittal to be issued within 90 days,
         before Apr 1, 2023 @ 11:59pm EST.
                     </p>
+                    <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                    >
+                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
+                       Any other correspondence will be disregarded.
+                    </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                     />
@@ -4346,12 +4352,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Amendment Cont
                         </tr>
                       </tbody>
                     </table>
-                    <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
-                    >
-                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
-                       Any other correspondence will be disregarded.
-                    </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
@@ -9537,7 +9537,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      Amendment Waiver Number
                                       :
                                     </p>
                                   </td>
@@ -9585,7 +9585,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Amend
+                                      1915(c)
                                     </p>
                                   </td>
                                 </tr>
@@ -9716,6 +9716,12 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
         expect a formal response to your submittal to be issued within 90 days,
         before Apr 1, 2023 @ 11:59pm EST.
                     </p>
+                    <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                    >
+                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
+                       Any other correspondence will be disregarded.
+                    </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                     />
@@ -9747,12 +9753,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                         </tr>
                       </tbody>
                     </table>
-                    <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
-                    >
-                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
-                       Any other correspondence will be disregarded.
-                    </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
@@ -10037,7 +10037,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                   >
-                                    Initial Waiver Number
+                                    Amendment Waiver Number
                                     :
                                   </p>
                                 </td>
@@ -10085,7 +10085,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                                   <p
                                     style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                   >
-                                    Amend
+                                    1915(c)
                                   </p>
                                 </td>
                               </tr>
@@ -10216,6 +10216,12 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
         expect a formal response to your submittal to be issued within 90 days,
         before Apr 1, 2023 @ 11:59pm EST.
                   </p>
+                  <p
+                    style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                  >
+                    This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
+                     Any other correspondence will be disregarded.
+                  </p>
                   <hr
                     style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                   />
@@ -10247,12 +10253,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a AppKCMSEmailPr
                       </tr>
                     </tbody>
                   </table>
-                  <p
-                    style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
-                  >
-                    This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
-                     Any other correspondence will be disregarded.
-                  </p>
                   <p
                     style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                   >
@@ -10594,7 +10594,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      Amendment Waiver Number
                                       :
                                     </p>
                                   </td>
@@ -10642,7 +10642,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Amend
+                                      1915(c)
                                     </p>
                                   </td>
                                 </tr>
@@ -10773,6 +10773,12 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
         expect a formal response to your submittal to be issued within 90 days,
         before Apr 1, 2023 @ 11:59pm EST.
                     </p>
+                    <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                    >
+                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
+                       Any other correspondence will be disregarded.
+                    </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                     />
@@ -10804,12 +10810,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Chipspa Previe
                         </tr>
                       </tbody>
                     </table>
-                    <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
-                    >
-                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
-                       Any other correspondence will be disregarded.
-                    </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
@@ -11858,7 +11858,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      Amendment Waiver Number
                                       :
                                     </p>
                                   </td>
@@ -11906,7 +11906,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Amend
+                                      1915(c)
                                     </p>
                                   </td>
                                 </tr>
@@ -12037,6 +12037,12 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
         expect a formal response to your submittal to be issued within 90 days,
         before Apr 1, 2023 @ 11:59pm EST.
                     </p>
+                    <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                    >
+                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
+                       Any other correspondence will be disregarded.
+                    </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                     />
@@ -12068,12 +12074,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                         </tr>
                       </tbody>
                     </table>
-                    <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
-                    >
-                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
-                       Any other correspondence will be disregarded.
-                    </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
@@ -14776,7 +14776,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      Amendment Waiver Number
                                       :
                                     </p>
                                   </td>
@@ -14824,7 +14824,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Amend
+                                      1915(c)
                                     </p>
                                   </td>
                                 </tr>
@@ -14955,6 +14955,12 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
         expect a formal response to your submittal to be issued within 90 days,
         before Apr 1, 2023 @ 11:59pm EST.
                     </p>
+                    <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                    >
+                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
+                       Any other correspondence will be disregarded.
+                    </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                     />
@@ -14986,12 +14992,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Contra
                         </tr>
                       </tbody>
                     </table>
-                    <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
-                    >
-                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
-                       Any other correspondence will be disregarded.
-                    </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
@@ -19202,7 +19202,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      Amendment Waiver Number
                                       :
                                     </p>
                                   </td>
@@ -19250,7 +19250,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Amend
+                                      1915(c)
                                     </p>
                                   </td>
                                 </tr>
@@ -19381,6 +19381,12 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
         expect a formal response to your submittal to be issued within 90 days,
         before Apr 1, 2023 @ 11:59pm EST.
                     </p>
+                    <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                    >
+                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
+                       Any other correspondence will be disregarded.
+                    </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                     />
@@ -19412,12 +19418,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                         </tr>
                       </tbody>
                     </table>
-                    <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
-                    >
-                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
-                       Any other correspondence will be disregarded.
-                    </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
@@ -21021,7 +21021,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      Amendment Waiver Number
                                       :
                                     </p>
                                   </td>
@@ -21069,7 +21069,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Amend
+                                      1915(c)
                                     </p>
                                   </td>
                                 </tr>
@@ -21200,6 +21200,12 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
         expect a formal response to your submittal to be issued within 90 days,
         before Apr 1, 2023 @ 11:59pm EST.
                     </p>
+                    <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                    >
+                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
+                       Any other correspondence will be disregarded.
+                    </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                     />
@@ -21231,12 +21237,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Capita
                         </tr>
                       </tbody>
                     </table>
-                    <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
-                    >
-                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
-                       Any other correspondence will be disregarded.
-                    </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
@@ -24433,7 +24433,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      Amendment Waiver Number
                                       :
                                     </p>
                                   </td>
@@ -24481,7 +24481,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Amend
+                                      1915(c)
                                     </p>
                                   </td>
                                 </tr>
@@ -24612,6 +24612,12 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
         expect a formal response to your submittal to be issued within 90 days,
         before Apr 1, 2023 @ 11:59pm EST.
                     </p>
+                    <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                    >
+                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
+                       Any other correspondence will be disregarded.
+                    </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                     />
@@ -24643,12 +24649,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
                         </tr>
                       </tbody>
                     </table>
-                    <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
-                    >
-                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
-                       Any other correspondence will be disregarded.
-                    </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
@@ -29340,7 +29340,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; font-weight: 600; letter-spacing: -0.5px;"
                                     >
-                                      Initial Waiver Number
+                                      Amendment Waiver Number
                                       :
                                     </p>
                                   </td>
@@ -29388,7 +29388,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                                     <p
                                       style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                                     >
-                                      Amend
+                                      1915(c)
                                     </p>
                                   </td>
                                 </tr>
@@ -29519,6 +29519,12 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
         expect a formal response to your submittal to be issued within 90 days,
         before Apr 1, 2023 @ 11:59pm EST.
                     </p>
+                    <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
+                    >
+                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
+                       Any other correspondence will be disregarded.
+                    </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                     />
@@ -29550,12 +29556,6 @@ exports[`Initial Submission State Email Snapshot Test > renders a TempExt Previe
                         </tr>
                       </tbody>
                     </table>
-                    <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
-                    >
-                      This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only.
-                       Any other correspondence will be disregarded.
-                    </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
