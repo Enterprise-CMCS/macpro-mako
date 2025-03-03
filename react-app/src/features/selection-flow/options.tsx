@@ -35,7 +35,7 @@ export const MEDICAID_SPA_OPTIONS: OptionData[] = [
   },
   {
     title: "Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing",
-    description: "Redirects to the MMDL submission system",
+    description: "Redirects to MMDL submission system",
     to: "/new-submission/spa/medicaid/landing/medicaid-abp",
   },
   {
