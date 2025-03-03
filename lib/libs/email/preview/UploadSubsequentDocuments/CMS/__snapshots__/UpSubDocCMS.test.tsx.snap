@@ -8251,7 +8251,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      New documents have been submitted for 1915(b) Waiver Amendment in OneMAC.
+                      New documents have been submitted for 1915(b) Waiver Amendment CO-24-1234 in OneMAC.
                     </h1>
                     <table
                       align="center"
@@ -9110,7 +9110,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                   <h1
                     style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                   >
-                    New documents have been submitted for 1915(b) Waiver Amendment in OneMAC.
+                    New documents have been submitted for 1915(b) Waiver Amendment CO-24-1234 in OneMAC.
                   </h1>
                   <table
                     align="center"
