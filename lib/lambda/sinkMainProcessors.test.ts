@@ -634,7 +634,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           },
         ],
         subject: "Sample Title",
-        submissionDate: ISO_DATETIME,
         types: [
           {
             SPA_TYPE_ID: 1,
@@ -747,7 +746,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           },
         ],
         subject: "Sample Title",
-        submissionDate: ISO_DATETIME,
         types: [
           {
             SPA_TYPE_ID: 1,
@@ -860,7 +858,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           },
         ],
         subject: "Sample Title",
-        submissionDate: ISO_DATETIME,
         types: [
           {
             SPA_TYPE_ID: 1,
@@ -975,7 +972,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           },
         ],
         subject: "Sample Title",
-        submissionDate: ISO_DATETIME,
         types: [
           {
             SPA_TYPE_ID: 1,

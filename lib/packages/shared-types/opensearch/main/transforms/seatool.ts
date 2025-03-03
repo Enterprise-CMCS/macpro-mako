@@ -168,7 +168,6 @@ export const transform = (id: string) => {
       cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
       seatoolStatus,
       locked: false,
-      submissionDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.SUBMISSION_DATE),
       subject: data.STATE_PLAN.TITLE_NAME,
       secondClock: isInSecondClock(raiReceivedDate, raiWithdrawnDate, seatoolStatus, authority),
       raiWithdrawEnabled: finalDispositionStatuses.includes(seatoolStatus) ? false : undefined,
