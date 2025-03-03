@@ -113,12 +113,3 @@ export const SELECT_CPOC: DrawerFilterableGroup = {
   type: "terms",
   value: [],
 };
-
-export const SELECT_ORIGIN: DrawerFilterableGroup = {
-  label: "Submission Source",
-  field: "origin.keyword",
-  component: "multiSelect",
-  prefix: "must",
-  type: "terms",
-  value: [],
-};
