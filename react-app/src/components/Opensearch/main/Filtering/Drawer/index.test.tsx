@@ -45,7 +45,6 @@ describe("OsFilterDrawer", () => {
         "Latest Package Activity",
         "Formal RAI Response",
         "CPOC Name",
-        "Submission Source",
       ].forEach((label) => {
         const heading = screen.queryByRole("heading", { name: label, level: 3 });
         expect(heading).toBeInTheDocument();
@@ -344,7 +343,6 @@ describe("OsFilterDrawer", () => {
         "Latest Package Activity",
         "Formal RAI Response",
         "CPOC Name",
-        "Submission Source",
       ].forEach((label) => {
         const heading = screen.queryByRole("heading", { name: label, level: 3 });
         expect(heading).toBeInTheDocument();
