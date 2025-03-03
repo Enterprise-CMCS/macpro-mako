@@ -165,7 +165,7 @@ export const submissionDetails = (data: opensearch.main.Document): DetailSection
     },
   },
   {
-    label: "Review Team (SRT)",
+    label: "SRT",
     value: <ReviewTeamList {...data} />,
     canView: (u) => (!u || !u.user ? false : isCmsUser(u.user) && !(data.actionType === "Extend")),
   },
