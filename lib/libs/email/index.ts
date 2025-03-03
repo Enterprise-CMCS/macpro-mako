@@ -145,4 +145,19 @@ export async function getLatestMatchingEvent(
   }
 }
 
+export function formatWaiverAction(actionType: string | undefined): string {
+  switch (actionType) {
+    case undefined:
+      return "";
+    case "Initial":
+      return "Initial Waiver";
+    case "Amendment":
+      return "Waiver Amendment";
+    case "Renewal":
+      return "Waiver Renewal";
+    default:
+      return actionType;
+  }
+}
+
 export * from "./getAllStateUsers";
