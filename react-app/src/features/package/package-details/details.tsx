@@ -94,20 +94,20 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
     canView: submission.actionType === "Extend",
   },
   {
-    label: "Proposed effective date",
+    label: "Proposed Effective Date",
     value: submission.proposedDate ? formatDateToEST(submission.proposedDate) : "Pending",
     canView: submission.actionType !== "Extend",
   },
   {
-    label: "Initial submission date",
+    label: "Initial Submission Date",
     value: submission.submissionDate ? formatDateToEST(submission.submissionDate) : BLANK_VALUE,
   },
   {
-    label: "Latest package activity",
+    label: "Latest Package Activity",
     value: submission.makoChangedDate ? formatDateToEST(submission.makoChangedDate) : BLANK_VALUE,
   },
   {
-    label: "Formal RAI response date",
+    label: "Formal RAI Response Date",
     value: submission.raiReceivedDate ? formatDateToEST(submission.raiReceivedDate) : BLANK_VALUE,
     canView: submission.actionType !== "Extend",
   },
@@ -115,14 +115,14 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
 
 export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (submission) => [
   {
-    label: "Final disposition date",
+    label: "Final Disposition Date",
     value: submission.finalDispositionDate
       ? formatDateToEST(submission.finalDispositionDate)
       : BLANK_VALUE,
     canView: submission.actionType !== "Extend",
   },
   {
-    label: "Approved effective date",
+    label: "Approved Effective Date",
     value: submission.approvedEffectiveDate
       ? formatDateToEST(submission.approvedEffectiveDate)
       : BLANK_VALUE,
