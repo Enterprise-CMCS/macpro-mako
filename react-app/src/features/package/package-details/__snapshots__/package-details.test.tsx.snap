@@ -80,7 +80,7 @@ exports[`package details > makes a package 1`] = `
                 <h3
                   class="font-bold"
                 >
-                  Proposed effective date
+                  Proposed Effective Date
                 </h3>
                 <div
                   class="py-2"
@@ -92,7 +92,7 @@ exports[`package details > makes a package 1`] = `
                 <h3
                   class="font-bold"
                 >
-                  Initial submission date
+                  Initial Submission Date
                 </h3>
                 <div
                   class="py-2"
@@ -104,7 +104,7 @@ exports[`package details > makes a package 1`] = `
                 <h3
                   class="font-bold"
                 >
-                  Latest package activity
+                  Latest Package Activity
                 </h3>
                 <div
                   class="py-2"
@@ -116,7 +116,7 @@ exports[`package details > makes a package 1`] = `
                 <h3
                   class="font-bold"
                 >
-                  Formal RAI response date
+                  Formal RAI Response Date
                 </h3>
                 <div
                   class="py-2"
@@ -128,7 +128,7 @@ exports[`package details > makes a package 1`] = `
                 <h3
                   class="font-bold"
                 >
-                  Final disposition date
+                  Final Disposition Date
                 </h3>
                 <div
                   class="py-2"
@@ -140,7 +140,7 @@ exports[`package details > makes a package 1`] = `
                 <h3
                   class="font-bold"
                 >
-                  Approved effective date
+                  Approved Effective Date
                 </h3>
                 <div
                   class="py-2"
@@ -270,7 +270,7 @@ exports[`package details > makes a package 1`] = `
               <h3
                 class="font-bold"
               >
-                Proposed effective date
+                Proposed Effective Date
               </h3>
               <div
                 class="py-2"
@@ -282,7 +282,7 @@ exports[`package details > makes a package 1`] = `
               <h3
                 class="font-bold"
               >
-                Initial submission date
+                Initial Submission Date
               </h3>
               <div
                 class="py-2"
@@ -294,7 +294,7 @@ exports[`package details > makes a package 1`] = `
               <h3
                 class="font-bold"
               >
-                Latest package activity
+                Latest Package Activity
               </h3>
               <div
                 class="py-2"
@@ -306,7 +306,7 @@ exports[`package details > makes a package 1`] = `
               <h3
                 class="font-bold"
               >
-                Formal RAI response date
+                Formal RAI Response Date
               </h3>
               <div
                 class="py-2"
@@ -318,7 +318,7 @@ exports[`package details > makes a package 1`] = `
               <h3
                 class="font-bold"
               >
-                Final disposition date
+                Final Disposition Date
               </h3>
               <div
                 class="py-2"
@@ -330,7 +330,7 @@ exports[`package details > makes a package 1`] = `
               <h3
                 class="font-bold"
               >
-                Approved effective date
+                Approved Effective Date
               </h3>
               <div
                 class="py-2"
