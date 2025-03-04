@@ -1,8 +1,5 @@
-import { events, getStatus, SEATOOL_STATUS } from "shared-types";
-import { seaToolFriendlyTimestamp } from "../../../../../shared-utils/seatool-date-helper";
-import { LegacyEvent } from "../../../../events";
-import { ONEMAC_LEGACY_ORIGIN } from ".";
-
+import { events } from "shared-types";
+import { baseTransform } from "./common-legacy-transform";
 
 export const transform = () => {
   return events["legacy-event"].legacyEventSchema.transform((data) => {
