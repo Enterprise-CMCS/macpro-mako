@@ -2,18 +2,11 @@ import { ONEMAC_LEGACY_ORIGIN } from ".";
 import { getStatus, SEATOOL_STATUS } from "../../../..";
 
 export const baseTransform = (data: any) => {
-  console.log("baseTransform - data", data);
   const seatoolStatus = getSeaToolStatusFromLegacyStatus(data.currentStatus);
-  console.log("baseTransform - seatoolStatus", seatoolStatus);
   const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-  console.log("baseTransform - cmsStatus", cmsStatus);
-  console.log("baseTransform - stateStatus", stateStatus);
   const lastEventTimestampDate = new Date(data.lastEventTimestamp);
   const submissionTimestampDate = new Date(data.submissionTimestamp);
-  console.log("baseTransform - timestampDate", lastEventTimestampDate);
-
   const isRaiResponseWithdrawEnabled = data.subStatus === "Withdraw Formal RAI Response Enabled";
-  console.log("baseTransform - isRaiResponseWithdrawEnabled", isRaiResponseWithdrawEnabled);
 
   return {
     additionalInformation: data.additionalInformation,
@@ -46,6 +39,7 @@ function getSeaToolStatusFromLegacyStatus(legacyStatus: string | null | undefine
     case "Inactivated":
       return SEATOOL_STATUS.UNKNOWN;
     case "Submitted":
+    case "TE Requested":
       return SEATOOL_STATUS.SUBMITTED;
     case "Under Review":
       return SEATOOL_STATUS.PENDING;
