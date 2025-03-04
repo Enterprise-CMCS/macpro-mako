@@ -1,14 +1,18 @@
 import { ONEMAC_LEGACY_ORIGIN } from ".";
 import { getStatus, SEATOOL_STATUS } from "../../../..";
-import { seaToolFriendlyTimestamp } from "../../../../../shared-utils/seatool-date-helper";
 
 export const baseTransform = (data: any) => {
+  console.log("baseTransform - data", data);
   const seatoolStatus = getSeaToolStatusFromLegacyStatus(data.currentStatus);
+  console.log("baseTransform - seatoolStatus", seatoolStatus);
   const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
+  console.log("baseTransform - cmsStatus", cmsStatus);
+  console.log("baseTransform - stateStatus", stateStatus);
   const timestampDate = new Date(data.eventTimestamp);
-  const todayEpoch = seaToolFriendlyTimestamp(timestampDate);
+  console.log("baseTransform - timestampDate", timestampDate);
 
   const isRaiResponseWithdrawEnabled = data.subStatus === "Withdraw Formal RAI Response Enabled";
+  console.log("baseTransform - isRaiResponseWithdrawEnabled", isRaiResponseWithdrawEnabled);
 
   return {
     additionalInformation: data.additionalInformation,
@@ -22,10 +26,10 @@ export const baseTransform = (data: any) => {
     seatoolStatus,
     state: data.pk?.split("-")?.[0], // Extract state from pk
     stateStatus,
-    statusDate: new Date(data.eventTimestamp).toISOString(),
-    proposedDate: isNaN(new Date(data.proposedEffectiveDate).getTime()) ? null : data.proposedEffectiveDate, // Handle non date convertible data as null
+    statusDate: timestampDate.toISOString(),
+    proposedDate: isNaN(new Date(data.proposedEffectiveDate).getTime()) ? null : data.proposedEffectiveDate,
     subject: null,
-    submissionDate: new Date(data.eventTimestamp).toISOString(),
+    submissionDate: timestampDate.toISOString(),
     submitterEmail: data.submitterEmail,
     submitterName: data.submitterName,
     initialIntakeNeeded: true,
