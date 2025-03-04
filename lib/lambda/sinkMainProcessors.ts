@@ -46,7 +46,7 @@ record: ParsedLegacyRecordFromKafka, kafkaSource: String,
   typeof record === "object" &&
   record?.componentType !== undefined &&
   record.componentType in legacyTransforms &&
-  record.sk === "package" &&
+  record.sk === "Package" &&
   (record.GSI1pk !== undefined && (record.GSI1pk === "OneMAC#spa" ||
   record.GSI1pk === "OneMAC#waiver")) &&
   // record.GSI1pk !== undefined && record.GSI1pk.startsWith("OneMAC#submit") &&
