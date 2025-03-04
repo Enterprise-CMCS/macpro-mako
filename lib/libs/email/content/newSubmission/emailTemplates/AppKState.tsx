@@ -30,8 +30,8 @@ export const AppKStateEmail = (props: {
           "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
-          "Initial Waiver Number": variables.id,
-          "Waiver Authority": variables.actionType,
+          "Amendment Waiver Number": variables.id,
+          "Waiver Authority": variables.authority,
           "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
           Summary: variables.additionalInformation,
@@ -44,8 +44,8 @@ export const AppKStateEmail = (props: {
         expect a formal response to your submittal to be issued within 90 days,
         before ${formatNinetyDaysDate(variables.timestamp)}.`}
       </Text>
-      <FollowUpNotice />
       <MailboxNotice type="Waiver" />
+      <FollowUpNotice includeDidNotExpect={false} />
     </BaseEmailTemplate>
   );
 };
