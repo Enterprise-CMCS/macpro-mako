@@ -14,7 +14,7 @@ module Jekyll
       if input["errors"].size > 0
         0
       else
-        input["stats"]["expected"] + input["stats"]["unexpected"] + input["stats"]["skipped"] 
+        input["stats"]["expected"] + input["stats"]["unexpected"] + input["stats"]["skipped"] + input["stats"]["flaky"]
       end
     end
 
