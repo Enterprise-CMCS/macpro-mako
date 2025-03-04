@@ -80,7 +80,7 @@ describe("", () => {
     expect(screen.getByText("SPA ID", { selector: "th>div" })).toBeInTheDocument();
     expect(screen.getByText("State", { selector: "th>div" })).toBeInTheDocument();
     expect(screen.getByText("Authority", { selector: "th>div" })).toBeInTheDocument();
-    expect(screen.queryByText("Submission Source", { selector: "th>div" })).toBeNull();
+    expect(screen.queryByText("Final Disposition", { selector: "th>div" })).toBeNull();
   });
 
   it("should handle clicking a column", async () => {
