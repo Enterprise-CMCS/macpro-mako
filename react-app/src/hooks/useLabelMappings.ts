@@ -4,6 +4,7 @@ export const SUB_TYPES = {
   New: "Initial",
   Amend: "Amendment",
   Renew: "Renewal",
+  Extend: "Temporary Extension Request",
 };
 
 export const STATES = {

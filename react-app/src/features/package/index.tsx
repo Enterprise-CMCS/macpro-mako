@@ -7,7 +7,7 @@ import { FC, PropsWithChildren } from "react";
 import { PackageActivities } from "./package-activity";
 import { AdminChanges } from "./admin-changes";
 
-import { PackageDetails } from "./package-details";
+import { SubmissionDetails } from "./package-details";
 import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
@@ -44,7 +44,7 @@ export const DetailsContent: FC<{ id: string }> = ({ id }) => {
         <PackageActionsCard id={id} />
       </section>
       <div className="flex flex-col gap-3">
-        <PackageDetails itemResult={data} />
+        <SubmissionDetails itemResult={data} />
         <PackageActivities />
         <AdminChanges />
       </div>

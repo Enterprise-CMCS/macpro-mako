@@ -2,6 +2,7 @@ import { useGetItem } from "@/api";
 import { ActionForm, LoadingSpinner, PackageSection } from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { useParams } from "react-router";
+import { SEATOOL_STATUS } from "shared-types";
 
 export const WithdrawPackageActionWaiver = () => {
   const { authority, id } = useParams();
@@ -40,7 +41,8 @@ export const WithdrawPackageActionWaiver = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) =>
+          check.recordExists && check.hasStatus(SEATOOL_STATUS.WITHDRAW_REQUESTED),
       }}
       bannerPostSubmission={{
         header: "Withdraw package request has been submitted",
@@ -94,7 +96,8 @@ export const WithdrawPackageAction = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) =>
+          check.recordExists && check.hasStatus(SEATOOL_STATUS.WITHDRAW_REQUESTED),
       }}
       bannerPostSubmission={{
         header: "Withdraw package request has been submitted",
@@ -142,7 +145,8 @@ export const WithdrawPackageActionChip = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) =>
+          check.recordExists && check.hasStatus(SEATOOL_STATUS.WITHDRAW_REQUESTED),
       }}
       breadcrumbText="Withdraw Package"
       additionalInformation={{
