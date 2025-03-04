@@ -12,6 +12,7 @@ const getRoleDescriptionsFromUser = (roles: string | undefined) => {
   return roles
     .split(",")
     .map((role) => RoleDescriptionStrings[role])
+    .filter(Boolean)
     .join(", ");
 };
 
