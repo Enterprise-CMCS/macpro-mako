@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Initial Submission CMS Email Snapshot Test > renders a Medicaid Spa Preview Template 1`] = `
+exports[`Initial Submission CMS Email Snapshot Test > renders a Medicaid SPA Preview Template 1`] = `
 <DocumentFragment>
   <meta
     content="text/html; charset=UTF-8"

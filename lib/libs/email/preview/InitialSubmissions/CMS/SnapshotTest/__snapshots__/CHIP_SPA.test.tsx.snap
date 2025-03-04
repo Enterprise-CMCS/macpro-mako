@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Initial Submission CMS Email Snapshot Test > renders a Chipspa Preview Template 1`] = `
+exports[`Initial Submission CMS Email Snapshot Test > renders a CHIP SPA Preview Template 1`] = `
 <DocumentFragment>
   <meta
     content="text/html; charset=UTF-8"
