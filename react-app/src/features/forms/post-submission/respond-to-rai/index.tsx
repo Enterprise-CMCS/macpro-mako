@@ -2,6 +2,7 @@ import { useGetItem } from "@/api";
 import { ActionForm, LoadingSpinner, PackageSection } from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { Navigate, useParams } from "react-router";
+import { SEATOOL_STATUS } from "shared-types";
 
 export const RespondToRaiMedicaid = () => {
   const { authority, id } = useParams();
@@ -21,7 +22,7 @@ export const RespondToRaiMedicaid = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) => check.recordExists && check.hasStatus(SEATOOL_STATUS.SUBMITTED),
       }}
       breadcrumbText="Respond to Formal RAI"
       preSubmissionMessage="Once you submit this form, a confirmation email is sent to you and to CMS.
@@ -68,7 +69,7 @@ export const RespondToRaiWaiver = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) => check.recordExists && check.hasStatus(SEATOOL_STATUS.SUBMITTED),
       }}
       breadcrumbText="Respond to Formal RAI"
       preSubmissionMessage="Once you submit this form, a confirmation email is sent to you and to CMS.
@@ -101,7 +102,7 @@ export const RespondToRaiChip = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) => check.recordExists && check.hasStatus(SEATOOL_STATUS.SUBMITTED),
       }}
       breadcrumbText="Respond to Formal RAI"
       preSubmissionMessage="Once you submit this form, a confirmation email is sent to you and to CMS.

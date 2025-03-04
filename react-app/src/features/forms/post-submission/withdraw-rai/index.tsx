@@ -2,6 +2,7 @@ import { ActionForm } from "@/components/ActionForm";
 import { PackageSection } from "@/components/Form/content/PackageSection";
 import { formSchemas } from "@/formSchemas";
 import { useParams } from "react-router";
+import { SEATOOL_STATUS } from "shared-types";
 
 export const WithdrawRaiForm = () => {
   const { authority, id } = useParams();
@@ -27,7 +28,8 @@ export const WithdrawRaiForm = () => {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) =>
+          check.recordExists && check.hasStatus(SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED),
       }}
       breadcrumbText="Withdraw Formal RAI Response"
       formDescription="Complete this form to withdraw the Formal RAI response. Once complete,

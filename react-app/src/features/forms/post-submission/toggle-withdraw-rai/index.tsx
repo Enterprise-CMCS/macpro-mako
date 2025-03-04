@@ -16,7 +16,7 @@ export const EnableWithdrawRaiForm = () => {
       defaultValues={{ id, authority, raiWithdrawEnabled: true }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) => check.recordExists && check.hasEnabledRaiWithdraw,
       }}
       breadcrumbText="Enable Formal RAI Response Withdraw"
       formDescription="Once you submit this form, the most recent Formal RAI Response for this
@@ -44,7 +44,7 @@ export const DisableWithdrawRaiForm = () => {
       defaultValues={{ id, authority, raiWithdrawEnabled: false }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) => check.recordExists && !check.hasEnabledRaiWithdraw,
       }}
       breadcrumbText="Disable Formal RAI Response Withdraw"
       formDescription="The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied."
