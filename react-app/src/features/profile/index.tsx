@@ -12,6 +12,7 @@ const getRoleDescriptionsFromUser = (roles: string | undefined) => {
   return roles
     .split(",")
     .map((role) => RoleDescriptionStrings[role])
+    .filter(Boolean)
     .join(", ");
 };
 
@@ -28,7 +29,10 @@ export const Profile = () => {
 
   const fullStateNames = getFullStateNamesFromUser(userData?.user["custom:state"]);
 
-  const userRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
+  const euaRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
+  const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
+
+  const userRoles = euaRoles ? euaRoles : idmRoles;
 
   return (
     <>

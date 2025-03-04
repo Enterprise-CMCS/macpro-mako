@@ -5,7 +5,7 @@ export const testStateCognitoUser: OneMacUser = {
   isCms: false,
   user: {
     sub: "0000aaaa-0000-00aa-0a0a-aaaaaa000000",
-    "custom:cms-roles": "onemac-micro-statesubmitter",
+    "custom:cms-roles": "onemac-state-user",
     "custom:state": "VA,OH,SC,CO,GA,MD",
     email_verified: true,
     given_name: "State",
