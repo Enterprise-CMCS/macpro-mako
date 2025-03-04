@@ -117,6 +117,6 @@ describe("banner", () => {
     await user.click(getByTestId("banner-close"));
 
     expect(queryByTestId("banner-header")).not.toBeInTheDocument();
-    expect(localStorage.getItem("banner")).toBeNull();
+    expect(localStorage.getItem("banner")).toBe("null");
   });
 });

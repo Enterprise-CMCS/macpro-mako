@@ -1,72 +1,70 @@
-import { renderHook } from "@testing-library/react";
+import { renderHook, act } from "@testing-library/react";
 import { describe, it, expect, afterEach } from "vitest";
 import { useLocalStorage, removeItemLocalStorage } from "./useLocalStorage";
-import { Storage } from "@/utils/test-helpers";
 
-describe("UseLocalStorage", () => {
-  global.lobalStorage = new Storage();
-
+describe("useLocalStorage", () => {
   afterEach(() => {
-    global.lobalStorage.clear();
-  });
-  it("sets local storage with key osQuery to null", () => {
-    const { result } = renderHook(() => useLocalStorage("osQuery", null));
-    expect(global.localStorage.getItem("osQuery")).toBe(null);
-    expect(result.current[0]).toEqual(null);
+    localStorage.clear();
   });
 
   it("returns initial value when localStorage contains invalid JSON", () => {
-    global.localStorage.setItem("osData", "invalid JSON");
+    localStorage.setItem("osQuery", "invalid JSON");
 
     const { result } = renderHook(() => useLocalStorage("osQuery", "fallback"));
 
     expect(result.current[0]).toBe("fallback");
   });
 
-  it("sets local storage with key osColumns to hidden columns", () => {
-    const initialOsData = { osColumns: { spas: ["test"], waivers: ["test"] } };
-    global.localStorage.setItem("osData", JSON.stringify(initialOsData));
+  it("sets and retrieves local storage correctly", () => {
+    const initialOsData = { spas: ["test"], waivers: ["test"] };
+    localStorage.setItem("osColumns", JSON.stringify(initialOsData));
 
+    const { result } = renderHook(() => useLocalStorage("osColumns", { spas: [], waivers: [] }));
+
+    expect(localStorage.getItem("osColumns")).toBe(JSON.stringify(initialOsData));
+    expect(result.current[0]).toEqual(initialOsData);
+  });
+
+  it("updates local storage when state changes", () => {
     const { result } = renderHook(() =>
       useLocalStorage("osColumns", { spas: ["test"], waivers: ["test"] }),
     );
 
-    expect(global.localStorage.getItem("osData")).toBe(
-      JSON.stringify({ osColumns: { spas: ["test"], waivers: ["test"] } }),
+    act(() => {
+      result.current[1]({ spas: ["updated"], waivers: ["test"] });
+    });
+
+    expect(localStorage.getItem("osColumns")).toBe(
+      JSON.stringify({ spas: ["updated"], waivers: ["test"] }),
     );
-    expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
+    expect(result.current[0]).toEqual({ spas: ["updated"], waivers: ["test"] });
   });
 
   it("holds values on rerender", () => {
     const { result, rerender } = renderHook(() =>
       useLocalStorage("osColumns", { spas: ["test"], waivers: ["test"] }),
     );
+
     expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
     rerender();
     expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
   });
 
-  it("clears storage after removeItemLocalStorage is called  a key", () => {
-    const { result } = renderHook(() =>
-      useLocalStorage("osColumns", { spas: ["test"], waivers: ["test"] }),
-    );
-    expect(global.localStorage.getItem("osData")).toBe(
-      JSON.stringify({ osColumns: { spas: ["test"], waivers: ["test"] } }),
-    );
-    expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
-    removeItemLocalStorage("osData");
-    expect(global.localStorage.getItem("osData")).toBe(null);
+  it("removes a specific key from localStorage", () => {
+    localStorage.setItem("osColumns", JSON.stringify({ spas: ["test"], waivers: ["test"] }));
+
+    removeItemLocalStorage("osColumns");
+
+    expect(localStorage.getItem("osColumns")).toBe(null);
   });
 
-  it("clears storage after removeItemLocalStorage is called without a key", () => {
-    const { result } = renderHook(() =>
-      useLocalStorage("osColumns", { spas: ["test"], waivers: ["test"] }),
-    );
-    expect(global.localStorage.getItem("osData")).toBe(
-      JSON.stringify({ osColumns: { spas: ["test"], waivers: ["test"] } }),
-    );
-    expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
+  it("clears all localStorage when called without a key", () => {
+    localStorage.setItem("osQuery", "test");
+    localStorage.setItem("osColumns", JSON.stringify({ spas: ["test"], waivers: ["test"] }));
+
     removeItemLocalStorage();
-    expect(global.localStorage.getItem("osData")).toBe(null);
+
+    expect(localStorage.getItem("osQuery")).toBe(null);
+    expect(localStorage.getItem("osColumns")).toBe(null);
   });
 });

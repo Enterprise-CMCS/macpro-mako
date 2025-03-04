@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Alert, AlertVariant } from "../Alert";
 import { Check, X } from "lucide-react";
 import { useLocation } from "react-router";
 import { Observer } from "@/utils/basic-observable";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export type Banner = {
   header: string;
@@ -14,14 +15,10 @@ export type Banner = {
 class BannerObserver extends Observer<Banner> {
   create = (data: Banner) => {
     this.publish(data);
-    this.observed = { ...data };
-    localStorage.setItem("banner", JSON.stringify(data));
   };
 
   dismiss = () => {
     this.publish(null);
-    this.observed = null;
-    localStorage.removeItem("banner");
   };
 }
 
@@ -33,13 +30,13 @@ export const banner = (newBanner: Banner) => {
 
 export const Banner = () => {
   const bannerObserverRef = useRef<(() => void) | null>(null);
-
-  const [activeBanner, setActiveBanner] = useState<Banner | null>(null);
   const { pathname } = useLocation();
   const previousPathRef = useRef(pathname);
 
+  const [activeBanner, setActiveBanner] = useLocalStorage<Banner | null>("banner", null);
+
   const onClose = () => {
-    bannerState.dismiss();
+    setActiveBanner(null);
   };
 
   useEffect(() => {
@@ -53,15 +50,13 @@ export const Banner = () => {
         bannerObserverRef.current = null;
       };
     }
-  }, []);
+  }, [setActiveBanner]);
 
   useEffect(() => {
-    const storedBanner = localStorage.getItem("banner");
-    if (storedBanner) {
-      const parsedBanner: Banner = JSON.parse(storedBanner);
-      bannerState.create(parsedBanner);
+    if (activeBanner) {
+      bannerState.create(activeBanner);
     }
-  }, []);
+  }, [activeBanner]);
 
   useEffect(() => {
     // only run cleanup if:

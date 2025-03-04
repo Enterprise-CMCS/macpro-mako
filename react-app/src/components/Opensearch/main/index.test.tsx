@@ -302,8 +302,8 @@ describe("OsMainView", () => {
         }),
       );
 
-      const storedData = JSON.parse(global.localStorage.getItem("osData") || "{}");
-      expect(storedData.osColumns).toEqual({
+      const storedData = JSON.parse(global.localStorage.getItem("osColumns") || "{}");
+      expect(storedData).toEqual({
         spas: ["finalDispositionDate.keyword"],
         waivers: ["finalDispositionDate.keyword"],
       });
@@ -316,7 +316,7 @@ describe("OsMainView", () => {
         waivers: [],
       };
 
-      global.localStorage.setItem("osData", JSON.stringify({ osColumns: hiddenColumns }));
+      global.localStorage.setItem("osColumns", JSON.stringify(hiddenColumns));
 
       const { user } = setup(
         [...DEFAULT_COLUMNS, HIDDEN_COLUMN],
