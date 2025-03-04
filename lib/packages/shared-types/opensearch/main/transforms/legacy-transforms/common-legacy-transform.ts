@@ -8,7 +8,7 @@ export const baseTransform = (data: any) => {
   const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
   console.log("baseTransform - cmsStatus", cmsStatus);
   console.log("baseTransform - stateStatus", stateStatus);
-  const timestampDate = new Date(data.eventTimestamp);
+  const timestampDate = new Date(data.lastEventTimestamp);
   console.log("baseTransform - timestampDate", timestampDate);
 
   const isRaiResponseWithdrawEnabled = data.subStatus === "Withdraw Formal RAI Response Enabled";
@@ -41,7 +41,7 @@ function getSeaToolStatusFromLegacyStatus(legacyStatus: string | null | undefine
     return SEATOOL_STATUS.UNKNOWN;
   }
 
-  switch (legacyStatus.toUpperCase()) {
+  switch (legacyStatus) {
     case "Inactivated":
       return SEATOOL_STATUS.UNKNOWN;
     case "Submitted":

@@ -6,6 +6,7 @@ import { legacyAttachmentSchema } from "../attachments";
 export const legacyEventSchema = legacySharedSchema.merge(
   z.object({
     eventTimestamp: z.number().nullish(),
+    lastEventTimestamp: z.number().nullish(),
     pk: z.string(),
     currentStatus: z.string().nullish(),
     subStatus: z.string().nullish(),
