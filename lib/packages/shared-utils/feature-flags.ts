@@ -24,4 +24,11 @@ export const featureFlags = {
     flag: "toggleFaq",
     defaultValue: true,
   },
+  /**
+   * Toggles the visibility of the MMDL Alert Banner
+   */
+  UAT_HIDE_MMDL_BANNER: {
+    flag: "uat-hide-mmdl-banner",
+    defaultValue: "OFF",
+  },
 } as const;

@@ -1,4 +1,4 @@
-# Copied from https://dev.to/ysfaran/how-to-use-playwright-with-github-actions-and-github-pages-4gdl
+# Adapted from https://dev.to/ysfaran/how-to-use-playwright-with-github-actions-and-github-pages-4gdl
 name: Delete Playwright Report for Branch
 
 on:
@@ -8,21 +8,30 @@ jobs:
   delete_reports:
     name: Delete Playwright Reports
     runs-on: ubuntu-latest
+    if: ${{ github.event.ref_type == 'branch' }}
     env:
       # Contains all reports for deleted branch
       BRANCH_NAME: ${{ github.event.ref }}
     steps:
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+      - name: Get GitHub App User ID
+        id: get-user-id
+        run: echo "user-id=$(gh api "/users/${{ steps.app-token.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+      - run: |
+          git config --global user.name '${{ steps.app-token.outputs.app-slug }}[bot]'
+          git config --global user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com'
       - name: Checkout GitHub Pages Branch
         uses: actions/checkout@v4
         with:
           ref: gh-pages
-      - name: Set Git User
-        # see: https://github.com/actions/checkout/issues/13#issuecomment-724415212
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          token: ${{ steps.app-token.outputs.token }}
       - name: Delete Data for Branch
-        if: ${{ github.event.ref_type == 'branch' }}
         timeout-minutes: 3
         working-directory: _data/playwright-reports/branches/
         run: |
@@ -33,7 +42,6 @@ jobs:
             echo "Could not find Playwright Data for $BRANCH_NAME to delete" >> "$GITHUB_STEP_SUMMARY"
           fi
       - name: Delete Reports for Branch
-        if: ${{ github.event.ref_type == 'branch' }}
         timeout-minutes: 3
         working-directory: playwright-reports/branches/
         run: |
@@ -44,10 +52,14 @@ jobs:
             echo "Could not find Playwright Reports for $BRANCH_NAME to delete" >> "$GITHUB_STEP_SUMMARY"
           fi
       - name: Push Changes
-        if: ${{ github.event.ref_type == 'branch' }}
         timeout-minutes: 3
         run: |
-          git add .
-          git commit -m "workflow: remove all reports and data for branch $BRANCH_NAME"
-          git pull origin gh-pages --rebase -s recursive -X ours
-          git push
+          if [[ -z $(git status --porcelain) ]]; then
+            echo "Did not have Playwright Data or Reports to delete" >> "$GITHUB_STEP_SUMMARY"
+          else
+            git add -A
+            git commit -am "workflow: remove all reports and data for branch $BRANCH_NAME"
+            git pull origin gh-pages --rebase -s recursive -X ours
+            git push
+            echo "Deleted Playwright Data or Reports for $BRANCH_NAME from GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
+          fi

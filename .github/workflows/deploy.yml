@@ -181,6 +181,7 @@ jobs:
   publish:
     needs: [e2e]
     uses: ./.github/workflows/push-to-gh-pages.yml
+    if: ${{ github.ref != 'refs/heads/production' }} && ${{ github.ref != 'refs/heads/val' }}
     with:
       FILE_1_ARTIFACT_ID: ${{ needs.e2e.outputs.json_artifact_id }}
       FILE_1_DEPLOY_TO: ${{ needs.e2e.outputs.json_deploy_to }}
@@ -188,6 +189,7 @@ jobs:
       FILE_2_DEPLOY_TO: ${{ needs.e2e.outputs.html_deploy_to }}
       COMMIT_MSG: ${{ needs.e2e.outputs.commit_msg }}
       URL_PATH: ${{ needs.e2e.outputs.output_url }}
+    secrets: inherit # pragma: allowlist secret
 
   cfn-nag:
     runs-on: ubuntu-latest
