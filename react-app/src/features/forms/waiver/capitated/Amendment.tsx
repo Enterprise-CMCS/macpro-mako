@@ -13,6 +13,7 @@ import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
 import { Link } from "react-router";
 import { getFAQLinkForAttachments } from "../../faqLinks";
+import { SEATOOL_STATUS } from "shared-types";
 
 interface AmendmentFormProps {
   waiverId?: string;
@@ -127,7 +128,7 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
       defaultValues={{ id: "", waiverNumber: waiverId ?? "" }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) => check.recordExists && check.hasStatus(SEATOOL_STATUS.SUBMITTED),
       }}
     />
   );
