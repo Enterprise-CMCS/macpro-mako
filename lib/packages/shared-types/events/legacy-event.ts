@@ -7,6 +7,8 @@ export const legacyEventSchema = legacySharedSchema.merge(
   z.object({
     eventTimestamp: z.number().nullish(),
     pk: z.string(),
+    currentStatus: z.string().nullish(),
+    subStatus: z.string().nullish(),
     proposedEffectiveDate: z.string().nullish(),
     GSI1pk: z.string(),
     componentId: z.string(),

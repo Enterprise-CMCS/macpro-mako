@@ -1,4 +1,5 @@
 import { Action, handleLegacyAttachment, legacyEventSchema } from "../../..";
+import { ONEMAC_LEGACY_ORIGIN } from "../../main/transforms/legacy-transforms";
 
 export const transform = (id: string) => {
   return legacyEventSchema.transform((data) => {
@@ -60,7 +61,7 @@ export const transform = (id: string) => {
       additionalInformation: data.additionalInformation,
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
-      origin: "OneMACLegacy",
+      origin: ONEMAC_LEGACY_ORIGIN,
     };
     return transformedData;
   });

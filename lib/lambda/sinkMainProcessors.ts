@@ -11,6 +11,7 @@ import {
   extendSubmitNOSOAdminSchema,
 } from "./update/adminChangeSchemas";
 import { legacyTransforms } from "lib/packages/shared-types/opensearch/main";
+import { ONEMAC_LEGACY_ORIGIN } from "node_modules/shared-types/opensearch/main/transforms/legacy-transforms";
 
 const removeDoubleQuotesSurroundingString = (str: string) => str.replace(/^"|"$/g, "");
 const adminRecordSchema = deleteAdminChangeSchema
@@ -45,8 +46,10 @@ record: ParsedLegacyRecordFromKafka, kafkaSource: String,
   typeof record === "object" &&
   record?.componentType !== undefined &&
   record.componentType in legacyTransforms &&
-  // record.sk === "package" &&
-  record.GSI1pk !== undefined && record.GSI1pk.startsWith("OneMAC#submit") &&
+  record.sk === "package" &&
+  (record.GSI1pk !== undefined && (record.GSI1pk === "OneMAC#spa" ||
+  record.GSI1pk === "OneMAC#waiver")) &&
+  // record.GSI1pk !== undefined && record.GSI1pk.startsWith("OneMAC#submit") &&
   kafkaSource === "onemac";
 
 const isRecordAOneMacRecord = (
@@ -256,18 +259,25 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
 
         const { data: seatoolDocument } = safeSeatoolRecord;
         const makoDocumentTimestamp = makoDocs.get(seatoolDocument.id)?.timestamp;
+        const origin = makoDocs.get(seatoolDocument.id)?.origin;
 
         console.log("--------------------");
         console.log(`id: ${seatoolDocument.id}`);
         console.log(`mako: ${makoDocumentTimestamp}`);
         console.log(`seatool: ${seatoolDocument.changed_date}`);
+        console.log(`origin: ${origin}`);
 
         const isNewerOrUndefined =
           seatoolDocument.changed_date &&
           makoDocumentTimestamp &&
           isBefore(makoDocumentTimestamp, seatoolDocument.changed_date);
 
-        if (isNewerOrUndefined && (makoDocs.get(seatoolDocument.id)?.origin !== "OneMACLegacy")) {
+        if (origin === ONEMAC_LEGACY_ORIGIN) {
+          console.log("SKIPPED DUE TO LEGACY PACKAGE ORIGIN");
+          return collection;
+        }
+
+        if (isNewerOrUndefined) {
           console.log("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
           return collection;
         }
