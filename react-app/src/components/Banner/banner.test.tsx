@@ -1,27 +1,9 @@
 import { ReactNode } from "react";
 import { Link, MemoryRouter, Route, Routes } from "react-router";
-import { describe, expect, test, vi } from "vitest";
+import { describe, expect, test } from "vitest";
 import { act, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { banner, Banner } from ".";
-
-const mockCookies: Record<string, string> = {};
-
-vi.spyOn(document, "cookie", "get").mockImplementation(() =>
-  Object.entries(mockCookies)
-    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-    .join("; "),
-);
-
-vi.spyOn(document, "cookie", "set").mockImplementation((cookieString: string) => {
-  const [key, ...valParts] = cookieString.split("=");
-  const value = valParts.join("=").split(";")[0];
-  mockCookies[key.trim()] = decodeURIComponent(value);
-});
-
-const setMockCookie = (name: string, value: object) => {
-  mockCookies[name] = JSON.stringify(value);
-};
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <MemoryRouter initialEntries={["/dashboard"]}>
@@ -32,6 +14,10 @@ const wrapper = ({ children }: { children: ReactNode }) => (
     {children}
   </MemoryRouter>
 );
+
+const testBanner = (path) => {
+  return { header: "Test header", body: "Test body", pathnameToDisplayOn: path };
+};
 
 describe("banner", () => {
   test("Hidden on initial render", () => {
@@ -44,11 +30,7 @@ describe("banner", () => {
     const { queryByTestId } = render(<Banner />, { wrapper });
 
     act(() => {
-      banner({
-        header: "Test header",
-        body: "Test body",
-        pathnameToDisplayOn: "/",
-      });
+      banner(testBanner("/"));
     });
 
     expect(queryByTestId("banner-header")).not.toBeInTheDocument();
@@ -58,11 +40,7 @@ describe("banner", () => {
     const { getByTestId } = render(<Banner />, { wrapper });
 
     act(() => {
-      banner({
-        header: "Test header",
-        body: "Test body",
-        pathnameToDisplayOn: "/dashboard",
-      });
+      banner(testBanner("/dashboard"));
     });
 
     expect(getByTestId("banner-header")).toHaveTextContent("Test header");
@@ -72,11 +50,7 @@ describe("banner", () => {
     const { getByText } = render(<Banner />, { wrapper });
 
     act(() => {
-      banner({
-        header: "Test header",
-        body: "Test body",
-        pathnameToDisplayOn: "/dashboard",
-      });
+      banner(testBanner("/dashboard"));
     });
 
     expect(getByText("Test header")).toBeInTheDocument();
@@ -90,11 +64,7 @@ describe("banner", () => {
     const user = userEvent.setup();
 
     act(() => {
-      banner({
-        header: "Test header",
-        body: "Test body",
-        pathnameToDisplayOn: "/dashboard",
-      });
+      banner(testBanner("/dashboard"));
     });
 
     await user.click(getByTestId("banner-close"));
@@ -109,11 +79,7 @@ describe("banner", () => {
     const user = userEvent.setup();
 
     act(() => {
-      banner({
-        header: "Test header",
-        body: "Test body",
-        pathnameToDisplayOn: "/dashboard",
-      });
+      banner(testBanner("/dashboard"));
     });
 
     const dashboardLink = container.querySelector("#dashboard-link");
@@ -123,32 +89,34 @@ describe("banner", () => {
     expect(queryByTestId("banner-header")).not.toBeInTheDocument();
   });
 
-  test("Sets banner via a cookie", () => {
-    setMockCookie("banner", {
+  test("Sets banner via localStorage", () => {
+    render(<Banner />, { wrapper });
+
+    act(() => {
+      banner(testBanner("/dashboard"));
+    });
+
+    const storedBanner = JSON.parse(localStorage.getItem("banner"));
+
+    expect(storedBanner).toEqual({
       header: "Test header",
       body: "Test body",
       pathnameToDisplayOn: "/dashboard",
     });
-
-    const { getByTestId } = render(<Banner />, { wrapper });
-
-    expect(getByTestId("banner-header")).toHaveTextContent("Test header");
-    expect(getByTestId("banner-body")).toHaveTextContent("Test body");
   });
 
-  test("Dismissing banner removes the cookie", async () => {
-    setMockCookie("banner", {
-      header: "Test header",
-      body: "Test body",
-      pathnameToDisplayOn: "/dashboard",
+  test("Dismissing banner removes localStorage entry", async () => {
+    const { getByTestId, queryByTestId } = render(<Banner />, { wrapper });
+
+    act(() => {
+      banner(testBanner("/dashboard"));
     });
 
-    const { getByTestId, queryByTestId } = render(<Banner />, { wrapper });
     const user = userEvent.setup();
 
     await user.click(getByTestId("banner-close"));
 
     expect(queryByTestId("banner-header")).not.toBeInTheDocument();
-    expect(document.cookie).toBe("banner=");
+    expect(localStorage.getItem("banner")).toBeNull();
   });
 });

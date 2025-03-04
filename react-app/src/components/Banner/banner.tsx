@@ -4,8 +4,6 @@ import { Check, X } from "lucide-react";
 import { useLocation } from "react-router";
 import { Observer } from "@/utils/basic-observable";
 
-import Cookies from "js-cookie";
-
 export type Banner = {
   header: string;
   body: string;
@@ -17,13 +15,13 @@ class BannerObserver extends Observer<Banner> {
   create = (data: Banner) => {
     this.publish(data);
     this.observed = { ...data };
-    Cookies.set("banner", JSON.stringify(data), { expires: 1 });
+    localStorage.setItem("banner", JSON.stringify(data));
   };
 
   dismiss = () => {
     this.publish(null);
     this.observed = null;
-    Cookies.remove("banner");
+    localStorage.removeItem("banner");
   };
 }
 
@@ -58,7 +56,7 @@ export const Banner = () => {
   }, []);
 
   useEffect(() => {
-    const storedBanner = Cookies.get("banner");
+    const storedBanner = localStorage.getItem("banner");
     if (storedBanner) {
       const parsedBanner: Banner = JSON.parse(storedBanner);
       bannerState.create(parsedBanner);
