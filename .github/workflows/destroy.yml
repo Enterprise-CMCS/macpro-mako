@@ -20,7 +20,7 @@ jobs:
         inputs.environment != '' &&
         (!contains(fromJson('["main", "staging", "production"]'), inputs.environment))
       )
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     environment:
       name: ${{ inputs.environment || (startsWith(github.event.ref, 'snyk-') && 'snyk' || github.event.ref) }}
     env:
