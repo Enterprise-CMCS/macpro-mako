@@ -1,13 +1,5 @@
 import { useState, useEffect } from "react";
 
-export const removeItemLocalStorage = (key?: string) => {
-  if (key) {
-    window.localStorage.removeItem(key);
-  } else {
-    window.localStorage.clear();
-  }
-};
-
 export const useLocalStorage = <T>(key: string, initialValue: T) => {
   const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === "undefined") return initialValue;

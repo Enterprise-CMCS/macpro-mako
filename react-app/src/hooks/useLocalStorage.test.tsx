@@ -1,6 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
 import { describe, it, expect, afterEach } from "vitest";
-import { useLocalStorage, removeItemLocalStorage } from "./useLocalStorage";
+import { useLocalStorage } from "./useLocalStorage";
 
 describe("useLocalStorage", () => {
   afterEach(() => {
@@ -48,23 +48,5 @@ describe("useLocalStorage", () => {
     expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
     rerender();
     expect(result.current[0]).toEqual({ spas: ["test"], waivers: ["test"] });
-  });
-
-  it("removes a specific key from localStorage", () => {
-    localStorage.setItem("osColumns", JSON.stringify({ spas: ["test"], waivers: ["test"] }));
-
-    removeItemLocalStorage("osColumns");
-
-    expect(localStorage.getItem("osColumns")).toBe(null);
-  });
-
-  it("clears all localStorage when called without a key", () => {
-    localStorage.setItem("osQuery", "test");
-    localStorage.setItem("osColumns", JSON.stringify({ spas: ["test"], waivers: ["test"] }));
-
-    removeItemLocalStorage();
-
-    expect(localStorage.getItem("osQuery")).toBe(null);
-    expect(localStorage.getItem("osColumns")).toBe(null);
   });
 });

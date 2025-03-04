@@ -13,7 +13,6 @@ import { Auth } from "aws-amplify";
 import { intervalToDuration } from "date-fns";
 import pluralize from "pluralize";
 import { useEffect, useState } from "react";
-import { removeItemLocalStorage } from "@/hooks/useLocalStorage";
 
 const TWENTY_MINS_IN_MILS = 1000 * 60 * 20;
 const TEN_MINS_IN_MILS = 60 * 10;
@@ -30,7 +29,7 @@ export const TimeoutModal = () => {
 
   const onLogOut = () => {
     Auth.signOut();
-    removeItemLocalStorage();
+    window.localStorage.clear();
   };
 
   const onExtendSession = () => {
