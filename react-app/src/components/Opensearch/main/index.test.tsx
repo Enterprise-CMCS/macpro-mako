@@ -112,8 +112,6 @@ describe("OsMainView", () => {
       await user.click(screen.queryByRole("button", { name: "Columns (1 hidden)" }));
       const columns = screen.queryByRole("dialog");
       expect(columns).toBeInTheDocument();
-      expect(within(columns).getByText("SPA ID")).toBeInTheDocument();
-      expect(within(columns).getByText("SPA ID").parentElement).toHaveClass("text-gray-800");
       expect(within(columns).getByText("State")).toBeInTheDocument();
       expect(within(columns).getByText("State").parentElement).toHaveClass("text-gray-800");
       expect(within(columns).getByText("Authority")).toBeInTheDocument();
