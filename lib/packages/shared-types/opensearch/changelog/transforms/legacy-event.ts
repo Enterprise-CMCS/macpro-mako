@@ -38,6 +38,14 @@ export const transform = (id: string) => {
       case "rairesponsewithdraw":
         event = Action.LEGACY_WITHDRAW_RAI_REQUEST;
         break;
+      case "medicaidspasubsequent":
+      case "chipspasubsequent":
+      case "waiverappksubsequent":
+      case "waivernewsubsequent":
+      case "waiverrenewalsubsequent":
+      case "waiveramendmentsubsequent":
+        event = Action.UPLOAD_SUBSEQUENT_DOCUMENTS;
+        break;
       default:
         console.log(
           `Unhandled event type for ${id}:  ${eventType}.  Doing nothing and continuing.`,

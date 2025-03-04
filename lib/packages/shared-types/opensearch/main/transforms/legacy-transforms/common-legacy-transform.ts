@@ -8,28 +8,29 @@ export const baseTransform = (data: any) => {
   const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
   console.log("baseTransform - cmsStatus", cmsStatus);
   console.log("baseTransform - stateStatus", stateStatus);
-  const timestampDate = new Date(data.lastEventTimestamp);
-  console.log("baseTransform - timestampDate", timestampDate);
+  const lastEventTimestampDate = new Date(data.lastEventTimestamp);
+  const submissionTimestampDate = new Date(data.submissionTimestamp);
+  console.log("baseTransform - timestampDate", lastEventTimestampDate);
 
   const isRaiResponseWithdrawEnabled = data.subStatus === "Withdraw Formal RAI Response Enabled";
   console.log("baseTransform - isRaiResponseWithdrawEnabled", isRaiResponseWithdrawEnabled);
 
   return {
     additionalInformation: data.additionalInformation,
-    changedDate: timestampDate.toISOString(), // eventTimestamp as ISO string
+    changedDate: lastEventTimestampDate.toISOString(), // eventTimestamp as ISO string
     cmsStatus, // Derived status
     description: null, // Not provided in legacy, set to null
     id: data.pk, // pk becomes id
-    makoChangedDate: timestampDate.toISOString(),
+    makoChangedDate: lastEventTimestampDate.toISOString(),
     origin: ONEMAC_LEGACY_ORIGIN,
     raiWithdrawEnabled: isRaiResponseWithdrawEnabled,
     seatoolStatus,
     state: data.pk?.split("-")?.[0], // Extract state from pk
     stateStatus,
-    statusDate: timestampDate.toISOString(),
+    statusDate: lastEventTimestampDate.toISOString(),
     proposedDate: isNaN(new Date(data.proposedEffectiveDate).getTime()) ? null : data.proposedEffectiveDate,
     subject: null,
-    submissionDate: timestampDate.toISOString(),
+    submissionDate: submissionTimestampDate.toISOString(),
     submitterEmail: data.submitterEmail,
     submitterName: data.submitterName,
     initialIntakeNeeded: true,
