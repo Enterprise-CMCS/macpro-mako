@@ -190,18 +190,15 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   await bulkUpdateDataWrapper(oneMacRecordsForMako, "main");
 };
 
-const getMakoDocProperties = async (kafkaRecords: KafkaRecord[]) => {
+const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
   const kafkaIds = kafkaRecords.map((record) =>
     removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(record.key)),
   );
   const openSearchRecords = await getItems(kafkaIds);
 
-  return openSearchRecords.reduce<Map<string, { timestamp: number; origin?: string }>>((map, item) => {
+  return openSearchRecords.reduce<Map<string, number>>((map, item) => {
     if (item?.changedDate) {
-      map.set(item.id, {
-        timestamp: new Date(item.changedDate).getTime(),
-        origin: item.origin, // Include the origin property
-      });
+       map.set(item.id, new Date(item.changedDate).getTime());
     }
 
     return map;
@@ -217,7 +214,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   kafkaRecords: KafkaRecord[],
   topicPartition: string,
 ) => {
-  const makoDocs = await getMakoDocProperties(kafkaRecords);
+  const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
 
   const seatoolRecordsForMako = kafkaRecords.reduce<{ id: string; [key: string]: unknown }[]>(
     (collection, kafkaRecord) => {
@@ -258,24 +255,17 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         }
 
         const { data: seatoolDocument } = safeSeatoolRecord;
-        const makoDocumentTimestamp = makoDocs.get(seatoolDocument.id)?.timestamp;
-        const origin = makoDocs.get(seatoolDocument.id)?.origin;
+        const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
 
         console.log("--------------------");
         console.log(`id: ${seatoolDocument.id}`);
         console.log(`mako: ${makoDocumentTimestamp}`);
         console.log(`seatool: ${seatoolDocument.changed_date}`);
-        console.log(`origin: ${origin}`);
 
         const isNewerOrUndefined =
           seatoolDocument.changed_date &&
           makoDocumentTimestamp &&
           isBefore(makoDocumentTimestamp, seatoolDocument.changed_date);
-
-        if (origin === ONEMAC_LEGACY_ORIGIN) {
-          console.log("SKIPPED DUE TO LEGACY PACKAGE ORIGIN");
-          return collection;
-        }
 
         if (isNewerOrUndefined) {
           console.log("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
