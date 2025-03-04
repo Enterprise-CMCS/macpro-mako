@@ -13,13 +13,13 @@ import { Auth } from "aws-amplify";
 import { intervalToDuration } from "date-fns";
 import pluralize from "pluralize";
 import { useEffect, useState } from "react";
-import { removeItemLocalStorage } from "@/hooks/useLocalStorage";
 
 const TWENTY_MINS_IN_MILS = 1000 * 60 * 20;
 const TEN_MINS_IN_MILS = 60 * 10;
 
 export const TimeoutModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const isIdleForTwentyMins = useIdle(TWENTY_MINS_IN_MILS, {
     initialState: false,
   });
@@ -29,8 +29,11 @@ export const TimeoutModal = () => {
   const { data: user, isLoading: isUserLoading } = useGetUser();
 
   const onLogOut = () => {
+    // Small delay to ensure Amplify completes its internal processes
+    setTimeout(() => {
+      window.localStorage.clear();
+    }, 100);
     Auth.signOut();
-    removeItemLocalStorage();
   };
 
   const onExtendSession = () => {
