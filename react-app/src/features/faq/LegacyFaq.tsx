@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { helpDeskContact, oneMACFAQContent } from "./content/oneMACFAQContent";
 import {
   Accordion,
@@ -7,13 +7,23 @@ import {
   AccordionContent,
   AccordionTrigger,
   SubNavHeader,
+  Button,
 } from "@/components";
 import { useParams } from "react-router";
 
-export const LegacyFaq = (props: any) => {
+export const LegacyFaq = () => {
   const { id } = useParams<{ id: string }>();
 
   const [openItems, setOpenItems] = useState<string[]>([]);
+
+  const expandAll = useCallback(() => {
+    const allIds = [];
+    oneMACFAQContent.forEach(({ qanda }) => {
+      qanda.forEach(({ anchorText }) => allIds.push(anchorText));
+    });
+    setOpenItems(allIds);
+  }, [setOpenItems]);
+
   useEffect(() => {
     if (id) {
       const element = document.getElementById(id);
@@ -34,6 +44,17 @@ export const LegacyFaq = (props: any) => {
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <div className="flex-1">
           <article className="mb-8">
+            {/* BUTTON */}
+            <Button
+              onClick={expandAll}
+              variant="outline"
+              data-testid="banner-close"
+              className="w-full xs:w-fit hover:bg-transparent mb-5"
+            >
+              Expand all to search with CTRL + F
+            </Button>
+
+            {/* FAQS */}
             <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
               {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
                 <article key={sectionTitle} className="mb-8">
