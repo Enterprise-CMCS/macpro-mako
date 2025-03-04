@@ -83,7 +83,10 @@ const UserDropdownMenu = () => {
   };
 
   const handleLogout = async () => {
-    window.localStorage.clear();
+    // Small delay to ensure Amplify completes its internal processes
+    setTimeout(() => {
+      window.localStorage.clear();
+    }, 100);
     await Auth.signOut();
   };
 

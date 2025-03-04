@@ -19,6 +19,7 @@ const TEN_MINS_IN_MILS = 60 * 10;
 
 export const TimeoutModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const isIdleForTwentyMins = useIdle(TWENTY_MINS_IN_MILS, {
     initialState: false,
   });
@@ -28,8 +29,11 @@ export const TimeoutModal = () => {
   const { data: user, isLoading: isUserLoading } = useGetUser();
 
   const onLogOut = () => {
+    // Small delay to ensure Amplify completes its internal processes
+    setTimeout(() => {
+      window.localStorage.clear();
+    }, 100);
     Auth.signOut();
-    window.localStorage.clear();
   };
 
   const onExtendSession = () => {
