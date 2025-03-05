@@ -10,7 +10,7 @@ export const Faq = () => {
   useEffect(() => {
     const isFlagOn = ldClient?.variation("toggleFaq");
     setFlagValue(isFlagOn);
-  }, [ldClient.allFlags()]);
+  }, [ldClient]);
 
-  return <>{flagValue ? <NewFaq /> : <LegacyFaq flagValue={flagValue} />}</>;
+  return <>{flagValue ? <NewFaq /> : <LegacyFaq />}</>;
 };

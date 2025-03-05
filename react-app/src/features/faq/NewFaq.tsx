@@ -4,12 +4,14 @@ import { SubNavHeader } from "@/components";
 import LeftNavigation from "./content/navigationBar";
 import { useCallback, useEffect, useState } from "react";
 import { oneMACFAQContent } from "./content/oneMACFAQContent";
-import { Accordion, AccordionItem, AccordionContent, AccordionTrigger, Button } from "@/components";
+import ExpandCollapseBtn from "./content/expandCollapseBtn";
+import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from "@/components";
 import { useParams } from "react-router";
 
 export const NewFaq = () => {
   const { id } = useParams<{ id: string }>();
 
+  // used for the expand button
   const [openItems, setOpenItems] = useState<string[]>([]);
 
   const expandAll = useCallback(() => {
@@ -20,7 +22,7 @@ export const NewFaq = () => {
     setOpenItems(allIds);
   }, [setOpenItems]);
 
-  const closeAll = useCallback(() => {
+  const collapseAll = useCallback(() => {
     setOpenItems([]);
   }, [setOpenItems]);
 
@@ -36,32 +38,13 @@ export const NewFaq = () => {
       }
     }
   }, [id]);
+
+  const tempFAQ = oneMACFAQContent[0].qanda.toSpliced(0, 3);
   return (
     <div className="min-h-screen flex flex-col">
       <SubNavHeader>
-        <h1 className="text-xl font-medium">Frequently Asked Questions</h1>
+        <h1 className="text-xl font-medium">OneMAC Support</h1>
       </SubNavHeader>
-
-      {/* We will put the buttons here for now */}
-      <div className="flex flex-row justify-around align-center p-2">
-        <Button
-          onClick={expandAll}
-          variant="outline"
-          data-testid="banner-close"
-          className="w-full xs:w-fit hover:bg-transparent"
-        >
-          Expand All
-        </Button>
-
-        <Button
-          onClick={closeAll}
-          variant="outline"
-          data-testid="banner-close"
-          className="w-full xs:w-fit hover:bg-transparent"
-        >
-          Close All
-        </Button>
-      </div>
 
       {/* Main Layout Wrapper with explicit widths */}
       <div className="max-w-screen-xl m-auto px-4 lg:px-8 pt-8 w-full">
@@ -76,9 +59,25 @@ export const NewFaq = () => {
             <div className="flex-1">
               <article className="mb-8">
                 <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
+                  <article key={"FAQs"} className="mb-8">
+                    <div className="flex justify-between">
+                      <h2 className="text-2xl mb-4 font-bold">Frequently asked questions (FAQs)</h2>
+                      <ExpandCollapseBtn collapseAll={collapseAll} expandAll={expandAll} />
+                    </div>
+                    <hr className="bg-slate-300 h-0.5" />
+
+                    {/* REMOVE LATER */}
+                    {tempFAQ.map(({ anchorText, answerJSX, question }) => (
+                      <AccordionItem value={anchorText} id={anchorText} key={anchorText}>
+                        <AccordionTrigger className="text-left">{question}</AccordionTrigger>
+                        <AccordionContent>{answerJSX}</AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </article>
                   {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
                     <article key={sectionTitle} className="mb-8">
-                      <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
+                      <h2 className="text-2xl font-bold mb-4">{sectionTitle}</h2>
+                      <hr className="bg-slate-300 h-0.5" />
                       {qanda.map(({ anchorText, answerJSX, question }) => (
                         <AccordionItem value={anchorText} id={anchorText} key={anchorText}>
                           <AccordionTrigger className="text-left">{question}</AccordionTrigger>
