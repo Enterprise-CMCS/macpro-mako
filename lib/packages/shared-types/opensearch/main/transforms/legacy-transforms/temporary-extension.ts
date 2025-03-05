@@ -10,7 +10,7 @@ export const transform = () => {
     // Extend the result with specific fields for this transform
     return {
       ...baseResult,
-      authority: data.temporaryExtensionType,
+      authority: data.temporaryExtensionType ?? '1915(b)',
       actionType: "Extend",
       originalWaiverNumber: data.parentId,
     };

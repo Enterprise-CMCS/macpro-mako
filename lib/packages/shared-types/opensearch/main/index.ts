@@ -127,4 +127,5 @@ export const legacyTransforms = {
   "waiverappk": legacyAppk,
   "waiverextensionb": legacyTemporaryExtension,
   "waiverextensionc": legacyTemporaryExtension,
+  "waiverextension": legacyTemporaryExtension,
 };
