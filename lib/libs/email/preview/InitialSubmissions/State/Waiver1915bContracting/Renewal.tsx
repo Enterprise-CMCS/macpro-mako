@@ -41,7 +41,7 @@ export default () => {
         event: "contracting-renewal",
         id: "CO-9987.R21.00",
         authority: "1915(b)",
-        actionType: formatActionType("Renew", true),
+        actionType: formatActionType("Renew"),
       }}
     />
   );

@@ -11,7 +11,7 @@ export default () => {
         event: "withdraw-package",
         id: "CO-1234.R21.00",
         authority: "1915(b)",
-        actionType: formatActionType("Amend", true),
+        actionType: formatActionType("Amend"),
         territory: "CO",
         attachments: {
           officialWithdrawalLetter: attachments.withdrawRequest,

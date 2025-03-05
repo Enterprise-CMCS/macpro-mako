@@ -11,7 +11,7 @@ const Waiver1915bCMSEmail = () => {
         id: "CO-24-1234",
         event: "upload-subsequent-documents",
         authority: "1915(b)",
-        actionType: formatActionType("Amend", true),
+        actionType: formatActionType("Amend"),
         attachments: {
           currentStatePlan: attachments.currentStatePlan,
           amendedLanguage: attachments.amendedLanguage,

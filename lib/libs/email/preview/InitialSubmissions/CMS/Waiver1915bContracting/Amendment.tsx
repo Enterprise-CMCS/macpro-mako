@@ -10,7 +10,7 @@ export default () => {
         event: "contracting-amendment",
         id: "CO-1234.R21.01",
         authority: "1915(b)",
-        actionType: formatActionType("Amend", true),
+        actionType: formatActionType("Amend"),
         waiverNumber: "CO-1234.R21.00",
         attachments: {
           b4WaiverApplication: {

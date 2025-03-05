@@ -36,7 +36,7 @@ export default () => {
         event: "contracting-initial",
         id: "CO-9987.R21.00",
         authority: "1915(b)",
-        actionType: formatActionType("New", true),
+        actionType: formatActionType("New"),
       }}
     />
   );

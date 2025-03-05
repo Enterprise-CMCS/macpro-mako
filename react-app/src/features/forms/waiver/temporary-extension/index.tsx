@@ -20,7 +20,11 @@ import { FAQ_TAB } from "@/router";
 import { useState } from "react";
 import { Link, useParams } from "react-router";
 import { getFAQLinkForAttachments } from "../../faqLinks";
-import { formatActionType } from "shared-utils";
+
+const actionTypeMap = {
+  New: "Initial Waiver",
+  Renew: "Waiver Renewal",
+};
 
 export const TemporaryExtensionForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
@@ -30,7 +34,7 @@ export const TemporaryExtensionForm = () => {
 
   const type =
     submission && submission._source
-      ? `${submission._source.authority} ${formatActionType(submission._source.actionType, true)}`
+      ? `${submission._source.authority} ${actionTypeMap[submission._source.actionType]}`
       : null;
 
   return (

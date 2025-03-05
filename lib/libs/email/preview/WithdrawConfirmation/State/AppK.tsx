@@ -11,7 +11,7 @@ export default () => {
         event: "app-k",
         id: "CO-1234.R21.00",
         authority: "1915(c)",
-        actionType: formatActionType("Amend", true),
+        actionType: formatActionType("Amend"),
         territory: "CO",
         title: "A Perfect Appendix K Amendment Title",
         attachments: {
