@@ -9,8 +9,9 @@ export const Faq = () => {
 
   useEffect(() => {
     const isFlagOn = ldClient?.variation("toggleFaq");
-    setFlagValue(isFlagOn);
+    if (isFlagOn) setFlagValue(isFlagOn);
   }, [ldClient]);
 
+  // Andie fix
   return <>{flagValue ? <NewFaq /> : <LegacyFaq />}</>;
 };

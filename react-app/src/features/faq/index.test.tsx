@@ -35,5 +35,5 @@ test("should render new faq when flag is true", () => {
 
   render(<Faq />);
 
-  expect(screen.getByText("FAQ Content Goes Here")).toBeInTheDocument();
+  expect(screen.getByText("OneMAC Support")).toBeInTheDocument();
 });
