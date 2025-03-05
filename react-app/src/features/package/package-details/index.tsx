@@ -9,8 +9,7 @@ import {
 
 import { LabelAndValue } from "./details";
 import { useGetUser } from "@/api/useGetUser";
-import { Authority } from "shared-types";
-import { ItemResult } from "shared-types/opensearch/main";
+import { Authority, opensearch } from "shared-types";
 
 type SubmissionDetailsGridProps = {
   details: LabelAndValue[];
@@ -30,12 +29,11 @@ const SubmissionDetailsGrid = ({ details }: SubmissionDetailsGridProps) => (
 );
 
 type SubmissionDetailsProps = {
-  itemResult: ItemResult;
+  submission: opensearch.main.Document;
 };
 
-export const SubmissionDetails = ({ itemResult }: SubmissionDetailsProps) => {
+export const SubmissionDetails = ({ submission }: SubmissionDetailsProps) => {
   const { data: user } = useGetUser();
-  const { _source: submission } = itemResult;
 
   const title = useMemo(() => {
     switch (submission.authority) {

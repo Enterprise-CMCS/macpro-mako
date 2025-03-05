@@ -6,13 +6,10 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  LoadingSpinner,
 } from "@/components";
 import * as Table from "@/components";
 import { BLANK_VALUE } from "@/consts";
 import { useAttachmentService, Attachments } from "./hook";
-import { useParams } from "react-router";
-import { useGetItem } from "@/api";
 import { ItemResult } from "shared-types/opensearch/changelog";
 import { formatDateToEST } from "shared-utils";
 
@@ -175,48 +172,31 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
   );
 };
 
-export const PackageActivities = () => {
-  const { id: packageId } = useParams<{ id: string }>();
-  const { data: submission, isLoading: isSubmissionLoading } = useGetItem(packageId);
+type PackageActivitiesProps = {
+  id: string;
+  changelog: ItemResult[];
+};
 
-  if (isSubmissionLoading === true) {
-    return <LoadingSpinner />;
-  }
-
-  if (submission === undefined || submission === null || submission?.found === false) {
-    return null;
-  }
-
-  const submissionChangelogWithoutAdminChanges = submission?._source?.changelog?.filter(
-    (activity) =>
-      // isAdminChange can be `undefined` or `boolean`
-      !activity?._source?.isAdminChange,
-  );
-
-  const keyAndDefaultValue = submissionChangelogWithoutAdminChanges?.[0]?._source?.id;
-
+export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => {
   return (
     <DetailsSection
       id="package_activity"
       title={
         <div className="flex justify-between">
-          Package Activity ({submissionChangelogWithoutAdminChanges?.length || 0})
-          <DownloadAllButton
-            submissionChangelog={submissionChangelogWithoutAdminChanges}
-            packageId={packageId}
-          />
+          Package Activity ({changelog.length || 0})
+          <DownloadAllButton submissionChangelog={changelog} packageId={id} />
         </div>
       }
     >
-      {submissionChangelogWithoutAdminChanges?.length > 0 ? (
+      {changelog.length > 0 ? (
         <Accordion
-          // `key` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
-          key={keyAndDefaultValue}
+          // `changelog[0]._source.id` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
+          key={changelog[0]._source.id}
           type="multiple"
           className="flex flex-col gap-2"
-          defaultValue={[keyAndDefaultValue]}
+          defaultValue={[changelog[0]._source.id]}
         >
-          {submissionChangelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
+          {changelog.map(({ _source: packageActivity }) => (
             <PackageActivity key={packageActivity.id} packageActivity={packageActivity} />
           ))}
         </Accordion>
