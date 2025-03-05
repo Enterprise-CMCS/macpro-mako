@@ -30,21 +30,21 @@ describe("VisibilityPopover", () => {
             cell: (data) => data.authority ?? BLANK_VALUE,
           },
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate.keyword",
+            label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => data.finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
         onItemClick={vi.fn()}
         hiddenColumns={[
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate.keyword",
+            label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => data.finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
       />,
@@ -110,21 +110,21 @@ describe("VisibilityPopover", () => {
             cell: (data) => data.authority ?? BLANK_VALUE,
           },
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate.keyword",
+            label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => data.finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
         onItemClick={onItemClick}
         hiddenColumns={[
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate.keyword",
+            label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => data.finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
       />,
@@ -161,21 +161,21 @@ describe("VisibilityPopover", () => {
             cell: (data) => data.authority ?? BLANK_VALUE,
           },
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate.keyword",
+            label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => data.finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
         onItemClick={onItemClick}
         hiddenColumns={[
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate.keyword",
+            label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => data.finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
       />,
@@ -215,30 +215,30 @@ describe("VisibilityPopover", () => {
             cell: (data) => data.authority ?? BLANK_VALUE,
           },
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate.keyword",
+            label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => data.finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
         onItemClick={onItemClick}
         hiddenColumns={[
           {
-            field: "origin.keyword",
-            label: "Submission Source",
+            field: "finalDispositionDate.keyword",
+            label: "Final Disposition",
             hidden: true,
-            transform: (data) => data.origin ?? BLANK_VALUE,
-            cell: (data) => data.origin ?? BLANK_VALUE,
+            transform: (data) => data.finalDispositionDate ?? BLANK_VALUE,
+            cell: (data) => data.finalDispositionDate ?? BLANK_VALUE,
           },
         ]}
       />,
     );
     await user.click(screen.getByRole("button", { name: "Columns (1 hidden)" }));
 
-    const stateColumnMenuItem = within(screen.getByRole("dialog")).getByText("Submission Source");
+    const stateColumnMenuItem = within(screen.getByRole("dialog")).getByText("Final Disposition");
     await user.click(stateColumnMenuItem.parentElement);
 
-    expect(onItemClick).toHaveBeenCalledWith("origin.keyword");
+    expect(onItemClick).toHaveBeenCalledWith("finalDispositionDate.keyword");
   });
 });

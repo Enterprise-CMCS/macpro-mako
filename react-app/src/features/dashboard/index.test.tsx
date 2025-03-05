@@ -1,5 +1,11 @@
 import { describe, expect, it, vi, beforeAll, afterAll, beforeEach, afterEach } from "vitest";
-import { screen, within, waitForElementToBeRemoved, cleanup } from "@testing-library/react";
+import {
+  screen,
+  within,
+  waitForElementToBeRemoved,
+  cleanup,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   renderWithQueryClientAndMemoryRouter,
@@ -8,6 +14,7 @@ import {
   verifyPagination,
   getFilteredHits,
   skipCleanup,
+  createTestQueryClient,
 } from "@/utils/test-helpers";
 import {
   TEST_STATE_SUBMITTER_USER,
@@ -18,7 +25,8 @@ import {
   errorApiSearchHandler,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
-import { Dashboard } from "./index";
+import { Dashboard, dashboardLoader } from "./index";
+import { redirect } from "react-router";
 
 const spaHits = getFilteredHits(["Medicaid SPA", "CHIP SPA"]);
 const waiverHits = getFilteredHits(["1915(b)", "1915(c)"]);
@@ -149,7 +157,7 @@ describe("Dashboard", () => {
 
     it("should display the dashboard correctly", async () => {
       expect(screen.queryByRole("heading", { level: 1, name: "Dashboard" })).toBeInTheDocument();
-      verifyFiltering(4); // 4 hidden columns by default
+      verifyFiltering(3); // 4 hidden columns by default
       verifyChips([]);
     });
 
@@ -171,12 +179,13 @@ describe("Dashboard", () => {
     it("should handle switching to the Waiver tab", async () => {
       const isWaiver = true;
 
-      const waiverTab = screen.queryByRole("heading", { level: 2, name: "Waivers" });
+      await waitFor(async () => {
+        const waiverTab = await screen.findByRole("heading", { level: 2, name: "Waivers" });
+        await user.click(waiverTab.parentElement);
 
-      await user.click(waiverTab.parentElement);
-
-      expect(waiverTab).toBeInTheDocument();
-      expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+        expect(waiverTab).toBeInTheDocument();
+        expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+      });
 
       const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
       expect(spaTab).toBeInTheDocument();
@@ -190,12 +199,13 @@ describe("Dashboard", () => {
     it("should handle switching back to the SPA tab", async () => {
       const isWaiver = false;
 
-      const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
+      await waitFor(async () => {
+        const spaTab = await screen.findByRole("heading", { level: 2, name: "SPAs" });
+        await user.click(spaTab.parentElement);
 
-      await user.click(spaTab.parentElement);
-
-      expect(spaTab).toBeInTheDocument();
-      expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+        expect(spaTab).toBeInTheDocument();
+        expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+      });
 
       const waiverTab = screen.queryByRole("heading", { level: 2, name: "Waivers" });
       expect(waiverTab).toBeInTheDocument();
@@ -240,7 +250,7 @@ describe("Dashboard", () => {
 
     it("should display the dashboard correctly", async () => {
       expect(screen.queryByRole("heading", { level: 1, name: "Dashboard" })).toBeInTheDocument();
-      verifyFiltering(4); // 4 hidden columns by default
+      verifyFiltering(3); // 4 hidden columns by default
       verifyChips([]);
 
       expect(screen.queryByRole("link", { name: "New Submission" })).toBeNull();
@@ -264,11 +274,13 @@ describe("Dashboard", () => {
     it("should handle switching to the Waiver tab", async () => {
       const isWaiver = true;
 
-      const waiverTab = screen.queryByRole("heading", { level: 2, name: "Waivers" });
-      await user.click(waiverTab.parentElement);
+      await waitFor(async () => {
+        const waiverTab = await screen.findByRole("heading", { level: 2, name: "Waivers" });
+        await user.click(waiverTab.parentElement);
 
-      expect(waiverTab).toBeInTheDocument();
-      expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+        expect(waiverTab).toBeInTheDocument();
+        expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+      });
 
       const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
       expect(spaTab).toBeInTheDocument();
@@ -282,11 +294,13 @@ describe("Dashboard", () => {
     it("should handle switching back to the SPA tab", async () => {
       const isWaiver = false;
 
-      const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
-      await user.click(spaTab.parentElement);
+      await waitFor(async () => {
+        const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
+        await user.click(spaTab.parentElement);
 
-      expect(spaTab).toBeInTheDocument();
-      expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+        expect(spaTab).toBeInTheDocument();
+        expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+      });
 
       const waiverTab = screen.queryByRole("heading", { level: 2, name: "Waivers" });
       expect(waiverTab).toBeInTheDocument();
@@ -295,6 +309,36 @@ describe("Dashboard", () => {
       const table = screen.getByRole("table");
       verifyColumns(table, hasActions, isWaiver, spaHits.total.value);
       verifyPagination(spaHits.total.value);
+    });
+  });
+
+  describe("dashboardLoader", () => {
+    vi.mock("react-router", { spy: true });
+    it.each([
+      ["State Submitter", TEST_STATE_SUBMITTER_USER, false],
+      ["CMS Reviewer", TEST_CMS_REVIEWER_USER, true],
+      ["CMS Help Desk User", TEST_HELP_DESK_USER, true],
+      ["CMS Read-Only User", TEST_READ_ONLY_USER, true],
+    ])("should load a %s", async (title, user, isCms) => {
+      const queryClient = createTestQueryClient();
+      setMockUsername(user.username);
+
+      const result = await dashboardLoader(queryClient)();
+      expect(result).toEqual({
+        user,
+        isCms,
+      });
+
+      expect(redirect).not.toHaveBeenCalled();
+    });
+
+    it("should redirect if user is not logged in", async () => {
+      const queryClient = createTestQueryClient();
+      setMockUsername(null);
+
+      await dashboardLoader(queryClient)();
+
+      expect(redirect).toHaveBeenCalledWith("/");
     });
   });
 });

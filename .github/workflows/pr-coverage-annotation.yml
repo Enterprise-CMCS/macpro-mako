@@ -5,18 +5,31 @@ on:
     branches:
       - main
 
+# ensures that currently running PR Coverage Annotation workflow is canceled if another one starts
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  actions: read
+
 jobs:
   coverage-report:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-      actions: read
+    outputs:
+      actualResult: ${{ steps.test.conclusion }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
+      - name: Test
+        id: test
+        continue-on-error: true
+        run: run test --coverage
       - name: Get run ID of Code Climate workflow
         id: get-run-id
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -27,26 +40,20 @@ jobs:
       - uses: actions/download-artifact@v4
         if: steps.get-run-id.conclusion == 'success'
         id: get-main-coverage
+        continue-on-error: true
         with:
           name: main-coverage
           path: main-coverage
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ steps.get-run-id.outputs.run-id }}
-      - name: Test
-        if: always()
-        id: test
-        continue-on-error: true
-        run: run test --coverage
       - name: Report Coverage (compared with Main)
-        if: steps.get-main-coverage.conclusion == 'success'
+        if: ${{ steps.get-run-id.conclusion == 'success' && steps.get-main-coverage.conclusion == 'success' }}
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           json-summary-compare-path: main-coverage/coverage-summary.json
           file-coverage-mode: all
       - name: Report Coverage (only PR)
-        if: steps.get-main-coverage.conclusion == 'failure' || steps.get-main-coverage.conclusion == 'skipped'
+        if: ${{ failure() }}
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           file-coverage-mode: all
-    outputs:
-      actualResult: ${{ steps.test.conclusion }}

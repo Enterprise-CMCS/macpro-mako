@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { opensearch } from "shared-types";
-import { format } from "date-fns";
 import {
   Accordion,
   DetailsSection,
@@ -15,6 +14,7 @@ import { useAttachmentService, Attachments } from "./hook";
 import { useParams } from "react-router";
 import { useGetItem } from "@/api";
 import { ItemResult } from "shared-types/opensearch/changelog";
+import { formatDateToEST } from "shared-utils";
 
 type AttachmentDetailsProps = {
   id: string;
@@ -131,9 +131,7 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
         <p className="flex flex-row gap-2 text-gray-600">
           <strong>{label}</strong>
           {" - "}
-          {packageActivity.timestamp
-            ? format(new Date(packageActivity.timestamp), "eee, MMM d, yyyy hh:mm:ss a")
-            : "Unknown"}
+          {packageActivity.timestamp ? formatDateToEST(packageActivity.timestamp) : "Unknown"}
         </p>
       </AccordionTrigger>
       <AccordionContent className="p-4">
