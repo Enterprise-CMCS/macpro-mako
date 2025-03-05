@@ -6,8 +6,6 @@ import {
   Attachments,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
-import { Link, Text } from "@react-email/components";
-import { styles } from "../../email-styles";
 
 export const ChipSpaCMSEmail = ({
   variables,
@@ -34,14 +32,6 @@ export const ChipSpaCMSEmail = ({
         }}
       />
       <Attachments attachments={variables.attachments} />
-      <Text style={{ ...styles.text.base, marginTop: "16px" }}>
-        {" "}
-        If the contents of this email seem suspicious, do not open them, and instead forward this
-        email to{" "}
-        <Link href={`mailto:SPAM@CMS.HHS.gov`} style={{ textDecoration: "underline" }}>
-          CHIPSPASubmissionMailBox@CMS.HHS.gov
-        </Link>
-      </Text>
     </BaseEmailTemplate>
   );
 };

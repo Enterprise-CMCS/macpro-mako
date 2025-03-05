@@ -157,7 +157,7 @@ describe("Dashboard", () => {
 
     it("should display the dashboard correctly", async () => {
       expect(screen.queryByRole("heading", { level: 1, name: "Dashboard" })).toBeInTheDocument();
-      verifyFiltering(4); // 4 hidden columns by default
+      verifyFiltering(3); // 4 hidden columns by default
       verifyChips([]);
     });
 
@@ -250,7 +250,7 @@ describe("Dashboard", () => {
 
     it("should display the dashboard correctly", async () => {
       expect(screen.queryByRole("heading", { level: 1, name: "Dashboard" })).toBeInTheDocument();
-      verifyFiltering(4); // 4 hidden columns by default
+      verifyFiltering(3); // 4 hidden columns by default
       verifyChips([]);
 
       expect(screen.queryByRole("link", { name: "New Submission" })).toBeNull();

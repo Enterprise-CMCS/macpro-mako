@@ -104,15 +104,6 @@ const getColumns = (props) => {
       cell: renderCellDate("finalDispositionDate"),
     },
     {
-      field: "origin.keyword",
-      label: "Submission Source",
-      hidden: true,
-      transform: (data) => data.origin,
-      cell: (data) => {
-        return data.origin;
-      },
-    },
-    {
       field: "makoChangedDate",
       label: "Latest Package Activity",
       transform: (data) =>
