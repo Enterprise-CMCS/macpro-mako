@@ -149,7 +149,7 @@ export const getSubmittedByDetails: GetLabelAndValueFromSubmission = (submission
     canView: submission.actionType !== "Extend",
   },
   {
-    label: "Review Team (SRT)",
+    label: "SRT",
     value: <ReviewTeamList reviewTeam={submission.reviewTeam} />,
     canView: isCmsUser(user) && submission.actionType !== "Extend",
   },
