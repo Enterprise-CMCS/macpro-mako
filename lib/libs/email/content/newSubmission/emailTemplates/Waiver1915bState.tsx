@@ -1,5 +1,5 @@
 import { CommonEmailVariables, Events } from "shared-types";
-import { formatNinetyDaysDate, formatDate } from "shared-utils";
+import { formatNinetyDaysDate, formatDate, formatActionTypeWithWaiver } from "shared-utils";
 import { Text } from "@react-email/components";
 import { PackageDetails, FollowUpNotice, MailboxNotice, BasicFooter } from "../../email-components";
 import { styles } from "../../email-styles";
@@ -15,10 +15,11 @@ export const Waiver1915bStateEmail = (props: {
     | (Events["ContractingAmendment"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
-  const previewText = `${variables.authority} ${variables.actionType} Submitted`;
+  const actionTypeWithWaiver = formatActionTypeWithWaiver(variables.actionType);
+  const previewText = `${variables.authority} ${actionTypeWithWaiver} Submitted`;
   const heading = `This response confirms the submission of your ${
     variables.authority
-  } ${variables.actionType} to CMS for review:`;
+  } ${actionTypeWithWaiver} to CMS for review:`;
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -31,7 +32,7 @@ export const Waiver1915bStateEmail = (props: {
           "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
-          [`${variables.authority} ${variables.actionType} Number`]: variables.id,
+          [`${actionTypeWithWaiver} Number`]: variables.id,
           "Waiver Authority": variables.authority,
           "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),

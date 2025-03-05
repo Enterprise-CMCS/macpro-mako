@@ -6,7 +6,7 @@ import {
   BasicFooter,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
-import { formatDate } from "shared-utils";
+import { formatDate, formatActionTypeWithWaiver } from "shared-utils";
 
 export const Waiver1915bCMSEmail = (props: {
   variables:
@@ -18,10 +18,11 @@ export const Waiver1915bCMSEmail = (props: {
     | (Events["ContractingAmendment"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
-  const previewText = `${variables.authority} ${variables.actionType} Submitted`;
+  const actionTypeWithWaiver = formatActionTypeWithWaiver(variables.actionType);
+  const previewText = `${variables.authority} ${actionTypeWithWaiver} Submitted`;
   const heading = `The OneMAC Submission Portal received a ${
     variables.authority
-  } ${variables.actionType} submission:`;
+  } ${actionTypeWithWaiver} Submission:`;
   return (
     <BaseEmailTemplate
       previewText={previewText}
@@ -35,7 +36,7 @@ export const Waiver1915bCMSEmail = (props: {
           "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
-          [`${variables.authority} ${variables.actionType} Number`]: variables.id,
+          [`${actionTypeWithWaiver} Number`]: variables.id,
           "Waiver Authority": variables.authority,
           "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           Summary: variables.additionalInformation,
