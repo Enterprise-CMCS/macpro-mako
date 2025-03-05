@@ -11,10 +11,9 @@ import { PackageDetails } from "./package-details";
 import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
-import { Authority, opensearch } from "shared-types";
+import { Authority } from "shared-types";
 import { LoaderFunctionArgs, useLoaderData, redirect } from "react-router";
 import { detailsAndActionsCrumbs } from "@/utils";
-import { ItemResult } from "shared-types/opensearch/changelog";
 
 export const DetailCardWrapper = ({
   title,
@@ -30,27 +29,6 @@ export const DetailCardWrapper = ({
   </CardWithTopBorder>
 );
 
-const getRespectiveChangelogsFromSubmission = ({ changelog = [] }: opensearch.main.Document) =>
-  changelog.reduce<{
-    adminActivities: ItemResult[];
-    activities: ItemResult[];
-  }>(
-    (acc, activity) => {
-      if (activity._source.isAdminChange) {
-        return {
-          ...acc,
-          adminActivities: [...acc.adminActivities, activity],
-        };
-      }
-
-      return {
-        ...acc,
-        activities: [...acc.activities, activity],
-      };
-    },
-    { adminActivities: [], activities: [] },
-  );
-
 type DetailsContentProps = {
   id: string;
 };
@@ -63,7 +41,6 @@ export const DetailsContent = ({ id }: DetailsContentProps) => {
   if (error) return <ErrorAlert error={error} />;
 
   const { _source: submission } = record;
-  const { adminActivities, activities } = getRespectiveChangelogsFromSubmission(submission);
 
   return (
     <div className="w-full py-1 px-4 lg:px-8">
@@ -73,8 +50,8 @@ export const DetailsContent = ({ id }: DetailsContentProps) => {
       </section>
       <div className="flex flex-col gap-3">
         <PackageDetails submission={submission} />
-        <PackageActivities id={id} changelog={activities} />
-        <AdminPackageActivities adminChangelog={adminActivities} />
+        <PackageActivities id={id} changelog={submission.changelog} />
+        <AdminPackageActivities changelog={submission.changelog} />
       </div>
     </div>
   );

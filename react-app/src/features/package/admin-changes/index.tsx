@@ -88,10 +88,12 @@ export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
 };
 
 type AdminChangesProps = {
-  adminChangelog: ItemResult[];
+  changelog: ItemResult[];
 };
 
-export const AdminPackageActivities = ({ adminChangelog }: AdminChangesProps) => {
+export const AdminPackageActivities = ({ changelog }: AdminChangesProps) => {
+  const adminChangelog = changelog.filter((item) => item._source.isAdminChange);
+
   if (adminChangelog.length === 0) return null;
 
   return (

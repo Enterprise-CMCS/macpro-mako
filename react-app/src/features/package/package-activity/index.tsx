@@ -178,25 +178,27 @@ type PackageActivitiesProps = {
 };
 
 export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => {
+  const changelogWithoutAdminChanges = changelog.filter((item) => !item._source.isAdminChange);
+
   return (
     <DetailsSection
       id="package_activity"
       title={
         <div className="flex justify-between">
-          Package Activity ({changelog.length || 0})
-          <DownloadAllButton submissionChangelog={changelog} packageId={id} />
+          Package Activity ({changelogWithoutAdminChanges.length || 0})
+          <DownloadAllButton submissionChangelog={changelogWithoutAdminChanges} packageId={id} />
         </div>
       }
     >
-      {changelog.length > 0 ? (
+      {changelogWithoutAdminChanges.length > 0 ? (
         <Accordion
-          // `changelog[0]._source.id` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
-          key={changelog[0]._source.id}
+          // `changelogWithoutAdminChanges[0]._source.id` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
+          key={changelogWithoutAdminChanges[0]._source.id}
           type="multiple"
           className="flex flex-col gap-2"
-          defaultValue={[changelog[0]._source.id]}
+          defaultValue={[changelogWithoutAdminChanges[0]._source.id]}
         >
-          {changelog.map(({ _source: packageActivity }) => (
+          {changelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
             <PackageActivity key={packageActivity.id} packageActivity={packageActivity} />
           ))}
         </Accordion>
