@@ -18,7 +18,7 @@ export const baseTransform = (data: any) => {
     origin: ONEMAC_LEGACY_ORIGIN,
     raiWithdrawEnabled: isRaiResponseWithdrawEnabled,
     seatoolStatus,
-    state: data.pk?.split("-")?.[0], // Extract state from pk
+    state: data.pk?.slice(0, 2), // Extract state from pk
     stateStatus,
     statusDate: lastEventTimestampDate.toISOString(),
     proposedDate: isNaN(new Date(data.proposedEffectiveDate).getTime()) ? null : data.proposedEffectiveDate,
