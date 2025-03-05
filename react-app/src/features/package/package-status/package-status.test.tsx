@@ -14,7 +14,7 @@ describe("Package Status test", () => {
   });
   it("The package status component is called successfully", async () => {
     const { asFragment } = renderWithQueryClient(
-      <PackageStatusCard data={TEST_PACKAGE_STATUS_ITEM} />,
+      <PackageStatusCard submission={TEST_PACKAGE_STATUS_ITEM._source} />,
     );
     expect(asFragment()).toMatchSnapshot();
   });
