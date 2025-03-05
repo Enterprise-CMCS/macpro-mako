@@ -6,4 +6,5 @@ export interface BannerNotification {
   buttonLink?: string;
   pubDate: string;
   expDate?: string;
+  disabled?: boolean;
 }
