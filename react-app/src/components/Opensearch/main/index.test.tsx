@@ -112,14 +112,12 @@ describe("OsMainView", () => {
       await user.click(screen.queryByRole("button", { name: "Columns (1 hidden)" }));
       const columns = screen.queryByRole("dialog");
       expect(columns).toBeInTheDocument();
-      expect(within(columns).getByText("SPA ID")).toBeInTheDocument();
-      expect(within(columns).getByText("SPA ID").parentElement).toHaveClass("text-gray-800");
       expect(within(columns).getByText("State")).toBeInTheDocument();
       expect(within(columns).getByText("State").parentElement).toHaveClass("text-gray-800");
       expect(within(columns).getByText("Authority")).toBeInTheDocument();
       expect(within(columns).getByText("Authority").parentElement).toHaveClass("text-gray-800");
-      expect(within(columns).getByText("Submission Source")).toBeInTheDocument();
-      expect(within(columns).getByText("Submission Source").parentElement).toHaveClass(
+      expect(within(columns).getByText("Final Disposition")).toBeInTheDocument();
+      expect(within(columns).getByText("Final Disposition").parentElement).toHaveClass(
         "text-gray-400",
       );
     });
@@ -168,15 +166,12 @@ describe("OsMainView", () => {
 
       await user.click(screen.queryByRole("button", { name: "Columns (1 hidden)" }));
       const columns = screen.queryByRole("dialog");
-      await user.click(within(columns).getByText("Submission Source"));
+      await user.click(within(columns).getByText("Final Disposition"));
 
       expect(within(table).getAllByRole("columnheader").length).toEqual(4);
       expect(within(table).getByText("SPA ID", { selector: "th>div" })).toBeInTheDocument();
       expect(within(table).getByText("State", { selector: "th>div" })).toBeInTheDocument();
       expect(within(table).getByText("Authority", { selector: "th>div" })).toBeInTheDocument();
-      expect(
-        within(table).getByText("Submission Source", { selector: "th>div" }),
-      ).toBeInTheDocument();
     });
 
     it("should handle clicking a column header", async () => {
@@ -307,8 +302,8 @@ describe("OsMainView", () => {
 
       const storedData = JSON.parse(global.localStorage.getItem("osData") || "{}");
       expect(storedData.osColumns).toEqual({
-        spas: ["origin.keyword"],
-        waivers: ["origin.keyword"],
+        spas: ["finalDispositionDate.keyword"],
+        waivers: ["finalDispositionDate.keyword"],
       });
     });
 
@@ -333,10 +328,6 @@ describe("OsMainView", () => {
       expect(screen.queryByRole("dialog")).toBeNull();
       await user.click(screen.queryByRole("button", { name: "Columns (1 hidden)" }));
       const columns = screen.queryByRole("dialog");
-      expect(within(columns).getByText("Submission Source")).toBeInTheDocument();
-      expect(within(columns).getByText("Submission Source").parentElement).toHaveClass(
-        "text-gray-800",
-      );
       expect(within(columns).getByText("Authority")).toBeInTheDocument();
       expect(within(columns).getByText("Authority").parentElement).toHaveClass("text-gray-400");
     });
