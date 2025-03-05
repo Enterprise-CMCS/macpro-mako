@@ -13,6 +13,7 @@ import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
 import { Link } from "react-router";
 import { getFAQLinkForAttachments } from "../../faqLinks";
+import { SEATOOL_STATUS } from "shared-types";
 
 export const RenewalForm = () => {
   return (
@@ -118,7 +119,7 @@ export const RenewalForm = () => {
       defaultValues={{ id: "" }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) => check.recordExists,
+        documentChecker: (check) => check.recordExists && check.hasStatus(SEATOOL_STATUS.SUBMITTED),
       }}
     />
   );
