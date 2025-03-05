@@ -7,7 +7,7 @@ import { PropsWithChildren } from "react";
 import { PackageActivities } from "./package-activity";
 import { AdminPackageActivities } from "./admin-changes";
 
-import { SubmissionDetails } from "./package-details";
+import { PackageDetails } from "./package-details";
 import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
@@ -72,8 +72,8 @@ export const DetailsContent = ({ id }: DetailsContentProps) => {
         <PackageActionsCard id={id} submission={submission} />
       </section>
       <div className="flex flex-col gap-3">
-        <SubmissionDetails submission={submission} />
-        {record.found && <PackageActivities id={id} changelog={activities} />}
+        <PackageDetails submission={submission} />
+        <PackageActivities id={id} changelog={activities} />
         <AdminPackageActivities adminChangelog={adminActivities} />
       </div>
     </div>
@@ -95,7 +95,7 @@ export const packageDetailsLoader = async ({
 
   try {
     const packageResult = await getItem(id);
-    if (!packageResult || packageResult?._source?.deleted === true) {
+    if (!packageResult || packageResult._source.deleted === true || packageResult.found === false) {
       return redirect("/dashboard");
     }
   } catch (error) {

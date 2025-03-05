@@ -11,11 +11,11 @@ import { LabelAndValue } from "./details";
 import { useGetUser } from "@/api/useGetUser";
 import { Authority, opensearch } from "shared-types";
 
-type SubmissionDetailsGridProps = {
+type PackageDetailsGridProps = {
   details: LabelAndValue[];
 };
 
-const SubmissionDetailsGrid = ({ details }: SubmissionDetailsGridProps) => (
+const PackageDetailsGrid = ({ details }: PackageDetailsGridProps) => (
   <div className="grid grid-cols-2 gap-6">
     {details.map(({ label, value, canView = true }) => {
       return canView ? (
@@ -28,11 +28,11 @@ const SubmissionDetailsGrid = ({ details }: SubmissionDetailsGridProps) => (
   </div>
 );
 
-type SubmissionDetailsProps = {
+type PackageDetailsProps = {
   submission: opensearch.main.Document;
 };
 
-export const SubmissionDetails = ({ submission }: SubmissionDetailsProps) => {
+export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   const { data: user } = useGetUser();
 
   const title = useMemo(() => {
@@ -51,7 +51,7 @@ export const SubmissionDetails = ({ submission }: SubmissionDetailsProps) => {
   return (
     <DetailsSection id="package_details" title={title}>
       <div className="flex-col gap-4 max-w-2xl">
-        <SubmissionDetailsGrid
+        <PackageDetailsGrid
           details={[
             ...getSubmissionDetails(submission, user),
             ...getApprovedAndEffectiveDetails(submission, user),
@@ -59,7 +59,7 @@ export const SubmissionDetails = ({ submission }: SubmissionDetailsProps) => {
           ]}
         />
         <hr className="my-4" />
-        <SubmissionDetailsGrid details={getSubmittedByDetails(submission, user)} />
+        <PackageDetailsGrid details={getSubmittedByDetails(submission, user)} />
       </div>
     </DetailsSection>
   );
