@@ -3057,7 +3057,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                     <h1
                       style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                     >
-                      This response confirms the submission of your Waiver Amendment RAI Response to CMS for review:
+                      This response confirms the submission of your Amendment RAI Response to CMS for review:
                     </h1>
                     <table
                       align="center"
@@ -3509,7 +3509,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                   <h1
                     style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
                   >
-                    This response confirms the submission of your Waiver Amendment RAI Response to CMS for review:
+                    This response confirms the submission of your Amendment RAI Response to CMS for review:
                   </h1>
                   <table
                     align="center"
