@@ -23,7 +23,6 @@ const capitatedInitial = "capitated-initial";
 const withdrawRai = "withdraw-rai";
 const respondToRai = "respond-to-rai";
 const uploadSubsequentDocuments = "upload-subsequent-documents";
-const exampleDate = new Date(2025, 0, 5).getTime();
 
 describe("process emails  Handler", () => {
   it.each([
@@ -69,7 +68,7 @@ describe("process emails  Handler", () => {
         authority: Authority.MED_SPA,
         event: nms,
         id: SIMPLE_ID,
-        proposedEffectiveDate: exampleDate,
+        proposedEffectiveDate: 1732645041557,
         timestamp: 1732645041557,
       },
     ],
