@@ -5,7 +5,6 @@ import {
   Attachments,
   BasicFooter,
   Divider,
-  SuspiciousContents,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { formatDate } from "shared-utils";
@@ -36,7 +35,6 @@ export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
         }}
       />
       <Attachments attachments={variables.attachments} />
-      <SuspiciousContents />
     </BaseEmailTemplate>
   );
 };

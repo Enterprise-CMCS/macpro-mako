@@ -4,7 +4,6 @@ import {
   PackageDetails,
   BasicFooter,
   Attachments,
-  SuspiciousContents,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
@@ -33,7 +32,6 @@ export const ChipSpaCMSEmail = ({
         }}
       />
       <Attachments attachments={variables.attachments} />
-      <SuspiciousContents />
     </BaseEmailTemplate>
   );
 };

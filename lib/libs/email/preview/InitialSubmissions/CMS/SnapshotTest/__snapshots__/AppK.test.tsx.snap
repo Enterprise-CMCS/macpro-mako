@@ -510,18 +510,6 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a AppkCMSEmail Pre
               </tbody>
             </table>
             <p
-              style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
-            >
-               If the contents of this email seem suspicious, do not open them, and instead forward this email to 
-              <a
-                href="mailto:SPAM@CMS.HHS.gov"
-                style="color: rgb(6, 125, 247); text-decoration: underline;"
-                target="_blank"
-              >
-                CHIPSPASubmissionMailBox@CMS.HHS.gov
-              </a>
-            </p>
-            <p
               style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
             >
               Thank you.
