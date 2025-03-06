@@ -139,7 +139,14 @@ const Attachments = ({
   attachments: Partial<Record<AttachmentKey, AttachmentGroup>>;
 }) => {
   if (!attachments || areAllAttachmentsEmpty(attachments)) {
-    return <Text>No attachments</Text>;
+    return (
+      <>
+        <Heading as="h2" style={styles.heading.h2}>
+          Files:
+        </Heading>
+        <Text>No attachments</Text>
+      </>
+    );
   }
 
   return (
@@ -191,7 +198,7 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
               </Heading>
             </Text>
             <Text style={styles.text.base}>
-              {value
+              {typeof value === "string" && value.trim()
                 ? value.split("\n").map((line, index, array) => (
                     <Fragment key={index}>
                       {line}
