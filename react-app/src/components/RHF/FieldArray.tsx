@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { FieldValues, useFieldArray } from "react-hook-form";
 import { FieldArrayProps } from "shared-types";
 import { Plus, Trash2 } from "lucide-react";
@@ -14,24 +14,22 @@ export const RHFFieldArray = <TFields extends FieldValues>(props: FieldArrayProp
     shouldUnregister: true,
   });
 
+  // initialize array if necessary
+  if (fieldArr.fields.length == 0) {
+    fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never);
+  }
+
   const onAppend = () => {
     fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never);
   };
 
   // on-load or if the element id changes, scroll this element into view
-  useEffect(() => {
+  useLayoutEffect(() => {
     const element = document.getElementById(props.name);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
     }
   }, [props.name]);
-
-  // if there are no fields in the field array set it to the props.field
-  useEffect(() => {
-    if (fieldArr.fields.length == 0) {
-      fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never);
-    }
-  }, [props.fields]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className={"flex flex-col gap-6 w-full"} id={props.name}>
