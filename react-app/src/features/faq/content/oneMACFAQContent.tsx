@@ -731,7 +731,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   </td>
                 </tr>
                 <tr>
-                  <td className="border border-gray-300 px-4 py-2">Budget Docs</td>
+                  <td className="border border-gray-300 px-4 py-2">Budget Documents</td>
                   <td className="border border-gray-300 px-4 py-2">
                     Updated 1-year budget if applicable of the State's planned expenditures if the
                     CHIP SPA submission has a significant impact on the approved budget
@@ -794,7 +794,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   </td>
                 </tr>
                 <tr>
-                  <td className="border border-gray-300 px-4 py-2">Budget Docs</td>
+                  <td className="border border-gray-300 px-4 py-2">Budget Documents</td>
                   <td className="border border-gray-300 px-4 py-2">
                     Updated 1-year budget if applicable of the State’s planned expenditures if the
                     CHIP SPA submission has a significant impact on the approved budget
@@ -1800,7 +1800,7 @@ export const oneMACFAQContent: FAQContent[] = [
               A state can withdraw a submission package if it is in the Under Review or RAI Issued
               status. However, please note that once withdrawn, a submission package cannot be
               resubmitted to CMS.{" "}
-              <b>Completing this action will conclude the review of this SPA package.</b>
+              <b>Completing this action will conclude the review of this Waiver package.</b>
             </p>
             <p>There are two methods you can use to withdraw a submission package:</p>
             <ul className="list-disc ml-7 space-y-2">
