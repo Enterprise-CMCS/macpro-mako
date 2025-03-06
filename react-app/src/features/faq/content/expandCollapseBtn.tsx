@@ -1,18 +1,19 @@
-import { useState } from "react";
 import { Plus as PlusIcon, Minus as MinusIcon } from "lucide-react";
 import { Button } from "@/components";
 
-const ExpandCollapseBtn = (props: { expandAll: () => void; collapseAll: () => void }) => {
-  const [areAllOpen, setAreAllOpen] = useState<boolean>(false);
-
+const ExpandCollapseBtn = (props: {
+  expandAll: () => void;
+  collapseAll: () => void;
+  areAllOpen: () => boolean;
+}) => {
   const callBack = () => {
-    if (areAllOpen) {
+    if (props.areAllOpen()) {
       props.collapseAll();
-      setAreAllOpen(false);
+
       return;
     } else {
       props.expandAll();
-      setAreAllOpen(true);
+      return;
     }
   };
 
@@ -23,8 +24,8 @@ const ExpandCollapseBtn = (props: { expandAll: () => void; collapseAll: () => vo
       data-testid="expand-all"
       className="w-full xs:w-fit hover:bg-transparent"
     >
-      <span>{areAllOpen ? "Collapse all" : "Expand all"}</span>
-      {areAllOpen ? <MinusIcon /> : <PlusIcon />}
+      <span>{props.areAllOpen() ? "Collapse all" : "Expand all"}</span>
+      {props.areAllOpen() ? <MinusIcon /> : <PlusIcon />}
     </Button>
   );
 };

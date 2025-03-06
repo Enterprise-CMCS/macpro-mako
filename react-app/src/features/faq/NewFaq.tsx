@@ -24,6 +24,14 @@ export const NewFaq = () => {
     setOpenAccordions([]);
   };
 
+  const areAllAccordionsOpen = () => {
+    const totalQandas = oneMACFAQContent.reduce((total, section) => {
+      return total + section.qanda.length;
+    }, 0);
+    if (openAccordions.length >= totalQandas) return true;
+    else return false;
+  };
+
   useEffect(() => {
     if (id) {
       const element = document.getElementById(id);
@@ -60,7 +68,11 @@ export const NewFaq = () => {
                   <article key={"FAQs"} className="mb-8">
                     <div className="flex justify-between">
                       <h2 className="text-2xl mb-4 font-bold">Frequently asked questions (FAQs)</h2>
-                      <ExpandCollapseBtn collapseAll={collapseAll} expandAll={expandAll} />
+                      <ExpandCollapseBtn
+                        collapseAll={collapseAll}
+                        expandAll={expandAll}
+                        areAllOpen={areAllAccordionsOpen}
+                      />
                     </div>
                     <hr className="bg-slate-300 h-0.5" />
 

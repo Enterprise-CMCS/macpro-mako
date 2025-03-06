@@ -27,14 +27,14 @@ vi.mock("./content/oneMACFAQContent", () => ({
 
 describe("ExpandCollapseBtn", () => {
   it("should display 'Expand all' when areAllOpen is false", () => {
-    render(<ExpandCollapseBtn expandAll={vi.fn()} collapseAll={vi.fn()} />);
+    render(<ExpandCollapseBtn expandAll={vi.fn()} collapseAll={vi.fn()} areAllOpen={vi.fn()} />);
 
     const button = screen.getByTestId("expand-all");
     expect(button).toHaveTextContent("Expand all");
   });
 
   it("should display 'Collapse all' when areAllOpen is true", async () => {
-    render(<ExpandCollapseBtn expandAll={vi.fn()} collapseAll={vi.fn()} />);
+    render(<ExpandCollapseBtn expandAll={vi.fn()} collapseAll={vi.fn()} areAllOpen={vi.fn()} />);
 
     const button = screen.getByTestId("expand-all");
 
@@ -47,8 +47,15 @@ describe("ExpandCollapseBtn", () => {
   it("should call expandAll when clicked and areAllOpen is false", async () => {
     const expandAllMock = vi.fn();
     const collapseAllMock = vi.fn();
+    const areAllOpenMock = vi.fn();
 
-    render(<ExpandCollapseBtn expandAll={expandAllMock} collapseAll={collapseAllMock} />);
+    render(
+      <ExpandCollapseBtn
+        expandAll={expandAllMock}
+        collapseAll={collapseAllMock}
+        areAllOpen={areAllOpenMock}
+      />,
+    );
 
     const button = screen.getByTestId("expand-all");
     button.click();
@@ -61,8 +68,15 @@ describe("ExpandCollapseBtn", () => {
   it("should call collapseAll when clicked and areAllOpen is true", async () => {
     const expandAllMock = vi.fn();
     const collapseAllMock = vi.fn();
+    const areAllOpenMock = vi.fn();
 
-    render(<ExpandCollapseBtn expandAll={expandAllMock} collapseAll={collapseAllMock} />);
+    render(
+      <ExpandCollapseBtn
+        expandAll={expandAllMock}
+        collapseAll={collapseAllMock}
+        areAllOpen={areAllOpenMock}
+      />,
+    );
 
     const button = screen.getByTestId("expand-all");
     // click twice to collapse all
