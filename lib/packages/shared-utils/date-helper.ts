@@ -1,14 +1,6 @@
 import { TZDate } from "@date-fns/tz";
 import { format, add } from "date-fns";
 
-export function formatDate(date: number | null | undefined) {
-  if (!date || date === undefined) {
-    return "Pending";
-  }
-
-  return format(date, "MMMM d, yyyy");
-}
-
 export const isDST = (date: Date): boolean => {
   const jan = new Date(date).getTimezoneOffset();
   const jul = new Date(new Date(date).setMonth(6)).getTimezoneOffset();
@@ -27,8 +19,17 @@ export function formatNinetyDaysDate(date: number | null | undefined): string {
   return format(ninetyDaysLater, `MMM d, yyyy '@ 11:59pm ${timezoneAbbreviation}'`);
 }
 
-export const formatDateToEST = (utcDateValue: string | number) => {
+export function formatDate(dateValue: string | number) {
+  const dateObj = new Date(dateValue);
+
+  return format(dateObj, "MMMM d, yyyy");
+}
+
+export const formatDateToEST = (
+  utcDateValue: string | number,
+  formatValue: string = "eee, MMM d yyyy, hh:mm:ss a 'EST'",
+) => {
   const utcDateObj = new TZDate(new Date(utcDateValue).toISOString(), "America/New_York");
 
-  return format(utcDateObj, "eee, MMM d yyyy, hh:mm:ss a 'EST'");
+  return format(utcDateObj, formatValue);
 };
