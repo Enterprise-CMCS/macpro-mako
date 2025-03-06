@@ -18,14 +18,12 @@ export const Waiver1915bCMSEmail = (props: {
     | (Events["ContractingAmendment"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
-  const actionTypeWithWaiver = formatActionTypeWithWaiver(variables.actionType);
-  const previewText = `${variables.authority} ${actionTypeWithWaiver} Submitted`;
   const heading = `The OneMAC Submission Portal received a ${
     variables.authority
-  } ${actionTypeWithWaiver} Submission:`;
+  } ${formatActionTypeWithWaiver(variables.actionType)} Submission:`;
   return (
     <BaseEmailTemplate
-      previewText={previewText}
+      previewText={`${variables.authority} ${formatActionTypeWithWaiver(variables.actionType)} Submitted`}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
@@ -36,7 +34,7 @@ export const Waiver1915bCMSEmail = (props: {
           "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
-          [`${actionTypeWithWaiver} Number`]: variables.id,
+          [`${formatActionTypeWithWaiver(variables.actionType)} Number`]: variables.id,
           "Waiver Authority": variables.authority,
           "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           Summary: variables.additionalInformation,

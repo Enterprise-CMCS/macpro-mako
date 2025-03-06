@@ -15,14 +15,12 @@ export const Waiver1915bStateEmail = (props: {
     | (Events["ContractingAmendment"] & CommonEmailVariables);
 }) => {
   const variables = props.variables;
-  const actionTypeWithWaiver = formatActionTypeWithWaiver(variables.actionType);
-  const previewText = `${variables.authority} ${actionTypeWithWaiver} Submitted`;
   const heading = `This response confirms the submission of your ${
     variables.authority
-  } ${actionTypeWithWaiver} to CMS for review:`;
+  } ${formatActionTypeWithWaiver(variables.actionType)} to CMS for review:`;
   return (
     <BaseEmailTemplate
-      previewText={previewText}
+      previewText={`${variables.authority} ${formatActionTypeWithWaiver(variables.actionType)} Submitted`}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
@@ -32,7 +30,7 @@ export const Waiver1915bStateEmail = (props: {
           "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
-          [`${actionTypeWithWaiver} Number`]: variables.id,
+          [`${formatActionTypeWithWaiver(variables.actionType)} Number`]: variables.id,
           "Waiver Authority": variables.authority,
           "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
