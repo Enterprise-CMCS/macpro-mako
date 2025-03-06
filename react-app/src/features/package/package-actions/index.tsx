@@ -25,7 +25,7 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
       </DetailCardWrapper>
     );
   }
-  console.log(data);
+
   return (
     <DetailCardWrapper title={"Package Actions"}>
       <div className="my-3">
