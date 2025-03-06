@@ -1,5 +1,3 @@
-// my-test-file.js
-
 import { render, screen } from "@testing-library/react";
 import { useLDClient } from "launchdarkly-react-client-sdk";
 import { expect, vi, test } from "vitest";
@@ -11,7 +9,6 @@ vi.mock("launchdarkly-react-client-sdk", () => ({
 }));
 
 test("should render legacy faq when flag is false", () => {
-  // mock return false for toggleFaq flag
   (useLDClient as jest.Mock).mockReturnValue({
     variation: vi.fn().mockReturnValue(false),
     allFlags: vi.fn().mockReturnValue({
@@ -25,7 +22,6 @@ test("should render legacy faq when flag is false", () => {
 });
 
 test("should render new faq when flag is true", () => {
-  // mock return true for toggleFaq flag
   (useLDClient as jest.Mock).mockReturnValue({
     variation: vi.fn().mockReturnValue(true),
     allFlags: vi.fn().mockReturnValue({

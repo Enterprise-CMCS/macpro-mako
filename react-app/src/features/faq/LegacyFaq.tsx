@@ -10,8 +10,12 @@ import {
   Button,
 } from "@/components";
 import { useParams } from "react-router";
+import { useHideBanner } from "@/hooks/useHideBanner";
+interface LegacyFaqProps {
+  flagValue: boolean;
+}
 
-export const LegacyFaq = () => {
+export const LegacyFaq: React.FC<LegacyFaqProps> = () => {
   const { id } = useParams<{ id: string }>();
 
   const [openItems, setOpenItems] = useState<string[]>([]);
@@ -36,6 +40,28 @@ export const LegacyFaq = () => {
       }
     }
   }, [id]);
+
+  // Get the flag value for hiding the MMDL banner.
+  const isBannerHidden = useHideBanner();
+  const anchorsToHide = [
+    "spa-admendments",
+    "abp-spa-templates",
+    "abp-implementation-guides-spa",
+    "mpc-spa-templates",
+    "mpc-spa-implementation-guides",
+    "chip-spa-templates",
+    "chip-spa-implentation-guides",
+  ];
+
+  const filteredFAQContent = oneMACFAQContent.map((section) => {
+    if (section.sectionTitle === "State Plan Amendments (SPAs)" && isBannerHidden) {
+      return {
+        ...section,
+        qanda: section.qanda.filter((qa) => !anchorsToHide.includes(qa.anchorText)),
+      };
+    }
+    return section;
+  });
   return (
     <>
       <SubNavHeader>
@@ -54,17 +80,17 @@ export const LegacyFaq = () => {
               Expand all to search with CTRL + F
             </Button>
 
-            {/* FAQS */}
+            {/* FAQ */}
             <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
-              {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
+              {filteredFAQContent.map(({ sectionTitle, qanda }) => (
                 <article key={sectionTitle} className="mb-8">
                   <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
                   {qanda.map(({ anchorText, answerJSX, question }) => (
                     <AccordionItem
                       value={anchorText}
                       id={anchorText}
-                      data-testid={anchorText}
                       key={anchorText}
+                      data-testid={anchorText}
                     >
                       <AccordionTrigger className="text-left">{question}</AccordionTrigger>
                       <AccordionContent>{answerJSX}</AccordionContent>

@@ -25,7 +25,7 @@ vi.mock("./content/oneMACFAQContent", () => ({
 
 describe("LegacyFaq", () => {
   it("should expand all FAQ items when the 'Expand all' button is clicked", () => {
-    render(<LegacyFaq />);
+    render(<LegacyFaq flagValue={null} />);
 
     const expandButton = screen.getByTestId("expand-all");
 
@@ -38,7 +38,7 @@ describe("LegacyFaq", () => {
     const scrollToMock = vi.fn();
     global.scrollTo = scrollToMock;
 
-    render(<LegacyFaq />);
+    render(<LegacyFaq flagValue={null} />);
 
     expect(screen.getByTestId("q1")).toBeInTheDocument();
     expect(scrollToMock).toHaveBeenCalled();
