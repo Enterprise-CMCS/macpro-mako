@@ -18,15 +18,23 @@ export const RHFFieldArray = <TFields extends FieldValues>(props: FieldArrayProp
     fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never);
   };
 
+  // on-load or if the element id changes, scroll this element into view
   useEffect(() => {
-    if (fieldArr.fields.length) return;
-    fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never, {
-      shouldFocus: false,
-    });
-  }, [fieldArr, props.fields]);
+    const element = document.getElementById(props.name);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+    }
+  }, [props.name]);
+
+  // if there are no fields in the field array set it to the props.field
+  useEffect(() => {
+    if (fieldArr.fields.length == 0) {
+      fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never);
+    }
+  }, [props.fields]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className={"flex flex-col gap-6 w-full"}>
+    <div className={"flex flex-col gap-6 w-full"} id={props.name}>
       {fieldArr.fields.map((FLD, index) => {
         return (
           <div className={cn("flex flex-row gap-6", props.fieldArrayClassName)} key={FLD.id}>
