@@ -9,6 +9,7 @@ import {
   SubNavHeader,
 } from "@/components";
 import { useParams } from "react-router";
+import { useHideBanner } from "@/hooks/useHideBanner";
 interface LegacyFaqProps {
   flagValue: boolean;
 }
@@ -29,6 +30,28 @@ export const LegacyFaq: React.FC<LegacyFaqProps> = () => {
       }
     }
   }, [id]);
+
+  // Get the flag value for hiding the MMDL banner.
+  const isBannerHidden = useHideBanner();
+  const anchorsToHide = [
+    "spa-admendments",
+    "abp-spa-templates",
+    "abp-implementation-guides-spa",
+    "mpc-spa-templates",
+    "mpc-spa-implementation-guides",
+    "chip-spa-templates",
+    "chip-spa-implentation-guides",
+  ];
+
+  const filteredFAQContent = oneMACFAQContent.map((section) => {
+    if (section.sectionTitle === "State Plan Amendments (SPAs)" && isBannerHidden) {
+      return {
+        ...section,
+        qanda: section.qanda.filter((qa) => !anchorsToHide.includes(qa.anchorText)),
+      };
+    }
+    return section;
+  });
   return (
     <>
       <SubNavHeader>
@@ -38,7 +61,7 @@ export const LegacyFaq: React.FC<LegacyFaqProps> = () => {
         <div className="flex-1">
           <article className="mb-8">
             <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
-              {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
+              {filteredFAQContent.map(({ sectionTitle, qanda }) => (
                 <article key={sectionTitle} className="mb-8">
                   <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
                   {qanda.map(({ anchorText, answerJSX, question }) => (
