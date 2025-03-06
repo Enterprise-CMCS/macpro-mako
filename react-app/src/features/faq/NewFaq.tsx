@@ -2,7 +2,7 @@
 
 import { SubNavHeader } from "@/components";
 import LeftNavigation from "./content/navigationBar";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { oneMACFAQContent } from "./content/oneMACFAQContent";
 import ExpandCollapseBtn from "./content/expandCollapseBtn";
 import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from "@/components";
@@ -10,27 +10,25 @@ import { useParams } from "react-router";
 
 export const NewFaq = () => {
   const { id } = useParams<{ id: string }>();
+  const [openAccordions, setOpenAccordions] = useState<string[]>([]);
 
-  // used for the expand button
-  const [openItems, setOpenItems] = useState<string[]>([]);
-
-  const expandAll = useCallback(() => {
+  const expandAll = () => {
     const allIds = [];
-    oneMACFAQContent.forEach(({ qanda }) => {
-      qanda.forEach(({ anchorText }) => allIds.push(anchorText));
+    oneMACFAQContent.flatMap(({ qanda }) => {
+      qanda.map(({ anchorText }) => allIds.push(anchorText));
     });
-    setOpenItems(allIds);
-  }, [setOpenItems]);
+    setOpenAccordions(allIds);
+  };
 
-  const collapseAll = useCallback(() => {
-    setOpenItems([]);
-  }, [setOpenItems]);
+  const collapseAll = () => {
+    setOpenAccordions([]);
+  };
 
   useEffect(() => {
     if (id) {
       const element = document.getElementById(id);
       if (element) {
-        setOpenItems([id]);
+        setOpenAccordions([id]);
         window.scrollTo({
           top: element.offsetTop,
           behavior: "smooth",
@@ -58,7 +56,7 @@ export const NewFaq = () => {
           <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
             <div className="flex-1">
               <article className="mb-8">
-                <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
+                <Accordion type="multiple" value={openAccordions} onValueChange={setOpenAccordions}>
                   <article key={"FAQs"} className="mb-8">
                     <div className="flex justify-between">
                       <h2 className="text-2xl mb-4 font-bold">Frequently asked questions (FAQs)</h2>

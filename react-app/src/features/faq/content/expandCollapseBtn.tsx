@@ -1,11 +1,11 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { Plus as PlusIcon, Minus as MinusIcon } from "lucide-react";
 import { Button } from "@/components";
 
 const ExpandCollapseBtn = (props: { expandAll: () => void; collapseAll: () => void }) => {
   const [areAllOpen, setAreAllOpen] = useState<boolean>(false);
 
-  const callBack = useCallback(() => {
+  const callBack = () => {
     if (areAllOpen) {
       props.collapseAll();
       setAreAllOpen(false);
@@ -14,7 +14,7 @@ const ExpandCollapseBtn = (props: { expandAll: () => void; collapseAll: () => vo
       props.expandAll();
       setAreAllOpen(true);
     }
-  }, [props, areAllOpen, setAreAllOpen]);
+  };
 
   return (
     <Button
