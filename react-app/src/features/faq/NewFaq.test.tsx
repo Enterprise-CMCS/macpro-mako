@@ -27,14 +27,14 @@ vi.mock("./content/oneMACFAQContent", () => ({
 
 describe("ExpandCollapseBtn", () => {
   it("should display 'Expand all' when areAllOpen is false", () => {
-    render(<ExpandCollapseBtn expandAll={vi.fn()} collapseAll={vi.fn()} areAllOpen={vi.fn()} />);
+    render(<ExpandCollapseBtn expandAll={vi.fn()} collapseAll={vi.fn()} areAllOpen={false} />);
 
     const button = screen.getByTestId("expand-all");
     expect(button).toHaveTextContent("Expand all");
   });
 
   it("should display 'Collapse all' when areAllOpen is true", async () => {
-    render(<ExpandCollapseBtn expandAll={vi.fn()} collapseAll={vi.fn()} areAllOpen={vi.fn()} />);
+    render(<ExpandCollapseBtn expandAll={vi.fn()} collapseAll={vi.fn()} areAllOpen={true} />);
 
     const button = screen.getByTestId("expand-all");
 
@@ -43,55 +43,9 @@ describe("ExpandCollapseBtn", () => {
     await waitFor(async () => expect(screen.getByText("Collapse all")).toBeInTheDocument());
     expect(button).toHaveTextContent("Collapse all");
   });
-
-  it("should call expandAll when clicked and areAllOpen is false", async () => {
-    const expandAllMock = vi.fn();
-    const collapseAllMock = vi.fn();
-    const areAllOpenMock = vi.fn();
-
-    render(
-      <ExpandCollapseBtn
-        expandAll={expandAllMock}
-        collapseAll={collapseAllMock}
-        areAllOpen={areAllOpenMock}
-      />,
-    );
-
-    const button = screen.getByTestId("expand-all");
-    button.click();
-    await waitFor(async () => expect(screen.getByText("Collapse all")).toBeInTheDocument());
-    expect(expandAllMock).toHaveBeenCalled();
-
-    expect(button).toHaveTextContent("Collapse all");
-  });
-
-  it("should call collapseAll when clicked and areAllOpen is true", async () => {
-    const expandAllMock = vi.fn();
-    const collapseAllMock = vi.fn();
-    const areAllOpenMock = vi.fn();
-
-    render(
-      <ExpandCollapseBtn
-        expandAll={expandAllMock}
-        collapseAll={collapseAllMock}
-        areAllOpen={areAllOpenMock}
-      />,
-    );
-
-    const button = screen.getByTestId("expand-all");
-    // click twice to collapse all
-    button.click();
-    await waitFor(async () => expect(screen.getByText("Collapse all")).toBeInTheDocument());
-    button.click();
-    await waitFor(async () => expect(screen.getByText("Expand all")).toBeInTheDocument());
-
-    expect(collapseAllMock).toHaveBeenCalled();
-
-    expect(button).toHaveTextContent("Expand all");
-  });
 });
 
-describe("LegacyFaq", () => {
+describe("NewFaq", () => {
   it("should set open items correctly when id param is passed", async () => {
     const scrollToMock = vi.fn();
     global.scrollTo = scrollToMock;
@@ -104,5 +58,39 @@ describe("LegacyFaq", () => {
       top: expect.any(Number),
       behavior: "smooth",
     });
+  });
+
+  it("should calculate if all accordions are open correctly when expanded", async () => {
+    render(<NewFaq />);
+
+    const expandAllButton = screen.getByTestId("expand-all");
+
+    expect(screen.queryByText("Answer 2")).toBeNull();
+    expect(screen.queryByText("Answer 3")).toBeNull();
+
+    expandAllButton.click();
+
+    await waitFor(async () => expect(screen.getByText("Collapse all")).toBeInTheDocument());
+    expect(screen.getByText("Answer 2")).toBeInTheDocument();
+    expect(screen.getByText("Answer 3")).toBeInTheDocument();
+    expect(screen.getByTestId("expand-all")).toHaveTextContent("Collapse all");
+  });
+
+  it("should calculate if all accordions are collapsed correctly", async () => {
+    render(<NewFaq />);
+
+    const expandAllButton = screen.getByTestId("expand-all");
+    expect(screen.queryByText("Answer 2")).toBeNull();
+    expect(screen.queryByText("Answer 3")).toBeNull();
+
+    expandAllButton.click();
+    await waitFor(async () => expect(screen.getByText("Collapse all")).toBeInTheDocument());
+    expandAllButton.click();
+    await waitFor(async () => expect(screen.getByText("Expand all")).toBeInTheDocument());
+
+    expect(screen.queryByText("Answer 2")).toBeNull();
+    expect(screen.queryByText("Answer 3")).toBeNull();
+
+    expect(screen.getByTestId("expand-all")).toHaveTextContent("Expand all");
   });
 });

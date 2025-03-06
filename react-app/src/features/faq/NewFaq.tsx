@@ -24,13 +24,13 @@ export const NewFaq = () => {
     setOpenAccordions([]);
   };
 
-  const areAllAccordionsOpen = () => {
+  const areAllAccordionsOpen = (function () {
     const totalQandas = oneMACFAQContent.reduce((total, section) => {
       return total + section.qanda.length;
     }, 0);
     if (openAccordions.length >= totalQandas) return true;
-    else return false;
-  };
+    return false;
+  })();
 
   useEffect(() => {
     if (id) {
