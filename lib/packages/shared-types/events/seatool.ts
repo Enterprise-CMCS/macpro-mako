@@ -21,7 +21,8 @@ export const seatoolSchema = z.object({
         })
         .nullable(),
     )
-    .default([]),
+    .nullish()
+    .transform((val) => val ?? []),
   STATE_PLAN_SERVICE_SUBTYPES: z
     .array(
       z
@@ -31,7 +32,8 @@ export const seatoolSchema = z.object({
         })
         .nullable(),
     )
-    .default([]),
+    .nullish()
+    .transform((val) => val ?? []),
   STATE_PLAN: z.object({
     SUBMISSION_DATE: z.number().nullable(),
     PLAN_TYPE: z.number().nullable(),
