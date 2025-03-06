@@ -159,7 +159,7 @@ exports[`package details > makes a package 1`] = `
                 <h3
                   class="font-bold"
                 >
-                  Submitted by
+                  Submitted By
                 </h3>
                 <div
                   class="py-2"
@@ -349,7 +349,7 @@ exports[`package details > makes a package 1`] = `
               <h3
                 class="font-bold"
               >
-                Submitted by
+                Submitted By
               </h3>
               <div
                 class="py-2"
