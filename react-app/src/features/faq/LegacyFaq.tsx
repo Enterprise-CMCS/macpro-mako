@@ -48,7 +48,7 @@ export const LegacyFaq = () => {
             <Button
               onClick={expandAll}
               variant="outline"
-              data-testid="banner-close"
+              data-testid="expand-all"
               className="w-full xs:w-fit hover:bg-transparent mb-5"
             >
               Expand all to search with CTRL + F
@@ -60,7 +60,12 @@ export const LegacyFaq = () => {
                 <article key={sectionTitle} className="mb-8">
                   <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
                   {qanda.map(({ anchorText, answerJSX, question }) => (
-                    <AccordionItem value={anchorText} id={anchorText} key={anchorText}>
+                    <AccordionItem
+                      value={anchorText}
+                      id={anchorText}
+                      data-testid={anchorText}
+                      key={anchorText}
+                    >
                       <AccordionTrigger className="text-left">{question}</AccordionTrigger>
                       <AccordionContent>{answerJSX}</AccordionContent>
                     </AccordionItem>

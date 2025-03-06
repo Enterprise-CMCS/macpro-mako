@@ -68,7 +68,12 @@ export const NewFaq = () => {
 
                     {/* REMOVE LATER */}
                     {tempFAQ.map(({ anchorText, answerJSX, question }) => (
-                      <AccordionItem value={anchorText} id={anchorText} key={anchorText}>
+                      <AccordionItem
+                        value={anchorText}
+                        id={anchorText}
+                        data-testid={anchorText}
+                        key={anchorText}
+                      >
                         <AccordionTrigger className="text-left">{question}</AccordionTrigger>
                         <AccordionContent>{answerJSX}</AccordionContent>
                       </AccordionItem>
@@ -79,7 +84,12 @@ export const NewFaq = () => {
                       <h2 className="text-2xl font-bold mb-4">{sectionTitle}</h2>
                       <hr className="bg-slate-300 h-0.5" />
                       {qanda.map(({ anchorText, answerJSX, question }) => (
-                        <AccordionItem value={anchorText} id={anchorText} key={anchorText}>
+                        <AccordionItem
+                          value={anchorText}
+                          id={anchorText}
+                          key={anchorText}
+                          data-testid={anchorText}
+                        >
                           <AccordionTrigger className="text-left">{question}</AccordionTrigger>
                           <AccordionContent>{answerJSX}</AccordionContent>
                         </AccordionItem>

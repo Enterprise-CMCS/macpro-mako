@@ -20,7 +20,7 @@ const ExpandCollapseBtn = (props: { expandAll: () => void; collapseAll: () => vo
     <Button
       onClick={callBack}
       variant="link"
-      data-testid="banner-close"
+      data-testid="expand-all"
       className="w-full xs:w-fit hover:bg-transparent"
     >
       <span>{areAllOpen ? "Collapse all" : "Expand all"}</span>
