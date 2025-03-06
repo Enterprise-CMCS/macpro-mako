@@ -31,7 +31,6 @@ export const useFilterState = () => {
         [C.DATE_LATESTPACKAGEACTIVITY.field]: C.DATE_LATESTPACKAGEACTIVITY,
         [C.DATE_RAIRECEIVED.field]: C.DATE_RAIRECEIVED,
         [C.SELECT_CPOC.field]: C.SELECT_CPOC,
-        [C.SELECT_ORIGIN.field]: C.SELECT_ORIGIN,
       };
     }
 
@@ -51,7 +50,6 @@ export const useFilterState = () => {
         [C.DATE_LATESTPACKAGEACTIVITY.field]: C.DATE_LATESTPACKAGEACTIVITY,
         [C.DATE_RAIRECEIVED.field]: C.DATE_RAIRECEIVED,
         [C.SELECT_CPOC.field]: C.SELECT_CPOC,
-        [C.SELECT_ORIGIN.field]: C.SELECT_ORIGIN,
       };
     }
 

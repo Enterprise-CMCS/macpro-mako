@@ -228,14 +228,6 @@ export const getAggregations = (
     };
   }
 
-  if (aggs?.["origin.keyword"]) {
-    aggregations["origin.keyword"] = {
-      doc_count_error_upper_bound: 0,
-      sum_other_doc_count: 0,
-      buckets: [{ key: "OneMAC", doc_count: 59 }],
-    };
-  }
-
   if (aggs?.["state.keyword"]) {
     aggregations["state.keyword"] = {
       doc_count_error_upper_bound: 0,
