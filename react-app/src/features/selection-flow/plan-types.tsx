@@ -62,7 +62,7 @@ const OptionsPage = ({ options, title, fieldsetLegend }: OptionsPageProps) => {
 export const NewSubmissionInitialOptions = () => (
   <OptionsPage
     title="Submission Type"
-    fieldsetLegend="Select a Submission Type."
+    fieldsetLegend="Select a Submission Type"
     options={AUTHORITY_OPTIONS}
   />
 );
