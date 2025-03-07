@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.52% </span>
+                <span class="strong">88.05% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>64/67</span>
+                <span class='fraction'>59/67</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">67.56% </span>
+                <span class="strong">62.16% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>25/37</span>
+                <span class='fraction'>23/37</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>7/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.38% </span>
+                <span class="strong">87.69% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>62/65</span>
+                <span class='fraction'>57/65</span>
             </div>
         
             
@@ -294,11 +294,11 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -465,12 +465,12 @@ export const handler: Handler = async (event) =&gt; {
       const stateArray: string[] = [];
       data.userProfileAppRoles.userRolesInfoList.forEach((element: any) =&gt; {
         const role = element.roleName;
-        <span class="missing-if-branch" title="else path not taken" >E</span>if (Object.values(UserRoles).includes(role)) {
-          roleArray.push(role);
-          <span class="missing-if-branch" title="else path not taken" >E</span>if (STATE_ROLES.includes(role)) {
-            element.roleAttributes.forEach((attr: any) =&gt; {
-              <span class="missing-if-branch" title="else path not taken" >E</span>if (attr.name === "State/Territory") {
-                stateArray.push(attr.value);
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (Object.values(UserRoles).includes(role)) {
+<span class="cstat-no" title="statement not covered" >          roleArray.push(role);</span>
+<span class="cstat-no" title="statement not covered" >          if (STATE_ROLES.includes(role)) {</span>
+<span class="cstat-no" title="statement not covered" >            element.roleAttributes.forEach(<span class="fstat-no" title="function not covered" >(a</span>ttr: any) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >              if (attr.name === "State/Territory") {</span>
+<span class="cstat-no" title="statement not covered" >                stateArray.push(attr.value);</span>
               }
             });
           }
@@ -535,12 +535,12 @@ async function updateUserAttributes(params: any): Promise&lt;void&gt; {
       if (rolesIndex !== -1) {
         // Only merge if new roles are not empty
         const newRoles = attributeData.UserAttributes[rolesIndex].Value
-          ? new Set(
+          ? <span class="branch-0 cbranch-no" title="branch not covered" >new Set(</span>
               attributeData.UserAttributes[rolesIndex].Value.split(",").concat(
                 "onemac-micro-super",
               ),
             )
-          : <span class="branch-1 cbranch-no" title="branch not covered" >new Set(["onemac-micro-super"]); // Ensure "onemac-micro-super" is always included</span>
+          : new Set(["onemac-micro-super"]); // Ensure "onemac-micro-super" is always included
         attributeData.UserAttributes[rolesIndex].Value = Array.from(newRoles).join(",");
       } else <span class="missing-if-branch" title="else path not taken" >E</span>{
         // Add "custom:cms-roles" with "onemac-micro-super"
@@ -559,8 +559,8 @@ async function updateUserAttributes(params: any): Promise&lt;void&gt; {
       if (stateIndex !== -1) {
         // Only merge if new states are not empty
         const newStates = attributeData.UserAttributes[stateIndex].Value
-          ? new Set(attributeData.UserAttributes[stateIndex].Value.split(",").concat("ZZ"))
-          : <span class="branch-1 cbranch-no" title="branch not covered" >new Set(["ZZ"]); // Ensure "ZZ" is always included</span>
+          ? <span class="branch-0 cbranch-no" title="branch not covered" >new Set(attributeData.UserAttributes[stateIndex].Value.split(",").concat("ZZ"))</span>
+          : new Set(["ZZ"]); // Ensure "ZZ" is always included
         attributeData.UserAttributes[stateIndex].Value = Array.from(newStates).join(",");
       } else <span class="missing-if-branch" title="else path not taken" >E</span>{
         // Add "custom:state" with "ZZ"
@@ -586,7 +586,7 @@ async function updateUserAttributes(params: any): Promise&lt;void&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-07T20:48:55.832Z
+                at 2025-03-07T21:35:16.751Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
