@@ -2,15 +2,57 @@
 
 import { SubNavHeader } from "@/components";
 import LeftNavigation from "./content/navigationBar";
+import { useEffect, useState } from "react";
+import { oneMACFAQContent } from "./content/oneMACFAQContent";
+import ExpandCollapseBtn from "./content/expandCollapseBtn";
+import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from "@/components";
+import { useParams } from "react-router";
 
 export const NewFaq = () => {
+  const { id } = useParams<{ id: string }>();
+  const [openAccordions, setOpenAccordions] = useState<string[]>([]);
+
+  const expandAll = () => {
+    const allIds = [];
+    oneMACFAQContent.flatMap(({ qanda }) => {
+      qanda.map(({ anchorText }) => allIds.push(anchorText));
+    });
+    setOpenAccordions(allIds);
+  };
+
+  const collapseAll = () => {
+    setOpenAccordions([]);
+  };
+
+  const areAllAccordionsOpen = (function () {
+    const totalQandas = oneMACFAQContent.reduce((total, section) => {
+      return total + section.qanda.length;
+    }, 0);
+    if (openAccordions.length >= totalQandas) return true;
+    return false;
+  })();
+
+  useEffect(() => {
+    if (id) {
+      const element = document.getElementById(id);
+      if (element) {
+        setOpenAccordions([id]);
+        window.scrollTo({
+          top: element.offsetTop,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [id]);
+
+  const tempFAQ = oneMACFAQContent[0].qanda.toSpliced(0, 3);
   return (
     <div className="min-h-screen flex flex-col">
       <SubNavHeader>
-        <h1 className="text-xl font-medium">Frequently Asked Questions</h1>
+        <h1 className="text-xl font-medium">OneMAC Support</h1>
       </SubNavHeader>
 
-      {/*·Main·Layout·Wrapper·with·explicit·widths·*/}
+      {/* Main Layout Wrapper with explicit widths */}
       <div className="max-w-screen-xl m-auto px-4 lg:px-8 pt-8 w-full">
         <div className="flex">
           {/* Left Navigation - Fixed width with explicit max-width */}
@@ -19,299 +61,55 @@ export const NewFaq = () => {
           </div>
 
           {/* Content - Force minimum width */}
-          <div className="flex-1 min-w-[400px] pl-6">
-            <article className="mb-8 min-h-[500px] p-4">
-              <h2 className="text-2xl mb-4">FAQ Content Goes Here</h2>
-              <p>This is a placeholder for the actual FAQ content.</p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                dolor. Aenean massa.
-              </p>
-              <p>
-                Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-                mus.
-              </p>
-              <p>
-                Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat
-                massa quis enim.
-              </p>
-              <p>
-                Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
-                rhoncus ut, imperdiet a, venenatis vitae, justo.
-              </p>
-              <p>
-                Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus
-                elementum semper nisi. Aenean vulputate eleifend tellus.
-              </p>
-              <p>
-                Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem
-                ante, dapibus in, viverra quis, feugiat a, tellus.
-              </p>
-              <p>
-                Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
-                Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.
-              </p>
-              <p>
-                Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem
-                quam semper libero, sit amet adipiscing sem neque sed ipsum.
-              </p>
-              <p>
-                Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio
-                et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus.
-              </p>
-              <p>
-                Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed
-                fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo
-                eget bibendum sodales, augue velit cursus nunc,
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                dolor. Aenean massa.
-              </p>
-              <p>
-                Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-                mus.
-              </p>
-              <p>
-                Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat
-                massa quis enim.
-              </p>
-              <p>
-                Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
-                rhoncus ut, imperdiet a, venenatis vitae, justo.
-              </p>
-              <p>
-                Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus
-                elementum semper nisi. Aenean vulputate eleifend tellus.
-              </p>
-              <p>
-                Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem
-                ante, dapibus in, viverra quis, feugiat a, tellus.
-              </p>
-              <p>
-                Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
-                Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.
-              </p>
-              <p>
-                Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem
-                quam semper libero, sit amet adipiscing sem neque sed ipsum.
-              </p>
-              <p>
-                Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio
-                et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus.
-              </p>
-              <p>
-                Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed
-                fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo
-                eget bibendum sodales, augue velit cursus nunc,
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                dolor. Aenean massa.
-              </p>
-              <p>
-                Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-                mus.
-              </p>
-              <p>
-                Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat
-                massa quis enim.
-              </p>
-              <p>
-                Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
-                rhoncus ut, imperdiet a, venenatis vitae, justo.
-              </p>
-              <p>
-                Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus
-                elementum semper nisi. Aenean vulputate eleifend tellus.
-              </p>
-              <p>
-                Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem
-                ante, dapibus in, viverra quis, feugiat a, tellus.
-              </p>
-              <p>
-                Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
-                Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.
-              </p>
-              <p>
-                Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem
-                quam semper libero, sit amet adipiscing sem neque sed ipsum.
-              </p>
-              <p>
-                Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio
-                et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus.
-              </p>
-              <p>
-                Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed
-                fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo
-                eget bibendum sodales, augue velit cursus nunc,
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                dolor. Aenean massa.
-              </p>
-              <p>
-                Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-                mus.
-              </p>
-              <p>
-                Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat
-                massa quis enim.
-              </p>
-              <p>
-                Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
-                rhoncus ut, imperdiet a, venenatis vitae, justo.
-              </p>
-              <p>
-                Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus
-                elementum semper nisi. Aenean vulputate eleifend tellus.
-              </p>
-              <p>
-                Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem
-                ante, dapibus in, viverra quis, feugiat a, tellus.
-              </p>
-              <p>
-                Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
-                Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.
-              </p>
-              <p>
-                Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem
-                quam semper libero, sit amet adipiscing sem neque sed ipsum.
-              </p>
-              <p>
-                Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio
-                et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus.
-              </p>
-              <p>
-                Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed
-                fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo
-                eget bibendum sodales, augue velit cursus nunc,
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                dolor. Aenean massa.
-              </p>
-              <p>
-                Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-                mus.
-              </p>
-              <p>
-                Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat
-                massa quis enim.
-              </p>
-              <p>
-                Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
-                rhoncus ut, imperdiet a, venenatis vitae, justo.
-              </p>
-              <p>
-                Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus
-                elementum semper nisi. Aenean vulputate eleifend tellus.
-              </p>
-              <p>
-                Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem
-                ante, dapibus in, viverra quis, feugiat a, tellus.
-              </p>
-              <p>
-                Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
-                Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.
-              </p>
-              <p>
-                Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem
-                quam semper libero, sit amet adipiscing sem neque sed ipsum.
-              </p>
-              <p>
-                Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio
-                et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus.
-              </p>
-              <p>
-                Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed
-                fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo
-                eget bibendum sodales, augue velit cursus nunc,
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                dolor. Aenean massa.
-              </p>
-              <p>
-                Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-                mus.
-              </p>
-              <p>
-                Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat
-                massa quis enim.
-              </p>
-              <p>
-                Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
-                rhoncus ut, imperdiet a, venenatis vitae, justo.
-              </p>
-              <p>
-                Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus
-                elementum semper nisi. Aenean vulputate eleifend tellus.
-              </p>
-              <p>
-                Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem
-                ante, dapibus in, viverra quis, feugiat a, tellus.
-              </p>
-              <p>
-                Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
-                Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.
-              </p>
-              <p>
-                Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem
-                quam semper libero, sit amet adipiscing sem neque sed ipsum.
-              </p>
-              <p>
-                Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio
-                et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus.
-              </p>
-              <p>
-                Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed
-                fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo
-                eget bibendum sodales, augue velit cursus nunc,
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                dolor. Aenean massa.
-              </p>
-              <p>
-                Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-                mus.
-              </p>
-              <p>
-                Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat
-                massa quis enim.
-              </p>
-              <p>
-                Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo,
-                rhoncus ut, imperdiet a, venenatis vitae, justo.
-              </p>
-              <p>
-                Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus
-                elementum semper nisi. Aenean vulputate eleifend tellus.
-              </p>
-              <p>
-                Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem
-                ante, dapibus in, viverra quis, feugiat a, tellus.
-              </p>
-              <p>
-                Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
-                Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.
-              </p>
-              <p>
-                Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem
-                quam semper libero, sit amet adipiscing sem neque sed ipsum.
-              </p>
-              <p>
-                Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio
-                et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus.
-              </p>
-              <p>
-                Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed
-                fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo
-                eget bibendum sodales, augue velit cursus nunc,
-              </p>
-            </article>
-          </div>
+          <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
+            <div className="flex-1">
+              <article className="mb-8">
+                <Accordion type="multiple" value={openAccordions} onValueChange={setOpenAccordions}>
+                  <article key={"FAQs"} className="mb-8">
+                    <div className="flex justify-between">
+                      <h2 className="text-2xl mb-4 font-bold">Frequently asked questions (FAQs)</h2>
+                      <ExpandCollapseBtn
+                        collapseAll={collapseAll}
+                        expandAll={expandAll}
+                        areAllOpen={areAllAccordionsOpen}
+                      />
+                    </div>
+                    <hr className="bg-slate-300 h-0.5" />
+
+                    {/* REMOVE LATER */}
+                    {tempFAQ.map(({ anchorText, answerJSX, question }) => (
+                      <AccordionItem
+                        value={anchorText}
+                        id={anchorText}
+                        data-testid={anchorText}
+                        key={anchorText}
+                      >
+                        <AccordionTrigger className="text-left">{question}</AccordionTrigger>
+                        <AccordionContent>{answerJSX}</AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </article>
+                  {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
+                    <article key={sectionTitle} className="mb-8">
+                      <h2 className="text-2xl font-bold mb-4">{sectionTitle}</h2>
+                      <hr className="bg-slate-300 h-0.5" />
+                      {qanda.map(({ anchorText, answerJSX, question }) => (
+                        <AccordionItem
+                          value={anchorText}
+                          id={anchorText}
+                          key={anchorText}
+                          data-testid={anchorText}
+                        >
+                          <AccordionTrigger className="text-left">{question}</AccordionTrigger>
+                          <AccordionContent>{answerJSX}</AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </article>
+                  ))}
+                </Accordion>
+              </article>
+            </div>
+          </section>
         </div>
       </div>
     </div>
