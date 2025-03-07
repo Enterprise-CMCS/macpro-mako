@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { helpDeskContact, oneMACFAQContent } from "./content/oneMACFAQContent";
 import {
   Accordion,
@@ -7,6 +7,7 @@ import {
   AccordionContent,
   AccordionTrigger,
   SubNavHeader,
+  Button,
 } from "@/components";
 import { useParams } from "react-router";
 import { useHideBanner } from "@/hooks/useHideBanner";
@@ -18,6 +19,15 @@ export const LegacyFaq: React.FC<LegacyFaqProps> = () => {
   const { id } = useParams<{ id: string }>();
 
   const [openItems, setOpenItems] = useState<string[]>([]);
+
+  const expandAll = useCallback(() => {
+    const allIds = [];
+    oneMACFAQContent.forEach(({ qanda }) => {
+      qanda.forEach(({ anchorText }) => allIds.push(anchorText));
+    });
+    setOpenItems(allIds);
+  }, [setOpenItems]);
+
   useEffect(() => {
     if (id) {
       const element = document.getElementById(id);
@@ -60,12 +70,28 @@ export const LegacyFaq: React.FC<LegacyFaqProps> = () => {
       <section className="block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
         <div className="flex-1">
           <article className="mb-8">
+            {/* BUTTON */}
+            <Button
+              onClick={expandAll}
+              variant="outline"
+              data-testid="expand-all"
+              className="w-full xs:w-fit hover:bg-transparent mb-5"
+            >
+              Expand all to search with CTRL + F
+            </Button>
+
+            {/* FAQ */}
             <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
               {filteredFAQContent.map(({ sectionTitle, qanda }) => (
                 <article key={sectionTitle} className="mb-8">
                   <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
                   {qanda.map(({ anchorText, answerJSX, question }) => (
-                    <AccordionItem value={anchorText} id={anchorText} key={anchorText}>
+                    <AccordionItem
+                      value={anchorText}
+                      id={anchorText}
+                      key={anchorText}
+                      data-testid={anchorText}
+                    >
                       <AccordionTrigger className="text-left">{question}</AccordionTrigger>
                       <AccordionContent>{answerJSX}</AccordionContent>
                     </AccordionItem>
