@@ -20,6 +20,10 @@ export const featureFlags = {
     defaultValue: false,
   },
 
+  TOGGLE_FAQ: {
+    flag: "toggleFaq",
+    defaultValue: true,
+  },
   /**
    * Toggles the visibility of the MMDL Alert Banner
    */
