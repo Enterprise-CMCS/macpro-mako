@@ -1,53 +1,26 @@
 import { useState, useEffect } from "react";
 
-interface LocalStorageData {
-  osQuery?: string;
-  osColumns?: string[];
-  osDashboardData?: object;
-  [key: string]: any;
-}
-
-type LocalStorageKeys = Extract<keyof LocalStorageData, string>;
-
-export const removeItemLocalStorage = (key?: LocalStorageKeys) => {
-  if (key) {
-    window.localStorage.removeItem(key);
-  } else {
-    window.localStorage.removeItem("osData");
-  }
-};
-
-export const useLocalStorage = (key: LocalStorageKeys, initialValue: any) => {
-  const [storedValue, setStoredValue] = useState(() => {
+export const useLocalStorage = <T>(key: string, initialValue: T) => {
+  const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === "undefined") return initialValue;
     try {
-      const item = window.localStorage.getItem("osData");
-      const data = item ? JSON.parse(item) : {};
-      return data[key] ?? initialValue;
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
     } catch (e) {
-      console.log("Error while getting local storage: ", e);
+      console.log("Error while getting local storage:", e);
       return initialValue;
     }
   });
 
   useEffect(() => {
-    const updateLocalStorage = () => {
-      if (typeof window !== "undefined") {
-        try {
-          const item = window.localStorage.getItem("osData");
-          const data = item ? JSON.parse(item) : {};
-
-          data[key] = storedValue;
-
-          localStorage.setItem("osData", JSON.stringify(data));
-        } catch (e) {
-          console.log("Error setting local storage", e);
-        }
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.setItem(key, JSON.stringify(storedValue));
+      } catch (e) {
+        console.log("Error setting local storage:", e);
       }
-    };
-
-    updateLocalStorage();
+    }
   }, [key, storedValue]);
 
-  return [storedValue, setStoredValue];
+  return [storedValue, setStoredValue] as const;
 };
