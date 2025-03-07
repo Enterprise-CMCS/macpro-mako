@@ -1,5 +1,6 @@
 import { Waiver1915bCMSEmail } from "libs/email/content/newSubmission/emailTemplates";
 import { emailTemplateValue } from "libs/email/mock-data/new-submission";
+import { formatActionType } from "shared-utils";
 
 export default () => {
   return (
@@ -9,7 +10,7 @@ export default () => {
         event: "contracting-amendment",
         id: "CO-1234.R21.01",
         authority: "1915(b)",
-        actionType: "Amendment",
+        actionType: formatActionType("Amend"),
         waiverNumber: "CO-1234.R21.00",
         attachments: {
           b4WaiverApplication: {
