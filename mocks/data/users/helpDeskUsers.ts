@@ -24,7 +24,7 @@ export const helpDeskUser: TestUserData = {
     },
     {
       Name: "custom:cms-roles",
-      Value: "onemac-micro-helpdesk",
+      Value: "onemac-helpdesk",
     },
     {
       Name: "sub",
@@ -58,7 +58,7 @@ export const automatedHelpDeskUser: TestUserData = {
     },
     {
       Name: "custom:cms-roles",
-      Value: "onemac-micro-helpdesk",
+      Value: "onemac-helpdesk",
     },
     {
       Name: "sub",
