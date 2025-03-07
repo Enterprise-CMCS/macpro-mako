@@ -67,6 +67,7 @@ describe("process emails Handler", () => {
                 origin: "mako",
                 event: "new-medicaid-submission",
                 authority: "medicaid spa",
+                proposedEffectiveDate: 1732645041557,
               }),
             ).toString("base64"),
             headers: {},

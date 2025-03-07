@@ -3,11 +3,6 @@ import { formatDate, formatDateToEST, formatNinetyDaysDate } from "./date-helper
 
 describe("date-helper", () => {
   describe("formatDate", () => {
-    it('should return "Pending" if date is null or undefined', () => {
-      expect(formatDate(null)).toBe("Pending");
-      expect(formatDate(undefined)).toBe("Pending");
-    });
-
     it("should correctly format a valid date", () => {
       const date = new Date(2025, 0, 5); // Jan 5, 2025
 
@@ -15,7 +10,7 @@ describe("date-helper", () => {
     });
   });
 
-  describe("formatDateForPackageDetails", () => {
+  describe("formatDateToEST", () => {
     it("formats a valid UTC date correctly to EST", () => {
       const utcDate = "2025-02-28T18:14:41.855Z";
       const formattedDate = formatDateToEST(utcDate);

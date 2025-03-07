@@ -1,18 +1,18 @@
 import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
 
-import { useGetItem, useGetItemCache, getItem } from "@/api";
+import { useGetItem, getItem } from "@/api";
 import { BreadCrumbs } from "@/components/BreadCrumb";
-import { FC, PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 
 import { PackageActivities } from "./package-activity";
-import { AdminChanges } from "./admin-changes";
+import { AdminPackageActivities } from "./admin-changes";
 
-import { SubmissionDetails } from "./package-details";
+import { PackageDetails } from "./package-details";
 import { PackageStatusCard } from "./package-status";
 import { PackageActionsCard } from "./package-actions";
 import { useDetailsSidebarLinks } from "./hooks";
 import { Authority } from "shared-types";
-import { LoaderFunctionArgs, useParams, useLoaderData, redirect } from "react-router";
+import { LoaderFunctionArgs, useLoaderData, redirect } from "react-router";
 import { detailsAndActionsCrumbs } from "@/utils";
 
 export const DetailCardWrapper = ({
@@ -29,24 +29,29 @@ export const DetailCardWrapper = ({
   </CardWithTopBorder>
 );
 
-export const DetailsContent: FC<{ id: string }> = ({ id }) => {
-  const { data, isLoading, error } = useGetItem(id);
+type DetailsContentProps = {
+  id: string;
+};
+
+export const DetailsContent = ({ id }: DetailsContentProps) => {
+  const { data: record, isLoading, error } = useGetItem(id);
 
   if (isLoading) return <LoadingSpinner />;
 
-  if (!data?._source) return <LoadingSpinner />;
   if (error) return <ErrorAlert error={error} />;
+
+  const { _source: submission } = record;
 
   return (
     <div className="w-full py-1 px-4 lg:px-8">
       <section id="package_overview" className="block md:flex space-x-0 md:space-x-8">
-        <PackageStatusCard data={data} />
-        <PackageActionsCard id={id} />
+        <PackageStatusCard submission={submission} />
+        <PackageActionsCard id={id} submission={submission} />
       </section>
       <div className="flex flex-col gap-3">
-        <SubmissionDetails itemResult={data} />
-        <PackageActivities />
-        <AdminChanges />
+        <PackageDetails submission={submission} />
+        <PackageActivities id={id} changelog={submission.changelog} />
+        <AdminPackageActivities changelog={submission.changelog} />
       </div>
     </div>
   );
@@ -67,7 +72,7 @@ export const packageDetailsLoader = async ({
 
   try {
     const packageResult = await getItem(id);
-    if (!packageResult || packageResult?._source?.deleted === true) {
+    if (!packageResult || packageResult._source.deleted === true || packageResult.found === false) {
       return redirect("/dashboard");
     }
   } catch (error) {
@@ -97,7 +102,11 @@ export const Details = () => {
   );
 };
 
-const DetailsSidebar: FC<{ id: string }> = ({ id }) => {
+type DetailsSidebarProps = {
+  id: string;
+};
+
+const DetailsSidebar = ({ id }: DetailsSidebarProps) => {
   const links = useDetailsSidebarLinks(id);
 
   return (
@@ -109,10 +118,4 @@ const DetailsSidebar: FC<{ id: string }> = ({ id }) => {
       ))}
     </aside>
   );
-};
-
-export const usePackageDetailsCache = () => {
-  const { id } = useParams<{ id: string }>();
-
-  return useGetItemCache(id);
 };

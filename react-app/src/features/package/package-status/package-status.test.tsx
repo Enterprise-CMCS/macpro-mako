@@ -9,12 +9,12 @@ import { OneMacUser } from "@/api";
 describe("Package Status test", () => {
   vi.spyOn(api, "useGetUser").mockImplementation(() => {
     const response = mockUseGetUser();
-    response.data.isCms = true;
+    response.data.user["custom:cms-roles"] = "onemac-micro-reviewer";
     return response as UseQueryResult<OneMacUser, unknown>;
   });
   it("The package status component is called successfully", async () => {
     const { asFragment } = renderWithQueryClient(
-      <PackageStatusCard data={TEST_PACKAGE_STATUS_ITEM} />,
+      <PackageStatusCard submission={TEST_PACKAGE_STATUS_ITEM._source} />,
     );
     expect(asFragment()).toMatchSnapshot();
   });
