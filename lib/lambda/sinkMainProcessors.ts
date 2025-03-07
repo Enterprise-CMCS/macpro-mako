@@ -94,9 +94,8 @@ const getOneMacRecordWithAllProperties = (
     console.log(`event after transformation: ${JSON.stringify(oneMacRecord, null, 2)}`);
 
     return oneMacRecord;
-  } else {
-    console.log(`No transform found for event: ${record.event}`);
   }
+  console.log(`No transform found for event: ${record.event}`);
 
   return;
 };

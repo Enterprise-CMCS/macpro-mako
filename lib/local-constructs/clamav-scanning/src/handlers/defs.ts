@@ -15,8 +15,7 @@ export async function handler(): Promise<string> {
     await uploadAVDefinitions();
     logger.info(`AV definition update end time: ${new Date()}`);
     return "DEFINITION UPDATE SUCCESS";
-  } else {
-    logger.error(`AV definition update failed: ${new Date()}`);
-    return "DEFINITION UPDATE FAILED";
   }
+  logger.error(`AV definition update failed: ${new Date()}`);
+  return "DEFINITION UPDATE FAILED";
 }

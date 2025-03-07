@@ -82,7 +82,8 @@ export async function bulkUpdateData(
           console.log(`Rate limit exceeded, retrying in ${delay}ms...`);
           await sleep(delay);
           return attemptBulkUpdate(retries - 1, delay * 2); // Exponential backoff
-        } else if (!hasRateLimitErrors) {
+        }
+        if (!hasRateLimitErrors) {
           // Handle or throw other errors normally
           console.error("Bulk update errors:", JSON.stringify(response.body.items, null, 2));
           throw "ERROR:  Bulk update had an error that was not rate related.";
@@ -95,10 +96,9 @@ export async function bulkUpdateData(
         console.log(`Rate limit exceeded, retrying in ${delay}ms...`, error.message);
         await sleep(delay);
         return attemptBulkUpdate(retries - 1, delay * 2); // Exponential backoff
-      } else {
-        console.error("An error occurred:", error);
-        throw error;
       }
+      console.error("An error occurred:", error);
+      throw error;
     }
   }
 
@@ -229,10 +229,9 @@ export async function getItems(ids: string[]): Promise<OSDocument[]> {
     return response.body.docs.reduce<OSDocument[]>((acc, doc) => {
       if (doc && doc.found && doc._source) {
         return acc.concat(doc._source);
-      } else {
-        console.error(`Document with ID ${doc._id} not found.`);
-        return acc;
       }
+      console.error(`Document with ID ${doc._id} not found.`);
+      return acc;
     }, []);
   } catch (e) {
     console.log({ e });

@@ -134,7 +134,6 @@ async function getLambdaLogGroup(functionName: string) {
   );
   if (response?.LoggingConfig?.LogGroup) {
     return response.LoggingConfig.LogGroup;
-  } else {
-    throw new Error("Error finding log group for function " + functionName);
   }
+  throw new Error("Error finding log group for function " + functionName);
 }

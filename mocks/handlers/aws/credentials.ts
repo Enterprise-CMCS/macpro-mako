@@ -58,8 +58,8 @@ const defaultSecurityTokenServiceHandler = http.post(
   </AssumeRoleResponse>
 `;
       return HttpResponse.xml(xmlResponse);
-    } else {
-      const xmlResponse = `
+    }
+    const xmlResponse = `
   <AssumeRoleResponse xmlns="https://sts.amazonaws.com/doc/2011-06-15/">
     <AssumeRoleResult>
       <SourceIdentity>DevUser123</SourceIdentity>
@@ -74,8 +74,7 @@ const defaultSecurityTokenServiceHandler = http.post(
     </ResponseMetadata>
   </AssumeRoleResponse>
 `;
-      return HttpResponse.xml(xmlResponse);
-    }
+    return HttpResponse.xml(xmlResponse);
   },
 );
 

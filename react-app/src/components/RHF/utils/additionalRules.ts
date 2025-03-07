@@ -25,9 +25,8 @@ export function stringCompare(a: { label: string }, b: { label: string }): numbe
 
   if (aIsNumber && bIsNumber) {
     return parseFloat(a.label) - parseFloat(b.label);
-  } else {
-    return a.label.localeCompare(b.label);
   }
+  return a.label.localeCompare(b.label);
 }
 
 export const ruleGenerator: RuleGenerator = (rules, addtnlRules) => {
@@ -52,7 +51,7 @@ export const valReducer = (
         [valName]: (value, fields) => {
           if (!rule.strictGreater && parseFloat(value) <= parseFloat(fields[rule.fieldName]))
             return true;
-          else if (parseFloat(value) < parseFloat(fields[rule.fieldName])) return true;
+          if (parseFloat(value) < parseFloat(fields[rule.fieldName])) return true;
           return rule.message;
         },
       };
@@ -62,7 +61,7 @@ export const valReducer = (
         [valName]: (value, fields) => {
           if (!rule.strictGreater && parseFloat(value) >= parseFloat(fields[rule.fieldName]))
             return true;
-          else if (parseFloat(value) > parseFloat(fields[rule.fieldName])) return true;
+          if (parseFloat(value) > parseFloat(fields[rule.fieldName])) return true;
           return rule.message;
         },
       };

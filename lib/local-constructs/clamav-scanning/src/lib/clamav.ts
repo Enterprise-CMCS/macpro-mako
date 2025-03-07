@@ -174,7 +174,8 @@ export const scanLocalFile = async (pathToFile: string): Promise<string | null> 
     if (avResult.status === 1) {
       logger.info("SUCCESSFUL SCAN, FILE INFECTED");
       return constants.STATUS_INFECTED_FILE;
-    } else if (avResult.status !== 0) {
+    }
+    if (avResult.status !== 0) {
       logger.info("-- SCAN FAILED WITH ERROR --");
       logger.info(avResult.stdout);
       logger.info(avResult.stderr);

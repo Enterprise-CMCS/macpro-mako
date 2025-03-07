@@ -8,7 +8,8 @@ const defaultIDMHandler = http.get(
 
     if (id === "fail") {
       return HttpResponse.json({ text: "Failed to retrieve user" }, { status: 401 });
-    } else if (id === "abcd") {
+    }
+    if (id === "abcd") {
       return HttpResponse.json(
         {
           userProfileAppRoles: {

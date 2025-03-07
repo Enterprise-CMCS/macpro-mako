@@ -11,10 +11,9 @@ const ExpandCollapseBtn = (props: {
       props.collapseAll();
 
       return;
-    } else {
-      props.expandAll();
-      return;
     }
+    props.expandAll();
+    return;
   };
 
   return (
