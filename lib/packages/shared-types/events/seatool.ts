@@ -12,22 +12,28 @@ export type SeatoolOfficer = z.infer<typeof seatoolOfficerSchema>;
 export const seatoolSchema = z.object({
   ACTION_OFFICERS: z.array(seatoolOfficerSchema).nullish(),
   LEAD_ANALYST: z.array(seatoolOfficerSchema).nullable(),
-  STATE_PLAN_SERVICETYPES: z.array(
-    z
-      .object({
-        SPA_TYPE_ID: z.number(),
-        SPA_TYPE_NAME: z.string(),
-      })
-      .nullable(),
-  ),
-  STATE_PLAN_SERVICE_SUBTYPES: z.array(
-    z
-      .object({
-        TYPE_ID: z.number(),
-        TYPE_NAME: z.string(),
-      })
-      .nullable(),
-  ),
+  STATE_PLAN_SERVICETYPES: z
+    .array(
+      z
+        .object({
+          SPA_TYPE_ID: z.number(),
+          SPA_TYPE_NAME: z.string(),
+        })
+        .nullable(),
+    )
+    .nullish()
+    .transform((val) => val ?? []),
+  STATE_PLAN_SERVICE_SUBTYPES: z
+    .array(
+      z
+        .object({
+          TYPE_ID: z.number(),
+          TYPE_NAME: z.string(),
+        })
+        .nullable(),
+    )
+    .nullish()
+    .transform((val) => val ?? []),
   STATE_PLAN: z.object({
     SUBMISSION_DATE: z.number().nullable(),
     PLAN_TYPE: z.number().nullable(),
