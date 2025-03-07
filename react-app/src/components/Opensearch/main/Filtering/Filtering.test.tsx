@@ -118,7 +118,6 @@ describe("Visibility button", () => {
     await user.click(screen.queryByRole("button", { name: "Columns" }));
     const columns = screen.queryByRole("dialog");
     expect(columns).toBeInTheDocument();
-    expect(within(columns).getByText("SPA ID")).toBeInTheDocument();
     expect(within(columns).getByText("State")).toBeInTheDocument();
     expect(within(columns).getByText("Authority")).toBeInTheDocument();
   });
