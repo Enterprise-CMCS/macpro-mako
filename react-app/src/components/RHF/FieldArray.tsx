@@ -14,14 +14,14 @@ export const RHFFieldArray = <TFields extends FieldValues>(props: FieldArrayProp
     shouldUnregister: true,
   });
 
-  // initialize array if necessary
-  if (fieldArr.fields.length == 0) {
-    fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never);
-  }
-
   const onAppend = () => {
     fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never);
   };
+
+  // initialize array if necessary
+  if (fieldArr.fields.length == 0) {
+    onAppend();
+  }
 
   // on-load or if the element id changes, scroll this element into view
   useLayoutEffect(() => {
