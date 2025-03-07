@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { FieldValues, useFieldArray } from "react-hook-form";
 import { FieldArrayProps } from "shared-types";
 import { Plus, Trash2 } from "lucide-react";
@@ -18,15 +18,21 @@ export const RHFFieldArray = <TFields extends FieldValues>(props: FieldArrayProp
     fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never);
   };
 
-  useEffect(() => {
-    if (fieldArr.fields.length) return;
-    fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never, {
-      shouldFocus: false,
-    });
-  }, [fieldArr, props.fields]);
+  // initialize array if necessary
+  if (fieldArr.fields.length == 0) {
+    onAppend();
+  }
+
+  // on-load or if the element id changes, scroll this element into view
+  useLayoutEffect(() => {
+    const element = document.getElementById(props.name);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+    }
+  }, [props.name]);
 
   return (
-    <div className={"flex flex-col gap-6 w-full"}>
+    <div className={"flex flex-col gap-6 w-full"} id={props.name}>
       {fieldArr.fields.map((FLD, index) => {
         return (
           <div className={cn("flex flex-row gap-6", props.fieldArrayClassName)} key={FLD.id}>
