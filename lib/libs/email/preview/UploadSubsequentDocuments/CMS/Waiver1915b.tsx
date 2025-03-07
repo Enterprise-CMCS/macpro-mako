@@ -1,6 +1,7 @@
 import { WaiversEmailCMS } from "libs/email/content/uploadSubsequentDocuments/emailTemplates/Waiver1915BCMS";
 import { emailTemplateValue } from "libs/email/mock-data/upload-subsequent-documents";
 import * as attachments from "libs/email/mock-data/attachments";
+import { formatActionType } from "shared-utils";
 
 const Waiver1915bCMSEmail = () => {
   return (
@@ -10,7 +11,7 @@ const Waiver1915bCMSEmail = () => {
         id: "CO-24-1234",
         event: "upload-subsequent-documents",
         authority: "1915(b)",
-        actionType: "Amendment",
+        actionType: formatActionType("Amend"),
         attachments: {
           currentStatePlan: attachments.currentStatePlan,
           amendedLanguage: attachments.amendedLanguage,
