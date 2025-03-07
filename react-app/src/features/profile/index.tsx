@@ -31,7 +31,7 @@ export const Profile = () => {
 
   const euaRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
   const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
-  const isStateUser = userData?.user?.["custom:cms-roles"] === "onemac-state-user";
+  const isStateUser = userData?.user?.["custom:cms-roles"].includes("onemac-state-user");
 
   const userRoles = euaRoles ? euaRoles : idmRoles;
 
