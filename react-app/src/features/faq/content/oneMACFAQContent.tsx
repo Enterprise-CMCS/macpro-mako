@@ -913,13 +913,15 @@ export const oneMACFAQContent: FAQContent[] = [
                 fill out the Additional Information section explaining your need to withdraw the
                 Formal RAI Response (all required information is marked with an asterisk).
               </li>
-              <li> Select Submit. </li>
-              <ul className="list-disc ml-12">
-                <li>
-                  You will receive a confirmation message asking if you are sure that you want to
-                  withdraw the Formal RAI Response. Select Yes, withdraw response.
-                </li>
-              </ul>
+              <li>
+                Select Submit.
+                <ul className="list-disc ml-12">
+                  <li>
+                    You will receive a confirmation message asking if you are sure that you want to
+                    withdraw the Formal RAI Response. Select Yes, withdraw response.
+                  </li>
+                </ul>
+              </li>
             </ul>
           </div>
         ),
@@ -1031,13 +1033,15 @@ export const oneMACFAQContent: FAQContent[] = [
                 fill out the Additional Information section explaining your need to withdraw the
                 Formal RAI Response (all required information is marked with an asterisk).
               </li>
-              <li> Select Submit. </li>
-              <ul className="list-disc ml-12">
-                <li>
-                  You will receive a confirmation message asking if you are sure that you want to
-                  withdraw the Formal RAI Response. Select Yes, withdraw response.
-                </li>
-              </ul>
+              <li>
+                Select Submit.
+                <ul className="list-disc ml-12">
+                  <li>
+                    You will receive a confirmation message asking if you are sure that you want to
+                    withdraw the Formal RAI Response. Select Yes, withdraw response.
+                  </li>
+                </ul>
+              </li>
             </ul>
           </div>
         ),
@@ -1201,7 +1205,7 @@ export const oneMACFAQContent: FAQContent[] = [
               CHIP eligibility SPA templates can be downloaded at the links below. After downloading
               and completing the templates you need, upload them as part of the SPA submission.
             </p>
-            <ul className="list-disc pl-7 space-y-2">
+            <div className="list-disc pl-7 space-y-2">
               {renderSection(
                 "MAGI Eligibility & Methods",
                 CHP_TEMPLATES,
@@ -1248,7 +1252,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   ].includes(template.title),
                 "list-disc pl-7 space-y-2",
               )}
-            </ul>
+            </div>
           </section>
         ),
       },
@@ -1273,7 +1277,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   </a>
                 </li>
               </ul>
-              <ul className="list-disc pl-6 space-y-2">
+              <div className="list-disc pl-6 space-y-2">
                 {renderSection(
                   "MAGI Eligibility & Methods",
                   CHP_GUIDES,
@@ -1320,7 +1324,7 @@ export const oneMACFAQContent: FAQContent[] = [
                     ].includes(guide.title),
                   "list-disc pl-6 space-y-2",
                 )}
-              </ul>
+              </div>
             </section>
           </div>
         ),
