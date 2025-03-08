@@ -39,9 +39,11 @@ const useGetLinks = () => {
             link: "/dashboard",
             condition:
               userObj.user &&
-              userObj.user["custom:cms-roles"] &&
-              Object.values(UserRoles).some((role) =>
-                userObj.user["custom:cms-roles"].includes(role),
+              (userObj.user["custom:cms-roles"] || userObj.user["custom:ismemberof"]) &&
+              Object.values(UserRoles).some(
+                (role) =>
+                  userObj.user["custom:cms-roles"].includes(role) ||
+                  userObj.user["custom:ismemberof"] === role,
               ),
           },
           {

@@ -1,5 +1,34 @@
 [
   {
+    "username": "reviewer@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "reviewer@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "CMS"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Reviewer"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "ONEMAC_USER_D"
+      }
+    ]
+  },
+  {
     "username": "george@example.com",
     "attributes": [
       {
@@ -24,7 +53,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-statesubmitter"
+        "Value": "onemac-state-user"
       }
     ]
   },
@@ -53,7 +82,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-statesubmitter"
+        "Value": "onemac-state-user"
       }
     ]
   },
@@ -82,7 +111,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-statesubmitter"
+        "Value": "onemac-state-user"
       }
     ]
   },
@@ -145,35 +174,6 @@
     ]
   },
   {
-    "username": "reviewer@example.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "reviewer@example.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "CMS"
-      },
-      {
-        "Name": "family_name",
-        "Value": "Reviewer"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:state",
-        "Value": ""
-      },
-      {
-        "Name": "custom:cms-roles",
-        "Value": "onemac-micro-reviewer"
-      }
-    ]
-  },
-  {
     "username": "super@example.com",
     "attributes": [
       {
@@ -197,8 +197,8 @@
         "Value": ""
       },
       {
-        "Name": "custom:cms-roles",
-        "Value": "onemac-micro-reviewer,onemac-micro-super"
+        "Name": "custom:ismemberof",
+        "Value": "ONEMAC_USER_D_SUPER"
       }
     ]
   },
@@ -226,8 +226,8 @@
         "Value": ""
       },
       {
-        "Name": "custom:cms-roles",
-        "Value": "onemac-micro-reviewer"
+        "Name": "custom:ismemberof",
+        "Value": "ONEMAC_USER_D"
       }
     ]
   },
@@ -256,7 +256,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-helpdesk"
+        "Value": "onemac-helpdesk"
       }
     ]
   },
@@ -285,7 +285,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-helpdesk"
+        "Value": "onemac-helpdesk"
       }
     ]
   },
@@ -314,7 +314,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-statesubmitter"
+        "Value": "onemac-state-user"
       }
     ]
   },
@@ -343,7 +343,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-statesubmitter"
+        "Value": "onemac-state-user"
       }
     ]
   },
@@ -393,7 +393,7 @@
       },
       {
         "Name": "custom:cms-roles",
-        "Value": "onemac-micro-statesubmitter"
+        "Value": "onemac-state-user"
       }
     ]
   },
@@ -421,8 +421,8 @@
         "Value": ""
       },
       {
-        "Name": "custom:cms-roles",
-        "Value": "onemac-micro-reviewer"
+        "Name": "custom:ismemberof",
+        "Value": "ONEMAC_USER_D"
       }
     ]
   }
