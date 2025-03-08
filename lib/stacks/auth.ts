@@ -71,7 +71,7 @@ export class Auth extends cdk.NestedStack {
 
     // Cognito User Pool
     const userPool = new cdk.aws_cognito.UserPool(this, "CognitoUserPool", {
-      userPoolName: `${project}-${stage}-${stack}`,
+      userPoolName: `${project}-${stage}-${stack}-okta`,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       signInAliases: {
         email: true,
