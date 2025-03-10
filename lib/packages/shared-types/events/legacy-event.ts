@@ -6,8 +6,18 @@ import { legacyAttachmentSchema } from "../attachments";
 export const legacyEventSchema = legacySharedSchema.merge(
   z.object({
     eventTimestamp: z.number().nullish(),
+    lastEventTimestamp: z.number().nullish(),
+    submissionTimestamp: z.number().nullish(),
+    pk: z.string(),
+    currentStatus: z.string().nullish(),
+    subStatus: z.string().nullish(),
+    proposedEffectiveDate: z.string().nullish(),
     GSI1pk: z.string(),
     componentId: z.string(),
+    waiverAuthority: z.string().nullish(),
+    title: z.string().nullish(),
+    parentId: z.string().nullish(),
+    temporaryExtensionType: z.string().nullish(),
     attachments: z.array(legacyAttachmentSchema).nullish(),
   }),
 );
