@@ -18,9 +18,8 @@ export async function fetchData<T>({ authorityId, typeIds }: FetchOptions): Prom
 
     if (typeIds) {
       return hits.map((hit: subtypes.ItemResult) => hit._source as T);
-    } else {
-      return hits.map((hit: types.ItemResult) => hit._source as T);
     }
+    return hits.map((hit: types.ItemResult) => hit._source as T);
   } catch (error) {
     console.error(`Error fetching ${typeIds ? "subtypes" : "types"}:`, error);
     throw new Error(`Failed to fetch ${typeIds ? "subtypes" : "types"}`);
