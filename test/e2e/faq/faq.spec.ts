@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
 import { FAQPage } from "../pages/faq.page";
 
 let faqPage: FAQPage;
@@ -363,6 +364,16 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
   });
 
   test.describe("Interaction validation", () => {
+    test.afterEach(async ({ page }) => {
+      // Perform an a11y scan after each section is expanded to check for accessibility issues
+      const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+      console.log(
+        `Accessibility violations:  ${accessibilityScanResults.violations.length}`,
+        accessibilityScanResults.violations,
+      );
+      expect(accessibilityScanResults.violations).toEqual([]);
+    });
+
     test.describe("General Section", () => {
       test("should display crosswalk system FAQ response", async () => {
         await faqPage.crossWalk.click();
