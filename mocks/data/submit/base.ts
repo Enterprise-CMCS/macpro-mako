@@ -85,6 +85,7 @@ export const contractingAmendment = {
   title: "Sample Title for Appendix K",
   attachments: {
     ...attachments.b4Waiver,
+    ...attachments.b4IndependentAssessment,
     ...attachments.tribalConsultation,
     ...attachments.other,
   },
