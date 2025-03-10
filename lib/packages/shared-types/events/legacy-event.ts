@@ -47,8 +47,8 @@ export const legacyEventSchema = legacySharedSchema
       statusDate: lastEventTimestampDate.toISOString(),
       proposedDate:
         data.proposedEffectiveDate && !isNaN(new Date(data.proposedEffectiveDate).getTime())
-          ? null
-          : data.proposedEffectiveDate,
+          ? data.proposedEffectiveDate
+          : null,
       subject: null,
       submissionDate: submissionTimestampDate.toISOString(),
       submitterEmail: data.submitterEmail,
