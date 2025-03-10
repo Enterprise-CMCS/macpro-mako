@@ -25,7 +25,7 @@ export const makoStateSubmitter: TestUserData = {
     },
     {
       Name: "custom:cms-roles",
-      Value: "onemac-micro-statesubmitter",
+      Value: "onemac-state-user",
     },
     {
       Name: "sub",
@@ -92,7 +92,7 @@ export const stateSubmitter: TestUserData = {
     },
     {
       Name: "custom:cms-roles",
-      Value: "onemac-micro-statesubmitter",
+      Value: "onemac-state-user",
     },
     {
       Name: "sub",
@@ -126,7 +126,7 @@ export const noDataStateSubmitter: TestUserData = {
     },
     {
       Name: "custom:cms-roles",
-      Value: "onemac-micro-statesubmitter",
+      Value: "onemac-state-user",
     },
     {
       Name: "sub",
@@ -160,7 +160,7 @@ export const coStateSubmitter: TestUserData = {
     },
     {
       Name: "custom:cms-roles",
-      Value: "onemac-micro-statesubmitter",
+      Value: "onemac-state-user",
     },
     {
       Name: "sub",
@@ -194,7 +194,7 @@ export const multiStateSubmitter: TestUserData = {
     },
     {
       Name: "custom:cms-roles",
-      Value: "onemac-micro-statesubmitter",
+      Value: "onemac-state-user",
     },
     {
       Name: "sub",
@@ -228,7 +228,7 @@ export const noStateSubmitter: TestUserData = {
     },
     {
       Name: "custom:cms-roles",
-      Value: "onemac-micro-statesubmitter",
+      Value: "onemac-state-user",
     },
     {
       Name: "sub",
@@ -262,7 +262,7 @@ export const automatedStateSubmitter: TestUserData = {
     },
     {
       Name: "custom:cms-roles",
-      Value: "onemac-micro-statesubmitter",
+      Value: "onemac-state-user",
     },
     {
       Name: "sub",
@@ -296,7 +296,7 @@ export const testNewStateSubmitter: TestUserData = {
     },
     {
       Name: "custom:cms-roles",
-      Value: "onemac-micro-statesubmitter",
+      Value: "onemac-state-user",
     },
     {
       Name: "sub",
@@ -330,7 +330,7 @@ export const noEmailStateSubmitter: TestUserData = {
     },
     {
       Name: "custom:cms-roles",
-      Value: "onemac-micro-statesubmitter",
+      Value: "onemac-state-user",
     },
     {
       Name: "sub",
@@ -360,7 +360,7 @@ export const invalidEmailStateSubmitter: TestUserData = {
     },
     {
       Name: "custom:cms-roles",
-      Value: "onemac-micro-statesubmitter",
+      Value: "onemac-state-user",
     },
     {
       Name: "sub",

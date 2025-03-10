@@ -70,7 +70,7 @@ export class Auth extends cdk.NestedStack {
     );
 
     // Cognito User Pool
-    const userPool = new cdk.aws_cognito.UserPool(this, "CognitoUserPool", {
+    const userPool = new cdk.aws_cognito.UserPool(this, "CognitoUserPoolOkta", {
       userPoolName: `${project}-${stage}-${stack}`,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       signInAliases: {
@@ -94,6 +94,7 @@ export class Auth extends cdk.NestedStack {
       customAttributes: {
         state: new cdk.aws_cognito.StringAttribute({ mutable: true }),
         "cms-roles": new cdk.aws_cognito.StringAttribute({ mutable: true }),
+        ismemberof: new cdk.aws_cognito.StringAttribute({ mutable: true }),
         username: new cdk.aws_cognito.StringAttribute({ mutable: true }),
       },
     });

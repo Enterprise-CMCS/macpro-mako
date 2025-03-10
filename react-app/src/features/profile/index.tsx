@@ -12,6 +12,7 @@ const getRoleDescriptionsFromUser = (roles: string | undefined) => {
   return roles
     .split(",")
     .map((role) => RoleDescriptionStrings[role])
+    .filter(Boolean)
     .join(", ");
 };
 
@@ -28,7 +29,11 @@ export const Profile = () => {
 
   const fullStateNames = getFullStateNamesFromUser(userData?.user["custom:state"]);
 
-  const userRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
+  const euaRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
+  const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
+  const isStateUser = userData?.user?.["custom:cms-roles"].includes("onemac-state-user");
+
+  const userRoles = euaRoles ? euaRoles : idmRoles;
 
   return (
     <>
@@ -83,7 +88,7 @@ export const Profile = () => {
             </div>
           </div>
 
-          {fullStateNames && (
+          {isStateUser && fullStateNames && (
             <div className="my-4 md:my-0 md:basis-1/2">
               <CardWithTopBorder>
                 <div className="px-8 py-2">
