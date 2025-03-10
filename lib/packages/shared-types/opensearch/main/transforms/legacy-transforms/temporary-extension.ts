@@ -1,7 +1,6 @@
 import { events } from "shared-types";
 import { baseTransform } from "./common-legacy-transform";
 
-
 export const transform = () => {
   return events["legacy-event"].legacyEventSchema.transform((data) => {
     // Use the shared transformation logic
@@ -10,7 +9,7 @@ export const transform = () => {
     // Extend the result with specific fields for this transform
     return {
       ...baseResult,
-      authority: data.temporaryExtensionType ?? '1915(b)',
+      authority: data.temporaryExtensionType ?? "1915(b)",
       actionType: "Extend",
       originalWaiverNumber: data.parentId,
     };

@@ -38,7 +38,7 @@ type ParsedLegacyRecordFromKafka = Partial<{
 
 export const isRecordALegacyOneMacRecord = (
   record: ParsedLegacyRecordFromKafka,
-  kafkaSource: String,
+  kafkaSource: string,
 ): record is {
   componentType: keyof typeof legacyTransforms;
 } =>

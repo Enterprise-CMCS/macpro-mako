@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ItemResult as Changelog, legacyEvent } from "../changelog";
+import { ItemResult as Changelog } from "../changelog";
 import { AggQuery, Filterable as FIL, Hit, QueryState, Response as Res } from "./../_";
 import {
   appK,
@@ -32,7 +32,6 @@ import {
   legacyTemporaryExtension,
 } from "./transforms/legacy-transforms";
 
-
 export type AppkDocument = z.infer<appK.Schema>;
 export type CapitatedAmendmentDocument = z.infer<capitatedAmendment.Schema>;
 export type CapitatedInitialDocument = z.infer<capitatedInitial.Schema>;
@@ -55,7 +54,7 @@ export type WithdrawRaiDocument = z.infer<withdrawRai.Schema>;
 export type LegacyMedicaidSpaDocument = z.infer<legacyMedicaidSpa.Schema>;
 export type LegacyChipSpaDocument = z.infer<legacyChipSpa.Schema>;
 export type LegacyInitialWaiverDocument = z.infer<legacyIniitalWaiver.Schema>;
-export type LegacyRenewalWaiverDocument = z.infer<legacyRenewalWaiver.Schema>; 
+export type LegacyRenewalWaiverDocument = z.infer<legacyRenewalWaiver.Schema>;
 export type LegacyAmendmentWaiverDocument = z.infer<legacyAmendmentWaiver.Schema>;
 export type LegacyAppkDocument = z.infer<legacyAppk.Schema>;
 export type LegacyTemporaryExtensionDocument = z.infer<legacyTemporaryExtension.Schema>;
@@ -119,13 +118,13 @@ export const transforms = {
 };
 
 export const legacyTransforms = {
-  "medicaidspa": legacyMedicaidSpa,
-  "chipspa": legacyChipSpa,
-  "waivernew": legacyIniitalWaiver,
-  "waiverrenewal": legacyRenewalWaiver,
-  "waiveramendment": legacyAmendmentWaiver,
-  "waiverappk": legacyAppk,
-  "waiverextensionb": legacyTemporaryExtension,
-  "waiverextensionc": legacyTemporaryExtension,
-  "waiverextension": legacyTemporaryExtension,
+  medicaidspa: legacyMedicaidSpa,
+  chipspa: legacyChipSpa,
+  waivernew: legacyIniitalWaiver,
+  waiverrenewal: legacyRenewalWaiver,
+  waiveramendment: legacyAmendmentWaiver,
+  waiverappk: legacyAppk,
+  waiverextensionb: legacyTemporaryExtension,
+  waiverextensionc: legacyTemporaryExtension,
+  waiverextension: legacyTemporaryExtension,
 };

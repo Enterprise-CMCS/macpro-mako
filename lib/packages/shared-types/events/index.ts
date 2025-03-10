@@ -41,7 +41,7 @@ export const events = {
   "respond-to-rai": respondToRai,
   "upload-subsequent-documents": uploadSubsequentDocuments,
   "app-k": appk,
-  "legacy-event": legacyEvent
+  "legacy-event": legacyEvent,
 };
 
 export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;
