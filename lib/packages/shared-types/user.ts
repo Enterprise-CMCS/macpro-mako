@@ -10,7 +10,7 @@ export type {
 
 export enum UserRoles {
   CMS_READ_ONLY = "onemac-micro-readonly", // this isn't a thing
-  CMS_REVIEWER = "ONEMAC_USER_D",
+  CMS_REVIEWER = "ONEMAC_USER_",
   HELPDESK = "onemac-helpdesk",
   STATE_SUBMITTER = "onemac-state-user",
   CMS_SUPER_USER = "ONEMAC_USER_D_SUPER",
