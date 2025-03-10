@@ -29,7 +29,7 @@ export const AppKCMSEmail = ({ variables }: { variables: AppKEmailProps }) => {
           "Email Address": variables.submitterEmail,
           "Amendment Title": variables.title ?? null,
           "Waiver Amendment Number": variables.id,
-          "Waiver Authority": variables.actionType,
+          "Waiver Authority": variables.authority,
           "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
           Summary: variables.additionalInformation,
         }}
