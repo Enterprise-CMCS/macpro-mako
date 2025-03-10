@@ -1,4 +1,5 @@
 import { Events, Authority, EmailAddresses, CommonEmailVariables } from "shared-types";
+import { formatActionTypeWithWaiver } from "shared-utils";
 import { AuthoritiesWithUserTypesTemplate } from "../..";
 import {
   MedSpaCMSEmail,
@@ -108,7 +109,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
     ) => {
       return {
         to: variables.emails.osgEmail,
-        subject: `1915(c) ${variables.id} Submitted`,
+        subject: `1915(c) ${formatActionTypeWithWaiver(variables.actionType)} ${variables.id} Submitted`,
         body: await render(<AppKCMSEmail variables={variables} />),
       };
     },
@@ -117,7 +118,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
     ) => {
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Your 1915(c) ${variables.id} has been submitted to CMS`,
+        subject: `Your 1915(c) ${formatActionTypeWithWaiver(variables.actionType)} ${variables.id} has been submitted to CMS`,
         body: await render(<AppKStateEmail variables={variables} />),
       };
     },

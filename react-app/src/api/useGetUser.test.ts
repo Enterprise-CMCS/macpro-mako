@@ -48,7 +48,11 @@ const mockUserAttr = ({
         },
         !options?.noRoles && {
           Name: "custom:cms-roles",
-          Value: isCms ? "onemac-micro-reviewer" : "onemac-micro-cmsreview",
+          Value: isCms ? "" : "onemac-micro-cmsreview",
+        },
+        !options?.noRoles && {
+          Name: "custom:ismemberof",
+          Value: isCms ? "ONEMAC_USER_D" : "",
         },
       ] as Array<{ Name: string; Value: string }>);
     });

@@ -140,7 +140,7 @@ export const getDescriptionDetails: GetLabelAndValueFromSubmission = (submission
 
 export const getSubmittedByDetails: GetLabelAndValueFromSubmission = (submission, { user }) => [
   {
-    label: "Submitted by",
+    label: "Submitted By",
     value: <p className="text-lg">{submission.submitterName || BLANK_VALUE}</p>,
   },
   {
@@ -149,7 +149,7 @@ export const getSubmittedByDetails: GetLabelAndValueFromSubmission = (submission
     canView: submission.actionType !== "Extend",
   },
   {
-    label: "Review Team (SRT)",
+    label: "SRT",
     value: <ReviewTeamList reviewTeam={submission.reviewTeam} />,
     canView: isCmsUser(user) && submission.actionType !== "Extend",
   },
