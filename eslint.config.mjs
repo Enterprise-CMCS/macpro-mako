@@ -17,6 +17,7 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   includeIgnoreFile(gitignorePath),
+  // @ts-expect-error
   eslintConfigPrettier,
   {
     plugins: {
@@ -57,6 +58,7 @@ export default tseslint.config(
       ],
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-non-null-assertion": "off",
+      "@/no-else-return": ["error", { allowElseIf: false }],
       "@typescript-eslint/ban-ts-comment": [
         "off",
         {
