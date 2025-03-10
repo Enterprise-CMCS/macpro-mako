@@ -106,9 +106,8 @@ export async function listBucketFiles(bucketName: string): Promise<string[]> {
     if (listFilesResult.Contents) {
       const keys = listFilesResult.Contents.map((c) => c.Key) as string[];
       return keys;
-    } else {
-      return [];
     }
+    return [];
   } catch (err) {
     logger.info("Error listing files");
     logger.error(err);
