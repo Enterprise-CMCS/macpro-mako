@@ -4,7 +4,6 @@ export * from "./textHelpers";
 export * from "./labelMappers";
 export * from "./user";
 export * from "./crumbs";
-export * from "./labels";
 export * from "./utils";
 export * from "./zod";
 export * from "./formOrigin";

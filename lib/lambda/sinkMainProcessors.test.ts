@@ -88,7 +88,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       {
         proposedDate: capitatedInitial.proposedEffectiveDate,
         additionalInformation: capitatedInitial.additionalInformation,
-        actionType: "Initial",
+        actionType: "New",
         initialIntakeNeeded: true,
       } as BulkUpdateRequestBody,
     ],
@@ -121,7 +121,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       {
         proposedDate: contractingInitial.proposedEffectiveDate,
         additionalInformation: contractingInitial.additionalInformation,
-        actionType: "Initial",
+        actionType: "New",
         initialIntakeNeeded: true,
       } as BulkUpdateRequestBody,
     ],
@@ -242,6 +242,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       "withdraw-rai",
       withdrawRai,
       {
+        raiReceivedDate: null,
         seatoolStatus: SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED,
         cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED],
         stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED],
@@ -311,6 +312,10 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
             changeMade: "ID has been updated.",
             submitterName: "George Harrison",
             submitterEmail: "george@example.com",
+            makoChangedDate: TIMESTAMP,
+            changedDate: TIMESTAMP,
+            statusDate: TIMESTAMP,
+            timestamp: TIMESTAMP,
           }),
         }),
       ],
@@ -326,6 +331,10 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         changeMade: "ID has been updated.",
         submitterName: "George Harrison",
         submitterEmail: "george@example.com",
+        makoChangedDate: TIMESTAMP,
+        changedDate: TIMESTAMP,
+        statusDate: TIMESTAMP,
+        timestamp: TIMESTAMP,
       },
     ]);
   });
@@ -344,6 +353,10 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
             changeMade: "title has been updated.",
             submitterName: "George Harrison",
             submitterEmail: "george@example.com",
+            makoChangedDate: TIMESTAMP,
+            changedDate: TIMESTAMP,
+            statusDate: TIMESTAMP,
+            timestamp: TIMESTAMP,
           }),
         }),
       ],
@@ -359,6 +372,10 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         changeMade: "title has been updated.",
         submitterName: "George Harrison",
         submitterEmail: "george@example.com",
+        makoChangedDate: TIMESTAMP,
+        changedDate: TIMESTAMP,
+        statusDate: TIMESTAMP,
+        timestamp: TIMESTAMP,
       },
     ]);
   });
@@ -376,6 +393,10 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
             deleted: false,
             submitterName: "George Harrison",
             submitterEmail: "george@example.com",
+            makoChangedDate: TIMESTAMP,
+            changedDate: TIMESTAMP,
+            statusDate: TIMESTAMP,
+            timestamp: TIMESTAMP,
           }),
         }),
       ],
@@ -390,6 +411,10 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         deleted: false,
         submitterName: "George Harrison",
         submitterEmail: "george@example.com",
+        makoChangedDate: TIMESTAMP,
+        changedDate: TIMESTAMP,
+        statusDate: TIMESTAMP,
+        timestamp: TIMESTAMP,
       },
     ]);
   });
@@ -714,7 +739,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           },
         ],
         subject: "Sample Title",
-        submissionDate: ISO_DATETIME,
         types: [
           {
             SPA_TYPE_ID: 1,
@@ -827,7 +851,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           },
         ],
         subject: "Sample Title",
-        submissionDate: ISO_DATETIME,
         types: [
           {
             SPA_TYPE_ID: 1,
@@ -940,7 +963,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           },
         ],
         subject: "Sample Title",
-        submissionDate: ISO_DATETIME,
         types: [
           {
             SPA_TYPE_ID: 1,
@@ -1055,7 +1077,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
           },
         ],
         subject: "Sample Title",
-        submissionDate: ISO_DATETIME,
         types: [
           {
             SPA_TYPE_ID: 1,

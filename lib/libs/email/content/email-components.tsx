@@ -1,5 +1,5 @@
 import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/components";
-import { ReactNode } from "react";
+import { ReactNode, Fragment } from "react";
 import {
   Attachment,
   AttachmentKey,
@@ -190,12 +190,15 @@ const PackageDetails = ({ details }: { details: Record<string, ReactNode> }) => 
                 Summary:
               </Heading>
             </Text>
-            <Text
-              style={{
-                whiteSpace: "pre-line",
-              }}
-            >
-              {value ?? "No additional information submitted"}
+            <Text style={styles.text.base}>
+              {value
+                ? value.split("\n").map((line, index, array) => (
+                    <Fragment key={index}>
+                      {line}
+                      {index !== array.length - 1 && <br />}
+                    </Fragment>
+                  ))
+                : "No additional information submitted"}
             </Text>
           </Row>
         );
@@ -246,7 +249,9 @@ const FollowUpNotice = ({
     {isChip ? (
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
-          If you have any questions, please contact{" "}
+          {`If you have any question${
+            includeDidNotExpect ? " or did not expect this email" : ""
+          }, please contact `}
           <Link href={`mailto:${EMAIL_CONFIG.CHIP_EMAIL}`} style={{ textDecoration: "underline" }}>
             {EMAIL_CONFIG.CHIP_EMAIL}
           </Link>
@@ -256,9 +261,7 @@ const FollowUpNotice = ({
     ) : (
       <Section>
         <Text style={{ marginTop: "8px", fontSize: "14px" }}>
-          {`If you have any questions${
-            includeDidNotExpect ? " or did not expect this email" : ""
-          }, please contact `}
+          {`If you have any questions, please contact `}
           <Link href={`mailto:${EMAIL_CONFIG.SPA_EMAIL}`} style={{ textDecoration: "underline" }}>
             {EMAIL_CONFIG.SPA_EMAIL}
           </Link>

@@ -1,9 +1,9 @@
 import { emailTemplateValue } from "libs/email/mock-data/upload-subsequent-documents";
-import { ChipSpaCMSEmail } from "libs/email/content/uploadSubsequentDocuments/emailTemplates";
+import { ChipSpaStateEmail } from "libs/email/content/uploadSubsequentDocuments/emailTemplates";
 import * as attachments from "libs/email/mock-data/attachments";
 const ChipSpaStateEmailPreview = () => {
   return (
-    <ChipSpaCMSEmail
+    <ChipSpaStateEmail
       variables={{
         ...emailTemplateValue,
         id: "CO-24-1234",
