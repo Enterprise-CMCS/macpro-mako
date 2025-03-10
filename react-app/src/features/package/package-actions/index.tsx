@@ -1,17 +1,22 @@
-import { useGetItem, useGetPackageActions } from "@/api";
+import { useGetPackageActions } from "@/api";
 import { LoadingSpinner } from "@/components";
 import { WAIVER_SUBMISSION_ORIGIN, DETAILS_ORIGIN, ORIGIN, mapActionLabel } from "@/utils";
 import { DetailCardWrapper } from "..";
-import { FC } from "react";
 import { Link, useLocation } from "react-router";
+import { opensearch } from "shared-types";
 
-export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
+type PackageActionsCardProps = {
+  id: string;
+  submission: opensearch.main.Document;
+};
+
+export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) => {
   const location = useLocation();
-  const item = useGetItem(id);
 
   const { data, isLoading } = useGetPackageActions(id, {
     retry: false,
   });
+
   if (isLoading) return <LoadingSpinner />;
 
   if (!data?.actions?.length) {
@@ -37,7 +42,7 @@ export const PackageActionsCard: FC<{ id: string }> = ({ id }) => {
                 from: `${location.pathname}${location.search}`,
               }}
               to={{
-                pathname: `/actions/${type}/${item.data?._source.authority}/${id}`,
+                pathname: `/actions/${type}/${submission.authority}/${id}`,
                 search: new URLSearchParams({
                   [ORIGIN]:
                     type === "amend-waiver" || type === "temporary-extension"

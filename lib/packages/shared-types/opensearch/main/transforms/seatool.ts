@@ -158,7 +158,6 @@ export const transform = (id: string) => {
           };
         }) || [],
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
-      raiReceivedDate,
       raiRequestedDate,
       raiWithdrawnDate,
       reviewTeam: compileSrtList(data.ACTION_OFFICERS),
