@@ -37,7 +37,7 @@ describe("Package Activity", () => {
     await renderFormWithPackageSectionAsync(<PackageActivities />, WITHDRAWN_CHANGELOG_ITEM_ID);
 
     expect(screen.getByText("Package Activity (7)"));
-    expect(screen.getByText("Initial Package Submitted"));
+    expect(screen.getByText("Initial Package Submitted By BOB SMITH"));
     expect(screen.getByText("Download all documents"));
     expect(screen.getByText("Contract Amendment"));
   });

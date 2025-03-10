@@ -639,6 +639,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Amendment to the capitated contract terms for 2024.",
             timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            submitterName: "BOB SMITH",
+            submitterEmail: "BOBSMITH@MEDICAIDFAKE.gov",
           },
         },
         {
