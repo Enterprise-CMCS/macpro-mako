@@ -108,9 +108,8 @@ async function getClient(bucket: string) {
         sessionToken: assumedCredentials.SessionToken,
       },
     });
-  } else {
-    return new S3Client({});
   }
+  return new S3Client({});
 }
 
 //TODO: add check for resource before signing URL

@@ -18,9 +18,11 @@ interface WebformBodyProps {
 const trimData = (data) => {
   if (typeof data === "string") {
     return data.trim();
-  } else if (Array.isArray(data)) {
+  }
+  if (Array.isArray(data)) {
     return data.map(trimData);
-  } else if (typeof data === "object" && data !== null) {
+  }
+  if (typeof data === "object" && data !== null) {
     return Object.keys(data).reduce((acc, key) => {
       acc[key] = trimData(data[key]);
       return acc;
