@@ -1,6 +1,6 @@
 import { bulkUpdateDataWrapper, ErrorType, logError, getItems } from "libs";
 import { KafkaRecord, opensearch, SeatoolRecordWithUpdatedDate } from "shared-types";
-import { Document, transforms } from "shared-types/opensearch/main";
+import { Document, transforms, legacyTransforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
 import { isBefore } from "date-fns";
 import {
@@ -10,8 +10,6 @@ import {
   splitSPAAdminChangeSchema,
   extendSubmitNOSOAdminSchema,
 } from "./update/adminChangeSchemas";
-import { legacyTransforms } from "lib/packages/shared-types/opensearch/main";
-import { ONEMAC_LEGACY_ORIGIN } from "node_modules/shared-types/opensearch/main/transforms/legacy-transforms";
 
 const removeDoubleQuotesSurroundingString = (str: string) => str.replace(/^"|"$/g, "");
 const adminRecordSchema = deleteAdminChangeSchema
@@ -38,10 +36,10 @@ type ParsedLegacyRecordFromKafka = Partial<{
   GSI1pk: string;
 }>;
 
-const isRecordALegacyOneMacRecord = (
+export const isRecordALegacyOneMacRecord = (
 record: ParsedLegacyRecordFromKafka, kafkaSource: String,
 ): record is {
-  componentType: keyof typeof legacyTransforms 
+  componentType: keyof typeof legacyTransforms
 } =>
   typeof record === "object" &&
   record?.componentType !== undefined &&
@@ -49,7 +47,6 @@ record: ParsedLegacyRecordFromKafka, kafkaSource: String,
   record.sk === "Package" &&
   (record.GSI1pk !== undefined && (record.GSI1pk === "OneMAC#spa" ||
   record.GSI1pk === "OneMAC#waiver")) &&
-  // record.GSI1pk !== undefined && record.GSI1pk.startsWith("OneMAC#submit") &&
   kafkaSource === "onemac";
 
 const isRecordAOneMacRecord = (
