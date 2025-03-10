@@ -94,7 +94,9 @@ const getOneMacRecordWithAllProperties = (
     console.log(`admin record: ${JSON.stringify(oneMacAdminRecord, null, 2)}`);
 
     return oneMacAdminRecord;
-  } else if (isRecordAOneMacRecord(record)) {
+  }
+
+  if (isRecordAOneMacRecord(record)) {
     const transformForEvent = transforms[record.event];
 
     const safeEvent = transformForEvent.transform().safeParse(record);
@@ -114,7 +116,9 @@ const getOneMacRecordWithAllProperties = (
     console.log(`event after transformation: ${JSON.stringify(oneMacRecord, null, 2)}`);
 
     return oneMacRecord;
-  } else if (isRecordALegacyOneMacRecord(record, kafkaSource)) {
+  }
+
+  if (isRecordALegacyOneMacRecord(record, kafkaSource)) {
     console.log(`legacy event: ${JSON.stringify(record, null, 2)}`);
     const transformForLegacyEvent = legacyTransforms[record.componentType];
 
