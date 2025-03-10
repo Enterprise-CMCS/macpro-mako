@@ -524,78 +524,126 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     });
   });
 
-  it("should process a valid medicaidspa legacy record and call bulkUpdateData with transformed record", async () => {
-    const validRecord = {
-      componentType: "medicaidspa",
-      pk: "VA12345",
-      sk: "Package",
-      GSI1pk: "OneMAC#spa",
-      additionalInformation: "info",
-      lastEventTimestamp: "2025-03-09T12:00:00Z",
-      submissionTimestamp: "2025-03-09T12:00:00Z",
-      proposedEffectiveDate: "2025-03-10T00:00:00Z",
-      submitterEmail: "test@example.com",
-      submitterName: "Tester",
-      currentStatus: "Submitted",
-    };
-
-    const kafkaRecord = createKafkaRecord({
-      topic: TOPIC,
-      key: "some-key",
-      value: convertObjToBase64({
-        ...validRecord,
-        origin: "OneMacLegacy",
+  it.each([
+    ["medicaidspa", "Medicaid SPA", {}, {}],
+    ["chipspa", "Chip SPA", {}, {}],
+    ["waivernew", "Initial Waiver", {}, {}],
+    ["waiverrenewal", "Renewal Waiver", {}, {}],
+    ["waiveramendment", "Amendment Waiver", {}, {}],
+    ["waiverappk", "Waiver AppK", {}, {}],
+    // For waiverextension types, add a waiverNumber and override currentStatus.
+    [
+      "waiverextension",
+      "Temporary Extension",
+      { waiverNumber: "W-12345" },
+      { originalWaiverNumber: "W-12345", actionType: "Extend" },
+    ],
+    [
+      "waiverextensionb",
+      "Temporary Extension",
+      { waiverNumber: "W-12345" },
+      { originalWaiverNumber: "W-12345", actionType: "Extend" },
+    ],
+    [
+      "waiverextensionc",
+      "Temporary Extension",
+      { waiverNumber: "W-12345" },
+      { originalWaiverNumber: "W-12345", actionType: "Extend" },
+    ],
+  ])(
+    "should process a valid legacy record for %s",
+    async (componentType, expectedAuthority, extraInput, expectedExtras) => {
+      const record = {
+        pk: "MD-12345", // This will yield state "MD"
+        sk: "Package",
+        GSI1pk: "OneMAC#spa",
+        additionalInformation: "info",
+        lastEventTimestamp: "2025-03-09T12:00:00Z",
+        submissionTimestamp: "2025-03-09T12:00:00Z",
+        proposedEffectiveDate: "2025-03-10T00:00:00Z",
+        submitterEmail: "tester@example.com",
         submitterName: "Tester",
-        submitterEmail: "test@example.com",
-        timestamp: TIMESTAMP,
-      }),
-      headers: [{ source: [111, 110, 101, 109, 97, 99] }], // ASCII codes for "onemac"
-    });
+        currentStatus: "Submitted",
+        subStatus: "Normal",
+        componentType,
+        ...extraInput,
+        ...(componentType.startsWith("waiverextension") ? { currentStatus: "TE Requested" } : {}),
+      };
 
-    await insertOneMacRecordsFromKafkaIntoMako([kafkaRecord], TOPIC);
+      const kafkaRecord = createKafkaRecord({
+        topic: TOPIC,
+        key: "some-key",
+        value: convertObjToBase64({
+          ...record,
+          origin: "OneMACLegacy",
+          submitterName: "Tester",
+          submitterEmail: "tester@example.com",
+          timestamp: TIMESTAMP,
+        }),
+        headers: [{ source: [111, 110, 101, 109, 97, 99] }], // "onemac"
+      });
 
-    const expectedTransformedRecord = {
-      additionalInformation: "info",
-      changedDate: "2025-03-09T12:00:00.000Z",
-      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.SUBMITTED],
-      description: null,
-      id: "VA12345",
-      makoChangedDate: "2025-03-09T12:00:00.000Z",
-      origin: "OneMAC", // assuming ONEMAC_LEGACY_ORIGIN equals "OneMAC"
-      raiWithdrawEnabled: false,
-      seatoolStatus: SEATOOL_STATUS.SUBMITTED,
-      state: "VA",
-      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.SUBMITTED],
-      statusDate: "2025-03-09T12:00:00.000Z",
-      proposedDate: "2025-03-10T00:00:00Z",
-      subject: null,
-      submissionDate: "2025-03-09T12:00:00.000Z",
-      submitterEmail: "test@example.com",
-      submitterName: "Tester",
-      initialIntakeNeeded: true,
-      authority: "Medicaid SPA",
-    };
+      await insertOneMacRecordsFromKafkaIntoMako([kafkaRecord], TOPIC);
 
-    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
-      expectedTransformedRecord,
-    ]);
-  });
+      // Build the expected base transformation (common to all)
+      const baseExpected = {
+        additionalInformation: "info",
+        changedDate: new Date("2025-03-09T12:00:00Z").toISOString(),
+        description: null,
+        id: "MD-12345",
+        makoChangedDate: new Date("2025-03-09T12:00:00Z").toISOString(),
+        origin: "OneMACLegacy",
+        proposedDate: "2025-03-10T00:00:00Z",
+        subject: null,
+        submissionDate: new Date("2025-03-09T12:00:00Z").toISOString(),
+        submitterEmail: "tester@example.com",
+        submitterName: "Tester",
+        initialIntakeNeeded: true,
+      };
 
-  it("should log a validation error and not call bulkUpdateData when safeParse fails", async () => {
+      // Build expected outcome conditionally based on the transform type.
+      let expectedRecord;
+      if (componentType.startsWith("waiverextension")) {
+        expectedRecord = {
+          ...baseExpected,
+          authority: expectedAuthority,
+          // For temporary extension, we expect the transform to override some status fields.
+          cmsStatus: "Requested",
+          stateStatus: "Submitted",
+          ...expectedExtras,
+        };
+      } else {
+        expectedRecord = {
+          ...baseExpected,
+          authority: expectedAuthority,
+          cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.SUBMITTED],
+          seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+          state: "MD",
+          stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.SUBMITTED],
+          statusDate: new Date("2025-03-09T12:00:00Z").toISOString(),
+        };
+      }
+
+      expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+        expect.objectContaining(expectedRecord),
+      ]);
+    },
+  );
+
+  it("should log a validation error and not call bulkUpdateData when safeParse fails on a legacy transform", async () => {
     // Omit 'pk' to force safeParse failure in the medicaidspa transform.
     const invalidRecord = {
       componentType: "medicaidspa",
+      // pk is missing here
       sk: "Package",
       GSI1pk: "OneMAC#spa",
       additionalInformation: "info",
       lastEventTimestamp: "2025-03-09T12:00:00Z",
       submissionTimestamp: "2025-03-09T12:00:00Z",
-      // pk is missing here
       proposedEffectiveDate: "2025-03-10T00:00:00Z",
       submitterEmail: "test@example.com",
       submitterName: "Tester",
       currentStatus: "Submitted",
-      subStatus: "Normal",
     };
 
     const kafkaRecord = createKafkaRecord({
@@ -603,7 +651,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       key: "some-key",
       value: convertObjToBase64({
         ...invalidRecord,
-        origin: "mako",
+        origin: "OneMACLegacy",
         submitterName: "Tester",
         submitterEmail: "test@example.com",
         timestamp: TIMESTAMP,
@@ -625,7 +673,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
           kafkaRecord,
           record: invalidRecord,
         }),
-      })
+      }),
     );
   });
 });

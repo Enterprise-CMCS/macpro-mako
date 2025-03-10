@@ -37,26 +37,26 @@ type ParsedLegacyRecordFromKafka = Partial<{
 }>;
 
 export const isRecordALegacyOneMacRecord = (
-record: ParsedLegacyRecordFromKafka, kafkaSource: String,
+  record: ParsedLegacyRecordFromKafka,
+  kafkaSource: String,
 ): record is {
-  componentType: keyof typeof legacyTransforms
+  componentType: keyof typeof legacyTransforms;
 } =>
   typeof record === "object" &&
   record?.componentType !== undefined &&
   record.componentType in legacyTransforms &&
   record.sk === "Package" &&
-  (record.GSI1pk !== undefined && (record.GSI1pk === "OneMAC#spa" ||
-  record.GSI1pk === "OneMAC#waiver")) &&
+  record.GSI1pk !== undefined &&
+  (record.GSI1pk === "OneMAC#spa" || record.GSI1pk === "OneMAC#waiver") &&
   kafkaSource === "onemac";
 
 const isRecordAOneMacRecord = (
-  record: ParsedRecordFromKafka
+  record: ParsedRecordFromKafka,
 ): record is { event: keyof typeof transforms } =>
   typeof record === "object" &&
   record?.event !== undefined &&
   record.event in transforms &&
   record?.origin === "mako";
-
 
 const isRecordAnAdminOneMacRecord = (
   record: ParsedRecordFromKafka,
@@ -72,7 +72,7 @@ const getOneMacRecordWithAllProperties = (
 ): OneMacRecord | undefined => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
   console.log(`kafkaRecord: ${JSON.stringify(kafkaRecord, null, 2)}`);
-  const kafkaSource = String.fromCharCode(...kafkaRecord.headers[0]?.source || []);
+  const kafkaSource = String.fromCharCode(...(kafkaRecord.headers[0]?.source || []));
 
   if (isRecordAnAdminOneMacRecord(record)) {
     const safeRecord = adminRecordSchema.safeParse(record);
@@ -154,7 +154,9 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const oneMacRecordsForMako = kafkaRecords.reduce<OneMacRecord[]>((collection, kafkaRecord) => {
-    console.log(`kafka record in insertOneMacRecordsFromKafkaIntoMako: ${JSON.stringify(kafkaRecord, null, 2)}`);
+    console.log(
+      `kafka record in insertOneMacRecordsFromKafkaIntoMako: ${JSON.stringify(kafkaRecord, null, 2)}`,
+    );
 
     try {
       const { value } = kafkaRecord;
@@ -194,7 +196,7 @@ const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
 
   return openSearchRecords.reduce<Map<string, number>>((map, item) => {
     if (item?.changedDate) {
-       map.set(item.id, new Date(item.changedDate).getTime());
+      map.set(item.id, new Date(item.changedDate).getTime());
     }
 
     return map;
