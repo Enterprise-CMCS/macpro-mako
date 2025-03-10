@@ -1,6 +1,6 @@
 import { formatNinetyDaysDate } from "shared-utils";
 import { CommonEmailVariables, Events } from "shared-types";
-import { PackageDetails, MailboxNotice, FollowUpNotice } from "../../email-components";
+import { PackageDetails, BasicFooter, MailboxNotice, FollowUpNotice } from "../../email-components";
 
 import { BaseEmailTemplate } from "../../email-templates";
 
@@ -15,6 +15,7 @@ export const TempExtStateEmail = (props: { variables: TempExtStateEmailProps }) 
       previewText={previewText}
       heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<BasicFooter />}
     >
       <PackageDetails
         details={{
