@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLDClient } from "launchdarkly-react-client-sdk";
 import { LegacyFaq } from "./LegacyFaq";
-import { NewFaq } from "./NewFaq";
+import { SupportPage } from "./SupportPage";
 
 export const Faq = () => {
   const ldClient = useLDClient();
@@ -12,5 +12,5 @@ export const Faq = () => {
     setFlagValue(isFlagOn);
   }, [ldClient]);
 
-  return <>{flagValue ? <NewFaq /> : <LegacyFaq flagValue={flagValue} />}</>;
+  return <>{flagValue ? <SupportPage /> : <LegacyFaq flagValue={flagValue} />}</>;
 };

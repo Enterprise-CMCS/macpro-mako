@@ -9,7 +9,7 @@ import { CHP_GUIDES } from "@/features/faq/content/chpGuides";
 
 import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from "@/components";
 
-type QuestionAnswer = {
+export type QuestionAnswer = {
   anchorText: string;
   question: string;
   answerJSX: JSX.Element;
