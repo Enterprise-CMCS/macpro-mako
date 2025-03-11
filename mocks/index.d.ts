@@ -1,7 +1,7 @@
 import type { Export } from "@aws-sdk/client-cloudformation";
 import { CreateEventSourceMappingCommandInput } from "@aws-sdk/client-lambda";
 import type { GetSecretValueCommandOutput } from "@aws-sdk/client-secrets-manager";
-import type { APIGatewayEventRequestContext, UserData, opensearch } from "shared-types";
+import type { APIGatewayEventRequestContext, opensearch, UserData } from "shared-types";
 
 // code borrowed from https://stackoverflow.com/questions/47914536/use-partial-in-nested-property-with-typescript
 export type DeepPartial<T> = {

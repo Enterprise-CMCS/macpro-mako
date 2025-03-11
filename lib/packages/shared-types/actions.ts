@@ -1,4 +1,5 @@
 import { IPackageCheck } from "shared-utils";
+
 import { CognitoUserAttributes } from "./user";
 
 export enum Action {

@@ -1,25 +1,27 @@
-import { fireEvent, waitFor, screen } from "@testing-library/react";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, test, expect, vi } from "vitest";
-import { ActionForm } from "./index";
-import { z } from "zod";
-import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
 import {
-  SUBMISSION_ERROR_ITEM_ID,
   GET_ERROR_ITEM_ID,
-  setDefaultStateSubmitter,
   setDefaultReviewer,
+  setDefaultStateSubmitter,
+  SUBMISSION_ERROR_ITEM_ID,
 } from "mocks";
-import * as userPrompt from "@/components/ConfirmationDialog/userPrompt";
-import * as banner from "@/components/Banner/banner";
-import * as documentPoller from "@/utils/Poller/documentPoller";
-import { DataPoller } from "@/utils/Poller/DataPoller";
 import { EXISTING_ITEM_PENDING_ID } from "mocks";
+import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
+import { isCmsReadonlyUser } from "shared-utils";
+import { describe, expect, test, vi } from "vitest";
+import { z } from "zod";
+
+import * as banner from "@/components/Banner/banner";
+import * as userPrompt from "@/components/ConfirmationDialog/userPrompt";
+import { DataPoller } from "@/utils/Poller/DataPoller";
+import * as documentPoller from "@/utils/Poller/documentPoller";
 import {
   renderFormAsync,
   renderFormWithPackageSectionAsync,
 } from "@/utils/test-helpers/renderForm";
-import { isCmsReadonlyUser } from "shared-utils";
+
+import { ActionForm } from "./index";
 
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
 

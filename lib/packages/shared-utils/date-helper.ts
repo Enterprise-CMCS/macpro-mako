@@ -1,5 +1,5 @@
 import { TZDate } from "@date-fns/tz";
-import { format, add } from "date-fns";
+import { add, format } from "date-fns";
 
 export function formatDate(date: number | null | undefined) {
   if (!date || date === undefined) {

@@ -1,6 +1,6 @@
-import { Handler } from "aws-lambda";
-import { send, SUCCESS, FAILED } from "cfn-response-async";
 import { SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
+import { Handler } from "aws-lambda";
+import { FAILED, send, SUCCESS } from "cfn-response-async";
 
 export const handler: Handler = async (event, context, callback) => {
   console.log("request:", JSON.stringify(event, undefined, 2));

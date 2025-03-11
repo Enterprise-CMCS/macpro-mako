@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { produceMessage, getProducer } from "./kafka";
 import { mockedProducer } from "mocks";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+
+import { getProducer, produceMessage } from "./kafka";
 
 describe("Kafka producer functions", () => {
   let brokerString: string | undefined;

@@ -1,6 +1,6 @@
 import { MedSpaCMSEmail } from "../../../content/respondToRai/emailTemplates/MedSpaCMS";
-import { emailTemplateValue } from "../../../mock-data/respond-to-rai";
 import * as attachments from "../../../mock-data/attachments";
+import { emailTemplateValue } from "../../../mock-data/respond-to-rai";
 
 export default () => {
   return (

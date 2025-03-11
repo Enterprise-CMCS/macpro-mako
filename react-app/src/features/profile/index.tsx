@@ -1,8 +1,9 @@
-import { useGetUser } from "@/api";
-import { Alert, CardWithTopBorder, SubNavHeader, Button } from "@/components";
 import { RoleDescriptionStrings } from "shared-types";
-import { convertStateAbbrToFullName } from "@/utils";
+
+import { useGetUser } from "@/api";
+import { Alert, Button, CardWithTopBorder, SubNavHeader } from "@/components";
 import config from "@/config";
+import { convertStateAbbrToFullName } from "@/utils";
 
 const getRoleDescriptionsFromUser = (roles: string | undefined) => {
   if (roles === undefined) {

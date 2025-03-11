@@ -1,17 +1,19 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
-import { PackageActivities } from ".";
-import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
-import { screen } from "@testing-library/react";
-import * as packageActivityHooks from "./hook";
-import userEvent from "@testing-library/user-event";
 import { toBeEmptyDOMElement } from "@testing-library/jest-dom/matchers";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import {
-  NOT_FOUND_ITEM_ID,
-  MISSING_CHANGELOG_ITEM_ID,
-  WITHDRAWN_CHANGELOG_ITEM_ID,
   ATTACHMENT_BUCKET_NAME,
+  MISSING_CHANGELOG_ITEM_ID,
+  NOT_FOUND_ITEM_ID,
   setDefaultStateSubmitter,
+  WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
+
+import { PackageActivities } from ".";
+import * as packageActivityHooks from "./hook";
 
 describe("Package Activity", () => {
   beforeEach(() => {

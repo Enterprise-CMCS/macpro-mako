@@ -1,3 +1,6 @@
+import { QueryClient } from "@tanstack/react-query";
+import { createBrowserRouter, Outlet } from "react-router";
+
 import * as C from "@/components";
 import { TimeoutModal } from "@/components";
 import * as F from "@/features";
@@ -5,8 +8,6 @@ import {
   postSubmissionLoader,
   PostSubmissionWrapper,
 } from "@/features/forms/post-submission/post-submission-forms";
-import { QueryClient } from "@tanstack/react-query";
-import { createBrowserRouter, Outlet } from "react-router";
 export const queryClient = new QueryClient();
 export const FAQ_TAB = "faq-tab";
 

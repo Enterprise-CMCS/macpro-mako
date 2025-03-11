@@ -1,11 +1,12 @@
-import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "aws-lambda";
-import { getPackage } from "libs/api/package";
 import { produceMessage } from "libs/api/kafka";
-import { ItemResult } from "shared-types/opensearch/main";
+import { getPackage } from "libs/api/package";
+import { response } from "libs/handler-lib";
 import { events } from "shared-types/events";
-import { getNextSplitSPAId } from "./getNextSplitSPAId";
+import { ItemResult } from "shared-types/opensearch/main";
 import { z } from "zod";
+
+import { getNextSplitSPAId } from "./getNextSplitSPAId";
 
 /** @typedef {object} json
  * @property {object} body
