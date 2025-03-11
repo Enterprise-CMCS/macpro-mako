@@ -112,6 +112,7 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
+    continue-on-error: true
     needs:
       - deploy
     environment:
@@ -141,7 +142,6 @@ jobs:
           role-duration-seconds: 10800
       - name: Run e2e tests
         id: e2e-test
-        continue-on-error: true
         run: run e2e
       - name: Set Report Path and Name
         id: variables
