@@ -136,9 +136,8 @@ export const getStateFilter = async (event: APIGatewayEvent) => {
       };
 
       return filter;
-    } else {
-      throw "State user detected, but no associated states.  Cannot continue";
     }
+    throw "State user detected, but no associated states.  Cannot continue";
   } else {
     console.log("CMS User detected.  No state filter required.");
     return null;

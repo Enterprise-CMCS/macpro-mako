@@ -14,27 +14,27 @@ const triggerCheckSwitch = (dependentValue: unknown[], d: Condition, i: number) 
     case "expectedValue":
       if (Array.isArray(dependentValue[i])) {
         return (dependentValue[i] as unknown[]).includes(d.expectedValue);
-      } else {
-        return dependentValue[i] === d?.expectedValue;
       }
+      return dependentValue[i] === d?.expectedValue;
+
     case "notBadValue":
       if (Array.isArray(dependentValue[i])) {
         return (
           (dependentValue[i] as unknown[]).length > 0 &&
           !(dependentValue[i] as unknown[]).includes(d.expectedValue)
         );
-      } else {
-        return !!dependentValue[i] && !(dependentValue[i] === d?.expectedValue);
       }
+      return !!dependentValue[i] && !(dependentValue[i] === d?.expectedValue);
+
     case "notOnlyBadValue":
       if (Array.isArray(dependentValue[i])) {
         return !(
           (dependentValue[i] as unknown[]).length === 1 &&
           (dependentValue[i] as unknown[]).includes(d.expectedValue)
         );
-      } else {
-        return !!dependentValue[i] && !(dependentValue[i] === d?.expectedValue);
       }
+      return !!dependentValue[i] && !(dependentValue[i] === d?.expectedValue);
+
     case "valueExists":
       return (
         (Array.isArray(dependentValue[i]) && (dependentValue[i] as unknown[]).length > 0) ||
@@ -125,7 +125,7 @@ const DependencyWrapperHandler = ({
       break;
     case "show":
       if (isTriggered) return <>{children}</>;
-      else return null;
+      return null;
   }
 
   return <>{children}</>;
