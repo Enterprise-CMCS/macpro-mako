@@ -77,24 +77,26 @@ const processAndIndex = async ({
 
         if (result.success) {
           if (result.data.adminChangeType === "update-id" && "idToBeUpdated" in result.data) {
+            const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
             // Push doc with package being soft deleted
             docs.forEach((log) => {
               const recordOffset = log.id.split("-").at(-1);
               docs.push({
                 ...log,
-                id: `${result.data.id}-${recordOffset}`,
-                packageId: result.data.id,
+                id: `${id}-${recordOffset}`,
+                packageId: id,
+                ...restOfResultData,
               });
             });
             // Get all changelog entries for this ID and create copies of all entries with new ID
-            const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
+            const packageChangelogs = await getPackageChangelog(idToBeUpdated);
 
             packageChangelogs.hits.hits.forEach((log) => {
               const recordOffset = log._id.split("-").at(-1);
               docs.push({
                 ...log._source,
-                id: `${result.data.id}-${recordOffset}`,
-                packageId: result.data.id,
+                id: `${id}-${recordOffset}`,
+                packageId: id,
               });
             });
           } else if (
