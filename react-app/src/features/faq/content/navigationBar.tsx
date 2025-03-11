@@ -4,7 +4,7 @@ import ContactHelpDesk from "./contactHelpDesk";
 
 const LeftNavigation: React.FC = () => {
   return (
-    <div className="h-full w-64 bg-white p-4 overflow-y-auto">
+    <div className="h-full w-full max-w-64 min-w-[8rem] bg-white p-4 overflow-y-auto">
       <h2 className="text-3xl font-bold mb-6">Topics</h2>
       <Accordion type="multiple">
         {[
