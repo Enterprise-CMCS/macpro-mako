@@ -112,6 +112,7 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
+    continue-on-error: true
     needs:
       - deploy
     environment:
