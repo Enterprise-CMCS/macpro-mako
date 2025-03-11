@@ -39,20 +39,6 @@ exports[`Package Status test > The package status component is called successful
                 Withdraw Formal RAI Response - Enabled
               </p>
             </div>
-            <div
-              class="flex flex-row gap-1"
-            >
-              <p
-                class="text-xs font-bold opacity-80"
-              >
-                ·
-              </p>
-              <p
-                class="text-xs opacity-80"
-              >
-                2nd Clock
-              </p>
-            </div>
           </div>
         </div>
       </div>

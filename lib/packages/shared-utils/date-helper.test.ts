@@ -11,18 +11,18 @@ describe("date-helper", () => {
   });
 
   describe("formatDateToEST", () => {
-    it("formats a valid UTC date correctly to EST", () => {
+    it("formats a valid UTC date correctly to ET", () => {
       const utcDate = "2025-02-28T18:14:41.855Z";
       const formattedDate = formatDateToEST(utcDate);
 
-      expect(formattedDate).toBe("Fri, Feb 28 2025, 01:14:41 PM EST");
+      expect(formattedDate).toBe("Fri, Feb 28 2025, 01:14:41 PM ET");
     });
 
     it("formats a UTC date in daylight saving time (DST) correctly", () => {
       const utcDate = "2025-07-15T18:00:00.000Z";
       const formattedDate = formatDateToEST(utcDate);
 
-      expect(formattedDate).toBe("Tue, Jul 15 2025, 02:00:00 PM EST");
+      expect(formattedDate).toBe("Tue, Jul 15 2025, 02:00:00 PM ET");
     });
   });
 

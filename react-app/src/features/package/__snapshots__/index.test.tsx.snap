@@ -320,7 +320,7 @@ exports[`package details > makes a package 1`] = `
                     <strong>
                       Package Added
                     </strong>
-                     - Sat, Dec 31 2022, 07:00:00 PM EST
+                     - Sat, Dec 31 2022, 07:00:00 PM ET
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -405,7 +405,7 @@ exports[`package details > makes a package 1`] = `
                     <strong>
                       Package Added
                     </strong>
-                     - Sat, Dec 31 2022, 07:00:00 PM EST
+                     - Sat, Dec 31 2022, 07:00:00 PM ET
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -462,7 +462,7 @@ exports[`package details > makes a package 1`] = `
                     <strong>
                       Manual Update
                     </strong>
-                     - Sat, Dec 31 2022, 07:00:00 PM EST
+                     - Sat, Dec 31 2022, 07:00:00 PM ET
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -519,7 +519,7 @@ exports[`package details > makes a package 1`] = `
                     <strong>
                       -- --
                     </strong>
-                     - Sat, Dec 31 2022, 07:00:00 PM EST
+                     - Sat, Dec 31 2022, 07:00:00 PM ET
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -576,7 +576,7 @@ exports[`package details > makes a package 1`] = `
                     <strong>
                       Enable Formal RAI Response Withdraw
                     </strong>
-                     - Sat, Dec 31 2022, 07:00:00 PM EST
+                     - Sat, Dec 31 2022, 07:00:00 PM ET
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -633,7 +633,7 @@ exports[`package details > makes a package 1`] = `
                     <strong>
                       Disable Formal RAI Response Withdraw
                     </strong>
-                     - Sat, Dec 31 2022, 07:00:00 PM EST
+                     - Sat, Dec 31 2022, 07:00:00 PM ET
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
