@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatDate, formatDateToEST, formatNinetyDaysDate } from "./date-helper";
+import { formatDate, formatDateToEST, formatDateToUTC, formatNinetyDaysDate } from "./date-helper";
 
 describe("date-helper", () => {
   describe("formatDate", () => {
@@ -13,16 +13,47 @@ describe("date-helper", () => {
   describe("formatDateToEST", () => {
     it("formats a valid UTC date correctly to ET", () => {
       const utcDate = "2025-02-28T18:14:41.855Z";
-      const formattedDate = formatDateToEST(utcDate);
+      const result = formatDateToEST(utcDate);
 
-      expect(formattedDate).toBe("Fri, Feb 28 2025, 01:14:41 PM ET");
+      expect(result).toBe("Fri, Feb 28 2025, 01:14:41 PM ET");
     });
 
     it("formats a UTC date in daylight saving time (DST) correctly", () => {
       const utcDate = "2025-07-15T18:00:00.000Z";
-      const formattedDate = formatDateToEST(utcDate);
+      const result = formatDateToEST(utcDate);
 
-      expect(formattedDate).toBe("Tue, Jul 15 2025, 02:00:00 PM ET");
+      expect(result).toBe("Tue, Jul 15 2025, 02:00:00 PM ET");
+    });
+
+    it("should format the date to EST with a custom format", () => {
+      const date = "2025-03-11T12:00:00Z";
+      const formatValue = "yyyy-MM-dd HH:mm:ss aaaa";
+      const expectedFormat = "2025-03-11 08:00:00 a.m.";
+
+      const result = formatDateToEST(date, formatValue);
+
+      expect(result).toBe(expectedFormat);
+    });
+  });
+
+  describe("formatDateToUTC", () => {
+    it('should format the date in default format "MMMM d, yyyy"', () => {
+      const date = "2025-03-11T00:00:00Z";
+      const expectedFormat = "March 11, 2025";
+
+      const result = formatDateToUTC(date);
+
+      expect(result).toEqual(expectedFormat);
+    });
+
+    it("should format the date with a custom format", () => {
+      const date = "2025-03-11T00:00:00Z";
+      const formatValue = "yyyy-MM-dd";
+      const expectedFormat = "2025-03-11";
+
+      const result = formatDateToUTC(date, formatValue);
+
+      expect(result).toEqual(expectedFormat);
     });
   });
 

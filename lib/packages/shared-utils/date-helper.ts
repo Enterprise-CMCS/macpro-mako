@@ -33,3 +33,12 @@ export const formatDateToEST = (
 
   return format(utcDateObj, formatValue);
 };
+
+export const formatDateToUTC = (
+  utcDateValue: string | number,
+  formatValue: string = "MMMM d, yyyy",
+) => {
+  const utcDateObj = new TZDate(new Date(utcDateValue).toISOString(), "UTC");
+
+  return format(utcDateObj, formatValue);
+};

@@ -1,7 +1,7 @@
 import {
   formatActionType,
-  formatDate,
   formatDateToEST,
+  formatDateToUTC,
   isCmsUser,
   isStateUser,
 } from "shared-utils";
@@ -101,7 +101,7 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
   },
   {
     label: "Proposed Effective Date",
-    value: submission.proposedDate ? formatDate(submission.proposedDate) : "Pending",
+    value: submission.proposedDate ? formatDateToUTC(submission.proposedDate) : "Pending",
     canView: submission.actionType !== "Extend",
   },
   {
@@ -123,14 +123,14 @@ export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (s
   {
     label: "Final Disposition Date",
     value: submission.finalDispositionDate
-      ? formatDate(submission.finalDispositionDate)
+      ? formatDateToUTC(submission.finalDispositionDate)
       : BLANK_VALUE,
     canView: submission.actionType !== "Extend",
   },
   {
     label: "Approved Effective Date",
     value: submission.approvedEffectiveDate
-      ? formatDate(submission.approvedEffectiveDate)
+      ? formatDateToUTC(submission.approvedEffectiveDate)
       : BLANK_VALUE,
     canView: submission.actionType !== "Extend",
   },
