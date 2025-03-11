@@ -92,12 +92,14 @@ const processAndIndex = async ({
             const packageChangelogs = await getPackageChangelog(idToBeUpdated);
 
             packageChangelogs.hits.hits.forEach((log) => {
-              const recordOffset = log._id.split("-").at(-1);
-              docs.push({
-                ...log._source,
-                id: `${id}-${recordOffset}`,
-                packageId: id,
-              });
+              if (log._source.event !== "delete") {
+                const recordOffset = log._id.split("-").at(-1);
+                docs.push({
+                  ...log._source,
+                  id: `${id}-${recordOffset}`,
+                  packageId: id,
+                });
+              }
             });
           } else if (
             result.data.adminChangeType === "split-spa" &&
