@@ -13,7 +13,7 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
     test.describe("header", () => {
       test("displays header", async () => {
         await expect(faqPage.header).toBeVisible();
-        await expect(faqPage.header).toHaveText("Frequently Asked Questions");
+        await expect(faqPage.header).toHaveText("OneMAC Support");
       });
     });
 
@@ -44,8 +44,8 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
       });
 
       test("displays official submission FAQ", async () => {
-        await expect(faqPage.official[1]).toBeVisible();
-        await expect(faqPage.official[1]).toHaveText(
+        await expect(faqPage.official).toBeVisible();
+        await expect(faqPage.official).toHaveText(
           "Is this considered the official state submission?",
         );
 
@@ -53,15 +53,15 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
       });
 
       test("displays OneMac user roles FAQ", async () => {
-        await expect(faqPage.onemacRoles[1]).toBeVisible();
-        await expect(faqPage.onemacRoles[1]).toHaveText("What are the OneMAC user roles?");
+        await expect(faqPage.onemacRoles).toBeVisible();
+        await expect(faqPage.onemacRoles).toHaveText("What are the OneMAC user roles?");
 
         await expect(faqPage.onemacRoles.locator("div:nth-child(1)")).not.toBeVisible();
       });
 
       test("displays file format FAQ", async () => {
-        await expect(faqPage.fileFormats[1]).toBeVisible();
-        await expect(faqPage.fileFormats[1]).toHaveText(
+        await expect(faqPage.fileFormats).toBeVisible();
+        await expect(faqPage.fileFormats).toHaveText(
           "What are the kinds of file formats I can upload into OneMAC",
         );
 
@@ -69,8 +69,8 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
       });
 
       test("displays onboarding materials FAQ", async () => {
-        await expect(faqPage.onboardingMaterials[1]).toBeVisible();
-        await expect(faqPage.onboardingMaterials[1]).toHaveText("Onboarding Materials");
+        await expect(faqPage.onboardingMaterials).toBeVisible();
+        await expect(faqPage.onboardingMaterials).toHaveText("Onboarding Materials");
 
         await expect(faqPage.onboardingMaterials.locator("div:nth-child(1)")).not.toBeVisible();
       });

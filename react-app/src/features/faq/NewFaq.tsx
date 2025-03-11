@@ -80,8 +80,8 @@ export const NewFaq = () => {
                     {tempFAQ.map(({ anchorText, answerJSX, question }) => (
                       <AccordionItem
                         value={anchorText}
-                        id={anchorText}
-                        data-testid={anchorText}
+                        id={`${anchorText}-faq`}
+                        data-testid={`${anchorText}-faq`}
                         key={anchorText}
                       >
                         <AccordionTrigger className="text-left">{question}</AccordionTrigger>
