@@ -13,7 +13,6 @@ import { ScrollToTop, SimplePageContainer, UserPrompt, Banner } from "@/componen
 import { isFaqPage, isProd } from "@/utils";
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 import { UserRoles } from "shared-types";
-import { removeItemLocalStorage } from "@/hooks/useLocalStorage";
 import { useHideBanner } from "@/hooks/useHideBanner";
 /**
  * Custom hook that generates a list of navigation links based on the user's status and whether the current page is the FAQ page.
@@ -40,9 +39,11 @@ const useGetLinks = () => {
             link: "/dashboard",
             condition:
               userObj.user &&
-              userObj.user["custom:cms-roles"] &&
-              Object.values(UserRoles).some((role) =>
-                userObj.user["custom:cms-roles"].includes(role),
+              (userObj.user["custom:cms-roles"] || userObj.user["custom:ismemberof"]) &&
+              Object.values(UserRoles).some(
+                (role) =>
+                  userObj.user["custom:cms-roles"].includes(role) ||
+                  userObj.user["custom:ismemberof"] === role,
               ),
           },
           {
@@ -84,7 +85,10 @@ const UserDropdownMenu = () => {
   };
 
   const handleLogout = async () => {
-    removeItemLocalStorage();
+    // Small delay to ensure Amplify completes its internal processes
+    setTimeout(() => {
+      window.localStorage.clear();
+    }, 100);
     await Auth.signOut();
   };
 

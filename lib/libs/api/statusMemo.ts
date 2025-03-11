@@ -10,7 +10,6 @@ export function buildStatusMemoQuery(
   const existingValue = " + CAST(ISNULL(Status_Memo, '') AS VARCHAR(MAX))";
   if (operation === "update") {
     return newEntry + existingValue;
-  } else {
-    return newEntry;
   }
+  return newEntry;
 }

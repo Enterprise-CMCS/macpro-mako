@@ -15,6 +15,10 @@ const wrapper = ({ children }: { children: ReactNode }) => (
   </MemoryRouter>
 );
 
+const testBanner = (path) => {
+  return { header: "Test header", body: "Test body", pathnameToDisplayOn: path };
+};
+
 describe("banner", () => {
   test("Hidden on initial render", () => {
     const { queryByTestId } = render(<Banner />, { wrapper });
@@ -26,11 +30,7 @@ describe("banner", () => {
     const { queryByTestId } = render(<Banner />, { wrapper });
 
     act(() => {
-      banner({
-        header: "Test header",
-        body: "Test body",
-        pathnameToDisplayOn: "/",
-      });
+      banner(testBanner("/"));
     });
 
     expect(queryByTestId("banner-header")).not.toBeInTheDocument();
@@ -40,11 +40,7 @@ describe("banner", () => {
     const { getByTestId } = render(<Banner />, { wrapper });
 
     act(() => {
-      banner({
-        header: "Test header",
-        body: "Test body",
-        pathnameToDisplayOn: "/dashboard",
-      });
+      banner(testBanner("/dashboard"));
     });
 
     expect(getByTestId("banner-header")).toHaveTextContent("Test header");
@@ -54,11 +50,7 @@ describe("banner", () => {
     const { getByText } = render(<Banner />, { wrapper });
 
     act(() => {
-      banner({
-        header: "Test header",
-        body: "Test body",
-        pathnameToDisplayOn: "/dashboard",
-      });
+      banner(testBanner("/dashboard"));
     });
 
     expect(getByText("Test header")).toBeInTheDocument();
@@ -72,11 +64,7 @@ describe("banner", () => {
     const user = userEvent.setup();
 
     act(() => {
-      banner({
-        header: "Test header",
-        body: "Test body",
-        pathnameToDisplayOn: "/dashboard",
-      });
+      banner(testBanner("/dashboard"));
     });
 
     await user.click(getByTestId("banner-close"));
@@ -91,11 +79,7 @@ describe("banner", () => {
     const user = userEvent.setup();
 
     act(() => {
-      banner({
-        header: "Test header",
-        body: "Test body",
-        pathnameToDisplayOn: "/dashboard",
-      });
+      banner(testBanner("/dashboard"));
     });
 
     const dashboardLink = container.querySelector("#dashboard-link");
@@ -103,5 +87,36 @@ describe("banner", () => {
     if (dashboardLink) await user.click(dashboardLink);
 
     expect(queryByTestId("banner-header")).not.toBeInTheDocument();
+  });
+
+  test("Sets banner via localStorage", () => {
+    render(<Banner />, { wrapper });
+
+    act(() => {
+      banner(testBanner("/dashboard"));
+    });
+
+    const storedBanner = JSON.parse(localStorage.getItem("banner"));
+
+    expect(storedBanner).toEqual({
+      header: "Test header",
+      body: "Test body",
+      pathnameToDisplayOn: "/dashboard",
+    });
+  });
+
+  test("Dismissing banner removes localStorage entry", async () => {
+    const { getByTestId, queryByTestId } = render(<Banner />, { wrapper });
+
+    act(() => {
+      banner(testBanner("/dashboard"));
+    });
+
+    const user = userEvent.setup();
+
+    await user.click(getByTestId("banner-close"));
+
+    expect(queryByTestId("banner-header")).not.toBeInTheDocument();
+    expect(localStorage.getItem("banner")).toBe("null");
   });
 });
