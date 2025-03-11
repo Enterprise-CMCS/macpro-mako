@@ -27,7 +27,7 @@ export function formatDate(dateValue: string | number) {
 
 export const formatDateToEST = (
   utcDateValue: string | number,
-  formatValue: string = "eee, MMM d yyyy, hh:mm:ss a 'EST'",
+  formatValue: string = "eee, MMM d yyyy, hh:mm:ss a 'ET'",
 ) => {
   const utcDateObj = new TZDate(new Date(utcDateValue).toISOString(), "America/New_York");
 
