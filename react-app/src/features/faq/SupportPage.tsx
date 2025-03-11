@@ -97,11 +97,9 @@ export const SupportPage = () => {
                         />
                       </div>
                     ) : (
-                      <>
-                        <h2 className="text-2xl font-bold mb-4">{sectionTitle}</h2>
-                        <hr className="bg-gray-400 h-0.5" />
-                      </>
+                      <h2 className="text-2xl font-bold mb-4">{sectionTitle}</h2>
                     )}
+                    <hr className="bg-gray-400 h-0.5" />
                     <FaqAccordion question={qanda} />
                   </article>
                 ))}
