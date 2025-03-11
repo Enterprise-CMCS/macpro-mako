@@ -90,8 +90,8 @@ export const contractingRenewal = {
   authority: "1915(b)",
   proposedEffectiveDate: 1700000000,
   attachments: {
-    ...attachments.b4IndependentAssessment,
     ...attachments.b4Waiver,
+    ...attachments.b4IndependentAssessment,
     ...attachments.tribalConsultation,
     ...attachments.other,
   },
