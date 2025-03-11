@@ -12,11 +12,15 @@ import { z } from "zod";
  * @property {string} body.packageId
  */
 
-const sendSubmitSplitSPAMessage = async (
-  currentPackage: ItemResult,
-  changeMade?: string,
-  changeReason?: string,
-) => {
+const sendSubmitSplitSPAMessage = async ({
+  currentPackage,
+  changeMade,
+  changeReason,
+}: {
+  currentPackage: ItemResult;
+  changeMade?: string;
+  changeReason?: string;
+}) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
     throw new Error("Topic name is not defined");
@@ -94,7 +98,7 @@ export const handler = async (event: APIGatewayEvent) => {
       });
     }
 
-    return sendSubmitSplitSPAMessage(currentPackage, changeMade, changeReason);
+    return sendSubmitSplitSPAMessage({ currentPackage, changeMade, changeReason });
   } catch (err) {
     console.error("Error has occured modifying package:", err);
     if (err instanceof z.ZodError) {
