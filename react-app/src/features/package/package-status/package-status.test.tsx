@@ -9,7 +9,7 @@ import { OneMacUser } from "@/api";
 describe("Package Status test", () => {
   vi.spyOn(api, "useGetUser").mockImplementation(() => {
     const response = mockUseGetUser();
-    response.data.user["custom:cms-roles"] = "onemac-micro-reviewer";
+    response.data.user["custom:cms-roles"] = "ONEMAC_USER_D";
     return response as UseQueryResult<OneMacUser, unknown>;
   });
   it("The package status component is called successfully", async () => {
