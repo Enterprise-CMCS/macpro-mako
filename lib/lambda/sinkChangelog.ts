@@ -78,17 +78,20 @@ const processAndIndex = async ({
         if (result.success) {
           if (result.data.adminChangeType === "update-id" && "idToBeUpdated" in result.data) {
             const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
-            // Push doc with package being soft deleted
+            // Push doc with content of package being soft deleted
             docs.forEach((log) => {
               const recordOffset = log.id.split("-").at(-1);
               docs.push({
                 ...log,
                 id: `${id}-${recordOffset}`,
                 packageId: id,
+                deleted: false,
                 ...restOfResultData,
               });
             });
-            // Get all changelog entries for this ID and create copies of all entries with new ID
+            // Get all changelog entries for the original package ID
+            // Filter out any entry regarding the soft deleted event
+            // Create copies of the rest of the changelog entries with the new package ID
             const packageChangelogs = await getPackageChangelog(idToBeUpdated);
 
             packageChangelogs.hits.hits.forEach((log) => {
