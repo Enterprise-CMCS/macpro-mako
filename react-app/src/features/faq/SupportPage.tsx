@@ -14,8 +14,8 @@ const FaqAccordion = ({ question }: { question: QuestionAnswer[] }) => {
       {question.map(({ anchorText, answerJSX, question }) => (
         <AccordionItem
           value={anchorText}
-          id={anchorText}
-          data-testid={anchorText}
+          id={`${anchorText}-support`}
+          data-testid={`${anchorText}-support`}
           key={anchorText}
           className="border-none my-6"
         >
