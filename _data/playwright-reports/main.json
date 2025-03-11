@@ -90,7 +90,7 @@
                   "specs": [
                     {
                       "title": "displays header",
-                      "ok": false,
+                      "ok": true,
                       "tags": [
                         "e2e",
                         "smoke",
@@ -107,117 +107,17 @@
                           "results": [
                             {
                               "workerIndex": 0,
-                              "status": "failed",
-                              "duration": 5913,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"Frequently Asked Questions\"\u001b[39m\nReceived string: \u001b[31m\"OneMAC Support\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"Frequently Asked Questions\"\u001b[39m\nReceived string: \u001b[31m\"OneMAC Support\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:16:38",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 38,
-                                  "line": 16
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 14 |\u001b[39m       test(\u001b[32m\"displays header\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 15 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 16 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Frequently Asked Questions\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 17 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 38,
-                                    "line": 16
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"Frequently Asked Questions\"\u001b[39m\nReceived string: \u001b[31m\"OneMAC Support\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 14 |\u001b[39m       test(\u001b[32m\"displays header\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 15 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 16 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Frequently Asked Questions\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 17 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:16:38"
-                                }
-                              ],
+                              "status": "passed",
+                              "duration": 1631,
+                              "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:04:30.779Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 38,
-                                "line": 16
-                              }
-                            },
-                            {
-                              "workerIndex": 1,
-                              "status": "failed",
-                              "duration": 5918,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"Frequently Asked Questions\"\u001b[39m\nReceived string: \u001b[31m\"OneMAC Support\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"Frequently Asked Questions\"\u001b[39m\nReceived string: \u001b[31m\"OneMAC Support\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:16:38",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 38,
-                                  "line": 16
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 14 |\u001b[39m       test(\u001b[32m\"displays header\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 15 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 16 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Frequently Asked Questions\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 17 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 38,
-                                    "line": 16
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"Frequently Asked Questions\"\u001b[39m\nReceived string: \u001b[31m\"OneMAC Support\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 14 |\u001b[39m       test(\u001b[32m\"displays header\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 15 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 16 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Frequently Asked Questions\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 17 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:16:38"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 1,
-                              "startTime": "2025-03-11T19:04:37.493Z",
-                              "attachments": [
-                                {
-                                  "name": "trace",
-                                  "contentType": "application/zip",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/test-results/e2e-faq-faq-FAQ-page-UI-validation-header-displays-header-state-user-chrome-retry1/trace.zip"
-                                }
-                              ],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 38,
-                                "line": 16
-                              }
-                            },
-                            {
-                              "workerIndex": 2,
-                              "status": "failed",
-                              "duration": 5891,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"Frequently Asked Questions\"\u001b[39m\nReceived string: \u001b[31m\"OneMAC Support\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"Frequently Asked Questions\"\u001b[39m\nReceived string: \u001b[31m\"OneMAC Support\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:16:38",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 38,
-                                  "line": 16
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 14 |\u001b[39m       test(\u001b[32m\"displays header\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 15 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 16 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Frequently Asked Questions\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 17 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 38,
-                                    "line": 16
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"Frequently Asked Questions\"\u001b[39m\nReceived string: \u001b[31m\"OneMAC Support\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"OneMAC Support\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 14 |\u001b[39m       test(\u001b[32m\"displays header\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 15 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 16 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Frequently Asked Questions\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 17 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:16:38"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 2,
-                              "startTime": "2025-03-11T19:04:44.251Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 38,
-                                "line": 16
-                              }
+                              "startTime": "2025-03-11T21:24:54.637Z",
+                              "attachments": []
                             }
                           ],
-                          "status": "unexpected"
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-4e622ef0edec4f961300",
@@ -251,14 +151,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 911,
+                              "duration": 1529,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:04:51.037Z",
+                              "startTime": "2025-03-11T21:24:56.409Z",
                               "attachments": []
                             }
                           ],
@@ -288,14 +188,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 833,
+                              "duration": 1503,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:04:52.087Z",
+                              "startTime": "2025-03-11T21:24:57.945Z",
                               "attachments": []
                             }
                           ],
@@ -325,14 +225,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 804,
+                              "duration": 1509,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:04:52.927Z",
+                              "startTime": "2025-03-11T21:24:59.454Z",
                               "attachments": []
                             }
                           ],
@@ -346,7 +246,7 @@
                     },
                     {
                       "title": "displays official submission FAQ",
-                      "ok": false,
+                      "ok": true,
                       "tags": [
                         "e2e",
                         "smoke",
@@ -362,118 +262,18 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
-                              "status": "failed",
-                              "duration": 871,
-                              "error": {
-                                "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#is-official') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').first()\n    2) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#is-official')\u001b[22m\n",
-                                "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('#is-official') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').first()\n    2) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#is-official')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:47:40",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 40,
-                                  "line": 47
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 45 |\u001b[39m\n \u001b[90m 46 |\u001b[39m       test(\u001b[32m\"displays official submission FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 47 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mofficial)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 48 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mofficial)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 49 |\u001b[39m           \u001b[32m\"Is this considered the official state submission?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 50 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 40,
-                                    "line": 47
-                                  },
-                                  "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#is-official') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').first()\n    2) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#is-official')\u001b[22m\n\n\n\u001b[0m \u001b[90m 45 |\u001b[39m\n \u001b[90m 46 |\u001b[39m       test(\u001b[32m\"displays official submission FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 47 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mofficial)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 48 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mofficial)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 49 |\u001b[39m           \u001b[32m\"Is this considered the official state submission?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 50 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:47:40"
-                                }
-                              ],
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1365,
+                              "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:04:53.736Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 40,
-                                "line": 47
-                              }
-                            },
-                            {
-                              "workerIndex": 4,
-                              "status": "failed",
-                              "duration": 999,
-                              "error": {
-                                "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#is-official') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').first()\n    2) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#is-official')\u001b[22m\n",
-                                "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('#is-official') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').first()\n    2) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#is-official')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:47:40",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 40,
-                                  "line": 47
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 45 |\u001b[39m\n \u001b[90m 46 |\u001b[39m       test(\u001b[32m\"displays official submission FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 47 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mofficial)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 48 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mofficial)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 49 |\u001b[39m           \u001b[32m\"Is this considered the official state submission?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 50 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 40,
-                                    "line": 47
-                                  },
-                                  "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#is-official') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').first()\n    2) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#is-official')\u001b[22m\n\n\n\u001b[0m \u001b[90m 45 |\u001b[39m\n \u001b[90m 46 |\u001b[39m       test(\u001b[32m\"displays official submission FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 47 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mofficial)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 48 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mofficial)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 49 |\u001b[39m           \u001b[32m\"Is this considered the official state submission?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 50 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:47:40"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 1,
-                              "startTime": "2025-03-11T19:04:55.256Z",
-                              "attachments": [
-                                {
-                                  "name": "trace",
-                                  "contentType": "application/zip",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/test-results/e2e-faq-faq-FAQ-page-UI-va-ebf2f-ays-official-submission-FAQ-state-user-chrome-retry1/trace.zip"
-                                }
-                              ],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 40,
-                                "line": 47
-                              }
-                            },
-                            {
-                              "workerIndex": 5,
-                              "status": "failed",
-                              "duration": 1002,
-                              "error": {
-                                "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#is-official') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').first()\n    2) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#is-official')\u001b[22m\n",
-                                "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('#is-official') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').first()\n    2) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#is-official')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:47:40",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 40,
-                                  "line": 47
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 45 |\u001b[39m\n \u001b[90m 46 |\u001b[39m       test(\u001b[32m\"displays official submission FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 47 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mofficial)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 48 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mofficial)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 49 |\u001b[39m           \u001b[32m\"Is this considered the official state submission?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 50 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 40,
-                                    "line": 47
-                                  },
-                                  "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#is-official') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').first()\n    2) <div class=\"border-b\" id=\"is-official\" data-state=\"closed\" data-testid=\"is-official\" data-orientation=\"vertical\">…</div> aka getByTestId('is-official').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#is-official')\u001b[22m\n\n\n\u001b[0m \u001b[90m 45 |\u001b[39m\n \u001b[90m 46 |\u001b[39m       test(\u001b[32m\"displays official submission FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 47 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mofficial)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 48 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mofficial)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 49 |\u001b[39m           \u001b[32m\"Is this considered the official state submission?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 50 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:47:40"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 2,
-                              "startTime": "2025-03-11T19:04:57.103Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 40,
-                                "line": 47
-                              }
+                              "startTime": "2025-03-11T21:25:00.968Z",
+                              "attachments": []
                             }
                           ],
-                          "status": "unexpected"
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-37ffcfb73c675e1bb134",
@@ -483,7 +283,7 @@
                     },
                     {
                       "title": "displays OneMac user roles FAQ",
-                      "ok": false,
+                      "ok": true,
                       "tags": [
                         "e2e",
                         "smoke",
@@ -499,118 +299,18 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 6,
-                              "status": "failed",
-                              "duration": 964,
-                              "error": {
-                                "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#onemac-roles') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').first()\n    2) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onemac-roles')\u001b[22m\n",
-                                "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('#onemac-roles') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').first()\n    2) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onemac-roles')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:56:43",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 43,
-                                  "line": 56
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 54 |\u001b[39m\n \u001b[90m 55 |\u001b[39m       test(\u001b[32m\"displays OneMac user roles FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 56 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 57 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"What are the OneMAC user roles?\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 58 |\u001b[39m\n \u001b[90m 59 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles\u001b[33m.\u001b[39mlocator(\u001b[32m\"div:nth-child(1)\"\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 43,
-                                    "line": 56
-                                  },
-                                  "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#onemac-roles') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').first()\n    2) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onemac-roles')\u001b[22m\n\n\n\u001b[0m \u001b[90m 54 |\u001b[39m\n \u001b[90m 55 |\u001b[39m       test(\u001b[32m\"displays OneMac user roles FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 56 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 57 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"What are the OneMAC user roles?\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 58 |\u001b[39m\n \u001b[90m 59 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles\u001b[33m.\u001b[39mlocator(\u001b[32m\"div:nth-child(1)\"\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:56:43"
-                                }
-                              ],
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1387,
+                              "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:04:58.906Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 43,
-                                "line": 56
-                              }
-                            },
-                            {
-                              "workerIndex": 7,
-                              "status": "failed",
-                              "duration": 956,
-                              "error": {
-                                "message": "Error: expect.toHaveText: Error: strict mode violation: locator('#onemac-roles') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').first()\n    2) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').nth(1)\n\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onemac-roles')\u001b[22m\n",
-                                "stack": "Error: expect.toHaveText: Error: strict mode violation: locator('#onemac-roles') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').first()\n    2) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').nth(1)\n\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onemac-roles')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:57:43",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 43,
-                                  "line": 57
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 55 |\u001b[39m       test(\u001b[32m\"displays OneMac user roles FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 56 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 57 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"What are the OneMAC user roles?\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 58 |\u001b[39m\n \u001b[90m 59 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles\u001b[33m.\u001b[39mlocator(\u001b[32m\"div:nth-child(1)\"\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 60 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 43,
-                                    "line": 57
-                                  },
-                                  "message": "Error: expect.toHaveText: Error: strict mode violation: locator('#onemac-roles') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').first()\n    2) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').nth(1)\n\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onemac-roles')\u001b[22m\n\n\n\u001b[0m \u001b[90m 55 |\u001b[39m       test(\u001b[32m\"displays OneMac user roles FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 56 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 57 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"What are the OneMAC user roles?\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 58 |\u001b[39m\n \u001b[90m 59 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles\u001b[33m.\u001b[39mlocator(\u001b[32m\"div:nth-child(1)\"\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 60 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:57:43"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 1,
-                              "startTime": "2025-03-11T19:05:00.693Z",
-                              "attachments": [
-                                {
-                                  "name": "trace",
-                                  "contentType": "application/zip",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/test-results/e2e-faq-faq-FAQ-page-UI-va-fe312-plays-OneMac-user-roles-FAQ-state-user-chrome-retry1/trace.zip"
-                                }
-                              ],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 43,
-                                "line": 57
-                              }
-                            },
-                            {
-                              "workerIndex": 8,
-                              "status": "failed",
-                              "duration": 1014,
-                              "error": {
-                                "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#onemac-roles') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').first()\n    2) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onemac-roles')\u001b[22m\n",
-                                "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('#onemac-roles') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').first()\n    2) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onemac-roles')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:56:43",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 43,
-                                  "line": 56
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 54 |\u001b[39m\n \u001b[90m 55 |\u001b[39m       test(\u001b[32m\"displays OneMac user roles FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 56 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 57 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"What are the OneMAC user roles?\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 58 |\u001b[39m\n \u001b[90m 59 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles\u001b[33m.\u001b[39mlocator(\u001b[32m\"div:nth-child(1)\"\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 43,
-                                    "line": 56
-                                  },
-                                  "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#onemac-roles') resolved to 2 elements:\n    1) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').first()\n    2) <div class=\"border-b\" id=\"onemac-roles\" data-state=\"closed\" data-testid=\"onemac-roles\" data-orientation=\"vertical\">…</div> aka getByTestId('onemac-roles').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onemac-roles')\u001b[22m\n\n\n\u001b[0m \u001b[90m 54 |\u001b[39m\n \u001b[90m 55 |\u001b[39m       test(\u001b[32m\"displays OneMac user roles FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 56 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 57 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"What are the OneMAC user roles?\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 58 |\u001b[39m\n \u001b[90m 59 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monemacRoles\u001b[33m.\u001b[39mlocator(\u001b[32m\"div:nth-child(1)\"\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:56:43"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 2,
-                              "startTime": "2025-03-11T19:05:02.516Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 43,
-                                "line": 56
-                              }
+                              "startTime": "2025-03-11T21:25:02.340Z",
+                              "attachments": []
                             }
                           ],
-                          "status": "unexpected"
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-7821de7ea6508168c162",
@@ -620,7 +320,7 @@
                     },
                     {
                       "title": "displays file format FAQ",
-                      "ok": false,
+                      "ok": true,
                       "tags": [
                         "e2e",
                         "smoke",
@@ -636,118 +336,18 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 9,
-                              "status": "failed",
-                              "duration": 949,
-                              "error": {
-                                "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#acceptable-file-formats') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').first()\n    2) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#acceptable-file-formats')\u001b[22m\n",
-                                "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('#acceptable-file-formats') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').first()\n    2) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#acceptable-file-formats')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:63:43",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 43,
-                                  "line": 63
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 61 |\u001b[39m\n \u001b[90m 62 |\u001b[39m       test(\u001b[32m\"displays file format FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 63 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mfileFormats)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 64 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mfileFormats)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 65 |\u001b[39m           \u001b[32m\"What are the kinds of file formats I can upload into OneMAC\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 66 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 43,
-                                    "line": 63
-                                  },
-                                  "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#acceptable-file-formats') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').first()\n    2) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#acceptable-file-formats')\u001b[22m\n\n\n\u001b[0m \u001b[90m 61 |\u001b[39m\n \u001b[90m 62 |\u001b[39m       test(\u001b[32m\"displays file format FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 63 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mfileFormats)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 64 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mfileFormats)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 65 |\u001b[39m           \u001b[32m\"What are the kinds of file formats I can upload into OneMAC\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 66 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:63:43"
-                                }
-                              ],
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1516,
+                              "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:04.312Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 43,
-                                "line": 63
-                              }
-                            },
-                            {
-                              "workerIndex": 10,
-                              "status": "failed",
-                              "duration": 973,
-                              "error": {
-                                "message": "Error: expect.toHaveText: Error: strict mode violation: locator('#acceptable-file-formats') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').first()\n    2) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').nth(1)\n\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#acceptable-file-formats')\u001b[22m\n",
-                                "stack": "Error: expect.toHaveText: Error: strict mode violation: locator('#acceptable-file-formats') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').first()\n    2) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').nth(1)\n\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#acceptable-file-formats')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:64:43",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 43,
-                                  "line": 64
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 62 |\u001b[39m       test(\u001b[32m\"displays file format FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 63 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mfileFormats)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 64 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mfileFormats)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 65 |\u001b[39m           \u001b[32m\"What are the kinds of file formats I can upload into OneMAC\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 66 |\u001b[39m         )\u001b[33m;\u001b[39m\n \u001b[90m 67 |\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 43,
-                                    "line": 64
-                                  },
-                                  "message": "Error: expect.toHaveText: Error: strict mode violation: locator('#acceptable-file-formats') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').first()\n    2) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').nth(1)\n\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#acceptable-file-formats')\u001b[22m\n\n\n\u001b[0m \u001b[90m 62 |\u001b[39m       test(\u001b[32m\"displays file format FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 63 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mfileFormats)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 64 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mfileFormats)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 65 |\u001b[39m           \u001b[32m\"What are the kinds of file formats I can upload into OneMAC\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 66 |\u001b[39m         )\u001b[33m;\u001b[39m\n \u001b[90m 67 |\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:64:43"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 1,
-                              "startTime": "2025-03-11T19:05:06.074Z",
-                              "attachments": [
-                                {
-                                  "name": "trace",
-                                  "contentType": "application/zip",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/test-results/e2e-faq-faq-FAQ-page-UI-va-52bd0-on-displays-file-format-FAQ-state-user-chrome-retry1/trace.zip"
-                                }
-                              ],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 43,
-                                "line": 64
-                              }
-                            },
-                            {
-                              "workerIndex": 11,
-                              "status": "failed",
-                              "duration": 1027,
-                              "error": {
-                                "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#acceptable-file-formats') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').first()\n    2) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#acceptable-file-formats')\u001b[22m\n",
-                                "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('#acceptable-file-formats') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').first()\n    2) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#acceptable-file-formats')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:63:43",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 43,
-                                  "line": 63
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 61 |\u001b[39m\n \u001b[90m 62 |\u001b[39m       test(\u001b[32m\"displays file format FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 63 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mfileFormats)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 64 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mfileFormats)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 65 |\u001b[39m           \u001b[32m\"What are the kinds of file formats I can upload into OneMAC\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 66 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 43,
-                                    "line": 63
-                                  },
-                                  "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#acceptable-file-formats') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').first()\n    2) <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"acceptable-file-formats\" data-testid=\"acceptable-file-formats\">…</div> aka getByTestId('acceptable-file-formats').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#acceptable-file-formats')\u001b[22m\n\n\n\u001b[0m \u001b[90m 61 |\u001b[39m\n \u001b[90m 62 |\u001b[39m       test(\u001b[32m\"displays file format FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 63 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mfileFormats)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 64 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mfileFormats)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 65 |\u001b[39m           \u001b[32m\"What are the kinds of file formats I can upload into OneMAC\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 66 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:63:43"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 2,
-                              "startTime": "2025-03-11T19:05:07.865Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 43,
-                                "line": 63
-                              }
+                              "startTime": "2025-03-11T21:25:03.732Z",
+                              "attachments": []
                             }
                           ],
-                          "status": "unexpected"
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-15b57e29b71783880603",
@@ -757,7 +357,7 @@
                     },
                     {
                       "title": "displays onboarding materials FAQ",
-                      "ok": false,
+                      "ok": true,
                       "tags": [
                         "e2e",
                         "smoke",
@@ -773,118 +373,18 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 12,
-                              "status": "failed",
-                              "duration": 938,
-                              "error": {
-                                "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#onboarding-materials') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').first()\n    2) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onboarding-materials')\u001b[22m\n",
-                                "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('#onboarding-materials') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').first()\n    2) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onboarding-materials')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:72:51",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 51,
-                                  "line": 72
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 70 |\u001b[39m\n \u001b[90m 71 |\u001b[39m       test(\u001b[32m\"displays onboarding materials FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 72 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 73 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Onboarding Materials\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 74 |\u001b[39m\n \u001b[90m 75 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials\u001b[33m.\u001b[39mlocator(\u001b[32m\"div:nth-child(1)\"\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 51,
-                                    "line": 72
-                                  },
-                                  "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#onboarding-materials') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').first()\n    2) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onboarding-materials')\u001b[22m\n\n\n\u001b[0m \u001b[90m 70 |\u001b[39m\n \u001b[90m 71 |\u001b[39m       test(\u001b[32m\"displays onboarding materials FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 72 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 73 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Onboarding Materials\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 74 |\u001b[39m\n \u001b[90m 75 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials\u001b[33m.\u001b[39mlocator(\u001b[32m\"div:nth-child(1)\"\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:72:51"
-                                }
-                              ],
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1374,
+                              "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:09.677Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 51,
-                                "line": 72
-                              }
-                            },
-                            {
-                              "workerIndex": 13,
-                              "status": "failed",
-                              "duration": 926,
-                              "error": {
-                                "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#onboarding-materials') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').first()\n    2) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onboarding-materials')\u001b[22m\n",
-                                "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('#onboarding-materials') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').first()\n    2) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onboarding-materials')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:72:51",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 51,
-                                  "line": 72
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 70 |\u001b[39m\n \u001b[90m 71 |\u001b[39m       test(\u001b[32m\"displays onboarding materials FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 72 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 73 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Onboarding Materials\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 74 |\u001b[39m\n \u001b[90m 75 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials\u001b[33m.\u001b[39mlocator(\u001b[32m\"div:nth-child(1)\"\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 51,
-                                    "line": 72
-                                  },
-                                  "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#onboarding-materials') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').first()\n    2) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onboarding-materials')\u001b[22m\n\n\n\u001b[0m \u001b[90m 70 |\u001b[39m\n \u001b[90m 71 |\u001b[39m       test(\u001b[32m\"displays onboarding materials FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 72 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 73 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Onboarding Materials\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 74 |\u001b[39m\n \u001b[90m 75 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials\u001b[33m.\u001b[39mlocator(\u001b[32m\"div:nth-child(1)\"\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:72:51"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 1,
-                              "startTime": "2025-03-11T19:05:11.429Z",
-                              "attachments": [
-                                {
-                                  "name": "trace",
-                                  "contentType": "application/zip",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/test-results/e2e-faq-faq-FAQ-page-UI-va-db055-ys-onboarding-materials-FAQ-state-user-chrome-retry1/trace.zip"
-                                }
-                              ],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 51,
-                                "line": 72
-                              }
-                            },
-                            {
-                              "workerIndex": 14,
-                              "status": "failed",
-                              "duration": 960,
-                              "error": {
-                                "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#onboarding-materials') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').first()\n    2) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onboarding-materials')\u001b[22m\n",
-                                "stack": "Error: expect.toBeVisible: Error: strict mode violation: locator('#onboarding-materials') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').first()\n    2) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onboarding-materials')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:72:51",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 51,
-                                  "line": 72
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 70 |\u001b[39m\n \u001b[90m 71 |\u001b[39m       test(\u001b[32m\"displays onboarding materials FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 72 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 73 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Onboarding Materials\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 74 |\u001b[39m\n \u001b[90m 75 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials\u001b[33m.\u001b[39mlocator(\u001b[32m\"div:nth-child(1)\"\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 51,
-                                    "line": 72
-                                  },
-                                  "message": "Error: expect.toBeVisible: Error: strict mode violation: locator('#onboarding-materials') resolved to 2 elements:\n    1) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').first()\n    2) <div class=\"border-b\" data-state=\"closed\" id=\"onboarding-materials\" data-orientation=\"vertical\" data-testid=\"onboarding-materials\">…</div> aka getByTestId('onboarding-materials').nth(1)\n\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onboarding-materials')\u001b[22m\n\n\n\u001b[0m \u001b[90m 70 |\u001b[39m\n \u001b[90m 71 |\u001b[39m       test(\u001b[32m\"displays onboarding materials FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 72 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 73 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Onboarding Materials\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 74 |\u001b[39m\n \u001b[90m 75 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39monboardingMaterials\u001b[33m.\u001b[39mlocator(\u001b[32m\"div:nth-child(1)\"\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:72:51"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 2,
-                              "startTime": "2025-03-11T19:05:13.187Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 51,
-                                "line": 72
-                              }
+                              "startTime": "2025-03-11T21:25:05.254Z",
+                              "attachments": []
                             }
                           ],
-                          "status": "unexpected"
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-24087be2a5f2d9c3bdf1",
@@ -918,14 +418,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 868,
+                              "duration": 1383,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:14.922Z",
+                              "startTime": "2025-03-11T21:25:06.633Z",
                               "attachments": []
                             }
                           ],
@@ -955,14 +455,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 815,
+                              "duration": 1497,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:15.937Z",
+                              "startTime": "2025-03-11T21:25:08.022Z",
                               "attachments": []
                             }
                           ],
@@ -992,14 +492,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 785,
+                              "duration": 1523,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:16.759Z",
+                              "startTime": "2025-03-11T21:25:09.524Z",
                               "attachments": []
                             }
                           ],
@@ -1029,14 +529,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 827,
+                              "duration": 1517,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:17.549Z",
+                              "startTime": "2025-03-11T21:25:11.053Z",
                               "attachments": []
                             }
                           ],
@@ -1066,14 +566,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 791,
+                              "duration": 1371,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:18.381Z",
+                              "startTime": "2025-03-11T21:25:12.574Z",
                               "attachments": []
                             }
                           ],
@@ -1103,14 +603,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 786,
+                              "duration": 1519,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:19.178Z",
+                              "startTime": "2025-03-11T21:25:13.951Z",
                               "attachments": []
                             }
                           ],
@@ -1140,14 +640,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 817,
+                              "duration": 1368,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:19.969Z",
+                              "startTime": "2025-03-11T21:25:15.476Z",
                               "attachments": []
                             }
                           ],
@@ -1177,14 +677,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 791,
+                              "duration": 1374,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:20.792Z",
+                              "startTime": "2025-03-11T21:25:16.848Z",
                               "attachments": []
                             }
                           ],
@@ -1214,14 +714,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 799,
+                              "duration": 1505,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:21.589Z",
+                              "startTime": "2025-03-11T21:25:18.228Z",
                               "attachments": []
                             }
                           ],
@@ -1251,14 +751,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 824,
+                              "duration": 1529,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:22.394Z",
+                              "startTime": "2025-03-11T21:25:19.738Z",
                               "attachments": []
                             }
                           ],
@@ -1288,14 +788,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 817,
+                              "duration": 1519,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:23.225Z",
+                              "startTime": "2025-03-11T21:25:21.271Z",
                               "attachments": []
                             }
                           ],
@@ -1325,14 +825,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 799,
+                              "duration": 1370,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:24.047Z",
+                              "startTime": "2025-03-11T21:25:22.796Z",
                               "attachments": []
                             }
                           ],
@@ -1362,14 +862,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 791,
+                              "duration": 1500,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:24.851Z",
+                              "startTime": "2025-03-11T21:25:24.171Z",
                               "attachments": []
                             }
                           ],
@@ -1399,14 +899,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 801,
+                              "duration": 1376,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:25.647Z",
+                              "startTime": "2025-03-11T21:25:25.676Z",
                               "attachments": []
                             }
                           ],
@@ -1436,14 +936,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 785,
+                              "duration": 1368,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:26.453Z",
+                              "startTime": "2025-03-11T21:25:27.056Z",
                               "attachments": []
                             }
                           ],
@@ -1473,14 +973,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 821,
+                              "duration": 1516,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:27.243Z",
+                              "startTime": "2025-03-11T21:25:28.428Z",
                               "attachments": []
                             }
                           ],
@@ -1518,14 +1018,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 786,
+                              "duration": 1368,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:28.069Z",
+                              "startTime": "2025-03-11T21:25:29.948Z",
                               "attachments": []
                             }
                           ],
@@ -1555,14 +1055,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 799,
+                              "duration": 1372,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:28.862Z",
+                              "startTime": "2025-03-11T21:25:31.321Z",
                               "attachments": []
                             }
                           ],
@@ -1592,14 +1092,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 797,
+                              "duration": 1372,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:29.665Z",
+                              "startTime": "2025-03-11T21:25:32.698Z",
                               "attachments": []
                             }
                           ],
@@ -1629,14 +1129,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 843,
+                              "duration": 1532,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:30.467Z",
+                              "startTime": "2025-03-11T21:25:34.074Z",
                               "attachments": []
                             }
                           ],
@@ -1666,14 +1166,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 795,
+                              "duration": 1374,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:31.315Z",
+                              "startTime": "2025-03-11T21:25:35.611Z",
                               "attachments": []
                             }
                           ],
@@ -1703,14 +1203,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 874,
+                              "duration": 1367,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:32.115Z",
+                              "startTime": "2025-03-11T21:25:36.989Z",
                               "attachments": []
                             }
                           ],
@@ -1740,14 +1240,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 850,
+                              "duration": 1502,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:32.995Z",
+                              "startTime": "2025-03-11T21:25:38.360Z",
                               "attachments": []
                             }
                           ],
@@ -1777,14 +1277,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 790,
+                              "duration": 1697,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:33.850Z",
+                              "startTime": "2025-03-11T21:25:39.866Z",
                               "attachments": []
                             }
                           ],
@@ -1814,14 +1314,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 791,
+                              "duration": 1364,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:34.644Z",
+                              "startTime": "2025-03-11T21:25:41.567Z",
                               "attachments": []
                             }
                           ],
@@ -1862,7 +1362,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:35.440Z",
+                              "startTime": "2025-03-11T21:25:42.935Z",
                               "attachments": []
                             }
                           ],
@@ -1903,7 +1403,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:35.440Z",
+                              "startTime": "2025-03-11T21:25:42.935Z",
                               "attachments": []
                             }
                           ],
@@ -1933,14 +1433,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 799,
+                              "duration": 1503,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:35.440Z",
+                              "startTime": "2025-03-11T21:25:42.936Z",
                               "attachments": []
                             }
                           ],
@@ -1970,14 +1470,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 785,
+                              "duration": 1507,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:36.244Z",
+                              "startTime": "2025-03-11T21:25:44.444Z",
                               "attachments": []
                             }
                           ],
@@ -2007,14 +1507,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 821,
+                              "duration": 1366,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:37.033Z",
+                              "startTime": "2025-03-11T21:25:45.957Z",
                               "attachments": []
                             }
                           ],
@@ -2044,14 +1544,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 786,
+                              "duration": 1382,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-11T19:05:37.859Z",
+                              "startTime": "2025-03-11T21:25:47.327Z",
                               "attachments": []
                             }
                           ],
@@ -2100,9 +1600,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1677,
+                      "duration": 1764,
                       "errors": [],
                       "stdout": [
                         {
@@ -2111,7 +1611,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:05:38.700Z",
+                      "startTime": "2025-03-11T21:25:48.768Z",
                       "attachments": []
                     }
                   ],
@@ -2139,9 +1639,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1792,
+                      "duration": 2139,
                       "errors": [],
                       "stdout": [
                         {
@@ -2150,7 +1650,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:05:40.383Z",
+                      "startTime": "2025-03-11T21:25:50.537Z",
                       "attachments": []
                     }
                   ],
@@ -2178,9 +1678,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 2214,
+                      "duration": 2524,
                       "errors": [],
                       "stdout": [
                         {
@@ -2189,7 +1689,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:05:42.179Z",
+                      "startTime": "2025-03-11T21:25:52.681Z",
                       "attachments": []
                     }
                   ],
@@ -2217,9 +1717,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1592,
+                      "duration": 1800,
                       "errors": [],
                       "stdout": [
                         {
@@ -2228,7 +1728,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:05:44.397Z",
+                      "startTime": "2025-03-11T21:25:55.210Z",
                       "attachments": []
                     }
                   ],
@@ -2256,9 +1756,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1561,
+                      "duration": 1807,
                       "errors": [],
                       "stdout": [
                         {
@@ -2267,7 +1767,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:05:45.993Z",
+                      "startTime": "2025-03-11T21:25:57.014Z",
                       "attachments": []
                     }
                   ],
@@ -2295,9 +1795,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1578,
+                      "duration": 1795,
                       "errors": [],
                       "stdout": [
                         {
@@ -2306,7 +1806,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:05:47.558Z",
+                      "startTime": "2025-03-11T21:25:58.826Z",
                       "attachments": []
                     }
                   ],
@@ -2334,9 +1834,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1594,
+                      "duration": 1862,
                       "errors": [],
                       "stdout": [
                         {
@@ -2345,7 +1845,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:05:49.141Z",
+                      "startTime": "2025-03-11T21:26:00.625Z",
                       "attachments": []
                     }
                   ],
@@ -2373,9 +1873,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1615,
+                      "duration": 1805,
                       "errors": [],
                       "stdout": [
                         {
@@ -2384,7 +1884,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:05:50.739Z",
+                      "startTime": "2025-03-11T21:26:02.492Z",
                       "attachments": []
                     }
                   ],
@@ -2412,9 +1912,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1579,
+                      "duration": 1800,
                       "errors": [],
                       "stdout": [
                         {
@@ -2423,7 +1923,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:05:52.359Z",
+                      "startTime": "2025-03-11T21:26:04.301Z",
                       "attachments": []
                     }
                   ],
@@ -2451,9 +1951,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1592,
+                      "duration": 1867,
                       "errors": [],
                       "stdout": [
                         {
@@ -2462,7 +1962,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:05:53.942Z",
+                      "startTime": "2025-03-11T21:26:06.106Z",
                       "attachments": []
                     }
                   ],
@@ -2490,9 +1990,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1593,
+                      "duration": 1857,
                       "errors": [],
                       "stdout": [
                         {
@@ -2501,7 +2001,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:05:55.538Z",
+                      "startTime": "2025-03-11T21:26:07.977Z",
                       "attachments": []
                     }
                   ],
@@ -2529,9 +2029,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1587,
+                      "duration": 1870,
                       "errors": [],
                       "stdout": [
                         {
@@ -2540,7 +2040,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:05:57.135Z",
+                      "startTime": "2025-03-11T21:26:09.839Z",
                       "attachments": []
                     }
                   ],
@@ -2568,9 +2068,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1586,
+                      "duration": 1791,
                       "errors": [],
                       "stdout": [
                         {
@@ -2579,7 +2079,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:05:58.726Z",
+                      "startTime": "2025-03-11T21:26:11.713Z",
                       "attachments": []
                     }
                   ],
@@ -2607,9 +2107,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1570,
+                      "duration": 1802,
                       "errors": [],
                       "stdout": [
                         {
@@ -2618,7 +2118,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:00.317Z",
+                      "startTime": "2025-03-11T21:26:13.509Z",
                       "attachments": []
                     }
                   ],
@@ -2646,9 +2146,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1542,
+                      "duration": 1867,
                       "errors": [],
                       "stdout": [
                         {
@@ -2657,7 +2157,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:01.892Z",
+                      "startTime": "2025-03-11T21:26:15.316Z",
                       "attachments": []
                     }
                   ],
@@ -2685,9 +2185,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1866,
+                      "duration": 2116,
                       "errors": [],
                       "stdout": [
                         {
@@ -2696,7 +2196,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:03.438Z",
+                      "startTime": "2025-03-11T21:26:17.186Z",
                       "attachments": []
                     }
                   ],
@@ -2724,9 +2224,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1801,
+                      "duration": 2122,
                       "errors": [],
                       "stdout": [
                         {
@@ -2735,7 +2235,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:05.308Z",
+                      "startTime": "2025-03-11T21:26:19.306Z",
                       "attachments": []
                     }
                   ],
@@ -2763,9 +2263,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1767,
+                      "duration": 2052,
                       "errors": [],
                       "stdout": [
                         {
@@ -2774,7 +2274,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:07.114Z",
+                      "startTime": "2025-03-11T21:26:21.435Z",
                       "attachments": []
                     }
                   ],
@@ -2802,9 +2302,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1819,
+                      "duration": 2023,
                       "errors": [],
                       "stdout": [
                         {
@@ -2813,7 +2313,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:08.885Z",
+                      "startTime": "2025-03-11T21:26:23.491Z",
                       "attachments": []
                     }
                   ],
@@ -2841,9 +2341,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1901,
+                      "duration": 2058,
                       "errors": [],
                       "stdout": [
                         {
@@ -2852,7 +2352,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:10.708Z",
+                      "startTime": "2025-03-11T21:26:25.519Z",
                       "attachments": []
                     }
                   ],
@@ -2880,9 +2380,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1780,
+                      "duration": 2038,
                       "errors": [],
                       "stdout": [
                         {
@@ -2891,7 +2391,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:12.614Z",
+                      "startTime": "2025-03-11T21:26:27.582Z",
                       "attachments": []
                     }
                   ],
@@ -2919,9 +2419,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1828,
+                      "duration": 2139,
                       "errors": [],
                       "stdout": [
                         {
@@ -2930,7 +2430,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:14.398Z",
+                      "startTime": "2025-03-11T21:26:29.624Z",
                       "attachments": []
                     }
                   ],
@@ -2958,9 +2458,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1809,
+                      "duration": 2077,
                       "errors": [],
                       "stdout": [
                         {
@@ -2969,7 +2469,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:16.231Z",
+                      "startTime": "2025-03-11T21:26:31.768Z",
                       "attachments": []
                     }
                   ],
@@ -2997,9 +2497,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1775,
+                      "duration": 1973,
                       "errors": [],
                       "stdout": [
                         {
@@ -3008,7 +2508,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:18.047Z",
+                      "startTime": "2025-03-11T21:26:33.850Z",
                       "attachments": []
                     }
                   ],
@@ -3036,9 +2536,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1741,
+                      "duration": 1981,
                       "errors": [],
                       "stdout": [
                         {
@@ -3047,7 +2547,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:19.826Z",
+                      "startTime": "2025-03-11T21:26:35.827Z",
                       "attachments": []
                     }
                   ],
@@ -3083,9 +2583,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3157,
+                      "duration": 3405,
                       "errors": [],
                       "stdout": [
                         {
@@ -3094,7 +2594,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:21.571Z",
+                      "startTime": "2025-03-11T21:26:37.812Z",
                       "attachments": []
                     }
                   ],
@@ -3122,9 +2622,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3755,
+                      "duration": 4181,
                       "errors": [],
                       "stdout": [
                         {
@@ -3133,7 +2633,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:24.733Z",
+                      "startTime": "2025-03-11T21:26:41.221Z",
                       "attachments": []
                     }
                   ],
@@ -3161,9 +2661,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3332,
+                      "duration": 3595,
                       "errors": [],
                       "stdout": [
                         {
@@ -3172,7 +2672,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:28.492Z",
+                      "startTime": "2025-03-11T21:26:45.408Z",
                       "attachments": []
                     }
                   ],
@@ -3200,9 +2700,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3334,
+                      "duration": 3627,
                       "errors": [],
                       "stdout": [
                         {
@@ -3211,7 +2711,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:31.828Z",
+                      "startTime": "2025-03-11T21:26:49.007Z",
                       "attachments": []
                     }
                   ],
@@ -3239,9 +2739,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3396,
+                      "duration": 3690,
                       "errors": [],
                       "stdout": [
                         {
@@ -3250,7 +2750,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:35.167Z",
+                      "startTime": "2025-03-11T21:26:52.638Z",
                       "attachments": []
                     }
                   ],
@@ -3278,9 +2778,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3263,
+                      "duration": 3507,
                       "errors": [],
                       "stdout": [
                         {
@@ -3289,7 +2789,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:38.567Z",
+                      "startTime": "2025-03-11T21:26:56.333Z",
                       "attachments": []
                     }
                   ],
@@ -3317,9 +2817,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3125,
+                      "duration": 3393,
                       "errors": [],
                       "stdout": [
                         {
@@ -3328,7 +2828,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:41.834Z",
+                      "startTime": "2025-03-11T21:26:59.845Z",
                       "attachments": []
                     }
                   ],
@@ -3356,9 +2856,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3295,
+                      "duration": 3558,
                       "errors": [],
                       "stdout": [
                         {
@@ -3367,7 +2867,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:44.963Z",
+                      "startTime": "2025-03-11T21:27:03.242Z",
                       "attachments": []
                     }
                   ],
@@ -3395,9 +2895,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3077,
+                      "duration": 3361,
                       "errors": [],
                       "stdout": [
                         {
@@ -3406,7 +2906,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:48.261Z",
+                      "startTime": "2025-03-11T21:27:06.803Z",
                       "attachments": []
                     }
                   ],
@@ -3434,9 +2934,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3128,
+                      "duration": 3404,
                       "errors": [],
                       "stdout": [
                         {
@@ -3445,7 +2945,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:51.342Z",
+                      "startTime": "2025-03-11T21:27:10.169Z",
                       "attachments": []
                     }
                   ],
@@ -3473,9 +2973,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3094,
+                      "duration": 3321,
                       "errors": [],
                       "stdout": [
                         {
@@ -3484,7 +2984,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:54.473Z",
+                      "startTime": "2025-03-11T21:27:13.577Z",
                       "attachments": []
                     }
                   ],
@@ -3512,9 +3012,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3311,
+                      "duration": 3542,
                       "errors": [],
                       "stdout": [
                         {
@@ -3523,7 +3023,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:06:57.572Z",
+                      "startTime": "2025-03-11T21:27:16.902Z",
                       "attachments": []
                     }
                   ],
@@ -3551,9 +3051,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3231,
+                      "duration": 3472,
                       "errors": [],
                       "stdout": [
                         {
@@ -3562,7 +3062,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:07:00.886Z",
+                      "startTime": "2025-03-11T21:27:20.448Z",
                       "attachments": []
                     }
                   ],
@@ -3590,9 +3090,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3054,
+                      "duration": 3301,
                       "errors": [],
                       "stdout": [
                         {
@@ -3601,7 +3101,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:07:04.122Z",
+                      "startTime": "2025-03-11T21:27:23.925Z",
                       "attachments": []
                     }
                   ],
@@ -3629,9 +3129,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3124,
+                      "duration": 3365,
                       "errors": [],
                       "stdout": [
                         {
@@ -3640,7 +3140,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:07:07.180Z",
+                      "startTime": "2025-03-11T21:27:27.231Z",
                       "attachments": []
                     }
                   ],
@@ -3668,9 +3168,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3242,
+                      "duration": 3441,
                       "errors": [],
                       "stdout": [
                         {
@@ -3679,7 +3179,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:07:10.308Z",
+                      "startTime": "2025-03-11T21:27:30.600Z",
                       "attachments": []
                     }
                   ],
@@ -3707,9 +3207,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3269,
+                      "duration": 3545,
                       "errors": [],
                       "stdout": [
                         {
@@ -3718,7 +3218,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:07:13.553Z",
+                      "startTime": "2025-03-11T21:27:34.044Z",
                       "attachments": []
                     }
                   ],
@@ -3746,9 +3246,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3423,
+                      "duration": 3674,
                       "errors": [],
                       "stdout": [
                         {
@@ -3757,7 +3257,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:07:16.826Z",
+                      "startTime": "2025-03-11T21:27:37.594Z",
                       "attachments": []
                     }
                   ],
@@ -3785,9 +3285,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3415,
+                      "duration": 3892,
                       "errors": [],
                       "stdout": [
                         {
@@ -3796,7 +3296,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:07:20.253Z",
+                      "startTime": "2025-03-11T21:27:41.272Z",
                       "attachments": []
                     }
                   ],
@@ -3824,9 +3324,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3053,
+                      "duration": 3285,
                       "errors": [],
                       "stdout": [
                         {
@@ -3835,7 +3335,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:07:23.672Z",
+                      "startTime": "2025-03-11T21:27:45.168Z",
                       "attachments": []
                     }
                   ],
@@ -3863,9 +3363,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3188,
+                      "duration": 3459,
                       "errors": [],
                       "stdout": [
                         {
@@ -3874,7 +3374,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:07:26.728Z",
+                      "startTime": "2025-03-11T21:27:48.458Z",
                       "attachments": []
                     }
                   ],
@@ -3902,9 +3402,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 15,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3162,
+                      "duration": 3392,
                       "errors": [],
                       "stdout": [
                         {
@@ -3913,7 +3413,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-11T19:07:29.920Z",
+                      "startTime": "2025-03-11T21:27:51.921Z",
                       "attachments": []
                     }
                   ],
@@ -3932,11 +3432,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-03-11T19:04:21.751Z",
-    "duration": 191382.838,
-    "expected": 79,
+    "startTime": "2025-03-11T21:24:38.756Z",
+    "duration": 196609.511,
+    "expected": 84,
     "skipped": 2,
-    "unexpected": 5,
+    "unexpected": 0,
     "flaky": 0
   }
 }
