@@ -327,7 +327,17 @@
 <a name='L262'></a><a href='#L262'>262</a>
 <a name='L263'></a><a href='#L263'>263</a>
 <a name='L264'></a><a href='#L264'>264</a>
-<a name='L265'></a><a href='#L265'>265</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L265'></a><a href='#L265'>265</a>
+<a name='L266'></a><a href='#L266'>266</a>
+<a name='L267'></a><a href='#L267'>267</a>
+<a name='L268'></a><a href='#L268'>268</a>
+<a name='L269'></a><a href='#L269'>269</a>
+<a name='L270'></a><a href='#L270'>270</a>
+<a name='L271'></a><a href='#L271'>271</a>
+<a name='L272'></a><a href='#L272'>272</a>
+<a name='L273'></a><a href='#L273'>273</a>
+<a name='L274'></a><a href='#L274'>274</a>
+<a name='L275'></a><a href='#L275'>275</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -379,6 +389,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -445,6 +457,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -512,13 +528,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -558,6 +576,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">14x</span>
@@ -578,6 +597,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -645,10 +665,12 @@ const sendDeleteMessage = async (packageId: string) =&gt; {
 const sendUpdateValuesMessage = async ({
   currentPackage,
   updatedFields,
+  changeMade,
   changeReason,
 }: {
   currentPackage: ItemResult;
   updatedFields: object;
+  changeMade?: string;
   changeReason?: string;
 }) =&gt; {
   const topicName = process.env.topicName as string;
@@ -687,7 +709,7 @@ const sendUpdateValuesMessage = async ({
       ...updatedFields,
       isAdminChange: true,
       adminChangeType: "update-values",
-      changeMade: changeMadeText,
+      changeMade,
       changeReason,
       makoChangedDate: currentTime,
       changedDate: currentTime,
@@ -711,9 +733,13 @@ const sendUpdateValuesMessage = async ({
 const sendUpdateIdMessage = async ({
   currentPackage,
   updatedId,
+  changeMade,
+  changeReason,
 }: {
   currentPackage: ItemResult;
   updatedId: string;
+  changeMade?: string;
+  changeReason?: string;
 }) =&gt; {
   const topicName = process.env.topicName as string;
   if (!topicName) {
@@ -766,7 +792,8 @@ const sendUpdateIdMessage = async ({
       idToBeUpdated: currentPackage._id,
       ...remainingFields,
       origin: "OneMAC",
-      changeMade: "ID has been updated.",
+      changeMade,
+      changeReason,
       isAdminChange: true,
       adminChangeType: "update-id",
       makoChangedDate: currentTime,
@@ -787,6 +814,7 @@ const updatePackageEventBodySchema = z.object({
   action: z.enum(["update-values", "update-id", "delete"]),
   updatedId: z.string().optional(),
   updatedFields: z.record(z.unknown()).optional(),
+  changeMade: z.string().optional(),
   changeReason: z.string().optional(),
 });
 &nbsp;
@@ -821,6 +849,7 @@ export const handler = async (event: APIGatewayEvent) =&gt; {
       action,
       updatedId = packageId,
       updatedFields = {},
+      changeMade,
       changeReason,
     } = parseEventBody(event.body);
 &nbsp;
@@ -837,13 +866,14 @@ export const handler = async (event: APIGatewayEvent) =&gt; {
     }
 &nbsp;
     if (action === "update-id") {
-      return await sendUpdateIdMessage({ currentPackage, updatedId });
+      return await sendUpdateIdMessage({ currentPackage, updatedId, changeMade, changeReason });
     }
 &nbsp;
     <span class="missing-if-branch" title="else path not taken" >E</span>if (action === "update-values") {
       return await sendUpdateValuesMessage({
         currentPackage,
         updatedFields,
+        changeMade,
         changeReason,
       });
     }
@@ -862,7 +892,7 @@ export const handler = async (event: APIGatewayEvent) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-12T02:06:33.992Z
+                at 2025-03-12T12:23:32.156Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

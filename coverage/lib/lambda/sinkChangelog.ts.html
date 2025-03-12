@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.27% </span>
+                <span class="strong">87.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>48/55</span>
+                <span class='fraction'>50/57</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>24/28</span>
+                <span class='fraction'>25/30</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.88% </span>
+                <span class="strong">89.28% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>48/54</span>
+                <span class='fraction'>50/56</span>
             </div>
         
             
@@ -226,7 +226,14 @@
 <a name='L161'></a><a href='#L161'>161</a>
 <a name='L162'></a><a href='#L162'>162</a>
 <a name='L163'></a><a href='#L163'>163</a>
-<a name='L164'></a><a href='#L164'>164</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -305,10 +312,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -320,6 +332,8 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -468,25 +482,32 @@ const processAndIndex = async ({
 &nbsp;
         if (result.success) {
           if (result.data.adminChangeType === "update-id" &amp;&amp; "idToBeUpdated" in result.data) {
-            // Push doc with package being soft deleted
+            const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
+            // Push doc with content of package being soft deleted
             docs.forEach((log) =&gt; {
               const recordOffset = log.id.split("-").at(-1);
               docs.push({
                 ...log,
-                id: `${result.data.id}-${recordOffset}`,
-                packageId: result.data.id,
+                id: `${id}-${recordOffset}`,
+                packageId: id,
+                deleted: false,
+                ...restOfResultData,
               });
             });
-            // Get all changelog entries for this ID and create copies of all entries with new ID
-            const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
+            // Get all changelog entries for the original package ID
+            // Filter out any entry regarding the soft deleted event
+            // Create copies of the rest of the changelog entries with the new package ID
+            const packageChangelogs = await getPackageChangelog(idToBeUpdated);
 &nbsp;
             packageChangelogs.hits.hits.forEach((log) =&gt; {
-              const recordOffset = log._id.split("-").at(-1);
-              docs.push({
-                ...log._source,
-                id: `${result.data.id}-${recordOffset}`,
-                packageId: result.data.id,
-              });
+              <span class="missing-if-branch" title="else path not taken" >E</span>if (log._source.event !== "delete") {
+                const recordOffset = log._id.split("-").at(-1);
+                docs.push({
+                  ...log._source,
+                  id: `${id}-${recordOffset}`,
+                  packageId: id,
+                });
+              }
             });
           <span class="missing-if-branch" title="if path not taken" >I</span>} else if (
             result.data.adminChangeType === "split-spa" &amp;&amp;
@@ -559,7 +580,7 @@ const processAndIndex = async ({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-12T02:06:33.992Z
+                at 2025-03-12T12:23:32.156Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
