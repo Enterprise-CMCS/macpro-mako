@@ -112,6 +112,7 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
+    continue-on-error: true
     needs:
       - deploy
     environment:
@@ -141,9 +142,9 @@ jobs:
           role-duration-seconds: 10800
       - name: Run e2e tests
         id: e2e-test
-        continue-on-error: true
         run: run e2e
       - name: Set Report Path and Name
+        if: ${{ !cancelled() }}
         id: variables
         run: |
           if [[ ${{ github.ref_name }} == 'main' ]]; then
@@ -156,6 +157,7 @@ jobs:
             echo "commit_msg=add Playwright report for branch ${{ github.ref_name }}, run-id ${{ github.run_id }}" >> "$GITHUB_OUTPUT"
           fi
       - name: Rename Reports
+        if: ${{ !cancelled() }}
         working-directory: test/e2e/playwright-reports/
         run: |
           mv playwright-summary.json ${{ steps.variables.outputs.report_name }}.json

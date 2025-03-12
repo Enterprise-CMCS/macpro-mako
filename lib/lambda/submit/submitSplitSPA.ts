@@ -12,7 +12,16 @@ import { getNextSplitSPAId } from "./getNextSplitSPAId";
  * @property {object} body
  * @property {string} body.packageId
  */
-const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
+
+const sendSubmitSplitSPAMessage = async ({
+  currentPackage,
+  changeMade,
+  changeReason,
+}: {
+  currentPackage: ItemResult;
+  changeMade?: string;
+  changeReason?: string;
+}) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
     throw new Error("Topic name is not defined");
@@ -44,8 +53,8 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
       timestamp: currentTime,
       statusDate: currentTime,
       origin: "OneMAC",
-      changeMade: "OneMAC Admin has added a package to OneMAC.",
-      changeReason: "Per request from CMS, this package was added to OneMAC.",
+      changeMade,
+      changeReason,
       mockEvent: "new-medicaid-submission",
       isAdminChange: true,
       adminChangeType: "split-spa",
@@ -60,6 +69,8 @@ const sendSubmitSplitSPAMessage = async (currentPackage: ItemResult) => {
 
 const splitSPAEventBodySchema = z.object({
   packageId: events["new-medicaid-submission"].baseSchema.shape.id,
+  changeMade: z.string().optional(),
+  changeReason: z.string().optional(),
 });
 
 export const handler = async (event: APIGatewayEvent) => {
@@ -71,7 +82,7 @@ export const handler = async (event: APIGatewayEvent) => {
   }
   try {
     const body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const { packageId } = splitSPAEventBodySchema.parse(body);
+    const { packageId, changeMade, changeReason } = splitSPAEventBodySchema.parse(body);
 
     const currentPackage = await getPackage(packageId);
     if (!currentPackage || currentPackage.found == false) {
@@ -88,7 +99,7 @@ export const handler = async (event: APIGatewayEvent) => {
       });
     }
 
-    return sendSubmitSplitSPAMessage(currentPackage);
+    return sendSubmitSplitSPAMessage({ currentPackage, changeMade, changeReason });
   } catch (err) {
     console.error("Error has occured modifying package:", err);
     if (err instanceof z.ZodError) {

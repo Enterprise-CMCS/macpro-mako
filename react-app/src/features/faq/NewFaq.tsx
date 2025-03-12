@@ -69,7 +69,7 @@ export const NewFaq = () => {
                 <Accordion type="multiple" value={openAccordions} onValueChange={setOpenAccordions}>
                   <article key={"FAQs"} className="mb-8">
                     <div className="flex justify-between">
-                      <h2 className="text-2xl mb-4 font-bold">Frequently asked questions (FAQs)</h2>
+                      <h2 className="text-2xl mb-4 font-bold">Frequently Asked Questions (FAQs)</h2>
                       <ExpandCollapseBtn
                         collapseAll={collapseAll}
                         expandAll={expandAll}
@@ -82,8 +82,8 @@ export const NewFaq = () => {
                     {tempFAQ.map(({ anchorText, answerJSX, question }) => (
                       <AccordionItem
                         value={anchorText}
-                        id={anchorText}
-                        data-testid={anchorText}
+                        id={`${anchorText}-faq`}
+                        data-testid={`${anchorText}-faq`}
                         key={anchorText}
                       >
                         <AccordionTrigger className="text-left">{question}</AccordionTrigger>
