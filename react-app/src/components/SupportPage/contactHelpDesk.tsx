@@ -1,6 +1,6 @@
 import React from "react";
 
-const ContactHelpDesk: React.FC = () => {
+const ContactHelpDesk = () => {
   return (
     <div className="mt-8 bg-gradient-to-t from-cyan-400 to-primary rounded-sm p-[3px]">
       <span className="flex flex-col w-full bg-white p-5">

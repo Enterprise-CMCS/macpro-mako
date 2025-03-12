@@ -388,18 +388,14 @@ export const SubNavHeader = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
-/**
- * SupportSubNavHeader component
- *
- * This component renders a sticky sub-navigation header with a background dark-primary and
- * centers its children content within a maximum width container.
- *
- * @param {Object} props - The properties object.
- * @param {React.ReactNode} props.children - The content to be displayed inside the sub-navigation header.
- *
- * @returns {JSX.Element} The rendered sub-navigation header component. */
+type SupportSubNavHeaderProps = {
+  /*
+   * The content to be displayed inside the sub-navigation header
+   */
+  children: React.ReactNode;
+};
 
-export const SupportSubNavHeader = ({ children }: { children: React.ReactNode }) => (
+export const SupportSubNavHeader = ({ children }: SupportSubNavHeaderProps) => (
   <div className="bg-primary-dark sticky top-0" data-testid="sub-faq-nav-header">
     <div className="max-w-screen-lg m-auto px-4 lg:px-8">
       <div className="flex items-center">

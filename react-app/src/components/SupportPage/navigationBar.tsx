@@ -15,11 +15,11 @@ const LeftNavigation: React.FC = () => {
           "User profile",
           "Glossary",
         ].map((item) => (
-          <AccordionItem value={item} key={item} className="border-none font-semibold">
+          <AccordionItem value={item} key={item} className="border-none">
             <AccordionTrigger className="text-gray-700 hover:text-gray-900 py-2">
               <div className="font-semibold">{item}</div>
             </AccordionTrigger>
-            <AccordionContent>{/* Content for each section can be added here */}</AccordionContent>
+            <AccordionContent></AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>

@@ -5,7 +5,7 @@ import ExpandCollapseBtn from "../../components/SupportPage/expandCollapseBtn";
 
 vi.mock("react-router", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("react-router")),
-  useParams: vi.fn().mockReturnValue({ id: "q1" }),
+  useParams: vi.fn().mockReturnValue({ id: "q1-support" }),
 }));
 
 vi.mock("./content/SupportMockContent", () => ({

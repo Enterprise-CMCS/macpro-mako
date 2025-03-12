@@ -1,5 +1,3 @@
-// import { useEffect, useState } from "react";
-
 import { SupportSubNavHeader } from "@/components";
 import LeftNavigation from "../../components/SupportPage/navigationBar";
 import { useEffect, useState } from "react";
@@ -34,10 +32,9 @@ export const SupportPage = () => {
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
 
   const expandAll = () => {
-    const allIds = [];
-    oneMACFAQContent.flatMap(({ qanda }) => {
-      qanda.map(({ anchorText }) => allIds.push(anchorText));
-    });
+    const allIds = oneMACFAQContent.flatMap(({ qanda }) =>
+      qanda.map(({ anchorText }) => anchorText),
+    );
     setOpenAccordions(allIds);
   };
 
