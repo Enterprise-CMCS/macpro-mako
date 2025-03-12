@@ -90,7 +90,7 @@
                   "specs": [
                     {
                       "title": "displays header",
-                      "ok": false,
+                      "ok": true,
                       "tags": [
                         "e2e",
                         "smoke",
@@ -107,117 +107,17 @@
                           "results": [
                             {
                               "workerIndex": 0,
-                              "status": "failed",
-                              "duration": 5905,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"OneMAC Support\"\u001b[39m\nReceived string: \u001b[31m\"Frequently Asked Questions\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"OneMAC Support\"\u001b[39m\nReceived string: \u001b[31m\"Frequently Asked Questions\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:17:38",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 38,
-                                  "line": 17
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 15 |\u001b[39m       test(\u001b[32m\"displays header\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 16 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 17 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"OneMAC Support\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 18 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 38,
-                                    "line": 17
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"OneMAC Support\"\u001b[39m\nReceived string: \u001b[31m\"Frequently Asked Questions\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 15 |\u001b[39m       test(\u001b[32m\"displays header\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 16 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 17 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"OneMAC Support\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 18 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:17:38"
-                                }
-                              ],
+                              "status": "passed",
+                              "duration": 1626,
+                              "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:08.557Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 38,
-                                "line": 17
-                              }
-                            },
-                            {
-                              "workerIndex": 1,
-                              "status": "failed",
-                              "duration": 5868,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"OneMAC Support\"\u001b[39m\nReceived string: \u001b[31m\"Frequently Asked Questions\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"OneMAC Support\"\u001b[39m\nReceived string: \u001b[31m\"Frequently Asked Questions\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:17:38",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 38,
-                                  "line": 17
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 15 |\u001b[39m       test(\u001b[32m\"displays header\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 16 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 17 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"OneMAC Support\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 18 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 38,
-                                    "line": 17
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"OneMAC Support\"\u001b[39m\nReceived string: \u001b[31m\"Frequently Asked Questions\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 15 |\u001b[39m       test(\u001b[32m\"displays header\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 16 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 17 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"OneMAC Support\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 18 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:17:38"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 1,
-                              "startTime": "2025-03-12T15:24:15.279Z",
-                              "attachments": [
-                                {
-                                  "name": "trace",
-                                  "contentType": "application/zip",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/test-results/e2e-faq-faq-FAQ-page-UI-validation-header-displays-header-state-user-chrome-retry1/trace.zip"
-                                }
-                              ],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 38,
-                                "line": 17
-                              }
-                            },
-                            {
-                              "workerIndex": 2,
-                              "status": "failed",
-                              "duration": 5906,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"OneMAC Support\"\u001b[39m\nReceived string: \u001b[31m\"Frequently Asked Questions\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"OneMAC Support\"\u001b[39m\nReceived string: \u001b[31m\"Frequently Asked Questions\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:17:38",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 38,
-                                  "line": 17
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 15 |\u001b[39m       test(\u001b[32m\"displays header\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 16 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 17 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"OneMAC Support\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 18 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 38,
-                                    "line": 17
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected string: \u001b[32m\"OneMAC Support\"\u001b[39m\nReceived string: \u001b[31m\"Frequently Asked Questions\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"bg-sky-100\" data-testid=\"sub-nav-header\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Frequently Asked Questions\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 15 |\u001b[39m       test(\u001b[32m\"displays header\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 16 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 17 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mheader)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"OneMAC Support\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 18 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:17:38"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 2,
-                              "startTime": "2025-03-12T15:24:22.003Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 38,
-                                "line": 17
-                              }
+                              "startTime": "2025-03-12T16:24:13.207Z",
+                              "attachments": []
                             }
                           ],
-                          "status": "unexpected"
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-4e622ef0edec4f961300",
@@ -251,14 +151,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 900,
+                              "duration": 1518,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:28.731Z",
+                              "startTime": "2025-03-12T16:24:14.972Z",
                               "attachments": []
                             }
                           ],
@@ -288,14 +188,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 836,
+                              "duration": 1481,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:29.769Z",
+                              "startTime": "2025-03-12T16:24:16.497Z",
                               "attachments": []
                             }
                           ],
@@ -325,14 +225,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 816,
+                              "duration": 1486,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:30.612Z",
+                              "startTime": "2025-03-12T16:24:17.984Z",
                               "attachments": []
                             }
                           ],
@@ -362,14 +262,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 809,
+                              "duration": 1382,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:31.433Z",
+                              "startTime": "2025-03-12T16:24:19.475Z",
                               "attachments": []
                             }
                           ],
@@ -399,14 +299,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 834,
+                              "duration": 1363,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:32.247Z",
+                              "startTime": "2025-03-12T16:24:20.864Z",
                               "attachments": []
                             }
                           ],
@@ -436,14 +336,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 849,
+                              "duration": 1483,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:33.086Z",
+                              "startTime": "2025-03-12T16:24:22.234Z",
                               "attachments": []
                             }
                           ],
@@ -473,14 +373,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 813,
+                              "duration": 1360,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:33.941Z",
+                              "startTime": "2025-03-12T16:24:23.723Z",
                               "attachments": []
                             }
                           ],
@@ -518,14 +418,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 824,
+                              "duration": 1360,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:34.759Z",
+                              "startTime": "2025-03-12T16:24:25.089Z",
                               "attachments": []
                             }
                           ],
@@ -555,14 +455,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 819,
+                              "duration": 1500,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:35.588Z",
+                              "startTime": "2025-03-12T16:24:26.456Z",
                               "attachments": []
                             }
                           ],
@@ -592,14 +492,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 820,
+                              "duration": 1507,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:36.414Z",
+                              "startTime": "2025-03-12T16:24:27.961Z",
                               "attachments": []
                             }
                           ],
@@ -629,14 +529,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 837,
+                              "duration": 1367,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:37.240Z",
+                              "startTime": "2025-03-12T16:24:29.473Z",
                               "attachments": []
                             }
                           ],
@@ -666,14 +566,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 811,
+                              "duration": 1365,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:38.083Z",
+                              "startTime": "2025-03-12T16:24:30.846Z",
                               "attachments": []
                             }
                           ],
@@ -703,14 +603,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 813,
+                              "duration": 1472,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:38.898Z",
+                              "startTime": "2025-03-12T16:24:32.216Z",
                               "attachments": []
                             }
                           ],
@@ -740,14 +640,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 832,
+                              "duration": 1349,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:39.716Z",
+                              "startTime": "2025-03-12T16:24:33.694Z",
                               "attachments": []
                             }
                           ],
@@ -777,14 +677,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 808,
+                              "duration": 1363,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:40.553Z",
+                              "startTime": "2025-03-12T16:24:35.047Z",
                               "attachments": []
                             }
                           ],
@@ -814,14 +714,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 814,
+                              "duration": 1494,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:41.365Z",
+                              "startTime": "2025-03-12T16:24:36.415Z",
                               "attachments": []
                             }
                           ],
@@ -851,14 +751,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 843,
+                              "duration": 1368,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:42.184Z",
+                              "startTime": "2025-03-12T16:24:37.914Z",
                               "attachments": []
                             }
                           ],
@@ -872,7 +772,7 @@
                     },
                     {
                       "title": "displays download ABP SPA templates FAQ",
-                      "ok": false,
+                      "ok": true,
                       "tags": [
                         "e2e",
                         "smoke",
@@ -888,118 +788,18 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 3,
-                              "status": "failed",
-                              "duration": 5421,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-spa-templates')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-spa-templates')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:170:47",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 47,
-                                  "line": 170
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 168 |\u001b[39m\n \u001b[90m 169 |\u001b[39m       test(\u001b[32m\"displays download ABP SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 170 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 171 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 172 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 173 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 47,
-                                    "line": 170
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-spa-templates')\u001b[22m\n\n\n\u001b[0m \u001b[90m 168 |\u001b[39m\n \u001b[90m 169 |\u001b[39m       test(\u001b[32m\"displays download ABP SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 170 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 171 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 172 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 173 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:170:47"
-                                }
-                              ],
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1412,
+                              "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:24:43.032Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 47,
-                                "line": 170
-                              }
-                            },
-                            {
-                              "workerIndex": 4,
-                              "status": "failed",
-                              "duration": 5670,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-spa-templates')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-spa-templates')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:170:47",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 47,
-                                  "line": 170
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 168 |\u001b[39m\n \u001b[90m 169 |\u001b[39m       test(\u001b[32m\"displays download ABP SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 170 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 171 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 172 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 173 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 47,
-                                    "line": 170
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-spa-templates')\u001b[22m\n\n\n\u001b[0m \u001b[90m 168 |\u001b[39m\n \u001b[90m 169 |\u001b[39m       test(\u001b[32m\"displays download ABP SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 170 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 171 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 172 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 173 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:170:47"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 1,
-                              "startTime": "2025-03-12T15:24:49.128Z",
-                              "attachments": [
-                                {
-                                  "name": "trace",
-                                  "contentType": "application/zip",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/test-results/e2e-faq-faq-FAQ-page-UI-va-b9fe9-nload-ABP-SPA-templates-FAQ-state-user-chrome-retry1/trace.zip"
-                                }
-                              ],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 47,
-                                "line": 170
-                              }
-                            },
-                            {
-                              "workerIndex": 5,
-                              "status": "failed",
-                              "duration": 5520,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-spa-templates')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-spa-templates')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:170:47",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 47,
-                                  "line": 170
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 168 |\u001b[39m\n \u001b[90m 169 |\u001b[39m       test(\u001b[32m\"displays download ABP SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 170 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 171 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 172 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 173 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 47,
-                                    "line": 170
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-spa-templates')\u001b[22m\n\n\n\u001b[0m \u001b[90m 168 |\u001b[39m\n \u001b[90m 169 |\u001b[39m       test(\u001b[32m\"displays download ABP SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 170 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 171 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 172 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 173 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:170:47"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 2,
-                              "startTime": "2025-03-12T15:24:55.654Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 47,
-                                "line": 170
-                              }
+                              "startTime": "2025-03-12T16:24:39.288Z",
+                              "attachments": []
                             }
                           ],
-                          "status": "unexpected"
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-37434253b0908d9ce75e",
@@ -1009,7 +809,7 @@
                     },
                     {
                       "title": "displays download ABP SPA implementation guides FAQ",
-                      "ok": false,
+                      "ok": true,
                       "tags": [
                         "e2e",
                         "smoke",
@@ -1025,118 +825,18 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 6,
-                              "status": "failed",
-                              "duration": 5670,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-implementation-guides-spa')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-implementation-guides-spa')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-implementation-guides-spa')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-implementation-guides-spa')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:179:44",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 44,
-                                  "line": 179
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 177 |\u001b[39m\n \u001b[90m 178 |\u001b[39m       test(\u001b[32m\"displays download ABP SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 179 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 180 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 181 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 182 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 44,
-                                    "line": 179
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-implementation-guides-spa')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-implementation-guides-spa')\u001b[22m\n\n\n\u001b[0m \u001b[90m 177 |\u001b[39m\n \u001b[90m 178 |\u001b[39m       test(\u001b[32m\"displays download ABP SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 179 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 180 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 181 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 182 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:179:44"
-                                }
-                              ],
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1367,
+                              "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:25:02.021Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 44,
-                                "line": 179
-                              }
-                            },
-                            {
-                              "workerIndex": 7,
-                              "status": "failed",
-                              "duration": 5688,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-implementation-guides-spa')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-implementation-guides-spa')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-implementation-guides-spa')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-implementation-guides-spa')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:179:44",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 44,
-                                  "line": 179
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 177 |\u001b[39m\n \u001b[90m 178 |\u001b[39m       test(\u001b[32m\"displays download ABP SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 179 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 180 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 181 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 182 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 44,
-                                    "line": 179
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-implementation-guides-spa')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-implementation-guides-spa')\u001b[22m\n\n\n\u001b[0m \u001b[90m 177 |\u001b[39m\n \u001b[90m 178 |\u001b[39m       test(\u001b[32m\"displays download ABP SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 179 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 180 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 181 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 182 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:179:44"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 1,
-                              "startTime": "2025-03-12T15:25:08.534Z",
-                              "attachments": [
-                                {
-                                  "name": "trace",
-                                  "contentType": "application/zip",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/test-results/e2e-faq-faq-FAQ-page-UI-va-87f96-A-implementation-guides-FAQ-state-user-chrome-retry1/trace.zip"
-                                }
-                              ],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 44,
-                                "line": 179
-                              }
-                            },
-                            {
-                              "workerIndex": 8,
-                              "status": "failed",
-                              "duration": 5524,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-implementation-guides-spa')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-implementation-guides-spa')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-implementation-guides-spa')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-implementation-guides-spa')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:179:44",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 44,
-                                  "line": 179
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 177 |\u001b[39m\n \u001b[90m 178 |\u001b[39m       test(\u001b[32m\"displays download ABP SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 179 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 180 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 181 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 182 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 44,
-                                    "line": 179
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#abp-implementation-guides-spa')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#abp-implementation-guides-spa')\u001b[22m\n\n\n\u001b[0m \u001b[90m 177 |\u001b[39m\n \u001b[90m 178 |\u001b[39m       test(\u001b[32m\"displays download ABP SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 179 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 180 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mabpSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 181 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 182 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:179:44"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 2,
-                              "startTime": "2025-03-12T15:25:15.108Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 44,
-                                "line": 179
-                              }
+                              "startTime": "2025-03-12T16:24:40.705Z",
+                              "attachments": []
                             }
                           ],
-                          "status": "unexpected"
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-0963c854d8258e74f166",
@@ -1146,7 +846,7 @@
                     },
                     {
                       "title": "displays download MPC SPA templates FAQ",
-                      "ok": false,
+                      "ok": true,
                       "tags": [
                         "e2e",
                         "smoke",
@@ -1162,118 +862,18 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 9,
-                              "status": "failed",
-                              "duration": 5529,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-templates')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-templates')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:188:47",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 47,
-                                  "line": 188
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 186 |\u001b[39m\n \u001b[90m 187 |\u001b[39m       test(\u001b[32m\"displays download MPC SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 188 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 189 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 190 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 191 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 47,
-                                    "line": 188
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-templates')\u001b[22m\n\n\n\u001b[0m \u001b[90m 186 |\u001b[39m\n \u001b[90m 187 |\u001b[39m       test(\u001b[32m\"displays download MPC SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 188 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 189 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 190 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 191 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:188:47"
-                                }
-                              ],
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1473,
+                              "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:25:21.456Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 47,
-                                "line": 188
-                              }
-                            },
-                            {
-                              "workerIndex": 10,
-                              "status": "failed",
-                              "duration": 5686,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-templates')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-templates')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:188:47",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 47,
-                                  "line": 188
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 186 |\u001b[39m\n \u001b[90m 187 |\u001b[39m       test(\u001b[32m\"displays download MPC SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 188 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 189 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 190 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 191 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 47,
-                                    "line": 188
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-templates')\u001b[22m\n\n\n\u001b[0m \u001b[90m 186 |\u001b[39m\n \u001b[90m 187 |\u001b[39m       test(\u001b[32m\"displays download MPC SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 188 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 189 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 190 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 191 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:188:47"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 1,
-                              "startTime": "2025-03-12T15:25:27.786Z",
-                              "attachments": [
-                                {
-                                  "name": "trace",
-                                  "contentType": "application/zip",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/test-results/e2e-faq-faq-FAQ-page-UI-va-4d8c2-nload-MPC-SPA-templates-FAQ-state-user-chrome-retry1/trace.zip"
-                                }
-                              ],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 47,
-                                "line": 188
-                              }
-                            },
-                            {
-                              "workerIndex": 11,
-                              "status": "failed",
-                              "duration": 5517,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-templates')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-templates')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:188:47",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 47,
-                                  "line": 188
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 186 |\u001b[39m\n \u001b[90m 187 |\u001b[39m       test(\u001b[32m\"displays download MPC SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 188 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 189 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 190 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 191 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 47,
-                                    "line": 188
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-templates')\u001b[22m\n\n\n\u001b[0m \u001b[90m 186 |\u001b[39m\n \u001b[90m 187 |\u001b[39m       test(\u001b[32m\"displays download MPC SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 188 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 189 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 190 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 191 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:188:47"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 2,
-                              "startTime": "2025-03-12T15:25:34.318Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 47,
-                                "line": 188
-                              }
+                              "startTime": "2025-03-12T16:24:42.077Z",
+                              "attachments": []
                             }
                           ],
-                          "status": "unexpected"
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-496ea50452ddd6df612b",
@@ -1283,7 +883,7 @@
                     },
                     {
                       "title": "displays download MPC SPA implementation guides FAQ",
-                      "ok": false,
+                      "ok": true,
                       "tags": [
                         "e2e",
                         "smoke",
@@ -1299,118 +899,18 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 12,
-                              "status": "failed",
-                              "duration": 5521,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-implementation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-implementation-guides')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-implementation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-implementation-guides')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:197:44",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 44,
-                                  "line": 197
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 195 |\u001b[39m\n \u001b[90m 196 |\u001b[39m       test(\u001b[32m\"displays download MPC SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 197 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 198 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 199 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 200 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 44,
-                                    "line": 197
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-implementation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-implementation-guides')\u001b[22m\n\n\n\u001b[0m \u001b[90m 195 |\u001b[39m\n \u001b[90m 196 |\u001b[39m       test(\u001b[32m\"displays download MPC SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 197 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 198 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 199 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 200 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:197:44"
-                                }
-                              ],
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1410,
+                              "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:25:40.644Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 44,
-                                "line": 197
-                              }
-                            },
-                            {
-                              "workerIndex": 13,
-                              "status": "failed",
-                              "duration": 5690,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-implementation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-implementation-guides')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-implementation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-implementation-guides')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:197:44",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 44,
-                                  "line": 197
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 195 |\u001b[39m\n \u001b[90m 196 |\u001b[39m       test(\u001b[32m\"displays download MPC SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 197 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 198 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 199 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 200 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 44,
-                                    "line": 197
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-implementation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-implementation-guides')\u001b[22m\n\n\n\u001b[0m \u001b[90m 195 |\u001b[39m\n \u001b[90m 196 |\u001b[39m       test(\u001b[32m\"displays download MPC SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 197 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 198 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 199 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 200 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:197:44"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 1,
-                              "startTime": "2025-03-12T15:25:46.976Z",
-                              "attachments": [
-                                {
-                                  "name": "trace",
-                                  "contentType": "application/zip",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/test-results/e2e-faq-faq-FAQ-page-UI-va-54f3b-A-implementation-guides-FAQ-state-user-chrome-retry1/trace.zip"
-                                }
-                              ],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 44,
-                                "line": 197
-                              }
-                            },
-                            {
-                              "workerIndex": 14,
-                              "status": "failed",
-                              "duration": 5516,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-implementation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-implementation-guides')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-implementation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-implementation-guides')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:197:44",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 44,
-                                  "line": 197
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 195 |\u001b[39m\n \u001b[90m 196 |\u001b[39m       test(\u001b[32m\"displays download MPC SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 197 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 198 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 199 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 200 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 44,
-                                    "line": 197
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#mpc-spa-implementation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-implementation-guides')\u001b[22m\n\n\n\u001b[0m \u001b[90m 195 |\u001b[39m\n \u001b[90m 196 |\u001b[39m       test(\u001b[32m\"displays download MPC SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 197 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 198 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mmpcSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 199 |\u001b[39m           \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 200 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:197:44"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 2,
-                              "startTime": "2025-03-12T15:25:53.518Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 44,
-                                "line": 197
-                              }
+                              "startTime": "2025-03-12T16:24:43.555Z",
+                              "attachments": []
                             }
                           ],
-                          "status": "unexpected"
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-cc93c82c71b42b6a1187",
@@ -1420,7 +920,7 @@
                     },
                     {
                       "title": "displays download CHIP eligibility SPA templates FAQ",
-                      "ok": false,
+                      "ok": true,
                       "tags": [
                         "e2e",
                         "smoke",
@@ -1436,118 +936,18 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 15,
-                              "status": "failed",
-                              "duration": 5533,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-templates')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-templates')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:206:48",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 48,
-                                  "line": 206
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 204 |\u001b[39m\n \u001b[90m 205 |\u001b[39m       test(\u001b[32m\"displays download CHIP eligibility SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 206 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 207 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 208 |\u001b[39m           \u001b[32m\"Where can I download CHIP eligibility SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 209 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 48,
-                                    "line": 206
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-templates')\u001b[22m\n\n\n\u001b[0m \u001b[90m 204 |\u001b[39m\n \u001b[90m 205 |\u001b[39m       test(\u001b[32m\"displays download CHIP eligibility SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 206 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 207 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 208 |\u001b[39m           \u001b[32m\"Where can I download CHIP eligibility SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 209 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:206:48"
-                                }
-                              ],
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1349,
+                              "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:25:59.834Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 48,
-                                "line": 206
-                              }
-                            },
-                            {
-                              "workerIndex": 16,
-                              "status": "failed",
-                              "duration": 5850,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-templates')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-templates')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:206:48",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 48,
-                                  "line": 206
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 204 |\u001b[39m\n \u001b[90m 205 |\u001b[39m       test(\u001b[32m\"displays download CHIP eligibility SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 206 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 207 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 208 |\u001b[39m           \u001b[32m\"Where can I download CHIP eligibility SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 209 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 48,
-                                    "line": 206
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-templates')\u001b[22m\n\n\n\u001b[0m \u001b[90m 204 |\u001b[39m\n \u001b[90m 205 |\u001b[39m       test(\u001b[32m\"displays download CHIP eligibility SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 206 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 207 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 208 |\u001b[39m           \u001b[32m\"Where can I download CHIP eligibility SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 209 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:206:48"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 1,
-                              "startTime": "2025-03-12T15:26:06.184Z",
-                              "attachments": [
-                                {
-                                  "name": "trace",
-                                  "contentType": "application/zip",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/test-results/e2e-faq-faq-FAQ-page-UI-va-280fe-igibility-SPA-templates-FAQ-state-user-chrome-retry1/trace.zip"
-                                }
-                              ],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 48,
-                                "line": 206
-                              }
-                            },
-                            {
-                              "workerIndex": 17,
-                              "status": "failed",
-                              "duration": 5515,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-templates')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-templates')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:206:48",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 48,
-                                  "line": 206
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 204 |\u001b[39m\n \u001b[90m 205 |\u001b[39m       test(\u001b[32m\"displays download CHIP eligibility SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 206 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 207 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 208 |\u001b[39m           \u001b[32m\"Where can I download CHIP eligibility SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 209 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 48,
-                                    "line": 206
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-templates')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-templates')\u001b[22m\n\n\n\u001b[0m \u001b[90m 204 |\u001b[39m\n \u001b[90m 205 |\u001b[39m       test(\u001b[32m\"displays download CHIP eligibility SPA templates FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 206 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaTemplates)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 207 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaTemplates)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 208 |\u001b[39m           \u001b[32m\"Where can I download CHIP eligibility SPA templates?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 209 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:206:48"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 2,
-                              "startTime": "2025-03-12T15:26:12.880Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 48,
-                                "line": 206
-                              }
+                              "startTime": "2025-03-12T16:24:44.970Z",
+                              "attachments": []
                             }
                           ],
-                          "status": "unexpected"
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-f47e28b489e7752fcf61",
@@ -1557,7 +957,7 @@
                     },
                     {
                       "title": "displays download CHIP eligibility SPA implementation guides FAQ",
-                      "ok": false,
+                      "ok": true,
                       "tags": [
                         "e2e",
                         "smoke",
@@ -1573,118 +973,18 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 18,
-                              "status": "failed",
-                              "duration": 5519,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-implentation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-implentation-guides')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-implentation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-implentation-guides')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:215:45",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 45,
-                                  "line": 215
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 213 |\u001b[39m\n \u001b[90m 214 |\u001b[39m       test(\u001b[32m\"displays download CHIP eligibility SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 215 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 216 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 217 |\u001b[39m           \u001b[32m\"Where can I download CHIP eligibility SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 218 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 45,
-                                    "line": 215
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-implentation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-implentation-guides')\u001b[22m\n\n\n\u001b[0m \u001b[90m 213 |\u001b[39m\n \u001b[90m 214 |\u001b[39m       test(\u001b[32m\"displays download CHIP eligibility SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 215 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 216 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 217 |\u001b[39m           \u001b[32m\"Where can I download CHIP eligibility SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 218 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:215:45"
-                                }
-                              ],
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1478,
+                              "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:19.202Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 45,
-                                "line": 215
-                              }
-                            },
-                            {
-                              "workerIndex": 19,
-                              "status": "failed",
-                              "duration": 5696,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-implentation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-implentation-guides')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-implentation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-implentation-guides')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:215:45",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 45,
-                                  "line": 215
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 213 |\u001b[39m\n \u001b[90m 214 |\u001b[39m       test(\u001b[32m\"displays download CHIP eligibility SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 215 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 216 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 217 |\u001b[39m           \u001b[32m\"Where can I download CHIP eligibility SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 218 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 45,
-                                    "line": 215
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-implentation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-implentation-guides')\u001b[22m\n\n\n\u001b[0m \u001b[90m 213 |\u001b[39m\n \u001b[90m 214 |\u001b[39m       test(\u001b[32m\"displays download CHIP eligibility SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 215 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 216 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 217 |\u001b[39m           \u001b[32m\"Where can I download CHIP eligibility SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 218 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:215:45"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 1,
-                              "startTime": "2025-03-12T15:26:25.520Z",
-                              "attachments": [
-                                {
-                                  "name": "trace",
-                                  "contentType": "application/zip",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/test-results/e2e-faq-faq-FAQ-page-UI-va-864c1-A-implementation-guides-FAQ-state-user-chrome-retry1/trace.zip"
-                                }
-                              ],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 45,
-                                "line": 215
-                              }
-                            },
-                            {
-                              "workerIndex": 20,
-                              "status": "failed",
-                              "duration": 5514,
-                              "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-implentation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-implentation-guides')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-implentation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-implentation-guides')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:215:45",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                  "column": 45,
-                                  "line": 215
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 213 |\u001b[39m\n \u001b[90m 214 |\u001b[39m       test(\u001b[32m\"displays download CHIP eligibility SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 215 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 216 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 217 |\u001b[39m           \u001b[32m\"Where can I download CHIP eligibility SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 218 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                    "column": 45,
-                                    "line": 215
-                                  },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#chip-spa-implentation-guides')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#chip-spa-implentation-guides')\u001b[22m\n\n\n\u001b[0m \u001b[90m 213 |\u001b[39m\n \u001b[90m 214 |\u001b[39m       test(\u001b[32m\"displays download CHIP eligibility SPA implementation guides FAQ\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 215 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaGuides)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 216 |\u001b[39m         \u001b[36mawait\u001b[39m expect(faqPage\u001b[33m.\u001b[39mchipSpaGuides)\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 217 |\u001b[39m           \u001b[32m\"Where can I download CHIP eligibility SPA implementation guides?\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 218 |\u001b[39m         )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:215:45"
-                                }
-                              ],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 2,
-                              "startTime": "2025-03-12T15:26:32.093Z",
-                              "attachments": [],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
-                                "column": 45,
-                                "line": 215
-                              }
+                              "startTime": "2025-03-12T16:24:46.323Z",
+                              "attachments": []
                             }
                           ],
-                          "status": "unexpected"
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-ce499e6a378aacf18db0",
@@ -1718,14 +1018,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 21,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 905,
+                              "duration": 1478,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:38.426Z",
+                              "startTime": "2025-03-12T16:24:47.806Z",
                               "attachments": []
                             }
                           ],
@@ -1755,14 +1055,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 21,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 817,
+                              "duration": 1356,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:39.474Z",
+                              "startTime": "2025-03-12T16:24:49.289Z",
                               "attachments": []
                             }
                           ],
@@ -1792,14 +1092,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 21,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 809,
+                              "duration": 952,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:40.298Z",
+                              "startTime": "2025-03-12T16:24:50.651Z",
                               "attachments": []
                             }
                           ],
@@ -1829,14 +1129,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 21,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 808,
+                              "duration": 1071,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:41.113Z",
+                              "startTime": "2025-03-12T16:24:51.608Z",
                               "attachments": []
                             }
                           ],
@@ -1866,14 +1166,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 21,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 839,
+                              "duration": 1471,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:41.927Z",
+                              "startTime": "2025-03-12T16:24:52.683Z",
                               "attachments": []
                             }
                           ],
@@ -1903,14 +1203,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 21,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 818,
+                              "duration": 975,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:42.772Z",
+                              "startTime": "2025-03-12T16:24:54.158Z",
                               "attachments": []
                             }
                           ],
@@ -1940,14 +1240,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 21,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 834,
+                              "duration": 1345,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:43.595Z",
+                              "startTime": "2025-03-12T16:24:55.138Z",
                               "attachments": []
                             }
                           ],
@@ -1977,14 +1277,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 21,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 819,
+                              "duration": 1473,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:44.435Z",
+                              "startTime": "2025-03-12T16:24:56.487Z",
                               "attachments": []
                             }
                           ],
@@ -2014,14 +1314,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 21,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 836,
+                              "duration": 1100,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:45.260Z",
+                              "startTime": "2025-03-12T16:24:57.965Z",
                               "attachments": []
                             }
                           ],
@@ -2062,7 +1362,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:46.101Z",
+                              "startTime": "2025-03-12T16:24:59.069Z",
                               "attachments": []
                             }
                           ],
@@ -2103,7 +1403,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:46.101Z",
+                              "startTime": "2025-03-12T16:24:59.070Z",
                               "attachments": []
                             }
                           ],
@@ -2133,14 +1433,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 21,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 825,
+                              "duration": 1352,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:46.103Z",
+                              "startTime": "2025-03-12T16:24:59.070Z",
                               "attachments": []
                             }
                           ],
@@ -2170,14 +1470,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 21,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 838,
+                              "duration": 1677,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:46.933Z",
+                              "startTime": "2025-03-12T16:25:00.426Z",
                               "attachments": []
                             }
                           ],
@@ -2207,14 +1507,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 21,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 827,
+                              "duration": 1474,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:47.777Z",
+                              "startTime": "2025-03-12T16:25:02.108Z",
                               "attachments": []
                             }
                           ],
@@ -2244,14 +1544,14 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 21,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 806,
+                              "duration": 1351,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-03-12T15:26:48.610Z",
+                              "startTime": "2025-03-12T16:25:03.587Z",
                               "attachments": []
                             }
                           ],
@@ -2300,9 +1600,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1689,
+                      "duration": 1737,
                       "errors": [],
                       "stdout": [
                         {
@@ -2311,7 +1611,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:26:49.473Z",
+                      "startTime": "2025-03-12T16:25:04.996Z",
                       "attachments": []
                     }
                   ],
@@ -2339,9 +1639,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1813,
+                      "duration": 2016,
                       "errors": [],
                       "stdout": [
                         {
@@ -2350,7 +1650,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:26:51.167Z",
+                      "startTime": "2025-03-12T16:25:06.739Z",
                       "attachments": []
                     }
                   ],
@@ -2378,9 +1678,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1984,
+                      "duration": 2410,
                       "errors": [],
                       "stdout": [
                         {
@@ -2389,7 +1689,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:26:52.984Z",
+                      "startTime": "2025-03-12T16:25:08.760Z",
                       "attachments": []
                     }
                   ],
@@ -2417,9 +1717,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1612,
+                      "duration": 1768,
                       "errors": [],
                       "stdout": [
                         {
@@ -2428,7 +1728,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:26:54.973Z",
+                      "startTime": "2025-03-12T16:25:11.174Z",
                       "attachments": []
                     }
                   ],
@@ -2456,9 +1756,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1614,
+                      "duration": 1788,
                       "errors": [],
                       "stdout": [
                         {
@@ -2467,7 +1767,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:26:56.590Z",
+                      "startTime": "2025-03-12T16:25:12.946Z",
                       "attachments": []
                     }
                   ],
@@ -2495,9 +1795,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1588,
+                      "duration": 1820,
                       "errors": [],
                       "stdout": [
                         {
@@ -2506,7 +1806,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:26:58.208Z",
+                      "startTime": "2025-03-12T16:25:14.737Z",
                       "attachments": []
                     }
                   ],
@@ -2534,9 +1834,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1612,
+                      "duration": 1789,
                       "errors": [],
                       "stdout": [
                         {
@@ -2545,7 +1845,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:26:59.800Z",
+                      "startTime": "2025-03-12T16:25:16.560Z",
                       "attachments": []
                     }
                   ],
@@ -2573,9 +1873,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1589,
+                      "duration": 1801,
                       "errors": [],
                       "stdout": [
                         {
@@ -2584,7 +1884,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:01.416Z",
+                      "startTime": "2025-03-12T16:25:18.353Z",
                       "attachments": []
                     }
                   ],
@@ -2612,9 +1912,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1631,
+                      "duration": 1840,
                       "errors": [],
                       "stdout": [
                         {
@@ -2623,7 +1923,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:03.009Z",
+                      "startTime": "2025-03-12T16:25:20.158Z",
                       "attachments": []
                     }
                   ],
@@ -2651,9 +1951,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1612,
+                      "duration": 1815,
                       "errors": [],
                       "stdout": [
                         {
@@ -2662,7 +1962,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:04.644Z",
+                      "startTime": "2025-03-12T16:25:22.003Z",
                       "attachments": []
                     }
                   ],
@@ -2690,9 +1990,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1650,
+                      "duration": 1821,
                       "errors": [],
                       "stdout": [
                         {
@@ -2701,7 +2001,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:06.261Z",
+                      "startTime": "2025-03-12T16:25:23.821Z",
                       "attachments": []
                     }
                   ],
@@ -2729,9 +2029,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1654,
+                      "duration": 1815,
                       "errors": [],
                       "stdout": [
                         {
@@ -2740,7 +2040,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:07.918Z",
+                      "startTime": "2025-03-12T16:25:25.646Z",
                       "attachments": []
                     }
                   ],
@@ -2768,9 +2068,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1603,
+                      "duration": 1794,
                       "errors": [],
                       "stdout": [
                         {
@@ -2779,7 +2079,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:09.577Z",
+                      "startTime": "2025-03-12T16:25:27.464Z",
                       "attachments": []
                     }
                   ],
@@ -2807,9 +2107,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1602,
+                      "duration": 1821,
                       "errors": [],
                       "stdout": [
                         {
@@ -2818,7 +2118,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:11.184Z",
+                      "startTime": "2025-03-12T16:25:29.262Z",
                       "attachments": []
                     }
                   ],
@@ -2846,9 +2146,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1622,
+                      "duration": 1812,
                       "errors": [],
                       "stdout": [
                         {
@@ -2857,7 +2157,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:12.791Z",
+                      "startTime": "2025-03-12T16:25:31.088Z",
                       "attachments": []
                     }
                   ],
@@ -2885,9 +2185,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1835,
+                      "duration": 2069,
                       "errors": [],
                       "stdout": [
                         {
@@ -2896,7 +2196,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:14.416Z",
+                      "startTime": "2025-03-12T16:25:32.904Z",
                       "attachments": []
                     }
                   ],
@@ -2924,9 +2224,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1850,
+                      "duration": 2068,
                       "errors": [],
                       "stdout": [
                         {
@@ -2935,7 +2235,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:16.256Z",
+                      "startTime": "2025-03-12T16:25:34.978Z",
                       "attachments": []
                     }
                   ],
@@ -2963,9 +2263,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1797,
+                      "duration": 2005,
                       "errors": [],
                       "stdout": [
                         {
@@ -2974,7 +2274,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:18.111Z",
+                      "startTime": "2025-03-12T16:25:37.051Z",
                       "attachments": []
                     }
                   ],
@@ -3002,9 +2302,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1820,
+                      "duration": 1996,
                       "errors": [],
                       "stdout": [
                         {
@@ -3013,7 +2313,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:19.912Z",
+                      "startTime": "2025-03-12T16:25:39.062Z",
                       "attachments": []
                     }
                   ],
@@ -3041,9 +2341,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1828,
+                      "duration": 2031,
                       "errors": [],
                       "stdout": [
                         {
@@ -3052,7 +2352,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:21.736Z",
+                      "startTime": "2025-03-12T16:25:41.061Z",
                       "attachments": []
                     }
                   ],
@@ -3080,9 +2380,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1796,
+                      "duration": 2062,
                       "errors": [],
                       "stdout": [
                         {
@@ -3091,7 +2391,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:23.568Z",
+                      "startTime": "2025-03-12T16:25:43.097Z",
                       "attachments": []
                     }
                   ],
@@ -3119,9 +2419,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1839,
+                      "duration": 2059,
                       "errors": [],
                       "stdout": [
                         {
@@ -3130,7 +2430,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:25.369Z",
+                      "startTime": "2025-03-12T16:25:45.164Z",
                       "attachments": []
                     }
                   ],
@@ -3158,9 +2458,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1843,
+                      "duration": 2030,
                       "errors": [],
                       "stdout": [
                         {
@@ -3169,7 +2469,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:27.211Z",
+                      "startTime": "2025-03-12T16:25:47.227Z",
                       "attachments": []
                     }
                   ],
@@ -3197,9 +2497,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1765,
+                      "duration": 2009,
                       "errors": [],
                       "stdout": [
                         {
@@ -3208,7 +2508,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:29.058Z",
+                      "startTime": "2025-03-12T16:25:49.262Z",
                       "attachments": []
                     }
                   ],
@@ -3236,9 +2536,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 1783,
+                      "duration": 1974,
                       "errors": [],
                       "stdout": [
                         {
@@ -3247,7 +2547,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:30.827Z",
+                      "startTime": "2025-03-12T16:25:51.275Z",
                       "attachments": []
                     }
                   ],
@@ -3283,9 +2583,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3218,
+                      "duration": 3478,
                       "errors": [],
                       "stdout": [
                         {
@@ -3294,7 +2594,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:32.614Z",
+                      "startTime": "2025-03-12T16:25:53.254Z",
                       "attachments": []
                     }
                   ],
@@ -3322,9 +2622,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3844,
+                      "duration": 4274,
                       "errors": [],
                       "stdout": [
                         {
@@ -3333,7 +2633,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:35.837Z",
+                      "startTime": "2025-03-12T16:25:56.737Z",
                       "attachments": []
                     }
                   ],
@@ -3361,9 +2661,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3380,
+                      "duration": 3654,
                       "errors": [],
                       "stdout": [
                         {
@@ -3372,7 +2672,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:39.684Z",
+                      "startTime": "2025-03-12T16:26:01.015Z",
                       "attachments": []
                     }
                   ],
@@ -3400,9 +2700,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3346,
+                      "duration": 3629,
                       "errors": [],
                       "stdout": [
                         {
@@ -3411,7 +2711,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:43.068Z",
+                      "startTime": "2025-03-12T16:26:04.674Z",
                       "attachments": []
                     }
                   ],
@@ -3439,9 +2739,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3431,
+                      "duration": 3704,
                       "errors": [],
                       "stdout": [
                         {
@@ -3450,7 +2750,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:46.418Z",
+                      "startTime": "2025-03-12T16:26:08.307Z",
                       "attachments": []
                     }
                   ],
@@ -3478,9 +2778,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3322,
+                      "duration": 3552,
                       "errors": [],
                       "stdout": [
                         {
@@ -3489,7 +2789,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:49.854Z",
+                      "startTime": "2025-03-12T16:26:12.016Z",
                       "attachments": []
                     }
                   ],
@@ -3517,9 +2817,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3168,
+                      "duration": 3425,
                       "errors": [],
                       "stdout": [
                         {
@@ -3528,7 +2828,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:53.180Z",
+                      "startTime": "2025-03-12T16:26:15.574Z",
                       "attachments": []
                     }
                   ],
@@ -3556,9 +2856,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3320,
+                      "duration": 3584,
                       "errors": [],
                       "stdout": [
                         {
@@ -3567,7 +2867,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:56.352Z",
+                      "startTime": "2025-03-12T16:26:19.003Z",
                       "attachments": []
                     }
                   ],
@@ -3595,9 +2895,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3109,
+                      "duration": 3337,
                       "errors": [],
                       "stdout": [
                         {
@@ -3606,7 +2906,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:27:59.676Z",
+                      "startTime": "2025-03-12T16:26:22.591Z",
                       "attachments": []
                     }
                   ],
@@ -3634,9 +2934,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3164,
+                      "duration": 3403,
                       "errors": [],
                       "stdout": [
                         {
@@ -3645,7 +2945,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:28:02.788Z",
+                      "startTime": "2025-03-12T16:26:25.932Z",
                       "attachments": []
                     }
                   ],
@@ -3673,9 +2973,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3133,
+                      "duration": 3353,
                       "errors": [],
                       "stdout": [
                         {
@@ -3684,7 +2984,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:28:05.955Z",
+                      "startTime": "2025-03-12T16:26:29.339Z",
                       "attachments": []
                     }
                   ],
@@ -3712,9 +3012,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3569,
+                      "duration": 3587,
                       "errors": [],
                       "stdout": [
                         {
@@ -3723,7 +3023,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:28:09.092Z",
+                      "startTime": "2025-03-12T16:26:32.697Z",
                       "attachments": []
                     }
                   ],
@@ -3751,9 +3051,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3251,
+                      "duration": 3542,
                       "errors": [],
                       "stdout": [
                         {
@@ -3762,7 +3062,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:28:12.665Z",
+                      "startTime": "2025-03-12T16:26:36.288Z",
                       "attachments": []
                     }
                   ],
@@ -3790,9 +3090,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3073,
+                      "duration": 3304,
                       "errors": [],
                       "stdout": [
                         {
@@ -3801,7 +3101,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:28:15.920Z",
+                      "startTime": "2025-03-12T16:26:39.834Z",
                       "attachments": []
                     }
                   ],
@@ -3829,9 +3129,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3120,
+                      "duration": 3359,
                       "errors": [],
                       "stdout": [
                         {
@@ -3840,7 +3140,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:28:18.998Z",
+                      "startTime": "2025-03-12T16:26:43.142Z",
                       "attachments": []
                     }
                   ],
@@ -3868,9 +3168,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3235,
+                      "duration": 3492,
                       "errors": [],
                       "stdout": [
                         {
@@ -3879,7 +3179,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:28:22.121Z",
+                      "startTime": "2025-03-12T16:26:46.505Z",
                       "attachments": []
                     }
                   ],
@@ -3907,9 +3207,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3348,
+                      "duration": 3584,
                       "errors": [],
                       "stdout": [
                         {
@@ -3918,7 +3218,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:28:25.361Z",
+                      "startTime": "2025-03-12T16:26:50.000Z",
                       "attachments": []
                     }
                   ],
@@ -3946,9 +3246,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3474,
+                      "duration": 3693,
                       "errors": [],
                       "stdout": [
                         {
@@ -3957,7 +3257,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:28:28.714Z",
+                      "startTime": "2025-03-12T16:26:53.588Z",
                       "attachments": []
                     }
                   ],
@@ -3985,9 +3285,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3505,
+                      "duration": 3690,
                       "errors": [],
                       "stdout": [
                         {
@@ -3996,7 +3296,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:28:32.193Z",
+                      "startTime": "2025-03-12T16:26:57.285Z",
                       "attachments": []
                     }
                   ],
@@ -4024,9 +3324,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3128,
+                      "duration": 3337,
                       "errors": [],
                       "stdout": [
                         {
@@ -4035,7 +3335,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:28:35.702Z",
+                      "startTime": "2025-03-12T16:27:00.980Z",
                       "attachments": []
                     }
                   ],
@@ -4063,9 +3363,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3220,
+                      "duration": 3669,
                       "errors": [],
                       "stdout": [
                         {
@@ -4074,7 +3374,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:28:38.835Z",
+                      "startTime": "2025-03-12T16:27:04.321Z",
                       "attachments": []
                     }
                   ],
@@ -4102,9 +3402,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 21,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3200,
+                      "duration": 3404,
                       "errors": [],
                       "stdout": [
                         {
@@ -4113,7 +3413,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-03-12T15:28:42.059Z",
+                      "startTime": "2025-03-12T16:27:07.993Z",
                       "attachments": []
                     }
                   ],
@@ -4132,11 +3432,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-03-12T15:23:57.997Z",
-    "duration": 287309.416,
-    "expected": 77,
+    "startTime": "2025-03-12T16:23:58.513Z",
+    "duration": 192936.194,
+    "expected": 84,
     "skipped": 2,
-    "unexpected": 7,
+    "unexpected": 0,
     "flaky": 0
   }
 }
