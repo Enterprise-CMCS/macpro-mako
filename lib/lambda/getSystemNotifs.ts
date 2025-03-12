@@ -1,5 +1,5 @@
-import { getSecret } from "shared-utils";
 import { response } from "libs/handler-lib";
+import { getSecret } from "shared-utils";
 
 export const getSystemNotifs = async () => {
   try {

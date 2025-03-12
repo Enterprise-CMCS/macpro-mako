@@ -1,6 +1,6 @@
+import { cpocs } from "lib/packages/shared-types/opensearch";
 import { search } from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
-import { cpocs } from "lib/packages/shared-types/opensearch";
 
 export const getNextSplitSPAId = async (spaId: string) => {
   const { domain, index } = getDomainAndNamespace("main");

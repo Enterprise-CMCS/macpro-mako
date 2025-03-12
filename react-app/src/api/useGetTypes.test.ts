@@ -1,21 +1,22 @@
-import { describe, expect, it } from "vitest";
-import { fetchData } from "./useGetTypes";
-import {
-  MEDICAID_SPA_AUTHORITY_ID,
-  CHIP_SPA_AUTHORITY_ID,
-  NOT_FOUND_AUTHORITY_ID,
-  ERROR_AUTHORITY_ID,
-  TYPE_ONE_ID,
-  TYPE_TWO_ID,
-  TYPE_THREE_ID,
-  DO_NOT_USE_TYPE_ID,
-  medicaidTypes,
-  medicaidSubtypes,
-  chipTypes,
-  chipSubtypes,
-} from "mocks/data/types";
 import { errorApiSubTypesHandler, errorApiTypeHandler } from "mocks";
+import {
+  CHIP_SPA_AUTHORITY_ID,
+  chipSubtypes,
+  chipTypes,
+  DO_NOT_USE_TYPE_ID,
+  ERROR_AUTHORITY_ID,
+  MEDICAID_SPA_AUTHORITY_ID,
+  medicaidSubtypes,
+  medicaidTypes,
+  NOT_FOUND_AUTHORITY_ID,
+  TYPE_ONE_ID,
+  TYPE_THREE_ID,
+  TYPE_TWO_ID,
+} from "mocks/data/types";
 import { mockedApiServer as mockedServer } from "mocks/server";
+import { describe, expect, it } from "vitest";
+
+import { fetchData } from "./useGetTypes";
 
 describe("fetchData", () => {
   describe("fetchTypes", () => {

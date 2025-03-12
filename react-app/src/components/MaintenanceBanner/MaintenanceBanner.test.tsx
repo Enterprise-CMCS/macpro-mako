@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { describe, vi, it, expect, afterEach } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { MaintenanceBanner } from ".";
 
 vi.mock("launchdarkly-react-client-sdk", () => ({

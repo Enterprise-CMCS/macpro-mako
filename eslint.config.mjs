@@ -5,6 +5,7 @@ import eslintConfigPrettier from "eslint-config-prettier";
 import prettier from "eslint-plugin-prettier";
 import react from "eslint-plugin-react";
 import eslintReactHooks from "eslint-plugin-react-hooks";
+import eslintImportSort from "eslint-plugin-simple-import-sort";
 import path from "path";
 import tseslint from "typescript-eslint";
 import { fileURLToPath } from "url";
@@ -22,8 +23,9 @@ export default tseslint.config(
   {
     plugins: {
       react,
-      // @ts-expect-error https://github.com/facebook/react/pull/28773#issuecomment-2147149016
+      // @ts-expect-error
       "react-hooks": fixupPluginRules(eslintReactHooks),
+      "simple-import-sort": eslintImportSort,
       prettier,
     },
     languageOptions: {
@@ -44,6 +46,7 @@ export default tseslint.config(
     },
 
     rules: {
+      "simple-import-sort/imports": "error",
       "prettier/prettier": "error",
       "react/react-in-jsx-scope": "off",
       "react/jsx-no-useless-fragment": ["error", { allowExpressions: true }],

@@ -1,9 +1,10 @@
-import { describe, it, expect } from "vitest";
 import * as cdk from "aws-cdk-lib";
-import { WafConstruct, CloudFrontWaf, RegionalWaf } from ".";
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import * as logs from "aws-cdk-lib/aws-logs";
 import * as wafv2 from "aws-cdk-lib/aws-wafv2";
-import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import { describe, expect, it } from "vitest";
+
+import { CloudFrontWaf, RegionalWaf, WafConstruct } from ".";
 
 describe("WafConstruct", () => {
   const app = new cdk.App();

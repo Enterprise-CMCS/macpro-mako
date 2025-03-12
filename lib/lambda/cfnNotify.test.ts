@@ -1,8 +1,9 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { handler } from "./cfnNotify";
 import { Context } from "aws-lambda";
-import { CLOUDFORMATION_NOTIFICATION_DOMAIN } from "mocks";
 import * as cfn from "cfn-response-async";
+import { CLOUDFORMATION_NOTIFICATION_DOMAIN } from "mocks";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { handler } from "./cfnNotify";
 
 describe("Lambda Handler", () => {
   const cfnSpy = vi.spyOn(cfn, "send");

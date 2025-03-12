@@ -1,4 +1,5 @@
-import { useOsContext, ErrorAlert, OsMainView, LoadingSpinner } from "@/components";
+import { ErrorAlert, LoadingSpinner, OsMainView, useOsContext } from "@/components";
+
 import { useSpaTableColumns } from "./consts";
 
 export const SpasList = () => {

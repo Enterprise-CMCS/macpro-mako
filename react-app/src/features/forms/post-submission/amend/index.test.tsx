@@ -1,13 +1,15 @@
 import { screen } from "@testing-library/react";
-import { Amendment } from "../amend";
-import { describe, expect, test, beforeAll } from "vitest";
-import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
-import { mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
 import {
   CAPITATED_INITIAL_ITEM_ID,
   CONTRACTING_INITIAL_ITEM_ID,
   MISSING_CHANGELOG_ITEM_ID,
 } from "mocks";
+import { beforeAll, describe, expect, test } from "vitest";
+
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
+import { mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
+
+import { Amendment } from "../amend";
 
 describe("Post-submission Amendment", () => {
   beforeAll(() => {

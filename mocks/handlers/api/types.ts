@@ -1,5 +1,6 @@
 import { http, HttpResponse } from "msw";
-import { types, subtypes } from "../../data/types";
+
+import { subtypes, types } from "../../data/types";
 
 type GetTypesBody = { authorityId: number };
 type GetSubTypesBody = { authorityId: number; typeIds: number[] };

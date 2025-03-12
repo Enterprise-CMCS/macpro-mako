@@ -1,11 +1,12 @@
+import { screen } from "@testing-library/react";
+import { EXISTING_ITEM_PENDING_ID } from "mocks";
+import { beforeAll, describe, expect, test } from "vitest";
+
 import { RespondToRaiChip } from "@/features/forms/post-submission/respond-to-rai";
 import { formSchemas } from "@/formSchemas";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { screen } from "@testing-library/react";
-import { EXISTING_ITEM_PENDING_ID } from "mocks";
-import { beforeAll, describe, expect, test } from "vitest";
 
 const upload = uploadFiles<(typeof formSchemas)["respond-to-rai-chip"]>();
 

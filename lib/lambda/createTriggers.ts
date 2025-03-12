@@ -1,10 +1,10 @@
-import { Handler } from "aws-lambda";
 import {
   CreateEventSourceMappingCommand,
   CreateEventSourceMappingCommandInput,
   GetEventSourceMappingCommand,
   LambdaClient,
 } from "@aws-sdk/client-lambda";
+import { Handler } from "aws-lambda";
 import { randomUUID } from "crypto";
 
 export const handler: Handler = async (event, _, callback) => {

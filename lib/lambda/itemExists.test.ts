@@ -1,6 +1,7 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { GET_ERROR_ITEM_ID, NOT_FOUND_ITEM_ID, TEST_ITEM_ID, NOT_EXISTING_ITEM_ID } from "mocks";
+import { GET_ERROR_ITEM_ID, NOT_EXISTING_ITEM_ID, NOT_FOUND_ITEM_ID, TEST_ITEM_ID } from "mocks";
 import { describe, expect, it } from "vitest";
+
 import { handler } from "./itemExists";
 
 describe("Handler for checking if record exists", () => {

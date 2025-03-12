@@ -1,8 +1,9 @@
-import { describe, it, expect } from "vitest";
-import { submit } from "./index";
-import { APIGatewayEvent } from "node_modules/shared-types";
-import { getRequestContext, automatedStateSubmitter } from "mocks";
+import { automatedStateSubmitter, getRequestContext } from "mocks";
 import { eventsAuthorizationRequired } from "mocks/data/submit/base";
+import { APIGatewayEvent } from "node_modules/shared-types";
+import { describe, expect, it } from "vitest";
+
+import { submit } from "./index";
 
 describe("submit Lambda function with unauthorized submitter", () => {
   it.each(eventsAuthorizationRequired.map((event) => [event.event, JSON.stringify(event)]))(

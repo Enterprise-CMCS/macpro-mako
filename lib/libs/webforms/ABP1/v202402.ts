@@ -1,4 +1,4 @@
-import { FormSchema, DefaultFieldGroupProps } from "shared-types";
+import { DefaultFieldGroupProps, FormSchema } from "shared-types";
 import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 export const v202402: FormSchema = {
