@@ -4,8 +4,9 @@ import userEvent from "@testing-library/user-event";
 import {
   ATTACHMENT_BUCKET_NAME,
   MISSING_CHANGELOG_ITEM_ID,
-  NOT_FOUND_ITEM_ID,
   setDefaultStateSubmitter,
+  TEST_ITEM_WITH_CHANGELOG,
+  WITHDRAW_APPK_ITEM,
   WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -22,13 +23,19 @@ describe("Package Activity", () => {
   });
 
   it("renders nothing if submission is not queried", async () => {
-    await renderFormWithPackageSectionAsync(<PackageActivities />, NOT_FOUND_ITEM_ID);
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id={MISSING_CHANGELOG_ITEM_ID} changelog={[]} />,
+      MISSING_CHANGELOG_ITEM_ID,
+    );
 
     expect(toBeEmptyDOMElement);
   });
 
   it("displays the correct title and description if changelog length is 0", async () => {
-    await renderFormWithPackageSectionAsync(<PackageActivities />, MISSING_CHANGELOG_ITEM_ID);
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id={MISSING_CHANGELOG_ITEM_ID} changelog={[]} />,
+      MISSING_CHANGELOG_ITEM_ID,
+    );
 
     expect(screen.getByText("Package Activity (0)"));
     expect(screen.getByText("No package activity recorded"));
@@ -36,7 +43,13 @@ describe("Package Activity", () => {
   });
 
   it("displays the correct title with changelog length, a changelog entry, and the 'Download all documents' button", async () => {
-    await renderFormWithPackageSectionAsync(<PackageActivities />, WITHDRAWN_CHANGELOG_ITEM_ID);
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities
+        id={WITHDRAWN_CHANGELOG_ITEM_ID}
+        changelog={WITHDRAW_APPK_ITEM._source.changelog}
+      />,
+      WITHDRAWN_CHANGELOG_ITEM_ID,
+    );
 
     expect(screen.getByText("Package Activity (7)"));
     expect(screen.getByText("Initial Package Submitted"));
@@ -47,14 +60,20 @@ describe("Package Activity", () => {
   it("calls 'Download all documents' with onZip and the correct attachment arguments", async () => {
     const spiedOnZip = vi.fn();
 
-    // @ts-ignore
+    // @ts-expect-error
     vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
       onZip: spiedOnZip,
       loading: false,
     }));
 
     const user = userEvent.setup();
-    await renderFormWithPackageSectionAsync(<PackageActivities />, WITHDRAWN_CHANGELOG_ITEM_ID);
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities
+        id={WITHDRAWN_CHANGELOG_ITEM_ID}
+        changelog={WITHDRAW_APPK_ITEM._source.changelog}
+      />,
+      WITHDRAWN_CHANGELOG_ITEM_ID,
+    );
 
     const downloadAllDocumentsBtn = screen.getByText("Download all documents");
     await user.click(downloadAllDocumentsBtn);
@@ -64,12 +83,6 @@ describe("Package Activity", () => {
         filename: "contract_amendment_2024.pdf",
         key: "doc001",
         title: "Contract Amendment",
-        bucket: ATTACHMENT_BUCKET_NAME,
-      },
-      {
-        filename: "contract_amendment_2024_2.pdf",
-        key: "doc002",
-        title: "Contract Amendment2",
         bucket: ATTACHMENT_BUCKET_NAME,
       },
       {
@@ -114,14 +127,20 @@ describe("Package Activity", () => {
   it("calls 'Download documents' with onZip and the correct attachment arguments", async () => {
     const spiedOnZip = vi.fn();
 
-    // @ts-ignore
+    // @ts-expect-error
     vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
       onZip: spiedOnZip,
       loading: false,
     }));
 
     const user = userEvent.setup();
-    await renderFormWithPackageSectionAsync(<PackageActivities />, WITHDRAWN_CHANGELOG_ITEM_ID);
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities
+        id={WITHDRAWN_CHANGELOG_ITEM_ID}
+        changelog={TEST_ITEM_WITH_CHANGELOG._source.changelog}
+      />,
+      WITHDRAWN_CHANGELOG_ITEM_ID,
+    );
 
     const downloadDocumentsBtn = screen.getByText("Download documents");
     await user.click(downloadDocumentsBtn);
@@ -146,7 +165,7 @@ describe("Package Activity", () => {
     const spiedOnUrl = vi.fn(() => Promise.resolve("hello world!"));
     const spiedWindowOpen = vi.fn();
 
-    // @ts-ignore
+    // @ts-expect-error
     vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
       onUrl: spiedOnUrl,
       loading: false,
@@ -155,7 +174,13 @@ describe("Package Activity", () => {
     vi.spyOn(window, "open").mockImplementation(spiedWindowOpen);
 
     const user = userEvent.setup();
-    await renderFormWithPackageSectionAsync(<PackageActivities />, WITHDRAWN_CHANGELOG_ITEM_ID);
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities
+        id={WITHDRAWN_CHANGELOG_ITEM_ID}
+        changelog={WITHDRAW_APPK_ITEM._source.changelog}
+      />,
+      WITHDRAWN_CHANGELOG_ITEM_ID,
+    );
 
     const firstDocumentBtn = screen.getByText("contract_amendment_2024.pdf");
     await user.click(firstDocumentBtn);
