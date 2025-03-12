@@ -1,9 +1,10 @@
-import { describe, it, expect } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
-import { handler } from "./getCpocs";
-import { mockedServiceServer } from "mocks/server";
 import { emptyOSCpocSearchHandler, errorOSCpocSearchHandler } from "mocks";
 import { cpocsList } from "mocks/data/cpocs";
+import { mockedServiceServer } from "mocks/server";
+import { describe, expect, it } from "vitest";
+
+import { handler } from "./getCpocs";
 
 describe("getCpocs Handler", () => {
   it("should return 400 if event body is missing", async () => {

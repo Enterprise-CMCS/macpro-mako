@@ -1,9 +1,11 @@
-import { useGetPackageActions } from "@/api";
-import { LoadingSpinner } from "@/components";
-import { WAIVER_SUBMISSION_ORIGIN, DETAILS_ORIGIN, ORIGIN, mapActionLabel } from "@/utils";
-import { DetailCardWrapper } from "..";
 import { Link, useLocation } from "react-router";
 import { opensearch } from "shared-types";
+
+import { useGetPackageActions } from "@/api";
+import { LoadingSpinner } from "@/components";
+import { DETAILS_ORIGIN, mapActionLabel, ORIGIN, WAIVER_SUBMISSION_ORIGIN } from "@/utils";
+
+import { DetailCardWrapper } from "..";
 
 type PackageActionsCardProps = {
   id: string;

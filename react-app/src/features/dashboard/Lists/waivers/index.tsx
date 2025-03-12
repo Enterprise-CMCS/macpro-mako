@@ -1,4 +1,5 @@
-import { useOsContext, ErrorAlert, OsMainView, LoadingSpinner } from "@/components";
+import { ErrorAlert, LoadingSpinner, OsMainView, useOsContext } from "@/components";
+
 import { useWaiverTableColumns } from "./consts";
 
 export const WaiversList = () => {

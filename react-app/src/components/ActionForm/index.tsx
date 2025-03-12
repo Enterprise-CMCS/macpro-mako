@@ -1,38 +1,40 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { API } from "aws-amplify";
 import { ReactNode, useMemo } from "react";
+import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router";
+import { Authority, CognitoUserAttributes } from "shared-types";
+import { isStateUser } from "shared-utils";
+import { z } from "zod";
+
+import { useGetUser } from "@/api";
 import {
-  Banner,
-  Button,
-  UserPrompt,
-  SimplePageContainer,
-  BreadCrumbs,
-  Form,
-  LoadingSpinner,
-  SectionCard,
-  FormField,
-  banner,
-  userPrompt,
-  FAQFooter,
-  PreSubmissionMessage,
-  optionCrumbsFromPath,
   ActionFormDescription,
+  Banner,
+  banner,
+  BreadCrumbs,
+  Button,
+  FAQFooter,
+  Form,
+  FormField,
+  LoadingSpinner,
+  optionCrumbsFromPath,
+  PreSubmissionMessage,
   RequiredFieldDescription,
   RequiredIndicator,
+  SectionCard,
+  SimplePageContainer,
+  UserPrompt,
+  userPrompt,
 } from "@/components";
-import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Navigate, useLocation, useNavigate, useParams } from "react-router";
+import { queryClient } from "@/router";
 import { getFormOrigin } from "@/utils";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
-import { API } from "aws-amplify";
-import { Authority, CognitoUserAttributes } from "shared-types";
-import { ActionFormAttachments, AttachmentsOptions } from "./ActionFormAttachments";
+
 import { getAttachments } from "./actionForm.utilities";
-import { isStateUser } from "shared-utils";
-import { useGetUser } from "@/api";
+import { ActionFormAttachments, AttachmentsOptions } from "./ActionFormAttachments";
 import { AdditionalInformation } from "./AdditionalInformation";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/router";
 
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {

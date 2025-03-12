@@ -1,17 +1,13 @@
 import { useMemo } from "react";
 import { opensearch } from "shared-types";
-import {
-  Accordion,
-  DetailsSection,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components";
-import * as Table from "@/components";
-import { BLANK_VALUE } from "@/consts";
-import { useAttachmentService, Attachments } from "./hook";
 import { ItemResult } from "shared-types/opensearch/changelog";
 import { formatDateToEST } from "shared-utils";
+
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components";
+import * as Table from "@/components";
+import { BLANK_VALUE } from "@/consts";
+
+import { Attachments, useAttachmentService } from "./hook";
 
 type AttachmentDetailsProps = {
   id: string;
@@ -181,7 +177,7 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => 
   const changelogWithoutAdminChanges = changelog.filter((item) => !item._source.isAdminChange);
 
   return (
-    <DetailsSection
+    <Table.DetailsSection
       id="package_activity"
       title={
         <div className="flex justify-between">
@@ -205,6 +201,6 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => 
       ) : (
         <p className="text-gray-500">No package activity recorded</p>
       )}
-    </DetailsSection>
+    </Table.DetailsSection>
   );
 };

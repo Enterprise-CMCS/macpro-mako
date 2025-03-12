@@ -1,9 +1,10 @@
-import { Argv } from "yargs";
 import {
   CloudFormationClient,
   DeleteStackCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
+import { Argv } from "yargs";
+
 import { checkIfAuthenticated, confirmDestroyCommand, project, region } from "../lib";
 
 const waitForStackDeleteComplete = async (client: CloudFormationClient, stackName: string) => {

@@ -1,15 +1,16 @@
 import { Text } from "@react-email/components";
 import { CommonEmailVariables, Events } from "shared-types";
-import { formatNinetyDaysDate, formatDate } from "shared-utils";
+import { formatDate, formatNinetyDaysDate } from "shared-utils";
+
 import {
-  PackageDetails,
   BasicFooter,
-  FollowUpNotice,
   Divider,
+  FollowUpNotice,
   MailboxNotice,
+  PackageDetails,
 } from "../../email-components";
-import { BaseEmailTemplate } from "../../email-templates";
 import { styles } from "../../email-styles";
+import { BaseEmailTemplate } from "../../email-templates";
 
 export const AppKStateEmail = (props: {
   variables: Events["AppKSubmission"] & CommonEmailVariables;

@@ -1,3 +1,5 @@
+import { ReactNode, useState } from "react";
+import { Authority, opensearch } from "shared-types";
 import {
   formatActionType,
   formatDateToEST,
@@ -8,8 +10,6 @@ import {
 
 import { OneMacUser } from "@/api/useGetUser";
 import { BLANK_VALUE } from "@/consts";
-import { useState, ReactNode } from "react";
-import { Authority, opensearch } from "shared-types";
 import { convertStateAbbrToFullName } from "@/utils";
 
 type ReviewTeamListProps = {

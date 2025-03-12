@@ -1,3 +1,5 @@
+import { SEATOOL_AUTHORITIES } from "shared-types";
+
 import {
   finalDispositionStatuses,
   getStatus,
@@ -7,8 +9,6 @@ import {
   SeatoolOfficer,
   seatoolSchema,
 } from "../../..";
-
-import { SEATOOL_AUTHORITIES } from "shared-types";
 
 function getLeadAnalyst(eventData: SeaTool) {
   let leadAnalystOfficerId: null | number = null;

@@ -1,9 +1,10 @@
 import { CommonEmailVariables, Events } from "shared-types";
+
 import {
-  PackageDetails,
+  Attachments,
   BasicFooter,
   LoginInstructions,
-  Attachments,
+  PackageDetails,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 

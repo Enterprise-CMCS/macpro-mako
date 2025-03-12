@@ -1,7 +1,8 @@
-import { describe, it, expect } from "vitest";
 import * as cdk from "aws-cdk-lib";
-import { CloudWatchLogsResourcePolicy } from ".";
 import * as logs from "aws-cdk-lib/aws-logs";
+import { describe, expect, it } from "vitest";
+
+import { CloudWatchLogsResourcePolicy } from ".";
 
 describe("CloudWatchLogsResourcePolicy", () => {
   const app = new cdk.App();

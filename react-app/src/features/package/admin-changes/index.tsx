@@ -1,5 +1,8 @@
 import { useMemo } from "react";
 import { opensearch } from "shared-types";
+import { ItemResult } from "shared-types/opensearch/changelog";
+import { formatDateToEST } from "shared-utils";
+
 import {
   Accordion,
   AccordionContent,
@@ -8,8 +11,6 @@ import {
   DetailsSection,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
-import { ItemResult } from "shared-types/opensearch/changelog";
-import { formatDateToEST } from "shared-utils";
 
 type AdminChangeProps = {
   adminActivity: opensearch.changelog.Document;
@@ -66,6 +67,10 @@ export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
         return [adminActivity.changeType || "Manual Update", AC_LegacyAdminChange];
       case "split-spa":
         return ["Package Added", AC_LegacyAdminChange];
+      case "update-id":
+        return ["Manual Update", AC_LegacyAdminChange];
+      case "update-values":
+        return ["Manual Update", AC_LegacyAdminChange];
       default:
         return [BLANK_VALUE, AC_Update];
     }

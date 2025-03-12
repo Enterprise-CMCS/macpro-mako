@@ -1,19 +1,20 @@
-import { describe, it, expect, vi } from "vitest";
-import * as os from "libs/opensearch-lib";
-import { Context } from "aws-lambda";
 import { SESClient } from "@aws-sdk/client-ses";
-import { handler } from "./processEmails";
-import { KafkaRecord, KafkaEvent } from "shared-types";
-import { Authority } from "shared-types";
+import { Context } from "aws-lambda";
+import * as os from "libs/opensearch-lib";
 import {
+  NOT_FOUND_ITEM_ID,
   SIMPLE_ID,
+  WITHDRAW_EMAIL_SENT,
   WITHDRAW_RAI_ITEM_B,
   WITHDRAW_RAI_ITEM_C,
-  NOT_FOUND_ITEM_ID,
-  WITHDRAW_EMAIL_SENT,
   WITHDRAW_RAI_ITEM_D,
   WITHDRAW_RAI_ITEM_E,
 } from "mocks";
+import { KafkaEvent, KafkaRecord } from "shared-types";
+import { Authority } from "shared-types";
+import { describe, expect, it, vi } from "vitest";
+
+import { handler } from "./processEmails";
 const nms = "new-medicaid-submission";
 const ncs = "new-chip-submission";
 const tempExtension = "temporary-extension";

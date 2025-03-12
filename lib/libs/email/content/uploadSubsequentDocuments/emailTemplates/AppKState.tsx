@@ -1,9 +1,10 @@
+import { Text } from "@react-email/components";
 import { Events } from "shared-types";
 import { CommonEmailVariables } from "shared-types";
-import { Text } from "@react-email/components";
-import { PackageDetails, Attachments, BasicFooter, Divider } from "../../email-components";
-import { BaseEmailTemplate } from "../../email-templates";
+
+import { Attachments, BasicFooter, Divider, PackageDetails } from "../../email-components";
 import { styles } from "../../email-styles";
+import { BaseEmailTemplate } from "../../email-templates";
 
 export const AppKStateEmail = ({
   variables,

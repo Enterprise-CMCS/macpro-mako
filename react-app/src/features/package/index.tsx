@@ -1,19 +1,18 @@
-import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
-
-import { useGetItem, getItem } from "@/api";
-import { BreadCrumbs } from "@/components/BreadCrumb";
 import { PropsWithChildren } from "react";
+import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
+import { Authority } from "shared-types";
 
-import { PackageActivities } from "./package-activity";
+import { getItem, useGetItem } from "@/api";
+import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
+import { BreadCrumbs } from "@/components/BreadCrumb";
+import { detailsAndActionsCrumbs } from "@/utils";
+
 import { AdminPackageActivities } from "./admin-changes";
-
+import { useDetailsSidebarLinks } from "./hooks";
+import { PackageActionsCard } from "./package-actions";
+import { PackageActivities } from "./package-activity";
 import { PackageDetails } from "./package-details";
 import { PackageStatusCard } from "./package-status";
-import { PackageActionsCard } from "./package-actions";
-import { useDetailsSidebarLinks } from "./hooks";
-import { Authority } from "shared-types";
-import { LoaderFunctionArgs, useLoaderData, redirect } from "react-router";
-import { detailsAndActionsCrumbs } from "@/utils";
 
 export const DetailCardWrapper = ({
   title,

@@ -1,5 +1,5 @@
-import type { opensearch } from "shared-types";
 import type { ReactNode } from "react";
+import type { opensearch } from "shared-types";
 
 export type OsTableColumn = {
   field?: opensearch.main.Field;
