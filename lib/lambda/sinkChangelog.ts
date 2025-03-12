@@ -1,15 +1,16 @@
 import { Handler } from "aws-lambda";
-import { decodeBase64WithUtf8 } from "shared-utils";
-import { KafkaEvent, KafkaRecord, opensearch } from "shared-types";
-import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "libs/sink-lib";
-import {
-  transformUpdateValuesSchema,
-  transformDeleteSchema,
-  transformedUpdateIdSchema,
-  transformedSplitSPASchema,
-  transformSubmitValuesSchema,
-} from "./update/adminChangeSchemas";
 import { getPackageChangelog } from "libs/api/package";
+import { bulkUpdateDataWrapper, ErrorType, getTopic, logError } from "libs/sink-lib";
+import { KafkaEvent, KafkaRecord, opensearch } from "shared-types";
+import { decodeBase64WithUtf8 } from "shared-utils";
+
+import {
+  transformDeleteSchema,
+  transformedSplitSPASchema,
+  transformedUpdateIdSchema,
+  transformSubmitValuesSchema,
+  transformUpdateValuesSchema,
+} from "./update/adminChangeSchemas";
 
 // One notable difference between this handler and sinkMain's...
 // The order in which records are processed for the changelog doesn't matter.
@@ -77,25 +78,32 @@ const processAndIndex = async ({
 
         if (result.success) {
           if (result.data.adminChangeType === "update-id" && "idToBeUpdated" in result.data) {
-            // Push doc with package being soft deleted
+            const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
+            // Push doc with content of package being soft deleted
             docs.forEach((log) => {
               const recordOffset = log.id.split("-").at(-1);
               docs.push({
                 ...log,
-                id: `${result.data.id}-${recordOffset}`,
-                packageId: result.data.id,
+                id: `${id}-${recordOffset}`,
+                packageId: id,
+                deleted: false,
+                ...restOfResultData,
               });
             });
-            // Get all changelog entries for this ID and create copies of all entries with new ID
-            const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
+            // Get all changelog entries for the original package ID
+            // Filter out any entry regarding the soft deleted event
+            // Create copies of the rest of the changelog entries with the new package ID
+            const packageChangelogs = await getPackageChangelog(idToBeUpdated);
 
             packageChangelogs.hits.hits.forEach((log) => {
-              const recordOffset = log._id.split("-").at(-1);
-              docs.push({
-                ...log._source,
-                id: `${result.data.id}-${recordOffset}`,
-                packageId: result.data.id,
-              });
+              if (log._source.event !== "delete") {
+                const recordOffset = log._id.split("-").at(-1);
+                docs.push({
+                  ...log._source,
+                  id: `${id}-${recordOffset}`,
+                  packageId: id,
+                });
+              }
             });
           } else if (
             result.data.adminChangeType === "split-spa" &&

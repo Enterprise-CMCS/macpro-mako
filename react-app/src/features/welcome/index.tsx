@@ -1,12 +1,13 @@
-import * as C from "@/components";
 import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
-import { getUser } from "@/api";
-import { Button } from "@/components";
 import { Link } from "react-router";
-import { FAQ_TAB } from "@/router";
+
+import { getUser } from "@/api";
+import * as C from "@/components";
+import { Button } from "@/components";
 import { CardWithTopBorder } from "@/components";
 import { useHideBanner } from "@/hooks/useHideBanner";
+import { FAQ_TAB } from "@/router";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {

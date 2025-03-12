@@ -1,24 +1,25 @@
 import { Navigate, useLocation } from "react-router";
+import { isStateUser } from "shared-utils";
+
+import { useGetUser } from "@/api";
 import {
+  BreadCrumbs,
   MACFieldsetOption,
   OptionCard,
+  optionCrumbsFromPath,
   OptionFieldset,
   SimplePageContainer,
-  BreadCrumbs,
-  optionCrumbsFromPath,
 } from "@/components";
 import {
   AUTHORITY_OPTIONS,
-  B4_WAIVER_OPTIONS,
   B_WAIVER_OPTIONS,
+  B4_WAIVER_OPTIONS,
   BCAP_WAIVER_OPTIONS,
   CHIP_SPA_OPTIONS,
   MEDICAID_SPA_OPTIONS,
   SPA_OPTIONS,
   WAIVER_OPTIONS,
 } from "@/features";
-import { useGetUser } from "@/api";
-import { isStateUser } from "shared-utils";
 
 /** Can be removed once page title bar with back nav is integrated */
 export const SimplePageTitle = ({ title }: { title: string }) => (

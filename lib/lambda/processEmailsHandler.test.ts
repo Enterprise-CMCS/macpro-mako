@@ -1,19 +1,20 @@
-import { describe, it, expect, vi } from "vitest";
-import * as os from "libs/opensearch-lib";
-import { Context } from "aws-lambda";
 import { SESClient } from "@aws-sdk/client-ses";
-import { handler } from "./processEmails";
-import { KafkaRecord, KafkaEvent } from "shared-types";
-import { Authority } from "shared-types";
+import { Context } from "aws-lambda";
+import * as os from "libs/opensearch-lib";
 import {
+  NOT_FOUND_ITEM_ID,
   SIMPLE_ID,
+  WITHDRAW_EMAIL_SENT,
   WITHDRAW_RAI_ITEM_B,
   WITHDRAW_RAI_ITEM_C,
-  NOT_FOUND_ITEM_ID,
-  WITHDRAW_EMAIL_SENT,
   WITHDRAW_RAI_ITEM_D,
   WITHDRAW_RAI_ITEM_E,
 } from "mocks";
+import { KafkaEvent, KafkaRecord } from "shared-types";
+import { Authority } from "shared-types";
+import { describe, expect, it, vi } from "vitest";
+
+import { handler } from "./processEmails";
 const nms = "new-medicaid-submission";
 const ncs = "new-chip-submission";
 const tempExtension = "temporary-extension";
@@ -28,187 +29,191 @@ describe("process emails  Handler", () => {
   it.each([
     [
       `should send an email for ${respondToRai} with ${Authority.MED_SPA}`,
-      Authority.MED_SPA,
-      respondToRai,
-      SIMPLE_ID,
+      {
+        authority: Authority.MED_SPA,
+        event: respondToRai,
+        id: SIMPLE_ID,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${respondToRai} with ${Authority.CHIP_SPA}`,
-      Authority.CHIP_SPA,
-      respondToRai,
-      SIMPLE_ID,
+      {
+        authority: Authority.CHIP_SPA,
+        event: respondToRai,
+        id: SIMPLE_ID,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${respondToRai} with ${Authority["1915b"]}`,
-      Authority["1915b"],
-      respondToRai,
-      SIMPLE_ID,
+      {
+        authority: Authority["1915b"],
+        event: respondToRai,
+        id: SIMPLE_ID,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${respondToRai} with ${Authority["1915c"]}`,
-      Authority["1915c"],
-      respondToRai,
-      SIMPLE_ID,
+      {
+        authority: Authority["1915c"],
+        event: respondToRai,
+        id: SIMPLE_ID,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${nms} with ${Authority.MED_SPA}`,
-      Authority.MED_SPA,
-      nms,
-      SIMPLE_ID,
+      {
+        authority: Authority.MED_SPA,
+        event: nms,
+        id: SIMPLE_ID,
+        proposedEffectiveDate: 1732645041557,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${nms} with ${Authority.CHIP_SPA}`,
-      Authority.CHIP_SPA,
-      nms,
-      SIMPLE_ID,
-    ],
-    [
-      `should send an email for ${nms} with ${Authority["1915b"]}`,
-      Authority["1915b"],
-      nms,
-      SIMPLE_ID,
-    ],
-    [
-      `should send an email for ${nms} with ${Authority["1915c"]}`,
-      Authority["1915c"],
-      nms,
-      SIMPLE_ID,
-    ],
-    [
-      `should send an email for ${ncs} with ${Authority.MED_SPA}`,
-      Authority.MED_SPA,
-      ncs,
-      SIMPLE_ID,
+      { authority: Authority.CHIP_SPA, event: nms, id: SIMPLE_ID, timestamp: 1732645041557 },
     ],
     [
       `should send an email for ${ncs} with ${Authority.CHIP_SPA}`,
-      Authority.CHIP_SPA,
-      ncs,
-      SIMPLE_ID,
-    ],
-    [
-      `should send an email for ${ncs} with ${Authority["1915b"]}`,
-      Authority["1915b"],
-      ncs,
-      SIMPLE_ID,
-    ],
-    [
-      `should send an email for ${ncs} with ${Authority["1915c"]}`,
-      Authority["1915c"],
-      ncs,
-      SIMPLE_ID,
+      { authority: Authority.CHIP_SPA, event: ncs, id: SIMPLE_ID, timestamp: 1732645041557 },
     ],
     [
       `should send an email for ${tempExtension} with ${Authority["1915b"]}`,
-      Authority["1915b"],
-      tempExtension,
-      SIMPLE_ID,
+      {
+        authority: Authority["1915b"],
+        event: tempExtension,
+        id: SIMPLE_ID,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${tempExtension} with ${Authority["1915c"]}`,
-      Authority["1915c"],
-      tempExtension,
-      SIMPLE_ID,
+      {
+        authority: Authority["1915c"],
+        event: tempExtension,
+        id: SIMPLE_ID,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${withdrawPackage} with ${Authority.MED_SPA}`,
-      Authority.MED_SPA,
-      withdrawPackage,
-      SIMPLE_ID,
+      {
+        authority: Authority.MED_SPA,
+        event: withdrawPackage,
+        id: SIMPLE_ID,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${withdrawPackage} with ${Authority.CHIP_SPA}`,
-      Authority.CHIP_SPA,
-      withdrawPackage,
-      SIMPLE_ID,
+      {
+        authority: Authority.CHIP_SPA,
+        event: withdrawPackage,
+        id: SIMPLE_ID,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${withdrawPackage} for ${ncs} with ${Authority["1915b"]}`,
-      Authority["1915b"],
-      withdrawPackage,
-      SIMPLE_ID,
-    ],
-    [
-      `should send an email for ${contractingInitial} with ${Authority.MED_SPA}`,
-      Authority.MED_SPA,
-      contractingInitial,
-      SIMPLE_ID,
-    ],
-    [
-      `should send an email for ${contractingInitial} with ${Authority.CHIP_SPA}`,
-      Authority.CHIP_SPA,
-      contractingInitial,
-      SIMPLE_ID,
+      {
+        authority: Authority["1915b"],
+        event: withdrawPackage,
+        id: SIMPLE_ID,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${contractingInitial} with ${Authority["1915b"]}`,
-      Authority["1915b"],
-      contractingInitial,
-      SIMPLE_ID,
+      {
+        authority: Authority["1915b"],
+        event: contractingInitial,
+        proposedEffectiveDate: 1732645041557,
+        id: SIMPLE_ID,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${contractingInitial} with ${Authority["1915c"]}`,
-      Authority["1915c"],
-      contractingInitial,
-      SIMPLE_ID,
-    ],
-    [
-      `should send an email for ${capitatedInitial} with ${Authority.MED_SPA}`,
-      Authority.MED_SPA,
-      capitatedInitial,
-      SIMPLE_ID,
-    ],
-    [
-      `should send an email for ${capitatedInitial} with ${Authority.CHIP_SPA}`,
-      Authority.CHIP_SPA,
-      capitatedInitial,
-      SIMPLE_ID,
+      {
+        authority: Authority["1915c"],
+        event: contractingInitial,
+        proposedEffectiveDate: 1732645041557,
+        id: SIMPLE_ID,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${capitatedInitial} with ${Authority["1915b"]}`,
-      Authority["1915b"],
-      capitatedInitial,
-      SIMPLE_ID,
+      {
+        authority: Authority["1915b"],
+        event: capitatedInitial,
+        proposedEffectiveDate: 1732645041557,
+        id: SIMPLE_ID,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${withdrawRai} with ${Authority["1915b"]}`,
-      Authority["1915b"],
-      withdrawRai,
-      WITHDRAW_RAI_ITEM_B,
+      {
+        authority: Authority["1915b"],
+        event: withdrawRai,
+        id: WITHDRAW_RAI_ITEM_B,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${withdrawRai} with ${Authority["1915c"]}`,
-      Authority["1915c"],
-      withdrawRai,
-      WITHDRAW_RAI_ITEM_C,
+      {
+        authority: Authority["1915c"],
+        event: withdrawRai,
+        id: WITHDRAW_RAI_ITEM_C,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${withdrawRai} with ${Authority["CHIP_SPA"]}`,
-      Authority["CHIP_SPA"],
-      withdrawRai,
-      WITHDRAW_RAI_ITEM_D,
+      {
+        authority: Authority["CHIP_SPA"],
+        event: withdrawRai,
+        id: WITHDRAW_RAI_ITEM_D,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${withdrawRai} with ${Authority["MED_SPA"]}`,
-      Authority["MED_SPA"],
-      withdrawRai,
-      WITHDRAW_RAI_ITEM_E,
+      {
+        authority: Authority["MED_SPA"],
+        event: withdrawRai,
+        id: WITHDRAW_RAI_ITEM_E,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${uploadSubsequentDocuments} with ${Authority.CHIP_SPA}`,
-      Authority.CHIP_SPA,
-      uploadSubsequentDocuments,
-      WITHDRAW_RAI_ITEM_B,
+      {
+        authority: Authority.CHIP_SPA,
+        event: uploadSubsequentDocuments,
+        id: WITHDRAW_RAI_ITEM_B,
+        timestamp: 1732645041557,
+      },
     ],
     [
       `should send an email for ${uploadSubsequentDocuments} with ${Authority["1915c"]}`,
-      Authority["1915c"],
-      uploadSubsequentDocuments,
-      WITHDRAW_RAI_ITEM_C,
+      {
+        authority: Authority["1915c"],
+        event: uploadSubsequentDocuments,
+        id: WITHDRAW_RAI_ITEM_C,
+        timestamp: 1732645041557,
+      },
     ],
-  ])("%s", async (_, auth, eventType, id) => {
+  ])("%s", async (_, record) => {
     const callback = vi.fn();
     const secSPY = vi.spyOn(SESClient.prototype, "send");
+    const { id, ...restOfRecord } = record;
     const mockEvent: KafkaEvent = {
       records: {
         "mock-topic": [
@@ -217,8 +222,7 @@ describe("process emails  Handler", () => {
             value: Buffer.from(
               JSON.stringify({
                 origin: "mako",
-                event: eventType,
-                authority: auth,
+                ...restOfRecord,
               }),
             ).toString("base64"),
             headers: {},

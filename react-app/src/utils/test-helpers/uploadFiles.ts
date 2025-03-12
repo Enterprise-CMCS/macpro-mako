@@ -1,6 +1,7 @@
-import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { z } from "zod";
+
 import { SchemaWithEnforcableProps } from "@/components";
 
 type ExtractAttachmentKeys<TSchema extends SchemaWithEnforcableProps> =

@@ -1,5 +1,6 @@
-import { Response as Res, Hit, Filterable as FIL, QueryState, AggQuery } from "./../_";
 import { z } from "zod";
+
+import { AggQuery, Filterable as FIL, Hit, QueryState, Response as Res } from "./../_";
 import { Type } from "./transforms";
 
 export type Document = z.infer<Type.Schema>;

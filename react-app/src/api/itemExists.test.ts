@@ -1,12 +1,13 @@
-import { describe, expect, it } from "vitest";
-import { itemExists } from "./itemExists";
 import {
-  TEST_ITEM_ID,
-  NOT_FOUND_ITEM_ID,
-  NOT_EXISTING_ITEM_ID,
   errorApiItemExistsHandler,
+  NOT_EXISTING_ITEM_ID,
+  NOT_FOUND_ITEM_ID,
+  TEST_ITEM_ID,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
+import { describe, expect, it } from "vitest";
+
+import { itemExists } from "./itemExists";
 
 describe("itemExists test", () => {
   it("should return true if the item exists", async () => {

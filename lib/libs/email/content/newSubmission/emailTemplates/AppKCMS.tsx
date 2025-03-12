@@ -1,13 +1,14 @@
-import { Events, CommonEmailVariables } from "shared-types";
+import { CommonEmailVariables, Events } from "shared-types";
+import { formatDate } from "shared-utils";
+
 import {
-  LoginInstructions,
-  PackageDetails,
   Attachments,
   BasicFooter,
   Divider,
+  LoginInstructions,
+  PackageDetails,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
-import { formatDate } from "shared-utils";
 
 type AppKEmailProps = Events["AppKSubmission"] & CommonEmailVariables;
 

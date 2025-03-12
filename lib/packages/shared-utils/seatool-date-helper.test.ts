@@ -1,6 +1,7 @@
-import { it, describe, expect } from "vitest";
-import { formatSeatoolDate, getBusinessDayTimestamp, seaToolFriendlyTimestamp } from ".";
 import { format } from "date-fns";
+import { describe, expect, it } from "vitest";
+
+import { formatSeatoolDate, getBusinessDayTimestamp, seaToolFriendlyTimestamp } from ".";
 
 describe("seaToolFriendlyTimestamp", () => {
   it("should convert date to a timestamp representing the date at midnight UTC time", () => {

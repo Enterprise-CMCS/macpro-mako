@@ -1,5 +1,5 @@
+import { ConfigResourceTypes, Kafka } from "kafkajs";
 import * as _ from "lodash";
-import { Kafka, ConfigResourceTypes } from "kafkajs";
 
 interface TopicConfig {
   topic: string;

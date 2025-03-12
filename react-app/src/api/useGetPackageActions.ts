@@ -1,6 +1,6 @@
-import { Action, ReactQueryApiError } from "shared-types";
-import { API } from "aws-amplify";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { API } from "aws-amplify";
+import { Action, ReactQueryApiError } from "shared-types";
 type PackageActionsResponse = {
   actions: Action[];
 };

@@ -1,8 +1,9 @@
-import { chromium, FullConfig } from "@playwright/test";
-import { testUsers } from "./users";
-import { LoginPage } from "../pages/loginPage";
+import { GetSecretValueCommand, SecretsManagerClient } from "@aws-sdk/client-secrets-manager";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
-import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
+import { chromium, FullConfig } from "@playwright/test";
+
+import { LoginPage } from "../pages/loginPage";
+import { testUsers } from "./users";
 
 const stage = process.env.STAGE_NAME || "main";
 const deploymentConfig = JSON.parse(

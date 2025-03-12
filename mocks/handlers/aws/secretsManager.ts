@@ -1,4 +1,5 @@
 import { http, HttpResponse, PathParams } from "msw";
+
 import type { SecretManagerRequestBody } from "../..";
 import secrets, { TEST_SECRET_ERROR_ID } from "../../data/secrets";
 

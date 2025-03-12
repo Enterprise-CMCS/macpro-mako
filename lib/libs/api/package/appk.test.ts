@@ -1,10 +1,11 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
-import { getAppkChildren } from "./appk";
 import {
-  OPENSEARCH_DOMAIN,
-  INITIAL_RELEASE_APPK_ITEM_ID,
   EXISTING_ITEM_APPROVED_APPK_ITEM_ID,
+  INITIAL_RELEASE_APPK_ITEM_ID,
+  OPENSEARCH_DOMAIN,
 } from "mocks";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { getAppkChildren } from "./appk";
 
 describe("getAppkChildren", () => {
   afterEach(() => {

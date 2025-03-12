@@ -1,20 +1,13 @@
 import { useMemo } from "react";
 import { opensearch } from "shared-types";
-import {
-  Accordion,
-  DetailsSection,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-  LoadingSpinner,
-} from "@/components";
-import * as Table from "@/components";
-import { BLANK_VALUE } from "@/consts";
-import { useAttachmentService, Attachments } from "./hook";
-import { useParams } from "react-router";
-import { useGetItem } from "@/api";
 import { ItemResult } from "shared-types/opensearch/changelog";
 import { formatDateToEST } from "shared-utils";
+
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components";
+import * as Table from "@/components";
+import { BLANK_VALUE } from "@/consts";
+
+import { Attachments, useAttachmentService } from "./hook";
 
 type AttachmentDetailsProps = {
   id: string;
@@ -175,54 +168,39 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
   );
 };
 
-export const PackageActivities = () => {
-  const { id: packageId } = useParams<{ id: string }>();
-  const { data: submission, isLoading: isSubmissionLoading } = useGetItem(packageId);
+type PackageActivitiesProps = {
+  id: string;
+  changelog: ItemResult[];
+};
 
-  if (isSubmissionLoading === true) {
-    return <LoadingSpinner />;
-  }
-
-  if (submission === undefined || submission === null || submission?.found === false) {
-    return null;
-  }
-
-  const submissionChangelogWithoutAdminChanges = submission?._source?.changelog?.filter(
-    (activity) =>
-      // isAdminChange can be `undefined` or `boolean`
-      !activity?._source?.isAdminChange,
-  );
-
-  const keyAndDefaultValue = submissionChangelogWithoutAdminChanges?.[0]?._source?.id;
+export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => {
+  const changelogWithoutAdminChanges = changelog.filter((item) => !item._source.isAdminChange);
 
   return (
-    <DetailsSection
+    <Table.DetailsSection
       id="package_activity"
       title={
         <div className="flex justify-between">
-          Package Activity ({submissionChangelogWithoutAdminChanges?.length || 0})
-          <DownloadAllButton
-            submissionChangelog={submissionChangelogWithoutAdminChanges}
-            packageId={packageId}
-          />
+          Package Activity ({changelogWithoutAdminChanges.length || 0})
+          <DownloadAllButton submissionChangelog={changelogWithoutAdminChanges} packageId={id} />
         </div>
       }
     >
-      {submissionChangelogWithoutAdminChanges?.length > 0 ? (
+      {changelogWithoutAdminChanges.length > 0 ? (
         <Accordion
-          // `key` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
-          key={keyAndDefaultValue}
+          // `changelogWithoutAdminChanges[0]._source.id` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
+          key={changelogWithoutAdminChanges[0]._source.id}
           type="multiple"
           className="flex flex-col gap-2"
-          defaultValue={[keyAndDefaultValue]}
+          defaultValue={[changelogWithoutAdminChanges[0]._source.id]}
         >
-          {submissionChangelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
+          {changelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
             <PackageActivity key={packageActivity.id} packageActivity={packageActivity} />
           ))}
         </Accordion>
       ) : (
         <p className="text-gray-500">No package activity recorded</p>
       )}
-    </DetailsSection>
+    </Table.DetailsSection>
   );
 };

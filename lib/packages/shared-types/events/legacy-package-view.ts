@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { legacySharedSchema } from "./legacy-shared";
+
 import { legacyAdminChangeSchema } from "./legacy-admin-change";
+import { legacySharedSchema } from "./legacy-shared";
 
 // Event schema for legacy package actions
 export const legacyPackageViewSchema = legacySharedSchema.merge(

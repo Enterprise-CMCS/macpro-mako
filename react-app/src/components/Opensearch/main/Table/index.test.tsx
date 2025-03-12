@@ -1,16 +1,17 @@
-import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { OsTable, OsTableColumn } from "@/components";
 import { opensearch } from "shared-types";
+import { describe, expect, it, vi } from "vitest";
+
+import { OsTable, OsTableColumn } from "@/components";
 import {
-  renderDashboard,
-  getDashboardQueryString,
-  getFilteredHits,
   DEFAULT_COLUMNS,
   EMPTY_HITS,
+  getDashboardQueryString,
+  getFilteredHits,
   HIDDEN_COLUMN,
   NO_FIELD_COLUMN,
+  renderDashboard,
 } from "@/utils/test-helpers";
 
 const defaultHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
