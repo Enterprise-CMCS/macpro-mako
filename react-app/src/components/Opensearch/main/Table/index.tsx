@@ -5,6 +5,7 @@ import { useOsContext } from "../Provider";
 import { useOsUrl, LoadingSpinner } from "@/components";
 import { BLANK_VALUE } from "@/consts";
 import { opensearch } from "shared-types";
+import { cn } from "@/utils";
 
 export const OsTable: FC<{
   columns: OsTableColumn[];
@@ -25,7 +26,7 @@ export const OsTable: FC<{
                 {...(!!TH.props && TH.props)}
                 key={`TH-${TH.field}`}
                 isActive={url.state.sort?.field === TH.field}
-                className={`${onlyID && TH.field === "id.keyword" ? "w-full" : ""}`}
+                className={cn({ "w-full": onlyID && TH.field === "id.keyword" })}
                 desc={url.state.sort?.order === "desc"}
                 {...(TH.isSystem && { className: "pointer-events-none" })}
                 onClick={() => {
