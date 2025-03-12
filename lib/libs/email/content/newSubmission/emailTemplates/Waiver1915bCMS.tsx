@@ -1,12 +1,13 @@
 import { CommonEmailVariables, Events } from "shared-types";
+import { formatActionTypeWithWaiver, formatDate } from "shared-utils";
+
 import {
   Attachments,
+  BasicFooter,
   LoginInstructions,
   PackageDetails,
-  BasicFooter,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
-import { formatDate, formatActionTypeWithWaiver } from "shared-utils";
 
 export const Waiver1915bCMSEmail = (props: {
   variables:

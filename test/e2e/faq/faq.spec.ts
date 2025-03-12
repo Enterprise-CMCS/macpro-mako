@@ -1,5 +1,6 @@
-import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { expect, test } from "@playwright/test";
+
 import { FAQPage } from "../pages/faq.page";
 
 let faqPage: FAQPage;

@@ -1,15 +1,16 @@
-import { describe, it, expect } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
-import { handler } from "./getTypes";
+import { errorOSTypeSearchHandler, TestTypeItemResult } from "mocks";
 import {
   CHIP_SPA_AUTHORITY_ID,
-  MEDICAID_SPA_AUTHORITY_ID,
-  NOT_FOUND_AUTHORITY_ID,
-  medicaidTypes,
   chipTypes,
+  MEDICAID_SPA_AUTHORITY_ID,
+  medicaidTypes,
+  NOT_FOUND_AUTHORITY_ID,
 } from "mocks/data/types";
-import { TestTypeItemResult, errorOSTypeSearchHandler } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
+import { describe, expect, it } from "vitest";
+
+import { handler } from "./getTypes";
 
 describe("getTypes Handler", () => {
   it("should return 400 if event body is missing", async () => {

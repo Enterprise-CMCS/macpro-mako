@@ -1,14 +1,13 @@
-import { describe, expect, it, vi } from "vitest";
 import { UseQueryResult } from "@tanstack/react-query";
+import { mockUseGetUser, WITHDRAW_APPK_ITEM, WITHDRAW_APPK_ITEM_ID } from "mocks";
+import { describe, expect, it, vi } from "vitest";
 
-import * as api from "@/api/useGetUser";
+import { getItem, OneMacUser } from "@/api";
 import * as gi from "@/api/useGetItem";
+import * as api from "@/api/useGetUser";
+import { renderWithQueryClient } from "@/utils/test-helpers";
 
 import { SubmissionDetails } from ".";
-
-import { mockUseGetUser, WITHDRAW_APPK_ITEM, WITHDRAW_APPK_ITEM_ID } from "mocks";
-import { renderWithQueryClient } from "@/utils/test-helpers";
-import { getItem, OneMacUser } from "@/api";
 
 describe("package details", () => {
   vi.spyOn(gi, "useGetItemCache").mockReturnValue({

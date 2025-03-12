@@ -1,5 +1,6 @@
 import { execSync } from "child_process";
-import { describe, it, expect, vi, beforeAll, afterAll } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+
 import * as utils from "./utils";
 
 vi.mock("child_process", () => ({

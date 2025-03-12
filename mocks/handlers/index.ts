@@ -1,8 +1,9 @@
 import { http, HttpResponse } from "msw";
+
 import { apiHandlers } from "./api";
 import { awsHandlers } from "./aws";
-import { opensearchHandlers } from "./opensearch";
 import { countiesHandlers } from "./counties";
+import { opensearchHandlers } from "./opensearch";
 
 export type Body =
   | Blob

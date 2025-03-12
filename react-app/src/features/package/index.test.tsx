@@ -1,12 +1,13 @@
-import { describe, expect, it, vi } from "vitest";
 import { UseQueryResult } from "@tanstack/react-query";
-import * as api from "@/api/useGetUser";
+import { ADMIN_CHANGE_ITEM, ADMIN_ITEM_ID, mockUseGetUser } from "mocks";
+import { describe, expect, it, vi } from "vitest";
 
-import { DetailsContent } from ".";
-import { mockUseGetUser, ADMIN_CHANGE_ITEM, ADMIN_ITEM_ID } from "mocks";
+import * as gi from "@/api/useGetItem";
+import * as api from "@/api/useGetUser";
 import { OneMacUser } from "@/api/useGetUser";
 import { renderFormAsync } from "@/utils/test-helpers";
-import * as gi from "@/api/useGetItem";
+
+import { DetailsContent } from ".";
 describe("package details", () => {
   vi.spyOn(gi, "useGetItemCache").mockReturnValue({
     data: ADMIN_CHANGE_ITEM._source,

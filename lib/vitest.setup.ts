@@ -1,25 +1,25 @@
-import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
+import { ConfigResourceTypes } from "kafkajs";
 import {
   API_ENDPOINT,
+  ATTACHMENT_BUCKET_NAME,
+  ATTACHMENT_BUCKET_REGION,
+  BUCKET_NAME,
+  BUCKET_REGION,
   IDENTITY_POOL_ID,
+  KAFKA_BROKERS,
+  mockedKafka,
   OPENSEARCH_DOMAIN,
   OPENSEARCH_INDEX_NAMESPACE,
   PROJECT,
   REGION,
+  setDefaultStateSubmitter,
   STAGE,
   USER_POOL_CLIENT_DOMAIN,
   USER_POOL_CLIENT_ID,
   USER_POOL_ID,
-  BUCKET_NAME,
-  BUCKET_REGION,
-  ATTACHMENT_BUCKET_NAME,
-  ATTACHMENT_BUCKET_REGION,
-  KAFKA_BROKERS,
-  setDefaultStateSubmitter,
-  mockedKafka,
 } from "mocks";
-import { ConfigResourceTypes } from "kafkajs";
 import { mockedServiceServer as mockedServer } from "mocks/server";
+import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
 type CreateType<T> = T & { default: T };
 
 vi.mock("kafkajs", async (importOriginal) => ({

@@ -1,5 +1,6 @@
-import { useGetItem } from "@/api";
 import { useLayoutEffect, useState } from "react";
+
+import { useGetItem } from "@/api";
 
 export type DetailsSidebarLink = {
   id: string;

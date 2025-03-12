@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
 import type { RHFSlotProps, RHFTextField } from "shared-types";
+
+import { cn } from "@/utils";
+
 import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "../Inputs";
 import { RHFTextDisplay } from ".";
 import { SlotField } from "./SlotField";
-import { cn } from "@/utils";
 
 export const RHFSlot = <
   TFieldValues extends FieldValues = FieldValues,

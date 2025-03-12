@@ -1,7 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { NewFaq } from "./NewFaq";
+
 import ExpandCollapseBtn from "./content/expandCollapseBtn";
+import { NewFaq } from "./NewFaq";
 
 vi.mock("react-router", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("react-router")),

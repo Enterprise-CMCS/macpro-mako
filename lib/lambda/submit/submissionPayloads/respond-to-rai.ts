@@ -1,9 +1,10 @@
-import { events } from "shared-types/events";
-import { isAuthorized, getAuthDetails, lookupUserAttributes } from "../../../libs/api/auth/user";
 import { type APIGatewayEvent } from "aws-lambda";
 import { itemExists } from "libs/api/package";
-import { getDomain, getOsNamespace } from "libs/utils";
 import * as os from "libs/opensearch-lib";
+import { getDomain, getOsNamespace } from "libs/utils";
+import { events } from "shared-types/events";
+
+import { getAuthDetails, isAuthorized, lookupUserAttributes } from "../../../libs/api/auth/user";
 
 export const respondToRai = async (event: APIGatewayEvent) => {
   if (!event.body) return;

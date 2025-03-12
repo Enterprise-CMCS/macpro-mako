@@ -1,6 +1,7 @@
-import { Switch } from "./switch";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+import { Switch } from "./switch";
 
 describe("Switch", () => {
   it("should render", () => {

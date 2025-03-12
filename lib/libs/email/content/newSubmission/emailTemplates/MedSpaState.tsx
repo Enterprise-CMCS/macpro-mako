@@ -1,10 +1,11 @@
-import { Events } from "shared-types";
-import { formatNinetyDaysDate, formatDate } from "shared-utils";
-import { CommonEmailVariables } from "shared-types";
-import { PackageDetails, FollowUpNotice, MailboxNotice, BasicFooter } from "../../email-components";
-import { BaseEmailTemplate } from "../../email-templates";
 import { Text } from "@react-email/components";
+import { Events } from "shared-types";
+import { CommonEmailVariables } from "shared-types";
+import { formatDate, formatNinetyDaysDate } from "shared-utils";
+
+import { BasicFooter, FollowUpNotice, MailboxNotice, PackageDetails } from "../../email-components";
 import { styles } from "../../email-styles";
+import { BaseEmailTemplate } from "../../email-templates";
 
 export const MedSpaStateEmail = (props: {
   variables: Events["NewMedicaidSubmission"] & CommonEmailVariables;

@@ -1,7 +1,8 @@
 import { act, render } from "@testing-library/react";
-import { describe, expect, test, vi } from "vitest";
-import { UserPrompt, userPrompt } from "./userPrompt";
 import userEvent from "@testing-library/user-event";
+import { describe, expect, test, vi } from "vitest";
+
+import { UserPrompt, userPrompt } from "./userPrompt";
 
 describe("userPrompt", () => {
   test("Hidden on initial render", () => {
