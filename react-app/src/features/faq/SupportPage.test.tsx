@@ -52,7 +52,7 @@ describe("OneMAC Support", () => {
 
     render(<SupportPage />);
 
-    expect(screen.getByTestId("q1")).toBeInTheDocument();
+    expect(screen.getByTestId("q1-support")).toBeInTheDocument();
     expect(scrollToMock).toHaveBeenCalled();
     expect(scrollToMock).toHaveBeenCalledWith({
       top: expect.any(Number),

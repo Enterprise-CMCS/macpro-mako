@@ -19,7 +19,7 @@ const ContactHelpDesk: React.FC = () => {
             </p>
             <p>
               Leave a message at{" "}
-              <a href="tel:(883) 228-2540" className="hover:underline">
+              <a href="tel:(883) 228-2540" className="text-blue-600 hover:underline">
                 (883) 228-2540
               </a>
             </p>
