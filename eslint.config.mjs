@@ -1,14 +1,15 @@
 // @ts-check
+import path from "path";
+import { fileURLToPath } from "url";
+
 import { fixupPluginRules, includeIgnoreFile } from "@eslint/compat";
 import eslint from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
+import { flatConfigs as importPlugin } from "eslint-plugin-import";
 import prettier from "eslint-plugin-prettier";
 import react from "eslint-plugin-react";
 import eslintReactHooks from "eslint-plugin-react-hooks";
-import eslintImportSort from "eslint-plugin-simple-import-sort";
-import path from "path";
 import tseslint from "typescript-eslint";
-import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,16 +19,16 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   includeIgnoreFile(gitignorePath),
-  // @ts-expect-error
   eslintConfigPrettier,
   {
     plugins: {
+      // @ts-expect-error
       react,
       // @ts-expect-error
       "react-hooks": fixupPluginRules(eslintReactHooks),
-      "simple-import-sort": eslintImportSort,
       prettier,
     },
+    extends: [importPlugin.recommended, importPlugin.typescript],
     languageOptions: {
       ecmaVersion: 2020,
       sourceType: "module",
@@ -38,15 +39,54 @@ export default tseslint.config(
         },
       },
     },
-
     settings: {
       react: {
         version: "detect",
       },
     },
-
     rules: {
-      "simple-import-sort/imports": "error",
+      "import/no-unresolved": "off",
+      "import/default": "error",
+      "import/no-named-as-default": "error",
+      "import/no-self-import": "error",
+      "import/order": [
+        "error",
+        {
+          groups: [
+            // Node.js builtins (with or without node: prefix)
+            "builtin",
+            // External packages (npm packages)
+            "external",
+            // Absolute imports and other imports
+            "internal",
+            // Relative parent imports (../)
+            "parent",
+            // Relative sibling imports (./)
+            "sibling",
+            // Index imports (./index)
+            "index",
+            // Object imports
+            "object",
+            // Type imports
+            "type",
+          ],
+          "newlines-between": "always",
+          pathGroups: [
+            {
+              pattern: "./setup",
+              group: "sibling",
+              position: "before",
+            },
+          ],
+          pathGroupsExcludedImportTypes: ["builtin"],
+          alphabetize: {
+            order: "asc",
+            caseInsensitive: true,
+          },
+        },
+      ],
+      "import/no-named-as-default-member": "off",
+      "import/no-useless-path-segments": "error",
       "prettier/prettier": "error",
       "react/react-in-jsx-scope": "off",
       "react/jsx-no-useless-fragment": ["error", { allowExpressions: true }],
