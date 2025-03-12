@@ -1,9 +1,10 @@
-import { fileTypeFromFile, MimeType } from "file-type";
 import fs from "fs";
-import { lookup } from "mime-types";
 import path from "path";
-import pino from "pino";
 import readline from "readline";
+
+import { fileTypeFromFile, MimeType } from "file-type";
+import { lookup } from "mime-types";
+import pino from "pino";
 
 import * as constants from "./constants";
 const logger = pino();

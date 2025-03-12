@@ -1,6 +1,6 @@
 import { TestCounty } from "../index.d";
 
-const counties: Record<string, TestCounty[]> = {
+export const counties: Record<string, TestCounty[]> = {
   "24": [
     ["NAME", "state", "county"],
     ["Worcester County, Maryland", "24", "047"],
@@ -256,5 +256,3 @@ const counties: Record<string, TestCounty[]> = {
     ["Fairfax County, Virginia", "51", "059"],
   ],
 };
-
-export default counties;

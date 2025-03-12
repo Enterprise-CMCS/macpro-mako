@@ -1,3 +1,5 @@
+import { randomUUID } from "crypto";
+
 import {
   CreateEventSourceMappingCommand,
   CreateEventSourceMappingCommandInput,
@@ -5,7 +7,6 @@ import {
   LambdaClient,
 } from "@aws-sdk/client-lambda";
 import { Handler } from "aws-lambda";
-import { randomUUID } from "crypto";
 
 export const handler: Handler = async (event, _, callback) => {
   console.log("request:", JSON.stringify(event, undefined, 2));

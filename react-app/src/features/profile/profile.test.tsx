@@ -2,9 +2,9 @@ import { screen, waitFor } from "@testing-library/react";
 import { multiStateSubmitter, setDefaultStateSubmitter, setMockUsername } from "mocks";
 import { afterEach, describe, expect, test } from "vitest";
 
-import { renderWithQueryClient } from "@/utils/test-helpers";
-
 import { Profile } from ".";
+
+import { renderWithQueryClient } from "@/utils/test-helpers";
 
 describe("Profile", () => {
   afterEach(() => {

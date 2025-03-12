@@ -3,6 +3,12 @@ import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 
 import {
+  AttachmentFAQInstructions,
+  AttachmentFileFormatInstructions,
+  AttachmentInstructions,
+} from "./actionForm.components";
+
+import {
   FormField,
   FormItem,
   FormLabel,
@@ -11,12 +17,6 @@ import {
   SectionCard,
   Upload,
 } from "@/components";
-
-import {
-  AttachmentFAQInstructions,
-  AttachmentFileFormatInstructions,
-  AttachmentInstructions,
-} from "./actionForm.components";
 
 export type AttachmentsOptions = {
   title?: string;

@@ -8,6 +8,7 @@ import { mockedServiceServer as mockedServer } from "mocks/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import * as os from "../libs/opensearch-lib";
+
 import { handler } from "./mapRole";
 
 describe("CloudFormation Custom Resource Handler", () => {

@@ -11,10 +11,11 @@ import {
 } from "mocks";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
+import * as packageActivityHooks from "./hook";
 
 import { PackageActivities } from ".";
-import * as packageActivityHooks from "./hook";
+
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 
 describe("Package Activity", () => {
   beforeEach(() => {

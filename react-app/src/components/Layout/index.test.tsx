@@ -4,11 +4,11 @@ import { Auth } from "aws-amplify";
 import { AUTH_CONFIG, makoStateSubmitter, noRoleUser, setMockUsername } from "mocks";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { Layout, SubNavHeader } from "./index";
+
 import * as api from "@/api";
 import * as hooks from "@/hooks";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
-
-import { Layout, SubNavHeader } from "./index";
 
 /**
  * Mock Configurations

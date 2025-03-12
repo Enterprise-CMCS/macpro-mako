@@ -1,6 +1,7 @@
 import { events } from "shared-types/events";
-import type { TemporaryExtensionSchema } from "shared-types/events/temporary-extension";
 import { z } from "zod";
+
+import type { TemporaryExtensionSchema } from "shared-types/events/temporary-extension";
 
 import { getItem, idIsApproved, itemExists } from "@/api";
 import { isAuthorizedState } from "@/utils";

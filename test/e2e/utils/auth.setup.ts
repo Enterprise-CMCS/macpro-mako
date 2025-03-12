@@ -3,6 +3,7 @@ import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { chromium, FullConfig } from "@playwright/test";
 
 import { LoginPage } from "../pages/loginPage";
+
 import { testUsers } from "./users";
 
 const stage = process.env.STAGE_NAME || "main";

@@ -1,6 +1,7 @@
 import { http, HttpResponse } from "msw";
 
 import items, { GET_ERROR_ITEM_ID } from "../../data/items";
+
 import type { GetItemBody } from "../../index.d";
 
 const defaultApiItemHandler = http.post<GetItemBody, GetItemBody>(

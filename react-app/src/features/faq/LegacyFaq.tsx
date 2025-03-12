@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 
+import { helpDeskContact, oneMACFAQContent } from "./content/oneMACFAQContent";
+
 import {
   Accordion,
   AccordionContent,
@@ -12,7 +14,6 @@ import {
 } from "@/components";
 import { useHideBanner } from "@/hooks/useHideBanner";
 
-import { helpDeskContact, oneMACFAQContent } from "./content/oneMACFAQContent";
 interface LegacyFaqProps {
   flagValue: boolean;
 }

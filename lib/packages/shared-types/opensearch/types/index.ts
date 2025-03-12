@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-import { AggQuery, Filterable as FIL, Hit, QueryState, Response as Res } from "./../_";
+import { AggQuery, Filterable as FIL, Hit, QueryState, Response as Res } from "../_";
+
 import { SPA_Type } from "./transforms";
 
 export type Document = z.infer<SPA_Type.Schema>;

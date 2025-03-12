@@ -11,6 +11,8 @@ import {
 import { opensearch } from "shared-types";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { SpasList } from "./index";
+
 import * as api from "@/api";
 import { BLANK_VALUE } from "@/consts";
 import {
@@ -36,8 +38,6 @@ import {
   verifyFiltering,
   verifyPagination,
 } from "@/utils/test-helpers";
-
-import { SpasList } from "./index";
 
 const pendingDoc = {
   ...PENDING_SUBMITTED_ITEM._source,

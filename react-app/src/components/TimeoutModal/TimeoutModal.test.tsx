@@ -4,11 +4,11 @@ import { Auth } from "aws-amplify";
 import { mockUseGetUser, setDefaultStateSubmitter } from "mocks";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { TimeoutModal } from ".";
+
 import * as api from "@/api";
 import { OneMacUser } from "@/api";
 import * as hooks from "@/hooks";
-
-import { TimeoutModal } from ".";
 
 const mockTimer = 60;
 

@@ -3,12 +3,12 @@ import userEvent from "@testing-library/user-event";
 import { EXISTING_ITEM_ID } from "mocks";
 import { beforeAll, describe, expect, test } from "vitest";
 
+import { ChipForm } from "./Chip";
+
 import { formSchemas } from "@/formSchemas";
 import { renderFormAsync } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-
-import { ChipForm } from "./Chip";
 
 const upload = uploadFiles<(typeof formSchemas)["new-chip-submission"]>();
 

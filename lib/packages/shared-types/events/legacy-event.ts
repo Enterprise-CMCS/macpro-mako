@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { legacyAttachmentSchema } from "../attachments";
+
 import { legacySharedSchema } from "./legacy-shared";
 
 // Event schema for legacy records

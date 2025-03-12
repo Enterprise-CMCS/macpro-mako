@@ -1,5 +1,11 @@
-import type { CognitoUserAttributes } from "shared-types";
 import { describe, expect, it } from "vitest";
+
+import {
+  testCMSCognitoUser,
+  testCMSIDMUser,
+  testStateCognitoUser,
+  testStateIDMUser,
+} from "./testData";
 
 import {
   isCmsReadonlyUser,
@@ -9,12 +15,8 @@ import {
   isIDM,
   isStateUser,
 } from ".";
-import {
-  testCMSCognitoUser,
-  testCMSIDMUser,
-  testStateCognitoUser,
-  testStateIDMUser,
-} from "./testData";
+
+import type { CognitoUserAttributes } from "shared-types";
 
 type User = CognitoUserAttributes;
 const cmsHelpDeskUser = {

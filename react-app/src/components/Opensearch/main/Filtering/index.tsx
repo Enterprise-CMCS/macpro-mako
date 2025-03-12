@@ -1,12 +1,12 @@
 import { FC } from "react";
 
-import { OsTableColumn, SearchForm } from "@/components";
-import { VisibilityPopover } from "@/components";
-
 import { useOsContext } from "../Provider";
 import { useOsUrl } from "../useOpensearch";
+
 import { OsFilterDrawer } from "./Drawer";
 import { OsExportData } from "./Export";
+
+import { VisibilityPopover, OsTableColumn, SearchForm } from "@/components";
 export const OsFiltering: FC<{
   columns: OsTableColumn[];
   onToggle: (field: string) => void;

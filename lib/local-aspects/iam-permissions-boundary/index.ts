@@ -1,5 +1,4 @@
-import { IAspect } from "aws-cdk-lib";
-import { CfnResource } from "aws-cdk-lib";
+import { IAspect, CfnResource } from "aws-cdk-lib";
 import * as iam from "aws-cdk-lib/aws-iam";
 import { IConstruct } from "constructs";
 

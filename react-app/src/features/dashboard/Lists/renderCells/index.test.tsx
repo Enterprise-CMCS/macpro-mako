@@ -11,9 +11,9 @@ import {
 import { Action, CognitoUserAttributes, opensearch, SEATOOL_STATUS } from "shared-types";
 import { describe, expect, it } from "vitest";
 
-import { renderWithMemoryRouter } from "@/utils/test-helpers";
-
 import { CellDetailsLink, renderCellActions, renderCellDate } from "./index";
+
+import { renderWithMemoryRouter } from "@/utils/test-helpers";
 
 describe("renderCells", () => {
   describe("renderCellDate", () => {

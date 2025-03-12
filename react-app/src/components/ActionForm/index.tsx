@@ -8,6 +8,10 @@ import { Authority, CognitoUserAttributes } from "shared-types";
 import { isStateUser } from "shared-utils";
 import { z } from "zod";
 
+import { getAttachments } from "./actionForm.utilities";
+import { ActionFormAttachments, AttachmentsOptions } from "./ActionFormAttachments";
+import { AdditionalInformation } from "./AdditionalInformation";
+
 import { useGetUser } from "@/api";
 import {
   ActionFormDescription,
@@ -31,10 +35,6 @@ import {
 import { queryClient } from "@/router";
 import { getFormOrigin } from "@/utils";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
-
-import { getAttachments } from "./actionForm.utilities";
-import { ActionFormAttachments, AttachmentsOptions } from "./ActionFormAttachments";
-import { AdditionalInformation } from "./AdditionalInformation";
 
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {

@@ -3,11 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
 import { opensearch, UserRoles } from "shared-types";
 
+import { createSearchFilterable } from "../utils";
+
+import { OsTab } from "./types";
+
 import { getOsData, useGetUser, useOsSearch } from "@/api";
 import { useLzUrl } from "@/hooks";
-
-import { createSearchFilterable } from "../utils";
-import { OsTab } from "./types";
 
 export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
   spas: {

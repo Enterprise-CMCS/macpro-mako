@@ -1,15 +1,16 @@
+import { spawnSync, SpawnSyncReturns } from "child_process";
+import fs from "fs";
+import asyncfs from "fs/promises";
+import path from "path";
+import { Readable } from "stream";
+
 import {
   DeleteObjectsCommand,
   GetObjectCommand,
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
-import { spawnSync, SpawnSyncReturns } from "child_process";
-import fs from "fs";
-import asyncfs from "fs/promises";
-import path from "path";
 import pino from "pino";
-import { Readable } from "stream";
 
 import * as constants from "./constants";
 import { listBucketFiles } from "./s3";

@@ -9,12 +9,12 @@ import {
 } from "mocks";
 import { beforeAll, describe, expect, test } from "vitest";
 
+import { RenewalForm } from "./Renewal";
+
 import { formSchemas } from "@/formSchemas";
 import { renderFormAsync } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-
-import { RenewalForm } from "./Renewal";
 
 const upload = uploadFiles<(typeof formSchemas)["contracting-renewal"]>();
 

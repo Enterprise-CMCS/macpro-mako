@@ -1,3 +1,5 @@
+import { join } from "path";
+
 import { Duration, RemovalPolicy, StackProps } from "aws-cdk-lib";
 import {
   Effect,
@@ -17,7 +19,6 @@ import {
   PhysicalResourceId,
 } from "aws-cdk-lib/custom-resources";
 import { Construct } from "constructs";
-import { join } from "path";
 
 import { commonBundlingOptions } from "../../config/bundling-config";
 

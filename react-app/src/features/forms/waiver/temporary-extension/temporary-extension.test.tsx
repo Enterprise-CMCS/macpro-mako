@@ -9,6 +9,8 @@ import {
 } from "mocks";
 import { afterEach, beforeAll, describe, expect, test, vi } from "vitest";
 
+import { TemporaryExtensionForm } from ".";
+
 import { formSchemas } from "@/formSchemas";
 import {
   renderFormAsync,
@@ -16,8 +18,6 @@ import {
 } from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-
-import { TemporaryExtensionForm } from ".";
 
 const upload = uploadFiles<(typeof formSchemas)["temporary-extension"]>();
 

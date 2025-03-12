@@ -3,9 +3,9 @@ import userEvent from "@testing-library/user-event";
 import { opensearch } from "shared-types";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { DEFAULT_FILTERS, getDashboardQueryString, renderFilterDrawer } from "@/utils/test-helpers";
-
 import { ChipBool, ChipDate, ChipTerms, FilterChips } from "./index";
+
+import { DEFAULT_FILTERS, getDashboardQueryString, renderFilterDrawer } from "@/utils/test-helpers";
 
 describe("FilterChips", () => {
   const openDrawer = vi.fn();

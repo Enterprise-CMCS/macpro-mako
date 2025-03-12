@@ -1,9 +1,9 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { renderWithQueryClient } from "@/utils/test-helpers";
-
 import { Upload } from "./upload";
+
+import { renderWithQueryClient } from "@/utils/test-helpers";
 
 const defaultProps = {
   dataTestId: "upload-component",

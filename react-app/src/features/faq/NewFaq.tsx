@@ -3,12 +3,17 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
-import { SubNavHeader } from "@/components";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components";
-
 import ExpandCollapseBtn from "./content/expandCollapseBtn";
 import LeftNavigation from "./content/navigationBar";
 import { oneMACFAQContent } from "./content/oneMACFAQContent";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  SubNavHeader,
+} from "@/components";
 
 export const NewFaq = () => {
   const { id } = useParams<{ id: string }>();

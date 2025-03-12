@@ -1,6 +1,9 @@
 import { FilterIcon } from "lucide-react";
 import { opensearch } from "shared-types";
 
+import * as F from "./Filterable";
+import { useFilterDrawer } from "./hooks";
+
 import {
   Accordion,
   AccordionContent,
@@ -12,9 +15,6 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "@/components";
-
-import * as F from "./Filterable";
-import { useFilterDrawer } from "./hooks";
 
 export const OsFilterDrawer = () => {
   // how filterDrawerHook looks

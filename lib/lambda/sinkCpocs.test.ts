@@ -15,6 +15,7 @@ import { mockedServiceServer as mockedServer } from "mocks/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import * as sink from "../libs/sink-lib";
+
 import { handler } from "./sinkCpocs";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}cpocs`;

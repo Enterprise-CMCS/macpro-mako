@@ -12,7 +12,7 @@ import {
   STATUS_CLEAN_FILE,
   STATUS_ERROR_PROCESSING_FILE,
   tagWithScanStatus,
-} from "./../lib";
+} from "../lib";
 const logger = pino();
 
 export async function handler(event: any): Promise<string[]> {

@@ -5,7 +5,8 @@ import {
   FRESHCLAM_WORK_DIR,
   updateAVDefinitonsWithFreshclam,
   uploadAVDefinitions,
-} from "./../lib";
+} from "../lib";
+
 import { handler } from "./defs";
 
 vi.mock("pino", () => {

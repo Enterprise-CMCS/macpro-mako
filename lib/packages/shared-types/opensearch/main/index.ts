@@ -1,7 +1,8 @@
 import { z } from "zod";
 
+import { AggQuery, Filterable as FIL, Hit, QueryState, Response as Res } from "../_";
 import { ItemResult as Changelog } from "../changelog";
-import { AggQuery, Filterable as FIL, Hit, QueryState, Response as Res } from "./../_";
+
 import {
   appK,
   capitatedAmendment,

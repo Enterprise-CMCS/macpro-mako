@@ -3,9 +3,9 @@ import userEvent from "@testing-library/user-event";
 import { opensearch } from "shared-types";
 import { describe, expect, it } from "vitest";
 
-import { getDashboardQueryString, renderFilterDrawer } from "@/utils/test-helpers";
-
 import { OsFilterDrawer } from "./index";
+
+import { getDashboardQueryString, renderFilterDrawer } from "@/utils/test-helpers";
 
 const setup = (
   filters: opensearch.Filterable<opensearch.main.Field>[],

@@ -2,8 +2,9 @@ import { format } from "date-fns";
 import { ExportToCsv } from "export-to-csv";
 import { motion } from "framer-motion";
 import { Download, Loader } from "lucide-react";
-import { useState } from "react";
-import { FC } from "react";
+import { useState, FC } from "react";
+
+import { DEFAULT_FILTERS } from "../../useOpensearch";
 
 import { getMainExportData } from "@/api";
 import {
@@ -16,8 +17,6 @@ import {
   TooltipTrigger,
   useOsUrl,
 } from "@/components";
-
-import { DEFAULT_FILTERS } from "../../useOpensearch";
 
 export const OsExportData: FC<{
   columns: OsTableColumn[];

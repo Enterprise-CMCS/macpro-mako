@@ -2,17 +2,17 @@ import { PropsWithChildren } from "react";
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import { Authority } from "shared-types";
 
-import { getItem, useGetItem } from "@/api";
-import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
-import { BreadCrumbs } from "@/components/BreadCrumb";
-import { detailsAndActionsCrumbs } from "@/utils";
-
 import { AdminPackageActivities } from "./admin-changes";
 import { useDetailsSidebarLinks } from "./hooks";
 import { PackageActionsCard } from "./package-actions";
 import { PackageActivities } from "./package-activity";
 import { PackageDetails } from "./package-details";
 import { PackageStatusCard } from "./package-status";
+
+import { getItem, useGetItem } from "@/api";
+import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
+import { BreadCrumbs } from "@/components/BreadCrumb";
+import { detailsAndActionsCrumbs } from "@/utils";
 
 export const DetailCardWrapper = ({
   title,

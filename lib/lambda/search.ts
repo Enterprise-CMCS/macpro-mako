@@ -7,6 +7,7 @@ import { validateEnvVariable } from "shared-utils";
 import { getStateFilter } from "../libs/api/auth/user";
 import { getAppkChildren } from "../libs/api/package";
 import * as os from "../libs/opensearch-lib";
+
 import { handleOpensearchError } from "./utils";
 
 // Handler function to search index

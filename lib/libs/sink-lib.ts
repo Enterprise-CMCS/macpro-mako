@@ -1,10 +1,10 @@
 import pino from "pino";
-const logger = pino();
-
 import { BaseIndex } from "shared-types/opensearch";
 
 import * as os from "./opensearch-lib";
 import { getDomainAndNamespace } from "./utils";
+
+const logger = pino();
 
 export function getTopic(topicPartition: string) {
   return topicPartition.split("--").pop()?.split("-").slice(0, -1)[0];

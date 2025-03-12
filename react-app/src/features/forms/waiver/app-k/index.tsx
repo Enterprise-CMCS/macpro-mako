@@ -1,6 +1,8 @@
 import { Link } from "react-router";
 import { Authority } from "shared-types";
 
+import { getFAQLinkForAttachments } from "../../faqLinks";
+
 import {
   ActionForm,
   DatePicker,
@@ -16,8 +18,6 @@ import {
 } from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
-
-import { getFAQLinkForAttachments } from "../../faqLinks";
 
 export const AppKAmendmentForm = () => (
   <ActionForm

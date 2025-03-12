@@ -1,6 +1,7 @@
 import { Action, CognitoUserAttributes, opensearch } from "shared-types";
 
 import { PackageCheck } from "../package-check";
+
 import rules from "./rules";
 
 export const getAvailableActions = (

@@ -2,10 +2,10 @@ import { Check, X } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router";
 
+import { Alert, AlertVariant } from "../Alert";
+
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { Observer } from "@/utils/basic-observable";
-
-import { Alert, AlertVariant } from "../Alert";
 
 export type Banner = {
   header: string;

@@ -1,9 +1,9 @@
 import { opensearch, SEATOOL_STATUS } from "shared-types";
 import { isCmsUser, isHelpDeskUser } from "shared-utils";
 
-import { useGetUser } from "@/api";
-
 import { DetailCardWrapper } from "..";
+
+import { useGetUser } from "@/api";
 
 type PackageStatusCardProps = {
   submission: opensearch.main.Document;

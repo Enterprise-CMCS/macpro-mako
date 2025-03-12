@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router";
 
+import { getFAQLinkForAttachments } from "../../faqLinks";
+
 import { useGetItem } from "@/api";
 import {
   ActionForm,
@@ -20,8 +22,6 @@ import {
 } from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
-
-import { getFAQLinkForAttachments } from "../../faqLinks";
 
 const actionTypeMap = {
   New: "Initial Waiver",

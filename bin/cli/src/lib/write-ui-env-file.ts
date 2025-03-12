@@ -1,6 +1,7 @@
-import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { promises as fs } from "fs";
 import path from "path";
+
+import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 
 import { project, region } from "./consts";
 

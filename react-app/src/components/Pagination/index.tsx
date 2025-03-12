@@ -1,9 +1,10 @@
 import { FC } from "react";
 
-import { cn } from "@/utils";
+import { pageStateResolver } from "./utils";
 
 import type { Props } from "./types";
-import { pageStateResolver } from "./utils";
+
+import { cn } from "@/utils";
 
 const maxRecordCount = 10000;
 

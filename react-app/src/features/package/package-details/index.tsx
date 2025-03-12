@@ -1,16 +1,16 @@
 import { useMemo } from "react";
 import { Authority, opensearch } from "shared-types";
 
-import { useGetUser } from "@/api/useGetUser";
-import { DetailsSection } from "@/components";
-
 import {
   getApprovedAndEffectiveDetails,
   getDescriptionDetails,
   getSubmissionDetails,
   getSubmittedByDetails,
+  LabelAndValue,
 } from "./details";
-import { LabelAndValue } from "./details";
+
+import { useGetUser } from "@/api/useGetUser";
+import { DetailsSection } from "@/components";
 
 type PackageDetailsGridProps = {
   details: LabelAndValue[];

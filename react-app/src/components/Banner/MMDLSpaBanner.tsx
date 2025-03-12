@@ -1,5 +1,4 @@
-import { Cross2Icon } from "@radix-ui/react-icons";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { Cross2Icon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router";
 
 import { useGetSystemNotifs } from "@/api";

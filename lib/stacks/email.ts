@@ -1,9 +1,10 @@
+import { join } from "path";
+
 import * as cdk from "aws-cdk-lib";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 import { DeploymentConfigProperties } from "lib/config/deployment-config";
-import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
 

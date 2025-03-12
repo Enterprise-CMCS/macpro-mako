@@ -6,6 +6,9 @@ import { useState } from "react";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
 import { UserRoles } from "shared-types";
 
+import { Footer } from "../Footer";
+import { UsaBanner } from "../UsaBanner";
+
 import { useGetUser } from "@/api";
 import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/components";
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
@@ -14,8 +17,6 @@ import { useMediaQuery } from "@/hooks";
 import { useHideBanner } from "@/hooks/useHideBanner";
 import { isFaqPage, isProd } from "@/utils";
 
-import { Footer } from "../Footer";
-import { UsaBanner } from "../UsaBanner";
 /**
  * Custom hook that generates a list of navigation links based on the user's status and whether the current page is the FAQ page.
  *

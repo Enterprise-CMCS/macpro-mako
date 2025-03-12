@@ -4,6 +4,9 @@ import { Link, Navigate, redirect } from "react-router";
 import { UserRoles } from "shared-types";
 import { isStateUser } from "shared-utils";
 
+import { SpasList } from "./Lists/spas";
+import { WaiversList } from "./Lists/waivers";
+
 import { getUser, useGetUser } from "@/api";
 import {
   FilterDrawerProvider,
@@ -17,9 +20,6 @@ import {
   useOsData,
 } from "@/components";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-
-import { SpasList } from "./Lists/spas";
-import { WaiversList } from "./Lists/waivers";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {

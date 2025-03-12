@@ -6,10 +6,10 @@ import {
 } from "mocks";
 import { beforeAll, describe, expect, test } from "vitest";
 
+import { Amendment } from ".";
+
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
-
-import { Amendment } from "../amend";
 
 describe("Post-submission Amendment", () => {
   beforeAll(() => {
