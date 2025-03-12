@@ -1,12 +1,13 @@
-import { describe, it, expect } from "vitest";
-import {
-  getDashboardTabForAuthority,
-  detailsAndActionsCrumbs,
-  dashboardCrumb,
-  detailsCrumb,
-  actionCrumb,
-} from "./crumbs";
 import { Action } from "shared-types/actions";
+import { describe, expect, it } from "vitest";
+
+import {
+  actionCrumb,
+  dashboardCrumb,
+  detailsAndActionsCrumbs,
+  detailsCrumb,
+  getDashboardTabForAuthority,
+} from "./crumbs";
 
 describe("getDashboardTabForAuthority", () => {
   //test for authority

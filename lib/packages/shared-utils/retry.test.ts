@@ -1,4 +1,5 @@
-import { it, describe, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
 import { retry } from "./retry";
 
 describe("test retry function", () => {

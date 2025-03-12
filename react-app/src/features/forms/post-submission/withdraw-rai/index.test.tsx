@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react";
-import { vi, describe, it, expect, beforeAll } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
+
 import { WithdrawRaiForm } from "@/features/forms/post-submission/withdraw-rai";
 import { renderFormAsync } from "@/utils/test-helpers/renderForm";
 

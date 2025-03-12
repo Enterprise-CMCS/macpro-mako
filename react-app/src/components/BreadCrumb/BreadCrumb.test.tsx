@@ -1,11 +1,11 @@
-import { describe, test, expect, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { BreadCrumb, BreadCrumbBar, BreadCrumbs } from "./BreadCrumb";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
-
-import { optionCrumbsFromPath } from "./create-breadcrumbs";
 import { Authority } from "shared-types";
+import { beforeEach, describe, expect, test } from "vitest";
+
+import { BreadCrumb, BreadCrumbBar, BreadCrumbs } from "./BreadCrumb";
+import { optionCrumbsFromPath } from "./create-breadcrumbs";
 
 export const LocationDisplay = () => {
   const location = useLocation();

@@ -4,8 +4,9 @@ import { Client, Connection, errors as OpensearchErrors } from "@opensearch-proj
 import * as aws4 from "aws4";
 import { aws4Interceptor } from "aws4-axios";
 import axios from "axios";
-import { ItemResult, Document as OSDocument } from "shared-types/opensearch/main";
 import { opensearch } from "shared-types";
+import { Document as OSDocument, ItemResult } from "shared-types/opensearch/main";
+
 import { getDomainAndNamespace } from "./utils";
 
 let client: Client;

@@ -1,10 +1,10 @@
-import { Handler } from "aws-lambda";
 import {
   DeleteEventSourceMappingCommand,
   GetEventSourceMappingCommand,
   LambdaClient,
   ListEventSourceMappingsCommand,
 } from "@aws-sdk/client-lambda";
+import { Handler } from "aws-lambda";
 
 export const handler: Handler = async (event, _, callback) => {
   console.log("request:", JSON.stringify(event, undefined, 2));

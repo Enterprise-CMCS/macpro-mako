@@ -1,10 +1,11 @@
 import * as cdk from "aws-cdk-lib";
-import { Construct } from "constructs";
-import { join } from "path";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
-import { commonBundlingOptions } from "../config/bundling-config";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { Construct } from "constructs";
 import { DeploymentConfigProperties } from "lib/config/deployment-config";
+import { join } from "path";
+
+import { commonBundlingOptions } from "../config/bundling-config";
 
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;

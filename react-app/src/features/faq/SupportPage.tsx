@@ -1,10 +1,12 @@
-import { SupportSubNavHeader } from "@/components";
-import LeftNavigation from "../../components/SupportPage/navigationBar";
 import { useEffect, useState } from "react";
-import { oneMACFAQContent, QuestionAnswer } from "./content/SupportMockContent";
-import ExpandCollapseBtn from "../../components/SupportPage/expandCollapseBtn";
-import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from "@/components";
 import { useParams } from "react-router";
+
+import { SupportSubNavHeader } from "@/components";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components";
+
+import ExpandCollapseBtn from "../../components/SupportPage/expandCollapseBtn";
+import LeftNavigation from "../../components/SupportPage/navigationBar";
+import { oneMACFAQContent, QuestionAnswer } from "./content/SupportMockContent";
 
 const FaqAccordion = ({ question }: { question: QuestionAnswer[] }) => {
   return (

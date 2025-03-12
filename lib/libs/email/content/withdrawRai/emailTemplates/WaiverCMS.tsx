@@ -1,5 +1,6 @@
-import { CommonEmailVariables, Events, EmailAddresses } from "shared-types";
-import { Attachments, PackageDetails, BasicFooter } from "../../email-components";
+import { CommonEmailVariables, EmailAddresses, Events } from "shared-types";
+
+import { Attachments, BasicFooter, PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const WaiverCMSEmail = ({

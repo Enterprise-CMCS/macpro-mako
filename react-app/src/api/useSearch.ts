@@ -1,12 +1,13 @@
+import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { API } from "aws-amplify";
+import type { opensearch, ReactQueryApiError } from "shared-types";
+
 import {
   aggQueryBuilder,
   filterQueryBuilder,
   paginationQueryBuilder,
   sortQueryBuilder,
 } from "@/components";
-import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import { API } from "aws-amplify";
-import type { ReactQueryApiError, opensearch } from "shared-types";
 
 type QueryProps<T> = {
   index: opensearch.Index;

@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
 import { useLDClient } from "launchdarkly-react-client-sdk";
+import { useEffect, useState } from "react";
+
 import { LegacyFaq } from "./LegacyFaq";
 import { SupportPage } from "./SupportPage";
 

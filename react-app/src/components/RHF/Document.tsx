@@ -1,6 +1,7 @@
 import { Control, FieldValues } from "react-hook-form";
-import { RHFSection } from "./Section";
 import { FormSchema } from "shared-types";
+
+import { RHFSection } from "./Section";
 
 export const RHFDocument = <TFieldValues extends FieldValues>(props: {
   document: FormSchema;

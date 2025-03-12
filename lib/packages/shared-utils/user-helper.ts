@@ -21,6 +21,9 @@ const userHasAuthorizedRole = (user: CognitoUserAttributes | null, authorized: U
 /** Confirms user is any kind of CMS user */
 export const isCmsUser = (user: CognitoUserAttributes | null) =>
   userHasAuthorizedRole(user, CMS_ROLES);
+/** Confirms user is help desk user */
+export const isHelpDeskUser = (user: CognitoUserAttributes | null) =>
+  userHasAuthorizedRole(user, [UserRoles.HELPDESK]);
 /** Confirms user is a CMS user who can create data */
 export const isCmsWriteUser = (user: CognitoUserAttributes | null) =>
   userHasAuthorizedRole(user, CMS_WRITE_ROLES);

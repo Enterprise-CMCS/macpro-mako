@@ -1,16 +1,17 @@
-import { describe, expect, it, vi } from "vitest";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { OsFiltering, OsTableColumn } from "@/components";
+import { ExportToCsv } from "export-to-csv";
 import { getFilteredDocList } from "mocks";
 import { opensearch } from "shared-types";
-import { ExportToCsv } from "export-to-csv";
+import { describe, expect, it, vi } from "vitest";
+
+import { OsFiltering, OsTableColumn } from "@/components";
 import {
-  renderDashboard,
   DEFAULT_COLUMNS,
-  HIDDEN_COLUMN,
-  getFilteredHits,
   getDashboardQueryString,
+  getFilteredHits,
+  HIDDEN_COLUMN,
+  renderDashboard,
 } from "@/utils/test-helpers";
 
 const defaultHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);

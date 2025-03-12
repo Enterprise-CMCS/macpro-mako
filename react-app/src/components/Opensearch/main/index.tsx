@@ -1,12 +1,14 @@
 import { FC, useState } from "react";
-import { OsFiltering } from "./Filtering";
-import { OsTable } from "./Table";
+
 import { Pagination } from "@/components/Pagination";
-import { useOsContext } from "./Provider";
-import { useOsData, useOsUrl } from "./useOpensearch";
-import { OsTableColumn } from "./types";
-import { FilterChips } from "./Filtering";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+
+import { OsFiltering } from "./Filtering";
+import { FilterChips } from "./Filtering";
+import { useOsContext } from "./Provider";
+import { OsTable } from "./Table";
+import { OsTableColumn } from "./types";
+import { useOsData, useOsUrl } from "./useOpensearch";
 
 const createLSColumns = (columns: OsTableColumn[]): string[] =>
   columns.filter((col) => col.hidden).map((col) => col.field ?? "");

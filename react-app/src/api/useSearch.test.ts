@@ -1,7 +1,9 @@
-import { describe, expect, it } from "vitest";
-import { getMainExportData } from "./useSearch";
-import { DEFAULT_FILTERS } from "@/components/Opensearch/main/useOpensearch";
 import { getFilteredDocList } from "mocks/data/items";
+import { describe, expect, it } from "vitest";
+
+import { DEFAULT_FILTERS } from "@/components/Opensearch/main/useOpensearch";
+
+import { getMainExportData } from "./useSearch";
 
 describe("getMainExportData tests", () => {
   it("should return spa items", async () => {

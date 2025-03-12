@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
+import { opensearch, ReactQueryApiError } from "shared-types";
+
 import { createContextProvider } from "@/utils";
-import { ReactQueryApiError, opensearch } from "shared-types";
 
 export type ContextState = {
   data: opensearch.main.Response["hits"] | undefined;

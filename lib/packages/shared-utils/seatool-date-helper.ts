@@ -1,7 +1,7 @@
+import { isAHoliday } from "@18f/us-federal-holidays";
 import { TZDate } from "@date-fns/tz";
 import { UTCDate } from "@date-fns/utc";
-import { format, startOfDay, isWeekend, addDays } from "date-fns";
-import { isAHoliday } from "@18f/us-federal-holidays";
+import { addDays, format, isWeekend, startOfDay } from "date-fns";
 
 /**
  * Returns the epoch timestamp for midnight UTC time for the date provided.

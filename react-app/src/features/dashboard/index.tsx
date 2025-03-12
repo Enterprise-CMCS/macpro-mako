@@ -1,23 +1,25 @@
 import { QueryClient } from "@tanstack/react-query";
 import { Plus as PlusIcon } from "lucide-react";
-import { getUser, useGetUser } from "@/api";
-import { WaiversList } from "./Lists/waivers";
-import { SpasList } from "./Lists/spas";
+import { Link, Navigate, redirect } from "react-router";
 import { UserRoles } from "shared-types";
+import { isStateUser } from "shared-utils";
+
+import { getUser, useGetUser } from "@/api";
 import {
-  OsProvider,
-  useOsData,
   FilterDrawerProvider,
+  LoadingSpinner,
+  OsProvider,
+  OsTab,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-  LoadingSpinner,
-  OsTab,
+  useOsData,
 } from "@/components";
-import { isStateUser } from "shared-utils";
-import { Link, Navigate, redirect } from "react-router";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+
+import { SpasList } from "./Lists/spas";
+import { WaiversList } from "./Lists/waivers";
 
 const loader = (queryClient: QueryClient) => {
   return async () => {

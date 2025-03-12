@@ -1,13 +1,13 @@
 import { FILE_TYPES } from "shared-types/uploads";
-import { ABP_TEMPLATES } from "@/features/faq/content/abpTemplate";
-import { renderSection } from "@/features/faq/content/chpRenderSection";
-import { ABP_GUIDES } from "@/features/faq/content/abpGuides";
-import { MPC_TEMPLATES } from "@/features/faq/content/mpcTemplates";
-import { MPC_GUIDES } from "@/features/faq/content/mpcGuides";
-import { CHP_TEMPLATES } from "@/features/faq/content/chpTemplates";
-import { CHP_GUIDES } from "@/features/faq/content/chpGuides";
 
-import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from "@/components";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components";
+import { ABP_GUIDES } from "@/features/faq/content/abpGuides";
+import { ABP_TEMPLATES } from "@/features/faq/content/abpTemplate";
+import { CHP_GUIDES } from "@/features/faq/content/chpGuides";
+import { renderSection } from "@/features/faq/content/chpRenderSection";
+import { CHP_TEMPLATES } from "@/features/faq/content/chpTemplates";
+import { MPC_GUIDES } from "@/features/faq/content/mpcGuides";
+import { MPC_TEMPLATES } from "@/features/faq/content/mpcTemplates";
 
 export type QuestionAnswer = {
   anchorText: string;
@@ -558,7 +558,7 @@ export const oneMACFAQContent: FAQContent[] = [
               <li>SS = 2 alpha character (State Abbreviation)</li>
               <li>YY = 2 numeric digits (Year)</li>
               <li>#### = 4 numeric digits (Serial number)</li>
-              <li>XXXX = OPTIONAL, 4 characters alpha/numeric modifier (Suffix)</li>
+              <li>XXXX = OPTIONAL, 1 to 4 characters alpha/numeric modifier (Suffix)</li>
             </ul>
           </div>
         ),

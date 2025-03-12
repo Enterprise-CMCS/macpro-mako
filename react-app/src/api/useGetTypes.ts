@@ -1,5 +1,5 @@
-import { API } from "aws-amplify";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { API } from "aws-amplify";
 import { opensearch, ReactQueryApiError } from "shared-types";
 import { subtypes, types } from "shared-types/opensearch";
 

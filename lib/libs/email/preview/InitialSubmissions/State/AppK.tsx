@@ -1,6 +1,6 @@
 import { AppKStateEmail } from "../../../content/newSubmission/emailTemplates";
-import { emailTemplateValue } from "../../../mock-data/new-submission";
 import * as attachments from "../../../mock-data/attachments";
+import { emailTemplateValue } from "../../../mock-data/new-submission";
 
 const AppKCMSEmailPreview = () => {
   return (

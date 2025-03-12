@@ -1,10 +1,12 @@
 import { Control, FieldValues } from "react-hook-form";
 import * as TRhf from "shared-types";
-import { FormLabel, FormField } from "../Inputs";
+
+import { cn } from "@/utils";
+
+import { FormField, FormLabel } from "../Inputs";
 import { DependencyWrapper } from "./dependencyWrapper";
 import { RHFSlot } from "./Slot";
 import { ruleGenerator } from "./utils";
-import { cn } from "@/utils";
 
 export const RHFFormGroup = <TFieldValues extends FieldValues>(props: {
   form: TRhf.FormGroup;

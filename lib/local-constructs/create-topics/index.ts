@@ -1,11 +1,5 @@
-import { Construct } from "constructs";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
-import { join } from "path";
-import {
-  AwsCustomResource,
-  AwsCustomResourcePolicy,
-  PhysicalResourceId,
-} from "aws-cdk-lib/custom-resources";
+import { Duration, RemovalPolicy } from "aws-cdk-lib";
+import { ISecurityGroup, ISubnet, IVpc } from "aws-cdk-lib/aws-ec2";
 import {
   Effect,
   ManagedPolicy,
@@ -14,10 +8,17 @@ import {
   Role,
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
-import { Duration, RemovalPolicy } from "aws-cdk-lib";
-import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
-import { ISecurityGroup, ISubnet, IVpc } from "aws-cdk-lib/aws-ec2";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { LogGroup } from "aws-cdk-lib/aws-logs";
+import {
+  AwsCustomResource,
+  AwsCustomResourcePolicy,
+  PhysicalResourceId,
+} from "aws-cdk-lib/custom-resources";
+import { Construct } from "constructs";
+import { join } from "path";
+
 import { commonBundlingOptions } from "../../config/bundling-config";
 
 interface CreateTopicsProps {

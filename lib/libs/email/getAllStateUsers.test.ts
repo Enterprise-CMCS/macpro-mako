@@ -1,6 +1,7 @@
-import { getAllStateUsers } from "./getAllStateUsers";
-import { describe, it, expect } from "vitest";
 import { USER_POOL_ID } from "mocks";
+import { describe, expect, it } from "vitest";
+
+import { getAllStateUsers } from "./getAllStateUsers";
 
 describe("getAllStateUsers", () => {
   it("should fetch users successfully", async () => {
