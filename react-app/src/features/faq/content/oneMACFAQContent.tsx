@@ -1804,7 +1804,7 @@ export const oneMACFAQContent: FAQContent[] = [
               A state can withdraw a submission package if it is in the Under Review or RAI Issued
               status. However, please note that once withdrawn, a submission package cannot be
               resubmitted to CMS.{" "}
-              <b>Completing this action will conclude the review of this SPA package.</b>
+              <b>Completing this action will conclude the review of this Waiver package.</b>
             </p>
             <p>There are two methods you can use to withdraw a submission package:</p>
             <ul className="list-disc ml-7 space-y-2">

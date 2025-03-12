@@ -14,7 +14,7 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
     test.describe("header", () => {
       test("displays header", async () => {
         await expect(faqPage.header).toBeVisible();
-        await expect(faqPage.header).toHaveText("Frequently Asked Questions");
+        await expect(faqPage.header).toHaveText("OneMAC Support");
       });
     });
 

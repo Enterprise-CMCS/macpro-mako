@@ -23,8 +23,8 @@ export const makoReviewer: TestUserData = {
       Value: "",
     },
     {
-      Name: "custom:cms-roles",
-      Value: "onemac-micro-reviewer",
+      Name: "custom:ismemberof",
+      Value: "ONEMAC_USER_D",
     },
     {
       Name: "sub",
@@ -57,8 +57,8 @@ export const reviewer: TestUserData = {
       Value: "",
     },
     {
-      Name: "custom:cms-roles",
-      Value: "onemac-micro-reviewer",
+      Name: "custom:ismemberof",
+      Value: "ONEMAC_USER_D",
     },
     {
       Name: "sub",
@@ -91,8 +91,8 @@ export const automatedReviewer: TestUserData = {
       Value: "",
     },
     {
-      Name: "custom:cms-roles",
-      Value: "onemac-micro-reviewer",
+      Name: "custom:ismemberof",
+      Value: "ONEMAC_USER_D",
     },
     {
       Name: "sub",

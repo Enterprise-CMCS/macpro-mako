@@ -93,28 +93,28 @@ export const ChipSPASubmissionOptions = () => (
 export const WaiverSubmissionOptions = () => (
   <OptionsPage
     title="Waiver Action Type"
-    fieldsetLegend="Select a Waiver type to start your submission."
+    fieldsetLegend="Select a Waiver type to start your submission"
     options={WAIVER_OPTIONS}
   />
 );
 export const BWaiverSubmissionOptions = () => (
   <OptionsPage
     title="1915(b) Waiver Action Type"
-    fieldsetLegend="Select a 1915(b) Waiver type for your submission."
+    fieldsetLegend="Select a 1915(b) Waiver type for your submission"
     options={B_WAIVER_OPTIONS}
   />
 );
 export const B4WaiverSubmissionOptions = () => (
   <OptionsPage
     title="1915(b)(4) FFS Selective Contracting Waiver Authority"
-    fieldsetLegend="Select a Waiver type to start your submission."
+    fieldsetLegend="Select a Waiver type to start your submission"
     options={B4_WAIVER_OPTIONS}
   />
 );
 export const BCapWaiverSubmissionOptions = () => (
   <OptionsPage
     title="1915(b) Comprehensive (Capitated) Waiver Authority"
-    fieldsetLegend="Select a Waiver type to start your submission."
+    fieldsetLegend="Select a Waiver type to start your submission"
     options={BCAP_WAIVER_OPTIONS}
   />
 );
