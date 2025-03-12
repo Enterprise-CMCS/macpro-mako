@@ -1,16 +1,17 @@
-import { Events, Authority, EmailAddresses, CommonEmailVariables } from "shared-types";
+import { render } from "@react-email/render";
+import { Authority, CommonEmailVariables, EmailAddresses, Events } from "shared-types";
+
 import { AuthoritiesWithUserTypesTemplate } from "../..";
 import {
-  ChipSpaCMSEmail,
-  ChipSpaStateEmail,
   AppKCMSEmail,
   AppKStateEmail,
-  MedSpaStateEmail,
+  ChipSpaCMSEmail,
+  ChipSpaStateEmail,
   MedSpaCMSEmail,
+  MedSpaStateEmail,
   WaiversEmailCMS,
   WaiversEmailState,
 } from "./emailTemplates";
-import { render } from "@react-email/render";
 
 export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
   [Authority.CHIP_SPA]: {

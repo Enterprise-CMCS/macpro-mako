@@ -1,20 +1,22 @@
 import { useMemo } from "react";
+import { useParams } from "react-router";
 import { opensearch } from "shared-types";
+import { ItemResult } from "shared-types/opensearch/changelog";
+import { formatDateToEST } from "shared-utils";
+
+import { useGetItem } from "@/api";
 import {
   Accordion,
-  DetailsSection,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  DetailsSection,
   LoadingSpinner,
 } from "@/components";
 import * as Table from "@/components";
 import { BLANK_VALUE } from "@/consts";
-import { useAttachmentService, Attachments } from "./hook";
-import { useParams } from "react-router";
-import { useGetItem } from "@/api";
-import { ItemResult } from "shared-types/opensearch/changelog";
-import { formatDateToEST } from "shared-utils";
+
+import { Attachments, useAttachmentService } from "./hook";
 
 type AttachmentDetailsProps = {
   id: string;

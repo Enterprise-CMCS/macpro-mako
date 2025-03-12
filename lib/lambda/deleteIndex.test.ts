@@ -1,9 +1,10 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
-import { handler } from "./deleteIndex";
 import { Context } from "aws-lambda";
-import { OPENSEARCH_DOMAIN, OPENSEARCH_INDEX_NAMESPACE, errorDeleteIndexHandler } from "mocks";
-import { mockedServiceServer as mockedServer } from "mocks/server";
 import * as os from "libs/opensearch-lib";
+import { errorDeleteIndexHandler, OPENSEARCH_DOMAIN, OPENSEARCH_INDEX_NAMESPACE } from "mocks";
+import { mockedServiceServer as mockedServer } from "mocks/server";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { handler } from "./deleteIndex";
 
 describe("Lambda Handler", () => {
   const deleteIndexSpy = vi.spyOn(os, "deleteIndex");

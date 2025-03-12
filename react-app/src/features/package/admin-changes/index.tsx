@@ -1,6 +1,8 @@
+import { UTCDate } from "@date-fns/utc";
+import { format } from "date-fns";
 import { FC, useMemo } from "react";
 import { opensearch } from "shared-types";
-import { format } from "date-fns";
+
 import {
   Accordion,
   AccordionContent,
@@ -9,8 +11,8 @@ import {
   DetailsSection,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+
 import { usePackageDetailsCache } from "..";
-import { UTCDate } from "@date-fns/utc";
 
 export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (props) => {
   return (

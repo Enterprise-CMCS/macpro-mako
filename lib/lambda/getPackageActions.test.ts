@@ -1,14 +1,15 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { Action } from "shared-types";
 import { getRequestContext } from "mocks";
 import {
   GET_ERROR_ITEM_ID,
   HI_TEST_ITEM_ID,
+  INITIAL_RELEASE_APPK_ITEM_ID,
   NOT_FOUND_ITEM_ID,
   WITHDRAWN_CHANGELOG_ITEM_ID,
-  INITIAL_RELEASE_APPK_ITEM_ID,
 } from "mocks/data/items";
+import { Action } from "shared-types";
 import { describe, expect, it } from "vitest";
+
 import { handler } from "./getPackageActions";
 
 describe("getPackageActions Handler", () => {

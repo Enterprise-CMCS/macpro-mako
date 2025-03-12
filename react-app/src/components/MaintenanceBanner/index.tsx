@@ -1,6 +1,7 @@
-import { Alert } from "@/components";
-import { featureFlags } from "shared-utils";
 import { useLDClient } from "launchdarkly-react-client-sdk";
+import { featureFlags } from "shared-utils";
+
+import { Alert } from "@/components";
 
 export const MaintenanceBanner = () => {
   const banners = {

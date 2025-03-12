@@ -1,4 +1,5 @@
 import { CloudFormationCustomResourceEvent } from "aws-lambda";
+
 import * as topics from "../../../libs/topics-lib";
 
 export const handler = async function (event: CloudFormationCustomResourceEvent): Promise<void> {

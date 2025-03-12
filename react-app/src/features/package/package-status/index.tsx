@@ -1,8 +1,10 @@
-import { useGetUser } from "@/api";
-import { SEATOOL_STATUS, UserRoles } from "shared-types";
-import { DetailCardWrapper } from "..";
 import { FC } from "react";
+import { SEATOOL_STATUS, UserRoles } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/main";
+
+import { useGetUser } from "@/api";
+
+import { DetailCardWrapper } from "..";
 export const PackageStatusCard: FC<{ data: ItemResult }> = ({ data }) => {
   const { data: user } = useGetUser();
 

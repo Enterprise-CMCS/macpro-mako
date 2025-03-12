@@ -1,18 +1,19 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
-import { APIGatewayEvent } from "aws-lambda";
-import { handler } from "./getAttachmentUrl";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { APIGatewayEvent } from "aws-lambda";
 import {
-  OPENSEARCH_DOMAIN,
-  getRequestContext,
-  NOT_FOUND_ITEM_ID,
-  HI_TEST_ITEM_ID,
-  TEST_ITEM_ID,
-  WITHDRAWN_CHANGELOG_ITEM_ID,
-  GET_ERROR_ITEM_ID,
   ATTACHMENT_BUCKET_NAME,
   ATTACHMENT_BUCKET_REGION,
+  GET_ERROR_ITEM_ID,
+  getRequestContext,
+  HI_TEST_ITEM_ID,
+  NOT_FOUND_ITEM_ID,
+  OPENSEARCH_DOMAIN,
+  TEST_ITEM_ID,
+  WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { handler } from "./getAttachmentUrl";
 
 vi.mock("@aws-sdk/s3-request-presigner", () => ({
   getSignedUrl: vi.fn(),

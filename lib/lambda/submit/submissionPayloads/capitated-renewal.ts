@@ -1,9 +1,10 @@
 // can/should add the additional frontend checks here
 
-import { events } from "shared-types/events";
-import { isAuthorized, getAuthDetails, lookupUserAttributes } from "../../../libs/api/auth/user";
 import { type APIGatewayEvent } from "aws-lambda";
 import { itemExists } from "libs/api/package";
+import { events } from "shared-types/events";
+
+import { getAuthDetails, isAuthorized, lookupUserAttributes } from "../../../libs/api/auth/user";
 
 export const capitatedRenewal = async (event: APIGatewayEvent) => {
   if (!event.body) return;

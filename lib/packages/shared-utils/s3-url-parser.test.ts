@@ -1,4 +1,5 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import { s3ParseUrl } from "./s3-url-parser";
 
 describe("s3ParseUrl", () => {

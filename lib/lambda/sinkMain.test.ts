@@ -1,8 +1,9 @@
-import { describe, it, expect, vi } from "vitest";
-import { handler } from "./sinkMain";
 import { Context } from "aws-lambda";
-import * as sinkMainProcessors from "./sinkMainProcessors";
 import { KafkaEvent } from "shared-types";
+import { describe, expect, it, vi } from "vitest";
+
+import { handler } from "./sinkMain";
+import * as sinkMainProcessors from "./sinkMainProcessors";
 
 const createKafkaEvent = (records: KafkaEvent["records"]) => ({
   eventSource: "SelfManagedKafka",

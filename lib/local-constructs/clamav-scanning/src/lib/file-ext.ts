@@ -1,10 +1,11 @@
-import { MimeType, fileTypeFromFile } from "file-type";
-import { lookup } from "mime-types";
-import * as constants from "./constants";
+import { fileTypeFromFile, MimeType } from "file-type";
 import fs from "fs";
+import { lookup } from "mime-types";
 import path from "path";
-import readline from "readline";
 import pino from "pino";
+import readline from "readline";
+
+import * as constants from "./constants";
 const logger = pino();
 
 export async function checkFileExt(pathToFile: string): Promise<string> {

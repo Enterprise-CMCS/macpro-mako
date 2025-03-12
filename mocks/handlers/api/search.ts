@@ -1,7 +1,8 @@
 import { http, HttpResponse, PathParams } from "msw";
+
 import { getFilteredItemList } from "../../data/items";
-import { getFilterValueAsStringArray, getAggregations } from "../search.utils";
 import { SearchQueryBody } from "../../index.d";
+import { getAggregations, getFilterValueAsStringArray } from "../search.utils";
 
 const defaultApiSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/search/:index",

@@ -1,6 +1,7 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { createTopics, deleteTopics } from "./topics-lib";
 import { mockedAdmin, TOPIC_ONE, TOPIC_THREE } from "mocks";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { createTopics, deleteTopics } from "./topics-lib";
 
 describe("topics-lib test", () => {
   afterEach(() => {

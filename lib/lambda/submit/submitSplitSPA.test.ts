@@ -1,12 +1,13 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { handler } from "./submitSplitSPA";
-import { APIGatewayEvent } from "node_modules/shared-types";
 import {
   getRequestContext,
   TEST_CHIP_SPA_ITEM,
   TEST_MED_SPA_ITEM,
   TEST_SPA_ITEM_TO_SPLIT,
 } from "mocks";
+import { APIGatewayEvent } from "node_modules/shared-types";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { handler } from "./submitSplitSPA";
 
 describe("handler", () => {
   beforeEach(() => {

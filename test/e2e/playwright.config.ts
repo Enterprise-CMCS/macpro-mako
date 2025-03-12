@@ -1,5 +1,5 @@
-import { defineConfig, devices } from "@playwright/test";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
+import { defineConfig, devices } from "@playwright/test";
 
 /**
  * See https://playwright.dev/docs/test-configuration.

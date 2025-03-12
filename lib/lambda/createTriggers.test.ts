@@ -1,17 +1,18 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { handler } from "./createTriggers";
+import {
+  CreateEventSourceMappingCommand,
+  GetEventSourceMappingCommand,
+  LambdaClient,
+} from "@aws-sdk/client-lambda";
 import { Context } from "aws-lambda";
 import {
   TEST_ERROR_EVENT_SOURCE_FUNCTION_NAME,
   TEST_FUNCTION_NAME,
-  TEST_TOPIC_NAME,
   TEST_FUNCTION_TEST_TOPIC_UUID,
+  TEST_TOPIC_NAME,
 } from "mocks";
-import {
-  LambdaClient,
-  CreateEventSourceMappingCommand,
-  GetEventSourceMappingCommand,
-} from "@aws-sdk/client-lambda";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import { handler } from "./createTriggers";
 
 vi.mock("crypto", () => ({
   randomUUID: vi.fn().mockReturnValue("test-uuid"),

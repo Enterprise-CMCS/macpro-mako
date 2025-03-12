@@ -1,11 +1,12 @@
-import { describe, it, expect } from "vitest";
 import * as cdk from "aws-cdk-lib";
-import { ManageUsers } from ".";
-import * as logs from "aws-cdk-lib/aws-logs";
-import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as cognito from "aws-cdk-lib/aws-cognito";
 import * as iam from "aws-cdk-lib/aws-iam";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as logs from "aws-cdk-lib/aws-logs";
 import * as cr from "aws-cdk-lib/custom-resources";
+import { describe, expect, it } from "vitest";
+
+import { ManageUsers } from ".";
 
 describe("ManageUsers", () => {
   const app = new cdk.App();

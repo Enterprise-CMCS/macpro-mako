@@ -1,8 +1,9 @@
-import { describe, it, expect, vi } from "vitest";
-import { Context } from "aws-lambda";
 import { SESClient } from "@aws-sdk/client-ses";
-import { sendEmail, validateEmailTemplate, handler } from "./processEmails";
-import { KafkaRecord, KafkaEvent } from "shared-types";
+import { Context } from "aws-lambda";
+import { KafkaEvent, KafkaRecord } from "shared-types";
+import { describe, expect, it, vi } from "vitest";
+
+import { handler, sendEmail, validateEmailTemplate } from "./processEmails";
 
 describe("process emails Handler", () => {
   it("should return 200 with a proper email", async () => {

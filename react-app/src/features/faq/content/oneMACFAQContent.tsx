@@ -1,13 +1,13 @@
 import { FILE_TYPES } from "shared-types/uploads";
-import { ABP_TEMPLATES } from "@/features/faq/content/abpTemplate";
-import { renderSection } from "@/features/faq/content/chpRenderSection";
-import { ABP_GUIDES } from "@/features/faq/content/abpGuides";
-import { MPC_TEMPLATES } from "@/features/faq/content/mpcTemplates";
-import { MPC_GUIDES } from "@/features/faq/content/mpcGuides";
-import { CHP_TEMPLATES } from "@/features/faq/content/chpTemplates";
-import { CHP_GUIDES } from "@/features/faq/content/chpGuides";
 
-import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from "@/components";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components";
+import { ABP_GUIDES } from "@/features/faq/content/abpGuides";
+import { ABP_TEMPLATES } from "@/features/faq/content/abpTemplate";
+import { CHP_GUIDES } from "@/features/faq/content/chpGuides";
+import { renderSection } from "@/features/faq/content/chpRenderSection";
+import { CHP_TEMPLATES } from "@/features/faq/content/chpTemplates";
+import { MPC_GUIDES } from "@/features/faq/content/mpcGuides";
+import { MPC_TEMPLATES } from "@/features/faq/content/mpcTemplates";
 
 type QuestionAnswer = {
   anchorText: string;
