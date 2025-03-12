@@ -52,10 +52,12 @@ const sendDeleteMessage = async (packageId: string) => {
 const sendUpdateValuesMessage = async ({
   currentPackage,
   updatedFields,
+  changeMade,
   changeReason,
 }: {
   currentPackage: ItemResult;
   updatedFields: object;
+  changeMade?: string;
   changeReason?: string;
 }) => {
   const topicName = process.env.topicName as string;
@@ -94,7 +96,7 @@ const sendUpdateValuesMessage = async ({
       ...updatedFields,
       isAdminChange: true,
       adminChangeType: "update-values",
-      changeMade: changeMadeText,
+      changeMade,
       changeReason,
       makoChangedDate: currentTime,
       changedDate: currentTime,
@@ -118,9 +120,13 @@ const sendUpdateValuesMessage = async ({
 const sendUpdateIdMessage = async ({
   currentPackage,
   updatedId,
+  changeMade,
+  changeReason,
 }: {
   currentPackage: ItemResult;
   updatedId: string;
+  changeMade?: string;
+  changeReason?: string;
 }) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
@@ -173,7 +179,8 @@ const sendUpdateIdMessage = async ({
       idToBeUpdated: currentPackage._id,
       ...remainingFields,
       origin: "OneMAC",
-      changeMade: "ID has been updated.",
+      changeMade,
+      changeReason,
       isAdminChange: true,
       adminChangeType: "update-id",
       makoChangedDate: currentTime,
@@ -194,6 +201,7 @@ const updatePackageEventBodySchema = z.object({
   action: z.enum(["update-values", "update-id", "delete"]),
   updatedId: z.string().optional(),
   updatedFields: z.record(z.unknown()).optional(),
+  changeMade: z.string().optional(),
   changeReason: z.string().optional(),
 });
 
@@ -228,6 +236,7 @@ export const handler = async (event: APIGatewayEvent) => {
       action,
       updatedId = packageId,
       updatedFields = {},
+      changeMade,
       changeReason,
     } = parseEventBody(event.body);
 
@@ -244,13 +253,14 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     if (action === "update-id") {
-      return await sendUpdateIdMessage({ currentPackage, updatedId });
+      return await sendUpdateIdMessage({ currentPackage, updatedId, changeMade, changeReason });
     }
 
     if (action === "update-values") {
       return await sendUpdateValuesMessage({
         currentPackage,
         updatedFields,
+        changeMade,
         changeReason,
       });
     }

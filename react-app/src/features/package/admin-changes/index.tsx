@@ -65,6 +65,10 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
         return [props.changeType || "Manual Update", AC_LegacyAdminChange];
       case "split-spa":
         return ["Package Added", AC_LegacyAdminChange];
+      case "update-id":
+        return ["Manual Update", AC_LegacyAdminChange];
+      case "update-values":
+        return ["Manual Update", AC_LegacyAdminChange];
       default:
         return [BLANK_VALUE, AC_Update];
     }
