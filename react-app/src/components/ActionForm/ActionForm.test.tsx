@@ -19,6 +19,7 @@ import {
   renderFormAsync,
   renderFormWithPackageSectionAsync,
 } from "@/utils/test-helpers/renderForm";
+
 import { ActionForm } from "./index";
 
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
@@ -280,7 +281,7 @@ describe("ActionForm", () => {
     );
 
     const submitBtn = await screen.findByTestId("submit-action-form");
-    await userEvent.click(submitBtn);
+    await user.click(submitBtn);
 
     expect(userPromptSpy).toBeCalledWith({
       header: "Hello World Header",
