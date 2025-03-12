@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.81% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/11</span>
+                <span class='fraction'>8/10</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/10</span>
+                <span class='fraction'>8/9</span>
             </div>
         
             
@@ -130,9 +130,7 @@
 <a name='L65'></a><a href='#L65'>65</a>
 <a name='L66'></a><a href='#L66'>66</a>
 <a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a>
-<a name='L70'></a><a href='#L70'>70</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L68'></a><a href='#L68'>68</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -153,8 +151,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">57x</span>
+<span class="cline-any cline-yes">38x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -169,10 +166,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">74x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -202,8 +198,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useMemo } from "react";
-import { Authority } from "shared-types";
-import { ItemResult } from "shared-types/opensearch/main";
+import { Authority, opensearch } from "shared-types";
 &nbsp;
 import { useGetUser } from "@/api/useGetUser";
 import { DetailsSection } from "@/components";
@@ -216,11 +211,11 @@ import {
 } from "./details";
 import { LabelAndValue } from "./details";
 &nbsp;
-type SubmissionDetailsGridProps = {
+type PackageDetailsGridProps = {
   details: LabelAndValue[];
 };
 &nbsp;
-const SubmissionDetailsGrid = ({ details }: SubmissionDetailsGridProps) =&gt; (
+const PackageDetailsGrid = ({ details }: PackageDetailsGridProps) =&gt; (
   &lt;div className="grid grid-cols-2 gap-6"&gt;
     {details.map(({ label, value, canView = true }) =&gt; {
       return canView ? (
@@ -233,13 +228,12 @@ const SubmissionDetailsGrid = ({ details }: SubmissionDetailsGridProps) =&gt; (
   &lt;/div&gt;
 );
 &nbsp;
-type SubmissionDetailsProps = {
-  itemResult: ItemResult;
+type PackageDetailsProps = {
+  submission: opensearch.main.Document;
 };
 &nbsp;
-export const SubmissionDetails = ({ itemResult }: SubmissionDetailsProps) =&gt; {
+export const PackageDetails = ({ submission }: PackageDetailsProps) =&gt; {
   const { data: user } = useGetUser();
-  const { _source: submission } = itemResult;
 &nbsp;
   const title = useMemo(() =&gt; {
     switch (submission.authority) {
@@ -257,7 +251,7 @@ export const SubmissionDetails = ({ itemResult }: SubmissionDetailsProps) =&gt; 
   return (
     &lt;DetailsSection id="package_details" title={title}&gt;
       &lt;div className="flex-col gap-4 max-w-2xl"&gt;
-        &lt;SubmissionDetailsGrid
+        &lt;PackageDetailsGrid
           details={[
             ...getSubmissionDetails(submission, user),
             ...getApprovedAndEffectiveDetails(submission, user),
@@ -265,7 +259,7 @@ export const SubmissionDetails = ({ itemResult }: SubmissionDetailsProps) =&gt; 
           ]}
         /&gt;
         &lt;hr className="my-4" /&gt;
-        &lt;SubmissionDetailsGrid details={getSubmittedByDetails(submission, user)} /&gt;
+        &lt;PackageDetailsGrid details={getSubmittedByDetails(submission, user)} /&gt;
       &lt;/div&gt;
     &lt;/DetailsSection&gt;
   );
@@ -277,7 +271,7 @@ export const SubmissionDetails = ({ itemResult }: SubmissionDetailsProps) =&gt; 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-12T14:51:15.515Z
+                at 2025-03-12T15:17:25.994Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>
