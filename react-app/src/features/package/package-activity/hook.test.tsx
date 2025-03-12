@@ -4,18 +4,13 @@ import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import { beforeEach, describe, expect, it, Mock, vi } from "vitest";
 
-import { getAttachmentUrl } from "@/api";
+import * as api from "@/api";
 
 import { useAttachmentService } from "./hook";
 
 const wrapper = ({ children }) => (
   <QueryClientProvider client={new QueryClient()}> {children}</QueryClientProvider>
 );
-
-vi.mock("@/api", async (importOriginals) => ({
-  ...(await importOriginals()),
-  getAttachmentUrl: vi.fn(),
-}));
 
 vi.mock("file-saver", async (importOriginals) => ({
   ...(await importOriginals()),
@@ -39,8 +34,9 @@ describe("useAttachmentService", () => {
       uploadDate: 123232,
     };
 
-    const mockedGetAttachmentUrl = getAttachmentUrl as Mock<typeof getAttachmentUrl>;
-    mockedGetAttachmentUrl.mockResolvedValue("http://example.com/testFile");
+    const getAttachmentUrlSpy = vi
+      .spyOn(api, "getAttachmentUrl")
+      .mockResolvedValue("http://example.com/testFile");
 
     const { result } = renderHook(() => useAttachmentService({ packageId }), {
       wrapper,
@@ -48,7 +44,7 @@ describe("useAttachmentService", () => {
 
     const url = await result.current.onUrl(attachment);
 
-    expect(mockedGetAttachmentUrl).toHaveBeenCalledWith(
+    expect(getAttachmentUrlSpy).toHaveBeenCalledWith(
       packageId,
       attachment.bucket,
       attachment.key,
@@ -77,9 +73,9 @@ describe("useAttachmentService", () => {
       },
     ];
 
-    const mockedGetAttachmentUrl = getAttachmentUrl as Mock<typeof getAttachmentUrl>;
-    mockedGetAttachmentUrl.mockResolvedValueOnce("http://example.com/file1.md");
-    mockedGetAttachmentUrl.mockResolvedValueOnce("http://example.com/file2.md");
+    const getAttachmentUrlSpy = vi.spyOn(api, "getAttachmentUrl");
+    getAttachmentUrlSpy.mockResolvedValueOnce("http://example.com/file1.md");
+    getAttachmentUrlSpy.mockResolvedValueOnce("http://example.com/file2.md");
 
     const fetchSpy = vi
       .spyOn(global, "fetch")
@@ -101,7 +97,7 @@ describe("useAttachmentService", () => {
       result.current.onZip(attachments);
     });
 
-    expect(mockedGetAttachmentUrl).toHaveBeenCalledTimes(2);
+    expect(getAttachmentUrlSpy).toHaveBeenCalledTimes(2);
     expect(fetchSpy).toBeCalledTimes(2);
     expect(zipFileSpy).toBeCalledWith("file1(1).md", expect.any(Blob));
     expect(zipFileSpy).toBeCalledWith("file2(2).md", expect.any(Blob));
@@ -120,10 +116,9 @@ describe("useAttachmentService", () => {
       },
     ];
 
-    const mockedGetAttachmentUrl = getAttachmentUrl as Mock<typeof getAttachmentUrl>;
-    const getAttachmentUrlSpy = mockedGetAttachmentUrl.mockResolvedValue(
-      "http://example.com/file1.md",
-    );
+    const getAttachmentUrlSpy = vi
+      .spyOn(api, "getAttachmentUrl")
+      .mockImplementation(() => Promise.resolve("http://example.com/file1.md"));
 
     const fetchSpy = vi
       .spyOn(JSZip.prototype, "generateAsync")
