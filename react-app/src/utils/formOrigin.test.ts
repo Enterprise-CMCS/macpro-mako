@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { getFormOrigin } from "./formOrigin";
 import { Authority } from "shared-types/authority";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import { getFormOrigin } from "./formOrigin";
 
 vi.mock("./crumbs", () => ({
   getDashboardTabForAuthority: vi.fn(() => "spas"), // Mock return value

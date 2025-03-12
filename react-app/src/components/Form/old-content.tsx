@@ -1,3 +1,6 @@
+import { Info } from "lucide-react";
+import { Link } from "react-router";
+
 import {
   ActionFormDescription,
   Alert,
@@ -5,8 +8,6 @@ import {
   RequiredFieldDescription,
 } from "@/components";
 import { FAQ_TAB } from "@/router";
-import { Info } from "lucide-react";
-import { Link } from "react-router";
 
 type FormIntroTextProps = {
   hasProgressLossReminder?: boolean;

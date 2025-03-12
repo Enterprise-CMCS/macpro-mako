@@ -1,6 +1,7 @@
 import { STATE_CODES, StateCode } from "shared-types/states";
 import { type CognitoUserAttributes } from "shared-types/user";
 import { isCmsUser, isStateUser } from "shared-utils";
+
 import { getUser } from "@/api";
 
 export const getUserStateCodes = (user: CognitoUserAttributes | null | undefined): StateCode[] => {

@@ -1,9 +1,10 @@
 import { Handler } from "aws-lambda";
-import { KafkaEvent } from "shared-types";
 import { ErrorType, getTopic, logError } from "libs";
+import { KafkaEvent } from "shared-types";
+
 import {
-  insertOneMacRecordsFromKafkaIntoMako,
   insertNewSeatoolRecordsFromKafkaIntoMako,
+  insertOneMacRecordsFromKafkaIntoMako,
   syncSeatoolRecordDatesFromKafkaWithMako,
 } from "./sinkMainProcessors";
 

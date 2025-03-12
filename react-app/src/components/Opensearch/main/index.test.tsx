@@ -1,22 +1,23 @@
-import { describe, expect, it, beforeEach } from "vitest";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { opensearch } from "shared-types";
-import {
-  renderDashboard,
-  getDashboardQueryString,
-  URL_CODE,
-  getFilteredHits,
-  DEFAULT_COLUMNS,
-  HIDDEN_COLUMN,
-  DEFAULT_FILTERS,
-  verifyFiltering,
-  verifyChips,
-  verifyPagination,
-  EMPTY_HITS,
-  Storage,
-} from "@/utils/test-helpers";
+import { beforeEach, describe, expect, it } from "vitest";
+
 import { OsMainView, OsTableColumn } from "@/components";
+import {
+  DEFAULT_COLUMNS,
+  DEFAULT_FILTERS,
+  EMPTY_HITS,
+  getDashboardQueryString,
+  getFilteredHits,
+  HIDDEN_COLUMN,
+  renderDashboard,
+  Storage,
+  URL_CODE,
+  verifyChips,
+  verifyFiltering,
+  verifyPagination,
+} from "@/utils/test-helpers";
 
 const verifyTable = (recordCount: number) => {
   const table = screen.getByRole("table");

@@ -1,7 +1,7 @@
 import { IAspect } from "aws-cdk-lib";
-import { IConstruct } from "constructs";
-import * as iam from "aws-cdk-lib/aws-iam";
 import { CfnResource } from "aws-cdk-lib";
+import * as iam from "aws-cdk-lib/aws-iam";
+import { IConstruct } from "constructs";
 
 export class IamPathAspect implements IAspect {
   private readonly iamPath: string;

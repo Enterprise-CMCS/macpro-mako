@@ -1,5 +1,6 @@
-import * as os from "../../opensearch-lib";
 import { opensearch } from "shared-types";
+
+import * as os from "../../opensearch-lib";
 import { getDomainAndNamespace } from "../../utils";
 
 export const getAppkChildren = async (packageId: string, filter: any[] = []) => {

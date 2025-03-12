@@ -1,16 +1,17 @@
-import { Argv } from "yargs";
-import { checkIfAuthenticated, runCommand, project, region, setStageFromBranch } from "../lib/";
 import {
-  ResourceGroupsTaggingAPIClient,
-  GetResourcesCommand,
-  TagFilter,
-} from "@aws-sdk/client-resource-groups-tagging-api";
-import {
-  LambdaClient,
   GetFunctionCommand,
   GetFunctionConfigurationCommand,
+  LambdaClient,
 } from "@aws-sdk/client-lambda";
+import {
+  GetResourcesCommand,
+  ResourceGroupsTaggingAPIClient,
+  TagFilter,
+} from "@aws-sdk/client-resource-groups-tagging-api";
 import prompts from "prompts";
+import { Argv } from "yargs";
+
+import { checkIfAuthenticated, project, region, runCommand, setStageFromBranch } from "../lib/";
 
 const lambdaClient = new LambdaClient({ region });
 

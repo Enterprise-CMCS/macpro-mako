@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
+import { formatSeatoolDate } from "shared-utils";
+
 import { useGetUser } from "@/api";
 import { OsTableColumn } from "@/components";
 import { BLANK_VALUE } from "@/consts";
 import { removeUnderscoresAndCapitalize } from "@/utils";
-import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
-import { formatSeatoolDate } from "shared-utils";
+
 import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 
 const getColumns = (props) => {
