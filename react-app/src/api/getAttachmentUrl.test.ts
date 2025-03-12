@@ -1,11 +1,12 @@
-import { describe, expect, it } from "vitest";
-import { getAttachmentUrl } from "./getAttachmentUrl";
 import {
   ATTACHMENT_BUCKET_NAME,
   ATTACHMENT_BUCKET_REGION,
   errorApiAttachmentUrlHandler,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
+import { describe, expect, it } from "vitest";
+
+import { getAttachmentUrl } from "./getAttachmentUrl";
 
 describe("getAttachmentUrl tests", () => {
   const id = "1234";

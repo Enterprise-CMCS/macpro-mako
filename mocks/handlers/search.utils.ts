@@ -1,4 +1,4 @@
-import { QueryContainer, TermQuery, TermsQuery, TestHit, QueryAggs, TestAggResult } from "..";
+import { QueryAggs, QueryContainer, TermQuery, TermsQuery, TestAggResult, TestHit } from "..";
 
 export const getFilterValue = (
   query: QueryContainer | QueryContainer[] | undefined,

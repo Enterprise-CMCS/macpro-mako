@@ -1,8 +1,9 @@
+import { useParams } from "react-router";
+import { SEATOOL_STATUS } from "shared-types";
+
 import { ActionForm } from "@/components/ActionForm";
 import { PackageSection } from "@/components/Form/content/PackageSection";
 import { formSchemas } from "@/formSchemas";
-import { useParams } from "react-router";
-import { SEATOOL_STATUS } from "shared-types";
 
 export const WithdrawRaiForm = () => {
   const { authority, id } = useParams();

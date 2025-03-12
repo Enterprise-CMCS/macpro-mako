@@ -1,11 +1,12 @@
 import { screen } from "@testing-library/react";
+import { TEST_ITEM_ID } from "mocks";
 import { beforeAll, describe, expect, test } from "vitest";
+
 import { WithdrawPackageActionChip } from "@/features/forms/post-submission/withdraw-package";
+import { formSchemas } from "@/formSchemas";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
-import { formSchemas } from "@/formSchemas";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { TEST_ITEM_ID } from "mocks";
 
 const upload = uploadFiles<(typeof formSchemas)["withdraw-package-chip"]>();
 

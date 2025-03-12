@@ -1,11 +1,13 @@
-import { describe, test, expect } from "vitest";
 import { screen } from "@testing-library/react";
-import { renderWithQueryClient } from "@/utils/test-helpers";
-import { RHFDocument } from "../.";
-import { Form } from "../../Inputs";
+import userEvent from "@testing-library/user-event";
 import { useForm } from "react-hook-form";
 import { FormSchema } from "shared-types";
-import userEvent from "@testing-library/user-event";
+import { describe, expect, test } from "vitest";
+
+import { renderWithQueryClient } from "@/utils/test-helpers";
+
+import { Form } from "../../Inputs";
+import { RHFDocument } from "../.";
 
 const testForm: FormSchema = {
   formId: "testFormId",

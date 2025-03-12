@@ -1,3 +1,6 @@
+import { Link } from "react-router";
+import { SEATOOL_STATUS } from "shared-types";
+
 import {
   ActionForm,
   DatePicker,
@@ -11,9 +14,8 @@ import {
 } from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/router";
-import { Link } from "react-router";
+
 import { getFAQLinkForAttachments } from "../../faqLinks";
-import { SEATOOL_STATUS } from "shared-types";
 
 export const InitialForm = () => (
   <ActionForm

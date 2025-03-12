@@ -1,11 +1,13 @@
-import * as UI from "@/components";
 import type { FC } from "react";
-import { OsTableColumn } from "./types";
-import { useOsContext } from "../Provider";
-import { useOsUrl, LoadingSpinner } from "@/components";
-import { BLANK_VALUE } from "@/consts";
 import { opensearch } from "shared-types";
 import { cn } from "@/utils";
+
+import * as UI from "@/components";
+import { LoadingSpinner, useOsUrl } from "@/components";
+import { BLANK_VALUE } from "@/consts";
+
+import { useOsContext } from "../Provider";
+import { OsTableColumn } from "./types";
 
 export const OsTable: FC<{
   columns: OsTableColumn[];

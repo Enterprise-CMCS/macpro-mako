@@ -1,8 +1,9 @@
-import { getAttachmentUrl } from "@/api";
-import JSZip from "jszip";
-import { saveAs } from "file-saver";
-import { opensearch } from "shared-types";
 import { useMutation } from "@tanstack/react-query";
+import { saveAs } from "file-saver";
+import JSZip from "jszip";
+import { opensearch } from "shared-types";
+
+import { getAttachmentUrl } from "@/api";
 
 export type Attachments = NonNullable<opensearch.changelog.Document["attachments"]>;
 

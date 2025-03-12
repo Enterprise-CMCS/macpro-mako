@@ -1,7 +1,8 @@
 import { Handler } from "aws-lambda";
 import { KafkaRecord, opensearch } from "shared-types";
 import { KafkaEvent } from "shared-types";
-import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "../libs/sink-lib";
+
+import { bulkUpdateDataWrapper, ErrorType, getTopic, logError } from "../libs/sink-lib";
 
 export const handler: Handler<KafkaEvent> = async (event) => {
   const loggableEvent = { ...event, records: "too large to display" };

@@ -1,8 +1,9 @@
 import { http, HttpResponse, PathParams } from "msw";
+
 import { GET_ERROR_ITEM_ID } from "../../data";
 import items from "../../data/items";
 import { SearchQueryBody, TestChangelogDocument, TestChangelogItemResult } from "../../index.d";
-import { getTermKeys, getTermValues, filterItemsByTerm } from "../search.utils";
+import { filterItemsByTerm, getTermKeys, getTermValues } from "../search.utils";
 
 const defaultOSChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-changelog/_search",

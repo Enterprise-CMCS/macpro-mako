@@ -1,9 +1,10 @@
-import { handleOpensearchError } from "./utils";
 import { APIGatewayEvent } from "aws-lambda";
 import { validateEnvVariable } from "shared-utils";
+
 import { getStateFilter } from "../libs/api/auth/user";
 import { getAppkChildren, getPackage, getPackageChangelog } from "../libs/api/package";
 import { response } from "../libs/handler-lib";
+import { handleOpensearchError } from "./utils";
 
 export const getItemData = async (event: APIGatewayEvent) => {
   validateEnvVariable("osDomain");

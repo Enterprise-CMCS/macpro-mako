@@ -1,6 +1,8 @@
+import { UTCDate } from "@date-fns/utc";
+import { format } from "date-fns";
 import { FC, useMemo } from "react";
 import { opensearch } from "shared-types";
-import { format } from "date-fns";
+
 import {
   Accordion,
   AccordionContent,
@@ -9,8 +11,8 @@ import {
   DetailsSection,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+
 import { usePackageDetailsCache } from "..";
-import { UTCDate } from "@date-fns/utc";
 
 export const AC_WithdrawEnabled: FC<opensearch.changelog.Document> = (props) => {
   return (
@@ -65,6 +67,10 @@ export const AdminChange: FC<opensearch.changelog.Document> = (props) => {
         return [props.changeType || "Manual Update", AC_LegacyAdminChange];
       case "split-spa":
         return ["Package Added", AC_LegacyAdminChange];
+      case "update-id":
+        return ["Manual Update", AC_LegacyAdminChange];
+      case "update-values":
+        return ["Manual Update", AC_LegacyAdminChange];
       default:
         return [BLANK_VALUE, AC_Update];
     }

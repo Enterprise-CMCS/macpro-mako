@@ -1,7 +1,7 @@
-import { DayPicker } from "react-day-picker";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
-import * as SwitchPrimitives from "@radix-ui/react-switch";
 import * as SelectPrimitive from "@radix-ui/react-select";
+import * as SwitchPrimitives from "@radix-ui/react-switch";
+import { DayPicker } from "react-day-picker";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   className?: string;

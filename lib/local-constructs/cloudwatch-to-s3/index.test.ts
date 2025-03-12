@@ -1,9 +1,10 @@
-import { describe, it, expect } from "vitest";
 import * as cdk from "aws-cdk-lib";
-import { CloudWatchToS3 } from ".";
-import * as logs from "aws-cdk-lib/aws-logs";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as firehose from "aws-cdk-lib/aws-kinesisfirehose";
+import * as logs from "aws-cdk-lib/aws-logs";
+import { describe, expect, it } from "vitest";
+
+import { CloudWatchToS3 } from ".";
 
 describe("CloudWatchToS3", () => {
   const app = new cdk.App();

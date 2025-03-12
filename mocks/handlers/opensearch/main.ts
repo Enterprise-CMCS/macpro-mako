@@ -1,15 +1,16 @@
 import { http, HttpResponse, PathParams } from "msw";
+
 import { GET_ERROR_ITEM_ID } from "../../data";
 import items from "../../data/items";
 import {
+  GetMultiItemBody,
   SearchQueryBody,
   TestAppkDocument,
   TestAppkItemResult,
   TestItemResult,
   TestMainDocument,
-  GetMultiItemBody,
 } from "../../index.d";
-import { getTermKeys, filterItemsByTerm, getTermValues } from "../search.utils";
+import { filterItemsByTerm, getTermKeys, getTermValues } from "../search.utils";
 
 const defaultOSMainDocumentHandler = http.get(
   `https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_doc/:id`,

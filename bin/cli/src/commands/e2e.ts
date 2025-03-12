@@ -1,4 +1,5 @@
 import { Argv } from "yargs";
+
 import { checkIfAuthenticated, runCommand } from "../lib";
 
 export const e2e = {

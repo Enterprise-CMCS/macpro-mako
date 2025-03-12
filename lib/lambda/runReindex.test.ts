@@ -1,9 +1,10 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
-import { handler } from "./runReindex";
-import { Context } from "aws-lambda";
-import { CLOUDFORMATION_NOTIFICATION_DOMAIN } from "mocks";
 import { SFNClient } from "@aws-sdk/client-sfn";
+import { Context } from "aws-lambda";
 import * as cfn from "cfn-response-async";
+import { CLOUDFORMATION_NOTIFICATION_DOMAIN } from "mocks";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { handler } from "./runReindex";
 
 describe("CloudFormation Custom Resource Handler", () => {
   const mockEventBase = {

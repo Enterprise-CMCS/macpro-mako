@@ -1,23 +1,24 @@
 import jwt from "jsonwebtoken";
 import { http, HttpResponse, passthrough, PathParams } from "msw";
+import { APIGatewayEventRequestContext } from "shared-types";
+
 import {
   ACCESS_KEY_ID,
+  COGNITO_IDP_DOMAIN,
   IDENTITY_POOL_ID,
   SECRET_KEY,
   USER_POOL_CLIENT_ID,
-  COGNITO_IDP_DOMAIN,
 } from "../../consts";
+import { userResponses } from "../../data/users";
 import type {
+  AdminGetUserRequestBody,
   IdentityRequest,
   IdpListUsersRequestBody,
   IdpRefreshRequestBody,
   IdpRequestSessionBody,
-  AdminGetUserRequestBody,
   TestUserData,
 } from "../../index.d";
 import { findUserByUsername } from "../auth.utils";
-import { APIGatewayEventRequestContext } from "shared-types";
-import { userResponses } from "../../data/users";
 
 const getUsernameFromAccessToken = (accessToken?: string): string | undefined => {
   if (accessToken) {
