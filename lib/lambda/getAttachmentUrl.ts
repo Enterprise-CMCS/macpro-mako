@@ -7,6 +7,7 @@ import { getDomain } from "libs/utils";
 
 import { getStateFilter } from "../libs/api/auth/user";
 import { getPackage, getPackageChangelog } from "../libs/api/package";
+
 import { handleOpensearchError } from "./utils";
 
 // Handler function to get Seatool data

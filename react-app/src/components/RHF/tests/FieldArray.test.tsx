@@ -4,10 +4,10 @@ import { Control, useForm } from "react-hook-form";
 import { DefaultFieldGroupProps, RHFSlotProps } from "shared-types";
 import { describe, expect, test } from "vitest";
 
-import { renderWithQueryClient } from "@/utils/test-helpers";
-
-import { Form, FormField } from "../../Inputs";
 import { RHFSlot } from "..";
+import { Form, FormField } from "../../Inputs";
+
+import { renderWithQueryClient } from "@/utils/test-helpers";
 
 const TestWrapper = (props: RHFSlotProps & { defaultValues?: any }) => {
   const form = useForm<any>({

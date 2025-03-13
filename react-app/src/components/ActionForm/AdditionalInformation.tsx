@@ -2,6 +2,7 @@ import { ControllerRenderProps, FieldPath } from "react-hook-form";
 import { z } from "zod";
 
 import { FormDescription, FormItem, FormLabel, Textarea } from "../Inputs";
+
 import { SchemaWithEnforcableProps } from ".";
 
 type AdditionalInformationProps<Schema extends SchemaWithEnforcableProps> = {

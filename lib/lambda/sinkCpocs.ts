@@ -1,6 +1,5 @@
 import { Handler } from "aws-lambda";
-import { KafkaRecord, opensearch } from "shared-types";
-import { KafkaEvent } from "shared-types";
+import { KafkaRecord, opensearch, KafkaEvent } from "shared-types";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 import { bulkUpdateDataWrapper, ErrorType, getTopic, logError } from "../libs/sink-lib";

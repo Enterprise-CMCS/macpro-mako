@@ -3,11 +3,12 @@ import { useLayoutEffect } from "react";
 import { FieldValues, useFieldArray } from "react-hook-form";
 import { FieldArrayProps } from "shared-types";
 
-import { cn } from "@/utils";
-
 import { Button } from "../Inputs";
+
 import { Field } from "./Field";
 import { slotInitializer } from "./utils";
+
+import { cn } from "@/utils";
 
 export const RHFFieldArray = <TFields extends FieldValues>(props: FieldArrayProps<TFields>) => {
   const fieldArr = useFieldArray<any>({

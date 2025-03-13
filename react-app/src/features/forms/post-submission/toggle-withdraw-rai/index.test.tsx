@@ -1,9 +1,9 @@
 import { WITHDRAW_RAI_ITEM_B } from "mocks";
 import { describe, expect, it, vi } from "vitest";
 
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
-
 import { DisableWithdrawRaiForm, EnableWithdrawRaiForm } from ".";
+
+import { renderFormAsync } from "@/utils/test-helpers/renderForm";
 
 vi.mock("react-router", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("react-router")),

@@ -1,3 +1,5 @@
+import { join } from "path";
+
 import { Duration, RemovalPolicy } from "aws-cdk-lib";
 import { ISecurityGroup, ISubnet, IVpc } from "aws-cdk-lib/aws-ec2";
 import {
@@ -17,9 +19,8 @@ import {
   PhysicalResourceId,
 } from "aws-cdk-lib/custom-resources";
 import { Construct } from "constructs";
-import { join } from "path";
 
-import { commonBundlingOptions } from "./../../config/bundling-config";
+import { commonBundlingOptions } from "../../config/bundling-config";
 
 interface CleanupKafkaProps {
   vpc: IVpc;

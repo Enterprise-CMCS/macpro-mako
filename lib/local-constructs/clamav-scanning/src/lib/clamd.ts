@@ -1,8 +1,8 @@
+import { exec, spawn } from "child_process";
 import fs from "fs";
+
 import pino from "pino";
 const logger = pino();
-
-import { exec, spawn } from "child_process";
 
 const CLAMD_SOCKET = "/tmp/clamd.ctl";
 const MAX_WAIT_TIME = 30000; // 30 seconds

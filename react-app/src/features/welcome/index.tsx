@@ -4,8 +4,7 @@ import { Link } from "react-router";
 
 import { getUser } from "@/api";
 import * as C from "@/components";
-import { Button } from "@/components";
-import { CardWithTopBorder } from "@/components";
+import { Button, CardWithTopBorder } from "@/components";
 import { FAQ_TAB } from "@/consts";
 import { useHideBanner } from "@/hooks/useHideBanner";
 

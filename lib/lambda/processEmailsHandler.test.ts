@@ -10,8 +10,7 @@ import {
   WITHDRAW_RAI_ITEM_D,
   WITHDRAW_RAI_ITEM_E,
 } from "mocks";
-import { KafkaEvent, KafkaRecord } from "shared-types";
-import { Authority } from "shared-types";
+import { KafkaEvent, KafkaRecord, Authority } from "shared-types";
 import { describe, expect, it, vi } from "vitest";
 
 import { handler } from "./processEmails";

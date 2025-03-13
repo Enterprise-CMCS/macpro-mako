@@ -5,12 +5,14 @@ import {
   setDefaultReviewer,
   setDefaultStateSubmitter,
   SUBMISSION_ERROR_ITEM_ID,
+  EXISTING_ITEM_PENDING_ID,
 } from "mocks";
-import { EXISTING_ITEM_PENDING_ID } from "mocks";
 import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
 import { isCmsReadonlyUser } from "shared-utils";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { z } from "zod";
+
+import { ActionForm } from "./index";
 
 import * as components from "@/components";
 import { DataPoller } from "@/utils/Poller/DataPoller";
@@ -19,8 +21,6 @@ import {
   renderFormAsync,
   renderFormWithPackageSectionAsync,
 } from "@/utils/test-helpers/renderForm";
-
-import { ActionForm } from "./index";
 
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
 

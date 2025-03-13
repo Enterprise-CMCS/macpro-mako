@@ -6,11 +6,11 @@ import { FILE_TYPES } from "shared-types/uploads";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
+import { extractBucketAndKeyFromUrl, getPresignedUrl, uploadToS3 } from "./upload.utilities";
+
 import * as I from "@/components/Inputs";
 import { LoadingSpinner } from "@/components/LoadingSpinner"; // Import your LoadingSpinner component
 import { cn } from "@/utils";
-
-import { extractBucketAndKeyFromUrl, getPresignedUrl, uploadToS3 } from "./upload.utilities";
 
 type Attachment = z.infer<typeof attachmentSchema>;
 

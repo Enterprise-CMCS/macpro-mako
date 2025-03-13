@@ -1,5 +1,3 @@
-import { cn } from "@/utils";
-
 import {
   Dialog,
   DialogContent,
@@ -9,6 +7,8 @@ import {
   DialogTitle,
 } from "../Dialog";
 import { Button } from "../Inputs";
+
+import { cn } from "@/utils";
 
 export type ConfirmationModalProps = {
   open: boolean;

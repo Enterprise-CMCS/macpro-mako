@@ -3,12 +3,12 @@ import userEvent from "@testing-library/user-event";
 import { EXISTING_ITEM_ID } from "mocks";
 import { beforeAll, describe, expect, test } from "vitest";
 
+import { MedicaidForm } from "./Medicaid";
+
 import { formSchemas } from "@/formSchemas";
 import { renderFormAsync } from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-
-import { MedicaidForm } from "./Medicaid";
 
 const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
 

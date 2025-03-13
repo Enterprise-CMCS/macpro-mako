@@ -1,5 +1,6 @@
-import type { Export } from "@aws-sdk/client-cloudformation";
 import { CreateEventSourceMappingCommandInput } from "@aws-sdk/client-lambda";
+
+import type { Export } from "@aws-sdk/client-cloudformation";
 import type { GetSecretValueCommandOutput } from "@aws-sdk/client-secrets-manager";
 import type { APIGatewayEventRequestContext, opensearch, UserData } from "shared-types";
 

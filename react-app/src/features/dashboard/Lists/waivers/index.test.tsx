@@ -12,6 +12,8 @@ import { opensearch } from "shared-types";
 import { formatActionType } from "shared-utils";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { WaiversList } from "./index";
+
 import * as api from "@/api";
 import { BLANK_VALUE } from "@/consts";
 import {
@@ -37,8 +39,6 @@ import {
   verifyFiltering,
   verifyPagination,
 } from "@/utils/test-helpers";
-
-import { WaiversList } from "./index";
 
 const pendingDoc = {
   ...PENDING_SUBMITTED_ITEM._source,

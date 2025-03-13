@@ -1,10 +1,11 @@
-import { CloudFrontClient, CreateInvalidationCommand } from "@aws-sdk/client-cloudfront";
-import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { execSync } from "child_process";
 import path from "path";
+
+import { CloudFrontClient, CreateInvalidationCommand } from "@aws-sdk/client-cloudfront";
+import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { Argv } from "yargs";
 
-import { checkIfAuthenticated, project, region, runCommand, writeUiEnvFile } from "../lib/";
+import { checkIfAuthenticated, project, region, runCommand, writeUiEnvFile } from "../lib";
 
 export const deploy = {
   command: "deploy",

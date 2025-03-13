@@ -3,11 +3,11 @@ import { opensearch } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
 import { formatDateToEST } from "shared-utils";
 
+import { Attachments, useAttachmentService } from "./hook";
+
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components";
 import * as Table from "@/components";
 import { BLANK_VALUE } from "@/consts";
-
-import { Attachments, useAttachmentService } from "./hook";
 
 type AttachmentDetailsProps = {
   id: string;

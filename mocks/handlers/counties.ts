@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
 
-import counties from "../data/counties";
+import { counties } from "../data/counties";
 
 export type PopulationParams = {
   get: string | string[];

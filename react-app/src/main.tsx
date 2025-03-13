@@ -8,10 +8,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router";
 
+import { router } from "./router";
+
 import config from "@/config";
 import { queryClient } from "@/utils";
-
-import { router } from "./router";
 
 const ldClientId = config.launchDarkly?.CLIENT_ID;
 if (ldClientId === undefined) {

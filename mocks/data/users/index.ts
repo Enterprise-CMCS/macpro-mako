@@ -1,10 +1,11 @@
 import { convertUserAttributes } from "mocks/handlers/auth.utils";
 
-import type { TestUserData } from "../../index.d";
 import { makoReviewer, reviewers, superReviewer } from "./cmsReviewer";
 import { helpDeskUser, helpDeskUsers } from "./helpDeskUsers";
 import { readOnlyUser, readOnlyUsers } from "./readOnlyCMSUsers";
 import { coStateSubmitter, makoStateSubmitter, stateSubmitters } from "./stateSubmitters";
+
+import type { TestUserData } from "../../index.d";
 
 export const noRoleUser: TestUserData = {
   UserAttributes: [

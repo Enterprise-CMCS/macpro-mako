@@ -10,6 +10,8 @@ import {
   USER_POOL_CLIENT_ID,
 } from "../../consts";
 import { userResponses } from "../../data/users";
+import { findUserByUsername } from "../auth.utils";
+
 import type {
   AdminGetUserRequestBody,
   IdentityRequest,
@@ -18,7 +20,6 @@ import type {
   IdpRequestSessionBody,
   TestUserData,
 } from "../../index.d";
-import { findUserByUsername } from "../auth.utils";
 
 const getUsernameFromAccessToken = (accessToken?: string): string | undefined => {
   if (accessToken) {

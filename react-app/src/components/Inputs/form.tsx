@@ -1,4 +1,3 @@
-import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
 import {
@@ -9,6 +8,8 @@ import {
   FormProvider,
   useFormContext,
 } from "react-hook-form";
+
+import type * as LabelPrimitive from "@radix-ui/react-label";
 
 import { Label } from "@/components/Inputs";
 import { cn } from "@/utils";

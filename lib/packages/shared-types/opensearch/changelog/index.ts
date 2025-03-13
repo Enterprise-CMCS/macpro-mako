@@ -7,7 +7,8 @@ import {
   Hit,
   QueryState,
   Response as Res,
-} from "./../_";
+} from "../_";
+
 import {
   appK,
   capitatedAmendment,

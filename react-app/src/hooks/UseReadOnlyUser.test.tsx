@@ -2,9 +2,9 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { setDefaultReviewer, setDefaultStateSubmitter, setMockUsername } from "mocks";
 import { afterAll, describe, expect, it } from "vitest";
 
-import { queryClientWrapper } from "@/utils/test-helpers";
-
 import { useReadOnlyUser } from "./useReadOnlyUser";
+
+import { queryClientWrapper } from "@/utils/test-helpers";
 
 const setup = async () => {
   const { result } = renderHook(() => useReadOnlyUser(), {

@@ -3,6 +3,7 @@ import { Authority, CommonEmailVariables, EmailAddresses, Events } from "shared-
 import { formatActionTypeWithWaiver } from "shared-utils";
 
 import { AuthoritiesWithUserTypesTemplate } from "../..";
+
 import {
   AppKCMSEmail,
   AppKStateEmail,

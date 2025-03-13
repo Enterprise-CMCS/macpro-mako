@@ -12,7 +12,8 @@ import {
   STATUS_CLEAN_FILE,
   STATUS_ERROR_PROCESSING_FILE,
   tagWithScanStatus,
-} from "./../lib";
+} from "../lib";
+
 import { handler } from "./scan";
 
 vi.mock("pino", () => {

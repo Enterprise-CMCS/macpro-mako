@@ -18,6 +18,8 @@ import { mockedApiServer as mockedServer } from "mocks/server";
 import { redirect } from "react-router";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { Dashboard, dashboardLoader } from "./index";
+
 import {
   createTestQueryClient,
   getFilteredHits,
@@ -27,8 +29,6 @@ import {
   verifyFiltering,
   verifyPagination,
 } from "@/utils/test-helpers";
-
-import { Dashboard, dashboardLoader } from "./index";
 
 const spaHits = getFilteredHits(["Medicaid SPA", "CHIP SPA"]);
 const waiverHits = getFilteredHits(["1915(b)", "1915(c)"]);

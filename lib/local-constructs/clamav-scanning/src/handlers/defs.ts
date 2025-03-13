@@ -5,7 +5,7 @@ import {
   FRESHCLAM_WORK_DIR,
   updateAVDefinitonsWithFreshclam,
   uploadAVDefinitions,
-} from "./../lib";
+} from "../lib";
 const logger = pino();
 
 export async function handler(): Promise<string> {

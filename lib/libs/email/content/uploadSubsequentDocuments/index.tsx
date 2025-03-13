@@ -2,6 +2,7 @@ import { render } from "@react-email/render";
 import { Authority, CommonEmailVariables, EmailAddresses, Events } from "shared-types";
 
 import { AuthoritiesWithUserTypesTemplate } from "../..";
+
 import {
   AppKCMSEmail,
   AppKStateEmail,

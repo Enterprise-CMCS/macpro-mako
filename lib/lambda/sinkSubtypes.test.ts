@@ -11,6 +11,7 @@ import { subtypes } from "mocks/data/types";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import * as sink from "../libs/sink-lib";
+
 import { handler } from "./sinkSubtypes";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}subtypes`;

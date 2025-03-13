@@ -10,6 +10,8 @@ import {
 } from "shared-types";
 import { expect } from "vitest";
 
+import { renderWithQueryClientAndMemoryRouter } from "./render";
+
 import {
   ContextState,
   FilterDrawerProvider,
@@ -18,8 +20,6 @@ import {
   OsUrlState,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
-
-import { renderWithQueryClientAndMemoryRouter } from "./render";
 
 export const DEFAULT_COLUMNS: OsTableColumn[] = [
   {

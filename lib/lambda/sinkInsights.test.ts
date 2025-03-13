@@ -10,6 +10,7 @@ import {
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import * as sink from "../libs/sink-lib";
+
 import { handler } from "./sinkInsights";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}insights`;

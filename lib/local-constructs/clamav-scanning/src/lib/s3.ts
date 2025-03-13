@@ -1,3 +1,8 @@
+import { randomUUID } from "crypto";
+import fs from "fs";
+import asyncfs from "fs/promises";
+import { Readable } from "stream";
+
 import {
   GetObjectCommand,
   HeadObjectCommand,
@@ -6,14 +11,11 @@ import {
   PutObjectTaggingCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
-import { randomUUID } from "crypto";
-import fs from "fs";
-import asyncfs from "fs/promises";
 import pino from "pino";
-const logger = pino();
-import { Readable } from "stream";
 
 import * as constants from "./constants";
+
+const logger = pino();
 
 const s3Client: S3Client = new S3Client();
 

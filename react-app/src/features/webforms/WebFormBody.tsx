@@ -3,11 +3,13 @@ import { FC } from "react";
 import { FormSchema } from "shared-types";
 import { featureFlags } from "shared-utils";
 
-import { Button, Form } from "@/components";
-
 import { documentValidator, RHFDocument } from "../../components/RHF";
-import { useWebform } from "../webforms";
-import { WebformFooter } from "../webforms/WebformFooter";
+
+import { WebformFooter } from "./WebformFooter";
+
+import { useWebform } from ".";
+
+import { Button, Form } from "@/components";
 
 interface WebformBodyProps {
   id: string;

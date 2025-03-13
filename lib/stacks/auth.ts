@@ -1,9 +1,10 @@
+import { readFileSync } from "fs";
+import { join } from "path";
+
 import * as cdk from "aws-cdk-lib";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
-import { readFileSync } from "fs";
 import { ManageUsers } from "local-constructs";
-import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "../config/deployment-config";

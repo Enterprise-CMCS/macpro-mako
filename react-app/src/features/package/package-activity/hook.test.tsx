@@ -4,9 +4,9 @@ import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import * as api from "@/api";
-
 import { useAttachmentService } from "./hook";
+
+import * as api from "@/api";
 
 const wrapper = ({ children }) => (
   <QueryClientProvider client={new QueryClient()}> {children}</QueryClientProvider>

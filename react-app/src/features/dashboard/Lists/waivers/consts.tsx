@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
 import { formatActionType, formatSeatoolDate } from "shared-utils";
 
+import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
+
 import { useGetUser } from "@/api";
 import { OsTableColumn } from "@/components";
 import { BLANK_VALUE } from "@/consts";
 import { removeUnderscoresAndCapitalize } from "@/utils";
-
-import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 
 const getColumns = (props) => {
   if (!props?.user || props.user === null) {

@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import { FormSchema } from "shared-types";
 import { describe, expect, test } from "vitest";
 
-import { renderWithQueryClient } from "@/utils/test-helpers";
-
+import { RHFDocument } from "..";
 import { Form } from "../../Inputs";
-import { RHFDocument } from "../.";
+
+import { renderWithQueryClient } from "@/utils/test-helpers";
 
 const testForm: FormSchema = {
   formId: "testFormId",

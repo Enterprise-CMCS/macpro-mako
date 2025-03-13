@@ -5,7 +5,7 @@ import {
   DeploymentConfig,
   DeploymentConfigProperties,
   InjectedConfigOptions,
-} from "../config/deployment-config";
+} from "./deployment-config";
 
 // Mock the shared-utils module
 vi.mock("shared-utils", () => ({
