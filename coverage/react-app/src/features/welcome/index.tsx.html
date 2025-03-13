@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">73.33% </span>
+                <span class="strong">13.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/15</span>
+                <span class='fraction'>2/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">73.33% </span>
+                <span class="strong">13.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/15</span>
+                <span class='fraction'>2/15</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -271,29 +271,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">74x</span>
-<span class="cline-any cline-yes">73x</span>
-<span class="cline-any cline-yes">73x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">73x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">73x</span>
-<span class="cline-any cline-yes">73x</span>
-<span class="cline-any cline-yes">73x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">73x</span>
-<span class="cline-any cline-yes">73x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">73x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -465,25 +465,25 @@ import { getUser } from "@/api";
 import * as C from "@/components";
 import { Button } from "@/components";
 import { CardWithTopBorder } from "@/components";
+import { FAQ_TAB } from "@/consts";
 import { useHideBanner } from "@/hooks/useHideBanner";
-import { FAQ_TAB } from "@/router";
 &nbsp;
-export const loader = (queryClient: QueryClient) =&gt; {
-  return async () =&gt; {
-    const queryString = window.location.search;
+export const loader = <span class="fstat-no" title="function not covered" >(q</span>ueryClient: QueryClient) =&gt; {
+<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >async () =&gt; {</span></span>
+    const queryString = <span class="cstat-no" title="statement not covered" >window.location.search;</span>
     // Parse the query string to get URL parameters
-    const queryParams = new URLSearchParams(queryString);
+    const queryParams = <span class="cstat-no" title="statement not covered" >new URLSearchParams(queryString);</span>
     // Access specific parameters
-    const errorDescription = queryParams.get("error_description");
-    const error = queryParams.get("error");
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (errorDescription || error) {
+    const errorDescription = <span class="cstat-no" title="statement not covered" >queryParams.get("error_description");</span>
+    const error = <span class="cstat-no" title="statement not covered" >queryParams.get("error");</span>
+<span class="cstat-no" title="statement not covered" >    if (errorDescription || error) {</span>
 <span class="cstat-no" title="statement not covered" >      console.error("Authentication Error:", { errorDescription, error });</span>
 <span class="cstat-no" title="statement not covered" >      return { error };</span>
     }
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (!queryClient.getQueryData(["user"])) {
-      return await queryClient.fetchQuery({
+<span class="cstat-no" title="statement not covered" >    if (!queryClient.getQueryData(["user"])) {</span>
+<span class="cstat-no" title="statement not covered" >      return await queryClient.fetchQuery({</span>
         queryKey: ["user"],
-        queryFn: () =&gt; getUser(),
+        queryFn: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >g</span>etUser(),</span>
       });
     }
 <span class="cstat-no" title="statement not covered" >    return queryClient.getQueryData(["user"]);</span>
@@ -661,7 +661,7 @@ export const Welcome = <span class="fstat-no" title="function not covered" >() =
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-13T02:07:45.763Z
+                at 2025-03-13T18:05:55.989Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
