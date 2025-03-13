@@ -75,7 +75,7 @@ export const SupportPage = () => {
       <div className="max-w-screen-xl m-auto px-4 lg:px-8 pt-8 w-full">
         <div className="flex">
           {/* Left Navigation - Fixed width with explicit max-width */}
-          <div className="w-1/3 sticky top-20 h-[calc(100vh-5rem)] -z-10">
+          <div className="w-1/3 sticky top-20 h-[calc(100vh-5rem)] sm:-z-10">
             <LeftNavigation />
           </div>
 
