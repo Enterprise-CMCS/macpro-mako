@@ -116,7 +116,7 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
         return BLANK_VALUE;
     }
   }, [packageActivity.event]);
-  console.log(packageActivity);
+
   return (
     <AccordionItem value={packageActivity.id}>
       <AccordionTrigger className="bg-gray-100 px-3">
