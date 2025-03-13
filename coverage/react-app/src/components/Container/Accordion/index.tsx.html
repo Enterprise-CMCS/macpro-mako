@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
@@ -124,7 +124,19 @@
 <a name='L59'></a><a href='#L59'>59</a>
 <a name='L60'></a><a href='#L60'>60</a>
 <a name='L61'></a><a href='#L61'>61</a>
-<a name='L62'></a><a href='#L62'>62</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -141,6 +153,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">73x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">73x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">771x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -186,7 +210,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Minus, Plus } from "lucide-react";
 import * as React from "react";
 &nbsp;
 import { cn } from "@/utils";
@@ -205,26 +229,38 @@ AccordionItem.displayName = "AccordionItem";
 &nbsp;
 type AccordionTriggerProps = {
   className?: string; // Add className to prop type definition
+  showPlusMinus?: boolean;
 } &amp; React.ComponentPropsWithoutRef&lt;typeof AccordionPrimitive.Trigger&gt;;
 &nbsp;
 const AccordionTrigger = React.forwardRef&lt;
   React.ElementRef&lt;typeof AccordionPrimitive.Trigger&gt;,
   AccordionTriggerProps
-&gt;(({ className, children, ...props }, ref) =&gt; (
-  &lt;AccordionPrimitive.Header className="flex"&gt;
-    &lt;AccordionPrimitive.Trigger
-      ref={ref}
-      className={cn(
-        "flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&amp;[data-state=open]&gt;svg]:rotate-180",
-        className,
-      )}
-      {...props}
-    &gt;
-      {children}
-      &lt;ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" /&gt;
-    &lt;/AccordionPrimitive.Trigger&gt;
-  &lt;/AccordionPrimitive.Header&gt;
-));
+&gt;(({ className, showPlusMinus, children, ...props }, ref) =&gt; {
+  const animationClass = showPlusMinus ? "group" : "[&amp;[data-state=open]&gt;svg]:rotate-180";
+  return (
+    &lt;AccordionPrimitive.Header className="flex"&gt;
+      &lt;AccordionPrimitive.Trigger
+        ref={ref}
+        className={cn(
+          "flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline",
+          animationClass,
+          className,
+        )}
+        {...props}
+      &gt;
+        {children}
+        {showPlusMinus ? (
+          &lt;&gt;
+            &lt;Plus className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden" /&gt;
+            &lt;Minus className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden" /&gt;
+          &lt;/&gt;
+        ) : (
+          &lt;ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" /&gt;
+        )}
+      &lt;/AccordionPrimitive.Trigger&gt;
+    &lt;/AccordionPrimitive.Header&gt;
+  );
+});
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
 &nbsp;
 type AccordionContentProps = {
@@ -253,7 +289,7 @@ export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-13T19:29:12.340Z
+                at 2025-03-13T20:46:07.528Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>
