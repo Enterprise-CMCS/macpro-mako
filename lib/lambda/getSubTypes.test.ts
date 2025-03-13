@@ -1,19 +1,20 @@
-import { describe, it, expect } from "vitest";
 import { APIGatewayEvent } from "aws-lambda";
-import { handler } from "./getSubTypes";
+import { errorOSSubtypeSearchHandler, TestSubtypeItemResult } from "mocks";
 import {
-  MEDICAID_SPA_AUTHORITY_ID,
   CHIP_SPA_AUTHORITY_ID,
+  chipSubtypes,
+  DO_NOT_USE_TYPE_ID,
+  MEDICAID_SPA_AUTHORITY_ID,
+  medicaidSubtypes,
   NOT_FOUND_AUTHORITY_ID,
   TYPE_ONE_ID,
-  TYPE_TWO_ID,
   TYPE_THREE_ID,
-  DO_NOT_USE_TYPE_ID,
-  medicaidSubtypes,
-  chipSubtypes,
+  TYPE_TWO_ID,
 } from "mocks/data/types";
-import { TestSubtypeItemResult, errorOSSubtypeSearchHandler } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
+import { describe, expect, it } from "vitest";
+
+import { handler } from "./getSubTypes";
 
 describe("getSubTypes Handler", () => {
   it("should return 400 if event body is missing", async () => {

@@ -1,3 +1,7 @@
+import { Fragment } from "react/jsx-runtime";
+import { useFormContext } from "react-hook-form";
+import { z } from "zod";
+
 import {
   FormField,
   FormItem,
@@ -7,10 +11,7 @@ import {
   SectionCard,
   Upload,
 } from "@/components";
-import { useFormContext } from "react-hook-form";
-import { z } from "zod";
 
-import { Fragment } from "react/jsx-runtime";
 import {
   AttachmentFAQInstructions,
   AttachmentFileFormatInstructions,

@@ -1,21 +1,23 @@
-import { beforeAll, afterEach, describe, expect, test, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
+import {
+  EXISTING_ITEM_APPROVED_NEW_ID,
+  EXISTING_ITEM_PENDING_ID,
+  NOT_FOUND_ITEM_ID,
+  TEST_SPA_ITEM_ID,
+  VALID_ITEM_TEMPORARY_EXTENSION_ID,
+} from "mocks";
+import { afterEach, beforeAll, describe, expect, test, vi } from "vitest";
+
 import { formSchemas } from "@/formSchemas";
-import { TemporaryExtensionForm } from ".";
 import {
   renderFormAsync,
   renderFormWithPackageSectionAsync,
 } from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
-import {
-  EXISTING_ITEM_PENDING_ID,
-  EXISTING_ITEM_APPROVED_NEW_ID,
-  NOT_FOUND_ITEM_ID,
-  VALID_ITEM_TEMPORARY_EXTENSION_ID,
-  TEST_SPA_ITEM_ID,
-} from "mocks";
+import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
+
+import { TemporaryExtensionForm } from ".";
 
 const upload = uploadFiles<(typeof formSchemas)["temporary-extension"]>();
 

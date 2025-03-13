@@ -1,6 +1,7 @@
 import { PropsWithChildren, ReactElement } from "react";
-import { useLocation, Link } from "react-router";
-import { Button, SimplePageContainer, BreadCrumbs, optionCrumbsFromPath } from "@/components";
+import { Link, useLocation } from "react-router";
+
+import { BreadCrumbs, Button, optionCrumbsFromPath, SimplePageContainer } from "@/components";
 import { SimplePageTitle } from "@/features";
 import { FAQ_TAB } from "@/router";
 

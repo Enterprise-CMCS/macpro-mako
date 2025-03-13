@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { useLDClient } from "launchdarkly-react-client-sdk";
-import { expect, vi, test } from "vitest";
+import { expect, test, vi } from "vitest";
+
 import { Faq } from "./index";
 
 // Mock the `useLDClient` hook from LaunchDarkly

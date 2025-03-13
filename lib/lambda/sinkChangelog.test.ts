@@ -1,34 +1,35 @@
-import { describe, expect, it, vi, afterEach } from "vitest";
-import { handler } from "./sinkChangelog";
 import { Context } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import * as sink from "libs/sink-lib";
 import {
-  OPENSEARCH_DOMAIN,
-  OPENSEARCH_INDEX_NAMESPACE,
-  WITHDRAWN_CHANGELOG_ITEM_ID as TEST_ITEM_ID,
   convertObjToBase64,
   createKafkaEvent,
   createKafkaRecord,
+  OPENSEARCH_DOMAIN,
+  OPENSEARCH_INDEX_NAMESPACE,
+  WITHDRAWN_CHANGELOG_ITEM_ID as TEST_ITEM_ID,
 } from "mocks";
 import items from "mocks/data/items";
 import {
   appkBase,
-  capitatedInitial,
   capitatedAmendmentBase,
+  capitatedInitial,
   capitatedRenewal,
-  contractingInitial,
   contractingAmendment,
+  contractingInitial,
   contractingRenewal,
   newChipSubmission,
   newMedicaidSubmission,
-  uploadSubsequentDocuments,
-  temporaryExtension,
   respondToRai,
+  temporaryExtension,
   toggleWithdrawRai,
+  uploadSubsequentDocuments,
   withdrawPackage,
   withdrawRai,
 } from "mocks/data/submit/changelog";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { handler } from "./sinkChangelog";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}changelog`;
 const TOPIC = "--mako--branch-name--aws.onemac.migration.cdc";
@@ -169,6 +170,7 @@ describe("syncing Changelog events", () => {
             submitterName: "George Harrison",
             submitterEmail: "george@example.com",
             changeMade: "update id of the change",
+            changeReason: "additional information of the change",
             isAdminChange: true,
             adminChangeType: "update-id",
             idToBeUpdated: TEST_ITEM_ID,
@@ -208,6 +210,7 @@ describe("syncing Changelog events", () => {
             submitterName: "George Harrison",
             submitterEmail: "george@example.com",
             changeMade: "update additional information of the change",
+            changeReason: "additional information of the change",
             isAdminChange: true,
             adminChangeType: "update-values",
             additionalInformation: "changed additional information",
@@ -230,6 +233,7 @@ describe("syncing Changelog events", () => {
         isAdminChange: true,
         adminChangeType: "update-values",
         changeMade: "update additional information of the change",
+        changeReason: "additional information of the change",
         event: "update-values",
         id: `${TEST_ITEM_ID}-3`,
         packageId: TEST_ITEM_ID,
@@ -255,6 +259,7 @@ describe("syncing Changelog events", () => {
             submitterName: "George Harrison",
             submitterEmail: "george@example.com",
             changeMade: "update additional information of the change",
+            changeReason: "additional information of the change",
             isAdminChange: true,
             adminChangeType: "update-values",
             additionalInformation: "changed additional information",
@@ -273,6 +278,7 @@ describe("syncing Changelog events", () => {
             submitterName: "George Harrison",
             submitterEmail: "george@example.com",
             changeMade: "update id of the change",
+            changeReason: "additional information of the change",
             isAdminChange: true,
             adminChangeType: "update-id",
             idToBeUpdated: TEST_ITEM_ID,
@@ -302,6 +308,7 @@ describe("syncing Changelog events", () => {
         isAdminChange: true,
         adminChangeType: "update-values",
         changeMade: "update additional information of the change",
+        changeReason: "additional information of the change",
         event: "update-values",
         id: `${TEST_ITEM_ID}-3`,
         packageId: TEST_ITEM_ID,
@@ -316,11 +323,13 @@ describe("syncing Changelog events", () => {
       {
         ...changes,
         isAdminChange: true,
-        adminChangeType: "update-values",
-        changeMade: "update additional information of the change",
-        event: "update-values",
+        adminChangeType: "update-id",
+        changeMade: "update id of the change",
+        changeReason: "additional information of the change",
+        event: "update-id",
         id: `${TEST_ITEM_UPDATE_ID}-3`,
         packageId: TEST_ITEM_UPDATE_ID,
+        deleted: false,
         submitterName: "George Harrison",
         submitterEmail: "george@example.com",
         additionalInformation: "changed additional information",

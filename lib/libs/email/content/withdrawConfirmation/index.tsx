@@ -1,7 +1,8 @@
+import { render } from "@react-email/render";
 import { Authority, CommonEmailVariables, EmailAddresses, Events } from "shared-types";
+
 import { AuthoritiesWithUserTypesTemplate } from "../..";
 import { ChipSpaStateEmail, MedSpaStateEmail, WaiverStateEmail } from "./emailTemplates";
-import { render } from "@react-email/render";
 
 const generateWithdrawEmail = async (
   variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },

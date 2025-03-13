@@ -1,6 +1,7 @@
-import { useGetUser } from "@/api";
-import { UserRoles } from "shared-types";
 import { useEffect, useState } from "react";
+import { UserRoles } from "shared-types";
+
+import { useGetUser } from "@/api";
 
 export const useReadOnlyUser = () => {
   const { data: user, isFetched: isUserFetched } = useGetUser();

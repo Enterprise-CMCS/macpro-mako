@@ -1,8 +1,9 @@
-import { handleOpensearchError } from "./utils";
 import { APIGatewayEvent } from "aws-lambda";
-import * as os from "libs/opensearch-lib";
 import { response } from "libs/handler-lib";
+import * as os from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
+
+import { handleOpensearchError } from "./utils";
 
 // type GetCpocsBody = object;
 

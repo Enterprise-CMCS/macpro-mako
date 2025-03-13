@@ -1,12 +1,14 @@
 import { screen, waitFor } from "@testing-library/react";
-import { describe, test, expect, beforeAll } from "vitest";
-import { formSchemas } from "@/formSchemas";
-import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
-import { UploadSubsequentDocuments } from ".";
 import userEvent from "@testing-library/user-event";
-import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { TEST_ITEM_ID } from "mocks";
+import { beforeAll, describe, expect, test } from "vitest";
+
+import { formSchemas } from "@/formSchemas";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
+import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
+import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
+
+import { UploadSubsequentDocuments } from ".";
 
 const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
 
