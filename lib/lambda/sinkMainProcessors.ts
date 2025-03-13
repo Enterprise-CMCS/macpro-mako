@@ -142,8 +142,8 @@ const getOneMacRecordWithAllProperties = (
     );
 
     return oneMacLegacyRecord;
-  } 
-  
+  }
+
   console.log(`No transform found for event: ${record.event}`);
 
   return;
