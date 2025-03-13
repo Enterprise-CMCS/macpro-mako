@@ -809,6 +809,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Amendment to the capitated contract terms for 2024.",
             timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            submitterName: "Bob Smith",
+            submitterEmail: "bob@mail.com",
           },
         },
         {
@@ -827,6 +829,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Detailed response to the request for additional information.",
             timestamp: 1675123200000, // Feb 1, 2023
+            submitterName: "Bob Smith",
+            submitterEmail: "bob@mail.com",
           },
         },
         {
@@ -845,6 +849,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Supporting documents uploaded as follow-up.",
             timestamp: 1677715200000, // Mar 1, 2023
+            submitterName: "Bob Smith",
+            submitterEmail: "bob@mail.com",
           },
         },
         {
@@ -863,6 +869,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Compliance review files uploaded.",
             timestamp: 1680307200000, // Apr 1, 2023
+            submitterName: "Bob Smith",
+            submitterEmail: "bob@mail.com",
           },
         },
         {
@@ -881,6 +889,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Official notice of RAI withdrawal submitted.",
             timestamp: 1682899200000, // May 1, 2023
+            submitterName: "Bob Smith",
+            submitterEmail: "bob@mail.com",
           },
         },
         {
@@ -899,6 +909,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Package has been withdrawn from submission pipeline.",
             timestamp: 1685491200000, // Jun 1, 2023
+            submitterName: "Bob Smith",
+            submitterEmail: "bob@mail.com",
           },
         },
         {
@@ -917,6 +929,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Uncategorized file upload.",
             isAdminChange: false,
+            submitterName: "Bob Smith",
+            submitterEmail: "bob@mail.com",
           },
         },
       ],
