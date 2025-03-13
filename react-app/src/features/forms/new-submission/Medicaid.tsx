@@ -13,8 +13,8 @@ import {
   SpaIdFormattingDesc,
 } from "@/components";
 import { AttachmentFileFormatInstructions } from "@/components/ActionForm/actionForm.components";
-import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/consts";
+import { formSchemas } from "@/formSchemas";
 
 export const MedicaidForm = () => (
   <ActionForm

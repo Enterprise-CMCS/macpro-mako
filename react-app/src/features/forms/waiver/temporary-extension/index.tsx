@@ -18,8 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components";
-import { formSchemas } from "@/formSchemas";
 import { FAQ_TAB } from "@/consts";
+import { formSchemas } from "@/formSchemas";
 
 import { getFAQLinkForAttachments } from "../../faqLinks";
 
