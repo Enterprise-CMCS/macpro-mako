@@ -13,7 +13,7 @@ import {
   RequiredIndicator,
 } from "@/components";
 import { formSchemas } from "@/formSchemas";
-import { FAQ_TAB } from "@/utils";
+import { FAQ_TAB } from "@/consts";
 
 import { getFAQLinkForAttachments } from "../../faqLinks";
 

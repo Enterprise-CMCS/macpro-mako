@@ -14,7 +14,7 @@ import {
 } from "@/components";
 import { AttachmentFileFormatInstructions } from "@/components/ActionForm/actionForm.components";
 import { formSchemas } from "@/formSchemas";
-import { FAQ_TAB } from "@/utils";
+import { FAQ_TAB } from "@/consts";
 
 export const MedicaidForm = () => (
   <ActionForm

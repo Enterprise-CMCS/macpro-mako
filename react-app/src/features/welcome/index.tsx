@@ -7,7 +7,7 @@ import * as C from "@/components";
 import { Button } from "@/components";
 import { CardWithTopBorder } from "@/components";
 import { useHideBanner } from "@/hooks/useHideBanner";
-import { FAQ_TAB } from "@/utils";
+import { FAQ_TAB } from "@/consts";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
