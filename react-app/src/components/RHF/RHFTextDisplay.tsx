@@ -1,6 +1,7 @@
-import { cn } from "@/utils";
 import { Link } from "react-router";
 import { RHFTextField } from "shared-types";
+
+import { cn } from "@/utils";
 
 interface RHFTextDisplayProps {
   text: RHFTextField;

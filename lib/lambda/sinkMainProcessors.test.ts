@@ -1,43 +1,44 @@
-import { describe, expect, it, vi, afterEach } from "vitest";
-import { startOfDay } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
+import { startOfDay } from "date-fns";
+import * as os from "libs/opensearch-lib";
+import * as sink from "libs/sink-lib";
+import {
+  convertObjToBase64,
+  createKafkaRecord,
+  errorOSMainMultiDocumentHandler,
+  EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
+  NOT_FOUND_ITEM_ID,
+  OPENSEARCH_DOMAIN,
+  OPENSEARCH_INDEX_NAMESPACE,
+  TEST_ITEM_ID,
+} from "mocks";
+import {
+  appkBase,
+  capitatedAmendmentBase,
+  capitatedInitial,
+  capitatedRenewal,
+  contractingAmendment,
+  contractingInitial,
+  contractingRenewal,
+  newChipSubmission,
+  newMedicaidSubmission,
+  respondToRai,
+  temporaryExtension,
+  toggleWithdrawRai,
+  uploadSubsequentDocuments,
+  withdrawPackage,
+  withdrawRai,
+} from "mocks/data/submit/base";
+import { mockedServiceServer as mockedServer } from "mocks/server";
+import { SEATOOL_STATUS, statusToDisplayToCmsUser, statusToDisplayToStateUser } from "shared-types";
+import { seatool } from "shared-types/opensearch/main";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
 import {
   insertNewSeatoolRecordsFromKafkaIntoMako,
   insertOneMacRecordsFromKafkaIntoMako,
   syncSeatoolRecordDatesFromKafkaWithMako,
 } from "./sinkMainProcessors";
-import { seatool } from "shared-types/opensearch/main";
-import { SEATOOL_STATUS, statusToDisplayToCmsUser, statusToDisplayToStateUser } from "shared-types";
-import * as sink from "libs/sink-lib";
-import * as os from "libs/opensearch-lib";
-import {
-  OPENSEARCH_DOMAIN,
-  OPENSEARCH_INDEX_NAMESPACE,
-  TEST_ITEM_ID,
-  EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
-  NOT_FOUND_ITEM_ID,
-  convertObjToBase64,
-  createKafkaRecord,
-  errorOSMainMultiDocumentHandler,
-} from "mocks";
-import { mockedServiceServer as mockedServer } from "mocks/server";
-import {
-  appkBase,
-  capitatedInitial,
-  capitatedAmendmentBase,
-  capitatedRenewal,
-  contractingInitial,
-  contractingAmendment,
-  contractingRenewal,
-  newChipSubmission,
-  newMedicaidSubmission,
-  uploadSubsequentDocuments,
-  temporaryExtension,
-  respondToRai,
-  toggleWithdrawRai,
-  withdrawPackage,
-  withdrawRai,
-} from "mocks/data/submit/base";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}main`;
 const TEST_ITEM_KEY = Buffer.from(TEST_ITEM_ID).toString("base64");
@@ -796,7 +797,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         leadAnalystOfficerId: 67890,
         locked: false,
         proposedDate: null,
-        raiReceivedDate: null,
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
@@ -908,7 +908,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         leadAnalystOfficerId: 67890,
         locked: false,
         proposedDate: null,
-        raiReceivedDate: null,
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
@@ -1020,7 +1019,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         leadAnalystOfficerId: 67890,
         locked: false,
         proposedDate: null,
-        raiReceivedDate: null,
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
@@ -1134,7 +1132,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         leadAnalystOfficerId: 67890,
         locked: false,
         proposedDate: null,
-        raiReceivedDate: null,
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,

@@ -1,6 +1,7 @@
-import { describe, expect, it, vi, afterEach } from "vitest";
-import { screen, render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { FilterableBoolean } from "./Boolean";
 
 describe("FilterableBoolean", () => {

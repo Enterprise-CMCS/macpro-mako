@@ -1,12 +1,13 @@
-import { handleOpensearchError } from "./utils";
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
+import { getDomainAndNamespace } from "libs/utils";
 import { BaseIndex } from "shared-types/opensearch";
 import { validateEnvVariable } from "shared-utils";
+
 import { getStateFilter } from "../libs/api/auth/user";
 import { getAppkChildren } from "../libs/api/package";
 import * as os from "../libs/opensearch-lib";
-import { getDomainAndNamespace } from "libs/utils";
+import { handleOpensearchError } from "./utils";
 import { ONEMAC_LEGACY_ORIGIN } from "lib/packages/shared-types/opensearch/main/transforms/legacy-transforms";
 
 // Handler function to search index

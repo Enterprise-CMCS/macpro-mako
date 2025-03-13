@@ -1,4 +1,5 @@
 import { Handler } from "aws-lambda";
+
 import * as os from "../libs/opensearch-lib";
 import { opensearch } from "../packages/shared-types";
 

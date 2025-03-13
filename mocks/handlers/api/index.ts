@@ -1,9 +1,9 @@
 import { cpocHandlers } from "./cpocs";
 import { itemHandlers } from "./items";
+import { notificationHandlers } from "./notifications";
 import { packageActionHandlers } from "./packageActions";
 import { searchHandlers } from "./search";
 import { submissionHandlers } from "./submissions";
-import { notificationHandlers } from "./notifications";
 import { typeHandlers } from "./types";
 
 export const apiHandlers = [

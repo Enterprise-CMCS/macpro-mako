@@ -1,6 +1,8 @@
-import { getItem } from "@/api/useGetItem";
-import { DataPoller } from "./DataPoller";
 import { PackageCheck } from "shared-utils";
+
+import { getItem } from "@/api/useGetItem";
+
+import { DataPoller } from "./DataPoller";
 
 export type CheckDocumentFunction = (
   check: ReturnType<typeof PackageCheck> & { recordExists: boolean },

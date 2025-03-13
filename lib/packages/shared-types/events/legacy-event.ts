@@ -1,8 +1,9 @@
 import { z } from "zod";
-import { legacySharedSchema } from "./legacy-shared";
+
 import { legacyAttachmentSchema } from "../attachments";
 import { getStatus, SEATOOL_STATUS } from "..";
 import { ONEMAC_LEGACY_ORIGIN } from "../opensearch/main/transforms/legacy-transforms";
+import { legacySharedSchema } from "./legacy-shared";
 
 // Event schema for legacy records
 export const legacyEventSchema = legacySharedSchema

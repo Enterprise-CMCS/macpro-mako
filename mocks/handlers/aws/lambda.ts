@@ -1,4 +1,5 @@
 import { http, HttpResponse, PathParams } from "msw";
+
 import {
   consumerGroups,
   TEST_DELETE_TRIGGER_UUID,

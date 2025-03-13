@@ -1,5 +1,5 @@
-import { vi } from "vitest";
 import { KafkaEvent, KafkaRecord } from "shared-types";
+import { vi } from "vitest";
 
 export const mockedProducer = {
   connect: vi.fn(),

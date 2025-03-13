@@ -1,10 +1,11 @@
 import * as cdk from "aws-cdk-lib";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import * as cr from "aws-cdk-lib/custom-resources";
 import { Construct } from "constructs";
-import * as LC from "local-constructs";
 import { readFileSync } from "fs";
+import * as LC from "local-constructs";
 import { join } from "path";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+
 import { commonBundlingOptions } from "../config/bundling-config";
 
 interface DataStackProps extends cdk.NestedStackProps {

@@ -1,9 +1,9 @@
 import {
+  AttributeType,
   CognitoIdentityProviderClient,
   ListUsersCommand,
   ListUsersCommandInput,
   ListUsersCommandOutput,
-  AttributeType,
 } from "@aws-sdk/client-cognito-identity-provider";
 
 export type StateUser = {

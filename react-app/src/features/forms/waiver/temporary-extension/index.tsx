@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { Link, useParams } from "react-router";
+
 import { useGetItem } from "@/api";
 import {
   ActionForm,
@@ -15,10 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components";
+import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
-import { FAQ_TAB } from "@/router";
-import { useState } from "react";
-import { Link, useParams } from "react-router";
+
 import { getFAQLinkForAttachments } from "../../faqLinks";
 
 const actionTypeMap = {
