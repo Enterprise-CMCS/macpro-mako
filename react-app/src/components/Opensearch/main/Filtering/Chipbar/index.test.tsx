@@ -3,8 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { opensearch } from "shared-types";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { ChipBool, ChipDate, ChipTerms, FilterChips } from "./index";
-
+import { ChipBool, ChipDate, ChipTerms, FilterChips } from "@/components";
 import { DEFAULT_FILTERS, getDashboardQueryString, renderFilterDrawer } from "@/utils/test-helpers";
 
 describe("FilterChips", () => {

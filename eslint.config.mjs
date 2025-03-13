@@ -19,10 +19,10 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   includeIgnoreFile(gitignorePath),
+  // @ts-expect-error
   eslintConfigPrettier,
   {
     plugins: {
-      // @ts-expect-error
       react,
       // @ts-expect-error
       "react-hooks": fixupPluginRules(eslintReactHooks),
