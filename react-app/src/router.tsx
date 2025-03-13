@@ -1,4 +1,3 @@
-import { QueryClient } from "@tanstack/react-query";
 import { createBrowserRouter, Outlet } from "react-router";
 
 import * as C from "@/components";
@@ -8,8 +7,7 @@ import {
   postSubmissionLoader,
   PostSubmissionWrapper,
 } from "@/features/forms/post-submission/post-submission-forms";
-export const queryClient = new QueryClient();
-export const FAQ_TAB = "faq-tab";
+import { queryClient } from "@/utils";
 
 const RoutesWithTimeout = () => (
   <>

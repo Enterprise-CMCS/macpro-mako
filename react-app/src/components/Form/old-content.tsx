@@ -7,7 +7,7 @@ import {
   ProgressLossReminder,
   RequiredFieldDescription,
 } from "@/components";
-import { FAQ_TAB } from "@/router";
+import { FAQ_TAB } from "@/utils";
 
 type FormIntroTextProps = {
   hasProgressLossReminder?: boolean;

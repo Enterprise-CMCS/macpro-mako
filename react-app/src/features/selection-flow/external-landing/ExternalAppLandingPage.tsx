@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router";
 
 import { BreadCrumbs, Button, optionCrumbsFromPath, SimplePageContainer } from "@/components";
 import { SimplePageTitle } from "@/features";
-import { FAQ_TAB } from "@/router";
+import { FAQ_TAB } from "@/utils";
 
 export enum EXTERNAL_APP {
   MAC_PRO = "https://www.medicaid.gov/resources-for-states/medicaid-and-chip-program-macpro-portal/index.html#MACPro",

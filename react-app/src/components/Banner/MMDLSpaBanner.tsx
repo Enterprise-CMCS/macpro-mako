@@ -3,7 +3,7 @@ import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router";
 
 import { useGetSystemNotifs } from "@/api";
-import { FAQ_TAB } from "@/router";
+import { FAQ_TAB } from "@/utils";
 
 // MMDL banner hidden for UAT until further notice, do not remove
 // const MMDLAlertBanner = () => {
