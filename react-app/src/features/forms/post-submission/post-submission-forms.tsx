@@ -1,7 +1,6 @@
 import { LoaderFunction, Navigate, useParams } from "react-router";
 import { Action, AuthorityUnion } from "shared-types";
 
-import { queryClient } from "../../../router";
 import { TemporaryExtensionForm } from "../waiver/temporary-extension";
 
 import { Amendment } from "./amend";
@@ -16,6 +15,7 @@ import {
 import { WithdrawRaiForm } from "./withdraw-rai";
 
 import { getItem } from "@/api";
+import { queryClient } from "@/utils";
 
 export const postSubmissionForms: Partial<
   Record<Action, Partial<Record<AuthorityUnion, () => React.ReactNode>>>

@@ -15,7 +15,7 @@ import {
   SpaIdFormattingDesc,
 } from "@/components";
 import { formSchemas } from "@/formSchemas";
-import { FAQ_TAB } from "@/router";
+import { FAQ_TAB } from "@/utils";
 
 export const ChipForm = () => (
   <ActionForm
