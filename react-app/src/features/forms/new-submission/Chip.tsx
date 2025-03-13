@@ -14,8 +14,8 @@ import {
   RequiredIndicator,
   SpaIdFormattingDesc,
 } from "@/components";
+import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
-import { FAQ_TAB } from "@/utils";
 
 export const ChipForm = () => (
   <ActionForm
