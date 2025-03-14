@@ -21,6 +21,7 @@ export * from "./RHF";
 export * from "./ScrollToTop";
 export * from "./SearchForm";
 export * from "./Sheet";
+export * from "./SupportPage";
 export * from "./Table";
 export * from "./Tabs";
 export * from "./UsaBanner";

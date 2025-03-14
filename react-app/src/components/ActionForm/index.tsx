@@ -28,8 +28,7 @@ import {
   UserPrompt,
   userPrompt,
 } from "@/components";
-import { queryClient } from "@/router";
-import { getFormOrigin } from "@/utils";
+import { getFormOrigin, queryClient } from "@/utils";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
 
 import { getAttachments } from "./actionForm.utilities";
