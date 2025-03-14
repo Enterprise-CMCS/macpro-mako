@@ -389,3 +389,20 @@ export const SubNavHeader = ({ children }: { children: React.ReactNode }) => (
     </div>
   </div>
 );
+
+type SupportSubNavHeaderProps = {
+  /*
+   * The content to be displayed inside the sub-navigation header
+   */
+  children: React.ReactNode;
+};
+
+export const SupportSubNavHeader = ({ children }: SupportSubNavHeaderProps) => (
+  <div className="bg-primary-dark sticky top-0" data-testid="sub-faq-nav-header">
+    <div className="max-w-screen-lg m-auto px-4 lg:px-8">
+      <div className="flex items-center">
+        <div className="flex align-middle py-2 text-white">{children}</div>
+      </div>
+    </div>
+  </div>
+);

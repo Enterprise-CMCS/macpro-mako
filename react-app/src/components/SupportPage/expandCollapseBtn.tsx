@@ -2,7 +2,7 @@ import { Minus as MinusIcon, Plus as PlusIcon } from "lucide-react";
 
 import { Button } from "@/components";
 
-const ExpandCollapseBtn = (props: {
+const ExpandCollapseButton = (props: {
   expandAll: () => void;
   collapseAll: () => void;
   areAllOpen: boolean;
@@ -30,4 +30,4 @@ const ExpandCollapseBtn = (props: {
   );
 };
 
-export default ExpandCollapseBtn;
+export default ExpandCollapseButton;
