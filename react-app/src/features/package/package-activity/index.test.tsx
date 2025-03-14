@@ -52,7 +52,7 @@ describe("Package Activity", () => {
     );
 
     expect(screen.getByText("Package Activity (7)"));
-    expect(screen.getByText("Initial Package Submitted"));
+    expect(screen.getByText("Initial Package Submitted By Bob Smith"));
     expect(screen.getByText("Download all documents"));
     expect(screen.getByText("Contract Amendment"));
   });
