@@ -111,7 +111,7 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
         return "RAI Response Submitted";
 
       case "upload-subsequent-documents":
-        return "Subsequent Documentation Uploaded";
+        return "Subsequent Document Uploaded";
 
       default:
         return BLANK_VALUE;
