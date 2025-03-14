@@ -9,7 +9,7 @@ import { CHP_TEMPLATES } from "@/features/faq/content/chpTemplates";
 import { MPC_GUIDES } from "@/features/faq/content/mpcGuides";
 import { MPC_TEMPLATES } from "@/features/faq/content/mpcTemplates";
 
-type QuestionAnswer = {
+export type QuestionAnswer = {
   anchorText: string;
   question: string;
   answerJSX: JSX.Element;
