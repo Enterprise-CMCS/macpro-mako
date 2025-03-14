@@ -2,8 +2,8 @@ import { LoaderFunction, Navigate, useParams } from "react-router";
 import { Action, AuthorityUnion } from "shared-types";
 
 import { getItem } from "@/api";
+import { queryClient } from "@/utils";
 
-import { queryClient } from "../../../router";
 import { TemporaryExtensionForm } from "../waiver/temporary-extension";
 import { Amendment } from "./amend";
 import { RespondToRaiChip, RespondToRaiMedicaid, RespondToRaiWaiver } from "./respond-to-rai";
