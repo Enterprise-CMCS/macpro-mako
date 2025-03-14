@@ -25,12 +25,17 @@ export function formatDate(dateValue: string | number) {
   return format(dateObj, "MMMM d, yyyy");
 }
 
-export const formatDateToEST = (
+export const formatDateToET = (
   utcDateValue: string | number,
-  formatValue: string = "eee, MMM d yyyy, hh:mm:ss a 'ET'",
+  formatValue: string = "eee, MMM d yyyy, hh:mm:ss a",
+  includeTimezone: boolean = true,
 ) => {
   const utcDateObj = new TZDate(new Date(utcDateValue).toISOString(), "America/New_York");
 
+  if (includeTimezone) {
+    const tzTag = format(utcDateObj, "z") === "GMT-5" ? "EST" : "EDT";
+    return format(utcDateObj, `${formatValue} '${tzTag}'`);
+  }
   return format(utcDateObj, formatValue);
 };
 

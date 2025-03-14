@@ -58,7 +58,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                       Package Added
                     </strong>
                      - 
-                    Sat, Dec 31 2022, 07:00:00 PM ET
+                    Sun, Jan 1 2023, 09:00:00 AM EST
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -144,7 +144,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                       Package Added
                     </strong>
                      - 
-                    Sat, Dec 31 2022, 07:00:00 PM ET
+                    Wed, Mar 1 2023, 09:00:00 AM EST
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -202,7 +202,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                       Manual Update
                     </strong>
                      - 
-                    Sat, Dec 31 2022, 07:00:00 PM ET
+                    Thu, Jun 1 2023, 09:00:00 AM EDT
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -260,7 +260,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                       -- --
                     </strong>
                      - 
-                    Sat, Dec 31 2022, 07:00:00 PM ET
+                    Fri, Sep 1 2023, 09:00:00 AM EDT
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -318,7 +318,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                       Enable Formal RAI Response Withdraw
                     </strong>
                      - 
-                    Sat, Dec 31 2022, 07:00:00 PM ET
+                    Sat, Dec 31 2022, 07:00:00 PM EST
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -376,7 +376,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                       Disable Formal RAI Response Withdraw
                     </strong>
                      - 
-                    Sat, Dec 31 2022, 07:00:00 PM ET
+                    Fri, Dec 1 2023, 09:00:00 AM EST
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -467,7 +467,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Package Added
                   </strong>
                    - 
-                  Sat, Dec 31 2022, 07:00:00 PM ET
+                  Sun, Jan 1 2023, 09:00:00 AM EST
                 </p>
                 <svg
                   class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -553,7 +553,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Package Added
                   </strong>
                    - 
-                  Sat, Dec 31 2022, 07:00:00 PM ET
+                  Wed, Mar 1 2023, 09:00:00 AM EST
                 </p>
                 <svg
                   class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -611,7 +611,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Manual Update
                   </strong>
                    - 
-                  Sat, Dec 31 2022, 07:00:00 PM ET
+                  Thu, Jun 1 2023, 09:00:00 AM EDT
                 </p>
                 <svg
                   class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -669,7 +669,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     -- --
                   </strong>
                    - 
-                  Sat, Dec 31 2022, 07:00:00 PM ET
+                  Fri, Sep 1 2023, 09:00:00 AM EDT
                 </p>
                 <svg
                   class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -727,7 +727,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Enable Formal RAI Response Withdraw
                   </strong>
                    - 
-                  Sat, Dec 31 2022, 07:00:00 PM ET
+                  Sat, Dec 31 2022, 07:00:00 PM EST
                 </p>
                 <svg
                   class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -785,7 +785,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Disable Formal RAI Response Withdraw
                   </strong>
                    - 
-                  Sat, Dec 31 2022, 07:00:00 PM ET
+                  Fri, Dec 1 2023, 09:00:00 AM EST
                 </p>
                 <svg
                   class="h-4 w-4 shrink-0 transition-transform duration-200"
