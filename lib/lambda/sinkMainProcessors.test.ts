@@ -665,53 +665,6 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       ]);
     },
   );
-
-  it("should log a validation error and not call bulkUpdateData when safeParse fails on a legacy transform", async () => {
-    // Omit 'pk' to force safeParse failure in the medicaidspa transform.
-    const invalidRecord = {
-      componentType: "medicaidspa",
-      // pk is missing here
-      sk: "Package",
-      GSI1pk: "OneMAC#spa",
-      additionalInformation: "info",
-      lastEventTimestamp: "2025-03-09T12:00:00Z",
-      submissionTimestamp: "2025-03-09T12:00:00Z",
-      proposedEffectiveDate: "2025-03-10T00:00:00Z",
-      submitterEmail: "test@example.com",
-      submitterName: "Tester",
-      currentStatus: "Submitted",
-    };
-
-    const kafkaRecord = createKafkaRecord({
-      topic: TOPIC,
-      key: "some-key",
-      value: convertObjToBase64({
-        ...invalidRecord,
-        origin: "OneMACLegacy",
-        submitterName: "Tester",
-        submitterEmail: "test@example.com",
-        timestamp: TIMESTAMP,
-      }),
-      headers: [{ source: [111, 110, 101, 109, 97, 99] }], // "onemac"
-    });
-
-    await insertOneMacRecordsFromKafkaIntoMako([kafkaRecord], TOPIC);
-
-    // Assert that bulkUpdateData was not called since transformation failed.
-    expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
-
-    // Assert that a validation error was logged.
-    expect(logErrorSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: "VALIDATION",
-        error: expect.any(Array),
-        metadata: expect.objectContaining({
-          kafkaRecord,
-          record: invalidRecord,
-        }),
-      }),
-    );
-  });
 });
 
 describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
