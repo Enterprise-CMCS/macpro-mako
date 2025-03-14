@@ -1,7 +1,7 @@
 import { isBefore } from "date-fns";
 import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
 import { KafkaRecord, opensearch, SeatoolRecordWithUpdatedDate } from "shared-types";
-import { Document, transforms, legacyTransforms } from "shared-types/opensearch/main";
+import { Document, legacyTransforms, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 import {
