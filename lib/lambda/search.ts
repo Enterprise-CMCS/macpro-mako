@@ -1,8 +1,8 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
 import { getDomainAndNamespace } from "libs/utils";
-import { ONEMAC_LEGACY_ORIGIN } from "shared-types/opensearch/main/transforms/legacy-transforms";
 import { BaseIndex } from "shared-types/opensearch";
+import { ONEMAC_LEGACY_ORIGIN } from "shared-types/opensearch/main/transforms/legacy-transforms";
 import { validateEnvVariable } from "shared-utils";
 
 import { getStateFilter } from "../libs/api/auth/user";
