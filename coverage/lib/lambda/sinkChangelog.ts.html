@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.71% </span>
+                <span class="strong">86.44% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>50/57</span>
+                <span class='fraction'>51/59</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">81.25% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>25/30</span>
+                <span class='fraction'>26/32</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.28% </span>
+                <span class="strong">87.93% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>50/56</span>
+                <span class='fraction'>51/58</span>
             </div>
         
             
@@ -234,7 +234,9 @@
 <a name='L169'></a><a href='#L169'>169</a>
 <a name='L170'></a><a href='#L170'>170</a>
 <a name='L171'></a><a href='#L171'>171</a>
-<a name='L172'></a><a href='#L172'>172</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -293,7 +295,7 @@
 <span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-yes">25x</span>
 <span class="cline-any cline-yes">25x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25x</span>
 <span class="cline-any cline-yes">25x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">25x</span>
@@ -372,11 +374,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">23x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">16x</span>
@@ -392,7 +396,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -463,8 +467,8 @@ const processAndIndex = async ({
   const docs: Array&lt;(typeof transforms)[keyof typeof transforms]["Schema"]&gt; = [];
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
-    const { value, offset } = kafkaRecord;
-&nbsp;
+    const { value, offset, headers } = kafkaRecord;
+    const kafkaSource = String.fromCharCode(...(headers[0]?.source || []));
     try {
       // If a legacy tombstone, continue
       if (!value) {
@@ -540,10 +544,12 @@ const processAndIndex = async ({
           );
         }
       }
-      // If we're not a mako event, continue
-      // TODO:  handle legacy.  for now, just continue
-      if (!record.event || record?.origin !== "mako") {
-        continue;
+&nbsp;
+      // If the event is a supported event, transform and push to docs array for indexing
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (kafkaSource === "onemac" &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >record.GSI1pk) {</span>
+        // This is a onemac legacy event
+<span class="cstat-no" title="statement not covered" >        record.event = "legacy-event";</span>
+<span class="cstat-no" title="statement not covered" >        record.origin = "onemac";</span>
       }
 &nbsp;
       // If the event is a supported event, transform and push to docs array for indexing
@@ -562,8 +568,8 @@ const processAndIndex = async ({
           continue;
         }
         docs.push(result.data);
-      } else <span class="missing-if-branch" title="else path not taken" >E</span>{
-<span class="cstat-no" title="statement not covered" >        console.log(`No transform found for event: ${record.event}`);</span>
+      } else {
+        console.log(`No transform found for event: ${record.event}`);
       }
     } catch (error) {
       logError({
@@ -583,7 +589,7 @@ const processAndIndex = async ({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-14T02:06:15.493Z
+                at 2025-03-14T19:59:53.714Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
