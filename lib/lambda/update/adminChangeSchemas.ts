@@ -18,9 +18,6 @@ import { events } from "lib/packages/shared-types";
 //   withdrawEmailSent: z.boolean().optional(),
 // });
 
-// export const deleteAdminChangeSchema = documentSchema.extend({
-//   adminChangeType: z.literal("delete"),
-// });
 export const deleteAdminChangeSchema = z.object({
   id: z.string(),
   deleted: z.boolean(),
@@ -30,7 +27,6 @@ export const deleteAdminChangeSchema = z.object({
   statusDate: z.number(),
   timestamp: z.number(),
 });
-//   .and(z.record(z.string(), z.any()));
 
 export const updateValuesAdminChangeSchema = z
   .object({
@@ -41,7 +37,7 @@ export const updateValuesAdminChangeSchema = z
     statusDate: z.number(),
     timestamp: z.number(),
   })
-  .and(z.record(z.string(), z.any()));
+  // .and(z.record(z.string(), z.any()));
 
 export const updateIdAdminChangeSchema = z
   .object({
