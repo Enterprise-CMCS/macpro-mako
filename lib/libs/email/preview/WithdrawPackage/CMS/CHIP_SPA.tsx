@@ -1,6 +1,6 @@
 import { ChipSpaCMSEmail } from "libs/email/content/withdrawPackage/emailTemplates";
-import { emailTemplateValue } from "libs/email/mock-data/new-submission";
 import * as attachments from "libs/email/mock-data/attachments";
+import { emailTemplateValue } from "libs/email/mock-data/new-submission";
 
 export default () => {
   return (

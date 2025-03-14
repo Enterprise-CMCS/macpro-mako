@@ -1,9 +1,9 @@
 import {
+  DefaultFieldGroupProps,
   DependencyRule,
   FormSchema,
   RHFSlotProps,
   Section,
-  DefaultFieldGroupProps,
 } from "shared-types";
 import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 

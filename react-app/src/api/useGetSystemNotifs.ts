@@ -1,8 +1,9 @@
-import { API } from "aws-amplify";
-import { useState, useEffect } from "react";
-import { useGetUser } from "@/api";
 import { useQuery } from "@tanstack/react-query";
+import { API } from "aws-amplify";
+import { useEffect, useState } from "react";
 import { BannerNotification, ReactQueryApiError } from "shared-types";
+
+import { useGetUser } from "@/api";
 
 export const getSystemNotifs = async (): Promise<BannerNotification[]> => {
   return await API.get("os", "/systemNotifs", {});

@@ -1,6 +1,7 @@
 import { events } from "shared-types/events";
-import { isAuthorizedState } from "@/utils";
+
 import { itemExists } from "@/api";
+import { isAuthorizedState } from "@/utils";
 
 export const formSchema = events["contracting-initial"].baseSchema.extend({
   id: events["contracting-initial"].baseSchema.shape.id

@@ -1,43 +1,44 @@
-import { describe, expect, it, vi, afterEach } from "vitest";
-import { startOfDay } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
+import { startOfDay } from "date-fns";
+import * as os from "libs/opensearch-lib";
+import * as sink from "libs/sink-lib";
+import {
+  convertObjToBase64,
+  createKafkaRecord,
+  errorOSMainMultiDocumentHandler,
+  EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
+  NOT_FOUND_ITEM_ID,
+  OPENSEARCH_DOMAIN,
+  OPENSEARCH_INDEX_NAMESPACE,
+  TEST_ITEM_ID,
+} from "mocks";
+import {
+  appkBase,
+  capitatedAmendmentBase,
+  capitatedInitial,
+  capitatedRenewal,
+  contractingAmendment,
+  contractingInitial,
+  contractingRenewal,
+  newChipSubmission,
+  newMedicaidSubmission,
+  respondToRai,
+  temporaryExtension,
+  toggleWithdrawRai,
+  uploadSubsequentDocuments,
+  withdrawPackage,
+  withdrawRai,
+} from "mocks/data/submit/base";
+import { mockedServiceServer as mockedServer } from "mocks/server";
+import { SEATOOL_STATUS, statusToDisplayToCmsUser, statusToDisplayToStateUser } from "shared-types";
+import { seatool } from "shared-types/opensearch/main";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
 import {
   insertNewSeatoolRecordsFromKafkaIntoMako,
   insertOneMacRecordsFromKafkaIntoMako,
   syncSeatoolRecordDatesFromKafkaWithMako,
 } from "./sinkMainProcessors";
-import { seatool } from "shared-types/opensearch/main";
-import { SEATOOL_STATUS, statusToDisplayToCmsUser, statusToDisplayToStateUser } from "shared-types";
-import * as sink from "libs/sink-lib";
-import * as os from "libs/opensearch-lib";
-import {
-  OPENSEARCH_DOMAIN,
-  OPENSEARCH_INDEX_NAMESPACE,
-  TEST_ITEM_ID,
-  EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
-  NOT_FOUND_ITEM_ID,
-  convertObjToBase64,
-  createKafkaRecord,
-  errorOSMainMultiDocumentHandler,
-} from "mocks";
-import { mockedServiceServer as mockedServer } from "mocks/server";
-import {
-  appkBase,
-  capitatedInitial,
-  capitatedAmendmentBase,
-  capitatedRenewal,
-  contractingInitial,
-  contractingAmendment,
-  contractingRenewal,
-  newChipSubmission,
-  newMedicaidSubmission,
-  uploadSubsequentDocuments,
-  temporaryExtension,
-  respondToRai,
-  toggleWithdrawRai,
-  withdrawPackage,
-  withdrawRai,
-} from "mocks/data/submit/base";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}main`;
 const TEST_ITEM_KEY = Buffer.from(TEST_ITEM_ID).toString("base64");
@@ -523,6 +524,147 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       metadata: expect.any(Object),
     });
   });
+  const TEST_TITLE = "Test Title";
+  it.each([
+    ["medicaidspa", "Medicaid SPA", {}, {}],
+    ["chipspa", "CHIP SPA", {}, {}],
+    ["waivernew", "1915(b)", {}, { actionType: "Initial" }],
+    ["waiverrenewal", "1915(b)", {}, { actionType: "Renewal" }],
+    ["waiveramendment", "1915(b)", {}, { actionType: "Amendment" }],
+    [
+      "waiverappk",
+      "1915(c)",
+      { title: TEST_TITLE },
+      { actionType: "Amendment", title: TEST_TITLE },
+    ],
+    // For waiverextension types, add a waiverNumber and override currentStatus.
+    [
+      "waiverextension",
+      "1915(b)",
+      { parentId: "W-12345" },
+      {
+        originalWaiverNumber: "W-12345",
+        actionType: "Extend",
+        cmsStatus: "Submitted - Intake Needed",
+        stateStatus: "Submitted",
+        currentStatus: "TE Requested",
+        seatoolStatus: "Submitted",
+      },
+    ],
+    [
+      "waiverextensionb",
+      "1915(b)",
+      { parentId: "W-12345" },
+      {
+        originalWaiverNumber: "W-12345",
+        actionType: "Extend",
+        cmsStatus: "Submitted - Intake Needed",
+        stateStatus: "Submitted",
+        currentStatus: "TE Requested",
+        seatoolStatus: "Submitted",
+      },
+    ],
+    [
+      "waiverextensionc",
+      "1915(b)",
+      { parentId: "W-12345" },
+      {
+        originalWaiverNumber: "W-12345",
+        actionType: "Extend",
+        cmsStatus: "Submitted - Intake Needed",
+        stateStatus: "Submitted",
+        currentStatus: "TE Requested",
+        seatoolStatus: "Submitted",
+      },
+    ],
+  ])(
+    "should process a valid legacy record for %s",
+    async (componentType, expectedAuthority, extraInput, expectedExtras) => {
+      const record = {
+        pk: "MD-12345", // This will yield state "MD"
+        sk: "Package",
+        GSI1pk: "OneMAC#spa",
+        componentId: "MD-12345",
+        additionalInformation: "info",
+        lastEventTimestamp: TIMESTAMP,
+        submissionTimestamp: TIMESTAMP,
+        proposedEffectiveDate: "2025-03-10T00:00:00Z",
+        submitterEmail: "tester@example.com",
+        submitterName: "Tester",
+        currentStatus: "Submitted",
+        componentType,
+        ...(componentType.startsWith("waiverextension") ? { currentStatus: "TE Requested" } : {}),
+        ...extraInput,
+      };
+
+      const kafkaRecord = createKafkaRecord({
+        topic: TOPIC,
+        key: "some-key",
+        value: convertObjToBase64({
+          ...record,
+          origin: "OneMACLegacy",
+          submitterName: "Tester",
+          submitterEmail: "tester@example.com",
+          timestamp: TIMESTAMP,
+        }),
+        headers: [{ source: [111, 110, 101, 109, 97, 99] }], // "onemac"
+      });
+
+      await insertOneMacRecordsFromKafkaIntoMako([kafkaRecord], TOPIC);
+
+      // Build the expected base transformation (common to all)
+      const baseExpected = {
+        pk: "MD-12345",
+        GSI1pk: "OneMAC#spa",
+        componentId: "MD-12345",
+        additionalInformation: "info",
+        lastEventTimestamp: TIMESTAMP,
+        submissionTimestamp: TIMESTAMP,
+        proposedEffectiveDate: "2025-03-10T00:00:00Z",
+        currentStatus: "Submitted",
+        changedDate: new Date(TIMESTAMP).toISOString(),
+        description: null,
+        id: "MD-12345",
+        makoChangedDate: new Date(TIMESTAMP).toISOString(),
+        origin: "OneMACLegacy",
+        proposedDate: "2025-03-10T00:00:00Z",
+        subject: null,
+        submissionDate: new Date(TIMESTAMP).toISOString(),
+        submitterEmail: "tester@example.com",
+        submitterName: "Tester",
+        initialIntakeNeeded: true,
+        raiWithdrawEnabled: false,
+      };
+
+      // Build expected outcome conditionally based on the transform type.
+      let expectedRecord;
+      if (componentType.startsWith("waiverextension")) {
+        expectedRecord = {
+          ...baseExpected,
+          authority: expectedAuthority,
+          // For temporary extension, we expect the transform to override some status fields.
+          cmsStatus: "Requested",
+          stateStatus: "Submitted",
+          ...expectedExtras,
+        };
+      } else {
+        expectedRecord = {
+          ...baseExpected,
+          authority: expectedAuthority,
+          cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.SUBMITTED],
+          seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+          state: "MD",
+          stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.SUBMITTED],
+          statusDate: new Date(TIMESTAMP).toISOString(),
+          ...expectedExtras,
+        };
+      }
+
+      expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+        expectedRecord,
+      ]);
+    },
+  );
 });
 
 describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
@@ -608,7 +750,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         leadAnalystOfficerId: 67890,
         locked: false,
         proposedDate: null,
-        raiReceivedDate: null,
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
@@ -720,7 +861,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         leadAnalystOfficerId: 67890,
         locked: false,
         proposedDate: null,
-        raiReceivedDate: null,
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
@@ -832,7 +972,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         leadAnalystOfficerId: 67890,
         locked: false,
         proposedDate: null,
-        raiReceivedDate: null,
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
@@ -946,7 +1085,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         leadAnalystOfficerId: 67890,
         locked: false,
         proposedDate: null,
-        raiReceivedDate: null,
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,

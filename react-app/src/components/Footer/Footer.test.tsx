@@ -1,8 +1,8 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router";
+import { describe, expect, it } from "vitest";
 
-import { Footer, FAQFooter } from "./index";
+import { FAQFooter, Footer } from "./index";
 
 describe("Footer", () => {
   it("renders footer", () => {

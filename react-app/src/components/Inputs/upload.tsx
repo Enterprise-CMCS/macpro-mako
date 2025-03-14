@@ -1,13 +1,15 @@
-import { cn } from "@/utils";
-import { useCallback, useState } from "react";
-import { useDropzone, FileRejection, Accept } from "react-dropzone";
-import * as I from "@/components/Inputs";
 import { X } from "lucide-react";
+import { useCallback, useState } from "react";
+import { Accept, FileRejection, useDropzone } from "react-dropzone";
+import { attachmentSchema } from "shared-types";
 import { FILE_TYPES } from "shared-types/uploads";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
+
+import * as I from "@/components/Inputs";
 import { LoadingSpinner } from "@/components/LoadingSpinner"; // Import your LoadingSpinner component
-import { attachmentSchema } from "shared-types";
+import { cn } from "@/utils";
+
 import { extractBucketAndKeyFromUrl, getPresignedUrl, uploadToS3 } from "./upload.utilities";
 
 type Attachment = z.infer<typeof attachmentSchema>;

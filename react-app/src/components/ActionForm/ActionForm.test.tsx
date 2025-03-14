@@ -1,29 +1,35 @@
-import { fireEvent, waitFor, screen } from "@testing-library/react";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, test, expect, vi } from "vitest";
-import { ActionForm } from "./index";
-import { z } from "zod";
-import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
 import {
-  SUBMISSION_ERROR_ITEM_ID,
   GET_ERROR_ITEM_ID,
-  setDefaultStateSubmitter,
   setDefaultReviewer,
+  setDefaultStateSubmitter,
+  SUBMISSION_ERROR_ITEM_ID,
 } from "mocks";
-import * as userPrompt from "@/components/ConfirmationDialog/userPrompt";
-import * as banner from "@/components/Banner/banner";
-import * as documentPoller from "@/utils/Poller/documentPoller";
-import { DataPoller } from "@/utils/Poller/DataPoller";
 import { EXISTING_ITEM_PENDING_ID } from "mocks";
+import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
+import { isCmsReadonlyUser } from "shared-utils";
+import { beforeEach, describe, expect, test, vi } from "vitest";
+import { z } from "zod";
+
+import * as components from "@/components";
+import { DataPoller } from "@/utils/Poller/DataPoller";
+import * as documentPoller from "@/utils/Poller/documentPoller";
 import {
   renderFormAsync,
   renderFormWithPackageSectionAsync,
 } from "@/utils/test-helpers/renderForm";
-import { isCmsReadonlyUser } from "shared-utils";
+
+import { ActionForm } from "./index";
 
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
 
 describe("ActionForm", () => {
+  beforeEach(() => {
+    setDefaultStateSubmitter();
+    vi.clearAllMocks();
+  });
+
   test("renders `breadcrumbText`", async () => {
     await renderFormAsync(
       <ActionForm
@@ -212,6 +218,13 @@ describe("ActionForm", () => {
   });
 
   test("renders custom `promptOnLeavingForm` when clicking Cancel", async () => {
+    const user = userEvent.setup();
+
+    const onAcceptMock = vi.fn();
+    const userPromptSpy = vi
+      .spyOn(components, "userPrompt")
+      .mockImplementation((args) => (args.onAccept = onAcceptMock));
+
     await renderFormAsync(
       <ActionForm
         title="Action Form Title"
@@ -229,13 +242,8 @@ describe("ActionForm", () => {
       />,
     );
 
-    const onAcceptMock = vi.fn();
-    const userPromptSpy = vi
-      .spyOn(userPrompt, "userPrompt")
-      .mockImplementation((args) => (args.onAccept = onAcceptMock));
-
     const cancelBtn = await screen.findByTestId("cancel-action-form");
-    await userEvent.click(cancelBtn);
+    await user.click(cancelBtn);
 
     expect(userPromptSpy).toBeCalledWith({
       header: "Hello World Header",
@@ -243,8 +251,15 @@ describe("ActionForm", () => {
       onAccept: onAcceptMock,
     });
   });
-  //
+
   test("renders custom `promptPreSubmission` when clicking Submit", async () => {
+    const user = userEvent.setup();
+
+    const onAcceptMock = vi.fn();
+    const userPromptSpy = vi
+      .spyOn(components, "userPrompt")
+      .mockImplementation((args) => (args.onAccept = onAcceptMock));
+
     await renderFormAsync(
       <ActionForm
         title="Action Form Title"
@@ -265,13 +280,8 @@ describe("ActionForm", () => {
       />,
     );
 
-    const onAcceptMock = vi.fn();
-    const userPromptSpy = vi
-      .spyOn(userPrompt, "userPrompt")
-      .mockImplementation((args) => (args.onAccept = onAcceptMock));
-
     const submitBtn = await screen.findByTestId("submit-action-form");
-    await userEvent.click(submitBtn);
+    await user.click(submitBtn);
 
     expect(userPromptSpy).toBeCalledWith({
       header: "Hello World Header",
@@ -311,7 +321,7 @@ describe("ActionForm", () => {
 
   test("calls `banner` with `bannerPostSubmission`", async () => {
     const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData");
-    const bannerSpy = vi.spyOn(banner, "banner");
+    const bannerSpy = vi.spyOn(components, "banner");
 
     await renderFormWithPackageSectionAsync(
       <ActionForm
@@ -360,7 +370,7 @@ describe("ActionForm", () => {
   });
 
   test("calls error banner if submission fails", async () => {
-    const bannerSpy = vi.spyOn(banner, "banner");
+    const bannerSpy = vi.spyOn(components, "banner");
 
     await renderFormWithPackageSectionAsync(
       <ActionForm
@@ -399,7 +409,7 @@ describe("ActionForm", () => {
 
   test("calls error banner on submit if fetch fails", async () => {
     const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData");
-    const bannerSpy = vi.spyOn(banner, "banner");
+    const bannerSpy = vi.spyOn(components, "banner");
 
     await renderFormWithPackageSectionAsync(
       <ActionForm
@@ -456,7 +466,7 @@ describe("ActionForm", () => {
 
   test("calls error banner on submit if document check fails", async () => {
     const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData");
-    const bannerSpy = vi.spyOn(banner, "banner");
+    const bannerSpy = vi.spyOn(components, "banner");
 
     await renderFormWithPackageSectionAsync(
       <ActionForm

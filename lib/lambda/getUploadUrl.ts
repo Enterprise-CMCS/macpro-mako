@@ -1,10 +1,11 @@
-import { response } from "libs/handler-lib";
-import { APIGatewayEvent } from "aws-lambda";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { v4 as uuidv4 } from "uuid";
 import * as path from "node:path";
+
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { APIGatewayEvent } from "aws-lambda";
+import { response } from "libs/handler-lib";
 import { validateEnvVariable } from "shared-utils";
+import { v4 as uuidv4 } from "uuid";
 
 const s3 = new S3Client({
   region: process.env.attachmentsBucketRegion,

@@ -1,5 +1,5 @@
 import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/components";
-import { ReactNode, Fragment } from "react";
+import { Fragment, ReactNode } from "react";
 import {
   Attachment,
   AttachmentKey,
@@ -7,8 +7,9 @@ import {
   EmailAddresses,
   Events,
 } from "shared-types";
-import { styles } from "./email-styles";
 import * as os from "shared-types/opensearch";
+
+import { styles } from "./email-styles";
 export const EMAIL_CONFIG = {
   DEV_EMAIL: "mako.stateuser+dev-to@gmail.com",
   CHIP_EMAIL: "CHIPSPASubmissionMailBox@cms.hhs.gov",

@@ -1,18 +1,20 @@
 import { screen } from "@testing-library/react";
-import { beforeAll, describe, expect, test } from "vitest";
 import userEvent from "@testing-library/user-event";
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
-import { skipCleanup, mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
-import { AmendmentForm } from "./Amendment";
-import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { formSchemas } from "@/formSchemas";
 import {
-  NOT_FOUND_ITEM_ID,
-  EXISTING_ITEM_PENDING_ID,
+  CAPITATED_AMEND_ITEM_ID,
   EXISTING_ITEM_APPROVED_AMEND_ID,
   EXISTING_ITEM_APPROVED_NEW_ID,
-  CAPITATED_AMEND_ITEM_ID,
+  EXISTING_ITEM_PENDING_ID,
+  NOT_FOUND_ITEM_ID,
 } from "mocks";
+import { beforeAll, describe, expect, test } from "vitest";
+
+import { formSchemas } from "@/formSchemas";
+import { renderFormAsync } from "@/utils/test-helpers/renderForm";
+import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
+import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
+
+import { AmendmentForm } from "./Amendment";
 
 const upload = uploadFiles<(typeof formSchemas)["capitated-amendment"]>();
 

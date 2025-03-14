@@ -1,8 +1,9 @@
-import { describe, it, expect } from "vitest";
-import { submit } from "./index";
-import { APIGatewayEvent } from "node_modules/shared-types";
 import { getRequestContext, NOT_FOUND_ITEM_ID } from "mocks";
 import { events, uploadSubsequentDocuments } from "mocks/data/submit/base";
+import { APIGatewayEvent } from "node_modules/shared-types";
+import { describe, expect, it } from "vitest";
+
+import { submit } from "./index";
 
 describe("submit Lambda function", () => {
   it("should handle a submission with no body", async () => {

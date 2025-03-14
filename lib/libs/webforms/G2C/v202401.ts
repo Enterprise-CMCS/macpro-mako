@@ -1,4 +1,4 @@
-import { FormSchema, DefaultFieldGroupProps } from "shared-types";
+import { DefaultFieldGroupProps, FormSchema } from "shared-types";
 import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 const subheaderStyling = "py-3 px-8 w-full bg-gray-300 text-2xl font-bold ";

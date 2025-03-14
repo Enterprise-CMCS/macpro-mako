@@ -1,4 +1,5 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import { decodeBase64WithUtf8 } from ".";
 
 describe("decodeBase64WithUtf8", () => {

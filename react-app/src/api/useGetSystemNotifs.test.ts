@@ -1,9 +1,9 @@
-import { beforeAll, afterAll, test, expect, vi, describe } from "vitest";
+import * as query from "@tanstack/react-query";
 import { renderHook } from "@testing-library/react";
 import { mockUseGetUser } from "mocks";
+import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 
 import * as api from "@/api";
-import * as query from "@tanstack/react-query";
 
 import { OneMacUser } from ".";
 

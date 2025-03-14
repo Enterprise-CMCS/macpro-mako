@@ -1,12 +1,13 @@
 import { CommonEmailVariables, Events } from "shared-types";
+import { formatDate } from "shared-utils";
+
 import {
   Attachments,
+  BasicFooter,
   LoginInstructions,
   PackageDetails,
-  BasicFooter,
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
-import { formatDate } from "shared-utils";
 
 export const MedSpaCMSEmail = (props: {
   variables: Events["NewMedicaidSubmission"] & CommonEmailVariables;

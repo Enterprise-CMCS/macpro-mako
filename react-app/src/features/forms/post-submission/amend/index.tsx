@@ -1,8 +1,9 @@
 import { Navigate, useParams } from "react-router";
-import { AmendmentForm as CapitatedForm } from "@/features/forms/waiver/capitated";
-import { AmendmentForm as ContractingForm } from "@/features/forms/waiver/contracting";
+
 import { useGetItem } from "@/api";
 import { LoadingSpinner } from "@/components";
+import { AmendmentForm as CapitatedForm } from "@/features/forms/waiver/capitated";
+import { AmendmentForm as ContractingForm } from "@/features/forms/waiver/contracting";
 
 export const Amendment = () => {
   const { id } = useParams();

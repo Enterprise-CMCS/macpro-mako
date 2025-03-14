@@ -1,5 +1,6 @@
-import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+
 import AppKStateEmailPreview from "./AppK";
 import ChipSpaStateEmailPreview from "./CHIP_SPA";
 import MedicaidSpaStateEmailPreview from "./MED_SPA";

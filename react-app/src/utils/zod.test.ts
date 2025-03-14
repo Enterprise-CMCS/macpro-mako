@@ -9,6 +9,7 @@ import {
   TEST_ITEM_ID,
 } from "mocks";
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import {
   zAdditionalInfo,
   zAdditionalInfoOptional,
@@ -20,11 +21,11 @@ import {
   zExtensionOriginalWaiverNumberSchema,
   zExtensionWaiverNumberSchema,
   zInitialWaiverNumberSchema,
+  zodAlwaysRefine,
   zRenewalOriginalWaiverNumberSchema,
   zRenewalWaiverNumberSchema,
   zSpaIdSchema,
   zUpdateIdSchema,
-  zodAlwaysRefine,
 } from "./zod";
 
 afterEach(() => {

@@ -1,4 +1,5 @@
 import { http, HttpResponse, PathParams } from "msw";
+
 import { types } from "../../data/types";
 import { SearchQueryBody } from "../../index.d";
 import { getFilterValueAsNumber } from "../search.utils";

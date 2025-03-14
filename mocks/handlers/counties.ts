@@ -1,4 +1,5 @@
 import { http, HttpResponse } from "msw";
+
 import counties from "../data/counties";
 
 export type PopulationParams = {

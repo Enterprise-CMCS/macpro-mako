@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { ItemResult as Changelog } from "../changelog";
 import { AggQuery, Filterable as FIL, Hit, QueryState, Response as Res } from "./../_";
 import {
@@ -21,6 +22,15 @@ import {
   withdrawPackage,
   withdrawRai,
 } from "./transforms";
+import {
+  legacyAmendmentWaiver,
+  legacyAppk,
+  legacyChipSpa,
+  legacyIniitalWaiver,
+  legacyMedicaidSpa,
+  legacyRenewalWaiver,
+  legacyTemporaryExtension,
+} from "./transforms/legacy-transforms";
 
 export type AppkDocument = z.infer<appK.Schema>;
 export type CapitatedAmendmentDocument = z.infer<capitatedAmendment.Schema>;
@@ -41,6 +51,14 @@ export type UploadSubsequentDocuments = z.infer<uploadSubsequentDocuments.Schema
 export type WithdrawPackageDocument = z.infer<withdrawPackage.Schema>;
 export type WithdrawRaiDocument = z.infer<withdrawRai.Schema>;
 
+export type LegacyMedicaidSpaDocument = z.infer<legacyMedicaidSpa.Schema>;
+export type LegacyChipSpaDocument = z.infer<legacyChipSpa.Schema>;
+export type LegacyInitialWaiverDocument = z.infer<legacyIniitalWaiver.Schema>;
+export type LegacyRenewalWaiverDocument = z.infer<legacyRenewalWaiver.Schema>;
+export type LegacyAmendmentWaiverDocument = z.infer<legacyAmendmentWaiver.Schema>;
+export type LegacyAppkDocument = z.infer<legacyAppk.Schema>;
+export type LegacyTemporaryExtensionDocument = z.infer<legacyTemporaryExtension.Schema>;
+
 export type Document = AppkDocument &
   CapitatedAmendmentDocument &
   CapitatedInitialDocument &
@@ -49,7 +67,6 @@ export type Document = AppkDocument &
   ContractingAmendmentDocument &
   ContractingInitialDocument &
   ContractingRenewalDocument &
-  LegacyPackageViewDocument &
   NewChipSubmissionDocument &
   NewMedicaidSubmissionDocument &
   RespondToRaiDocument &
@@ -98,4 +115,16 @@ export const transforms = {
   "upload-subsequent-documents": uploadSubsequentDocuments,
   "withdraw-package": withdrawPackage,
   "withdraw-rai": withdrawRai,
+};
+
+export const legacyTransforms = {
+  medicaidspa: legacyMedicaidSpa,
+  chipspa: legacyChipSpa,
+  waivernew: legacyIniitalWaiver,
+  waiverrenewal: legacyRenewalWaiver,
+  waiveramendment: legacyAmendmentWaiver,
+  waiverappk: legacyAppk,
+  waiverextensionb: legacyTemporaryExtension,
+  waiverextensionc: legacyTemporaryExtension,
+  waiverextension: legacyTemporaryExtension,
 };

@@ -1,5 +1,6 @@
-import { ItemResult } from "shared-types/opensearch/main";
 import * as os from "libs/opensearch-lib";
+import { ItemResult } from "shared-types/opensearch/main";
+
 import { getDomainAndNamespace } from "../../utils";
 
 export interface ExtendedItemResult extends ItemResult {

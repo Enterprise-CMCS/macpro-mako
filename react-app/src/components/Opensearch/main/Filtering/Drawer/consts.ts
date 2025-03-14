@@ -1,4 +1,5 @@
 import { opensearch } from "shared-types";
+
 import { OsFilterComponentType } from "../../types";
 
 /**

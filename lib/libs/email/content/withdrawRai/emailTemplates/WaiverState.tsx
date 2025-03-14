@@ -1,5 +1,6 @@
-import { CommonEmailVariables, Events, EmailAddresses } from "shared-types";
-import { FollowUpNotice, BasicFooter, PackageDetails, MailboxNotice } from "../../email-components";
+import { CommonEmailVariables, EmailAddresses, Events } from "shared-types";
+
+import { BasicFooter, FollowUpNotice, MailboxNotice, PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const WaiverStateEmail = ({

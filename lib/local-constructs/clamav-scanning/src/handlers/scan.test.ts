@@ -1,18 +1,19 @@
-import { handler } from "./scan";
-import {
-  startClamd,
-  downloadAVDefinitions,
-  scanLocalFile,
-  extractKeyFromS3Event,
-  extractBucketFromS3Event,
-  STATUS_ERROR_PROCESSING_FILE,
-  downloadFileFromS3,
-  tagWithScanStatus,
-  checkFileExt,
-  STATUS_CLEAN_FILE,
-  checkFileSize,
-} from "./../lib";
 import { expect, test, vi } from "vitest";
+
+import {
+  checkFileExt,
+  checkFileSize,
+  downloadAVDefinitions,
+  downloadFileFromS3,
+  extractBucketFromS3Event,
+  extractKeyFromS3Event,
+  scanLocalFile,
+  startClamd,
+  STATUS_CLEAN_FILE,
+  STATUS_ERROR_PROCESSING_FILE,
+  tagWithScanStatus,
+} from "./../lib";
+import { handler } from "./scan";
 
 vi.mock("pino", () => {
   return {

@@ -1,11 +1,12 @@
-import { describe, it, expect } from "vitest";
 import * as cdk from "aws-cdk-lib";
-import { EmptyBuckets } from ".";
-import * as logs from "aws-cdk-lib/aws-logs";
-import * as lambda from "aws-cdk-lib/aws-lambda";
-import * as s3 from "aws-cdk-lib/aws-s3";
 import * as iam from "aws-cdk-lib/aws-iam";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as logs from "aws-cdk-lib/aws-logs";
+import * as s3 from "aws-cdk-lib/aws-s3";
 import * as cr from "aws-cdk-lib/custom-resources";
+import { describe, expect, it } from "vitest";
+
+import { EmptyBuckets } from ".";
 
 describe("EmptyBuckets", () => {
   const app = new cdk.App();

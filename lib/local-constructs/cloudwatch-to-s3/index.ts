@@ -1,9 +1,9 @@
 import * as cdk from "aws-cdk-lib";
-import { Construct } from "constructs";
-import { Bucket } from "aws-cdk-lib/aws-s3";
+import { PolicyDocument, PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
 import { CfnDeliveryStream } from "aws-cdk-lib/aws-kinesisfirehose";
-import { Role, ServicePrincipal, PolicyStatement, PolicyDocument } from "aws-cdk-lib/aws-iam";
-import { LogGroup, CfnSubscriptionFilter } from "aws-cdk-lib/aws-logs";
+import { CfnSubscriptionFilter, LogGroup } from "aws-cdk-lib/aws-logs";
+import { Bucket } from "aws-cdk-lib/aws-s3";
+import { Construct } from "constructs";
 
 interface CloudWatchToS3Props {
   readonly logGroup: LogGroup;

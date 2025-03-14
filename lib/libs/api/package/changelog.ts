@@ -1,5 +1,6 @@
 import * as os from "libs/opensearch-lib";
 import { opensearch } from "shared-types";
+
 import { getDomainAndNamespace } from "../../utils";
 
 export const getPackageChangelog = async (packageId: string, filter: any[] = []) => {

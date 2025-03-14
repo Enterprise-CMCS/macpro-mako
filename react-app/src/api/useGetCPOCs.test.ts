@@ -1,8 +1,9 @@
-import { describe, expect, it } from "vitest";
-import { fetchCpocData } from "./useGetCPOCs";
 import { errorApiCpocHandler } from "mocks";
-import { mockedApiServer as mockedServer } from "mocks/server";
 import { cpocsList } from "mocks/data/cpocs";
+import { mockedApiServer as mockedServer } from "mocks/server";
+import { describe, expect, it } from "vitest";
+
+import { fetchCpocData } from "./useGetCPOCs";
 
 describe("useGetCPOCs test", () => {
   describe("fetchCpocData tests", () => {

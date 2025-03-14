@@ -1,4 +1,4 @@
-import { RHFOption, RHFSlotProps, FormGroup, FormSchema } from "shared-types/forms";
+import { FormGroup, FormSchema, RHFOption, RHFSlotProps } from "shared-types/forms";
 
 type GL = Record<string, unknown>;
 

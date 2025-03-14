@@ -1,6 +1,7 @@
-import { BLANK_VALUE } from "@/consts";
 import { useParams } from "react-router";
 import { AuthorityUnion } from "shared-types";
+
+import { BLANK_VALUE } from "@/consts";
 
 export const getIdLabel = (authority: AuthorityUnion) => {
   const idLabels = new Map<AuthorityUnion, string>([

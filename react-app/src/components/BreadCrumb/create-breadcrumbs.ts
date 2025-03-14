@@ -1,6 +1,7 @@
-import { dashboardCrumb } from "@/utils";
-import { BreadCrumbConfig } from "@/components";
 import { Authority } from "shared-types";
+
+import { BreadCrumbConfig } from "@/components";
+import { dashboardCrumb } from "@/utils";
 
 const newSubmissionPageRouteMapper: Record<string, { to: string; displayText: string }> = {
   "new-submission": {

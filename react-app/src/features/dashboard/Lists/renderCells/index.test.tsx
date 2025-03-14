@@ -1,17 +1,19 @@
-import { describe, expect, it } from "vitest";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { opensearch, CognitoUserAttributes, Action, SEATOOL_STATUS } from "shared-types";
 import {
   TEST_1915B_ITEM,
   TEST_1915C_ITEM,
   TEST_CHIP_SPA_ITEM,
+  TEST_CMS_REVIEWER_USER,
   TEST_MED_SPA_ITEM,
   TEST_STATE_SUBMITTER_USER,
-  TEST_CMS_REVIEWER_USER,
 } from "mocks";
+import { Action, CognitoUserAttributes, opensearch, SEATOOL_STATUS } from "shared-types";
+import { describe, expect, it } from "vitest";
+
 import { renderWithMemoryRouter } from "@/utils/test-helpers";
-import { renderCellDate, CellDetailsLink, renderCellActions } from "./index";
+
+import { CellDetailsLink, renderCellActions, renderCellDate } from "./index";
 
 describe("renderCells", () => {
   describe("renderCellDate", () => {

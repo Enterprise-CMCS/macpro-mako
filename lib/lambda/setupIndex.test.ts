@@ -1,9 +1,10 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
-import { handler } from "./setupIndex";
 import { Context } from "aws-lambda";
-import { OPENSEARCH_DOMAIN, OPENSEARCH_INDEX_NAMESPACE, errorCreateIndexHandler } from "mocks";
-import { mockedServiceServer as mockedServer } from "mocks/server";
 import * as os from "libs/opensearch-lib";
+import { errorCreateIndexHandler, OPENSEARCH_DOMAIN, OPENSEARCH_INDEX_NAMESPACE } from "mocks";
+import { mockedServiceServer as mockedServer } from "mocks/server";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { handler } from "./setupIndex";
 
 describe("handler", () => {
   const baseEvent = {

@@ -1,8 +1,9 @@
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { useGetSystemNotifs } from "@/api";
-import { FAQ_TAB } from "@/router";
 import { Link } from "react-router";
+
+import { useGetSystemNotifs } from "@/api";
+import { FAQ_TAB } from "@/consts";
 
 // MMDL banner hidden for UAT until further notice, do not remove
 // const MMDLAlertBanner = () => {

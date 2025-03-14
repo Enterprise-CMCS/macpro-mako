@@ -1,11 +1,12 @@
 import { describe, expect, it } from "vitest";
+
 import {
+  aggQueryBuilder,
+  checkMultiFilter,
+  createSearchFilterable,
   filterQueryBuilder,
   paginationQueryBuilder,
   sortQueryBuilder,
-  aggQueryBuilder,
-  createSearchFilterable,
-  checkMultiFilter,
 } from "./utils";
 
 describe("Opensearch utils tests", () => {

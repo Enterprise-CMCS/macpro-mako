@@ -1,4 +1,5 @@
 import { Authority } from "shared-types/authority";
+
 import { getDashboardTabForAuthority } from "./crumbs";
 
 /** Constant key for accessing origin in query string. */

@@ -1,7 +1,8 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
-import { Checkbox, CheckboxGroup } from "./checkbox";
+import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
+import { describe, expect, it, vi } from "vitest";
+
+import { Checkbox, CheckboxGroup } from "./checkbox";
 
 describe("Checkbox Component", () => {
   it("renders correctly with a label", () => {

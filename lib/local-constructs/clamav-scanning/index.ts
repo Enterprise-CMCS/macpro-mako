@@ -1,18 +1,18 @@
-import { DockerImageCode, DockerImageFunction } from "aws-cdk-lib/aws-lambda";
 import * as cdk from "aws-cdk-lib";
-import { Construct } from "constructs";
-import * as sqs from "aws-cdk-lib/aws-sqs";
+import { Rule, RuleTargetInput, Schedule } from "aws-cdk-lib/aws-events";
+import { LambdaFunction } from "aws-cdk-lib/aws-events-targets";
+import * as iam from "aws-cdk-lib/aws-iam";
+import { ManagedPolicy, PolicyDocument, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
+import * as kms from "aws-cdk-lib/aws-kms";
+import { DockerImageCode, DockerImageFunction } from "aws-cdk-lib/aws-lambda";
+import * as destinations from "aws-cdk-lib/aws-lambda-destinations";
+import * as lambdaEventSources from "aws-cdk-lib/aws-lambda-event-sources";
+import * as logs from "aws-cdk-lib/aws-logs";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as s3n from "aws-cdk-lib/aws-s3-notifications";
-import * as logs from "aws-cdk-lib/aws-logs";
-import * as iam from "aws-cdk-lib/aws-iam";
-import * as kms from "aws-cdk-lib/aws-kms";
-import * as lambdaEventSources from "aws-cdk-lib/aws-lambda-event-sources";
-import * as destinations from "aws-cdk-lib/aws-lambda-destinations";
+import * as sqs from "aws-cdk-lib/aws-sqs";
 import * as cr from "aws-cdk-lib/custom-resources";
-import { ManagedPolicy, PolicyDocument, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
-import { LambdaFunction } from "aws-cdk-lib/aws-events-targets";
-import { Rule, RuleTargetInput, Schedule } from "aws-cdk-lib/aws-events";
+import { Construct } from "constructs";
 
 interface ClamScanScannerProps {
   readonly fileBucket: s3.Bucket;

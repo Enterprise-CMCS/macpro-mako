@@ -1,14 +1,14 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { handler } from "./updatePackage";
-import { APIGatewayEvent } from "node_modules/shared-types";
-
 import {
-  EXISTING_ITEM_ID,
-  EXISTING_ITEM_PENDING_ID,
   CAPITATED_INITIAL_ITEM_ID,
   CAPITATED_INITIAL_NEW_ITEM_ID,
+  EXISTING_ITEM_ID,
+  EXISTING_ITEM_PENDING_ID,
   SIMPLE_ID,
 } from "mocks";
+import { APIGatewayEvent } from "node_modules/shared-types";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { handler } from "./updatePackage";
 vi.mock("libs/handler-lib", () => ({
   response: vi.fn((data) => data),
 }));

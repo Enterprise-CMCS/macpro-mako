@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { ReactQueryApiError, FormSchema } from "shared-types";
+import { FormSchema, ReactQueryApiError } from "shared-types";
 import { reInsertRegex } from "shared-utils";
 
 export const getForm = async (formId: string, formVersion?: string): Promise<FormSchema> => {

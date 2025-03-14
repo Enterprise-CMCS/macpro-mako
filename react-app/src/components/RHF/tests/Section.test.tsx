@@ -1,10 +1,12 @@
-import { describe, test, expect } from "vitest";
 import { screen } from "@testing-library/react";
-import { renderWithQueryClient } from "@/utils/test-helpers";
-import { RHFDocument, documentInitializer } from "..";
-import { Form } from "../../Inputs";
 import { useForm } from "react-hook-form";
 import { FormSchema } from "shared-types";
+import { describe, expect, test } from "vitest";
+
+import { renderWithQueryClient } from "@/utils/test-helpers";
+
+import { Form } from "../../Inputs";
+import { documentInitializer, RHFDocument } from "..";
 
 const TestWrapper = (props: { data: FormSchema }) => {
   const form = useForm({ defaultValues: documentInitializer(props.data) });

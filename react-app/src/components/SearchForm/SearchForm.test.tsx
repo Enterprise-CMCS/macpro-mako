@@ -1,8 +1,9 @@
 // Search.test.js
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, expect, test, vi, afterEach } from "vitest";
-import { SearchForm } from ".";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { afterEach, describe, expect, test, vi } from "vitest";
+
+import { SearchForm } from ".";
 
 const mockHandleSearch = vi.fn();
 

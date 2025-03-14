@@ -1,8 +1,9 @@
+import { Navigate, useParams } from "react-router";
+import { SEATOOL_STATUS } from "shared-types";
+
 import { useGetItem } from "@/api";
 import { ActionForm, LoadingSpinner, PackageSection } from "@/components";
 import { formSchemas } from "@/formSchemas";
-import { Navigate, useParams } from "react-router";
-import { SEATOOL_STATUS } from "shared-types";
 
 export const RespondToRaiMedicaid = () => {
   const { authority, id } = useParams();

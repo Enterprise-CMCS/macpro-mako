@@ -1,6 +1,6 @@
+import { LambdaClient, ListEventSourceMappingsCommand } from "@aws-sdk/client-lambda";
 import { Handler } from "aws-lambda";
 import { Kafka } from "kafkajs";
-import { LambdaClient, ListEventSourceMappingsCommand } from "@aws-sdk/client-lambda";
 
 export const handler: Handler = async (event, _, callback) => {
   const response = {

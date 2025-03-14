@@ -1,9 +1,11 @@
 import { STATE_CODES } from "shared-types/states";
-import { getUser } from "@/api";
-import { isCmsUser, isStateUser } from "shared-utils";
-import { getUserStateCodes, isAuthorizedState } from "./user";
-import { describe, it, expect, vi, beforeEach } from "vitest";
 import { type CognitoUserAttributes } from "shared-types/user";
+import { isCmsUser, isStateUser } from "shared-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { getUser } from "@/api";
+
+import { getUserStateCodes, isAuthorizedState } from "./user";
 
 // Mock users with different roles
 const cmsReviewerUser = {

@@ -1,13 +1,14 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
 import { getAvailableActions } from "shared-utils";
-import { handleOpensearchError } from "./utils";
+
 import {
   getAuthDetails,
   isAuthorizedToGetPackageActions,
   lookupUserAttributes,
 } from "../libs/api/auth/user";
 import { getPackage } from "../libs/api/package/getPackage";
+import { handleOpensearchError } from "./utils";
 
 export const getPackageActions = async (event: APIGatewayEvent) => {
   if (!event.body) {

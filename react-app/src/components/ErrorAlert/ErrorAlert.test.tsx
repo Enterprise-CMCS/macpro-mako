@@ -1,8 +1,8 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { ReactQueryApiError } from "shared-types";
+import { describe, expect, it } from "vitest";
 
 import { ErrorAlert } from "./index";
-import { ReactQueryApiError } from "shared-types";
 
 describe("ErrorAlert", () => {
   it("renders with default error", () => {

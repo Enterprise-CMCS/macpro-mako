@@ -1,12 +1,14 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
-import { TimeoutModal } from ".";
-import * as api from "@/api";
-import { mockUseGetUser, setDefaultStateSubmitter } from "mocks";
 import { UseQueryResult } from "@tanstack/react-query";
-import { OneMacUser } from "@/api";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { Auth } from "aws-amplify";
+import { mockUseGetUser, setDefaultStateSubmitter } from "mocks";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import * as api from "@/api";
+import { OneMacUser } from "@/api";
 import * as hooks from "@/hooks";
+
+import { TimeoutModal } from ".";
 
 const mockTimer = 60;
 

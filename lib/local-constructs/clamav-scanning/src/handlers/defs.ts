@@ -1,10 +1,11 @@
+import pino from "pino";
+
 import {
-  updateAVDefinitonsWithFreshclam,
-  uploadAVDefinitions,
   cleanupFolder,
   FRESHCLAM_WORK_DIR,
+  updateAVDefinitonsWithFreshclam,
+  uploadAVDefinitions,
 } from "./../lib";
-import pino from "pino";
 const logger = pino();
 
 export async function handler(): Promise<string> {

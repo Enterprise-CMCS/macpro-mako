@@ -1,8 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { useGetUser } from "./useGetUser";
-import { getUserStateCodes } from "@/utils";
-import { FULL_CENSUS_STATES } from "shared-types";
 import { useMemo } from "react";
+import { FULL_CENSUS_STATES } from "shared-types";
+
+import { getUserStateCodes } from "@/utils";
+
+import { useGetUser } from "./useGetUser";
 
 const usePopulationData = (stateString: string) => {
   return useQuery(

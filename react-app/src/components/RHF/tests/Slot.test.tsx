@@ -1,10 +1,12 @@
-import { describe, test, expect } from "vitest";
 import { screen } from "@testing-library/react";
-import { renderWithQueryClient } from "@/utils/test-helpers";
-import { RHFSlot } from "../.";
-import { Form, FormField } from "../../Inputs";
 import { Control, useForm } from "react-hook-form";
 import { RHFSlotProps } from "shared-types";
+import { describe, expect, test } from "vitest";
+
+import { renderWithQueryClient } from "@/utils/test-helpers";
+
+import { Form, FormField } from "../../Inputs";
+import { RHFSlot } from "../.";
 
 const TestWrapper = (props: RHFSlotProps) => {
   const form = useForm();

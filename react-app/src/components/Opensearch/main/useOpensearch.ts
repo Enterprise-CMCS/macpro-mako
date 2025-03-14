@@ -1,11 +1,13 @@
-import { useEffect, useState, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { UserRoles, opensearch } from "shared-types";
-import { getOsData, useOsSearch, useGetUser } from "@/api";
-import { useLzUrl } from "@/hooks";
-import { OsTab } from "./types";
-import { createSearchFilterable } from "../utils";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
+import { opensearch, UserRoles } from "shared-types";
+
+import { getOsData, useGetUser, useOsSearch } from "@/api";
+import { useLzUrl } from "@/hooks";
+
+import { createSearchFilterable } from "../utils";
+import { OsTab } from "./types";
 
 export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
   spas: {

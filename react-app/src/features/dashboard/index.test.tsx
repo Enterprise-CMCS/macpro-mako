@@ -1,32 +1,34 @@
-import { describe, expect, it, vi, beforeAll, afterAll, beforeEach, afterEach } from "vitest";
 import {
-  screen,
-  within,
-  waitForElementToBeRemoved,
   cleanup,
+  screen,
   waitFor,
+  waitForElementToBeRemoved,
+  within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
-  renderWithQueryClientAndMemoryRouter,
-  verifyFiltering,
-  verifyChips,
-  verifyPagination,
-  getFilteredHits,
-  skipCleanup,
-  createTestQueryClient,
-} from "@/utils/test-helpers";
-import {
-  TEST_STATE_SUBMITTER_USER,
+  errorApiSearchHandler,
+  setMockUsername,
   TEST_CMS_REVIEWER_USER,
   TEST_HELP_DESK_USER,
   TEST_READ_ONLY_USER,
-  setMockUsername,
-  errorApiSearchHandler,
+  TEST_STATE_SUBMITTER_USER,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
-import { Dashboard, dashboardLoader } from "./index";
 import { redirect } from "react-router";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+
+import {
+  createTestQueryClient,
+  getFilteredHits,
+  renderWithQueryClientAndMemoryRouter,
+  skipCleanup,
+  verifyChips,
+  verifyFiltering,
+  verifyPagination,
+} from "@/utils/test-helpers";
+
+import { Dashboard, dashboardLoader } from "./index";
 
 const spaHits = getFilteredHits(["Medicaid SPA", "CHIP SPA"]);
 const waiverHits = getFilteredHits(["1915(b)", "1915(c)"]);

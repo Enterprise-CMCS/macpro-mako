@@ -1,9 +1,10 @@
-import { describe, it, expect, vi, beforeEach, afterEach, Mock } from "vitest";
-import { APIGatewayEvent } from "aws-lambda";
-import { handler } from "./getUploadUrl";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { v4 as uuidv4 } from "uuid";
+import { APIGatewayEvent } from "aws-lambda";
 import { ATTACHMENT_BUCKET_NAME, ATTACHMENT_BUCKET_REGION } from "mocks";
+import { v4 as uuidv4 } from "uuid";
+import { afterEach, beforeEach, describe, expect, it, Mock, vi } from "vitest";
+
+import { handler } from "./getUploadUrl";
 
 vi.mock("@aws-sdk/s3-request-presigner", () => ({
   getSignedUrl: vi.fn(),

@@ -1,7 +1,9 @@
+import { FormSchema } from "shared-types";
+
 import * as ABP1 from "./ABP1";
 import * as ABP2A from "./ABP2A";
-import * as ABP2C from "./ABP2C";
 import * as ABP2B from "./ABP2B";
+import * as ABP2C from "./ABP2C";
 import * as ABP3 from "./ABP3";
 import * as ABP3_1 from "./ABP3_1";
 import * as ABP4 from "./ABP4";
@@ -20,7 +22,6 @@ import * as G2A from "./G2A";
 import * as G2B from "./G2B";
 import * as G2C from "./G2C";
 import * as G3 from "./G3";
-import { FormSchema } from "shared-types";
 
 export const webformVersions: Record<string, Record<string, FormSchema>> = {
   ABP1: {

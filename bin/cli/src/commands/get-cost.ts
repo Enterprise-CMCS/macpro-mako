@@ -1,6 +1,7 @@
-import { Argv } from "yargs";
 import { CostExplorerClient, GetCostAndUsageCommand } from "@aws-sdk/client-cost-explorer";
-import { checkIfAuthenticated, setStageFromBranch, project } from "../lib";
+import { Argv } from "yargs";
+
+import { checkIfAuthenticated, project, setStageFromBranch } from "../lib";
 
 export const getCost = {
   command: "get-cost",

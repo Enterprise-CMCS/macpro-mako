@@ -1,5 +1,5 @@
 import { Handler } from "aws-lambda";
-import { send, SUCCESS, FAILED } from "cfn-response-async";
+import { FAILED, send, SUCCESS } from "cfn-response-async";
 type ResponseStatus = typeof SUCCESS | typeof FAILED;
 import * as os from "./../libs/opensearch-lib";
 

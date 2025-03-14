@@ -1,4 +1,5 @@
 import { Argv } from "yargs";
+
 import { runCommand } from "../lib";
 
 export const docs = {

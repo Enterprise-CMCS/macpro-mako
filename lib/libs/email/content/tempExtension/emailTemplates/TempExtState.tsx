@@ -1,7 +1,7 @@
-import { formatNinetyDaysDate } from "shared-utils";
 import { CommonEmailVariables, Events } from "shared-types";
-import { PackageDetails, BasicFooter, MailboxNotice, FollowUpNotice } from "../../email-components";
+import { formatNinetyDaysDate } from "shared-utils";
 
+import { BasicFooter, FollowUpNotice, MailboxNotice, PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
 type TempExtStateEmailProps = Events["TemporaryExtension"] & CommonEmailVariables;

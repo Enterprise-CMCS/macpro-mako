@@ -1,4 +1,6 @@
 import { FormSchema } from "shared-types";
+import { noLeadingTrailingWhitespace } from "shared-utils/regex";
+
 import {
   additionalInfo,
   createSectionId,
@@ -13,7 +15,6 @@ import {
   SectionDependencyInfo,
   SectionName,
 } from "./sections/v202401";
-import { noLeadingTrailingWhitespace } from "shared-utils/regex";
 
 const formId = "abp8";
 

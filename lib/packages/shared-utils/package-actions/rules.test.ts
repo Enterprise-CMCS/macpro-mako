@@ -1,25 +1,26 @@
-import { describe, expect, it } from "vitest";
 import {
-  arRespondToRai,
-  arTempExtension,
-  arAmend,
-  arEnableWithdrawRaiResponse,
-  arDisableWithdrawRaiResponse,
-  arWithdrawRaiResponse,
-  arWithdrawPackage,
-  arUploadSubsequentDocuments,
-} from "./rules";
-import { PackageCheck } from "../package-check";
-import { SEATOOL_STATUS } from "shared-types";
-import {
-  TEST_MED_SPA_ITEM,
-  TEST_TEMP_EXT_ITEM,
-  TEST_CHIP_SPA_ITEM,
   TEST_1915B_ITEM,
   TEST_1915C_ITEM,
-  TEST_STATE_SUBMITTER_USER,
+  TEST_CHIP_SPA_ITEM,
   TEST_CMS_REVIEWER_USER,
+  TEST_MED_SPA_ITEM,
+  TEST_STATE_SUBMITTER_USER,
+  TEST_TEMP_EXT_ITEM,
 } from "mocks";
+import { SEATOOL_STATUS } from "shared-types";
+import { describe, expect, it } from "vitest";
+
+import { PackageCheck } from "../package-check";
+import {
+  arAmend,
+  arDisableWithdrawRaiResponse,
+  arEnableWithdrawRaiResponse,
+  arRespondToRai,
+  arTempExtension,
+  arUploadSubsequentDocuments,
+  arWithdrawPackage,
+  arWithdrawRaiResponse,
+} from "./rules";
 
 describe("package actions rules tests", () => {
   describe("arRespondToRai rule tests", () => {

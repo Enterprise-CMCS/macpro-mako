@@ -1,11 +1,12 @@
-import { handler } from "./defs";
+import { expect, test, vi } from "vitest";
+
 import {
-  updateAVDefinitonsWithFreshclam,
-  uploadAVDefinitions,
   cleanupFolder,
   FRESHCLAM_WORK_DIR,
+  updateAVDefinitonsWithFreshclam,
+  uploadAVDefinitions,
 } from "./../lib";
-import { expect, test, vi } from "vitest";
+import { handler } from "./defs";
 
 vi.mock("pino", () => {
   return {

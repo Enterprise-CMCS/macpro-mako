@@ -1,6 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { getSystemNotifs } from "./getSystemNotifs";
 import * as util from "shared-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { getSystemNotifs } from "./getSystemNotifs";
 
 vi.mock("shared-utils", () => ({
   getExport: vi.fn(),

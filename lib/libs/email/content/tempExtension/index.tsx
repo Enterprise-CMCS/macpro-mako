@@ -1,7 +1,8 @@
+import { render } from "@react-email/render";
 import { Authority, EmailAddresses, Events } from "shared-types";
 import { CommonEmailVariables } from "shared-types";
+
 import { AuthoritiesWithUserTypesTemplate } from "../..";
-import { render } from "@react-email/render";
 import { TempExtCMSEmail, TempExtStateEmail } from "./emailTemplates";
 
 export const tempExtension: AuthoritiesWithUserTypesTemplate = {

@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { handler } from "./submitNOSO";
-import { APIGatewayEvent } from "node_modules/shared-types";
-
 import { NOT_EXISTING_ITEM_ID, TEST_ITEM_ID } from "mocks";
+import { APIGatewayEvent } from "node_modules/shared-types";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { handler } from "./submitNOSO";
 
 vi.mock("libs/handler-lib", () => ({
   response: vi.fn((data) => data),

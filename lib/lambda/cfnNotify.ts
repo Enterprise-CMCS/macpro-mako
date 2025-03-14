@@ -1,5 +1,5 @@
 import { Handler } from "aws-lambda";
-import { send, SUCCESS, FAILED } from "cfn-response-async";
+import { FAILED, send, SUCCESS } from "cfn-response-async";
 
 export const handler: Handler = async (event, _, callback) => {
   const response = {

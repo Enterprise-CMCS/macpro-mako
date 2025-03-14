@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { expect, test, vi } from "vitest";
+
 import {
-  EMAIL_CONFIG,
   areAllAttachmentsEmpty,
-  Textarea,
   DetailsHeading,
+  EMAIL_CONFIG,
   getCpocEmail,
+  Textarea,
 } from "../email-components";
 
 // 🟢 Test EMAIL_CONFIG

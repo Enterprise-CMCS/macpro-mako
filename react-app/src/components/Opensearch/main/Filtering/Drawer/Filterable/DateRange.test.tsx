@@ -1,9 +1,10 @@
-import { describe, expect, it, vi, afterEach } from "vitest";
-import { screen, render, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { FilterableDateRange, DATE_FORMAT, DATE_DISPLAY_FORMAT } from "./DateRange";
-import { format, startOfQuarter, startOfMonth, sub, endOfDay, startOfDay } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { endOfDay, format, startOfDay, startOfMonth, startOfQuarter, sub } from "date-fns";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { DATE_DISPLAY_FORMAT, DATE_FORMAT, FilterableDateRange } from "./DateRange";
 
 describe("FilterableDateRange", () => {
   const onChange = vi.fn();

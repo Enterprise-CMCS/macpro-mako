@@ -1,9 +1,10 @@
-import { formatNinetyDaysDate } from "shared-utils";
-import { CommonEmailVariables, Events } from "shared-types";
 import { Text } from "@react-email/components";
-import { PackageDetails, MailboxNotice, BasicFooter, FollowUpNotice } from "../../email-components";
-import { BaseEmailTemplate } from "../../email-templates";
+import { CommonEmailVariables, Events } from "shared-types";
+import { formatNinetyDaysDate } from "shared-utils";
+
+import { BasicFooter, FollowUpNotice, MailboxNotice, PackageDetails } from "../../email-components";
 import { styles } from "../../email-styles";
+import { BaseEmailTemplate } from "../../email-templates";
 
 export const WaiverStateEmail = ({
   variables,

@@ -1,17 +1,18 @@
-import {
-  startClamd,
-  downloadAVDefinitions,
-  scanLocalFile,
-  extractKeyFromS3Event,
-  extractBucketFromS3Event,
-  STATUS_ERROR_PROCESSING_FILE,
-  downloadFileFromS3,
-  tagWithScanStatus,
-  checkFileExt,
-  STATUS_CLEAN_FILE,
-  checkFileSize,
-} from "./../lib";
 import pino from "pino";
+
+import {
+  checkFileExt,
+  checkFileSize,
+  downloadAVDefinitions,
+  downloadFileFromS3,
+  extractBucketFromS3Event,
+  extractKeyFromS3Event,
+  scanLocalFile,
+  startClamd,
+  STATUS_CLEAN_FILE,
+  STATUS_ERROR_PROCESSING_FILE,
+  tagWithScanStatus,
+} from "./../lib";
 const logger = pino();
 
 export async function handler(event: any): Promise<string[]> {

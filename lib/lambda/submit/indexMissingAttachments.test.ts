@@ -1,8 +1,9 @@
-import { describe, it, expect } from "vitest";
-import { submit } from "./index";
-import { APIGatewayEvent } from "node_modules/shared-types";
 import { getRequestContext } from "mocks";
 import { eventsAttachmentRequired } from "mocks/data/submit/base";
+import { APIGatewayEvent } from "node_modules/shared-types";
+import { describe, expect, it } from "vitest";
+
+import { submit } from "./index";
 
 describe("submit Lambda function missing objects in event", () => {
   it.each(

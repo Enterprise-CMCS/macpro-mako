@@ -1,7 +1,8 @@
-import { CommonEmailVariables, Events } from "shared-types";
-import { PackageDetails, BasicFooter, Attachments, Divider } from "../../email-components";
-import { styles } from "../../email-styles";
 import { Text } from "@react-email/components";
+import { CommonEmailVariables, Events } from "shared-types";
+
+import { Attachments, BasicFooter, Divider, PackageDetails } from "../../email-components";
+import { styles } from "../../email-styles";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const WaiversEmailState = ({

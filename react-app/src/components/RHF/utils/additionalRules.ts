@@ -1,5 +1,5 @@
 import { RegisterOptions } from "react-hook-form";
-import { RuleGenerator, SortFuncs, AdditionalRule } from "shared-types/forms";
+import { AdditionalRule, RuleGenerator, SortFuncs } from "shared-types/forms";
 
 export const sortFunctions: {
   [x in SortFuncs]: (a: string, b: string) => number;

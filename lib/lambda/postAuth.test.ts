@@ -1,6 +1,4 @@
-import { describe, it, expect, vi, afterAll } from "vitest";
 import { Context } from "aws-lambda";
-import { handler } from "./postAuth";
 import {
   makoStateSubmitter,
   setMockUsername,
@@ -8,6 +6,9 @@ import {
   TEST_IDM_USERS,
   USER_POOL_ID,
 } from "mocks";
+import { afterAll, describe, expect, it, vi } from "vitest";
+
+import { handler } from "./postAuth";
 
 const callback = vi.fn();
 describe("process emails Handler", () => {

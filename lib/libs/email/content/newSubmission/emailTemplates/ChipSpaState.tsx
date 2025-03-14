@@ -1,9 +1,10 @@
+import { Link, Text } from "@react-email/components";
 import { Events } from "shared-types";
 import { CommonEmailVariables } from "shared-types";
-import { Link, Text } from "@react-email/components";
-import { PackageDetails, BasicFooter } from "../../email-components";
-import { BaseEmailTemplate } from "../../email-templates";
+
+import { BasicFooter, PackageDetails } from "../../email-components";
 import { styles } from "../../email-styles";
+import { BaseEmailTemplate } from "../../email-templates";
 
 export const ChipSpaStateEmail = (props: {
   variables: Events["NewChipSubmission"] & CommonEmailVariables;

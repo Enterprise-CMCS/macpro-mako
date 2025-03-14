@@ -1,13 +1,14 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { handler } from "./mapRole";
 import { Context } from "aws-lambda";
 import {
   CLOUDFORMATION_NOTIFICATION_DOMAIN,
-  OPENSEARCH_DOMAIN,
   errorSecurityRolesMappingHandler,
+  OPENSEARCH_DOMAIN,
 } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
 import * as os from "../libs/opensearch-lib";
+import { handler } from "./mapRole";
 
 describe("CloudFormation Custom Resource Handler", () => {
   const mockEventBase = {

@@ -1,6 +1,7 @@
-import { describe, test, expect } from "vitest";
-import { documentInitializer } from "../utils/initializer";
 import { FormSchema } from "shared-types";
+import { describe, expect, test } from "vitest";
+
+import { documentInitializer } from "../utils/initializer";
 
 const form: FormSchema = {
   formId: "testForm",

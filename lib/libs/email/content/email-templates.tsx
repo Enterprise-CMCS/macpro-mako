@@ -1,7 +1,8 @@
 import { Body, Container, Head, Heading, Html, Preview, Text } from "@react-email/components";
-import { EmailNav, EmailFooter } from "./email-components";
-import { styles } from "./email-styles";
 import { ReactNode } from "react";
+
+import { EmailFooter, EmailNav } from "./email-components";
+import { styles } from "./email-styles";
 
 interface BaseEmailTemplateProps {
   previewText: string;

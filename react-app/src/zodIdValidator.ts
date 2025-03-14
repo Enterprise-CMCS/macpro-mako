@@ -1,4 +1,4 @@
-import { z, SuperRefinement } from "zod";
+import { SuperRefinement, z } from "zod";
 
 export const validId = (idRegex: RegExp, message: string): SuperRefinement<string> => {
   const correctFormatSchema = z.string().regex(idRegex, {

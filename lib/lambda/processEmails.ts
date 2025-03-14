@@ -1,21 +1,21 @@
-import { SESClient, SendEmailCommand, SendEmailCommandInput } from "@aws-sdk/client-ses";
+import { SendEmailCommand, SendEmailCommandInput, SESClient } from "@aws-sdk/client-ses";
+import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
+import { Handler } from "aws-lambda";
+import { htmlToText, HtmlToTextOptions } from "html-to-text";
+import { getAllStateUsers, getEmailTemplates } from "libs/email";
+import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
+import * as os from "libs/opensearch-lib";
+import { getOsNamespace } from "libs/utils";
 import {
   EmailAddresses,
+  Events,
   KafkaEvent,
   KafkaRecord,
   opensearch,
   SEATOOL_STATUS,
-  Events,
 } from "shared-types";
 import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils";
 import { retry } from "shared-utils/retry";
-import { Handler } from "aws-lambda";
-import { getEmailTemplates, getAllStateUsers } from "libs/email";
-import * as os from "libs/opensearch-lib";
-import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
-import { htmlToText, HtmlToTextOptions } from "html-to-text";
-import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
-import { getOsNamespace } from "libs/utils";
 
 class TemporaryError extends Error {
   constructor(message: string) {

@@ -2,10 +2,11 @@ import {
   Action,
   ActionRule,
   Authority,
-  SEATOOL_STATUS,
   finalDispositionStatuses,
+  SEATOOL_STATUS,
 } from "shared-types";
-import { isStateUser, isCmsWriteUser, isCmsSuperUser } from "../user-helper";
+
+import { isCmsSuperUser, isCmsWriteUser, isStateUser } from "../user-helper";
 
 export const arRespondToRai: ActionRule = {
   action: Action.RESPOND_TO_RAI,

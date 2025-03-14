@@ -1,12 +1,13 @@
 import * as cdk from "aws-cdk-lib";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
-import { Construct } from "constructs";
-import { join } from "path";
-import { DeploymentConfigProperties } from "../config/deployment-config";
-import * as LC from "local-constructs";
-import { BlockPublicAccess, Bucket, BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { AnyPrincipal, Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { BlockPublicAccess, Bucket, BucketEncryption } from "aws-cdk-lib/aws-s3";
+import { Construct } from "constructs";
+import * as LC from "local-constructs";
+import { join } from "path";
+
 import { commonBundlingOptions } from "../config/bundling-config";
+import { DeploymentConfigProperties } from "../config/deployment-config";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;

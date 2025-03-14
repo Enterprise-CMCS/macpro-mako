@@ -1,7 +1,8 @@
-import { BreadCrumbConfig } from "@/components";
-import { mapActionLabel } from "@/utils";
 import { Action } from "shared-types/actions";
 import { Authority } from "shared-types/authority";
+
+import { BreadCrumbConfig } from "@/components";
+import { mapActionLabel } from "@/utils";
 
 type DetailsAndActionsBreadCrumbsArgs = {
   id: string;

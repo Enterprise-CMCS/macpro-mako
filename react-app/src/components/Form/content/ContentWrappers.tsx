@@ -1,7 +1,8 @@
-import { Alert, RequiredIndicator, SectionCard } from "@/components";
 import clsx from "clsx";
 import { Info } from "lucide-react";
 import { ReactElement, ReactNode } from "react";
+
+import { Alert, RequiredIndicator, SectionCard } from "@/components";
 
 export const FormSectionCard = ({
   children,

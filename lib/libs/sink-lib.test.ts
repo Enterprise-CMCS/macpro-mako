@@ -1,7 +1,8 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { bulkUpdateDataWrapper } from "./sink-lib";
 import { OPENSEARCH_DOMAIN, OPENSEARCH_INDEX_NAMESPACE } from "mocks";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
 import * as os from "./opensearch-lib";
+import { bulkUpdateDataWrapper } from "./sink-lib";
 
 describe("bulkUpdateDataWrapper", () => {
   const bulkUpdateDataSpy = vi.spyOn(os, "bulkUpdateData");

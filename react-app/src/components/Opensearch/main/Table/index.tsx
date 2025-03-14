@@ -1,10 +1,13 @@
-import * as UI from "@/components";
 import type { FC } from "react";
-import { OsTableColumn } from "./types";
-import { useOsContext } from "../Provider";
-import { useOsUrl, LoadingSpinner } from "@/components";
-import { BLANK_VALUE } from "@/consts";
 import { opensearch } from "shared-types";
+
+import * as UI from "@/components";
+import { LoadingSpinner, useOsUrl } from "@/components";
+import { BLANK_VALUE } from "@/consts";
+import { cn } from "@/utils";
+
+import { useOsContext } from "../Provider";
+import { OsTableColumn } from "./types";
 
 export const OsTable: FC<{
   columns: OsTableColumn[];
@@ -12,6 +15,7 @@ export const OsTable: FC<{
 }> = (props) => {
   const context = useOsContext();
   const url = useOsUrl();
+  const onlyID = props.columns.filter((c) => c.hidden === false).length <= 2;
 
   return (
     <UI.Table className="overflow-scroll w-full">
@@ -24,6 +28,7 @@ export const OsTable: FC<{
                 {...(!!TH.props && TH.props)}
                 key={`TH-${TH.field}`}
                 isActive={url.state.sort?.field === TH.field}
+                className={cn({ "w-full": onlyID && TH.field === "id.keyword" })}
                 desc={url.state.sort?.order === "desc"}
                 {...(TH.isSystem && { className: "pointer-events-none" })}
                 onClick={() => {

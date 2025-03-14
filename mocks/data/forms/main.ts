@@ -1,4 +1,5 @@
 import { FormSchema } from "shared-types";
+
 import { slots } from "./slots";
 
 export const textForm: FormSchema = {

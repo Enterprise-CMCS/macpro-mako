@@ -1,5 +1,5 @@
-import { emailTemplateValue } from "../../../mock-data/temp-extension";
 import { TempExtStateEmail } from "../../../content/tempExtension/emailTemplates/TempExtState";
+import { emailTemplateValue } from "../../../mock-data/temp-extension";
 
 const TempExtStatePreview = () => {
   return (

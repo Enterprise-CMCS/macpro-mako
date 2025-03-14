@@ -1,6 +1,7 @@
-import { beforeAll, it, expect, vi, describe } from "vitest";
-import * as unit from "./useGetUser";
 import { Auth } from "aws-amplify";
+import { beforeAll, describe, expect, it, vi } from "vitest";
+
+import * as unit from "./useGetUser";
 
 /* When mocking the getItem and helper functions:
  * 1. Assign Auth.currentAuthenticatedUser to use mockCognito

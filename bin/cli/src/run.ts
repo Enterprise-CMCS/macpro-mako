@@ -1,18 +1,19 @@
 import yargs from "yargs";
+
 import {
   deploy,
   destroy,
   docs,
   e2e,
+  emails,
+  getCost,
   install,
   logs,
   openApp,
   openKibana,
   test,
   ui,
-  getCost,
   watch,
-  emails,
 } from "./commands";
 
 yargs

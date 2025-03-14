@@ -1,10 +1,10 @@
 import { APIGatewayEvent } from "aws-lambda";
 import {
   GET_ERROR_ITEM_ID,
+  getRequestContext,
   HI_TEST_ITEM_ID,
   NOT_FOUND_ITEM_ID,
   WITHDRAWN_CHANGELOG_ITEM_ID,
-  getRequestContext,
 } from "mocks";
 import items from "mocks/data/items";
 import { describe, expect, it } from "vitest";

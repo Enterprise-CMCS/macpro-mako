@@ -1,12 +1,14 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, test, expect, beforeAll } from "vitest";
-import { InitialForm } from "./Initial";
-import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { skipCleanup, mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
-import { formSchemas } from "@/formSchemas";
 import { EXISTING_ITEM_APPROVED_AMEND_ID } from "mocks";
+import { beforeAll, describe, expect, test } from "vitest";
+
+import { formSchemas } from "@/formSchemas";
+import { renderFormAsync } from "@/utils/test-helpers/renderForm";
+import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
+import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
+
+import { InitialForm } from "./Initial";
 
 const upload = uploadFiles<(typeof formSchemas)["contracting-initial"]>();
 

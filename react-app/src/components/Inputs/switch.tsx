@@ -1,7 +1,8 @@
-import * as React from "react";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
-import { cn } from "@/utils";
+import * as React from "react";
 import { SwitchProps } from "shared-types";
+
+import { cn } from "@/utils";
 
 const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root> & { className?: string },

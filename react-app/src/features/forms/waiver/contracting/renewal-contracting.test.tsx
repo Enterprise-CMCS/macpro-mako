@@ -1,18 +1,20 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeAll, describe, expect, test } from "vitest";
-import { RenewalForm } from "./Renewal";
-import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
-import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
-import { formSchemas } from "@/formSchemas";
 import {
-  EXISTING_ITEM_PENDING_ID,
-  EXISTING_ITEM_APPROVED_NEW_ID,
   EXISTING_ITEM_APPROVED_AMEND_ID,
+  EXISTING_ITEM_APPROVED_NEW_ID,
+  EXISTING_ITEM_PENDING_ID,
   NOT_FOUND_ITEM_ID,
   TEST_ITEM_ID,
 } from "mocks";
+import { beforeAll, describe, expect, test } from "vitest";
+
+import { formSchemas } from "@/formSchemas";
+import { renderFormAsync } from "@/utils/test-helpers/renderForm";
+import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
+import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
+
+import { RenewalForm } from "./Renewal";
 
 const upload = uploadFiles<(typeof formSchemas)["contracting-renewal"]>();
 

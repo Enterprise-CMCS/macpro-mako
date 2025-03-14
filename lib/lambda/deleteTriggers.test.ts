@@ -1,5 +1,9 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { handler } from "./deleteTriggers";
+import {
+  DeleteEventSourceMappingCommand,
+  GetEventSourceMappingCommand,
+  LambdaClient,
+  ListEventSourceMappingsCommand,
+} from "@aws-sdk/client-lambda";
 import { Context } from "aws-lambda";
 import {
   TEST_DELETE_TRIGGER_FUNCTION_NAME,
@@ -7,12 +11,9 @@ import {
   TEST_ERROR_EVENT_SOURCE_FUNCTION_NAME,
   TEST_NO_TRIGGERS_FUNCTION_NAME,
 } from "mocks";
-import {
-  DeleteEventSourceMappingCommand,
-  GetEventSourceMappingCommand,
-  LambdaClient,
-  ListEventSourceMappingsCommand,
-} from "@aws-sdk/client-lambda";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { handler } from "./deleteTriggers";
 
 describe("Lambda Handler", () => {
   const lambdaSpy = vi.spyOn(LambdaClient.prototype, "send");

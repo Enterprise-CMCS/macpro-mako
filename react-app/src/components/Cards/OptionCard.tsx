@@ -1,6 +1,7 @@
+import { ChevronRight } from "lucide-react";
 import { PropsWithChildren, ReactNode } from "react";
 import { Link, LinkProps } from "react-router";
-import { ChevronRight } from "lucide-react";
+
 import { CardWithTopBorder } from "@/components";
 
 export type OptionCardFieldsetProps = PropsWithChildren<{

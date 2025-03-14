@@ -1,11 +1,11 @@
-import { useState, useMemo } from "react";
-import { format, startOfQuarter, startOfMonth, sub, endOfDay } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
+import { endOfDay, format, startOfMonth, startOfQuarter, sub } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
-
-import { cn } from "@/utils";
-import { Popover, PopoverContent, PopoverTrigger, Button, Calendar, Input } from "@/components";
+import { useMemo, useState } from "react";
 import { opensearch } from "shared-types";
+
+import { Button, Calendar, Input, Popover, PopoverContent, PopoverTrigger } from "@/components";
+import { cn } from "@/utils";
 
 type Props = Omit<React.HTMLAttributes<HTMLDivElement>, "onChange" | "value" | "onSelect"> & {
   value: opensearch.RangeValue;

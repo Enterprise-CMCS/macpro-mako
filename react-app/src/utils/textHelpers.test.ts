@@ -1,5 +1,6 @@
-import { describe, it, expect } from "vitest";
-import { removeUnderscoresAndCapitalize, convertCamelCaseToWords } from "./textHelpers";
+import { describe, expect, it } from "vitest";
+
+import { convertCamelCaseToWords, removeUnderscoresAndCapitalize } from "./textHelpers";
 
 describe("removeUnderscoresAndCapitalize", () => {
   it("should replace underscores with spaces and capitalize each word", () => {

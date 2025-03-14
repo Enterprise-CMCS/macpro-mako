@@ -1,7 +1,7 @@
 import {
-  SecretsManagerClient,
-  GetSecretValueCommand,
   DescribeSecretCommand,
+  GetSecretValueCommand,
+  SecretsManagerClient,
 } from "@aws-sdk/client-secrets-manager";
 
 export async function getSecret(secretId: string, region: string = "us-east-1"): Promise<string> {

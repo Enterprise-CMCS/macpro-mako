@@ -1,12 +1,14 @@
-import { handleOpensearchError } from "./utils";
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
+import { getDomainAndNamespace } from "libs/utils";
 import { BaseIndex } from "shared-types/opensearch";
+import { ONEMAC_LEGACY_ORIGIN } from "shared-types/opensearch/main/transforms/legacy-transforms";
 import { validateEnvVariable } from "shared-utils";
+
 import { getStateFilter } from "../libs/api/auth/user";
 import { getAppkChildren } from "../libs/api/package";
 import * as os from "../libs/opensearch-lib";
-import { getDomainAndNamespace } from "libs/utils";
+import { handleOpensearchError } from "./utils";
 
 // Handler function to search index
 export const getSearchData = async (event: APIGatewayEvent) => {
@@ -44,7 +46,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     // Return OneMAC records and NOSOs (denoted with SEATool origin)
     query.query.bool.must.push({
       terms: {
-        "origin.keyword": ["OneMAC", "SEATool"],
+        "origin.keyword": ["OneMAC", "SEATool", ONEMAC_LEGACY_ORIGIN],
       },
     });
 

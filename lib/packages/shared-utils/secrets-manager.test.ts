@@ -6,6 +6,7 @@ import {
 } from "mocks";
 import secrets from "mocks/data/secrets";
 import { describe, expect, it } from "vitest";
+
 import { getSecret } from ".";
 
 describe("getSecret", () => {

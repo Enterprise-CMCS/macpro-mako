@@ -1,11 +1,12 @@
-import { describe, it, expect, vi } from "vitest";
-import { updateFieldMapping, decodeUtf8 } from "./opensearch-lib";
 import {
+  errorUpdateFieldMappingHandler,
   OPENSEARCH_DOMAIN,
   OPENSEARCH_INDEX_NAMESPACE,
-  errorUpdateFieldMappingHandler,
 } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
+import { describe, expect, it, vi } from "vitest";
+
+import { decodeUtf8, updateFieldMapping } from "./opensearch-lib";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}main`;
 

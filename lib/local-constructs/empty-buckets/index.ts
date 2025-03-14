@@ -1,15 +1,4 @@
-import { join } from "path";
-
 import { Duration, RemovalPolicy, StackProps } from "aws-cdk-lib";
-import { LogGroup } from "aws-cdk-lib/aws-logs";
-import { IBucket } from "aws-cdk-lib/aws-s3";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
-import { Runtime } from "aws-cdk-lib/aws-lambda";
-import {
-  AwsCustomResource,
-  AwsCustomResourcePolicy,
-  PhysicalResourceId,
-} from "aws-cdk-lib/custom-resources";
 import {
   Effect,
   ManagedPolicy,
@@ -18,7 +7,18 @@ import {
   Role,
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
+import { Runtime } from "aws-cdk-lib/aws-lambda";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { LogGroup } from "aws-cdk-lib/aws-logs";
+import { IBucket } from "aws-cdk-lib/aws-s3";
+import {
+  AwsCustomResource,
+  AwsCustomResourcePolicy,
+  PhysicalResourceId,
+} from "aws-cdk-lib/custom-resources";
 import { Construct } from "constructs";
+import { join } from "path";
+
 import { commonBundlingOptions } from "../../config/bundling-config";
 
 interface EmptyBucketsProps extends StackProps {

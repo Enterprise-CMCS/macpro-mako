@@ -1,8 +1,8 @@
 import * as cdk from "aws-cdk-lib";
-import { Construct } from "constructs";
-import { CfnWebACL, CfnLoggingConfiguration, CfnWebACLAssociation } from "aws-cdk-lib/aws-wafv2";
-import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { RestApi } from "aws-cdk-lib/aws-apigateway";
+import { LogGroup } from "aws-cdk-lib/aws-logs";
+import { CfnLoggingConfiguration, CfnWebACL, CfnWebACLAssociation } from "aws-cdk-lib/aws-wafv2";
+import { Construct } from "constructs";
 
 interface WafProps {
   readonly name: string;

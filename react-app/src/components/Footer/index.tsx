@@ -1,5 +1,6 @@
-import { Alert, Button } from "@/components";
 import { Link } from "react-router";
+
+import { Alert, Button } from "@/components";
 
 type Props = {
   email: string;

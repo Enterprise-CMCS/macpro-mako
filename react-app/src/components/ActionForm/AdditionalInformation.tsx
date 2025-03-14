@@ -1,7 +1,8 @@
 import { ControllerRenderProps, FieldPath } from "react-hook-form";
 import { z } from "zod";
-import { SchemaWithEnforcableProps } from ".";
+
 import { FormDescription, FormItem, FormLabel, Textarea } from "../Inputs";
+import { SchemaWithEnforcableProps } from ".";
 
 type AdditionalInformationProps<Schema extends SchemaWithEnforcableProps> = {
   label: string;

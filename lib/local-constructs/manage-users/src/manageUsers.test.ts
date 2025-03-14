@@ -1,21 +1,22 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { handler } from "./manageUsers"; // Adjust the path as necessary
-import { Context } from "aws-lambda";
 import {
-  CognitoIdentityProviderClient,
   AdminCreateUserCommand,
+  AdminGetUserCommand,
   AdminSetUserPasswordCommand,
   AdminUpdateUserAttributesCommand,
-  AdminGetUserCommand,
+  CognitoIdentityProviderClient,
 } from "@aws-sdk/client-cognito-identity-provider";
+import { Context } from "aws-lambda";
+import * as cfn from "cfn-response-async";
 import {
   CLOUDFORMATION_NOTIFICATION_DOMAIN,
   TEST_PW_ARN,
   TEST_SECRET_ERROR_ID,
-  USER_POOL_ID,
   testNewStateSubmitter,
+  USER_POOL_ID,
 } from "mocks";
-import * as cfn from "cfn-response-async";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { handler } from "./manageUsers"; // Adjust the path as necessary
 
 describe("Cognito User Lambda Handler", () => {
   const cognitoSpy = vi.spyOn(CognitoIdentityProviderClient.prototype, "send");

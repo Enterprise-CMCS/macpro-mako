@@ -1,6 +1,7 @@
-import * as UI from "@/components";
 import { XCircleIcon } from "lucide-react";
 import { ReactQueryApiError } from "shared-types";
+
+import * as UI from "@/components";
 
 export const ErrorAlert = ({ error }: { error: ReactQueryApiError }) => {
   let message = "An error has occurred";

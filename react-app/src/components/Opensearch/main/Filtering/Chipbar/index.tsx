@@ -1,11 +1,12 @@
-import { type FC, useCallback } from "react";
-
-import { Chip, useOsUrl, checkMultiFilter } from "@/components";
-import { opensearch } from "shared-types";
-import { useFilterDrawerContext } from "../FilterProvider";
-import { useLabelMapping } from "@/hooks";
 import { UTCDate } from "@date-fns/utc";
 import { format } from "date-fns";
+import { type FC, useCallback } from "react";
+import { opensearch } from "shared-types";
+
+import { checkMultiFilter, Chip, useOsUrl } from "@/components";
+import { useLabelMapping } from "@/hooks";
+
+import { useFilterDrawerContext } from "../FilterProvider";
 
 export const DATE_FORMAT = "M/d/yyyy";
 export interface RenderProp {

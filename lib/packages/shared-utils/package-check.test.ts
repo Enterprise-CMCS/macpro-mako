@@ -1,7 +1,8 @@
-import { describe, it, expect } from "vitest";
-import { PackageCheck } from ".";
+import { TEST_1915B_ITEM, TEST_CHIP_SPA_ITEM, TEST_MED_SPA_ITEM } from "mocks/data/items";
 import { ActionType, Authority, SEATOOL_STATUS } from "shared-types";
-import { TEST_MED_SPA_ITEM, TEST_CHIP_SPA_ITEM, TEST_1915B_ITEM } from "mocks/data/items";
+import { describe, expect, it } from "vitest";
+
+import { PackageCheck } from ".";
 
 describe("PackageCheck", () => {
   describe("Plan Checks", () => {

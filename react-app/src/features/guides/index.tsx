@@ -1,5 +1,6 @@
-import * as UI from "@/components";
 import { Guide } from "shared-types";
+
+import * as UI from "@/components";
 
 export const ABPGuide = () => {
   return (

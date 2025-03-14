@@ -1,20 +1,21 @@
-import { describe, expect, it, vi, afterEach } from "vitest";
-import { handler } from "./sinkCpocs";
+import { Client } from "@opensearch-project/opensearch";
 import { Context } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
-import * as sink from "../libs/sink-lib";
 import {
   convertObjToBase64,
   createKafkaEvent,
   createKafkaRecord,
+  errorBulkUpdateDataHandler,
   OPENSEARCH_DOMAIN,
   OPENSEARCH_INDEX_NAMESPACE,
   rateLimitBulkUpdateDataHandler,
-  errorBulkUpdateDataHandler,
 } from "mocks";
-import { mockedServiceServer as mockedServer } from "mocks/server";
 import cpocs, { MUHAMMAD_BASHAR_ID } from "mocks/data/cpocs";
-import { Client } from "@opensearch-project/opensearch";
+import { mockedServiceServer as mockedServer } from "mocks/server";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import * as sink from "../libs/sink-lib";
+import { handler } from "./sinkCpocs";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}cpocs`;
 const TOPIC = "--mako--branch-name--aws.seatool.debezium.cdc.SEA.dbo.Officers";

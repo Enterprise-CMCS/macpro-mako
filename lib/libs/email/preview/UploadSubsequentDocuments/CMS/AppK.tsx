@@ -1,7 +1,8 @@
-import { AppKCMSEmail } from "../../../content/uploadSubsequentDocuments/emailTemplates";
-import { emailTemplateValue } from "../../../mock-data/new-submission";
-import * as attachments from "../../../mock-data/attachments";
 import { formatActionType } from "shared-utils";
+
+import { AppKCMSEmail } from "../../../content/uploadSubsequentDocuments/emailTemplates";
+import * as attachments from "../../../mock-data/attachments";
+import { emailTemplateValue } from "../../../mock-data/new-submission";
 const AppKCMSEmailPreview = () => {
   return (
     <AppKCMSEmail

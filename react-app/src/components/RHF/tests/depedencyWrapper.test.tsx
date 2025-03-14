@@ -1,9 +1,10 @@
-import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
-import { useForm, FormProvider } from "react-hook-form";
-import { DependencyWrapper } from "../dependencyWrapper";
 import { PropsWithChildren } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { DependencyRule } from "shared-types";
+import { describe, expect, it } from "vitest";
+
+import { DependencyWrapper } from "../dependencyWrapper";
 
 const TestComp = ({
   name,

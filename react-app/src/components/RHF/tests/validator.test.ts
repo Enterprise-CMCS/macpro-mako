@@ -1,6 +1,7 @@
-import { describe, expect, it } from "vitest";
-import { documentValidator, validateInput, validateOption } from "../utils";
 import { mockForms } from "mocks/data/forms/main";
+import { describe, expect, it } from "vitest";
+
+import { documentValidator, validateInput, validateOption } from "../utils";
 
 describe("Test for RHF validator", () => {
   it("checks to see if a field is missing while required", () => {

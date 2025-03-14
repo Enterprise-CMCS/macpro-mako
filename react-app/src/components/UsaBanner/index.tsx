@@ -1,7 +1,9 @@
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import { useLoaderData } from "react-router";
-import { ChevronDown, ChevronUp } from "lucide-react";
+
 import config from "@/config";
+
 import { LockIcon } from "../LockIcon";
 
 const MiniLock = () => {

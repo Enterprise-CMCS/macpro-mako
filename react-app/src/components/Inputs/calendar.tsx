@@ -1,6 +1,8 @@
-import { CalendarProps } from "shared-types";
 import { DayPicker } from "react-day-picker";
+import { CalendarProps } from "shared-types";
+
 import { cn } from "@/utils";
+
 import { buttonVariants } from "./button";
 
 function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {

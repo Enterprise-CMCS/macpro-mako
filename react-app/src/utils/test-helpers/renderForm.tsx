@@ -1,7 +1,8 @@
 import { waitForElementToBeRemoved } from "@testing-library/react";
-import React, { ReactElement } from "react";
 import items from "mocks/data/items";
+import React, { ReactElement } from "react";
 import { Authority } from "shared-types";
+
 import { renderWithQueryClient, renderWithQueryClientAndMemoryRouter } from "./render";
 
 export const renderFormAsync = async (form: ReactElement) => {

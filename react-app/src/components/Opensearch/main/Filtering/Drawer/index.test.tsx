@@ -1,9 +1,11 @@
-import { describe, expect, it } from "vitest";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { OsFilterDrawer } from "./index";
 import { opensearch } from "shared-types";
-import { renderFilterDrawer, getDashboardQueryString } from "@/utils/test-helpers";
+import { describe, expect, it } from "vitest";
+
+import { getDashboardQueryString, renderFilterDrawer } from "@/utils/test-helpers";
+
+import { OsFilterDrawer } from "./index";
 
 const setup = (
   filters: opensearch.Filterable<opensearch.main.Field>[],

@@ -1,9 +1,15 @@
-import { formatActionType, formatDateToEST, isCmsUser, isStateUser } from "shared-utils";
+import { ReactNode, useState } from "react";
+import { Authority, opensearch } from "shared-types";
+import {
+  formatActionType,
+  formatDateToEST,
+  formatDateToUTC,
+  isCmsUser,
+  isStateUser,
+} from "shared-utils";
 
 import { OneMacUser } from "@/api/useGetUser";
 import { BLANK_VALUE } from "@/consts";
-import { useState, ReactNode } from "react";
-import { Authority, opensearch } from "shared-types";
 import { convertStateAbbrToFullName } from "@/utils";
 
 type ReviewTeamListProps = {
@@ -95,7 +101,7 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
   },
   {
     label: "Proposed Effective Date",
-    value: submission.proposedDate ? formatDateToEST(submission.proposedDate) : "Pending",
+    value: submission.proposedDate ? formatDateToUTC(submission.proposedDate) : "Pending",
     canView: submission.actionType !== "Extend",
   },
   {
@@ -117,14 +123,14 @@ export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (s
   {
     label: "Final Disposition Date",
     value: submission.finalDispositionDate
-      ? formatDateToEST(submission.finalDispositionDate)
+      ? formatDateToUTC(submission.finalDispositionDate)
       : BLANK_VALUE,
     canView: submission.actionType !== "Extend",
   },
   {
     label: "Approved Effective Date",
     value: submission.approvedEffectiveDate
-      ? formatDateToEST(submission.approvedEffectiveDate)
+      ? formatDateToUTC(submission.approvedEffectiveDate)
       : BLANK_VALUE,
     canView: submission.actionType !== "Extend",
   },

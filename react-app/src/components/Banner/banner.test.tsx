@@ -1,9 +1,10 @@
+import { act, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ReactNode } from "react";
 import { Link, MemoryRouter, Route, Routes } from "react-router";
 import { describe, expect, test } from "vitest";
-import { act, render } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { banner, Banner } from ".";
+
+import { Banner, banner } from ".";
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <MemoryRouter initialEntries={["/dashboard"]}>

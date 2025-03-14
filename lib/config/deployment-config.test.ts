@@ -1,10 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import * as sharedUtils from "shared-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import {
   DeploymentConfig,
-  InjectedConfigOptions,
   DeploymentConfigProperties,
+  InjectedConfigOptions,
 } from "../config/deployment-config";
-import * as sharedUtils from "shared-utils";
 
 // Mock the shared-utils module
 vi.mock("shared-utils", () => ({

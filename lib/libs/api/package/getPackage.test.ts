@@ -2,6 +2,7 @@
 import { INITIAL_RELEASE_APPK_ITEM_ID, TEST_ITEM_ID } from "mocks";
 import items from "mocks/data/items";
 import { describe, expect, it } from "vitest";
+
 import { getPackage } from "./getPackage";
 
 describe("getPackage", () => {

@@ -1,11 +1,12 @@
 import {
   opensearch,
-  statusToDisplayToStateUser,
-  statusToDisplayToCmsUser,
   SEATOOL_STATUS,
+  statusToDisplayToCmsUser,
+  statusToDisplayToStateUser,
 } from "shared-types";
-import type { TestItemResult } from "../index.d";
+
 import { ATTACHMENT_BUCKET_NAME } from "../consts";
+import type { TestItemResult } from "../index.d";
 
 export const EXISTING_ITEM_PENDING_ID = "MD-0002.R00.00";
 export const EXISTING_ITEM_APPROVED_NEW_ID = "MD-0000.R00.00";

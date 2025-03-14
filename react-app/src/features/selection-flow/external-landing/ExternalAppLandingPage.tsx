@@ -1,8 +1,9 @@
 import { PropsWithChildren, ReactElement } from "react";
-import { useLocation, Link } from "react-router";
-import { Button, SimplePageContainer, BreadCrumbs, optionCrumbsFromPath } from "@/components";
+import { Link, useLocation } from "react-router";
+
+import { BreadCrumbs, Button, optionCrumbsFromPath, SimplePageContainer } from "@/components";
+import { FAQ_TAB } from "@/consts";
 import { SimplePageTitle } from "@/features";
-import { FAQ_TAB } from "@/router";
 
 export enum EXTERNAL_APP {
   MAC_PRO = "https://www.medicaid.gov/resources-for-states/medicaid-and-chip-program-macpro-portal/index.html#MACPro",

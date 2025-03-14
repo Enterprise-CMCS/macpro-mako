@@ -1,4 +1,5 @@
 import { http, HttpResponse } from "msw";
+
 import { ACCESS_KEY_ID, SECRET_KEY } from "../../consts";
 
 const generateSessionToken = (): string | null => {

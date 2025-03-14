@@ -1,8 +1,9 @@
-import { ActionForm } from "@/components/ActionForm";
-import { formSchemas } from "@/formSchemas";
-import { PackageSection } from "@/components/Form/content/PackageSection";
 import { useParams } from "react-router";
 import { isCmsUser } from "shared-utils";
+
+import { ActionForm } from "@/components/ActionForm";
+import { PackageSection } from "@/components/Form/content/PackageSection";
+import { formSchemas } from "@/formSchemas";
 
 export const EnableWithdrawRaiForm = () => {
   const { authority, id } = useParams();

@@ -1,9 +1,10 @@
-import type { TestUserData } from "../../index.d";
-import { reviewers, makoReviewer, superReviewer } from "./cmsReviewer";
-import { helpDeskUsers, helpDeskUser } from "./helpDeskUsers";
-import { readOnlyUsers, readOnlyUser } from "./readOnlyCMSUsers";
-import { stateSubmitters, makoStateSubmitter, coStateSubmitter } from "./stateSubmitters";
 import { convertUserAttributes } from "mocks/handlers/auth.utils";
+
+import type { TestUserData } from "../../index.d";
+import { makoReviewer, reviewers, superReviewer } from "./cmsReviewer";
+import { helpDeskUser, helpDeskUsers } from "./helpDeskUsers";
+import { readOnlyUser, readOnlyUsers } from "./readOnlyCMSUsers";
+import { coStateSubmitter, makoStateSubmitter, stateSubmitters } from "./stateSubmitters";
 
 export const noRoleUser: TestUserData = {
   UserAttributes: [

@@ -1,10 +1,10 @@
-import { Handler } from "aws-lambda";
-import { UserRoles, STATE_ROLES } from "shared-types";
 import {
-  CognitoIdentityProviderClient,
-  AdminUpdateUserAttributesCommand,
   AdminGetUserCommand,
+  AdminUpdateUserAttributesCommand,
+  CognitoIdentityProviderClient,
 } from "@aws-sdk/client-cognito-identity-provider";
+import { Handler } from "aws-lambda";
+import { STATE_ROLES, UserRoles } from "shared-types";
 import { getSecret } from "shared-utils";
 
 // Initialize Cognito client

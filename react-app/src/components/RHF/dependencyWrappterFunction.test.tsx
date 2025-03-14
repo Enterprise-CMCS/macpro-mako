@@ -1,6 +1,7 @@
-import { describe, expect, it } from "vitest";
-import { checkTriggeringValue } from "./dependencyWrapper";
 import { DependencyRule } from "shared-types";
+import { describe, expect, it } from "vitest";
+
+import { checkTriggeringValue } from "./dependencyWrapper";
 describe("Trigger Check Switch test", () => {
   it("Test if the expected value is correct", () => {
     const dependency: DependencyRule = {
